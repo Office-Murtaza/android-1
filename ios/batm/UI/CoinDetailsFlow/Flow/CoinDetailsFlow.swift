@@ -13,7 +13,6 @@ class CoinDetailsFlow: BaseFlow<BTMNavigationController, CoinDetailsFlowControll
       CoinSellDetailsAnotherAddressAssembly(),
       CoinSellDetailsCurrentAddressAssembly(),
       CoinExchangeAssembly(),
-      CoinStakingAssembly(),
       TransactionDetailsAssembly(),
       ReserveAssembly(),
       RecallAssembly(),
@@ -31,7 +30,6 @@ class CoinDetailsFlow: BaseFlow<BTMNavigationController, CoinDetailsFlowControll
     case sellDetailsForCurrentAddress(SellDetailsForCurrentAddress)
     case exchange(BTMCoin, [CoinBalance], CoinDetails)
     case trades(BTMCoin, [CoinBalance], CoinDetails)
-    case staking(BTMCoin, [CoinBalance], CoinDetails, StakeDetails)
     case reserve(BTMCoin, [CoinBalance], CoinDetails)
     case recall(BTMCoin, [CoinBalance], CoinDetails)
     case coinDetailsPredefinedData(CoinDetailsPredefinedDataConfig)
@@ -90,10 +88,6 @@ class CoinDetailsFlow: BaseFlow<BTMNavigationController, CoinDetailsFlowControll
       let flow = TradesFlow(view: view, parent: self)
       let step = TradesFlow.Steps.trades(coin, coinBalances, CoinDetails)
       return next(flow: flow, step: step)
-    case let .staking(coin, coinBalances, coinDetails, stakeDetails):
-      let module = resolver.resolve(Module<CoinStakingModule>.self)!
-      module.input.setup(coin: coin, coinBalances: coinBalances, coinDetails: coinDetails, stakeDetails: stakeDetails)
-      return push(module.controller)
     case let .reserve(coin, coinBalances, coinDetails):
       let module = resolver.resolve(Module<ReserveModule>.self)!
       module.input.setup(coin: coin, coinBalances: coinBalances, coinDetails: coinDetails)

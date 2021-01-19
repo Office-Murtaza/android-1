@@ -7,7 +7,7 @@ final class CoinStakingAssembly: Assembly {
   func assemble(container: Container) {
     container.register(Module<CoinStakingModule>.self) { resolver in
       let viewController = CoinStakingViewController()
-      let usecase = resolver.resolve(CoinDetailsUsecase.self)!
+      let usecase = resolver.resolve(DealsUsecase.self)!
       let presenter = CoinStakingPresenter(usecase: usecase)
       
       presenter.delegate = resolver.resolve(CoinStakingModuleDelegate.self)

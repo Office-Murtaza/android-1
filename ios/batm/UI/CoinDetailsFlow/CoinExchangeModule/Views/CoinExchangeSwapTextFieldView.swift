@@ -20,21 +20,6 @@ class CoinExchangeSwapTextFieldView: UIView, UIPickerViewDataSource, HasDisposeB
         return label
     }()
     
-    lazy var errorField: UITextField = {
-        let textField = UITextField()
-        textField.leftViewMode = UITextField.ViewMode.always
-        textField.isUserInteractionEnabled = false
-        let containerView = UIView(frame: CGRect(x:0, y: 0,width:25, height: 20))
-        let imageView = UIImageView(frame: CGRect(x: 0, y: 0, width:20 , height: 20))
-        imageView.image = UIImage(named: "swap_error")
-        containerView.addSubview(imageView)
-        textField.leftView = containerView
-        textField.textAlignment = .right
-        textField.textColor = UIColor(hexString: "B00020")
-        textField.font = .systemFont(ofSize: 12)
-        return textField
-    }()
-    
     lazy var coinTypeImageView: UIImageView = {
         let imageView = UIImageView()
         return imageView
@@ -51,7 +36,7 @@ class CoinExchangeSwapTextFieldView: UIView, UIPickerViewDataSource, HasDisposeB
         label.textColor = .slateGrey
         label.font = .systemFont(ofSize: 12, weight: .regular)
         return label
-    }();
+    }()
     
     lazy var amountTextField: UITextField = {
         let textField = UITextField()
@@ -65,10 +50,13 @@ class CoinExchangeSwapTextFieldView: UIView, UIPickerViewDataSource, HasDisposeB
     
     lazy var feeLabel: UILabel = {
         let label = UILabel()
+        label.setContentCompressionResistancePriority(.required, for: .horizontal)
         label.textColor = .slateGrey
         label.font = .systemFont(ofSize: 12, weight: .regular)
         return label
     }()
+    
+    lazy var errorFieldView = UIView()
     
     var coins: [CustomCoinType] = [] {
         didSet {
@@ -78,7 +66,7 @@ class CoinExchangeSwapTextFieldView: UIView, UIPickerViewDataSource, HasDisposeB
             fakeToCoinTextField.isEnabled = coins.count > 1
         }
     }
-    
+
     override init(frame: CGRect) {
         super.init(frame: frame)
         
@@ -101,7 +89,7 @@ class CoinExchangeSwapTextFieldView: UIView, UIPickerViewDataSource, HasDisposeB
                     amountTextField,
                     maxButton,
                     resultLabel,
-                    errorField,
+                    errorFieldView,
                     feeLabel)
         coinTextField.font = .systemFont(ofSize: 22, weight: .bold)
     }
@@ -123,7 +111,7 @@ class CoinExchangeSwapTextFieldView: UIView, UIPickerViewDataSource, HasDisposeB
             $0.top.equalTo(balanceLabel.snp.bottom).offset(5)
             $0.left.equalTo(balanceLabel.snp.left)
         }
-        
+                
         coinTextField.snp.makeConstraints {
             $0.centerY.equalTo(coinTypeImageView.snp_centerYWithinMargins)
             $0.left.equalTo(coinTypeImageView.snp_rightMargin).offset(20)
@@ -158,11 +146,11 @@ class CoinExchangeSwapTextFieldView: UIView, UIPickerViewDataSource, HasDisposeB
             $0.centerY.equalTo(balanceLabel)
         }
         
-        errorField.snp.makeConstraints {
+        errorFieldView.snp.makeConstraints {
             $0.top.equalTo(maxButton.snp.bottom)
             $0.top.equalTo(resultLabel.snp.bottom)
             $0.right.equalTo(amountTextField.snp.right)
-            $0.left.greaterThanOrEqualTo(self)
+            $0.left.greaterThanOrEqualTo(feeLabel.snp.right).offset(12)
         }
         
         setupPicker()
@@ -175,7 +163,33 @@ class CoinExchangeSwapTextFieldView: UIView, UIPickerViewDataSource, HasDisposeB
         coinPickerView.dataSource = self
     }
     
-    
+    func setupErrorField(errorText: String?) {
+        let imageView = UIImageView()
+        let textLabel = UILabel()
+        errorFieldView.subviews.forEach { $0.removeFromSuperview() }
+        errorFieldView.addSubviews(imageView, textLabel)
+        
+        imageView.snp.remakeConstraints {
+            $0.left.equalTo(errorFieldView.snp.left).offset(0)
+            $0.width.height.equalTo(14)
+            $0.centerY.equalTo(errorFieldView.snp.centerY)
+            $0.right.equalTo(textLabel.snp.left).offset(-8)
+        }
+        
+        textLabel.snp.remakeConstraints {
+            $0.left.equalTo(imageView.snp.right).offset(8)
+            $0.right.top.bottom.equalTo(errorFieldView)
+            $0.top.equalTo(errorFieldView.snp.top).offset(0)
+            $0.bottom.equalTo(errorFieldView.snp.bottom).offset(0)
+        }
+        
+        imageView.image = UIImage(named: "swap_error")
+        textLabel.text = errorText
+        textLabel.textAlignment = .right
+        textLabel.textColor = .errorRed
+        textLabel.font = .systemFont(ofSize: 12)
+        textLabel.numberOfLines = 2
+    }
     
     func configure(for coinType:CustomCoinType, coins: [CustomCoinType]) {
         self.coins = coins
@@ -198,7 +212,8 @@ class CoinExchangeSwapTextFieldView: UIView, UIPickerViewDataSource, HasDisposeB
     }
     
     private func configureFee(fee: Decimal, type: CustomCoinType) {
-        let feeFormatted = fee.coinFormatted.withCoinType(type)
+        let coinType = type.isETHBased ? CustomCoinType.ethereum : type
+        let feeFormatted = fee.coinFormatted.withCoinType(coinType)
         let feeText = String(format: localize(L.CoinWithdraw.Form.CoinAmount.helper), feeFormatted)
         
         feeLabel.text = feeText
@@ -248,5 +263,11 @@ extension Reactive where Base == CoinExchangeSwapTextFieldView {
     
     var maxTap: Driver<Void> {
         return base.maxButton.rx.tap.asDriver()
+    }
+    
+    var errorTextChanged: Binder<String?> {
+        return Binder(base) { target, value in
+            target.setupErrorField(errorText: value)
+        }
     }
 }

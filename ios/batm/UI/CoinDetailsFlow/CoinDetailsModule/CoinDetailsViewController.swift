@@ -11,7 +11,6 @@ final class CoinDetailsViewController: ModuleViewController<CoinDetailsPresenter
   let didTapSellRelay = PublishRelay<Void>()
   let didTapExchangeRelay = PublishRelay<Void>()
   let didTapTradesRelay = PublishRelay<Void>()
-  let didTapStakingRelay = PublishRelay<Void>()
   let didTapRecallRelay = PublishRelay<Void>()
   let didTapReserveRelay = PublishRelay<Void>()
   
@@ -169,7 +168,6 @@ final class CoinDetailsViewController: ModuleViewController<CoinDetailsPresenter
     let sellDriver = didTapSellRelay.asDriver(onErrorDriveWith: .empty())
     let exchangeDriver = didTapExchangeRelay.asDriver(onErrorDriveWith: .empty())
     let tradesDriver = didTapTradesRelay.asDriver(onErrorDriveWith: .empty())
-    let stakingDriver = didTapStakingRelay.asDriver(onErrorDriveWith: .empty())
     let showMoreDriver = tableView.rx.willDisplayLastCell.asDriver(onErrorDriveWith: .empty())
     let transactionSelectedDriver = tableView.rx.itemSelected.asDriver()
     let updateSelectedPeriodDriver = didSelectPeriodRelay.asDriver(onErrorDriveWith: .empty())
@@ -183,7 +181,6 @@ final class CoinDetailsViewController: ModuleViewController<CoinDetailsPresenter
                                                      sell: sellDriver,
                                                      exchange: exchangeDriver,
                                                      trades: tradesDriver,
-                                                     staking: stakingDriver,
                                                      showMore: showMoreDriver,
                                                      transactionSelected: transactionSelectedDriver,
                                                      updateSelectedPeriod: updateSelectedPeriodDriver,

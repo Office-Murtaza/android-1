@@ -25,13 +25,13 @@ extension DealsFlowController: DealsModuleDelegate {
 
 extension DealsFlowController: CoinExchangeModuleDelegate {
     func didFinishCoinExchange() {
-        step.accept(DealsFlow.Steps.pop(localize(L.CoinDetails.transactionCreated)))
+        step.accept(DealsFlow.Steps.popToRoot(localize(L.CoinDetails.transactionCreated)))
     }
 }
 
 extension DealsFlowController: CoinStakingModuleDelegate {
     func didFinishCoinStaking() {
-        step.accept(CoinDetailsFlow.Steps.pop(localize(L.CoinDetails.transactionCreated)))
+        step.accept(DealsFlow.Steps.popToRoot(localize(L.CoinDetails.transactionCreated)))
     }
 }
 

@@ -3,7 +3,6 @@ import RxSwift
 import RxCocoa
 
 final class CoinStakingPresenter: ModulePresenter, CoinStakingModule {
-    
     typealias Store = ViewStore<CoinStakingAction, CoinStakingState>
     
     struct Input {
@@ -14,7 +13,8 @@ final class CoinStakingPresenter: ModulePresenter, CoinStakingModule {
         var withdraw: Driver<Void>
     }
     
-    private let usecase: CoinDetailsUsecase
+    private let reloadScreenRelay = PublishRelay<Void>()
+    private let usecase: DealsUsecase
     private let store: Store
     
     weak var delegate: CoinStakingModuleDelegate?
@@ -23,7 +23,7 @@ final class CoinStakingPresenter: ModulePresenter, CoinStakingModule {
         return store.state
     }
     
-    init(usecase: CoinDetailsUsecase,
+    init(usecase: DealsUsecase,
          store: Store = CoinStakingStore()) {
         self.usecase = usecase
         self.store = store
@@ -51,7 +51,7 @@ final class CoinStakingPresenter: ModulePresenter, CoinStakingModule {
             .bind(to: store.action)
             .disposed(by: disposeBag)
         
-        Driver.merge(input.create, input.cancel, input.withdraw)
+        Driver.merge(input.create)
             .asObservable()
             .doOnNext { [store] in store.action.accept(.updateValidationState) }
             .withLatestFrom(state)
@@ -59,19 +59,14 @@ final class CoinStakingPresenter: ModulePresenter, CoinStakingModule {
             .flatMap { [unowned self] in self.track(self.proceedWithStaking(for: $0)) }
             .subscribe(onNext: { [delegate] in delegate?.didFinishCoinStaking() })
             .disposed(by: disposeBag)
+        
+        Driver.merge(input.cancel, input.withdraw)
+            .asObservable()
+            .withLatestFrom(state)
+            .flatMap { [unowned self] in self.track(self.proceedWithStaking(for: $0)) }
+            .subscribe(onNext: { [delegate] in delegate?.didFinishCoinStaking() })
+            .disposed(by: disposeBag)
     }
-    
-//    private func getCoin() -> Observable<CoinStakingAction> {
-//        return usecase.getCoin(for: .catm).asObservable().map { CoinStakingAction.setupCoin($0) }
-//    }
-//
-//    private func getCoinDetails() -> Observable<CoinStakingAction> {
-//        return usecase.getCoinDetails(for: .catm).asObservable().map { CoinStakingAction.setupCoinDetails($0) }
-//    }
-//
-//    private func getStakeDetails() -> Observable<CoinStakingAction> {
-//        return usecase.getStakeDetails(for: .catm).asObservable().map { CoinStakingAction.setupStakeDetails($0) }
-//    }
     
     private func proceedWithStaking(for state: CoinStakingState) -> Completable {
         let coin = state.coin!
@@ -79,32 +74,39 @@ final class CoinStakingPresenter: ModulePresenter, CoinStakingModule {
         let coinAmount = state.coinAmount.decimalValue ?? 0.0
         let stakeDetails = state.stakeDetails!
         
-        if stakeDetails.status == .notExist || stakeDetails.status == .withdrawn {
+        switch stakeDetails.status {
+        case .notExist, .withdrawn:
             return usecase.createStake(from: coin, with: coinDetails, amount: coinAmount)
                 .catchError { [store] in
                     if let apiError = $0 as? APIError, case let .serverError(error) = apiError, let code = error.code, code > 1 {
                         store.action.accept(.updateCoinAmountError(error.message))
                     }
-                    
+                    throw $0
+                }
+        case .created:
+            return usecase.cancelStake(from: coin, with: coinDetails, stakeDetails: stakeDetails)
+                .catchError { [store] in
+                    if let apiError = $0 as? APIError, case let .serverError(error) = apiError, let code = error.code, code > 1 {
+                        store.action.accept(.updateCoinAmountError(error.message))
+                    }
+                    throw $0
+                }
+        case .canceled:
+            return usecase.withdrawStake(from: coin, with: coinDetails, stakeDetails: stakeDetails)
+                .catchError { [store] in
+                    if let apiError = $0 as? APIError, case let .serverError(error) = apiError, let code = error.code, code > 1 {
+                        store.action.accept(.updateCoinAmountError(error.message))
+                    }
+                    throw $0
+                }
+        default:
+            return usecase.createStake(from: coin, with: coinDetails, amount: coinAmount)
+                .catchError { [store] in
+                    if let apiError = $0 as? APIError, case let .serverError(error) = apiError, let code = error.code, code > 1 {
+                        store.action.accept(.updateCoinAmountError(error.message))
+                    }
                     throw $0
                 }
         }
-        
-        if stakeDetails.status == .createPending {
-            return usecase.cancelStake(from: coin, with: coinDetails, stakeDetails: stakeDetails)
-        }
-        
-        if stakeDetails.status == .canceled {
-            return usecase.withdrawStake(from: coin, with: coinDetails, stakeDetails: stakeDetails)
-        }
-        
-        return usecase.createStake(from: coin, with: coinDetails, amount: coinAmount)
-            .catchError { [store] in
-                if let apiError = $0 as? APIError, case let .serverError(error) = apiError, let code = error.code, code > 1 {
-                    store.action.accept(.updateCoinAmountError(error.message))
-                }
-                
-                throw $0
-            }
     }
 }

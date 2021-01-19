@@ -10,6 +10,7 @@ protocol DealsUsecase {
     func getStakeDetails(for type: CustomCoinType) -> Single<StakeDetails>
     func createStake(from coin: BTMCoin, with coinDetails: CoinDetails, amount: Decimal) -> Completable
     func cancelStake(from coin: BTMCoin, with coinDetails: CoinDetails, stakeDetails: StakeDetails) -> Completable
+    func withdrawStake(from coin: BTMCoin, with coinDetails: CoinDetails, stakeDetails: StakeDetails) -> Completable
     func getCoinDetails(for type: CustomCoinType) -> Single<CoinDetails>
     func getCoin(for type: CustomCoinType) -> Single<BTMCoin>
     func getCoinsBalance() -> Single<CoinsBalance>
@@ -129,6 +130,28 @@ class DealsUsecaseImpl: DealsUsecase {
                                    type: coin.type,
                                    txType: .cancelStake,
                                    amount: 0,
+                                   fee: coinDetails.txFee,
+                                   fromAddress: coin.address,
+                                   toAddress: coinDetails.contractAddress,
+                                   transactionResultString: transactionResultString)
+            }
+    }
+    
+    func withdrawStake(from coin: BTMCoin, with coinDetails: CoinDetails, stakeDetails: StakeDetails) -> Completable {
+        return accountStorage.get()
+            .flatMap { [walletService] account in
+                return walletService.getTransactionHex(for: coin,
+                                                       with: coinDetails,
+                                                       destination: "",
+                                                       amount: 0,
+                                                       stakingType: .withdrawStake)
+                    .map { (account, $0) }
+            }
+            .flatMapCompletable { [unowned self] account, transactionResultString in
+                return self.submit(userId: account.userId,
+                                   type: coin.type,
+                                   txType: .withdrawStake,
+                                   amount: (Decimal(stakeDetails.amount ?? 0)) + (Decimal(stakeDetails.rewardAmount ?? 0)),
                                    fee: coinDetails.txFee,
                                    fromAddress: coin.address,
                                    toAddress: coinDetails.contractAddress,

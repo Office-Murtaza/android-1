@@ -23,6 +23,10 @@ class CoinStakingFormView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
+    func configureStakeAmount(with amount: String) {
+        fromCoinView.amountTextField.attributedPlaceholder = NSAttributedString(string: amount, attributes: [.foregroundColor : UIColor.black])
+    }
+    
     func configure(coinType: CustomCoinType, stakeDetails: StakeDetails, fee: Decimal?) {
         fromCoinView.configure(for: coinType, coins: [coinType])
         switch stakeDetails.status {
@@ -68,8 +72,8 @@ class CoinStakingFormView: UIView {
     }
     
     private func configureField(field: inout CoinExchangeSwapTextFieldView, error: String?) {
-        field.errorField.isHidden = error == nil
-        field.errorField.text = error
+        field.errorFieldView.isHidden = error == nil
+        field.setupErrorField(errorText: error)
         field.amountTextField.textColor = error == nil ? .black : .errorRed
     }
 }

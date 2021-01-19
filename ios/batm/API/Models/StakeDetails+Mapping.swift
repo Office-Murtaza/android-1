@@ -11,11 +11,11 @@ extension StakeDetails: ImmutableMappable {
         rewardPercentStr = try map.value("rewardPercentStr")
         rewardAnnualAmount = try map.value("rewardAnnualAmount")
         rewardAnnualAmountStr = try map.value("rewardAnnualAmountStr")
-        rewardAnnualPercent = try map.value("rewardAnnualPercent")
+        annualPercent = try map.value("annualPercent")
         createDate = try map.value("createDate")
         cancelDate = try map.value("cancelDate")
         duration = try map.value("duration")
-        untilWithdraw = try map.value("tillWithdrawal")
-        cancelHoldPeriod = try map.value("cancelHoldPeriod")
+        tillWithdrawal = try map.value("tillWithdrawal")
+        holdPeriod = try map.value("holdPeriod")
     }
 }

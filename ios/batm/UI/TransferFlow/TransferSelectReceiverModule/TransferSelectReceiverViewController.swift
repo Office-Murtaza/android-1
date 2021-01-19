@@ -53,8 +53,14 @@ final class TransferSelectReceiverViewController:ModuleViewController<TransferSe
         
         presenter.state
             .asObservable()
-            .map{ $0.phone }
+            .map { $0.phone }
             .bind(to: header.phoneNumberTextField.rx.text)
+            .disposed(by: disposeBag)
+        
+        presenter.state
+          .asObservable()
+            .map { $0.phoneNumberError }
+            .bind(to: header.rx.phoneErrorText)
             .disposed(by: disposeBag)
         
         dismissKeyboardView.callback = { [weak self] in

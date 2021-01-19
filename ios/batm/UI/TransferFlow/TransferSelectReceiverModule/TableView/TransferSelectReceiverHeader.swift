@@ -42,4 +42,10 @@ extension Reactive where Base == TransferSelectReceiverHeader {
     var text: ControlProperty<String?> {
         return base.phoneNumberTextField.rx.text
     }
+    
+    var phoneErrorText: Binder<String?> {
+        return Binder(base) { target, value in
+            target.phoneNumberTextFieldController.setErrorText(value, errorAccessibilityValue: value)
+        }
+    }
 }
