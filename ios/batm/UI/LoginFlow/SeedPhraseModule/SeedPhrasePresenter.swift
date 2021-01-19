@@ -8,6 +8,8 @@ class SeedPhrasePresenter: ModulePresenter, SeedPhraseModule {
   struct Input {
     var copy: Driver<Void>
     var next: Driver<Void>
+    var generate: Driver<Void>
+    var paste: Driver<Void>
   }
   
   private let usecase: LoginUsecase
@@ -35,6 +37,11 @@ class SeedPhrasePresenter: ModulePresenter, SeedPhraseModule {
       .drive(onNext: { UIPasteboard.general.string = $0.seedPhrase })
       .disposed(by: disposeBag)
     
+    input.paste.asObservable()
+        .map{ SeedPhraseAction.pastePhrase(UIPasteboard.general.string)}
+        .bind(to: store.action)
+      .disposed(by: disposeBag)
+    
     input.next
       .asObservable()
       .doOnNext { [store] _ in store.action.accept(.updateValidationState) }
@@ -51,24 +58,28 @@ class SeedPhrasePresenter: ModulePresenter, SeedPhraseModule {
       .subscribe(onNext: { [delegate] in delegate?.didFinishCopyingSeedPhrase() })
       .disposed(by: disposeBag)
     
+    input.generate
+     .asObservable()
+     .withLatestFrom(state)
+     .map { $0.mode }
+     .flatMap { [unowned self] mode -> Driver<String> in
+       switch mode {
+       case .creation:
+         return self.track(self.usecase.createWallet().andThen(self.usecase.getSeedPhrase()))
+       case .showing:
+         return self.track(self.usecase.getSeedPhrase())
+       }
+   }
+   .map { SeedPhraseAction.setupSeedPhrase($0) }
+   .bind(to: store.action)
+   .disposed(by: disposeBag)
+    
     setupBindings()
   }
   
   private func setupBindings() {
-    Observable.just(())
-      .withLatestFrom(state)
-      .map { $0.mode }
-      .flatMap { [unowned self] mode -> Driver<String> in
-        switch mode {
-        case .creation:
-          return self.track(self.usecase.createWallet().andThen(self.usecase.getSeedPhrase()))
-        case .showing:
-          return self.track(self.usecase.getSeedPhrase())
-        }
-    }
-    .map { SeedPhraseAction.setupSeedPhrase($0) }
-    .bind(to: store.action)
-    .disposed(by: disposeBag)
+//    Observable.just(())
+
   }
   
   private func createAccount(phoneNumber: String, password: String) -> Completable {

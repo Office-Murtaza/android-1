@@ -148,6 +148,7 @@ enum L {
 
   struct SeedPhrase {
     static let annotation = "seed_phrase.annotation"
+    static let generate = "seed_phrase.generate"
     static let title = "seed_phrase.title"
   }
 

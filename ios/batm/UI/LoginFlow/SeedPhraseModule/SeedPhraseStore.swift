@@ -10,6 +10,7 @@ enum SeedPhraseAction: Equatable {
   case setupSeedPhrase(String)
   case updateValidationState
   case makeInvalidState(String)
+  case pastePhrase(String?)
 }
 
 struct SeedPhraseState: Equatable {
@@ -34,6 +35,9 @@ final class SeedPhraseStore: ViewStore<SeedPhraseAction, SeedPhraseState> {
     case let .setupSeedPhrase(seedPhrase): state.seedPhrase = seedPhrase
     case .updateValidationState: state.validationState = validate(state)
     case let .makeInvalidState(error): state.validationState = .invalid(error)
+    case let .pastePhrase(seedPhrase):
+        guard let phrase = seedPhrase else { return state }
+        state.seedPhrase = phrase
     }
     
     return state

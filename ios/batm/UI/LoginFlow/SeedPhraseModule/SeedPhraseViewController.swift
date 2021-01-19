@@ -19,9 +19,29 @@ class SeedPhraseViewController: ModuleViewController<SeedPhrasePresenter> {
   let formView = SeedPhraseFormView()
   
   let copyButton = MDCButton.secondaryCopy
-  
+
+  let pasteButton = MDCButton.secondaryPaste
+    
+    lazy var generateButton: MDCButton = {
+        let button = MDCButton.secondaryText
+        button.setTitle(localize(L.SeedPhrase.generate), for: .normal)
+        button.setImage(UIImage(named: "key"), for: .normal)
+        button.imageEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 10)
+        return button 
+    }();
+
+    lazy var buttonStack: UIStackView = {
+        let stack = UIStackView()
+        stack.axis = .horizontal
+        stack.distribution = .fillProportionally
+        stack.spacing = 5
+        
+        return stack
+    }()
+    
+    
   let nextButton = MDCButton.next
-  
+    
   override func setupUI() {
     title = localize(L.SeedPhrase.title)
     
@@ -32,7 +52,14 @@ class SeedPhraseViewController: ModuleViewController<SeedPhrasePresenter> {
                                            infoView,
                                            formView,
                                            copyButton,
-                                           nextButton)
+                                           nextButton,
+                                           buttonStack)
+    
+    buttonStack.addArrangedSubviews([
+        generateButton,
+        pasteButton,
+        copyButton
+    ])
     
     setupDefaultKeyboardHandling()
   }
@@ -57,13 +84,14 @@ class SeedPhraseViewController: ModuleViewController<SeedPhrasePresenter> {
       $0.top.equalTo(infoView.snp.bottom).offset(5)
       $0.left.right.equalToSuperview().inset(15)
     }
-    copyButton.snp.makeConstraints {
-      $0.top.equalTo(formView.snp.bottom).offset(15)
-      $0.centerX.equalToSuperview()
-      $0.bottom.lessThanOrEqualTo(nextButton.snp.top).offset(-20)
-      $0.width.equalTo(75)
-      $0.height.equalTo(36)
+
+    buttonStack.snp.makeConstraints{
+        $0.left.equalTo(formView.snp.left)
+        $0.right.equalTo(formView.snp.right)
+        $0.top.equalTo(formView.snp.bottom).offset(10)
+        $0.height.equalTo(35)
     }
+    
     nextButton.snp.makeConstraints {
       $0.height.equalTo(50)
       $0.left.right.equalToSuperview().inset(15)
@@ -111,8 +139,13 @@ class SeedPhraseViewController: ModuleViewController<SeedPhrasePresenter> {
     setupUIBindings()
     
     let copyDriver = copyButton.rx.tap.asDriver()
+    let generateDriver = generateButton.rx.tap.asDriver()
+    let pasteDriver = pasteButton.rx.tap.asDriver()
+    
     let nextDriver = nextButton.rx.tap.asDriver()
     presenter.bind(input: SeedPhrasePresenter.Input(copy: copyDriver,
-                                                    next: nextDriver))
+                                                    next: nextDriver,
+                                                    generate: generateDriver,
+                                                    paste: pasteDriver))
   }
 }

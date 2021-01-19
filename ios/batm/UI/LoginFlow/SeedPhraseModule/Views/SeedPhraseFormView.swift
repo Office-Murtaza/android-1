@@ -7,11 +7,12 @@ class SeedPhraseFormView: UIView, MDCChipFieldDelegate {
   
   let chipField: MDCChipField = {
     let view = MDCChipField()
-    view.isUserInteractionEnabled = false
-    view.textField.textColor = .slateGrey
-    view.contentEdgeInsets = .init(top: 20, left: 20, bottom: 20, right: 20)
-    view.layer.borderColor = UIColor.clear.cgColor
-    view.layer.borderWidth = 0
+        view.textField.textColor = .slateGrey
+        view.delimiter = .all
+        view.contentEdgeInsets = .init(top: 20, left: 20, bottom: 20, right: 20)
+        view.layer.borderColor = UIColor.whiteFive.cgColor
+        view.layer.borderWidth = 1
+        view.layer.cornerRadius = 4
     return view
   }()
   
