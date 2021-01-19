@@ -1,11 +1,3 @@
-//
-//  SocketRequestBuilder.swift
-//  batm
-//
-//  Created by Dmytro Frolov on 08.11.2020.
-//  Copyright © 2020 Daniel Tischenko. All rights reserved.
-//
-
 import Foundation
 
 enum SocketMessageType: String {

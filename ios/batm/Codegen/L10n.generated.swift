@@ -72,6 +72,8 @@ enum L {
   }
 
   struct CoinSendGift {
+    static let addGif = "coin_send_gift.add_gif"
+    static let addNote = "coin_send_gift.add_note"
     static let title = "coin_send_gift.title"
   }
 
@@ -189,6 +191,9 @@ enum L {
 
   struct TransactionDetails {
     static let title = "transaction_details.title"
+  }
+
+  struct Transfer {
   }
 
   struct Unlink {
@@ -509,6 +514,7 @@ extension L.Deals {
   struct Cell {
     static let staking = "deals.cell.staking"
     static let swap = "deals.cell.swap"
+    static let transfer = "deals.cell.transfer"
   }
 }
 extension L.EnterPassword {
@@ -812,6 +818,18 @@ extension L.TransactionDetails.Header {
 
   struct TxType {
     static let title = "transaction_details.header.tx_type.title"
+  }
+}
+extension L.Transfer {
+
+  struct Receiver {
+    static let title = "transfer.receiver.title"
+  }
+}
+extension L.Transfer.Receiver {
+
+  struct Phone {
+    static let placeholder = "transfer.receiver.phone.placeholder"
   }
 }
 extension L.UpdatePassword {

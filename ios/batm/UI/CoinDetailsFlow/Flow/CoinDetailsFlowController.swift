@@ -62,14 +62,6 @@ extension CoinDetailsFlowController: CoinWithdrawModuleDelegate {
   
 }
 
-extension CoinDetailsFlowController: CoinSendGiftModuleDelegate {
-  
-  func didFinishCoinSendGift() {
-    step.accept(CoinDetailsFlow.Steps.pop(localize(L.CoinDetails.transactionCreated)))
-  }
-  
-}
-
 extension CoinDetailsFlowController: CoinSellModuleDelegate {
   
   func showSellDetailsForAnotherAddress(_ details: SellDetailsForAnotherAddress) {

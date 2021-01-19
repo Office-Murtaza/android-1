@@ -417,7 +417,7 @@ struct GetGiftAddressRequest: AuthorizedAPIRequest {
   let coinId: String
   let phone: String
   
-  var path: String { return "/coin/\(coinId)/gift-address" }
+  var path: String { return "/coin/\(coinId)/transfer-address" }
   var method: HTTPMethod { return .get }
   var task: HTTPTask {
     return .requestParameters(parameters: ["phone": phone], encoding: URLEncoding.customDefault)

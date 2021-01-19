@@ -70,6 +70,7 @@ protocol APIGateway {
   func getStakeDetails(userId: Int, type: CustomCoinType) -> Single<StakeDetails>
   func manageCoins(userId: Int, coin: String, visible: Bool) -> Completable
   func getPriceChart(type: CustomCoinType, period: SelectedPeriod) -> Single<PriceChartDetails>
+    
 }
 
 final class APIGatewayImpl: APIGateway {

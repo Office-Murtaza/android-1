@@ -17,6 +17,10 @@ extension DealsFlowController: DealsModuleDelegate {
     func didSelectSwap() {
         step.accept(DealsFlow.Steps.swap)
     }
+    
+    func didSelectTransfer() {
+        step.accept(DealsFlow.Steps.transfer)
+    }
 }
 
 extension DealsFlowController: CoinExchangeModuleDelegate {
@@ -28,5 +32,11 @@ extension DealsFlowController: CoinExchangeModuleDelegate {
 extension DealsFlowController: CoinStakingModuleDelegate {
     func didFinishCoinStaking() {
         step.accept(CoinDetailsFlow.Steps.pop(localize(L.CoinDetails.transactionCreated)))
+    }
+}
+
+extension DealsFlowController: CoinSendGiftModuleDelegate {
+    func didFinishCoinSendGift() {
+        step.accept(DealsFlow.Steps.popToRoot(localize(L.CoinDetails.transactionCreated)))
     }
 }

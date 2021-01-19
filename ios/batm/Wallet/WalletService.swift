@@ -175,15 +175,16 @@ class WalletServiceImpl: WalletService {
                                          amount: Decimal,
                                          nonce: Int,
                                          stakingType: TransactionType? = nil) throws -> String {
-    let divider: Int64 = Int64(10.pow(CustomCoinType.maxNumberOfFractionDigits))
-    
-    let dividerthUnit = coin.type.unit / divider
-    guard let amountMultipliedByDivider = (amount * Decimal(divider)).int64Value else {
-      throw CreateTransactionError.cantCreate
+    var divider: Int64 = Int64(10.pow(18))
+    if coin.type == .usdt {
+        divider = Int64(10.pow(6))
     }
     
+    let dividerthUnit = coin.type.unit / divider
+    let amountMultipliedByDivider = (amount * Decimal(divider)).description
+    
     let bigUnit = BInt(dividerthUnit)
-    let bigAmount = BInt(amountMultipliedByDivider)
+    let bigAmount = BInt(amountMultipliedByDivider) ?? 0
     let bigAmountInUnits = bigUnit * bigAmount
     let hexAmountInUnits = bigAmountInUnits.asString(radix: 16).leadingZeros(64)
     let dataAmount = Data(hexString: hexAmountInUnits)!

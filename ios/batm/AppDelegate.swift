@@ -1,6 +1,7 @@
 import UIKit
 import RxFlow
 import FirebaseMessaging
+import Contacts
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -29,6 +30,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
   func application(_ application: UIApplication,
                    didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
     guard let window = self.window else { return false }
+    
+    CNContactStore().requestAccess(for: .contacts, completionHandler: { (result, error) in })
     
     initializers.forEach { $0.initialize(with: launchOptions,
                                          assembler: assembler,

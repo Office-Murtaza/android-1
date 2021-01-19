@@ -8,11 +8,13 @@ protocol DealsCellTypeRepresentable {
 }
 
 enum DealsCellType: CaseIterable, DealsCellTypeRepresentable {
+    case transfer
     case swap
     case staking
     
     var title: String {
         switch self {
+        case .transfer: return localize(L.Deals.Cell.transfer)
         case .swap: return localize(L.Deals.Cell.swap)
         case .staking: return localize(L.Deals.Cell.staking)
         }
@@ -20,6 +22,7 @@ enum DealsCellType: CaseIterable, DealsCellTypeRepresentable {
     
     var image: UIImage? {
         switch self {
+        case .transfer: return UIImage(named: "paper-plane")
         case .swap: return UIImage(named: "deals_swap")
         case .staking: return UIImage(named: "deals_staking")
         }

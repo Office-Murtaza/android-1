@@ -10,12 +10,19 @@ final class CoinSendGiftViewController: ModuleViewController<CoinSendGiftPresent
   
   let rootScrollView = RootScrollView()
   
-  let headerView = HeaderView()
-  
   let formView = CoinSendGiftFormView()
   
   let submitButton = MDCButton.submit
   
+  let contactView = ContactView(isSeparatorVisible: false)
+
+    lazy var separatorView: UIView = {
+        let separator = UIView()
+        separator.backgroundColor = .lightGray
+        return separator
+    }()
+
+    
   private let didUpdateImageRelay = PublishRelay<GPHMedia?>()
   
   private var didUpdateImageDriver: Driver<GPHMedia?> {
@@ -24,14 +31,29 @@ final class CoinSendGiftViewController: ModuleViewController<CoinSendGiftPresent
   
   override func setupUI() {
     view.addSubview(rootScrollView)
-    rootScrollView.contentView.addSubviews(headerView,
-                                           formView,
-                                           submitButton)
+    rootScrollView.contentView.addSubviews(formView,
+                                           submitButton,
+                                           separatorView,
+                                           contactView)
     
     setupDefaultKeyboardHandling()
   }
 
   override func setupLayout() {
+    
+    contactView.snp.makeConstraints{
+        $0.top.equalToSuperview().offset(10)
+        $0.centerX.equalTo(self.view.snp.centerX).offset(-20)
+        $0.height.equalTo(87)
+    }
+    
+    separatorView.snp.makeConstraints{
+        $0.top.equalTo(contactView.snp.bottom)
+        $0.left.equalToSuperview().offset(15)
+        $0.right.equalToSuperview().offset(-15)
+        $0.height.equalTo(1/UIScreen.main.scale)
+    }
+    
     rootScrollView.snp.makeConstraints {
       $0.top.equalTo(view.safeAreaLayoutGuide)
       $0.left.right.bottom.equalToSuperview()
@@ -39,13 +61,9 @@ final class CoinSendGiftViewController: ModuleViewController<CoinSendGiftPresent
     rootScrollView.contentView.snp.makeConstraints {
       $0.height.greaterThanOrEqualToSuperview()
     }
-    headerView.snp.makeConstraints {
-      $0.top.equalToSuperview().offset(25)
-      $0.left.equalToSuperview().offset(15)
-      $0.right.lessThanOrEqualToSuperview().offset(-15)
-    }
+
     formView.snp.makeConstraints {
-      $0.top.equalTo(headerView.snp.bottom).offset(30)
+      $0.top.equalTo(contactView.snp.bottom)
       $0.left.right.equalToSuperview().inset(15)
       $0.bottom.lessThanOrEqualTo(submitButton.snp.top).offset(-30)
     }
@@ -57,6 +75,56 @@ final class CoinSendGiftViewController: ModuleViewController<CoinSendGiftPresent
   }
   
   func setupUIBindings() {
+    
+    presenter.state
+        .drive(onNext:{[unowned self] state in
+            guard let fromBalance = state.fromCoinBalance, let fromDetails = state.coinDetails else { return }
+            self.formView.coinAmountTextFieldView.configureBalance(for: fromBalance, coinDetails: fromDetails)
+            let number = (Decimal(string: state.coinAmount) ?? 0) * fromBalance.price
+            self.formView.configureUsdView(usd: number)
+    })
+    .disposed(by: disposeBag)
+    
+    let fromCoinDriver = presenter.state
+      .map { $0.fromCoin?.type }
+      .filterNil()
+      .distinctUntilChanged()
+ 
+    let fromCoinBalancesDriver = presenter.state
+      .map { state in state.fromCoinBalances?.map { $0.type } }
+      .filterNil()
+      .distinctUntilChanged()
+ 
+    
+    Driver.combineLatest(fromCoinDriver, fromCoinBalancesDriver)
+      .drive(onNext: { [formView] in
+        formView.configure(coin: $0, fromCoins: $1)
+      })
+      .disposed(by: disposeBag)
+    
+    
+    presenter.state
+        .asObservable()
+        .map { $0.fromCoinType }
+        .filterNil()
+        .bind(to: formView.rx.fromCoin)
+        .disposed(by: disposeBag)
+    
+    presenter.state
+      .asObservable()
+      .map { $0.coinAmount }
+      .bind(to: formView.rx.fromCoinAmountText)
+      .disposed(by: disposeBag)
+    
+    presenter.state
+         .asObservable()
+         .map { $0.coinAmountError }
+           .subscribeOn(MainScheduler.instance)
+           .subscribe { [weak self] result in
+               guard let error = result.element else { return }
+               self?.formView.configureFromError(error: error )
+           }.disposed(by: disposeBag)
+    
     presenter.state
       .map { $0.coin?.type.code }
       .filterNil()
@@ -65,52 +133,7 @@ final class CoinSendGiftViewController: ModuleViewController<CoinSendGiftPresent
         self.title = String(format: localize(L.CoinSendGift.title), $0)
       })
       .disposed(by: disposeBag)
-    
-    presenter.state
-      .map { $0.coinBalance }
-      .filterNil()
-      .drive(onNext: { [headerView] coinBalance in
-        let amountView = CryptoFiatAmountView()
-        amountView.configure(for: coinBalance)
-        let reservedView = CryptoFiatAmountView()
-        reservedView.configure(for: coinBalance, useReserved: true)
-        
-        headerView.removeAll()
-        headerView.add(title: localize(L.CoinDetails.price), value: coinBalance.price.fiatFormatted.withDollarSign)
-        headerView.add(title: localize(L.CoinDetails.balance), valueView: amountView)
-        headerView.add(title: localize(L.CoinDetails.reserved), valueView: reservedView)
-      })
-      .disposed(by: disposeBag)
-    
-    let coinTypeDriver = presenter.state
-      .map { $0.coin?.type }
-      .filterNil()
-    
-    let feeDriver = presenter.state
-      .map { $0.coinDetails?.txFee }
-    
-    Driver.combineLatest(coinTypeDriver, feeDriver)
-      .drive(onNext: { [formView] in formView.configure(coinType: $0, fee: $1) })
-      .disposed(by: disposeBag)
-    
-    presenter.state
-      .asObservable()
-      .map { $0.phone }
-      .bind(to: formView.rx.phoneText)
-      .disposed(by: disposeBag)
-    
-    presenter.state
-      .asObservable()
-      .map { $0.fiatAmount }
-      .bind(to: formView.rx.fiatAmountText)
-      .disposed(by: disposeBag)
-    
-    presenter.state
-      .asObservable()
-      .map { $0.coinAmount }
-      .bind(to: formView.rx.coinAmountText)
-      .disposed(by: disposeBag)
-    
+   
     presenter.state
       .asObservable()
       .map { $0.message }
@@ -120,13 +143,7 @@ final class CoinSendGiftViewController: ModuleViewController<CoinSendGiftPresent
     presenter.state
       .asObservable()
       .map { $0.phoneError }
-      .bind(to: formView.rx.phoneErrorText)
-      .disposed(by: disposeBag)
-    
-    presenter.state
-      .asObservable()
-      .map { $0.coinAmountError }
-      .bind(to: formView.rx.coinAmountErrorText)
+        .bind(to: formView.coinAmountTextFieldView.errorField.rx.text)
       .disposed(by: disposeBag)
     
     presenter.state
@@ -161,24 +178,39 @@ final class CoinSendGiftViewController: ModuleViewController<CoinSendGiftPresent
     submitButton.rx.tap.asDriver()
       .drive(onNext: { [view] in view?.endEditing(true) })
       .disposed(by: disposeBag)
+    
+    
+    presenter.state
+      .asObservable()
+      .map { $0.contact }
+      .filterNil()
+      .subscribe(onNext: { [weak self] (contact) in
+        self?.contactView.update(contact: contact)
+      })
+      .disposed(by: disposeBag)
+    
   }
 
   override func setupBindings() {
     setupUIBindings()
     
-    let updatePhoneDriver = formView.rx.phoneText.asDriver()
-    let updateCoinAmountDriver = formView.rx.coinAmountText.asDriver()
+    let updateCoinAmountDriver = formView.rx.fromCoinAmountText.asDriver()
+    let updateFromPickerItemDriver = formView.rx.selectFromPickerItem
+    let maxFromDriver = formView.rx.maxFromTap
+    
+    
     let updateMessageDriver = formView.rx.messageText.asDriver()
     let updateImageIdDriver = didUpdateImageDriver.map { $0?.id }
-    let maxDriver = formView.rx.maxTap
     let submitDriver = submitButton.rx.tap.asDriver()
+    let fromCoinTypeDriver = formView.rx.willChangeFromCoinType
     
-    presenter.bind(input: CoinSendGiftPresenter.Input(updatePhone: updatePhoneDriver,
-                                                      updateCoinAmount: updateCoinAmountDriver,
+    presenter.bind(input: CoinSendGiftPresenter.Input(updateCoinAmount: updateCoinAmountDriver,
+                                                      updateFromPickerItem: updateFromPickerItemDriver,
+                                                      maxFrom: maxFromDriver,
                                                       updateMessage: updateMessageDriver,
                                                       updateImageId: updateImageIdDriver,
-                                                      max: maxDriver,
-                                                      submit: submitDriver))
+                                                      submit: submitDriver,
+                                                      fromCoinType: fromCoinTypeDriver))
   }
 }
 

@@ -49,5 +49,14 @@ class DealsPresenter: ModulePresenter, DealsModule {
                 delegate?.didSelectSwap()
             })
             .disposed(by: disposeBag)
+        
+        input.select
+            .asObservable()
+            .map { [types] in types[$0.item] }
+            .filter { $0 == .transfer }
+            .subscribe(onNext: { [delegate] _ in
+                delegate?.didSelectTransfer()
+            })
+            .disposed(by: disposeBag)
     }
 }

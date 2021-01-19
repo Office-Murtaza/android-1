@@ -8,9 +8,10 @@ final class CoinSendGiftAssembly: Assembly {
     container.register(Module<CoinSendGiftModule>.self) { resolver in
       let viewController = CoinSendGiftViewController()
       let usecase = resolver.resolve(CoinDetailsUsecase.self)!
-      let presenter = CoinSendGiftPresenter(usecase: usecase)
+      let walletUseCase = resolver.resolve(WalletUsecase.self)!
+      let presenter = CoinSendGiftPresenter(usecase: usecase, walletUseCase: walletUseCase)
       
-      presenter.delegate = resolver.resolve(CoinSendGiftModuleDelegate.self)
+      presenter.delegate = resolver.resolve(DealsFlowController.self)
       viewController.presenter = presenter
       
       return Module<CoinSendGiftModule>(controller: viewController, input: presenter)

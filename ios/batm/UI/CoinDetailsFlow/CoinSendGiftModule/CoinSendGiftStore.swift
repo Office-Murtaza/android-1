@@ -13,6 +13,12 @@ enum CoinSendGiftAction: Equatable {
     case updateMessageError(String?)
     case updateImageId(String?)
     case updateValidationState
+    case setupContact(BContact)
+    case finishFetchingCoinsData(CoinsBalance, CoinDetails, [BTMCoin])
+    
+    case updateFromCoin(BTMCoin)
+    case updateFromCoinType(CustomCoinType)
+    
 }
 
 struct CoinSendGiftState: Equatable {
@@ -28,13 +34,26 @@ struct CoinSendGiftState: Equatable {
     var messageError: String?
     var imageId: String?
     var validationState: ValidationState = .unknown
-    
+    var contact: BContact?
+    var coins: [BTMCoin]?
+    var fromCoin: BTMCoin?
+    var fromCoinType: CustomCoinType?
+ 
     var coinBalance: CoinBalance? {
         return coinBalances?.first { $0.type == coin?.type }
     }
     
+    var fromCoinBalance: CoinBalance? {
+            return coinBalances?.first { $0.type == fromCoinType}
+    }
+    
+    var fromCoinBalances: [BTMCoin]? {
+        return coins?.sorted(by: { $0.index < $1.index })
+    }
+    
+    // to remove
     var maxValue: Decimal {
-        guard let type = coin?.type, let balance = coinBalance?.balance, let fee = coinDetails?.txFee else { return 0 }
+        guard let type = fromCoin?.type, let balance = fromCoinBalance?.balance, let fee = coinDetails?.txFee else { return 0 }
         
         switch type {
         case .catm:
@@ -63,6 +82,18 @@ struct CoinSendGiftState: Equatable {
         return phoneE164.count > 0 && coinAmount.count > 0
     }
     
+    var maxFromValue: Decimal {
+        guard let type = fromCoinType, let balance = fromCoinBalance?.balance, let fee = coinDetails?.txFee else { return 0 }
+        
+        if type.isETHBased == true {
+            return balance
+        } else if type == .ripple {
+            return max(0, balance - fee - 20)
+        } else {
+            return max(0, balance - fee)
+        }
+    }
+    
 }
 
 final class CoinSendGiftStore: ViewStore<CoinSendGiftAction, CoinSendGiftState> {
@@ -82,11 +113,7 @@ final class CoinSendGiftStore: ViewStore<CoinSendGiftAction, CoinSendGiftState> 
             state.phone = PartialFormatter.default.formatPartial(phone ?? "")
             state.phoneError = nil
         case let .updateCoinAmount(amount):
-            if let amount = amount, amount.isFirstCharacterDigit {
-                state.coinAmount = amount.coinWithdrawFormatted
-            } else {
-                state.coinAmount = ""
-            }
+            state.coinAmount = (amount ?? "").coinWithdrawFormatted
             state.coinAmountError = nil
         case let .updateMessage(message):
             state.message = message ?? ""
@@ -96,6 +123,27 @@ final class CoinSendGiftStore: ViewStore<CoinSendGiftAction, CoinSendGiftState> 
         case let .updateMessageError(messageError): state.messageError = messageError
         case let .updateImageId(imageId): state.imageId = imageId
         case .updateValidationState: validate(&state)
+        case let .setupContact(contact):
+            state.contact = contact
+        case let .finishFetchingCoinsData(balances, details, coins):
+            state.coinBalances = balances.coins
+            state.coins = coins
+            state.coinDetails = details
+            let firstCoin = coins.first
+            if let type = firstCoin?.type, let address = firstCoin?.address {
+                let coin = BTMCoin(type: type, privateKey: "", address: address)
+                state.fromCoin = coin
+                state.fromCoinType = coin.type
+            }
+            
+            
+         
+        case let .updateFromCoin(coin):
+            state.fromCoin = coin
+        
+        case let .updateFromCoinType(coinType):
+            state.coinAmount = ""
+            state.fromCoinType = coinType
         }
         
         return state

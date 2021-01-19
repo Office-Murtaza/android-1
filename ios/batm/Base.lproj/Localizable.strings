@@ -178,11 +178,11 @@
 "coin_details.reserved" = "Reserved";
 "coin_details.deposit" = "Deposit";
 "coin_details.withdraw" = "Withdraw";
-"coin_details.send_gift" = "Send gift";
+"coin_details.send_gift" = "Send transfer";
 "coin_details.exchange" = "Exchange";
 "coin_details.trade" = "Trade";
 "coin_details.staking" = "Staking";
-"coin_details.receive_gift" = "Receive gift";
+"coin_details.receive_gift" = "Receive transfer";
 "coin_details.buy" = "Buy";
 "coin_details.sell" = "Sell";
 "coin_details.move" = "Move";
@@ -232,6 +232,8 @@
 "coin_send_gift.form.phone.placeholder" = "Recipient phone";
 "coin_send_gift.form.message.placeholder" = "Message";
 "coin_send_gift.form.error.invalid_phone" = "Invalid phone";
+"coin_send_gift.add_note" = "ADD NOTE";
+"coin_send_gift.add_gif" = "ADD GIF";
 
 "coin_sell.title" = "Sell %@";
 "coin_sell.daily_limit" = "Daily limit";
@@ -353,6 +355,7 @@
 "deals.title" = "Deals";
 "deals.cell.staking" = "Staking";
 "deals.cell.swap" = "Swap";
+"deals.cell.transfer" = "Transfer";
 
 "notifications.title" = "Notifications";
 "notifications.cell.title" = "Receive push notifications";
@@ -361,3 +364,6 @@
 "swap.tilda" = "~";
 "swap.percent" = "%";
 "swap.usd.title" = "USD converted value";
+
+"transfer.receiver.phone.placeholder" = "Type mobile number or contact name";
+"transfer.receiver.title" = "Transfer";

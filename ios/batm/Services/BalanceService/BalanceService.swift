@@ -1,11 +1,3 @@
-//
-//  BalanceService.swift
-//  batm
-//
-//  Created by Dmytro Frolov on 02.11.2020.
-//  Copyright © 2020 Daniel Tischenko. All rights reserved.
-//
-
 import Foundation
 import RxSwift
 import RxCocoa

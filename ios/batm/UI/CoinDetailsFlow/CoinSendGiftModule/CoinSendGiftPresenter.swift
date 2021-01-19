@@ -7,27 +7,33 @@ final class CoinSendGiftPresenter: ModulePresenter, CoinSendGiftModule {
   typealias Store = ViewStore<CoinSendGiftAction, CoinSendGiftState>
 
   struct Input {
-    var updatePhone: Driver<String?>
     var updateCoinAmount: Driver<String?>
+    var updateFromPickerItem: Driver<CustomCoinType>
+    var maxFrom: Driver<Void>
     var updateMessage: Driver<String?>
     var updateImageId: Driver<String?>
-    var max: Driver<Void>
     var submit: Driver<Void>
+    var fromCoinType: Driver<CustomCoinType>
   }
   
   private let usecase: CoinDetailsUsecase
   private let store: Store
-
+  private let walletUseCase: WalletUsecase
+    
   weak var delegate: CoinSendGiftModuleDelegate?
-  
+
+  private let fetchDataRelay = PublishRelay<Void>()
+    
   var state: Driver<CoinSendGiftState> {
     return store.state
   }
   
   init(usecase: CoinDetailsUsecase,
-       store: Store = CoinSendGiftStore()) {
+       store: Store = CoinSendGiftStore(),
+       walletUseCase: WalletUsecase) {
     self.usecase = usecase
     self.store = store
+    self.walletUseCase = walletUseCase
   }
   
   func setup(coin: BTMCoin, coinBalances: [CoinBalance], coinDetails: CoinDetails) {
@@ -36,12 +42,66 @@ final class CoinSendGiftPresenter: ModulePresenter, CoinSendGiftModule {
     store.action.accept(.setupCoinDetails(coinDetails))
   }
 
+  func setupContact(_ contact: BContact) {
+    store.action.accept(.setupContact(contact))
+    store.action.accept(.updatePhone(contact.phones.first))
+  }
+
   func bind(input: Input) {
-    input.updatePhone
-      .asObservable()
-      .map { CoinSendGiftAction.updatePhone($0) }
-      .bind(to: store.action)
+    
+    
+    fetchDataRelay
+        .asObservable()
+      .flatMap { [unowned self]  in
+        return self.track(Observable.combineLatest(self.walletUseCase.getCoinsBalance(filteredByActive: false).asObservable(),
+                                                   self.walletUseCase.getCoinDetails(for: CustomCoinType.bitcoin).asObservable(),
+                                                   self.walletUseCase.getCoinsList().asObservable()))
+      }.subscribe({ [weak self] in
+        guard let coinBalance = $0.element?.0, let coinDetails = $0.element?.1, let coins = $0.element?.2 else { return }
+        self?.store.action.accept(.finishFetchingCoinsData(coinBalance, coinDetails, coins))
+      })
       .disposed(by: disposeBag)
+    
+    
+    input.fromCoinType
+              .asObservable()
+              .distinctUntilChanged()
+              .observeOn(MainScheduler.instance)
+              .flatMap { [unowned self] type in self.track(self.usecase.getCoinDetails(for: type))}
+              .subscribe { [unowned self] result in
+                switch result {
+                case let .next(details):
+                  self.store.action.accept(.setupCoinDetails(details))
+                default: break
+                }
+              }.disposed(by: disposeBag)
+    
+    
+    
+    input.updateFromPickerItem
+             .asObservable()
+           .observeOn(MainScheduler.instance)
+             .flatMap { [unowned self] type in
+               self.track(self.usecase.getCoin(for: type))
+             }
+             .subscribe { [unowned self] result in
+               switch result {
+               case let .next(coin):
+                   self.store.action.accept(.updateFromCoin(coin))
+                   self.store.action.accept(.updateFromCoinType(coin.type))
+               default: break
+               }
+             }.disposed(by: disposeBag)
+    
+    
+    input.maxFrom
+        .asObservable()
+        .withLatestFrom(state)
+        .map { $0.maxFromValue.coinFormatted }
+        .map { CoinSendGiftAction.updateCoinAmount($0) }
+        .bind(to: store.action)
+        .disposed(by: disposeBag)
+    
     
     input.updateCoinAmount
       .asObservable()
@@ -61,26 +121,22 @@ final class CoinSendGiftPresenter: ModulePresenter, CoinSendGiftModule {
       .bind(to: store.action)
       .disposed(by: disposeBag)
     
-    input.max
-      .asObservable()
-      .withLatestFrom(state)
-      .map { $0.maxValue.coinFormatted }
-      .map { CoinSendGiftAction.updateCoinAmount($0) }
-      .bind(to: store.action)
-      .disposed(by: disposeBag)
-    
     input.submit
       .asObservable()
       .doOnNext { [store] in store.action.accept(.updateValidationState) }
       .withLatestFrom(state)
       .filter { $0.validationState.isValid }
       .flatMap { [unowned self] in self.track(self.sendGift(for: $0)) }
-      .subscribe(onNext: { [delegate] in delegate?.didFinishCoinSendGift() })
+      .subscribe(onNext: { [delegate] in
+                  delegate?.didFinishCoinSendGift()
+      })
       .disposed(by: disposeBag)
+    
+    fetchDataRelay.accept(())
   }
   
   private func sendGift(for state: CoinSendGiftState) -> Completable {
-    return usecase.sendGift(from: state.coin!,
+    return usecase.sendGift(from: state.fromCoin!,
                                 with: state.coinDetails!,
                                 to: state.phoneE164,
                                 amount: state.coinAmount.decimalValue ?? 0.0,
