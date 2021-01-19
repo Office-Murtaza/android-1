@@ -18,7 +18,6 @@ import com.mongodb.bulk.BulkWriteResult;
 import com.mongodb.client.model.FindOneAndUpdateOptions;
 import com.mongodb.client.model.UpdateOneModel;
 import com.mongodb.client.model.UpdateOptions;
-import lombok.Getter;
 import org.apache.commons.lang3.StringUtils;
 import org.bson.Document;
 import org.bson.types.Decimal128;
@@ -27,17 +26,14 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
 import org.web3j.crypto.Credentials;
 import org.web3j.protocol.Web3j;
 import org.web3j.protocol.core.DefaultBlockParameterName;
 import org.web3j.protocol.core.DefaultBlockParameterNumber;
 import org.web3j.protocol.core.methods.response.EthBlock;
 import org.web3j.protocol.core.methods.response.EthGetBalance;
-import org.web3j.protocol.core.methods.response.Log;
 import org.web3j.protocol.core.methods.response.TransactionReceipt;
 import org.web3j.protocol.http.HttpService;
-import org.web3j.tx.gas.ContractGasProvider;
 import org.web3j.tx.gas.StaticGasProvider;
 import org.web3j.utils.Numeric;
 import wallet.core.java.AnySigner;
@@ -51,7 +47,6 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.*;
 
-@Getter
 @Service
 @EnableScheduling
 public class GethService {
@@ -60,6 +55,7 @@ public class GethService {
     public static final BigDecimal USDT_DIVIDER = BigDecimal.valueOf(1_000_000L);
 
     private static final CoinType ETHEREUM = CoinType.ETHEREUM;
+    private static final ByteString CHAIN_ID = ByteString.copyFrom(Numeric.hexStringToByteArray("1"));
 
     private static final int START_BLOCK = 10290000;
     private static final int MAX_BLOCK_COUNT = 500;
@@ -73,34 +69,65 @@ public class GethService {
     public static Web3j web3;
     public static CATM catm;
     public static USDT usdt;
-    private static long ethInitialGasLimit;
+
     private static String catmContractAddress;
     private static String usdtContractAddress;
-    private static RestTemplate rest;
+
     private static MongoTemplate mongo;
     private static CacheService cacheService;
     private static WalletService walletService;
     private static NodeService nodeService;
+    private static PlatformService platformService;
 
-    public GethService(@Value("${eth.initial.gas-limit}") long ethInitialGasLimit,
-                       @Value("${catm.contract.address}") String catmContractAddress,
+    private int stakingBasePeriod;
+    private int stakingHoldPeriod;
+    private int stakingAnnualPeriod;
+    private int stakingAnnualPercent;
+
+    public GethService(@Value("${catm.contract.address}") String catmContractAddress,
                        @Value("${usdt.contract.address}") String usdtContractAddress,
-                       RestTemplate rest,
                        MongoTemplate mongo,
                        CacheService cacheService,
                        WalletService walletService,
-                       NodeService nodeService) {
+                       NodeService nodeService,
+                       PlatformService platformService) {
 
-        GethService.ethInitialGasLimit = ethInitialGasLimit;
         GethService.catmContractAddress = catmContractAddress;
         GethService.usdtContractAddress = usdtContractAddress;
-        GethService.rest = rest;
         GethService.mongo = mongo;
         GethService.cacheService = cacheService;
         GethService.walletService = walletService;
         GethService.nodeService = nodeService;
+        GethService.nodeService = nodeService;
+        GethService.platformService = platformService;
 
         init();
+    }
+
+    public static void init() {
+        try {
+            web3 = Web3j.build(new HttpService(nodeService.getNodeUrl(ETHEREUM)));
+
+            catm = CATM.load(catmContractAddress, web3,
+                    Credentials.create(Numeric.toHexString(walletService.getCoinsMap().get(CoinType.ETHEREUM).getPrivateKey().data())),
+                    new StaticGasProvider(BigInteger.valueOf(getFastGasPrice()), BigInteger.valueOf(platformService.getInitialGasLimits().get(ERC20.CATM.name()))));
+
+            usdt = USDT.load(usdtContractAddress, web3,
+                    Credentials.create(Numeric.toHexString(walletService.getCoinsMap().get(CoinType.ETHEREUM).getPrivateKey().data())),
+                    new StaticGasProvider(BigInteger.valueOf(getFastGasPrice()), BigInteger.valueOf(platformService.getInitialGasLimits().get(ERC20.USDT.name()))));
+        } catch (Exception e) {
+            if (nodeService.switchToReserveNode(ETHEREUM)) {
+                init();
+            }
+        }
+    }
+
+    public static Long getAvgGasPrice() {
+        return Long.valueOf(cacheService.getEtherscanGasPrice().optJSONObject("result").optString("ProposeGasPrice")) * 1000_000_000;
+    }
+
+    public static Long getFastGasPrice() {
+        return Long.valueOf(cacheService.getEtherscanGasPrice().optJSONObject("result").optString("FastGasPrice")) * 1000_000_000;
     }
 
     public static String submitTransaction(ERC20 token, SubmitTransactionDTO dto) {
@@ -124,32 +151,6 @@ public class GethService {
         }
 
         return null;
-    }
-
-    public static Long getAvgGasPrice() {
-        return Long.valueOf(cacheService.getEtherscanGasPrice().optJSONObject("result").optString("ProposeGasPrice")) * 1000_000_000;
-    }
-
-    public static Long getFastGasPrice() {
-        return Long.valueOf(cacheService.getEtherscanGasPrice().optJSONObject("result").optString("FastGasPrice")) * 1000_000_000;
-    }
-
-    private static void init() {
-        try {
-            web3 = Web3j.build(new HttpService(nodeService.getNodeUrl(ETHEREUM)));
-
-            ContractGasProvider gasProvider = new StaticGasProvider(BigInteger.valueOf(getFastGasPrice()), BigInteger.valueOf(ethInitialGasLimit));
-
-            catm = CATM.load(catmContractAddress, web3,
-                    Credentials.create(Numeric.toHexString(walletService.getCoinsMap().get(CoinType.ETHEREUM).getPrivateKey().data())), gasProvider);
-
-            usdt = USDT.load(usdtContractAddress, web3,
-                    Credentials.create(Numeric.toHexString(walletService.getCoinsMap().get(CoinType.ETHEREUM).getPrivateKey().data())), gasProvider);
-        } catch (Exception e) {
-            if (nodeService.switchToReserveNode(ETHEREUM)) {
-                init();
-            }
-        }
     }
 
     private static TransactionHistoryDTO buildTransactionList(String coll, BasicDBObject query, String address, Integer startIndex, Integer limit, List<TransactionRecord> transactionRecords, List<TransactionRecordWallet> transactionRecordWallets) {
@@ -189,7 +190,9 @@ public class GethService {
             if (d.containsKey("fee")) {
                 return d.get("fee", Decimal128.class).bigDecimalValue();
             }
-        } catch (Exception e) {}
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         return BigDecimal.ZERO;
     }
@@ -333,6 +336,39 @@ public class GethService {
         }
     }
 
+    public Integer getNonce(String address) {
+        if (nodeService.isNodeAvailable(ETHEREUM)) {
+            try {
+                return web3.ethGetTransactionCount(address, DefaultBlockParameterName.PENDING).send().getTransactionCount().intValue();
+            } catch (Exception e) {
+                e.printStackTrace();
+
+                if (nodeService.switchToReserveNode(ETHEREUM)) {
+                    init();
+                    return getNonce(address);
+                }
+            }
+        }
+
+        return 0;
+    }
+
+    public Long getGasLimit(String toAddress) {
+        ERC20 token = getTokenByContractAddress(toAddress);
+
+        if (token != null) {
+            return platformService.getInitialGasLimits().get(token.name());
+        } else if (nodeService.isNodeAvailable(ETHEREUM)) {
+            try {
+                return web3.ethEstimateGas(org.web3j.protocol.core.methods.request.Transaction.createEthCallTransaction(null, toAddress, null)).send().getAmountUsed().longValue();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        return 0L;
+    }
+
     public BigDecimal getBalance(String address) {
         if (nodeService.isNodeAvailable(ETHEREUM)) {
             try {
@@ -350,6 +386,81 @@ public class GethService {
         }
 
         return BigDecimal.ZERO;
+    }
+
+    public BigDecimal getTxFee(Long gasLimit, Long gasPrice) {
+        return new BigDecimal(gasLimit).multiply(new BigDecimal(gasPrice)).divide(ETH_DIVIDER).stripTrailingZeros();
+    }
+
+    public TransactionStatus getTransactionStatus(TransactionReceipt receipt) {
+        try {
+            int status = Numeric.toBigInt(receipt.getStatus()).intValue();
+
+            if (status == 0) {
+                return TransactionStatus.FAIL;
+            } else {
+                return TransactionStatus.COMPLETE;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return TransactionStatus.PENDING;
+    }
+
+    public String sign(String fromAddress, String toAddress, BigDecimal amount, Long gasLimit, Long gasPrice) {
+        try {
+            PrivateKey privateKey = getPrivateKey(fromAddress);
+            Integer nonce = getNonce(fromAddress);
+
+            Ethereum.SigningInput.Builder input = Ethereum.SigningInput.newBuilder();
+            input.setPrivateKey(ByteString.copyFrom(Numeric.hexStringToByteArray(Numeric.toHexStringNoPrefix(privateKey.data()))));
+            input.setToAddress(toAddress);
+            input.setChainId(CHAIN_ID);
+            input.setNonce(ByteString.copyFrom(Numeric.hexStringToByteArray(Integer.toHexString(nonce))));
+            input.setGasLimit(ByteString.copyFrom(Numeric.hexStringToByteArray(Long.toHexString(gasLimit))));
+            input.setGasPrice(ByteString.copyFrom(Numeric.hexStringToByteArray(Long.toHexString(gasPrice))));
+            input.setAmount(ByteString.copyFrom(Numeric.hexStringToByteArray(Long.toHexString(amount.multiply(ETH_DIVIDER).longValue()))));
+
+            Ethereum.SigningOutput output = AnySigner.sign(input.build(), CoinType.ETHEREUM, Ethereum.SigningOutput.parser());
+
+            return Numeric.toHexString(output.getEncoded().toByteArray());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
+    public String sign(ERC20 token, String fromAddress, String toAddress, BigDecimal amount, Long gasLimit, Long gasPrice) {
+        try {
+            PrivateKey privateKey = getPrivateKey(fromAddress);
+            Integer nonce = getNonce(fromAddress);
+
+            Ethereum.SigningInput.Builder input = Ethereum.SigningInput.newBuilder();
+            input.setPrivateKey(ByteString.copyFrom(Numeric.hexStringToByteArray(Numeric.toHexStringNoPrefix(privateKey.data()))));
+            input.setToAddress(token.getContractAddress());
+            input.setChainId(CHAIN_ID);
+            input.setNonce(ByteString.copyFrom(Numeric.hexStringToByteArray(Integer.toHexString(nonce))));
+            input.setGasLimit(ByteString.copyFrom(Numeric.hexStringToByteArray(Long.toHexString(gasLimit))));
+            input.setGasPrice(ByteString.copyFrom(Numeric.hexStringToByteArray(Long.toHexString(gasPrice))));
+
+            EthereumAbiFunction function = new EthereumAbiFunction("transfer");
+            byte[] amountBytes = amount.multiply(token.getDivider()).toBigInteger().toByteArray();
+            function.addParamAddress(Numeric.hexStringToByteArray(toAddress), false);
+            function.addParamUInt256(amountBytes, false);
+            byte[] encode = EthereumAbi.encode(function);
+
+            input.setPayload(ByteString.copyFrom(encode));
+
+            Ethereum.SigningOutput output = AnySigner.sign(input.build(), CoinType.ETHEREUM, Ethereum.SigningOutput.parser());
+
+            return Numeric.toHexString(output.getEncoded().toByteArray());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return null;
     }
 
     public String submitTransaction(SubmitTransactionDTO dto) {
@@ -374,56 +485,8 @@ public class GethService {
         return null;
     }
 
-    public BigDecimal getTxFee(Long gasLimit, Long gasPrice) {
-        return new BigDecimal(gasLimit).multiply(new BigDecimal(gasPrice)).divide(ETH_DIVIDER).stripTrailingZeros();
-    }
-
-    public Integer getNonce(String address) {
-        if (nodeService.isNodeAvailable(ETHEREUM)) {
-            try {
-                return web3.ethGetTransactionCount(address, DefaultBlockParameterName.PENDING).send().getTransactionCount().intValue();
-            } catch (Exception e) {
-                e.printStackTrace();
-
-                if (nodeService.switchToReserveNode(ETHEREUM)) {
-                    init();
-                    return getNonce(address);
-                }
-            }
-        }
-
-        return 0;
-    }
-
-    public TransactionStatus getTransactionStatus(TransactionReceipt receipt) {
-        try {
-            int status = Numeric.toBigInt(receipt.getStatus()).intValue();
-
-            if (status == 0) {
-                return TransactionStatus.FAIL;
-            } else {
-                return TransactionStatus.COMPLETE;
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return TransactionStatus.PENDING;
-    }
-
     public void addAddressToJournal(String address) {
         mongo.getCollection(ADDRESS_COLL).findOneAndUpdate(new BasicDBObject("address", address.toLowerCase()), new BasicDBObject("$set", new BasicDBObject("address", address.toLowerCase()).append("timestamp", System.currentTimeMillis())), new FindOneAndUpdateOptions().upsert(true));
-    }
-
-    public boolean isAddressInJournal(String... addresses) {
-        if (addresses.length == 0) {
-            return false;
-        }
-
-        BasicDBList or = new BasicDBList();
-        Arrays.stream(addresses).filter(e -> StringUtils.isNotBlank(e)).forEach(e -> or.add(new BasicDBObject("address", e.toLowerCase())));
-
-        return mongo.getCollection(ADDRESS_COLL).find(new BasicDBObject("$or", or)).iterator().hasNext();
     }
 
     public TransactionDetailsDTO getTransactionDetails(String txId, String address, String explorerUrl) {
@@ -458,28 +521,15 @@ public class GethService {
         return getNodeTransactionsFromDB(ETH_TX_COLL, query, address);
     }
 
-    public String sign(String fromAddress, String toAddress, BigDecimal amount, Long gasLimit, Long gasPrice) {
-        try {
-            PrivateKey privateKey = getPrivateKey(fromAddress);
-            Integer nonce = getNonce(fromAddress);
-
-            Ethereum.SigningInput.Builder input = Ethereum.SigningInput.newBuilder();
-            input.setPrivateKey(ByteString.copyFrom(Numeric.hexStringToByteArray(Numeric.toHexStringNoPrefix(privateKey.data()))));
-            input.setToAddress(toAddress);
-            input.setChainId(ByteString.copyFrom(Numeric.hexStringToByteArray("1")));
-            input.setNonce(ByteString.copyFrom(Numeric.hexStringToByteArray(Integer.toHexString(nonce))));
-            input.setGasLimit(ByteString.copyFrom(Numeric.hexStringToByteArray(Long.toHexString(gasLimit))));
-            input.setGasPrice(ByteString.copyFrom(Numeric.hexStringToByteArray(Long.toHexString(gasPrice))));
-            input.setAmount(ByteString.copyFrom(Numeric.hexStringToByteArray(Long.toHexString(amount.multiply(ETH_DIVIDER).longValue()))));
-
-            Ethereum.SigningOutput output = AnySigner.sign(input.build(), CoinType.ETHEREUM, Ethereum.SigningOutput.parser());
-
-            return Numeric.toHexString(output.getEncoded().toByteArray());
-        } catch (Exception e) {
-            e.printStackTrace();
+    private boolean isAddressInJournal(String... addresses) {
+        if (addresses.length == 0) {
+            return false;
         }
 
-        return null;
+        BasicDBList or = new BasicDBList();
+        Arrays.stream(addresses).filter(e -> StringUtils.isNotBlank(e)).forEach(e -> or.add(new BasicDBObject("address", e.toLowerCase())));
+
+        return mongo.getCollection(ADDRESS_COLL).find(new BasicDBObject("$or", or)).iterator().hasNext();
     }
 
     private PrivateKey getPrivateKey(String fromAddress) {
@@ -491,54 +541,8 @@ public class GethService {
         }
     }
 
-    public String sign(ERC20 token, String fromAddress, String toAddress, BigDecimal amount, Long gasLimit, Long gasPrice) {
-        try {
-            PrivateKey privateKey = getPrivateKey(fromAddress);
-            Integer nonce = getNonce(fromAddress);
-
-            Ethereum.SigningInput.Builder input = Ethereum.SigningInput.newBuilder();
-            input.setPrivateKey(ByteString.copyFrom(Numeric.hexStringToByteArray(Numeric.toHexStringNoPrefix(privateKey.data()))));
-            input.setToAddress(token.getContractAddress());
-            input.setChainId(ByteString.copyFrom(Numeric.hexStringToByteArray("1")));
-            input.setNonce(ByteString.copyFrom(Numeric.hexStringToByteArray(Integer.toHexString(nonce))));
-            input.setGasLimit(ByteString.copyFrom(Numeric.hexStringToByteArray(Long.toHexString(gasLimit))));
-            input.setGasPrice(ByteString.copyFrom(Numeric.hexStringToByteArray(Long.toHexString(gasPrice))));
-
-            EthereumAbiFunction function = new EthereumAbiFunction("transfer");
-            byte[] amountBytes = amount.multiply(token.getDivider()).toBigInteger().toByteArray();
-            function.addParamAddress(Numeric.hexStringToByteArray(toAddress), false);
-            function.addParamUInt256(amountBytes, false);
-            byte[] encode = EthereumAbi.encode(function);
-
-            input.setPayload(ByteString.copyFrom(encode));
-
-            Ethereum.SigningOutput output = AnySigner.sign(input.build(), CoinType.ETHEREUM, Ethereum.SigningOutput.parser());
-
-            return Numeric.toHexString(output.getEncoded().toByteArray());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return null;
-    }
-
-    public Long getGasLimit(String toAddress) {
-        if (nodeService.isNodeAvailable(ETHEREUM)) {
-            try {
-                return web3.ethEstimateGas(org.web3j.protocol.core.methods.request.Transaction.createEthCallTransaction(null, toAddress, null)).send().getAmountUsed().longValue();
-            } catch (Exception e) {
-            }
-        }
-
-        return ethInitialGasLimit;
-    }
-
-    private String convertAddress32BytesTo20Bytes(String contractAddress, String address32Bytes) {
-        String address20Bytes = Numeric.prependHexPrefix(address32Bytes.substring(address32Bytes.length() - 40));
-
-        if (Numeric.toBigInt(address20Bytes).intValue() == 0) return contractAddress;
-
-        return address20Bytes;
+    private String convertAddress32BytesTo20Bytes(String address32Bytes) {
+        return Numeric.prependHexPrefix(address32Bytes.substring(address32Bytes.length() - 40));
     }
 
     private void fetchEthTransaction(org.web3j.protocol.core.methods.response.Transaction tx, Long timestamp, List<UpdateOneModel<Document>> ethTxs, List<UpdateOneModel<Document>> tokenTxs) {
@@ -565,16 +569,12 @@ public class GethService {
                             if (tokenDoc != null) {
                                 tokenDoc.append("txId", txId);
                                 tokenDoc.append("blockNumber", blockNumber);
+                                tokenDoc.append("fromAddress", Util.nvl(tokenDoc.getString("fromAddress"), fromAddress));
+                                tokenDoc.append("toAddress", Util.nvl(tokenDoc.getString("toAddress"), toAddress));
                                 tokenDoc.append("fee", fee);
                                 tokenDoc.append("status", status.getValue());
                                 tokenDoc.append("blockTime", timestamp);
                                 tokenDoc.append("timestamp", System.currentTimeMillis());
-
-                                fromAddress = Util.nvl(fromAddress, tokenDoc.getString("fromAddress"));
-                                toAddress = Util.nvl(toAddress, tokenDoc.getString("toAddress"));
-
-                                tokenDoc.put("fromAddress", fromAddress);
-                                tokenDoc.put("toAddress", toAddress);
 
                                 UpdateOneModel tokenUpdate = new UpdateOneModel(new Document("txId", tokenDoc.getString("txId")), new Document("$set", tokenDoc), new UpdateOptions().upsert(true));
                                 tokenTxs.add(tokenUpdate);
@@ -604,34 +604,48 @@ public class GethService {
     private Document fetchTokenTransaction(TransactionReceipt receipt) {
         try {
             if (receipt.getLogs().size() > 0) {
-                Log log = receipt.getLogs().get(0);
-                BigDecimal amountToken = parseTokenAmount(log.getData());
+                Document doc = new Document();
+                ERC20 token = getTokenByContractAddress(receipt.getLogs().get(0).getAddress());
 
-                if (catmContractAddress.equalsIgnoreCase(log.getAddress())) {
-                    String fromAddressToken = convertAddress32BytesTo20Bytes(catmContractAddress, log.getTopics().get(1));
-                    String toAddressToken = convertAddress32BytesTo20Bytes(catmContractAddress, log.getTopics().get(2));
-
-                    return new Document("fromAddress", fromAddressToken)
-                            .append("toAddress", toAddressToken)
-                            .append("amount", amountToken.divide(ETH_DIVIDER).stripTrailingZeros())
-                            .append("timestamp", System.currentTimeMillis())
-                            .append("token", ERC20.CATM.name());
-                } else if (usdtContractAddress.equalsIgnoreCase(log.getAddress())) {
-                    String fromAddressToken = convertAddress32BytesTo20Bytes(catmContractAddress, log.getTopics().get(1));
-                    String toAddressToken = convertAddress32BytesTo20Bytes(catmContractAddress, log.getTopics().get(2));
-
-                    return new Document("fromAddress", fromAddressToken)
-                            .append("toAddress", toAddressToken)
-                            .append("amount", amountToken.divide(USDT_DIVIDER).stripTrailingZeros())
-                            .append("timestamp", System.currentTimeMillis())
-                            .append("token", ERC20.USDT.name());
+                if (token == null) {
+                    return doc;
                 }
+
+                doc.append("token", token.name());
+
+                //transfer
+                if (receipt.getLogs().size() == 1 && receipt.getLogs().get(0).getTopics().get(0).equalsIgnoreCase("0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef")) {
+                    doc.append("fromAddress", convertAddress32BytesTo20Bytes(receipt.getLogs().get(0).getTopics().get(1)));
+                    doc.append("toAddress", convertAddress32BytesTo20Bytes(receipt.getLogs().get(0).getTopics().get(2)));
+                    doc.append("amount", parseTokenAmount(receipt.getLogs().get(0).getData()).divide(token.getDivider()).stripTrailingZeros());
+                    doc.append("function", "transfer");
+                }
+
+                //create stake
+                if (receipt.getLogs().size() == 2 && receipt.getLogs().get(1).getTopics().get(0).equalsIgnoreCase("0x8915595eb58a6a6bf41eb9635929fc76b8e27c299f418d35d2727b8142cd5e90")) {
+                    doc.append("fromAddress", convertAddress32BytesTo20Bytes(receipt.getLogs().get(1).getTopics().get(1)));
+                    doc.append("toAddress", convertAddress32BytesTo20Bytes(receipt.getLogs().get(1).getAddress()));
+                    doc.append("amount", parseTokenAmount(receipt.getLogs().get(1).getData()).divide(token.getDivider()).stripTrailingZeros());
+                    doc.append("function", "createStake");
+                }
+
+                return doc;
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
 
         return null;
+    }
+
+    private ERC20 getTokenByContractAddress(String contractAddress) {
+        if (catmContractAddress.equalsIgnoreCase(contractAddress)) {
+            return ERC20.CATM;
+        } else if (usdtContractAddress.equalsIgnoreCase(contractAddress)) {
+            return ERC20.USDT;
+        } else {
+            return null;
+        }
     }
 
     private BigDecimal parseTokenAmount(String data) {
@@ -674,6 +688,54 @@ public class GethService {
         }
 
         return null;
+    }
+
+    public int getStakingBasePeriod() {
+        try {
+            if (stakingBasePeriod == 0) {
+                stakingBasePeriod = catm.basePeriod().send().intValue();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return stakingBasePeriod;
+    }
+
+    public int getStakingHoldPeriod() {
+        try {
+            if (stakingHoldPeriod == 0) {
+                stakingHoldPeriod = catm.holdPeriod().send().intValue();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return stakingHoldPeriod;
+    }
+
+    public int getStakingAnnualPeriod() {
+        try {
+            if (stakingAnnualPeriod == 0) {
+                stakingAnnualPeriod = catm.annualPeriod().send().intValue();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return stakingAnnualPeriod;
+    }
+
+    public int getStakingAnnualPercent() {
+        try {
+            if (stakingAnnualPercent == 0) {
+                stakingAnnualPercent = catm.annualPercent().send().intValue();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return stakingAnnualPercent;
     }
 
     public enum ERC20 {

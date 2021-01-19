@@ -166,6 +166,9 @@ public class UserController {
             refreshTokenRep.save(token);
 
             user.setPlatform(dto.getPlatform());
+            user.setDeviceModel(dto.getDeviceModel());
+            user.setDeviceOS(dto.getDeviceOS());
+            user.setAppVersion(dto.getAppVersion());
             user.setNotificationsToken(dto.getNotificationsToken());
 
             if (user.getReferral() == null) {

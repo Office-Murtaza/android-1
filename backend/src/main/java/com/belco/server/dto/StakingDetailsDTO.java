@@ -26,7 +26,8 @@ public class StakingDetailsDTO {
     private String rewardPercentStr;
     private BigDecimal rewardAnnualAmount;
     private String rewardAnnualAmountStr;
-    private int rewardAnnualPercent;
+    private int holdPeriod;
+    private int annualPercent;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private Date createDate;
@@ -36,7 +37,6 @@ public class StakingDetailsDTO {
 
     private int duration;
     private int tillWithdrawal;
-    private int cancelHoldPeriod;
 
     public void setStatus(StakeStatus status) {
         this.status = status;
@@ -62,8 +62,12 @@ public class StakingDetailsDTO {
         this.rewardAnnualAmountStr = Util.convert(rewardAnnualAmount);
     }
 
-    public void setRewardAnnualPercent(int rewardAnnualPercent) {
-        this.rewardAnnualPercent = rewardAnnualPercent;
+    public void setAnnualPercent(int annualPercent) {
+        this.annualPercent = annualPercent;
+    }
+
+    public void setHoldPeriod(int holdPeriod) {
+        this.holdPeriod = holdPeriod;
     }
 
     public void setCreateDate(Date createDate) {
@@ -80,9 +84,5 @@ public class StakingDetailsDTO {
 
     public void setTillWithdrawal(int tillWithdrawal) {
         this.tillWithdrawal = tillWithdrawal;
-    }
-
-    public void setCancelHoldPeriod(int cancelHoldPeriod) {
-        this.cancelHoldPeriod = cancelHoldPeriod;
     }
 }

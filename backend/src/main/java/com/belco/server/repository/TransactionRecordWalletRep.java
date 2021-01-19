@@ -17,7 +17,7 @@ public interface TransactionRecordWalletRep extends JpaRepository<TransactionRec
 
     Optional<TransactionRecordWallet> findFirstByIdentityAndCoinAndTypeAndStatusOrderByCreateDateDesc(Identity identity, Coin coin, Integer type, Integer status);
 
-    Optional<TransactionRecordWallet> findFirstByIdentityAndCoinAndTypeOrderByCreateDateDesc(Identity identity, Coin coin, Integer type);
+    Optional<TransactionRecordWallet> findFirstByIdentityAndCoinAndTypeAndStatusNotOrderByCreateDateDesc(Identity identity, Coin coin, Integer type, Integer status);
 
     List<TransactionRecordWallet> findAllByIdentityAndCoin(Identity identity, Coin coin);
 

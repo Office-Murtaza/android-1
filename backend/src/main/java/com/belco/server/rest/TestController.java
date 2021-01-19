@@ -8,6 +8,7 @@ import com.belco.server.service.*;
 import net.sf.json.JSONObject;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.bind.annotation.*;
+import org.web3j.protocol.core.methods.response.TransactionReceipt;
 import org.web3j.tuples.generated.Tuple2;
 import wallet.core.jni.CoinType;
 
@@ -82,25 +83,10 @@ public class TestController {
         } catch (Exception e) {
         }
 
-        try {
-            json.put("basePeriod(s)", gethService.catm.basePeriod().send());
-        } catch (Exception e) {
-        }
-
-        try {
-            json.put("holdPeriod(s)", gethService.catm.holdPeriod().send());
-        } catch (Exception e) {
-        }
-
-        try {
-            json.put("annualPercent", gethService.catm.annualPercent().send());
-        } catch (Exception e) {
-        }
-
-        try {
-            json.put("annualPeriod(s)", gethService.catm.annualPeriod().send());
-        } catch (Exception e) {
-        }
+        json.put("basePeriod(s)", gethService.getStakingBasePeriod());
+        json.put("holdPeriod(s)", gethService.getStakingHoldPeriod());
+        json.put("annualPeriod(s)", gethService.getStakingAnnualPeriod());
+        json.put("annualPercent", gethService.getStakingAnnualPercent());
 
         return Response.ok(json);
     }
@@ -131,6 +117,19 @@ public class TestController {
         dto.setHex(hex);
 
         return Response.ok(coin.submitTransaction(dto));
+    }
+
+    @GetMapping("/transaction-receipt")
+    public Response getTransactionReceipt(@RequestParam String txId) {
+        try {
+            TransactionReceipt receipt = gethService.web3.ethGetTransactionReceipt(txId).send().getTransactionReceipt().get();
+
+            return Response.ok(receipt);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return Response.ok("error");
     }
 
     private JSONObject getCoinJson(String address, BigDecimal balance, BigDecimal fee, String nodeUrl) {

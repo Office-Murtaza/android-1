@@ -5,6 +5,7 @@ import com.belco.server.security.JWTTokenProvider;
 import com.belco.server.service.CoinService;
 import com.belco.server.service.UserService;
 import com.belco.server.util.Constant;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Configuration;
@@ -108,10 +109,16 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
                 } else if (StompCommand.DISCONNECT.equals(accessor.getCommand()) || StompCommand.UNSUBSCRIBE.equals(accessor.getCommand())) {
                     Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
                     String name = authentication == null ? accessor.getUser().getName() : authentication.getName();
-
                     System.out.println(" ---- " + accessor.getCommand() + ": " + name);
 
-                    CoinService.wsMap.remove(name);
+                    if(StringUtils.isNotBlank(name) && "anonymous".equalsIgnoreCase(name)) {
+                        StompHeaderAccessor headerAccessor = StompHeaderAccessor.create(StompCommand.ERROR);
+                        headerAccessor.setMessage("Access is denied");
+                        headerAccessor.setSessionId(accessor.getSessionId());
+                        clientOutboundChannel.send(MessageBuilder.createMessage(new byte[0], headerAccessor.getMessageHeaders()));
+                    } else {
+                        CoinService.wsMap.remove(name);
+                    }
                 }
 
                 return message;

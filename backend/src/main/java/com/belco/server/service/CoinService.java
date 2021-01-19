@@ -5,13 +5,11 @@ import com.belco.server.entity.*;
 import com.belco.server.repository.CoinRep;
 import com.belco.server.util.Util;
 import net.sf.json.JSONObject;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import wallet.core.jni.CoinType;
-
 import java.math.BigDecimal;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
@@ -36,11 +34,9 @@ public class CoinService {
     private static BinanceService binanceService;
     private static RippledService rippledService;
     private static TrongridService trongridService;
+    private static PlatformService platformService;
 
-    @Value("${swap.profit-percent}")
-    private BigDecimal swapProfitPercent;
-
-    public CoinService(WalletService walletService, UserService userService, CoinRep coinRep, CacheService cacheService, SimpMessagingTemplate simpMessagingTemplate, NodeService nodeService, BlockbookService blockbookService, GethService gethService, BinanceService binanceService, RippledService rippledService, TrongridService trongridService) {
+    public CoinService(WalletService walletService, UserService userService, CoinRep coinRep, CacheService cacheService, SimpMessagingTemplate simpMessagingTemplate, NodeService nodeService, BlockbookService blockbookService, GethService gethService, BinanceService binanceService, RippledService rippledService, TrongridService trongridService, PlatformService platformService) {
         CoinService.walletService = walletService;
         CoinService.userService = userService;
 
@@ -54,6 +50,7 @@ public class CoinService {
         CoinService.binanceService = binanceService;
         CoinService.rippledService = rippledService;
         CoinService.trongridService = trongridService;
+        CoinService.platformService = platformService;
     }
 
     private static BigDecimal getPriceById(String id) {
@@ -134,7 +131,7 @@ public class CoinService {
         dto.setTxFee(coin.getTxFee());
         dto.setGasPrice(coin.getGasPrice());
         dto.setScale(coin.getCoinEntity().getScale());
-        dto.setSwapProfitPercent(swapProfitPercent);
+        dto.setSwapProfitPercent(platformService.getSwapProfitPercent());
         dto.setWalletAddress(coin.getWalletAddress());
         dto.setContractAddress(coin.getContractAddress());
 
