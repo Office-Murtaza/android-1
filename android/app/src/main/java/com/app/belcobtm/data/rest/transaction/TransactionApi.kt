@@ -171,7 +171,7 @@ interface TransactionApi {
     fun stakeDetailsAsync(
         @Path("userId") userId: Int,
         @Path("coinCode") coinCode: String
-    ): Deferred<Response<StakeDetailsRequest>>
+    ): Deferred<Response<StakeDetailsResponse>>
 
     @POST("user/{userId}/coin/{coinCode}/submit")
     fun stakeOrUnStakeAsync(
