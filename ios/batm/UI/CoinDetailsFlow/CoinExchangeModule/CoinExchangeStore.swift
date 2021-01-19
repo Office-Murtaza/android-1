@@ -79,13 +79,12 @@ struct CoinExchangeState: Equatable {
     func toRateString() -> String {
         guard let fromPrice = fromCoinBalance?.price,
               let toPrice = toCoinBalance?.price,
-              let toCoinType = toCoinType,
-              let scale = toCoinDetails?.scale  else {
+              let toCoinType = toCoinType  else {
             return ""
         }
         let result = fromPrice / toPrice
         
-        return result.coinFormatted(fractionDigits:scale).withCoinType(toCoinType)
+        return result.coinFormatted(fractionDigits:nil).withCoinType(toCoinType)
     }
     
     var maxFromValue: Decimal {
@@ -254,19 +253,21 @@ final class CoinExchangeStore: ViewStore<CoinExchangeAction, CoinExchangeState> 
     
     private func validate(_ state: inout CoinExchangeState) {
         state.validationState = .valid
-        let lessThanTxFee = state.fromCoinAmount.decimalValue?.lessThan(state.coinDetails?.txFee ?? 0) == true
-            || state.toCoinAmount.decimalValue?.lessThan(state.toCoinTxFee ?? 0) == true
+        let lessThanFromTxFee = state.fromCoinAmount.decimalValue?.lessThan(state.coinDetails?.txFee ?? 0) == true
+        let lessThanToTxFree = state.toCoinAmount.decimalValue?.lessThan(state.toCoinTxFee ?? 0) == true
         
         if state.fromCoinAmount.count == 0 {
-            setupState(with: &state, errorString: L.CreateWallet.Form.Error.fieldRequired)
+            setupFromCoinErrorState(with: &state, errorString: L.CreateWallet.Form.Error.fieldRequired)
         } else if state.fromCoinAmount.decimalValue == nil {
-            setupState(with: &state, errorString: L.CoinWithdraw.Form.Error.invalidAmount)
+            setupFromCoinErrorState(with: &state, errorString: L.CoinWithdraw.Form.Error.invalidAmount)
         } else if state.fromCoinAmount.decimalValue! <= 0 {
-            setupState(with: &state, errorString: L.CoinWithdraw.Form.Error.tooLowAmount)
-        } else if lessThanTxFee {
-            setupState(with: &state, errorString: L.CoinWithdraw.Form.Error.lessThanFee)
+            setupFromCoinErrorState(with: &state, errorString: L.CoinWithdraw.Form.Error.tooLowAmount)
+        } else if lessThanFromTxFee {
+            setupFromCoinErrorState(with: &state, errorString: L.CoinWithdraw.Form.Error.lessThanFee)
+        } else if lessThanToTxFree {
+            setupToCoinErrorState(with: &state, errorString: L.CoinWithdraw.Form.Error.lessThanFee)
         } else if !state.fromCoinAmount.decimalValue!.lessThanOrEqualTo(state.maxFromValue) {
-            setupState(with: &state, errorString: L.CoinWithdraw.Form.Error.tooHighAmount)
+            setupFromCoinErrorState(with: &state, errorString: L.CoinWithdraw.Form.Error.tooHighAmount)
         } else if state.toCoinType == .ripple,
                   state.isCoinActivated == false,
                   (state.toCoinAmount.decimalValue ?? 0 >= (20 + (state.toCoinDetails?.txFee ?? 0.0) )) {
@@ -280,7 +281,7 @@ final class CoinExchangeStore: ViewStore<CoinExchangeAction, CoinExchangeState> 
                 let ethBalance = state.coinBalances?.first { $0.type == .ethereum }?.balance ?? 0
                 
                 if !ethBalance.greaterThanOrEqualTo(fee) {
-                    setupState(with: &state, errorString: L.CoinWithdraw.Form.Error.insufficientETHBalance)
+                    setupFromCoinErrorState(with: &state, errorString: L.CoinWithdraw.Form.Error.insufficientETHBalance)
 
                 }
             }
@@ -293,9 +294,15 @@ final class CoinExchangeStore: ViewStore<CoinExchangeAction, CoinExchangeState> 
         }
     }
     
-    private func setupState(with state: inout CoinExchangeState, errorString: String) {
+    private func setupFromCoinErrorState(with state: inout CoinExchangeState, errorString: String) {
         let errorString = localize(errorString)
         state.fromCoinAmountError = errorString
+        state.validationState = .invalid(errorString)
+    }
+    
+    private func setupToCoinErrorState(with state: inout CoinExchangeState, errorString: String) {
+        let errorString = localize(errorString)
+        state.toCoinTypeError = errorString
         state.validationState = .invalid(errorString)
     }
 }
