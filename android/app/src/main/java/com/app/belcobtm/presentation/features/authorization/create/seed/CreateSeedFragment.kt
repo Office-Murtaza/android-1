@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.os.bundleOf
+import androidx.core.view.children
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.navArgs
 import com.app.belcobtm.R
@@ -101,6 +102,9 @@ class CreateSeedFragment : BaseFragment<FragmentCreateSeedBinding>() {
         binding.word10.text = wordList[9]
         binding.word11.text = wordList[10]
         binding.word12.text = wordList[11]
+        binding.chipGroupView.children.forEach {
+            it.show()
+        }
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean = if (item.itemId == android.R.id.home) {
