@@ -89,15 +89,10 @@ class TradeReserveFragment : BaseFragment<FragmentTradeReserveBinding>() {
         )
         balanceUsdView.text =
             getString(R.string.text_usd, viewModel.coinItem.balanceUsd.toStringUsd())
-        feeLabel.text = getString(
+        amountCryptoView.helperText = getString(
             R.string.transaction_helper_text_commission,
             viewModel.getTransactionFee().toStringCoin(),
             viewModel.coinItem.code
-        )
-        feeLabel.text = getString(
-            R.string.transaction_helper_text_commission,
-            viewModel.getTransactionFee().toStringCoin(),
-            viewModel.getCoinCode()
         )
         reservedCryptoView.text = getString(
             R.string.text_text,

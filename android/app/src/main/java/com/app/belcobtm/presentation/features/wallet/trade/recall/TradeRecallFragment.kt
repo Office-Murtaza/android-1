@@ -98,7 +98,7 @@ class TradeRecallFragment : BaseFragment<FragmentTradeRecallBinding>() {
             R.string.text_usd,
             viewModel.coinItem.reservedBalanceUsd.toStringUsd()
         )
-        feeLabel.text = getString(
+        amountCryptoView.helperText = getString(
             R.string.transaction_helper_text_commission,
             viewModel.getTransactionFee().toStringCoin(),
             viewModel.getCoinCode()
