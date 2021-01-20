@@ -391,15 +391,15 @@
     <string name="error_transaction_cannot_be_created">The transaction can not be created</string>
     <string name="error_xrp_amount_is_not_enough">Amount is not enough to activate receiver address</string>
 
-    <string name="staking_screen_anual_percent">Staking annual percent</string>
-    <string name="staking_screen_cancel_period">Cancel hold period</string>
+    <string name="staking_screen_anual_percent">Annual percent</string>
+    <string name="staking_screen_cancel_period">Hold period</string>
     <string name="staking_screen_usd_converted">USD converted value</string>
     <string name="staking_screen_anual_reward">Annual reward amount</string>
     <string name="staking_screen_created">Created</string>
     <string name="staking_screen_canceled">Canceled</string>
     <string name="staking_screen_duration">Duration</string>
     <string name="staking_screen_rewards">Rewards</string>
-    <string name="staking_screen_rewards_amount">%1$s CATM,  %2$.2f %%</string>
+    <string name="staking_screen_rewards_amount">%1$s CATM\n%2$.2f %%</string>
     <string name="staking_screen_rewards_percent">%1$.2f%%</string>
     <string name="staking_screen_usd_formatted">$%s</string>
     <string name="staking_screen_catm_price_formatted"><![CDATA[<b>1</b> CATM = $ <b>%s</b>]]></string>
