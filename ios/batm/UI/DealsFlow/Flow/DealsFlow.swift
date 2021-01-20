@@ -15,7 +15,6 @@ class DealsFlow: BaseFlow<BTMNavigationController, DealsFlowController> {
         case deals
         case staking(BTMCoin, [CoinBalance], CoinDetails, StakeDetails)
         case swap
-        case pop(String? = nil)
         case transfer
         case popToRoot(String?=nil)
     }
@@ -41,13 +40,10 @@ class DealsFlow: BaseFlow<BTMNavigationController, DealsFlowController> {
         case .swap:
             let module = resolver.resolve(Module<CoinExchangeModule>.self)!
             return push(module.controller)
-        case let .pop(toastMessage):
-            toastMessage.flatMap { message in
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { [weak self] in
-                    self?.view.topViewController?.view.makeToast(message)
-                }
-            }
-            return pop()
+        case .transfer:
+            let transfer = TransferFlow(view: self.view, parent: self)
+            let step = TransferFlow.Steps.transfer
+            return next(flow: transfer, step: step)
         case let .popToRoot(toastMessage):
             toastMessage.flatMap { message in
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { [weak self] in
@@ -55,10 +51,6 @@ class DealsFlow: BaseFlow<BTMNavigationController, DealsFlowController> {
                 }
             }
             return popToRoot()
-        case .transfer:
-            let transfer = TransferFlow(view: self.view, parent: self)
-            let step = TransferFlow.Steps.transfer
-            return next(flow: transfer, step: step)
         }
     }
 }

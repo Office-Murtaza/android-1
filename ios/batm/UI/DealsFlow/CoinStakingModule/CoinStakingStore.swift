@@ -60,7 +60,7 @@ struct CoinStakingState: Equatable {
     }
     
     var shouldWithdrawButtonEnabled: Bool {
-        return stakeDetails?.status == .canceled && stakeDetails?.untilWithdraw == 0
+        return stakeDetails?.status == .canceled && stakeDetails?.tillWithdrawal == 0
     }
 }
 

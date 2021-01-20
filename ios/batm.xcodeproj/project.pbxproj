@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		05021CFE2582679000FE8809 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 05021CFD2582679000FE8809 /* GoogleService-Info.plist */; };
+		0503565225B73AB100FCA326 /* Double+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0503565125B73AB100FCA326 /* Double+Extension.swift */; };
 		050625D825A36B6C007E0512 /* UIDevice+Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 050625D725A36B6C007E0512 /* UIDevice+Helper.swift */; };
 		05144137258950D7000B56E7 /* DealsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05144136258950D7000B56E7 /* DealsCell.swift */; };
 		0514414125895378000B56E7 /* DealsTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0514414025895378000B56E7 /* DealsTableView.swift */; };
@@ -589,6 +590,7 @@
 
 /* Begin PBXFileReference section */
 		05021CFD2582679000FE8809 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		0503565125B73AB100FCA326 /* Double+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Double+Extension.swift"; sourceTree = "<group>"; };
 		050625D725A36B6C007E0512 /* UIDevice+Helper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIDevice+Helper.swift"; sourceTree = "<group>"; };
 		05144136258950D7000B56E7 /* DealsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DealsCell.swift; sourceTree = "<group>"; };
 		0514414025895378000B56E7 /* DealsTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DealsTableView.swift; sourceTree = "<group>"; };
@@ -1231,6 +1233,7 @@
 			children = (
 				055A9B702575528800A8E8F1 /* Flow */,
 				055A9B6F2575527F00A8E8F1 /* DealsModule */,
+				DB1D21E924AE6F13001E9696 /* CoinStakingModule */,
 			);
 			path = DealsFlow;
 			sourceTree = "<group>";
@@ -1930,7 +1933,6 @@
 				DB16A86B235F4419007E3B20 /* CoinSellDetailsAnotherAddressModule */,
 				DB2F25072360685C00274C60 /* CoinSellDetailsCurrentAddressModule */,
 				DBADDE312438DCF200BFD806 /* CoinExchangeModule */,
-				DB1D21E924AE6F13001E9696 /* CoinStakingModule */,
 				DB2F25102360A8D800274C60 /* TransactionDetailsModule */,
 			);
 			path = CoinDetailsFlow;
@@ -2300,6 +2302,7 @@
 				DB2C97212344B4BA006E7D61 /* Primitives+Extensions.swift */,
 				DB67D1B52394FB3E008EFB0D /* Error+Extensions.swift */,
 				23F4138925AA55DD006853CB /* Contact+Extensions.swift */,
+				0503565125B73AB100FCA326 /* Double+Extension.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -3847,6 +3850,7 @@
 				DB8A1960235729A0003E8F7D /* NavigationScreenView.swift in Sources */,
 				DB0AD1D624BA1F4C00806282 /* PasswordTextField.swift in Sources */,
 				DB8D408122C3DBA700D5FBD0 /* CreateWalletModule.swift in Sources */,
+				0503565225B73AB100FCA326 /* Double+Extension.swift in Sources */,
 				DBC68CAA22F868E000473247 /* EnterPasswordAssembly.swift in Sources */,
 				DB9616DD22C748610078E92D /* NSManagedObject+ActiveRecord.swift in Sources */,
 				DB4F395122DEFA2600D53BF3 /* ManageWalletsModule.swift in Sources */,

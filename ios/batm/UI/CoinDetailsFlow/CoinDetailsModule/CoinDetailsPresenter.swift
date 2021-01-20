@@ -14,7 +14,6 @@ final class CoinDetailsPresenter: ModulePresenter, CoinDetailsModule {
         var sell: Driver<Void>
         var exchange: Driver<Void>
         var trades: Driver<Void>
-        var staking: Driver<Void>
         var showMore: Driver<Void>
         var transactionSelected: Driver<IndexPath>
         var updateSelectedPeriod: Driver<SelectedPeriod>
@@ -147,20 +146,6 @@ final class CoinDetailsPresenter: ModulePresenter, CoinDetailsModule {
                                                               coinBalances: $0.coinBalances!,
                                                               coinDetails: $0.coinDetails!) })
           .disposed(by: disposeBag)
-        
-        
-        input.staking
-            .withLatestFrom(state)
-            .filter { $0.coin != nil }
-            .flatMap { [unowned self] state in
-                return self.track(self.usecase.getStakeDetails(for: state.coin!.type))
-                    .map { (state, $0) }
-            }
-            .drive(onNext: { [delegate] in delegate?.showStakingScreen(coin: $0.coin!,
-                                                                       coinBalances: $0.coinBalances!,
-                                                                       coinDetails: $0.coinDetails!,
-                                                                       stakeDetails: $1) })
-            .disposed(by: disposeBag)
         
         input.showMore
             .drive(onNext: { [fetchTransactionsRelay] _ in fetchTransactionsRelay.accept(()) })

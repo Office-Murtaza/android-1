@@ -121,8 +121,6 @@ final class CoinExchangePresenter: ModulePresenter, CoinExchangeModule {
                 default: break
                 }
               }.disposed(by: disposeBag)
-        
-        
 
         input.updateFromPickerItem
           .asObservable()
@@ -140,7 +138,6 @@ final class CoinExchangePresenter: ModulePresenter, CoinExchangeModule {
             }
           }.disposed(by: disposeBag)
      
-        
         input.maxFrom
             .asObservable()
             .withLatestFrom(state)

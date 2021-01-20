@@ -28,7 +28,7 @@ final class CoinSendGiftFormView: UIView, HasDisposeBag {
         return separator
     }()
     
-    lazy var varticalSeparatorView: UIView = {
+    lazy var verticalSeparatorView: UIView = {
         let separator = UIView()
         separator.backgroundColor = .lightGray
         return separator
@@ -99,7 +99,7 @@ final class CoinSendGiftFormView: UIView, HasDisposeBag {
     
     bottomContainer.addSubviews(gifViewContainer,
                                 removeButton,
-                                varticalSeparatorView,
+                                verticalSeparatorView,
                                 messageTextField,
                                 addMessageButton)
 
@@ -122,15 +122,15 @@ final class CoinSendGiftFormView: UIView, HasDisposeBag {
     
     coinAmountTextFieldView.snp.makeConstraints{
         $0.left.right.top.equalToSuperview()
-        $0.height.equalTo(116)
+        $0.height.equalTo(120)
     }
     
     usdView.snp.makeConstraints {
-            $0.right.equalToSuperview()
-            $0.top.equalTo(separatorView.snp.bottom).offset(10)
-            $0.left.equalToSuperview()
-            $0.height.equalTo(45)
-        }
+        $0.right.equalToSuperview()
+        $0.top.equalTo(separatorView.snp.bottom).offset(10)
+        $0.left.equalToSuperview()
+        $0.height.equalTo(45)
+    }
     
     bottomContainer.snp.makeConstraints {
       $0.top.equalTo(usdView.snp.bottom).offset(15)
@@ -147,7 +147,7 @@ final class CoinSendGiftFormView: UIView, HasDisposeBag {
       $0.edges.equalToSuperview()
     }
     
-    varticalSeparatorView.snp.makeConstraints {
+    verticalSeparatorView.snp.makeConstraints {
         $0.width.equalTo(1/UIScreen.main.scale)
         $0.centerX.equalTo(bottomContainer.snp.centerX)
         $0.top.bottom.equalToSuperview()
@@ -192,9 +192,9 @@ final class CoinSendGiftFormView: UIView, HasDisposeBag {
     }
     
     private func configureField(field: inout CoinExchangeSwapTextFieldView, error: String?) {
-            field.errorField.isHidden = error == nil
-            field.errorField.text = error
-            field.amountTextField.textColor = error == nil ? UIColor.black : UIColor(hexString: "B00020")
+        field.errorFieldView.isHidden = error == nil
+        field.setupErrorField(errorText: error)
+        field.amountTextField.textColor = error == nil ? UIColor.black : UIColor(hexString: "B00020")
     }
 }
 

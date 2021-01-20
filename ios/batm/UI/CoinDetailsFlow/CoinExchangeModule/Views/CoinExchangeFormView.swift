@@ -90,14 +90,13 @@ class CoinExchangeFormView: UIView {
     }
     
     private func configureField(field: inout CoinExchangeSwapTextFieldView, error: String?) {
-        field.errorField.isHidden = error == nil
-        field.errorField.text = error
+        field.errorFieldView.isHidden = error == nil
+        field.setupErrorField(errorText: error)
         field.amountTextField.textColor = error == nil ? .black : .errorRed
     }
 }
 
 extension Reactive where Base == CoinExchangeFormView {
-    
     //MARK: - From coin
     
     var fromCoin: Binder<CustomCoinType> {

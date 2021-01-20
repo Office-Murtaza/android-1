@@ -122,7 +122,7 @@ final class CoinSendGiftViewController: ModuleViewController<CoinSendGiftPresent
            .subscribeOn(MainScheduler.instance)
            .subscribe { [weak self] result in
                guard let error = result.element else { return }
-               self?.formView.configureFromError(error: error )
+               self?.formView.configureFromError(error: error)
            }.disposed(by: disposeBag)
     
     presenter.state
@@ -138,12 +138,6 @@ final class CoinSendGiftViewController: ModuleViewController<CoinSendGiftPresent
       .asObservable()
       .map { $0.message }
       .bind(to: formView.rx.messageText)
-      .disposed(by: disposeBag)
-    
-    presenter.state
-      .asObservable()
-      .map { $0.phoneError }
-        .bind(to: formView.coinAmountTextFieldView.errorField.rx.text)
       .disposed(by: disposeBag)
     
     presenter.state
