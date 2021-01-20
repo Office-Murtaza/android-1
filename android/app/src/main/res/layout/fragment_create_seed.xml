@@ -39,8 +39,12 @@
             android:id="@+id/chip_group_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="32dp"
-            android:layout_marginEnd="32dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="8dp"
+            android:background="@drawable/seed_phrase_border"
+            android:padding="4dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/description">
@@ -50,6 +54,7 @@
                 style="@style/Button.Chip"
                 android:clickable="false"
                 android:focusable="false"
+                android:visibility="invisible"
                 tools:text="first" />
 
             <com.google.android.material.chip.Chip
@@ -57,6 +62,7 @@
                 style="@style/Button.Chip"
                 android:clickable="false"
                 android:focusable="false"
+                android:visibility="invisible"
                 tools:text="second" />
 
             <com.google.android.material.chip.Chip
@@ -64,6 +70,7 @@
                 style="@style/Button.Chip"
                 android:clickable="false"
                 android:focusable="false"
+                android:visibility="invisible"
                 tools:text="third" />
 
             <com.google.android.material.chip.Chip
@@ -71,6 +78,7 @@
                 style="@style/Button.Chip"
                 android:clickable="false"
                 android:focusable="false"
+                android:visibility="invisible"
                 tools:text="fourth" />
 
             <com.google.android.material.chip.Chip
@@ -78,6 +86,7 @@
                 style="@style/Button.Chip"
                 android:clickable="false"
                 android:focusable="false"
+                android:visibility="invisible"
                 tools:text="fifth" />
 
             <com.google.android.material.chip.Chip
@@ -85,6 +94,7 @@
                 style="@style/Button.Chip"
                 android:clickable="false"
                 android:focusable="false"
+                android:visibility="invisible"
                 tools:text="sixth" />
 
             <com.google.android.material.chip.Chip
@@ -92,11 +102,13 @@
                 style="@style/Button.Chip"
                 android:clickable="false"
                 android:focusable="false"
+                android:visibility="invisible"
                 tools:text="seventh" />
 
             <com.google.android.material.chip.Chip
                 android:id="@+id/word8"
                 style="@style/Button.Chip"
+                android:visibility="invisible"
                 tools:text="eighth" />
 
             <com.google.android.material.chip.Chip
@@ -104,6 +116,7 @@
                 style="@style/Button.Chip"
                 android:clickable="false"
                 android:focusable="false"
+                android:visibility="invisible"
                 tools:text="ninth" />
 
             <com.google.android.material.chip.Chip
@@ -111,6 +124,7 @@
                 style="@style/Button.Chip"
                 android:clickable="false"
                 android:focusable="false"
+                android:visibility="invisible"
                 tools:text="tenth" />
 
             <com.google.android.material.chip.Chip
@@ -118,6 +132,7 @@
                 style="@style/Button.Chip"
                 android:clickable="false"
                 android:focusable="false"
+                android:visibility="invisible"
                 tools:text="eleventh" />
 
             <com.google.android.material.chip.Chip
@@ -125,6 +140,7 @@
                 style="@style/Button.Chip"
                 android:clickable="false"
                 android:focusable="false"
+                android:visibility="invisible"
                 tools:text="twelfth" />
         </com.app.belcobtm.presentation.features.authorization.create.seed.ChipGroupCenter>
 

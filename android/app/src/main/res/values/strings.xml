@@ -96,14 +96,14 @@
     <string name="seed_pharse_paste_error_message">Seed phrase should contain 12 words separated by space. Please rechecked seed phrase and paste it again</string>
 
     <!-- Recover Seed Screen -->
-    <string name="recover_seed_screen_title">Seed phrase</string>
+    <string name="recover_seed_screen_title">Recover seed phrase</string>
     <string name="recover_seed_screen_description">Enter your secret 12-word phrase\nhere to restore your wallet</string>
     <string name="recover_seed_screen_error_length">Seed phrase must be 12 words</string>
     <string name="recover_seed_screen_incorrect_phrase">Seed phrase you entered is invalid. Please try again</string>
 
 
     <!-- Create Seed Screen-->
-    <string name="create_seed_screen_title">Seed phrase</string>
+    <string name="create_seed_screen_title">Create seed phrase</string>
     <string name="create_seed_screen_description">If you lost your seed phrase you would not be able to recover your wallet</string>
     <string name="create_seed_screen_seed_phrase_copied">Seed phrase copied</string>
     <!--    <string name="create_seed_screen_"></string>-->
