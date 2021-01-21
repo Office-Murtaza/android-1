@@ -13,9 +13,11 @@ final class CoinStakingPresenter: ModulePresenter, CoinStakingModule {
         var withdraw: Driver<Void>
     }
     
+    let didUpdateCompleted = PublishRelay<String>()
     private let reloadScreenRelay = PublishRelay<Void>()
     private let usecase: DealsUsecase
     private let store: Store
+    private var stakeSuccessStatus: String?
     
     weak var delegate: CoinStakingModuleDelegate?
     
@@ -51,7 +53,7 @@ final class CoinStakingPresenter: ModulePresenter, CoinStakingModule {
             .bind(to: store.action)
             .disposed(by: disposeBag)
         
-        Driver.merge(input.create)
+        Driver.merge(input.create, input.cancel, input.withdraw)
             .asObservable()
             .doOnNext { [store] in store.action.accept(.updateValidationState) }
             .withLatestFrom(state)
@@ -60,11 +62,26 @@ final class CoinStakingPresenter: ModulePresenter, CoinStakingModule {
             .subscribe(onNext: { [delegate] in delegate?.didFinishCoinStaking() })
             .disposed(by: disposeBag)
         
-        Driver.merge(input.cancel, input.withdraw)
-            .asObservable()
-            .withLatestFrom(state)
-            .flatMap { [unowned self] in self.track(self.proceedWithStaking(for: $0)) }
-            .subscribe(onNext: { [delegate] in delegate?.didFinishCoinStaking() })
+        reloadScreenRelay
+            .flatMap { [unowned self] _ in
+                return self.track(Completable.concat(self.usecase.getStakeDetails(for: .catm)
+                                                        .do(onSuccess: { [store] in store.action.accept(.setupStakeDetails($0)) })
+                                                        .asCompletable(),
+                                                     self.usecase.getCoinDetails(for: .catm)
+                                                        .do(onSuccess: { [store] in store.action.accept(.setupCoinDetails($0)) })
+                                                        .asCompletable(),
+                                                     self.usecase.getCoin(for: .catm)
+                                                        .do(onSuccess: { [store] in store.action.accept(.setupCoin($0)) })
+                                                        .asCompletable(),
+                                                     self.usecase.getCoinsBalance()
+                                                        .do(onSuccess: { [store] in store.action.accept(.setupCoinBalances($0.coins)) })
+                                                        .asCompletable()))
+            }
+            .subscribe(onNext: { [weak self] in
+                let toastMessage = String.localizedStringWithFormat(localize(L.CoinStaking.Toast.completed),
+                                                                    self?.stakeSuccessStatus ?? "")
+                self?.didUpdateCompleted.accept(toastMessage)
+            })
             .disposed(by: disposeBag)
     }
     
@@ -73,40 +90,40 @@ final class CoinStakingPresenter: ModulePresenter, CoinStakingModule {
         let coinDetails = state.coinDetails!
         let coinAmount = state.coinAmount.decimalValue ?? 0.0
         let stakeDetails = state.stakeDetails!
+        let stakeAction: Completable
+        let stakeErrorStatus: String
         
         switch stakeDetails.status {
         case .notExist, .withdrawn:
-            return usecase.createStake(from: coin, with: coinDetails, amount: coinAmount)
-                .catchError { [store] in
-                    if let apiError = $0 as? APIError, case let .serverError(error) = apiError, let code = error.code, code > 1 {
-                        store.action.accept(.updateCoinAmountError(error.message))
-                    }
-                    throw $0
-                }
+            stakeAction = usecase.createStake(from: coin, with: coinDetails, amount: coinAmount)
+            stakeErrorStatus = "creation"
+            stakeSuccessStatus = "created"
         case .created:
-            return usecase.cancelStake(from: coin, with: coinDetails, stakeDetails: stakeDetails)
-                .catchError { [store] in
-                    if let apiError = $0 as? APIError, case let .serverError(error) = apiError, let code = error.code, code > 1 {
-                        store.action.accept(.updateCoinAmountError(error.message))
-                    }
-                    throw $0
-                }
+            stakeAction = usecase.cancelStake(from: coin, with: coinDetails, stakeDetails: stakeDetails)
+            stakeErrorStatus = "cancel"
+            stakeSuccessStatus = "canceled"
         case .canceled:
-            return usecase.withdrawStake(from: coin, with: coinDetails, stakeDetails: stakeDetails)
-                .catchError { [store] in
-                    if let apiError = $0 as? APIError, case let .serverError(error) = apiError, let code = error.code, code > 1 {
-                        store.action.accept(.updateCoinAmountError(error.message))
-                    }
-                    throw $0
-                }
+            stakeAction = usecase.withdrawStake(from: coin, with: coinDetails, stakeDetails: stakeDetails)
+            stakeErrorStatus = "withdraw"
+            stakeSuccessStatus = "withdrawn"
         default:
-            return usecase.createStake(from: coin, with: coinDetails, amount: coinAmount)
-                .catchError { [store] in
-                    if let apiError = $0 as? APIError, case let .serverError(error) = apiError, let code = error.code, code > 1 {
-                        store.action.accept(.updateCoinAmountError(error.message))
-                    }
-                    throw $0
-                }
+            stakeAction = usecase.createStake(from: coin, with: coinDetails, amount: coinAmount)
+            stakeErrorStatus = "creation"
+            stakeSuccessStatus = "created"
         }
+        
+        return stakeAction
+            .do(onError: { [weak self] error in
+                let toastMessage = String.localizedStringWithFormat(localize(L.CoinStaking.Toast.error), stakeErrorStatus)
+                self?.didUpdateCompleted.accept(toastMessage)
+            }, onCompleted: { [weak self] in
+                self?.reloadScreenRelay.accept(())
+            })
+            .catchError { [store] in
+                if let apiError = $0 as? APIError, case let .serverError(error) = apiError, let code = error.code, code > 1 {
+                    store.action.accept(.updateCoinAmountError(error.message))
+                }
+                throw $0
+            }
     }
 }

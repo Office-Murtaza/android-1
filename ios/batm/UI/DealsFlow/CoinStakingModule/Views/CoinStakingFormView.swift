@@ -24,7 +24,7 @@ class CoinStakingFormView: UIView {
     }
     
     func configureStakeAmount(with amount: String) {
-        fromCoinView.amountTextField.attributedPlaceholder = NSAttributedString(string: amount, attributes: [.foregroundColor : UIColor.black])
+        fromCoinView.amountTextField.text = amount
     }
     
     func configure(coinType: CustomCoinType, stakeDetails: StakeDetails, fee: Decimal?) {
