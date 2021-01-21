@@ -167,7 +167,7 @@ public class TransactionService {
                 walletRep.save(record);
             } else {
                 if (receiverOpt.isPresent()) {
-                    String token = userService.findById(userId).getNotificationsToken();
+                    String token = userService.findById(receiverOpt.get().getId()).getNotificationsToken();
                     StringBuilder messageBuilder = new StringBuilder("You just received " + dto.getCryptoAmount().stripTrailingZeros() + " " + coinCode.name());
 
                     if (StringUtils.isNotBlank(dto.getMessage())) {

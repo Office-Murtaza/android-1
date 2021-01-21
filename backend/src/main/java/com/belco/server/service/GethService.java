@@ -629,6 +629,14 @@ public class GethService {
                     doc.append("function", "createStake");
                 }
 
+                //cancel stake
+                if(receipt.getLogs().size() == 1 && receipt.getLogs().get(0).getTopics().get(0).equalsIgnoreCase("0x42549297d4130b561bf55291c0aaedc0050cd4bc739be20b58090af3d85f4fd9")) {
+                    doc.append("fromAddress", convertAddress32BytesTo20Bytes(receipt.getLogs().get(0).getTopics().get(1)));
+                    doc.append("toAddress", receipt.getLogs().get(0).getAddress());
+                    doc.append("amount", BigDecimal.ZERO);
+                    doc.append("function", "cancelStake");
+                }
+
                 return doc;
             }
         } catch (Exception e) {
