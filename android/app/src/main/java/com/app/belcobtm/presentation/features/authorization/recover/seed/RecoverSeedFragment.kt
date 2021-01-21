@@ -1,8 +1,6 @@
 package com.app.belcobtm.presentation.features.authorization.recover.seed
 
 import android.annotation.SuppressLint
-import android.content.ClipboardManager
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
@@ -15,14 +13,17 @@ import com.app.belcobtm.domain.authorization.interactor.*
 import com.app.belcobtm.presentation.core.extensions.clearError
 import com.app.belcobtm.presentation.core.extensions.getString
 import com.app.belcobtm.presentation.core.extensions.showError
+import com.app.belcobtm.presentation.core.helper.ClipBoardHelper
 import com.app.belcobtm.presentation.core.ui.fragment.BaseFragment
 import com.app.belcobtm.presentation.features.pin.code.PinCodeFragment
 import com.app.belcobtm.presentation.features.sms.code.SmsCodeFragment
+import org.koin.android.ext.android.inject
 import org.koin.android.viewmodel.ext.android.viewModel
 
 class RecoverSeedFragment : BaseFragment<FragmentRecoverSeedBinding>() {
     private val viewModel: RecoverSeedViewModel by viewModel()
     private var watcher: RecoverSeedWatcher? = null
+    private val clipBoardHelper: ClipBoardHelper by inject()
     override val isToolbarEnabled: Boolean = true
     override val isHomeButtonEnabled: Boolean = true
     override val backPressedListener: View.OnClickListener =
@@ -32,6 +33,7 @@ class RecoverSeedFragment : BaseFragment<FragmentRecoverSeedBinding>() {
     override fun FragmentRecoverSeedBinding.initViews() {
         setToolbarTitle(R.string.recover_seed_screen_title)
     }
+
 
     override fun FragmentRecoverSeedBinding.initObservers() {
         viewModel.recoverWalletLiveData.listen(
@@ -73,7 +75,7 @@ class RecoverSeedFragment : BaseFragment<FragmentRecoverSeedBinding>() {
         seedView.addTextChangedListener(watcher)
         nextButtonView.setOnClickListener { recoverWallet() }
         pasteButtonView.setOnClickListener {
-            val text = getTextFromClipboard()
+            val text = clipBoardHelper.getTextFromClipboard().orEmpty()
             seedView.setText("")
             seedView.setText(text)
             seedView.setSelection(text.length)
@@ -104,13 +106,6 @@ class RecoverSeedFragment : BaseFragment<FragmentRecoverSeedBinding>() {
         } else {
             binding.seedContainerView.showError(R.string.recover_seed_screen_error_length)
         }
-    }
-
-    private fun getTextFromClipboard(): String {
-        val clipboard = requireContext().getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
-        val clipData = clipboard.primaryClip
-        val item = clipData?.getItemAt(0)
-        return if (item?.text.isNullOrBlank()) "" else item?.text.toString() + " "
     }
 
     companion object {

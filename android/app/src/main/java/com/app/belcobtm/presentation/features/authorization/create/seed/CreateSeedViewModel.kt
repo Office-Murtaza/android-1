@@ -46,7 +46,7 @@ class CreateSeedViewModel(
     fun isValidSeed(seed: String): Boolean =
         processSeed(seed).size == SEED_PHRASE_SIZE
 
-    fun processSeed(seed: String) =
+    private fun processSeed(seed: String) =
         seed.replace(CreateSeedFragment.CHAR_NEXT_LINE, CreateSeedFragment.CHAR_SPACE)
             .splitToSequence(CreateSeedFragment.CHAR_SPACE)
             .filter { it.isNotEmpty() }
