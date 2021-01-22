@@ -2,7 +2,6 @@ package com.app.belcobtm.presentation.features.authorization.create.seed
 
 import android.content.ClipData
 import android.content.ClipboardManager
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
@@ -17,14 +16,17 @@ import com.app.belcobtm.databinding.FragmentCreateSeedBinding
 import com.app.belcobtm.presentation.core.extensions.hide
 import com.app.belcobtm.presentation.core.extensions.show
 import com.app.belcobtm.presentation.core.helper.AlertHelper
+import com.app.belcobtm.presentation.core.helper.ClipBoardHelper
 import com.app.belcobtm.presentation.core.ui.fragment.BaseFragment
 import com.app.belcobtm.presentation.features.pin.code.PinCodeFragment
 import com.app.belcobtm.presentation.features.sms.code.SmsCodeFragment
+import org.koin.android.ext.android.inject
 import org.koin.android.viewmodel.ext.android.viewModel
 
 class CreateSeedFragment : BaseFragment<FragmentCreateSeedBinding>() {
     private val viewModel: CreateSeedViewModel by viewModel()
     private val args: CreateSeedFragmentArgs by navArgs()
+    private val clipBoardHelper: ClipBoardHelper by inject()
     override val isToolbarEnabled: Boolean = true
     override val isHomeButtonEnabled: Boolean = true
     override val backPressedListener: View.OnClickListener = View.OnClickListener {
@@ -59,7 +61,7 @@ class CreateSeedFragment : BaseFragment<FragmentCreateSeedBinding>() {
             viewModel.createSeed()
         }
         pasteButtonView.setOnClickListener {
-            val seed = getTextFromClipboard().takeIf(String::isNotBlank)
+            val seed = clipBoardHelper.getTextFromClipboard()?.takeIf(String::isNotBlank)
             if (seed != null && viewModel.isValidSeed(seed)) {
                 viewModel.saveSeed(seed)
             } else {
@@ -156,13 +158,6 @@ class CreateSeedFragment : BaseFragment<FragmentCreateSeedBinding>() {
             requireArguments().getString(SmsCodeFragment.TAG_PHONE, ""),
             requireArguments().getString(TAG_PASSWORD, "")
         )
-    }
-
-    private fun getTextFromClipboard(): String {
-        val clipboard = requireContext().getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
-        val clipData = clipboard.primaryClip
-        val item = clipData?.getItemAt(0)
-        return if (item?.text.isNullOrBlank()) "" else item?.text.toString() + " "
     }
 
     companion object {

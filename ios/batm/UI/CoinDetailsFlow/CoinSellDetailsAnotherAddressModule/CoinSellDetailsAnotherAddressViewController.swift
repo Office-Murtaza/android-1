@@ -81,6 +81,4 @@ final class CoinSellDetailsAnotherAddressViewController: NavigationScreenViewCon
                                                                        copy: copyDriver,
                                                                        done: doneDriver))
   }
-  
-  
 }

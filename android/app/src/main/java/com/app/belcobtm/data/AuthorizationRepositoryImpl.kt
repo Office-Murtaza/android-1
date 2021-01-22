@@ -67,7 +67,7 @@ class AuthorizationRepositoryImpl(
     }
 
     override suspend fun saveSeed(seed: String): Either<Failure, Unit> {
-        val wallet = HDWallet(128, seed)
+        val wallet = HDWallet(seed, "")
         temporaryCoinMap.clear()
         temporaryCoinMap.putAll(
             LocalCoinType.values().map { Pair(it, createTemporaryAccount(it, wallet)) }.toMap()

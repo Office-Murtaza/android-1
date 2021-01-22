@@ -357,6 +357,11 @@ extension L.CoinStaking {
     static let withdrawPending = "coin_staking.status.withdraw_pending"
   }
 
+  struct Toast {
+    static let completed = "coin_staking.toast.completed"
+    static let error = "coin_staking.toast.error"
+  }
+
   struct WithdrawView {
     static let description = "coin_staking.withdraw_view.description"
   }

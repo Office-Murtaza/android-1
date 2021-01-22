@@ -1,7 +1,5 @@
 package com.app.belcobtm.presentation.features.wallet.withdraw
 
-import android.content.ClipboardManager
-import android.content.Context
 import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
@@ -11,20 +9,24 @@ import com.app.belcobtm.databinding.FragmentWithdrawBinding
 import com.app.belcobtm.domain.Failure
 import com.app.belcobtm.domain.wallet.LocalCoinType
 import com.app.belcobtm.domain.wallet.item.isEthRelatedCoinCode
+import com.app.belcobtm.presentation.core.coin.CoinCodeProvider
 import com.app.belcobtm.presentation.core.coin.model.ValidationResult
 import com.app.belcobtm.presentation.core.extensions.*
 import com.app.belcobtm.presentation.core.helper.AlertHelper
+import com.app.belcobtm.presentation.core.helper.ClipBoardHelper
 import com.app.belcobtm.presentation.core.ui.fragment.BaseFragment
 import com.app.belcobtm.presentation.core.watcher.DoubleTextWatcher
 import com.google.zxing.integration.android.IntentIntegrator
+import org.koin.android.ext.android.inject
 import org.koin.android.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
-import wallet.core.jni.CoinType
 
 class WithdrawFragment : BaseFragment<FragmentWithdrawBinding>() {
+    private val coinCodeProvider by inject<CoinCodeProvider>()
     private val viewModel: WithdrawViewModel by viewModel {
         parametersOf(WithdrawFragmentArgs.fromBundle(requireArguments()).coinCode)
     }
+    private val clipBoardHelper: ClipBoardHelper by inject()
     private val doubleTextWatcher: DoubleTextWatcher = DoubleTextWatcher(
         firstTextWatcher = { editable ->
             val cryptoAmount: Double = editable.getDouble()
@@ -47,7 +49,7 @@ class WithdrawFragment : BaseFragment<FragmentWithdrawBinding>() {
             IntentIntegrator.forSupportFragment(this@WithdrawFragment).initiateScan()
         }
         addressPasteView.setOnClickListener {
-            getTextFromClipboard()?.let {
+            clipBoardHelper.getTextFromClipboard()?.let {
                 addressView.setText(it)
                 updateNextButton()
             }
@@ -89,14 +91,6 @@ class WithdrawFragment : BaseFragment<FragmentWithdrawBinding>() {
 
     override fun createBinding(inflater: LayoutInflater, container: ViewGroup?): FragmentWithdrawBinding =
         FragmentWithdrawBinding.inflate(inflater, container, false)
-
-    private fun getTextFromClipboard(): String? {
-        val clipboard =
-            requireContext().getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
-        val clipData = clipboard.primaryClip
-        val item = clipData?.getItemAt(0)
-        return item?.text?.toString()
-    }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         val result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data)
@@ -174,10 +168,8 @@ class WithdrawFragment : BaseFragment<FragmentWithdrawBinding>() {
     }
 
     private fun FragmentWithdrawBinding.isValidAddress(): Boolean {
-        val coinType = when (val coinCode = viewModel.getCoinCode()) {
-            LocalCoinType.USDT.name -> CoinType.ETHEREUM
-            else -> CoinTypeExtension.getTypeByCode(coinCode)
-        }
+        val coinCode = coinCodeProvider.getCoinCode(viewModel.getCoinCode())
+        val coinType = CoinTypeExtension.getTypeByCode(coinCode)
         return coinType?.validate(addressView.getString()) ?: false
     }
 
