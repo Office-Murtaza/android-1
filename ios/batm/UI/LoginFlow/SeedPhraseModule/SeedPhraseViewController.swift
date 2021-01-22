@@ -18,9 +18,9 @@ class SeedPhraseViewController: ModuleViewController<SeedPhrasePresenter> {
   
   let formView = SeedPhraseFormView()
   
-  let copyButton = MDCButton.secondaryCopy
+    let copyButton = MDCButton.secondaryCopy
 
-  let pasteButton = MDCButton.secondaryPaste
+    let pasteButton = MDCButton.secondaryPaste
     
     lazy var generateButton: MDCButton = {
         let button = MDCButton.secondaryText
@@ -81,7 +81,7 @@ class SeedPhraseViewController: ModuleViewController<SeedPhrasePresenter> {
       $0.left.right.equalToSuperview().inset(15)
     }
     formView.snp.makeConstraints {
-      $0.top.equalTo(infoView.snp.bottom).offset(5)
+      $0.top.equalTo(infoView.snp.bottom).offset(10)
       $0.left.right.equalToSuperview().inset(15)
     }
 

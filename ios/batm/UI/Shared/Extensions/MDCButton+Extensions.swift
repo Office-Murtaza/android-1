@@ -56,6 +56,8 @@ extension MDCButton {
   static var secondaryPaste: MDCButton {
     let button = MDCButton.secondaryText
     button.setTitle(localize(L.Shared.Button.paste), for: .normal)
+    button.setImage(UIImage(named: "paste"), for: .normal)
+    button.imageEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 10)
     return button
   }
   
@@ -86,6 +88,8 @@ extension MDCButton {
   static var secondaryCopy: MDCButton {
      let button = MDCButton.secondaryText
      button.setTitle(localize(L.Shared.Button.copy), for: .normal)
+     button.setImage(UIImage(named: "copy"), for: .normal)
+     button.imageEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 10)
      return button
    }
   

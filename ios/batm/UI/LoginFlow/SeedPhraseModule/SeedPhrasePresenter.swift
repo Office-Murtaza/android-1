@@ -65,7 +65,7 @@ class SeedPhrasePresenter: ModulePresenter, SeedPhraseModule {
      .flatMap { [unowned self] mode -> Driver<String> in
        switch mode {
        case .creation:
-         return self.track(self.usecase.createWallet().andThen(self.usecase.getSeedPhrase()))
+        return self.track(self.usecase.createWallet(seedPhrase: store.currentState.seedPhrase).andThen(self.usecase.getSeedPhrase()))
        case .showing:
          return self.track(self.usecase.getSeedPhrase())
        }
