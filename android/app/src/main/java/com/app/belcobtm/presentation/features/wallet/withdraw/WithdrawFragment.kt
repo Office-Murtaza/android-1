@@ -138,6 +138,9 @@ class WithdrawFragment : BaseFragment<FragmentWithdrawBinding>() {
             R.string.text_usd,
             viewModel.getReservedBalanceUsd().toStringUsd()
         )
+        // to prevent paste possibility through standard method
+        addressView.isLongClickable = false
+        addressView.editText?.isLongClickable = false
     }
 
     private fun FragmentWithdrawBinding.validateAndSubmit() {
