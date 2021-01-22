@@ -9,6 +9,7 @@ import com.app.belcobtm.databinding.FragmentWithdrawBinding
 import com.app.belcobtm.domain.Failure
 import com.app.belcobtm.domain.wallet.LocalCoinType
 import com.app.belcobtm.domain.wallet.item.isEthRelatedCoinCode
+import com.app.belcobtm.presentation.core.coin.CoinCodeProvider
 import com.app.belcobtm.presentation.core.coin.model.ValidationResult
 import com.app.belcobtm.presentation.core.extensions.*
 import com.app.belcobtm.presentation.core.helper.AlertHelper
@@ -19,9 +20,9 @@ import com.google.zxing.integration.android.IntentIntegrator
 import org.koin.android.ext.android.inject
 import org.koin.android.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
-import wallet.core.jni.CoinType
 
 class WithdrawFragment : BaseFragment<FragmentWithdrawBinding>() {
+    private val coinCodeProvider by inject<CoinCodeProvider>()
     private val viewModel: WithdrawViewModel by viewModel {
         parametersOf(WithdrawFragmentArgs.fromBundle(requireArguments()).coinCode)
     }
@@ -167,10 +168,8 @@ class WithdrawFragment : BaseFragment<FragmentWithdrawBinding>() {
     }
 
     private fun FragmentWithdrawBinding.isValidAddress(): Boolean {
-        val coinType = when (val coinCode = viewModel.getCoinCode()) {
-            LocalCoinType.USDT.name -> CoinType.ETHEREUM
-            else -> CoinTypeExtension.getTypeByCode(coinCode)
-        }
+        val coinCode = coinCodeProvider.getCoinCode(viewModel.getCoinCode())
+        val coinType = CoinTypeExtension.getTypeByCode(coinCode)
         return coinType?.validate(addressView.getString()) ?: false
     }
 
