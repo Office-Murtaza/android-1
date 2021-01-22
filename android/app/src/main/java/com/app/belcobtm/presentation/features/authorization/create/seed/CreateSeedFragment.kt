@@ -36,7 +36,18 @@ class CreateSeedFragment : BaseFragment<FragmentCreateSeedBinding>() {
     private var seedPhrase = ""
 
     override fun FragmentCreateSeedBinding.initViews() {
-        setToolbarTitle(R.string.create_seed_screen_title)
+        setToolbarTitle(
+            if (args.mode == MODE_SETTINGS)
+                R.string.show_seed_screen_title
+            else
+                R.string.create_seed_screen_title
+        )
+        description.setText(
+            if (args.mode == MODE_SETTINGS)
+                R.string.show_seed_screen_description
+            else
+                R.string.create_seed_screen_description
+        )
         initNextButton()
         showBackButton(true)
         if (args.mode == MODE_SETTINGS) {
