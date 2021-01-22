@@ -17,7 +17,6 @@ import com.mongodb.BasicDBObject;
 import com.mongodb.bulk.BulkWriteResult;
 import com.mongodb.client.model.FindOneAndUpdateOptions;
 import com.mongodb.client.model.UpdateOneModel;
-import com.mongodb.client.model.UpdateOptions;
 import org.apache.commons.lang3.StringUtils;
 import org.bson.Document;
 import org.bson.types.Decimal128;
@@ -360,7 +359,7 @@ public class GethService {
             return platformService.getInitialGasLimits().get(token.name());
         } else if (nodeService.isNodeAvailable(ETHEREUM)) {
             try {
-                return web3.ethEstimateGas(org.web3j.protocol.core.methods.request.Transaction.createEthCallTransaction(null, toAddress, null)).send().getAmountUsed().longValue();
+                return web3.ethEstimateGas(org.web3j.protocol.core.methods.request.Transaction.createEthCallTransaction(null, toAddress, null)).send().getAmountUsed().longValue() * 2;
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -576,7 +575,9 @@ public class GethService {
                                 tokenDoc.append("blockTime", timestamp);
                                 tokenDoc.append("timestamp", System.currentTimeMillis());
 
-                                UpdateOneModel tokenUpdate = new UpdateOneModel(new Document("txId", tokenDoc.getString("txId")), new Document("$set", tokenDoc), new UpdateOptions().upsert(true));
+                                UpdateOneModel tokenUpdate = new UpdateOneModel(new Document("txId", tokenDoc.getString("txId")), new Document("$set", tokenDoc));
+                                tokenUpdate.getOptions().upsert(true);
+
                                 tokenTxs.add(tokenUpdate);
                             }
                         }
@@ -591,7 +592,9 @@ public class GethService {
                                 .append("blockTime", timestamp)
                                 .append("timestamp", System.currentTimeMillis());
 
-                        UpdateOneModel update = new UpdateOneModel(new Document("txId", doc.getString("txId")), new Document("$set", doc), new UpdateOptions().upsert(true));
+                        UpdateOneModel update = new UpdateOneModel(new Document("txId", doc.getString("txId")), new Document("$set", doc));
+                        update.getOptions().upsert(true);
+
                         ethTxs.add(update);
                     }
                 }
@@ -621,7 +624,7 @@ public class GethService {
                     doc.append("function", "transfer");
                 }
 
-                //create stake
+                //createStake
                 if (receipt.getLogs().size() == 2 && receipt.getLogs().get(1).getTopics().get(0).equalsIgnoreCase("0x8915595eb58a6a6bf41eb9635929fc76b8e27c299f418d35d2727b8142cd5e90")) {
                     doc.append("fromAddress", convertAddress32BytesTo20Bytes(receipt.getLogs().get(1).getTopics().get(1)));
                     doc.append("toAddress", convertAddress32BytesTo20Bytes(receipt.getLogs().get(1).getAddress()));
@@ -629,12 +632,20 @@ public class GethService {
                     doc.append("function", "createStake");
                 }
 
-                //cancel stake
-                if(receipt.getLogs().size() == 1 && receipt.getLogs().get(0).getTopics().get(0).equalsIgnoreCase("0x42549297d4130b561bf55291c0aaedc0050cd4bc739be20b58090af3d85f4fd9")) {
+                //cancelStake
+                if (receipt.getLogs().size() == 1 && receipt.getLogs().get(0).getTopics().get(0).equalsIgnoreCase("0x42549297d4130b561bf55291c0aaedc0050cd4bc739be20b58090af3d85f4fd9")) {
                     doc.append("fromAddress", convertAddress32BytesTo20Bytes(receipt.getLogs().get(0).getTopics().get(1)));
                     doc.append("toAddress", receipt.getLogs().get(0).getAddress());
                     doc.append("amount", BigDecimal.ZERO);
                     doc.append("function", "cancelStake");
+                }
+
+                //withdrawStake
+                if (receipt.getLogs().size() == 2 && receipt.getLogs().get(1).getTopics().get(0).equalsIgnoreCase("0x1248d48e2de900a1010c7fce73506969ecec243600bfc08b641b158f26d857cd")) {
+                    doc.append("fromAddress", receipt.getLogs().get(1).getAddress());
+                    doc.append("toAddress", convertAddress32BytesTo20Bytes(receipt.getLogs().get(1).getTopics().get(1)));
+                    doc.append("amount", parseTokenAmount(receipt.getLogs().get(0).getData()).divide(token.getDivider()).stripTrailingZeros());
+                    doc.append("function", "withdrawStake");
                 }
 
                 return doc;

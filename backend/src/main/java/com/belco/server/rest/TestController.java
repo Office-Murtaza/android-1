@@ -91,6 +91,17 @@ public class TestController {
         return Response.ok(json);
     }
 
+    @GetMapping("/gas-limit")
+    public Response getGasLimit(@RequestParam String toAddress) {
+        try {
+            return Response.ok("result", gethService.web3.ethEstimateGas(org.web3j.protocol.core.methods.request.Transaction.createEthCallTransaction(null, toAddress, null)).send().getAmountUsed().longValue());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return Response.ok("result", "error");
+    }
+
     @GetMapping("/send-notification")
     public Response sendNotification(@RequestParam(required = false) Long userId, @RequestParam(required = false) String token, @RequestParam String title, @RequestParam String message) {
         if (StringUtils.isBlank(token)) token = userService.findById(userId).getNotificationsToken();
