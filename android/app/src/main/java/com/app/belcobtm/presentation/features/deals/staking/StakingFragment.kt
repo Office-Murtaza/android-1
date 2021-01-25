@@ -281,7 +281,7 @@ class StakingFragment : BaseFragment<FragmentStakingBinding>() {
                         tvDurationValue.show()
                         // others
                         thirdDivider.show()
-                        tvWithdraw.toggle(showWithdrawButton)
+                        tvWithdraw.toggle(!showWithdrawButton)
                         createButtonView.hide()
                         cancelButtonView.hide()
                         withdrawButtonView.toggle(showWithdrawButton)
