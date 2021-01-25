@@ -100,10 +100,24 @@ class SeedPhraseViewController: ModuleViewController<SeedPhrasePresenter> {
   }
   
   private func setupUIBindings() {
-    presenter.state
-      .map { $0.seedPhrase.separatedWords }
-      .drive(onNext: { [formView] in formView.configure(for: $0) })
+    
+    pasteButton.rx.tap.asDriver()
+      .map { UIPasteboard.general.string ?? "" }
+      .map { $0.separatedWords }
+      .drive(onNext: { [formView] in
+              formView.configure(for: $0) })
       .disposed(by: disposeBag)
+    
+    
+    presenter.state
+        .map{ $0.generatedPhrase }
+        .distinctUntilChanged()
+        .drive(onNext: { [formView] in
+                formView.configure(for: $0)
+            
+        })
+        .disposed(by: disposeBag)
+    
     
     presenter.state
       .map { $0.validationState }
@@ -140,12 +154,11 @@ class SeedPhraseViewController: ModuleViewController<SeedPhrasePresenter> {
     
     let copyDriver = copyButton.rx.tap.asDriver()
     let generateDriver = generateButton.rx.tap.asDriver()
-    let pasteDriver = pasteButton.rx.tap.asDriver()
-    
+    let updateSeedPhraseDriver = formView.rx.seedPhrase
     let nextDriver = nextButton.rx.tap.asDriver()
     presenter.bind(input: SeedPhrasePresenter.Input(copy: copyDriver,
                                                     next: nextDriver,
                                                     generate: generateDriver,
-                                                    paste: pasteDriver))
+                                                    updateSeedPhrase: updateSeedPhraseDriver))
   }
 }
