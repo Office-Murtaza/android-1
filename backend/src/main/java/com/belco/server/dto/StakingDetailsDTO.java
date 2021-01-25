@@ -1,6 +1,6 @@
 package com.belco.server.dto;
 
-import com.belco.server.model.StakeStatus;
+import com.belco.server.model.StakingStatus;
 import com.belco.server.util.Util;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -17,7 +17,7 @@ import java.util.Date;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class StakingDetailsDTO {
 
-    private StakeStatus status;
+    private StakingStatus status;
     private BigDecimal amount;
     private String amountStr;
     private BigDecimal rewardAmount;
@@ -38,7 +38,7 @@ public class StakingDetailsDTO {
     private int duration;
     private int tillWithdrawal;
 
-    public void setStatus(StakeStatus status) {
+    public void setStatus(StakingStatus status) {
         this.status = status;
     }
 

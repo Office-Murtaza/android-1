@@ -1,11 +1,9 @@
 package com.belco.server.model;
 
-import com.fasterxml.jackson.annotation.JsonValue;
-
 import java.util.HashMap;
 import java.util.Map;
 
-public enum StakeStatus {
+public enum StakingStatus {
 
     NOT_EXIST(1),
     CREATE_PENDING(2),
@@ -15,30 +13,25 @@ public enum StakeStatus {
     WITHDRAW_PENDING(6),
     WITHDRAWN(7);
 
-    private int value;
-
-    private static final Map<Integer, StakeStatus> map = new HashMap<>();
+    private static final Map<Integer, StakingStatus> map = new HashMap<>();
 
     static {
-        for (StakeStatus type : StakeStatus.values()) {
+        for (StakingStatus type : StakingStatus.values()) {
             map.put(type.value, type);
         }
     }
 
-    StakeStatus(int value) {
+    private int value;
+
+    StakingStatus(int value) {
         this.value = value;
     }
 
-    @JsonValue
-    public int getValue() {
-        return value;
-    }
-
-    public static StakeStatus valueOf(Integer value) {
+    public static StakingStatus valueOf(Integer value) {
         return map.get(value);
     }
 
-    public static StakeStatus convert(TransactionType type, TransactionStatus status) {
+    public static StakingStatus convert(TransactionType type, TransactionStatus status) {
         if (type == TransactionType.CREATE_STAKE) {
             if (status == TransactionStatus.PENDING) {
                 return CREATE_PENDING;

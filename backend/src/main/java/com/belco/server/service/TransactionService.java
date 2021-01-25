@@ -395,10 +395,9 @@ public class TransactionService {
 
             Optional<TransactionRecordWallet> createStakeRecOpt = walletRep.findFirstByIdentityAndCoinAndTypeAndStatusOrderByCreateDateDesc(identity, coin.getCoinEntity(), TransactionType.CREATE_STAKE.getValue(), TransactionStatus.COMPLETE.getValue());
 
-            if (createStakeRecOpt.isPresent()) {
-                TransactionRecordWallet createStakeRec = createStakeRecOpt.get();
-                createStakeRec.setRefTxId(txId);
-                walletRep.save(createStakeRec);
+            TransactionRecordWallet previousTransaction = linkPreviousTransaction(txId, createStakeRecOpt);
+            if (previousTransaction != null) {
+                walletRep.save(previousTransaction);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -421,10 +420,9 @@ public class TransactionService {
 
             Optional<TransactionRecordWallet> cancelStakeRecOpt = walletRep.findFirstByIdentityAndCoinAndTypeAndStatusOrderByCreateDateDesc(identity, coin.getCoinEntity(), TransactionType.CANCEL_STAKE.getValue(), TransactionStatus.COMPLETE.getValue());
 
-            if (cancelStakeRecOpt.isPresent()) {
-                TransactionRecordWallet cancelStakeRec = cancelStakeRecOpt.get();
-                cancelStakeRec.setRefTxId(txId);
-                walletRep.save(record);
+            TransactionRecordWallet previousTransaction = linkPreviousTransaction(txId, cancelStakeRecOpt);
+            if (previousTransaction != null) {
+                walletRep.save(previousTransaction);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -433,7 +431,7 @@ public class TransactionService {
 
     public StakingDetailsDTO getStakeDetails(Long userId, CoinService.CoinEnum coin) {
         StakingDetailsDTO dto = new StakingDetailsDTO();
-        dto.setStatus(StakeStatus.NOT_EXIST);
+        dto.setStatus(StakingStatus.NOT_EXIST);
         dto.setAnnualPercent(gethService.getStakingAnnualPercent());
         dto.setHoldPeriod(gethService.getStakingHoldPeriod() / gethService.getStakingBasePeriod());
 
@@ -444,7 +442,7 @@ public class TransactionService {
             if (createStakeRecOpt.isPresent()) {
                 TransactionRecordWallet createStakeRec = createStakeRecOpt.get();
 
-                dto.setStatus(StakeStatus.convert(TransactionType.valueOf(createStakeRec.getType()), TransactionStatus.valueOf(createStakeRec.getStatus())));
+                dto.setStatus(StakingStatus.convert(TransactionType.valueOf(createStakeRec.getType()), TransactionStatus.valueOf(createStakeRec.getStatus())));
                 dto.setAmount(createStakeRec.getAmount().stripTrailingZeros());
                 dto.setCreateDate(createStakeRec.getCreateDate());
 
@@ -465,7 +463,7 @@ public class TransactionService {
 
                     dto.setDuration(days);
                     dto.setRewardPercent(percent);
-                    dto.setStatus(StakeStatus.convert(TransactionType.valueOf(cancelStakeRec.getType()), TransactionStatus.valueOf(cancelStakeRec.getStatus())));
+                    dto.setStatus(StakingStatus.convert(TransactionType.valueOf(cancelStakeRec.getType()), TransactionStatus.valueOf(cancelStakeRec.getStatus())));
                     dto.setCancelDate(cancelStakeRec.getCreateDate());
                     dto.setRewardAmount(createStakeRec.getAmount().multiply(Util.convertPercentToDecimal(percent)).stripTrailingZeros());
                     dto.setRewardAnnualAmount(createStakeRec.getAmount().multiply(Util.convertPercentToDecimal(BigDecimal.valueOf(gethService.getStakingAnnualPercent()))).stripTrailingZeros());
@@ -473,7 +471,7 @@ public class TransactionService {
 
                     if (StringUtils.isNotBlank(cancelStakeRec.getRefTxId())) {
                         TransactionRecordWallet withdrawStakeRec = walletRep.findFirstByTxId(cancelStakeRec.getRefTxId()).get();
-                        dto.setStatus(StakeStatus.convert(TransactionType.valueOf(withdrawStakeRec.getType()), TransactionStatus.valueOf(withdrawStakeRec.getStatus())));
+                        dto.setStatus(StakingStatus.convert(TransactionType.valueOf(withdrawStakeRec.getType()), TransactionStatus.valueOf(withdrawStakeRec.getStatus())));
                     }
                 }
             }
@@ -641,6 +639,26 @@ public class TransactionService {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    private TransactionRecordWallet linkPreviousTransaction(String txId, Optional<TransactionRecordWallet> previousTransactionRecOpt) {
+        if (previousTransactionRecOpt.isPresent()) {
+            TransactionRecordWallet previousTransactionRec = previousTransactionRecOpt.get();
+
+            if (StringUtils.isBlank(previousTransactionRec.getRefTxId())) {
+                previousTransactionRec.setRefTxId(txId);
+            } else {
+                Optional<TransactionRecordWallet> cancelStakeRecOpt = walletRep.findFirstByTxId(previousTransactionRec.getRefTxId());
+
+                if (cancelStakeRecOpt.isPresent() && cancelStakeRecOpt.get().getStatus() == TransactionStatus.FAIL.getValue()) {
+                    previousTransactionRec.setRefTxId(txId);
+                }
+            }
+
+            return previousTransactionRec;
+        }
+
+        return null;
     }
 
     private BigDecimal calculateStakeRewardPercent(int days) {
