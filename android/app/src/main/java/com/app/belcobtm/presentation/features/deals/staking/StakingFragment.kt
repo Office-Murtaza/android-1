@@ -3,6 +3,8 @@ package com.app.belcobtm.presentation.features.deals.staking
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.lifecycle.Observer
 import com.app.belcobtm.R
 import com.app.belcobtm.data.rest.transaction.response.StakeDetailsStatus
 import com.app.belcobtm.databinding.FragmentStakingBinding
@@ -19,13 +21,21 @@ class StakingFragment : BaseFragment<FragmentStakingBinding>() {
     private val doubleTextWatcher: DoubleTextWatcher = DoubleTextWatcher(
         firstTextWatcher = { editable ->
             val cryptoAmount: Double = editable.getDouble()
-            binding.coinInputLayout.getEditText().setText(
+            with(binding.coinInputLayout.getEditText()) {
                 if (cryptoAmount > 0) {
-                    (cryptoAmount * viewModel.getUsdPrice()).toStringUsd()
-                } else {
-                    "0.0"
+                    val text = cryptoAmount.toStringCoin()
+                    setText(text)
+                    setSelection(text.length)
                 }
-            )
+            }
+            // "0" should always be displayed for user
+            // even through they try to clear the input
+            if (editable.isEmpty()) {
+                editable.insert(0, "0")
+            }
+            binding.tvUsdConvertedValue.text =
+                (cryptoAmount * viewModel.getUsdPrice()).toStringUsd()
+
             binding.createButtonView.isEnabled =
                 binding.coinInputLayout.getEditText().text.isNotBlank() &&
                         binding.coinInputLayout.getEditText().text.getDouble() > 0
@@ -80,7 +90,6 @@ class StakingFragment : BaseFragment<FragmentStakingBinding>() {
             .addTextChangedListener(doubleTextWatcher.firstTextWatcher)
     }
 
-
     override fun FragmentStakingBinding.initObservers() {
         viewModel.stakeDetailsLiveData.listen(success = {
             with(it) {
@@ -119,9 +128,38 @@ class StakingFragment : BaseFragment<FragmentStakingBinding>() {
                         withdrawButtonView.hide()
                     }
                     // cancel
-                    StakeDetailsStatus.CREATE_PENDING,
-                    StakeDetailsStatus.CREATED,
-                    StakeDetailsStatus.CANCEL_PENDING -> {
+                    StakeDetailsStatus.CREATE_PENDING -> {
+                        invalidateStakingDetails()
+                        // header
+                        coinInputLayout.getEditText().isEnabled = false
+                        coinInputLayout.setMaxVisible(false)
+                        coinInputLayout.setHelperText2(getString(R.string.staking_screen_staked))
+                        // left row
+                        tvAnualPercent.show()
+                        tvAnualPercentValue.show()
+                        tvCancelHoldPeriod.show()
+                        tvCancelHoldPeriodValue.show()
+                        tvRewards.show()
+                        tvRewardsValue.show()
+                        // right row
+                        tvUsdConverted.hide()
+                        tvUsdConvertedValue.hide()
+                        tvAnualRewardAmount.hide()
+                        tvAnualRewardAmountValue.hide()
+                        tvCreated.show()
+                        tvCreatedValue.show()
+                        tvCanceled.hide()
+                        tvCanceledValue.hide()
+                        tvDuration.show()
+                        tvDurationValue.show()
+                        // others
+                        thirdDivider.hide()
+                        tvWithdraw.hide()
+                        createButtonView.hide()
+                        cancelButtonView.hide()
+                        withdrawButtonView.hide()
+                    }
+                    StakeDetailsStatus.CREATED -> {
                         invalidateStakingDetails()
                         // header
                         coinInputLayout.getEditText().isEnabled = false
@@ -152,9 +190,39 @@ class StakingFragment : BaseFragment<FragmentStakingBinding>() {
                         cancelButtonView.show()
                         withdrawButtonView.hide()
                     }
+                    StakeDetailsStatus.CANCEL_PENDING -> {
+                        invalidateStakingDetails()
+                        // header
+                        coinInputLayout.getEditText().isEnabled = false
+                        coinInputLayout.setMaxVisible(false)
+                        coinInputLayout.setHelperText2(getString(R.string.staking_screen_staked))
+                        // left row
+                        tvAnualPercent.show()
+                        tvAnualPercentValue.show()
+                        tvCancelHoldPeriod.show()
+                        tvCancelHoldPeriodValue.show()
+                        tvRewards.show()
+                        tvRewardsValue.show()
+                        // right row
+                        tvUsdConverted.hide()
+                        tvUsdConvertedValue.hide()
+                        tvAnualRewardAmount.hide()
+                        tvAnualRewardAmountValue.hide()
+                        tvCreated.show()
+                        tvCreatedValue.show()
+                        tvCanceled.hide()
+                        tvCanceledValue.hide()
+                        tvDuration.show()
+                        tvDurationValue.show()
+                        // others
+                        thirdDivider.hide()
+                        tvWithdraw.hide()
+                        createButtonView.hide()
+                        cancelButtonView.hide()
+                        withdrawButtonView.hide()
+                    }
                     // WITHDRAW
-                    StakeDetailsStatus.CANCEL,
-                    StakeDetailsStatus.WITHDRAW_PENDING -> {
+                    StakeDetailsStatus.CANCEL -> {
                         invalidateStakingDetails()
                         // header
                         coinInputLayout.getEditText().isEnabled = false
@@ -185,6 +253,37 @@ class StakingFragment : BaseFragment<FragmentStakingBinding>() {
                         cancelButtonView.hide()
                         withdrawButtonView.show()
                     }
+                    StakeDetailsStatus.WITHDRAW_PENDING -> {
+                        invalidateStakingDetails()
+                        // header
+                        coinInputLayout.getEditText().isEnabled = false
+                        coinInputLayout.setMaxVisible(false)
+                        coinInputLayout.setHelperText2(getString(R.string.staking_screen_staked))
+                        // left row
+                        tvAnualPercent.show()
+                        tvAnualPercentValue.show()
+                        tvCancelHoldPeriod.show()
+                        tvCancelHoldPeriodValue.show()
+                        tvRewards.show()
+                        tvRewardsValue.show()
+                        // right row
+                        tvUsdConverted.hide()
+                        tvUsdConvertedValue.hide()
+                        tvAnualRewardAmount.hide()
+                        tvAnualRewardAmountValue.hide()
+                        tvCreated.show()
+                        tvCreatedValue.show()
+                        tvCanceled.show()
+                        tvCanceledValue.show()
+                        tvDuration.show()
+                        tvDurationValue.show()
+                        // others
+                        thirdDivider.show()
+                        tvWithdraw.hide()
+                        createButtonView.hide()
+                        cancelButtonView.hide()
+                        withdrawButtonView.hide()
+                    }
                     else -> {
                         createButtonView.hide()
                         cancelButtonView.hide()
@@ -193,8 +292,28 @@ class StakingFragment : BaseFragment<FragmentStakingBinding>() {
                 }
             }
         })
-        viewModel.transactionLiveData.listen(success = {
-            popBackStack()
+        viewModel.transactionLiveData.observe(viewLifecycleOwner, Observer { data ->
+            when (data) {
+                is LoadingData.Loading -> showLoading()
+                is LoadingData.Success -> {
+                    val stringResource = when (data.data) {
+                        StakingTransactionState.CREATE -> R.string.staking_screen_success_created
+                        StakingTransactionState.CANCEL -> R.string.staking_screen_success_canceled
+                        StakingTransactionState.WITHDRAW -> R.string.staking_screen_success_withdrawn
+                    }
+                    Toast.makeText(requireContext(), stringResource, Toast.LENGTH_LONG).show()
+                    showContent()
+                }
+                is LoadingData.Error -> {
+                    val stringResource = when (data.data!!) {
+                        StakingTransactionState.CREATE -> R.string.staking_screen_fail_create
+                        StakingTransactionState.CANCEL -> R.string.staking_screen_fail_cancel
+                        StakingTransactionState.WITHDRAW -> R.string.staking_screen_fail_withdraw
+                    }
+                    Toast.makeText(requireContext(), stringResource, Toast.LENGTH_LONG).show()
+                    showContent()
+                }
+            }
         })
     }
 
@@ -254,10 +373,11 @@ class StakingFragment : BaseFragment<FragmentStakingBinding>() {
         }
         if (untilWithdraw != null) {
             binding.tvWithdraw.text = resources.getQuantityString(
-                R.plurals.staking_screen_time_value,
+                R.plurals.staking_screen_time_withdraw,
                 untilWithdraw,
                 untilWithdraw
             )
+            binding.withdrawButtonView.isEnabled = untilWithdraw == 0
         }
         // header
         binding.tvStakeRate.text = getString(
@@ -276,8 +396,14 @@ class StakingFragment : BaseFragment<FragmentStakingBinding>() {
         binding.coinInputLayout.setCoinData(
             LocalCoinType.CATM.name, LocalCoinType.CATM.resIcon(), false
         )
-        if (amount != null) {
+        if (amount != null
+            && status != StakeDetailsStatus.NOT_EXIST
+            && status != StakeDetailsStatus.WITHDRAWN
+        ) {
             binding.coinInputLayout.getEditText().setText(amount.toStringCoin())
+        } else {
+            binding.tvUsdConvertedValue.text = "0.0"
+            binding.coinInputLayout.getEditText().setText("0")
         }
     }
 
@@ -290,7 +416,18 @@ class StakingFragment : BaseFragment<FragmentStakingBinding>() {
             showError(R.string.balance_amount_exceeded)
             false
         }
-        else -> true
+        else -> {
+            binding.coinInputLayout.setErrorText(null)
+            true
+        }
+    }
+
+    override fun showError(resMessage: Int) {
+        showError(getString(resMessage))
+    }
+
+    override fun showError(message: String) {
+        binding.coinInputLayout.setErrorText(message)
     }
 
     override fun createBinding(

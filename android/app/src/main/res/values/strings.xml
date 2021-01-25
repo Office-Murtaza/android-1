@@ -395,6 +395,12 @@
     <string name="error_transaction_cannot_be_created">The transaction can not be created</string>
     <string name="error_xrp_amount_is_not_enough">Amount is not enough to activate receiver address</string>
 
+    <string name="staking_screen_fail_create">Stake creation error</string>
+    <string name="staking_screen_fail_cancel">Stake cancel error</string>
+    <string name="staking_screen_fail_withdraw">Stake withdraw error</string>
+    <string name="staking_screen_success_created">Stake successfully created</string>
+    <string name="staking_screen_success_canceled">Stake successfully canceled</string>
+    <string name="staking_screen_success_withdrawn">Stake successfully withdrawn</string>
     <string name="staking_screen_anual_percent">Annual percent</string>
     <string name="staking_screen_cancel_period">Hold period</string>
     <string name="staking_screen_usd_converted">USD converted value</string>
@@ -418,6 +424,11 @@
         <item quantity="one">%d day</item>
         <item quantity="few">%d days</item>
         <item quantity="other">%d days</item>
+    </plurals>
+    <plurals name="staking_screen_time_withdraw">
+        <item quantity="one">%d day to withdraw</item>
+        <item quantity="few">%d days to withdraw</item>
+        <item quantity="other">%d days to withdraw</item>
     </plurals>
 
     <string name="create">Create</string>
