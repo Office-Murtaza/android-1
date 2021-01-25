@@ -5,6 +5,8 @@ import MaterialComponents
 
 class SeedPhraseFormView: UIView, MDCChipFieldDelegate {
   
+    let didUpdateSeedPhraseRelay = PublishRelay<[String]>()
+  
   let chipField: MDCChipField = {
     let view = MDCChipField()
         view.textField.textColor = .slateGrey
@@ -41,15 +43,25 @@ class SeedPhraseFormView: UIView, MDCChipFieldDelegate {
     }
   }
   
+    private func updateSeedPhrase() {
+      let seedPhrase = chipField.chips.map { $0.titleLabel.text ?? "" }
+      didUpdateSeedPhraseRelay.accept(seedPhrase)
+    }
+    
   func chipField(_ chipField: MDCChipField, didAddChip chip: MDCChipView) {
     chip.setBackgroundColor(.white, for: .normal)
     chip.setBorderColor(.whiteFive, for: .normal)
     chip.setBorderWidth(1, for: .normal)
     chip.setTitleColor(.slateGrey, for: .normal)
+    guard chipField.textField.text?.isEmpty == false else { return }
+    updateSeedPhrase()
   }
+    
+    func chipField(_ chipField: MDCChipField, didRemoveChip chip: MDCChipView) {
+      updateSeedPhrase()
+    }
   
   func configure(for seedPhrase: [String]) {
-    chipField.clearTextInput()
     chipField.chips.forEach { chipField.removeChip($0) }
     
     seedPhrase.forEach {
@@ -57,5 +69,11 @@ class SeedPhraseFormView: UIView, MDCChipFieldDelegate {
       chipView.titleLabel.text = $0
       chipField.addChip(chipView)
     }
+}
+}
+
+extension Reactive where Base == SeedPhraseFormView {
+  var seedPhrase: Driver<[String]> {
+    return base.didUpdateSeedPhraseRelay.asDriver(onErrorJustReturn: [])
   }
 }

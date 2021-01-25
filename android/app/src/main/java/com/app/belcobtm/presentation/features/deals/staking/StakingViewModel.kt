@@ -18,8 +18,9 @@ import com.app.belcobtm.domain.wallet.item.CoinDataItem
 import com.app.belcobtm.domain.wallet.item.CoinDetailsDataItem
 import com.app.belcobtm.presentation.core.SingleLiveData
 import com.app.belcobtm.presentation.core.mvvm.LoadingData
-import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.filterIsInstance
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.mapNotNull
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
@@ -39,7 +40,7 @@ class StakingViewModel(
     val stakeDetailsLiveData: LiveData<LoadingData<StakingScreenItem>> = _stakeDetailsLiveData
 
     private val _transactionLiveData = SingleLiveData<LoadingData<StakingTransactionState>>()
-    val transactionLiveData : LiveData<LoadingData<StakingTransactionState>> = _transactionLiveData
+    val transactionLiveData: LiveData<LoadingData<StakingTransactionState>> = _transactionLiveData
 
     private lateinit var coinDataItem: CoinDataItem
     private lateinit var coinDetailsDataItem: CoinDetailsDataItem
@@ -55,7 +56,8 @@ class StakingViewModel(
                 .receiveAsFlow()
                 .filterIsInstance<WalletBalance.Balance>()
                 .mapNotNull { balance -> balance.data.coinList.find { it.code == LocalCoinType.CATM.name } }
-                .collect { catmCoin ->
+                .first()
+                .also { catmCoin ->
                     coinDataItem = catmCoin
                     getCoinDetailsUseCase.invoke(
                         GetCoinDetailsUseCase.Params(LocalCoinType.CATM.name),
@@ -108,7 +110,11 @@ class StakingViewModel(
         stakeCreateUseCase.invoke(
             params = StakeCreateUseCase.Params(coinDataItem.code, amount),
             onSuccess = {
-                _transactionLiveData.value = LoadingData.Success(StakingTransactionState.CREATE)
+                viewModelScope.launch {
+                    delay(1000L)
+                    loadData()
+                    _transactionLiveData.value = LoadingData.Success(StakingTransactionState.CREATE)
+                }
             },
             onError = {
                 _transactionLiveData.value = LoadingData.Error(it, StakingTransactionState.CREATE)
@@ -121,7 +127,11 @@ class StakingViewModel(
         stakeCancelUseCase.invoke(
             params = StakeCancelUseCase.Params(coinDataItem.code),
             onSuccess = {
-                _transactionLiveData.value = LoadingData.Success(StakingTransactionState.CANCEL)
+                viewModelScope.launch {
+                    delay(1000L)
+                    loadData()
+                    _transactionLiveData.value = LoadingData.Success(StakingTransactionState.CANCEL)
+                }
             },
             onError = {
                 _transactionLiveData.value = LoadingData.Error(it, StakingTransactionState.CANCEL)
@@ -136,7 +146,12 @@ class StakingViewModel(
         stakeWithdrawUseCase.invoke(
             params = StakeWithdrawUseCase.Params(coinDataItem.code, amount),
             onSuccess = {
-                _transactionLiveData.value = LoadingData.Success(StakingTransactionState.WITHDRAW)
+                viewModelScope.launch {
+                    delay(1000L)
+                    loadData()
+                    _transactionLiveData.value =
+                        LoadingData.Success(StakingTransactionState.WITHDRAW)
+                }
             },
             onError = {
                 _transactionLiveData.value = LoadingData.Error(it, StakingTransactionState.WITHDRAW)

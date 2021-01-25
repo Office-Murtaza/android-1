@@ -9,7 +9,7 @@ class SeedPhrasePresenter: ModulePresenter, SeedPhraseModule {
     var copy: Driver<Void>
     var next: Driver<Void>
     var generate: Driver<Void>
-    var paste: Driver<Void>
+    var updateSeedPhrase: Driver<[String]>
   }
   
   private let usecase: LoginUsecase
@@ -34,12 +34,13 @@ class SeedPhrasePresenter: ModulePresenter, SeedPhraseModule {
   func bind(input: Input) {
     input.copy
       .withLatestFrom(state)
-      .drive(onNext: { UIPasteboard.general.string = $0.seedPhrase })
+      .drive(onNext: { UIPasteboard.general.string = $0.fullSeedPhrase })
       .disposed(by: disposeBag)
     
-    input.paste.asObservable()
-        .map{ SeedPhraseAction.pastePhrase(UIPasteboard.general.string)}
-        .bind(to: store.action)
+    input.updateSeedPhrase
+      .asObservable()
+      .map { SeedPhraseAction.updateSeedPhrase($0) }
+      .bind(to: store.action)
       .disposed(by: disposeBag)
     
     input.next
@@ -65,12 +66,12 @@ class SeedPhrasePresenter: ModulePresenter, SeedPhraseModule {
      .flatMap { [unowned self] mode -> Driver<String> in
        switch mode {
        case .creation:
-        return self.track(self.usecase.createWallet(seedPhrase: store.currentState.seedPhrase).andThen(self.usecase.getSeedPhrase()))
+        return self.track(self.usecase.createWallet(seedPhrase: store.currentState.fullSeedPhrase).andThen(self.usecase.getSeedPhrase()))
        case .showing:
          return self.track(self.usecase.getSeedPhrase())
        }
    }
-   .map { SeedPhraseAction.setupSeedPhrase($0) }
+        .map { SeedPhraseAction.generateSeedPhrase($0.separatedWords) }
    .bind(to: store.action)
    .disposed(by: disposeBag)
     
