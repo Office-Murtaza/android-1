@@ -8,7 +8,7 @@ enum CreateTransactionError: Error {
 }
 
 protocol WalletService {
-  func createWallet() -> Completable
+    func createWallet(seedPhrase: String) -> Completable
   func recoverWallet(seedPhrase: String) -> Completable
   func getTransactionHex(for coin: BTMCoin,
                          with coinDetails: CoinDetails,
@@ -31,12 +31,17 @@ class WalletServiceImpl: WalletService {
     self.walletStorage = walletStorage
   }
   
-  func createWallet() -> Completable {
-    let hdWallet = HDWallet(strength: BTMWallet.seedPhraseStrength, passphrase: "")
-    let btmWallet = BTMWallet(hdWallet: hdWallet)
-    
-    return walletStorage.save(wallet: btmWallet)
-  }
+    func createWallet(seedPhrase: String) -> Completable {
+        var hdWallet = HDWallet(mnemonic: seedPhrase, passphrase: "")
+        
+        if seedPhrase.isEmpty {
+            hdWallet = HDWallet(strength: BTMWallet.seedPhraseStrength, passphrase: "")
+        }
+      
+        let btmWallet = BTMWallet(hdWallet: hdWallet)
+        
+        return walletStorage.save(wallet: btmWallet)
+    }
   
   func recoverWallet(seedPhrase: String) -> Completable {
     let hdWallet = HDWallet(mnemonic: seedPhrase, passphrase: "")

@@ -12,7 +12,7 @@ protocol LoginUsecase {
   func getLoginState() -> Single<LoginState>
   func checkCreatingAccount(phoneNumber: String, password: String) -> Completable
   func checkRecoveringAccount(phoneNumber: String, password: String) -> Completable
-  func createWallet() -> Completable
+    func createWallet(seedPhrase: String) -> Completable
   func getSeedPhrase() -> Single<String>
   func createAccount(phoneNumber: String, password: String) -> Completable
   func recoverWallet(phoneNumber: String, password: String, seedPhrase: String) -> Completable
@@ -93,8 +93,8 @@ class LoginUsecaseImpl: LoginUsecase {
       }
   }
   
-  func createWallet() -> Completable {
-    return walletService.createWallet()
+    func createWallet(seedPhrase: String) -> Completable {
+    return walletService.createWallet(seedPhrase: seedPhrase)
   }
   
   func getSeedPhrase() -> Single<String> {

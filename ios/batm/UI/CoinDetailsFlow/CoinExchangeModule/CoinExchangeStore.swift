@@ -202,6 +202,7 @@ final class CoinExchangeStore: ViewStore<CoinExchangeAction, CoinExchangeState> 
             }
             state.toCoinType = balances.coins.first(where: { $0.type != firstCoin?.type })?.type
         case .swap:
+            state.fromCoin = state.coins?.first(where: { $0.type == state.toCoinType })
             state.fromCoinAmount = "".coinWithdrawFormatted
             let toCoinType = state.toCoinType
             state.toCoinType = state.fromCoinType

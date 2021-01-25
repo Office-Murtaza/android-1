@@ -5,7 +5,12 @@ import RxCocoa
 
 class TransferSelectReceiverHeader: UIView {
     
-    let phoneNumberTextField = MDCTextField.phone
+    let phoneNumberTextField: MDCTextField = {
+        let field = MDCTextField.phone
+        field.rightView = nil
+        return field
+    }()
+    
     let phoneNumberTextFieldController: ThemedTextInputControllerOutlined
     
     override init(frame: CGRect) {
