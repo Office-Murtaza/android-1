@@ -65,13 +65,13 @@ class StakingFragment : BaseFragment<FragmentStakingBinding>() {
             binding.coinInputLayout.getEditText().setText(viewModel.getMaxValue().toStringCoin())
         })
         createButtonView.setOnClickListener {
-            binding.coinInputLayout.setErrorText(null)
+            binding.coinInputLayout.setErrorText(null, false)
             if (isValid()) {
                 viewModel.stakeCreate(binding.coinInputLayout.getEditText().text.getDouble())
             }
         }
         binding.coinInputLayout.getEditText().actionDoneListener {
-            binding.coinInputLayout.setErrorText(null)
+            binding.coinInputLayout.setErrorText(null, false)
             if (isValid()) {
                 viewModel.stakeCreate(binding.coinInputLayout.getEditText().text.getDouble())
             }
@@ -223,6 +223,7 @@ class StakingFragment : BaseFragment<FragmentStakingBinding>() {
                     }
                     // WITHDRAW
                     StakeDetailsStatus.CANCEL -> {
+                        val showWithdrawButton = untilWithdraw == 0
                         invalidateStakingDetails()
                         // header
                         coinInputLayout.getEditText().isEnabled = false
@@ -248,12 +249,13 @@ class StakingFragment : BaseFragment<FragmentStakingBinding>() {
                         tvDurationValue.show()
                         // others
                         thirdDivider.show()
-                        tvWithdraw.show()
+                        tvWithdraw.toggle(!showWithdrawButton)
                         createButtonView.hide()
                         cancelButtonView.hide()
-                        withdrawButtonView.show()
+                        withdrawButtonView.toggle(showWithdrawButton)
                     }
                     StakeDetailsStatus.WITHDRAW_PENDING -> {
+                        val showWithdrawButton = untilWithdraw == 0
                         invalidateStakingDetails()
                         // header
                         coinInputLayout.getEditText().isEnabled = false
@@ -279,10 +281,10 @@ class StakingFragment : BaseFragment<FragmentStakingBinding>() {
                         tvDurationValue.show()
                         // others
                         thirdDivider.show()
-                        tvWithdraw.hide()
+                        tvWithdraw.toggle(!showWithdrawButton)
                         createButtonView.hide()
                         cancelButtonView.hide()
-                        withdrawButtonView.hide()
+                        withdrawButtonView.toggle(showWithdrawButton)
                     }
                     else -> {
                         createButtonView.hide()
@@ -409,25 +411,21 @@ class StakingFragment : BaseFragment<FragmentStakingBinding>() {
 
     private fun isValid(): Boolean = when {
         viewModel.isNotEnoughETHBalanceForCATM() -> {
-            showError(R.string.withdraw_screen_where_money_libovski)
+            binding.coinInputLayout.setErrorText(
+                getString(R.string.withdraw_screen_where_money_libovski), false
+            )
             false
         }
         viewModel.getMaxValue() < binding.coinInputLayout.getEditText().text.getDouble() -> {
-            showError(R.string.balance_amount_exceeded)
+            binding.coinInputLayout.setErrorText(
+                getString(R.string.balance_amount_exceeded), true
+            )
             false
         }
         else -> {
-            binding.coinInputLayout.setErrorText(null)
+            binding.coinInputLayout.setErrorText(null, false)
             true
         }
-    }
-
-    override fun showError(resMessage: Int) {
-        showError(getString(resMessage))
-    }
-
-    override fun showError(message: String) {
-        binding.coinInputLayout.setErrorText(message)
     }
 
     override fun createBinding(

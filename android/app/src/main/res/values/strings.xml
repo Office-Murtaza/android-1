@@ -302,8 +302,7 @@
 
     <!-- Send gift screen -->
     <string name="send_gift_screen_title">Transfer</string>
-    <string name="send_gift_screen_balance_formatted">Balance %1$s %2$s</string>
-    <string name="send_gift_screen_fee_formatted"><![CDATA[Fee ~%1$s %2$s]]></string>
+    <string name="send_gift_screen_balance_formatted"><![CDATA[Balance %1$s %2$s\nFee ~%3$s %4$s]]></string>
     <string name="send_gift_screen_message">Message</string>
     <string name="send_gift_screen_submit_button_label">Submit</string>
     <string name="send_gift_screen_converted_label">USD converted value</string>

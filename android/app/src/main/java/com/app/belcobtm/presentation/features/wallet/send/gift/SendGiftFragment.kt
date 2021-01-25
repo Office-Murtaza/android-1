@@ -34,7 +34,8 @@ import com.giphy.sdk.ui.themes.LightTheme
 import com.giphy.sdk.ui.views.GiphyDialogFragment
 import org.koin.android.viewmodel.ext.android.viewModel
 
-class SendGiftFragment : BaseFragment<FragmentSendGiftBinding>(), GiphyDialogFragment.GifSelectionListener {
+class SendGiftFragment : BaseFragment<FragmentSendGiftBinding>(),
+    GiphyDialogFragment.GifSelectionListener {
 
     private val viewModel: SendGiftViewModel by viewModel()
     private val sendGiftArgs: SendGiftFragmentArgs by navArgs()
@@ -150,32 +151,23 @@ class SendGiftFragment : BaseFragment<FragmentSendGiftBinding>(), GiphyDialogFra
             }
         }
         viewModel.cryptoAmountError.observe(viewLifecycleOwner) {
-            binding.sendCoinInputLayout.setErrorText(it?.let(::getString))
+            binding.sendCoinInputLayout.setErrorText(it?.let(::getString), true)
         }
         viewModel.usdAmount.observe(viewLifecycleOwner) {
             binding.amountUsdView.text = getString(R.string.text_usd, it)
         }
-        viewModel.coinToSend.observe(viewLifecycleOwner) { coin ->
-            val coinCode = coin.code
-            val coinBalance = coin.balanceCoin.toStringCoin()
-            val localType = LocalCoinType.valueOf(coinCode)
-            binding.sendCoinInputLayout.setCoinData(coinCode, localType.resIcon())
-            binding.sendCoinInputLayout.setHelperText(
-                getString(R.string.send_gift_screen_balance_formatted, coinBalance, coinCode)
-            )
+        viewModel.coinToSend.observe(viewLifecycleOwner) {
+            setCoinData()
         }
-        viewModel.fee.observe(viewLifecycleOwner) { amount ->
-            binding.sendCoinInputLayout.setAdditionalHelperText(
-                getString(
-                    R.string.send_gift_screen_fee_formatted,
-                    amount.toStringCoin(),
-                    viewModel.coinToSend.value?.code.orEmpty()
-                )
-            )
+        viewModel.fee.observe(viewLifecycleOwner) {
+            setCoinData()
         }
         viewModel.sendGiftLoadingData.listen(
             success = {
-                AlertHelper.showToastShort(requireContext(), R.string.transactions_screen_transaction_created)
+                AlertHelper.showToastShort(
+                    requireContext(),
+                    R.string.transactions_screen_transaction_created
+                )
                 popBackStack(R.id.fragment_deals, true)
             },
             error = {
@@ -187,12 +179,32 @@ class SendGiftFragment : BaseFragment<FragmentSendGiftBinding>(), GiphyDialogFra
                     }
                     is Failure.ServerError -> showErrorServerError()
                     is Failure.XRPLowAmountToSend -> {
-                        binding.sendCoinInputLayout.setErrorText(getString(R.string.error_xrp_amount_is_not_enough))
+                        binding.sendCoinInputLayout.setErrorText(
+                            getString(R.string.error_xrp_amount_is_not_enough), true
+                        )
                         showContent()
                     }
                     else -> showErrorSomethingWrong()
                 }
             })
+    }
+
+    private fun setCoinData() {
+        val coin = viewModel.coinToSend.value ?: return
+        val fee = viewModel.fee.value ?: return
+        val coinCode = coin.code
+        val coinBalance = coin.balanceCoin.toStringCoin()
+        val localType = LocalCoinType.valueOf(coinCode)
+        binding.sendCoinInputLayout.setCoinData(coinCode, localType.resIcon())
+        binding.sendCoinInputLayout.setHelperText(
+            getString(
+                R.string.send_gift_screen_balance_formatted,
+                coinBalance,
+                coinCode,
+                fee.toStringCoin(),
+                coinCode
+            )
+        )
     }
 
     private fun showSelectCoinDialog(
@@ -235,6 +247,9 @@ class SendGiftFragment : BaseFragment<FragmentSendGiftBinding>(), GiphyDialogFra
         )
     }
 
-    override fun createBinding(inflater: LayoutInflater, container: ViewGroup?): FragmentSendGiftBinding =
+    override fun createBinding(
+        inflater: LayoutInflater,
+        container: ViewGroup?
+    ): FragmentSendGiftBinding =
         FragmentSendGiftBinding.inflate(inflater, container, false)
 }

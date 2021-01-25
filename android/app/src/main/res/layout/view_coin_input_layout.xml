@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:layout_height="150dp">
+    tools:layout_height="170dp">
 
     <com.google.android.material.textfield.TextInputEditText
         android:id="@+id/coinInputEditText"
@@ -89,17 +89,6 @@
         tools:text="Staked" />
 
     <TextView
-        android:id="@+id/tvAdditionalHelperText"
-        style="@style/Text.Regular1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:paddingStart="@dimen/margin_normal"
-        android:paddingEnd="@dimen/margin_normal"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvHelperText"
-        tools:text="Fee: ~0.6583 BTC" />
-
-    <TextView
         android:id="@+id/tvMax"
         style="@style/EditText.TextLink"
         android:padding="@dimen/margin_normal"
@@ -115,12 +104,13 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/margin_half"
         android:layout_marginEnd="@dimen/margin_half"
+        android:layout_marginBottom="@dimen/margin_main"
         android:drawableStart="@drawable/ic_error"
         android:drawablePadding="@dimen/margin_half"
         android:textColor="@color/colorError"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tvMax"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvHelperText"
         tools:text="Error message here" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
