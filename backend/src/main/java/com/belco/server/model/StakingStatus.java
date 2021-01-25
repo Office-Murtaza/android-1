@@ -1,5 +1,7 @@
 package com.belco.server.model;
 
+import com.fasterxml.jackson.annotation.JsonValue;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -59,5 +61,10 @@ public enum StakingStatus {
         }
 
         return NOT_EXIST;
+    }
+
+    @JsonValue
+    public int getValue() {
+        return value;
     }
 }

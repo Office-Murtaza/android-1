@@ -17,7 +17,9 @@ import java.util.Date;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class StakingDetailsDTO {
 
+    @JsonFormat(shape = JsonFormat.Shape.OBJECT)
     private StakingStatus status;
+
     private BigDecimal amount;
     private String amountStr;
     private BigDecimal rewardAmount;
