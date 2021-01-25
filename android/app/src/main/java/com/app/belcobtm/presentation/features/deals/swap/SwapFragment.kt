@@ -71,7 +71,10 @@ class SwapFragment : BaseFragment<FragmentSwapBinding>() {
         setTextSilently(receiveCoinInputLayout.getEditText(), textWatcher.secondTextWatcher, "0")
     }
 
-    override fun createBinding(inflater: LayoutInflater, container: ViewGroup?): FragmentSwapBinding =
+    override fun createBinding(
+        inflater: LayoutInflater,
+        container: ViewGroup?
+    ): FragmentSwapBinding =
         FragmentSwapBinding.inflate(inflater, container, false)
 
     override fun FragmentSwapBinding.initListeners() {
@@ -168,12 +171,11 @@ class SwapFragment : BaseFragment<FragmentSwapBinding>() {
             ).toHtmlSpan()
         })
         viewModel.coinToSendError.observe(viewLifecycleOwner, Observer { error ->
-            sendCoinInputLayout.setErrorText(
-                when (error) {
-                    is ValidationResult.Valid -> null
-                    is ValidationResult.InValid -> getString(error.error)
-                }
-            )
+            when (error) {
+                is ValidationResult.Valid -> sendCoinInputLayout.setErrorText(null, false)
+                is ValidationResult.InValid ->
+                    sendCoinInputLayout.setErrorText(getString(error.error), true)
+            }
         })
         viewModel.sendCoinAmount.observe(viewLifecycleOwner, Observer { sendAmount ->
             val targetEditText = sendCoinInputLayout.getEditText()

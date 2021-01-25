@@ -28,7 +28,6 @@ class CoinInputLayout @JvmOverloads constructor(
     private val editText: EditText
     private val tvCoinName: TextView
     private val tvHelperText: TextView
-    private val tvAdditionalHelperText: TextView
     private val tvHelperText2: TextView
 
     init {
@@ -40,12 +39,11 @@ class CoinInputLayout @JvmOverloads constructor(
         tvCoinName = findViewById(R.id.tvCoinName)
         coinButton = findViewById(R.id.coinButton)
         tvHelperText = findViewById(R.id.tvHelperText)
-        tvAdditionalHelperText = findViewById(R.id.tvAdditionalHelperText)
         tvHelperText2 = findViewById(R.id.tvHelperText2)
         editText = findViewById(R.id.coinInputEditText)
 
         textColorOrigin = editText.textColors.defaultColor
-        setErrorText(null)
+        setErrorText(null, false)
     }
 
     fun getEditText(): EditText = editText
@@ -72,10 +70,6 @@ class CoinInputLayout @JvmOverloads constructor(
         tvHelperText.text = text
     }
 
-    fun setAdditionalHelperText(text: CharSequence?) {
-        tvAdditionalHelperText.text = text
-    }
-
     fun setMaxVisible(visible: Boolean) {
         if (visible) {
             tvMax.isEnabled = true
@@ -90,9 +84,13 @@ class CoinInputLayout @JvmOverloads constructor(
         tvHelperText2.text = charSequence
     }
 
-    fun setErrorText(text: CharSequence?) {
+    fun setErrorText(text: CharSequence?, highlightAmount: Boolean) {
         if (text != null) {
-            editText.setTextColor(textColorError)
+            if (highlightAmount) {
+                editText.setTextColor(textColorError)
+            } else {
+                editText.setTextColor(textColorOrigin)
+            }
             tvError.visibility = View.VISIBLE
         } else {
             editText.setTextColor(textColorOrigin)
