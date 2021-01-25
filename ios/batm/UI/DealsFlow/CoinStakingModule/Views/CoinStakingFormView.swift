@@ -45,8 +45,9 @@ class CoinStakingFormView: UIView {
         stakingRateView.configure(fromCoin: fromCoin, toCoin: toCurrency)
     }
     
-    func configure(from error: String?) {
-        configureField(field: &fromCoinView, error: error)
+    func configure(from error: String?, isEthLowBalance: Bool) {
+        configureField(field: &fromCoinView, error: error, isEthLowBalance: isEthLowBalance)
+        layoutIfNeeded()
     }
     
     func configureBalance(for coinBalance: CoinBalance, coinDetails: CoinDetails) {
@@ -59,11 +60,11 @@ class CoinStakingFormView: UIView {
     }
     
     private func setupLayout() {
-        fromCoinView.snp.makeConstraints {
+        fromCoinView.snp.remakeConstraints {
             $0.top.left.right.equalToSuperview()
-            $0.height.equalTo(150)
+            $0.height.equalTo(136)
         }
-        
+
         stakingRateView.snp.makeConstraints {
             $0.height.equalTo(36)
             $0.centerY.equalTo(fromCoinView.snp.bottom)
@@ -71,10 +72,14 @@ class CoinStakingFormView: UIView {
         }
     }
     
-    private func configureField(field: inout CoinExchangeSwapTextFieldView, error: String?) {
+    private func configureField(field: inout CoinExchangeSwapTextFieldView, error: String?, isEthLowBalance: Bool) {
         field.errorFieldView.isHidden = error == nil
         field.setupErrorField(errorText: error)
-        field.amountTextField.textColor = error == nil ? .black : .errorRed
+        field.amountTextField.textColor = error == nil || isEthLowBalance ? .black : .errorRed
+        fromCoinView.snp.remakeConstraints {
+            $0.top.left.right.equalToSuperview()
+            $0.height.equalTo(error == nil ? 136 : 150)
+        }
     }
 }
 

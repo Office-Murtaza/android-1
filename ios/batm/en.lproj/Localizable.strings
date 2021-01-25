@@ -320,7 +320,7 @@
 "coin_staking.header.cancel_hold_period" = "Hold period";
 "coin_staking.header.annual_reward_amount" = "Annual reward amount";
 "coin_staking.header.reward.title" = "Reward";
-"coin_staking.header.reward.value" = "%@ %";
+"coin_staking.header.reward.value" = "%@\n%@";
 "coin_staking.withdraw_view.description" = "%d days until withdrawal";
 "coin_staking.status.form_view_status" = "Staked";
 "coin_staking.toast.completed" = "Stake successfully %@";
