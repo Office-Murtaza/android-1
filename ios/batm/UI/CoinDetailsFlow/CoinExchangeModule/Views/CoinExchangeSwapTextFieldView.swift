@@ -137,7 +137,7 @@ class CoinExchangeSwapTextFieldView: UIView, UIPickerViewDataSource, HasDisposeB
         }
         
         resultLabel.snp.makeConstraints {
-            $0.right.equalToSuperview().offset(-8)
+            $0.right.equalTo(amountTextField.snp.right)
             $0.centerY.equalTo(balanceLabel)
         }
         
@@ -147,10 +147,9 @@ class CoinExchangeSwapTextFieldView: UIView, UIPickerViewDataSource, HasDisposeB
         }
         
         errorFieldView.snp.makeConstraints {
-            $0.top.equalTo(maxButton.snp.bottom)
-            $0.top.equalTo(resultLabel.snp.bottom)
+            $0.top.equalTo(feeLabel.snp.bottom).offset(5)
             $0.right.equalTo(amountTextField.snp.right)
-            $0.left.greaterThanOrEqualTo(feeLabel.snp.right).offset(12)
+            $0.left.equalTo(balanceLabel.snp.left)
         }
         
         setupPicker()
@@ -185,7 +184,7 @@ class CoinExchangeSwapTextFieldView: UIView, UIPickerViewDataSource, HasDisposeB
         
         imageView.image = UIImage(named: "swap_error")
         textLabel.text = errorText
-        textLabel.textAlignment = .right
+        textLabel.textAlignment = .left
         textLabel.textColor = .errorRed
         textLabel.font = .systemFont(ofSize: 12)
         textLabel.numberOfLines = 2

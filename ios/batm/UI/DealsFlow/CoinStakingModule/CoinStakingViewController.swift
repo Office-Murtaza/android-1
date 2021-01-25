@@ -126,11 +126,11 @@ final class CoinStakingViewController: ModuleViewController<CoinStakingPresenter
         
         presenter.state
             .asObservable()
-            .map { $0.coinAmountError }
+            .map { ($0.coinAmountError, $0.isEthLowBalance) }
             .subscribeOn(MainScheduler.instance)
             .subscribe { [weak self] result in
-                guard let error = result.element else { return }
-                self?.formView.configure(from: error )
+                guard let errorText = result.element?.0, let isEthLowBalance = result.element?.1  else { return }
+                self?.formView.configure(from: errorText, isEthLowBalance: isEthLowBalance)
             }.disposed(by: disposeBag)
         
         presenter.state
@@ -180,20 +180,14 @@ final class CoinStakingViewController: ModuleViewController<CoinStakingPresenter
         
         presenter.state
             .asObservable()
-            .map { !$0.shouldShowWithdrawButton }
+            .map { !$0.shouldWithdrawButtonEnabled }
             .bind(to: withdrawButton.rx.isHidden)
             .disposed(by: disposeBag)
         
         presenter.state
             .asObservable()
-            .map { !$0.shouldShowWithdrawButton }
+            .map { !$0.shouldShowWithdrawView }
             .bind(to: withdrawView.rx.isHidden)
-            .disposed(by: disposeBag)
-        
-        presenter.state
-            .asObservable()
-            .map { $0.shouldWithdrawButtonEnabled }
-            .bind(to: withdrawButton.rx.isEnabled)
             .disposed(by: disposeBag)
         
         Driver.merge(buttons.map { $0.rx.tap.asDriver() })
@@ -253,7 +247,8 @@ final class CoinStakingViewController: ModuleViewController<CoinStakingPresenter
     
     private func setupCancelView(with stakeDetails: StakeDetails, coinBalance: CoinBalance) {
         let rewardAmount = String(format: localize(L.CoinStaking.Header.Reward.value),
-                                  "\(stakeDetails.rewardAmount?.formatted() ?? "0") \(coinBalance.type.code) \(stakeDetails.rewardPercent?.formatted() ?? "0") %")
+                                  "\(stakeDetails.rewardAmount?.formatted() ?? "0") \(coinBalance.type.code)",
+                                  "\(stakeDetails.rewardPercent?.formatted() ?? "0")%")
         formView.configureStakeAmount(with: "\(stakeDetails.amount?.formatted() ?? "0")")
         
         stakingInfoView.configureRightView(with: localize(L.CoinStaking.Header.createdDate),
@@ -272,9 +267,10 @@ final class CoinStakingViewController: ModuleViewController<CoinStakingPresenter
     
     private func setupWithdrawView(with stakeDetails: StakeDetails, coinBalance: CoinBalance) {
         let rewardAmount = String(format: localize(L.CoinStaking.Header.Reward.value),
-                                  "\(stakeDetails.rewardAmount?.formatted() ?? "0") \(coinBalance.type.code) \(stakeDetails.rewardPercent?.formatted() ?? "0") %")
+                                  "\(stakeDetails.rewardAmount?.formatted() ?? "0") \(coinBalance.type.code)",
+                                  "\(stakeDetails.rewardPercent?.formatted() ?? "0")%")
         formView.configureStakeAmount(with: "\(stakeDetails.amount?.formatted() ?? "0")")
-
+        
         stakingInfoView.configureRightView(with: localize(L.CoinStaking.Header.createdDate),
                                            value: stakeDetails.createDate)
         

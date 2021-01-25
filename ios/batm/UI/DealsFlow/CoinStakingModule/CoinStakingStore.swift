@@ -17,6 +17,7 @@ struct CoinStakingState: Equatable {
     var stakeDetails: StakeDetails?
     var coinAmount: String = ""
     var coinAmountError: String?
+    var isEthLowBalance: Bool = false
     var validationState: ValidationState = .unknown
     
     var coinBalance: CoinBalance? {
@@ -55,8 +56,8 @@ struct CoinStakingState: Equatable {
         return stakeDetails?.status == .created
     }
     
-    var shouldShowWithdrawButton: Bool {
-        return stakeDetails?.status == .canceled
+    var shouldShowWithdrawView: Bool {
+        return stakeDetails?.status == .canceled && (stakeDetails?.tillWithdrawal ?? 0) > 0
     }
     
     var shouldWithdrawButtonEnabled: Bool {
@@ -94,6 +95,7 @@ final class CoinStakingStore: ViewStore<CoinStakingAction, CoinStakingState> {
         
         if !ethBalance.greaterThanOrEqualTo(fee) {
             let errorString = localize(L.CoinWithdraw.Form.Error.insufficientETHBalance)
+            state.isEthLowBalance = true
             state.coinAmountError = errorString
             state.validationState = .invalid(errorString)
         }

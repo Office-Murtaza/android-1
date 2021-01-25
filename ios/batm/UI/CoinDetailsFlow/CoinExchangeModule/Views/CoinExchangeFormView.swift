@@ -34,42 +34,6 @@ class CoinExchangeFormView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    private func setupUI() {
-        translatesAutoresizingMaskIntoConstraints = false
-        
-        addSubviews([
-            fromCoinView,
-            toCoinView,
-            swapButton,
-            swapRateView,
-        ])
-        
-    }
-    
-  private func setupLayout() {
-    fromCoinView.snp.makeConstraints {
-        $0.top.left.right.equalToSuperview()
-        $0.height.equalTo(150)
-    }
-    toCoinView.snp.makeConstraints {
-        $0.top.equalTo(fromCoinView.snp.bottom)
-        $0.left.right.equalToSuperview()
-        $0.height.equalTo(150)
-    }
-    
-    swapButton.snp.makeConstraints {
-        $0.width.height.equalTo(36)
-        $0.centerY.equalTo(fromCoinView.snp.bottom)
-        $0.left.equalToSuperview().offset(15)
-    }
-    
-    swapRateView.snp.makeConstraints {
-        $0.height.equalTo(36)
-        $0.centerY.equalTo(fromCoinView.snp.bottom)
-        $0.right.equalToSuperview().offset(-15)
-    }
-  }
-    
     func configure(coin: CustomCoinType, fromCoins: [CustomCoinType], toCoins:  [CustomCoinType], fee: Decimal?) {
         fromCoinView.configure(for: coin, coins: fromCoins)
         toCoinView.configure(for: coin, coins: toCoins)
@@ -89,10 +53,50 @@ class CoinExchangeFormView: UIView {
         configureField(field: &toCoinView, error: error)
     }
     
+    private func setupUI() {
+        translatesAutoresizingMaskIntoConstraints = false
+        
+        addSubviews([
+            fromCoinView,
+            toCoinView,
+            swapButton,
+            swapRateView,
+        ])
+    }
+    
+    private func setupLayout() {
+        fromCoinView.snp.remakeConstraints {
+            $0.top.left.right.equalToSuperview()
+            $0.height.equalTo(136)
+        }
+        toCoinView.snp.remakeConstraints {
+            $0.top.equalTo(fromCoinView.snp.bottom)
+            $0.left.right.equalToSuperview()
+            $0.height.equalTo(136)
+        }
+        
+        swapButton.snp.makeConstraints {
+            $0.width.height.equalTo(36)
+            $0.centerY.equalTo(fromCoinView.snp.bottom)
+            $0.left.equalToSuperview().offset(15)
+        }
+        
+        swapRateView.snp.makeConstraints {
+            $0.height.equalTo(36)
+            $0.centerY.equalTo(fromCoinView.snp.bottom)
+            $0.right.equalToSuperview().offset(-15)
+        }
+    }
+    
     private func configureField(field: inout CoinExchangeSwapTextFieldView, error: String?) {
         field.errorFieldView.isHidden = error == nil
         field.setupErrorField(errorText: error)
         field.amountTextField.textColor = error == nil ? .black : .errorRed
+        
+        field.snp.remakeConstraints {
+            $0.top.left.right.equalToSuperview()
+            $0.height.equalTo(error == nil ? 136 : 150)
+        }
     }
 }
 

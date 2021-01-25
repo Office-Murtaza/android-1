@@ -6,7 +6,6 @@ import GiphyUISDK
 import GiphyCoreSDK
 
 final class CoinSendGiftFormView: UIView, HasDisposeBag {
-    
     let bottomContainer = UIView()
     
     let gifViewContainer: UIView = {
@@ -33,8 +32,6 @@ final class CoinSendGiftFormView: UIView, HasDisposeBag {
         separator.backgroundColor = .lightGray
         return separator
     }()
-    
-    private let usdView = SwapUsdValueView()
     
     lazy var addButton: MDCButton = {
         let button = MDCButton()
@@ -67,118 +64,32 @@ final class CoinSendGiftFormView: UIView, HasDisposeBag {
         button.layer.shadowRadius = 3
         button.layer.shadowOpacity = 0.5
         button.layer.shadowOffset = CGSize(width: 1, height: 2)
-    
+        
         return button
     }()
-  
-  var coinAmountTextFieldView = CoinExchangeSwapTextFieldView()
+    
     lazy var messageTextField: MDCMultilineTextField = {
         let field = MDCMultilineTextField.default
         field.borderView = nil
-    
+        
         return field
     }()
-  
-  var messageTextFieldController: ThemedTextInputControllerOutlinedTextArea?
-  
-  override init(frame: CGRect) {
-    super.init(frame: frame)
-    messageTextFieldController = ThemedTextInputControllerOutlinedTextArea(textInput: messageTextField)
-    setupUI()
-    setupLayout()
-  }
-  
-  required init?(coder aDecoder: NSCoder) {
-    fatalError("init(coder:) has not been implemented")
-  }
-  
-  private func setupUI() {
-    translatesAutoresizingMaskIntoConstraints = false
+    
+    var coinAmountTextFieldView = CoinExchangeSwapTextFieldView()
+    var messageTextFieldController: ThemedTextInputControllerOutlinedTextArea?
+    private let usdView = SwapUsdValueView()
 
-    addSubviews([coinAmountTextFieldView, bottomContainer, separatorView, usdView])
-    
-    bottomContainer.addSubviews(gifViewContainer,
-                                removeButton,
-                                verticalSeparatorView,
-                                messageTextField,
-                                addMessageButton)
-
-    gifViewContainer.addSubviews(gifMediaView,
-                                 addButton)
-    
-    messageTextFieldController?.minimumLines = 3
-    
-    removeButton.isHidden = true
-  }
-  
-  private func setupLayout() {
-    
-    separatorView.snp.makeConstraints{
-        $0.top.equalTo(coinAmountTextFieldView.snp.bottom).offset(10)
-        $0.left.equalToSuperview()
-        $0.right.equalToSuperview()
-        $0.height.equalTo(1/UIScreen.main.scale)
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        messageTextFieldController = ThemedTextInputControllerOutlinedTextArea(textInput: messageTextField)
+        setupUI()
+        setupLayout()
     }
     
-    coinAmountTextFieldView.snp.makeConstraints{
-        $0.left.right.top.equalToSuperview()
-        $0.height.equalTo(120)
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
     
-    usdView.snp.makeConstraints {
-        $0.right.equalToSuperview()
-        $0.top.equalTo(separatorView.snp.bottom).offset(10)
-        $0.left.equalToSuperview()
-        $0.height.equalTo(45)
-    }
-    
-    bottomContainer.snp.makeConstraints {
-      $0.top.equalTo(usdView.snp.bottom).offset(15)
-      $0.left.right.bottom.equalToSuperview()
-    }
-    
-    gifViewContainer.snp.makeConstraints {
-      $0.top.left.equalToSuperview()
-      $0.height.equalTo(messageTextField)
-      $0.right.equalTo(bottomContainer.snp.centerX).offset(-15)
-    }
-    
-    gifMediaView.snp.makeConstraints {
-      $0.edges.equalToSuperview()
-    }
-    
-    verticalSeparatorView.snp.makeConstraints {
-        $0.width.equalTo(1/UIScreen.main.scale)
-        $0.centerX.equalTo(bottomContainer.snp.centerX)
-        $0.top.bottom.equalToSuperview()
-    }
-    
-    messageTextField.snp.makeConstraints {
-      $0.top.right.bottom.equalToSuperview()
-        $0.left.equalTo(bottomContainer.snp.centerX).offset(15)
-      $0.height.equalTo(105)
-    }
-    
-    addButton.snp.makeConstraints {
-        $0.edges.equalToSuperview()
-    }
-    
-    removeButton.snp.makeConstraints {
-        $0.width.height.equalTo(24)
-        $0.centerX.equalTo(gifViewContainer.snp.right)
-        $0.centerY.equalTo(gifViewContainer.snp.top)
-    }
-    
-    addMessageButton.snp.makeConstraints {
-        $0.edges.equalTo(messageTextField)
-    }
-  }
-    
-    @objc func focusOnMessage() {
-        addMessageButton.isHidden = true
-        messageTextField.becomeFirstResponder()
-    }
-  
     func configure(coin: CustomCoinType, fromCoins: [CustomCoinType]) {
         coinAmountTextFieldView.configure(for: coin, coins: fromCoins)
     }
@@ -191,18 +102,105 @@ final class CoinSendGiftFormView: UIView, HasDisposeBag {
         usdView.configure(value: usd)
     }
     
+    @objc func focusOnMessage() {
+        addMessageButton.isHidden = true
+        messageTextField.becomeFirstResponder()
+    }
+    
+    private func setupUI() {
+        translatesAutoresizingMaskIntoConstraints = false
+        
+        addSubviews([coinAmountTextFieldView, bottomContainer, separatorView, usdView])
+        
+        bottomContainer.addSubviews(gifViewContainer,
+                                    removeButton,
+                                    verticalSeparatorView,
+                                    messageTextField,
+                                    addMessageButton)
+        
+        gifViewContainer.addSubviews(gifMediaView,
+                                     addButton)
+        
+        messageTextFieldController?.minimumLines = 3
+        
+        removeButton.isHidden = true
+    }
+    
+    private func setupLayout() {
+        separatorView.snp.makeConstraints{
+            $0.top.equalTo(coinAmountTextFieldView.snp.bottom).offset(10)
+            $0.left.equalToSuperview()
+            $0.right.equalToSuperview()
+            $0.height.equalTo(1/UIScreen.main.scale)
+        }
+        
+        coinAmountTextFieldView.snp.remakeConstraints{
+            $0.left.right.top.equalToSuperview()
+            $0.height.equalTo(120)
+        }
+        
+        usdView.snp.makeConstraints {
+            $0.right.equalToSuperview()
+            $0.top.equalTo(separatorView.snp.bottom).offset(10)
+            $0.left.equalToSuperview()
+            $0.height.equalTo(45)
+        }
+        
+        bottomContainer.snp.makeConstraints {
+            $0.top.equalTo(usdView.snp.bottom).offset(15)
+            $0.left.right.bottom.equalToSuperview()
+        }
+        
+        gifViewContainer.snp.makeConstraints {
+            $0.top.left.equalToSuperview()
+            $0.height.equalTo(messageTextField)
+            $0.right.equalTo(bottomContainer.snp.centerX).offset(-15)
+        }
+        
+        gifMediaView.snp.makeConstraints {
+            $0.edges.equalToSuperview()
+        }
+        
+        verticalSeparatorView.snp.makeConstraints {
+            $0.width.equalTo(1/UIScreen.main.scale)
+            $0.centerX.equalTo(bottomContainer.snp.centerX)
+            $0.top.bottom.equalToSuperview()
+        }
+        
+        messageTextField.snp.makeConstraints {
+            $0.top.right.bottom.equalToSuperview()
+            $0.left.equalTo(bottomContainer.snp.centerX).offset(15)
+            $0.height.equalTo(105)
+        }
+        
+        addButton.snp.makeConstraints {
+            $0.edges.equalToSuperview()
+        }
+        
+        removeButton.snp.makeConstraints {
+            $0.width.height.equalTo(24)
+            $0.centerX.equalTo(gifViewContainer.snp.right)
+            $0.centerY.equalTo(gifViewContainer.snp.top)
+        }
+        
+        addMessageButton.snp.makeConstraints {
+            $0.edges.equalTo(messageTextField)
+        }
+    }
+    
     private func configureField(field: inout CoinExchangeSwapTextFieldView, error: String?) {
         field.errorFieldView.isHidden = error == nil
         field.setupErrorField(errorText: error)
-        field.amountTextField.textColor = error == nil ? UIColor.black : UIColor(hexString: "B00020")
+        field.amountTextField.textColor = error == nil ? .black : .errorRed
+        coinAmountTextFieldView.snp.remakeConstraints{
+            $0.left.right.top.equalToSuperview()
+            $0.height.equalTo(error == nil ? 120 : 136)
+        }
     }
 }
 
 extension Reactive where Base == CoinSendGiftFormView {
-    
-    
     //MARK: - From coin
-    
     var fromCoin: Binder<CustomCoinType> {
         return base.coinAmountTextFieldView.rx.сoin
     }
@@ -223,36 +221,35 @@ extension Reactive where Base == CoinSendGiftFormView {
         return base.coinAmountTextFieldView.rx.maxTap
     }
     
-    
-  var messageText: ControlProperty<String?> {
-    return base.messageTextField.rx.text
-  }
-
-  var messageErrorText: Binder<String?> {
-    return Binder(base) { target, value in
-      target.messageTextFieldController?.setErrorText(value, errorAccessibilityValue: value)
+    var messageText: ControlProperty<String?> {
+        return base.messageTextField.rx.text
     }
-  }
     
-  var addGifTap: Driver<Void> {
-    return base.addButton.rx.tap.asDriver()
-  }
-    
-  var removeGifTap: Driver<Void> {
-    return base.removeButton.rx.tap.asDriver()
-  }
-    
-  var gifMedia: Binder<GPHMedia?> {
-    return Binder(base) { target, value in
-      target.removeButton.isHidden = value == nil
-      target.addButton.isHidden = value != nil
-      
-      if let media = value {
-        target.gifMediaView.setMedia(media, rendition: .fixedHeightSmall)
-      } else {
-        target.gifMediaView.media = nil
-      }
-      target.gifMediaView.isHidden = value == nil
+    var messageErrorText: Binder<String?> {
+        return Binder(base) { target, value in
+            target.messageTextFieldController?.setErrorText(value, errorAccessibilityValue: value)
+        }
     }
-  }
+    
+    var addGifTap: Driver<Void> {
+        return base.addButton.rx.tap.asDriver()
+    }
+    
+    var removeGifTap: Driver<Void> {
+        return base.removeButton.rx.tap.asDriver()
+    }
+    
+    var gifMedia: Binder<GPHMedia?> {
+        return Binder(base) { target, value in
+            target.removeButton.isHidden = value == nil
+            target.addButton.isHidden = value != nil
+            
+            if let media = value {
+                target.gifMediaView.setMedia(media, rendition: .fixedHeightSmall)
+            } else {
+                target.gifMediaView.media = nil
+            }
+            target.gifMediaView.isHidden = value == nil
+        }
+    }
 }
