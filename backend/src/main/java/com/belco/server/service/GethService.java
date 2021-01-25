@@ -565,21 +565,19 @@ public class GethService {
                         if (amount.compareTo(BigDecimal.ZERO) == 0) {
                             Document tokenDoc = fetchTokenTransaction(receipt);
 
-                            if (tokenDoc != null) {
-                                tokenDoc.append("txId", txId);
-                                tokenDoc.append("blockNumber", blockNumber);
-                                tokenDoc.append("fromAddress", Util.nvl(tokenDoc.getString("fromAddress"), fromAddress));
-                                tokenDoc.append("toAddress", Util.nvl(tokenDoc.getString("toAddress"), toAddress));
-                                tokenDoc.append("fee", fee);
-                                tokenDoc.append("status", status.getValue());
-                                tokenDoc.append("blockTime", timestamp);
-                                tokenDoc.append("timestamp", System.currentTimeMillis());
+                            tokenDoc.append("txId", txId);
+                            tokenDoc.append("blockNumber", blockNumber);
+                            tokenDoc.append("fromAddress", Util.nvl(tokenDoc.getString("fromAddress"), fromAddress));
+                            tokenDoc.append("toAddress", Util.nvl(tokenDoc.getString("toAddress"), toAddress));
+                            tokenDoc.append("fee", fee);
+                            tokenDoc.append("status", status.getValue());
+                            tokenDoc.append("blockTime", timestamp);
+                            tokenDoc.append("timestamp", System.currentTimeMillis());
 
-                                UpdateOneModel tokenUpdate = new UpdateOneModel(new Document("txId", tokenDoc.getString("txId")), new Document("$set", tokenDoc));
-                                tokenUpdate.getOptions().upsert(true);
+                            UpdateOneModel tokenUpdate = new UpdateOneModel(new Document("txId", tokenDoc.getString("txId")), new Document("$set", tokenDoc));
+                            tokenUpdate.getOptions().upsert(true);
 
-                                tokenTxs.add(tokenUpdate);
-                            }
+                            tokenTxs.add(tokenUpdate);
                         }
 
                         Document doc = new Document("txId", txId)
@@ -654,7 +652,7 @@ public class GethService {
             e.printStackTrace();
         }
 
-        return null;
+        return new Document();
     }
 
     private ERC20 getTokenByContractAddress(String contractAddress) {
