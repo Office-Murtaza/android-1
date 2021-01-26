@@ -44,6 +44,12 @@ class CoinInputLayout @JvmOverloads constructor(
 
         textColorOrigin = editText.textColors.defaultColor
         setErrorText(null, false)
+        setPadding(
+            paddingLeft,
+            paddingTop + resources.getDimensionPixelOffset(R.dimen.margin_half),
+            paddingRight,
+            paddingBottom + resources.getDimensionPixelOffset(R.dimen.margin_x2)
+        )
     }
 
     fun getEditText(): EditText = editText

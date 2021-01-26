@@ -12,8 +12,8 @@ import com.app.belcobtm.domain.transaction.interactor.StakeDetailsGetUseCase
 import com.app.belcobtm.domain.transaction.interactor.StakeWithdrawUseCase
 import com.app.belcobtm.domain.transaction.item.StakeDetailsDataItem
 import com.app.belcobtm.domain.wallet.LocalCoinType
-import com.app.belcobtm.domain.wallet.interactor.GetCoinByCodeUseCase
 import com.app.belcobtm.domain.wallet.interactor.GetCoinDetailsUseCase
+import com.app.belcobtm.domain.wallet.interactor.GetFreshCoinUseCase
 import com.app.belcobtm.domain.wallet.item.CoinDataItem
 import com.app.belcobtm.domain.wallet.item.CoinDetailsDataItem
 import com.app.belcobtm.presentation.core.SingleLiveData
@@ -28,7 +28,7 @@ import kotlinx.coroutines.launch
 class StakingViewModel(
     private val walletObserver: WalletObserver,
     private val getCoinDetailsUseCase: GetCoinDetailsUseCase,
-    private val getCoinByCodeUseCase: GetCoinByCodeUseCase,
+    private val getCoinByCodeUseCase: GetFreshCoinUseCase,
     private val stakeCreateUseCase: StakeCreateUseCase,
     private val stakeCancelUseCase: StakeCancelUseCase,
     private val stakeWithdrawUseCase: StakeWithdrawUseCase,
@@ -43,6 +43,7 @@ class StakingViewModel(
     val transactionLiveData: LiveData<LoadingData<StakingTransactionState>> = _transactionLiveData
 
     private lateinit var coinDataItem: CoinDataItem
+    private lateinit var etheriumCoinDataItem: CoinDataItem
     private lateinit var coinDetailsDataItem: CoinDetailsDataItem
 
     init {
@@ -50,20 +51,32 @@ class StakingViewModel(
     }
 
     fun loadData() {
+        val catmCoinCode = LocalCoinType.CATM.name
         _stakeDetailsLiveData.value = LoadingData.Loading()
         viewModelScope.launch {
             walletObserver.observe()
                 .receiveAsFlow()
                 .filterIsInstance<WalletBalance.Balance>()
-                .mapNotNull { balance -> balance.data.coinList.find { it.code == LocalCoinType.CATM.name } }
+                .mapNotNull { balance -> balance.data.coinList.find { it.code == catmCoinCode } }
                 .first()
                 .also { catmCoin ->
                     coinDataItem = catmCoin
                     getCoinDetailsUseCase.invoke(
-                        GetCoinDetailsUseCase.Params(LocalCoinType.CATM.name),
+                        GetCoinDetailsUseCase.Params(catmCoinCode),
                         onSuccess = {
                             coinDetailsDataItem = it
-                            loadBaseData()
+                            // it is necessary to get latest data as we will be checking
+                            // balance value to proceess next operations
+                            getCoinByCodeUseCase(
+                                GetFreshCoinUseCase.Params(LocalCoinType.ETH.name),
+                                onSuccess = { etherium ->
+                                    etheriumCoinDataItem = etherium
+                                    loadBaseData()
+                                },
+                                onError = { failure2 ->
+                                    _stakeDetailsLiveData.value = LoadingData.Error(failure2)
+                                }
+                            )
                         },
                         onError = {
                             _stakeDetailsLiveData.value = LoadingData.Error(it)
@@ -160,7 +173,7 @@ class StakingViewModel(
     }
 
     fun isNotEnoughETHBalanceForCATM(): Boolean =
-        getCoinByCodeUseCase.invoke(LocalCoinType.ETH.name).balanceCoin < coinDetailsDataItem.txFee
+        etheriumCoinDataItem.balanceCoin < coinDetailsDataItem.txFee
 
     fun getMaxValue(): Double = if (coinDataItem.code == LocalCoinType.CATM.name) {
         coinDataItem.balanceCoin
