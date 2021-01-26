@@ -66,7 +66,7 @@ final class CoinDetailsPresenter: ModulePresenter, CoinDetailsModule {
                                     .do(onSuccess: { [store] in store.action.accept(.setupCoinBalances($0.coins)) })
                                     .asCompletable())
             }
-            .subscribe(onNext: {})
+            .subscribe()
             .disposed(by: disposeBag)
         
         input.refresh

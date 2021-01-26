@@ -89,7 +89,6 @@ class PinCodePresenter: ModulePresenter, PinCodeModule {
           return .just(state)
         }
     }
-      
     .subscribe(onNext: { [delegate] in delegate?.didFinishPinCode(for: $0.stage, with: $0.code) })
     .disposed(by: disposeBag)
   }

@@ -14,7 +14,6 @@ extension WalletFlow {
         }
         .inObjectScope(.container)
         .implements(WalletModuleDelegate.self,
-                    ManageWalletsModuleDelegate.self,
                     CoinDetailsFlowControllerDelegate.self)
     }
   }

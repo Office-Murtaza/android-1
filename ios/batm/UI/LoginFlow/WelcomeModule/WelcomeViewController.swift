@@ -37,9 +37,7 @@ class WelcomeViewController: ModuleViewController<WelcomePresenter>, MFMailCompo
     }
   }
   
-  private func setupUIBindings() {
-    
-  }
+  private func setupUIBindings() {}
   
   override func setupBindings() {
     setupUIBindings()

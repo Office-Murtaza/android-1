@@ -65,8 +65,9 @@ class RefreshCredentialsServiceImpl: RefreshCredentialsService {
         .flatMap { [unowned self] in self.accountStorage.save(account: $0).andThen(.just($0)) }
         .do(onSuccess: { [unowned self] in
           self.isFetching = false
+          UserDefaultsHelper.isAuthorized = true
           self.credentialsRelay.accept(($0, nil))
-          self.notifyCredentialsDidRefershed()
+          self.notifyCredentialsDidRefreshed()
         }, onError: { [unowned self] in
             self.isFetching = false
             self.credentialsRelay.accept((nil, $0))
@@ -77,6 +78,7 @@ class RefreshCredentialsServiceImpl: RefreshCredentialsService {
           let completableError = Completable.error(mappedError)
           
           if mappedError == .notAuthorized {
+            UserDefaultsHelper.isAuthorized = false
             return self.logoutUsecase.unlink()
           }
           return completableError
@@ -84,7 +86,7 @@ class RefreshCredentialsServiceImpl: RefreshCredentialsService {
     }
   }
   
-  func notifyCredentialsDidRefershed() {
+  func notifyCredentialsDidRefreshed() {
     let  notificationName = Notification.Name(RefreshCredentialsConstants.refreshNotificationName)
     NotificationCenter
       .default

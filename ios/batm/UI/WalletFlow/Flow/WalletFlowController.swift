@@ -23,10 +23,4 @@ extension WalletFlowController: WalletModuleDelegate {
   }
 }
 
-extension WalletFlowController: ManageWalletsModuleDelegate {
-  func didChangeVisibility() {
-    module?.fetchCoinsBalance()
-  }
-}
-
 extension WalletFlowController: CoinDetailsFlowControllerDelegate {}
