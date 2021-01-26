@@ -255,7 +255,6 @@ class StakingFragment : BaseFragment<FragmentStakingBinding>() {
                         withdrawButtonView.toggle(showWithdrawButton)
                     }
                     StakeDetailsStatus.WITHDRAW_PENDING -> {
-                        val showWithdrawButton = untilWithdraw == 0
                         invalidateStakingDetails()
                         // header
                         coinInputLayout.getEditText().isEnabled = false
@@ -281,10 +280,10 @@ class StakingFragment : BaseFragment<FragmentStakingBinding>() {
                         tvDurationValue.show()
                         // others
                         thirdDivider.show()
-                        tvWithdraw.toggle(!showWithdrawButton)
+                        tvWithdraw.hide()
                         createButtonView.hide()
                         cancelButtonView.hide()
-                        withdrawButtonView.toggle(showWithdrawButton)
+                        withdrawButtonView.hide()
                     }
                     else -> {
                         createButtonView.hide()
@@ -304,7 +303,6 @@ class StakingFragment : BaseFragment<FragmentStakingBinding>() {
                         StakingTransactionState.WITHDRAW -> R.string.staking_screen_success_withdrawn
                     }
                     Toast.makeText(requireContext(), stringResource, Toast.LENGTH_LONG).show()
-                    showContent()
                 }
                 is LoadingData.Error -> {
                     val stringResource = when (data.data!!) {
@@ -379,7 +377,6 @@ class StakingFragment : BaseFragment<FragmentStakingBinding>() {
                 untilWithdraw,
                 untilWithdraw
             )
-            binding.withdrawButtonView.isEnabled = untilWithdraw == 0
         }
         // header
         binding.tvStakeRate.text = getString(

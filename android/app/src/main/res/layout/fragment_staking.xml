@@ -11,13 +11,12 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingBottom="16dp">
+        android:layout_height="wrap_content">
 
         <com.app.belcobtm.presentation.core.views.CoinInputLayout
             android:id="@+id/coinInputLayout"
             android:layout_width="0dp"
-            android:layout_height="160dp"
+            android:layout_height="wrap_content"
             android:background="@color/colorLightGray"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -253,7 +252,7 @@
             style="@style/Text.Regular3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
+            android:layout_marginBottom="@dimen/margin_x2"
             android:drawableStart="@drawable/ic_withdraw"
             android:drawablePadding="8dp"
             android:textColor="@color/colorPrimary"
@@ -265,7 +264,6 @@
         <com.google.android.material.button.MaterialButton
             android:id="@+id/createButtonView"
             style="@style/Button.Primary"
-            android:layout_marginBottom="0dp"
             android:enabled="false"
             android:text="@string/staking_screen_stake"
             android:visibility="gone"
@@ -278,7 +276,6 @@
         <com.google.android.material.button.MaterialButton
             android:id="@+id/cancelButtonView"
             style="@style/Button.Primary"
-            android:layout_marginBottom="0dp"
             android:text="@string/staking_screen_stake_cancel"
             android:visibility="gone"
             app:layout_constraintBottom_toTopOf="@id/withdrawButtonView"
@@ -288,9 +285,7 @@
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/withdrawButtonView"
-            style="@style/Button.Secondary"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp"
+            style="@style/Button.Primary"
             android:text="@string/staking_screen_unstake"
             android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
