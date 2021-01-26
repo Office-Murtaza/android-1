@@ -60,16 +60,18 @@ class SeedPhraseFormView: UIView, MDCChipFieldDelegate {
     func chipField(_ chipField: MDCChipField, didRemoveChip chip: MDCChipView) {
       updateSeedPhrase()
     }
-  
-  func configure(for seedPhrase: [String]) {
-    chipField.chips.forEach { chipField.removeChip($0) }
     
-    seedPhrase.forEach {
-      let chipView = MDCChipView()
-      chipView.titleLabel.text = $0
-      chipField.addChip(chipView)
+    func configure(for seedPhrase: [String]) {
+        chipField.chips.forEach { chipField.removeChip($0) }
+        
+        seedPhrase.forEach {
+            let chipView = MDCChipView()
+            chipView.titleLabel.text = $0
+            chipField.addChip(chipView)
+        }
+        
+        updateSeedPhrase()
     }
-}
 }
 
 extension Reactive where Base == SeedPhraseFormView {

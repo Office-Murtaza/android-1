@@ -66,12 +66,13 @@ class SeedPhrasePresenter: ModulePresenter, SeedPhraseModule {
      .flatMap { [unowned self] mode -> Driver<String> in
        switch mode {
        case .creation:
+        store.action.accept(.resetSeedPhrase)
         return self.track(self.usecase.createWallet(seedPhrase: store.currentState.fullSeedPhrase).andThen(self.usecase.getSeedPhrase()))
        case .showing:
          return self.track(self.usecase.getSeedPhrase())
        }
    }
-        .map { SeedPhraseAction.generateSeedPhrase($0.separatedWords) }
+   .map { SeedPhraseAction.generateSeedPhrase($0.separatedWords) }
    .bind(to: store.action)
    .disposed(by: disposeBag)
     
