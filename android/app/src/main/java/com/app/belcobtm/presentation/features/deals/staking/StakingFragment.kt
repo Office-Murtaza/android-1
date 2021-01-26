@@ -20,6 +20,11 @@ class StakingFragment : BaseFragment<FragmentStakingBinding>() {
     private val viewModel: StakingViewModel by viewModel()
     private val doubleTextWatcher: DoubleTextWatcher = DoubleTextWatcher(
         firstTextWatcher = { editable ->
+            if (viewModel.stakeDetailsLiveData.value !is LoadingData.Success) {
+                // random crash which was caused by accessing viewmodel's lateinit properties
+                // before their initialization
+                return@DoubleTextWatcher
+            }
             val cryptoAmount: Double = editable.getDouble()
             with(binding.coinInputLayout.getEditText()) {
                 if (cryptoAmount > 0) {
