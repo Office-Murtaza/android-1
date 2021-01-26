@@ -82,6 +82,7 @@ class CoinStakingInfoView: UIView {
             $0.left.equalToSuperview().offset(15)
             $0.right.equalTo(verticalSeparatorView.snp.left).offset(0)
             $0.bottom.equalTo(leftAmountLabel.snp.top).offset(-2)
+            $0.height.equalTo(20)
         }
         
         leftAmountLabel.snp.makeConstraints {
@@ -102,6 +103,7 @@ class CoinStakingInfoView: UIView {
             $0.left.equalTo(verticalSeparatorView.snp.right).offset(0)
             $0.right.equalToSuperview().offset(-15)
             $0.bottom.equalTo(rightAmountLabel.snp.top).offset(-2)
+            $0.height.equalTo(20)
         }
         
         rightAmountLabel.snp.makeConstraints {

@@ -73,7 +73,7 @@ final class CoinStakingPresenter: ModulePresenter, CoinStakingModule {
                                                      self.usecase.getCoin(for: .catm)
                                                         .do(onSuccess: { [store] in store.action.accept(.setupCoin($0)) })
                                                         .asCompletable(),
-                                                     self.usecase.getCoinsBalance()
+                                                     self.usecase.getCoinsBalance(by: .catm)
                                                         .do(onSuccess: { [store] in store.action.accept(.setupCoinBalances($0.coins)) })
                                                         .asCompletable()))
             }

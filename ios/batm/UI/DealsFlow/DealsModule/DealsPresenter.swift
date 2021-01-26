@@ -31,7 +31,7 @@ class DealsPresenter: ModulePresenter, DealsModule {
                 return self.track(Observable.combineLatest(self.usecase.getStakeDetails(for: .catm).asObservable(),
                                                            self.usecase.getCoinDetails(for: .catm).asObservable(),
                                                            self.usecase.getCoin(for: .catm).asObservable(),
-                                                           self.usecase.getCoinsBalance().asObservable()))
+                                                           self.usecase.getCoinsBalance(by: .catm).asObservable()))
             }.withLatestFrom(state) { ($1, $0.0, $0.1, $0.2, $0.3) }
             .subscribe(onNext: { [delegate] (dealsState, stakeDetails, coinDetails, coin, coinBalances) in
                 delegate?.didSelectStaking(coin: coin,

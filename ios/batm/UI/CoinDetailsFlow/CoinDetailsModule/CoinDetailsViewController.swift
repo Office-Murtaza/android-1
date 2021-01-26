@@ -30,6 +30,7 @@ final class CoinDetailsViewController: ModuleViewController<CoinDetailsPresenter
     if let index = self.tableView.indexPathForSelectedRow {
       self.tableView.deselectRow(at: index, animated: true)
     }
+    presenter.updateScreenRelay.accept(())
   }
   
   override func setupUI() {
@@ -62,9 +63,9 @@ final class CoinDetailsViewController: ModuleViewController<CoinDetailsPresenter
     }
     
     // TODO: Should be removed after transferring to the Deals screen
-    fab.view.addItem(title: localize(L.CoinDetails.sendGift), image: UIImage(named: "fab_send_gift")) { [unowned self] _ in
-      self.didTapSendGiftRelay.accept(())
-    }
+//    fab.view.addItem(title: localize(L.CoinDetails.sendGift), image: UIImage(named: "fab_send_gift")) { [unowned self] _ in
+//      self.didTapSendGiftRelay.accept(())
+//    }
 //    fab.view.addItem(title: localize(L.CoinDetails.sell), image: UIImage(named: "fab_sell")) { [unowned self] _ in
 //        self.didTapSellRelay.accept(())
 //    }

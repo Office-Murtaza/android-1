@@ -13,7 +13,7 @@ protocol DealsUsecase {
     func withdrawStake(from coin: BTMCoin, with coinDetails: CoinDetails, stakeDetails: StakeDetails) -> Completable
     func getCoinDetails(for type: CustomCoinType) -> Single<CoinDetails>
     func getCoin(for type: CustomCoinType) -> Single<BTMCoin>
-    func getCoinsBalance() -> Single<CoinsBalance>
+    func getCoinsBalance(by type: CustomCoinType) -> Single<CoinsBalance>
 }
 
 class DealsUsecaseImpl: DealsUsecase {
@@ -32,9 +32,9 @@ class DealsUsecaseImpl: DealsUsecase {
         self.walletStorage = walletStorage
     }
     
-    func getCoinsBalance() -> Single<CoinsBalance> {
+    func getCoinsBalance(by type: CustomCoinType) -> Single<CoinsBalance> {
         return walletStorage.get()
-            .map { $0.coins.filter { $0.isVisible } }
+            .map { $0.coins.filter { $0.type == type } }
             .asObservable()
             .withLatestFrom(accountStorage.get()) { ($1, $0) }
             .flatMap { [api] in

@@ -21,6 +21,8 @@ final class CoinDetailsPresenter: ModulePresenter, CoinDetailsModule {
         var reserve: Driver<Void>
     }
     
+    let updateScreenRelay = PublishRelay<Void>()
+    
     private let usecase: CoinDetailsUsecase
     private let store: Store
     private let fetchTransactionsRelay = PublishRelay<Void>()
@@ -55,6 +57,18 @@ final class CoinDetailsPresenter: ModulePresenter, CoinDetailsModule {
     }
       
     func bind(input: Input) {
+        updateScreenRelay
+            .withLatestFrom(state)
+            .map { $0.coinDetails?.type }
+            .filterNil()
+            .flatMap { [unowned self] type in
+                return self.track(self.walletUsecase.getCoinBalance(by: type)
+                                    .do(onSuccess: { [store] in store.action.accept(.setupCoinBalances($0.coins)) })
+                                    .asCompletable())
+            }
+            .subscribe(onNext: {})
+            .disposed(by: disposeBag)
+        
         input.refresh
             .asObservable()
             .flatFilter(activity.not())
@@ -205,7 +219,6 @@ final class CoinDetailsPresenter: ModulePresenter, CoinDetailsModule {
     }
   }
   
-    
     private func setupBindings() {
         let coinTypeObservable = state
             .map { $0.coinDetails?.type }
