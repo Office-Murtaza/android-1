@@ -4,7 +4,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.lifecycle.Observer
 import com.app.belcobtm.R
 import com.app.belcobtm.data.rest.transaction.response.StakeDetailsStatus
 import com.app.belcobtm.databinding.FragmentStakingBinding
@@ -20,30 +19,41 @@ class StakingFragment : BaseFragment<FragmentStakingBinding>() {
     private val viewModel: StakingViewModel by viewModel()
     private val doubleTextWatcher: DoubleTextWatcher = DoubleTextWatcher(
         firstTextWatcher = { editable ->
-            if (viewModel.stakeDetailsLiveData.value !is LoadingData.Success) {
+            val stakingDetails = viewModel.stakeDetailsLiveData.value
+            if (stakingDetails !is LoadingData.Success) {
                 // random crash which was caused by accessing viewmodel's lateinit properties
                 // before their initialization
                 return@DoubleTextWatcher
             }
-            val cryptoAmount: Double = editable.getDouble()
-            with(binding.coinInputLayout.getEditText()) {
+            if (stakingDetails.data.status == StakeDetailsStatus.NOT_EXIST
+                || stakingDetails.data.status == StakeDetailsStatus.WITHDRAWN
+            ) {
+                val cryptoAmount: Double = editable.getDouble()
+                val annualRewardPercents = stakingDetails.data.rewardsPercentAnnual ?: 0.0
+                val annualRewardData = (cryptoAmount * annualRewardPercents / 100).toStringCoin()
+                // during stake creaation there should be some calculation like
+                // converted values based on input
+                binding.tvUsdConvertedValue.text =
+                    (cryptoAmount * viewModel.getUsdPrice()).toStringUsd()
+                binding.tvAnualRewardAmountValue.text = getString(
+                    R.string.text_text,
+                    annualRewardData,
+                    LocalCoinType.CATM.name
+                )
+                binding.createButtonView.isEnabled =
+                    binding.coinInputLayout.getEditText().text.isNotBlank() &&
+                            binding.coinInputLayout.getEditText().text.getDouble() > 0
                 if (cryptoAmount > 0) {
                     val text = cryptoAmount.toStringCoin()
-                    setText(text)
-                    setSelection(text.length)
+                    binding.coinInputLayout.getEditText().setText(text)
+                    binding.coinInputLayout.getEditText().setSelection(text.length)
+                }
+                // "0" should always be displayed for user
+                // even through they try to clear the input
+                if (editable.isEmpty()) {
+                    editable.insert(0, "0")
                 }
             }
-            // "0" should always be displayed for user
-            // even through they try to clear the input
-            if (editable.isEmpty()) {
-                editable.insert(0, "0")
-            }
-            binding.tvUsdConvertedValue.text =
-                (cryptoAmount * viewModel.getUsdPrice()).toStringUsd()
-
-            binding.createButtonView.isEnabled =
-                binding.coinInputLayout.getEditText().text.isNotBlank() &&
-                        binding.coinInputLayout.getEditText().text.getDouble() > 0
         }
     )
     override var isMenuEnabled = true
@@ -66,9 +76,9 @@ class StakingFragment : BaseFragment<FragmentStakingBinding>() {
     }
 
     override fun FragmentStakingBinding.initListeners() {
-        binding.coinInputLayout.setOnMaxClickListener(View.OnClickListener {
+        binding.coinInputLayout.setOnMaxClickListener {
             binding.coinInputLayout.getEditText().setText(viewModel.getMaxValue().toStringCoin())
-        })
+        }
         createButtonView.setOnClickListener {
             binding.coinInputLayout.setErrorText(null, false)
             if (isValid()) {
@@ -298,7 +308,7 @@ class StakingFragment : BaseFragment<FragmentStakingBinding>() {
                 }
             }
         })
-        viewModel.transactionLiveData.observe(viewLifecycleOwner, Observer { data ->
+        viewModel.transactionLiveData.observe(viewLifecycleOwner, { data ->
             when (data) {
                 is LoadingData.Loading -> showLoading()
                 is LoadingData.Success -> {
@@ -347,7 +357,7 @@ class StakingFragment : BaseFragment<FragmentStakingBinding>() {
         // Usd converted value
         if (amount != null) {
             val usdValue = amount * price
-            binding.tvAnualRewardAmountValue.text = getString(
+            binding.tvUsdConvertedValue.text = getString(
                 R.string.staking_screen_usd_formatted,
                 usdValue.toStringUsd()
             )
