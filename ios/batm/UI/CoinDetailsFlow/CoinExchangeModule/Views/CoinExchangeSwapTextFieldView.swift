@@ -204,7 +204,7 @@ class CoinExchangeSwapTextFieldView: UIView, UIPickerViewDataSource, HasDisposeB
     }
     
     private func configure(cryptoAmount: Decimal, fiatAmount: Decimal,txFee: Decimal , type: CustomCoinType, weighted: Bool = false) {
-        balanceLabel.text = "\(localize(L.CoinDetails.balance)): \(cryptoAmount.coinFormatted.withCoinType(type))"
+        balanceLabel.text = "\(localize(L.CoinDetails.balance)) \(cryptoAmount.coinFormatted.withCoinType(type))"
         
         let font = UIFont.systemFont(ofSize: 12, weight: weighted ? .medium : .regular)
         balanceLabel.font = font

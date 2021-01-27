@@ -31,6 +31,7 @@ final class CoinStakingViewController: ModuleViewController<CoinStakingPresenter
         if #available(iOS 13.0, *) {
             overrideUserInterfaceStyle = .light
         }
+        title = localize(L.CoinStaking.title)
         view.addSubview(rootScrollView)
         rootScrollView.contentView.addSubviews(formView,
                                                stakingInfoView,
@@ -90,14 +91,6 @@ final class CoinStakingViewController: ModuleViewController<CoinStakingPresenter
     }
     
     func setupUIBindings() {
-        presenter.state
-            .map { $0.coin?.type.code }
-            .filterNil()
-            .drive(onNext: { [unowned self] in
-                self.title = String(format: localize(L.CoinStaking.title), $0)
-            })
-            .disposed(by: disposeBag)
-        
         let coinBalanceDriver = presenter.state
             .map { $0.coinBalance }
             .filterNil()
