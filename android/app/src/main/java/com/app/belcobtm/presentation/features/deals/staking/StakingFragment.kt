@@ -35,10 +35,12 @@ class StakingFragment : BaseFragment<FragmentStakingBinding>() {
                 // converted values based on input
                 binding.tvUsdConvertedValue.text =
                     (cryptoAmount * viewModel.getUsdPrice()).toStringUsd()
-                binding.tvAnualRewardAmountValue.text = getString(
-                    R.string.text_text,
-                    annualRewardData,
-                    LocalCoinType.CATM.name
+                binding.tvAnualRewardAmountValue.text = "+".plus(
+                    getString(
+                        R.string.text_text,
+                        annualRewardData,
+                        LocalCoinType.CATM.name
+                    )
                 )
                 binding.createButtonView.isEnabled =
                     binding.coinInputLayout.getEditText().text.isNotBlank() &&
@@ -86,10 +88,7 @@ class StakingFragment : BaseFragment<FragmentStakingBinding>() {
             }
         }
         binding.coinInputLayout.getEditText().actionDoneListener {
-            binding.coinInputLayout.setErrorText(null, false)
-            if (isValid()) {
-                viewModel.stakeCreate(binding.coinInputLayout.getEditText().text.getDouble())
-            }
+            hideKeyboard()
         }
         cancelButtonView.setOnClickListener {
             if (isValid()) {
@@ -379,11 +378,10 @@ class StakingFragment : BaseFragment<FragmentStakingBinding>() {
             binding.tvCanceledValue.text = cancelDate
         }
         if (duration != null) {
-            val days = TimeUnit.SECONDS.toDays(duration.toLong()).toInt()
             binding.tvDurationValue.text = resources.getQuantityString(
                 R.plurals.staking_screen_time_value,
-                days,
-                days
+                duration,
+                duration
             )
         }
         if (untilWithdraw != null) {
