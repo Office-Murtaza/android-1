@@ -232,11 +232,10 @@ final class CoinStakingViewController: ModuleViewController<CoinStakingPresenter
     private func setupCreateView(with stakeDetails: StakeDetails, coinBalance: CoinBalance) {
         presenter.state
             .drive(onNext: { [stakeDetails, coinBalance, cancelInfoView, stakingInfoView] state in
-                let percent = ((state.coinAmount.decimalValue ?? 0) * (Decimal(stakeDetails.annualPercent ?? 0))) / 100
-                let annualReward = (state.coinAmount.decimalValue ?? 0) + percent
+                let annualReward = ((state.coinAmount.decimalValue ?? 0) * (Decimal(stakeDetails.annualPercent ?? 0))) / 100
                 
                 cancelInfoView.configureRightView(with: localize(L.CoinStaking.Header.annualRewardAmount),
-                                                  value: "\(annualReward) \(coinBalance.type.code)",
+                                                  value: "+\(annualReward) \(coinBalance.type.code)",
                                                   valueColor: .ceruleanBlue)
                 stakingInfoView.configureRightView(with: localize(L.CoinStaking.Header.UsdConverted.title),
                                                    value: String(format: localize(L.CoinStaking.Header.UsdConverted.value),
