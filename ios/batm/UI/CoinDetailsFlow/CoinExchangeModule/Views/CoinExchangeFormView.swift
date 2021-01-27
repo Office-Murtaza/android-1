@@ -93,8 +93,13 @@ class CoinExchangeFormView: UIView {
         field.setupErrorField(errorText: error)
         field.amountTextField.textColor = error == nil ? .black : .errorRed
         
-        field.snp.remakeConstraints {
+        fromCoinView.snp.remakeConstraints {
             $0.top.left.right.equalToSuperview()
+            $0.height.equalTo(error == nil ? 136 : 150)
+        }
+        toCoinView.snp.remakeConstraints {
+            $0.top.equalTo(fromCoinView.snp.bottom)
+            $0.left.right.equalToSuperview()
             $0.height.equalTo(error == nil ? 136 : 150)
         }
     }

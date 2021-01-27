@@ -126,6 +126,13 @@ final class CoinStakingViewController: ModuleViewController<CoinStakingPresenter
         
         presenter.state
             .asObservable()
+            .map { $0.coinAmount }
+            .filterEmpty()
+            .bind(to: formView.rx.fromCoinAmountText)
+            .disposed(by: disposeBag)
+        
+        presenter.state
+            .asObservable()
             .map { ($0.coinAmountError, $0.isEthLowBalance) }
             .subscribeOn(MainScheduler.instance)
             .subscribe { [weak self] result in
@@ -249,6 +256,7 @@ final class CoinStakingViewController: ModuleViewController<CoinStakingPresenter
         let rewardAmount = String(format: localize(L.CoinStaking.Header.Reward.value),
                                   "\(stakeDetails.rewardAmount?.formatted() ?? "0") \(coinBalance.type.code)",
                                   "\(stakeDetails.rewardPercent?.formatted() ?? "0")%")
+        
         formView.configureStakeAmount(with: "\(stakeDetails.amount?.formatted() ?? "0")")
         
         stakingInfoView.configureRightView(with: localize(L.CoinStaking.Header.createdDate),

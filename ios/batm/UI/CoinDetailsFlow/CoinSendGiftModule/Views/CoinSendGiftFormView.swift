@@ -192,7 +192,8 @@ final class CoinSendGiftFormView: UIView, HasDisposeBag {
         field.errorFieldView.isHidden = error == nil
         field.setupErrorField(errorText: error)
         field.amountTextField.textColor = error == nil ? .black : .errorRed
-        coinAmountTextFieldView.snp.remakeConstraints{
+        
+        field.snp.remakeConstraints{
             $0.left.right.top.equalToSuperview()
             $0.height.equalTo(error == nil ? 120 : 136)
         }
