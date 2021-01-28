@@ -13,7 +13,6 @@ import com.app.belcobtm.presentation.core.mvvm.LoadingData
 import com.app.belcobtm.presentation.core.ui.fragment.BaseFragment
 import com.app.belcobtm.presentation.core.watcher.DoubleTextWatcher
 import org.koin.android.viewmodel.ext.android.viewModel
-import java.util.concurrent.TimeUnit
 
 class StakingFragment : BaseFragment<FragmentStakingBinding>() {
     private val viewModel: StakingViewModel by viewModel()
@@ -33,8 +32,10 @@ class StakingFragment : BaseFragment<FragmentStakingBinding>() {
                 val annualRewardData = (cryptoAmount * annualRewardPercents / 100).toStringCoin()
                 // during stake creaation there should be some calculation like
                 // converted values based on input
-                binding.tvUsdConvertedValue.text =
+                binding.tvUsdConvertedValue.text = getString(
+                    R.string.staking_screen_usd_formatted,
                     (cryptoAmount * viewModel.getUsdPrice()).toStringUsd()
+                )
                 binding.tvAnualRewardAmountValue.text = "+".plus(
                     getString(
                         R.string.text_text,
@@ -336,7 +337,7 @@ class StakingFragment : BaseFragment<FragmentStakingBinding>() {
         if (rewardsPercentAnnual != null) {
             binding.tvAnualPercentValue.text = getString(
                 R.string.staking_screen_rewards_percent,
-                rewardsPercentAnnual
+                rewardsPercentAnnual.toStringPercents()
             )
         }
         // Cancel hold period
@@ -350,7 +351,7 @@ class StakingFragment : BaseFragment<FragmentStakingBinding>() {
             binding.tvRewardsValue.text = getString(
                 R.string.staking_screen_rewards_amount,
                 rewardsAmount.toStringCoin(),
-                rewardsPercent
+                rewardsPercent.toStringPercents()
             )
         }
         // Usd converted value
@@ -414,7 +415,10 @@ class StakingFragment : BaseFragment<FragmentStakingBinding>() {
         ) {
             binding.coinInputLayout.getEditText().setText(amount.toStringCoin())
         } else {
-            binding.tvUsdConvertedValue.text = "0.0"
+            binding.tvUsdConvertedValue.text = getString(
+                R.string.staking_screen_usd_formatted,
+                "0"
+            )
             binding.coinInputLayout.getEditText().setText("0")
         }
     }

@@ -408,9 +408,9 @@
     <string name="staking_screen_canceled">Canceled</string>
     <string name="staking_screen_duration">Duration</string>
     <string name="staking_screen_rewards">Rewards</string>
-    <string name="staking_screen_rewards_amount">%1$s CATM\n%2$.2f %%</string>
-    <string name="staking_screen_rewards_percent">%1$.2f%%</string>
-    <string name="staking_screen_usd_formatted">$%s</string>
+    <string name="staking_screen_rewards_amount">%1$s CATM\n%2$s %%</string>
+    <string name="staking_screen_rewards_percent">%1$s%%</string>
+    <string name="staking_screen_usd_formatted">&#x24; %1$s</string>
     <string name="staking_screen_catm_price_formatted"><![CDATA[<b>1</b> CATM = $ <b>%s</b>]]></string>
     <string name="staking_screen_balance_formatted">@string/swap_screen_balance_formatted</string>
     <string name="staking_screen_staked">Staked</string>
