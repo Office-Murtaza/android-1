@@ -3,10 +3,7 @@ package com.app.belcobtm.presentation.core.ui.fragment
 import android.content.ComponentCallbacks
 import android.content.Context
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.MenuItem
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.view.inputmethod.InputMethodManager
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
@@ -26,13 +23,15 @@ import com.app.belcobtm.presentation.core.extensions.hide
 import com.app.belcobtm.presentation.core.extensions.show
 import com.app.belcobtm.presentation.core.extensions.toggle
 import com.app.belcobtm.presentation.core.mvvm.LoadingData
+import com.app.belcobtm.presentation.core.views.InterceptableFrameLayout
 import com.app.belcobtm.presentation.features.HostActivity
 import com.app.belcobtm.presentation.features.HostNavigationFragment
 import com.google.android.material.snackbar.Snackbar
 import org.koin.android.ext.android.get
 import org.koin.core.parameter.parametersOf
 
-abstract class BaseFragment<V : ViewBinding> : Fragment() {
+abstract class BaseFragment<V : ViewBinding> : Fragment(),
+    InterceptableFrameLayout.OnInterceptEventListener {
     private var cachedToolbarTitle: String = ""
     private var navController: NavController? = null
     protected open val isToolbarEnabled: Boolean = true
@@ -99,6 +98,7 @@ abstract class BaseFragment<V : ViewBinding> : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         this.navController = Navigation.findNavController(view)
         updateActionBar()
+        baseBinding.interceptableFrameLayout.interceptListner = this
         baseBinding.errorRetryButtonView.setOnClickListener(retryListener)
         with (binding) {
             initViews()
@@ -128,6 +128,10 @@ abstract class BaseFragment<V : ViewBinding> : Fragment() {
         } else {
             false
         }
+
+    override fun onIntercented(ev: MotionEvent) {
+        if (ev.action == MotionEvent.ACTION_DOWN) hideKeyboard()
+    }
 
     protected inline fun <reified T : Any> ComponentCallbacks.injectPresenter() = lazy {
         get<T>(null) { parametersOf(this) }

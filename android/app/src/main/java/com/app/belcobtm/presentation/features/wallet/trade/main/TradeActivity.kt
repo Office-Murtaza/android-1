@@ -3,6 +3,7 @@ package com.app.belcobtm.presentation.features.wallet.trade.main
 import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
+import android.view.MotionEvent
 import androidx.lifecycle.Observer
 import com.app.belcobtm.R
 import com.app.belcobtm.databinding.ActivityTradeBinding
@@ -14,6 +15,7 @@ import com.app.belcobtm.presentation.core.extensions.toStringCoin
 import com.app.belcobtm.presentation.core.extensions.toStringUsd
 import com.app.belcobtm.presentation.core.mvvm.LoadingData
 import com.app.belcobtm.presentation.core.ui.BaseActivity
+import com.app.belcobtm.presentation.core.views.InterceptableFrameLayout
 import com.app.belcobtm.presentation.features.HostActivity
 import com.app.belcobtm.presentation.features.wallet.trade.create.TradeCreateActivity
 import com.app.belcobtm.presentation.features.wallet.trade.details.TradeDetailsBuyActivity
@@ -26,7 +28,7 @@ import com.google.android.material.tabs.TabLayoutMediator
 import org.koin.android.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 
-class TradeActivity : BaseActivity() {
+class TradeActivity : BaseActivity(), InterceptableFrameLayout.OnInterceptEventListener {
 
     private lateinit var binding: ActivityTradeBinding
 
@@ -104,6 +106,10 @@ class TradeActivity : BaseActivity() {
         return super.onOptionsItemSelected(item)
     }
 
+    override fun onIntercented(ev: MotionEvent) {
+        if (ev.action == MotionEvent.ACTION_DOWN) hideSoftKeyboard()
+    }
+
     private fun ActivityTradeBinding.initListeners() {
         fabMenuView.setOnMenuToggleListener {
             if (it) {
@@ -129,6 +135,7 @@ class TradeActivity : BaseActivity() {
             tradePageAdapter.clearData()
             viewModel.updateSorting(TradeSortType.DISTANCE)
         }
+        container.interceptListner = this@TradeActivity
     }
 
     private fun ActivityTradeBinding.initObservers() {
