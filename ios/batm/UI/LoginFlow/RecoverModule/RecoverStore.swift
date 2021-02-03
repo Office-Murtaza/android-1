@@ -12,7 +12,7 @@ enum RecoverAction: Equatable {
 
 struct RecoverState: Equatable {
   
-  var phoneNumber: String = ""
+  var phoneNumber: String = localize(L.Phone.Default.prefix)
   var password: String = ""
   var phoneNumberError: String?
   var passwordError: String?

@@ -11,8 +11,8 @@ enum UpdatePhoneAction: Equatable {
 
 struct UpdatePhoneState: Equatable {
   
-  var oldPhoneNumber: String = ""
-  var phoneNumber: String = ""
+  var oldPhoneNumber: String = localize(L.Phone.Default.prefix)
+  var phoneNumber: String = localize(L.Phone.Default.prefix)
   var phoneNumberError: String?
   var validationState: ValidationState = .unknown
   

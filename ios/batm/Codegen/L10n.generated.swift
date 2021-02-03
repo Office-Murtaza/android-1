@@ -117,6 +117,9 @@ enum L {
     static let title = "notifications.title"
   }
 
+  struct Phone {
+  }
+
   struct PhoneVerification {
     static let codeSent = "phone_verification.code_sent"
     static let enterCode = "phone_verification.enter_code"
@@ -595,6 +598,12 @@ extension L.Notifications {
 
   struct Cell {
     static let title = "notifications.cell.title"
+  }
+}
+extension L.Phone {
+
+  struct Default {
+    static let prefix = "phone.default.prefix"
   }
 }
 extension L.PhoneVerification {

@@ -12,7 +12,7 @@ enum TransferReceiverAction {
 struct TransferReceiverState {
     
     var contacts: [CGroup]?
-    var phone: String?
+    var phone: String? = localize(L.Phone.Default.prefix)
     var selectedContact: BContact?
     var phoneNumberError: String?
     
@@ -64,7 +64,7 @@ final class TransferSelectReceiverStore: ViewStore<TransferReceiverAction, Trans
             state.phoneNumberError = nil
         case .reset:
             state.selectedContact = nil
-            state.phone = nil
+            state.phone = localize(L.Phone.Default.prefix)
         }
         return state
     }

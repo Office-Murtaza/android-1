@@ -31,7 +31,6 @@ final class TransferSelectReceiverViewController:ModuleViewController<TransferSe
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         presenter.resetState()
-        header.resetPhone()
     }
     
     func bind() {

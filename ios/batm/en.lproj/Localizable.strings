@@ -49,6 +49,7 @@
 "phone_verification.resend_code" = "Didn`t get the code? Resend code";
 "phone_verification.code_sent" = "New code was sent";
 "phone_verification.error.invalid_code" = "Invalid code";
+"phone.default.prefix" = "+1";
 
 "seed_phrase.title" = "Seed phrase";
 "seed_phrase.annotation" = "Create a new seed phrase or use your own. In case you lost seed phrase you will be not able to recover your wallet";

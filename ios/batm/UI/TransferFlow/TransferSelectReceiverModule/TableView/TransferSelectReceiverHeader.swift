@@ -28,10 +28,6 @@ class TransferSelectReceiverHeader: UIView {
         phoneNumberTextFieldController.placeholderText = localize(L.Transfer.Receiver.Phone.placeholder)
     }
     
-    func resetPhone() {
-        phoneNumberTextField.text = nil
-    }
-    
     func setupLayout() {
         addSubview(phoneNumberTextField)
         phoneNumberTextField.snp.makeConstraints {

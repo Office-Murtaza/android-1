@@ -14,7 +14,7 @@ enum CreateWalletAction: Equatable {
 
 struct CreateWalletState: Equatable {
   
-  var phoneNumber: String = ""
+  var phoneNumber: String = localize(L.Phone.Default.prefix);
   var password: String = ""
   var confirmPassword: String = ""
   var phoneNumberError: String?
