@@ -284,6 +284,14 @@ extension L.BuySellTradeDetails.Form {
 }
 extension L.CoinDetails {
 
+  struct Error {
+    static let transactionError = "coin_details.error.transaction_error"
+  }
+
+  struct Success {
+    static let transactionCreated = "coin_details.success.transaction_created"
+  }
+
   struct Transactions {
     static let empty = "coin_details.transactions.empty"
   }
@@ -344,6 +352,12 @@ extension L.CoinStaking {
     static let withdraw = "coin_staking.button.withdraw"
   }
 
+  struct ErrorStatus {
+    static let cancel = "coin_staking.error_status.cancel"
+    static let creation = "coin_staking.error_status.creation"
+    static let withdraw = "coin_staking.error_status.withdraw"
+  }
+
   struct Header {
     static let annualRewardAmount = "coin_staking.header.annual_reward_amount"
     static let cancelHoldPeriod = "coin_staking.header.cancel_hold_period"
@@ -358,6 +372,12 @@ extension L.CoinStaking {
     static let created = "coin_staking.status.created"
     static let formViewStatus = "coin_staking.status.form_view_status"
     static let withdrawPending = "coin_staking.status.withdraw_pending"
+  }
+
+  struct SuccessStatus {
+    static let canceled = "coin_staking.success_status.canceled"
+    static let created = "coin_staking.success_status.created"
+    static let withdrawn = "coin_staking.success_status.withdrawn"
   }
 
   struct Toast {

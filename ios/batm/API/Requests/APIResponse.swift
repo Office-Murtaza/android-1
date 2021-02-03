@@ -1,5 +1,12 @@
 import ObjectMapper
 
+enum ScreenType {
+    case recall
+    case reserve
+    case withdraw
+    case none
+}
+
 enum APIResponse<T: ImmutableMappable> {
   case response(T)
   case error(APIError)
@@ -24,7 +31,7 @@ extension APIResponse: ImmutableMappable {
 extension APIEmptyResponse: ImmutableMappable {
   init(map: Map) throws {
     if let error: ServerError = try? map.value("error") {
-      self = .error(.serverError(error))
+        self = .error(.serverError(error))
       return
     }
     

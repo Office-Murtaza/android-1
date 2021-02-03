@@ -116,7 +116,8 @@ class CoinDetailsUsecaseImpl: CoinDetailsUsecase {
                                    fee: coinDetails.txFee,
                                    fromAddress: coin.address,
                                    toAddress: destination,
-                                   transactionResultString: transactionResultString)
+                                   transactionResultString: transactionResultString,
+                                   from: .withdraw)
             }
     }
     
@@ -240,7 +241,8 @@ class CoinDetailsUsecaseImpl: CoinDetailsUsecase {
                                    fee: coinDetails.txFee,
                                    fromAddress: coin.address,
                                    toAddress: coinDetails.walletAddress,
-                                   transactionResultString: transactionResultString)
+                                   transactionResultString: transactionResultString,
+                                   from: .reserve)
             }
     }
     
@@ -250,7 +252,8 @@ class CoinDetailsUsecaseImpl: CoinDetailsUsecase {
                 return self.submit(userId: account.userId,
                                    type: coin.type,
                                    txType: .recall,
-                                   amount: amount)
+                                   amount: amount,
+                                   from: .recall)
             }
     }
     
@@ -332,7 +335,8 @@ class CoinDetailsUsecaseImpl: CoinDetailsUsecase {
                         imageId: String? = nil,
                         toCoinType: CustomCoinType? = nil,
                         toCoinAmount: Decimal? = nil,
-                        transactionResultString: String? = nil) -> Completable {
+                        transactionResultString: String? = nil,
+                        from screen: ScreenType = .none) -> Completable {
         
         return api.submitTransaction(userId: userId,
                                      type: type,
@@ -346,7 +350,8 @@ class CoinDetailsUsecaseImpl: CoinDetailsUsecase {
                                      imageId: imageId,
                                      toCoinType: toCoinType,
                                      toCoinAmount: toCoinAmount,
-                                     txhex: transactionResultString)
+                                     txhex: transactionResultString,
+                                     from: screen)
     }
     
     func getStakeDetails(for type: CustomCoinType) -> Single<StakeDetails> {

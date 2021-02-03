@@ -209,6 +209,8 @@
 "coin_details.one_year" = "1y";
 "coin_details.transactions.empty" = "Your transactions will appear here";
 "coin_details.transaction_created" = "Transaction was successfully created";
+"coin_details.success.transaction_created" = "%@ successfully created";
+"coin_details.error.transaction_error" = "%@ transaction error";
 
 "coin_deposit.title" = "Deposit %@";
 
@@ -325,7 +327,14 @@
 "coin_staking.status.form_view_status" = "Staked";
 "coin_staking.toast.completed" = "Stake successfully %@";
 "coin_staking.toast.error" = "Stake %@ error";
+"coin_staking.error_status.creation" = "creation";
+"coin_staking.error_status.cancel" = "cancel";
+"coin_staking.error_status.withdraw" = "withdraw";
+"coin_staking.success_status.created" = "created";
+"coin_staking.success_status.canceled" = "canceled";
+"coin_staking.success_status.withdrawn" = "withdrawn";
 
+// TODO: Delete after release 1.8
 "coin_staking.title" = "Staking";
 "coin_staking.header.amount.title" = "Amount";
 "coin_staking.header.status.title" = "Status";

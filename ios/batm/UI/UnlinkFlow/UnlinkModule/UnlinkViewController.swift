@@ -7,9 +7,7 @@ import MaterialComponents
 class UnlinkViewController: ModuleViewController<UnlinkPresenter> {
   
   let rootScrollView = RootScrollView()
-  
-  let imageView = UIImageView(image: UIImage(named: "unlink"))
-  
+    
   let infoView: InfoView = {
     let view = InfoView()
     view.setup(with: localize(L.Unlink.annotation))
@@ -24,8 +22,7 @@ class UnlinkViewController: ModuleViewController<UnlinkPresenter> {
     view.addSubviews(rootScrollView)
     
     rootScrollView.contentInsetAdjustmentBehavior = .never
-    rootScrollView.contentView.addSubviews(imageView,
-                                           infoView,
+    rootScrollView.contentView.addSubviews(infoView,
                                            unlinkButton)
   }
   
@@ -37,15 +34,9 @@ class UnlinkViewController: ModuleViewController<UnlinkPresenter> {
     rootScrollView.contentView.snp.makeConstraints {
       $0.height.equalToSuperview()
     }
-    imageView.snp.makeConstraints {
-      $0.top.equalToSuperview().offset(40)
-      $0.centerX.equalToSuperview()
-      $0.keepRatio(for: imageView)
-    }
-    imageView.setContentCompressionResistancePriority(.defaultLow, for: .vertical)
-    imageView.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
+    
     infoView.snp.makeConstraints {
-      $0.top.equalTo(imageView.snp.bottom).offset(40)
+      $0.top.equalToSuperview().offset(40)
       $0.left.right.equalToSuperview().inset(15)
       $0.bottom.lessThanOrEqualTo(unlinkButton.snp.top).offset(-40)
     }

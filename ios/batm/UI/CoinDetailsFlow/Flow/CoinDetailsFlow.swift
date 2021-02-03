@@ -98,7 +98,7 @@ class CoinDetailsFlow: BaseFlow<BTMNavigationController, CoinDetailsFlowControll
       return push(module.controller)
     case let .pop(toastMessage):
       toastMessage.flatMap { message in
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { [weak self] in
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) { [weak self] in
           self?.view.topViewController?.view.makeToast(message)
         }
       }

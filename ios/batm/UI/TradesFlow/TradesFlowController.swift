@@ -35,33 +35,25 @@ extension TradesFlowController: TradesModuleDelegate {
 }
 
 extension TradesFlowController: BuySellTradeDetailsModuleDelegate {
-  
   func didFinishBuySellTradeDetails() {
     step.accept(TradesFlow.Steps.pop)
   }
-  
 }
 
 extension TradesFlowController: CreateEditTradeModuleDelegate {
-  
   func didFinishCreateEditTrade() {
     step.accept(TradesFlow.Steps.pop)
   }
-  
 }
 
 extension TradesFlowController: ReserveModuleDelegate {
-  
-  func didFinishReserve() {
-    step.accept(TradesFlow.Steps.pop)
-  }
-
+    func didFinishReserve(with transactionResult: String) {
+        step.accept(TradesFlow.Steps.pop)
+    }
 }
 
 extension TradesFlowController: RecallModuleDelegate {
-  
-  func didFinishRecall() {
-    step.accept(TradesFlow.Steps.pop)
-  }
-
+    func didFinishRecall(with transactionResult: String) {
+        step.accept(TradesFlow.Steps.pop)
+    }
 }

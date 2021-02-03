@@ -96,20 +96,20 @@ final class CoinStakingPresenter: ModulePresenter, CoinStakingModule {
         switch stakeDetails.status {
         case .notExist, .withdrawn:
             stakeAction = usecase.createStake(from: coin, with: coinDetails, amount: coinAmount)
-            stakeErrorStatus = "creation"
-            stakeSuccessStatus = "created"
+            stakeErrorStatus = localize(L.CoinStaking.ErrorStatus.creation)
+            stakeSuccessStatus = localize(L.CoinStaking.SuccessStatus.created)
         case .created:
             stakeAction = usecase.cancelStake(from: coin, with: coinDetails, stakeDetails: stakeDetails)
-            stakeErrorStatus = "cancel"
-            stakeSuccessStatus = "canceled"
+            stakeErrorStatus = localize(L.CoinStaking.ErrorStatus.cancel)
+            stakeSuccessStatus = localize(L.CoinStaking.SuccessStatus.canceled)
         case .canceled:
             stakeAction = usecase.withdrawStake(from: coin, with: coinDetails, stakeDetails: stakeDetails)
-            stakeErrorStatus = "withdraw"
-            stakeSuccessStatus = "withdrawn"
+            stakeErrorStatus = localize(L.CoinStaking.ErrorStatus.withdraw)
+            stakeSuccessStatus = localize(L.CoinStaking.SuccessStatus.withdrawn)
         default:
             stakeAction = usecase.createStake(from: coin, with: coinDetails, amount: coinAmount)
-            stakeErrorStatus = "creation"
-            stakeSuccessStatus = "created"
+            stakeErrorStatus = localize(L.CoinStaking.ErrorStatus.creation)
+            stakeSuccessStatus = localize(L.CoinStaking.SuccessStatus.created)
         }
         
         return stakeAction

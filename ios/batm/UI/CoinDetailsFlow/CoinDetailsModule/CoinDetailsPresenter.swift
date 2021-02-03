@@ -62,9 +62,11 @@ final class CoinDetailsPresenter: ModulePresenter, CoinDetailsModule {
             .map { $0.coinDetails?.type }
             .filterNil()
             .flatMap { [unowned self] type in
-                return self.track(self.walletUsecase.getCoinBalance(by: type)
-                                    .do(onSuccess: { [store] in store.action.accept(.setupCoinBalances($0.coins)) })
-                                    .asCompletable())
+                return self.track(Completable.concat(self.walletUsecase.getCoinBalance(by: type)
+                                                        .do(onSuccess: { [store] in store.action.accept(.setupCoinBalances($0.coins)) })
+                                                        .asCompletable(),
+                                                     self.getTransactions(for: type).asCompletable()),
+                                  trackers: [self.errorTracker])
             }
             .subscribe()
             .disposed(by: disposeBag)
@@ -99,14 +101,6 @@ final class CoinDetailsPresenter: ModulePresenter, CoinDetailsModule {
             .withLatestFrom(state)
             .filter { $0.coin != nil }
             .drive(onNext: { [delegate] in delegate?.showDepositScreen(coin: $0.coin!) })
-            .disposed(by: disposeBag)
-        
-        input.withdraw
-            .withLatestFrom(state)
-            .filter { $0.coin != nil }
-            .drive(onNext: { [delegate] in delegate?.showWithdrawScreen(coin: $0.coin!,
-                                                                        coinBalances: $0.coinBalances!,
-                                                                        coinDetails: $0.coinDetails!) })
             .disposed(by: disposeBag)
         
         input.sendGift
@@ -145,22 +139,6 @@ final class CoinDetailsPresenter: ModulePresenter, CoinDetailsModule {
                                                                       coinDetails: $0.coinDetails!) })
             .disposed(by: disposeBag)
         
-        input.reserve
-          .withLatestFrom(state)
-          .filter { $0.coin != nil }
-          .drive(onNext: { [delegate] in delegate?.showReserve(coin: $0.coin!,
-                                                               coinBalances: $0.coinBalances!,
-                                                               coinDetails: $0.coinDetails!) })
-          .disposed(by: disposeBag)
-        
-        input.recall
-          .withLatestFrom(state)
-          .filter { $0.coin != nil }
-          .drive(onNext: { [delegate] in delegate?.showRecall(coin: $0.coin!,
-                                                              coinBalances: $0.coinBalances!,
-                                                              coinDetails: $0.coinDetails!) })
-          .disposed(by: disposeBag)
-        
         input.showMore
             .drive(onNext: { [fetchTransactionsRelay] _ in fetchTransactionsRelay.accept(()) })
             .disposed(by: disposeBag)
@@ -193,6 +171,10 @@ final class CoinDetailsPresenter: ModulePresenter, CoinDetailsModule {
         }.subscribe()
         .disposed(by: disposeBag)
       
+        proceedWithRecall(with: input)
+        proceedWithReserve(with: input)
+        proceedWithWithdraw(with: input)
+        
       setupBindings()
     }
   
@@ -202,7 +184,6 @@ final class CoinDetailsPresenter: ModulePresenter, CoinDetailsModule {
         completable(.completed)
         return Disposables.create {}
       }
-      
       
       if let predefinedData = self.store.currentState.predefinedData {
         store.action.accept(.updateSelectedPeriod(period, PriceChartDetails(prices: predefinedData.chartData)))
@@ -256,11 +237,41 @@ final class CoinDetailsPresenter: ModulePresenter, CoinDetailsModule {
             .withLatestFrom(state)
             .filter { !$0.isLastPage }
             .flatMap { [unowned self] in
-              self.track(self.getTransactions(for: ($0.coinDetails?.type ?? $0.predefinedData?.balance.type as! CustomCoinType),
+              self.track(self.getTransactions(for: ($0.coinDetails?.type ?? $0.predefinedData!.balance.type),
                                               from: $0.nextPage),
                          trackers: [self.errorTracker])
             }
             .subscribe()
+            .disposed(by: disposeBag)
+    }
+    
+    private func proceedWithRecall(with input: Input) {
+        input.recall
+          .withLatestFrom(state)
+          .filter { $0.coin != nil }
+          .drive(onNext: { [delegate] in delegate?.showRecall(coin: $0.coin!,
+                                                              coinBalances: $0.coinBalances!,
+                                                              coinDetails: $0.coinDetails!) })
+          .disposed(by: disposeBag)
+    }
+    
+    private func proceedWithReserve(with input: Input) {
+        input.reserve
+          .withLatestFrom(state)
+          .filter { $0.coin != nil }
+          .drive(onNext: { [delegate] in delegate?.showReserve(coin: $0.coin!,
+                                                               coinBalances: $0.coinBalances!,
+                                                               coinDetails: $0.coinDetails!) })
+          .disposed(by: disposeBag)
+    }
+    
+    private func proceedWithWithdraw(with input: Input) {
+        input.withdraw
+            .withLatestFrom(state)
+            .filter { $0.coin != nil }
+            .drive(onNext: { [delegate] in delegate?.showWithdrawScreen(coin: $0.coin!,
+                                                                        coinBalances: $0.coinBalances!,
+                                                                        coinDetails: $0.coinDetails!) })
             .disposed(by: disposeBag)
     }
     

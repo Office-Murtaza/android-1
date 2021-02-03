@@ -51,7 +51,8 @@ protocol APIGateway {
                          imageId: String?,
                          toCoinType: CustomCoinType?,
                          toCoinAmount: Decimal?,
-                         txhex: String?) -> Completable
+                         txhex: String?,
+                         from screen: ScreenType) -> Completable
   func getTronBlockHeader(type: CustomCoinType) -> Single<BTMTronBlockHeader>
   func getGiftAddress(type: CustomCoinType, phone: String) -> Single<GiftAddress>
   func getNonce(type: CustomCoinType, address: String) -> Single<Nonce>
@@ -84,15 +85,15 @@ final class APIGatewayImpl: APIGateway {
     self.errorService = errorService
   }
   
-  private func processError<T>(_ error: APIError) -> Single<T> {
-    if case let .serverError(serverError) = error, serverError.code == 1 {
-      return errorService.showError(for: .serverError).andThen(.error(error))
-    }
+    private func processError<T>(_ error: APIError, from screen: ScreenType) -> Single<T> {
+        if case let .serverError(serverError) = error, serverError.code == 1, screen == .none {
+            return errorService.showError(for: .serverError).andThen(.error(error))
+        }
     
-    return Single.error(error)
+        return Single.error(error)
   }
   
-  func execute<Response: ImmutableMappable, Request: APIRequest>(_ request: Request) -> Single<Response>
+  func execute<Response: ImmutableMappable, Request: APIRequest>(_ request: Request, from screen: ScreenType = .none) -> Single<Response>
     where Request.ResponseType == APIResponse<Response>, Request.ResponseTrait == SingleResponseTrait {
       return api.execute(request)
         .flatMap { [unowned self] in
@@ -100,12 +101,12 @@ final class APIGatewayImpl: APIGateway {
           case let .response(response):
             return Single.just(response)
           case let .error(error):
-            return self.processError(error)
+            return self.processError(error, from: screen)
           }
         }
   }
-  
-  func execute<Request: APIRequest>(_ request: Request) -> Completable
+   
+  func execute<Request: APIRequest>(_ request: Request, from screen: ScreenType = .none) -> Completable
     where Request.ResponseType == APIEmptyResponse, Request.ResponseTrait == SingleResponseTrait {
       return api.execute(request)
         .flatMap { [unowned self] apiResponse -> Single<Void> in
@@ -113,7 +114,7 @@ final class APIGatewayImpl: APIGateway {
           case .response:
             return Single.just(())
           case let .error(error):
-            return self.processError(error)
+            return self.processError(error, from: screen)
           }
         }
         .toCompletable()
@@ -239,7 +240,8 @@ final class APIGatewayImpl: APIGateway {
                          imageId: String?,
                          toCoinType: CustomCoinType?,
                          toCoinAmount: Decimal?,
-                         txhex: String?) -> Completable {
+                         txhex: String?,
+                         from screen: ScreenType) -> Completable {
     let request = SubmitTransactionRequest(userId: userId,
                                            coinId: type.code,
                                            txType: txType,
@@ -253,7 +255,7 @@ final class APIGatewayImpl: APIGateway {
                                            toCoinId: toCoinType?.code,
                                            toCoinAmount: toCoinAmount,
                                            txhex: txhex)
-    return execute(request)
+    return execute(request, from: screen)
   }
   
   func getTronBlockHeader(type: CustomCoinType) -> Single<BTMTronBlockHeader> {

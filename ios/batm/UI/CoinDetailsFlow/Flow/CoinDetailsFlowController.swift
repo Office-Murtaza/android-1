@@ -51,11 +51,9 @@ extension CoinDetailsFlowController: CoinDetailsModuleDelegate {
 extension CoinDetailsFlowController: CoinDepositModuleDelegate {}
 
 extension CoinDetailsFlowController: CoinWithdrawModuleDelegate {
-  
-  func didFinishCoinWithdraw() {
-    step.accept(CoinDetailsFlow.Steps.pop(localize(L.CoinDetails.transactionCreated)))
-  }
-  
+    func didFinishCoinWithdraw(with transactionResult: String) {
+        step.accept(CoinDetailsFlow.Steps.pop(localize(transactionResult)))
+    }
 }
 
 extension CoinDetailsFlowController: CoinSellModuleDelegate {
@@ -105,13 +103,13 @@ extension CoinDetailsFlowController: TradesFlowControllerDelegate {
 }
 
 extension CoinDetailsFlowController: ReserveModuleDelegate {
-  func didFinishReserve() {
-    step.accept(CoinDetailsFlow.Steps.pop(localize(L.CoinDetails.transactionCreated)))
-  }
+    func didFinishReserve(with transactionResult: String) {
+        step.accept(CoinDetailsFlow.Steps.pop(localize(transactionResult)))
+    }
 }
 
 extension CoinDetailsFlowController: RecallModuleDelegate {
-  func didFinishRecall() {
-    step.accept(CoinDetailsFlow.Steps.pop(localize(L.CoinDetails.transactionCreated)))
+    func didFinishRecall(with transactionResult: String) {
+        step.accept(CoinDetailsFlow.Steps.pop(localize(transactionResult)))
   }
 }

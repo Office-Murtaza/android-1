@@ -67,30 +67,38 @@ final class CoinWithdrawPresenter: ModulePresenter, CoinWithdrawModule {
       .disposed(by: disposeBag)
     
     input.submit
-      .asObservable()
-      .doOnNext { [store] in store.action.accept(.updateValidationState) }
-      .withLatestFrom(state)
-      .filter { $0.validationState.isValid }
-      .flatMap { [unowned self] in self.track(self.withdraw(for: $0)) }
-      .subscribe(onNext: { [delegate] in delegate?.didFinishCoinWithdraw() })
-      .disposed(by: disposeBag)
+        .asObservable()
+        .doOnNext { [store] in store.action.accept(.updateValidationState) }
+        .withLatestFrom(state)
+        .filter { $0.validationState.isValid }
+        .flatMap { [unowned self] in self.track(self.withdraw(for: $0)) }
+        .subscribe(onNext: { [weak self] in self?.proceedWithdraw(with: L.CoinDetails.Success.transactionCreated)
+        })
+        .disposed(by: disposeBag)
   }
   
-  private func withdraw(for state: CoinWithdrawState) -> Completable {
-    return usecase.withdraw(from: state.coin!,
+    private func withdraw(for state: CoinWithdrawState) -> Completable {
+        return usecase.withdraw(from: state.coin!,
                                 with: state.coinDetails!,
                                 to: state.address,
                                 amount: state.coinAmount.decimalValue ?? 0.0)
-      .catchError { [store] in
-        if let apiError = $0 as? APIError, case let .serverError(error) = apiError, let code = error.code, code > 1 {
-          if code == 3 {
-            store.action.accept(.updateCoinAmountError(error.message))
-          } else {
-            store.action.accept(.updateAddressError(error.message))
-          }
-        }
-        
-        throw $0
-      }
-  }
+            .catchError { [weak self, store] in
+                if let apiError = $0 as? APIError, case let .serverError(error) = apiError, let code = error.code, code > 1 {
+                    if code == 2 {
+                        self?.proceedWithdraw(with: L.CoinDetails.Error.transactionError)
+                    } else if code == 3 {
+                        store.action.accept(.updateCoinAmountError(error.message))
+                    } else {
+                        store.action.accept(.updateAddressError(error.message))
+                    }
+                }
+                throw $0
+            }
+    }
+    
+    private func proceedWithdraw(with result: String) {
+        let transactionResult = String(format: localize(result),
+                                       localize(L.CoinDetails.withdraw))
+        delegate?.didFinishCoinWithdraw(with: transactionResult)
+    }
 }

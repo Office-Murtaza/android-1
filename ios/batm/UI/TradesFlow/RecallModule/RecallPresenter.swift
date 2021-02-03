@@ -14,7 +14,6 @@ final class RecallPresenter: ModulePresenter, RecallModule {
   
   private let usecase: CoinDetailsUsecase
   private let store: Store
-
   weak var delegate: RecallModuleDelegate?
   
   var state: Driver<RecallState> {
@@ -49,24 +48,34 @@ final class RecallPresenter: ModulePresenter, RecallModule {
       .disposed(by: disposeBag)
     
     input.recall
-      .asObservable()
-      .doOnNext { [store] in store.action.accept(.updateValidationState) }
-      .withLatestFrom(state)
-      .filter { $0.validationState.isValid }
-      .flatMap { [unowned self] in self.track(self.recall(for: $0)) }
-      .subscribe(onNext: { [delegate] in delegate?.didFinishRecall() })
-      .disposed(by: disposeBag)
+        .asObservable()
+        .doOnNext { [store] in store.action.accept(.updateValidationState) }
+        .withLatestFrom(state)
+        .filter { $0.validationState.isValid }
+        .flatMap { [unowned self] in self.track(self.recall(for: $0)) }
+        .subscribe(onNext: { [weak self] in self?.proceedRecall(with: L.CoinDetails.Success.transactionCreated) })
+        .disposed(by: disposeBag)
   }
-  
-  private func recall(for state: RecallState) -> Completable {
-    return usecase.recall(from: state.coin!,
-                          amount: state.coinAmount.decimalValue ?? 0.0)
-      .catchError { [store] in
-        if let apiError = $0 as? APIError, case let .serverError(error) = apiError {
-          store.action.accept(.makeInvalidState(error.message))
-        }
-        
-        throw $0
-      }
-  }
+    
+    private func recall(for state: RecallState) -> Completable {
+        return usecase.recall(from: state.coin!,
+                              amount: state.coinAmount.decimalValue ?? 0.0)
+            .catchError { [weak self, store] in
+                if let apiError = $0 as? APIError, case let .serverError(error) = apiError {
+                    if error.code == 2 {
+                        self?.proceedRecall(with: L.CoinDetails.Error.transactionError)
+                    } else {
+                        store.action.accept(.makeInvalidState(error.message))
+                    }
+                }
+
+                throw $0
+            }
+    }
+    
+    private func proceedRecall(with result: String) {
+        let transactionResult = String(format: localize(result),
+                                       localize(L.CoinDetails.recall))
+        delegate?.didFinishRecall(with: transactionResult)
+    }
 }
