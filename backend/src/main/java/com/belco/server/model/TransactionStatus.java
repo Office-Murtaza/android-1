@@ -8,7 +8,8 @@ public enum TransactionStatus {
 
     PENDING(1),
     COMPLETE(2),
-    FAIL(3);
+    FAIL(3),
+    NOT_EXIST(4);
 
     private int value;
 

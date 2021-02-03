@@ -1,11 +1,14 @@
 package com.belco.server.rest;
 
 import com.belco.server.dto.SubmitTransactionDTO;
+import com.belco.server.dto.TransactionDetailsDTO;
 import com.belco.server.model.Response;
+import com.belco.server.model.TransactionStatus;
 import com.belco.server.model.TransactionType;
 import com.belco.server.service.CoinService;
 import com.belco.server.service.TransactionService;
 import org.apache.commons.lang.StringUtils;
+import org.apache.logging.log4j.util.Strings;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -59,9 +62,11 @@ public class TransactionController {
                 return transactionService.recall(userId, coin, dto);
             } else {
                 txId = coin.submitTransaction(dto);
+
+                Thread.sleep(2000);
             }
 
-            if (StringUtils.isNotBlank(txId)) {
+            if (StringUtils.isNotBlank(txId) && coin.isTransactionSeenOnBlockchain(txId)) {
                 if (TransactionType.SEND_TRANSFER.getValue() == dto.getType()) {
                     transactionService.persistTransfer(userId, coin, txId, dto);
                 }
@@ -87,9 +92,9 @@ public class TransactionController {
                 }
 
                 return Response.ok("txId", txId);
+            } else {
+                return Response.defaultError(coin.name() + " submit transaction error");
             }
-
-            return Response.defaultError(coin.name() + " submit transaction error");
         } catch (Exception e) {
             e.printStackTrace();
             return Response.serverError();

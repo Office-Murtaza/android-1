@@ -232,6 +232,11 @@ public class CoinService {
             }
 
             @Override
+            public boolean isTransactionSeenOnBlockchain(String txId) {
+                return blockbookService.isTransactionSeenOnBlockchain(getCoinType(), txId);
+            }
+
+            @Override
             public TransactionDetailsDTO getTransactionDetails(String txId, String address) {
                 return blockbookService.getTransactionDetails(getCoinType(), txId, address, getExplorerUrl());
             }
@@ -328,6 +333,11 @@ public class CoinService {
             @Override
             public String getName() {
                 return "bitcoin-cash";
+            }
+
+            @Override
+            public boolean isTransactionSeenOnBlockchain(String txId) {
+                return blockbookService.isTransactionSeenOnBlockchain(getCoinType(), txId);
             }
 
             @Override
@@ -430,6 +440,11 @@ public class CoinService {
             }
 
             @Override
+            public boolean isTransactionSeenOnBlockchain(String txId) {
+                return blockbookService.isTransactionSeenOnBlockchain(getCoinType(), txId);
+            }
+
+            @Override
             public TransactionDetailsDTO getTransactionDetails(String txId, String address) {
                 return blockbookService.getTransactionDetails(getCoinType(), txId, address, getExplorerUrl());
             }
@@ -526,6 +541,11 @@ public class CoinService {
             @Override
             public String getName() {
                 return "dash";
+            }
+
+            @Override
+            public boolean isTransactionSeenOnBlockchain(String txId) {
+                return blockbookService.isTransactionSeenOnBlockchain(getCoinType(), txId);
             }
 
             @Override
@@ -628,6 +648,11 @@ public class CoinService {
             }
 
             @Override
+            public boolean isTransactionSeenOnBlockchain(String txId) {
+                return blockbookService.isTransactionSeenOnBlockchain(getCoinType(), txId);
+            }
+
+            @Override
             public TransactionDetailsDTO getTransactionDetails(String txId, String address) {
                 return blockbookService.getTransactionDetails(getCoinType(), txId, address, getExplorerUrl());
             }
@@ -727,6 +752,11 @@ public class CoinService {
             }
 
             @Override
+            public boolean isTransactionSeenOnBlockchain(String txId) {
+                return gethService.isTransactionSeenOnBlockchain(txId);
+            }
+
+            @Override
             public TransactionDetailsDTO getTransactionDetails(String txId, String address) {
                 return gethService.getTransactionDetails(txId, address, getExplorerUrl());
             }
@@ -820,6 +850,11 @@ public class CoinService {
             @Override
             public String getName() {
                 return "catm";
+            }
+
+            @Override
+            public boolean isTransactionSeenOnBlockchain(String txId) {
+                return gethService.isTransactionSeenOnBlockchain(txId);
             }
 
             @Override
@@ -919,6 +954,11 @@ public class CoinService {
             }
 
             @Override
+            public boolean isTransactionSeenOnBlockchain(String txId) {
+                return gethService.isTransactionSeenOnBlockchain(txId);
+            }
+
+            @Override
             public TransactionDetailsDTO getTransactionDetails(String txId, String address) {
                 return gethService.getTransactionDetails(GethService.ERC20.USDT, txId, address, getExplorerUrl());
             }
@@ -1015,6 +1055,11 @@ public class CoinService {
             }
 
             @Override
+            public boolean isTransactionSeenOnBlockchain(String txId) {
+                return binanceService.isTransactionSeenOnBlockchain(txId);
+            }
+
+            @Override
             public TransactionDetailsDTO getTransactionDetails(String txId, String address) {
                 return binanceService.getTransactionDetails(txId, address, getExplorerUrl());
             }
@@ -1108,6 +1153,11 @@ public class CoinService {
             @Override
             public String getName() {
                 return "ripple";
+            }
+
+            @Override
+            public boolean isTransactionSeenOnBlockchain(String txId) {
+                return rippledService.isTransactionSeenOnBlockchain(txId);
             }
 
             @Override
@@ -1215,6 +1265,11 @@ public class CoinService {
             }
 
             @Override
+            public boolean isTransactionSeenOnBlockchain(String txId) {
+                return trongridService.isTransactionSeenOnBlockchain(txId);
+            }
+
+            @Override
             public TransactionDetailsDTO getTransactionDetails(String txId, String address) {
                 return trongridService.getTransactionDetails(txId, address, getExplorerUrl());
             }
@@ -1288,6 +1343,8 @@ public class CoinService {
         public abstract Long getGasLimit(String toAddress);
 
         public abstract String getName();
+
+        public abstract boolean isTransactionSeenOnBlockchain(String txId);
 
         public abstract TransactionDetailsDTO getTransactionDetails(String txId, String address);
 

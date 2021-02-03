@@ -197,17 +197,18 @@ public class GethService {
     }
 
     private static TransactionDetailsDTO getTransactionFromDB(String coll, BasicDBObject query, String address, String explorerUrl) {
+        TransactionDetailsDTO dto = new TransactionDetailsDTO();
+
         try {
             Document txDoc = mongo.getCollection(coll).find(query).first();
 
             if (txDoc == null) {
-                return new TransactionDetailsDTO();
+                dto.setStatus(TransactionStatus.NOT_EXIST);
             } else {
                 String txId = txDoc.getString("txId");
                 String fromAddress = txDoc.getString("fromAddress");
                 String toAddress = txDoc.getString("toAddress");
 
-                TransactionDetailsDTO dto = new TransactionDetailsDTO();
                 dto.setTxId(txId);
                 dto.setLink(explorerUrl + "/" + txId);
                 dto.setType(TransactionType.getType(fromAddress, toAddress, address));
@@ -217,14 +218,12 @@ public class GethService {
                 dto.setCryptoFee(extractFee(txDoc));
                 dto.setStatus(TransactionStatus.valueOf(txDoc.getInteger("status")));
                 dto.setDate2(new Date(txDoc.getLong("blockTime")));
-
-                return dto;
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
 
-        return new TransactionDetailsDTO();
+        return dto;
     }
 
     private static void addPendingTransaction(String txId, String fromAddress, String toAddress, BigDecimal amount) {
@@ -482,6 +481,20 @@ public class GethService {
         }
 
         return null;
+    }
+
+    public boolean isTransactionSeenOnBlockchain(String txId) {
+        try {
+            Optional<TransactionReceipt> receiptOptional = web3.ethGetTransactionReceipt(txId).send().getTransactionReceipt();
+
+            if(receiptOptional.isPresent()) {
+                return true;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return false;
     }
 
     public void addAddressToJournal(String address) {

@@ -15,6 +15,7 @@ import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 import org.web3j.utils.Numeric;
 import wallet.core.java.AnySigner;
@@ -169,6 +170,37 @@ public class RippledService {
         return new CurrentAccountDTO();
     }
 
+    public boolean isTransactionSeenOnBlockchain(String txId) {
+        if (nodeService.isNodeAvailable(COIN_TYPE)) {
+            try {
+                JSONArray params = new JSONArray();
+                params.add(Util.toJsonObject("transaction", txId));
+
+                JSONObject req = new JSONObject();
+                req.put("method", "tx");
+                req.put("params", params);
+
+                JSONObject res = rest.postForObject(nodeService.getNodeUrl(COIN_TYPE), req, JSONObject.class).optJSONObject("result");
+
+                if(res.containsKey("error")) {
+                    if(res.optJSONObject("result").optString("error").equalsIgnoreCase("txnNotFound")) {
+                        return false;
+                    }
+                } else {
+                    return true;
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+
+                if (nodeService.switchToReserveNode(COIN_TYPE)) {
+                    return isTransactionSeenOnBlockchain(txId);
+                }
+            }
+        }
+
+        return false;
+    }
+
     public TransactionDetailsDTO getTransactionDetails(String txId, String address, String explorerUrl) {
         TransactionDetailsDTO dto = new TransactionDetailsDTO();
 
@@ -181,18 +213,17 @@ public class RippledService {
                 req.put("method", "tx");
                 req.put("params", params);
 
-                JSONObject res = rest.postForObject(nodeService.getNodeUrl(COIN_TYPE), req, JSONObject.class);
-                JSONObject tx = res.optJSONObject("result");
+                JSONObject res = rest.postForObject(nodeService.getNodeUrl(COIN_TYPE), req, JSONObject.class).optJSONObject("result");
 
                 dto.setTxId(txId);
                 dto.setLink(explorerUrl + "/" + txId);
-                dto.setCryptoAmount(getAmount(tx.optString("Amount")));
-                dto.setCryptoFee(getAmount(tx.optString("Fee")));
-                dto.setFromAddress(tx.optString("Account"));
-                dto.setToAddress(tx.optString("Destination"));
+                dto.setCryptoAmount(getAmount(res.optString("Amount")));
+                dto.setCryptoFee(getAmount(res.optString("Fee")));
+                dto.setFromAddress(res.optString("Account"));
+                dto.setToAddress(res.optString("Destination"));
                 dto.setType(TransactionType.getType(dto.getFromAddress(), dto.getToAddress(), address));
-                dto.setStatus(getStatus(tx.optString("status")));
-                dto.setDate2(new Date((tx.optLong("date") + 946684800L) * 1000));
+                dto.setStatus(getStatus(res.optString("status")));
+                dto.setDate2(new Date((res.optLong("date") + 946684800L) * 1000));
             } catch (Exception e) {
                 e.printStackTrace();
 
@@ -219,9 +250,8 @@ public class RippledService {
                 req.put("method", "account_tx");
                 req.put("params", params);
 
-                JSONObject res = rest.postForObject(nodeService.getNodeUrl(COIN_TYPE), req, JSONObject.class);
-                JSONObject jsonResult = res.optJSONObject("result");
-                JSONArray array = jsonResult.optJSONArray("transactions");
+                JSONObject res = rest.postForObject(nodeService.getNodeUrl(COIN_TYPE), req, JSONObject.class).optJSONObject("result");
+                JSONArray array = res.optJSONArray("transactions");
 
                 return collectNodeTxs(array, address);
             } catch (Exception e) {
@@ -325,10 +355,9 @@ public class RippledService {
                 req.put("method", "tx");
                 req.put("params", params);
 
-                JSONObject res = rest.postForObject(nodeService.getNodeUrl(COIN_TYPE), req, JSONObject.class);
-                JSONObject tx = res.optJSONObject("result");
+                JSONObject res = rest.postForObject(nodeService.getNodeUrl(COIN_TYPE), req, JSONObject.class).optJSONObject("result");
 
-                return !tx.optString("status").equalsIgnoreCase("error");
+                return !res.optString("status").equalsIgnoreCase("error");
             } catch (Exception e) {
                 e.printStackTrace();
 

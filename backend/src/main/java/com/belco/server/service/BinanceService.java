@@ -21,6 +21,7 @@ import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 import org.web3j.utils.Numeric;
 import wallet.core.java.AnySigner;
@@ -96,6 +97,24 @@ public class BinanceService {
         }
 
         return null;
+    }
+
+    public boolean isTransactionSeenOnBlockchain(String txId) {
+        if (nodeService.isNodeAvailable(COIN_TYPE)) {
+            try {
+                return rest.getForObject(nodeService.getNodeUrl(COIN_TYPE) + "/api/v1/tx/" + txId + "?format=json", JSONObject.class) != null;
+            } catch (HttpClientErrorException.NotFound notFound) {
+                return false;
+            } catch (Exception e) {
+                e.printStackTrace();
+
+                if (nodeService.switchToReserveNode(COIN_TYPE)) {
+                    return isTransactionSeenOnBlockchain(txId);
+                }
+            }
+        }
+
+        return false;
     }
 
     public TransactionDetailsDTO getTransactionDetails(String txId, String address, String explorerUrl) {

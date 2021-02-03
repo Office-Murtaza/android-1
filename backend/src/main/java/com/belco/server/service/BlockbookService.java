@@ -112,6 +112,24 @@ public class BlockbookService {
         return null;
     }
 
+    public  boolean isTransactionSeenOnBlockchain(CoinType coinType, String txId) {
+        if (nodeService.isNodeAvailable(coinType)) {
+            try {
+                return rest.getForObject(nodeService.getNodeUrl(coinType) + "/api/v2/tx/" + txId, JSONObject.class) != null;
+            } catch (HttpClientErrorException he) {
+               return false;
+            } catch (Exception e) {
+                e.printStackTrace();
+
+                if (nodeService.switchToReserveNode(coinType)) {
+                    return isTransactionSeenOnBlockchain(coinType, txId);
+                }
+            }
+        }
+
+        return false;
+    }
+
     public TransactionDetailsDTO getTransactionDetails(CoinType coinType, String txId, String address, String explorerUrl) {
         TransactionDetailsDTO dto = new TransactionDetailsDTO();
 
@@ -137,7 +155,7 @@ public class BlockbookService {
                 dto.setStatus(getStatus(res.optInt("confirmations")));
                 dto.setDate2(new Date(res.optLong("blockTime") * 1000));
             } catch (HttpClientErrorException he) {
-                dto.setStatus(TransactionStatus.FAIL);
+                dto.setStatus(TransactionStatus.NOT_EXIST);
             } catch (Exception e) {
                 e.printStackTrace();
 

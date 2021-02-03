@@ -88,6 +88,27 @@ public class TrongridService {
         return null;
     }
 
+    public boolean isTransactionSeenOnBlockchain(String txId) {
+        if (nodeService.isNodeAvailable(COIN_TYPE)) {
+            try {
+                JSONObject json = new JSONObject();
+                json.put("value", txId);
+
+                JSONObject res = JSONObject.fromObject(rest.postForObject(nodeService.getNodeUrl(COIN_TYPE) + "/wallet/gettransactionbyid", json, String.class));
+
+                return !res.isEmpty();
+            } catch (Exception e) {
+                e.printStackTrace();
+
+                if (nodeService.switchToReserveNode(COIN_TYPE)) {
+                    return isTransactionSeenOnBlockchain(txId);
+                }
+            }
+        }
+
+        return false;
+    }
+
     public TransactionDetailsDTO getTransactionDetails(String txId, String address, String explorerUrl) {
         TransactionDetailsDTO dto = new TransactionDetailsDTO();
 
