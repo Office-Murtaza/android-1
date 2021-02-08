@@ -5,5 +5,6 @@
         <attr name="text" format="string" />
         <attr name="value" format="string" />
         <attr name="withChevron" format="boolean" />
+        <attr name="withSwitch" format="boolean" />
     </declare-styleable>
 </resources>

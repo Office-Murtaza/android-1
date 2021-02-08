@@ -1,5 +1,7 @@
 package com.app.belcobtm.data
 
+import android.app.Application
+import androidx.biometric.BiometricManager
 import com.app.belcobtm.data.disk.AssetsDataStore
 import com.app.belcobtm.data.disk.shared.preferences.SharedPreferencesHelper
 import com.app.belcobtm.data.rest.settings.SettingsApiService
@@ -13,6 +15,7 @@ import com.app.belcobtm.domain.settings.item.VerificationVipDataItem
 import com.app.belcobtm.domain.settings.type.VerificationStatus
 
 class SettingsRepositoryImpl(
+    private val application: Application,
     private val apiService: SettingsApiService,
     private val assetsDataStore: AssetsDataStore,
     private val prefHelper: SharedPreferencesHelper
@@ -60,4 +63,21 @@ class SettingsRepositoryImpl(
 
     override suspend fun verifyPhone(phone: String): Either<Failure, Boolean> =
         apiService.verifyPhone(prefHelper.userId, phone)
+
+    override suspend fun setUserAllowedBioAuth(allowed: Boolean) {
+        prefHelper.userAllowedBioAuth = allowed
+    }
+
+    override suspend fun bioAuthSupportedByPhone(): Either<Failure, Boolean> {
+        val bioManager = BiometricManager.from(application.applicationContext)
+        val error = Either.Left(Failure.MessageError("BIOMETRIC_NOT_SUPPORTED"))
+        return when (bioManager.canAuthenticate(BiometricManager.Authenticators.BIOMETRIC_STRONG)) {
+            BiometricManager.BIOMETRIC_SUCCESS -> Either.Right(true)
+            else -> error
+        }
+    }
+
+    override suspend fun userAllowedBioAuth(): Either<Failure, Boolean> {
+        return Either.Right(prefHelper.userAllowedBioAuth)
+    }
 }

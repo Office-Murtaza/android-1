@@ -28,6 +28,8 @@
     <string name="pin_code_screen_old_pin">Enter old PIN</string>
     <string name="pin_code_screen_new_pin">Enter new PIN</string>
     <string name="pin_code_screen_new_pin_confirm">Confirm new PIN</string>
+    <string name="pin_code_screen_bio_title">Scan to access</string>
+    <string name="pin_code_screen_bio_cancel">Enter PIN</string>
     <string name="code_created">Code created successfully</string>
     <string name="code_changed">Code changed successfully</string>
     <string name="pin_code_do_not_match">PINS don\'t match. Please try again</string>
@@ -463,6 +465,7 @@
     <string name="update_phone_hint">New phone</string>
     <string name="update_pass_label">Update password</string>
     <string name="update_pin_label">Update PIN</string>
+    <string name="bio_auth_label">Use bio auth</string>
     <string name="seed_phrase_label">Seed phrase</string>
     <string name="unlink_wallet_label">Unlink</string>
     <string name="phone_changed">Phone changed</string>

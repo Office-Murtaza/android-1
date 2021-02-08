@@ -53,6 +53,10 @@ class SharedPreferencesHelper(private val sharedPreferences: SharedPreferences) 
         set(value) = sharedPreferences.set(USER_PHONE, value)
         get() = sharedPreferences[USER_PHONE] ?: ""
 
+    var userAllowedBioAuth: Boolean
+        set(value) = sharedPreferences.set(USER_BIO_AUTH, value)
+        get() = sharedPreferences.getBoolean(USER_BIO_AUTH, true)
+
     var tradeLocationExpirationTime: Long
         set(value) = sharedPreferences.set(TRADE_LOCATION_EXPIRATION_TIME, value)
         get() = sharedPreferences[TRADE_LOCATION_EXPIRATION_TIME] ?: -1
@@ -97,6 +101,7 @@ class SharedPreferencesHelper(private val sharedPreferences: SharedPreferences) 
         private const val USER_PIN = "KEY_PIN"
         private const val NOTIFICATION_TOKEN = "KEY_NOTIFICATION"
         private const val USER_PHONE = "KEY_PHONE"
+        private const val USER_BIO_AUTH = "KEY_BIO_AUTH"
         private const val COINS_FEE = "PREF_KEY_COINS_FEE"
         private const val TRADE_LOCATION_EXPIRATION_TIME = "trade_location_expiration_time"
     }

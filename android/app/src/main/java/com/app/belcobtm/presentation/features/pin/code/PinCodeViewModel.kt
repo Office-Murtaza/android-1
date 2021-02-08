@@ -4,9 +4,12 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.app.belcobtm.R
 import com.app.belcobtm.domain.Failure
+import com.app.belcobtm.domain.UseCase
 import com.app.belcobtm.domain.authorization.interactor.AuthorizeUseCase
 import com.app.belcobtm.domain.authorization.interactor.GetAuthorizePinUseCase
 import com.app.belcobtm.domain.authorization.interactor.SaveAuthorizePinUseCase
+import com.app.belcobtm.domain.settings.interactor.BioAuthAllowedByUserUseCase
+import com.app.belcobtm.domain.settings.interactor.BioAuthSupportedByPhoneUseCase
 import com.app.belcobtm.domain.settings.interactor.UnlinkUseCase
 import com.app.belcobtm.domain.wallet.interactor.ConnectToWalletUseCase
 import com.app.belcobtm.presentation.core.SingleLiveData
@@ -21,6 +24,8 @@ import com.app.belcobtm.presentation.features.pin.code.PinCodeFragment.Companion
 class PinCodeViewModel(
     private val authorizeUseCase: AuthorizeUseCase,
     private val unlinkUseCase: UnlinkUseCase,
+    private val bioAuthSupportedByPhoneUseCase: BioAuthSupportedByPhoneUseCase,
+    private val bioAuthAllowedByUserUseCase: BioAuthAllowedByUserUseCase,
     private val connectToWalletUseCase: ConnectToWalletUseCase,
     private val authorizePinUseCase: GetAuthorizePinUseCase,
     private val savePinCodeUseCase: SaveAuthorizePinUseCase
@@ -68,7 +73,10 @@ class PinCodeViewModel(
     fun setMode(mode: String) {
         this.mode = mode
         when (mode) {
-            KEY_PIN_MODE_ENTER -> step = STEP_VERIFY
+            KEY_PIN_MODE_ENTER -> {
+                step = STEP_VERIFY
+                checkForBioAuth()
+            }
             KEY_PIN_MODE_CHANGE -> step = STEP_VERIFY
             KEY_PIN_MODE_CREATE -> step - STEP_CREATE
         }
@@ -211,6 +219,24 @@ class PinCodeViewModel(
             onError = { actionData.value = PinCodeAction.StartWelcomeScreen }
         )
     }
+
+    private fun checkForBioAuth() {
+        bioAuthSupportedByPhoneUseCase(
+            UseCase.None(),
+            onSuccess = { supported ->
+                if (supported)
+                    bioAuthAllowedByUserUseCase(
+                        UseCase.None(),
+                        onSuccess = { allowed ->
+                            if (allowed)
+                                actionData.value = PinCodeAction.StartBioPromt
+                        },
+                        onError = {}
+                    )
+            },
+            onError = {},
+        )
+    }
 }
 
 data class PinCodeState(
@@ -228,5 +254,6 @@ sealed class PinCodeAction {
     object ChangedPin : PinCodeAction()
     data class AuthorizeError(val failure: Failure) : PinCodeAction()
     object BackPress : PinCodeAction()
-    object StartWelcomeScreen: PinCodeAction()
+    object StartBioPromt : PinCodeAction()
+    object StartWelcomeScreen : PinCodeAction()
 }

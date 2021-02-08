@@ -8,6 +8,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TableLayout
+import androidx.biometric.BiometricPrompt
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.observe
 import com.app.belcobtm.App
 import com.app.belcobtm.R
@@ -42,6 +44,7 @@ class PinCodeFragment : BaseFragment<FragmentPinCodeBinding>() {
 
     override fun FragmentPinCodeBinding.initViews() {
         appliedState = null
+        pinIndicatorsView.setMaxLength(PIN_CODE_LENGTH)
         viewModel.setMode(pinMode)
     }
 
@@ -122,8 +125,24 @@ class PinCodeFragment : BaseFragment<FragmentPinCodeBinding>() {
                     else -> showErrorSomethingWrong()
                 }
                 is PinCodeAction.BackPress -> popBackStack(R.id.security_fragment, false)
+                PinCodeAction.StartBioPromt -> startBioPromt()
             }
         }
+    }
+
+    private fun startBioPromt() {
+        val mainExecutor = ContextCompat.getMainExecutor(requireContext())
+        val promtInfo = BiometricPrompt.PromptInfo.Builder()
+            .setTitle(getString(R.string.pin_code_screen_bio_title))
+            .setNegativeButtonText(getString(R.string.pin_code_screen_bio_cancel))
+            .build()
+        val promtCallback = object : BiometricPrompt.AuthenticationCallback() {
+            override fun onAuthenticationSucceeded(result: BiometricPrompt.AuthenticationResult) {
+                super.onAuthenticationSucceeded(result)
+                viewModel.authorize()
+            }
+        }
+        BiometricPrompt(this, mainExecutor, promtCallback).authenticate(promtInfo)
     }
 
     private fun addPinSymbol(view: View) {
@@ -171,7 +190,7 @@ class PinCodeFragment : BaseFragment<FragmentPinCodeBinding>() {
         const val STEP_CREATE = 1
         const val STEP_CONFIRM = 2
 
-        const val PIN_CODE_LENGTH: Int = 6
+        const val PIN_CODE_LENGTH: Int = 4
     }
 
     override fun createBinding(inflater: LayoutInflater, container: ViewGroup?): FragmentPinCodeBinding =

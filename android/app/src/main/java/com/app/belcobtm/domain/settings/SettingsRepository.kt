@@ -17,4 +17,7 @@ interface SettingsRepository {
     suspend fun changePass(oldPassword: String, newPassword: String): Either<Failure, Boolean>
     suspend fun updatePhone(phone: String): Either<Failure, Boolean>
     suspend fun verifyPhone(phone: String): Either<Failure, Boolean>
+    suspend fun setUserAllowedBioAuth(allowed: Boolean)
+    suspend fun userAllowedBioAuth(): Either<Failure, Boolean>
+    suspend fun bioAuthSupportedByPhone(): Either<Failure, Boolean>
 }
