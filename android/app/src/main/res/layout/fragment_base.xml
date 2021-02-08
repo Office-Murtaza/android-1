@@ -17,7 +17,8 @@
         app:layout_constraintTop_toTopOf="parent"
         app:titleTextColor="@color/colorText" />
 
-    <FrameLayout
+    <com.app.belcobtm.presentation.core.views.InterceptableFrameLayout
+        android:id="@+id/interceptableFrameLayout"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
@@ -92,6 +93,6 @@
                 android:layout_height="wrap_content"
                 android:text="@string/retry" />
         </LinearLayout>
-    </FrameLayout>
+    </com.app.belcobtm.presentation.core.views.InterceptableFrameLayout>
 
 </LinearLayout>

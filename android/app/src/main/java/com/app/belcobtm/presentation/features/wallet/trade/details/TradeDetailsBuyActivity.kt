@@ -3,6 +3,7 @@ package com.app.belcobtm.presentation.features.wallet.trade.details
 import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
+import android.view.MotionEvent
 import androidx.lifecycle.Observer
 import com.app.belcobtm.R
 import com.app.belcobtm.databinding.ActivityTradeDetailsBinding
@@ -10,6 +11,7 @@ import com.app.belcobtm.domain.Failure
 import com.app.belcobtm.presentation.core.extensions.*
 import com.app.belcobtm.presentation.core.mvvm.LoadingData
 import com.app.belcobtm.presentation.core.ui.BaseActivity
+import com.app.belcobtm.presentation.core.views.InterceptableFrameLayout
 import com.app.belcobtm.presentation.core.watcher.DoubleTextWatcher
 import com.app.belcobtm.presentation.features.HostActivity
 import com.app.belcobtm.presentation.features.wallet.trade.main.item.TradeDetailsBuySellItem
@@ -17,7 +19,7 @@ import org.koin.android.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 import kotlin.math.roundToInt
 
-class TradeDetailsBuyActivity : BaseActivity() {
+class TradeDetailsBuyActivity : BaseActivity(), InterceptableFrameLayout.OnInterceptEventListener {
 
     private lateinit var tradeDetailsItem: TradeDetailsBuySellItem
     private lateinit var binding: ActivityTradeDetailsBinding
@@ -110,6 +112,11 @@ class TradeDetailsBuyActivity : BaseActivity() {
         }
         amountCryptoView.editText?.addTextChangedListener(doubleTextWatcher.firstTextWatcher)
         amountUsdView.editText?.addTextChangedListener(doubleTextWatcher.secondTextWatcher)
+        interceptableFrameLayout.interceptListner = this@TradeDetailsBuyActivity
+    }
+
+    override fun onIntercented(ev: MotionEvent) {
+        if (ev.action == MotionEvent.ACTION_DOWN) hideSoftKeyboard()
     }
 
     private fun ActivityTradeDetailsBinding.initObservers() {

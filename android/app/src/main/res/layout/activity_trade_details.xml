@@ -19,7 +19,8 @@
         tools:navigationIcon="@drawable/gph_ic_back"
         tools:title="Buy BTC" />
 
-    <FrameLayout
+    <com.app.belcobtm.presentation.core.views.InterceptableFrameLayout
+        android:id="@+id/interceptableFrameLayout"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1">
@@ -245,7 +246,7 @@
                 android:layout_gravity="center"
                 android:layout_marginBottom="8dp" />
         </FrameLayout>
-    </FrameLayout>
+    </com.app.belcobtm.presentation.core.views.InterceptableFrameLayout>
 
 </LinearLayout>
 

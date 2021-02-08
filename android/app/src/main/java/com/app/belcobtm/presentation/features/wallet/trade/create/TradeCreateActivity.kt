@@ -1,6 +1,7 @@
 package com.app.belcobtm.presentation.features.wallet.trade.create
 
 import android.os.Bundle
+import android.view.MotionEvent
 import androidx.lifecycle.Observer
 import com.app.belcobtm.R
 import com.app.belcobtm.databinding.ActivityTradeCreateBinding
@@ -8,10 +9,11 @@ import com.app.belcobtm.domain.Failure
 import com.app.belcobtm.presentation.core.extensions.*
 import com.app.belcobtm.presentation.core.mvvm.LoadingData
 import com.app.belcobtm.presentation.core.ui.BaseActivity
+import com.app.belcobtm.presentation.core.views.InterceptableFrameLayout
 import org.koin.android.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 
-class TradeCreateActivity : BaseActivity() {
+class TradeCreateActivity : BaseActivity(), InterceptableFrameLayout.OnInterceptEventListener {
 
     private val viewModel: TradeCreateViewModel by viewModel { parametersOf(intent.getStringExtra(TAG_COIN_CODE)) }
     private lateinit var binding: ActivityTradeCreateBinding
@@ -26,9 +28,14 @@ class TradeCreateActivity : BaseActivity() {
         binding.initViews()
     }
 
+    override fun onIntercented(ev: MotionEvent) {
+        if (ev.action == MotionEvent.ACTION_DOWN) hideSoftKeyboard()
+    }
+
     private fun ActivityTradeCreateBinding.initListeners() {
         createButtonView.setOnClickListener { createTrade() }
         tradeTermsView.actionDoneListener { createTrade() }
+        interceptableFrameLayout.interceptListner = this@TradeCreateActivity
     }
 
     private fun ActivityTradeCreateBinding.initObservers() {
