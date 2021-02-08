@@ -33,6 +33,7 @@
                 android:drawableTint="@color/colorPrimary"
                 android:hint="@string/create_wallet_screen_phone"
                 android:importantForAutofill="no"
+                android:text="@string/phone_number_country_code"
                 android:inputType="phone|textNoSuggestions"
                 android:lines="1"
                 android:nextFocusDown="@id/password_view" />

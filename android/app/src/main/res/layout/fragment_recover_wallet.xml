@@ -24,6 +24,7 @@
             android:drawableEnd="@drawable/ic_phone"
             android:drawableTint="@color/colorPrimary"
             android:hint="@string/recover_wallet_phone"
+            android:text="@string/phone_number_country_code"
             android:importantForAutofill="no"
             android:autofillHints="@null"
             android:inputType="phone"
