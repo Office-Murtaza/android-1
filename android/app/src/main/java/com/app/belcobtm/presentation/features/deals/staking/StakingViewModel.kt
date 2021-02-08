@@ -28,7 +28,7 @@ import kotlinx.coroutines.launch
 class StakingViewModel(
     private val walletObserver: WalletObserver,
     private val getCoinDetailsUseCase: GetCoinDetailsUseCase,
-    private val getCoinByCodeUseCase: GetFreshCoinUseCase,
+    private val getFreshCoinUseCase: GetFreshCoinUseCase,
     private val stakeCreateUseCase: StakeCreateUseCase,
     private val stakeCancelUseCase: StakeCancelUseCase,
     private val stakeWithdrawUseCase: StakeWithdrawUseCase,
@@ -45,6 +45,7 @@ class StakingViewModel(
     private lateinit var coinDataItem: CoinDataItem
     private lateinit var etheriumCoinDataItem: CoinDataItem
     private lateinit var coinDetailsDataItem: CoinDetailsDataItem
+    private lateinit var ethCoinDataItem: CoinDataItem
 
     init {
         loadData()
@@ -67,7 +68,7 @@ class StakingViewModel(
                             coinDetailsDataItem = it
                             // it is necessary to get latest data as we will be checking
                             // balance value to proceess next operations
-                            getCoinByCodeUseCase(
+                            getFreshCoinUseCase(
                                 GetFreshCoinUseCase.Params(LocalCoinType.ETH.name),
                                 onSuccess = { etherium ->
                                     etheriumCoinDataItem = etherium
@@ -114,7 +115,7 @@ class StakingViewModel(
                         untilWithdraw = stakeDataItem.untilWithdraw
                     )
                 )
-            }
+            },
         )
     }
 

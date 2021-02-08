@@ -24,11 +24,22 @@ class WalletRepositoryImpl(
         coinCode: String
     ): CoinDetailsDataItem = prefHelper.coinsDetails.getValue(coinCode)
 
-    override fun getCoinItemByCode(
+    override suspend fun getCoinItemByCode(
         coinCode: String
-    ): CoinDataItem = cachedCoinDataItemList.find { it.code == coinCode }!!
+    ): Either<Failure, CoinDataItem> {
+        val cachedCoinData = cachedCoinDataItemList.find { it.code == coinCode }
+        return if (cachedCoinData != null)
+            Either.Right(cachedCoinData)
+        else
+            getFreshCoinDataItem(coinCode)
+    }
 
-    override fun getCoinItemList(): List<CoinDataItem> = cachedCoinDataItemList
+    override suspend fun getCoinItemList(): Either<Failure, List<CoinDataItem>> {
+        return if (cachedCoinDataItemList.isNotEmpty())
+            Either.Right(cachedCoinDataItemList)
+        else
+            getFreshCoinDataItems(daoAccount.getItemList()?.filter { it.isEnabled }?.map { it.type.name }.orEmpty())
+    }
 
     override suspend fun getAccountList(): List<AccountDataItem> =
         (daoAccount.getItemList() ?: emptyList()).sortedBy { it.id }.map { it.mapToDataItem() }
@@ -76,6 +87,8 @@ class WalletRepositoryImpl(
     ): Either<Failure, List<CoinDataItem>> {
         val response = apiService.getBalance(coinCodes)
         return if (response is Either.Right) {
+            cachedCoinDataItemList.clear()
+            cachedCoinDataItemList.addAll(response.b.coinList)
             Either.Right(response.b.coinList)
         } else {
             response as Either.Left

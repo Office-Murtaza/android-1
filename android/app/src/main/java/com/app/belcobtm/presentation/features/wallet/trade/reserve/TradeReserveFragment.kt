@@ -22,6 +22,8 @@ class TradeReserveFragment : BaseFragment<FragmentTradeReserveBinding>() {
         val initValue = viewModel.initialLoadLiveData.value
         if (initValue == null || initValue is LoadingData.Success) {
             viewModel.createTransaction()
+        } else {
+            viewModel.loadInitialData()
         }
     }
     private val viewModel: TradeReserveViewModel by viewModel {
@@ -54,7 +56,31 @@ class TradeReserveFragment : BaseFragment<FragmentTradeReserveBinding>() {
     }
 
     override fun FragmentTradeReserveBinding.initObservers() {
-        viewModel.initialLoadLiveData.listen(success = {})
+        viewModel.initialLoadLiveData.listen(success = {
+            priceUsdView.text = getString(R.string.text_usd, viewModel.coinItem.priceUsd.toStringUsd())
+            balanceCryptoView.text = getString(
+                R.string.text_text,
+                viewModel.coinItem.balanceCoin.toStringCoin(),
+                viewModel.coinItem.code
+            )
+            balanceUsdView.text =
+                getString(R.string.text_usd, viewModel.coinItem.balanceUsd.toStringUsd())
+            amountCryptoView.helperText = getString(
+                R.string.transaction_helper_text_commission,
+                viewModel.getTransactionFee().toStringCoin(),
+                viewModel.coinItem.code
+            )
+            reservedCryptoView.text = getString(
+                R.string.text_text,
+                viewModel.coinItem.reservedBalanceCoin.toStringCoin(),
+                viewModel.coinItem.code
+            )
+            reservedUsdView.text = getString(
+                R.string.text_usd,
+                viewModel.coinItem.reservedBalanceUsd.toStringUsd()
+            )
+            amountCryptoView.hint = getString(R.string.text_amount, viewModel.coinItem.code)
+        })
         viewModel.createTransactionLiveData.listen(
             success = {
                 AlertHelper.showToastShort(
@@ -81,29 +107,6 @@ class TradeReserveFragment : BaseFragment<FragmentTradeReserveBinding>() {
 
     override fun FragmentTradeReserveBinding.initViews() {
         setToolbarTitle(R.string.trade_reserve_screen_title)
-        priceUsdView.text = getString(R.string.text_usd, viewModel.coinItem.priceUsd.toStringUsd())
-        balanceCryptoView.text = getString(
-            R.string.text_text,
-            viewModel.coinItem.balanceCoin.toStringCoin(),
-            viewModel.coinItem.code
-        )
-        balanceUsdView.text =
-            getString(R.string.text_usd, viewModel.coinItem.balanceUsd.toStringUsd())
-        amountCryptoView.helperText = getString(
-            R.string.transaction_helper_text_commission,
-            viewModel.getTransactionFee().toStringCoin(),
-            viewModel.coinItem.code
-        )
-        reservedCryptoView.text = getString(
-            R.string.text_text,
-            viewModel.coinItem.reservedBalanceCoin.toStringCoin(),
-            viewModel.coinItem.code
-        )
-        reservedUsdView.text = getString(
-            R.string.text_usd,
-            viewModel.coinItem.reservedBalanceUsd.toStringUsd()
-        )
-        amountCryptoView.hint = getString(R.string.text_amount, viewModel.coinItem.code)
     }
 
     override fun createBinding(inflater: LayoutInflater, container: ViewGroup?): FragmentTradeReserveBinding =
