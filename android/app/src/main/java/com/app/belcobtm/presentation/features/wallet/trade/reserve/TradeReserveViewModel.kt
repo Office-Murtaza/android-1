@@ -6,6 +6,8 @@ import androidx.lifecycle.ViewModel
 import com.app.belcobtm.domain.transaction.interactor.trade.TradeReserveTransactionCompleteUseCase
 import com.app.belcobtm.domain.transaction.interactor.trade.TradeReserveTransactionCreateUseCase
 import com.app.belcobtm.domain.wallet.LocalCoinType
+import com.app.belcobtm.domain.wallet.interactor.GetCoinByCodeUseCase
+import com.app.belcobtm.domain.wallet.interactor.GetCoinDetailsUseCase
 import com.app.belcobtm.domain.wallet.interactor.GetFreshCoinUseCase
 import com.app.belcobtm.domain.wallet.item.CoinDataItem
 import com.app.belcobtm.domain.wallet.item.CoinDetailsDataItem
@@ -19,8 +21,9 @@ import com.app.belcobtm.presentation.core.item.mapToScreenItem
 import com.app.belcobtm.presentation.core.mvvm.LoadingData
 
 class TradeReserveViewModel(
-    private val coinDataItem: CoinDataItem,
-    private val detailsDataItem: CoinDetailsDataItem,
+    private val coinCode: String,
+    private val getCoinByCodeUseCase: GetCoinByCodeUseCase,
+    private val getCoinDetailsUseCase: GetCoinDetailsUseCase,
     private val getCoinUseCace: GetFreshCoinUseCase,
     private val createTransactionUseCase: TradeReserveTransactionCreateUseCase,
     private val completeTransactionUseCase: TradeReserveTransactionCompleteUseCase,
@@ -41,15 +44,37 @@ class TradeReserveViewModel(
     val submitButtonEnable: LiveData<Boolean> = _submitButtonEnable
 
     private var etheriumCoinDataItem: CoinDataItem? = null
-    val coinItem: CoinScreenItem = coinDataItem.mapToScreenItem()
+    private lateinit var coinDataItem: CoinDataItem
+    private lateinit var detailsDataItem: CoinDetailsDataItem
+    lateinit var coinItem: CoinScreenItem
+        private set
 
     private var selectedAmount: Double = 0.0
 
     init {
-        if (coinDataItem.isEthRelatedCoin()) {
-            // for CATM amount calculation we need ETH coin
-            fetchEtherium()
-        }
+        loadInitialData()
+    }
+
+    fun loadInitialData() {
+        _initialLoadLiveData.value = LoadingData.Loading()
+        getCoinByCodeUseCase.invoke(coinCode, onSuccess = { coinItem ->
+            coinDataItem = coinItem
+            this.coinItem = coinItem.mapToScreenItem()
+            getCoinDetailsUseCase.invoke(GetCoinDetailsUseCase.Params(coinCode),
+                onSuccess = { coinDetailsItem ->
+                    detailsDataItem = coinDetailsItem
+                    if (coinDataItem.isEthRelatedCoin()) {
+                        // for CATM amount calculation we need ETH coin
+                        fetchEtherium()
+                    } else {
+                        _initialLoadLiveData.value = LoadingData.Success(Unit)
+                    }
+                }, onError = {
+                    _initialLoadLiveData.value = LoadingData.Error(it)
+                })
+        }, onError = {
+            _initialLoadLiveData.value = LoadingData.Error(it)
+        })
     }
 
     fun createTransaction() {
@@ -122,7 +147,6 @@ class TradeReserveViewModel(
     }
 
     private fun fetchEtherium() {
-        _initialLoadLiveData.value = LoadingData.Loading()
         getCoinUseCace.invoke(
             params = GetFreshCoinUseCase.Params(LocalCoinType.ETH.name),
             onSuccess = {

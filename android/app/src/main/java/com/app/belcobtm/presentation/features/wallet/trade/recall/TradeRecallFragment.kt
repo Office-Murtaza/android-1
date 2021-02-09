@@ -23,6 +23,8 @@ class TradeRecallFragment : BaseFragment<FragmentTradeRecallBinding>() {
         val initValue = viewModel.initialLoadLiveData.value
         if (initValue == null || initValue is LoadingData.Success) {
             viewModel.performTransaction()
+        } else {
+            viewModel.loadInitialData()
         }
     }
     private val viewModel: TradeRecallViewModel by viewModel {
@@ -51,7 +53,31 @@ class TradeRecallFragment : BaseFragment<FragmentTradeRecallBinding>() {
     }
 
     override fun FragmentTradeRecallBinding.initObservers() {
-        viewModel.initialLoadLiveData.listen(success = {})
+        viewModel.initialLoadLiveData.listen(success = {
+            priceUsdView.text = getString(R.string.text_usd, viewModel.coinItem.priceUsd.toStringUsd())
+            balanceCryptoView.text = getString(
+                R.string.text_text,
+                viewModel.coinItem.balanceCoin.toStringCoin(),
+                viewModel.coinItem.code
+            )
+            balanceUsdView.text =
+                getString(R.string.text_usd, viewModel.coinItem.balanceUsd.toStringUsd())
+            reservedCryptoView.text = getString(
+                R.string.text_text,
+                viewModel.coinItem.reservedBalanceCoin.toStringCoin(),
+                viewModel.coinItem.code
+            )
+            reservedUsdView.text = getString(
+                R.string.text_usd,
+                viewModel.coinItem.reservedBalanceUsd.toStringUsd()
+            )
+            amountCryptoView.helperText = getString(
+                R.string.transaction_helper_text_commission,
+                viewModel.getTransactionFee().toStringCoin(),
+                viewModel.getCoinCode()
+            )
+            amountCryptoView.hint = getString(R.string.text_amount, viewModel.coinItem.code)
+        })
         viewModel.transactionLiveData.listen(
             success = {
                 AlertHelper.showToastShort(
@@ -81,29 +107,6 @@ class TradeRecallFragment : BaseFragment<FragmentTradeRecallBinding>() {
 
     override fun FragmentTradeRecallBinding.initViews() {
         setToolbarTitle(R.string.trade_recall_screen_title)
-        priceUsdView.text = getString(R.string.text_usd, viewModel.coinItem.priceUsd.toStringUsd())
-        balanceCryptoView.text = getString(
-            R.string.text_text,
-            viewModel.coinItem.balanceCoin.toStringCoin(),
-            viewModel.coinItem.code
-        )
-        balanceUsdView.text =
-            getString(R.string.text_usd, viewModel.coinItem.balanceUsd.toStringUsd())
-        reservedCryptoView.text = getString(
-            R.string.text_text,
-            viewModel.coinItem.reservedBalanceCoin.toStringCoin(),
-            viewModel.coinItem.code
-        )
-        reservedUsdView.text = getString(
-            R.string.text_usd,
-            viewModel.coinItem.reservedBalanceUsd.toStringUsd()
-        )
-        amountCryptoView.helperText = getString(
-            R.string.transaction_helper_text_commission,
-            viewModel.getTransactionFee().toStringCoin(),
-            viewModel.getCoinCode()
-        )
-        amountCryptoView.hint = getString(R.string.text_amount, viewModel.coinItem.code)
     }
 
     override fun createBinding(inflater: LayoutInflater, container: ViewGroup?): FragmentTradeRecallBinding =

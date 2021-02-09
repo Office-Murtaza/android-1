@@ -120,6 +120,20 @@ class TradeDetailsBuyActivity : BaseActivity(), InterceptableFrameLayout.OnInter
     }
 
     private fun ActivityTradeDetailsBinding.initObservers() {
+        viewModel.loadingData.observe(this@TradeDetailsBuyActivity, Observer {
+            when (it) {
+                is LoadingData.Loading -> progressView.show()
+                is LoadingData.Success -> progressView.hide()
+                is LoadingData.Error -> {
+                    when (it.errorType) {
+                        is Failure.MessageError -> showError(it.errorType.message)
+                        is Failure.NetworkConnection -> showError(R.string.error_internet_unavailable)
+                        else -> showError(R.string.error_something_went_wrong)
+                    }
+                    progressView.hide()
+                }
+            }
+        })
         viewModel.buyLiveData.observe(this@TradeDetailsBuyActivity, Observer {
             when (it) {
                 is LoadingData.Loading -> progressView.show()

@@ -1,7 +1,6 @@
 package com.app.belcobtm.presentation.di
 
 import android.content.Context
-import com.app.belcobtm.domain.wallet.WalletRepository
 import com.app.belcobtm.presentation.core.coin.AmountCoinValidator
 import com.app.belcobtm.presentation.core.coin.CoinCodeProvider
 import com.app.belcobtm.presentation.core.coin.MinMaxCoinValueProvider
@@ -66,17 +65,17 @@ val viewModelModule = module {
         TradeViewModel(coinCode, latitude, longitude, get(), get(), get(), get(), get())
     }
     viewModel { (coinCode: String) ->
-        val coinDataItem = get<WalletRepository>().getCoinItemByCode(coinCode)
-        TradeDetailsBuyViewModel(coinDataItem, get())
+        TradeDetailsBuyViewModel(coinCode, get(), get())
     }
     viewModel { (coinCode: String) ->
-        TradeCreateViewModel(get<WalletRepository>().getCoinItemByCode(coinCode), get(), get())
+        TradeCreateViewModel(coinCode, get(), get(), get())
     }
     viewModel { TradeEditViewModel() }
     viewModel { (coinCode: String) ->
         TradeRecallViewModel(
-            get<WalletRepository>().getCoinItemByCode(coinCode),
-            get<WalletRepository>().getCoinDetailsItemByCode(coinCode),
+            coinCode,
+            get(),
+            get(),
             get(),
             get(),
             get(),
@@ -85,8 +84,9 @@ val viewModelModule = module {
     }
     viewModel { (coinCode: String) ->
         TradeReserveViewModel(
-            get<WalletRepository>().getCoinItemByCode(coinCode),
-            get<WalletRepository>().getCoinDetailsItemByCode(coinCode),
+            coinCode,
+            get(),
+            get(),
             get(),
             get(),
             get(),

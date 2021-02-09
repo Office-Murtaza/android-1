@@ -39,6 +39,20 @@ class TradeCreateActivity : BaseActivity(), InterceptableFrameLayout.OnIntercept
     }
 
     private fun ActivityTradeCreateBinding.initObservers() {
+        viewModel.loadingData.observe(this@TradeCreateActivity, Observer { loadingData ->
+            when (loadingData) {
+                is LoadingData.Loading -> progressView.show()
+                is LoadingData.Success -> progressView.hide()
+                is LoadingData.Error -> {
+                    when (loadingData.errorType) {
+                        is Failure.MessageError -> showError(loadingData.errorType.message)
+                        is Failure.NetworkConnection -> showError(R.string.error_internet_unavailable)
+                        else -> showError(R.string.error_something_went_wrong)
+                    }
+                    progressView.hide()
+                }
+            }
+        })
         viewModel.createTradeLiveData.observe(this@TradeCreateActivity, Observer { loadingData ->
             when (loadingData) {
                 is LoadingData.Loading -> progressView.show()

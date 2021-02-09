@@ -16,7 +16,7 @@ import com.app.belcobtm.presentation.core.mvvm.LoadingData
 class WithdrawViewModel(
     private val coinCode: String,
     private val getCoinListUseCase: GetCoinListUseCase,
-    private val getCoinDetailsUseCase: GetCoinDetailsUseCase,
+    getCoinDetailsUseCase: GetCoinDetailsUseCase,
     private val withdrawUseCase: WithdrawUseCase,
     private val minMaxCoinValueProvider: MinMaxCoinValueProvider,
     private val amountCoinValidator: AmountCoinValidator
@@ -35,11 +35,15 @@ class WithdrawViewModel(
     init {
         _loadingLiveData.value = LoadingData.Loading()
         getCoinDetailsUseCase.invoke(GetCoinDetailsUseCase.Params(coinCode), onSuccess = { coinDetails ->
-            coinDataItemList = getCoinListUseCase.invoke()
-            fromCoinDataItem = coinDataItemList.find { it.code == coinCode }
-                ?: throw IllegalStateException("Invalid coin code that is not presented in a list $coinCode")
-            fromCoinDetailsDataItem = coinDetails
-            _loadingLiveData.value = LoadingData.Success(Unit)
+            getCoinListUseCase.invoke(Unit, onSuccess = {
+                coinDataItemList = it
+                fromCoinDataItem = coinDataItemList.find { it.code == coinCode }
+                    ?: throw IllegalStateException("Invalid coin code that is not presented in a list $coinCode")
+                fromCoinDetailsDataItem = coinDetails
+                _loadingLiveData.value = LoadingData.Success(Unit)
+            }, onError = {
+                _loadingLiveData.value = LoadingData.Error(it)
+            })
         }, onError = {
             _loadingLiveData.value = LoadingData.Error(it)
         })
