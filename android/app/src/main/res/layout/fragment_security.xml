@@ -50,6 +50,21 @@
         android:background="@color/thin_divider" />
 
     <com.app.belcobtm.presentation.core.views.SettingsItemView
+        android:id="@+id/switch_bio_auth_item"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:src="@drawable/ic_face_id"
+        app:text="@string/bio_auth_label"
+        app:withSwitch="true"
+        tools:visibility="visible" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/thin_divider" />
+
+    <com.app.belcobtm.presentation.core.views.SettingsItemView
         android:id="@+id/seed_phrase_item"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

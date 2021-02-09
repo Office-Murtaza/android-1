@@ -8,6 +8,7 @@ import com.app.belcobtm.domain.settings.SettingsRepository
 import com.app.belcobtm.domain.tools.ToolsRepository
 import com.app.belcobtm.domain.transaction.TransactionRepository
 import com.app.belcobtm.domain.wallet.WalletRepository
+import org.koin.android.ext.koin.androidApplication
 import org.koin.dsl.module
 
 val repositoryModule = module {
@@ -18,7 +19,7 @@ val repositoryModule = module {
             (get() as AppDatabase).getCoinDao()
         )
     }
-    single<SettingsRepository> { SettingsRepositoryImpl(get(), get(), get()) }
+    single<SettingsRepository> { SettingsRepositoryImpl(androidApplication(), get(), get(), get()) }
     single<WalletRepository> { WalletRepositoryImpl(get(), get(), get()) }
     single<TransactionRepository> { TransactionRepositoryImpl(get(), get(), get(), get(), get()) }
     single<ToolsRepository> { ToolsRepositoryImpl(get()) }

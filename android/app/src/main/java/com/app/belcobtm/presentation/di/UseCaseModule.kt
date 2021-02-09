@@ -74,4 +74,7 @@ val useCaseModule = module {
     single { GetFreshCoinsUseCase(get()) }
     single { GetContactsUseCase(get()) }
     single { SaveSeedUseCase(get()) }
+    single { BioAuthSupportedByPhoneUseCase(get()) }
+    single { BioAuthAllowedByUserUseCase(get()) }
+    single { SetBioAuthStateAllowedUseCase(get()) }
 }

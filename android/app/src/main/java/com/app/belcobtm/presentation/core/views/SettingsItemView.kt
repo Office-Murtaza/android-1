@@ -44,6 +44,7 @@ class SettingsItemView @JvmOverloads constructor(
             setLabel(typedArray.getString(R.styleable.SettingsItemView_text))
             setValue(typedArray.getString(R.styleable.SettingsItemView_value))
             showChevron(typedArray.getBoolean(R.styleable.SettingsItemView_withChevron, false))
+            showSwitch(typedArray.getBoolean(R.styleable.SettingsItemView_withSwitch, false))
         } finally {
             typedArray.recycle()
         }
@@ -66,5 +67,13 @@ class SettingsItemView @JvmOverloads constructor(
 
     fun showChevron(show: Boolean) {
         binding.ivChevron.toggle(show)
+    }
+
+    fun showSwitch(show: Boolean) {
+        binding.commonSwitch.toggle(show)
+    }
+
+    fun setSwitchState(swithed: Boolean) {
+        binding.commonSwitch.isChecked = swithed
     }
 }
