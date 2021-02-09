@@ -1,5 +1,6 @@
 package com.belco.server.model;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 import java.util.HashMap;
@@ -29,6 +30,7 @@ public enum StakingStatus {
         this.value = value;
     }
 
+    @JsonCreator(mode = JsonCreator.Mode.DELEGATING)
     public static StakingStatus valueOf(Integer value) {
         return map.get(value);
     }

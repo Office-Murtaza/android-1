@@ -6,27 +6,27 @@ import com.fasterxml.jackson.annotation.JsonValue;
 import java.util.HashMap;
 import java.util.Map;
 
-public enum TradeType {
+public enum TradeStatus {
 
-    BUY(1),
-    SELL(2);
+    CREATED(1),
+    CANCELED(2);
 
-    private static final Map<Integer, TradeType> map = new HashMap<>();
+    private static final Map<Integer, TradeStatus> map = new HashMap<>();
 
     static {
-        for (TradeType type : TradeType.values()) {
+        for (TradeStatus type : TradeStatus.values()) {
             map.put(type.value, type);
         }
     }
 
     private int value;
 
-    TradeType(int value) {
+    TradeStatus(int value) {
         this.value = value;
     }
 
     @JsonCreator(mode = JsonCreator.Mode.DELEGATING)
-    public static TradeType valueOf(Integer value) {
+    public static TradeStatus valueOf(Integer value) {
         return map.get(value);
     }
 

@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="7835ef4f-7d4c-45f1-b200-3aac6f8def1b" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/backend/src/main/java/com/belco/server/dto/ChatMessageDTO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/src/main/java/com/belco/server/dto/OrderDTO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/src/main/java/com/belco/server/dto/TradesDTO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/src/main/java/com/belco/server/entity/Order.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/src/main/java/com/belco/server/model/OrderStatus.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/src/main/java/com/belco/server/model/PaymentMethod.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/src/main/java/com/belco/server/model/TradeStatus.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/src/main/java/com/belco/server/repository/OrderRep.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/src/main/resources/db/create/create_trades.sql" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/src/main/resources/db/update/add_status_to_user.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/belco/server/config/WebSocketConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/belco/server/config/WebSocketConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/belco/server/dto/CoinDetailsDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/belco/server/dto/CoinDetailsDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/belco/server/dto/KycDetailsDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/belco/server/dto/KycDetailsDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/belco/server/dto/TradeDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/belco/server/dto/TradeDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/belco/server/dto/TradeDetailsDTO.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/belco/server/dto/TradeListDTO.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/belco/server/dto/TradeRequestDTO.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/belco/server/dto/TradeRequestDetailsDTO.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/belco/server/dto/TradeRequestListDTO.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/belco/server/dto/TradeUserDTO.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/belco/server/entity/Trade.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/belco/server/entity/Trade.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/belco/server/entity/TradeRequest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/belco/server/entity/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/belco/server/entity/User.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/belco/server/model/KycStatus.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/belco/server/model/VerificationStatus.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/belco/server/model/PricePeriod.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/belco/server/model/PricePeriod.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/belco/server/model/ProcessedType.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/belco/server/model/ProcessedType.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/belco/server/model/StakingStatus.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/belco/server/model/StakingStatus.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/belco/server/model/TradeRequestStatus.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/belco/server/model/TradeSort.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/belco/server/model/TradeType.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/belco/server/model/TradeType.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/belco/server/model/TransactionGroupType.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/belco/server/repository/TradeRep.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/belco/server/repository/TradeRep.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/belco/server/repository/TradeRequestRep.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/belco/server/rest/TradeController.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/belco/server/rest/TradeController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/belco/server/service/CoinService.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/belco/server/service/CoinService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/belco/server/service/NodeService.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/belco/server/service/NodeService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/belco/server/service/TradeService.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/belco/server/service/TradeService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/belco/server/service/UserService.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/belco/server/service/UserService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/resources/db/changelog.xml" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/resources/db/changelog.xml" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="ProjectId" id="1oFOIZEG0duSgicbFUggfHmLBfD" />
+  <component name="ProjectViewState">
+    <option name="autoscrollFromSource" value="true" />
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="aspect.path.notification.shown" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="7835ef4f-7d4c-45f1-b200-3aac6f8def1b" name="Default Changelist" comment="" />
+      <created>1612878792404</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1612878792404</updated>
+      <workItem from="1612878796504" duration="15000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+</project>

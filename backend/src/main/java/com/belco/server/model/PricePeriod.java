@@ -1,5 +1,6 @@
 package com.belco.server.model;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 import java.time.Instant;
@@ -40,10 +41,6 @@ public enum PricePeriod {
         }
     };
 
-    private int value;
-
-    public abstract long getFrom();
-
     private static final Map<Integer, PricePeriod> map = new HashMap<>();
 
     static {
@@ -52,16 +49,21 @@ public enum PricePeriod {
         }
     }
 
+    private int value;
+
     PricePeriod(int value) {
         this.value = value;
     }
 
+    @JsonCreator(mode = JsonCreator.Mode.DELEGATING)
+    public static PricePeriod valueOf(Integer value) {
+        return map.get(value);
+    }
+
+    public abstract long getFrom();
+
     @JsonValue
     public int getValue() {
         return value;
-    }
-
-    public static PricePeriod valueOf(Integer value) {
-        return map.get(value);
     }
 }

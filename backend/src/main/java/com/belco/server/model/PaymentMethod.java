@@ -6,27 +6,30 @@ import com.fasterxml.jackson.annotation.JsonValue;
 import java.util.HashMap;
 import java.util.Map;
 
-public enum TradeType {
+public enum PaymentMethod {
 
-    BUY(1),
-    SELL(2);
+    CASH(1),
+    PAY_PALL(2),
+    VENMO(3),
+    CASH_APP(4),
+    PAYONEER(5);
 
-    private static final Map<Integer, TradeType> map = new HashMap<>();
+    private static final Map<Integer, PaymentMethod> map = new HashMap<>();
 
     static {
-        for (TradeType type : TradeType.values()) {
+        for (PaymentMethod type : PaymentMethod.values()) {
             map.put(type.value, type);
         }
     }
 
     private int value;
 
-    TradeType(int value) {
+    PaymentMethod(int value) {
         this.value = value;
     }
 
     @JsonCreator(mode = JsonCreator.Mode.DELEGATING)
-    public static TradeType valueOf(Integer value) {
+    public static PaymentMethod valueOf(Integer value) {
         return map.get(value);
     }
 

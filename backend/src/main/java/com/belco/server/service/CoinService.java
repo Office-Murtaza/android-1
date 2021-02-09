@@ -2,14 +2,18 @@ package com.belco.server.service;
 
 import com.belco.server.dto.*;
 import com.belco.server.entity.*;
+import com.belco.server.model.TradeType;
 import com.belco.server.repository.CoinRep;
 import com.belco.server.util.Util;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonValue;
 import net.sf.json.JSONObject;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import wallet.core.jni.CoinType;
+
 import java.math.BigDecimal;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
@@ -131,7 +135,8 @@ public class CoinService {
         dto.setTxFee(coin.getTxFee());
         dto.setGasPrice(coin.getGasPrice());
         dto.setScale(coin.getCoinEntity().getScale());
-        dto.setSwapProfitPercent(platformService.getSwapProfitPercent());
+        dto.setPlatformSwapFee(platformService.getSwapProfitPercent());
+        dto.setPlatformTradeFee(platformService.getSwapProfitPercent());
         dto.setWalletAddress(coin.getWalletAddress());
         dto.setContractAddress(coin.getContractAddress());
 
@@ -1369,5 +1374,10 @@ public class CoinService {
         public abstract String getExplorerUrl();
 
         public abstract String getContractAddress();
+
+        @JsonValue
+        public String getValue() {
+            return name();
+        }
     }
 }

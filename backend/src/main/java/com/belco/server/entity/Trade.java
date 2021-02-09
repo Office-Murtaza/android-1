@@ -1,14 +1,17 @@
 package com.belco.server.entity;
 
-import com.belco.server.dto.TradeDetailsDTO;
-import com.belco.server.dto.TradeUserDTO;
+import com.belco.server.dto.TradeDTO;
+import com.belco.server.model.TradeStatus;
+import com.belco.server.model.TradeType;
+import com.belco.server.service.CoinService;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
 import javax.persistence.*;
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 
 @Setter
 @Getter
@@ -19,33 +22,51 @@ import java.math.BigDecimal;
 public class Trade extends BaseEntity {
 
     private Integer type;
-    private String paymentMethod;
-    private BigDecimal margin;
-    private Long minLimit;
-    private Long maxLimit;
+    private Integer status;
+    private BigDecimal price;
+    private BigDecimal minLimit;
+    private BigDecimal maxLimit;
+    private BigDecimal lockedCryptoAmount;
+    private String paymentMethods;
     private String terms;
 
-    @Transient
-    private BigDecimal price;
+    @OneToMany(mappedBy = "trade", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<Order> orders = new ArrayList<>();
 
     @ManyToOne
     @JoinColumn(name = "coin_id")
     private Coin coin;
 
     @ManyToOne
-    @JoinColumn(name = "identity_id")
-    private Identity identity;
+    @JoinColumn(name = "maker_user_id")
+    private User maker;
 
     @Transient
-    public TradeDetailsDTO toDTO(TradeUserDTO trader) {
-        return TradeDetailsDTO.builder()
-                .id(getId())
-                .type(getType())
-                .trader(trader)
-                .price(getPrice())
-                .paymentMethod(getPaymentMethod())
-                .minLimit(getMinLimit())
-                .maxLimit(getMaxLimit())
-                .terms(getTerms()).build();
+    public TradeType getTradeType() {
+        return TradeType.valueOf(type);
+    }
+
+    @Transient
+    public TradeStatus getTradeStatus() {
+        return TradeStatus.valueOf(status);
+    }
+
+    @Transient
+    public TradeDTO toDTO() {
+        return new TradeDTO(getId(),
+                getTradeType(),
+                CoinService.CoinEnum.valueOf(getCoin().getCode()),
+                getTradeStatus(),
+                getPrice().stripTrailingZeros(),
+                getMinLimit().stripTrailingZeros(),
+                getMaxLimit().stripTrailingZeros(),
+                getPaymentMethods(),
+                getTerms(),
+                getMaker().getId(),
+                getMaker().getIdentity().getPublicId(),
+                getMaker().getLatitude().stripTrailingZeros(),
+                getMaker().getLongitude().stripTrailingZeros(),
+                getMaker().getTotalTrades(),
+                getMaker().getTradingRate());
     }
 }

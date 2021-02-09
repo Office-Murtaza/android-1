@@ -4,16 +4,15 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import wallet.core.jni.CoinType;
 
-import java.util.*;
+import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 @Service
 public class NodeService {
 
-    private final Map<CoinType, Set<String>> coinNodeMap = new ConcurrentHashMap<>();
-    private final Map<CoinType, String> coinCurrentNodeMap = new ConcurrentHashMap<>();
-    private final Map<CoinType, String> coinExplorerMap = new ConcurrentHashMap<>();
-    private final Map<CoinType, Long> coinTimeMap = new ConcurrentHashMap<>();
+    private final Map<CoinType, String> mainNodeMap = new ConcurrentHashMap<>();
+    private final Map<CoinType, String> reserveNodeMap = new ConcurrentHashMap<>();
+    private final Map<CoinType, String> explorerMap = new ConcurrentHashMap<>();
 
     public NodeService(
             @Value("${btc.node.main.url}") String btcNodeMainUrl,
@@ -39,75 +38,53 @@ public class NodeService {
             @Value("${xrp.explorer.url}") String xrpExplorerUrl,
             @Value("${trx.explorer.url}") String trxExplorerUrl) {
 
-        coinNodeMap.put(CoinType.BITCOIN, new HashSet<>(Arrays.asList(btcNodeMainUrl, btcNodeReserveUrl)));
-        coinNodeMap.put(CoinType.LITECOIN, new HashSet<>(Arrays.asList(ltcNodeMainUrl)));
-        coinNodeMap.put(CoinType.BITCOINCASH, new LinkedHashSet<>(Arrays.asList(bchNodeMainUrl)));
-        coinNodeMap.put(CoinType.DASH, new HashSet<>(Arrays.asList(dashNodeMainUrl)));
-        coinNodeMap.put(CoinType.DOGECOIN, new HashSet<>(Arrays.asList(dogeNodeMainUrl)));
-        coinNodeMap.put(CoinType.ETHEREUM, new LinkedHashSet<>(Arrays.asList(ethNodeMainUrl, ethNodeReserveUrl)));
-        coinNodeMap.put(CoinType.BINANCE, new HashSet<>(Arrays.asList(bnbNodeMainUrl)));
-        coinNodeMap.put(CoinType.XRP, new LinkedHashSet<>(Arrays.asList(xrpNodeMainUrl, xrpNodeReserveUrl)));
-        coinNodeMap.put(CoinType.TRON, new HashSet<>(Arrays.asList(trxNodeMainUrl)));
+        mainNodeMap.put(CoinType.BITCOIN, btcNodeMainUrl);
+        mainNodeMap.put(CoinType.LITECOIN, ltcNodeMainUrl);
+        mainNodeMap.put(CoinType.BITCOINCASH, bchNodeMainUrl);
+        mainNodeMap.put(CoinType.DASH, dashNodeMainUrl);
+        mainNodeMap.put(CoinType.DOGECOIN, dogeNodeMainUrl);
+        mainNodeMap.put(CoinType.ETHEREUM, ethNodeMainUrl);
+        mainNodeMap.put(CoinType.BINANCE, bnbNodeMainUrl);
+        mainNodeMap.put(CoinType.XRP, xrpNodeMainUrl);
+        mainNodeMap.put(CoinType.TRON, trxNodeMainUrl);
 
-        coinExplorerMap.put(CoinType.BITCOIN, btcExplorerUrl);
-        coinExplorerMap.put(CoinType.LITECOIN, ltcExplorerUrl);
-        coinExplorerMap.put(CoinType.BITCOINCASH, bchExplorerUrl);
-        coinExplorerMap.put(CoinType.DASH, dashExplorerUrl);
-        coinExplorerMap.put(CoinType.DOGECOIN, dogeExplorerUrl);
-        coinExplorerMap.put(CoinType.ETHEREUM, ethExplorerUrl);
-        coinExplorerMap.put(CoinType.BINANCE, bnbExplorerUrl);
-        coinExplorerMap.put(CoinType.XRP, xrpExplorerUrl);
-        coinExplorerMap.put(CoinType.TRON, trxExplorerUrl);
+        reserveNodeMap.put(CoinType.BITCOIN, btcNodeReserveUrl);
+        reserveNodeMap.put(CoinType.ETHEREUM, ethNodeReserveUrl);
+        reserveNodeMap.put(CoinType.XRP, xrpNodeReserveUrl);
 
-        coinNodeMap.keySet().stream().forEach(e -> init(e));
+        explorerMap.put(CoinType.BITCOIN, btcExplorerUrl);
+        explorerMap.put(CoinType.LITECOIN, ltcExplorerUrl);
+        explorerMap.put(CoinType.BITCOINCASH, bchExplorerUrl);
+        explorerMap.put(CoinType.DASH, dashExplorerUrl);
+        explorerMap.put(CoinType.DOGECOIN, dogeExplorerUrl);
+        explorerMap.put(CoinType.ETHEREUM, ethExplorerUrl);
+        explorerMap.put(CoinType.BINANCE, bnbExplorerUrl);
+        explorerMap.put(CoinType.XRP, xrpExplorerUrl);
+        explorerMap.put(CoinType.TRON, trxExplorerUrl);
     }
 
     public String getNodeUrl(CoinType coinType) {
-        return coinCurrentNodeMap.get(coinType);
+        return mainNodeMap.get(coinType);
     }
 
     public String getExplorerUrl(CoinType coinType) {
-        return coinExplorerMap.get(coinType);
+        return explorerMap.get(coinType);
     }
 
     public boolean isNodeAvailable(CoinType coinType) {
-        return coinCurrentNodeMap.containsKey(coinType);
+        return mainNodeMap.containsKey(coinType);
     }
 
     public boolean switchToReserveNode(CoinType coinType) {
-        return init(coinType);
-    }
+        if (reserveNodeMap.containsKey(coinType)) {
+            mainNodeMap.put(coinType, reserveNodeMap.get(coinType));
+            reserveNodeMap.remove(coinType);
 
-    private boolean init(CoinType coinType) {
-        if (coinCurrentNodeMap.containsKey(coinType)) {
-            if (coinTimeMap.get(coinType) < System.currentTimeMillis() - 10 * 60 * 1000) {
-                String currentNode = coinCurrentNodeMap.get(coinType);
-                Optional<String> reserveNodeOpt = coinNodeMap.get(coinType).stream().filter(e -> !e.equalsIgnoreCase(currentNode)).findFirst();
-
-                if (reserveNodeOpt.isPresent()) {
-                    String reserveNode = reserveNodeOpt.get();
-                    coinNodeMap.remove(coinType);
-                    coinCurrentNodeMap.put(coinType, reserveNode);
-                    coinTimeMap.put(coinType, System.currentTimeMillis());
-
-                    return true;
-                }
-            }
+            return true;
         } else {
-            Iterator<String> iterator = coinNodeMap.get(coinType).stream().iterator();
+            mainNodeMap.remove(coinType);
 
-            if (iterator.hasNext()) {
-                String currentNode = iterator.next();
-                coinCurrentNodeMap.put(coinType, currentNode);
-                coinTimeMap.put(coinType, System.currentTimeMillis());
-
-                return true;
-            }
-        }
-
-        if (!coinCurrentNodeMap.containsKey(coinType))
             throw new RuntimeException("Nodes for " + coinType.name() + " are down");
-
-        return false;
+        }
     }
 }

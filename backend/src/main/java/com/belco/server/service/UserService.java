@@ -5,7 +5,7 @@ import com.belco.server.dto.KycDetailsDTO;
 import com.belco.server.dto.LocationDTO;
 import com.belco.server.dto.SubmitKycDTO;
 import com.belco.server.entity.*;
-import com.belco.server.model.KycStatus;
+import com.belco.server.model.VerificationStatus;
 import com.belco.server.repository.*;
 import com.belco.server.util.Util;
 import liquibase.util.file.FilenameUtils;
@@ -266,19 +266,19 @@ public class UserService implements UserDetailsService {
 
     public KycDetailsDTO getKycDetails(Long userId) {
         KycDetailsDTO dto = new KycDetailsDTO();
-        dto.setStatus(KycStatus.NOT_VERIFIED);
+        dto.setStatus(VerificationStatus.NOT_VERIFIED);
 
         User user = userRep.getOne(userId);
         IdentityKycReview ikr = identityKycReviewRep.findFirstByIdentityOrderByIdDesc(user.getIdentity());
 
         if (ikr != null) {
-            dto.setStatus(KycStatus.valueOf(ikr.getReviewStatus()));
+            dto.setStatus(VerificationStatus.valueOf(ikr.getReviewStatus()));
             dto.setMessage(ikr.getRejectedMessage());
         }
 
-        if (dto.getStatus() == KycStatus.NOT_VERIFIED) {
+        if (dto.getStatus() == VerificationStatus.NOT_VERIFIED) {
             dto.setMessage("To increase your limits to 3000$ per transaction and 10000$ per day, please verify your account");
-        } else if (dto.getStatus() == KycStatus.VERIFIED) {
+        } else if (dto.getStatus() == VerificationStatus.VERIFIED) {
             dto.setMessage("To increase your limits to 10000$ per transaction and 20000$ per day, please VIP verify your account");
         }
 
@@ -304,7 +304,7 @@ public class UserService implements UserDetailsService {
 
                 ikr.setIdentity(user.getIdentity());
                 ikr.setTierId(TIER_1);
-                ikr.setReviewStatus(KycStatus.VERIFICATION_PENDING.getValue());
+                ikr.setReviewStatus(VerificationStatus.VERIFICATION_PENDING.getValue());
                 ikr.setIdCardNumber(dto.getIdNumber());
                 ikr.setAddress(dto.getAddress());
                 ikr.setCountry(dto.getCountry());
@@ -326,7 +326,7 @@ public class UserService implements UserDetailsService {
                 Util.uploadFile(dto.getFile(), path);
 
                 ikr.setTierId(TIER_2);
-                ikr.setReviewStatus(KycStatus.VIP_VERIFICATION_PENDING.getValue());
+                ikr.setReviewStatus(VerificationStatus.VIP_VERIFICATION_PENDING.getValue());
                 ikr.setSsn(dto.getSsn());
                 ikr.setSsnFileName(newFileName);
                 ikr.setSsnFileMimeType(dto.getFile().getContentType());
@@ -335,6 +335,8 @@ public class UserService implements UserDetailsService {
             }
 
             IdentityKycReview ikrSaved = identityKycReviewRep.save(ikr);
+            user.setStatus(ikrSaved.getReviewStatus());
+            save(user);
 
             confirmKyc(ikrSaved.getId());
 
@@ -430,7 +432,7 @@ public class UserService implements UserDetailsService {
                 addDailyLimit(review, VERIFIED_DAILY_LIMIT);
                 addTransactionLimit(review, VERIFIED_TX_LIMIT);
 
-                review.setReviewStatus(KycStatus.VERIFIED.getValue());
+                review.setReviewStatus(VerificationStatus.VERIFIED.getValue());
                 identityKycReviewRep.save(review);
             } else if (review.getTierId() == TIER_2) {
                 IdentityPiece identityPiece = identityPieceRep.findFirstByIdentityAndPieceTypeOrderByIdDesc(review.getIdentity(), IdentityPiece.TYPE_SELFIE);
@@ -478,9 +480,14 @@ public class UserService implements UserDetailsService {
                 addDailyLimit(review, VIP_VERIFIED_DAILY_LIMIT);
                 addTransactionLimit(review, VIP_VERIFIED_TX_LIMIT);
 
-                review.setReviewStatus(KycStatus.VIP_VERIFIED.getValue());
+                review.setReviewStatus(VerificationStatus.VIP_VERIFIED.getValue());
                 identityKycReviewRep.save(review);
             }
+
+            User user = review.getIdentity().getUser();
+            user.setStatus(review.getReviewStatus());
+
+            save(user);
         }
     }
 
