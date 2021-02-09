@@ -537,4 +537,5 @@
     <string name="transfer_contact_search_hint">Type mobile number or contact name</string>
     <string name="transfer_phone_number_invalid">Please input correct number</string>
     <string name="empty_amount">0.00 $</string>
+    <string name="phone_number_country_code">+1</string>
 </resources>

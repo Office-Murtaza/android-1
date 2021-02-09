@@ -17,6 +17,7 @@
             android:id="@+id/phone_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:text="@string/phone_number_country_code"
             android:layout_gravity="center"
             android:inputType="phone" />
     </com.google.android.material.textfield.TextInputLayout>
