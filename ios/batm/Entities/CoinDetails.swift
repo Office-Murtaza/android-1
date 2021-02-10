@@ -8,7 +8,8 @@ struct CoinDetails: Equatable {
   var scale: Int?
   var gasPrice: Int?
   var gasLimit: Int?
-  var swapProfitPercent: Decimal
+  var platformSwapFee: Decimal?
+  var platformTradeFee: Decimal?
   var walletAddress: String
   var contractAddress: String?
   var convertedTxFee: Decimal?

@@ -8,7 +8,7 @@ extension CoinDetails: ImmutableMappable {
     guard
       let mappedType = CustomCoinType(code: code),
       let txFee = Decimal(string: try map.value("txFeeStr")),
-      let swapProfitPercent = Decimal(string: try map.value("swapProfitPercentStr"))
+      let platformSwapFee = Decimal(string: try map.value("platformSwapFeeStr"))
     else {
       throw ObjectMapperError.couldNotMap
     }
@@ -19,7 +19,8 @@ extension CoinDetails: ImmutableMappable {
     scale = try map.value("scale")
     gasPrice = try map.value("gasPrice")
     gasLimit = try map.value("gasLimit")
-    self.swapProfitPercent = swapProfitPercent
+    self.platformSwapFee = platformSwapFee
+    platformTradeFee = Decimal(string: try map.value("platformTradeFeeStr"))
     walletAddress = try map.value("walletAddress")
     contractAddress = try map.value("contractAddress")
     if map.JSON.keys.contains("convertedTxFeeStr") {

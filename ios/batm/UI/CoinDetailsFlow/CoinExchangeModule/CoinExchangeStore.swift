@@ -70,7 +70,7 @@ struct CoinExchangeState: Equatable {
         
         let receiveCoinFee = (toCoinType?.isETHBased ?? false) ? toCoinDetails?.convertedTxFee : toCoinDetails?.txFee
         let price = fromCoinAmountDecimal * (toRateString().decimalValue ?? 0)
-        let sendCoinFee = 1 - (toCoinDetails?.swapProfitPercent ?? 0) / 100
+        let sendCoinFee = 1 - (toCoinDetails?.platformSwapFee ?? 0) / 100
         var result = price * sendCoinFee - (receiveCoinFee ?? 0)
         result = result > 0 ? result : 0
         return result.coinFormatted(fractionDigits: toCoinDetails?.scale)
@@ -220,7 +220,7 @@ final class CoinExchangeStore: ViewStore<CoinExchangeAction, CoinExchangeState> 
     }
     
     private func updatePlatformFee(state: inout CoinExchangeState) {
-        guard let toCoinType = state.toCoinType, let swapPrecent = state.toCoinDetails?.swapProfitPercent else {
+        guard let toCoinType = state.toCoinType, let swapPrecent = state.toCoinDetails?.platformSwapFee else {
             state.platformFee = ""
             return
         }
@@ -229,7 +229,7 @@ final class CoinExchangeStore: ViewStore<CoinExchangeAction, CoinExchangeState> 
         let fromAmount = Decimal(string: state.fromCoinAmount) ?? 0
         let fromPrice = state.fromCoinBalance?.price ?? 0
         let toPrice = state.toCoinBalance?.price ?? 0
-        let feeAmount = fromAmount * fromPrice / toPrice * ((state.toCoinDetails?.swapProfitPercent ?? 0) / 100)
+        let feeAmount = fromAmount * fromPrice / toPrice * ((state.toCoinDetails?.platformSwapFee ?? 0) / 100)
         let fee = feeAmount.isNaN ? 0 : feeAmount
         state.platformFee = "\(percent) ~ \(fee.coinFormatted(fractionDigits:nil).withCoinType(toCoinType))"
     }
@@ -243,7 +243,7 @@ final class CoinExchangeStore: ViewStore<CoinExchangeAction, CoinExchangeState> 
         guard let feeB = state.toCoinDetails?.txFee ?? state.toCoinDetails?.convertedTxFee,
               let priceB = state.toCoinBalance?.price,
               let priceA = state.fromCoinBalance?.price,
-              let profit = state.toCoinDetails?.swapProfitPercent else { return 0.0.coinFormatted }
+              let profit = state.toCoinDetails?.platformSwapFee else { return 0.0.coinFormatted }
         
         let firstExpression = (amount.decimalValue ?? 0 + feeB) * priceB
         let secondPart = priceA / (1 - profit / 100)
