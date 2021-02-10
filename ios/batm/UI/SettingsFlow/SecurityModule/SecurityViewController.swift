@@ -5,7 +5,7 @@ import SnapKit
 
 class SecurityViewController: ModuleViewController<SecurityPresenter> {
   
-  var dataSource: SettingsTableViewDataSource!
+  var dataSource: SecurityTableViewDataSource!
   
   let tableView = SettingsTableView()
   

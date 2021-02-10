@@ -4,7 +4,7 @@ import RxCocoa
 
 class PinCodeDotsView: UIView {
   
-  static let numberOfDots = 6
+  static let numberOfDots = 4
   static let normalColor = UIColor.brownishGrey.withAlphaComponent(0.2)
   static let activeColor = UIColor.ceruleanBlue
   

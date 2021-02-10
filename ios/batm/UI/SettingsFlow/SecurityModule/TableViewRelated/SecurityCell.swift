@@ -4,6 +4,7 @@ enum SecurityCellType: Equatable, SettingsCellTypeRepresentable {
   case updatePhone(phoneNumber: String? = nil)
   case updatePassword
   case updatePIN
+  case faceId(isEnabled: Bool = UserDefaultsHelper.isLocalAuthEnabled)
   case seedPhrase
   case unlink
 
@@ -14,6 +15,7 @@ enum SecurityCellType: Equatable, SettingsCellTypeRepresentable {
     case .updatePIN: return localize(L.Security.Cell.updatePIN)
     case .seedPhrase: return localize(L.Security.Cell.seedPhrase)
     case .unlink: return localize(L.Security.Cell.unlink)
+    case .faceId: return localize(L.Security.Cell.faceId)
     }
   }
 
@@ -31,12 +33,13 @@ enum SecurityCellType: Equatable, SettingsCellTypeRepresentable {
     case .updatePIN: return UIImage(named: "security_pin")
     case .seedPhrase: return UIImage(named: "security_seed_phrase")
     case .unlink: return UIImage(named: "security_unlink")
+    case .faceId: return UIImage(named: "settingsFaceId")
     }
   }
     
   var isDisclosureNeeded: Bool {
     switch self {
-    case .updatePhone: return false
+    case .updatePhone, .faceId: return false
     default: return true
     }
   }

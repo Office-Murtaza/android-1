@@ -715,6 +715,7 @@ extension L.Reserve {
 extension L.Security {
 
   struct Cell {
+    static let faceId = "security.cell.face_id"
     static let seedPhrase = "security.cell.seed_phrase"
     static let unlink = "security.cell.unlink"
     static let updatePIN = "security.cell.update_p_i_n"

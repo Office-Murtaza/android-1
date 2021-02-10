@@ -4,6 +4,7 @@ class UserDefaultsHelper {
     enum Consts: String {
         case notificationsEnabled
         case isAuthorized
+        case isLocalAuthEnabled
     }
     
     static let defs = UserDefaults.standard
@@ -13,6 +14,9 @@ class UserDefaultsHelper {
     
     @UserDefaultOptional(key: .isAuthorized)
     static var isAuthorized: Bool?
+    
+    @UserDefault<Bool>(key: .isLocalAuthEnabled, defaultValue: true )
+    static var isLocalAuthEnabled: Bool
     
     static func reset() {
         let dict = defs.dictionaryRepresentation()

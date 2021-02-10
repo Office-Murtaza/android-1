@@ -44,6 +44,8 @@
 		05B7596F25880C3800F23F23 /* CreateWalletResponse+Mapping.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05B7596E25880C3800F23F23 /* CreateWalletResponse+Mapping.swift */; };
 		05C62222257ECE28008787F3 /* KeychainManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05C62221257ECE28008787F3 /* KeychainManager.swift */; };
 		05E35FE725AE585900E2167C /* WithdrawView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05E35FE625AE585900E2167C /* WithdrawView.swift */; };
+		2318A08A25D1C16B006F3EC4 /* LocalAuthentication.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2318A08925D1C16B006F3EC4 /* LocalAuthentication.framework */; };
+		2318A08C25D1C2A9006F3EC4 /* LAContext+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2318A08B25D1C2A9006F3EC4 /* LAContext+Extensions.swift */; };
 		23234DA425AB9B4500CA90F7 /* TransferSectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23234DA325AB9B4500CA90F7 /* TransferSectionView.swift */; };
 		232E33482550626A00A9BF72 /* BalanceService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 232E33472550626A00A9BF72 /* BalanceService.swift */; };
 		232E345E2558772B00A9BF72 /* SocketMessageBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 232E345D2558772B00A9BF72 /* SocketMessageBuilder.swift */; };
@@ -52,6 +54,8 @@
 		234B90AD25AE39110012F2A2 /* TransferFlowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 234B90AC25AE39110012F2A2 /* TransferFlowController.swift */; };
 		234B90B125AE3AB60012F2A2 /* TransferModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 234B90B025AE3AB60012F2A2 /* TransferModule.swift */; };
 		234B90B725AE4CF70012F2A2 /* ContactView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 234B90B625AE4CF70012F2A2 /* ContactView.swift */; };
+		234EE5C325D3066200884141 /* SecurityLocalAuthCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 234EE5C225D3066200884141 /* SecurityLocalAuthCell.swift */; };
+		234EE5CA25D30AB100884141 /* SecurityTableDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 234EE5C925D30AB100884141 /* SecurityTableDataSource.swift */; };
 		2362ECE325A7AA4500E9BC85 /* SwapUsdValueView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2362ECE225A7AA4500E9BC85 /* SwapUsdValueView.swift */; };
 		237EC457256DAE8A005BB79B /* PriceChartDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = 237EC456256DAE8A005BB79B /* PriceChartDetails.swift */; };
 		239685DB2575988A00C0FF1E /* CoinExchangeSwapTextFieldView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 239685DA2575988A00C0FF1E /* CoinExchangeSwapTextFieldView.swift */; };
@@ -628,6 +632,8 @@
 		05C62221257ECE28008787F3 /* KeychainManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainManager.swift; sourceTree = "<group>"; };
 		05E35FE625AE585900E2167C /* WithdrawView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WithdrawView.swift; sourceTree = "<group>"; };
 		142D5BA6DA2741657FE02671 /* Pods_batmTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_batmTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		2318A08925D1C16B006F3EC4 /* LocalAuthentication.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = LocalAuthentication.framework; path = System/Library/Frameworks/LocalAuthentication.framework; sourceTree = SDKROOT; };
+		2318A08B25D1C2A9006F3EC4 /* LAContext+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LAContext+Extensions.swift"; sourceTree = "<group>"; };
 		23234DA325AB9B4500CA90F7 /* TransferSectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransferSectionView.swift; sourceTree = "<group>"; };
 		232E33472550626A00A9BF72 /* BalanceService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BalanceService.swift; sourceTree = "<group>"; };
 		232E345D2558772B00A9BF72 /* SocketMessageBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SocketMessageBuilder.swift; sourceTree = "<group>"; };
@@ -636,6 +642,8 @@
 		234B90AC25AE39110012F2A2 /* TransferFlowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransferFlowController.swift; sourceTree = "<group>"; };
 		234B90B025AE3AB60012F2A2 /* TransferModule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransferModule.swift; sourceTree = "<group>"; };
 		234B90B625AE4CF70012F2A2 /* ContactView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactView.swift; sourceTree = "<group>"; };
+		234EE5C225D3066200884141 /* SecurityLocalAuthCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecurityLocalAuthCell.swift; sourceTree = "<group>"; };
+		234EE5C925D30AB100884141 /* SecurityTableDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecurityTableDataSource.swift; sourceTree = "<group>"; };
 		2362ECE225A7AA4500E9BC85 /* SwapUsdValueView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwapUsdValueView.swift; sourceTree = "<group>"; };
 		237EC456256DAE8A005BB79B /* PriceChartDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PriceChartDetails.swift; sourceTree = "<group>"; };
 		239685DA2575988A00C0FF1E /* CoinExchangeSwapTextFieldView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoinExchangeSwapTextFieldView.swift; sourceTree = "<group>"; };
@@ -1175,6 +1183,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2318A08A25D1C16B006F3EC4 /* LocalAuthentication.framework in Frameworks */,
 				32C70C2C2AC5257199173D49 /* Pods_batm.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1310,6 +1319,14 @@
 			path = Flow;
 			sourceTree = "<group>";
 		};
+		234EE5C825D30A9800884141 /* DataSource */ = {
+			isa = PBXGroup;
+			children = (
+				234EE5C925D30AB100884141 /* SecurityTableDataSource.swift */,
+			);
+			path = DataSource;
+			sourceTree = "<group>";
+		};
 		23BF987A25A3A06300119C30 /* TransferFlow */ = {
 			isa = PBXGroup;
 			children = (
@@ -1359,6 +1376,7 @@
 		69A08C4BAA3CCE770777E941 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				2318A08925D1C16B006F3EC4 /* LocalAuthentication.framework */,
 				5D2E48FC9C22336570E8297D /* Pods_batm.framework */,
 				142D5BA6DA2741657FE02671 /* Pods_batmTests.framework */,
 			);
@@ -2303,6 +2321,7 @@
 				DB67D1B52394FB3E008EFB0D /* Error+Extensions.swift */,
 				23F4138925AA55DD006853CB /* Contact+Extensions.swift */,
 				0503565125B73AB100FCA326 /* Double+Extension.swift */,
+				2318A08B25D1C2A9006F3EC4 /* LAContext+Extensions.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -2961,6 +2980,7 @@
 		DBDA455824E5BD6D002A3AF5 /* SecurityModule */ = {
 			isa = PBXGroup;
 			children = (
+				234EE5C825D30A9800884141 /* DataSource */,
 				DBDA456124E5BE16002A3AF5 /* TableViewRelated */,
 				DBDA455A24E5BD82002A3AF5 /* SecurityViewController.swift */,
 				DBDA455B24E5BD82002A3AF5 /* SecurityPresenter.swift */,
@@ -2973,6 +2993,7 @@
 		DBDA456124E5BE16002A3AF5 /* TableViewRelated */ = {
 			isa = PBXGroup;
 			children = (
+				234EE5C225D3066200884141 /* SecurityLocalAuthCell.swift */,
 				DBDA456224E5BE25002A3AF5 /* SecurityCell.swift */,
 			);
 			path = TableViewRelated;
@@ -3394,6 +3415,7 @@
 				DB0211C422CCE7FD004065E9 /* RecoverSeedPhraseFormView.swift in Sources */,
 				232E345E2558772B00A9BF72 /* SocketMessageBuilder.swift in Sources */,
 				DB04E4CE22D85D41000E2D85 /* PinCodeRecord+CoreDataClass.swift in Sources */,
+				2318A08C25D1C2A9006F3EC4 /* LAContext+Extensions.swift in Sources */,
 				DBC8B45E23635AB200E7A799 /* SellDetails.swift in Sources */,
 				DBA1B61624A9C9D000A9A703 /* ReserveFormView.swift in Sources */,
 				DB70852322CFA39F00FFE4F7 /* WalletModule.swift in Sources */,
@@ -3749,6 +3771,7 @@
 				DB9616D622C748610078E92D /* FetchRequestBuilder.swift in Sources */,
 				DBDD5D13235797F00012DFAA /* CoinSellAnotherAddressView.swift in Sources */,
 				DB1D21E824AE6CCB001E9696 /* StakeDetails+Mapping.swift in Sources */,
+				234EE5C325D3066200884141 /* SecurityLocalAuthCell.swift in Sources */,
 				DB26C00D24D1E4BD007FE258 /* FirebaseInitializer.swift in Sources */,
 				DB5185AE231FE68300052229 /* CoinWithdrawViewController.swift in Sources */,
 				DB16A871235F4438007E3B20 /* CoinSellDetailsAnotherAddressViewController.swift in Sources */,
@@ -3848,6 +3871,7 @@
 				DB2F250E2360687800274C60 /* CoinSellDetailsCurrentAddressPresenter.swift in Sources */,
 				055A9B8E2575530E00A8E8F1 /* DealsStore.swift in Sources */,
 				DB8A1960235729A0003E8F7D /* NavigationScreenView.swift in Sources */,
+				234EE5CA25D30AB100884141 /* SecurityTableDataSource.swift in Sources */,
 				DB0AD1D624BA1F4C00806282 /* PasswordTextField.swift in Sources */,
 				DB8D408122C3DBA700D5FBD0 /* CreateWalletModule.swift in Sources */,
 				0503565225B73AB100FCA326 /* Double+Extension.swift in Sources */,

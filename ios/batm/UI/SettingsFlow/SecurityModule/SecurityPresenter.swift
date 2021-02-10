@@ -25,6 +25,7 @@ class SecurityPresenter: ModulePresenter, SecurityModule {
             self.types.accept([.updatePhone(phoneNumber: user.phoneNumber.phoneFormatted),
                                .updatePassword,
                                .updatePIN,
+                               .faceId(isEnabled: UserDefaultsHelper.isLocalAuthEnabled),
                                .seedPhrase,
                                .unlink])
         })
@@ -40,6 +41,7 @@ class SecurityPresenter: ModulePresenter, SecurityModule {
         case .updatePIN: self.fetchPinCode()
         case .seedPhrase: delegate?.didSelectSeedPhrase()
         case .unlink: delegate?.didSelectUnlink()
+        case .faceId: break
         }
       })
       .disposed(by: disposeBag)
