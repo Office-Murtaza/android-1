@@ -11,9 +11,10 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.math.BigDecimal;
+import java.util.Date;
 
-@Getter
 @Setter
+@Getter
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -29,6 +30,9 @@ public class TradeDTO {
 
     @JsonFormat(shape = JsonFormat.Shape.OBJECT)
     private TradeStatus status;
+
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm aa, MMMM dd, yyyy")
+    private Date createDate;
 
     private BigDecimal price;
     private BigDecimal minLimit;

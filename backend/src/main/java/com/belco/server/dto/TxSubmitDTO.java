@@ -1,23 +1,25 @@
 package com.belco.server.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.math.BigDecimal;
 
-@Getter
 @Setter
+@Getter
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class SubmitTransactionDTO {
+public class TxSubmitDTO {
 
     private Integer type;
     private String fromAddress;
     private String toAddress;
     private BigDecimal cryptoAmount;
     private BigDecimal refCryptoAmount;
-    //private BigDecimal fee;
     private Integer fiatAmount;
     private String fiatCurrency;
     private String phone;

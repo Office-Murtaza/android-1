@@ -1,8 +1,8 @@
 package com.belco.server.service;
 
 import com.belco.server.dto.CurrentAccountDTO;
-import com.belco.server.dto.TransactionDetailsDTO;
-import com.belco.server.dto.TransactionHistoryDTO;
+import com.belco.server.dto.TxDetailsDTO;
+import com.belco.server.dto.TxHistoryDTO;
 import com.belco.server.entity.TransactionRecord;
 import com.belco.server.entity.TransactionRecordWallet;
 import com.belco.server.model.TransactionStatus;
@@ -15,7 +15,6 @@ import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 import org.web3j.utils.Numeric;
 import wallet.core.java.AnySigner;
@@ -201,8 +200,8 @@ public class RippledService {
         return false;
     }
 
-    public TransactionDetailsDTO getTransactionDetails(String txId, String address, String explorerUrl) {
-        TransactionDetailsDTO dto = new TransactionDetailsDTO();
+    public TxDetailsDTO getTransactionDetails(String txId, String address, String explorerUrl) {
+        TxDetailsDTO dto = new TxDetailsDTO();
 
         if (nodeService.isNodeAvailable(COIN_TYPE)) {
             try {
@@ -236,7 +235,7 @@ public class RippledService {
         return dto;
     }
 
-    public Map<String, TransactionDetailsDTO> getNodeTransactions(String address) {
+    public Map<String, TxDetailsDTO> getNodeTransactions(String address) {
         if (nodeService.isNodeAvailable(COIN_TYPE)) {
             try {
                 JSONObject param = new JSONObject();
@@ -266,7 +265,7 @@ public class RippledService {
         return Collections.emptyMap();
     }
 
-    public TransactionHistoryDTO getTransactionDetails(String address, Integer startIndex, Integer limit, List<TransactionRecord> transactionRecords, List<TransactionRecordWallet> transactionRecordWallets) {
+    public TxHistoryDTO getTransactionDetails(String address, Integer startIndex, Integer limit, List<TransactionRecord> transactionRecords, List<TransactionRecordWallet> transactionRecordWallets) {
         return TxUtil.buildTxs(getNodeTransactions(address), startIndex, limit, transactionRecords, transactionRecordWallets);
     }
 
@@ -303,8 +302,8 @@ public class RippledService {
         return null;
     }
 
-    private Map<String, TransactionDetailsDTO> collectNodeTxs(JSONArray array, String address) {
-        Map<String, TransactionDetailsDTO> map = new HashMap<>();
+    private Map<String, TxDetailsDTO> collectNodeTxs(JSONArray array, String address) {
+        Map<String, TxDetailsDTO> map = new HashMap<>();
 
         if (array != null && !array.isEmpty()) {
             for (int i = 0; i < array.size(); i++) {
@@ -319,7 +318,7 @@ public class RippledService {
                 BigDecimal amount = Util.format(getAmount(tx.optString("Amount")), 6);
                 Date date1 = new Date((tx.optLong("date") + 946684800L) * 1000);
 
-                map.put(txId, new TransactionDetailsDTO(txId, amount, fromAddress, toAddress, type, status, date1));
+                map.put(txId, new TxDetailsDTO(txId, amount, fromAddress, toAddress, type, status, date1));
             }
         }
 

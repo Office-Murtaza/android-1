@@ -31,10 +31,10 @@ public class StakingDetailsDTO {
     private int holdPeriod;
     private int annualPercent;
 
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm aa, MMMM dd, yyyy")
     private Date createDate;
 
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm aa, MMMM dd, yyyy")
     private Date cancelDate;
 
     private int duration;

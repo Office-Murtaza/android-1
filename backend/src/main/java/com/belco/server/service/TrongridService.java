@@ -1,8 +1,8 @@
 package com.belco.server.service;
 
 import com.belco.server.dto.CurrentBlockDTO;
-import com.belco.server.dto.TransactionDetailsDTO;
-import com.belco.server.dto.TransactionHistoryDTO;
+import com.belco.server.dto.TxDetailsDTO;
+import com.belco.server.dto.TxHistoryDTO;
 import com.belco.server.entity.TransactionRecord;
 import com.belco.server.entity.TransactionRecordWallet;
 import com.belco.server.model.TransactionStatus;
@@ -109,8 +109,8 @@ public class TrongridService {
         return false;
     }
 
-    public TransactionDetailsDTO getTransactionDetails(String txId, String address, String explorerUrl) {
-        TransactionDetailsDTO dto = new TransactionDetailsDTO();
+    public TxDetailsDTO getTransactionDetails(String txId, String address, String explorerUrl) {
+        TxDetailsDTO dto = new TxDetailsDTO();
 
         if (nodeService.isNodeAvailable(COIN_TYPE)) {
             try {
@@ -142,7 +142,7 @@ public class TrongridService {
         return dto;
     }
 
-    public Map<String, TransactionDetailsDTO> getNodeTransactions(String address) {
+    public Map<String, TxDetailsDTO> getNodeTransactions(String address) {
         if (nodeService.isNodeAvailable(COIN_TYPE)) {
             try {
                 JSONObject res = rest.getForObject(nodeService.getNodeUrl(COIN_TYPE) + "/v1/accounts/" + address + "/transactions?limit=200&search_internal=true", JSONObject.class);
@@ -161,7 +161,7 @@ public class TrongridService {
         return Collections.emptyMap();
     }
 
-    public TransactionHistoryDTO getTransactionHistory(String address, Integer startIndex, Integer limit, List<TransactionRecord> transactionRecords, List<TransactionRecordWallet> transactionRecordWallets) {
+    public TxHistoryDTO getTransactionHistory(String address, Integer startIndex, Integer limit, List<TransactionRecord> transactionRecords, List<TransactionRecordWallet> transactionRecordWallets) {
         return TxUtil.buildTxs(getNodeTransactions(address), startIndex, limit, transactionRecords, transactionRecordWallets);
     }
 
@@ -231,8 +231,8 @@ public class TrongridService {
         return null;
     }
 
-    private Map<String, TransactionDetailsDTO> collectNodeTxs(JSONArray array, String address) {
-        Map<String, TransactionDetailsDTO> map = new HashMap<>();
+    private Map<String, TxDetailsDTO> collectNodeTxs(JSONArray array, String address) {
+        Map<String, TxDetailsDTO> map = new HashMap<>();
 
         if (array != null && !array.isEmpty()) {
             for (int i = 0; i < array.size(); i++) {
@@ -258,7 +258,7 @@ public class TrongridService {
                 TransactionStatus status = getStatus(contractRet);
                 Date date1 = new Date(tx.optJSONObject("raw_data").optLong("timestamp"));
 
-                map.put(txId, new TransactionDetailsDTO(txId, amount, fromAddress, toAddress, type, status, date1));
+                map.put(txId, new TxDetailsDTO(txId, amount, fromAddress, toAddress, type, status, date1));
             }
         }
 

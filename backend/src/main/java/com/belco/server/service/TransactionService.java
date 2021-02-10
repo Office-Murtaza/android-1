@@ -55,12 +55,12 @@ public class TransactionService {
         this.platformService = platformService;
     }
 
-    public TransactionDetailsDTO getTransactionDetails(Long userId, CoinService.CoinEnum coinCode, String txId) {
+    public TxDetailsDTO getTransactionDetails(Long userId, CoinService.CoinEnum coinCode, String txId) {
         User user = userService.findById(userId);
         Identity identity = user.getIdentity();
         Coin coin = coinCode.getCoinEntity();
 
-        TransactionDetailsDTO dto = new TransactionDetailsDTO();
+        TxDetailsDTO dto = new TxDetailsDTO();
         Optional<TransactionRecord> buySellRecOpt;
 
         if (org.apache.commons.lang.StringUtils.isNumeric(txId)) {  /** consider as txDbId */
@@ -132,7 +132,7 @@ public class TransactionService {
         return dto;
     }
 
-    public TransactionHistoryDTO getTransactionHistory(Long userId, CoinService.CoinEnum coinCode, Integer startIndex) {
+    public TxHistoryDTO getTransactionHistory(Long userId, CoinService.CoinEnum coinCode, Integer startIndex) {
         User user = userService.findById(userId);
         Identity identity = user.getIdentity();
         Coin coin = coinCode.getCoinEntity();
@@ -144,7 +144,7 @@ public class TransactionService {
         return coinCode.getTransactionHistory(address, startIndex, 10, transactionRecords, transactionRecordWallets);
     }
 
-    public void persistTransfer(Long userId, CoinService.CoinEnum coinCode, String txId, SubmitTransactionDTO dto) {
+    public void persistTransfer(Long userId, CoinService.CoinEnum coinCode, String txId, TxSubmitDTO dto) {
         try {
             User user = userService.findById(userId);
             Optional<User> receiverOpt = userService.findByPhone(dto.getPhone());
@@ -250,7 +250,7 @@ public class TransactionService {
         return dto;
     }
 
-    public PreSubmitDTO preSubmit(Long userId, CoinService.CoinEnum coinId, SubmitTransactionDTO transaction) {
+    public PreSubmitDTO preSubmit(Long userId, CoinService.CoinEnum coinId, TxSubmitDTO transaction) {
         PreSubmitDTO dto = new PreSubmitDTO();
 
         try {
@@ -275,7 +275,7 @@ public class TransactionService {
         return dto;
     }
 
-    public void swap(Long userId, CoinService.CoinEnum coin, String txId, SubmitTransactionDTO dto) {
+    public void swap(Long userId, CoinService.CoinEnum coin, String txId, TxSubmitDTO dto) {
         try {
             CoinService.CoinEnum refCoin = CoinService.CoinEnum.valueOf(dto.getRefCoin());
 
@@ -296,7 +296,7 @@ public class TransactionService {
         }
     }
 
-    public void reserve(Long userId, CoinService.CoinEnum coinCode, String txId, SubmitTransactionDTO dto) {
+    public void reserve(Long userId, CoinService.CoinEnum coinCode, String txId, TxSubmitDTO dto) {
         try {
             TransactionRecordWallet record = new TransactionRecordWallet();
             record.setTxId(txId);
@@ -312,7 +312,7 @@ public class TransactionService {
         }
     }
 
-    public Response recall(Long userId, CoinService.CoinEnum coinCode, SubmitTransactionDTO dto) {
+    public Response recall(Long userId, CoinService.CoinEnum coinCode, TxSubmitDTO dto) {
         try {
             UserCoin userCoin = userService.getUserCoin(userId, coinCode.name());
             BigDecimal reserved = userCoin.getReservedBalance();
@@ -323,7 +323,7 @@ public class TransactionService {
                 String toAddress = userCoin.getAddress();
                 String hex = coinCode.sign(fromAddress, toAddress, dto.getCryptoAmount());
 
-                SubmitTransactionDTO submit = new SubmitTransactionDTO();
+                TxSubmitDTO submit = new TxSubmitDTO();
                 submit.setHex(hex);
                 submit.setFromAddress(fromAddress);
                 submit.setToAddress(toAddress);
@@ -545,7 +545,7 @@ public class TransactionService {
                         String toAddress = userService.getUserCoin(identity.getUser().getId(), coinCode.name()).getAddress();
                         String hex = coinCode.sign(fromAddress, toAddress, t.getRefAmount());
 
-                        SubmitTransactionDTO submit = new SubmitTransactionDTO();
+                        TxSubmitDTO submit = new TxSubmitDTO();
                         submit.setHex(hex);
                         submit.setFromAddress(fromAddress);
                         submit.setToAddress(toAddress);
@@ -607,7 +607,7 @@ public class TransactionService {
                             String toAddress = userService.getUserCoin(receiverOpt.get().getId(), t.getCoin().getCode()).getAddress();
                             String hex = coinCode.sign(fromAddress, toAddress, withdrawAmount);
 
-                            SubmitTransactionDTO dto = new SubmitTransactionDTO();
+                            TxSubmitDTO dto = new TxSubmitDTO();
                             dto.setHex(hex);
                             dto.setCryptoAmount(withdrawAmount);
                             dto.setRefTxId(t.getTxId());

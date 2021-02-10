@@ -47,7 +47,7 @@ public class TradeService {
 
     @PostConstruct
     public void init() {
-        tradesMap = tradeRep.findAllByStatus(TradeStatus.CREATED.getValue()).stream()
+        tradesMap = tradeRep.findAllByStatus(TradeStatus.ACTIVE.getValue()).stream()
                 .collect(Collectors.toMap(Trade::getId, trade -> trade.toDTO()));
     }
 

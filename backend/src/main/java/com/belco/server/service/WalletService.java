@@ -1,8 +1,8 @@
 package com.belco.server.service;
 
 import com.belco.server.dto.CoinDTO;
-import com.belco.server.dto.SubmitTransactionDTO;
-import com.belco.server.dto.TransactionDetailsDTO;
+import com.belco.server.dto.TxSubmitDTO;
+import com.belco.server.dto.TxDetailsDTO;
 import com.belco.server.entity.Coin;
 import com.belco.server.entity.CoinPath;
 import com.belco.server.entity.TransactionRecordWallet;
@@ -158,7 +158,7 @@ public class WalletService {
 
             BigDecimal pendingSum = coin.getNodeTransactions(walletAddress).values().stream()
                     .filter(e -> e.getType() == TransactionType.WITHDRAW && e.getStatus() == TransactionStatus.PENDING)
-                    .map(TransactionDetailsDTO::getCryptoAmount)
+                    .map(TxDetailsDTO::getCryptoAmount)
                     .reduce(BigDecimal.ZERO, BigDecimal::add);
 
             if (coin == CoinService.CoinEnum.XRP) {
@@ -207,7 +207,7 @@ public class WalletService {
             if (balance.compareTo(amount) >= 0 && amount.compareTo(BigDecimal.ZERO) > 0) {
                 String hex = coin.sign(fromAddress, toAddress, amount);
 
-                SubmitTransactionDTO dto = new SubmitTransactionDTO();
+                TxSubmitDTO dto = new TxSubmitDTO();
                 dto.setHex(hex);
                 dto.setFromAddress(fromAddress);
                 dto.setToAddress(toAddress);

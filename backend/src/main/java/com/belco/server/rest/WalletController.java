@@ -1,6 +1,6 @@
 package com.belco.server.rest;
 
-import com.belco.server.dto.TransactionDetailsDTO;
+import com.belco.server.dto.TxDetailsDTO;
 import com.belco.server.dto.WalletDTO;
 import com.belco.server.service.CoinService;
 import com.belco.server.service.WalletService;
@@ -39,7 +39,8 @@ public class WalletController {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
 
-        WalletDTO dto = WalletDTO.builder().valid(coin.getCoinType().validate(address)).build();
+        WalletDTO dto = new WalletDTO();
+        dto.setValid(coin.getCoinType().validate(address));
 
         return ResponseEntity.ok(dto);
     }
@@ -52,7 +53,8 @@ public class WalletController {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
 
-        WalletDTO dto = WalletDTO.builder().price(coin.getPrice()).build();
+        WalletDTO dto = new WalletDTO();
+        dto.setPrice(coin.getPrice());
 
         return ResponseEntity.ok(dto);
     }
@@ -65,7 +67,8 @@ public class WalletController {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
 
-        WalletDTO dto = WalletDTO.builder().balance(walletService.getBalance(coin)).build();
+        WalletDTO dto = new WalletDTO();
+        dto.setBalance(walletService.getBalance(coin));
 
         return ResponseEntity.ok(dto);
     }
@@ -78,11 +81,11 @@ public class WalletController {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
 
-        WalletDTO dto = WalletDTO.builder()
-                .walletAddress(coin.getWalletAddress())
-                .txFee(coin.getTxFee())
-                .tolerance(coin.getCoinEntity().getTolerance().stripTrailingZeros())
-                .scale(coin.getCoinEntity().getScale()).build();
+        WalletDTO dto = new WalletDTO();
+        dto.setWalletAddress(coin.getWalletAddress());
+        dto.setTxFee(coin.getTxFee());
+        dto.setTolerance(coin.getCoinEntity().getTolerance().stripTrailingZeros());
+        dto.setScale(coin.getCoinEntity().getScale());
 
         if (coin == CoinService.CoinEnum.CATM || coin == CoinService.CoinEnum.USDT) {
             dto.setConvertedTxFee(walletService.convertToFee(coin));
@@ -99,13 +102,14 @@ public class WalletController {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
 
-        WalletDTO dto = WalletDTO.builder().receivingAddress(walletService.getReceivingAddress(coin)).build();
+        WalletDTO dto = new WalletDTO();
+        dto.setReceivingAddress(walletService.getReceivingAddress(coin));
 
         return ResponseEntity.ok(dto);
     }
 
     @GetMapping("/coin/{coin}/transaction")
-    public ResponseEntity<TransactionDetailsDTO> getTransaction(@PathVariable CoinService.CoinEnum coin, @RequestParam String txId, @RequestParam String address, @RequestParam long timestamp, @RequestParam String signature) {
+    public ResponseEntity<TxDetailsDTO> getTransaction(@PathVariable CoinService.CoinEnum coin, @RequestParam String txId, @RequestParam String address, @RequestParam long timestamp, @RequestParam String signature) {
         String signature2 = Util.sign("transaction", coin.name(), timestamp, apiKey, apiSecret);
 
         if (enabled && !signature2.equals(signature)) {
@@ -127,14 +131,14 @@ public class WalletController {
     }
 
     @GetMapping("/coin/{coin}/transfer")
-    public ResponseEntity<TransactionDetailsDTO> transfer(@PathVariable CoinService.CoinEnum coin, @RequestParam String fromAddress, @RequestParam String toAddress, @RequestParam BigDecimal amount, @RequestParam long timestamp, @RequestParam String signature) {
+    public ResponseEntity<TxDetailsDTO> transfer(@PathVariable CoinService.CoinEnum coin, @RequestParam String fromAddress, @RequestParam String toAddress, @RequestParam BigDecimal amount, @RequestParam long timestamp, @RequestParam String signature) {
         String signature2 = Util.sign("transfer", coin.name(), timestamp, apiKey, apiSecret);
 
         if (enabled && !signature2.equals(signature)) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
 
-        TransactionDetailsDTO dto = new TransactionDetailsDTO();
+        TxDetailsDTO dto = new TxDetailsDTO();
         dto.setTxId(walletService.transfer(coin, fromAddress, toAddress, amount));
 
         return ResponseEntity.ok(dto);

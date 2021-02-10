@@ -1,9 +1,9 @@
 package com.belco.server.service;
 
 import com.belco.server.dto.AuthenticationDTO;
-import com.belco.server.dto.KycDetailsDTO;
 import com.belco.server.dto.LocationDTO;
-import com.belco.server.dto.SubmitKycDTO;
+import com.belco.server.dto.VerificationDTO;
+import com.belco.server.dto.VerificationDetailsDTO;
 import com.belco.server.entity.*;
 import com.belco.server.model.VerificationStatus;
 import com.belco.server.repository.*;
@@ -264,8 +264,8 @@ public class UserService implements UserDetailsService {
         return savedIdentity;
     }
 
-    public KycDetailsDTO getKycDetails(Long userId) {
-        KycDetailsDTO dto = new KycDetailsDTO();
+    public VerificationDetailsDTO getKycDetails(Long userId) {
+        VerificationDetailsDTO dto = new VerificationDetailsDTO();
         dto.setStatus(VerificationStatus.NOT_VERIFIED);
 
         User user = userRep.getOne(userId);
@@ -289,7 +289,7 @@ public class UserService implements UserDetailsService {
     }
 
     @Transactional
-    public boolean submitKyc(Long userId, SubmitKycDTO dto) {
+    public boolean submitKyc(Long userId, VerificationDTO dto) {
         try {
             User user = userRep.getOne(userId);
             IdentityKycReview ikr = new IdentityKycReview();

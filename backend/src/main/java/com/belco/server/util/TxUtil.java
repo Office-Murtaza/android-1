@@ -1,7 +1,7 @@
 package com.belco.server.util;
 
-import com.belco.server.dto.TransactionDetailsDTO;
-import com.belco.server.dto.TransactionHistoryDTO;
+import com.belco.server.dto.TxDetailsDTO;
+import com.belco.server.dto.TxHistoryDTO;
 import com.belco.server.entity.TransactionRecord;
 import com.belco.server.entity.TransactionRecordWallet;
 import com.belco.server.model.TransactionStatus;
@@ -15,16 +15,16 @@ import java.util.Map;
 
 public class TxUtil {
 
-    public static TransactionHistoryDTO buildTxs(Map<String, TransactionDetailsDTO> map, Integer startIndex, Integer limit, List<TransactionRecord> transactionRecords, List<TransactionRecordWallet> transactionRecordWallets) {
+    public static TxHistoryDTO buildTxs(Map<String, TxDetailsDTO> map, Integer startIndex, Integer limit, List<TransactionRecord> transactionRecords, List<TransactionRecordWallet> transactionRecordWallets) {
         mergeTransactionRecords(map, transactionRecords);
         mergeTransactionRecordWallets(map, transactionRecordWallets);
 
-        List<TransactionDetailsDTO> list = convertAndSort(map);
+        List<TxDetailsDTO> list = convertAndSort(map);
 
-        return new TransactionHistoryDTO(list.size(), list.subList(startIndex - 1, Math.min(list.size(), startIndex + limit - 1)));
+        return new TxHistoryDTO(list.size(), list.subList(startIndex - 1, Math.min(list.size(), startIndex + limit - 1)));
     }
 
-    private static void mergeTransactionRecordWallets(Map<String, TransactionDetailsDTO> map, List<TransactionRecordWallet> list) {
+    private static void mergeTransactionRecordWallets(Map<String, TxDetailsDTO> map, List<TransactionRecordWallet> list) {
         if (list != null && !list.isEmpty()) {
             list.stream().forEach(e -> {
                 if (map.containsKey(e.getTxId())) {
@@ -35,7 +35,7 @@ public class TxUtil {
         }
     }
 
-    private static void mergeTransactionRecords(Map<String, TransactionDetailsDTO> map, List<TransactionRecord> txList) {
+    private static void mergeTransactionRecords(Map<String, TxDetailsDTO> map, List<TransactionRecord> txList) {
         if (txList != null && !txList.isEmpty()) {
             txList.stream().forEach(e -> {
                 TransactionType type = e.getTransactionType();
@@ -45,20 +45,20 @@ public class TxUtil {
                     map.get(e.getDetail()).setType(type);
                     map.get(e.getDetail()).setStatus(status);
                 } else {
-                    TransactionDetailsDTO transactionDetailsDTO = new TransactionDetailsDTO(null, Util.format(e.getCryptoAmount(), 6), type, status, e.getServerTime());
+                    TxDetailsDTO txDetailsDTO = new TxDetailsDTO(null, Util.format(e.getCryptoAmount(), 6), type, status, e.getServerTime());
                     String txDbId = e.getId().toString();
-                    transactionDetailsDTO.setTxDbId(txDbId);
+                    txDetailsDTO.setTxDbId(txDbId);
 
-                    map.put(txDbId, transactionDetailsDTO);
+                    map.put(txDbId, txDetailsDTO);
                 }
             });
         }
     }
 
-    private static List<TransactionDetailsDTO> convertAndSort(Map<String, TransactionDetailsDTO> map) {
+    private static List<TxDetailsDTO> convertAndSort(Map<String, TxDetailsDTO> map) {
         if (!map.isEmpty()) {
-            List<TransactionDetailsDTO> list = new ArrayList<>(map.values());
-            list.sort(Comparator.comparing(TransactionDetailsDTO::getDate1).reversed());
+            List<TxDetailsDTO> list = new ArrayList<>(map.values());
+            list.sort(Comparator.comparing(TxDetailsDTO::getDate1).reversed());
 
             return list;
         }

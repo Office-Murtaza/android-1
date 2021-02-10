@@ -9,13 +9,13 @@ import lombok.Setter;
 import java.util.ArrayList;
 import java.util.List;
 
-@Getter
 @Setter
+@Getter
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class TransactionHistoryDTO {
+public class TxHistoryDTO {
 
     private Integer total = 0;
-    private List<TransactionDetailsDTO> transactions = new ArrayList<>();
+    private List<TxDetailsDTO> transactions = new ArrayList<>();
 }

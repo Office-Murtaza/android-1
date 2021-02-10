@@ -1,17 +1,23 @@
 package com.belco.server.dto;
 
+import com.belco.server.model.VerificationStatus;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Getter
+import java.math.BigDecimal;
+
 @Setter
+@Getter
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class VerificationResponseDTO {
+public class VerificationDetailsDTO {
 
-    private String code;
+    private VerificationStatus status;
+    private BigDecimal txLimit;
+    private BigDecimal dailyLimit;
+    private String message;
 }

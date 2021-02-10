@@ -8,7 +8,7 @@ import java.util.Map;
 
 public enum TradeStatus {
 
-    CREATED(1),
+    ACTIVE(1),
     CANCELED(2);
 
     private static final Map<Integer, TradeStatus> map = new HashMap<>();

@@ -1,7 +1,7 @@
 package com.belco.server.service;
 
-import com.belco.server.dto.TransactionDetailsDTO;
-import com.belco.server.dto.TransactionHistoryDTO;
+import com.belco.server.dto.TxDetailsDTO;
+import com.belco.server.dto.TxHistoryDTO;
 import com.belco.server.dto.UtxoDTO;
 import com.belco.server.entity.TransactionRecord;
 import com.belco.server.entity.TransactionRecordWallet;
@@ -130,8 +130,8 @@ public class BlockbookService {
         return false;
     }
 
-    public TransactionDetailsDTO getTransactionDetails(CoinType coinType, String txId, String address, String explorerUrl) {
-        TransactionDetailsDTO dto = new TransactionDetailsDTO();
+    public TxDetailsDTO getTransactionDetails(CoinType coinType, String txId, String address, String explorerUrl) {
+        TxDetailsDTO dto = new TxDetailsDTO();
 
         if (nodeService.isNodeAvailable(coinType)) {
             try {
@@ -168,7 +168,7 @@ public class BlockbookService {
         return dto;
     }
 
-    public Map<String, TransactionDetailsDTO> getNodeTransactions(CoinType coinType, String address) {
+    public Map<String, TxDetailsDTO> getNodeTransactions(CoinType coinType, String address) {
         if (nodeService.isNodeAvailable(coinType)) {
             try {
                 JSONObject res = rest.getForObject(nodeService.getNodeUrl(coinType) + "/api/v2/address/" + address + "?details=txs&pageSize=1000&page=1", JSONObject.class);
@@ -187,7 +187,7 @@ public class BlockbookService {
         return Collections.emptyMap();
     }
 
-    public TransactionHistoryDTO getTransactionHistory(CoinType coinType, String address, Integer startIndex, Integer limit, List<TransactionRecord> transactionRecords, List<TransactionRecordWallet> transactionRecordWallets) {
+    public TxHistoryDTO getTransactionHistory(CoinType coinType, String address, Integer startIndex, Integer limit, List<TransactionRecord> transactionRecords, List<TransactionRecordWallet> transactionRecordWallets) {
         return TxUtil.buildTxs(getNodeTransactions(coinType, address), startIndex, limit, transactionRecords, transactionRecordWallets);
     }
 
@@ -258,8 +258,8 @@ public class BlockbookService {
         return BigDecimal.valueOf(getByteFee(coinType)).divide(DIVIDER).multiply(BigDecimal.valueOf(1000)).stripTrailingZeros();
     }
 
-    private Map<String, TransactionDetailsDTO> collectNodeTxs(JSONArray array, String address) {
-        Map<String, TransactionDetailsDTO> map = new HashMap<>();
+    private Map<String, TxDetailsDTO> collectNodeTxs(JSONArray array, String address) {
+        Map<String, TxDetailsDTO> map = new HashMap<>();
 
         if (array != null && !array.isEmpty()) {
             for (int i = 0; i < array.size(); i++) {
@@ -276,7 +276,7 @@ public class BlockbookService {
                 TransactionStatus status = getStatus(json.optInt("confirmations"));
                 Date date1 = new Date(json.optLong("blockTime") * 1000);
 
-                map.put(txId, new TransactionDetailsDTO(txId, amount, fromAddress, toAddress, type, status, date1));
+                map.put(txId, new TxDetailsDTO(txId, amount, fromAddress, toAddress, type, status, date1));
             }
         }
 

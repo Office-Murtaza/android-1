@@ -45,7 +45,6 @@ public class Order extends BaseEntity {
     private User taker;
 
     private Integer takerRate;
-
     private Date createDate;
 
     @Transient

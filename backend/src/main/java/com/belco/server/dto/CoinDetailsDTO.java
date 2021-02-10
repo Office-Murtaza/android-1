@@ -23,13 +23,10 @@ public class CoinDetailsDTO {
     private Long gasPrice;
     private Long gasLimit;
     private Integer scale;
-
     private BigDecimal platformSwapFee;
     private String platformSwapFeeStr;
-
     private BigDecimal platformTradeFee;
     private String platformTradeFeeStr;
-
     private String walletAddress;
     private String contractAddress;
 

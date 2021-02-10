@@ -81,18 +81,15 @@ public class UserController {
     @PostMapping("/verify")
     public Response verify(@RequestBody VerificationDTO dto) {
         try {
-            VerificationResponseDTO res = new VerificationResponseDTO();
             String code = twilioService.sendVerificationCode(dto.getPhone());
 
             if (StringUtils.isBlank(code)) {
                 return Response.defaultError("Not supported phone number");
             }
 
-            res.setCode(code);
-
             log.info("phone: " + dto.getPhone() + ", code: " + code);
 
-            return Response.ok(res);
+            return Response.ok("code", code);
         } catch (Exception e) {
             e.printStackTrace();
             return Response.serverError();
@@ -304,7 +301,7 @@ public class UserController {
     }
 
     @PostMapping("/user/{userId}/kyc-submit")
-    public Response submitKyc(@PathVariable Long userId, @RequestBody @ModelAttribute SubmitKycDTO dto) {
+    public Response submitKyc(@PathVariable Long userId, @RequestBody @ModelAttribute VerificationDTO dto) {
         try {
             return Response.ok(userService.submitKyc(userId, dto));
         } catch (Exception e) {
@@ -355,7 +352,7 @@ public class UserController {
         httpHeaders.add(Constant.AUTHORIZATION_HEADER, "Bearer " + jwt);
 
         return new TokenDTO(userId, identityId, jwt, System.currentTimeMillis() + tokenDuration, refreshToken,
-                authentication.getAuthorities().stream().map(role -> role.getAuthority()).collect(Collectors.toList()));
+                authentication.getAuthorities().stream().map(role -> role.getAuthority()).collect(Collectors.toList()), null);
     }
 
     private TokenDTO getJwt(User user) {
@@ -369,6 +366,6 @@ public class UserController {
         httpHeaders.add(Constant.AUTHORIZATION_HEADER, "Bearer " + jwt);
 
         return new TokenDTO(user.getId(), user.getIdentity().getId(), jwt, System.currentTimeMillis() + tokenDuration, refreshToken,
-                authentication.getAuthorities().stream().map(role -> role.getAuthority()).collect(Collectors.toList()));
+                authentication.getAuthorities().stream().map(role -> role.getAuthority()).collect(Collectors.toList()), null);
     }
 }

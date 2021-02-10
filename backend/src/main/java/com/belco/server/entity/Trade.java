@@ -11,6 +11,7 @@ import lombok.Setter;
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Setter
@@ -41,6 +42,8 @@ public class Trade extends BaseEntity {
     @JoinColumn(name = "maker_user_id")
     private User maker;
 
+    private Date createDate;
+
     @Transient
     public TradeType getTradeType() {
         return TradeType.valueOf(type);
@@ -57,6 +60,7 @@ public class Trade extends BaseEntity {
                 getTradeType(),
                 CoinService.CoinEnum.valueOf(getCoin().getCode()),
                 getTradeStatus(),
+                getCreateDate(),
                 getPrice().stripTrailingZeros(),
                 getMinLimit().stripTrailingZeros(),
                 getMaxLimit().stripTrailingZeros(),

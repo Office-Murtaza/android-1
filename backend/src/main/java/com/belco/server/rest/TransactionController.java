@@ -1,14 +1,11 @@
 package com.belco.server.rest;
 
-import com.belco.server.dto.SubmitTransactionDTO;
-import com.belco.server.dto.TransactionDetailsDTO;
+import com.belco.server.dto.TxSubmitDTO;
 import com.belco.server.model.Response;
-import com.belco.server.model.TransactionStatus;
 import com.belco.server.model.TransactionType;
 import com.belco.server.service.CoinService;
 import com.belco.server.service.TransactionService;
 import org.apache.commons.lang.StringUtils;
-import org.apache.logging.log4j.util.Strings;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -44,7 +41,7 @@ public class TransactionController {
     }
 
     @PostMapping("/user/{userId}/coin/{coin}/pre-submit")
-    public Response preSubmit(@PathVariable Long userId, @PathVariable CoinService.CoinEnum coin, @RequestBody SubmitTransactionDTO dto) {
+    public Response preSubmit(@PathVariable Long userId, @PathVariable CoinService.CoinEnum coin, @RequestBody TxSubmitDTO dto) {
         try {
             return Response.ok(transactionService.preSubmit(userId, coin, dto));
         } catch (Exception e) {
@@ -54,7 +51,7 @@ public class TransactionController {
     }
 
     @PostMapping("/user/{userId}/coin/{coin}/submit")
-    public Response submit(@PathVariable Long userId, @PathVariable CoinService.CoinEnum coin, @RequestBody SubmitTransactionDTO dto) {
+    public Response submit(@PathVariable Long userId, @PathVariable CoinService.CoinEnum coin, @RequestBody TxSubmitDTO dto) {
         try {
             String txId;
 

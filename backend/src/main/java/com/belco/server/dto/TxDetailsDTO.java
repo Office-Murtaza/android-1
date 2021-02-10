@@ -5,6 +5,7 @@ import com.belco.server.model.TransactionStatus;
 import com.belco.server.model.TransactionType;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -12,11 +13,12 @@ import lombok.Setter;
 import java.math.BigDecimal;
 import java.util.Date;
 
-@Getter
 @Setter
+@Getter
 @NoArgsConstructor
+@AllArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class TransactionDetailsDTO {
+public class TxDetailsDTO {
 
     private String txId;
     private String txDbId;
@@ -46,13 +48,13 @@ public class TransactionDetailsDTO {
     @JsonFormat(shape = JsonFormat.Shape.OBJECT)
     private CashStatus cashStatus;
 
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "MMMM dd, yyyy")
     private Date date1;
 
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm aa, MMMM dd, yyyy")
     private Date date2;
 
-    public TransactionDetailsDTO(String txId, BigDecimal cryptoAmount, TransactionType type, TransactionStatus status, Date date1) {
+    public TxDetailsDTO(String txId, BigDecimal cryptoAmount, TransactionType type, TransactionStatus status, Date date1) {
         this.txId = txId;
         this.cryptoAmount = cryptoAmount;
         this.type = type;
@@ -60,7 +62,7 @@ public class TransactionDetailsDTO {
         this.date1 = date1;
     }
 
-    public TransactionDetailsDTO(String txId, BigDecimal cryptoAmount, String fromAddress, String toAddress, TransactionType type, TransactionStatus status, Date date1) {
+    public TxDetailsDTO(String txId, BigDecimal cryptoAmount, String fromAddress, String toAddress, TransactionType type, TransactionStatus status, Date date1) {
         this.txId = txId;
         this.cryptoAmount = cryptoAmount;
         this.fromAddress = fromAddress;

@@ -9,7 +9,7 @@ import java.util.Map;
 public enum PaymentMethod {
 
     CASH(1),
-    PAY_PALL(2),
+    PAY_PAL(2),
     VENMO(3),
     CASH_APP(4),
     PAYONEER(5);
