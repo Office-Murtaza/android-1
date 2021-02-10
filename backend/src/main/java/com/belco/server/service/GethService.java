@@ -1,15 +1,14 @@
 package com.belco.server.service;
 
-import com.belco.server.dto.TxSubmitDTO;
 import com.belco.server.dto.TxDetailsDTO;
 import com.belco.server.dto.TxHistoryDTO;
+import com.belco.server.dto.TxSubmitDTO;
 import com.belco.server.entity.TransactionRecord;
 import com.belco.server.entity.TransactionRecordWallet;
 import com.belco.server.model.TransactionStatus;
 import com.belco.server.model.TransactionType;
 import com.belco.server.token.CATM;
 import com.belco.server.token.USDT;
-import com.belco.server.util.TxUtil;
 import com.belco.server.util.Util;
 import com.google.protobuf.ByteString;
 import com.mongodb.BasicDBList;
@@ -153,7 +152,7 @@ public class GethService {
     }
 
     private static TxHistoryDTO buildTransactionList(String coll, BasicDBObject query, String address, Integer startIndex, Integer limit, List<TransactionRecord> transactionRecords, List<TransactionRecordWallet> transactionRecordWallets) {
-        return TxUtil.buildTxs(getNodeTransactionsFromDB(coll, query, address), startIndex, limit, transactionRecords, transactionRecordWallets);
+        return TransactionService.buildTxs(getNodeTransactionsFromDB(coll, query, address), startIndex, limit, transactionRecords, transactionRecordWallets);
     }
 
     private static Map<String, TxDetailsDTO> getNodeTransactionsFromDB(String coll, BasicDBObject query, String address) {
@@ -487,7 +486,7 @@ public class GethService {
         try {
             Optional<TransactionReceipt> receiptOptional = web3.ethGetTransactionReceipt(txId).send().getTransactionReceipt();
 
-            if(receiptOptional.isPresent()) {
+            if (receiptOptional.isPresent()) {
                 return true;
             }
         } catch (Exception e) {

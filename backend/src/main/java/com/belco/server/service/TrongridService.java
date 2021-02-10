@@ -8,7 +8,6 @@ import com.belco.server.entity.TransactionRecordWallet;
 import com.belco.server.model.TransactionStatus;
 import com.belco.server.model.TransactionType;
 import com.belco.server.util.Base58;
-import com.belco.server.util.TxUtil;
 import com.belco.server.util.Util;
 import com.google.protobuf.ByteString;
 import lombok.Getter;
@@ -162,7 +161,7 @@ public class TrongridService {
     }
 
     public TxHistoryDTO getTransactionHistory(String address, Integer startIndex, Integer limit, List<TransactionRecord> transactionRecords, List<TransactionRecordWallet> transactionRecordWallets) {
-        return TxUtil.buildTxs(getNodeTransactions(address), startIndex, limit, transactionRecords, transactionRecordWallets);
+        return TransactionService.buildTxs(getNodeTransactions(address), startIndex, limit, transactionRecords, transactionRecordWallets);
     }
 
     public CurrentBlockDTO getCurrentBlock() {

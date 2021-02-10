@@ -7,7 +7,6 @@ import com.belco.server.entity.TransactionRecord;
 import com.belco.server.entity.TransactionRecordWallet;
 import com.belco.server.model.TransactionStatus;
 import com.belco.server.model.TransactionType;
-import com.belco.server.util.TxUtil;
 import com.belco.server.util.Util;
 import com.google.protobuf.ByteString;
 import lombok.Getter;
@@ -21,6 +20,7 @@ import wallet.core.java.AnySigner;
 import wallet.core.jni.CoinType;
 import wallet.core.jni.PrivateKey;
 import wallet.core.jni.proto.Ripple;
+
 import java.math.BigDecimal;
 import java.util.*;
 
@@ -181,8 +181,8 @@ public class RippledService {
 
                 JSONObject res = rest.postForObject(nodeService.getNodeUrl(COIN_TYPE), req, JSONObject.class).optJSONObject("result");
 
-                if(res.containsKey("error")) {
-                    if(res.optJSONObject("result").optString("error").equalsIgnoreCase("txnNotFound")) {
+                if (res.containsKey("error")) {
+                    if (res.optJSONObject("result").optString("error").equalsIgnoreCase("txnNotFound")) {
                         return false;
                     }
                 } else {
@@ -266,7 +266,7 @@ public class RippledService {
     }
 
     public TxHistoryDTO getTransactionDetails(String address, Integer startIndex, Integer limit, List<TransactionRecord> transactionRecords, List<TransactionRecordWallet> transactionRecordWallets) {
-        return TxUtil.buildTxs(getNodeTransactions(address), startIndex, limit, transactionRecords, transactionRecordWallets);
+        return TransactionService.buildTxs(getNodeTransactions(address), startIndex, limit, transactionRecords, transactionRecordWallets);
     }
 
     public String sign(String fromAddress, String toAddress, BigDecimal amount, BigDecimal fee) {

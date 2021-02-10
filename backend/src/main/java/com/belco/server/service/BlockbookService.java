@@ -7,7 +7,6 @@ import com.belco.server.entity.TransactionRecord;
 import com.belco.server.entity.TransactionRecordWallet;
 import com.belco.server.model.TransactionStatus;
 import com.belco.server.model.TransactionType;
-import com.belco.server.util.TxUtil;
 import com.belco.server.util.Util;
 import com.google.protobuf.ByteString;
 import net.sf.json.JSONArray;
@@ -112,12 +111,12 @@ public class BlockbookService {
         return null;
     }
 
-    public  boolean isTransactionSeenOnBlockchain(CoinType coinType, String txId) {
+    public boolean isTransactionSeenOnBlockchain(CoinType coinType, String txId) {
         if (nodeService.isNodeAvailable(coinType)) {
             try {
                 return rest.getForObject(nodeService.getNodeUrl(coinType) + "/api/v2/tx/" + txId, JSONObject.class) != null;
             } catch (HttpClientErrorException he) {
-               return false;
+                return false;
             } catch (Exception e) {
                 e.printStackTrace();
 
@@ -188,7 +187,7 @@ public class BlockbookService {
     }
 
     public TxHistoryDTO getTransactionHistory(CoinType coinType, String address, Integer startIndex, Integer limit, List<TransactionRecord> transactionRecords, List<TransactionRecordWallet> transactionRecordWallets) {
-        return TxUtil.buildTxs(getNodeTransactions(coinType, address), startIndex, limit, transactionRecords, transactionRecordWallets);
+        return TransactionService.buildTxs(getNodeTransactions(coinType, address), startIndex, limit, transactionRecords, transactionRecordWallets);
     }
 
     public String signBTCForks(CoinType coinType, String fromAddress, String toAddress, BigDecimal amount, Long byteFee, List<JSONObject> utxos) {

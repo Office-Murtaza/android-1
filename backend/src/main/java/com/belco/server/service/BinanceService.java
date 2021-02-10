@@ -6,7 +6,6 @@ import com.belco.server.dto.TxHistoryDTO;
 import com.belco.server.entity.TransactionRecord;
 import com.belco.server.entity.TransactionRecordWallet;
 import com.belco.server.model.TransactionStatus;
-import com.belco.server.util.TxUtil;
 import com.belco.server.util.Util;
 import com.binance.dex.api.client.BinanceDexApiRestClient;
 import com.binance.dex.api.client.domain.Account;
@@ -168,7 +167,7 @@ public class BinanceService {
     }
 
     public TxHistoryDTO getTransactionHistory(String address, Integer startIndex, Integer limit, List<TransactionRecord> transactionRecords, List<TransactionRecordWallet> transactionRecordWallets) {
-        return TxUtil.buildTxs(getNodeTransactions(address), startIndex, limit, transactionRecords, transactionRecordWallets);
+        return TransactionService.buildTxs(getNodeTransactions(address), startIndex, limit, transactionRecords, transactionRecordWallets);
     }
 
     public CurrentAccountDTO getCurrentAccount(String address) {
