@@ -10,6 +10,8 @@ import android.view.ViewGroup
 import android.widget.TableLayout
 import androidx.biometric.BiometricPrompt
 import androidx.core.content.ContextCompat
+import androidx.core.view.isInvisible
+import androidx.lifecycle.Observer
 import androidx.lifecycle.observe
 import com.app.belcobtm.App
 import com.app.belcobtm.R
@@ -60,6 +62,11 @@ class PinCodeFragment : BaseFragment<FragmentPinCodeBinding>() {
         key9View.setOnClickListener { addPinSymbol(it) }
         key0View.setOnClickListener { addPinSymbol(it) }
         keyEraseView.setOnClickListener { removePinSymbol() }
+        keyBioView.setOnClickListener {
+            // since the visibility could not be set to GONE
+            // we have to check first if this button is visible to a user
+            if (viewModel.bioAuthVisible.value == true) startBioPromt()
+        }
         backButtonView.setOnClickListener {
             viewModel.onBackClick()
         }
@@ -128,6 +135,9 @@ class PinCodeFragment : BaseFragment<FragmentPinCodeBinding>() {
                 PinCodeAction.StartBioPromt -> startBioPromt()
             }
         }
+        viewModel.bioAuthVisible.observe(viewLifecycleOwner, Observer{ visible ->
+            binding.keyBioView.isInvisible = !visible
+        })
     }
 
     private fun startBioPromt() {
