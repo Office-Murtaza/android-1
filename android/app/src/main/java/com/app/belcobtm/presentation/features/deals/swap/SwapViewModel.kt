@@ -363,7 +363,7 @@ class SwapViewModel(
     }
 
     private fun getCoinFeeActual(coinDetailsDataItem: CoinDetailsDataItem): Double {
-        return 1 - coinDetailsDataItem.swapProfitPercent / 100
+        return 1 - coinDetailsDataItem.platformSwapFee / 100
     }
 
     private fun calcCoinsRatio(coin1: CoinDataItem, coin2: CoinDataItem): Double {
@@ -376,7 +376,7 @@ class SwapViewModel(
         val coinToReceiveDetails = coinToReceiveDetails ?: return
         // Platform fee(B) = amount(A) x price(A) / price(B) x (swapProfitPercent / 100)
         val receiveRawAmount = sendAmount * calcCoinsRatio(coinToSend, coinToReceive)
-        val platformFeeActual = coinToReceiveDetails.swapProfitPercent
+        val platformFeeActual = coinToReceiveDetails.platformSwapFee
         val platformFeeCoinsAmount = receiveRawAmount * (platformFeeActual / 100)
         _swapFee.value = SwapFeeModelView(
             platformFeeActual,
