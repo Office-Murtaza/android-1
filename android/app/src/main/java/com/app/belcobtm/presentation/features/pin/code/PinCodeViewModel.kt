@@ -233,7 +233,7 @@ class PinCodeViewModel(
                         UseCase.None(),
                         onSuccess = { allowed ->
                             if (allowed) actionData.value = PinCodeAction.StartBioPromt
-                            _bioAuthVisible.value = true
+                            _bioAuthVisible.value = allowed
                         },
                         onError = {}
                     )
