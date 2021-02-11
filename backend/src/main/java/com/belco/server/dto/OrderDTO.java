@@ -2,6 +2,7 @@ package com.belco.server.dto;
 
 import com.belco.server.model.OrderStatus;
 import com.belco.server.service.CoinService;
+import com.belco.server.util.Constant;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;
@@ -29,8 +30,9 @@ public class OrderDTO {
     @JsonFormat(shape = JsonFormat.Shape.OBJECT)
     private OrderStatus status;
 
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = Constant.LONG_DATE_FORMAT)
     private Date createDate;
+    private Long timestamp;
 
     private BigDecimal price;
     private BigDecimal cryptoAmount;

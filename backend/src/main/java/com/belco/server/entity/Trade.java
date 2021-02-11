@@ -44,7 +44,7 @@ public class Trade extends BaseEntity {
     @JoinColumn(name = "maker_user_id")
     private User maker;
 
-    private Date createDate;
+    private Date createDate = new Date();
 
     @Transient
     public TradeType getTradeType() {
@@ -63,6 +63,7 @@ public class Trade extends BaseEntity {
                 CoinService.CoinEnum.valueOf(getCoin().getCode()),
                 getTradeStatus(),
                 getCreateDate(),
+                getCreateDate().getTime(),
                 getPrice().stripTrailingZeros(),
                 getMinLimit().stripTrailingZeros(),
                 getMaxLimit().stripTrailingZeros(),

@@ -3,6 +3,7 @@ package com.belco.server.dto;
 import com.belco.server.model.CashStatus;
 import com.belco.server.model.TransactionStatus;
 import com.belco.server.model.TransactionType;
+import com.belco.server.util.Constant;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;
@@ -48,10 +49,10 @@ public class TxDetailsDTO {
     @JsonFormat(shape = JsonFormat.Shape.OBJECT)
     private CashStatus cashStatus;
 
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "MMMM dd, yyyy")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = Constant.SHORT_DATE_FORMAT)
     private Date date1;
 
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm aa, MMMM dd, yyyy")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = Constant.LONG_DATE_FORMAT)
     private Date date2;
 
     public TxDetailsDTO(String txId, BigDecimal cryptoAmount, TransactionType type, TransactionStatus status, Date date1) {

@@ -13,14 +13,16 @@ public class CoinController {
 
     private final UserService userService;
     private final CoinService coinService;
+    private final BlockbookService blockbookService;
     private final RippledService rippledService;
     private final TrongridService trongridService;
     private final GethService gethService;
     private final CacheService cacheService;
 
-    public CoinController(UserService userService, CoinService coinService, RippledService rippledService, TrongridService trongridService, GethService gethService, CacheService cacheService) {
+    public CoinController(UserService userService, CoinService coinService, BlockbookService blockbookService, RippledService rippledService, TrongridService trongridService, GethService gethService, CacheService cacheService) {
         this.userService = userService;
         this.coinService = coinService;
+        this.blockbookService = blockbookService;
         this.rippledService = rippledService;
         this.trongridService = trongridService;
         this.gethService = gethService;
@@ -50,7 +52,7 @@ public class CoinController {
     @GetMapping("/coin/{coin}/utxo")
     public Response getUtxo(@PathVariable CoinService.CoinEnum coin, @RequestParam String xpub) {
         try {
-            return Response.ok(coin.getUtxo(xpub));
+            return Response.ok("utxos", blockbookService.getUtxo(coin.getCoinType(), xpub));
         } catch (Exception e) {
             e.printStackTrace();
             return Response.serverError();

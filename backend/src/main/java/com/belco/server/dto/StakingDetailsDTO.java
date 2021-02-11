@@ -1,6 +1,7 @@
 package com.belco.server.dto;
 
 import com.belco.server.model.StakingStatus;
+import com.belco.server.util.Constant;
 import com.belco.server.util.Util;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -31,10 +32,10 @@ public class StakingDetailsDTO {
     private int holdPeriod;
     private int annualPercent;
 
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm aa, MMMM dd, yyyy")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = Constant.LONG_DATE_FORMAT)
     private Date createDate;
 
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm aa, MMMM dd, yyyy")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = Constant.LONG_DATE_FORMAT)
     private Date cancelDate;
 
     private int duration;

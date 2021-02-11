@@ -45,7 +45,7 @@ public class Order extends BaseEntity {
     private User taker;
 
     private Integer takerRate;
-    private Date createDate;
+    private Date createDate = new Date();
 
     @Transient
     public OrderStatus getOrderStatus() {
@@ -60,6 +60,7 @@ public class Order extends BaseEntity {
                 CoinService.CoinEnum.valueOf(getCoin().getCode()),
                 getOrderStatus(),
                 getCreateDate(),
+                getCreateDate().getTime(),
                 getPrice().stripTrailingZeros(),
                 getCryptoAmount().stripTrailingZeros(),
                 getFiatAmount().stripTrailingZeros(),

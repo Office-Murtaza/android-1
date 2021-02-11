@@ -2,7 +2,6 @@ package com.belco.server.service;
 
 import com.belco.server.dto.TxDetailsDTO;
 import com.belco.server.dto.TxHistoryDTO;
-import com.belco.server.dto.UtxoDTO;
 import com.belco.server.entity.TransactionRecord;
 import com.belco.server.entity.TransactionRecordWallet;
 import com.belco.server.model.TransactionStatus;
@@ -75,12 +74,10 @@ public class BlockbookService {
         return null;
     }
 
-    public UtxoDTO getUtxo(CoinType coinType, String xpub) {
+    public JSONArray getUtxo(CoinType coinType, String xpub) {
         if (nodeService.isNodeAvailable(coinType)) {
             try {
-                JSONArray res = rest.getForObject(nodeService.getNodeUrl(coinType) + "/api/v2/utxo/" + xpub, JSONArray.class);
-
-                return new UtxoDTO(res);
+                return rest.getForObject(nodeService.getNodeUrl(coinType) + "/api/v2/utxo/" + xpub, JSONArray.class);
             } catch (Exception e) {
                 e.printStackTrace();
 
@@ -90,7 +87,7 @@ public class BlockbookService {
             }
         }
 
-        return new UtxoDTO();
+        return new JSONArray();
     }
 
     public Long getByteFee(CoinType coinType) {

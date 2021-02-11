@@ -118,11 +118,11 @@ public class TradeService {
     @Transactional
     public Response updateTrade(Long userId, TradeDTO dto) {
         try {
-            User user = userService.findById(userId);
-            UserCoin userCoin = user.getUserCoin(dto.getCoin().name());
             Trade trade = tradeRep.getOne(dto.getId());
+            User user = userService.findById(userId);
+            UserCoin userCoin = user.getUserCoin(trade.getCoin().getCode());
 
-            if (dto.getType() == TradeType.SELL) {
+            if (trade.getTradeType() == TradeType.SELL) {
                 userCoin.setReservedBalance(userCoin.getReservedBalance().add(trade.getLockedCryptoAmount()).stripTrailingZeros());
                 trade.setLockedCryptoAmount(BigDecimal.ZERO);
                 BigDecimal lockedCryptoAmount = calculateLockedCryptoAmount(dto);
@@ -135,7 +135,7 @@ public class TradeService {
                 trade.setLockedCryptoAmount(lockedCryptoAmount);
 
                 userCoinRep.save(userCoin);
-            } else if (dto.getType() == TradeType.BUY) {
+            } else if (trade.getTradeType() == TradeType.BUY) {
                 trade.setLockedCryptoAmount(BigDecimal.ZERO);
             }
 
@@ -149,7 +149,7 @@ public class TradeService {
             tradesMap.put(trade.getId(), trade.toDTO());
             wsPushTrade(trade.toDTO());
 
-            return Response.ok("id", trade.getId());
+            return Response.ok(trade != null);
         } catch (Exception e) {
             e.printStackTrace();
             return Response.serverError();
