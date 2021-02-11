@@ -54,7 +54,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:visibility="gone"
-        app:src="@drawable/ic_face_id"
+        app:src="@drawable/ic_lock_id"
         app:text="@string/bio_auth_label"
         app:withSwitch="true"
         tools:visibility="visible" />

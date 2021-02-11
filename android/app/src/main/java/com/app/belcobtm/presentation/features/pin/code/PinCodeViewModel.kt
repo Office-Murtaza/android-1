@@ -1,5 +1,6 @@
 package com.app.belcobtm.presentation.features.pin.code
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.app.belcobtm.R
@@ -33,6 +34,9 @@ class PinCodeViewModel(
 
     val stateData = MutableLiveData(PinCodeState())
     val actionData = SingleLiveData<PinCodeAction>()
+
+    private val _bioAuthVisible = MutableLiveData(false)
+    val bioAuthVisible: LiveData<Boolean> = _bioAuthVisible
 
     private var enteredPin = ""
 
@@ -228,8 +232,8 @@ class PinCodeViewModel(
                     bioAuthAllowedByUserUseCase(
                         UseCase.None(),
                         onSuccess = { allowed ->
-                            if (allowed)
-                                actionData.value = PinCodeAction.StartBioPromt
+                            if (allowed) actionData.value = PinCodeAction.StartBioPromt
+                            _bioAuthVisible.value = true
                         },
                         onError = {}
                     )
