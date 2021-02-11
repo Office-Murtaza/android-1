@@ -1,6 +1,8 @@
 import UIKit
 import RxSwift
 import RxCocoa
+import MaterialComponents
+import LocalAuthentication
 
 class PinCodeKeyboardView: UIView {
   
@@ -35,6 +37,15 @@ class PinCodeKeyboardView: UIView {
   let digitButton_0 = PinCodeKeyboardDigitButton(digit: 0)
   let backButton = PinCodeKeyboardBackButton()
   
+    lazy var localAuthButton: MDCButton = {
+        let button = MDCButton()
+        button.setBackgroundColor(.whiteTwo, for: .normal)
+        let type = LAContext().supportedBioAuthType
+        button.setImage(UIImage(named: type.rawValue), for: .normal)
+        return button
+    }()
+  
+   
   var digitButtons: [PinCodeKeyboardDigitButton] {
     return [
       digitButton_0,
@@ -84,7 +95,7 @@ class PinCodeKeyboardView: UIView {
                                        digitButton_8,
                                        digitButton_9)
     
-    fourthStackView.addArrangedSubviews(PinCodeKeyboardDummyView(),
+    fourthStackView.addArrangedSubviews(localAuthButton,
                                         digitButton_0,
                                         backButton)
   }
@@ -109,4 +120,8 @@ extension Reactive where Base == PinCodeKeyboardView {
   var backTapped: Driver<Void> {
     return base.backButton.rx.tap.asDriver()
   }
+    
+    var laAuthTapped: Driver<Void> {
+        return base.localAuthButton.rx.tap.asDriver()
+    }
 }

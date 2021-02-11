@@ -1,6 +1,7 @@
 import Foundation
 import RxSwift
 import RxCocoa
+import LocalAuthentication
 
 class PinCodePresenter: ModulePresenter, PinCodeModule {
   
@@ -10,12 +11,14 @@ class PinCodePresenter: ModulePresenter, PinCodeModule {
     var addDigit: Driver<String>
     var removeDigit: Driver<Void>
     var didDisappear: Driver<Void>
+    var laAuthDriver: Driver<Void>
   }
   
   private let usecase: PinCodeUsecase
   private let store: Store
   private let balanceService: BalanceService
-  
+  private let laContext = LAContext()
+    
   let didTypeWrongPinCode = PublishRelay<Void>()
   
   var state: Driver<PinCodeState> {
@@ -67,14 +70,42 @@ class PinCodePresenter: ModulePresenter, PinCodeModule {
       .bind(to: store.action)
       .disposed(by: disposeBag)
     
+    input.laAuthDriver
+        .asObservable()
+        .subscribe { [weak self] (_) in
+            self?.enrollLocalAuth()
+        }
+        .disposed(by: disposeBag)
+    
     setupBindings()
   }
   
+  func startLocalAuth() {
+     enrollLocalAuth()
+  }
+    
   private func clearCode() {
     store.action.accept(.clearCode)
     didTypeWrongPinCode.accept(())
   }
-  
+
+
+    private func enrollLocalAuth() {
+       
+        guard UserDefaultsHelper.isLocalAuthEnabled else { return }
+        
+        laContext.enroll { [unowned self] in
+            self.usecase
+                .refresh()
+                .do(onError: { [unowned self] _ in self.clearCode() }, onCompleted: { [unowned self] in
+                self.balanceService.start()
+                }).subscribe({ [unowned self]  _ in self.delegate?.didFinishPinCode(for: .verification, with: "") })
+                .disposed(by: disposeBag)
+        } failure: {
+            
+        }
+    }
+    
   private func setupBindings() {
     state
       .filter { $0.code.count == PinCodeDotsView.numberOfDots }

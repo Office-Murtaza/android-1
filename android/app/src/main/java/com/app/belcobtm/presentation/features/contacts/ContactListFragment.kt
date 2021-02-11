@@ -52,6 +52,8 @@ class ContactListFragment : BaseFragment<FragmentContactListBinding>() {
     @NeedsPermission(Manifest.permission.READ_CONTACTS)
     fun loadInitialData() {
         viewModel.loadContacts(binding.searchEditText.text.toString())
+        // add textwatcher only after permission granting
+        binding.searchEditText.addTextChangedListener(searchQueryTextWatcher)
     }
 
     override fun onRequestPermissionsResult(
@@ -65,7 +67,6 @@ class ContactListFragment : BaseFragment<FragmentContactListBinding>() {
     }
 
     override fun FragmentContactListBinding.initListeners() {
-        searchEditText.addTextChangedListener(searchQueryTextWatcher)
         searchEditText.actionDoneListener {
             hideKeyboard()
             validateSearchQuery()

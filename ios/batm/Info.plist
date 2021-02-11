@@ -80,5 +80,7 @@
 	</array>
 	<key>NSContactsUsageDescription</key>
 	<string>This allows Belco to choose a contact to send transaction</string>
+	<key>NSFaceIDUsageDescription</key>
+	<string>Will use to convinient auth process</string>
 </dict>
 </plist>

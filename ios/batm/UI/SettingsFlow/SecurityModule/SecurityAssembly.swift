@@ -6,7 +6,7 @@ final class SecurityAssembly: Assembly {
   
   func assemble(container: Container) {
     container.register(Module<SecurityModule>.self) { resolver in
-      let dataSource = SettingsTableViewDataSource()
+      let dataSource = SecurityTableViewDataSource()
       let viewController = SecurityViewController()
       let usecase = resolver.resolve(SettingsUsecase.self)!
       let presenter = SecurityPresenter(usecase: usecase)

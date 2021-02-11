@@ -43,6 +43,11 @@ class PinCodeViewController: ModuleViewController<PinCodePresenter>, UITextField
                      keyboardView)
   }
   
+   override func viewDidAppear(_ animated: Bool) {
+     super.viewDidAppear(animated)
+     presenter.startLocalAuth()
+   }
+    
   override func setupLayout() {
     logoImageView.snp.makeConstraints {
       $0.top.equalTo(view.safeAreaLayoutGuide).offset(60)
@@ -101,9 +106,11 @@ class PinCodeViewController: ModuleViewController<PinCodePresenter>, UITextField
     let addDigitDriver = keyboardView.rx.digitTapped
     let removeDigitDriver = keyboardView.rx.backTapped
     let didDisappearDriver = didDisappearRelay.asDriver(onErrorDriveWith: .empty())
+    let laAuthDriver = keyboardView.rx.laAuthTapped
     
     presenter.bind(input: PinCodePresenter.Input(addDigit: addDigitDriver,
                                                  removeDigit: removeDigitDriver,
-                                                 didDisappear: didDisappearDriver))
+                                                 didDisappear: didDisappearDriver,
+                                                 laAuthDriver: laAuthDriver))
   }
 }
