@@ -21,7 +21,7 @@ public class TradeController {
 
     @GetMapping("/user/{userId}/trades")
     public Response getTrades(@PathVariable Long userId) {
-        return Response.ok(tradeService.getTrades(userId));
+        return tradeService.getTrades(userId);
     }
 
     @PostMapping("/user/{userId}/trade")
@@ -35,8 +35,8 @@ public class TradeController {
     }
 
     @DeleteMapping("/user/{userId}/trade")
-    public Response cancelTrade(@PathVariable Long userId, @RequestParam Long tradeId) {
-        return tradeService.cancelTrade(userId, tradeId);
+    public Response cancelTrade(@PathVariable Long userId, @RequestParam Long id) {
+        return tradeService.cancelTrade(userId, id);
     }
 
     @PostMapping("/user/{userId}/order")
@@ -50,8 +50,8 @@ public class TradeController {
     }
 
     @DeleteMapping("/user/{userId}/order")
-    public Response cancelOrder(@PathVariable Long userId, @RequestParam Long orderId) {
-        return tradeService.cancelOrder(userId, orderId);
+    public Response cancelOrder(@PathVariable Long userId, @RequestParam Long id) {
+        return tradeService.cancelOrder(userId, id);
     }
 
     @MessageMapping("/chat")

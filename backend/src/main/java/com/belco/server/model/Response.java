@@ -2,13 +2,13 @@ package com.belco.server.model;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import net.sf.json.JSONObject;
 
-@Getter
 @Setter
+@Getter
 @AllArgsConstructor
 @NoArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -47,7 +47,7 @@ public class Response {
         return Response.error(new com.belco.server.model.Error(1, "Server error"));
     }
 
-    public static Response defaultError(String message) {
+    public static Response validationError(String message) {
         return Response.error(new com.belco.server.model.Error(2, message));
     }
 }

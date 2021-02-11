@@ -8,6 +8,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -30,6 +31,7 @@ public class Trade extends BaseEntity {
     private BigDecimal lockedCryptoAmount;
     private String paymentMethods;
     private String terms;
+    private Integer openOrders;
 
     @OneToMany(mappedBy = "trade", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Order> orders = new ArrayList<>();
@@ -66,6 +68,7 @@ public class Trade extends BaseEntity {
                 getMaxLimit().stripTrailingZeros(),
                 getPaymentMethods(),
                 getTerms(),
+                getOpenOrders(),
                 getMaker().getId(),
                 getMaker().getIdentity().getPublicId(),
                 getMaker().getLatitude().stripTrailingZeros(),

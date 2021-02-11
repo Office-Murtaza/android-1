@@ -84,7 +84,7 @@ public class UserController {
             String code = twilioService.sendVerificationCode(dto.getPhone());
 
             if (StringUtils.isBlank(code)) {
-                return Response.defaultError("Not supported phone number");
+                return Response.validationError("Not supported phone number");
             }
 
             log.info("phone: " + dto.getPhone() + ", code: " + code);
@@ -100,7 +100,7 @@ public class UserController {
     public Response register(@RequestBody AuthenticationDTO dto) {
         try {
             if (dto.getCoins().isEmpty()) {
-                return Response.defaultError("Empty coin list");
+                return Response.validationError("Empty coin list");
             }
 
             Optional<User> userOpt = userService.findByPhone(dto.getPhone());
@@ -135,7 +135,7 @@ public class UserController {
     public Response recover(@RequestBody AuthenticationDTO dto) {
         try {
             if (dto.getCoins().isEmpty()) {
-                return Response.defaultError("Empty coin list");
+                return Response.validationError("Empty coin list");
             }
 
             Optional<User> userOpt = userService.findByPhone(dto.getPhone());
@@ -237,7 +237,7 @@ public class UserController {
             Boolean isPhoneExist = userService.isPhoneExist(userId, dto.getPhone());
 
             if (isPhoneExist) {
-                return Response.defaultError("Phone is already used");
+                return Response.validationError("Phone is already used");
             } else {
                 userService.updatePhone(userId, dto.getPhone());
             }
@@ -266,7 +266,7 @@ public class UserController {
             Boolean isMatch = passwordEncoder.matches(dto.getOldPassword(), user.getPassword());
 
             if (!isMatch) {
-                return Response.defaultError("Wrong password");
+                return Response.validationError("Wrong password");
             } else {
                 userService.updatePassword(userId, passwordEncoder.encode(dto.getNewPassword()));
             }

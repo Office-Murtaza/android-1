@@ -39,6 +39,7 @@ public class TradeDTO {
     private BigDecimal maxLimit;
     private String paymentMethods;
     private String terms;
+    private Integer openOrders;
 
     private Long makerId;
     private String makerPublicId;

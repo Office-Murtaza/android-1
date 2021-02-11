@@ -90,7 +90,7 @@ public class TransactionController {
 
                 return Response.ok("txId", txId);
             } else {
-                return Response.defaultError(coin.name() + " submit transaction error");
+                return Response.validationError(coin.name() + " submit transaction error");
             }
         } catch (Exception e) {
             e.printStackTrace();
