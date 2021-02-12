@@ -291,9 +291,9 @@ public class UserController {
     }
 
     @GetMapping("/user/{userId}/kyc-details")
-    public Response getKycDetails(@PathVariable Long userId) {
+    public Response getVerificationDetails(@PathVariable Long userId) {
         try {
-            return Response.ok(userService.getKycDetails(userId));
+            return Response.ok(userService.getVerificationDetails(userId));
         } catch (Exception e) {
             e.printStackTrace();
             return Response.serverError();
@@ -301,9 +301,9 @@ public class UserController {
     }
 
     @PostMapping("/user/{userId}/kyc-submit")
-    public Response submitKyc(@PathVariable Long userId, @RequestBody @ModelAttribute VerificationDTO dto) {
+    public Response submitVerification(@PathVariable Long userId, @RequestBody @ModelAttribute VerificationDTO dto) {
         try {
-            return Response.ok(userService.submitKyc(userId, dto));
+            return userService.submitVerification(userId, dto);
         } catch (Exception e) {
             e.printStackTrace();
             return Response.serverError();

@@ -5,7 +5,9 @@ import com.belco.server.dto.LocationDTO;
 import com.belco.server.dto.VerificationDTO;
 import com.belco.server.dto.VerificationDetailsDTO;
 import com.belco.server.entity.*;
+import com.belco.server.model.Response;
 import com.belco.server.model.VerificationStatus;
+import com.belco.server.model.VerificationTier;
 import com.belco.server.repository.*;
 import com.belco.server.util.Util;
 import liquibase.util.file.FilenameUtils;
@@ -31,9 +33,6 @@ import java.util.stream.Collectors;
 
 @Service
 public class UserService implements UserDetailsService {
-
-    private static final int TIER_1 = 1;
-    private static final int TIER_2 = 2;
 
     private static final String SELFIE_PREFIX = "selfie_";
     private static final String ID_CARD_PREFIX = "id_card_";
@@ -68,7 +67,7 @@ public class UserService implements UserDetailsService {
     private IdentityPieceCellPhoneRep identityPieceCellPhoneRep;
 
     @Autowired
-    private IdentityKycReviewRep identityKycReviewRep;
+    private VerificationReviewRep verificationReviewRep;
 
     @Autowired
     private IdentityPiecePersonalInfoRep identityPiecePersonalInfoRep;
@@ -264,16 +263,16 @@ public class UserService implements UserDetailsService {
         return savedIdentity;
     }
 
-    public VerificationDetailsDTO getKycDetails(Long userId) {
+    public VerificationDetailsDTO getVerificationDetails(Long userId) {
         VerificationDetailsDTO dto = new VerificationDetailsDTO();
         dto.setStatus(VerificationStatus.NOT_VERIFIED);
 
         User user = userRep.getOne(userId);
-        IdentityKycReview ikr = identityKycReviewRep.findFirstByIdentityOrderByIdDesc(user.getIdentity());
+        VerificationReview verificationReview = verificationReviewRep.findFirstByIdentityOrderByIdDesc(user.getIdentity());
 
-        if (ikr != null) {
-            dto.setStatus(VerificationStatus.valueOf(ikr.getReviewStatus()));
-            dto.setMessage(ikr.getRejectedMessage());
+        if (verificationReview != null) {
+            dto.setStatus(VerificationStatus.valueOf(verificationReview.getStatus()));
+            dto.setMessage(verificationReview.getMessage());
         }
 
         if (dto.getStatus() == VerificationStatus.NOT_VERIFIED) {
@@ -289,212 +288,199 @@ public class UserService implements UserDetailsService {
     }
 
     @Transactional
-    public boolean submitKyc(Long userId, VerificationDTO dto) {
+    public Response submitVerification(Long userId, VerificationDTO dto) {
         try {
             User user = userRep.getOne(userId);
-            IdentityKycReview ikr = new IdentityKycReview();
+            VerificationReview verificationReview = new VerificationReview();
+            String fileExtension = FilenameUtils.getExtension(dto.getFile().getOriginalFilename());
+            String newFileName = RandomStringUtils.randomAlphanumeric(20).toLowerCase() + "." + fileExtension;
 
-            if (dto.getTierId() == TIER_1) {
-                String fileExtension = FilenameUtils.getExtension(dto.getFile().getOriginalFilename());
-                String newFileName = ID_CARD_PREFIX + RandomStringUtils.randomAlphanumeric(20).toLowerCase() + "." + fileExtension;
-                String newFilePath = documentUploadPath + File.separator + newFileName;
+            if (dto.getVerificationTier() == VerificationTier.VERIFICATION) {
+                String newFilePath = documentUploadPath + File.separator + ID_CARD_PREFIX + newFileName;
                 Path path = Paths.get(newFilePath);
-
                 Util.uploadFile(dto.getFile(), path);
 
-                ikr.setIdentity(user.getIdentity());
-                ikr.setTierId(TIER_1);
-                ikr.setReviewStatus(VerificationStatus.VERIFICATION_PENDING.getValue());
-                ikr.setIdCardNumber(dto.getIdNumber());
-                ikr.setAddress(dto.getAddress());
-                ikr.setCountry(dto.getCountry());
-                ikr.setProvince(dto.getProvince());
-                ikr.setCity(dto.getCity());
-                ikr.setZip(dto.getZipCode());
-                ikr.setFirstName(dto.getFirstName());
-                ikr.setLastName(dto.getLastName());
-                ikr.setIdCardFileName(newFileName);
-                ikr.setIdCardFileMimeType(dto.getFile().getContentType());
-            } else if (dto.getTierId() == TIER_2) {
-                ikr = identityKycReviewRep.findFirstByIdentityOrderByIdDesc(user.getIdentity());
-
-                String fileExtension = FilenameUtils.getExtension(dto.getFile().getOriginalFilename());
-                String newFileName = SELFIE_PREFIX + RandomStringUtils.randomAlphanumeric(20).toLowerCase() + "." + fileExtension;
-                String newFilePath = documentUploadPath + File.separator + newFileName;
+                verificationReview.setTier(dto.getVerificationTier().getValue());
+                verificationReview.setIdentity(user.getIdentity());
+                verificationReview.setStatus(VerificationStatus.VERIFICATION_PENDING.getValue());
+                verificationReview.setIdCardNumber(dto.getIdNumber());
+                verificationReview.setAddress(dto.getAddress());
+                verificationReview.setCountry(dto.getCountry());
+                verificationReview.setProvince(dto.getProvince());
+                verificationReview.setCity(dto.getCity());
+                verificationReview.setZipCode(dto.getZipCode());
+                verificationReview.setFirstName(dto.getFirstName());
+                verificationReview.setLastName(dto.getLastName());
+                verificationReview.setIdCardNumberFilename(newFileName);
+                verificationReview.setIdCardNumberMimetype(dto.getFile().getContentType());
+            } else if (dto.getVerificationTier() == VerificationTier.VIP_VERIFICATION) {
+                verificationReview = verificationReviewRep.findFirstByIdentityOrderByIdDesc(user.getIdentity());
+                String newFilePath = documentUploadPath + File.separator + SELFIE_PREFIX + newFileName;
                 Path path = Paths.get(newFilePath);
-
                 Util.uploadFile(dto.getFile(), path);
 
-                ikr.setTierId(TIER_2);
-                ikr.setReviewStatus(VerificationStatus.VIP_VERIFICATION_PENDING.getValue());
-                ikr.setSsn(dto.getSsn());
-                ikr.setSsnFileName(newFileName);
-                ikr.setSsnFileMimeType(dto.getFile().getContentType());
-            } else {
-                return false;
+                verificationReview.setTier(dto.getVerificationTier().getValue());
+                verificationReview.setStatus(VerificationStatus.VIP_VERIFICATION_PENDING.getValue());
+                verificationReview.setSsn(dto.getSsn());
+                verificationReview.setSsnFilename(newFileName);
+                verificationReview.setSsnMimetype(dto.getFile().getContentType());
             }
 
-            IdentityKycReview ikrSaved = identityKycReviewRep.save(ikr);
-            user.setStatus(ikrSaved.getReviewStatus());
+            verificationReview = verificationReviewRep.save(verificationReview);
+            user.setStatus(verificationReview.getStatus());
             save(user);
 
-            confirmKyc(ikrSaved.getId());
+            confirmVerification(verificationReview.getId());
 
-            return true;
+            return Response.ok(verificationReview != null);
         } catch (Exception e) {
             e.printStackTrace();
+            return Response.serverError();
         }
-
-        return false;
     }
 
     @Transactional
-    public void confirmKyc(Long id) {
-        Optional<IdentityKycReview> identityKycReview = identityKycReviewRep.findById(id);
+    public void confirmVerification(Long id) {
+        Optional<VerificationReview> verificationReviewOpt = verificationReviewRep.findById(id);
 
-        if (identityKycReview.isPresent()) {
-            IdentityKycReview review = identityKycReview.get();
+        if (verificationReviewOpt.isPresent()) {
+            VerificationReview verificationReview = verificationReviewOpt.get();
 
-            if (review.getTierId() == TIER_1) {
-                IdentityPiece scanIdentityPiece = identityPieceRep.findFirstByIdentityAndPieceTypeOrderByIdDesc(review.getIdentity(), IdentityPiece.TYPE_ID_SCAN);
+            if (verificationReview.getVerificationTier() == VerificationTier.VERIFICATION) {
+                IdentityPiece idScan = identityPieceRep.findFirstByIdentityAndPieceTypeOrderByIdDesc(verificationReview.getIdentity(), IdentityPiece.TYPE_ID_SCAN);
 
-                if (scanIdentityPiece != null) {
-                    IdentityPieceDocument identityPieceDocument = identityPieceDocumentRep.findFirstByIdentityPieceOrderByIdDesc(scanIdentityPiece).get();
-                    identityPieceDocument.setFileName(review.getIdCardFileName());
-                    identityPieceDocument.setMimeType(review.getIdCardFileMimeType());
+                if (idScan != null) {
+                    IdentityPieceDocument identityPieceDocument = identityPieceDocumentRep.findFirstByIdentityPieceOrderByIdDesc(idScan).get();
+                    identityPieceDocument.setFileName(verificationReview.getIdCardNumberFilename());
+                    identityPieceDocument.setMimeType(verificationReview.getIdCardNumberMimetype());
                     identityPieceDocument.setCreated(new Date());
                     identityPieceDocumentRep.save(identityPieceDocument);
 
-                    scanIdentityPiece.setCreated(new Date());
-                    identityPieceRep.save(scanIdentityPiece);
+                    idScan.setCreated(new Date());
+                    identityPieceRep.save(idScan);
                 } else {
-                    scanIdentityPiece = new IdentityPiece();
-                    scanIdentityPiece.setIdentity(review.getIdentity());
-                    scanIdentityPiece.setPieceType(IdentityPiece.TYPE_ID_SCAN);
-                    scanIdentityPiece.setRegistration(true);
-                    scanIdentityPiece.setCreated(new Date());
-                    IdentityPiece identityPieceSaved = identityPieceRep.save(scanIdentityPiece);
+                    idScan = new IdentityPiece();
+                    idScan.setIdentity(verificationReview.getIdentity());
+                    idScan.setPieceType(IdentityPiece.TYPE_ID_SCAN);
+                    idScan.setRegistration(true);
+                    idScan.setCreated(new Date());
+                    idScan = identityPieceRep.save(idScan);
 
-                    IdentityPieceDocument identityPieceDocument = IdentityPieceDocument.builder()
-                            .fileName(review.getIdCardFileName())
-                            .mimeType(review.getIdCardFileMimeType())
-                            .identity(review.getIdentity())
-                            .identityPiece(identityPieceSaved)
-                            .created(new Date())
-                            .build();
-
+                    IdentityPieceDocument identityPieceDocument = new IdentityPieceDocument();
+                    identityPieceDocument.setFileName(verificationReview.getIdCardNumberFilename());
+                    identityPieceDocument.setMimeType(verificationReview.getIdCardNumberMimetype());
+                    identityPieceDocument.setIdentity(verificationReview.getIdentity());
+                    identityPieceDocument.setIdentityPiece(idScan);
+                    identityPieceDocument.setCreated(new Date());
                     identityPieceDocumentRep.save(identityPieceDocument);
                 }
 
-                IdentityPiece personalInfoIdentityPiece = identityPieceRep.findFirstByIdentityAndPieceTypeOrderByIdDesc(review.getIdentity(), IdentityPiece.TYPE_PERSONAL_INFORMATION);
+                IdentityPiece personalInfo = identityPieceRep.findFirstByIdentityAndPieceTypeOrderByIdDesc(verificationReview.getIdentity(), IdentityPiece.TYPE_PERSONAL_INFORMATION);
 
-                if (personalInfoIdentityPiece != null) {
-                    IdentityPiecePersonalInfo identityPiecePersonalInfo = identityPiecePersonalInfoRep.findFirstByIdentityPieceOrderByIdDesc(personalInfoIdentityPiece).get();
-                    identityPiecePersonalInfo.setFirstName(review.getFirstName());
-                    identityPiecePersonalInfo.setLastName(review.getLastName());
-                    identityPiecePersonalInfo.setLastName(review.getLastName());
-                    identityPiecePersonalInfo.setAddress(review.getAddress());
-                    identityPiecePersonalInfo.setCountry(review.getCountry());
-                    identityPiecePersonalInfo.setProvince(review.getProvince());
-                    identityPiecePersonalInfo.setCity(review.getCity());
-                    identityPiecePersonalInfo.setZip(review.getZip());
-                    identityPiecePersonalInfo.setIdCardNumber(review.getIdCardNumber());
+                if (personalInfo != null) {
+                    IdentityPiecePersonalInfo identityPiecePersonalInfo = identityPiecePersonalInfoRep.findFirstByIdentityPieceOrderByIdDesc(personalInfo).get();
+                    identityPiecePersonalInfo.setFirstName(verificationReview.getFirstName());
+                    identityPiecePersonalInfo.setLastName(verificationReview.getLastName());
+                    identityPiecePersonalInfo.setLastName(verificationReview.getLastName());
+                    identityPiecePersonalInfo.setAddress(verificationReview.getAddress());
+                    identityPiecePersonalInfo.setCountry(verificationReview.getCountry());
+                    identityPiecePersonalInfo.setProvince(verificationReview.getProvince());
+                    identityPiecePersonalInfo.setCity(verificationReview.getCity());
+                    identityPiecePersonalInfo.setZip(verificationReview.getZipCode());
+                    identityPiecePersonalInfo.setIdCardNumber(verificationReview.getIdCardNumber());
                     identityPiecePersonalInfo.setCreated(new Date());
                     identityPiecePersonalInfoRep.save(identityPiecePersonalInfo);
 
-                    personalInfoIdentityPiece.setCreated(new Date());
-                    identityPieceRep.save(personalInfoIdentityPiece);
+                    personalInfo.setCreated(new Date());
+                    identityPieceRep.save(personalInfo);
                 } else {
-                    personalInfoIdentityPiece = new IdentityPiece();
-                    personalInfoIdentityPiece.setIdentity(review.getIdentity());
-                    personalInfoIdentityPiece.setPieceType(IdentityPiece.TYPE_PERSONAL_INFORMATION);
-                    personalInfoIdentityPiece.setRegistration(true);
-                    personalInfoIdentityPiece.setCreated(new Date());
-                    IdentityPiece personalInfoIdentityPieceSaved = identityPieceRep.save(personalInfoIdentityPiece);
+                    personalInfo = new IdentityPiece();
+                    personalInfo.setIdentity(verificationReview.getIdentity());
+                    personalInfo.setPieceType(IdentityPiece.TYPE_PERSONAL_INFORMATION);
+                    personalInfo.setRegistration(true);
+                    personalInfo.setCreated(new Date());
+                    IdentityPiece personalInfoIdentityPieceSaved = identityPieceRep.save(personalInfo);
 
-                    IdentityPiecePersonalInfo identityPiecePersonalInfo = IdentityPiecePersonalInfo.builder()
-                            .firstName(review.getFirstName())
-                            .lastName(review.getLastName())
-                            .identity(review.getIdentity())
-                            .identityPiece(personalInfoIdentityPieceSaved)
-                            .address(review.getAddress())
-                            .country(review.getCountry())
-                            .province(review.getProvince())
-                            .city(review.getCity())
-                            .zip(review.getZip())
-                            .idCardNumber(review.getIdCardNumber())
-                            .created(new Date())
-                            .build();
+                    IdentityPiecePersonalInfo identityPiecePersonalInfo = new IdentityPiecePersonalInfo();
+                    identityPiecePersonalInfo.setFirstName(verificationReview.getFirstName());
+                    identityPiecePersonalInfo.setLastName(verificationReview.getLastName());
+                    identityPiecePersonalInfo.setIdentity(verificationReview.getIdentity());
+                    identityPiecePersonalInfo.setIdentityPiece(personalInfoIdentityPieceSaved);
+                    identityPiecePersonalInfo.setAddress(verificationReview.getAddress());
+                    identityPiecePersonalInfo.setCountry(verificationReview.getCountry());
+                    identityPiecePersonalInfo.setProvince(verificationReview.getProvince());
+                    identityPiecePersonalInfo.setCity(verificationReview.getCity());
+                    identityPiecePersonalInfo.setZip(verificationReview.getZipCode());
+                    identityPiecePersonalInfo.setIdCardNumber(verificationReview.getIdCardNumber());
+                    identityPiecePersonalInfo.setCreated(new Date());
 
                     identityPiecePersonalInfoRep.save(identityPiecePersonalInfo);
                 }
 
-                addDailyLimit(review, VERIFIED_DAILY_LIMIT);
-                addTransactionLimit(review, VERIFIED_TX_LIMIT);
+                addDailyLimit(verificationReview, VERIFIED_DAILY_LIMIT);
+                addTransactionLimit(verificationReview, VERIFIED_TX_LIMIT);
 
-                review.setReviewStatus(VerificationStatus.VERIFIED.getValue());
-                identityKycReviewRep.save(review);
-            } else if (review.getTierId() == TIER_2) {
-                IdentityPiece identityPiece = identityPieceRep.findFirstByIdentityAndPieceTypeOrderByIdDesc(review.getIdentity(), IdentityPiece.TYPE_SELFIE);
+                verificationReview.setStatus(VerificationStatus.VERIFIED.getValue());
+                verificationReviewRep.save(verificationReview);
+            } else if (verificationReview.getVerificationTier() == VerificationTier.VIP_VERIFICATION) {
+                IdentityPiece selfie = identityPieceRep.findFirstByIdentityAndPieceTypeOrderByIdDesc(verificationReview.getIdentity(), IdentityPiece.TYPE_SELFIE);
 
-                if (identityPiece != null) {
-                    IdentityPieceSelfie identityPieceSelfie = identityPieceSelfieRep.findFirstByIdentityPieceOrderByIdDesc(identityPiece).get();
-                    identityPieceSelfie.setFileName(review.getSsnFileName());
-                    identityPieceSelfie.setMimeType(review.getSsnFileMimeType());
+                if (selfie != null) {
+                    IdentityPieceSelfie identityPieceSelfie = identityPieceSelfieRep.findFirstByIdentityPieceOrderByIdDesc(selfie).get();
+                    identityPieceSelfie.setFileName(verificationReview.getSsnFilename());
+                    identityPieceSelfie.setMimeType(verificationReview.getSsnMimetype());
                     identityPieceSelfie.setCreated(new Date());
                     identityPieceSelfieRep.save(identityPieceSelfie);
 
-                    identityPiece.setCreated(new Date());
-                    identityPieceRep.save(identityPiece);
+                    selfie.setCreated(new Date());
+                    identityPieceRep.save(selfie);
                 } else {
-                    identityPiece = new IdentityPiece();
-                    identityPiece.setIdentity(review.getIdentity());
-                    identityPiece.setPieceType(IdentityPiece.TYPE_SELFIE);
-                    identityPiece.setRegistration(true);
-                    identityPiece.setCreated(new Date());
-                    IdentityPiece identityPieceSaved = identityPieceRep.save(identityPiece);
+                    selfie = new IdentityPiece();
+                    selfie.setIdentity(verificationReview.getIdentity());
+                    selfie.setPieceType(IdentityPiece.TYPE_SELFIE);
+                    selfie.setRegistration(true);
+                    selfie.setCreated(new Date());
+                    selfie = identityPieceRep.save(selfie);
 
-                    IdentityPieceSelfie identityPieceSelfie = IdentityPieceSelfie.builder()
-                            .fileName(review.getSsnFileName())
-                            .mimeType(review.getSsnFileMimeType())
-                            .identity(review.getIdentity())
-                            .identityPiece(identityPieceSaved)
-                            .created(new Date())
-                            .build();
-
+                    IdentityPieceSelfie identityPieceSelfie = new IdentityPieceSelfie();
+                    identityPieceSelfie.setFileName(verificationReview.getSsnFilename());
+                    identityPieceSelfie.setMimeType(verificationReview.getSsnMimetype());
+                    identityPieceSelfie.setIdentity(verificationReview.getIdentity());
+                    identityPieceSelfie.setIdentityPiece(selfie);
+                    identityPieceSelfie.setCreated(new Date());
                     identityPieceSelfieRep.save(identityPieceSelfie);
                 }
 
-                IdentityPiece personalInfoIdentityPiece = identityPieceRep.findFirstByIdentityAndPieceTypeOrderByIdDesc(review.getIdentity(), IdentityPiece.TYPE_PERSONAL_INFORMATION);
+                IdentityPiece personalInfo = identityPieceRep.findFirstByIdentityAndPieceTypeOrderByIdDesc(verificationReview.getIdentity(), IdentityPiece.TYPE_PERSONAL_INFORMATION);
 
-                if (personalInfoIdentityPiece != null) {
-                    IdentityPiecePersonalInfo identityPiecePersonalInfo = identityPiecePersonalInfoRep.findFirstByIdentityPieceOrderByIdDesc(personalInfoIdentityPiece).get();
-                    identityPiecePersonalInfo.setSsn(review.getSsn());
+                if (personalInfo != null) {
+                    IdentityPiecePersonalInfo identityPiecePersonalInfo = identityPiecePersonalInfoRep.findFirstByIdentityPieceOrderByIdDesc(personalInfo).get();
+                    identityPiecePersonalInfo.setSsn(verificationReview.getSsn());
                     identityPiecePersonalInfo.setCreated(new Date());
                     identityPiecePersonalInfoRep.save(identityPiecePersonalInfo);
 
-                    personalInfoIdentityPiece.setCreated(new Date());
-                    identityPieceRep.save(personalInfoIdentityPiece);
+                    personalInfo.setCreated(new Date());
+                    identityPieceRep.save(personalInfo);
                 }
 
-                addDailyLimit(review, VIP_VERIFIED_DAILY_LIMIT);
-                addTransactionLimit(review, VIP_VERIFIED_TX_LIMIT);
+                addDailyLimit(verificationReview, VIP_VERIFIED_DAILY_LIMIT);
+                addTransactionLimit(verificationReview, VIP_VERIFIED_TX_LIMIT);
 
-                review.setReviewStatus(VerificationStatus.VIP_VERIFIED.getValue());
-                identityKycReviewRep.save(review);
+                verificationReview.setStatus(VerificationStatus.VIP_VERIFIED.getValue());
+                verificationReviewRep.save(verificationReview);
             }
 
-            User user = review.getIdentity().getUser();
-            user.setStatus(review.getReviewStatus());
+            User user = verificationReview.getIdentity().getUser();
+            user.setStatus(verificationReview.getStatus());
 
             save(user);
         }
     }
 
     @Transactional
-    public boolean deleteKyc(Long userId) {
+    public boolean deleteVerification(Long userId) {
         User user = userRep.getOne(userId);
-        identityKycReviewRep.deleteByIdentity(user.getIdentity());
+        verificationReviewRep.deleteByIdentity(user.getIdentity());
 
         List<IdentityPiece> identityPieces = identityPieceRep.findAllByIdentityAndPieceTypeIn(user.getIdentity(), new int[]{IdentityPiece.TYPE_ID_SCAN, IdentityPiece.TYPE_SELFIE, IdentityPiece.TYPE_PERSONAL_INFORMATION});
         identityPiecePersonalInfoRep.deleteAllByIdentityPieceIn(identityPieces);
@@ -533,7 +519,7 @@ public class UserService implements UserDetailsService {
         return userRep.save(user);
     }
 
-    private void addTransactionLimit(IdentityKycReview review, BigDecimal newTxLimit) {
+    private void addTransactionLimit(VerificationReview review, BigDecimal newTxLimit) {
         Limit txLimit = new Limit();
         txLimit.setAmount(newTxLimit);
         txLimit.setCurrency("USD");
@@ -544,7 +530,7 @@ public class UserService implements UserDetailsService {
         identityRep.save(review.getIdentity());
     }
 
-    private void addDailyLimit(IdentityKycReview review, BigDecimal newDailyLimit) {
+    private void addDailyLimit(VerificationReview review, BigDecimal newDailyLimit) {
         Limit dailyLimit = new Limit();
         dailyLimit.setAmount(newDailyLimit);
         dailyLimit.setCurrency("USD");

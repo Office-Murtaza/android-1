@@ -111,7 +111,7 @@ public class TestController {
 
     @GetMapping("/user/{userId}/delete-verification")
     public Response deleteUserVerification(@PathVariable Long userId) {
-        return Response.ok(userService.deleteKyc(userId));
+        return Response.ok(userService.deleteVerification(userId));
     }
 
     @GetMapping("/coin/{coin}/sign")

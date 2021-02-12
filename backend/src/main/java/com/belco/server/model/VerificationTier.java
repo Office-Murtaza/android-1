@@ -6,32 +6,27 @@ import com.fasterxml.jackson.annotation.JsonValue;
 import java.util.HashMap;
 import java.util.Map;
 
-public enum VerificationStatus {
+public enum VerificationTier {
 
-    NOT_VERIFIED(1),
-    VERIFICATION_PENDING(2),
-    VERIFICATION_REJECTED(3),
-    VERIFIED(4),
-    VIP_VERIFICATION_PENDING(5),
-    VIP_VERIFICATION_REJECTED(6),
-    VIP_VERIFIED(7);
+    VERIFICATION(1),
+    VIP_VERIFICATION(2);
 
-    private static final Map<Integer, VerificationStatus> map = new HashMap<>();
+    private static final Map<Integer, VerificationTier> map = new HashMap<>();
 
     static {
-        for (VerificationStatus type : VerificationStatus.values()) {
+        for (VerificationTier type : VerificationTier.values()) {
             map.put(type.value, type);
         }
     }
 
     private int value;
 
-    VerificationStatus(int value) {
+    VerificationTier(int value) {
         this.value = value;
     }
 
     @JsonCreator(mode = JsonCreator.Mode.DELEGATING)
-    public static VerificationStatus valueOf(Integer value) {
+    public static VerificationTier valueOf(Integer value) {
         return map.get(value);
     }
 
