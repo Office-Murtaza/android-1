@@ -7,7 +7,6 @@ import androidx.lifecycle.viewModelScope
 import com.app.belcobtm.data.disk.database.AccountDao
 import com.app.belcobtm.data.websockets.wallet.WalletObserver
 import com.app.belcobtm.data.websockets.wallet.model.WalletBalance
-import com.app.belcobtm.domain.wallet.WalletRepository
 import com.app.belcobtm.presentation.core.mvvm.LoadingData
 import com.app.belcobtm.presentation.features.wallet.balance.adapter.CoinListItem
 import kotlinx.coroutines.flow.map
@@ -17,7 +16,6 @@ import kotlinx.coroutines.launch
 class WalletViewModel(
     private val accountDao: AccountDao,
     private val walletObserver: WalletObserver,
-    private val walletRepository: WalletRepository,
 ) : ViewModel() {
 
     val balanceLiveData: LiveData<LoadingData<Pair<Double, List<CoinListItem>>>> =
@@ -39,11 +37,6 @@ class WalletViewModel(
             is WalletBalance.NoInfo -> LoadingData.Loading()
             is WalletBalance.Error -> LoadingData.Error(wallet.error)
             is WalletBalance.Balance -> {
-                // workaround to update wallet repository cache
-                // this cache is used to initialize ViewModels
-                // see AppModule.kt
-                walletRepository.updateCoinsCache(wallet.data.coinList)
-
                 wallet.data.coinList
                     .filter { accountDao.getItem(it.code).isEnabled }
                     .map {
