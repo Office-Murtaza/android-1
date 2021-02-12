@@ -41,7 +41,9 @@ class PinCodeKeyboardView: UIView {
         let button = MDCButton()
         button.setBackgroundColor(.whiteTwo, for: .normal)
         let type = LAContext().supportedBioAuthType
-        button.setImage(UIImage(named: type.rawValue), for: .normal)
+        if UserDefaultsHelper.isLocalAuthEnabled {
+            button.setImage(UIImage(named: type.rawValue), for: .normal)
+        }
         return button
     }()
   
