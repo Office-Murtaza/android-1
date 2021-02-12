@@ -24,7 +24,6 @@ val useCaseModule = module {
     single { SendVerificationBlankUseCase(get()) }
     single { GetVerificationCountryListUseCase(get()) }
     single { SendVerificationVipUseCase(get()) }
-    single { GetCoinDetailsMapUseCase(get()) }
     single { SwapUseCase(get()) }
     single { CreateTransactionUseCase(get()) }
     single { SendGiftTransactionCreateUseCase(get()) }

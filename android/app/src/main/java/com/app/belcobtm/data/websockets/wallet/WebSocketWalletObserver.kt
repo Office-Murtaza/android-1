@@ -137,7 +137,15 @@ class WebSocketWalletObserver(
             is Failure -> throwable
             else -> Failure.ServerError()
         }
-        balanceInfo.send(WalletBalance.Error(error))
+        if (balanceInfo.valueOrNull != null
+            && balanceInfo.valueOrNull !is WalletBalance.Error
+        ) {
+            // notify about error only in case when balance info is not yet populated
+            balanceInfo.send(WalletBalance.Error(error))
+        } else {
+            // otherwise "swallow" an error
+            throwable.printStackTrace()
+        }
     }
 
     private suspend fun processErrorMessage(socketResponse: WalletSocketResponse) {
@@ -156,7 +164,7 @@ class WebSocketWalletObserver(
                 balanceInfo.send(WalletBalance.Error(Failure.ServerError()))
             }
         } else {
-            balanceInfo.send(WalletBalance.Error(Failure.ServerError()))
+            processError(Failure.ServerError())
         }
     }
 
