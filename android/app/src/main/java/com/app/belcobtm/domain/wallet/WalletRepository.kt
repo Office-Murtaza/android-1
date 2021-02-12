@@ -11,15 +11,11 @@ interface WalletRepository {
 
     fun getCoinDetailsItemByCode(coinCode: String): CoinDetailsDataItem
 
+    fun updateCoinsCache(coins: List<CoinDataItem>)
+
     suspend fun getCoinItemByCode(coinCode: String): Either<Failure, CoinDataItem>
 
     suspend fun getCoinItemList(): Either<Failure, List<CoinDataItem>>
-
-    fun updateCoinsCache(coins: List<CoinDataItem>)
-
-    suspend fun getAccountList(): List<AccountDataItem>
-
-    suspend fun updateAccount(accountDataItem: AccountDataItem): Either<Failure, Unit>
 
     suspend fun getFreshCoinDataItem(coinCode: String): Either<Failure, CoinDataItem>
 

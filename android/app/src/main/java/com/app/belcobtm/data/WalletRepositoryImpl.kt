@@ -1,8 +1,6 @@
 package com.app.belcobtm.data
 
 import com.app.belcobtm.data.disk.database.AccountDao
-import com.app.belcobtm.data.disk.database.mapToDataItem
-import com.app.belcobtm.data.disk.database.mapToEntity
 import com.app.belcobtm.data.disk.shared.preferences.SharedPreferencesHelper
 import com.app.belcobtm.data.rest.wallet.WalletApiService
 import com.app.belcobtm.data.rest.wallet.request.PriceChartPeriod
@@ -39,22 +37,6 @@ class WalletRepositoryImpl(
             Either.Right(cachedCoinDataItemList)
         else
             getFreshCoinDataItems(daoAccount.getItemList()?.filter { it.isEnabled }?.map { it.type.name }.orEmpty())
-    }
-
-    override suspend fun getAccountList(): List<AccountDataItem> =
-        (daoAccount.getItemList() ?: emptyList()).sortedBy { it.id }.map { it.mapToDataItem() }
-
-    override suspend fun updateAccount(accountDataItem: AccountDataItem): Either<Failure, Unit> {
-        val toggleCoinStateResult = apiService.toggleCoinState(
-            accountDataItem.type.name,
-            accountDataItem.isEnabled
-        )
-        return if (toggleCoinStateResult.isRight) {
-            daoAccount.updateItem(accountDataItem.mapToEntity())
-            Either.Right(Unit)
-        } else {
-            toggleCoinStateResult
-        }
     }
 
     override suspend fun getFreshCoinDataItem(

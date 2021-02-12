@@ -1,17 +1,17 @@
-package com.app.belcobtm.domain.transaction.interactor
+package com.app.belcobtm.domain.account.interactor
 
 import com.app.belcobtm.domain.Either
 import com.app.belcobtm.domain.Failure
 import com.app.belcobtm.domain.UseCase
-import com.app.belcobtm.domain.wallet.WalletRepository
+import com.app.belcobtm.domain.account.AccountRepository
 import com.app.belcobtm.domain.wallet.item.AccountDataItem
 
-class UpdateCoinUseCase(
-    private val repository: WalletRepository
-) : UseCase<Unit, UpdateCoinUseCase.Params>() {
+class UpdateUserCoinListUseCase(
+    private val repository: AccountRepository
+) : UseCase<Unit, UpdateUserCoinListUseCase.Params>() {
 
     override suspend fun run(params: Params): Either<Failure, Unit> =
-        repository.updateAccount(params.dataItemLocal)
+        repository.updateAccountCoinsList(params.dataItemLocal)
 
     data class Params(val dataItemLocal: AccountDataItem)
 }

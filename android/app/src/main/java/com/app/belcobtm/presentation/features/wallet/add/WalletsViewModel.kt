@@ -2,15 +2,15 @@ package com.app.belcobtm.presentation.features.wallet.add
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.app.belcobtm.domain.transaction.interactor.UpdateCoinUseCase
-import com.app.belcobtm.domain.wallet.interactor.GetLocalCoinListUseCase
+import com.app.belcobtm.domain.account.interactor.UpdateUserCoinListUseCase
+import com.app.belcobtm.domain.account.interactor.GetUserCoinListUseCase
 import com.app.belcobtm.domain.wallet.item.AccountDataItem
 import com.app.belcobtm.presentation.core.mvvm.LoadingData
 import com.app.belcobtm.presentation.features.wallet.add.adapter.AddWalletCoinItem
 
 class WalletsViewModel(
-    coinListUseCase: GetLocalCoinListUseCase,
-    private val updateCoinUseCase: UpdateCoinUseCase
+    coinListUseCase: GetUserCoinListUseCase,
+    private val updateUserCoinListUseCase: UpdateUserCoinListUseCase
 ) : ViewModel() {
     val coinListLiveData: MutableLiveData<LoadingData<List<AddWalletCoinItem>>> = MutableLiveData()
     private val accountDataList: MutableList<AccountDataItem> = mutableListOf()
@@ -33,7 +33,8 @@ class WalletsViewModel(
             coinListLiveData.value = LoadingData.Loading()
             val coinDataItem = accountDataList[position]
             coinDataItem.isEnabled = isChecked
-            updateCoinUseCase.invoke(UpdateCoinUseCase.Params(coinDataItem),
+            updateUserCoinListUseCase.invoke(
+                UpdateUserCoinListUseCase.Params(coinDataItem),
                 onSuccess = {
                     updateCoinList()
                 },

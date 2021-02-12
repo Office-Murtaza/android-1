@@ -1,5 +1,7 @@
 package com.app.belcobtm.presentation.di
 
+import com.app.belcobtm.domain.account.interactor.GetUserCoinListUseCase
+import com.app.belcobtm.domain.account.interactor.UpdateUserCoinListUseCase
 import com.app.belcobtm.domain.atm.interactor.GetAtmsUseCase
 import com.app.belcobtm.domain.authorization.interactor.*
 import com.app.belcobtm.domain.contacts.GetContactsUseCase
@@ -32,8 +34,8 @@ val useCaseModule = module {
     single { SendSmsToDeviceUseCase(get()) }
     single { SellPreSubmitUseCase(get()) }
     single { SellGetLimitsUseCase(get()) }
-    single { GetLocalCoinListUseCase(get()) }
-    single { UpdateCoinUseCase(get()) }
+    single { GetUserCoinListUseCase(get()) }
+    single { UpdateUserCoinListUseCase(get()) }
     single { GetListTradeUseCase.Buy(get()) }
     single { GetListTradeUseCase.Sell(get()) }
     single { GetListTradeUseCase.My(get()) }
