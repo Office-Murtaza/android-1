@@ -1,5 +1,6 @@
 package com.belco.server.rest;
 
+import com.belco.server.dto.MessageDTO;
 import com.belco.server.dto.PasswordDTO;
 import com.belco.server.dto.PhoneDTO;
 import com.belco.server.dto.VerificationDTO;
@@ -17,6 +18,11 @@ public class DashboardController {
     public DashboardController(UserService userService, UserController userController) {
         this.userService = userService;
         this.userController = userController;
+    }
+
+    @PostMapping("/message")
+    public Response sendMessage(@RequestBody MessageDTO dto) {
+        return Response.ok(true);
     }
 
     @PostMapping("/user/{userId}/phone")
