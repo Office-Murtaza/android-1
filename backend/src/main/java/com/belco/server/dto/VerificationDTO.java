@@ -1,5 +1,6 @@
 package com.belco.server.dto;
 
+import com.belco.server.model.VerificationStatus;
 import com.belco.server.model.VerificationTier;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -16,6 +17,11 @@ import org.springframework.web.multipart.MultipartFile;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class VerificationDTO {
 
+    private Long id;
+
+    @JsonFormat(shape = JsonFormat.Shape.OBJECT)
+    private VerificationStatus status;
+
     private String tierId;
     private String phone;
     private String firstName;
@@ -28,6 +34,7 @@ public class VerificationDTO {
     private String idNumber;
     private String ssn;
     private MultipartFile file;
+    private String message;
 
     public VerificationTier getVerificationTier() {
         return VerificationTier.valueOf(Integer.valueOf(tierId));

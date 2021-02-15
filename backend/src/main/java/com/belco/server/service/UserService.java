@@ -126,13 +126,14 @@ public class UserService implements UserDetailsService {
         return findById(userId).getIdentity();
     }
 
-    public void updatePassword(Long userId, String encodedPassword) {
+    public boolean updatePassword(Long userId, String encodedPassword) {
         User user = userRep.findById(userId).get();
         user.setPassword(encodedPassword);
-        userRep.save(user);
+
+        return userRep.save(user) != null;
     }
 
-    public void updatePhone(Long userId, String phone) {
+    public boolean updatePhone(Long userId, String phone) {
         User user = userRep.findById(userId).get();
         user.setPhone(phone);
         userRep.save(user);
@@ -142,20 +143,21 @@ public class UserService implements UserDetailsService {
         IdentityPieceCellPhone identityPieceCellPhone = identityPieceCellPhoneRep.findByIdentityAndIdentityPiece(identity, identityPiece);
 
         identityPieceCellPhone.setPhoneNumber(Util.formatPhone(phone));
-        identityPieceCellPhoneRep.save(identityPieceCellPhone);
+
+        return identityPieceCellPhoneRep.save(identityPieceCellPhone) != null;
     }
 
     public Boolean isPhoneExist(Long userId, String phone) {
-        User user = userRep.findOneByPhone(phone).get();
+        Optional<User> userOpt = userRep.findOneByPhone(phone);
 
-        if (user != null && !user.getId().equals(userId)) {
+        if (userOpt.isPresent() && !userOpt.get().getId().equals(userId)) {
             return true;
         }
 
         List<IdentityPieceCellPhone> identityPieceCellPhones = identityPieceCellPhoneRep.findByPhoneNumber(Util.formatPhone(phone));
 
         for (IdentityPieceCellPhone ipcp : identityPieceCellPhones) {
-            if (!ipcp.getIdentity().getId().equals(user.getIdentity().getId())) {
+            if (!ipcp.getIdentity().getId().equals(userOpt.get().getIdentity().getId())) {
                 if (ipcp.getPhoneNumber().equalsIgnoreCase(Util.formatPhone(phone))) {
                     return true;
                 }
@@ -330,8 +332,6 @@ public class UserService implements UserDetailsService {
             user.setStatus(verificationReview.getStatus());
             save(user);
 
-            confirmVerification(verificationReview.getId());
-
             return Response.ok(verificationReview != null);
         } catch (Exception e) {
             e.printStackTrace();
@@ -340,141 +340,140 @@ public class UserService implements UserDetailsService {
     }
 
     @Transactional
-    public void confirmVerification(Long id) {
-        Optional<VerificationReview> verificationReviewOpt = verificationReviewRep.findById(id);
+    public Response updateVerification(Long userId, VerificationDTO dto) {
+        VerificationReview verificationReview = verificationReviewRep.findById(dto.getId()).get();
 
-        if (verificationReviewOpt.isPresent()) {
-            VerificationReview verificationReview = verificationReviewOpt.get();
+        if (dto.getStatus() == VerificationStatus.VERIFICATION_REJECTED || dto.getStatus() == VerificationStatus.VIP_VERIFICATION_REJECTED) {
+            verificationReview.setStatus(dto.getStatus().getValue());
+            verificationReview.setMessage(dto.getMessage());
+            verificationReviewRep.save(verificationReview);
+        } else if (verificationReview.getVerificationTier() == VerificationTier.VERIFICATION) {
+            IdentityPiece idScan = identityPieceRep.findFirstByIdentityAndPieceTypeOrderByIdDesc(verificationReview.getIdentity(), IdentityPiece.TYPE_ID_SCAN);
 
-            if (verificationReview.getVerificationTier() == VerificationTier.VERIFICATION) {
-                IdentityPiece idScan = identityPieceRep.findFirstByIdentityAndPieceTypeOrderByIdDesc(verificationReview.getIdentity(), IdentityPiece.TYPE_ID_SCAN);
+            if (idScan != null) {
+                IdentityPieceDocument identityPieceDocument = identityPieceDocumentRep.findFirstByIdentityPieceOrderByIdDesc(idScan).get();
+                identityPieceDocument.setFileName(verificationReview.getIdCardNumberFilename());
+                identityPieceDocument.setMimeType(verificationReview.getIdCardNumberMimetype());
+                identityPieceDocument.setCreated(new Date());
+                identityPieceDocumentRep.save(identityPieceDocument);
 
-                if (idScan != null) {
-                    IdentityPieceDocument identityPieceDocument = identityPieceDocumentRep.findFirstByIdentityPieceOrderByIdDesc(idScan).get();
-                    identityPieceDocument.setFileName(verificationReview.getIdCardNumberFilename());
-                    identityPieceDocument.setMimeType(verificationReview.getIdCardNumberMimetype());
-                    identityPieceDocument.setCreated(new Date());
-                    identityPieceDocumentRep.save(identityPieceDocument);
+                idScan.setCreated(new Date());
+                identityPieceRep.save(idScan);
+            } else {
+                idScan = new IdentityPiece();
+                idScan.setIdentity(verificationReview.getIdentity());
+                idScan.setPieceType(IdentityPiece.TYPE_ID_SCAN);
+                idScan.setRegistration(true);
+                idScan.setCreated(new Date());
+                idScan = identityPieceRep.save(idScan);
 
-                    idScan.setCreated(new Date());
-                    identityPieceRep.save(idScan);
-                } else {
-                    idScan = new IdentityPiece();
-                    idScan.setIdentity(verificationReview.getIdentity());
-                    idScan.setPieceType(IdentityPiece.TYPE_ID_SCAN);
-                    idScan.setRegistration(true);
-                    idScan.setCreated(new Date());
-                    idScan = identityPieceRep.save(idScan);
-
-                    IdentityPieceDocument identityPieceDocument = new IdentityPieceDocument();
-                    identityPieceDocument.setFileName(verificationReview.getIdCardNumberFilename());
-                    identityPieceDocument.setMimeType(verificationReview.getIdCardNumberMimetype());
-                    identityPieceDocument.setIdentity(verificationReview.getIdentity());
-                    identityPieceDocument.setIdentityPiece(idScan);
-                    identityPieceDocument.setCreated(new Date());
-                    identityPieceDocumentRep.save(identityPieceDocument);
-                }
-
-                IdentityPiece personalInfo = identityPieceRep.findFirstByIdentityAndPieceTypeOrderByIdDesc(verificationReview.getIdentity(), IdentityPiece.TYPE_PERSONAL_INFORMATION);
-
-                if (personalInfo != null) {
-                    IdentityPiecePersonalInfo identityPiecePersonalInfo = identityPiecePersonalInfoRep.findFirstByIdentityPieceOrderByIdDesc(personalInfo).get();
-                    identityPiecePersonalInfo.setFirstName(verificationReview.getFirstName());
-                    identityPiecePersonalInfo.setLastName(verificationReview.getLastName());
-                    identityPiecePersonalInfo.setLastName(verificationReview.getLastName());
-                    identityPiecePersonalInfo.setAddress(verificationReview.getAddress());
-                    identityPiecePersonalInfo.setCountry(verificationReview.getCountry());
-                    identityPiecePersonalInfo.setProvince(verificationReview.getProvince());
-                    identityPiecePersonalInfo.setCity(verificationReview.getCity());
-                    identityPiecePersonalInfo.setZip(verificationReview.getZipCode());
-                    identityPiecePersonalInfo.setIdCardNumber(verificationReview.getIdCardNumber());
-                    identityPiecePersonalInfo.setCreated(new Date());
-                    identityPiecePersonalInfoRep.save(identityPiecePersonalInfo);
-
-                    personalInfo.setCreated(new Date());
-                    identityPieceRep.save(personalInfo);
-                } else {
-                    personalInfo = new IdentityPiece();
-                    personalInfo.setIdentity(verificationReview.getIdentity());
-                    personalInfo.setPieceType(IdentityPiece.TYPE_PERSONAL_INFORMATION);
-                    personalInfo.setRegistration(true);
-                    personalInfo.setCreated(new Date());
-                    IdentityPiece personalInfoIdentityPieceSaved = identityPieceRep.save(personalInfo);
-
-                    IdentityPiecePersonalInfo identityPiecePersonalInfo = new IdentityPiecePersonalInfo();
-                    identityPiecePersonalInfo.setFirstName(verificationReview.getFirstName());
-                    identityPiecePersonalInfo.setLastName(verificationReview.getLastName());
-                    identityPiecePersonalInfo.setIdentity(verificationReview.getIdentity());
-                    identityPiecePersonalInfo.setIdentityPiece(personalInfoIdentityPieceSaved);
-                    identityPiecePersonalInfo.setAddress(verificationReview.getAddress());
-                    identityPiecePersonalInfo.setCountry(verificationReview.getCountry());
-                    identityPiecePersonalInfo.setProvince(verificationReview.getProvince());
-                    identityPiecePersonalInfo.setCity(verificationReview.getCity());
-                    identityPiecePersonalInfo.setZip(verificationReview.getZipCode());
-                    identityPiecePersonalInfo.setIdCardNumber(verificationReview.getIdCardNumber());
-                    identityPiecePersonalInfo.setCreated(new Date());
-
-                    identityPiecePersonalInfoRep.save(identityPiecePersonalInfo);
-                }
-
-                addDailyLimit(verificationReview, VERIFIED_DAILY_LIMIT);
-                addTransactionLimit(verificationReview, VERIFIED_TX_LIMIT);
-
-                verificationReview.setStatus(VerificationStatus.VERIFIED.getValue());
-                verificationReviewRep.save(verificationReview);
-            } else if (verificationReview.getVerificationTier() == VerificationTier.VIP_VERIFICATION) {
-                IdentityPiece selfie = identityPieceRep.findFirstByIdentityAndPieceTypeOrderByIdDesc(verificationReview.getIdentity(), IdentityPiece.TYPE_SELFIE);
-
-                if (selfie != null) {
-                    IdentityPieceSelfie identityPieceSelfie = identityPieceSelfieRep.findFirstByIdentityPieceOrderByIdDesc(selfie).get();
-                    identityPieceSelfie.setFileName(verificationReview.getSsnFilename());
-                    identityPieceSelfie.setMimeType(verificationReview.getSsnMimetype());
-                    identityPieceSelfie.setCreated(new Date());
-                    identityPieceSelfieRep.save(identityPieceSelfie);
-
-                    selfie.setCreated(new Date());
-                    identityPieceRep.save(selfie);
-                } else {
-                    selfie = new IdentityPiece();
-                    selfie.setIdentity(verificationReview.getIdentity());
-                    selfie.setPieceType(IdentityPiece.TYPE_SELFIE);
-                    selfie.setRegistration(true);
-                    selfie.setCreated(new Date());
-                    selfie = identityPieceRep.save(selfie);
-
-                    IdentityPieceSelfie identityPieceSelfie = new IdentityPieceSelfie();
-                    identityPieceSelfie.setFileName(verificationReview.getSsnFilename());
-                    identityPieceSelfie.setMimeType(verificationReview.getSsnMimetype());
-                    identityPieceSelfie.setIdentity(verificationReview.getIdentity());
-                    identityPieceSelfie.setIdentityPiece(selfie);
-                    identityPieceSelfie.setCreated(new Date());
-                    identityPieceSelfieRep.save(identityPieceSelfie);
-                }
-
-                IdentityPiece personalInfo = identityPieceRep.findFirstByIdentityAndPieceTypeOrderByIdDesc(verificationReview.getIdentity(), IdentityPiece.TYPE_PERSONAL_INFORMATION);
-
-                if (personalInfo != null) {
-                    IdentityPiecePersonalInfo identityPiecePersonalInfo = identityPiecePersonalInfoRep.findFirstByIdentityPieceOrderByIdDesc(personalInfo).get();
-                    identityPiecePersonalInfo.setSsn(verificationReview.getSsn());
-                    identityPiecePersonalInfo.setCreated(new Date());
-                    identityPiecePersonalInfoRep.save(identityPiecePersonalInfo);
-
-                    personalInfo.setCreated(new Date());
-                    identityPieceRep.save(personalInfo);
-                }
-
-                addDailyLimit(verificationReview, VIP_VERIFIED_DAILY_LIMIT);
-                addTransactionLimit(verificationReview, VIP_VERIFIED_TX_LIMIT);
-
-                verificationReview.setStatus(VerificationStatus.VIP_VERIFIED.getValue());
-                verificationReviewRep.save(verificationReview);
+                IdentityPieceDocument identityPieceDocument = new IdentityPieceDocument();
+                identityPieceDocument.setFileName(verificationReview.getIdCardNumberFilename());
+                identityPieceDocument.setMimeType(verificationReview.getIdCardNumberMimetype());
+                identityPieceDocument.setIdentity(verificationReview.getIdentity());
+                identityPieceDocument.setIdentityPiece(idScan);
+                identityPieceDocument.setCreated(new Date());
+                identityPieceDocumentRep.save(identityPieceDocument);
             }
 
-            User user = verificationReview.getIdentity().getUser();
-            user.setStatus(verificationReview.getStatus());
+            IdentityPiece personalInfo = identityPieceRep.findFirstByIdentityAndPieceTypeOrderByIdDesc(verificationReview.getIdentity(), IdentityPiece.TYPE_PERSONAL_INFORMATION);
 
-            save(user);
+            if (personalInfo != null) {
+                IdentityPiecePersonalInfo identityPiecePersonalInfo = identityPiecePersonalInfoRep.findFirstByIdentityPieceOrderByIdDesc(personalInfo).get();
+                identityPiecePersonalInfo.setFirstName(verificationReview.getFirstName());
+                identityPiecePersonalInfo.setLastName(verificationReview.getLastName());
+                identityPiecePersonalInfo.setLastName(verificationReview.getLastName());
+                identityPiecePersonalInfo.setAddress(verificationReview.getAddress());
+                identityPiecePersonalInfo.setCountry(verificationReview.getCountry());
+                identityPiecePersonalInfo.setProvince(verificationReview.getProvince());
+                identityPiecePersonalInfo.setCity(verificationReview.getCity());
+                identityPiecePersonalInfo.setZip(verificationReview.getZipCode());
+                identityPiecePersonalInfo.setIdCardNumber(verificationReview.getIdCardNumber());
+                identityPiecePersonalInfo.setCreated(new Date());
+                identityPiecePersonalInfoRep.save(identityPiecePersonalInfo);
+
+                personalInfo.setCreated(new Date());
+                identityPieceRep.save(personalInfo);
+            } else {
+                personalInfo = new IdentityPiece();
+                personalInfo.setIdentity(verificationReview.getIdentity());
+                personalInfo.setPieceType(IdentityPiece.TYPE_PERSONAL_INFORMATION);
+                personalInfo.setRegistration(true);
+                personalInfo.setCreated(new Date());
+                IdentityPiece personalInfoIdentityPieceSaved = identityPieceRep.save(personalInfo);
+
+                IdentityPiecePersonalInfo identityPiecePersonalInfo = new IdentityPiecePersonalInfo();
+                identityPiecePersonalInfo.setFirstName(verificationReview.getFirstName());
+                identityPiecePersonalInfo.setLastName(verificationReview.getLastName());
+                identityPiecePersonalInfo.setIdentity(verificationReview.getIdentity());
+                identityPiecePersonalInfo.setIdentityPiece(personalInfoIdentityPieceSaved);
+                identityPiecePersonalInfo.setAddress(verificationReview.getAddress());
+                identityPiecePersonalInfo.setCountry(verificationReview.getCountry());
+                identityPiecePersonalInfo.setProvince(verificationReview.getProvince());
+                identityPiecePersonalInfo.setCity(verificationReview.getCity());
+                identityPiecePersonalInfo.setZip(verificationReview.getZipCode());
+                identityPiecePersonalInfo.setIdCardNumber(verificationReview.getIdCardNumber());
+                identityPiecePersonalInfo.setCreated(new Date());
+
+                identityPiecePersonalInfoRep.save(identityPiecePersonalInfo);
+            }
+
+            addDailyLimit(verificationReview, VERIFIED_DAILY_LIMIT);
+            addTransactionLimit(verificationReview, VERIFIED_TX_LIMIT);
+            verificationReview.setStatus(VerificationStatus.VERIFIED.getValue());
+            verificationReviewRep.save(verificationReview);
+        } else if (verificationReview.getVerificationTier() == VerificationTier.VIP_VERIFICATION) {
+            IdentityPiece selfie = identityPieceRep.findFirstByIdentityAndPieceTypeOrderByIdDesc(verificationReview.getIdentity(), IdentityPiece.TYPE_SELFIE);
+
+            if (selfie != null) {
+                IdentityPieceSelfie identityPieceSelfie = identityPieceSelfieRep.findFirstByIdentityPieceOrderByIdDesc(selfie).get();
+                identityPieceSelfie.setFileName(verificationReview.getSsnFilename());
+                identityPieceSelfie.setMimeType(verificationReview.getSsnMimetype());
+                identityPieceSelfie.setCreated(new Date());
+                identityPieceSelfieRep.save(identityPieceSelfie);
+
+                selfie.setCreated(new Date());
+                identityPieceRep.save(selfie);
+            } else {
+                selfie = new IdentityPiece();
+                selfie.setIdentity(verificationReview.getIdentity());
+                selfie.setPieceType(IdentityPiece.TYPE_SELFIE);
+                selfie.setRegistration(true);
+                selfie.setCreated(new Date());
+                selfie = identityPieceRep.save(selfie);
+
+                IdentityPieceSelfie identityPieceSelfie = new IdentityPieceSelfie();
+                identityPieceSelfie.setFileName(verificationReview.getSsnFilename());
+                identityPieceSelfie.setMimeType(verificationReview.getSsnMimetype());
+                identityPieceSelfie.setIdentity(verificationReview.getIdentity());
+                identityPieceSelfie.setIdentityPiece(selfie);
+                identityPieceSelfie.setCreated(new Date());
+                identityPieceSelfieRep.save(identityPieceSelfie);
+            }
+
+            IdentityPiece personalInfo = identityPieceRep.findFirstByIdentityAndPieceTypeOrderByIdDesc(verificationReview.getIdentity(), IdentityPiece.TYPE_PERSONAL_INFORMATION);
+
+            if (personalInfo != null) {
+                IdentityPiecePersonalInfo identityPiecePersonalInfo = identityPiecePersonalInfoRep.findFirstByIdentityPieceOrderByIdDesc(personalInfo).get();
+                identityPiecePersonalInfo.setSsn(verificationReview.getSsn());
+                identityPiecePersonalInfo.setCreated(new Date());
+                identityPiecePersonalInfoRep.save(identityPiecePersonalInfo);
+
+                personalInfo.setCreated(new Date());
+                identityPieceRep.save(personalInfo);
+            }
+
+            addDailyLimit(verificationReview, VIP_VERIFIED_DAILY_LIMIT);
+            addTransactionLimit(verificationReview, VIP_VERIFIED_TX_LIMIT);
+
+            verificationReview.setStatus(VerificationStatus.VIP_VERIFIED.getValue());
+            verificationReviewRep.save(verificationReview);
         }
+
+        User user = findById(userId);
+        user.setStatus(verificationReview.getStatus());
+
+        return Response.ok(save(user) != null);
     }
 
     @Transactional

@@ -239,10 +239,8 @@ public class UserController {
             if (isPhoneExist) {
                 return Response.validationError("Phone is already used");
             } else {
-                userService.updatePhone(userId, dto.getPhone());
+                return Response.ok(userService.updatePhone(userId, dto.getPhone()));
             }
-
-            return Response.ok(true);
         } catch (Exception e) {
             e.printStackTrace();
             return Response.serverError();
@@ -263,15 +261,16 @@ public class UserController {
     public Response updatePassword(@PathVariable Long userId, @RequestBody PasswordDTO dto) {
         try {
             User user = userService.findById(userId);
-            Boolean isMatch = passwordEncoder.matches(dto.getOldPassword(), user.getPassword());
 
-            if (!isMatch) {
-                return Response.validationError("Wrong password");
-            } else {
-                userService.updatePassword(userId, passwordEncoder.encode(dto.getNewPassword()));
+            if (StringUtils.isNotBlank(dto.getOldPassword())) {
+                Boolean isMatch = passwordEncoder.matches(dto.getOldPassword(), user.getPassword());
+
+                if (!isMatch) {
+                    return Response.validationError("Wrong password");
+                }
             }
 
-            return Response.ok(true);
+            return Response.ok(userService.updatePassword(userId, passwordEncoder.encode(dto.getNewPassword())));
         } catch (Exception e) {
             e.printStackTrace();
             return Response.serverError();
