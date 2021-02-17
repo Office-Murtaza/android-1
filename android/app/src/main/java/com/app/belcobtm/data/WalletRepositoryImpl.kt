@@ -1,22 +1,25 @@
 package com.app.belcobtm.data
 
 import com.app.belcobtm.data.disk.database.AccountDao
-import com.app.belcobtm.data.disk.database.mapToDataItem
-import com.app.belcobtm.data.disk.database.mapToEntity
 import com.app.belcobtm.data.disk.shared.preferences.SharedPreferencesHelper
 import com.app.belcobtm.data.rest.wallet.WalletApiService
 import com.app.belcobtm.data.rest.wallet.request.PriceChartPeriod
+import com.app.belcobtm.data.websockets.wallet.WalletObserver
+import com.app.belcobtm.data.websockets.wallet.model.WalletBalance
 import com.app.belcobtm.domain.Either
 import com.app.belcobtm.domain.Failure
 import com.app.belcobtm.domain.wallet.WalletRepository
 import com.app.belcobtm.domain.wallet.item.*
+import kotlinx.coroutines.flow.filterIsInstance
+import kotlinx.coroutines.flow.firstOrNull
+import kotlinx.coroutines.flow.receiveAsFlow
 
 class WalletRepositoryImpl(
+    private val walletObserver: WalletObserver,
     private val apiService: WalletApiService,
     private val prefHelper: SharedPreferencesHelper,
     private val daoAccount: AccountDao
 ) : WalletRepository {
-    private val cachedCoinDataItemList: MutableList<CoinDataItem> = mutableListOf()
 
     override fun getCoinDetailsMap(): Map<String, CoinDetailsDataItem> = prefHelper.coinsDetails
 
@@ -27,50 +30,34 @@ class WalletRepositoryImpl(
     override suspend fun getCoinItemByCode(
         coinCode: String
     ): Either<Failure, CoinDataItem> {
-        val cachedCoinData = cachedCoinDataItemList.find { it.code == coinCode }
-        return if (cachedCoinData != null)
-            Either.Right(cachedCoinData)
-        else
-            getFreshCoinDataItem(coinCode)
+        val data = walletObserver.observe().receiveAsFlow()
+            .filterIsInstance<WalletBalance.Balance>()
+            .firstOrNull()
+        if (data != null) {
+            val coin = data.data.coinList.firstOrNull { it.code == coinCode }
+            if (coin != null) return Either.Right(coin)
+        }
+        // fallback
+        return getFreshCoinDataItem(coinCode)
     }
 
     override suspend fun getCoinItemList(): Either<Failure, List<CoinDataItem>> {
-        return if (cachedCoinDataItemList.isNotEmpty())
-            Either.Right(cachedCoinDataItemList)
-        else
-            getFreshCoinDataItems(daoAccount.getItemList()?.filter { it.isEnabled }?.map { it.type.name }.orEmpty())
-    }
-
-    override suspend fun getAccountList(): List<AccountDataItem> =
-        (daoAccount.getItemList() ?: emptyList()).sortedBy { it.id }.map { it.mapToDataItem() }
-
-    override suspend fun updateAccount(accountDataItem: AccountDataItem): Either<Failure, Unit> {
-        val toggleCoinStateResult = apiService.toggleCoinState(
-            accountDataItem.type.name,
-            accountDataItem.isEnabled
-        )
-        return if (toggleCoinStateResult.isRight) {
-            daoAccount.updateItem(accountDataItem.mapToEntity())
-            Either.Right(Unit)
+        val result = getBalanceItem()
+        return if (result is Either.Right) {
+            Either.Right(result.b.coinList)
         } else {
-            toggleCoinStateResult
+            val upstreamFailure = (result as Either.Left).a
+            Either.Left(upstreamFailure)
         }
     }
 
     override suspend fun getFreshCoinDataItem(
         coinCode: String
     ): Either<Failure, CoinDataItem> {
-        val enabledCodeList =
-            daoAccount.getItemList()?.filter { it.isEnabled }?.map { it.type.name } ?: emptyList()
+        val enabledCodeList = daoAccount.getItemList()?.map { it.type.name } ?: emptyList()
         val response = apiService.getBalance(enabledCodeList)
         return if (response.isRight) {
             val balanceItem = (response as Either.Right).b
-            //TODO need find best way
-            val enabledCoinList = balanceItem.coinList.map { coinItem ->
-                coinItem.copy(isEnabled = enabledCodeList.firstOrNull { it == coinItem.code } != null)
-            }
-            cachedCoinDataItemList.clear()
-            cachedCoinDataItemList.addAll(enabledCoinList)
             val coinDataItem = balanceItem.coinList.find { it.code == coinCode }
             if (coinDataItem == null) {
                 Either.Left(Failure.MessageError("Data error"))
@@ -87,8 +74,6 @@ class WalletRepositoryImpl(
     ): Either<Failure, List<CoinDataItem>> {
         val response = apiService.getBalance(coinCodes)
         return if (response is Either.Right) {
-            cachedCoinDataItemList.clear()
-            cachedCoinDataItemList.addAll(response.b.coinList)
             Either.Right(response.b.coinList)
         } else {
             response as Either.Left
@@ -96,17 +81,13 @@ class WalletRepositoryImpl(
     }
 
     override suspend fun getBalanceItem(): Either<Failure, BalanceDataItem> {
-        val enabledCodeList =
-            daoAccount.getItemList()?.filter { it.isEnabled }?.map { it.type.name } ?: emptyList()
-        val response = apiService.getBalance(enabledCodeList)
-        if (response.isRight) {
-            val balanceItem = (response as Either.Right).b
-            val enabledCoinList = balanceItem.coinList.map { coinItem ->
-                coinItem.copy(isEnabled = enabledCodeList.firstOrNull { it == coinItem.code } != null)
-            }
-            updateCoinsCache(enabledCoinList)
+        val data = walletObserver.observe().receiveAsFlow()
+            .filterIsInstance<WalletBalance.Balance>()
+            .firstOrNull()
+        if (data != null) {
+            return Either.Right(data.data)
         }
-        return response
+        return Either.Left(Failure.ServerError())
     }
 
     override suspend fun getChart(
@@ -124,10 +105,5 @@ class WalletRepositoryImpl(
             prefHelper.coinsDetails = mutableCoinsFeeMap
         }
         return response
-    }
-
-    override fun updateCoinsCache(coins: List<CoinDataItem>) {
-        cachedCoinDataItemList.clear()
-        cachedCoinDataItemList.addAll(coins)
     }
 }
