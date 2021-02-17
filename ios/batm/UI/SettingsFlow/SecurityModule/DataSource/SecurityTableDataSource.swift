@@ -25,12 +25,14 @@ final class SecurityTableViewDataSource: NSObject, UITableViewDataSource, HasDis
   
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     let model = values[indexPath.item]
-    if case .faceId = model {
-        let faceIdCell = tableView.dequeueReusableCell(SecurityLocalAuthCell.self, for: indexPath)
-        faceIdCell.delegate = self
-        faceIdCell.configure(for: model)
-        return faceIdCell
-    } else {
+    switch model {
+    case .faceId: fallthrough
+    case .touchId:
+        let localAuthCell = tableView.dequeueReusableCell(SecurityLocalAuthCell.self, for: indexPath)
+        localAuthCell.delegate = self
+        localAuthCell.configure(for: model)
+        return localAuthCell
+    default:
         let cell = tableView.dequeueReusableCell(SettingsCell.self, for: indexPath)
         cell.configure(for: model)
         return cell

@@ -5,6 +5,7 @@ class UserDefaultsHelper {
         case notificationsEnabled
         case isAuthorized
         case isLocalAuthEnabled
+        case pinCodeWasEntered
     }
     
     static let defs = UserDefaults.standard
@@ -17,6 +18,9 @@ class UserDefaultsHelper {
     
     @UserDefault<Bool>(key: .isLocalAuthEnabled, defaultValue: true )
     static var isLocalAuthEnabled: Bool
+    
+    @UserDefault<Bool>(key: .pinCodeWasEntered, defaultValue: false)
+    static var pinCodeWasEntered: Bool
     
     static func reset() {
         let dict = defs.dictionaryRepresentation()

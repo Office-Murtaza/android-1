@@ -1,6 +1,7 @@
 import Foundation
 import RxSwift
 import RxCocoa
+import LocalAuthentication
 
 class SecurityPresenter: ModulePresenter, SecurityModule {
   struct Input {
@@ -22,12 +23,8 @@ class SecurityPresenter: ModulePresenter, SecurityModule {
         .drive(onNext: { [weak self] user in
             guard let self = self else { return }
             self.userPhoneNumber = user.phoneNumber
-            self.types.accept([.updatePhone(phoneNumber: user.phoneNumber.phoneFormatted),
-                               .updatePassword,
-                               .updatePIN,
-                               .faceId(isEnabled: UserDefaultsHelper.isLocalAuthEnabled),
-                               .seedPhrase,
-                               .unlink])
+            let types = self.dataFactory(phoneNumber: user.phoneNumber.phoneFormatted)
+            self.types.accept(types)
         })
         .disposed(by: disposeBag)
     
@@ -42,10 +39,40 @@ class SecurityPresenter: ModulePresenter, SecurityModule {
         case .seedPhrase: delegate?.didSelectSeedPhrase()
         case .unlink: delegate?.didSelectUnlink()
         case .faceId: break
+        case .touchId: break
         }
       })
       .disposed(by: disposeBag)
   }
+    
+    private func dataFactory(phoneNumber: String?) -> [SecurityCellType] {
+        
+        let initialTypes: [SecurityCellType] = [.updatePhone(phoneNumber: phoneNumber),
+                                         .updatePassword,
+                                         .updatePIN,
+                                         .seedPhrase,
+                                         .unlink]
+        let laData = localAuthData()
+        var dataTypes = [SecurityCellType]()
+        
+        for type in initialTypes {
+            dataTypes.append(type)
+            if type == .updatePIN, let laType = laData {
+                dataTypes.append(laType)
+            }
+        }
+        
+        return dataTypes
+    }
+    
+    private func localAuthData() -> SecurityCellType? {
+        let laType = LAContext().supportedBioAuthType
+        guard laType != .none else { return nil }
+        
+        return laType == .faceID ?
+            .faceId(isEnabled: UserDefaultsHelper.isLocalAuthEnabled)
+            : .touchId(isEnabled: UserDefaultsHelper.isLocalAuthEnabled)
+    }
   
   private func fetchPinCode() {
     track(usecase.getPinCode())
