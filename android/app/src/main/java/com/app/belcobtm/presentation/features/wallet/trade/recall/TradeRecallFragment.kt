@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.observe
+import androidx.navigation.fragment.findNavController
 import com.app.belcobtm.R
 import com.app.belcobtm.databinding.FragmentTradeRecallBinding
 import com.app.belcobtm.presentation.core.extensions.*
@@ -12,6 +13,7 @@ import com.app.belcobtm.presentation.core.mvvm.LoadingData
 import com.app.belcobtm.presentation.core.ui.fragment.BaseFragment
 import com.app.belcobtm.presentation.core.views.listeners.SafeDecimalEditTextWatcher
 import com.app.belcobtm.presentation.features.wallet.trade.reserve.InputFieldState
+import com.app.belcobtm.presentation.features.wallet.transactions.TransactionsFragment
 import org.koin.android.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 
@@ -83,6 +85,8 @@ class TradeRecallFragment : BaseFragment<FragmentTradeRecallBinding>() {
                 AlertHelper.showToastShort(
                     requireContext(), R.string.trade_recall_screen_success_message
                 )
+                val stateHandle = findNavController().previousBackStackEntry?.savedStateHandle
+                stateHandle?.set(TransactionsFragment.REFETCH_OPTION_KEY, true)
                 popBackStack()
             }
         )

@@ -4,6 +4,7 @@ import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.fragment.findNavController
 import com.app.belcobtm.R
 import com.app.belcobtm.databinding.FragmentWithdrawBinding
 import com.app.belcobtm.domain.Failure
@@ -16,6 +17,7 @@ import com.app.belcobtm.presentation.core.helper.AlertHelper
 import com.app.belcobtm.presentation.core.helper.ClipBoardHelper
 import com.app.belcobtm.presentation.core.ui.fragment.BaseFragment
 import com.app.belcobtm.presentation.core.watcher.DoubleTextWatcher
+import com.app.belcobtm.presentation.features.wallet.transactions.TransactionsFragment
 import com.google.zxing.integration.android.IntentIntegrator
 import org.koin.android.ext.android.inject
 import org.koin.android.viewmodel.ext.android.viewModel
@@ -69,6 +71,8 @@ class WithdrawFragment : BaseFragment<FragmentWithdrawBinding>() {
         viewModel.transactionLiveData.listen(
             success = {
                 AlertHelper.showToastShort(requireContext(), R.string.transactions_screen_transaction_created)
+                val stateHandle = findNavController().previousBackStackEntry?.savedStateHandle
+                stateHandle?.set(TransactionsFragment.REFETCH_OPTION_KEY, true)
                 popBackStack()
             },
             error = {
