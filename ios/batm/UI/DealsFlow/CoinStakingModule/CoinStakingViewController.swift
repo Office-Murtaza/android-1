@@ -102,6 +102,14 @@ final class CoinStakingViewController: ModuleViewController<CoinStakingPresenter
         let feeDriver = presenter.state
             .map { $0.coinDetails?.txFee }
         
+        rx.firstTimeViewDidAppear
+            .asObservable()
+            .doOnNext { [weak self] in
+                self?.presenter.didViewLoad.accept(())
+            }
+            .subscribe()
+            .disposed(by: disposeBag)
+        
         Driver.combineLatest(coinBalanceDriver, stakeDetailsDriver)
             .drive(onNext: { [weak self] coinBalance, stakeDetails in
                 self?.setupDefaultInfoViews(with: stakeDetails)

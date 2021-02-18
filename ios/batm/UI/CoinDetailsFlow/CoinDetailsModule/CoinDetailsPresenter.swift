@@ -27,7 +27,8 @@ final class CoinDetailsPresenter: ModulePresenter, CoinDetailsModule {
     private let store: Store
     private let fetchTransactionsRelay = PublishRelay<Void>()
     private let walletUsecase: WalletUsecase
-  
+    private let balanceService: BalanceService
+    
     weak var delegate: CoinDetailsModuleDelegate?
     
     var state: Driver<CoinDetailsState> {
@@ -36,10 +37,12 @@ final class CoinDetailsPresenter: ModulePresenter, CoinDetailsModule {
     
     init(usecase: CoinDetailsUsecase,
          walletUsecase: WalletUsecase,
+         balanceService: BalanceService,
          store: Store = CoinDetailsStore()) {
         self.usecase = usecase
         self.store = store
         self.walletUsecase = walletUsecase
+        self.balanceService = balanceService
     }
     
     func setup(coinBalances: [CoinBalance], coinDetails: CoinDetails, data: PriceChartDetails) {
@@ -62,7 +65,8 @@ final class CoinDetailsPresenter: ModulePresenter, CoinDetailsModule {
             .map { $0.coinDetails?.type }
             .filterNil()
             .flatMap { [unowned self] type in
-                return self.track(Completable.concat(self.walletUsecase.getCoinBalance(by: type)
+                return self.track(Completable.concat(self.balanceService.getCoinsBalance()
+                                                        .asSingle()
                                                         .do(onSuccess: { [store] in store.action.accept(.setupCoinBalances($0.coins)) })
                                                         .asCompletable(),
                                                      self.getTransactions(for: type).asCompletable()),

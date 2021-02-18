@@ -23,6 +23,7 @@ final class CoinExchangePresenter: ModulePresenter, CoinExchangeModule {
     private let usecase: CoinDetailsUsecase
     private let store: Store
     private let walletUseCase: WalletUsecase
+    private let balanceServise: BalanceService
     private let fetchDataRelay = PublishRelay<Void>()
     var coinTypeDidChange = PublishRelay<Void>()
     
@@ -34,10 +35,12 @@ final class CoinExchangePresenter: ModulePresenter, CoinExchangeModule {
     
     init(usecase: CoinDetailsUsecase,
          walletUseCase: WalletUsecase,
+         balanceService: BalanceService,
          store: Store = CoinExchangeStore()) {
         self.usecase = usecase
         self.store = store
         self.walletUseCase = walletUseCase
+        self.balanceServise = balanceService
     }
     
     func setup(coin: BTMCoin, coinBalances: [CoinBalance], coinDetails: CoinDetails) {
@@ -51,7 +54,7 @@ final class CoinExchangePresenter: ModulePresenter, CoinExchangeModule {
         fetchDataRelay
             .asObservable()
           .flatMap { [unowned self]  in
-            return self.track(Observable.combineLatest(self.walletUseCase.getCoinsBalance(filteredByActive: false).asObservable(),
+            return self.track(Observable.combineLatest(self.balanceServise.getCoinsBalance().asObservable(),
                                                        self.walletUseCase.getCoinDetails(for: CustomCoinType.bitcoin).asObservable(),
                                                        self.walletUseCase.getCoinsList().asObservable()))
           }.subscribe({ [weak self] in

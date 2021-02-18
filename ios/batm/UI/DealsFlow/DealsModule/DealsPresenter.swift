@@ -15,11 +15,15 @@ class DealsPresenter: ModulePresenter, DealsModule {
     weak var delegate: DealsModuleDelegate?
     let types = DealsCellType.allCases
     private let usecase: DealsUsecase
+    private let balanceService: BalanceService
     private let store: Store
     
-    init(usecase: DealsUsecase, store: Store = DealsStore()) {
+    init(usecase: DealsUsecase,
+         store: Store = DealsStore(),
+         balanceService: BalanceService) {
         self.usecase = usecase
         self.store = store
+        self.balanceService = balanceService
     }
     
     func bind(input: Input) {
@@ -27,17 +31,8 @@ class DealsPresenter: ModulePresenter, DealsModule {
             .asObservable()
             .map { [types] in types[$0.item] }
             .filter { $0 == .staking }
-            .flatMap { [unowned self] _ in
-                return self.track(Observable.combineLatest(self.usecase.getStakeDetails(for: .catm).asObservable(),
-                                                           self.usecase.getCoinDetails(for: .catm).asObservable(),
-                                                           self.usecase.getCoin(for: .catm).asObservable(),
-                                                           self.usecase.getCoinsBalance(by: .catm).asObservable()))
-            }.withLatestFrom(state) { ($1, $0.0, $0.1, $0.2, $0.3) }
-            .subscribe(onNext: { [delegate] (dealsState, stakeDetails, coinDetails, coin, coinBalances) in
-                delegate?.didSelectStaking(coin: coin,
-                                           coinBalances: coinBalances.coins,
-                                           coinDetails: coinDetails,
-                                           stakeDetails: stakeDetails)
+            .subscribe(onNext: { [delegate] _ in
+                delegate?.didSelectStaking()
             })
             .disposed(by: disposeBag)
         

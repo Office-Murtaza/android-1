@@ -18,7 +18,8 @@ final class CoinSendGiftPresenter: ModulePresenter, CoinSendGiftModule {
   
   private let usecase: CoinDetailsUsecase
   private let store: Store
-  private let walletUseCase: WalletUsecase
+  private let walletUsecase: WalletUsecase
+  private let balanceService: BalanceService
     
   weak var delegate: CoinSendGiftModuleDelegate?
 
@@ -30,10 +31,12 @@ final class CoinSendGiftPresenter: ModulePresenter, CoinSendGiftModule {
   
   init(usecase: CoinDetailsUsecase,
        store: Store = CoinSendGiftStore(),
-       walletUseCase: WalletUsecase) {
+       walletUseCase: WalletUsecase,
+       balanceService: BalanceService) {
     self.usecase = usecase
     self.store = store
-    self.walletUseCase = walletUseCase
+    self.walletUsecase = walletUseCase
+    self.balanceService = balanceService
   }
   
   func setup(coin: BTMCoin, coinBalances: [CoinBalance], coinDetails: CoinDetails) {
@@ -53,9 +56,9 @@ final class CoinSendGiftPresenter: ModulePresenter, CoinSendGiftModule {
     fetchDataRelay
         .asObservable()
       .flatMap { [unowned self]  in
-        return self.track(Observable.combineLatest(self.walletUseCase.getCoinsBalance(filteredByActive: false).asObservable(),
-                                                   self.walletUseCase.getCoinDetails(for: CustomCoinType.bitcoin).asObservable(),
-                                                   self.walletUseCase.getCoinsList().asObservable()))
+        return self.track(Observable.combineLatest(self.balanceService.getCoinsBalance().asObservable(),
+                                                   self.walletUsecase.getCoinDetails(for: CustomCoinType.bitcoin).asObservable(),
+                                                   self.walletUsecase.getCoinsList().asObservable()))
       }.subscribe({ [weak self] in
         guard let coinBalance = $0.element?.0, let coinDetails = $0.element?.1, let coins = $0.element?.2 else { return }
         self?.store.action.accept(.finishFetchingCoinsData(coinBalance, coinDetails, coins))
