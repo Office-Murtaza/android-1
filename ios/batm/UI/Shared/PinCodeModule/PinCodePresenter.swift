@@ -17,7 +17,7 @@ class PinCodePresenter: ModulePresenter, PinCodeModule {
   private let usecase: PinCodeUsecase
   private let store: Store
   private let balanceService: BalanceService
-  private let laContext = LAContext()
+  private var laContext = LAContext()
     
   let didTypeWrongPinCode = PublishRelay<Void>()
   
@@ -72,16 +72,23 @@ class PinCodePresenter: ModulePresenter, PinCodeModule {
     
     input.laAuthDriver
         .asObservable()
-        .subscribe { [weak self] (_) in
+        .doOnNext({ [weak self] in
+            self?.refreshContext()
             self?.enrollLocalAuth()
-        }
+        })
+        .subscribe()
         .disposed(by: disposeBag)
     
     setupBindings()
   }
   
   func startLocalAuth() {
-     enrollLocalAuth()
+    guard UserDefaultsHelper.pinCodeWasEntered else { return }
+    enrollLocalAuth()
+  }
+    
+  func refreshContext() {
+     laContext = LAContext();
   }
     
   private func clearCode() {
@@ -92,15 +99,16 @@ class PinCodePresenter: ModulePresenter, PinCodeModule {
 
     private func enrollLocalAuth() {
        
-        guard UserDefaultsHelper.isLocalAuthEnabled else { return }
+        guard UserDefaultsHelper.isLocalAuthEnabled,
+              UserDefaultsHelper.pinCodeWasEntered else { return }
         
-        laContext.enroll { [unowned self] in
-            self.usecase
+        laContext.enroll { [weak self] in
+            self?.usecase
                 .refresh()
-                .do(onError: { [unowned self] _ in self.clearCode() }, onCompleted: { [unowned self] in
-                self.balanceService.start()
-                }).subscribe({ [unowned self]  _ in self.delegate?.didFinishPinCode(for: .verification, with: "") })
-                .disposed(by: disposeBag)
+                .do(onError: { [weak self] _ in self?.clearCode() }, onCompleted: { [weak self] in
+                self?.balanceService.start()
+                }).subscribe({ [weak self]  _ in self?.delegate?.didFinishPinCode(for: .verification, with: "") })
+                .disposed(by: self?.disposeBag ?? DisposeBag() )
         } failure: {
             
         }
@@ -129,6 +137,7 @@ class PinCodePresenter: ModulePresenter, PinCodeModule {
       clearCode()
       return .error(PinCodeError.notMatch)
     }
+    UserDefaultsHelper.pinCodeWasEntered = true
     self.balanceService.start()
     return usecase.save(pinCode: state.code)
   }

@@ -50,8 +50,8 @@ import java.util.*
 
 val viewModelModule = module {
     viewModel { AboutViewModel(androidApplication(), get()) }
-    viewModel { SecurityViewModel(get(), get(), get(), get()) }
-    viewModel { WalletViewModel(get(), get(), get()) }
+    viewModel { SecurityViewModel(get(), get(), get(), get(), get()) }
+    viewModel { WalletViewModel(get(), get()) }
     viewModel { (coinCode: String) -> TransactionsViewModel(coinCode, get(), get(), get(), get()) }
     viewModel { RecoverWalletViewModel(get(), get<PhoneNumberValidator>()) }
     viewModel { CreateWalletViewModel(get(), get<PhoneNumberValidator>()) }

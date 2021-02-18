@@ -49,6 +49,7 @@ extension LAContext {
                 guard let error = error else { return }
                 print(error.localizedDescription)
                 DispatchQueue.main.async { [failure] in
+                    self.invalidate()
                     failure()
                 }
             }

@@ -11,6 +11,7 @@ import com.app.belcobtm.data.websockets.wallet.model.WalletBalance
 import com.app.belcobtm.domain.transaction.interactor.GetTransactionListUseCase
 import com.app.belcobtm.domain.wallet.LocalCoinType
 import com.app.belcobtm.domain.wallet.interactor.GetChartsUseCase
+import com.app.belcobtm.domain.wallet.interactor.GetCoinByCodeUseCase
 import com.app.belcobtm.domain.wallet.interactor.UpdateCoinDetailsUseCase
 import com.app.belcobtm.domain.wallet.item.ChartChangesColor
 import com.app.belcobtm.domain.wallet.item.ChartDataItem
@@ -27,7 +28,7 @@ import kotlin.collections.set
 
 class TransactionsViewModel(
     val coinCode: String,
-    walletObserver: WalletObserver,
+    private val getCoinByCodeUseCase: GetCoinByCodeUseCase,
     private val chartUseCase: GetChartsUseCase,
     private val transactionListUseCase: GetTransactionListUseCase,
     private val updateCoinDetailsUseCase: UpdateCoinDetailsUseCase
@@ -37,21 +38,9 @@ class TransactionsViewModel(
     val transactionListLiveData: MutableLiveData<List<TransactionsAdapterItem>> = MutableLiveData()
     private val chartInfo = HashMap<@PriceChartPeriod Int, ChartDataItem>()
     var totalTransactionListSize: Int = 0
-    val detailsLiveData: LiveData<TransactionsScreenItem> =
-        walletObserver.observe()
-            .receiveAsFlow()
-            .filterIsInstance<WalletBalance.Balance>()
-            .mapNotNull { balance ->
-                balance.data.coinList.find { it.code == coinCode }?.let { coinDataItem ->
-                    TransactionsScreenItem(
-                        balance = coinDataItem.balanceCoin,
-                        priceUsd = coinDataItem.priceUsd,
-                        reservedBalanceUsd = coinDataItem.reservedBalanceUsd,
-                        reservedCode = coinDataItem.code,
-                        reservedBalanceCoin = coinDataItem.reservedBalanceCoin
-                    )
-                }
-            }.asLiveData()
+
+    private val _detailsLiveData = MutableLiveData<TransactionsScreenItem>()
+    val detailsLiveData: LiveData<TransactionsScreenItem> = _detailsLiveData
 
     private val _loadingLiveData = MutableLiveData<LoadingData<Unit>>()
     val loadingData: LiveData<LoadingData<Unit>>
@@ -63,6 +52,7 @@ class TransactionsViewModel(
     }
 
     init {
+        loadCoinDataItem(coinCode)
         updateData()
     }
 
@@ -159,6 +149,21 @@ class TransactionsViewModel(
                 }
             },
             onError = { it.printStackTrace() }
+        )
+    }
+
+    private fun loadCoinDataItem(coinCode: String) {
+        getCoinByCodeUseCase(
+            coinCode,
+            onSuccess = { coinDataItem ->
+                _detailsLiveData.value = TransactionsScreenItem(
+                    balance = coinDataItem.balanceCoin,
+                    priceUsd = coinDataItem.priceUsd,
+                    reservedBalanceUsd = coinDataItem.reservedBalanceUsd,
+                    reservedCode = coinDataItem.code,
+                    reservedBalanceCoin = coinDataItem.reservedBalanceCoin
+                )
+            }
         )
     }
 }

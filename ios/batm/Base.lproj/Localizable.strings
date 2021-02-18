@@ -91,7 +91,8 @@
 "security.cell.update_p_i_n" = "Update PIN";
 "security.cell.seed_phrase" = "Seed phrase";
 "security.cell.unlink" = "Unlink";
-"security.cell.face_id" = "Use FaceID / TouchID";
+"security.cell.face_id" = "Use FaceID";
+"security.cell.touch_id" = "Use TouchID";
 
 "about.title" = "About";
 "about.cell.terms_and_conditions" = "Terms & Conditions";

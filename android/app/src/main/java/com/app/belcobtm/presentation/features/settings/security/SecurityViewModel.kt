@@ -11,11 +11,13 @@ import com.app.belcobtm.domain.settings.interactor.BioAuthSupportedByPhoneUseCas
 import com.app.belcobtm.domain.settings.interactor.GetPhoneUseCase
 import com.app.belcobtm.domain.settings.interactor.SetBioAuthStateAllowedUseCase
 import com.app.belcobtm.presentation.core.SingleLiveData
+import com.app.belcobtm.presentation.core.formatter.Formatter
 import com.app.belcobtm.presentation.core.mvvm.LoadingData
 import com.app.belcobtm.presentation.features.authorization.create.seed.CreateSeedFragment
 
 class SecurityViewModel(
     private val getPhoneUseCase: GetPhoneUseCase,
+    private val phoneNumberFormatter: Formatter<String>,
     private val setBioAuthStateAllowedUseCase: SetBioAuthStateAllowedUseCase,
     private val bioAuthAllowedByUserUseCase: BioAuthAllowedByUserUseCase,
     private val bioAuthSupportedByPhoneUseCase: BioAuthSupportedByPhoneUseCase
@@ -81,7 +83,10 @@ class SecurityViewModel(
         _userPhone.value = LoadingData.Loading()
         getPhoneUseCase(
             UseCase.None(),
-            onSuccess = { _userPhone.value = LoadingData.Success(it) },
+            onSuccess = {
+                val formattedNumber = phoneNumberFormatter.format(it)
+                _userPhone.value = LoadingData.Success(formattedNumber)
+                        },
             onError = { _userPhone.value = LoadingData.Error(it) }
         )
     }

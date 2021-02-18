@@ -4,14 +4,13 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.app.belcobtm.data.websockets.wallet.WalletObserver
-import com.app.belcobtm.data.websockets.wallet.model.WalletBalance
 import com.app.belcobtm.domain.transaction.interactor.StakeCancelUseCase
 import com.app.belcobtm.domain.transaction.interactor.StakeCreateUseCase
 import com.app.belcobtm.domain.transaction.interactor.StakeDetailsGetUseCase
 import com.app.belcobtm.domain.transaction.interactor.StakeWithdrawUseCase
 import com.app.belcobtm.domain.transaction.item.StakeDetailsDataItem
 import com.app.belcobtm.domain.wallet.LocalCoinType
+import com.app.belcobtm.domain.wallet.interactor.GetCoinByCodeUseCase
 import com.app.belcobtm.domain.wallet.interactor.GetCoinDetailsUseCase
 import com.app.belcobtm.domain.wallet.interactor.GetFreshCoinUseCase
 import com.app.belcobtm.domain.wallet.item.CoinDataItem
@@ -19,14 +18,10 @@ import com.app.belcobtm.domain.wallet.item.CoinDetailsDataItem
 import com.app.belcobtm.presentation.core.SingleLiveData
 import com.app.belcobtm.presentation.core.mvvm.LoadingData
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.filterIsInstance
-import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.mapNotNull
-import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 
 class StakingViewModel(
-    private val walletObserver: WalletObserver,
+    private val getCoinByCodeUseCase: GetCoinByCodeUseCase,
     private val getCoinDetailsUseCase: GetCoinDetailsUseCase,
     private val getFreshCoinUseCase: GetFreshCoinUseCase,
     private val stakeCreateUseCase: StakeCreateUseCase,
@@ -54,37 +49,36 @@ class StakingViewModel(
     fun loadData() {
         val catmCoinCode = LocalCoinType.CATM.name
         _stakeDetailsLiveData.value = LoadingData.Loading()
-        viewModelScope.launch {
-            walletObserver.observe()
-                .receiveAsFlow()
-                .filterIsInstance<WalletBalance.Balance>()
-                .mapNotNull { balance -> balance.data.coinList.find { it.code == catmCoinCode } }
-                .first()
-                .also { catmCoin ->
-                    coinDataItem = catmCoin
-                    getCoinDetailsUseCase.invoke(
-                        GetCoinDetailsUseCase.Params(catmCoinCode),
-                        onSuccess = {
-                            coinDetailsDataItem = it
-                            // it is necessary to get latest data as we will be checking
-                            // balance value to proceess next operations
-                            getFreshCoinUseCase(
-                                GetFreshCoinUseCase.Params(LocalCoinType.ETH.name),
-                                onSuccess = { etherium ->
-                                    etheriumCoinDataItem = etherium
-                                    loadBaseData()
-                                },
-                                onError = { failure2 ->
-                                    _stakeDetailsLiveData.value = LoadingData.Error(failure2)
-                                }
-                            )
-                        },
-                        onError = {
-                            _stakeDetailsLiveData.value = LoadingData.Error(it)
-                        }
-                    )
-                }
-        }
+        getCoinByCodeUseCase(
+            catmCoinCode,
+            onSuccess = { catmCoin ->
+                coinDataItem = catmCoin
+                getCoinDetailsUseCase.invoke(
+                    GetCoinDetailsUseCase.Params(catmCoinCode),
+                    onSuccess = {
+                        coinDetailsDataItem = it
+                        // it is necessary to get latest data as we will be checking
+                        // balance value to proceess next operations
+                        getFreshCoinUseCase(
+                            GetFreshCoinUseCase.Params(LocalCoinType.ETH.name),
+                            onSuccess = { etherium ->
+                                etheriumCoinDataItem = etherium
+                                loadBaseData()
+                            },
+                            onError = { failure2 ->
+                                _stakeDetailsLiveData.value = LoadingData.Error(failure2)
+                            }
+                        )
+                    },
+                    onError = {
+                        _stakeDetailsLiveData.value = LoadingData.Error(it)
+                    }
+                )
+            },
+            onError = {
+                _stakeDetailsLiveData.value = LoadingData.Error(it)
+            }
+        )
     }
 
     private fun loadBaseData() {
