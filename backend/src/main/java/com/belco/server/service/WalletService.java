@@ -165,7 +165,7 @@ public class WalletService {
                 pendingSum = pendingSum.add(new BigDecimal(20));
             }
 
-            return balance.subtract(pendingSum);
+            return BigDecimal.ZERO.max(balance.subtract(pendingSum));
         } catch (Exception e) {
             e.printStackTrace();
         }
