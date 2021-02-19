@@ -3,6 +3,7 @@ package com.app.belcobtm.presentation.features.wallet.withdraw
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.app.belcobtm.domain.transaction.interactor.WithdrawUseCase
 import com.app.belcobtm.domain.wallet.interactor.GetCoinDetailsUseCase
 import com.app.belcobtm.domain.wallet.interactor.GetCoinListUseCase
@@ -12,6 +13,8 @@ import com.app.belcobtm.presentation.core.coin.AmountCoinValidator
 import com.app.belcobtm.presentation.core.coin.MinMaxCoinValueProvider
 import com.app.belcobtm.presentation.core.coin.model.ValidationResult
 import com.app.belcobtm.presentation.core.mvvm.LoadingData
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 class WithdrawViewModel(
     private val coinCode: String,
@@ -34,19 +37,22 @@ class WithdrawViewModel(
 
     init {
         _loadingLiveData.value = LoadingData.Loading()
-        getCoinDetailsUseCase.invoke(GetCoinDetailsUseCase.Params(coinCode), onSuccess = { coinDetails ->
-            getCoinListUseCase.invoke(Unit, onSuccess = {
-                coinDataItemList = it
-                fromCoinDataItem = coinDataItemList.find { it.code == coinCode }
-                    ?: throw IllegalStateException("Invalid coin code that is not presented in a list $coinCode")
-                fromCoinDetailsDataItem = coinDetails
-                _loadingLiveData.value = LoadingData.Success(Unit)
-            }, onError = {
+        getCoinDetailsUseCase.invoke(
+            GetCoinDetailsUseCase.Params(coinCode),
+            onSuccess = { coinDetails ->
+                getCoinListUseCase.invoke(Unit, onSuccess = {
+                    coinDataItemList = it
+                    fromCoinDataItem = coinDataItemList.find { it.code == coinCode }
+                        ?: throw IllegalStateException("Invalid coin code that is not presented in a list $coinCode")
+                    fromCoinDetailsDataItem = coinDetails
+                    _loadingLiveData.value = LoadingData.Success(Unit)
+                }, onError = {
+                    _loadingLiveData.value = LoadingData.Error(it)
+                })
+            },
+            onError = {
                 _loadingLiveData.value = LoadingData.Error(it)
             })
-        }, onError = {
-            _loadingLiveData.value = LoadingData.Error(it)
-        })
     }
 
     fun withdraw(
@@ -56,14 +62,22 @@ class WithdrawViewModel(
         transactionLiveData.value = LoadingData.Loading()
         withdrawUseCase.invoke(
             params = WithdrawUseCase.Params(getCoinCode(), coinAmount, toAddress),
-            onSuccess = { transactionLiveData.value = LoadingData.Success(it) },
+            onSuccess = {
+                // we need to add some delay as server returns 200 before writting to DB
+                viewModelScope.launch {
+                    delay(1000)
+                    transactionLiveData.value = LoadingData.Success(it)
+                }
+            },
             onError = { transactionLiveData.value = LoadingData.Error(it) }
         )
     }
 
-    fun getMinValue(): Double = minMaxCoinValueProvider.getMinValue(fromCoinDataItem, fromCoinDetailsDataItem)
+    fun getMinValue(): Double =
+        minMaxCoinValueProvider.getMinValue(fromCoinDataItem, fromCoinDetailsDataItem)
 
-    fun getMaxValue(): Double = minMaxCoinValueProvider.getMaxValue(fromCoinDataItem, fromCoinDetailsDataItem)
+    fun getMaxValue(): Double =
+        minMaxCoinValueProvider.getMaxValue(fromCoinDataItem, fromCoinDetailsDataItem)
 
     fun getTransactionFee(): Double = fromCoinDetailsDataItem.txFee
 
