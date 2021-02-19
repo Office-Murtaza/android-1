@@ -34,5 +34,6 @@ allprojects {
         maven { url "http://giphy.bintray.com/giphy-sdk" }
         mavenCentral()
         maven { url "https://oss.sonatype.org/content/repositories/snapshots" }
+        maven { url "http://giphy.bintray.com/giphy-sdk" }
     }
 }
