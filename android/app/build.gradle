@@ -117,7 +117,7 @@ dependencies {
     implementation 'com.google.zxing:core:3.3.0'
     implementation('com.journeyapps:zxing-android-embedded:3.6.0') { transitive = false }
 
-    implementation 'com.giphy.sdk:ui:1.0.1'
+    implementation 'com.giphy.sdk:ui:2.0.9'
     implementation 'pl.droidsonroids.gif:android-gif-drawable:1.2.20'
     implementation 'com.github.bumptech.glide:glide:4.11.0'
 

@@ -28,9 +28,9 @@ import com.giphy.sdk.core.models.Media
 import com.giphy.sdk.core.models.enums.RenditionType
 import com.giphy.sdk.ui.GPHContentType
 import com.giphy.sdk.ui.GPHSettings
-import com.giphy.sdk.ui.GiphyCoreUI
+import com.giphy.sdk.ui.Giphy
+import com.giphy.sdk.ui.themes.GPHTheme
 import com.giphy.sdk.ui.themes.GridType
-import com.giphy.sdk.ui.themes.LightTheme
 import com.giphy.sdk.ui.views.GiphyDialogFragment
 import org.koin.android.viewmodel.ext.android.viewModel
 
@@ -72,7 +72,7 @@ class SendGiftFragment : BaseFragment<FragmentSendGiftBinding>(),
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        GiphyCoreUI.configure(context, GIPHY_API_KEY)
+        Giphy.configure(context, GIPHY_API_KEY)
     }
 
     override fun FragmentSendGiftBinding.initViews() {
@@ -82,8 +82,8 @@ class SendGiftFragment : BaseFragment<FragmentSendGiftBinding>(),
         setToolbarTitle(getString(R.string.send_gift_screen_title))
         val settings = GPHSettings(
             gridType = GridType.waterfall,
-            theme = LightTheme,
-            dimBackground = true,
+            theme = GPHTheme.Light,
+            useBlurredBackground = true,
             mediaTypeConfig = arrayOf(GPHContentType.gif)
         )
         gifsDialog = GiphyDialogFragment.newInstance(settings)
@@ -224,9 +224,19 @@ class SendGiftFragment : BaseFragment<FragmentSendGiftBinding>(),
         gifsDialog.gifSelectionListener = this
     }
 
-    override fun onDismissed() = Unit
+    override fun onDismissed(selectedContentType: GPHContentType) {
+        // noop
+    }
 
-    override fun onGifSelected(media: Media) {
+    override fun didSearchTerm(term: String) {
+        // noop
+    }
+
+    override fun onGifSelected(
+        media: Media,
+        searchTerm: String?,
+        selectedContentType: GPHContentType
+    ) {
         gifMedia = media
         binding.gifImage.setMedia(media, RenditionType.original)
         binding.gifImage.show()

@@ -21,7 +21,7 @@ import com.app.belcobtm.presentation.core.QRUtils.Companion.getSpacelessQR
 import com.app.belcobtm.presentation.core.extensions.*
 import com.app.belcobtm.presentation.core.formatter.Formatter
 import com.app.belcobtm.presentation.core.ui.fragment.BaseFragment
-import com.giphy.sdk.ui.GiphyCoreUI
+import com.giphy.sdk.ui.Giphy
 import com.giphy.sdk.ui.views.GPHMediaView
 import org.koin.android.ext.android.inject
 import org.koin.android.viewmodel.ext.android.viewModel
@@ -43,7 +43,7 @@ class TransactionDetailsFragment : BaseFragment<FragmentTransactionDetailsBindin
         fromPhoneView.addTextChangedListener(PhoneNumberFormattingTextWatcher())
         toPhoneView.addTextChangedListener(PhoneNumberFormattingTextWatcher())
 
-        GiphyCoreUI.configure(requireContext(), GIPHY_API_KEY)
+        Giphy.configure(requireContext(), GIPHY_API_KEY)
     }
 
     override fun FragmentTransactionDetailsBinding.initObservers() {
