@@ -21,6 +21,7 @@ enum PinCodeAction: Equatable {
   case addDigit(String)
   case removeDigit
   case clearCode
+  case localAuthOnStartEnabled(Bool)
 }
 
 struct PinCodeState: Equatable {
@@ -29,6 +30,7 @@ struct PinCodeState: Equatable {
   var correctCode = ""
   var code = ""
   var shouldShowNavBar = false
+  var isEnabledLocalAuthOnStart = false
   
   var title: String {
     let title: String
@@ -68,6 +70,7 @@ final class PinCodeStore: ViewStore<PinCodeAction, PinCodeState> {
     case let .addDigit(digit): state.code += digit
     case .removeDigit: _ = state.code.popLast()
     case .clearCode: state.code = ""
+    case let .localAuthOnStartEnabled(isEnabled): state.isEnabledLocalAuthOnStart = isEnabled
     }
     
     return state

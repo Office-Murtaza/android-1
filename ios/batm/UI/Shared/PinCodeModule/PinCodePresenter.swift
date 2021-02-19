@@ -18,9 +18,10 @@ class PinCodePresenter: ModulePresenter, PinCodeModule {
   private let store: Store
   private let balanceService: BalanceService
   private var laContext = LAContext()
+  private var shouldUseLocalAuthOnStart = false
     
   let didTypeWrongPinCode = PublishRelay<Void>()
-  
+    
   var state: Driver<PinCodeState> {
     return store.state
   }
@@ -49,6 +50,10 @@ class PinCodePresenter: ModulePresenter, PinCodeModule {
   
   func setup(shouldShowNavBar: Bool) {
     store.action.accept(.setupShouldShowNavBar(shouldShowNavBar))
+  }
+    
+  func setup(shouldUseLocalAuthOnStart isEnabled: Bool = false) {
+    store.action.accept(.localAuthOnStartEnabled(isEnabled))
   }
   
   func bind(input: Input) {
@@ -83,7 +88,8 @@ class PinCodePresenter: ModulePresenter, PinCodeModule {
   }
   
   func startLocalAuth() {
-    guard UserDefaultsHelper.pinCodeWasEntered else { return }
+    guard UserDefaultsHelper.pinCodeWasEntered,
+          store.currentState.isEnabledLocalAuthOnStart else { return }
     enrollLocalAuth()
   }
     

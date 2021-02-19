@@ -37,8 +37,8 @@ class RootFlow: BaseFlow<UIWindow, RootFlowController> {
       return replaceRoot(with: loginFlow, step: LoginFlow.Steps.welcome(toastMessage))
     case let .pinCode(stage, pinCode):
       let module = resolver.resolve(Module<PinCodeModule>.self)!
+      module.input.setup(shouldUseLocalAuthOnStart: true)
       module.input.setup(for: stage)
-      
       if stage == .confirmation {
         module.input.setup(shouldShowNavBar: true)
       }

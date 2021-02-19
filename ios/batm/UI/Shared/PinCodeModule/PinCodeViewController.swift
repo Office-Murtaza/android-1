@@ -98,6 +98,16 @@ class PinCodeViewController: ModuleViewController<PinCodePresenter>, UITextField
         self.triggerWrongPinCodeHapticFeedback()
       })
       .disposed(by: disposeBag)
+    
+    presenter.state
+        .map{ $0.isEnabledLocalAuthOnStart }
+        .drive(onNext: { [weak self] (result) in
+            if result == false {
+                self?.keyboardView.disableAuthButton()
+            }
+        })
+    .disposed(by: disposeBag)
+    
   }
   
   override func setupBindings() {

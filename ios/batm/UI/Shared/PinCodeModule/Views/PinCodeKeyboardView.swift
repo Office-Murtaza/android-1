@@ -37,7 +37,7 @@ class PinCodeKeyboardView: UIView {
   let digitButton_0 = PinCodeKeyboardDigitButton(digit: 0)
   let backButton = PinCodeKeyboardBackButton()
   
-    lazy var localAuthButton: MDCButton = {
+  lazy var localAuthButton: MDCButton = {
         let button = MDCButton()
         button.setBackgroundColor(.whiteTwo, for: .normal)
         let type = LAContext().supportedBioAuthType
@@ -48,7 +48,12 @@ class PinCodeKeyboardView: UIView {
         return button
     }()
   
-   
+    func disableAuthButton() {
+        localAuthButton.setImage(nil, for: .normal)
+        localAuthButton.isEnabled = false
+    }
+    
+    
   var digitButtons: [PinCodeKeyboardDigitButton] {
     return [
       digitButton_0,
@@ -124,7 +129,8 @@ extension Reactive where Base == PinCodeKeyboardView {
     return base.backButton.rx.tap.asDriver()
   }
     
-    var laAuthTapped: Driver<Void> {
-        return base.localAuthButton.rx.tap.asDriver()
-    }
+  var laAuthTapped: Driver<Void> {
+    return base.localAuthButton.rx.tap.asDriver()
+  }
+    
 }
