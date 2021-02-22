@@ -16,12 +16,10 @@ import com.app.belcobtm.databinding.FragmentTransactionDetailsBinding
 import com.app.belcobtm.domain.transaction.type.TransactionCashStatusType
 import com.app.belcobtm.domain.transaction.type.TransactionStatusType
 import com.app.belcobtm.domain.transaction.type.TransactionType
-import com.app.belcobtm.presentation.core.Const.GIPHY_API_KEY
 import com.app.belcobtm.presentation.core.QRUtils.Companion.getSpacelessQR
 import com.app.belcobtm.presentation.core.extensions.*
 import com.app.belcobtm.presentation.core.formatter.Formatter
 import com.app.belcobtm.presentation.core.ui.fragment.BaseFragment
-import com.giphy.sdk.ui.GiphyCoreUI
 import com.giphy.sdk.ui.views.GPHMediaView
 import org.koin.android.ext.android.inject
 import org.koin.android.viewmodel.ext.android.viewModel
@@ -42,8 +40,6 @@ class TransactionDetailsFragment : BaseFragment<FragmentTransactionDetailsBindin
         setToolbarTitle(getString(R.string.transaction_details_screen_title))
         fromPhoneView.addTextChangedListener(PhoneNumberFormattingTextWatcher())
         toPhoneView.addTextChangedListener(PhoneNumberFormattingTextWatcher())
-
-        GiphyCoreUI.configure(requireContext(), GIPHY_API_KEY)
     }
 
     override fun FragmentTransactionDetailsBinding.initObservers() {
