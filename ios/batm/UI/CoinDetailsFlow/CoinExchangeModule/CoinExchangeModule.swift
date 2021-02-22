@@ -1,7 +1,7 @@
 import Foundation
 
 protocol CoinExchangeModule: class {
-  func setup(coin: BTMCoin, coinBalances: [CoinBalance], coinDetails: CoinDetails)
+  func setup()
 }
 protocol CoinExchangeModuleDelegate: class {
   func didFinishCoinExchange()

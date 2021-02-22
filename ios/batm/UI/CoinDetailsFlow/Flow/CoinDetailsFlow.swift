@@ -82,7 +82,7 @@ class CoinDetailsFlow: BaseFlow<BTMNavigationController, CoinDetailsFlowControll
       return replaceLast(module.controller)
     case let .exchange(coin, coinBalances, coinDetails):
       let module = resolver.resolve(Module<CoinExchangeModule>.self)!
-      module.input.setup(coin: coin, coinBalances: coinBalances, coinDetails: coinDetails)
+      module.input.setup()
       return push(module.controller)
     case let .trades(coin, coinBalances, CoinDetails):
       let flow = TradesFlow(view: view, parent: self)

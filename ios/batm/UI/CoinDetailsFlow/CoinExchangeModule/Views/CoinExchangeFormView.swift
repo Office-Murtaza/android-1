@@ -117,7 +117,7 @@ extension Reactive where Base == CoinExchangeFormView {
     }
     
     var willChangeFromCoinType: Driver<CustomCoinType> {
-        return base.fromCoinView.rx.willCointTypeChanged
+        return base.fromCoinView.rx.willCoinTypeChanged
     }
     
     var selectFromPickerItem: Driver<CustomCoinType> {
@@ -144,7 +144,7 @@ extension Reactive where Base == CoinExchangeFormView {
         return base.toCoinView.rx.maxTap
     }
     var willChangeToCoinType: Driver<CustomCoinType> {
-        return base.toCoinView.rx.willCointTypeChanged
+        return base.toCoinView.rx.willCoinTypeChanged
     }
     
     var swapButtonDidPushed: ControlEvent<Void> {

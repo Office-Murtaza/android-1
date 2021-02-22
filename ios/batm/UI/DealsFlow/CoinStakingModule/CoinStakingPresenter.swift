@@ -50,9 +50,7 @@ final class CoinStakingPresenter: ModulePresenter, CoinStakingModule {
                                                         .do(onSuccess: { [store] in store.action.accept(.setupCoin($0)) })
                                                         .asCompletable(),
                                                      self.balanceService.getCoinsBalance()
-                                                        .do(onNext: { [store] in
-                                                            store.action.accept(.setupCoinBalances($0.coins))
-                                                        })
+                                                        .do(onNext: { [store] in store.action.accept(.setupCoinBalances($0.coins)) })
                                                         .asSingle()
                                                         .asCompletable()))
             }
@@ -94,8 +92,8 @@ final class CoinStakingPresenter: ModulePresenter, CoinStakingModule {
                                                         .do(onSuccess: { [store] in store.action.accept(.setupCoin($0)) })
                                                         .asCompletable(),
                                                      self.balanceService.getCoinsBalance()
+                                                        .do(onNext: { [store] in store.action.accept(.setupCoinBalances($0.coins)) })
                                                         .asSingle()
-                                                        .do(onSuccess: { [store] in store.action.accept(.setupCoinBalances($0.coins)) })
                                                         .asCompletable()))
             }
             .subscribe(onNext: { [weak self] in

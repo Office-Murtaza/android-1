@@ -211,7 +211,7 @@ extension Reactive where Base == CoinSendGiftFormView {
     }
     
     var willChangeFromCoinType: Driver<CustomCoinType> {
-        return base.coinAmountTextFieldView.rx.willCointTypeChanged
+        return base.coinAmountTextFieldView.rx.willCoinTypeChanged
     }
     
     var selectFromPickerItem: Driver<CustomCoinType> {

@@ -23,7 +23,7 @@ final class CoinExchangePresenter: ModulePresenter, CoinExchangeModule {
     private let usecase: CoinDetailsUsecase
     private let store: Store
     private let walletUseCase: WalletUsecase
-    private let balanceServise: BalanceService
+    private let balanceService: BalanceService
     private let fetchDataRelay = PublishRelay<Void>()
     var coinTypeDidChange = PublishRelay<Void>()
     
@@ -40,26 +40,20 @@ final class CoinExchangePresenter: ModulePresenter, CoinExchangeModule {
         self.usecase = usecase
         self.store = store
         self.walletUseCase = walletUseCase
-        self.balanceServise = balanceService
+        self.balanceService = balanceService
     }
     
-    func setup(coin: BTMCoin, coinBalances: [CoinBalance], coinDetails: CoinDetails) {
-        store.action.accept(.setupCoin(coin))
-        store.action.accept(.setupCoinBalances(coinBalances))
-        store.action.accept(.setupCoinDetails(coinDetails))
-    }
+    func setup() {}
     
     func bind(input: Input) {
-
         fetchDataRelay
             .asObservable()
           .flatMap { [unowned self]  in
-            return self.track(Observable.combineLatest(self.balanceServise.getCoinsBalance().asObservable(),
-                                                       self.walletUseCase.getCoinDetails(for: CustomCoinType.bitcoin).asObservable(),
+            return self.track(Observable.combineLatest(self.balanceService.getCoinsBalance().single().asObservable(),
                                                        self.walletUseCase.getCoinsList().asObservable()))
           }.subscribe({ [weak self] in
-            guard let coinBalance = $0.element?.0, let coinDetails = $0.element?.1, let coins = $0.element?.2 else { return }
-            self?.store.action.accept(.finishFetchingCoinsData(coinBalance, coinDetails, coins))
+            guard let coinBalance = $0.element?.0, let coins = $0.element?.1 else { return }
+            self?.store.action.accept(.finishFetchingCoinsData(coinBalance, coins))
           })
           .disposed(by: disposeBag)
         
