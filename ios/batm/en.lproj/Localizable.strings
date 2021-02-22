@@ -399,6 +399,7 @@
 "deals.cell.staking" = "Staking";
 "deals.cell.swap" = "Swap";
 "deals.cell.transfer" = "Transfer";
+"deals.cell.p2p" = "P2P Trading";
 
 "notifications.title" = "Notifications";
 "notifications.cell.title" = "Receive push notifications";

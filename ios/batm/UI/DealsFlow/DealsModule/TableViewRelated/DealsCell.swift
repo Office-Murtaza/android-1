@@ -11,12 +11,14 @@ enum DealsCellType: CaseIterable, DealsCellTypeRepresentable {
     case transfer
     case swap
     case staking
+    case p2pTrades
     
     var title: String {
         switch self {
         case .transfer: return localize(L.Deals.Cell.transfer)
         case .swap: return localize(L.Deals.Cell.swap)
         case .staking: return localize(L.Deals.Cell.staking)
+        case .p2pTrades: return localize(L.Deals.Cell.p2p)
         }
     }
     
@@ -25,6 +27,7 @@ enum DealsCellType: CaseIterable, DealsCellTypeRepresentable {
         case .transfer: return UIImage(named: "paper-plane")
         case .swap: return UIImage(named: "deals_swap")
         case .staking: return UIImage(named: "deals_staking")
+        case .p2pTrades: return UIImage(named: "p2p")
         }
     }
 }

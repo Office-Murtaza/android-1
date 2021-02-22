@@ -557,6 +557,7 @@ extension L.CreateWallet.Form {
 extension L.Deals {
 
   struct Cell {
+    static let p2p = "deals.cell.p2p"
     static let staking = "deals.cell.staking"
     static let swap = "deals.cell.swap"
     static let transfer = "deals.cell.transfer"

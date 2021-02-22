@@ -16,6 +16,7 @@ class DealsFlow: BaseFlow<BTMNavigationController, DealsFlowController> {
         case staking
         case swap
         case transfer
+        case p2p
         case popToRoot(String?=nil)
     }
     
@@ -33,7 +34,7 @@ class DealsFlow: BaseFlow<BTMNavigationController, DealsFlowController> {
             module.controller.tabBarItem.image = UIImage(named: "tab_bar_deals")
             module.controller.tabBarItem.selectedImage = UIImage(named: "tab_bar_active_deals")
             return push(module.controller, animated: false)
-        case let .staking:
+        case .staking:
             let module = resolver.resolve(Module<CoinStakingModule>.self)!
             module.input.setup()
             return push(module.controller)
@@ -51,6 +52,7 @@ class DealsFlow: BaseFlow<BTMNavigationController, DealsFlowController> {
                 }
             }
             return popToRoot()
+        case .p2p: return push(UIViewController())//print("start p2p flow")
         }
     }
 }

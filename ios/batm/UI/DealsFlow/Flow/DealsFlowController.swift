@@ -21,6 +21,10 @@ extension DealsFlowController: DealsModuleDelegate {
     func didSelectTransfer() {
         step.accept(DealsFlow.Steps.transfer)
     }
+    
+    func didSelectedP2p() {
+        step.accept(DealsFlow.Steps.p2p)
+    }
 }
 
 extension DealsFlowController: CoinExchangeModuleDelegate {
