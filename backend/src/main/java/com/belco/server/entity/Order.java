@@ -67,14 +67,14 @@ public class Order extends BaseEntity {
                 getTerms(),
                 getMaker().getId(),
                 getMaker().getIdentity().getPublicId(),
-                getMaker().getLatitude().stripTrailingZeros(),
-                getMaker().getLongitude().stripTrailingZeros(),
+                getMaker().getLatitude(),
+                getMaker().getLongitude(),
                 getMaker().getTotalTrades(),
                 getMaker().getTradingRate(),
                 getTaker().getId(),
                 getTaker().getIdentity().getPublicId(),
-                getTaker().getLatitude().stripTrailingZeros(),
-                getTaker().getLongitude().stripTrailingZeros(),
+                getTaker().getLatitude(),
+                getTaker().getLongitude(),
                 getTaker().getTotalTrades(),
                 getTaker().getTradingRate()
         );

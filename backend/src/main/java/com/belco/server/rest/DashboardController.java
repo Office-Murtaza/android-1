@@ -36,6 +36,11 @@ public class DashboardController {
     }
 
     @PostMapping("/user/{userId}/verification")
+    public Response submitVerification(@PathVariable Long userId, @RequestBody @ModelAttribute VerificationDTO dto) {
+        return userService.submitVerification(userId, dto);
+    }
+
+    @PutMapping("/user/{userId}/verification")
     public Response updateVerification(@PathVariable Long userId, @RequestBody VerificationDTO dto) {
         return userService.updateVerification(userId, dto);
     }

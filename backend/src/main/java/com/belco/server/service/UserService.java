@@ -305,7 +305,6 @@ public class UserService implements UserDetailsService {
                 verificationReview.setTier(dto.getVerificationTier().getValue());
                 verificationReview.setIdentity(user.getIdentity());
                 verificationReview.setStatus(VerificationStatus.VERIFICATION_PENDING.getValue());
-                verificationReview.setIdCardNumber(dto.getIdNumber());
                 verificationReview.setAddress(dto.getAddress());
                 verificationReview.setCountry(dto.getCountry());
                 verificationReview.setProvince(dto.getProvince());
@@ -313,6 +312,7 @@ public class UserService implements UserDetailsService {
                 verificationReview.setZipCode(dto.getZipCode());
                 verificationReview.setFirstName(dto.getFirstName());
                 verificationReview.setLastName(dto.getLastName());
+                verificationReview.setIdCardNumber(dto.getIdNumber());
                 verificationReview.setIdCardNumberFilename(newFileName);
                 verificationReview.setIdCardNumberMimetype(dto.getFile().getContentType());
             } else if (dto.getVerificationTier() == VerificationTier.VIP_VERIFICATION) {
