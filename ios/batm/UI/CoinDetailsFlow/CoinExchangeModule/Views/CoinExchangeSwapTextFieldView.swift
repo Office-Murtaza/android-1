@@ -188,6 +188,10 @@ class CoinExchangeSwapTextFieldView: UIView, UIPickerViewDataSource, HasDisposeB
     func configure(for coinType:CustomCoinType, coins: [CustomCoinType]) {
         self.coins = coins
         self.coinType = coinType
+        if let index = coins.firstIndex(of: coinType) {
+            coinPickerView.selectRow(index, inComponent: 0, animated: false)
+        }
+        
     }
     
     func configureBalance(for coinBalance: CoinBalance, coinDetails: CoinDetails, useReserved: Bool = false, weighted: Bool = false) {

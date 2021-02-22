@@ -96,6 +96,11 @@ final class CoinExchangeViewController: ModuleViewController<CoinExchangePresent
       .filterNil()
       .distinctUntilChanged()
     
+    let toCoinDriver = presenter.state
+        .map{ $0.toCoinType}
+        .filterNil()
+        .distinctUntilChanged()
+    
     let otherCoinBalancesDriver = presenter.state
       .map { state in state.otherCoinBalances?.map { $0.type } }
       .filterNil()
@@ -114,9 +119,9 @@ final class CoinExchangeViewController: ModuleViewController<CoinExchangePresent
     let feeDriver = presenter.state
     .map { $0.coinDetails?.txFee }
     
-    Driver.combineLatest(fromCoinDriver, fromCoinBalancesDriver, toCoinBalancesDriver, feeDriver)
+    Driver.combineLatest(fromCoinDriver, toCoinDriver ,fromCoinBalancesDriver, toCoinBalancesDriver, feeDriver)
       .drive(onNext: { [formView] in
-              formView.configure(coin: $0, fromCoins: $1, toCoins: $2, fee: $3)
+        formView.configure(coin: $0,toCoinType: $1 ,fromCoins: $2, toCoins: $3, fee: $4)
       })
       .disposed(by: disposeBag)
     

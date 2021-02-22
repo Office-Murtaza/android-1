@@ -34,9 +34,9 @@ class CoinExchangeFormView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func configure(coin: CustomCoinType, fromCoins: [CustomCoinType], toCoins:  [CustomCoinType], fee: Decimal?) {
+    func configure(coin: CustomCoinType, toCoinType: CustomCoinType,fromCoins: [CustomCoinType], toCoins:  [CustomCoinType], fee: Decimal?) {
         fromCoinView.configure(for: coin, coins: fromCoins)
-        toCoinView.configure(for: coin, coins: toCoins)
+        toCoinView.configure(for: toCoinType, coins: toCoins)
     }
     
     func configureRateView(fromCoin: String, toCoin: String) {
