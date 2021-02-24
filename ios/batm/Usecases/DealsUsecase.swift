@@ -13,6 +13,7 @@ protocol DealsUsecase {
     func withdrawStake(from coin: BTMCoin, with coinDetails: CoinDetails, stakeDetails: StakeDetails) -> Completable
     func getCoinDetails(for type: CustomCoinType) -> Single<CoinDetails>
     func getCoin(for type: CustomCoinType) -> Single<BTMCoin>
+    func getTrades() -> Single<Trades>
 }
 
 class DealsUsecaseImpl: DealsUsecase {
@@ -186,5 +187,9 @@ class DealsUsecaseImpl: DealsUsecase {
                                      toCoinAmount: toCoinAmount,
                                      txhex: transactionResultString,
                                      from: .none)
+    }
+    
+    func getTrades() -> Single<Trades> {
+        return accountStorage.get().flatMap{ [api] in api.getTrades(userId: $0.userId)}
     }
 }

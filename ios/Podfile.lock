@@ -701,7 +701,7 @@ PODS:
     - MaterialComponents/private/Math
   - MBProgressHUD (1.1.0)
   - MDFInternationalization (2.0.0)
-  - MDFTextAccessibility (2.0.0)
+  - MDFTextAccessibility (2.0.1)
   - MotionAnimator (2.8.1):
     - MotionInterchange (~> 1.6)
   - MotionInterchange (1.6.0)
@@ -857,7 +857,7 @@ SPEC CHECKSUMS:
   MaterialComponents: 7675cd4b1c9f660b63cddeb725b2de853790402b
   MBProgressHUD: e7baa36a220447d8aeb12769bf0585582f3866d9
   MDFInternationalization: 010097556d6b09d2c4ea38e0820ea6d37be6a314
-  MDFTextAccessibility: 85c09a1bd9c321f494348e632a25063bcda35a53
+  MDFTextAccessibility: f4bb4cc2194286651b59a215fdeaa0e05dc90ba5
   MotionAnimator: ee16aa30567c5bae0fb2750c132915829cfaaf8a
   MotionInterchange: ead0e3ae1f3a5fb539e289debbc7ae036160a10d
   Moya: f4a4b80ff2f8a4ffc208dfb31cd91636622fee6e
@@ -882,6 +882,6 @@ SPEC CHECKSUMS:
   Toast-Swift: 9b6a70f28b3bf0b96c40d46c0c4b9d6639846711
   TrustWalletCore: 6bf9821db20951be01a4d69f8703a5cf36560f36
 
-PODFILE CHECKSUM: 90f7b0beffc44408c8adf7bb634acc165c3b3655
+PODFILE CHECKSUM: ba3e268ffcee72514284980b325876e764bd9d0e
 
 COCOAPODS: 1.10.1

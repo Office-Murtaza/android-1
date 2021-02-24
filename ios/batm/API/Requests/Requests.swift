@@ -650,3 +650,16 @@ struct ManageCoinsRequest: AuthorizedAPIRequest {
                                 encoding: URLEncoding.customDefault)
   }
 }
+
+struct TradesRequest: AuthorizedAPIRequest {
+  typealias ResponseType = APIResponse<Trades>
+  typealias ResponseTrait = SingleResponseTrait
+  
+  let userId: Int
+  
+  var path: String { return "/user/\(userId)/trades" }
+  var method: HTTPMethod { return .get }
+  var task: HTTPTask {
+      return .requestPlain
+  }
+}

@@ -8,7 +8,8 @@ class DealsFlow: BaseFlow<BTMNavigationController, DealsFlowController> {
                 CoinExchangeAssembly(),
                 CoinStakingAssembly(),
                 CoinExchangeAssembly(),
-                TransferSelectReceiverAssembly()]
+                TransferSelectReceiverAssembly(),
+                P2PAssembly()]
     }
     
     enum Steps: Step, Equatable {
@@ -16,7 +17,7 @@ class DealsFlow: BaseFlow<BTMNavigationController, DealsFlowController> {
         case staking
         case swap
         case transfer
-        case p2p
+        case p2p(trades: Trades)
         case popToRoot(String?=nil)
     }
     
@@ -52,7 +53,10 @@ class DealsFlow: BaseFlow<BTMNavigationController, DealsFlowController> {
                 }
             }
             return popToRoot()
-        case .p2p: return push(UIViewController())//print("start p2p flow")
+        case let .p2p(trades):
+            let module = resolver.resolve(Module<P2PModule>.self)!
+            module.input.setup(trades: trades)
+            return push(module.controller)
         }
     }
 }

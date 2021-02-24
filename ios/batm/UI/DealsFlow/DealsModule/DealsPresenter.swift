@@ -58,9 +58,19 @@ class DealsPresenter: ModulePresenter, DealsModule {
             .asObservable()
             .map { [types] in types[$0.item] }
             .filter { $0 == .p2pTrades }
-            .subscribe(onNext: { [delegate] _ in
-                delegate?.didSelectedP2p()
+            .flatMap { _ in self.track(self.usecase.getTrades()) }
+            .map { DealsAction.loadedTrades($0)  }
+            .bind(to: store.action)
+            .disposed(by: disposeBag)
+        
+        
+            state.asObservable()
+            .map { $0.trades }
+            .filterNil()
+            .subscribe(onNext: { [delegate] (trades) in
+                delegate?.didSelectedP2p(trades: trades)
             })
             .disposed(by: disposeBag)
+        
     }
 }

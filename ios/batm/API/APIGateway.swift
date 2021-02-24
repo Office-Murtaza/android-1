@@ -71,6 +71,7 @@ protocol APIGateway {
   func getStakeDetails(userId: Int, type: CustomCoinType) -> Single<StakeDetails>
   func manageCoins(userId: Int, coin: String, visible: Bool) -> Completable
   func getPriceChart(type: CustomCoinType, period: SelectedPeriod) -> Single<PriceChartDetails>
+  func getTrades(userId: Int) -> Single<Trades>
     
 }
 
@@ -349,4 +350,10 @@ final class APIGatewayImpl: APIGateway {
     let request = ManageCoinsRequest(userId: userId, coinId: coin, isVisible: String(visible))
     return execute(request)
   }
+    
+    func getTrades(userId: Int) -> Single<Trades> {
+        let request = TradesRequest(userId: userId)
+        return execute(request)
+    }
+    
 }
