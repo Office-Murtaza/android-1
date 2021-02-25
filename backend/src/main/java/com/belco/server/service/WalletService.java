@@ -151,12 +151,11 @@ public class WalletService {
         return null;
     }
 
-    public BigDecimal getBalance(CoinService.CoinEnum coin) {
+    public BigDecimal getBalance(CoinService.CoinEnum coin, String address) {
         try {
-            String walletAddress = coin.getWalletAddress();
-            BigDecimal balance = coin.getBalance(walletAddress);
+            BigDecimal balance = coin.getBalance(address);
 
-            BigDecimal pendingSum = coin.getNodeTransactions(walletAddress).values().stream()
+            BigDecimal pendingSum = coin.getNodeTransactions(address).values().stream()
                     .filter(e -> e.getType() == TransactionType.WITHDRAW && e.getStatus() == TransactionStatus.PENDING)
                     .map(TxDetailsDTO::getCryptoAmount)
                     .reduce(BigDecimal.ZERO, BigDecimal::add);
@@ -173,11 +172,11 @@ public class WalletService {
         return BigDecimal.ZERO;
     }
 
-    public boolean isEnoughBalance(CoinService.CoinEnum coin, BigDecimal amount) {
-        BigDecimal balance = getBalance(coin);
+    public boolean isEnoughBalance(CoinService.CoinEnum coin, String address, BigDecimal amount) {
+        BigDecimal balance = getBalance(coin, address);
 
         if (coin == CoinService.CoinEnum.CATM || coin == CoinService.CoinEnum.USDT) {
-            BigDecimal ethBalance = getBalance(CoinService.CoinEnum.ETH);
+            BigDecimal ethBalance = getBalance(CoinService.CoinEnum.ETH, address);
             BigDecimal fee = convertToFee(coin);
 
             return balance.compareTo(amount.add(fee)) >= 0 && ethBalance.compareTo(coin.getTxFee()) >= 0;
@@ -202,7 +201,7 @@ public class WalletService {
 
     public String transfer(CoinService.CoinEnum coin, String fromAddress, String toAddress, BigDecimal amount) {
         try {
-            BigDecimal balance = getBalance(coin);
+            BigDecimal balance = getBalance(coin, fromAddress);
 
             if (balance.compareTo(amount) >= 0 && amount.compareTo(BigDecimal.ZERO) > 0) {
                 String hex = coin.sign(fromAddress, toAddress, amount);

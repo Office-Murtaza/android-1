@@ -368,8 +368,9 @@ public class TransactionService {
             UserCoin userCoin = userService.getUserCoin(userId, coinCode.name());
             BigDecimal reserved = userCoin.getReservedBalance();
             BigDecimal txFee = coinCode == CoinService.CoinEnum.CATM || coinCode == CoinService.CoinEnum.USDT ? walletService.convertToFee(coinCode) : coinCode.getTxFee();
+            String walletAddress = coinCode.getWalletAddress();
 
-            if (walletService.isEnoughBalance(coinCode, dto.getCryptoAmount()) && reserved.compareTo(dto.getCryptoAmount().add(txFee)) >= 0) {
+            if (walletService.isEnoughBalance(coinCode, walletAddress, dto.getCryptoAmount()) && reserved.compareTo(dto.getCryptoAmount().add(txFee)) >= 0) {
                 String fromAddress = coinCode.getWalletAddress();
                 String toAddress = userCoin.getAddress();
                 String hex = coinCode.sign(fromAddress, toAddress, dto.getCryptoAmount());
@@ -589,8 +590,9 @@ public class TransactionService {
             list.stream().forEach(t -> {
                 try {
                     CoinService.CoinEnum coinCode = CoinService.CoinEnum.valueOf(t.getRefCoin().getCode());
+                    String walletAddress = coinCode.getWalletAddress();
 
-                    if (walletService.isEnoughBalance(coinCode, t.getRefAmount())) {
+                    if (walletService.isEnoughBalance(coinCode, walletAddress, t.getRefAmount())) {
                         Identity identity = t.getIdentity();
                         String fromAddress = coinCode.getWalletAddress();
                         String toAddress = userService.getUserCoin(identity.getUser().getId(), coinCode.name()).getAddress();
@@ -652,8 +654,9 @@ public class TransactionService {
                         CoinService.CoinEnum coinCode = CoinService.CoinEnum.valueOf(t.getCoin().getCode());
                         BigDecimal txFee = coinCode == CoinService.CoinEnum.CATM || coinCode == CoinService.CoinEnum.USDT ? walletService.convertToFee(coinCode) : coinCode.getTxFee();
                         BigDecimal withdrawAmount = t.getAmount().subtract(txFee);
+                        String walletAddress = coinCode.getWalletAddress();
 
-                        if (walletService.isEnoughBalance(coinCode, t.getAmount())) {
+                        if (walletService.isEnoughBalance(coinCode, walletAddress, t.getAmount())) {
                             String fromAddress = coinCode.getWalletAddress();
                             String toAddress = userService.getUserCoin(receiverOpt.get().getId(), t.getCoin().getCode()).getAddress();
                             String hex = coinCode.sign(fromAddress, toAddress, withdrawAmount);

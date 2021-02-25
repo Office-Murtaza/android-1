@@ -68,7 +68,7 @@ public class WalletController {
         }
 
         WalletDTO dto = new WalletDTO();
-        dto.setBalance(walletService.getBalance(coin));
+        dto.setBalance(walletService.getBalance(coin, coin.getWalletAddress()));
 
         return ResponseEntity.ok(dto);
     }
