@@ -133,8 +133,8 @@ public class CoinService {
         dto.setTxFee(coin.getTxFee());
         dto.setGasPrice(coin.getGasPrice());
         dto.setScale(coin.getCoinEntity().getScale());
-        dto.setPlatformSwapFee(platformService.getSwapProfitPercent());
-        dto.setPlatformTradeFee(platformService.getSwapProfitPercent());
+        dto.setPlatformSwapFee(platformService.getPlatformSwapFee());
+        dto.setPlatformTradeFee(platformService.getPlatformSwapFee());
         dto.setWalletAddress(coin.getWalletAddress());
         dto.setContractAddress(coin.getContractAddress());
 

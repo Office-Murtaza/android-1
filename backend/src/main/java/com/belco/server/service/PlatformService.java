@@ -17,7 +17,7 @@ public class PlatformService {
 
     private final MongoTemplate mongo;
 
-    private BigDecimal swapProfitPercent;
+    private BigDecimal platformSwapFee;
     private Map<String, Long> initialGasLimits;
 
     public PlatformService(MongoTemplate mongo) {
@@ -25,7 +25,7 @@ public class PlatformService {
 
         Document doc = mongo.getCollection("platform_details").find().first();
 
-        this.swapProfitPercent = doc.get("swapProfitPercent", Decimal128.class).bigDecimalValue();
+        this.platformSwapFee = doc.get("platformSwapFee", Decimal128.class).bigDecimalValue();
         this.initialGasLimits = doc.get("initialGasLimits", Map.class);
     }
 }

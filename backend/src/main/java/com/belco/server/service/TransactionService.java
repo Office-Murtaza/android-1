@@ -337,7 +337,7 @@ public class TransactionService {
             record.setAmount(dto.getCryptoAmount());
             record.setType(TransactionType.SEND_SWAP.getValue());
             record.setStatus(TransactionStatus.PENDING.getValue());
-            record.setProfitPercent(platformService.getSwapProfitPercent());
+            record.setProfitPercent(platformService.getPlatformSwapFee());
             record.setRefCoin(refCoin.getCoinEntity());
             record.setRefAmount(dto.getRefCryptoAmount());
 
