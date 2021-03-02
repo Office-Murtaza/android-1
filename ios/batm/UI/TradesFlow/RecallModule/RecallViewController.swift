@@ -51,6 +51,7 @@ final class RecallViewController: ModuleViewController<RecallPresenter> {
     
     presenter.state
       .map { $0.coinBalance }
+      .distinctUntilChanged()
       .filterNil()
       .drive(onNext: { [headerView] coinBalance in
         let amountView = CryptoFiatAmountView()
