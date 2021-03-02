@@ -10,6 +10,8 @@ import com.app.belcobtm.data.core.TransactionHashHelper
 import com.app.belcobtm.data.disk.AssetsDataStore
 import com.app.belcobtm.data.disk.database.AppDatabase
 import com.app.belcobtm.data.disk.shared.preferences.SharedPreferencesHelper
+import com.app.belcobtm.data.inmemory.TradeInMemoryCache
+import com.app.belcobtm.data.mapper.TradesResponseToTradeDataMapper
 import com.app.belcobtm.data.notification.NotificationTokenRepositoryImpl
 import com.app.belcobtm.data.rest.atm.AtmApi
 import com.app.belcobtm.data.rest.atm.AtmApiService
@@ -23,6 +25,8 @@ import com.app.belcobtm.data.rest.settings.SettingsApi
 import com.app.belcobtm.data.rest.settings.SettingsApiService
 import com.app.belcobtm.data.rest.tools.ToolsApi
 import com.app.belcobtm.data.rest.tools.ToolsApiService
+import com.app.belcobtm.data.rest.trade.TradeApi
+import com.app.belcobtm.data.rest.trade.TradeApiService
 import com.app.belcobtm.data.rest.transaction.TransactionApi
 import com.app.belcobtm.data.rest.transaction.TransactionApiService
 import com.app.belcobtm.data.rest.wallet.WalletApi
@@ -60,6 +64,7 @@ val dataModule = module {
     single { TransactionApiService(get(), get()) }
     single { ToolsApiService(get(), get()) }
     single { AtmApiService(get()) }
+    single { TradeApiService(get(), get()) }
     single { NetworkUtils(get()) }
     single { FileHelper(get()) }
     single { AssetsDataStore(get()) }
@@ -97,6 +102,9 @@ val dataModule = module {
     single { get<Retrofit>().create(WalletApi::class.java) }
     single { get<Retrofit>().create(SettingsApi::class.java) }
     single { get<Retrofit>().create(TransactionApi::class.java) }
+    single { get<Retrofit>().create(TradeApi::class.java) }
     single<NotificationTokenRepository> { NotificationTokenRepositoryImpl(get()) }
     single<ContactsRepository> { ContactsRepositoryImpl(get<Context>().contentResolver) }
+    single { TradeInMemoryCache(get()) }
+    factory { TradesResponseToTradeDataMapper() }
 }

@@ -15,4 +15,5 @@ sealed class Failure : IOException() {
 
     data class ServerError(override val message: String? = null) : Failure()
     data class MessageError(override val message: String?, val code: Int? = null) : Failure()
+    data class ValidationError(override val message: String? = null) : Failure()
 }

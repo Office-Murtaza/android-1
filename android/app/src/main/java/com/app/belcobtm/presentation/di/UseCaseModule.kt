@@ -9,8 +9,12 @@ import com.app.belcobtm.domain.settings.interactor.*
 import com.app.belcobtm.domain.tools.interactor.OldSendSmsToDeviceUseCase
 import com.app.belcobtm.domain.tools.interactor.OldVerifySmsCodeUseCase
 import com.app.belcobtm.domain.tools.interactor.SendSmsToDeviceUseCase
+import com.app.belcobtm.domain.trade.list.FetchTradesUseCase
+import com.app.belcobtm.domain.trade.list.ObserveTradesUseCase
+import com.app.belcobtm.domain.trade.list.ObserveUserTradeStatisticUseCase
+import com.app.belcobtm.domain.trade.list.mapper.TradesDataToStatisticsMapper
+import com.app.belcobtm.domain.trade.list.mapper.TradesDataToTradeListMapper
 import com.app.belcobtm.domain.transaction.interactor.*
-import com.app.belcobtm.domain.transaction.interactor.trade.*
 import com.app.belcobtm.domain.wallet.interactor.*
 import org.koin.dsl.module
 
@@ -36,22 +40,12 @@ val useCaseModule = module {
     single { SellGetLimitsUseCase(get()) }
     single { GetUserCoinListUseCase(get()) }
     single { UpdateUserCoinListUseCase(get()) }
-    single { GetListTradeUseCase.Buy(get()) }
-    single { GetListTradeUseCase.Sell(get()) }
-    single { GetListTradeUseCase.My(get()) }
-    single { GetListTradeUseCase.Open(get()) }
-    single { TradeBuySellUseCase(get()) }
-    single { CreateBuyTradeUseCase(get()) }
-    single { CreateSellTradeUseCase(get()) }
     single { GetBalanceUseCase(get()) }
     single { GetChartsUseCase(get()) }
     single { GetTransactionListUseCase(get()) }
     single { UpdateCoinDetailsUseCase(get()) }
     single { WithdrawUseCase(get()) }
     single { GetCoinByCodeUseCase(get()) }
-    single { TradeRecallTransactionCompleteUseCase(get()) }
-    single { TradeReserveTransactionCompleteUseCase(get()) }
-    single { TradeReserveTransactionCreateUseCase(get()) }
     single { GetFreshCoinUseCase(get()) }
     single { RecoverWalletUseCase(get(), get()) }
     single { CreateSeedUseCase(get()) }
@@ -78,4 +72,9 @@ val useCaseModule = module {
     single { BioAuthSupportedByPhoneUseCase(get()) }
     single { BioAuthAllowedByUserUseCase(get()) }
     single { SetBioAuthStateAllowedUseCase(get()) }
+    single { FetchTradesUseCase(get()) }
+    single { ObserveTradesUseCase(get(), get()) }
+    single { ObserveUserTradeStatisticUseCase(get(), get()) }
+    factory { TradesDataToTradeListMapper() }
+    factory { TradesDataToStatisticsMapper() }
 }

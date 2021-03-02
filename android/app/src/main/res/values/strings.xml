@@ -529,7 +529,7 @@
     <string name="deals_toolsbar_title">Deals</string>
     <string name="deals_staking">Staking</string>
     <string name="deals_swap">Swap</string>
-    <string name="deals_trade">Trade</string>
+    <string name="deals_trade">P2P Trading</string>
     <string name="deals_transfer">Transfer</string>
 
     <!-- Transfer flow -->
@@ -538,4 +538,22 @@
     <string name="transfer_phone_number_invalid">Please input correct number</string>
     <string name="empty_amount">0.00 $</string>
     <string name="phone_number_country_code">+1</string>
+
+    <!-- New trade screen -->
+    <string name="trade_list_screen_title">P2P Trading</string>
+    <string name="trade_list_item_usd_formatted">&#x24;%1$s</string>
+    <string name="trade_list_item_price_range_format">%1$s - %2$s</string>
+    <string name="trade_list_buy_tab_title">Buy</string>
+    <string name="trade_list_sell_tab_title">Sell</string>
+    <string name="trade_list_my_info_tab_title">My info</string>
+    <string name="trade_list_account_info_verified_label">Verified</string>
+    <string name="user_trade_info_success_rate_label">Success rate</string>
+    <string name="user_trade_info_total_trades_label">Total trades</string>
+
+    <string name="trade_type_buy_label">Buy</string>
+    <string name="trade_type_sell_label">Sell</string>
+
+    <!--  TODO RENAME  -->
+    <string name="fiat_amount_label">Fiat amount</string>
+    <string name="crypto_amount_label">Crypto amount</string>
 </resources>

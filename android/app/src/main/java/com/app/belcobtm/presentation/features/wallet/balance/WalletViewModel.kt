@@ -15,7 +15,7 @@ import kotlinx.coroutines.launch
 
 class WalletViewModel(
     private val accountDao: AccountDao,
-    private val walletObserver: WalletObserver,
+    private val walletObserver: WalletObserver
 ) : ViewModel() {
 
     val balanceLiveData: LiveData<LoadingData<Pair<Double, List<CoinListItem>>>> =

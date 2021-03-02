@@ -155,6 +155,9 @@ dependencies {
     //number validation
     implementation 'io.michaelrocks:libphonenumber-android:8.12.7'
 
+    // ViewPager 2
+    implementation "androidx.viewpager2:viewpager2:1.0.0"
+
     //firebase
     implementation "com.google.firebase:firebase-messaging:$lib.firebaseMessaging"
     implementation "com.google.firebase:firebase-crashlytics:$lib.crashlytics"

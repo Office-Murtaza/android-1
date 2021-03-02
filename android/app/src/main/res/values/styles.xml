@@ -305,6 +305,13 @@
         <item name="fab_size">mini</item>
     </style>
 
+    <style name="TradeScreen.FloatingActionButtonChild" parent="Widget.MaterialComponents.FloatingActionButton">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="fab_colorNormal">@color/blue_color</item>
+        <item name="fab_colorPressed">@color/blue_color</item>
+        <item name="fab_size">normal</item>
+    </style>
 
     <style name="Transaction" />
 
@@ -340,5 +347,25 @@
     <style name="SettingsLabel">
         <item name="android:textSize">16sp</item>
         <item name="android:textColor">#000000</item>
+    </style>
+
+    <style name="PrimaryTabLayout" parent="Widget.Design.TabLayout">
+        <item name="tabIndicatorColor">@color/gph_white</item>
+        <item name="tabBackground">@color/colorPrimary</item>
+        <item name="tabTextAppearance">@style/AppTabTextAppearance</item>
+        <item name="tabSelectedTextColor">@color/gph_white</item>
+    </style>
+
+    <style name="SecondaryTabLayout" parent="Widget.Design.TabLayout">
+        <item name="tabIndicatorColor">#000</item>
+        <item name="tabBackground">#8d8d8d</item>
+        <item name="tabTextAppearance">@style/AppTabTextAppearance</item>
+        <item name="tabSelectedTextColor">#000</item>
+    </style>
+
+    <!-- for text -->
+    <style name="AppTabTextAppearance" parent="TextAppearance.Design.Tab">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/gph_white</item>
     </style>
 </resources>

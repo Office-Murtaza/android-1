@@ -96,7 +96,7 @@ abstract class BaseFragment<V : ViewBinding> : Fragment(),
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        this.navController = Navigation.findNavController(view)
+        this.navController = resolveNavController(view)
         updateActionBar()
         baseBinding.interceptableFrameLayout.interceptListner = this
         baseBinding.errorRetryButtonView.setOnClickListener(retryListener)
@@ -109,6 +109,8 @@ abstract class BaseFragment<V : ViewBinding> : Fragment(),
             showContent()
         }
     }
+
+    protected open fun resolveNavController(view: View) = Navigation.findNavController(view)
 
     override fun onDestroyView() {
         super.onDestroyView()
@@ -290,7 +292,7 @@ abstract class BaseFragment<V : ViewBinding> : Fragment(),
     }
 
     protected fun <T> LiveData<LoadingData<T>>.listen(
-        success: (data: T) -> Unit,
+        success: (data: T) -> Unit = {},
         error: (error: Failure?) -> Unit = baseErrorHandler,
         onUpdate: ((LoadingData<T>) -> Unit)? = null
     ) {

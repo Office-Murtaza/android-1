@@ -33,12 +33,11 @@ import com.app.belcobtm.presentation.features.wallet.add.WalletsViewModel
 import com.app.belcobtm.presentation.features.wallet.balance.WalletViewModel
 import com.app.belcobtm.presentation.features.wallet.deposit.DepositViewModel
 import com.app.belcobtm.presentation.features.wallet.send.gift.SendGiftViewModel
-import com.app.belcobtm.presentation.features.wallet.trade.create.TradeCreateViewModel
-import com.app.belcobtm.presentation.features.wallet.trade.details.TradeDetailsBuyViewModel
-import com.app.belcobtm.presentation.features.wallet.trade.edit.TradeEditViewModel
-import com.app.belcobtm.presentation.features.wallet.trade.main.TradeViewModel
+import com.app.belcobtm.presentation.features.wallet.trade.container.TradeContainerViewModel
+import com.app.belcobtm.presentation.features.wallet.trade.list.TradeListViewModel
 import com.app.belcobtm.presentation.features.wallet.trade.recall.TradeRecallViewModel
 import com.app.belcobtm.presentation.features.wallet.trade.reserve.TradeReserveViewModel
+import com.app.belcobtm.presentation.features.wallet.trade.statistic.TradeUserStatisticViewModel
 import com.app.belcobtm.presentation.features.wallet.transaction.details.TransactionDetailsViewModel
 import com.app.belcobtm.presentation.features.wallet.transactions.TransactionsViewModel
 import com.app.belcobtm.presentation.features.wallet.withdraw.WithdrawViewModel
@@ -61,39 +60,11 @@ val viewModelModule = module {
     viewModel { VerificationVipViewModel(get()) }
     viewModel { SwapViewModel(get(), get(), get(), get(), get(), get(), get()) }
     viewModel { WalletsViewModel(get(), get()) }
-    viewModel { (latitude: Double, longitude: Double, coinCode: String) ->
-        TradeViewModel(coinCode, latitude, longitude, get(), get(), get(), get(), get())
+    viewModel { (coinCode: String) ->
+        TradeRecallViewModel(coinCode, get(), get(), get(), get(), get(), get())
     }
     viewModel { (coinCode: String) ->
-        TradeDetailsBuyViewModel(coinCode, get(), get())
-    }
-    viewModel { (coinCode: String) ->
-        TradeCreateViewModel(coinCode, get(), get(), get())
-    }
-    viewModel { TradeEditViewModel() }
-    viewModel { (coinCode: String) ->
-        TradeRecallViewModel(
-            coinCode,
-            get(),
-            get(),
-            get(),
-            get(),
-            get(),
-            get()
-        )
-    }
-    viewModel { (coinCode: String) ->
-        TradeReserveViewModel(
-            coinCode,
-            get(),
-            get(),
-            get(),
-            get(),
-            get(),
-            get(),
-            get(),
-            get()
-        )
+        TradeReserveViewModel(coinCode, get(), get(), get(), get(), get(), get(), get(), get())
     }
     viewModel {
         StakingViewModel(get(), get(), get(), get(), get(), get(), get())
@@ -109,25 +80,16 @@ val viewModelModule = module {
     viewModel { UpdatePasswordViewModel(get()) }
     viewModel { PhoneChangeViewModel(get(), get(), get(), get<PhoneNumberValidator>()) }
     viewModel { AtmViewModel(get()) }
-    viewModel { (txId: String, coinCode: String) ->
-        TransactionDetailsViewModel(
-            txId,
-            coinCode,
-            get()
-        )
-    }
+    viewModel { (txId: String, coinCode: String) -> TransactionDetailsViewModel(txId, coinCode, get()) }
     viewModel {
         SendGiftViewModel(get(), get(), get(), get(), get(), get(), get(), get<PhoneNumberValidator>())
     }
-    viewModel { (coinCode: String) ->
-        WithdrawViewModel(coinCode, get(), get(), get(), get(), get())
-    }
-    viewModel { (coinCode: String) ->
-        DepositViewModel(coinCode, get())
-    }
-    viewModel {
-        ContactListViewModel(get(), get<PhoneNumberValidator>(), get())
-    }
+    viewModel { (coinCode: String) -> WithdrawViewModel(coinCode, get(), get(), get(), get(), get()) }
+    viewModel { (coinCode: String) -> DepositViewModel(coinCode, get()) }
+    viewModel { ContactListViewModel(get(), get<PhoneNumberValidator>(), get()) }
+    viewModel { TradeContainerViewModel(get()) }
+    viewModel { TradeListViewModel(get()) }
+    viewModel { TradeUserStatisticViewModel(get()) }
 }
 
 val viewModelHelperModule = module {
