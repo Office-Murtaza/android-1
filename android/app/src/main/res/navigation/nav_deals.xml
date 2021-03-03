@@ -101,6 +101,21 @@
         android:id="@+id/trade_container_fragment"
         android:name="com.app.belcobtm.presentation.features.wallet.trade.container.TradeContainerFragment"
         android:label="TradeListContainerFragment"
-        tools:layout="@layout/fragment_trade_list_container" />
+        tools:layout="@layout/fragment_trade_list_container">
+
+        <action
+            android:id="@+id/to_create_trade_fragment"
+            app:destination="@id/create_trade_fragment"
+            app:enterAnim="@anim/slide_from_right"
+            app:exitAnim="@anim/slide_to_left"
+            app:popEnterAnim="@anim/slide_from_left"
+            app:popExitAnim="@anim/slide_to_right" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/create_trade_fragment"
+        android:name="com.app.belcobtm.presentation.features.wallet.trade.create.CreateTradeFragment"
+        android:label="CreateTradeFragment"
+        tools:layout="@layout/fragment_create_trade" />
 
 </navigation>

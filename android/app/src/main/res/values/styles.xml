@@ -357,10 +357,11 @@
     </style>
 
     <style name="SecondaryTabLayout" parent="Widget.Design.TabLayout">
-        <item name="tabIndicatorColor">#000</item>
-        <item name="tabBackground">#8d8d8d</item>
+        <item name="tabIndicatorColor">@color/colorPrimary</item>
+        <item name="tabBackground">@color/secondaryTabBackground</item>
         <item name="tabTextAppearance">@style/AppTabTextAppearance</item>
         <item name="tabSelectedTextColor">#000</item>
+        <item name="tabTextColor">#A3000000</item>
     </style>
 
     <!-- for text -->

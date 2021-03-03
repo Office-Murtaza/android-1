@@ -16,7 +16,7 @@ class ObserveOrdersUseCase(
     private val mapper: TradesDataToOrderListMapper
 ) {
 
-    operator fun invoke(params: Unit): Flow<Either<Failure, List<OrderItem>>?> =
+    operator fun invoke(): Flow<Either<Failure, List<OrderItem>>?> =
         tradeRepository.observeTradeData()
             .map {
                 when {

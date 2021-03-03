@@ -5,8 +5,8 @@ import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Lifecycle
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.app.belcobtm.data.model.trade.TradeType
+import com.app.belcobtm.presentation.features.wallet.trade.info.TradeInfoContainerFragment
 import com.app.belcobtm.presentation.features.wallet.trade.list.TradeListFragment
-import com.app.belcobtm.presentation.features.wallet.trade.statistic.TradeUserStatisticFragment
 
 class TradeContainerViewPagerAdapter(
     fragmentManager: FragmentManager,
@@ -25,7 +25,7 @@ class TradeContainerViewPagerAdapter(
         when (position) {
             BUY_TRADES_TAB_POSITION -> TradeListFragment.newInstance(TradeType.BUY)
             SELL_TRADES_TAB_POSITION -> TradeListFragment.newInstance(TradeType.SELL)
-            TRADE_INFO_TAB_POSITION -> TradeUserStatisticFragment()
+            TRADE_INFO_TAB_POSITION -> TradeInfoContainerFragment()
             else -> throw RuntimeException("Illegal position of tab $position")
         }
 }

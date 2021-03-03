@@ -4,6 +4,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Lifecycle
 import androidx.viewpager2.adapter.FragmentStateAdapter
+import com.app.belcobtm.presentation.features.wallet.trade.mytrade.MyTradesFragment
 import com.app.belcobtm.presentation.features.wallet.trade.order.TradeOrdersFragment
 import com.app.belcobtm.presentation.features.wallet.trade.statistic.TradeUserStatisticFragment
 
@@ -22,9 +23,8 @@ class TradeInfoContainerViewPagerAdapter(
 
     override fun createFragment(position: Int): Fragment =
         when (position) {
-            // TODO open proper screens
-            MY_TRADES_TAB_POSITION -> TradeOrdersFragment()
-            ORDERS_TAB_POSITION -> TradeUserStatisticFragment()
+            MY_TRADES_TAB_POSITION -> MyTradesFragment()
+            ORDERS_TAB_POSITION -> TradeOrdersFragment()
             TRADE_INFO_TAB_POSITION -> TradeUserStatisticFragment()
             else -> throw RuntimeException("Illegal position of tab $position")
         }

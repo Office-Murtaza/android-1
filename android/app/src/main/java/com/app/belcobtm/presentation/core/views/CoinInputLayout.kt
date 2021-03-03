@@ -90,6 +90,14 @@ class CoinInputLayout @JvmOverloads constructor(
         tvHelperText2.text = charSequence
     }
 
+    fun setErrorEnabled(enabled: Boolean) {
+        tvError.visibility = if (enabled) View.VISIBLE else View.GONE
+    }
+
+    fun setMaxButtonEnabled(enabled: Boolean) {
+        tvMax.visibility = if (enabled) View.VISIBLE else View.GONE
+    }
+
     fun setErrorText(text: CharSequence?, highlightAmount: Boolean) {
         if (text != null) {
             if (highlightAmount) {

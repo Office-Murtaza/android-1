@@ -1,9 +1,7 @@
 package com.app.belcobtm.presentation.features.wallet.trade.container
 
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import com.app.belcobtm.R
 import com.app.belcobtm.databinding.FragmentTradeListContainerBinding
 import com.app.belcobtm.domain.Failure
@@ -20,11 +18,9 @@ class TradeContainerFragment : BaseFragment<FragmentTradeListContainerBinding>()
     override var isMenuEnabled: Boolean = true
     override var isHomeButtonEnabled: Boolean = true
 
-    // TODO add retry listener
     override val retryListener: View.OnClickListener = View.OnClickListener {
         viewModel.retry()
     }
-
 
     private val viewModel by viewModel<TradeContainerViewModel>()
 
@@ -39,7 +35,7 @@ class TradeContainerFragment : BaseFragment<FragmentTradeListContainerBinding>()
                 BUY_TRADES_TAB_POSITION -> getString(R.string.trade_list_buy_tab_title)
                 SELL_TRADES_TAB_POSITION -> getString(R.string.trade_list_sell_tab_title)
                 TRADE_INFO_TAB_POSITION -> getString(R.string.trade_list_my_info_tab_title)
-                else -> ""//throw RuntimeException("Illegal position of tab $position")
+                else -> throw RuntimeException("Illegal position of tab $position")
             }
         }.attach()
     }
@@ -47,6 +43,17 @@ class TradeContainerFragment : BaseFragment<FragmentTradeListContainerBinding>()
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel.fetchTrades()
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) =
+        inflater.inflate(R.menu.trade_menu, menu)
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean = when (item.itemId) {
+        R.id.create_trade_menu_item -> {
+            navigate(TradeContainerFragmentDirections.toCreateTradeFragment())
+            true
+        }
+        else -> false
     }
 
     override fun FragmentTradeListContainerBinding.initObservers() {

@@ -67,4 +67,6 @@
     <color name="not_verified_border">#ababab</color>
     <color name="trade_type_buy_trade_text_color">#48C583</color>
     <color name="trade_type_sell_trade_text_color">#EDB900</color>
+
+    <color name="secondaryTabBackground">#198d8d8d</color>
 </resources>

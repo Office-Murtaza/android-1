@@ -14,7 +14,7 @@ class TradeOrdersViewModel(
 ) : ViewModel() {
 
     fun observeOrders(): LiveData<Either<Failure, List<OrderItem>>?> =
-        observeOrdersUseCase(Unit)
+        observeOrdersUseCase()
             .asLiveData(viewModelScope.coroutineContext)
 
 }

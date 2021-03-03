@@ -545,15 +545,37 @@
     <string name="trade_list_item_price_range_format">%1$s - %2$s</string>
     <string name="trade_list_buy_tab_title">Buy</string>
     <string name="trade_list_sell_tab_title">Sell</string>
-    <string name="trade_list_my_info_tab_title">My info</string>
+    <string name="trade_list_my_info_tab_title">My…</string>
     <string name="trade_list_account_info_verified_label">Verified</string>
     <string name="user_trade_info_success_rate_label">Success rate</string>
     <string name="user_trade_info_total_trades_label">Total trades</string>
 
+    <string name="trade_info_my_trades_tab_title">Trades</string>
+    <string name="trade_info_open_orders_tab_title">Open orders</string>
+    <string name="trade_info_statistic_tab_title">Info</string>
+
     <string name="trade_type_buy_label">Buy</string>
     <string name="trade_type_sell_label">Sell</string>
 
+    <string name="order_status_new_label">New</string>
+    <string name="order_status_doing_label">Doing</string>
+    <string name="order_status_disputing_label">Disputing</string>
+    <string name="order_status_paid_label">Paid</string>
+    <string name="order_status_released_label">Released</string>
+    <string name="order_status_cancelled_label">Cancelled</string>
+    <string name="order_status_solved_label">Done</string>
+
     <!--  TODO RENAME  -->
+    <string name="trade_create_balance_formatted"><![CDATA[Balance %1$s %2$s]]></string>
     <string name="fiat_amount_label">Fiat amount</string>
     <string name="crypto_amount_label">Crypto amount</string>
+    <string name="no_trades_message">You haven\'t ccreated a single trade yet.</string>
+    <string name="create_trade_screen_title">New trade</string>
+    <string name="open_create_trade_button_title">Create new trade</string>
+    <string name="create_trade_menu_title">Create trade</string>
+    <string name="create_trade_screen_trade_type_label">Trade type</string>
+    <string name="payment_options_label">Payment methods</string>
+    <string name="trade_create_price_limits_label">Limits</string>
+    <string name="trade_create_terms_label">Terms</string>
+    <string name="create_trade_button_title">Submit</string>
 </resources>

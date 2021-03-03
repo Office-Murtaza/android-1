@@ -9,11 +9,8 @@ import com.app.belcobtm.domain.settings.interactor.*
 import com.app.belcobtm.domain.tools.interactor.OldSendSmsToDeviceUseCase
 import com.app.belcobtm.domain.tools.interactor.OldVerifySmsCodeUseCase
 import com.app.belcobtm.domain.tools.interactor.SendSmsToDeviceUseCase
-import com.app.belcobtm.domain.trade.list.FetchTradesUseCase
-import com.app.belcobtm.domain.trade.list.ObserveTradesUseCase
-import com.app.belcobtm.domain.trade.list.ObserveUserTradeStatisticUseCase
-import com.app.belcobtm.domain.trade.list.mapper.TradesDataToStatisticsMapper
-import com.app.belcobtm.domain.trade.list.mapper.TradesDataToTradeListMapper
+import com.app.belcobtm.domain.trade.list.*
+import com.app.belcobtm.domain.trade.list.mapper.*
 import com.app.belcobtm.domain.transaction.interactor.*
 import com.app.belcobtm.domain.wallet.interactor.*
 import org.koin.dsl.module
@@ -75,6 +72,11 @@ val useCaseModule = module {
     single { FetchTradesUseCase(get()) }
     single { ObserveTradesUseCase(get(), get()) }
     single { ObserveUserTradeStatisticUseCase(get(), get()) }
-    factory { TradesDataToTradeListMapper() }
+    single { ObserveOrdersUseCase(get(), get()) }
+    single { ObserveMyTradesUseCase(get(), get(), get()) }
+    factory { TradePaymentOptionMapper() }
+    factory { TradesDataToTradeListMapper(get()) }
     factory { TradesDataToStatisticsMapper() }
+    factory { TradesDataToOrderListMapper(get()) }
+    factory { TradesDataToMyTradeMapper(get()) }
 }

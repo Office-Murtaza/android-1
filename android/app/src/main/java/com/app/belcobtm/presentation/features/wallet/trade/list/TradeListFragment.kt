@@ -19,10 +19,8 @@ import com.app.belcobtm.presentation.core.ui.fragment.BaseFragment
 import com.app.belcobtm.presentation.features.wallet.trade.container.TradeContainerViewModel
 import com.app.belcobtm.presentation.features.wallet.trade.list.delegate.TradeItemDelegate
 import com.app.belcobtm.presentation.features.wallet.trade.list.model.TradeItem
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.koin.android.viewmodel.ext.android.viewModel
 
-@ExperimentalCoroutinesApi
 class TradeListFragment : BaseFragment<FragmentTradeListBinding>() {
 
     companion object {
