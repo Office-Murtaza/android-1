@@ -175,7 +175,7 @@ public class WalletService {
     public boolean isEnoughBalance(CoinService.CoinEnum coin, String address, BigDecimal amount) {
         BigDecimal balance = getBalance(coin, address);
 
-        if (coin == CoinService.CoinEnum.CATM || coin == CoinService.CoinEnum.USDT) {
+        if (coin == CoinService.CoinEnum.CATM || coin == CoinService.CoinEnum.USDC) {
             BigDecimal ethBalance = getBalance(CoinService.CoinEnum.ETH, address);
             BigDecimal fee = convertToFee(coin);
 

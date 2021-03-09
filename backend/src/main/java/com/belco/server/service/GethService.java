@@ -50,7 +50,7 @@ import java.util.*;
 public class GethService {
 
     public static final BigDecimal ETH_DIVIDER = BigDecimal.valueOf(1_000_000_000_000_000_000L);
-    public static final BigDecimal USDT_DIVIDER = BigDecimal.valueOf(1_000_000L);
+    public static final BigDecimal USDC_DIVIDER = BigDecimal.valueOf(1_000_000L);
 
     private static final CoinType ETHEREUM = CoinType.ETHEREUM;
     private static final ByteString CHAIN_ID = ByteString.copyFrom(Numeric.hexStringToByteArray("1"));
@@ -69,7 +69,7 @@ public class GethService {
     public static USDT usdt;
 
     private static String catmContractAddress;
-    private static String usdtContractAddress;
+    private static String usdcContractAddress;
 
     private static MongoTemplate mongo;
     private static CacheService cacheService;
@@ -83,7 +83,7 @@ public class GethService {
     private int stakingAnnualPercent;
 
     public GethService(@Value("${catm.contract.address}") String catmContractAddress,
-                       @Value("${usdt.contract.address}") String usdtContractAddress,
+                       @Value("${usdc.contract.address}") String usdcContractAddress,
                        MongoTemplate mongo,
                        CacheService cacheService,
                        WalletService walletService,
@@ -91,7 +91,7 @@ public class GethService {
                        PlatformService platformService) {
 
         GethService.catmContractAddress = catmContractAddress;
-        GethService.usdtContractAddress = usdtContractAddress;
+        GethService.usdcContractAddress = usdcContractAddress;
         GethService.mongo = mongo;
         GethService.cacheService = cacheService;
         GethService.walletService = walletService;
@@ -110,9 +110,9 @@ public class GethService {
                     Credentials.create(Numeric.toHexString(walletService.getCoinsMap().get(CoinType.ETHEREUM).getPrivateKey().data())),
                     new StaticGasProvider(BigInteger.valueOf(getFastGasPrice()), BigInteger.valueOf(platformService.getInitialGasLimits().get(ERC20.CATM.name()))));
 
-            usdt = USDT.load(usdtContractAddress, web3,
+            usdt = USDT.load(usdcContractAddress, web3,
                     Credentials.create(Numeric.toHexString(walletService.getCoinsMap().get(CoinType.ETHEREUM).getPrivateKey().data())),
-                    new StaticGasProvider(BigInteger.valueOf(getFastGasPrice()), BigInteger.valueOf(platformService.getInitialGasLimits().get(ERC20.USDT.name()))));
+                    new StaticGasProvider(BigInteger.valueOf(getFastGasPrice()), BigInteger.valueOf(platformService.getInitialGasLimits().get(ERC20.USDC.name()))));
         } catch (Exception e) {
             if (nodeService.switchToReserveNode(ETHEREUM)) {
                 init();
@@ -670,8 +670,8 @@ public class GethService {
     private ERC20 getTokenByContractAddress(String contractAddress) {
         if (catmContractAddress.equalsIgnoreCase(contractAddress)) {
             return ERC20.CATM;
-        } else if (usdtContractAddress.equalsIgnoreCase(contractAddress)) {
-            return ERC20.USDT;
+        } else if (usdcContractAddress.equalsIgnoreCase(contractAddress)) {
+            return ERC20.USDC;
         } else {
             return null;
         }
@@ -797,17 +797,17 @@ public class GethService {
                 return ETH_DIVIDER;
             }
         },
-        USDT {
+        USDC {
             @Override
             public String getContractAddress() {
-                return usdtContractAddress;
+                return usdcContractAddress;
             }
 
             @Override
             public BigDecimal getBalance(String address) {
                 if (nodeService.isNodeAvailable(ETHEREUM)) {
                     try {
-                        return new BigDecimal(usdt.balanceOf(address).send()).divide(USDT_DIVIDER);
+                        return new BigDecimal(usdt.balanceOf(address).send()).divide(USDC_DIVIDER);
                     } catch (Exception e) {
                         e.printStackTrace();
 
@@ -823,7 +823,7 @@ public class GethService {
 
             @Override
             public BigDecimal getDivider() {
-                return USDT_DIVIDER;
+                return USDC_DIVIDER;
             }
         };
 
