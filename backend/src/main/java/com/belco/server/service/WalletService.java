@@ -206,6 +206,8 @@ public class WalletService {
             if (balance.compareTo(amount) >= 0 && amount.compareTo(BigDecimal.ZERO) > 0) {
                 String hex = coin.sign(fromAddress, toAddress, amount);
 
+                log.info(" --------- coin: " + coin.name() + ", hex: " + hex);
+
                 TxSubmitDTO dto = new TxSubmitDTO();
                 dto.setHex(hex);
                 dto.setFromAddress(fromAddress);
@@ -213,23 +215,26 @@ public class WalletService {
                 dto.setCryptoAmount(amount);
 
                 String txId = coin.submitTransaction(dto);
+                log.info(" --------- coin: " + coin.name() + ", txId: " + txId);
 
-                TransactionRecordWallet wallet = new TransactionRecordWallet();
-                wallet.setCoin(coin.getCoinEntity());
-                wallet.setAmount(amount);
+                if(StringUtils.isNotBlank(txId)) {
+                    TransactionRecordWallet wallet = new TransactionRecordWallet();
+                    wallet.setCoin(coin.getCoinEntity());
+                    wallet.setAmount(amount);
 
-                if (isServerAddress(coin.getCoinType(), fromAddress)) {
-                    wallet.setType(TransactionType.SELL.getValue());
-                } else {
-                    wallet.setType(TransactionType.MOVE.getValue());
+                    if (isServerAddress(coin.getCoinType(), fromAddress)) {
+                        wallet.setType(TransactionType.SELL.getValue());
+                    } else {
+                        wallet.setType(TransactionType.MOVE.getValue());
+                    }
+
+                    wallet.setTxId(txId);
+                    wallet.setStatus(coin.getTransactionDetails(txId, StringUtils.EMPTY).getStatus().getValue());
+
+                    transactionRecordWalletRep.save(wallet);
+
+                    return txId;
                 }
-
-                wallet.setTxId(txId);
-                wallet.setStatus(coin.getTransactionDetails(txId, StringUtils.EMPTY).getStatus().getValue());
-
-                transactionRecordWalletRep.save(wallet);
-
-                return txId;
             }
         } catch (Exception e) {
             e.printStackTrace();
