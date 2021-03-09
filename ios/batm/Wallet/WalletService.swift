@@ -58,7 +58,7 @@ class WalletServiceImpl: WalletService {
     switch coin.type {
     case .bitcoin, .bitcoinCash, .litecoin, .dash, .doge:
       return getBitcoinLikeTransactionHex(for: coin, with: coinDetails, to: destination, amount: amount)
-    case .ethereum, .catm, .usdt:
+    case .ethereum, .catm, .usdc:
       return getEthereumTransactionHex(for: coin, with: coinDetails, to: destination, amount: amount, stakingType: stakingType)
     case .tron:
       return getTronTransactionHex(for: coin, with: coinDetails, to: destination, amount: amount)
@@ -181,7 +181,7 @@ class WalletServiceImpl: WalletService {
                                          nonce: Int,
                                          stakingType: TransactionType? = nil) throws -> String {
     var divider: Int64 = Int64(10.pow(18))
-    if coin.type == .usdt {
+    if coin.type == .usdc {
         divider = Int64(10.pow(6))
     }
     
