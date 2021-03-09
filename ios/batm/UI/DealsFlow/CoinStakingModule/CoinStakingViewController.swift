@@ -260,7 +260,7 @@ final class CoinStakingViewController: ModuleViewController<CoinStakingPresenter
         formView.configureStakeAmount(with: "\(stakeDetails.amount?.formatted() ?? "0")")
         
         stakingInfoView.configureRightView(with: localize(L.CoinStaking.Header.createdDate),
-                                           value: stakeDetails.createDate)
+                                           value: stakeDetails.createTimestamp)
         
         cancelInfoView.configureRightView(with: localize(L.CoinStaking.Header.Duration.title),
                                           value: String(format: localize(L.CoinStaking.Header.Duration.value),
@@ -280,10 +280,10 @@ final class CoinStakingViewController: ModuleViewController<CoinStakingPresenter
         formView.configureStakeAmount(with: "\(stakeDetails.amount?.formatted() ?? "0")")
         
         stakingInfoView.configureRightView(with: localize(L.CoinStaking.Header.createdDate),
-                                           value: stakeDetails.createDate)
+                                           value: stakeDetails.createTimestamp)
         
         cancelInfoView.configureRightView(with: localize(L.CoinStaking.Header.CancelDate.title),
-                                          value: stakeDetails.cancelDate)
+                                          value: stakeDetails.cancelTimestamp)
         
         rewardsInfoView.configureLeftView(with: localize(L.CoinStaking.Header.Reward.title),
                                           value: rewardAmount,
