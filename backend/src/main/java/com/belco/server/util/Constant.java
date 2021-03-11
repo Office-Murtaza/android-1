@@ -7,4 +7,6 @@ public class Constant {
 
     public static final String SHORT_DATE_FORMAT = "MM/dd/yyyy";
     public static final String LONG_DATE_FORMAT = "MM/dd/yyyy, hh:mm a";
+
+    public static final int HOURS_BETWEEN_TRANSACTIONS = 1;
 }
