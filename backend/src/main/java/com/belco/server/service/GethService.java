@@ -56,7 +56,7 @@ public class GethService {
     private static final ByteString CHAIN_ID = ByteString.copyFrom(Numeric.hexStringToByteArray("1"));
 
     private static final int START_BLOCK = 10290000;
-    private static final int MAX_BLOCK_COUNT = 500;
+    private static final int MAX_BLOCK_COUNT = 1000;
     private static final long WATCH_TIME = 1800000;
 
     private static final String ADDRESS_COLL = "eth_address";
@@ -268,7 +268,7 @@ public class GethService {
         return new BasicDBObject("$and", and);
     }
 
-    @Scheduled(cron = "0 */10 * * * *")
+    @Scheduled(cron = "0 */2 * * * *")
     public void storeNodeTransactions() {
         if (nodeService.isNodeAvailable(ETHEREUM)) {
             try {
@@ -279,10 +279,10 @@ public class GethService {
                     int n = Math.min(MAX_BLOCK_COUNT, lastBlockNumber - lastSuccessBlock);
                     int toBlockNumber = lastSuccessBlock + n;
 
-                    for (int i = lastSuccessBlock + 1; i <= toBlockNumber; i++) {
-                        List<UpdateOneModel<Document>> ethTxs = new ArrayList<>();
-                        List<UpdateOneModel<Document>> tokenTxs = new ArrayList<>();
+                    List<UpdateOneModel<Document>> ethTxs = new ArrayList<>();
+                    List<UpdateOneModel<Document>> tokenTxs = new ArrayList<>();
 
+                    for (int i = lastSuccessBlock + 1; i <= toBlockNumber; i++) {
                         EthBlock.Block block = web3.ethGetBlockByNumber(new DefaultBlockParameterNumber(i), true).send().getBlock();
 
                         block.getTransactions().stream().forEach(e -> {
@@ -291,15 +291,15 @@ public class GethService {
 
                             fetchEthTransaction(tx, timestamp, ethTxs, tokenTxs);
                         });
-
-                        bulkWrite(ETH_TX_COLL, ethTxs);
-                        bulkWrite(TOKEN_TX_COLL, tokenTxs);
-
-                        mongo.getCollection(BLOCK_COLL).findOneAndUpdate(
-                                new Document("lastSuccessBlock", new Document("$exists", true)),
-                                new Document("$set", new Document("lastSuccessBlock", i).append("timestamp", System.currentTimeMillis())),
-                                new FindOneAndUpdateOptions().upsert(true));
                     }
+
+                    bulkWrite(ETH_TX_COLL, ethTxs);
+                    bulkWrite(TOKEN_TX_COLL, tokenTxs);
+
+                    mongo.getCollection(BLOCK_COLL).findOneAndUpdate(
+                            new Document("lastSuccessBlock", new Document("$exists", true)),
+                            new Document("$set", new Document("lastSuccessBlock", toBlockNumber).append("timestamp", System.currentTimeMillis())),
+                            new FindOneAndUpdateOptions().upsert(true));
                 }
             } catch (Exception e) {
                 e.printStackTrace();
@@ -501,11 +501,11 @@ public class GethService {
     }
 
     public TxDetailsDTO getTransactionDetails(String txId, String address, String explorerUrl) {
-        return getTransactionFromDB(ETH_TX_COLL, new BasicDBObject("txId", txId.toLowerCase()), address, explorerUrl);
+        return getTransactionFromDB(ETH_TX_COLL, new BasicDBObject("txId", txId.toLowerCase()), address.toLowerCase(), explorerUrl);
     }
 
     public TxDetailsDTO getTransactionDetails(ERC20 token, String txId, String address, String explorerUrl) {
-        return getTransactionFromDB(TOKEN_TX_COLL, new BasicDBObject("txId", txId.toLowerCase()).append("token", token.name()), address, explorerUrl);
+        return getTransactionFromDB(TOKEN_TX_COLL, new BasicDBObject("txId", txId.toLowerCase()).append("token", token.name()), address.toLowerCase(), explorerUrl);
     }
 
     public TxHistoryDTO getTransactionHistory(String address, Integer startIndex, Integer limit, List<TransactionRecord> transactionRecords, List<TransactionRecordWallet> transactionRecordWallets) {
