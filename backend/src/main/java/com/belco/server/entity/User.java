@@ -35,6 +35,7 @@ public class User extends BaseEntity {
     private String byReferralCode;
     private BigDecimal latitude;
     private BigDecimal longitude;
+    private String timezone;
     private Integer totalTrades;
     private BigDecimal tradingRate;
 

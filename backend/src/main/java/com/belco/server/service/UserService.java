@@ -98,6 +98,9 @@ public class UserService implements UserDetailsService {
         user.setDeviceModel(dto.getDeviceModel());
         user.setDeviceOS(dto.getDeviceOS());
         user.setAppVersion(dto.getAppVersion());
+        user.setLatitude(dto.getLatitude());
+        user.setLongitude(dto.getLongitude());
+        user.setTimezone(dto.getTimezone());
         user.setNotificationsToken(dto.getNotificationsToken());
         user.setByReferralCode(dto.getByReferralCode());
         User savedUser = userRep.save(user);

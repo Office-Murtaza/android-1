@@ -62,7 +62,6 @@ public class Trade extends BaseEntity {
                 getTradeType(),
                 CoinService.CoinEnum.valueOf(getCoin().getCode()),
                 getTradeStatus(),
-                getCreateDate(),
                 getCreateDate().getTime(),
                 getPrice().stripTrailingZeros(),
                 getMinLimit().stripTrailingZeros(),

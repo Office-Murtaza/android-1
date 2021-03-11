@@ -59,7 +59,6 @@ public class Order extends BaseEntity {
                 null,
                 CoinService.CoinEnum.valueOf(getCoin().getCode()),
                 getOrderStatus(),
-                getCreateDate(),
                 getCreateDate().getTime(),
                 getPrice().stripTrailingZeros(),
                 getCryptoAmount().stripTrailingZeros(),

@@ -128,7 +128,7 @@ public class TrongridService {
                 dto.setType(TransactionType.getType(dto.getFromAddress(), dto.getToAddress(), address));
                 dto.setStatus(getStatus(res.optJSONArray("ret").getJSONObject(0).optString("contractRet")));
                 dto.setConfirmations(dto.getStatus().getConfirmations());
-                dto.setDate2(new Date(res.optJSONObject("raw_data").optLong("timestamp")));
+                dto.setTimestamp(res.optJSONObject("raw_data").optLong("timestamp"));
             } catch (Exception e) {
                 e.printStackTrace();
 
@@ -255,9 +255,9 @@ public class TrongridService {
                 TransactionType type = TransactionType.getType(fromAddress, toAddress, address);
                 BigDecimal amount = Util.format(getAmount(row.optLong("amount")), 6);
                 TransactionStatus status = getStatus(contractRet);
-                Date date1 = new Date(tx.optJSONObject("raw_data").optLong("timestamp"));
+                long timestamp = tx.optJSONObject("raw_data").optLong("timestamp");
 
-                map.put(txId, new TxDetailsDTO(txId, amount, fromAddress, toAddress, type, status, date1));
+                map.put(txId, new TxDetailsDTO(txId, amount, fromAddress, toAddress, type, status, timestamp));
             }
         }
 

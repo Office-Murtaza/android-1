@@ -8,7 +8,7 @@ import com.belco.server.entity.TransactionRecordWallet;
 import com.belco.server.model.TransactionStatus;
 import com.belco.server.model.TransactionType;
 import com.belco.server.token.CATM;
-import com.belco.server.token.USDT;
+import com.belco.server.token.USDC;
 import com.belco.server.util.Util;
 import com.google.protobuf.ByteString;
 import com.mongodb.BasicDBList;
@@ -66,7 +66,7 @@ public class GethService {
 
     public static Web3j web3;
     public static CATM catm;
-    public static USDT usdt;
+    public static USDC usdc;
 
     private static String catmContractAddress;
     private static String usdcContractAddress;
@@ -110,7 +110,7 @@ public class GethService {
                     Credentials.create(Numeric.toHexString(walletService.getCoinsMap().get(CoinType.ETHEREUM).getPrivateKey().data())),
                     new StaticGasProvider(BigInteger.valueOf(getFastGasPrice()), BigInteger.valueOf(platformService.getInitialGasLimits().get(ERC20.CATM.name()))));
 
-            usdt = USDT.load(usdcContractAddress, web3,
+            usdc = USDC.load(usdcContractAddress, web3,
                     Credentials.create(Numeric.toHexString(walletService.getCoinsMap().get(CoinType.ETHEREUM).getPrivateKey().data())),
                     new StaticGasProvider(BigInteger.valueOf(getFastGasPrice()), BigInteger.valueOf(platformService.getInitialGasLimits().get(ERC20.USDC.name()))));
         } catch (Exception e) {
@@ -172,7 +172,7 @@ public class GethService {
                 dto.setCryptoFee(extractFee(d));
                 dto.setFromAddress(fromAddress);
                 dto.setToAddress(toAddress);
-                dto.setDate1(new Date(d.getLong("blockTime")));
+                dto.setTimestamp(d.getLong("blockTime"));
 
                 map.put(d.getString("txId"), dto);
             } catch (Exception e) {
@@ -216,7 +216,7 @@ public class GethService {
                 dto.setToAddress(toAddress);
                 dto.setCryptoFee(extractFee(txDoc));
                 dto.setStatus(TransactionStatus.valueOf(txDoc.getInteger("status")));
-                dto.setDate2(new Date(txDoc.getLong("blockTime")));
+                dto.setTimestamp(txDoc.getLong("blockTime"));
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -807,7 +807,7 @@ public class GethService {
             public BigDecimal getBalance(String address) {
                 if (nodeService.isNodeAvailable(ETHEREUM)) {
                     try {
-                        return new BigDecimal(usdt.balanceOf(address).send()).divide(USDC_DIVIDER);
+                        return new BigDecimal(usdc.balanceOf(address).send()).divide(USDC_DIVIDER);
                     } catch (Exception e) {
                         e.printStackTrace();
 
