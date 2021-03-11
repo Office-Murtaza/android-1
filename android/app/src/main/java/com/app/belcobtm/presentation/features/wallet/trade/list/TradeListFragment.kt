@@ -2,19 +2,18 @@ package com.app.belcobtm.presentation.features.wallet.trade.list
 
 import android.os.Bundle
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.observe
-import androidx.navigation.NavController
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.app.belcobtm.R
 import com.app.belcobtm.data.model.trade.TradeType
 import com.app.belcobtm.databinding.FragmentTradeListBinding
 import com.app.belcobtm.domain.Either
 import com.app.belcobtm.domain.Failure
 import com.app.belcobtm.presentation.core.adapter.MultiTypeAdapter
+import com.app.belcobtm.presentation.core.extensions.hide
 import com.app.belcobtm.presentation.core.ui.fragment.BaseFragment
 import com.app.belcobtm.presentation.features.wallet.trade.container.TradeContainerViewModel
 import com.app.belcobtm.presentation.features.wallet.trade.list.delegate.TradeItemDelegate
@@ -49,8 +48,13 @@ class TradeListFragment : BaseFragment<FragmentTradeListBinding>() {
         }
     }
 
-    override fun resolveNavController(view: View): NavController =
-        requireParentFragment().findNavController()
+    override fun initToolbar() {
+        baseBinding.toolbarView.hide()
+    }
+
+    override fun updateActionBar() {
+
+    }
 
     override fun createBinding(inflater: LayoutInflater, container: ViewGroup?): FragmentTradeListBinding =
         FragmentTradeListBinding.inflate(inflater, container, false)
@@ -70,6 +74,9 @@ class TradeListFragment : BaseFragment<FragmentTradeListBinding>() {
                 }
             }
         })
+        openFilterButton.setOnClickListener {
+            navigate(R.id.filter_trade_fragment)
+        }
     }
 
     override fun FragmentTradeListBinding.initObservers() {

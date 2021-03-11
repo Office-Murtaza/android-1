@@ -5,7 +5,7 @@ import com.app.belcobtm.data.model.trade.TradeData
 import com.app.belcobtm.domain.wallet.LocalCoinType
 import com.app.belcobtm.presentation.core.adapter.model.ListItem
 import com.app.belcobtm.presentation.features.wallet.trade.list.model.TradeItem
-import com.app.belcobtm.presentation.features.wallet.trade.mytrade.model.NoTradesCreatedItem
+import com.app.belcobtm.presentation.features.wallet.trade.mytrade.list.model.NoTradesCreatedItem
 
 class TradesDataToMyTradeMapper(
     private val paymentOptionMapper: TradePaymentOptionMapper

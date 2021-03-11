@@ -6,18 +6,24 @@ import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.observe
 import com.app.belcobtm.R
+import com.app.belcobtm.data.model.trade.TradeType
 import com.app.belcobtm.databinding.FragmentCreateTradeBinding
 import com.app.belcobtm.domain.Failure
 import com.app.belcobtm.domain.wallet.LocalCoinType
 import com.app.belcobtm.domain.wallet.item.CoinDataItem
+import com.app.belcobtm.presentation.core.adapter.MultiTypeAdapter
 import com.app.belcobtm.presentation.core.extensions.getDouble
 import com.app.belcobtm.presentation.core.extensions.resIcon
 import com.app.belcobtm.presentation.core.extensions.toStringCoin
+import com.app.belcobtm.presentation.core.extensions.toggle
 import com.app.belcobtm.presentation.core.helper.AlertHelper
+import com.app.belcobtm.presentation.core.mvvm.LoadingData
 import com.app.belcobtm.presentation.core.ui.fragment.BaseFragment
 import com.app.belcobtm.presentation.core.views.listeners.SafeDecimalEditTextWatcher
 import com.app.belcobtm.presentation.features.deals.swap.adapter.CoinDialogAdapter
+import com.app.belcobtm.presentation.features.wallet.trade.create.delegate.TradePaymentOptionDelegate
 import com.google.android.material.chip.Chip
+import com.google.android.material.snackbar.Snackbar
 import org.koin.android.viewmodel.ext.android.viewModel
 
 class CreateTradeFragment : BaseFragment<FragmentCreateTradeBinding>() {
@@ -29,14 +35,35 @@ class CreateTradeFragment : BaseFragment<FragmentCreateTradeBinding>() {
 
     private val viewModel by viewModel<CreateTradeViewModel>()
 
+    override val retryListener: View.OnClickListener?
+        get() = View.OnClickListener {
+            if (viewModel.initialLoadingData.value is LoadingData.Error<Unit>) {
+                viewModel.fetchInitialData()
+            } else {
+                viewModel.createTrade(
+                    if (binding.tradeTypeBuyChip.isChecked) TradeType.BUY else TradeType.SELL,
+                    binding.priceRageSlider.values, binding.termsInput.editText?.text.toString()
+                )
+            }
+        }
+
+    private val adapter by lazy {
+        MultiTypeAdapter().apply {
+            registerDelegate(TradePaymentOptionDelegate())
+        }
+    }
+
     private val cryptoAmountTextWatcher by lazy {
         SafeDecimalEditTextWatcher { editable ->
-            val parsedCoinAmount = editable.getDouble()
+            val parsedCoinAmount = editable.getDouble("\\$")
             if (parsedCoinAmount != viewModel.price.value) {
                 viewModel.updatePrice(parsedCoinAmount)
             }
-            if (editable.isEmpty()) {
-                editable.insert(0, "0")
+            if (editable.toString() == "$") {
+                editable.append("0")
+            }
+            if (!editable.startsWith("$")) {
+                editable.insert(0, "$")
             }
         }
     }
@@ -48,8 +75,12 @@ class CreateTradeFragment : BaseFragment<FragmentCreateTradeBinding>() {
         setToolbarTitle(R.string.create_trade_screen_title)
         coinDetailsView.setMaxButtonEnabled(false)
         coinDetailsView.setErrorEnabled(false)
-        coinDetailsView.getEditText().setText("0")
+        coinDetailsView.getEditText().setText("$0")
+        coinDetailsView.setHint(requireContext().getString(R.string.create_trade_price_input_hint))
         coinDetailsView.setPadding(0, 0, 0, 0)
+        paymentOptions.adapter = adapter
+        paymentOptions.setHasFixedSize(true)
+        paymentOptions.overScrollMode = View.OVER_SCROLL_NEVER
     }
 
     override fun FragmentCreateTradeBinding.initObservers() {
@@ -60,11 +91,11 @@ class CreateTradeFragment : BaseFragment<FragmentCreateTradeBinding>() {
         viewModel.initialLoadingData.listen({})
         viewModel.price.observe(viewLifecycleOwner) { price ->
             with(coinDetailsView.getEditText()) {
-                if (text.getDouble() == 0.0 && price == 0.0) {
+                if (text.getDouble("\\$") == 0.0 && price == 0.0) {
                     return@observe
                 }
                 removeTextChangedListener(cryptoAmountTextWatcher)
-                setText(price.toStringCoin())
+                setText("$" + price.toStringCoin())
                 if (isFocused) {
                     setSelection(text.length)
                 }
@@ -74,6 +105,17 @@ class CreateTradeFragment : BaseFragment<FragmentCreateTradeBinding>() {
         viewModel.cryptoAmountError.observe(viewLifecycleOwner) {
             coinDetailsView.setErrorText(it?.let(::getString), true)
         }
+        viewModel.priceError.observe(viewLifecycleOwner) {
+            coinDetailsView.setErrorText(it?.let(::getString), true)
+        }
+        viewModel.priceRangeError.observe(viewLifecycleOwner) {
+            it?.let(priceRangeError::setText)
+            priceRangeError.toggle(it != null)
+        }
+        viewModel.snackbarMessage.observe(viewLifecycleOwner) {
+            Snackbar.make(root, it, Snackbar.LENGTH_SHORT).show()
+        }
+        viewModel.availablePaymentOptions.observe(viewLifecycleOwner, adapter::update)
         viewModel.createTradeLoadingData.listen(
             success = {
                 AlertHelper.showToastShort(
@@ -110,6 +152,12 @@ class CreateTradeFragment : BaseFragment<FragmentCreateTradeBinding>() {
                 viewModel.selectCoin(it)
             }
         })
+        createTradeButton.setOnClickListener {
+            viewModel.createTrade(
+                if (binding.tradeTypeBuyChip.isChecked) TradeType.BUY else TradeType.SELL,
+                binding.priceRageSlider.values, binding.termsInput.editText?.text.toString()
+            )
+        }
     }
 
     private fun setCoinData(coin: CoinDataItem) {

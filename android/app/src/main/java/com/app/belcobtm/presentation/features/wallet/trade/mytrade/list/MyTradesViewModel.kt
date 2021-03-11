@@ -1,4 +1,4 @@
-package com.app.belcobtm.presentation.features.wallet.trade.mytrade
+package com.app.belcobtm.presentation.features.wallet.trade.mytrade.list
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel

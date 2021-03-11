@@ -1,4 +1,4 @@
-package com.app.belcobtm.presentation.features.wallet.trade.mytrade.delegate
+package com.app.belcobtm.presentation.features.wallet.trade.mytrade.list.delegate
 
 import android.view.LayoutInflater
 import android.view.ViewGroup

@@ -42,6 +42,7 @@
                 android:layout_height="wrap_content"
                 android:checkable="true"
                 android:text="@string/trade_type_buy_label"
+                android:textColor="#48C583"
                 app:checkedIconVisible="false"
                 app:chipBackgroundColor="#2648C583"
                 app:chipIcon="@drawable/ic_trade_type_buy"
@@ -54,6 +55,7 @@
                 android:layout_height="wrap_content"
                 android:checkable="true"
                 android:text="@string/trade_type_sell_label"
+                android:textColor="#EDB900"
                 app:checkedIconVisible="false"
                 app:chipBackgroundColor="#26EDB900"
                 app:chipIcon="@drawable/ic_trade_type_sell"
@@ -77,9 +79,7 @@
             android:id="@+id/coin_details_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/trade_type_chip_group_divider" />
 
@@ -118,9 +118,13 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
             android:layout_marginEnd="16dp"
+            android:orientation="horizontal"
+            app:layoutManager="com.google.android.flexbox.FlexboxLayoutManager"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/payment_options_label" />
+            app:layout_constraintTop_toBottomOf="@id/payment_options_label"
+            app:spanCount="5"
+            tools:listitem="@layout/item_trade_payment_option" />
 
         <View
             android:id="@+id/payment_options_view_divider"
@@ -149,52 +153,57 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/payment_options_view_divider" />
 
-        <androidx.appcompat.widget.AppCompatSeekBar
-            android:id="@+id/price_seek_bar"
-            android:layout_width="match_parent"
+        <com.google.android.material.slider.RangeSlider
+            android:id="@+id/price_rage_slider"
+            style="@style/SliderWithoutSteps"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
-            android:layout_marginEnd="16dp"
+            android:padding="0dp"
+            android:stepSize="1"
+            android:valueFrom="0"
+            android:valueTo="10000"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/price_limits_label" />
+            app:layout_constraintTop_toBottomOf="@id/price_limits_label"
+            app:thumbRadius="6dp"
+            app:values="@array/initial_slider_values" />
 
         <TextView
             android:id="@+id/price_min_limit"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:text="@string/trade_create_price_limits_label"
+            android:layout_marginStart="16dp"
+            android:text="@string/min_price_value_label"
             android:textColor="@color/black_text_color"
             android:textSize="20sp"
             android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="@id/price_seek_bar"
-            app:layout_constraintTop_toBottomOf="@id/price_seek_bar"
-            tools:text="$100" />
+            app:layout_constraintStart_toStartOf="@id/price_rage_slider"
+            app:layout_constraintTop_toBottomOf="@id/price_rage_slider" />
 
         <TextView
             android:id="@+id/price_max_limit"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:text="@string/trade_create_price_limits_label"
+            android:layout_marginEnd="16dp"
+            android:text="@string/max_price_value_label"
             android:textColor="@color/black_text_color"
             android:textSize="20sp"
             android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="@id/price_seek_bar"
-            app:layout_constraintTop_toBottomOf="@id/price_seek_bar"
-            tools:text="$3,000" />
+            app:layout_constraintEnd_toEndOf="@id/price_rage_slider"
+            app:layout_constraintTop_toBottomOf="@id/price_rage_slider" />
 
         <TextView
             android:id="@+id/price_range_error"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
             android:text="@string/trade_create_price_limits_label"
             android:textColor="@color/colorError"
             android:textSize="12sp"
-            app:layout_constraintStart_toStartOf="@id/price_seek_bar"
+            android:visibility="gone"
+            app:layout_constraintStart_toStartOf="@id/price_rage_slider"
             app:layout_constraintTop_toBottomOf="@id/price_max_limit"
             tools:text="Validation error message" />
 
@@ -226,11 +235,13 @@
             app:layout_constraintTop_toBottomOf="@id/limits_view_divider" />
 
         <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/terms_input"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
             android:layout_marginEnd="16dp"
+            android:hint="@string/trade_create_terms_hint"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/terms_label">
@@ -238,20 +249,25 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="textMultiLine" />
+                android:background="@android:color/transparent"
+                android:inputType="textMultiLine"
+                android:paddingTop="@dimen/margin_half"
+                android:paddingBottom="@dimen/margin_half"
+                android:textSize="16sp" />
 
         </com.google.android.material.textfield.TextInputLayout>
-
 
         <Button
             android:id="@+id/create_trade_button"
             style="@style/Button.Primary"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/margin_x2"
             android:text="@string/create_trade_button_title"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/terms_label" />
+            app:layout_constraintTop_toBottomOf="@id/terms_input" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

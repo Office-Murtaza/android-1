@@ -12,11 +12,10 @@ import com.app.belcobtm.data.model.trade.PaymentOption.Companion.VENMO
 @IntDef(CASH, PAYPAL, VENMO, CASH_APP, PAYONEER)
 annotation class PaymentOption {
     companion object {
-        const val CASH = 0
-        const val PAYPAL = 1
-        const val VENMO = 2
-        const val CASH_APP = 3
-        const val PAYONEER = 4
-
+        const val CASH = 1
+        const val PAYPAL = 2
+        const val VENMO = 3
+        const val CASH_APP = 4
+        const val PAYONEER = 5
     }
 }

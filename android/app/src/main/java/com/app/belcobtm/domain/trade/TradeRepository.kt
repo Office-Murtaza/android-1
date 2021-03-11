@@ -1,13 +1,16 @@
 package com.app.belcobtm.domain.trade
 
+import com.app.belcobtm.data.model.trade.PaymentOption
 import com.app.belcobtm.data.model.trade.TradeData
 import com.app.belcobtm.domain.Either
 import com.app.belcobtm.domain.Failure
-import com.app.belcobtm.presentation.features.wallet.trade.create.CreateTradeItem
+import com.app.belcobtm.presentation.features.wallet.trade.create.model.CreateTradeItem
 import com.app.belcobtm.presentation.features.wallet.trade.edit.EditTradeItem
 import kotlinx.coroutines.flow.Flow
 
 interface TradeRepository {
+
+    fun getAvailablePaymentOptions(): List<@PaymentOption Int>
 
     suspend fun fetchTrades()
 

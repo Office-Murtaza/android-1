@@ -1,4 +1,4 @@
-package com.app.belcobtm.presentation.features.wallet.trade.mytrade.model
+package com.app.belcobtm.presentation.features.wallet.trade.mytrade.list.model
 
 import com.app.belcobtm.presentation.core.adapter.model.ListItem
 

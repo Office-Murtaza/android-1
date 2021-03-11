@@ -2,6 +2,7 @@ package com.app.belcobtm.data.inmemory
 
 import com.app.belcobtm.data.mapper.TradesResponseToTradeDataMapper
 import com.app.belcobtm.data.model.trade.TradeData
+import com.app.belcobtm.data.model.trade.filter.TradeFilter
 import com.app.belcobtm.data.rest.trade.response.TradesResponse
 import com.app.belcobtm.domain.Either
 import com.app.belcobtm.domain.Failure
@@ -17,10 +18,13 @@ class TradeInMemoryCache(
     }
 
     private val cache = MutableStateFlow<Either<Failure, TradeData>?>(null)
+    private val tradeFilter = MutableStateFlow<TradeFilter?>(null)
 
     val data: StateFlow<Either<Failure, TradeData>?>
         get() = cache
 
+    val filter: StateFlow<TradeFilter?>
+        get() = tradeFilter
 
     fun updateCache(response: Either<Failure, TradesResponse>) {
         if (response.isLeft) {
@@ -28,6 +32,10 @@ class TradeInMemoryCache(
         } else {
             cache.value = Either.Right(tradesMapper.map((response as Either.Right<TradesResponse>).b))
         }
+    }
+
+    fun updateFilter(filter: TradeFilter) {
+        tradeFilter.value = filter
     }
 
     fun updateDistances(distances: Map<Int, Double>) {

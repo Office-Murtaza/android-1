@@ -469,7 +469,7 @@
     <string name="seed_phrase_label">Seed phrase</string>
     <string name="unlink_wallet_label">Unlink</string>
     <string name="phone_changed">Phone changed</string>
-    
+
     //support
     <string name="support_title">Support</string>
     <string name="support_phone_label">Phone</string>
@@ -578,4 +578,20 @@
     <string name="trade_create_price_limits_label">Limits</string>
     <string name="trade_create_terms_label">Terms</string>
     <string name="create_trade_button_title">Submit</string>
+    <string name="create_trade_price_input_hint">Price</string>
+    <string name="trade_create_terms_hint">Type your terms or comments</string>
+    <string name="create_trade_cash_label">Cash</string>
+    <string name="create_trade_paypal_label">PayPal</string>
+    <string name="create_trade_venmo_label">Venmo</string>
+    <string name="create_trade_cash_app_label">Cash app</string>
+    <string name="create_trade_payoneer_label">Payoneer</string>
+    <string name="min_price_value_label">$0</string>
+    <string name="max_price_value_label">$10000</string>
+    <string name="create_trade_price_zero_error">Price cannot be zero</string>
+    <string name="create_trade_price_range_zero_error">Min price range value cannot be zero</string>
+    <string name="create_trade_no_payment_options_selected_error">Select at least one payment option</string>
+    <string name="payment_methods_label">Payment methods</string>
+    <string name="open_orders_label">Open orders</string>
+    <string name="edit_trade_button_title">Edit</string>
+    <string name="cancel_trade_button_title">Cancel</string>
 </resources>

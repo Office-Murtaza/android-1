@@ -13,8 +13,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 import androidx.navigation.NavController
 import androidx.navigation.NavDirections
-import androidx.navigation.Navigation
 import androidx.navigation.Navigator
+import androidx.navigation.fragment.findNavController
 import androidx.viewbinding.ViewBinding
 import com.app.belcobtm.R
 import com.app.belcobtm.databinding.FragmentBaseBinding
@@ -67,7 +67,7 @@ abstract class BaseFragment<V : ViewBinding> : Fragment(),
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setHasOptionsMenu(isToolbarEnabled)
+        setHasOptionsMenu(true)
     }
 
     override fun onCreateView(
@@ -96,11 +96,11 @@ abstract class BaseFragment<V : ViewBinding> : Fragment(),
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        this.navController = resolveNavController(view)
+        this.navController = findNavController()
         updateActionBar()
         baseBinding.interceptableFrameLayout.interceptListner = this
         baseBinding.errorRetryButtonView.setOnClickListener(retryListener)
-        with (binding) {
+        with(binding) {
             initViews()
             initListeners()
             initObservers()
@@ -109,8 +109,6 @@ abstract class BaseFragment<V : ViewBinding> : Fragment(),
             showContent()
         }
     }
-
-    protected open fun resolveNavController(view: View) = Navigation.findNavController(view)
 
     override fun onDestroyView() {
         super.onDestroyView()
@@ -321,7 +319,7 @@ abstract class BaseFragment<V : ViewBinding> : Fragment(),
         }
     }
 
-    private fun updateActionBar() {
+    protected open fun updateActionBar() {
         val activity = requireActivity() as AppCompatActivity
         activity.supportActionBar?.let { actionBar ->
             if (isToolbarEnabled) {

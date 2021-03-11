@@ -1,11 +1,14 @@
 package com.app.belcobtm.presentation.features.wallet.trade.list.model
 
+import androidx.annotation.DrawableRes
+import androidx.annotation.StringRes
 import com.app.belcobtm.data.model.trade.PaymentOption
 import com.app.belcobtm.presentation.core.adapter.model.ListItem
 
 data class TradePayment(
     @PaymentOption val paymentId: Int,
-    val icon: Int
+    @DrawableRes val icon: Int,
+    @StringRes val title: Int
 ) : ListItem {
 
     companion object {

@@ -1,14 +1,12 @@
 package com.app.belcobtm.presentation.features.wallet.trade.statistic
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.observe
-import androidx.navigation.NavController
-import androidx.navigation.fragment.findNavController
 import com.app.belcobtm.databinding.FragmentTradeUserInfoBinding
 import com.app.belcobtm.domain.Either
 import com.app.belcobtm.domain.Failure
+import com.app.belcobtm.presentation.core.extensions.hide
 import com.app.belcobtm.presentation.core.ui.fragment.BaseFragment
 import com.app.belcobtm.presentation.features.wallet.trade.container.TradeContainerViewModel
 import com.app.belcobtm.presentation.features.wallet.trade.list.model.TradeStatistics
@@ -28,8 +26,13 @@ class TradeUserStatisticFragment : BaseFragment<FragmentTradeUserInfoBinding>() 
     override fun createBinding(inflater: LayoutInflater, container: ViewGroup?): FragmentTradeUserInfoBinding =
         FragmentTradeUserInfoBinding.inflate(inflater, container, false)
 
-    override fun resolveNavController(view: View): NavController =
-        requireParentFragment().findNavController()
+    override fun updateActionBar() {
+
+    }
+
+    override fun initToolbar() {
+        baseBinding.toolbarView.hide()
+    }
 
     override fun FragmentTradeUserInfoBinding.initObservers() {
         viewModel.observeStatistic().observe(viewLifecycleOwner) {

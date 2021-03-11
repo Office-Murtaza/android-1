@@ -71,6 +71,12 @@
         <item name="android:textColor">#0073e4</item>
     </style>
 
+    <style name="Button.Secondary.NoOutlined" parent="Widget.MaterialComponents.Button.TextButton">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">#0073e4</item>
+    </style>
+
     <style name="Button.Chip" parent="Widget.MaterialComponents.Chip.Choice">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
@@ -368,5 +374,10 @@
     <style name="AppTabTextAppearance" parent="TextAppearance.Design.Tab">
         <item name="android:textSize">14sp</item>
         <item name="android:textColor">@color/gph_white</item>
+    </style>
+
+    <style name="SliderWithoutSteps" parent="Base.Widget.MaterialComponents.Slider">
+        <item name="tickColorActive">@android:color/transparent</item>
+        <item name="tickColorInactive">@android:color/transparent</item>
     </style>
 </resources>

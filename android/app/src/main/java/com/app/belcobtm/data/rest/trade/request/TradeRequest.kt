@@ -8,6 +8,6 @@ data class TradeRequest(
     val maxLimit: Int,
     val paymentMethods: String,
     val terms: String,
-    val makerLatitude: Double,
-    val makerLongitude: Double
+    val makerLatitude: Double? = null,
+    val makerLongitude: Double? = null
 )

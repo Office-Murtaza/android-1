@@ -110,7 +110,21 @@
             app:exitAnim="@anim/slide_to_left"
             app:popEnterAnim="@anim/slide_from_left"
             app:popExitAnim="@anim/slide_to_right" />
+
+        <action
+            android:id="@+id/to_filter_trade_fragment"
+            app:destination="@id/filter_trade_fragment"
+            app:enterAnim="@anim/slide_from_right"
+            app:exitAnim="@anim/slide_to_left"
+            app:popEnterAnim="@anim/slide_from_left"
+            app:popExitAnim="@anim/slide_to_right" />
     </fragment>
+
+    <dialog
+        android:id="@+id/filter_trade_fragment"
+        android:name="com.app.belcobtm.presentation.features.wallet.trade.list.filter.TradeFilterBottomSheetDialogFragment"
+        android:label="FilterFragmen"
+        tools:layout="@layout/fragment_trade_filter" />
 
     <fragment
         android:id="@+id/create_trade_fragment"

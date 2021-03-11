@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/coin_icon"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="24dp"
+            android:contentDescription="@null"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:src="@drawable/ic_coin_bitcoin" />
+
+        <TextView
+            android:id="@+id/coin_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:textAppearance="@style/Text.Bold1"
+            android:textColor="@color/black_text_color"
+            app:layout_constraintBottom_toBottomOf="@id/coin_icon"
+            app:layout_constraintStart_toEndOf="@id/coin_icon"
+            app:layout_constraintTop_toTopOf="@id/coin_icon"
+            tools:text="BTC" />
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/trade_type_chip"
+            android:layout_width="wrap_content"
+            android:layout_height="24dp"
+            android:layout_marginStart="8dp"
+            android:checkable="true"
+            android:text="@string/trade_type_buy_label"
+            android:textColor="#48C583"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            app:checkedIconVisible="false"
+            app:chipBackgroundColor="#2648C583"
+            app:chipIcon="@drawable/ic_trade_type_buy"
+            app:chipMinTouchTargetSize="0dp"
+            app:chipStrokeColor="#48C583"
+            app:chipStrokeWidth="@dimen/divider_size"
+            app:layout_constraintBottom_toBottomOf="@id/coin_icon"
+            app:layout_constraintStart_toEndOf="@id/coin_label"
+            app:layout_constraintTop_toTopOf="@id/coin_icon" />
+
+        <TextView
+            android:id="@+id/amount_range"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:layout_marginEnd="16dp"
+            android:gravity="end"
+            android:textColor="@color/black_text_color"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@id/coin_icon"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/trade_type_chip"
+            app:layout_constraintTop_toTopOf="@id/coin_icon"
+            tools:text="$1000 - $7500" />
+
+        <TextView
+            android:id="@+id/price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:layout_marginEnd="16dp"
+            android:gravity="end"
+            android:textColor="@color/black_text_color"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="@id/coin_label"
+            app:layout_constraintTop_toBottomOf="@id/coin_label"
+            tools:text="$37,750.50" />
+
+        <View
+            android:id="@+id/coin_details_divider"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/divider_size"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:background="@color/dark_bg"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/price" />
+
+        <TextView
+            android:id="@+id/payment_options_label"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:gravity="start"
+            android:text="@string/payment_methods_label"
+            android:textColor="@color/colorText"
+            android:textSize="14sp"
+            app:layout_constraintBottom_toBottomOf="@id/payment_options"
+            app:layout_constraintEnd_toStartOf="@id/payment_options"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/payment_options" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/payment_options"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:orientation="vertical"
+            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1"
+            app:layout_constraintStart_toEndOf="@id/payment_options_label"
+            app:layout_constraintTop_toBottomOf="@id/coin_details_divider"
+            app:spanCount="5"
+            tools:itemCount="5"
+            tools:listitem="@layout/item_payment_option" />
+
+        <View
+            android:id="@+id/payment_details_divider"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/divider_size"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:background="@color/dark_bg"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/payment_options" />
+
+        <TextView
+            android:id="@+id/open_orders_label"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:gravity="start"
+            android:text="@string/open_orders_label"
+            android:textColor="@color/colorText"
+            android:textSize="14sp"
+            app:layout_constraintEnd_toStartOf="@id/open_orders_value"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/payment_details_divider" />
+
+        <TextView
+            android:id="@+id/open_orders_value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:textColor="@color/black_text_color"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/payment_details_divider"
+            tools:text="8" />
+
+        <View
+            android:id="@+id/order_details_divider"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/divider_size"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:background="@color/dark_bg"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/open_orders_value" />
+
+        <TextView
+            android:id="@+id/terms_label"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:gravity="start"
+            android:text="@string/open_orders_label"
+            android:textColor="@color/colorText"
+            android:textSize="14sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/order_details_divider"
+            tools:text="Selling cryptocurrency at the best rate. Ready to meet select cash as a method of payment. Always available, write in chat 24/7." />
+
+        <Button
+            android:id="@+id/edit_button"
+            style="@style/Button.Primary"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/edit_trade_button_title"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/terms_label" />
+
+        <Button
+            android:id="@+id/cancel_button"
+            style="@style/Button.Secondary.NoOutlined"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:text="@string/cancel_trade_button_title"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/edit_button" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.core.widget.NestedScrollView>

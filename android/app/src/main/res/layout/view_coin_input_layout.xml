@@ -6,27 +6,35 @@
     android:layout_height="wrap_content"
     tools:parentTag="androidx.constraintlayout.widget.ConstraintLayout">
 
-    <com.google.android.material.textfield.TextInputEditText
-        android:id="@+id/coinInputEditText"
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/coinInputLayout"
+        style="@style/Widget.Design.TextInputLayout"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/margin_x2"
         android:layout_marginTop="@dimen/margin_main"
-        android:background="@android:color/transparent"
-        android:digits="1234567890."
-        android:gravity="end"
-        android:inputType="numberDecimal"
-        android:paddingStart="@dimen/margin_main"
-        android:paddingTop="@dimen/margin_half"
-        android:paddingEnd="@dimen/margin_main"
-        android:paddingBottom="@dimen/margin_half"
-        android:singleLine="true"
-        android:textAppearance="@style/SwapAmountTextAppearance"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/coinButton"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_chainStyle="packed"
-        tools:hint="Coin amount" />
+        app:layout_constraintVertical_chainStyle="packed">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/coinInputEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            android:digits="1234567890."
+            android:gravity="end"
+            android:inputType="numberDecimal"
+            android:paddingStart="@dimen/margin_main"
+            android:paddingTop="@dimen/margin_half"
+            android:paddingEnd="@dimen/margin_main"
+            android:paddingBottom="@dimen/margin_half"
+            android:singleLine="true"
+            android:textAppearance="@style/SwapAmountTextAppearance"
+            tools:hint="Coin amount" />
+
+    </com.google.android.material.textfield.TextInputLayout>
 
     <LinearLayout
         android:id="@+id/coinButton"
@@ -35,9 +43,9 @@
         android:layout_marginStart="@dimen/margin_main"
         android:gravity="center"
         android:orientation="horizontal"
-        app:layout_constraintBottom_toBottomOf="@id/coinInputEditText"
+        app:layout_constraintBottom_toBottomOf="@id/coinInputLayout"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@id/coinInputEditText">
+        app:layout_constraintTop_toTopOf="@id/coinInputLayout">
 
         <ImageView
             android:id="@+id/ivCoin"
@@ -69,7 +77,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:barrierDirection="bottom"
-        app:constraint_referenced_ids="coinButton,coinInputEditText" />
+        app:constraint_referenced_ids="coinButton,coinInputLayout" />
 
     <TextView
         android:id="@+id/tvHelperText"

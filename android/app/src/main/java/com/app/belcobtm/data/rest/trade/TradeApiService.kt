@@ -8,7 +8,7 @@ import com.app.belcobtm.data.rest.trade.response.EditTradeResponse
 import com.app.belcobtm.data.rest.trade.response.TradesResponse
 import com.app.belcobtm.domain.Either
 import com.app.belcobtm.domain.Failure
-import com.app.belcobtm.presentation.features.wallet.trade.create.CreateTradeItem
+import com.app.belcobtm.presentation.features.wallet.trade.create.model.CreateTradeItem
 import com.app.belcobtm.presentation.features.wallet.trade.edit.EditTradeItem
 
 class TradeApiService(
@@ -28,9 +28,12 @@ class TradeApiService(
 
     suspend fun createTrade(createTradeItem: CreateTradeItem): Either<Failure, CreateTradeResponse> =
         withErrorHandling {
-            val request = TradeRequest(
-                0, "", 0, 0, 0, "", "", 0.0, 0.0
-            )
+            val request = with(createTradeItem) {
+                TradeRequest(
+                    tradeType, coinCode, price, minLimit, maxLimit,
+                    paymentOptions.joinToString(","), terms
+                )
+            }
             val response = tradeApi.createTradeAsync(prefHelper.userId, request).await()
             response.body()?.let { Either.Right(it) } ?: Either.Left(Failure.ServerError())
         }

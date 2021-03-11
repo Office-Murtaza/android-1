@@ -1,31 +1,46 @@
-package com.app.belcobtm.presentation.features.wallet.trade.mytrade
+package com.app.belcobtm.presentation.features.wallet.trade.mytrade.list
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.observe
-import androidx.navigation.NavController
-import androidx.navigation.fragment.findNavController
+import com.app.belcobtm.R
 import com.app.belcobtm.databinding.FragmentMyTradesBinding
 import com.app.belcobtm.domain.Either
 import com.app.belcobtm.domain.Failure
 import com.app.belcobtm.presentation.core.adapter.MultiTypeAdapter
 import com.app.belcobtm.presentation.core.adapter.model.ListItem
+import com.app.belcobtm.presentation.core.extensions.hide
 import com.app.belcobtm.presentation.core.ui.fragment.BaseFragment
 import com.app.belcobtm.presentation.features.wallet.trade.container.TradeContainerViewModel
-import com.app.belcobtm.presentation.features.wallet.trade.mytrade.delegate.MyTradeDelegate
-import com.app.belcobtm.presentation.features.wallet.trade.mytrade.delegate.MyTradesNoTradesDelegate
+import com.app.belcobtm.presentation.features.wallet.trade.mytrade.list.delegate.MyTradeDelegate
+import com.app.belcobtm.presentation.features.wallet.trade.mytrade.list.delegate.MyTradesNoTradesDelegate
 import org.koin.android.viewmodel.ext.android.viewModel
 
 class MyTradesFragment : BaseFragment<FragmentMyTradesBinding>() {
+
+    override val isToolbarEnabled: Boolean
+        get() = false
+
+    override val isHomeButtonEnabled: Boolean
+        get() = false
+
+    override var isMenuEnabled: Boolean = false
 
     private val adapter by lazy {
         MultiTypeAdapter().apply {
             registerDelegate(MyTradeDelegate())
             registerDelegate(MyTradesNoTradesDelegate {
-                // TODO open create trade
+                navigate(R.id.create_trade_fragment)
             })
         }
+    }
+
+    override fun initToolbar() {
+        baseBinding.toolbarView.hide()
+    }
+
+    override fun updateActionBar() {
+
     }
 
     private val viewModel by viewModel<MyTradesViewModel>()
@@ -36,9 +51,6 @@ class MyTradesFragment : BaseFragment<FragmentMyTradesBinding>() {
 
     override fun createBinding(inflater: LayoutInflater, container: ViewGroup?): FragmentMyTradesBinding =
         FragmentMyTradesBinding.inflate(inflater, container, false)
-
-    override fun resolveNavController(view: View): NavController =
-        requireParentFragment().findNavController()
 
     override fun FragmentMyTradesBinding.initViews() {
         myTradesList.adapter = adapter

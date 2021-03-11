@@ -1,15 +1,13 @@
 package com.app.belcobtm.presentation.features.wallet.trade.order
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.observe
-import androidx.navigation.NavController
-import androidx.navigation.fragment.findNavController
 import com.app.belcobtm.databinding.FragmentTradeOrdersBinding
 import com.app.belcobtm.domain.Either
 import com.app.belcobtm.domain.Failure
 import com.app.belcobtm.presentation.core.adapter.MultiTypeAdapter
+import com.app.belcobtm.presentation.core.extensions.hide
 import com.app.belcobtm.presentation.core.ui.fragment.BaseFragment
 import com.app.belcobtm.presentation.features.wallet.trade.container.TradeContainerViewModel
 import com.app.belcobtm.presentation.features.wallet.trade.list.model.OrderItem
@@ -36,11 +34,16 @@ class TradeOrdersFragment : BaseFragment<FragmentTradeOrdersBinding>() {
     override fun createBinding(inflater: LayoutInflater, container: ViewGroup?): FragmentTradeOrdersBinding =
         FragmentTradeOrdersBinding.inflate(inflater, container, false)
 
-    override fun resolveNavController(view: View): NavController =
-        requireParentFragment().findNavController()
-
     override fun FragmentTradeOrdersBinding.initViews() {
         orderList.adapter = adapter
+    }
+
+    override fun initToolbar() {
+        baseBinding.toolbarView.hide()
+    }
+
+    override fun updateActionBar() {
+
     }
 
     override fun FragmentTradeOrdersBinding.initObservers() {

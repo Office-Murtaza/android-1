@@ -15,7 +15,6 @@ import org.koin.android.viewmodel.ext.android.viewModel
 
 class TradeContainerFragment : BaseFragment<FragmentTradeListContainerBinding>() {
 
-    override var isMenuEnabled: Boolean = true
     override var isHomeButtonEnabled: Boolean = true
 
     override val retryListener: View.OnClickListener = View.OnClickListener {
@@ -45,15 +44,16 @@ class TradeContainerFragment : BaseFragment<FragmentTradeListContainerBinding>()
         viewModel.fetchTrades()
     }
 
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) =
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.trade_menu, menu)
+    }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean = when (item.itemId) {
         R.id.create_trade_menu_item -> {
             navigate(TradeContainerFragmentDirections.toCreateTradeFragment())
             true
         }
-        else -> false
+        else -> super.onOptionsItemSelected(item)
     }
 
     override fun FragmentTradeListContainerBinding.initObservers() {

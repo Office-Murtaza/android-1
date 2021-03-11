@@ -5,5 +5,5 @@
         android:id="@+id/create_trade_menu_item"
         android:icon="@drawable/ic_create_trade"
         android:title="@string/create_trade_menu_title"
-        app:showAsAction="always" />
+        app:showAsAction="always|collapseActionView" />
 </menu>

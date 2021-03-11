@@ -28,7 +28,7 @@ class TradesResponseToTradeDataMapper {
         with(trade) {
             Trade(
                 id, type, coin,
-                status, createDate,
+                status, createDate.orEmpty(),
                 price, minLimit, maxLimit,
                 paymentMethods.split(PAYMENT_DELIMITER).map(String::toInt),
                 terms, makerId, makerPublicId, makerLatitude,

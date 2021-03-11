@@ -17,6 +17,7 @@
         tools:listitem="@layout/item_trade" />
 
     <com.github.clans.fab.FloatingActionButton
+        android:id="@+id/open_filter_button"
         style="@style/TradeScreen.FloatingActionButtonChild"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

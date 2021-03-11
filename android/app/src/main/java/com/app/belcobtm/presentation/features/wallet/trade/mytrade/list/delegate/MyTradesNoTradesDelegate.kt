@@ -1,11 +1,11 @@
-package com.app.belcobtm.presentation.features.wallet.trade.mytrade.delegate
+package com.app.belcobtm.presentation.features.wallet.trade.mytrade.list.delegate
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.app.belcobtm.databinding.ItemMyTradesNoTradesBinding
 import com.app.belcobtm.presentation.core.adapter.delegate.AdapterDelegate
 import com.app.belcobtm.presentation.core.adapter.holder.MultiTypeViewHolder
-import com.app.belcobtm.presentation.features.wallet.trade.mytrade.model.NoTradesCreatedItem
+import com.app.belcobtm.presentation.features.wallet.trade.mytrade.list.model.NoTradesCreatedItem
 
 class MyTradesNoTradesDelegate(
     private val createNewTradeListener: () -> Unit

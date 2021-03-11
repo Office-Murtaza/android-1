@@ -8,7 +8,7 @@ data class TradeItemResponse(
     @TradeType val type: Int,
     val coin: String,
     @TradeStatus val status: Int,
-    val createDate: String,
+    val createDate: String?,
     val price: Double,
     val minLimit: Double,
     val maxLimit: Double,
