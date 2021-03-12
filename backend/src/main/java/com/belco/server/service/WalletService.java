@@ -151,6 +151,8 @@ public class WalletService {
             if (coin == CoinService.CoinEnum.ETH) {
                 gethService.addAddressToJournal(address);
             }
+
+            return address;
         } catch (Exception e) {
             e.printStackTrace();
         }
