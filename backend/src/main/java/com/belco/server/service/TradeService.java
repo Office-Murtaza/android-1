@@ -19,6 +19,7 @@ import org.jetbrains.annotations.NotNull;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
+
 import javax.annotation.PostConstruct;
 import javax.transaction.Transactional;
 import java.math.BigDecimal;
@@ -77,6 +78,10 @@ public class TradeService {
     public Response createTrade(Long userId, TradeDTO dto) {
         try {
             User user = userService.findById(userId);
+            user.setLatitude(dto.getMakerLatitude());
+            user.setLongitude(dto.getMakerLongitude());
+            user = userService.save(user);
+
             UserCoin userCoin = user.getUserCoin(dto.getCoin().name());
             Trade trade = new Trade();
 
@@ -105,10 +110,12 @@ public class TradeService {
             trade.setMaker(user);
 
             trade = tradeRep.save(trade);
-            tradesMap.put(trade.getId(), trade.toDTO());
-            wsPushTrade(trade.toDTO());
 
-            return Response.ok("id", trade.getId());
+            TradeDTO rDTO = trade.toDTO();
+            tradesMap.put(trade.getId(), rDTO);
+            wsPushTrade(rDTO);
+
+            return Response.ok(rDTO);
         } catch (Exception e) {
             e.printStackTrace();
             return Response.serverError();
@@ -146,10 +153,12 @@ public class TradeService {
             trade.setTerms(dto.getTerms());
 
             trade = tradeRep.save(trade);
-            tradesMap.put(trade.getId(), trade.toDTO());
-            wsPushTrade(trade.toDTO());
 
-            return Response.ok(trade != null);
+            TradeDTO rDTO = trade.toDTO();
+            tradesMap.put(trade.getId(), rDTO);
+            wsPushTrade(rDTO);
+
+            return Response.ok(rDTO);
         } catch (Exception e) {
             e.printStackTrace();
             return Response.serverError();
@@ -172,10 +181,12 @@ public class TradeService {
             trade.setLockedCryptoAmount(BigDecimal.ZERO);
             trade.setStatus(TradeStatus.CANCELED.getValue());
             tradesMap.remove(trade.getId());
-            trade = tradeRep.save(trade);
-            wsPushTrade(trade.toDTO());
 
-            return Response.ok(trade != null);
+            trade = tradeRep.save(trade);
+            TradeDTO rDTO = trade.toDTO();
+            wsPushTrade(rDTO);
+
+            return Response.ok(rDTO);
         } catch (Exception e) {
             e.printStackTrace();
             return Response.serverError();
@@ -218,15 +229,16 @@ public class TradeService {
             order.setTrade(trade);
             order.setCoin(trade.getCoin());
             order.setTrade(trade);
-            order.setMaker(userService.findById(dto.getMakerId()));
+            order.setMaker(trade.getMaker());
             order.setTaker(taker);
             order.setCreateDate(new Date());
 
             order = orderRep.save(order);
-            wsPushOrder(order.getMaker().getPhone(), order.toDTO());
-            wsPushOrder(order.getTaker().getPhone(), order.toDTO());
+            OrderDTO rDTO = order.toDTO();
+            wsPushOrder(order.getMaker().getPhone(), rDTO);
+            wsPushOrder(order.getTaker().getPhone(), rDTO);
 
-            return Response.ok("id", order.getId());
+            return Response.ok(rDTO);
         } catch (Exception e) {
             e.printStackTrace();
             return Response.serverError();
@@ -239,6 +251,7 @@ public class TradeService {
             Order order = orderRep.getOne(dto.getId());
             Trade trade = order.getTrade();
 
+            //rate the trade
             if (dto.getTradeRate() != null) {
                 order.setMakerRate(dto.getTradeRate());
 
@@ -258,7 +271,7 @@ public class TradeService {
                     }
                 }
 
-                if(dto.getStatus() == OrderStatus.PAID || dto.getStatus() == OrderStatus.SOLVED) {
+                if (dto.getStatus() == OrderStatus.PAID || dto.getStatus() == OrderStatus.SOLVED) {
                     trade.setOpenOrders(trade.getOpenOrders() - 1);
                     tradesMap.get(trade.getId()).setOpenOrders(trade.getOpenOrders());
                     trade = tradeRep.save(trade);
@@ -269,11 +282,11 @@ public class TradeService {
             }
 
             order = orderRep.save(order);
+            OrderDTO rDTO = order.toDTO();
+            wsPushOrder(order.getMaker().getPhone(), rDTO);
+            wsPushOrder(order.getTaker().getPhone(), rDTO);
 
-            wsPushOrder(order.getMaker().getPhone(), order.toDTO());
-            wsPushOrder(order.getTaker().getPhone(), order.toDTO());
-
-            return Response.ok(order != null);
+            return Response.ok(rDTO);
         } catch (Exception e) {
             e.printStackTrace();
             return Response.serverError();
@@ -299,10 +312,19 @@ public class TradeService {
             trade = tradeRep.save(trade);
             wsPushTrade(trade.toDTO());
 
-            wsPushOrder(order.getMaker().getPhone(), order.toDTO());
-            wsPushOrder(order.getTaker().getPhone(), order.toDTO());
+            order.setStatus(OrderStatus.CANCELED.getValue());
+            order = orderRep.save(order);
+            OrderDTO rDTO = order.toDTO();
+            wsPushOrder(order.getMaker().getPhone(), rDTO);
+            wsPushOrder(order.getTaker().getPhone(), rDTO);
 
-            return Response.ok(trade != null);
+            if (userId.equals(order.getMaker().getId())) {
+                //send push notification to taker
+            } else {
+                //send push notification to maker
+            }
+
+            return Response.ok(rDTO);
         } catch (Exception e) {
             e.printStackTrace();
             return Response.serverError();

@@ -199,7 +199,7 @@ public class WalletService {
 
         addresses.stream().forEach(e -> {
             List<String> txIds = coinCode.getNodeTransactions(e).entrySet().stream()
-                    .filter(x -> x.getValue().getToAddress().equalsIgnoreCase(e) && x.getValue().getDate1().getTime() + Constant.HOURS_BETWEEN_TRANSACTIONS * 3600000 >= System.currentTimeMillis() )
+                    .filter(x -> x.getValue().getToAddress().equalsIgnoreCase(e) && x.getValue().getTimestamp() + Constant.HOURS_BETWEEN_TRANSACTIONS * 3600000 >= System.currentTimeMillis() )
                     .map(x -> x.getKey()).collect(Collectors.toList());
 
             map.put(e, txIds);
