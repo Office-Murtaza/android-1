@@ -52,6 +52,9 @@ class TradeRepositoryImpl(
     }
 
     override fun observeTradeData(): Flow<Either<Failure, TradeData>?> =
+        tradeInMemoryCache.observableData
+
+    override fun getTradeData(): Either<Failure, TradeData>? =
         tradeInMemoryCache.data
 
     override suspend fun createTrade(createTradeItem: CreateTradeItem): Either<Failure, Unit> {

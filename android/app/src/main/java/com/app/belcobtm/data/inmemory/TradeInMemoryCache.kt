@@ -20,11 +20,17 @@ class TradeInMemoryCache(
     private val cache = MutableStateFlow<Either<Failure, TradeData>?>(null)
     private val tradeFilter = MutableStateFlow<TradeFilter?>(null)
 
-    val data: StateFlow<Either<Failure, TradeData>?>
+    val observableData: StateFlow<Either<Failure, TradeData>?>
         get() = cache
 
-    val filter: StateFlow<TradeFilter?>
+    val data: Either<Failure, TradeData>?
+        get() = cache.value
+
+    val observableFilter: StateFlow<TradeFilter?>
         get() = tradeFilter
+
+    val filter: TradeFilter?
+        get() = tradeFilter.value
 
     fun updateCache(response: Either<Failure, TradesResponse>) {
         if (response.isLeft) {

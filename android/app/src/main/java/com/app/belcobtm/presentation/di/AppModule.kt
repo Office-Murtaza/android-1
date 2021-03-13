@@ -6,7 +6,11 @@ import com.app.belcobtm.presentation.core.coin.CoinCodeProvider
 import com.app.belcobtm.presentation.core.coin.MinMaxCoinValueProvider
 import com.app.belcobtm.presentation.core.formatter.Formatter
 import com.app.belcobtm.presentation.core.formatter.PhoneNumberFormatter
+import com.app.belcobtm.presentation.core.formatter.UsdPriceFormatter
+import com.app.belcobtm.presentation.core.formatter.UsdPriceFormatter.Companion.QUALIFIER
 import com.app.belcobtm.presentation.core.helper.ClipBoardHelper
+import com.app.belcobtm.presentation.core.provider.string.ResourceStringProvider
+import com.app.belcobtm.presentation.core.provider.string.StringProvider
 import com.app.belcobtm.presentation.core.validator.PhoneNumberValidator
 import com.app.belcobtm.presentation.features.atm.AtmViewModel
 import com.app.belcobtm.presentation.features.authorization.create.seed.CreateSeedViewModel
@@ -48,6 +52,7 @@ import com.app.belcobtm.presentation.features.wallet.withdraw.WithdrawViewModel
 import io.michaelrocks.libphonenumber.android.PhoneNumberUtil
 import org.koin.android.ext.koin.androidApplication
 import org.koin.android.viewmodel.dsl.viewModel
+import org.koin.core.qualifier.named
 import org.koin.dsl.module
 import java.util.*
 
@@ -116,4 +121,6 @@ val viewModelHelperModule = module {
 val helperModule = module {
     factory { NotificationHelper(get()) }
     single { ClipBoardHelper(androidApplication()) }
+    single<Formatter<Double>>(named(QUALIFIER)) { UsdPriceFormatter(get()) }
+    single<StringProvider> { ResourceStringProvider(androidApplication().resources) }
 }

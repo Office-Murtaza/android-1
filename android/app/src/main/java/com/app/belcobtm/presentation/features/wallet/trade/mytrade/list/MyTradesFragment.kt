@@ -3,6 +3,7 @@ package com.app.belcobtm.presentation.features.wallet.trade.mytrade.list
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.lifecycle.observe
+import androidx.recyclerview.widget.DividerItemDecoration
 import com.app.belcobtm.R
 import com.app.belcobtm.databinding.FragmentMyTradesBinding
 import com.app.belcobtm.domain.Either
@@ -54,6 +55,7 @@ class MyTradesFragment : BaseFragment<FragmentMyTradesBinding>() {
 
     override fun FragmentMyTradesBinding.initViews() {
         myTradesList.adapter = adapter
+        myTradesList.addItemDecoration(DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL))
     }
 
     override fun FragmentMyTradesBinding.initObservers() {

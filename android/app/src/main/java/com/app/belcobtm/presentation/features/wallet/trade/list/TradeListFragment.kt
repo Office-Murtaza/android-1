@@ -13,10 +13,13 @@ import com.app.belcobtm.databinding.FragmentTradeListBinding
 import com.app.belcobtm.domain.Either
 import com.app.belcobtm.domain.Failure
 import com.app.belcobtm.presentation.core.adapter.MultiTypeAdapter
+import com.app.belcobtm.presentation.core.adapter.model.ListItem
 import com.app.belcobtm.presentation.core.extensions.hide
 import com.app.belcobtm.presentation.core.ui.fragment.BaseFragment
 import com.app.belcobtm.presentation.features.wallet.trade.container.TradeContainerViewModel
+import com.app.belcobtm.presentation.features.wallet.trade.list.delegate.NoTradesDelegate
 import com.app.belcobtm.presentation.features.wallet.trade.list.delegate.TradeItemDelegate
+import com.app.belcobtm.presentation.features.wallet.trade.list.model.NoTrades
 import com.app.belcobtm.presentation.features.wallet.trade.list.model.TradeItem
 import org.koin.android.viewmodel.ext.android.viewModel
 
@@ -45,6 +48,7 @@ class TradeListFragment : BaseFragment<FragmentTradeListBinding>() {
     private val adapter: MultiTypeAdapter by lazy {
         MultiTypeAdapter().apply {
             registerDelegate(TradeItemDelegate())
+            registerDelegate(NoTradesDelegate(viewModel::resetFilters))
         }
     }
 
@@ -83,7 +87,8 @@ class TradeListFragment : BaseFragment<FragmentTradeListBinding>() {
         viewModel.observeTrades(requireArguments().getInt(TRADE_TYPE_BUNDLE_KEY))
             .observe(viewLifecycleOwner) {
                 if (it?.isRight == true) {
-                    adapter.update((it as Either.Right<List<TradeItem>>).b)
+                    val trades = (it as Either.Right<List<TradeItem>>).b
+                    adapter.update(trades.ifEmpty { listOf<ListItem>(NoTrades()) })
                 } else {
                     parentViewModel.showError((it as Either.Left<Failure>).a)
                 }

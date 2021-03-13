@@ -33,4 +33,8 @@ class TradeListViewModel(
     fun loadNextPage(itemsCount: Int) {
         lastVisibleItem.value = itemsCount
     }
+
+    fun resetFilters() {
+
+    }
 }

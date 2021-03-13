@@ -58,7 +58,7 @@ class TradeApiService(
     } catch (messageError: Failure.MessageError) {
         Either.Left(
             if (messageError.code == VALIDATION_ERROR_REASON) {
-                Failure.ValidationError()
+                Failure.ValidationError(messageError.message)
             } else {
                 Failure.ServerError()
             }

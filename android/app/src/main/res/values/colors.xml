@@ -68,5 +68,6 @@
     <color name="trade_type_buy_trade_text_color">#48C583</color>
     <color name="trade_type_sell_trade_text_color">#EDB900</color>
 
-    <color name="secondaryTabBackground">#198d8d8d</color>
+    <color name="lighter_gray">#198d8d8d</color>
+    <color name="light_gray">#8d8d8d</color>
 </resources>

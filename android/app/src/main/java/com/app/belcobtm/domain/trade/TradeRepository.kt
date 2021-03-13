@@ -16,6 +16,8 @@ interface TradeRepository {
 
     fun observeTradeData(): Flow<Either<Failure, TradeData>?>
 
+    fun getTradeData(): Either<Failure, TradeData>?
+
     suspend fun createTrade(createTradeItem: CreateTradeItem): Either<Failure, Unit>
 
     suspend fun editTrade(editTrade: EditTradeItem): Either<Failure, Unit>

@@ -9,6 +9,7 @@ import com.app.belcobtm.domain.settings.interactor.*
 import com.app.belcobtm.domain.tools.interactor.OldSendSmsToDeviceUseCase
 import com.app.belcobtm.domain.tools.interactor.OldVerifySmsCodeUseCase
 import com.app.belcobtm.domain.tools.interactor.SendSmsToDeviceUseCase
+import com.app.belcobtm.domain.trade.create.CheckTradeCreationAvailabilityUseCase
 import com.app.belcobtm.domain.trade.create.CreateTradeUseCase
 import com.app.belcobtm.domain.trade.create.GetAvailableTradePaymentOptionsUseCase
 import com.app.belcobtm.domain.trade.create.mapper.PaymentIdToAvailablePaymentOptionMapper
@@ -82,6 +83,7 @@ val useCaseModule = module {
     single { GetAvailableTradePaymentOptionsUseCase(get(), get()) }
     single { GetCoinsUseCase(get(), get()) }
     single { CreateTradeUseCase(get()) }
+    single { CheckTradeCreationAvailabilityUseCase(get(), get()) }
     factory { TradePaymentOptionMapper() }
     factory { CoinCodeMapper() }
     factory { TradesDataToTradeListMapper(get()) }

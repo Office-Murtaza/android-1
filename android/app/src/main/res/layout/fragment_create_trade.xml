@@ -154,58 +154,84 @@
             app:layout_constraintTop_toBottomOf="@id/payment_options_view_divider" />
 
         <com.google.android.material.slider.RangeSlider
-            android:id="@+id/price_rage_slider"
+            android:id="@+id/amount_range_slider"
             style="@style/SliderWithoutSteps"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:padding="0dp"
-            android:stepSize="1"
-            android:valueFrom="0"
-            android:valueTo="10000"
+            android:stepSize="@integer/trade_amount_step"
+            android:valueFrom="@integer/trade_amount_min"
+            android:valueTo="@integer/trade_amount_max"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/price_limits_label"
             app:thumbRadius="6dp"
             app:values="@array/initial_slider_values" />
 
-        <TextView
-            android:id="@+id/price_min_limit"
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/amount_min_limit_input_layout"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:text="@string/min_price_value_label"
-            android:textColor="@color/black_text_color"
-            android:textSize="20sp"
-            android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="@id/price_rage_slider"
-            app:layout_constraintTop_toBottomOf="@id/price_rage_slider" />
+            android:hint="@string/from_hint_label"
+            app:layout_constraintStart_toStartOf="@id/amount_range_slider"
+            app:layout_constraintTop_toBottomOf="@id/amount_range_slider">
 
-        <TextView
-            android:id="@+id/price_max_limit"
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/amount_min_limit_edit_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:digits="1234567890$"
+                tools:text="$100" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/amount_max_limit_input_layout"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="16dp"
-            android:text="@string/max_price_value_label"
-            android:textColor="@color/black_text_color"
-            android:textSize="20sp"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="@id/price_rage_slider"
-            app:layout_constraintTop_toBottomOf="@id/price_rage_slider" />
+            android:hint="@string/to_hint_label"
+            app:layout_constraintEnd_toEndOf="@id/amount_range_slider"
+            app:layout_constraintTop_toBottomOf="@id/amount_range_slider">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/amount_max_limit_edit_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:digits="1234567890$"
+                tools:text="$100" />
+
+        </com.google.android.material.textfield.TextInputLayout>
 
         <TextView
-            android:id="@+id/price_range_error"
+            android:id="@+id/amount_range_error"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
-            android:text="@string/trade_create_price_limits_label"
             android:textColor="@color/colorError"
             android:textSize="12sp"
             android:visibility="gone"
-            app:layout_constraintStart_toStartOf="@id/price_rage_slider"
-            app:layout_constraintTop_toBottomOf="@id/price_max_limit"
-            tools:text="Validation error message" />
+            app:layout_constraintStart_toStartOf="@id/amount_range_slider"
+            app:layout_constraintTop_toBottomOf="@id/amount_min_limit_input_layout"
+            tools:text="Validation error message"
+            tools:visibility="visible" />
+
+        <TextView
+            android:id="@+id/crypto_amount_value"
+            style="@style/Text.Regular1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:lineSpacingExtra="@dimen/margin_half"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/amount_max_limit_input_layout"
+            tools:text="~0.6555 BTC" />
 
         <View
             android:id="@+id/limits_view_divider"
@@ -217,7 +243,7 @@
             android:background="@color/thin_divider"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/price_range_error" />
+            app:layout_constraintTop_toBottomOf="@id/crypto_amount_value" />
 
         <TextView
             android:id="@+id/terms_label"
