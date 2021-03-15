@@ -251,11 +251,11 @@
             tools:text="Selling cryptocurrency at the best rate. Ready to meet select cash as a method of payment. Always available, write in chat 24/7." />
 
         <Button
-            android:id="@+id/edit_button"
+            android:id="@+id/buy_sell_button"
             style="@style/Button.Primary"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="@string/edit_trade_button_title"
+            android:text="@string/trade_details_buy_sell_button_title"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/terms_label" />

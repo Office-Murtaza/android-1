@@ -7,7 +7,6 @@ import androidx.lifecycle.observe
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.app.belcobtm.R
 import com.app.belcobtm.data.model.trade.TradeType
 import com.app.belcobtm.databinding.FragmentTradeListBinding
 import com.app.belcobtm.domain.Either
@@ -47,7 +46,9 @@ class TradeListFragment : BaseFragment<FragmentTradeListBinding>() {
 
     private val adapter: MultiTypeAdapter by lazy {
         MultiTypeAdapter().apply {
-            registerDelegate(TradeItemDelegate())
+            registerDelegate(TradeItemDelegate {
+                navigate(TradeListFragmentDirections.toTradeDetails(it.tradeId))
+            })
             registerDelegate(NoTradesDelegate(viewModel::resetFilters))
         }
     }
@@ -79,7 +80,7 @@ class TradeListFragment : BaseFragment<FragmentTradeListBinding>() {
             }
         })
         openFilterButton.setOnClickListener {
-            navigate(R.id.filter_trade_fragment)
+            navigate(TradeListFragmentDirections.toFilterTradeFragment())
         }
     }
 

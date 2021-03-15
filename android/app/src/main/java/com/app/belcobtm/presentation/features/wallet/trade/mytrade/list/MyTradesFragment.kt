@@ -29,7 +29,9 @@ class MyTradesFragment : BaseFragment<FragmentMyTradesBinding>() {
 
     private val adapter by lazy {
         MultiTypeAdapter().apply {
-            registerDelegate(MyTradeDelegate())
+            registerDelegate(MyTradeDelegate {
+                navigate(MyTradesFragmentDirections.toMyTradeDetails(it.tradeId))
+            })
             registerDelegate(MyTradesNoTradesDelegate {
                 navigate(R.id.create_trade_fragment)
             })

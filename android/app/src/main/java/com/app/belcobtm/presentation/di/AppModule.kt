@@ -4,11 +4,15 @@ import android.content.Context
 import com.app.belcobtm.presentation.core.coin.AmountCoinValidator
 import com.app.belcobtm.presentation.core.coin.CoinCodeProvider
 import com.app.belcobtm.presentation.core.coin.MinMaxCoinValueProvider
+import com.app.belcobtm.presentation.core.formatter.DoubleCurrencyPriceFormatter
+import com.app.belcobtm.presentation.core.formatter.DoubleCurrencyPriceFormatter.Companion.DOUBLE_CURRENCY_PRICE_FORMATTER_QUALIFIER
 import com.app.belcobtm.presentation.core.formatter.Formatter
+import com.app.belcobtm.presentation.core.formatter.IntCurrencyPriceFormatter
+import com.app.belcobtm.presentation.core.formatter.IntCurrencyPriceFormatter.Companion.INT_CURRENCY_PRICE_FORMATTER_QUALIFIER
 import com.app.belcobtm.presentation.core.formatter.PhoneNumberFormatter
-import com.app.belcobtm.presentation.core.formatter.UsdPriceFormatter
-import com.app.belcobtm.presentation.core.formatter.UsdPriceFormatter.Companion.QUALIFIER
 import com.app.belcobtm.presentation.core.helper.ClipBoardHelper
+import com.app.belcobtm.presentation.core.parser.PriceDoubleParser
+import com.app.belcobtm.presentation.core.parser.StringParser
 import com.app.belcobtm.presentation.core.provider.string.ResourceStringProvider
 import com.app.belcobtm.presentation.core.provider.string.StringProvider
 import com.app.belcobtm.presentation.core.validator.PhoneNumberValidator
@@ -105,7 +109,13 @@ val viewModelModule = module {
             get()
         )
     }
-    viewModel { CreateTradeViewModel(get(), get(), get(), get(), get(), get(), get()) }
+    viewModel {
+        CreateTradeViewModel(
+            get(), get(), get(), get(), get(), get(), get(),
+            get(named(DOUBLE_CURRENCY_PRICE_FORMATTER_QUALIFIER)),
+            get(named(INT_CURRENCY_PRICE_FORMATTER_QUALIFIER)), get()
+        )
+    }
     viewModel { TradeFilterViewModel(get(), get()) }
 }
 
@@ -115,12 +125,15 @@ val viewModelHelperModule = module {
     factory { AmountCoinValidator() }
     factory { PhoneNumberUtil.createInstance(get<Context>()) }
     factory { PhoneNumberValidator(get()) }
-    factory<Formatter<String>> { PhoneNumberFormatter(Locale.US.country) }
+    factory<Formatter<String>> { PhoneNumberFormatter(get<Locale>().country) }
 }
 
 val helperModule = module {
     factory { NotificationHelper(get()) }
     single { ClipBoardHelper(androidApplication()) }
-    single<Formatter<Double>>(named(QUALIFIER)) { UsdPriceFormatter(get()) }
+    single<Locale> { Locale.US }
+    factory<Formatter<Double>>(named(DOUBLE_CURRENCY_PRICE_FORMATTER_QUALIFIER)) { DoubleCurrencyPriceFormatter(get()) }
+    factory<Formatter<Int>>(named(INT_CURRENCY_PRICE_FORMATTER_QUALIFIER)) { IntCurrencyPriceFormatter(get()) }
+    factory<StringParser<Double>> { PriceDoubleParser(get()) }
     single<StringProvider> { ResourceStringProvider(androidApplication().resources) }
 }

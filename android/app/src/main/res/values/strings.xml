@@ -589,7 +589,7 @@
     <string name="min_price_value_label">$0</string>
     <string name="max_price_value_label">$10000</string>
     <string name="create_trade_price_zero_error">Price cannot be zero</string>
-    <string name="create_trade_price_range_zero_error">Min price range value cannot be zero</string>
+    <string name="create_trade_amount_range_error">Invalid amount range. Enter value from %1$s to %2$s</string>
     <string name="create_trade_no_payment_options_selected_error">Select at least one payment option</string>
     <string name="create_trade_not_enough_crypto_balance">Max limit exceeds reserved balance</string>
     <string name="create_trade_already_exists">You already have a %1$s %2$s trade</string>
@@ -603,7 +603,10 @@
     <string name="price_decimal_separator">.</string>
     <string name="price_grouping_separator">,</string>
     <string name="price_format">###,##0.00</string>
-    <string name="usd_price_format">&#x24; %1$s</string>
     <string name="no_orders_message">There isn\'t open orders yet</string>
     <string name="no_trades_result_message">There isn\'t trades with the applied filter</string>
+    <string name="trade_details_buy_sell_button_title">Buy/Sell</string>
+    <string name="trade_buy_sell_crypto_amount_label">Crypto amount</string>
+    <string name="trade_buy_sell_submit_button_label">Submit</string>
+    <string name="usd_amount_label">Fiat amount</string>
 </resources>

@@ -10,4 +10,9 @@ class TradeDetailsFragment : BaseFragment<FragmentTradeDetailsBinding>() {
     override fun createBinding(inflater: LayoutInflater, container: ViewGroup?): FragmentTradeDetailsBinding =
         FragmentTradeDetailsBinding.inflate(inflater, container, false)
 
+    override fun FragmentTradeDetailsBinding.initListeners() {
+        buySellButton.setOnClickListener {
+            navigate(TradeDetailsFragmentDirections.toTradeDetailsBuySell())
+        }
+    }
 }

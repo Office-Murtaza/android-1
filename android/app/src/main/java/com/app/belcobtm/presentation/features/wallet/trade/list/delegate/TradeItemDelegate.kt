@@ -13,15 +13,23 @@ import com.app.belcobtm.presentation.core.extensions.resIcon
 import com.app.belcobtm.presentation.core.extensions.toStringUsd
 import com.app.belcobtm.presentation.features.wallet.trade.list.model.TradeItem
 
-class TradeItemDelegate : AdapterDelegate<TradeItem, TradeItemViewHolder>() {
+class TradeItemDelegate(
+    private val onTradeClickListener: (TradeItem) -> Unit
+) : AdapterDelegate<TradeItem, TradeItemViewHolder>() {
     override val viewType: Int
         get() = TradeItem.TRADE_ITEM_LIST_TYPE
 
     override fun createHolder(parent: ViewGroup, inflater: LayoutInflater): TradeItemViewHolder =
-        TradeItemViewHolder(ItemTradeBinding.inflate(inflater, parent, false))
+        TradeItemViewHolder(
+            ItemTradeBinding.inflate(inflater, parent, false),
+            onTradeClickListener
+        )
 }
 
-class TradeItemViewHolder(private val binding: ItemTradeBinding) : MultiTypeViewHolder<TradeItem>(binding.root) {
+class TradeItemViewHolder(
+    private val binding: ItemTradeBinding,
+    onTradeClickListener: (TradeItem) -> Unit
+) : MultiTypeViewHolder<TradeItem>(binding.root) {
 
     private val paymentAdapter = MultiTypeAdapter()
 
@@ -29,7 +37,7 @@ class TradeItemViewHolder(private val binding: ItemTradeBinding) : MultiTypeView
         paymentAdapter.registerDelegate(TradePaymentOptionDelegate())
         binding.paymentOptions.adapter = paymentAdapter
         binding.root.setOnClickListener {
-            // TODO open trade details
+            onTradeClickListener(model)
         }
     }
 

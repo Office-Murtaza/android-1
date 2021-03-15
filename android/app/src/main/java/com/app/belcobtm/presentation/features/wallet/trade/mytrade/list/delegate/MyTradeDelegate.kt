@@ -14,15 +14,23 @@ import com.app.belcobtm.presentation.core.extensions.toStringUsd
 import com.app.belcobtm.presentation.features.wallet.trade.list.delegate.TradePaymentOptionDelegate
 import com.app.belcobtm.presentation.features.wallet.trade.list.model.TradeItem
 
-class MyTradeDelegate : AdapterDelegate<TradeItem, MyTradeViewHolder>() {
+class MyTradeDelegate(
+    private val onTradeDetailsClick: (TradeItem) -> Unit
+) : AdapterDelegate<TradeItem, MyTradeViewHolder>() {
     override val viewType: Int
         get() = TradeItem.TRADE_ITEM_LIST_TYPE
 
     override fun createHolder(parent: ViewGroup, inflater: LayoutInflater): MyTradeViewHolder =
-        MyTradeViewHolder(ItemMyTradeBinding.inflate(inflater, parent, false))
+        MyTradeViewHolder(
+            ItemMyTradeBinding.inflate(inflater, parent, false),
+            onTradeDetailsClick
+        )
 }
 
-class MyTradeViewHolder(private val binding: ItemMyTradeBinding) : MultiTypeViewHolder<TradeItem>(binding.root) {
+class MyTradeViewHolder(
+    private val binding: ItemMyTradeBinding,
+    onTradeDetailsClick: (TradeItem) -> Unit
+) : MultiTypeViewHolder<TradeItem>(binding.root) {
 
     private val paymentAdapter = MultiTypeAdapter()
 
@@ -30,7 +38,7 @@ class MyTradeViewHolder(private val binding: ItemMyTradeBinding) : MultiTypeView
         paymentAdapter.registerDelegate(TradePaymentOptionDelegate())
         binding.paymentOptions.adapter = paymentAdapter
         binding.root.setOnClickListener {
-            // TODO open trade details
+            onTradeDetailsClick(model)
         }
     }
 
@@ -47,7 +55,7 @@ class MyTradeViewHolder(private val binding: ItemMyTradeBinding) : MultiTypeView
                 R.string.trade_list_item_usd_formatted, price.toStringUsd()
             )
             paymentAdapter.update(paymentMethods)
-            if(tradeType == TradeType.BUY) {
+            if (tradeType == TradeType.BUY) {
                 binding.tradeType.setBackgroundResource(R.drawable.trade_type_buy_background)
                 val tradeTypeDrawable = ContextCompat.getDrawable(binding.root.context, R.drawable.ic_trade_type_buy)
                 binding.tradeType.setCompoundDrawables(tradeTypeDrawable, null, null, null)

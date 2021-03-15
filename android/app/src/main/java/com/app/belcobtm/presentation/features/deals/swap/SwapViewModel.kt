@@ -98,7 +98,7 @@ class SwapViewModel(
                         // move to next step
                         updateCoins(
                             originCoinsData.first { it.code == LocalCoinType.BTC.name },
-                            originCoinsData.first { it.code == LocalCoinType.USDT.name }
+                            originCoinsData.first { it.code == LocalCoinType.USDC.name }
                         )
                     },
                     onError = { _initLoadingData.value = LoadingData.Error(Failure.ServerError()) }

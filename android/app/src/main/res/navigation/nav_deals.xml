@@ -110,10 +110,33 @@
             app:exitAnim="@anim/slide_to_left"
             app:popEnterAnim="@anim/slide_from_left"
             app:popExitAnim="@anim/slide_to_right" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/trade_list"
+        android:name="com.app.belcobtm.presentation.features.wallet.trade.list.TradeListFragment"
+        android:label="CreateTradeFragment"
+        tools:layout="@layout/fragment_create_trade">
+
+        <action
+            android:id="@+id/to_create_trade_fragment"
+            app:destination="@id/create_trade_fragment"
+            app:enterAnim="@anim/slide_from_right"
+            app:exitAnim="@anim/slide_to_left"
+            app:popEnterAnim="@anim/slide_from_left"
+            app:popExitAnim="@anim/slide_to_right" />
 
         <action
             android:id="@+id/to_filter_trade_fragment"
             app:destination="@id/filter_trade_fragment"
+            app:enterAnim="@anim/slide_from_right"
+            app:exitAnim="@anim/slide_to_left"
+            app:popEnterAnim="@anim/slide_from_left"
+            app:popExitAnim="@anim/slide_to_right" />
+
+        <action
+            android:id="@+id/to_trade_details"
+            app:destination="@id/trade_details"
             app:enterAnim="@anim/slide_from_right"
             app:exitAnim="@anim/slide_to_left"
             app:popEnterAnim="@anim/slide_from_left"
@@ -131,5 +154,89 @@
         android:name="com.app.belcobtm.presentation.features.wallet.trade.create.CreateTradeFragment"
         android:label="CreateTradeFragment"
         tools:layout="@layout/fragment_create_trade" />
+
+    <fragment
+        android:id="@+id/trade_details"
+        android:name="com.app.belcobtm.presentation.features.wallet.trade.details.TradeDetailsFragment"
+        android:label="DetailsTradeFragment"
+        tools:layout="@layout/fragment_trade_details">
+
+        <argument
+            android:name="tradeId"
+            app:argType="integer"
+            app:nullable="false" />
+
+        <action
+            android:id="@+id/to_trade_details_buy_sell"
+            app:destination="@id/trade_details_buy_sell"
+            app:enterAnim="@anim/slide_from_right"
+            app:exitAnim="@anim/slide_to_left"
+            app:popEnterAnim="@anim/slide_from_left"
+            app:popExitAnim="@anim/slide_to_right" />
+    </fragment>
+
+    <dialog
+        android:id="@+id/trade_details_buy_sell"
+        android:name="com.app.belcobtm.presentation.features.wallet.trade.buysell.TradeBuySellBottomSheetFragment"
+        android:label="BuySellTradeFragment"
+        tools:layout="@layout/fragment_trade_buy_sell_fragment" />
+
+    <fragment
+        android:id="@+id/my_trades_fragment"
+        android:name="com.app.belcobtm.presentation.features.wallet.trade.mytrade.list.MyTradesFragment"
+        android:label="MyTradesFragment"
+        tools:layout="@layout/fragment_my_trades">
+
+        <action
+            android:id="@+id/to_my_trade_details"
+            app:destination="@id/my_trade_details_fragment"
+            app:enterAnim="@anim/slide_from_right"
+            app:exitAnim="@anim/slide_to_left"
+            app:popEnterAnim="@anim/slide_from_left"
+            app:popExitAnim="@anim/slide_to_right" />
+
+        <action
+            android:id="@+id/to_create_trade"
+            app:destination="@id/create_trade_fragment"
+            app:enterAnim="@anim/slide_from_right"
+            app:exitAnim="@anim/slide_to_left"
+            app:popEnterAnim="@anim/slide_from_left"
+            app:popExitAnim="@anim/slide_to_right" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/my_trade_details_fragment"
+        android:name="com.app.belcobtm.presentation.features.wallet.trade.mytrade.details.MyTradeDetailsFragment"
+        android:label="MyTradeDetailsFragment"
+        tools:layout="@layout/fragment_my_trade_details">
+
+        <argument
+            android:name="tradeId"
+            app:argType="integer"
+            app:nullable="false" />
+
+        <action
+            android:id="@+id/to_edit_my_trade_details"
+            app:destination="@id/edit_trade_fragment"
+            app:enterAnim="@anim/slide_from_right"
+            app:exitAnim="@anim/slide_to_left"
+            app:popEnterAnim="@anim/slide_from_left"
+            app:popExitAnim="@anim/slide_to_right" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/edit_trade_fragment"
+        android:name="com.app.belcobtm.presentation.features.wallet.trade.edit.EditTradeFragment"
+        android:label="CreateTradeFragment"
+        tools:layout="@layout/fragment_edit_trade">
+
+        <argument
+            android:name="tradeId"
+            app:argType="integer"
+            app:nullable="false" />
+
+    </fragment>
 
 </navigation>

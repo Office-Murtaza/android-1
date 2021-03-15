@@ -184,7 +184,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:digits="1234567890$"
-                android:inputType="number"
                 tools:text="$100" />
 
         </com.google.android.material.textfield.TextInputLayout>
@@ -204,39 +203,33 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:digits="1234567890$"
-                android:inputType="number"
                 tools:text="$100" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
         <TextView
             android:id="@+id/amount_range_error"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
+            android:layout_marginTop="16dp"
             android:textColor="@color/colorError"
             android:textSize="12sp"
             android:visibility="gone"
-            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@id/amount_range_slider"
-            app:layout_constraintTop_toBottomOf="@id/crypto_amount_value"
+            app:layout_constraintTop_toBottomOf="@id/amount_min_limit_input_layout"
             tools:text="Validation error message"
             tools:visibility="visible" />
 
         <TextView
             android:id="@+id/crypto_amount_value"
             style="@style/Text.Regular1"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
             android:layout_marginTop="16dp"
             android:layout_marginEnd="16dp"
-            android:gravity="end"
             android:lineSpacingExtra="@dimen/margin_half"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/amount_max_limit_input_layout"
             tools:text="~0.6555 BTC" />
 
@@ -250,7 +243,7 @@
             android:background="@color/thin_divider"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/amount_range_error" />
+            app:layout_constraintTop_toBottomOf="@id/crypto_amount_value" />
 
         <TextView
             android:id="@+id/terms_label"

@@ -1,4 +1,4 @@
-package com.app.belcobtm.presentation.features.wallet.trade.create
+package com.app.belcobtm.presentation.features.wallet.trade.edit
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -16,26 +16,20 @@ import com.app.belcobtm.domain.wallet.interactor.GetCoinDetailsUseCase
 import com.app.belcobtm.domain.wallet.interactor.GetFreshCoinsUseCase
 import com.app.belcobtm.domain.wallet.item.CoinDataItem
 import com.app.belcobtm.domain.wallet.item.CoinDetailsDataItem
-import com.app.belcobtm.presentation.core.formatter.Formatter
-import com.app.belcobtm.presentation.core.livedata.CombinedLiveData
 import com.app.belcobtm.presentation.core.mvvm.LoadingData
-import com.app.belcobtm.presentation.core.parser.StringParser
 import com.app.belcobtm.presentation.core.provider.string.StringProvider
 import com.app.belcobtm.presentation.features.wallet.trade.create.model.AvailableTradePaymentOption
 import com.app.belcobtm.presentation.features.wallet.trade.create.model.CreateTradeItem
 import kotlinx.coroutines.launch
 
-class CreateTradeViewModel(
+class EditTradeViewModel(
     private val getCoinDetailsUseCase: GetCoinDetailsUseCase,
     private val getAvailableTradePaymentOptionsUseCase: GetAvailableTradePaymentOptionsUseCase,
     private val getFreshCoinsUseCase: GetFreshCoinsUseCase,
     private val accountDao: AccountDao,
     private val createTradeUseCase: CreateTradeUseCase,
     private val checkTradeCreationAvailabilityUseCase: CheckTradeCreationAvailabilityUseCase,
-    private val stringProvider: StringProvider,
-    private val priceFormatter: Formatter<Double>,
-    private val amountFormatter: Formatter<Int>,
-    private val priceParser: StringParser<Double>
+    private val stringProvider: StringProvider
 ) : ViewModel() {
 
     private lateinit var coinList: List<CoinDataItem>
@@ -74,25 +68,10 @@ class CreateTradeViewModel(
     private val _amountMaxLimit = MutableLiveData<Int>()
     val amountMaxLimit: LiveData<Int> = _amountMaxLimit
 
-    val cryptoAmountFormatted: LiveData<String> =
-        CombinedLiveData(price, amountMaxLimit, selectedCoin) { price, maxAmount, coin ->
-            val cryptoAmount = if (maxAmount == null || price == null || price == 0.0) {
-                0.0
-            } else {
-                maxAmount.toDouble() / price
-            }
-            stringProvider.getString(R.string.trade_crypto_amount_value, cryptoAmount, coin?.code.orEmpty())
-        }
 
     init {
         fetchInitialData()
     }
-
-    fun parsePrice(input: String) = priceParser.parse(input)
-
-    fun formatAmount(amount: Int) = amountFormatter.format(amount)
-
-    fun formatPrice(price: Double) = priceFormatter.format(price)
 
     fun fetchInitialData() {
         viewModelScope.launch {
@@ -142,12 +121,7 @@ class CreateTradeViewModel(
         updateCoinInfo(coinDataItem)
     }
 
-    fun createTrade(
-        @TradeType type: Int,
-        terms: String,
-        minRangeAmount: Int,
-        maxRangeAmount: Int
-    ) {
+    fun createTrade(@TradeType type: Int, priceRange: List<Float>, terms: String) {
         // TODO validate unique trade
         val paymentOptions = availablePaymentOptions.value.orEmpty()
             .asSequence()
@@ -165,22 +139,13 @@ class CreateTradeViewModel(
             _snackbarMessage.value = stringProvider.getString(R.string.create_trade_no_payment_options_selected_error)
             return
         }
-        val fromAmount = _amountMinLimit.value ?: 0
-        val toAmount = _amountMaxLimit.value ?: 0
-        if (
-            fromAmount < minRangeAmount || fromAmount > maxRangeAmount
-            || toAmount < minRangeAmount || toAmount > maxRangeAmount
-        ) {
-            _priceRangeError.value = stringProvider.getString(
-                R.string.create_trade_amount_range_error,
-                amountFormatter.format(minRangeAmount),
-                amountFormatter.format(maxRangeAmount)
-            )
-            return
-        } else {
-            _priceRangeError.value = null
-        }
-        val cryptoAmount = toAmount / price
+//        if (priceRange[0] <= 0.0f || priceRange[1] <= 0.0f) {
+//            _priceRangeError.value = stringProvider.getString(R.string.create_trade_price_range_zero_error)
+//            return
+//        } else {
+//            _priceRangeError.value = null
+//        }
+        val cryptoAmount = priceRange[1] / price
         if (type == TradeType.SELL && cryptoAmount > selectedCoin.value?.reservedBalanceCoin ?: 0.0) {
             _snackbarMessage.value = stringProvider.getString(R.string.create_trade_not_enough_crypto_balance)
             return
@@ -190,7 +155,7 @@ class CreateTradeViewModel(
             CheckTradeCreationAvailabilityUseCase.Params(coinCode, type),
             onSuccess = { canCreateTrade ->
                 if (canCreateTrade) {
-                    createTrade(type, coinCode, price, fromAmount, toAmount, terms, paymentOptions)
+                    createTrade(type, coinCode, price, priceRange, terms, paymentOptions)
                 } else {
                     val tradeLabel = stringProvider.getString(
                         if (type == TradeType.SELL) {
@@ -215,8 +180,7 @@ class CreateTradeViewModel(
         type: Int,
         coinCode: String,
         price: Double,
-        fromAmount: Int,
-        toAmount: Int,
+        priceRange: List<Float>,
         terms: String,
         paymentOptions: List<@PaymentOption Int>
     ) {
@@ -224,7 +188,7 @@ class CreateTradeViewModel(
         createTradeUseCase.invoke(
             CreateTradeItem(
                 type, coinCode, price.toInt(),
-                fromAmount, toAmount,
+                priceRange[0].toInt(), priceRange[1].toInt(),
                 terms, paymentOptions
             ), onSuccess = {
                 _createTradeLoadingData.value = LoadingData.Success(it)
