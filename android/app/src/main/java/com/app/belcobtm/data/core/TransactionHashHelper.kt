@@ -44,7 +44,7 @@ class TransactionHashHelper(
             fromCoinAmount
         )
         LocalCoinType.ETH,
-        LocalCoinType.USDT,
+        LocalCoinType.USDC,
         LocalCoinType.CATM -> createTransactionHashETH(
             toAddress,
             fromCoin,
@@ -198,7 +198,7 @@ class TransactionHashHelper(
             val nonceResponse = (response as Either.Right).b
             val coinFee = prefsHelper.coinsDetails[fromCoin.name]
             val amountMultipliedByDivider = BigDecimal(fromCoinAmount * when (fromCoin) {
-                LocalCoinType.USDT -> USDT_UNIT
+                LocalCoinType.USDC -> USDC_UNIT
                 else -> CoinType.ETHEREUM.unit()
             })
             val hexAmount = addLeadingZeroes(amountMultipliedByDivider.toLong().toString(16))?.toHexByteArray()

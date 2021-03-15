@@ -98,7 +98,7 @@ class SwapViewModel(
                         // move to next step
                         updateCoins(
                             originCoinsData.first { it.code == LocalCoinType.BTC.name },
-                            originCoinsData.first { it.code == LocalCoinType.USDT.name }
+                            originCoinsData.first { it.code == LocalCoinType.USDC.name }
                         )
                     },
                     onError = { _initLoadingData.value = LoadingData.Error(Failure.ServerError()) }
@@ -354,7 +354,7 @@ class SwapViewModel(
         receiveCoin: CoinDataItem,
         receiveCoinDetails: CoinDetailsDataItem,
     ): Double {
-        // fee(B) = convertedTxFee(B) in case B is CATM or USDT
+        // fee(B) = convertedTxFee(B) in case B is CATM or USDC
         // fee(B) = txFee(B) for the rest of coins.
         return when (receiveCoin.isEthRelatedCoin()) {
             true -> receiveCoinDetails.convertedTxFee
