@@ -21,5 +21,5 @@ fun CoinDataItem.isEthRelatedCoin(): Boolean {
 }
 
 fun String.isEthRelatedCoinCode(): Boolean {
-    return this == LocalCoinType.USDT.name || this == LocalCoinType.CATM.name
+    return this == LocalCoinType.USDC.name || this == LocalCoinType.CATM.name
 }
