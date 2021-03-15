@@ -54,8 +54,8 @@ public class TradeController {
         return tradeService.cancelOrder(userId, id);
     }
 
-    @MessageMapping("/chat")
-    public void processMessage(@Payload ChatMessageDTO dto) {
-        tradeService.processMessage(dto);
+    @MessageMapping("/order-chat")
+    public void wsReceiveMessage(@Payload ChatMessageDTO dto) {
+        tradeService.onChatMessage(dto);
     }
 }

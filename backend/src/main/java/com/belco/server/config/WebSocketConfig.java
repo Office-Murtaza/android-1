@@ -6,7 +6,6 @@ import com.belco.server.service.CoinService;
 import com.belco.server.service.UserService;
 import com.belco.server.util.Constant;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
@@ -34,21 +33,17 @@ import java.util.List;
 @EnableWebSocketMessageBroker
 public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
-    @Autowired
-    private JWTTokenProvider tokenProvider;
+    private final JWTTokenProvider tokenProvider;
+    private final CoinService coinService;
+    private final UserService userService;
+    private final MessageChannel clientOutboundChannel;
 
-    @Autowired
-    @Lazy
-    private CoinService coinService;
-
-    @Autowired
-    @Lazy
-    private UserService userService;
-
-    @Autowired
-    @Lazy
-    @Qualifier("clientOutboundChannel")
-    private MessageChannel clientOutboundChannel;
+    public WebSocketConfig(JWTTokenProvider tokenProvider, @Lazy CoinService coinService, @Lazy UserService userService, @Lazy @Qualifier("clientOutboundChannel") MessageChannel clientOutboundChannel) {
+        this.tokenProvider = tokenProvider;
+        this.coinService = coinService;
+        this.userService = userService;
+        this.clientOutboundChannel = clientOutboundChannel;
+    }
 
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
@@ -111,7 +106,7 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
                     String name = authentication == null ? accessor.getUser().getName() : authentication.getName();
                     System.out.println(" ---- " + accessor.getCommand() + ": " + name);
 
-                    if(StringUtils.isNotBlank(name) && "anonymous".equalsIgnoreCase(name)) {
+                    if (StringUtils.isNotBlank(name) && "anonymous".equalsIgnoreCase(name)) {
                         StompHeaderAccessor headerAccessor = StompHeaderAccessor.create(StompCommand.ERROR);
                         headerAccessor.setMessage("Access is denied");
                         headerAccessor.setSessionId(accessor.getSessionId());

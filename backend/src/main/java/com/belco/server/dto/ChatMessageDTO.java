@@ -22,5 +22,8 @@ public class ChatMessageDTO {
     private Long senderId;
     private Long recipientId;
     private String message;
+    private String fileBase64;
+    private String fileExtension;
+    private String filePath;
     private long timestamp;
 }
