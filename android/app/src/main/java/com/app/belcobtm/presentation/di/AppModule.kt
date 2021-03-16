@@ -4,7 +4,6 @@ import android.content.Context
 import com.app.belcobtm.presentation.core.coin.AmountCoinValidator
 import com.app.belcobtm.presentation.core.coin.CoinCodeProvider
 import com.app.belcobtm.presentation.core.coin.MinMaxCoinValueProvider
-import com.app.belcobtm.presentation.core.formatter.Formatter
 import com.app.belcobtm.presentation.core.formatter.PhoneNumberFormatter
 import com.app.belcobtm.presentation.core.helper.ClipBoardHelper
 import com.app.belcobtm.presentation.core.validator.PhoneNumberValidator
@@ -113,6 +112,7 @@ val viewModelModule = module {
         TransactionDetailsViewModel(
             txId,
             coinCode,
+            get(),
             get()
         )
     }
@@ -136,7 +136,7 @@ val viewModelHelperModule = module {
     factory { AmountCoinValidator() }
     factory { PhoneNumberUtil.createInstance(get<Context>()) }
     factory { PhoneNumberValidator(get()) }
-    factory<Formatter<String>> { PhoneNumberFormatter(Locale.US.country) }
+    factory { PhoneNumberFormatter(Locale.US.country) }
 }
 
 val helperModule = module {

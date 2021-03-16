@@ -225,21 +225,14 @@
     </style>
 
     <style name="CoinDetails.Table.Key">
-        <item name="android:layout_width">0dp</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_weight">1</item>
-        <item name="android:textSize">16sp</item>
+        <item name="android:textSize">14sp</item>
         <item name="android:textColor">#8d8d8d</item>
     </style>
 
     <style name="CoinDetails.Table.Value">
-        <item name="android:layout_width">0dp</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_weight">2</item>
         <item name="android:textSize">16sp</item>
-        <item name="android:textColor">#58585a</item>
+        <item name="android:textColor">@android:color/black</item>
     </style>
-
 
     <style name="VerificationInfoScreen" />
 

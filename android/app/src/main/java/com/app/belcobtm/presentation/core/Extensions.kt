@@ -43,7 +43,7 @@ fun Long.toByteArray(): ByteArray {
 class QRUtils{
     companion object{
 
-        fun getSpacelessQR(text:String,h:Int,w:Int): Bitmap?{
+        fun getSpacelessQR(text:String,h:Int,w:Int): Bitmap? {
             try {
                 /**
                  * Allow the zxing engine use the default argument for the margin variable
