@@ -15,7 +15,7 @@ class AmountCoinValidator {
         coinList: List<CoinDataItem>
     ): ValidationResult =
         when (coin?.code) {
-            LocalCoinType.CATM.name, LocalCoinType.USDT.name -> {
+            LocalCoinType.CATM.name, LocalCoinType.USDC.name -> {
                 val balanceCoin = coinList.find { LocalCoinType.ETH.name == it.code }?.balanceCoin
                 if (balanceCoin ?: 0.0 < coinDetails.txFee) {
                     ValidationResult.InValid(R.string.withdraw_screen_where_money_libovski)

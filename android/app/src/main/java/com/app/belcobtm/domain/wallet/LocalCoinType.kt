@@ -11,7 +11,7 @@ enum class LocalCoinType(val fullName: String, val trustWalletType: CoinType) {
     BNB("Binance", CoinType.BINANCE),
     TRX("Tron", CoinType.TRON),
     XRP("Ripple", CoinType.XRP),
-    USDT("Tether", CoinType.ETHEREUM),
+    USDC("USD Coin", CoinType.ETHEREUM),
     DOGE("Doge", CoinType.DOGECOIN),
     DASH("Dash", CoinType.DASH),
 }
