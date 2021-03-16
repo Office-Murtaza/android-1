@@ -18,6 +18,7 @@ import com.belco.server.repository.UserCoinRep;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.bson.Document;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.mongodb.core.MongoTemplate;
@@ -34,6 +35,8 @@ import java.util.stream.Collectors;
 
 @Service
 public class TradeService {
+
+    private static final String COLL_ORDER_CHAT = "order_chat";
 
     private final TradeRep tradeRep;
     private final OrderRep orderRep;
@@ -69,10 +72,13 @@ public class TradeService {
             List<TradeDTO> trades = tradesMap.values()
                     .stream().sorted(Comparator.comparing(TradeDTO::getPrice)).collect(Collectors.toList());
 
-            List<OrderDTO> orders = orderRep.findAllByMakerOrTaker(user, user)
-                    .stream().map(Order::toDTO).collect(Collectors.toList());
+            Map<Long, OrderDTO> orders = orderRep.findAllByMakerOrTaker(user, user)
+                    .stream().collect(Collectors.toMap(Order::getId, Order::toDTO));
 
-            return Response.ok(new TradesDTO(user.getIdentity().getPublicId(), user.getVerificationStatus(), user.getTotalTrades(), user.getTradingRate(), trades, orders));
+            mongo.getCollection(COLL_ORDER_CHAT).createIndex(new Document("orderId", 1));
+            mongo.getCollection(COLL_ORDER_CHAT).find(new Document("orderId", new Document("$in", orders.keySet()))).into(new ArrayList<>()).stream().forEach(d -> orders.get(d.getLong("orderId")).getChat().add(ChatMessageDTO.toDTO(d)));
+
+            return Response.ok(new TradesDTO(user.getIdentity().getPublicId(), user.getVerificationStatus(), user.getTotalTrades(), user.getTradingRate(), trades, new ArrayList<>(orders.values())));
         } catch (Exception e) {
             e.printStackTrace();
             return Response.serverError();
@@ -348,9 +354,9 @@ public class TradeService {
                 dto.setFilePath(newFilePath);
             }
 
-            mongo.save(dto);
+            mongo.getCollection("order_chat").insertOne(dto.toDocument());
 
-            wsPushChatMessage(userService.findById(dto.getRecipientId()).getPhone(), dto);
+            wsPushChatMessage(userService.findById(dto.getToUserId()).getPhone(), dto);
         } catch (Exception e) {
             e.printStackTrace();
         }

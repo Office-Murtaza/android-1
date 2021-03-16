@@ -10,6 +10,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Date;
 
 @Setter
@@ -66,16 +67,19 @@ public class Order extends BaseEntity {
                 getTerms(),
                 getMaker().getId(),
                 getMaker().getIdentity().getPublicId(),
+                getMaker().getVerificationStatus(),
                 getMaker().getLatitude(),
                 getMaker().getLongitude(),
                 getMaker().getTotalTrades(),
                 getMaker().getTradingRate(),
                 getTaker().getId(),
                 getTaker().getIdentity().getPublicId(),
+                getTaker().getVerificationStatus(),
                 getTaker().getLatitude(),
                 getTaker().getLongitude(),
                 getTaker().getTotalTrades(),
-                getTaker().getTradingRate()
+                getTaker().getTradingRate(),
+                new ArrayList<>()
         );
     }
 }

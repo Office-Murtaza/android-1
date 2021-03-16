@@ -71,6 +71,7 @@ public class Trade extends BaseEntity {
                 getOpenOrders(),
                 getMaker().getId(),
                 getMaker().getIdentity().getPublicId(),
+                getMaker().getVerificationStatus(),
                 getMaker().getLatitude(),
                 getMaker().getLongitude(),
                 getMaker().getTotalTrades(),

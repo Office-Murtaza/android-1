@@ -81,6 +81,7 @@ public class UserService implements UserDetailsService {
         User user = new User();
         user.setPhone(dto.getPhone());
         user.setPassword(passwordEncoder.encode(dto.getPassword()));
+        user.setStatus(VerificationStatus.NOT_VERIFIED.getValue());
         user.setRole("ROLE_USER");
         user.setPlatform(dto.getPlatform());
         user.setDeviceModel(dto.getDeviceModel());

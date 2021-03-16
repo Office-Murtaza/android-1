@@ -1,6 +1,7 @@
 package com.belco.server.dto;
 
 import com.belco.server.model.OrderStatus;
+import com.belco.server.model.VerificationStatus;
 import com.belco.server.service.CoinService;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -10,6 +11,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 @Setter
 @Getter
@@ -37,6 +39,10 @@ public class OrderDTO {
 
     private Long makerId;
     private String makerPublicId;
+
+    @JsonFormat(shape = JsonFormat.Shape.OBJECT)
+    private VerificationStatus makerStatus;
+
     private BigDecimal makerLatitude;
     private BigDecimal makerLongitude;
     private Integer makerTotalTrades;
@@ -44,8 +50,14 @@ public class OrderDTO {
 
     private Long takerId;
     private String takerPublicId;
+
+    @JsonFormat(shape = JsonFormat.Shape.OBJECT)
+    private VerificationStatus takerStatus;
+
     private BigDecimal takerLatitude;
     private BigDecimal takerLongitude;
     private Integer takerTotalTrades;
     private BigDecimal takerTradingRate;
+
+    private List<ChatMessageDTO> chat;
 }
