@@ -32,6 +32,9 @@ class AuthApiService(private val authApi: AuthApi) {
     suspend fun createWallet(
         phone: String,
         password: String,
+        lat: Double?,
+        lng: Double?,
+        timezone: String,
         notificationToken: String?,
         coinMap: Map<String, String>
     ): Either<Failure, CreateRecoverWalletResponse> = try {
@@ -42,6 +45,9 @@ class AuthApiService(private val authApi: AuthApi) {
             deviceModel,
             deviceOS,
             appVersion,
+            lat,
+            lng,
+            timezone,
             notificationToken,
             coinList
         )
@@ -55,6 +61,9 @@ class AuthApiService(private val authApi: AuthApi) {
     suspend fun recoverWallet(
         phone: String,
         password: String,
+        lat: Double?,
+        lng: Double?,
+        timezone: String,
         notificationToken: String?,
         coinMap: Map<String, String>
     ): Either<Failure, CreateRecoverWalletResponse> = try {
@@ -65,6 +74,9 @@ class AuthApiService(private val authApi: AuthApi) {
             deviceModel,
             deviceOS,
             appVersion,
+            lat,
+            lng,
+            timezone,
             notificationToken,
             coinList
         )

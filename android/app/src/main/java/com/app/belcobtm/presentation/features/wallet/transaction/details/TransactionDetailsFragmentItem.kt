@@ -4,6 +4,7 @@ import com.app.belcobtm.domain.transaction.item.TransactionDetailsDataItem
 import com.app.belcobtm.domain.transaction.type.TransactionCashStatusType
 import com.app.belcobtm.domain.transaction.type.TransactionStatusType
 import com.app.belcobtm.domain.transaction.type.TransactionType
+import com.app.belcobtm.presentation.core.DateFormat
 
 data class TransactionDetailsFragmentItem(
     val txId: String,
@@ -30,8 +31,12 @@ data class TransactionDetailsFragmentItem(
     val cashStatusType: TransactionCashStatusType
 )
 
-fun TransactionDetailsDataItem.mapToUiItem(): TransactionDetailsFragmentItem =
-    TransactionDetailsFragmentItem(
+fun TransactionDetailsDataItem.mapToUiItem(): TransactionDetailsFragmentItem {
+    val formattedDate = when (timestamp) {
+        null -> ""
+        else -> DateFormat.sdfLong.format(timestamp)
+    }
+    return TransactionDetailsFragmentItem(
         txId = txId,
         txDbId = txDbId,
         cryptoAmount = cryptoAmount,
@@ -39,7 +44,7 @@ fun TransactionDetailsDataItem.mapToUiItem(): TransactionDetailsFragmentItem =
         cryptoFee = cryptoFee,
         refCryptoAmount = refCryptoAmount,
         link = link,
-        date = date,
+        date = formattedDate,
         fromPhone = fromPhone,
         toPhone = toPhone,
         fromAddress = fromAddress,
@@ -55,3 +60,4 @@ fun TransactionDetailsDataItem.mapToUiItem(): TransactionDetailsFragmentItem =
         statusType = statusType,
         cashStatusType = cashStatusType
     )
+}

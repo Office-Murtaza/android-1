@@ -10,7 +10,8 @@ class TransactionDetailsViewModel(
     private val coinCode: String,
     private val transactionDetailsUseCase: GetTransactionDetailsUseCase
 ) : ViewModel() {
-    val transactionDetailsLiveData: MutableLiveData<LoadingData<TransactionDetailsFragmentItem>> = MutableLiveData()
+    val transactionDetailsLiveData: MutableLiveData<LoadingData<TransactionDetailsFragmentItem>> =
+        MutableLiveData()
 
     init {
         getTransactionDetails()
@@ -20,7 +21,9 @@ class TransactionDetailsViewModel(
         transactionDetailsLiveData.value = LoadingData.Loading()
         transactionDetailsUseCase.invoke(
             params = GetTransactionDetailsUseCase.Params(txId, coinCode),
-            onSuccess = { transactionDetailsLiveData.value = LoadingData.Success(it.mapToUiItem()) },
+            onSuccess = {
+                transactionDetailsLiveData.value = LoadingData.Success(it.mapToUiItem())
+            },
             onError = { transactionDetailsLiveData.value = LoadingData.Error(it) }
         )
     }

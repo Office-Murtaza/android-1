@@ -13,7 +13,7 @@ data class TransactionItemResponse(
     val txId: String?,
     val txDbId: String?,
     val index: Int,
-    val date1: String,
+    val timestamp: Long,
     val status: Int,
     val type: Int,
     val cryptoAmount: Double
@@ -23,7 +23,7 @@ fun TransactionItemResponse.mapToDataItem(): TransactionDataItem = TransactionDa
     txId = txId ?: "",
     txDbId = txDbId ?: "",
     index = index,
-    date = date1,
+    timestamp = timestamp,
     cryptoAmount = cryptoAmount,
     type = TransactionType.values().firstOrNull { it.code == type } ?: TransactionType.UNKNOWN,
     status = TransactionStatusType.values().firstOrNull { it.code == status } ?: TransactionStatusType.UNKNOWN

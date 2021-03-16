@@ -9,8 +9,8 @@ class StakeDetailsDataItem(
         val rewardsAnnualAmount: Double?,
         val rewardsPercent: Double?,
         val rewardsAnnualPercent: Double?,
-        val createDate: String?,
-        val cancelDate: String?,
+        val createTimestamp: Long?,
+        val cancelTimestamp: Long?,
         val duration: Int?,
         val cancelHoldPeriod: Int,
         val untilWithdraw: Int?

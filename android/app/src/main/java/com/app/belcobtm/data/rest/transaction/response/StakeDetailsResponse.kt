@@ -10,8 +10,8 @@ class StakeDetailsResponse(
     val rewardAnnualAmount: Double?,
     val holdPeriod: Int,
     val annualPercent: Double,
-    val createDate: String?,
-    val cancelDate: String?,
+    val createTimestamp: Long?,
+    val cancleTimestamp: Long?,
     val duration: Int?,
     val tillWithdrawal: Int?
 )
@@ -23,8 +23,8 @@ fun StakeDetailsResponse.mapToDataItem(): StakeDetailsDataItem = StakeDetailsDat
     rewardsAnnualPercent = annualPercent,
     rewardsAmount = rewardAmount,
     rewardsPercent = rewardPercent,
-    createDate = createDate,
-    cancelDate = cancelDate,
+    createTimestamp = createTimestamp,
+    cancelTimestamp = cancleTimestamp,
     duration = duration,
     cancelHoldPeriod = holdPeriod,
     untilWithdraw = tillWithdrawal
