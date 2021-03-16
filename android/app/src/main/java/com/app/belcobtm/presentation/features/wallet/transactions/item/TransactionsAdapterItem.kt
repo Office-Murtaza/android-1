@@ -4,6 +4,8 @@ import androidx.recyclerview.widget.DiffUtil
 import com.app.belcobtm.domain.transaction.item.TransactionDataItem
 import com.app.belcobtm.domain.transaction.type.TransactionStatusType
 import com.app.belcobtm.domain.transaction.type.TransactionType
+import com.app.belcobtm.presentation.core.DateFormat
+import java.text.SimpleDateFormat
 
 data class TransactionsAdapterItem(
     val id: String,
@@ -14,14 +16,15 @@ data class TransactionsAdapterItem(
     val type: TransactionType
 )
 
-fun TransactionDataItem.mapToUiItem(): TransactionsAdapterItem = TransactionsAdapterItem(
-    id = txId,
-    dbId = txDbId,
-    date = date,
-    cryptoAmount = cryptoAmount,
-    type = type,
-    status = status
-)
+fun TransactionDataItem.mapToUiItem(): TransactionsAdapterItem =
+    TransactionsAdapterItem(
+        id = txId,
+        dbId = txDbId,
+        date = DateFormat.sdfShort.format(timestamp),
+        cryptoAmount = cryptoAmount,
+        type = type,
+        status = status
+    )
 
 class TransactionsAdapterItemCallback : DiffUtil.ItemCallback<TransactionsAdapterItem>() {
     override fun areItemsTheSame(
