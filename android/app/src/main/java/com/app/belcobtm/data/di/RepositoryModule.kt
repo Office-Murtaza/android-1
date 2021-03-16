@@ -15,6 +15,7 @@ import org.koin.dsl.module
 val repositoryModule = module {
     single<AuthorizationRepository> {
         AuthorizationRepositoryImpl(
+            androidApplication(),
             get(),
             get(),
             (get() as AppDatabase).getCoinDao()

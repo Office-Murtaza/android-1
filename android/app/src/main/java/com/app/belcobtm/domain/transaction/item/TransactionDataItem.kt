@@ -4,7 +4,7 @@ import com.app.belcobtm.domain.transaction.type.TransactionStatusType
 import com.app.belcobtm.domain.transaction.type.TransactionType
 
 data class TransactionDataItem(
-    val date: String,
+    val timestamp: Long,
     val index: Int,
     val txId: String,
     val txDbId: String,

@@ -6,6 +6,9 @@ data class CreateWalletRequest(
     val deviceModel: String,
     val deviceOS: String,
     val appVersion: String,
+    val latitude: Double?,
+    val longitude: Double?,
+    val timezone: String,
     val notificationsToken: String?,
     val coins: List<CreateWalletCoinRequest>,
     val platform: Int = 2//android
