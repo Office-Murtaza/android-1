@@ -9,7 +9,7 @@
 import Foundation
 
 extension Int {
-    func toDate(format: String) -> String {
+    func timestampToStringDate(format: String) -> String {
         let dateFormatter = DateFormatter()
         dateFormatter.timeZone = TimeZone.current
         dateFormatter.dateFormat = format

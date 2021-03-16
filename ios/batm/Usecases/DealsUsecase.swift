@@ -76,7 +76,7 @@ class DealsUsecaseImpl: DealsUsecase {
             .flatMapCompletable { [unowned self] account, transactionResultString in
                 return self.submit(userId: account.userId,
                                    type: fromCoin.type,
-                                   txType: .sendС2С,
+                                   txType: .sendSwap,
                                    amount: amount,
                                    fee: coinDetails.txFee,
                                    fromAddress: fromCoin.address,

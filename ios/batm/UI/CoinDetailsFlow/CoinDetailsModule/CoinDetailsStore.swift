@@ -81,7 +81,7 @@ final class CoinDetailsStore: ViewStore<CoinDetailsAction, CoinDetailsState> {
       state.predefinedData?.selectedPrediod = selectedPeriod
     case .startFetching: state.isFetching = true
     case .finishFetching: state.isFetching = false
-    case let.finishFetchingTransactions(transactions):
+    case let .finishFetchingTransactions(transactions):
       state.isFetching = false
       state.transactions = transactions
     case let .finishFetchingNextTransactions(transactions):

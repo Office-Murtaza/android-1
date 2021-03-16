@@ -37,14 +37,14 @@ enum L {
     static let pending = "coin_details.pending"
     static let price = "coin_details.price"
     static let recall = "coin_details.recall"
-    static let receiveC2C = "coin_details.receive_c_2_c"
     static let receiveGift = "coin_details.receive_gift"
+    static let receiveSwap = "coin_details.receive_swap"
     static let reserve = "coin_details.reserve"
     static let reserved = "coin_details.reserved"
     static let se1f = "coin_details.se1f"
     static let sell = "coin_details.sell"
-    static let sendC2C = "coin_details.send_c_2_c"
     static let sendGift = "coin_details.send_gift"
+    static let sendSwap = "coin_details.send_swap"
     static let staking = "coin_details.staking"
     static let threeMonths = "coin_details.three_months"
     static let trade = "coin_details.trade"
@@ -286,6 +286,23 @@ extension L.CoinDetails {
 
   struct Error {
     static let transactionError = "coin_details.error.transaction_error"
+  }
+
+  struct Status {
+    static let available = "coin_details.status.available"
+    static let canceled = "coin_details.status.canceled"
+    static let complete = "coin_details.status.complete"
+    static let disputing = "coin_details.status.disputing"
+    static let doing = "coin_details.status.doing"
+    static let fail = "coin_details.status.fail"
+    static let new = "coin_details.status.new"
+    static let notAvailable = "coin_details.status.not_available"
+    static let notExist = "coin_details.status.not_exist"
+    static let paid = "coin_details.status.paid"
+    static let pending = "coin_details.status.pending"
+    static let released = "coin_details.status.released"
+    static let unknown = "coin_details.status.unknown"
+    static let withdrawn = "coin_details.status.withdrawn"
   }
 
   struct Success {
@@ -784,6 +801,24 @@ extension L.Swap {
 extension L.TransactionDetails {
 
   struct Header {
+  }
+
+  struct HeaderTitle {
+    static let amount = "transaction_details.header_title.amount"
+    static let cashStatus = "transaction_details.header_title.cash_status"
+    static let confirmations = "transaction_details.header_title.confirmations"
+    static let date = "transaction_details.header_title.date"
+    static let fee = "transaction_details.header_title.fee"
+    static let fromAddress = "transaction_details.header_title.from_address"
+    static let fromPhone = "transaction_details.header_title.from_phone"
+    static let id = "transaction_details.header_title.id"
+    static let sellAmount = "transaction_details.header_title.sell_amount"
+    static let status = "transaction_details.header_title.status"
+    static let swapAmount = "transaction_details.header_title.swap_amount"
+    static let swapId = "transaction_details.header_title.swap_id"
+    static let toAddress = "transaction_details.header_title.to_address"
+    static let toPhone = "transaction_details.header_title.to_phone"
+    static let type = "transaction_details.header_title.type"
   }
 }
 extension L.TransactionDetails.Header {

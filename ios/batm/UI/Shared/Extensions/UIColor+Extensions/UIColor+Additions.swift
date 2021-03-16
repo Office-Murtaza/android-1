@@ -1,6 +1,6 @@
 import UIKit
 
-protocol StatusColorPallete {
+protocol StatusColorPalette {
     static var background: UIColor { get }
     static var border: UIColor { get }
     static var font: UIColor { get }
@@ -8,37 +8,37 @@ protocol StatusColorPallete {
 
 extension UIColor {
     enum StatusColor {
-        enum Gray: StatusColorPallete {
+        enum Gray: StatusColorPalette {
             static let background = UIColor(hexString: "#f3f3f3")
             static let border = UIColor(hexString: "#d9d9d9")
             static let font = UIColor(hexString: "#d9d9d9")
         }
-        enum Yellow: StatusColorPallete {
+        enum Yellow: StatusColorPalette {
             static let background = UIColor(hexString: "#fffcf3")
             static let border = UIColor(hexString: "#ffcd4c")
             static let font = UIColor(hexString: "#ffcd4c")
         }
-        enum Green: StatusColorPallete {
+        enum Green: StatusColorPalette {
             static let background = UIColor(hexString: "#effff0")
             static let border = UIColor(hexString: "#48be53")
             static let font = UIColor(hexString: "#48be53")
         }
-        enum Orange: StatusColorPallete {
+        enum Orange: StatusColorPalette {
             static let background = UIColor(hexString: "#fff8f3")
             static let border = UIColor(hexString: "#ff984c")
             static let font = UIColor(hexString: "#ff984c")
         }
-        enum Pink: StatusColorPallete {
+        enum Pink: StatusColorPalette {
             static let background = UIColor(hexString: "#8033FF")
             static let border = UIColor(hexString: "#6B33FF")
             static let font = UIColor(hexString: "#6B33FF")
         }
-        enum Red: StatusColorPallete {
+        enum Red: StatusColorPalette {
             static let background = UIColor(hexString: "#FF6433")
             static let border = UIColor(hexString: "#FF3333")
             static let font = UIColor(hexString: "#FF3333")
         }
-        enum Blue: StatusColorPallete {
+        enum Blue: StatusColorPalette {
             static let background = UIColor(hexString: "#0073e4")
             static let border = UIColor(hexString: "#0000E4")
             static let font = UIColor(hexString: "#0000E4")

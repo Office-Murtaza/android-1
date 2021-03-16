@@ -165,7 +165,7 @@ final class CoinDetailsPresenter: ModulePresenter, CoinDetailsModule {
                 return self.track(self.usecase.getTransactionDetails(for: type, by: id))
                     .map { ($0, type) }
             }
-            .subscribe(onNext: { [delegate] in delegate?.showTransactionDetails(with: $0, for: $1) })
+            .subscribe(onNext: { [delegate] in delegate?.showTransactionDetails(with: $0.0) })
             .disposed(by: disposeBag)
       
       input.updateSelectedPeriod

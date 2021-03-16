@@ -107,9 +107,9 @@ final class TransactionCell: UITableViewCell {
   
   func configure(for model: Transaction) {
     dateLabel.text = model.dateString
-    typeLabel.text = model.type.verboseValue
+    typeLabel.text = model.type?.verboseValue
     amountLabel.text = model.amount.coinFormatted
-    
-    statusView.configure(text: model.status.verboseValue, color: model.status.associatedColor)
+    guard let status = model.status else { return }
+    statusView.configure(text: status.verboseValue, color: status.associatedColor)
   }
 }
