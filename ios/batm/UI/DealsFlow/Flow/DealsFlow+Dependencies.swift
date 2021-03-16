@@ -12,7 +12,8 @@ extension DealsFlow {
                 }
                 .inObjectScope(.container)
                 .implements(DealsModuleDelegate.self,
-                            CoinExchangeModuleDelegate.self)
+                            CoinExchangeModuleDelegate.self,
+                            CoinStakingModuleDelegate.self)
         }
   }
 }
