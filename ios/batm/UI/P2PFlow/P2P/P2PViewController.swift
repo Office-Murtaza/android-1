@@ -13,10 +13,11 @@ class P2PViewController: ModuleViewController<P2PPresenter>, MDCTabBarDelegate {
     public var sellViewController: TradeListViewController?
     private let sellDataSource = TradesDataSource()
     
-    public var myViewController: UIViewController?
+    public var myViewController: MyViewController?
     
-    var controllers = [UIViewController]()
-    
+    private var controllers = [UIViewController]()
+    private var prevIndex = 0
+    private var balance: CoinsBalance?
     
     lazy var pageController: UIPageViewController = {
         let controller = UIPageViewController(transitionStyle: .scroll,
@@ -39,13 +40,20 @@ class P2PViewController: ModuleViewController<P2PPresenter>, MDCTabBarDelegate {
         tabBar.alignment = .justified
         tabBar.setTitleColor(.white, for: .selected)
         tabBar.setTitleColor(.white, for: .normal)
-        tabBar.backgroundColor = .blue
+        tabBar.backgroundColor = UIColor(hexString: "#0073E4")
         tabBar.tintColor = .white
         tabBar.items = [buyTradesItem, sellTradesItem, openTradesItem]
         return tabBar
     }()
     
     override func setupUI() {
+        title = "P2P Trading"
+
+        navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(named: "p2p_create_trade"),
+                                                            style: .plain,
+                                                            target: self,
+                                                            action: #selector(createTrade))
+        
         presenter.checkLocation()
         tabBar.delegate = self
         view.addSubview(tabBar)
@@ -58,10 +66,18 @@ class P2PViewController: ModuleViewController<P2PPresenter>, MDCTabBarDelegate {
             print(result)
         }
         
-        buyDataSource.setup(tableView: buyViewController?.tableView)
-        sellDataSource.setup(tableView: sellViewController?.tableView)
         
+        guard let buyController = buyViewController, let sellController = sellViewController else { return }
         
+        buyDataSource.setup(controller: buyController)
+        sellDataSource.setup(controller: sellController)
+        
+    }
+    
+    @objc func createTrade() {
+        guard let balance = balance else { return }
+        let controller = P2PCreateTradeViewController(balance: balance, payments: TradePaymentMethods.allCases)
+        navigationController?.pushViewController(controller, animated: true)
     }
     
     override func setupBindings() {
@@ -81,12 +97,17 @@ class P2PViewController: ModuleViewController<P2PPresenter>, MDCTabBarDelegate {
             .filterNil()
             .distinctUntilChanged()
             .observeOn(MainScheduler())
-            .do { [weak self] (trades) in
-                self?.buyDataSource.setup(trades: trades, type: .buy)
-                self?.sellDataSource.setup(trades: trades, type: .sell)
+            .do { [unowned self] (trades) in
+                let id = self.presenter.userId
+                self.buyDataSource.setup(trades: trades, type: .buy, userId: id)
+                self.sellDataSource.setup(trades: trades, type: .sell, userId: id)
+                self.myViewController?.update(trades: trades, userId: id)
             }.subscribe()
             .disposed(by: disposeBag)
-
+        
+        presenter.balance.observeOn(MainScheduler()).subscribe { [unowned self] (balance) in
+            self.balance = balance
+        }.disposed(by: disposeBag)
     }
     
     override func setupLayout() {
@@ -104,7 +125,7 @@ class P2PViewController: ModuleViewController<P2PPresenter>, MDCTabBarDelegate {
     }
     
     //MARK: - Tabbar delegate
-    var prevIndex = 0
+    
     func tabBar(_ tabBar: MDCTabBar, didSelect item: UITabBarItem) {
         let direction: UIPageViewController.NavigationDirection = prevIndex < item.tag ? .forward : .reverse
         pageController.setViewControllers([controllers[item.tag]], direction: direction, animated: true) { [weak self, item] (result) in

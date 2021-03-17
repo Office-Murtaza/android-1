@@ -2,7 +2,7 @@ import Foundation
 
 
 struct Trade: Equatable {
-    var id: Int
+    var id: String?
     var type: Int?
     var coin: String?
     var status: Int?
@@ -22,34 +22,34 @@ struct Trade: Equatable {
 }
 
 struct Order: Equatable {
-    var id: Int
-    var tradeId: Int
-    var coin: String
-    var status: Int
-    var createDate: String
-    var price: Double
-    var cryptoAmount: Double
-    var fiatAmount: Double
-    var terms: String
-    var makerId: Int
-    var makerPublicId: String
-    var makerLatitude: Double
-    var makerLongitude: Double
-    var makerTotalTrades: Double
-    var makerTradingRate: Double
-    var takerId: Int
-    var takerPublicId: String
-    var takerLatitude: Double
-    var takerLongitude: Double
-    var takerTotalTrades: Double
-    var takerTradingRate: Double
+    var id: String?
+    var tradeId: String?
+    var coin: String?
+    var status: Int?
+    var timestamp: Int?
+    var price: Double?
+    var cryptoAmount: Double?
+    var fiatAmount: Double?
+    var terms: String?
+    var makerId: Int?
+    var makerPublicId: String?
+    var makerStatus: Int?
+    var makerTotalTrades: Double?
+    var makerTradingRate: Double?
+    var takerId: Int?
+    var takerPublicId: String?
+    var takerLatitude: Double?
+    var takerLongitude: Double?
+    var takerTotalTrades: Double?
+    var takerTradingRate: Double?
+    var paymentMethods: String?
 }
 
 struct Trades: Equatable {
-    var publicId: String
-    var status: Int
-    var totalTrades: Double
-    var tradingRate: Double
+    var makerPublicId: String
+    var makerStatus: Int
+    var makerTotalTrades: Double
+    var makerTradingRate: Double
     var trades: [Trade]
-//    var orders: [Order]
+    var orders: [Order]
 }

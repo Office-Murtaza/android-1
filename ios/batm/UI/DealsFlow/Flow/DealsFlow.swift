@@ -17,7 +17,7 @@ class DealsFlow: BaseFlow<BTMNavigationController, DealsFlowController> {
         case staking
         case swap
         case transfer
-        case p2p(trades: Trades)
+        case p2p(trades: Trades, userId: Int)
         case popToRoot(String?=nil)
     }
     
@@ -53,9 +53,9 @@ class DealsFlow: BaseFlow<BTMNavigationController, DealsFlowController> {
                 }
             }
             return popToRoot()
-        case let .p2p(trades):
+        case let .p2p(trades, userId):
             let module = resolver.resolve(Module<P2PModule>.self)!
-            module.input.setup(trades: trades)
+            module.input.setup(trades: trades, userId: userId)
             return push(module.controller)
         }
     }

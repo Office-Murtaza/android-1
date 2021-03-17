@@ -657,7 +657,7 @@ struct TradesRequest: AuthorizedAPIRequest {
   
   let userId: Int
   
-  var path: String { return "/user/\(userId)/trades" }
+  var path: String { return "/user/\(userId)/trade-history" }
   var method: HTTPMethod { return .get }
   var task: HTTPTask {
       return .requestPlain

@@ -1,46 +1,11 @@
 import UIKit
 import CoreLocation
 
-enum TradePaymentMethods: Int {
-    case cash = 1
-    case payPal
-    case venmo
-    case cashApp
-    case payoneer
-    
-    var image: UIImage {
-        switch self {
-        case .cash: return UIImage(named: "p2p_cash")!
-        case .payPal: return UIImage(named: "p2p_pay_pal")!
-        case .venmo: return UIImage(named: "p2p_venmo")!
-        case .cashApp: return UIImage(named: "p2p_cash_app")!
-        case .payoneer: return UIImage(named: "p2p_payoneer")!
-        }
-    }
-}
-
-enum TradeVerificationStatus: Int {
-    case notVerified = 1
-    case verified = 4
-    case vipVerfified  = 7
-    
-    
-    var image: UIImage? {
-        switch self {
-        case .notVerified: return UIImage(named: "p2p_not_verified")
-        case .verified: return UIImage(named: "p2p_verified_trade")
-        case .vipVerfified: return UIImage(named: "p2p_vip_verified")
-        }
-    }
-}
-
 class TradeViewModel {
     
     private let trade: Trade
     private let total: Double
     private let rate: Double
-    
-    var currentLocation: CLLocation?
     
     var coin: CustomCoinType? {
         return CustomCoinType(code: trade.coin ?? "BTC")
@@ -73,14 +38,9 @@ class TradeViewModel {
         return TradeVerificationStatus(rawValue: status)?.image
     }
     
-    var distanceInMiles: String? {
-        guard let location = currentLocation,
-              let latitude = trade.makerLatitude,
-              let longitude = trade.makerLongitude  else { return nil }
-        let markerLocation = CLLocation(latitude: latitude, longitude: longitude)
-        let distance = (markerLocation.distance(from: location) * 0.000621371).rounded()
-        return String(distance)
-    }
+    var distanceInMiles: String?
+    
+    var distance: Double?
     
     var isRateHidden: Bool {
         return (rate == 0 && total == 0)
@@ -98,5 +58,40 @@ class TradeViewModel {
         self.trade = trade
         self.total = totalTrades
         self.rate = rate
+    }
+    
+   func update(location: CLLocation?) {
+        guard let location = location,
+              let latitude = trade.makerLatitude,
+              let longitude = trade.makerLongitude  else { return }
+        let markerLocation = CLLocation(latitude: latitude, longitude: longitude)
+        distance = (markerLocation.distance(from: location) * 0.000621371).rounded()
+        distanceInMiles = String(distance ?? 0)
+    }
+    
+    func isInclude(_ scope: FilterScopeModel) -> Bool {
+        var validators = [Validator]()
+        
+        if scope.coins.isNotEmpty {
+            validators.append(CoinsValidator(coins: scope.coins, trade: trade))
+        }
+
+        if scope.paymentMethods.isNotEmpty {
+            validators.append(PaymentValidator(trade: trade, paymentMethods: scope.paymentMethods))
+        }
+        
+        if scope.maxRange != 0 {
+            validators.append(RangeValidator(distance: distance ?? 0,
+                                             minRange: scope.minRange,
+                                             maxRange: scope.maxRange))
+        }
+        
+        for validator in validators {
+            if validator.isValid() == false {
+                return false
+            }
+        }
+
+        return true
     }
 }

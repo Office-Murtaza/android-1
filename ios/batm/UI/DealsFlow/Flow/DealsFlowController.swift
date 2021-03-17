@@ -22,8 +22,8 @@ extension DealsFlowController: DealsModuleDelegate {
         step.accept(DealsFlow.Steps.transfer)
     }
 
-    func didSelectedP2p(trades: Trades) {
-        step.accept(DealsFlow.Steps.p2p(trades: trades))
+    func didSelectedP2p(trades: Trades, userId: Int) {
+        step.accept(DealsFlow.Steps.p2p(trades: trades, userId: userId))
     }
 }
 
