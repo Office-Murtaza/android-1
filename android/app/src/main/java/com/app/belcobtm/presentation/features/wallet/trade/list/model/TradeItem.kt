@@ -1,5 +1,6 @@
 package com.app.belcobtm.presentation.features.wallet.trade.list.model
 
+import androidx.annotation.DrawableRes
 import com.app.belcobtm.domain.wallet.LocalCoinType
 import com.app.belcobtm.presentation.core.adapter.model.ListItem
 
@@ -15,10 +16,12 @@ data class TradeItem(
     val paymentMethods: List<TradePayment>,
     val terms: String,
     val makerId: Int,
+    @DrawableRes val makerStatusIcon: Int,
     val makerPublicId: String,
     val makerTotalTrades: Int,
     val makerTradingRate: Double,
-    val distance: Double
+    val distance: Double,
+    val distanceFormatted: String
 ) : ListItem {
 
     companion object {

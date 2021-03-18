@@ -44,27 +44,30 @@ class MyTradeViewHolder(
 
     override fun bind(model: TradeItem) {
         with(model) {
+            val context = binding.root.context
             binding.coinIcon.setImageResource(coin.resIcon())
             binding.coinCode.text = coin.name
-            binding.priceRange.text = binding.root.context.getString(
+            binding.priceRange.text = context.getString(
                 R.string.trade_list_item_price_range_format,
-                binding.root.context.getString(R.string.trade_list_item_usd_formatted, minLimit.toStringUsd()),
-                binding.root.context.getString(R.string.trade_list_item_usd_formatted, maxLimit.toStringUsd())
+                context.getString(R.string.trade_list_item_usd_formatted, minLimit.toStringUsd()),
+                context.getString(R.string.trade_list_item_usd_formatted, maxLimit.toStringUsd())
             )
-            binding.priceLabel.text = binding.root.context.getString(
+            binding.priceLabel.text = context.getString(
                 R.string.trade_list_item_usd_formatted, price.toStringUsd()
             )
             paymentAdapter.update(paymentMethods)
-            if (tradeType == TradeType.BUY) {
-                binding.tradeType.setBackgroundResource(R.drawable.trade_type_buy_background)
-                val tradeTypeDrawable = ContextCompat.getDrawable(binding.root.context, R.drawable.ic_trade_type_buy)
-                binding.tradeType.setCompoundDrawables(tradeTypeDrawable, null, null, null)
-                binding.tradeType.setText(R.string.trade_type_buy_label)
-            } else {
-                binding.tradeType.setBackgroundResource(R.drawable.trade_type_sell_background)
-                val tradeTypeDrawable = ContextCompat.getDrawable(binding.root.context, R.drawable.ic_trade_type_sell)
-                binding.tradeType.setCompoundDrawables(tradeTypeDrawable, null, null, null)
-                binding.tradeType.setText(R.string.trade_type_sell_label)
+            with(binding.tradeType) {
+                if (tradeType == TradeType.BUY) {
+                    setBackgroundResource(R.drawable.trade_type_buy_background)
+                    setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_trade_type_buy, 0, 0, 0)
+                    setText(R.string.trade_type_buy_label)
+                    setTextColor(ContextCompat.getColor(context, R.color.trade_type_buy_trade_text_color))
+                } else {
+                    setBackgroundResource(R.drawable.trade_type_sell_background)
+                    setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_trade_type_sell, 0, 0, 0)
+                    setText(R.string.trade_type_sell_label)
+                    setTextColor(ContextCompat.getColor(context, R.color.trade_type_sell_trade_text_color))
+                }
             }
         }
     }

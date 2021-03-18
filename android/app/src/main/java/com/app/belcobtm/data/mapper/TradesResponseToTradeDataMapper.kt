@@ -31,8 +31,8 @@ class TradesResponseToTradeDataMapper {
                 status, createDate.orEmpty(),
                 price, minLimit, maxLimit,
                 paymentMethods.split(PAYMENT_DELIMITER).map(String::toInt),
-                terms, makerId, makerPublicId, makerLatitude,
-                makerLongitude, makerTotalTrades,
+                terms, makerId, makerPublicId, makerStatus,
+                makerLatitude, makerLongitude, makerTotalTrades,
                 makerTradingRate, UNDEFINED_DISTANCE
             )
         }

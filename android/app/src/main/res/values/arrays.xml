@@ -4,4 +4,8 @@
         <item>@integer/trade_amount_min</item>
         <item>@integer/trade_amount_max</item>
     </integer-array>
+    <integer-array name="initial_distance_slider_values">
+        <item>@integer/trade_filter_min_distance</item>
+        <item>@integer/trade_filter_max_distance</item>
+    </integer-array>
 </resources>

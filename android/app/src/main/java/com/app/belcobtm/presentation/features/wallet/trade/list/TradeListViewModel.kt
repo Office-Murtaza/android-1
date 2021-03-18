@@ -8,6 +8,7 @@ import com.app.belcobtm.data.model.trade.TradeType
 import com.app.belcobtm.domain.Either
 import com.app.belcobtm.domain.Failure
 import com.app.belcobtm.domain.trade.list.ObserveTradesUseCase
+import com.app.belcobtm.domain.trade.list.filter.ResetFilterUseCase
 import com.app.belcobtm.presentation.features.wallet.trade.list.model.TradeItem
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -15,7 +16,8 @@ import kotlinx.coroutines.flow.flatMapLatest
 
 @ExperimentalCoroutinesApi
 class TradeListViewModel(
-    private val observeTradesUseCase: ObserveTradesUseCase
+    private val observeTradesUseCase: ObserveTradesUseCase,
+    private val resetFilterUseCase: ResetFilterUseCase
 ) : ViewModel() {
 
     companion object {
@@ -35,6 +37,6 @@ class TradeListViewModel(
     }
 
     fun resetFilters() {
-
+        resetFilterUseCase.invoke(Unit)
     }
 }

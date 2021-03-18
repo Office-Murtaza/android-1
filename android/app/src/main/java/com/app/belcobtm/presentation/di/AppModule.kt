@@ -4,14 +4,16 @@ import android.content.Context
 import com.app.belcobtm.presentation.core.coin.AmountCoinValidator
 import com.app.belcobtm.presentation.core.coin.CoinCodeProvider
 import com.app.belcobtm.presentation.core.coin.MinMaxCoinValueProvider
-import com.app.belcobtm.presentation.core.formatter.DoubleCurrencyPriceFormatter
+import com.app.belcobtm.presentation.core.formatter.*
 import com.app.belcobtm.presentation.core.formatter.DoubleCurrencyPriceFormatter.Companion.DOUBLE_CURRENCY_PRICE_FORMATTER_QUALIFIER
 import com.app.belcobtm.presentation.core.formatter.Formatter
-import com.app.belcobtm.presentation.core.formatter.IntCurrencyPriceFormatter
 import com.app.belcobtm.presentation.core.formatter.IntCurrencyPriceFormatter.Companion.INT_CURRENCY_PRICE_FORMATTER_QUALIFIER
-import com.app.belcobtm.presentation.core.formatter.PhoneNumberFormatter
+import com.app.belcobtm.presentation.core.formatter.MilesFormatter.Companion.MILES_FORMATTER_QUALIFIER
 import com.app.belcobtm.presentation.core.helper.ClipBoardHelper
+import com.app.belcobtm.presentation.core.parser.DistanceParser
+import com.app.belcobtm.presentation.core.parser.DistanceParser.Companion.DISTANCE_INT_PARSER_QUALIFIER
 import com.app.belcobtm.presentation.core.parser.PriceDoubleParser
+import com.app.belcobtm.presentation.core.parser.PriceDoubleParser.Companion.PRICE_DOUBLE_PARSER_QUALIFIER
 import com.app.belcobtm.presentation.core.parser.StringParser
 import com.app.belcobtm.presentation.core.provider.string.ResourceStringProvider
 import com.app.belcobtm.presentation.core.provider.string.StringProvider
@@ -101,7 +103,7 @@ val viewModelModule = module {
     viewModel { (coinCode: String) -> DepositViewModel(coinCode, get()) }
     viewModel { ContactListViewModel(get(), get<PhoneNumberValidator>(), get()) }
     viewModel { TradeContainerViewModel(get()) }
-    viewModel { TradeListViewModel(get()) }
+    viewModel { TradeListViewModel(get(), get()) }
     viewModel { TradeUserStatisticViewModel(get()) }
     viewModel { TradeOrdersViewModel(get()) }
     viewModel {
@@ -116,7 +118,7 @@ val viewModelModule = module {
             get(named(INT_CURRENCY_PRICE_FORMATTER_QUALIFIER)), get()
         )
     }
-    viewModel { TradeFilterViewModel(get(), get()) }
+    viewModel { TradeFilterViewModel(get(), get(), get(), get(), get(named(DISTANCE_INT_PARSER_QUALIFIER))) }
 }
 
 val viewModelHelperModule = module {
@@ -133,7 +135,9 @@ val helperModule = module {
     single { ClipBoardHelper(androidApplication()) }
     single<Locale> { Locale.US }
     factory<Formatter<Double>>(named(DOUBLE_CURRENCY_PRICE_FORMATTER_QUALIFIER)) { DoubleCurrencyPriceFormatter(get()) }
+    factory<Formatter<Double>>(named(MILES_FORMATTER_QUALIFIER)) { MilesFormatter(get()) }
     factory<Formatter<Int>>(named(INT_CURRENCY_PRICE_FORMATTER_QUALIFIER)) { IntCurrencyPriceFormatter(get()) }
-    factory<StringParser<Double>> { PriceDoubleParser(get()) }
+    factory<StringParser<Double>>(named(PRICE_DOUBLE_PARSER_QUALIFIER)) { PriceDoubleParser(get()) }
+    factory<StringParser<Int>>(named(DISTANCE_INT_PARSER_QUALIFIER)) { DistanceParser() }
     single<StringProvider> { ResourceStringProvider(androidApplication().resources) }
 }

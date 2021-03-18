@@ -547,8 +547,12 @@
     <string name="trade_list_sell_tab_title">Sell</string>
     <string name="trade_list_my_info_tab_title">My…</string>
     <string name="trade_list_account_info_verified_label">Verified</string>
+
     <string name="user_trade_info_success_rate_label">Success rate</string>
     <string name="user_trade_info_total_trades_label">Total trades</string>
+    <string name="user_trade_info_not_verified_status_label">Not verified</string>
+    <string name="user_trade_info_verified_status_label">Verified</string>
+    <string name="user_trade_info_vip_verified_status_label">Vip verified</string>
 
     <string name="trade_info_my_trades_tab_title">Trades</string>
     <string name="trade_info_open_orders_tab_title">Open orders</string>
@@ -609,4 +613,13 @@
     <string name="trade_buy_sell_crypto_amount_label">Crypto amount</string>
     <string name="trade_buy_sell_submit_button_label">Submit</string>
     <string name="usd_amount_label">Fiat amount</string>
+    <string name="item_no_trades_reset_all_filters_button_label">Reset all filters</string>
+
+    <string name="distance_label_formatted">%1$s miles</string>
+    <string name="trade_filter_dialog_sort_option_price_label">Price</string>
+    <string name="trade_filter_dialog_sort_option_distance_label">Distance</string>
+    <string name="trade_filter_dialog_reset_filter_button_label">Reset all</string>
+    <string name="trade_filter_dialog_sort_label">Sort by</string>
+    <string name="trade_filter_distance_label">Distance range</string>
+    <string name="trade_filter_dialog_coins_label">Coins</string>
 </resources>

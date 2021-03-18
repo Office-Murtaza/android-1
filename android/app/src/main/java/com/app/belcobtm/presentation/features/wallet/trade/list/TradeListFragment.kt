@@ -15,6 +15,7 @@ import com.app.belcobtm.presentation.core.adapter.MultiTypeAdapter
 import com.app.belcobtm.presentation.core.adapter.model.ListItem
 import com.app.belcobtm.presentation.core.extensions.hide
 import com.app.belcobtm.presentation.core.ui.fragment.BaseFragment
+import com.app.belcobtm.presentation.features.wallet.trade.container.TradeContainerFragmentDirections
 import com.app.belcobtm.presentation.features.wallet.trade.container.TradeContainerViewModel
 import com.app.belcobtm.presentation.features.wallet.trade.list.delegate.NoTradesDelegate
 import com.app.belcobtm.presentation.features.wallet.trade.list.delegate.TradeItemDelegate
@@ -47,7 +48,7 @@ class TradeListFragment : BaseFragment<FragmentTradeListBinding>() {
     private val adapter: MultiTypeAdapter by lazy {
         MultiTypeAdapter().apply {
             registerDelegate(TradeItemDelegate {
-                navigate(TradeListFragmentDirections.toTradeDetails(it.tradeId))
+                navigate(TradeContainerFragmentDirections.toTradeDetails(it.tradeId))
             })
             registerDelegate(NoTradesDelegate(viewModel::resetFilters))
         }
@@ -80,14 +81,17 @@ class TradeListFragment : BaseFragment<FragmentTradeListBinding>() {
             }
         })
         openFilterButton.setOnClickListener {
-            navigate(TradeListFragmentDirections.toFilterTradeFragment())
+            navigate(TradeContainerFragmentDirections.toFilterTradeFragment())
         }
     }
 
     override fun FragmentTradeListBinding.initObservers() {
         viewModel.observeTrades(requireArguments().getInt(TRADE_TYPE_BUNDLE_KEY))
             .observe(viewLifecycleOwner) {
-                if (it?.isRight == true) {
+                if (it == null) {
+                    return@observe
+                }
+                if (it.isRight) {
                     val trades = (it as Either.Right<List<TradeItem>>).b
                     adapter.update(trades.ifEmpty { listOf<ListItem>(NoTrades()) })
                 } else {

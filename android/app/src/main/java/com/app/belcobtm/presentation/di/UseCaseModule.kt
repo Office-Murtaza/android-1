@@ -14,11 +14,17 @@ import com.app.belcobtm.domain.trade.create.CreateTradeUseCase
 import com.app.belcobtm.domain.trade.create.GetAvailableTradePaymentOptionsUseCase
 import com.app.belcobtm.domain.trade.create.mapper.PaymentIdToAvailablePaymentOptionMapper
 import com.app.belcobtm.domain.trade.list.*
-import com.app.belcobtm.domain.trade.list.filter.GetCoinsUseCase
+import com.app.belcobtm.domain.trade.list.filter.ApplyFilterUseCase
+import com.app.belcobtm.domain.trade.list.filter.LoadFilterDataUseCase
+import com.app.belcobtm.domain.trade.list.filter.ResetFilterUseCase
 import com.app.belcobtm.domain.trade.list.filter.mapper.CoinCodeMapper
+import com.app.belcobtm.domain.trade.list.filter.mapper.TradeFilterItemMapper
+import com.app.belcobtm.domain.trade.list.filter.mapper.TradeFilterMapper
 import com.app.belcobtm.domain.trade.list.mapper.*
 import com.app.belcobtm.domain.transaction.interactor.*
 import com.app.belcobtm.domain.wallet.interactor.*
+import com.app.belcobtm.presentation.core.formatter.MilesFormatter.Companion.MILES_FORMATTER_QUALIFIER
+import org.koin.core.qualifier.named
 import org.koin.dsl.module
 
 val useCaseModule = module {
@@ -81,14 +87,20 @@ val useCaseModule = module {
     single { ObserveOrdersUseCase(get(), get()) }
     single { ObserveMyTradesUseCase(get(), get(), get()) }
     single { GetAvailableTradePaymentOptionsUseCase(get(), get()) }
-    single { GetCoinsUseCase(get(), get()) }
     single { CreateTradeUseCase(get()) }
     single { CheckTradeCreationAvailabilityUseCase(get(), get()) }
+    single { LoadFilterDataUseCase(get(), get(), get()) }
+    single { ResetFilterUseCase(get()) }
+    single { ApplyFilterUseCase(get(), get()) }
     factory { TradePaymentOptionMapper() }
     factory { CoinCodeMapper() }
     factory { TradesDataToTradeListMapper(get()) }
-    factory { TradesDataToStatisticsMapper() }
+    factory { TradeToTradeItemMapper(get(), get(named(MILES_FORMATTER_QUALIFIER)), get()) }
+    factory { TraderStatusToIconMapper() }
+    factory { TradesDataToStatisticsMapper(get()) }
     factory { TradesDataToOrderListMapper(get()) }
     factory { TradesDataToMyTradeMapper(get()) }
+    factory { TradeFilterItemMapper(get(), get()) }
     factory { PaymentIdToAvailablePaymentOptionMapper(get()) }
+    factory { TradeFilterMapper() }
 }

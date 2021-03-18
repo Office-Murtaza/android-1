@@ -1,32 +1,33 @@
 package com.app.belcobtm.domain.trade.list.mapper
 
-import com.app.belcobtm.data.model.trade.Trade
+import com.app.belcobtm.data.inmemory.TradeInMemoryCache.Companion.UNDEFINED_DISTANCE
 import com.app.belcobtm.data.model.trade.TradeData
+import com.app.belcobtm.data.model.trade.filter.TradeFilter
 import com.app.belcobtm.domain.trade.list.ObserveTradesUseCase
-import com.app.belcobtm.domain.wallet.LocalCoinType
 import com.app.belcobtm.presentation.features.wallet.trade.list.model.TradeItem
 
-class TradesDataToTradeListMapper(
-    private val paymentOptionMapper: TradePaymentOptionMapper
-) {
+class TradesDataToTradeListMapper(private val tradeMapper: TradeToTradeItemMapper) {
 
-    fun map(tradeData: TradeData, params: ObserveTradesUseCase.Params): List<TradeItem> =
+    fun map(tradeData: TradeData, params: ObserveTradesUseCase.Params, filter: TradeFilter?): List<TradeItem> =
         tradeData.trades
             .asSequence()
             .filter { it.type == params.tradeType }
-            // TODO add another filter
+            .let { sequence ->
+                filter?.let { filter ->
+                    sequence.filter { it.coinCode == filter.coinCode }
+                        .filter { trade ->
+                            trade.paymentMethods.any { tradePaymentOption ->
+                                filter.paymentOptions.any { it == tradePaymentOption }
+                            }
+                        }
+                        .filter {
+                            !filter.filterByDistanceEnalbed || it.distance == UNDEFINED_DISTANCE ||
+                                    (it.distance in filter.minDistance.toDouble()..filter.maxDistance.toDouble())
+                        }
+                } ?: sequence
+            }
             .take(params.numbersToLoad)
-            .map(::mapTrade)
-            // TODO distinct until changed?
+            .map(tradeMapper::map)
+            // TODO add sort
             .toList()
-
-    private fun mapTrade(trade: Trade): TradeItem =
-        with(trade) {
-            TradeItem(
-                id, type, LocalCoinType.valueOf(coinCode),
-                status, createDate, price, minLimit, maxLimit,
-                paymentMethods.map(paymentOptionMapper::map),
-                terms, makerId, makerPublicId, makerTotalTrades, makerTradingRate, distance
-            )
-        }
 }

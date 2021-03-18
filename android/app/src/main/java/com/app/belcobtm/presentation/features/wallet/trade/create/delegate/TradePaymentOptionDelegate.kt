@@ -36,5 +36,6 @@ class TradePaymentOptionViewHolder(
     override fun bind(model: AvailableTradePaymentOption) {
         binding.paymentOption.setChipIconResource(model.payment.icon)
         binding.paymentOption.setText(model.payment.title)
+        binding.paymentOption.isChecked = model.selected
     }
 }

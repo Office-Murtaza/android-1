@@ -7,7 +7,10 @@ import com.app.belcobtm.domain.trade.TradeRepository
 
 class FetchTradesUseCase(
     private val tradeRepository: TradeRepository
-) : UseCase<Unit, Unit>() {
-    override suspend fun run(params: Unit): Either<Failure, Unit> =
-        Either.Right(tradeRepository.fetchTrades())
+) : UseCase<Unit, FetchTradesUseCase.Params>() {
+
+    override suspend fun run(params: Params): Either<Failure, Unit> =
+        Either.Right(tradeRepository.fetchTrades(params.calculateDistanceEnabled))
+
+    data class Params(val calculateDistanceEnabled: Boolean)
 }

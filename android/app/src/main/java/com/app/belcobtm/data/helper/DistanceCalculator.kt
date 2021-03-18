@@ -1,0 +1,60 @@
+package com.app.belcobtm.data.helper
+
+import com.app.belcobtm.data.model.trade.Trade
+import com.app.belcobtm.data.provider.location.LocationProvider
+import kotlin.math.atan2
+import kotlin.math.cos
+import kotlin.math.sin
+import kotlin.math.sqrt
+
+class DistanceCalculator(
+    private val locationProvider: LocationProvider
+) {
+
+    private companion object {
+        const val EARTH_RADIUS_KM = 6371;
+    }
+
+    suspend fun updateDistanceToTrades(trades: List<Trade>): List<Trade> {
+        val currentLocation = locationProvider.getCurrentLocation() ?: return trades
+        val currentLat = currentLocation.latitude
+        val currentLong = currentLocation.longitude
+        return trades.map {
+            val makerLat = it.makerLatitude
+            val makerLong = it.makerLongitude
+            if (makerLat != null && makerLong != null) {
+                it.copy(distance = calculateDistance(currentLat, currentLong, makerLat, makerLong))
+            } else {
+                it
+            }
+        }
+    }
+
+    suspend fun updateDistanceToTrade(trade: Trade): Trade {
+        val currentLocation = locationProvider.getCurrentLocation() ?: return trade
+        val currentLat = currentLocation.latitude
+        val currentLong = currentLocation.longitude
+        val makerLat = trade.makerLatitude
+        val makerLong = trade.makerLongitude
+        return if (makerLat != null && makerLong != null) {
+            trade.copy(distance = calculateDistance(currentLat, currentLong, makerLat, makerLong))
+        } else {
+            trade
+        }
+    }
+
+    private fun calculateDistance(fromLat: Double, fromLong: Double, toLat: Double, toLong: Double): Double {
+        val dLat = degreesToRadians(toLat - fromLat)
+        val dLon = degreesToRadians(toLong - fromLong)
+
+        val fromLatRadians = degreesToRadians(fromLat)
+        val toLatRadians = degreesToRadians(toLat)
+
+        val a = sin(dLat / 2) * sin(dLat / 2) +
+                sin(dLon / 2) * sin(dLon / 2) * cos(fromLatRadians) * cos(toLatRadians)
+        val c = 2 * atan2(sqrt(a), sqrt(1 - a))
+        return EARTH_RADIUS_KM * c;
+    }
+
+    private fun degreesToRadians(degrees: Double) = degrees * Math.PI / 180
+}

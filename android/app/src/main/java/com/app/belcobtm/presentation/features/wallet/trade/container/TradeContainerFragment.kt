@@ -1,5 +1,6 @@
 package com.app.belcobtm.presentation.features.wallet.trade.container
 
+import android.Manifest
 import android.os.Bundle
 import android.view.*
 import com.app.belcobtm.R
@@ -12,7 +13,11 @@ import com.app.belcobtm.presentation.features.wallet.trade.container.adapter.Tra
 import com.app.belcobtm.presentation.features.wallet.trade.container.adapter.TradeContainerViewPagerAdapter.Companion.TRADE_INFO_TAB_POSITION
 import com.google.android.material.tabs.TabLayoutMediator
 import org.koin.android.viewmodel.ext.android.viewModel
+import permissions.dispatcher.NeedsPermission
+import permissions.dispatcher.OnPermissionDenied
+import permissions.dispatcher.RuntimePermissions
 
+@RuntimePermissions
 class TradeContainerFragment : BaseFragment<FragmentTradeListContainerBinding>() {
 
     override var isHomeButtonEnabled: Boolean = true
@@ -41,7 +46,17 @@ class TradeContainerFragment : BaseFragment<FragmentTradeListContainerBinding>()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.fetchTrades()
+        loadWithDistanceCalculationWithPermissionCheck()
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        // NOTE: delegate the permission handling to generated method
+        onRequestPermissionsResult(requestCode, grantResults)
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -68,5 +83,15 @@ class TradeContainerFragment : BaseFragment<FragmentTradeListContainerBinding>()
                 else -> showErrorSomethingWrong()
             }
         })
+    }
+
+    @NeedsPermission(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION)
+    fun loadWithDistanceCalculation() {
+        viewModel.fetchTrades(calculateDistanceEnabled = true)
+    }
+
+    @OnPermissionDenied(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION)
+    fun loadWithoutDistanceCalculation() {
+        viewModel.fetchTrades(calculateDistanceEnabled = false)
     }
 }

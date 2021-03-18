@@ -6,8 +6,8 @@ import com.app.belcobtm.presentation.features.wallet.trade.list.filter.model.Coi
 
 class CoinCodeMapper {
 
-    fun map(accountEntity: AccountEntity): CoinCodeListItem =
+    fun map(accountEntity: AccountEntity, selectedCoinCode: String): CoinCodeListItem =
         with(accountEntity) {
-            CoinCodeListItem(type.name, type.resIcon(), isEnabled)
+            CoinCodeListItem(type.name, type.resIcon(), isEnabled, type.name == selectedCoinCode)
         }
 }

@@ -13,6 +13,7 @@ data class Trade(
     val terms: String,
     val makerId: Int,
     val makerPublicId: String,
+    @TraderStatus val makerStatus: Int,
     val makerLatitude: Double?,
     val makerLongitude: Double?,
     val makerTotalTrades: Int,

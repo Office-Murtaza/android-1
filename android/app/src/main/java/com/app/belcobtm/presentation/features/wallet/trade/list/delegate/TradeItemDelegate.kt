@@ -46,6 +46,9 @@ class TradeItemViewHolder(
             binding.coinIcon.setImageResource(coin.resIcon())
             binding.coinCode.text = coin.name
             binding.makerPublicId.text = makerPublicId
+            binding.makerPublicId.setCompoundDrawablesWithIntrinsicBounds(
+                R.drawable.ic_account_circle, 0, makerStatusIcon, 0
+            )
             binding.priceRange.text = binding.root.context.getString(
                 R.string.trade_list_item_price_range_format,
                 binding.root.context.getString(R.string.trade_list_item_usd_formatted, minLimit.toStringUsd()),
@@ -61,7 +64,7 @@ class TradeItemViewHolder(
                 binding.distanceLabel.visibility = View.GONE
             } else {
                 binding.distanceLabel.visibility = View.VISIBLE
-                // TODO set distance
+                binding.distanceLabel.text = distanceFormatted
             }
         }
     }

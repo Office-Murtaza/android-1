@@ -12,6 +12,7 @@ import com.app.belcobtm.presentation.core.adapter.MultiTypeAdapter
 import com.app.belcobtm.presentation.core.adapter.model.ListItem
 import com.app.belcobtm.presentation.core.extensions.hide
 import com.app.belcobtm.presentation.core.ui.fragment.BaseFragment
+import com.app.belcobtm.presentation.features.wallet.trade.container.TradeContainerFragmentDirections
 import com.app.belcobtm.presentation.features.wallet.trade.container.TradeContainerViewModel
 import com.app.belcobtm.presentation.features.wallet.trade.mytrade.list.delegate.MyTradeDelegate
 import com.app.belcobtm.presentation.features.wallet.trade.mytrade.list.delegate.MyTradesNoTradesDelegate
@@ -30,7 +31,7 @@ class MyTradesFragment : BaseFragment<FragmentMyTradesBinding>() {
     private val adapter by lazy {
         MultiTypeAdapter().apply {
             registerDelegate(MyTradeDelegate {
-                navigate(MyTradesFragmentDirections.toMyTradeDetails(it.tradeId))
+                navigate(TradeContainerFragmentDirections.toMyTradeDetails(it.tradeId))
             })
             registerDelegate(MyTradesNoTradesDelegate {
                 navigate(R.id.create_trade_fragment)

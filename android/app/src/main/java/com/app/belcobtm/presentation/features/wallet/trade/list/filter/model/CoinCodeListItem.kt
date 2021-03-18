@@ -6,7 +6,8 @@ import com.app.belcobtm.presentation.core.adapter.model.ListItem
 data class CoinCodeListItem(
     val coinCode: String,
     @DrawableRes val coinIcon: Int,
-    val enabled: Boolean
+    val enabled: Boolean,
+    val selected: Boolean
 ) : ListItem {
 
     override val id: String

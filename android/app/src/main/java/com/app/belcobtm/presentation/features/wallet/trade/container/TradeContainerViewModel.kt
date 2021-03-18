@@ -10,16 +10,19 @@ import com.app.belcobtm.presentation.core.mvvm.LoadingData
 import kotlinx.coroutines.launch
 
 class TradeContainerViewModel(
-    private val fetchTradesUseCase: FetchTradesUseCase
+    private val fetchTradesUseCase: FetchTradesUseCase,
 ) : ViewModel() {
 
     private val _loadingData = MutableLiveData<LoadingData<Unit>>()
     val loadingData: LiveData<LoadingData<Unit>>
         get() = _loadingData
 
-    fun fetchTrades() {
+    private var calculateDistanceEnabled = false
+
+    fun fetchTrades(calculateDistanceEnabled: Boolean) {
+        this.calculateDistanceEnabled = calculateDistanceEnabled
         _loadingData.value = LoadingData.Loading()
-        fetchTradesUseCase.invoke(Unit,
+        fetchTradesUseCase.invoke(FetchTradesUseCase.Params(calculateDistanceEnabled),
             onSuccess = {
                 viewModelScope.launch {
                     _loadingData.value = LoadingData.Success(Unit)
@@ -35,7 +38,11 @@ class TradeContainerViewModel(
 
     fun retry() {
         if (_loadingData.value is LoadingData.Error<Unit>) {
-            fetchTrades()
+            fetchTrades(calculateDistanceEnabled)
         }
+    }
+
+    fun enableDistanceCalculation() {
+
     }
 }

@@ -54,7 +54,7 @@ class CreateTradeFragment : BaseFragment<FragmentCreateTradeBinding>() {
     }
 
     private val priceTextWatcher = SafeDecimalEditTextWatcher { editable ->
-        viewModel.updatePrice(viewModel.parsePrice(editable.toString()) / 100)
+        viewModel.updatePrice(viewModel.parseAmount(editable.toString()) / 100)
     }
 
     private val minAmountValue by lazy { resources.getInteger(R.integer.trade_amount_min) }
@@ -62,13 +62,13 @@ class CreateTradeFragment : BaseFragment<FragmentCreateTradeBinding>() {
 
     private val minAmountTextWatcher = SafeDecimalEditTextWatcher { editable ->
         val currentMax = binding.amountMaxLimitEditText.text?.toString()
-            ?.let(viewModel::parsePrice)?.toInt() ?: maxAmountValue
-        val parsedAmount = viewModel.parsePrice(editable.toString()).toInt().coerceAtMost(currentMax)
+            ?.let(viewModel::parseAmount)?.toInt() ?: maxAmountValue
+        val parsedAmount = viewModel.parseAmount(editable.toString()).toInt().coerceAtMost(currentMax)
         viewModel.updateMinAmount(parsedAmount)
     }
 
     private val maxAmountTextWatcher = SafeDecimalEditTextWatcher { editable ->
-        val parsedAmount = viewModel.parsePrice(editable.toString()).toInt().coerceAtMost(maxAmountValue)
+        val parsedAmount = viewModel.parseAmount(editable.toString()).toInt().coerceAtMost(maxAmountValue)
         viewModel.updateMaxAmount(parsedAmount)
     }
 
@@ -107,7 +107,7 @@ class CreateTradeFragment : BaseFragment<FragmentCreateTradeBinding>() {
             amountMinLimitEditText.setTextSilently(minAmountTextWatcher, viewModel.formatAmount(amount))
         }
         viewModel.amountMaxLimit.observe(viewLifecycleOwner) { amount ->
-            if (amount >= minAmountValue) {
+            if (amount <= maxAmountValue) {
                 amountRangeSlider.values = amountRangeSlider.values.apply { set(1, amount.toFloat()) }
             }
             amountMaxLimitEditText.setTextSilently(maxAmountTextWatcher, viewModel.formatAmount(amount))

@@ -35,7 +35,7 @@ class CreateTradeViewModel(
     private val stringProvider: StringProvider,
     private val priceFormatter: Formatter<Double>,
     private val amountFormatter: Formatter<Int>,
-    private val priceParser: StringParser<Double>
+    private val amountParser: StringParser<Double>
 ) : ViewModel() {
 
     private lateinit var coinList: List<CoinDataItem>
@@ -88,7 +88,7 @@ class CreateTradeViewModel(
         fetchInitialData()
     }
 
-    fun parsePrice(input: String) = priceParser.parse(input)
+    fun parseAmount(input: String) = amountParser.parse(input)
 
     fun formatAmount(amount: Int) = amountFormatter.format(amount)
 

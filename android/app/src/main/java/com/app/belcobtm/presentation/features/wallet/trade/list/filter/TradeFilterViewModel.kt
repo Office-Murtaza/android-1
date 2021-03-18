@@ -3,14 +3,23 @@ package com.app.belcobtm.presentation.features.wallet.trade.list.filter
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.app.belcobtm.domain.trade.create.GetAvailableTradePaymentOptionsUseCase
-import com.app.belcobtm.domain.trade.list.filter.GetCoinsUseCase
+import com.app.belcobtm.R
+import com.app.belcobtm.data.model.trade.filter.SortOption
+import com.app.belcobtm.domain.trade.list.filter.ApplyFilterUseCase
+import com.app.belcobtm.domain.trade.list.filter.LoadFilterDataUseCase
+import com.app.belcobtm.domain.trade.list.filter.ResetFilterUseCase
+import com.app.belcobtm.presentation.core.parser.StringParser
+import com.app.belcobtm.presentation.core.provider.string.StringProvider
 import com.app.belcobtm.presentation.features.wallet.trade.create.model.AvailableTradePaymentOption
 import com.app.belcobtm.presentation.features.wallet.trade.list.filter.model.CoinCodeListItem
+import com.app.belcobtm.presentation.features.wallet.trade.list.filter.model.TradeFilterItem
 
 class TradeFilterViewModel(
-    private val getCoinsUseCase: GetCoinsUseCase,
-    private val getAvailableTradePaymentOptionsUseCase: GetAvailableTradePaymentOptionsUseCase
+    private val loadFilterDataUseCase: LoadFilterDataUseCase,
+    private val resetFilterUseCase: ResetFilterUseCase,
+    private val applyFilterUseCase: ApplyFilterUseCase,
+    private val stringProvider: StringProvider,
+    private val distanceParser: StringParser<Int>
 ) : ViewModel() {
 
     private val _coins = MutableLiveData<List<CoinCodeListItem>>()
@@ -21,17 +30,76 @@ class TradeFilterViewModel(
     val paymentOptions: LiveData<List<AvailableTradePaymentOption>>
         get() = _paymentOptions
 
+    private val _distanceMinLimit = MutableLiveData<Int>()
+    val distanceMinLimit: LiveData<Int>
+        get() = _distanceMinLimit
+
+    private val _distanceMaxLimit = MutableLiveData<Int>()
+    val distanceMaxLimit: LiveData<Int>
+        get() = _distanceMaxLimit
+
+    private val _distanceEnabled = MutableLiveData<Boolean>()
+    val distanceEnabled: LiveData<Boolean>
+        get() = _distanceEnabled
+
+    private val _sortOption = MutableLiveData<@SortOption Int>()
+    val sortOption: LiveData<@SortOption Int>
+        get() = _sortOption
+
+    private val _closeFilter = MutableLiveData<Boolean>()
+    val closeFilter: LiveData<Boolean>
+        get() = _closeFilter
+
     fun fetchInitialData() {
-        getAvailableTradePaymentOptionsUseCase.invoke(Unit, onSuccess = {
-            _paymentOptions.value = it
-        })
-        getCoinsUseCase.invoke(Unit, onSuccess = {
-            _coins.value = it
+        loadFilterDataUseCase.invoke(Unit, onSuccess = {
+            _paymentOptions.value = it.paymentOptions
+            _coins.value = it.coins
+            _distanceEnabled.value = it.distanceFilterEnabled
+            _distanceMinLimit.value = it.minDistance
+            _distanceMaxLimit.value = it.maxDistance
+            _sortOption.value = it.sortOption
+        }, onError = {
+
         })
     }
 
-    fun selectCoin(coinListItem: CoinCodeListItem, isChecked: Boolean) {
-        val currentList = coins.value
+    fun updateMinDistance(distance: Int) {
+        _distanceMinLimit.value = distance
+    }
+
+    fun updateMaxDistance(distance: Int) {
+        _distanceMaxLimit.value = distance
+    }
+
+    fun selectCoin(coinListItem: CoinCodeListItem) {
+        _coins.value = coins.value.orEmpty().map {
+            it.copy(selected = it.id == coinListItem.id)
+        }
+    }
+
+    fun resetFilter() {
+        resetFilterUseCase.invoke(Unit, onSuccess = {
+            fetchInitialData()
+        })
+    }
+
+    fun applyFilter() {
+        val newFilter = TradeFilterItem(
+            coins.value.orEmpty(), paymentOptions.value.orEmpty(),
+            distanceEnabled.value ?: false, distanceMinLimit.value ?: 0,
+            distanceMaxLimit.value ?: 0, sortOption.value ?: SortOption.PRICE
+        )
+        applyFilterUseCase.invoke(newFilter, onSuccess = {
+            _closeFilter.value = true
+        })
+    }
+
+    fun parseDistance(input: String): Int = distanceParser.parse(input)
+
+    fun formatDistance(distance: Int): String = stringProvider.getString(R.string.distance_label_formatted, distance)
+
+    fun selectSort(@SortOption option: Int) {
+        _sortOption.value = option
     }
 
 }
