@@ -13,6 +13,7 @@ data class TradeItemResponse(
     val price: Double,
     val minLimit: Double,
     val maxLimit: Double,
+    val openOrders: Int,
     val paymentMethods: String,
     val terms: String,
     val makerId: Int,

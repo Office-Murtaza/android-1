@@ -2,7 +2,8 @@ package com.app.belcobtm.data.rest.trade
 
 import android.location.Location
 import com.app.belcobtm.data.disk.shared.preferences.SharedPreferencesHelper
-import com.app.belcobtm.data.rest.trade.request.TradeRequest
+import com.app.belcobtm.data.rest.trade.request.CreateTradeRequest
+import com.app.belcobtm.data.rest.trade.request.EditTradeRequest
 import com.app.belcobtm.data.rest.trade.response.CreateTradeResponse
 import com.app.belcobtm.data.rest.trade.response.DeleteTradeResponse
 import com.app.belcobtm.data.rest.trade.response.EditTradeResponse
@@ -33,7 +34,7 @@ class TradeApiService(
     ): Either<Failure, CreateTradeResponse> =
         withErrorHandling {
             val request = with(createTradeItem) {
-                TradeRequest(
+                CreateTradeRequest(
                     tradeType, coinCode, price, minLimit, maxLimit,
                     paymentOptions.joinToString(","), terms,
                     location?.latitude, location?.longitude
@@ -45,9 +46,12 @@ class TradeApiService(
 
     suspend fun editTrade(editTradeItem: EditTradeItem): Either<Failure, EditTradeResponse> =
         withErrorHandling {
-            val request = TradeRequest(
-                0, "", 0, 0, 0, "", "", 0.0, 0.0
-            )
+            val request = with(editTradeItem) {
+                EditTradeRequest(
+                    tradeId, price, minAmount, maxAmount,
+                    paymentOptions.joinToString(","), terms
+                )
+            }
             val response = tradeApi.editTradeAsync(prefHelper.userId, request).await()
             response.body()?.let { Either.Right(it) } ?: Either.Left(Failure.ServerError())
         }

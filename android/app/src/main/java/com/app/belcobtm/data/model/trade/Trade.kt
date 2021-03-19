@@ -9,6 +9,7 @@ data class Trade(
     val price: Double,
     val minLimit: Double,
     val maxLimit: Double,
+    val ordersCount: Int,
     val paymentMethods: List<@PaymentOption Int>,
     val terms: String,
     val makerId: Int,

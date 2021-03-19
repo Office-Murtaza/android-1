@@ -1,6 +1,6 @@
 package com.app.belcobtm.data.rest.trade.request
 
-data class TradeRequest(
+data class CreateTradeRequest(
     val type: Int,
     val coin: String,
     val price: Int,

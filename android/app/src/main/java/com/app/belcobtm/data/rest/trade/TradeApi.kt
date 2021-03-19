@@ -1,6 +1,7 @@
 package com.app.belcobtm.data.rest.trade
 
-import com.app.belcobtm.data.rest.trade.request.TradeRequest
+import com.app.belcobtm.data.rest.trade.request.CreateTradeRequest
+import com.app.belcobtm.data.rest.trade.request.EditTradeRequest
 import com.app.belcobtm.data.rest.trade.response.CreateTradeResponse
 import com.app.belcobtm.data.rest.trade.response.DeleteTradeResponse
 import com.app.belcobtm.data.rest.trade.response.EditTradeResponse
@@ -17,13 +18,13 @@ interface TradeApi {
     @POST("user/{userId}/trade")
     fun createTradeAsync(
         @Path("userId") userId: Int,
-        @Body trade: TradeRequest
+        @Body createTrade: CreateTradeRequest
     ): Deferred<Response<CreateTradeResponse>>
 
-    @POST("user/{userId}/trade")
+    @PUT("user/{userId}/trade")
     fun editTradeAsync(
         @Path("userId") userId: Int,
-        @Body trade: TradeRequest
+        @Body editTrade: EditTradeRequest
     ): Deferred<Response<EditTradeResponse>>
 
     @DELETE("user/{userId}/trade")

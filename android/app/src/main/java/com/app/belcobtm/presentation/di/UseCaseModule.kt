@@ -13,6 +13,9 @@ import com.app.belcobtm.domain.trade.create.CheckTradeCreationAvailabilityUseCas
 import com.app.belcobtm.domain.trade.create.CreateTradeUseCase
 import com.app.belcobtm.domain.trade.create.GetAvailableTradePaymentOptionsUseCase
 import com.app.belcobtm.domain.trade.create.mapper.PaymentIdToAvailablePaymentOptionMapper
+import com.app.belcobtm.domain.trade.details.CancelTradeUseCase
+import com.app.belcobtm.domain.trade.details.EditTradeUseCase
+import com.app.belcobtm.domain.trade.details.GetTradeDetailsUseCase
 import com.app.belcobtm.domain.trade.list.*
 import com.app.belcobtm.domain.trade.list.filter.ApplyFilterUseCase
 import com.app.belcobtm.domain.trade.list.filter.LoadFilterDataUseCase
@@ -92,6 +95,9 @@ val useCaseModule = module {
     single { LoadFilterDataUseCase(get(), get(), get()) }
     single { ResetFilterUseCase(get()) }
     single { ApplyFilterUseCase(get(), get()) }
+    single { GetTradeDetailsUseCase(get(), get()) }
+    single { CancelTradeUseCase(get()) }
+    single { EditTradeUseCase(get()) }
     factory { TradePaymentOptionMapper() }
     factory { CoinCodeMapper() }
     factory { TradesDataToTradeListMapper(get()) }

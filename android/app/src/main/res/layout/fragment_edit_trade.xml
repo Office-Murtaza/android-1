@@ -284,12 +284,12 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <Button
-            android:id="@+id/create_trade_button"
+            android:id="@+id/edit_trade_button"
             style="@style/Button.Primary"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/margin_x2"
-            android:text="@string/create_trade_button_title"
+            android:text="@string/edit_trade_screen_edit_button_title"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

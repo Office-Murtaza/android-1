@@ -16,7 +16,7 @@ class TradeToTradeItemMapper(
             TradeItem(
                 id, type, LocalCoinType.valueOf(coinCode),
                 status, createDate, price, minLimit, maxLimit,
-                paymentMethods.map(paymentOptionMapper::map),
+                ordersCount, paymentMethods.map(paymentOptionMapper::map),
                 terms, makerId, statusMapper.map(makerStatus),
                 makerPublicId, makerTotalTrades, makerTradingRate,
                 distance, milesFormatter.format(distance)

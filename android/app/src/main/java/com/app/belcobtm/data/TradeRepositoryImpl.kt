@@ -84,7 +84,7 @@ class TradeRepositoryImpl(
         }
     }
 
-    override suspend fun deleteTrade(tradeId: Int): Either<Failure, Unit> {
+    override suspend fun cancelTrade(tradeId: Int): Either<Failure, Unit> {
         val response = tradeApiService.deleteTrade(tradeId)
         return if (response.isRight) {
             Either.Right(Unit)

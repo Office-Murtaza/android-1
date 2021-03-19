@@ -35,7 +35,7 @@
         <com.google.android.material.chip.Chip
             android:id="@+id/trade_type_chip"
             android:layout_width="wrap_content"
-            android:layout_height="24dp"
+            android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:checkable="true"
             android:text="@string/trade_type_buy_label"
@@ -45,9 +45,6 @@
             app:checkedIconVisible="false"
             app:chipBackgroundColor="#2648C583"
             app:chipIcon="@drawable/ic_trade_type_buy"
-            app:chipMinTouchTargetSize="0dp"
-            app:chipStrokeColor="#48C583"
-            app:chipStrokeWidth="@dimen/divider_size"
             app:layout_constraintBottom_toBottomOf="@id/coin_icon"
             app:layout_constraintStart_toEndOf="@id/coin_label"
             app:layout_constraintTop_toTopOf="@id/coin_icon" />
@@ -115,13 +112,12 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:layout_marginEnd="16dp"
-            android:orientation="vertical"
-            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+            android:orientation="horizontal"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="1"
             app:layout_constraintStart_toEndOf="@id/payment_options_label"
             app:layout_constraintTop_toBottomOf="@id/coin_details_divider"
-            app:spanCount="5"
             tools:itemCount="5"
             tools:listitem="@layout/item_payment_option" />
 
@@ -179,14 +175,13 @@
             app:layout_constraintTop_toBottomOf="@id/open_orders_value" />
 
         <TextView
-            android:id="@+id/terms_label"
+            android:id="@+id/terms"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
             android:layout_marginEnd="16dp"
             android:gravity="start"
-            android:text="@string/open_orders_label"
             android:textColor="@color/colorText"
             android:textSize="14sp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -202,7 +197,7 @@
             android:text="@string/edit_trade_button_title"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/terms_label" />
+            app:layout_constraintTop_toBottomOf="@id/terms" />
 
         <Button
             android:id="@+id/cancel_button"

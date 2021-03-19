@@ -45,7 +45,6 @@
             app:checkedIconVisible="false"
             app:chipBackgroundColor="#2648C583"
             app:chipIcon="@drawable/ic_trade_type_buy"
-            app:chipMinTouchTargetSize="0dp"
             app:chipStrokeColor="#48C583"
             app:chipStrokeWidth="@dimen/divider_size"
             app:layout_constraintBottom_toBottomOf="@id/coin_icon"

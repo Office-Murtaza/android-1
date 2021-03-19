@@ -1,11 +1,14 @@
 package com.app.belcobtm.presentation.features.wallet.trade.edit
 
+import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.observe
+import androidx.navigation.fragment.navArgs
 import com.app.belcobtm.R
-import com.app.belcobtm.databinding.FragmentCreateTradeBinding
+import com.app.belcobtm.data.model.trade.TradeType
+import com.app.belcobtm.databinding.FragmentEditTradeBinding
 import com.app.belcobtm.domain.Failure
 import com.app.belcobtm.domain.wallet.LocalCoinType
 import com.app.belcobtm.domain.wallet.item.CoinDataItem
@@ -14,41 +17,32 @@ import com.app.belcobtm.presentation.core.extensions.resIcon
 import com.app.belcobtm.presentation.core.extensions.setTextSilently
 import com.app.belcobtm.presentation.core.extensions.toStringCoin
 import com.app.belcobtm.presentation.core.extensions.toggle
-import com.app.belcobtm.presentation.core.formatter.DoubleCurrencyPriceFormatter
-import com.app.belcobtm.presentation.core.formatter.Formatter
 import com.app.belcobtm.presentation.core.helper.AlertHelper
 import com.app.belcobtm.presentation.core.mvvm.LoadingData
-import com.app.belcobtm.presentation.core.parser.StringParser
 import com.app.belcobtm.presentation.core.ui.fragment.BaseFragment
 import com.app.belcobtm.presentation.core.views.listeners.SafeDecimalEditTextWatcher
-import com.app.belcobtm.presentation.features.wallet.trade.create.CreateTradeViewModel
 import com.app.belcobtm.presentation.features.wallet.trade.create.delegate.TradePaymentOptionDelegate
 import com.google.android.material.chip.Chip
 import com.google.android.material.snackbar.Snackbar
-import org.koin.android.ext.android.inject
 import org.koin.android.viewmodel.ext.android.viewModel
-import org.koin.core.qualifier.named
 
-class EditTradeFragment : BaseFragment<FragmentCreateTradeBinding>() {
+class EditTradeFragment : BaseFragment<FragmentEditTradeBinding>() {
 
-    override val isHomeButtonEnabled: Boolean
-        get() = true
-    override val isToolbarEnabled: Boolean
-        get() = true
+    override var isHomeButtonEnabled: Boolean = true
+    override val isToolbarEnabled: Boolean = true
 
-    private val viewModel by viewModel<CreateTradeViewModel>()
-    private val priceFormatter: Formatter<Double> by inject(named(DoubleCurrencyPriceFormatter.DOUBLE_CURRENCY_PRICE_FORMATTER_QUALIFIER))
-    private val priceParser: StringParser<Double> by inject()
+    private val args by navArgs<EditTradeFragmentArgs>()
+    private val viewModel by viewModel<EditTradeViewModel>()
 
     override val retryListener: View.OnClickListener?
         get() = View.OnClickListener {
             if (viewModel.initialLoadingData.value is LoadingData.Error<Unit>) {
-                viewModel.fetchInitialData()
+                viewModel.fetchTradeDetails(args.tradeId)
             } else {
-//                viewModel.createTrade(
-//                    if (binding.tradeTypeBuyChip.isChecked) TradeType.BUY else TradeType.SELL,
-//                    binding.amountRangeSlider.values, binding.termsInput.editText?.text.toString()
-//                )
+                viewModel.editTrade(
+                    args.tradeId, binding.termsInput.editText?.text.toString(),
+                    minAmountValue, maxAmountValue
+                )
             }
         }
 
@@ -59,7 +53,7 @@ class EditTradeFragment : BaseFragment<FragmentCreateTradeBinding>() {
     }
 
     private val priceTextWatcher = SafeDecimalEditTextWatcher { editable ->
-        viewModel.updatePrice(priceParser.parse(editable.toString()) / 100)
+        viewModel.updatePrice(viewModel.parseAmount(editable.toString()) / 100)
     }
 
     private val minAmountValue by lazy { resources.getInteger(R.integer.trade_amount_min) }
@@ -67,26 +61,30 @@ class EditTradeFragment : BaseFragment<FragmentCreateTradeBinding>() {
 
     private val minAmountTextWatcher = SafeDecimalEditTextWatcher { editable ->
         val currentMax = binding.amountMaxLimitEditText.text?.toString()
-            ?.let(priceParser::parse)?.toInt() ?: maxAmountValue
-        val parsedAmount = priceParser.parse(editable.toString()).toInt().coerceIn(minAmountValue..currentMax)
+            ?.let(viewModel::parseAmount)?.toInt() ?: maxAmountValue
+        val parsedAmount = viewModel.parseAmount(editable.toString()).toInt().coerceAtMost(currentMax)
         viewModel.updateMinAmount(parsedAmount)
     }
 
     private val maxAmountTextWatcher = SafeDecimalEditTextWatcher { editable ->
-        val currentMin = binding.amountMinLimitEditText.text?.toString()
-            ?.let(priceParser::parse)?.toInt() ?: minAmountValue
-        val parsedAmount = priceParser.parse(editable.toString()).toInt().coerceIn(currentMin..maxAmountValue)
+        val parsedAmount = viewModel.parseAmount(editable.toString()).toInt().coerceAtMost(maxAmountValue)
         viewModel.updateMaxAmount(parsedAmount)
     }
 
-    override fun createBinding(inflater: LayoutInflater, container: ViewGroup?): FragmentCreateTradeBinding =
-        FragmentCreateTradeBinding.inflate(inflater, container, false)
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        val root = super.onCreateView(inflater, container, savedInstanceState)
+        viewModel.fetchTradeDetails(args.tradeId)
+        return root
+    }
 
-    override fun FragmentCreateTradeBinding.initViews() {
-        setToolbarTitle(R.string.create_trade_screen_title)
+    override fun createBinding(inflater: LayoutInflater, container: ViewGroup?): FragmentEditTradeBinding =
+        FragmentEditTradeBinding.inflate(inflater, container, false)
+
+    override fun FragmentEditTradeBinding.initViews() {
+        setToolbarTitle(R.string.edit_trade_screen_title)
         coinDetailsView.setMaxButtonEnabled(false)
         coinDetailsView.setErrorEnabled(false)
-        coinDetailsView.getEditText().setText(priceFormatter.format(0.0))
+        coinDetailsView.getEditText().setText(viewModel.formatPrice(0.0))
         coinDetailsView.setHint(requireContext().getString(R.string.create_trade_price_input_hint))
         coinDetailsView.setPadding(0, 0, 0, 0)
         paymentOptions.adapter = adapter
@@ -96,30 +94,31 @@ class EditTradeFragment : BaseFragment<FragmentCreateTradeBinding>() {
         viewModel.updateMaxAmount(amountRangeSlider.values[1].toInt())
     }
 
-    override fun FragmentCreateTradeBinding.initObservers() {
+    override fun FragmentEditTradeBinding.initObservers() {
         viewModel.selectedCoin.observe(viewLifecycleOwner, ::setCoinData)
+        viewModel.initialTerms.observe(viewLifecycleOwner) {
+            termsInput.editText?.setText(it)
+        }
         viewModel.cryptoAmountError.observe(viewLifecycleOwner) {
             coinDetailsView.setErrorText(it, true)
         }
         viewModel.initialLoadingData.listen({})
         viewModel.price.observe(viewLifecycleOwner) { price ->
             coinDetailsView.getEditText().setTextSilently(
-                priceTextWatcher, priceFormatter.format(price)
+                priceTextWatcher, viewModel.formatPrice(price)
             )
         }
         viewModel.amountMinLimit.observe(viewLifecycleOwner) { amount ->
-            amountRangeSlider.values = amountRangeSlider.values.apply { set(0, amount.toFloat()) }
-            val currentValue = amountMinLimitEditText.text?.toString()?.let(priceParser::parse)?.toInt() ?: 0
-            if (currentValue != amount) {
-                amountMinLimitEditText.setTextSilently(minAmountTextWatcher, priceFormatter.format(amount.toDouble()))
+            if (amount >= minAmountValue) {
+                amountRangeSlider.values = amountRangeSlider.values.apply { set(0, amount.toFloat()) }
             }
+            amountMinLimitEditText.setTextSilently(minAmountTextWatcher, viewModel.formatAmount(amount))
         }
         viewModel.amountMaxLimit.observe(viewLifecycleOwner) { amount ->
-            amountRangeSlider.values = amountRangeSlider.values.apply { set(1, amount.toFloat()) }
-            val currentValue = amountMaxLimitEditText.text?.toString()?.let(priceParser::parse)?.toInt() ?: 0
-            if (currentValue != amount) {
-                amountMaxLimitEditText.setTextSilently(maxAmountTextWatcher, priceFormatter.format(amount.toDouble()))
+            if (amount <= maxAmountValue) {
+                amountRangeSlider.values = amountRangeSlider.values.apply { set(1, amount.toFloat()) }
             }
+            amountMaxLimitEditText.setTextSilently(maxAmountTextWatcher, viewModel.formatAmount(amount))
         }
         viewModel.cryptoAmountFormatted.observe(viewLifecycleOwner, cryptoAmountValue::setText)
         viewModel.cryptoAmountError.observe(viewLifecycleOwner) {
@@ -136,7 +135,17 @@ class EditTradeFragment : BaseFragment<FragmentCreateTradeBinding>() {
             Snackbar.make(root, it, Snackbar.LENGTH_SHORT).show()
         }
         viewModel.availablePaymentOptions.observe(viewLifecycleOwner, adapter::update)
-        viewModel.createTradeLoadingData.listen(
+        viewModel.tradeType.observe(viewLifecycleOwner) {
+            if (it == TradeType.SELL) {
+                tradeTypeBuyChip.isEnabled = false
+            } else {
+                tradeTypeSellChip.isEnabled = false
+            }
+        }
+        viewModel.cryptoAmountError.observe(viewLifecycleOwner) {
+            coinDetailsView.setErrorText(it, true)
+        }
+        viewModel.editTradeLoadingData.listen(
             success = {
                 AlertHelper.showToastShort(
                     requireContext(),
@@ -159,7 +168,7 @@ class EditTradeFragment : BaseFragment<FragmentCreateTradeBinding>() {
             })
     }
 
-    override fun FragmentCreateTradeBinding.initListeners() {
+    override fun FragmentEditTradeBinding.initListeners() {
         setupTradeTypeCheckChangeListener(tradeTypeBuyChip)
         setupTradeTypeCheckChangeListener(tradeTypeSellChip)
         coinDetailsView.getEditText().addTextChangedListener(priceTextWatcher)
@@ -171,11 +180,11 @@ class EditTradeFragment : BaseFragment<FragmentCreateTradeBinding>() {
                 viewModel.updateMaxAmount(slider.values[1].toInt())
             }
         }
-        createTradeButton.setOnClickListener {
-//            viewModel.createTrade(
-//                if (binding.tradeTypeBuyChip.isChecked) TradeType.BUY else TradeType.SELL,
-//                binding.amountRangeSlider.values, binding.termsInput.editText?.text.toString()
-//            )
+        editTradeButton.setOnClickListener {
+            viewModel.editTrade(
+                args.tradeId, binding.termsInput.editText?.text.toString(),
+                minAmountValue, maxAmountValue
+            )
         }
     }
 

@@ -3,43 +3,37 @@ package com.app.belcobtm.presentation.features.wallet.trade.edit
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import com.app.belcobtm.R
-import com.app.belcobtm.data.disk.database.AccountDao
-import com.app.belcobtm.data.model.trade.PaymentOption
 import com.app.belcobtm.data.model.trade.TradeType
 import com.app.belcobtm.domain.Failure
-import com.app.belcobtm.domain.trade.create.CheckTradeCreationAvailabilityUseCase
-import com.app.belcobtm.domain.trade.create.CreateTradeUseCase
 import com.app.belcobtm.domain.trade.create.GetAvailableTradePaymentOptionsUseCase
-import com.app.belcobtm.domain.wallet.interactor.GetCoinDetailsUseCase
-import com.app.belcobtm.domain.wallet.interactor.GetFreshCoinsUseCase
+import com.app.belcobtm.domain.trade.details.EditTradeUseCase
+import com.app.belcobtm.domain.trade.details.GetTradeDetailsUseCase
+import com.app.belcobtm.domain.wallet.interactor.GetCoinListUseCase
 import com.app.belcobtm.domain.wallet.item.CoinDataItem
-import com.app.belcobtm.domain.wallet.item.CoinDetailsDataItem
+import com.app.belcobtm.presentation.core.formatter.Formatter
+import com.app.belcobtm.presentation.core.livedata.CombinedLiveData
 import com.app.belcobtm.presentation.core.mvvm.LoadingData
+import com.app.belcobtm.presentation.core.parser.StringParser
 import com.app.belcobtm.presentation.core.provider.string.StringProvider
 import com.app.belcobtm.presentation.features.wallet.trade.create.model.AvailableTradePaymentOption
-import com.app.belcobtm.presentation.features.wallet.trade.create.model.CreateTradeItem
-import kotlinx.coroutines.launch
 
 class EditTradeViewModel(
-    private val getCoinDetailsUseCase: GetCoinDetailsUseCase,
+    private val getTradeDetailsUseCase: GetTradeDetailsUseCase,
     private val getAvailableTradePaymentOptionsUseCase: GetAvailableTradePaymentOptionsUseCase,
-    private val getFreshCoinsUseCase: GetFreshCoinsUseCase,
-    private val accountDao: AccountDao,
-    private val createTradeUseCase: CreateTradeUseCase,
-    private val checkTradeCreationAvailabilityUseCase: CheckTradeCreationAvailabilityUseCase,
-    private val stringProvider: StringProvider
+    private val getCoinListUseCase: GetCoinListUseCase,
+    private val editTradeUseCase: EditTradeUseCase,
+    private val stringProvider: StringProvider,
+    private val priceFormatter: Formatter<Double>,
+    private val amountFormatter: Formatter<Int>,
+    private val amountParser: StringParser<Double>
 ) : ViewModel() {
-
-    private lateinit var coinList: List<CoinDataItem>
-    private lateinit var coinDetails: CoinDetailsDataItem
 
     private val _initialLoadingData = MutableLiveData<LoadingData<Unit>>()
     val initialLoadingData: LiveData<LoadingData<Unit>> = _initialLoadingData
 
-    private val _createTradeLoadingData = MutableLiveData<LoadingData<Unit>>()
-    val createTradeLoadingData: LiveData<LoadingData<Unit>> = _createTradeLoadingData
+    private val _editTradeLoadingData = MutableLiveData<LoadingData<Unit>>()
+    val editTradeLoadingData: LiveData<LoadingData<Unit>> = _editTradeLoadingData
 
     private val _selectedCoin = MutableLiveData<CoinDataItem>()
     val selectedCoin: LiveData<CoinDataItem> = _selectedCoin
@@ -68,41 +62,65 @@ class EditTradeViewModel(
     private val _amountMaxLimit = MutableLiveData<Int>()
     val amountMaxLimit: LiveData<Int> = _amountMaxLimit
 
+    private val _tradeType = MutableLiveData<@TradeType Int>()
+    val tradeType: LiveData<@TradeType Int> = _tradeType
 
-    init {
-        fetchInitialData()
-    }
+    private val _initialTerms = MutableLiveData<String>()
+    val initialTerms: LiveData<String> = _initialTerms
 
-    fun fetchInitialData() {
-        viewModelScope.launch {
-            _initialLoadingData.value = LoadingData.Loading(Unit)
-            val allCoins = accountDao.getItemList().orEmpty()
-            getAvailableTradePaymentOptionsUseCase.invoke(Unit, onSuccess = { availablePaymentOptions ->
-                _availablePaymentOptions.value = availablePaymentOptions
-                if (allCoins.isNotEmpty()) {
-                    val coinCodesList = allCoins.map { it.type.name }
-                    getFreshCoinsUseCase(
-                        params = GetFreshCoinsUseCase.Params(coinCodesList),
-                        onSuccess = { coinsDataList ->
-                            coinList = coinsDataList
-                            val coin = coinList.firstOrNull()
-                            if (coin == null) {
-                                _initialLoadingData.value = LoadingData.Error(Failure.ServerError())
-                            } else {
-                                updateCoinInfo(coin)
-                            }
-                        },
-                        onError = { _initialLoadingData.value = LoadingData.Error(Failure.ServerError()) }
-                    )
-                } else {
-                    _initialLoadingData.value = LoadingData.Error(Failure.ServerError())
-                }
-            }, onError = { _initialLoadingData.value = LoadingData.Error(Failure.ServerError()) })
+    val cryptoAmountFormatted: LiveData<String> =
+        CombinedLiveData(price, amountMaxLimit, selectedCoin) { price, maxAmount, coin ->
+            val cryptoAmount = if (maxAmount == null || price == null || price == 0.0) {
+                0.0
+            } else {
+                maxAmount.toDouble() / price
+            }
+            stringProvider.getString(R.string.trade_crypto_amount_value, cryptoAmount, coin?.code.orEmpty())
         }
-    }
 
-    fun getCoinsToSelect(): List<CoinDataItem> =
-        coinList.filter { selectedCoin.value?.code != it.code }
+    fun parseAmount(input: String) = amountParser.parse(input)
+
+    fun formatAmount(amount: Int) = amountFormatter.format(amount)
+
+    fun formatPrice(price: Double) = priceFormatter.format(price)
+
+    fun fetchTradeDetails(tradeId: Int) {
+        _initialLoadingData.value = LoadingData.Loading(Unit)
+        getAvailableTradePaymentOptionsUseCase.invoke(Unit, onSuccess = { availablePaymentOptions ->
+            getTradeDetailsUseCase.invoke(tradeId, onSuccess = { trade ->
+                _availablePaymentOptions.value = availablePaymentOptions.map { paymentOption ->
+                    paymentOption.apply { selected = trade.paymentMethods.contains(paymentOption.payment) }
+                }
+                _tradeType.value = trade.type
+                _initialTerms.value = trade.terms
+                _amountMinLimit.value = trade.minLimit.toInt()
+                _amountMinLimit.value = trade.maxLimit.toInt()
+                _price.value = trade.price
+                getCoinListUseCase(
+                    params = Unit,
+                    onSuccess = { coinsDataList ->
+                        val coin: CoinDataItem? = coinsDataList.firstOrNull { it.code == trade.coin.name }
+                        if (coin == null) {
+                            _initialLoadingData.value = LoadingData.Error(Failure.ServerError())
+                        } else {
+                            _selectedCoin.value = coin
+                            _initialLoadingData.value = LoadingData.Success(Unit)
+                        }
+                    },
+                    onError = {
+                        it.printStackTrace()
+                        _initialLoadingData.value = LoadingData.Error(Failure.ServerError())
+                    }
+                )
+            }, onError = {
+                it.printStackTrace()
+                _initialLoadingData.value = LoadingData.Error(Failure.ServerError())
+            })
+        }, onError = {
+            it.printStackTrace()
+            _initialLoadingData.value = LoadingData.Error(Failure.ServerError())
+        })
+    }
 
     fun updatePrice(amount: Double) {
         _price.value = amount
@@ -116,98 +134,54 @@ class EditTradeViewModel(
         _amountMaxLimit.value = amount
     }
 
-    fun selectCoin(coinDataItem: CoinDataItem) {
-        _initialLoadingData.value = LoadingData.Loading()
-        updateCoinInfo(coinDataItem)
-    }
-
-    fun createTrade(@TradeType type: Int, priceRange: List<Float>, terms: String) {
-        // TODO validate unique trade
+    fun editTrade(
+        tradeId: Int,
+        terms: String,
+        minRangeAmount: Int,
+        maxRangeAmount: Int
+    ) {
         val paymentOptions = availablePaymentOptions.value.orEmpty()
             .asSequence()
             .filter(AvailableTradePaymentOption::selected)
             .map { it.payment.paymentId }
             .toList()
+        if (paymentOptions.isEmpty()) {
+            _snackbarMessage.value = stringProvider.getString(R.string.edit_trade_no_payment_options_selected_error)
+            return
+        }
         val price = price.value ?: 0.0
         if (price <= 0.0) {
-            _priceError.value = stringProvider.getString(R.string.create_trade_price_zero_error)
+            _priceError.value = stringProvider.getString(R.string.edit_trade_price_zero_error)
             return
         } else {
             _priceError.value = null
         }
-        if (paymentOptions.isEmpty()) {
-            _snackbarMessage.value = stringProvider.getString(R.string.create_trade_no_payment_options_selected_error)
+        val fromAmount = _amountMinLimit.value ?: 0
+        val toAmount = _amountMaxLimit.value ?: 0
+        if (
+            fromAmount < minRangeAmount || fromAmount > maxRangeAmount
+            || toAmount < minRangeAmount || toAmount > maxRangeAmount
+        ) {
+            _priceRangeError.value = stringProvider.getString(
+                R.string.edit_trade_amount_range_error,
+                amountFormatter.format(minRangeAmount),
+                amountFormatter.format(maxRangeAmount)
+            )
+            return
+        } else {
+            _priceRangeError.value = null
+        }
+        val cryptoAmount = toAmount / price
+        if (tradeType.value == TradeType.SELL && cryptoAmount > selectedCoin.value?.reservedBalanceCoin ?: 0.0) {
+            _snackbarMessage.value = stringProvider.getString(R.string.edit_trade_not_enough_crypto_balance)
             return
         }
-//        if (priceRange[0] <= 0.0f || priceRange[1] <= 0.0f) {
-//            _priceRangeError.value = stringProvider.getString(R.string.create_trade_price_range_zero_error)
-//            return
-//        } else {
-//            _priceRangeError.value = null
-//        }
-        val cryptoAmount = priceRange[1] / price
-        if (type == TradeType.SELL && cryptoAmount > selectedCoin.value?.reservedBalanceCoin ?: 0.0) {
-            _snackbarMessage.value = stringProvider.getString(R.string.create_trade_not_enough_crypto_balance)
-            return
-        }
-        val coinCode = selectedCoin.value?.code.orEmpty()
-        checkTradeCreationAvailabilityUseCase(
-            CheckTradeCreationAvailabilityUseCase.Params(coinCode, type),
-            onSuccess = { canCreateTrade ->
-                if (canCreateTrade) {
-                    createTrade(type, coinCode, price, priceRange, terms, paymentOptions)
-                } else {
-                    val tradeLabel = stringProvider.getString(
-                        if (type == TradeType.SELL) {
-                            R.string.trade_type_sell_label
-                        } else {
-                            R.string.trade_type_buy_label
-                        }
-                    )
-                    _snackbarMessage.value = stringProvider.getString(
-                        R.string.create_trade_already_exists, coinCode, tradeLabel
-                    )
-                    _createTradeLoadingData.value = LoadingData.Error(Failure.ClientValidationError())
-                }
-            },
-            onError = {
-                _createTradeLoadingData.value = LoadingData.Error(it)
-            }
-        )
-    }
-
-    private fun createTrade(
-        type: Int,
-        coinCode: String,
-        price: Double,
-        priceRange: List<Float>,
-        terms: String,
-        paymentOptions: List<@PaymentOption Int>
-    ) {
-        _createTradeLoadingData.value = LoadingData.Loading()
-        createTradeUseCase.invoke(
-            CreateTradeItem(
-                type, coinCode, price.toInt(),
-                priceRange[0].toInt(), priceRange[1].toInt(),
-                terms, paymentOptions
-            ), onSuccess = {
-                _createTradeLoadingData.value = LoadingData.Success(it)
+        _editTradeLoadingData.value = LoadingData.Loading()
+        editTradeUseCase(
+            EditTradeItem(tradeId, price, fromAmount, toAmount, terms, paymentOptions), onSuccess = {
+                _editTradeLoadingData.value = LoadingData.Success(it)
             }, onError = {
-                _createTradeLoadingData.value = LoadingData.Error(it)
-            }
-        )
-    }
-
-    private fun updateCoinInfo(coinToSend: CoinDataItem) {
-        getCoinDetailsUseCase(
-            params = GetCoinDetailsUseCase.Params(coinToSend.code),
-            onSuccess = { coinDetails ->
-                _selectedCoin.value = coinToSend
-                this.coinDetails = coinDetails
-                _initialLoadingData.value = LoadingData.Success(Unit)
-            },
-            onError = {
-                _initialLoadingData.value = LoadingData.Error(it)
+                _editTradeLoadingData.value = LoadingData.Error(it)
             }
         )
     }

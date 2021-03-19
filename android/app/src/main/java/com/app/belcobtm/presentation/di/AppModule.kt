@@ -45,8 +45,10 @@ import com.app.belcobtm.presentation.features.wallet.deposit.DepositViewModel
 import com.app.belcobtm.presentation.features.wallet.send.gift.SendGiftViewModel
 import com.app.belcobtm.presentation.features.wallet.trade.container.TradeContainerViewModel
 import com.app.belcobtm.presentation.features.wallet.trade.create.CreateTradeViewModel
+import com.app.belcobtm.presentation.features.wallet.trade.edit.EditTradeViewModel
 import com.app.belcobtm.presentation.features.wallet.trade.list.TradeListViewModel
 import com.app.belcobtm.presentation.features.wallet.trade.list.filter.TradeFilterViewModel
+import com.app.belcobtm.presentation.features.wallet.trade.mytrade.details.MyTradeDetailsViewModel
 import com.app.belcobtm.presentation.features.wallet.trade.mytrade.list.MyTradesViewModel
 import com.app.belcobtm.presentation.features.wallet.trade.order.TradeOrdersViewModel
 import com.app.belcobtm.presentation.features.wallet.trade.recall.TradeRecallViewModel
@@ -105,6 +107,15 @@ val viewModelModule = module {
     viewModel { TradeContainerViewModel(get()) }
     viewModel { TradeListViewModel(get(), get()) }
     viewModel { TradeUserStatisticViewModel(get()) }
+    viewModel { MyTradeDetailsViewModel(get(), get(), get(), get(named(DOUBLE_CURRENCY_PRICE_FORMATTER_QUALIFIER))) }
+    viewModel {
+        EditTradeViewModel(
+            get(), get(), get(), get(), get(),
+            get(named(DOUBLE_CURRENCY_PRICE_FORMATTER_QUALIFIER)),
+            get(named(INT_CURRENCY_PRICE_FORMATTER_QUALIFIER)),
+            get(named(PRICE_DOUBLE_PARSER_QUALIFIER))
+        )
+    }
     viewModel { TradeOrdersViewModel(get()) }
     viewModel {
         MyTradesViewModel(
@@ -113,9 +124,10 @@ val viewModelModule = module {
     }
     viewModel {
         CreateTradeViewModel(
-            get(), get(), get(), get(), get(), get(), get(),
+            get(), get(), get(), get(), get(), get(),
             get(named(DOUBLE_CURRENCY_PRICE_FORMATTER_QUALIFIER)),
-            get(named(INT_CURRENCY_PRICE_FORMATTER_QUALIFIER)), get()
+            get(named(INT_CURRENCY_PRICE_FORMATTER_QUALIFIER)),
+            get(named(PRICE_DOUBLE_PARSER_QUALIFIER))
         )
     }
     viewModel { TradeFilterViewModel(get(), get(), get(), get(), get(named(DISTANCE_INT_PARSER_QUALIFIER))) }

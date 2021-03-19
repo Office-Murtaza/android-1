@@ -13,6 +13,7 @@ data class TradeItem(
     val price: Double,
     val minLimit: Double,
     val maxLimit: Double,
+    val ordersCount: Int,
     val paymentMethods: List<TradePayment>,
     val terms: String,
     val makerId: Int,

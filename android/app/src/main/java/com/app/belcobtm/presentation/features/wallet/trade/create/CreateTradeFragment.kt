@@ -113,9 +113,6 @@ class CreateTradeFragment : BaseFragment<FragmentCreateTradeBinding>() {
             amountMaxLimitEditText.setTextSilently(maxAmountTextWatcher, viewModel.formatAmount(amount))
         }
         viewModel.cryptoAmountFormatted.observe(viewLifecycleOwner, cryptoAmountValue::setText)
-        viewModel.cryptoAmountError.observe(viewLifecycleOwner) {
-            coinDetailsView.setErrorText(it, true)
-        }
         viewModel.priceError.observe(viewLifecycleOwner) {
             coinDetailsView.setErrorText(it, true)
         }
@@ -131,7 +128,7 @@ class CreateTradeFragment : BaseFragment<FragmentCreateTradeBinding>() {
             success = {
                 AlertHelper.showToastShort(
                     requireContext(),
-                    R.string.transactions_screen_transaction_created
+                    R.string.create_trade_success_message
                 )
                 popBackStack()
             },

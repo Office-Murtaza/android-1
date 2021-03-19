@@ -622,4 +622,15 @@
     <string name="trade_filter_dialog_sort_label">Sort by</string>
     <string name="trade_filter_distance_label">Distance range</string>
     <string name="trade_filter_dialog_coins_label">Coins</string>
+
+    <string name="my_trade_details_screen_title">Trade details</string>
+    <string name="my_trade_details_cancel_trade_success_message">Trade successfully canceled</string>
+
+    <string name="edit_trade_screen_title">Edit trade</string>
+    <string name="edit_trade_price_zero_error">Price cannot be zero</string>
+    <string name="edit_trade_amount_range_error">Invalid amount range. Enter value from %1$s to %2$s</string>
+    <string name="edit_trade_no_payment_options_selected_error">Select at least one payment option</string>
+    <string name="edit_trade_not_enough_crypto_balance">Max limit exceeds reserved balance</string>
+    <string name="edit_trade_success_message">Trade successfully edited</string>
+    <string name="edit_trade_screen_edit_button_title">Save</string>
 </resources>
