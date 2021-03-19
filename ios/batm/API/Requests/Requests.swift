@@ -53,7 +53,8 @@ struct CreateAccountRequest: RetriableAPIRequest {
   let password: String
   let coinAddresses: [CoinAddress]
   let notificationsToken: String
-  
+  private let userTimeZone: String = TimeZone.current.localizedName(for: .shortStandard, locale: nil) ?? ""
+
   var path: String { return "/register" }
   var method: HTTPMethod { return .post }
   var task: HTTPTask {
@@ -64,6 +65,7 @@ struct CreateAccountRequest: RetriableAPIRequest {
                                            "deviceOS": UIDevice.current.deviceOS,
                                            "appVersion": UIApplication.shared.appVersion,
                                            "notificationsToken": notificationsToken,
+                                           "timezone": userTimeZone,
                                            "coins": coinAddresses.toJSON()],
                               encoding: JSONEncoding.default)
   }
@@ -77,7 +79,8 @@ struct RecoverWalletRequest: RetriableAPIRequest {
   let password: String
   let coinAddresses: [CoinAddress]
   let notificationsToken: String
-  
+  private let userTimeZone: String = TimeZone.current.localizedName(for: .shortStandard, locale: nil) ?? ""
+
   var path: String { return "/recover" }
   var method: HTTPMethod { return .post }
   var task: HTTPTask {
@@ -88,6 +91,7 @@ struct RecoverWalletRequest: RetriableAPIRequest {
                                            "deviceOS": UIDevice.current.deviceOS,
                                            "appVersion": UIApplication.shared.appVersion,
                                            "notificationsToken": notificationsToken,
+                                           "timezone": userTimeZone,
                                            "coins": coinAddresses.toJSON()],
                               encoding: JSONEncoding.default)
   }
