@@ -87,7 +87,7 @@ public class CoinService {
 
         BigDecimal totalBalance = Util.format(balances.stream()
                 .map(it -> it.getPrice().multiply(it.getBalance().add(it.getReservedBalance())))
-                .reduce(BigDecimal.ZERO, BigDecimal::add), 2);
+                .reduce(BigDecimal.ZERO, BigDecimal::add), 3);
 
         return new BalanceDTO(totalBalance, totalBalance.toString(), balances);
     }
@@ -128,7 +128,6 @@ public class CoinService {
 
     public CoinDetailsDTO getCoinDetails(CoinService.CoinEnum coin) {
         CoinDetailsDTO dto = new CoinDetailsDTO();
-        dto.setCode(coin.name());
         dto.setByteFee(coin.getByteFee());
         dto.setTxFee(coin.getTxFee());
         dto.setGasPrice(coin.getGasPrice());
@@ -173,11 +172,11 @@ public class CoinService {
 
     private CompletableFuture<CoinBalanceDTO> callAsync(UserCoin userCoin) {
         return CompletableFuture.supplyAsync(() -> {
-            CoinEnum coinEnum = CoinEnum.valueOf(userCoin.getCoin().getCode());
+            CoinEnum coin = CoinEnum.valueOf(userCoin.getCoin().getCode());
 
-            Integer scale = coinEnum.getCoinEntity().getScale();
-            BigDecimal coinPrice = coinEnum.getPrice();
-            BigDecimal coinBalance = coinEnum.getBalance(userCoin.getAddress()).setScale(scale, BigDecimal.ROUND_DOWN).stripTrailingZeros();
+            Integer scale = coin.getCoinEntity().getScale();
+            BigDecimal coinPrice = coin.getPrice();
+            BigDecimal coinBalance = coin.getBalance(userCoin.getAddress()).setScale(scale, BigDecimal.ROUND_DOWN).stripTrailingZeros();
             BigDecimal coinFiatBalance = Util.format(coinBalance.multiply(coinPrice), 3);
             BigDecimal reservedBalance = userCoin.getReservedBalance().stripTrailingZeros();
             BigDecimal reservedFiatBalance = Util.format(reservedBalance.multiply(coinPrice), 3);
@@ -192,6 +191,7 @@ public class CoinService {
             dto.setReservedBalance(reservedBalance);
             dto.setReservedFiatBalance(reservedFiatBalance);
             dto.setPrice(coinPrice);
+            dto.setDetails(getCoinDetails(coin));
 
             return dto;
         });

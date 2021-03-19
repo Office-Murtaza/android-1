@@ -60,7 +60,14 @@ public class TransactionService {
 
         List<TxDetailsDTO> list = convertAndSort(map);
 
-        return new TxHistoryDTO(list.size(), list.subList(startIndex - 1, Math.min(list.size(), startIndex + limit - 1)));
+        int fromIndex = (startIndex - 1) * limit;
+        int toIndex = Math.min(list.size(), (startIndex - 1) * limit + limit);
+
+        if(fromIndex <= list.size()) {
+            return new TxHistoryDTO(list.size(), list.subList(fromIndex, toIndex));
+        } else {
+            return new TxHistoryDTO(list.size(), new ArrayList<>());
+        }
     }
 
     private static void mergeTransactionRecordWallets(Map<String, TxDetailsDTO> map, List<TransactionRecordWallet> list) {
