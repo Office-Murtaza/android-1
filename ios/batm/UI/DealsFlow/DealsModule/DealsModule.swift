@@ -1,7 +1,7 @@
 import Foundation
 
-protocol DealsModule: class {}
-protocol DealsModuleDelegate: class {
+protocol DealsModule: AnyObject {}
+protocol DealsModuleDelegate: AnyObject {
     func didSelectStaking()
     func didSelectSwap()
     func didSelectTransfer()

@@ -1,7 +1,7 @@
 import UIKit
 import SnapKit
 
-protocol CodeInputViewDelegate: class {
+protocol CodeInputViewDelegate: AnyObject {
   func didComplete(with code: String, by inputView: CodeInputView)
 }
 

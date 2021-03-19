@@ -1,8 +1,8 @@
 import Foundation
 
-protocol BuySellTradeDetailsModule: class {
+protocol BuySellTradeDetailsModule: AnyObject {
   func setup(coinBalance: CoinBalance, trade: BuySellTrade, type: TradeType)
 }
-protocol BuySellTradeDetailsModuleDelegate: class {
+protocol BuySellTradeDetailsModuleDelegate: AnyObject {
   func didFinishBuySellTradeDetails()
 }

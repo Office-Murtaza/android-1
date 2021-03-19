@@ -194,7 +194,7 @@ final class CoinSendGiftViewController: ModuleViewController<CoinSendGiftPresent
     
     
     let updateMessageDriver = formView.rx.messageText.asDriver()
-    let updateImageIdDriver = didUpdateImageDriver.map { $0?.id }
+    let updateImageDriver = didUpdateImageDriver.map { $0?.id }
     let submitDriver = submitButton.rx.tap.asDriver()
     let fromCoinTypeDriver = formView.rx.willChangeFromCoinType
     
@@ -202,7 +202,7 @@ final class CoinSendGiftViewController: ModuleViewController<CoinSendGiftPresent
                                                       updateFromPickerItem: updateFromPickerItemDriver,
                                                       maxFrom: maxFromDriver,
                                                       updateMessage: updateMessageDriver,
-                                                      updateImageId: updateImageIdDriver,
+                                                      updateImage: updateImageDriver,
                                                       submit: submitDriver,
                                                       fromCoinType: fromCoinTypeDriver))
   }

@@ -1,6 +1,6 @@
 import RxFlow
 
-protocol UpdatePinFlowControllerDelegate: class {
+protocol UpdatePinFlowControllerDelegate: AnyObject {
   func didFinishUpdatePinFlow()
 }
 

@@ -20,16 +20,16 @@ final class CoinExchangePresenter: ModulePresenter, CoinExchangeModule {
         var swap: Driver<Void>
     }
     
+    weak var delegate: CoinExchangeModuleDelegate?
     let didViewAppear = PublishRelay<Void>()
     var coinTypeDidChange = PublishRelay<Void>()
     var alertShouldAppear = PublishRelay<Void>()
+    
     private let usecase: CoinDetailsUsecase
     private let store: Store
     private let walletUseCase: WalletUsecase
-    private let balanceService: BalanceService
     private var sortedCoins: [BTMCoin] = []
     
-    weak var delegate: CoinExchangeModuleDelegate?
     
     var state: Driver<CoinExchangeState> {
         return store.state
@@ -37,12 +37,10 @@ final class CoinExchangePresenter: ModulePresenter, CoinExchangeModule {
     
     init(usecase: CoinDetailsUsecase,
          walletUseCase: WalletUsecase,
-         balanceService: BalanceService,
          store: Store = CoinExchangeStore()) {
         self.usecase = usecase
         self.store = store
         self.walletUseCase = walletUseCase
-        self.balanceService = balanceService
     }
     
     func setup() {}
@@ -51,7 +49,7 @@ final class CoinExchangePresenter: ModulePresenter, CoinExchangeModule {
         didViewAppear
             .asObservable()
             .flatMap { [unowned self]  in
-                return self.track(Observable.combineLatest(self.balanceService.getCoinsBalance().single().asObservable(),
+                return self.track(Observable.combineLatest(self.walletUseCase.getCoinsBalance(),
                                                            self.walletUseCase.getCoinsList().asObservable()))
             }.subscribe({ [weak self] in
                 guard let coins = $0.element?.1, coins.count >= 2 else {
@@ -79,10 +77,14 @@ final class CoinExchangePresenter: ModulePresenter, CoinExchangeModule {
             .asObservable()
             .distinctUntilChanged()
             .observeOn(MainScheduler.instance)
-            .flatMap { [unowned self] type in self.track(self.usecase.getCoinDetails(for: type))}
+            .flatMap { [unowned self] type in
+                self.track(Observable.combineLatest(self.usecase.getCoinsBalance(),
+                                                    Signal.just(type).asObservable()))
+            }
             .subscribe { [unowned self] result in
                 switch result {
-                case let .next(details):
+                case let .next((balances, type)):
+                    let details = balances.coins.first { $0.type == type }?.details ?? .empty
                     self.store.action.accept(.updateToCoinDetails(details))
                 default: break
                 }
@@ -93,10 +95,15 @@ final class CoinExchangePresenter: ModulePresenter, CoinExchangeModule {
             .asObservable()
             .distinctUntilChanged()
             .observeOn(MainScheduler.instance)
-            .flatMap { [unowned self] type in self.track(self.usecase.getCoinDetails(for: type))}
+
+            .flatMap { [unowned self] type in
+                self.track(Observable.combineLatest(self.usecase.getCoinsBalance(),
+                                                    Signal.just(type).asObservable()))
+            }
             .subscribe { [unowned self] result in
                 switch result {
-                case let .next(details):
+                case let .next((balances, type)):
+                    let details = balances.coins.first { $0.type == type }?.details ?? .empty
                     self.store.action.accept(.updateFromCoinDetails(details))
                 default: break
                 }

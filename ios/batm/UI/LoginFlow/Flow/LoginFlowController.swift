@@ -1,7 +1,7 @@
 import Foundation
 import RxFlow
 
-protocol LoginFlowControllerDelegate: class {
+protocol LoginFlowControllerDelegate: AnyObject {
   func didFinishLogin()
 }
 

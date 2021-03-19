@@ -57,11 +57,11 @@ struct CoinStakingState: Equatable {
     }
     
     var shouldShowWithdrawView: Bool {
-        return stakeDetails?.status == .canceled && (stakeDetails?.tillWithdrawal ?? 0) > 0
+        return stakeDetails?.status == .canceled && (stakeDetails?.tillWithdraw ?? 0) > 0
     }
     
     var shouldWithdrawButtonEnabled: Bool {
-        return stakeDetails?.status == .canceled && stakeDetails?.tillWithdrawal == 0
+        return stakeDetails?.status == .canceled && stakeDetails?.tillWithdraw == 0
     }
 }
 

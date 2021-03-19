@@ -1,6 +1,6 @@
 import UIKit
 
-protocol PickerDelegate: class {
+protocol PickerDelegate: AnyObject {
   func didSelect(image: UIImage)
   func didCancel()
 }

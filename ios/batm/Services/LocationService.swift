@@ -7,7 +7,7 @@ protocol LocationService {
   func requestLocationIfNeeded()
 }
 
-protocol LocationManager: class {
+protocol LocationManager: AnyObject {
   var delegate: CLLocationManagerDelegate? { get set }
   
   func requestLocation()

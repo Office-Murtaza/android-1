@@ -2,7 +2,7 @@
 //  UIImage+Extension.swift
 //  batm
 //
-//  Created by Dmytro Kolesnyk2 on 17.03.2021.
+//  Created by Dmytro Kolesnyk on 17.03.2021.
 //  Copyright © 2021 Daniel Tischenko. All rights reserved.
 //
 
@@ -14,7 +14,7 @@ extension UIImage {
     enum TransactionStatus {
         static let pending = UIImage(named: "pending")
         static let complete = UIImage(named: "complete")
-        static let fail = UIImage(named: "fail")
+        static let fail = UIImage(named: "transaction_details_fail")
         static let notExist = UIImage(named: "active")
     }
     

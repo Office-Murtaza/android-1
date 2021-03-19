@@ -22,7 +22,6 @@ protocol APIGateway {
   func createAccount(phoneNumber: String, password: String, coinAddresses: [CoinAddress]) -> Single<CreateWalletResponse>
   func recoverWallet(phoneNumber: String, password: String, coinAddresses: [CoinAddress]) -> Single<CreateWalletResponse>
   func verifyCode(userId: Int, code: String) -> Completable
-  func getCoinsBalance(userId: Int, coins: [BTMCoin]) -> Single<CoinsBalance>
   func getCoinDetails(type: CustomCoinType) -> Single<CoinDetails>
   func getMapAddresses() -> Single<MapAddresses>
   func getPhoneNumber(userId: Int) -> Single<PhoneNumber>
@@ -39,6 +38,21 @@ protocol APIGateway {
                             type: CustomCoinType,
                             coinAmount: Decimal,
                             currencyAmount: Decimal) -> Single<PreSubmitResponse>
+    func submitCoinTransaction(userId: Int,
+                               type: CustomCoinType,
+                               txType: TransactionType,
+                               amount: Decimal,
+                               fee: Decimal?,
+                               fromAddress: String?,
+                               toAddress: String?,
+                               phone: String?,
+                               message: String?,
+                               image: String?,
+                               toCoinType: CustomCoinType?,
+                               toCoinAmount: Decimal?,
+                               txhex: String?,
+                               from screen: ScreenType) -> Single<TransactionDetails>
+
   func submitTransaction(userId: Int,
                          type: CustomCoinType,
                          txType: TransactionType,
@@ -48,7 +62,7 @@ protocol APIGateway {
                          toAddress: String?,
                          phone: String?,
                          message: String?,
-                         imageId: String?,
+                         image: String?,
                          toCoinType: CustomCoinType?,
                          toCoinAmount: Decimal?,
                          txhex: String?,
@@ -150,15 +164,6 @@ final class APIGatewayImpl: APIGateway {
     return execute(request)
   }
   
-  func getCoinsBalance(userId: Int, coins: [BTMCoin]) -> Single<CoinsBalance> {
-    if coins.isEmpty {
-      return Single.just(CoinsBalance(totalBalance: 0, coins: []))
-    }
-    
-    let request = CoinsBalanceRequest(userId: userId, coins: coins)
-    return execute(request)
-  }
-  
   func getCoinDetails(type: CustomCoinType) -> Single<CoinDetails> {
     let request = CoinDetailsRequest(coinId: type.code)
     return execute(request)
@@ -230,6 +235,37 @@ final class APIGatewayImpl: APIGateway {
                                               currencyAmount: currencyAmount)
     return execute(request)
   }
+    
+    func submitCoinTransaction(userId: Int,
+                               type: CustomCoinType,
+                               txType: TransactionType,
+                               amount: Decimal,
+                               fee: Decimal?,
+                               fromAddress: String?,
+                               toAddress: String?,
+                               phone: String?,
+                               message: String?,
+                               image: String?,
+                               toCoinType: CustomCoinType?,
+                               toCoinAmount: Decimal?,
+                               txhex: String?,
+                               from screen: ScreenType) -> Single<TransactionDetails> {
+        let request = CoinSubmitTransactionRequest(userId: userId,
+                                                   coinId: type.code,
+                                                   txType: txType,
+                                                   amount: amount,
+                                                   fee: fee,
+                                                   fromAddress: fromAddress,
+                                                   toAddress: toAddress,
+                                                   phone: phone,
+                                                   message: message,
+                                                   image: image,
+                                                   toCoinId: toCoinType?.code,
+                                                   toCoinAmount: toCoinAmount,
+                                                   txhex: txhex)
+        return execute(request, from: screen)
+    }
+
   
   func submitTransaction(userId: Int,
                          type: CustomCoinType,
@@ -240,7 +276,7 @@ final class APIGatewayImpl: APIGateway {
                          toAddress: String?,
                          phone: String?,
                          message: String?,
-                         imageId: String?,
+                         image: String?,
                          toCoinType: CustomCoinType?,
                          toCoinAmount: Decimal?,
                          txhex: String?,
@@ -254,7 +290,7 @@ final class APIGatewayImpl: APIGateway {
                                            toAddress: toAddress,
                                            phone: phone,
                                            message: message,
-                                           imageId: imageId,
+                                           image: image,
                                            toCoinId: toCoinType?.code,
                                            toCoinAmount: toCoinAmount,
                                            txhex: txhex)

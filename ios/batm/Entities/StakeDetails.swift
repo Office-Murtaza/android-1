@@ -1,21 +1,26 @@
 import UIKit
 
 struct StakeDetails: Equatable {
-    var status: StakingStatus
-    var amount: Double?
-    var amountStr: String?
-    var rewardAmount: Double?
-    var rewardAmountStr: String?
-    var rewardPercent: Double?
-    var rewardPercentStr: String?
-    var rewardAnnualAmount: Double?
-    var rewardAnnualAmountStr: String?
-    var annualPercent: Int?
-    var createTimestamp: String?
-    var cancelTimestamp: String?
-    var duration: Int?
-    var tillWithdrawal: Int?
+    var id: String?
+    var coin: CustomCoinType?
+    var status: StakingStatus?
+    var cryptoAmount: Double?
+    var basePeriod: Int?
+    var annualPeriod: Int?
     var holdPeriod: Int?
+    var annualPercent: Int?
+    var createTxId: String?
+    var createTimestamp: String?
+    var cancelTxId: String?
+    var cancelTimestamp: String?
+    var withdrawTxId: String?
+    var withdrawTimestamp: String?
+
+    var duration: Int
+    var rewardPercent: Int
+    var rewardAmount: Double
+    var rewardAnnualAmount: Double
+    var tillWithdraw: Int
 }
 
 enum StakingStatus: Int, Equatable {

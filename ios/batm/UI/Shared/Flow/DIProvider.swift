@@ -1,7 +1,7 @@
 import Foundation
 import Swinject
 
-protocol DIProvider: class {
+protocol DIProvider: AnyObject {
   var parent: DIProvider? { get }
   var assembler: Assembler { get }
   var resolver: Resolver { get }

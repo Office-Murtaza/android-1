@@ -1,8 +1,8 @@
 import Foundation
 
-protocol PhoneVerificationModule: class {
+protocol PhoneVerificationModule: AnyObject {
   func setup(phoneNumber: String, for mode: PhoneVerificationMode)
 }
-protocol PhoneVerificationModuleDelegate: class {
+protocol PhoneVerificationModuleDelegate: AnyObject {
   func didFinishPhoneVerification(phoneNumber: String)
 }

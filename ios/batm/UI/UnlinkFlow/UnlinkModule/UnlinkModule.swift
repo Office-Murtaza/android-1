@@ -1,4 +1,4 @@
 import Foundation
 
-protocol UnlinkModule: class {}
-protocol UnlinkModuleDelegate: class {}
+protocol UnlinkModule: AnyObject {}
+protocol UnlinkModuleDelegate: AnyObject {}

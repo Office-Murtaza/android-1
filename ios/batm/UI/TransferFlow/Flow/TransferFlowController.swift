@@ -2,7 +2,7 @@ import Foundation
 import RxSwift
 import RxFlow
 
-protocol TransferFlowControllerDelegate: class {}
+protocol TransferFlowControllerDelegate: AnyObject {}
 
 class TransferFlowController: FlowController {
   var initialStep: Step = TransferFlow.Steps.transfer

@@ -27,14 +27,33 @@ final class TransactionDetailsViewController: ModuleViewController<TransactionDe
         tableView.dataSource = dataSource
         dataSource?.tableView = tableView
         
-        guard let dataSource = dataSource, let details = presenter.transactionDetails else { return }
+        rx.firstTimeViewDidAppear
+            .asObservable()
+            .doOnNext { [weak self] in
+                self?.presenter.didViewLoadRelay.accept(()) }
+            .subscribe()
+            .disposed(by: disposeBag)
         
-        dataSource.transactionsRelay.accept(details)
+        presenter.state
+            .asObservable()
+            .map { $0.coinType }
+            .subscribe { [weak self] in
+                self?.dataSource?.coinType = $0
+            }
+            .disposed(by: disposeBag)
+        
+        presenter.state
+            .asObservable()
+            .map { $0.transactionDetails }
+            .distinctUntilChanged()
+            .filterNil()
+            .subscribe(onNext: { [weak self] details in
+                self?.dataSource?.transactionsRelay.accept(details)
+            })
+            .disposed(by: disposeBag)
     }
     
     override func setupBindings() {
         setupUIBindings()
-        
-        presenter.bind(input: TransactionDetailsPresenter.Input())
     }
 }

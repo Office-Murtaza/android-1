@@ -1,9 +1,9 @@
 import UIKit
 
-protocol VerificationModule: class {
+protocol VerificationModule: AnyObject {
   func didPick(image: UIImage)
 }
-protocol VerificationModuleDelegate: class {
+protocol VerificationModuleDelegate: AnyObject {
   func showPicker(from module: VerificationModule)
   func didFinishVerification()
 }

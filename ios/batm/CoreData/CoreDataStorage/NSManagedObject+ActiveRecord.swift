@@ -7,7 +7,7 @@ struct ObjectId<T: NSManagedObject> {
 
 protocol ActiveRecord {}
 
-protocol UniqueIdentifiable: class {
+protocol UniqueIdentifiable: AnyObject {
   associatedtype UidType: CVarArg, Equatable
   
   var uid: UidType { get set }

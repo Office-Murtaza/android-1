@@ -1,6 +1,6 @@
 import Foundation
 
-protocol EnterPasswordModule: class {}
-protocol EnterPasswordModuleDelegate: class {
+protocol EnterPasswordModule: AnyObject {}
+protocol EnterPasswordModuleDelegate: AnyObject {
   func didMatchPassword()
 }

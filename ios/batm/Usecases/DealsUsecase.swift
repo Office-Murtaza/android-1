@@ -11,7 +11,8 @@ protocol DealsUsecase {
     func createStake(from coin: BTMCoin, with coinDetails: CoinDetails, amount: Decimal) -> Completable
     func cancelStake(from coin: BTMCoin, with coinDetails: CoinDetails, stakeDetails: StakeDetails) -> Completable
     func withdrawStake(from coin: BTMCoin, with coinDetails: CoinDetails, stakeDetails: StakeDetails) -> Completable
-    func getCoinDetails(for type: CustomCoinType) -> Single<CoinDetails>
+    func getCoinDetails(for type: CustomCoinType) -> Observable<CoinDetails>
+    func getCoinsBalance() -> Observable<CoinsBalance>
     func getCoin(for type: CustomCoinType) -> Single<BTMCoin>
     func getTrades() -> Single<Trades>
     func getAccount() -> Single<Account>
@@ -22,26 +23,22 @@ class DealsUsecaseImpl: DealsUsecase {
     let accountStorage: AccountStorage
     let walletService: WalletService
     let walletStorage: BTMWalletStorage
+    let balanceService: BalanceService
     
     init(api: APIGateway,
          accountStorage: AccountStorage,
          walletService: WalletService,
-         walletStorage: BTMWalletStorage) {
+         walletStorage: BTMWalletStorage,
+         balanceService: BalanceService) {
         self.api = api
         self.accountStorage = accountStorage
         self.walletService = walletService
         self.walletStorage = walletStorage
+        self.balanceService = balanceService
     }
     
-    func getCoinsBalance(by type: CustomCoinType) -> Single<CoinsBalance> {
-        return walletStorage.get()
-            .map { $0.coins.filter { $0.type == type } }
-            .asObservable()
-            .withLatestFrom(accountStorage.get()) { ($1, $0) }
-            .flatMap { [api] in
-                api.getCoinsBalance(userId: $0.userId, coins: $1)
-            }
-            .asSingle()
+    func getCoinsBalance() -> Observable<CoinsBalance> {
+        return balanceService.getCoinsBalance()
     }
     
     func getCoin(for type: CustomCoinType) -> Single<BTMCoin> {
@@ -57,8 +54,8 @@ class DealsUsecaseImpl: DealsUsecase {
             }
     }
     
-    func getCoinDetails(for type: CustomCoinType) -> Single<CoinDetails> {
-        return api.getCoinDetails(type: type)
+    func getCoinDetails(for type: CustomCoinType) -> Observable<CoinDetails> {
+        return balanceService.getCoinDetails(for: type)
     }
     
     func exchange(from fromCoin: BTMCoin,
@@ -70,7 +67,7 @@ class DealsUsecaseImpl: DealsUsecase {
             .flatMap { [walletService] account in
                 return walletService.getTransactionHex(for: fromCoin,
                                                        with: coinDetails,
-                                                       destination: coinDetails.walletAddress,
+                                                       destination: coinDetails.walletAddress.value,
                                                        amount: amount,
                                                        stakingType: nil)
                     .map { (account, $0) }
@@ -152,7 +149,7 @@ class DealsUsecaseImpl: DealsUsecase {
                 return self.submit(userId: account.userId,
                                    type: coin.type,
                                    txType: .withdrawStake,
-                                   amount: (Decimal(stakeDetails.amount ?? 0)) + (Decimal(stakeDetails.rewardAmount ?? 0)),
+                                   amount: (Decimal(stakeDetails.cryptoAmount ?? 0)) + (Decimal(stakeDetails.rewardAmount)),
                                    fee: coinDetails.txFee,
                                    fromAddress: coin.address,
                                    toAddress: coinDetails.contractAddress,
@@ -169,7 +166,7 @@ class DealsUsecaseImpl: DealsUsecase {
                         toAddress: String? = nil,
                         phone: String? = nil,
                         message: String? = nil,
-                        imageId: String? = nil,
+                        image: String? = nil,
                         toCoinType: CustomCoinType? = nil,
                         toCoinAmount: Decimal? = nil,
                         transactionResultString: String? = nil) -> Completable {
@@ -183,7 +180,7 @@ class DealsUsecaseImpl: DealsUsecase {
                                      toAddress: toAddress,
                                      phone: phone,
                                      message: message,
-                                     imageId: imageId,
+                                     image: image,
                                      toCoinType: toCoinType,
                                      toCoinAmount: toCoinAmount,
                                      txhex: transactionResultString,

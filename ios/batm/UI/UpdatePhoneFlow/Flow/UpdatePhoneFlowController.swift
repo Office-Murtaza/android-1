@@ -1,6 +1,6 @@
 import RxFlow
 
-protocol UpdatePhoneFlowControllerDelegate: class {
+protocol UpdatePhoneFlowControllerDelegate: AnyObject {
   func didFinishUpdatePhoneFlow()
 }
 

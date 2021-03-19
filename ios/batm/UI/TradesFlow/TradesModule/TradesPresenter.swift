@@ -14,8 +14,6 @@ final class TradesPresenter: ModulePresenter, TradesModule {
     var showMoreSellTrades: Driver<Void>
     var buyTradeSelected: Driver<IndexPath>
     var sellTradeSelected: Driver<IndexPath>
-    var recall: Driver<Void>
-    var reserve: Driver<Void>
     var create: Driver<Void>
   }
   
@@ -101,20 +99,6 @@ final class TradesPresenter: ModulePresenter, TradesModule {
     input.create
       .withLatestFrom(state)
       .drive(onNext: { [delegate] in delegate?.showCreateEditTrade(coinBalance: $0.coinBalance!) })
-      .disposed(by: disposeBag)
-    
-    input.reserve
-      .withLatestFrom(state)
-      .drive(onNext: { [delegate] in delegate?.showReserve(coin: $0.coin!,
-                                                           coinBalances: $0.coinBalances!,
-                                                           coinDetails: $0.coinDetails!) })
-      .disposed(by: disposeBag)
-    
-    input.recall
-      .withLatestFrom(state)
-      .drive(onNext: { [delegate] in delegate?.showRecall(coin: $0.coin!,
-                                                          coinBalances: $0.coinBalances!,
-                                                          coinDetails: $0.coinDetails!) })
       .disposed(by: disposeBag)
     
     setupBindings()

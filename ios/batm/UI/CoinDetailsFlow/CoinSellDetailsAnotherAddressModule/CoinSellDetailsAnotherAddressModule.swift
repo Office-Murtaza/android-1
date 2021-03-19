@@ -1,8 +1,8 @@
 import Foundation
 
-protocol CoinSellDetailsAnotherAddressModule: class {
+protocol CoinSellDetailsAnotherAddressModule: AnyObject {
   func setup(with details: SellDetailsForAnotherAddress)
 }
-protocol CoinSellDetailsAnotherAddressModuleDelegate: class {
+protocol CoinSellDetailsAnotherAddressModuleDelegate: AnyObject {
   func didFinishCoinSellDetailsAnotherAddress()
 }

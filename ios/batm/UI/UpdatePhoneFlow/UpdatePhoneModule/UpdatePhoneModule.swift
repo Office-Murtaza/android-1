@@ -1,8 +1,8 @@
 import Foundation
 
-protocol UpdatePhoneModule: class {
+protocol UpdatePhoneModule: AnyObject {
   func setup(oldPhoneNumber: String)
 }
-protocol UpdatePhoneModuleDelegate: class {
+protocol UpdatePhoneModuleDelegate: AnyObject {
   func didNotMatchNewPhoneNumber(_ phoneNumber: String)
 }

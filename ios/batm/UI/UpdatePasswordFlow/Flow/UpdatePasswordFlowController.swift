@@ -1,6 +1,6 @@
 import RxFlow
 
-protocol UpdatePasswordFlowControllerDelegate: class {
+protocol UpdatePasswordFlowControllerDelegate: AnyObject {
   func didFinishUpdatePasswordFlow()
 }
 

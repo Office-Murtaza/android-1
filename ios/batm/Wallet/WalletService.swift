@@ -390,7 +390,7 @@ class WalletServiceImpl: WalletService {
       $0.account = coin.address
       $0.destination = toAddress
       $0.amount = amountInUnits
-      $0.fee = coin.transactionFee(fee: coinDetails.txFee)
+      $0.fee = coin.transactionFee(fee: coinDetails.txFee.value)
       $0.sequence = Int32(sequence)
       $0.privateKey = privateKey
     }

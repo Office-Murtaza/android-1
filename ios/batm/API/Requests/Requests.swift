@@ -56,7 +56,6 @@ struct CreateAccountRequest: RetriableAPIRequest {
   private let userTimeZone: String = TimeZone.current.localizedName(for: .standard, locale: nil) ?? ""
   private let locationManager = UserLocationManager()
 
-
   var path: String { return "/register" }
   var method: HTTPMethod { return .post }
   var task: HTTPTask {
@@ -116,21 +115,6 @@ struct VerifyCodeRequest: AuthorizedAPIRequest {
   var task: HTTPTask {
     return .requestParameters(parameters: ["code": code],
                               encoding: JSONEncoding.default)
-  }
-}
-
-struct CoinsBalanceRequest: AuthorizedAPIRequest {
-  typealias ResponseType = APIResponse<CoinsBalance>
-  typealias ResponseTrait = SingleResponseTrait
-  
-  let userId: Int
-  let coins: [BTMCoin]
-  
-  var path: String { return "/user/\(userId)/balance" }
-  var method: HTTPMethod { return .get }
-  var task: HTTPTask {
-  return .requestParameters(parameters: ["coins": coins.map { $0.type.code }],
-                            encoding: URLEncoding.customDefault)
   }
 }
 
@@ -344,6 +328,42 @@ struct PreSubmitTransactionRequest: AuthorizedAPIRequest {
   }
 }
 
+struct CoinSubmitTransactionRequest: AuthorizedAPIRequest {
+    typealias ResponseType = APIResponse<TransactionDetails>
+    typealias ResponseTrait = SingleResponseTrait
+    
+    let userId: Int
+    let coinId: String
+    let txType: TransactionType
+    let amount: Decimal
+    let fee: Decimal?
+    let fromAddress: String?
+    let toAddress: String?
+    let phone: String?
+    let message: String?
+    let image: String?
+    let toCoinId: String?
+    let toCoinAmount: Decimal?
+    let txhex: String?
+    
+    var path: String { return "/user/\(userId)/coin/\(coinId)/submit" }
+    var method: HTTPMethod { return .post }
+    var task: HTTPTask {
+        return .requestParameters(parameters: ["type": txType.rawValue,
+                                               "cryptoAmount": amount,
+                                               "fee": fee as Any,
+                                               "fromAddress": fromAddress as Any,
+                                               "toAddress": toAddress as Any,
+                                               "phone": phone as Any,
+                                               "message": message as Any,
+                                               "image": image as Any,
+                                               "refCoin": toCoinId as Any,
+                                               "refCryptoAmount": toCoinAmount as Any,
+                                               "hex": txhex as Any],
+                                  encoding: JSONEncoding.default)
+    }
+}
+
 struct SubmitTransactionRequest: AuthorizedAPIRequest {
   typealias ResponseType = APIEmptyResponse
   typealias ResponseTrait = SingleResponseTrait
@@ -357,7 +377,7 @@ struct SubmitTransactionRequest: AuthorizedAPIRequest {
   let toAddress: String?
   let phone: String?
   let message: String?
-  let imageId: String?
+  let image: String?
   let toCoinId: String?
   let toCoinAmount: Decimal?
   let txhex: String?
@@ -372,7 +392,7 @@ struct SubmitTransactionRequest: AuthorizedAPIRequest {
                                            "toAddress": toAddress as Any,
                                            "phone": phone as Any,
                                            "message": message as Any,
-                                           "imageId": imageId as Any,
+                                           "image": image as Any,
                                            "refCoin": toCoinId as Any,
                                            "refCryptoAmount": toCoinAmount as Any,
                                            "hex": txhex as Any],
@@ -626,7 +646,7 @@ struct StakeDetailsRequest: AuthorizedAPIRequest {
   let userId: Int
   let coinId: String
   
-  var path: String { return "/user/\(userId)/coin/\(coinId)/stake-details" }
+  var path: String { return "/user/\(userId)/coin/\(coinId)/staking-details" }
   var method: HTTPMethod { return .get }
   var task: HTTPTask {
     return .requestPlain

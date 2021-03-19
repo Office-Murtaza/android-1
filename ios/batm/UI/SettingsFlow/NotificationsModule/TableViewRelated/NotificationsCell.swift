@@ -3,7 +3,7 @@ import RxSwift
 import RxCocoa
 import MaterialComponents
 
-protocol NotificationsCellDelegate: class {
+protocol NotificationsCellDelegate: AnyObject {
     func didTapChangeNotifications()
 }
 

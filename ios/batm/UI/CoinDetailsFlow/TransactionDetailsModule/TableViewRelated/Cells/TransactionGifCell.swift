@@ -2,7 +2,7 @@
 //  GifCell.swift
 //  batm
 //
-//  Created by Dmytro Kolesnyk2 on 17.03.2021.
+//  Created by Dmytro Kolesnyk on 17.03.2021.
 //  Copyright © 2021 Daniel Tischenko. All rights reserved.
 //
 
@@ -57,10 +57,10 @@ final class TransactionGifCell: UITableViewCell {
         infoLabel.text = nil
     }
     
-    func configure(imageId: String?, message: String?) {
-        guard let imageId = imageId else { return }
+    func configure(image: String?, message: String?) {
+        guard let image = image else { return }
         
-        GiphyCore.shared.gifByID(imageId) { response, error in
+        GiphyCore.shared.gifByID(image) { response, error in
             guard let media = response?.data else { return }
             DispatchQueue.main.async { [weak self] in
                 guard let self = self else { return }

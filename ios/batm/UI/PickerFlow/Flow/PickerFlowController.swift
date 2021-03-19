@@ -1,7 +1,7 @@
 import Foundation
 import RxFlow
 
-protocol PickerFlowControllerDelegate: class {
+protocol PickerFlowControllerDelegate: AnyObject {
   func didPick(image: UIImage)
 }
 

@@ -1,7 +1,7 @@
 import Foundation
 
-protocol WelcomeModule: class {}
-protocol WelcomeModuleDelegate: class {
+protocol WelcomeModule: AnyObject {}
+protocol WelcomeModuleDelegate: AnyObject {
   func showCreateWalletScreen()
   func showRecoverScreen()
   func showContactSupportAlert()

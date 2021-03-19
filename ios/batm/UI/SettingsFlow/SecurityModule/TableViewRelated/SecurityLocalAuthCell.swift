@@ -3,7 +3,7 @@ import RxSwift
 import RxCocoa
 import MaterialComponents
 
-protocol SecurityLocalAuthCellDelegate: class {
+protocol SecurityLocalAuthCellDelegate: AnyObject {
     func didTapChangeLocalAuthCell()
 }
 

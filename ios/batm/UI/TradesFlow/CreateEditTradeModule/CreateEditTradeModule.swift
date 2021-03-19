@@ -1,8 +1,8 @@
 import Foundation
 
-protocol CreateEditTradeModule: class {
+protocol CreateEditTradeModule: AnyObject {
   func setup(coinBalance: CoinBalance)
 }
-protocol CreateEditTradeModuleDelegate: class {
+protocol CreateEditTradeModuleDelegate: AnyObject {
   func didFinishCreateEditTrade()
 }

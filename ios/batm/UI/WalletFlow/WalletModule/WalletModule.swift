@@ -1,9 +1,9 @@
 import Foundation
 
-protocol WalletModule: class {
-  func fetchCoinsBalance()
+protocol WalletModule: AnyObject {
+    func fetchCoinsBalance()
 }
-protocol WalletModuleDelegate: class {
-  func showCoinDetails(coinBalances: [CoinBalance], coinDetails: CoinDetails, data: PriceChartDetails)
-  func showCoinDetail(predefinedConfig: CoinDetailsPredefinedDataConfig)
+protocol WalletModuleDelegate: AnyObject {
+    func showCoinDetails(for type: CustomCoinType)
+    func showCoinDetail(predefinedConfig: CoinDetailsPredefinedDataConfig)
 }
