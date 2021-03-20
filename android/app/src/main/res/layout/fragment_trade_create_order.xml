@@ -3,14 +3,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content">
 
     <View
         android:id="@+id/grayed_background"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:background="@color/lighter_gray"
-        app:layout_constraintBottom_toBottomOf="@id/input_barrier"
+        app:layout_constraintBottom_toBottomOf="@id/amount_error"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -36,7 +36,6 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
-        android:text="@string/crypto_amount_label"
         android:textColor="@color/black_text_color"
         android:textSize="22sp"
         android:textStyle="bold"
@@ -67,18 +66,20 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="16dp"
-        android:layout_marginBottom="24dp"
         app:hintEnabled="false"
         app:layout_constraintBottom_toBottomOf="@id/input_barrier"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1"
         app:layout_constraintStart_toStartOf="@id/vertical_guideline"
         app:layout_constraintTop_toBottomOf="@id/crypto_amount_label">
 
         <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/amount_edit_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@android:color/transparent"
             android:gravity="end"
+            android:inputType="number"
             android:padding="0dp"
             android:textColor="@color/black_text_color"
             android:textSize="22sp"
@@ -97,6 +98,21 @@
         app:constraint_referenced_ids="amount_input_layout,crypto_amount_value" />
 
     <TextView
+        android:id="@+id/amount_error"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:paddingBottom="8dp"
+        android:textColor="@color/colorError"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toTopOf="@id/platform_fee_label"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/input_barrier"
+        tools:text="Some error" />
+
+    <TextView
         android:id="@+id/platform_fee_label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -106,17 +122,20 @@
         android:textSize="12sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/input_barrier"
+        app:layout_constraintTop_toBottomOf="@id/amount_error"
         tools:text="Platform fee 3% ~ 0.00054 BTC" />
 
     <Button
         android:id="@+id/submit_button"
+        style="@style/Button.Primary"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="16dp"
+        android:layout_marginBottom="32dp"
         android:text="@string/trade_buy_sell_submit_button_label"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/platform_fee_label" />

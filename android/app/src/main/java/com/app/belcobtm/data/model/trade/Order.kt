@@ -6,7 +6,7 @@ data class Order(
     @TradeType val type: Int,
     val coinCode: String,
     @OrderStatus val status: Int,
-    val createDate: String,
+    val timestamp: Long,
     val price: Double,
     val paymentMethods: List<@PaymentOption Int>,
     val cryptoAmount: Double,

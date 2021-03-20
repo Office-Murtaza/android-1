@@ -14,7 +14,7 @@ import com.app.belcobtm.domain.trade.create.GetAvailableTradePaymentOptionsUseCa
 import com.app.belcobtm.domain.wallet.interactor.GetCoinListUseCase
 import com.app.belcobtm.domain.wallet.item.CoinDataItem
 import com.app.belcobtm.presentation.core.formatter.Formatter
-import com.app.belcobtm.presentation.core.livedata.CombinedLiveData
+import com.app.belcobtm.presentation.core.livedata.TripleCombinedLiveData
 import com.app.belcobtm.presentation.core.mvvm.LoadingData
 import com.app.belcobtm.presentation.core.parser.StringParser
 import com.app.belcobtm.presentation.core.provider.string.StringProvider
@@ -69,7 +69,7 @@ class CreateTradeViewModel(
     val amountMaxLimit: LiveData<Int> = _amountMaxLimit
 
     val cryptoAmountFormatted: LiveData<String> =
-        CombinedLiveData(price, amountMaxLimit, selectedCoin) { price, maxAmount, coin ->
+        TripleCombinedLiveData(price, amountMaxLimit, selectedCoin) { price, maxAmount, coin ->
             val cryptoAmount = if (maxAmount == null || price == null || price == 0.0) {
                 0.0
             } else {

@@ -9,7 +9,7 @@ data class TradeOrderItemResponse(
     @TradeType val type: Int,
     val coin: String,
     @OrderStatus val status: Int,
-    val createDate: String,
+    val timestamp: Long,
     val price: Double,
     val cryptoAmount: Double,
     val fiatAmount: Double,

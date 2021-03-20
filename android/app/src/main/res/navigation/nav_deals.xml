@@ -142,6 +142,14 @@
             app:exitAnim="@anim/slide_to_left"
             app:popEnterAnim="@anim/slide_from_left"
             app:popExitAnim="@anim/slide_to_right" />
+
+        <action
+            android:id="@+id/to_order_details"
+            app:destination="@id/trade_order_details_fragment"
+            app:enterAnim="@anim/slide_from_right"
+            app:exitAnim="@anim/slide_to_left"
+            app:popEnterAnim="@anim/slide_from_left"
+            app:popExitAnim="@anim/slide_to_right" />
     </fragment>
 
     <dialog
@@ -178,9 +186,25 @@
 
     <dialog
         android:id="@+id/trade_details_buy_sell"
-        android:name="com.app.belcobtm.presentation.features.wallet.trade.buysell.TradeBuySellBottomSheetFragment"
+        android:name="com.app.belcobtm.presentation.features.wallet.trade.buysell.TradeCreateOrderBottomSheetFragment"
         android:label="BuySellTradeFragment"
-        tools:layout="@layout/fragment_trade_buy_sell_fragment" />
+        tools:layout="@layout/fragment_trade_create_order">
+
+        <argument
+            android:name="tradeId"
+            app:argType="integer"
+            app:nullable="false" />
+
+        <action
+            android:id="@+id/to_order_details"
+            app:destination="@id/trade_order_details_fragment"
+            app:enterAnim="@anim/slide_from_right"
+            app:exitAnim="@anim/slide_to_left"
+            app:popEnterAnim="@anim/slide_from_left"
+            app:popExitAnim="@anim/slide_to_right"
+            app:popUpTo="@+id/trade_container_fragment" />
+
+    </dialog>
 
 
     <fragment
@@ -212,6 +236,19 @@
 
         <argument
             android:name="tradeId"
+            app:argType="integer"
+            app:nullable="false" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/trade_order_details_fragment"
+        android:name="com.app.belcobtm.presentation.features.wallet.trade.order.details.TradeOrderDetailsFragment"
+        android:label="OrderDetailsFragment"
+        tools:layout="@layout/fragment_trade_order_details">
+
+        <argument
+            android:name="orderId"
             app:argType="integer"
             app:nullable="false" />
 

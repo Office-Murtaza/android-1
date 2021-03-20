@@ -5,6 +5,7 @@ import androidx.annotation.StringRes
 import com.app.belcobtm.R
 import com.app.belcobtm.data.model.trade.Order
 import com.app.belcobtm.data.model.trade.OrderStatus
+import com.app.belcobtm.data.model.trade.PaymentOption
 import com.app.belcobtm.data.model.trade.TradeData
 import com.app.belcobtm.domain.wallet.LocalCoinType
 import com.app.belcobtm.presentation.features.wallet.trade.list.model.OrderItem
@@ -21,8 +22,8 @@ class TradesDataToOrderListMapper(
             OrderItem(
                 id, type, type, LocalCoinType.valueOf(coinCode),
                 getStatusLabel(status), getStatusDrawable(status),
-                createDate, price, cryptoAmount, fiatAmount,
-                paymentMethods.map(paymentOptionMapper::map),
+                timestamp, price, cryptoAmount, fiatAmount,
+                listOf(paymentOptionMapper.map(PaymentOption.VENMO)),
                 terms, makerId, makerPublicId, makerLatitude,
                 makerLongitude, makerTotalTrades, makerTradingRate,
                 takerId, takerPublicId, takerLatitude, takerLongitude,

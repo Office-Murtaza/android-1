@@ -13,7 +13,7 @@ data class OrderItem(
     val coin: LocalCoinType,
     @StringRes val statusLabelId: Int,
     @DrawableRes val statusDrawableId: Int,
-    val createDate: String,
+    val timestamp: Long,
     val price: Double,
     val cryptoAmount: Double,
     val fiatAmount: Double,

@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.Observer
 
-class CombinedLiveData<T, K, F, S>(
+class TripleCombinedLiveData<T, K, F, S>(
     source1: LiveData<T>,
     source2: LiveData<K>,
     source3: LiveData<F>,

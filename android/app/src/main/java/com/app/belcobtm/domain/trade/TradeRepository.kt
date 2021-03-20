@@ -6,6 +6,7 @@ import com.app.belcobtm.data.model.trade.TradeData
 import com.app.belcobtm.data.model.trade.filter.TradeFilter
 import com.app.belcobtm.domain.Either
 import com.app.belcobtm.domain.Failure
+import com.app.belcobtm.presentation.features.wallet.trade.buysell.model.TradeOrderItem
 import com.app.belcobtm.presentation.features.wallet.trade.create.model.CreateTradeItem
 import com.app.belcobtm.presentation.features.wallet.trade.edit.EditTradeItem
 import kotlinx.coroutines.flow.Flow
@@ -36,5 +37,5 @@ interface TradeRepository {
 
     suspend fun cancelTrade(tradeId: Int): Either<Failure, Unit>
 
-    suspend fun createOrder(): Either<Failure, Unit>
+    suspend fun createOrder(tradeOrder: TradeOrderItem): Either<Failure, Unit>
 }

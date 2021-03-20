@@ -41,8 +41,8 @@ class TradesResponseToTradeDataMapper {
         with(trade) {
             Order(
                 id, tradeId, type, coin,
-                status, createDate,
-                price, paymentMethods.split(PAYMENT_DELIMITER).map(String::toInt),
+                status, timestamp,
+                price, emptyList(), // TODO get from trade?
                 cryptoAmount, fiatAmount, terms,
                 makerId, makerPublicId, makerLatitude,
                 makerLongitude, makerTotalTrades, makerTradingRate,

@@ -57,7 +57,8 @@ class TradeItemViewHolder(
             binding.priceLabel.text = binding.root.context.getString(
                 R.string.trade_list_item_usd_formatted, price.toStringUsd()
             )
-            binding.makerTradeCountLabel.text = makerTotalTrades.toString()
+            binding.makerTradeCountLabel.text = binding.root.resources
+                .getString(R.string.trade_list_item_total_trades_formatted, makerTotalTrades)
             binding.makerRateLabel.text = makerTradingRate.toString()
             paymentAdapter.update(paymentMethods)
             if (distance == UNDEFINED_DISTANCE) {

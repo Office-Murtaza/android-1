@@ -44,8 +44,8 @@ class TradeContainerFragment : BaseFragment<FragmentTradeListContainerBinding>()
         }.attach()
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
         loadWithDistanceCalculationWithPermissionCheck()
     }
 

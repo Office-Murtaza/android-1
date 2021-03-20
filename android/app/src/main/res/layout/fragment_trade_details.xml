@@ -35,7 +35,7 @@
         <com.google.android.material.chip.Chip
             android:id="@+id/trade_type_chip"
             android:layout_width="wrap_content"
-            android:layout_height="24dp"
+            android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:checkable="true"
             android:text="@string/trade_type_buy_label"
@@ -114,13 +114,12 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:layout_marginEnd="16dp"
-            android:orientation="vertical"
-            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+            android:orientation="horizontal"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="1"
             app:layout_constraintStart_toEndOf="@id/payment_options_label"
             app:layout_constraintTop_toBottomOf="@id/coin_details_divider"
-            app:spanCount="5"
             tools:itemCount="5"
             tools:listitem="@layout/item_payment_option" />
 
@@ -202,24 +201,17 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
             android:layout_marginEnd="16dp"
-            android:gravity="end"
+            android:drawablePadding="4dp"
+            android:gravity="end|center_vertical"
             android:textColor="@color/black_text_color"
             android:textSize="14sp"
+            android:visibility="gone"
+            app:drawableEndCompat="@drawable/ic_directions"
             app:drawableStartCompat="@drawable/ic_distance"
-            app:layout_constraintBottom_toBottomOf="@id/directions_icon"
-            app:layout_constraintEnd_toStartOf="@id/directions_icon"
-            app:layout_constraintTop_toTopOf="@id/directions_icon"
-            tools:text="0.4 miles" />
-
-        <ImageView
-            android:id="@+id/directions_icon"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="16dp"
-            android:src="@drawable/ic_directions"
             app:layout_constraintBottom_toBottomOf="@id/distance_divider"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@id/distance_divider" />
+            app:layout_constraintTop_toTopOf="@id/distance_divider"
+            tools:text="0.4 miles" />
 
         <View
             android:id="@+id/order_details_divider"
@@ -234,7 +226,7 @@
             app:layout_constraintTop_toBottomOf="@id/distance_divider" />
 
         <TextView
-            android:id="@+id/terms_label"
+            android:id="@+id/terms"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
@@ -257,7 +249,7 @@
             android:text="@string/trade_details_buy_sell_button_title"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/terms_label" />
+            app:layout_constraintTop_toBottomOf="@id/terms" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

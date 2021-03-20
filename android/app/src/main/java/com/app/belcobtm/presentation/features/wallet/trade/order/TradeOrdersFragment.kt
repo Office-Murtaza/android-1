@@ -3,6 +3,7 @@ package com.app.belcobtm.presentation.features.wallet.trade.order
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.lifecycle.observe
+import androidx.recyclerview.widget.DividerItemDecoration
 import com.app.belcobtm.databinding.FragmentTradeOrdersBinding
 import com.app.belcobtm.domain.Either
 import com.app.belcobtm.domain.Failure
@@ -40,6 +41,7 @@ class TradeOrdersFragment : BaseFragment<FragmentTradeOrdersBinding>() {
 
     override fun FragmentTradeOrdersBinding.initViews() {
         orderList.adapter = adapter
+        orderList.addItemDecoration(DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL))
     }
 
     override fun initToolbar() {

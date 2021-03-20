@@ -14,6 +14,7 @@ import com.app.belcobtm.domain.trade.create.CreateTradeUseCase
 import com.app.belcobtm.domain.trade.create.GetAvailableTradePaymentOptionsUseCase
 import com.app.belcobtm.domain.trade.create.mapper.PaymentIdToAvailablePaymentOptionMapper
 import com.app.belcobtm.domain.trade.details.CancelTradeUseCase
+import com.app.belcobtm.domain.trade.details.CreateOrderUseCase
 import com.app.belcobtm.domain.trade.details.EditTradeUseCase
 import com.app.belcobtm.domain.trade.details.GetTradeDetailsUseCase
 import com.app.belcobtm.domain.trade.list.*
@@ -25,6 +26,7 @@ import com.app.belcobtm.domain.trade.list.filter.mapper.TradeFilterItemMapper
 import com.app.belcobtm.domain.trade.list.filter.mapper.TradeFilterMapper
 import com.app.belcobtm.domain.trade.list.mapper.*
 import com.app.belcobtm.domain.transaction.interactor.*
+import com.app.belcobtm.domain.transaction.interactor.trade.TradeRecallTransactionCompleteUseCase
 import com.app.belcobtm.domain.wallet.interactor.*
 import com.app.belcobtm.presentation.core.formatter.MilesFormatter.Companion.MILES_FORMATTER_QUALIFIER
 import org.koin.core.qualifier.named
@@ -84,8 +86,9 @@ val useCaseModule = module {
     single { BioAuthSupportedByPhoneUseCase(get()) }
     single { BioAuthAllowedByUserUseCase(get()) }
     single { SetBioAuthStateAllowedUseCase(get()) }
+    single { TradeRecallTransactionCompleteUseCase(get()) }
     single { FetchTradesUseCase(get()) }
-    single { ObserveTradesUseCase(get(), get()) }
+    single { ObserveTradesUseCase(get(), get(), get()) }
     single { ObserveUserTradeStatisticUseCase(get(), get()) }
     single { ObserveOrdersUseCase(get(), get()) }
     single { ObserveMyTradesUseCase(get(), get(), get()) }
@@ -98,6 +101,7 @@ val useCaseModule = module {
     single { GetTradeDetailsUseCase(get(), get()) }
     single { CancelTradeUseCase(get()) }
     single { EditTradeUseCase(get()) }
+    single { CreateOrderUseCase(get()) }
     factory { TradePaymentOptionMapper() }
     factory { CoinCodeMapper() }
     factory { TradesDataToTradeListMapper(get()) }

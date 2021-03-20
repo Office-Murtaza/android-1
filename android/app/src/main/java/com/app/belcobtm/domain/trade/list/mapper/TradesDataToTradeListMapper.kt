@@ -8,10 +8,16 @@ import com.app.belcobtm.presentation.features.wallet.trade.list.model.TradeItem
 
 class TradesDataToTradeListMapper(private val tradeMapper: TradeToTradeItemMapper) {
 
-    fun map(tradeData: TradeData, params: ObserveTradesUseCase.Params, filter: TradeFilter?): List<TradeItem> =
+    fun map(
+        tradeData: TradeData,
+        params: ObserveTradesUseCase.Params,
+        filter: TradeFilter?,
+        userId: Int
+    ): List<TradeItem> =
         tradeData.trades
             .asSequence()
             .filter { it.type == params.tradeType }
+            .filter { it.makerId != userId }
             .let { sequence ->
                 filter?.let { filter ->
                     sequence.filter { it.coinCode == filter.coinCode }

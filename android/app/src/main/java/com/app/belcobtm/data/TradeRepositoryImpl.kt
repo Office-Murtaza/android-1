@@ -15,6 +15,7 @@ import com.app.belcobtm.domain.Either
 import com.app.belcobtm.domain.Failure
 import com.app.belcobtm.domain.trade.TradeRepository
 import com.app.belcobtm.domain.wallet.LocalCoinType
+import com.app.belcobtm.presentation.features.wallet.trade.buysell.model.TradeOrderItem
 import com.app.belcobtm.presentation.features.wallet.trade.create.model.CreateTradeItem
 import com.app.belcobtm.presentation.features.wallet.trade.edit.EditTradeItem
 import kotlinx.coroutines.flow.Flow
@@ -71,7 +72,7 @@ class TradeRepositoryImpl(
         return if (response.isRight) {
             Either.Right(Unit)
         } else {
-            response as Either.Left
+            response as Either.Left<Failure>
         }
     }
 
@@ -80,7 +81,7 @@ class TradeRepositoryImpl(
         return if (response.isRight) {
             Either.Right(Unit)
         } else {
-            response as Either.Left
+            response as Either.Left<Failure>
         }
     }
 
@@ -89,12 +90,18 @@ class TradeRepositoryImpl(
         return if (response.isRight) {
             Either.Right(Unit)
         } else {
-            response as Either.Left
+            response as Either.Left<Failure>
         }
     }
 
-    override suspend fun createOrder(): Either<Failure, Unit> {
-        TODO("Implement trade creation")
+    override suspend fun createOrder(tradeOrder: TradeOrderItem): Either<Failure, Unit> {
+        val response = tradeApiService.createOrder(tradeOrder)
+        // TODO save to cache?
+        return if (response.isRight) {
+            Either.Right(Unit)
+        } else {
+            response as Either.Left<Failure>
+        }
     }
 
     private suspend fun createInitialFilter(calculateDistance: Boolean): TradeFilter {

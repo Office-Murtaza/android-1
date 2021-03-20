@@ -43,8 +43,10 @@ import com.app.belcobtm.presentation.features.wallet.add.WalletsViewModel
 import com.app.belcobtm.presentation.features.wallet.balance.WalletViewModel
 import com.app.belcobtm.presentation.features.wallet.deposit.DepositViewModel
 import com.app.belcobtm.presentation.features.wallet.send.gift.SendGiftViewModel
+import com.app.belcobtm.presentation.features.wallet.trade.buysell.TradeCreateOrderViewModel
 import com.app.belcobtm.presentation.features.wallet.trade.container.TradeContainerViewModel
 import com.app.belcobtm.presentation.features.wallet.trade.create.CreateTradeViewModel
+import com.app.belcobtm.presentation.features.wallet.trade.details.TradeDetailsViewModel
 import com.app.belcobtm.presentation.features.wallet.trade.edit.EditTradeViewModel
 import com.app.belcobtm.presentation.features.wallet.trade.list.TradeListViewModel
 import com.app.belcobtm.presentation.features.wallet.trade.list.filter.TradeFilterViewModel
@@ -117,11 +119,8 @@ val viewModelModule = module {
         )
     }
     viewModel { TradeOrdersViewModel(get()) }
-    viewModel {
-        MyTradesViewModel(
-            get()
-        )
-    }
+    viewModel { MyTradesViewModel(get()) }
+    viewModel { TradeDetailsViewModel(get(), get(), get(named(DOUBLE_CURRENCY_PRICE_FORMATTER_QUALIFIER))) }
     viewModel {
         CreateTradeViewModel(
             get(), get(), get(), get(), get(), get(),
@@ -131,6 +130,13 @@ val viewModelModule = module {
         )
     }
     viewModel { TradeFilterViewModel(get(), get(), get(), get(), get(named(DISTANCE_INT_PARSER_QUALIFIER))) }
+    viewModel {
+        TradeCreateOrderViewModel(
+            get(), get(), get(), get(), get(),
+            get(named(DOUBLE_CURRENCY_PRICE_FORMATTER_QUALIFIER)),
+            get(named(PRICE_DOUBLE_PARSER_QUALIFIER))
+        )
+    }
 }
 
 val viewModelHelperModule = module {

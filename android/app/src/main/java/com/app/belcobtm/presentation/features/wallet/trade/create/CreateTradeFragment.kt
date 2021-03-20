@@ -101,13 +101,13 @@ class CreateTradeFragment : BaseFragment<FragmentCreateTradeBinding>() {
             )
         }
         viewModel.amountMinLimit.observe(viewLifecycleOwner) { amount ->
-            if (amount >= minAmountValue) {
+            if (amount in minAmountValue..maxAmountValue) {
                 amountRangeSlider.values = amountRangeSlider.values.apply { set(0, amount.toFloat()) }
             }
             amountMinLimitEditText.setTextSilently(minAmountTextWatcher, viewModel.formatAmount(amount))
         }
         viewModel.amountMaxLimit.observe(viewLifecycleOwner) { amount ->
-            if (amount <= maxAmountValue) {
+            if (amount in minAmountValue..maxAmountValue) {
                 amountRangeSlider.values = amountRangeSlider.values.apply { set(1, amount.toFloat()) }
             }
             amountMaxLimitEditText.setTextSilently(maxAmountTextWatcher, viewModel.formatAmount(amount))

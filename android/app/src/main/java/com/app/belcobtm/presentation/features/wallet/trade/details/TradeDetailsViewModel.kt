@@ -1,11 +1,12 @@
-package com.app.belcobtm.presentation.features.wallet.trade.mytrade.details
+package com.app.belcobtm.presentation.features.wallet.trade.details
 
+import androidx.annotation.DrawableRes
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.app.belcobtm.R
+import com.app.belcobtm.data.inmemory.TradeInMemoryCache.Companion.UNDEFINED_DISTANCE
 import com.app.belcobtm.data.model.trade.TradeType
-import com.app.belcobtm.domain.trade.details.CancelTradeUseCase
 import com.app.belcobtm.domain.trade.details.GetTradeDetailsUseCase
 import com.app.belcobtm.domain.wallet.LocalCoinType
 import com.app.belcobtm.presentation.core.formatter.Formatter
@@ -13,18 +14,14 @@ import com.app.belcobtm.presentation.core.mvvm.LoadingData
 import com.app.belcobtm.presentation.core.provider.string.StringProvider
 import com.app.belcobtm.presentation.features.wallet.trade.list.model.TradePayment
 
-class MyTradeDetailsViewModel(
+class TradeDetailsViewModel(
     private val getTradeDetailsUseCase: GetTradeDetailsUseCase,
-    private val cancelTradeUseCase: CancelTradeUseCase,
     private val stringProvider: StringProvider,
     private val priceFormatter: Formatter<Double>
 ) : ViewModel() {
 
     private val _initialLoadingData = MutableLiveData<LoadingData<Unit>>()
     val initialLoadingData: LiveData<LoadingData<Unit>> = _initialLoadingData
-
-    private val _cancelTradeLoadingData = MutableLiveData<LoadingData<Unit>>()
-    val cancelTradeLoadingData: LiveData<LoadingData<Unit>> = _cancelTradeLoadingData
 
     private val _selectedCoin = MutableLiveData<LocalCoinType>()
     val selectedCoin: LiveData<LocalCoinType> = _selectedCoin
@@ -35,8 +32,20 @@ class MyTradeDetailsViewModel(
     private val _price = MutableLiveData<String>()
     val price: LiveData<String> = _price
 
-    private val _ordersCount = MutableLiveData<Int>()
-    val ordersCount: LiveData<Int> = _ordersCount
+    private val _publicId = MutableLiveData<String>()
+    val publicId: LiveData<String> = _publicId
+
+    private val _traderStatus = MutableLiveData<@DrawableRes Int>()
+    val traderStatus: LiveData<Int> = _traderStatus
+
+    private val _traderRate = MutableLiveData<Double>()
+    val traderRate: LiveData<Double> = _traderRate
+
+    private val _totalTrades = MutableLiveData<Int>()
+    val totalTrades: LiveData<Int> = _totalTrades
+
+    private val _distance = MutableLiveData<String>()
+    val distance: LiveData<String> = _distance
 
     private val _terms = MutableLiveData<String>()
     val terms: LiveData<String> = _terms
@@ -58,20 +67,18 @@ class MyTradeDetailsViewModel(
                 priceFormatter.format(it.maxLimit)
             )
             _paymentOptions.value = it.paymentMethods
-            _ordersCount.value = it.ordersCount
+            _traderRate.value = it.makerTradingRate
+            _totalTrades.value = it.makerTotalTrades
+            _publicId.value = it.makerPublicId
+            _traderStatus.value = it.makerStatusIcon
             _terms.value = it.terms
+            if (it.distance != UNDEFINED_DISTANCE) {
+                _distance.value = it.distanceFormatted
+            }
             _initialLoadingData.value = LoadingData.Success(Unit)
         }, onError = {
             _initialLoadingData.value = LoadingData.Error(it)
         })
     }
 
-    fun cancel(tradeId: Int) {
-        _cancelTradeLoadingData.value = LoadingData.Loading()
-        cancelTradeUseCase(tradeId, onSuccess = {
-            _cancelTradeLoadingData.value = LoadingData.Success(Unit)
-        }, onError = {
-            _cancelTradeLoadingData.value = LoadingData.Error(it)
-        })
-    }
 }

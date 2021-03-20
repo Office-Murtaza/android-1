@@ -543,6 +543,7 @@
     <string name="trade_list_screen_title">P2P Trading</string>
     <string name="trade_list_item_usd_formatted">&#x24;%1$s</string>
     <string name="trade_list_item_price_range_format">%1$s - %2$s</string>
+    <string name="trade_list_item_total_trades_formatted">%d trades</string>
     <string name="trade_list_buy_tab_title">Buy</string>
     <string name="trade_list_sell_tab_title">Sell</string>
     <string name="trade_list_my_info_tab_title">My…</string>
@@ -626,6 +627,9 @@
     <string name="my_trade_details_screen_title">Trade details</string>
     <string name="my_trade_details_cancel_trade_success_message">Trade successfully canceled</string>
 
+
+    <string name="trade_details_screen_total_trades_formatted">%d trades</string>
+
     <string name="edit_trade_screen_title">Edit trade</string>
     <string name="edit_trade_price_zero_error">Price cannot be zero</string>
     <string name="edit_trade_amount_range_error">Invalid amount range. Enter value from %1$s to %2$s</string>
@@ -633,4 +637,9 @@
     <string name="edit_trade_not_enough_crypto_balance">Max limit exceeds reserved balance</string>
     <string name="edit_trade_success_message">Trade successfully edited</string>
     <string name="edit_trade_screen_edit_button_title">Save</string>
+
+    <string name="trade_buy_sell_dialog_platform_fee_formatted">Platform fee %1$s%% ~ %2$s %3$s</string>
+    <string name="trade_buy_sell_dialog_crypto_amount_formatted">%1$s %2$s</string>
+    <string name="trade_buy_sell_dialog_amount_not_in_range_error">Amount is bigger/less than specified limits</string>
+    <string name="trade_buy_sell_dialog_amount_too_big_error">Amount is bigger than your reserved balance</string>
 </resources>
