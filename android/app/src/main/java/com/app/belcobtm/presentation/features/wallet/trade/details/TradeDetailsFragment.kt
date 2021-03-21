@@ -12,6 +12,7 @@ import com.app.belcobtm.data.model.trade.TradeType
 import com.app.belcobtm.databinding.FragmentTradeDetailsBinding
 import com.app.belcobtm.presentation.core.adapter.MultiTypeAdapter
 import com.app.belcobtm.presentation.core.extensions.resIcon
+import com.app.belcobtm.presentation.core.extensions.setDrawableStart
 import com.app.belcobtm.presentation.core.extensions.toggle
 import com.app.belcobtm.presentation.core.ui.fragment.BaseFragment
 import com.app.belcobtm.presentation.features.wallet.trade.list.delegate.TradePaymentOptionDelegate
@@ -75,27 +76,17 @@ class TradeDetailsFragment : BaseFragment<FragmentTradeDetailsBinding>() {
         viewModel.terms.observe(viewLifecycleOwner, terms::setText)
         viewModel.amountRange.observe(viewLifecycleOwner, amountRange::setText)
         viewModel.tradeType.observe(viewLifecycleOwner) {
-            with(tradeTypeChip) {
+            with(tradeType) {
                 if (it == TradeType.BUY) {
                     setBackgroundResource(R.drawable.trade_type_buy_background)
-                    setChipIconResource(R.drawable.ic_trade_type_buy)
+                    setDrawableStart(R.drawable.ic_trade_type_buy)
                     setText(R.string.trade_type_buy_label)
-                    setTextColor(
-                        ContextCompat.getColor(
-                            context,
-                            R.color.trade_type_buy_trade_text_color
-                        )
-                    )
+                    setTextColor(ContextCompat.getColor(binding.root.context, R.color.trade_type_buy_trade_text_color))
                 } else {
                     setBackgroundResource(R.drawable.trade_type_sell_background)
-                    setChipIconResource(R.drawable.ic_trade_type_sell)
+                    setDrawableStart(R.drawable.ic_trade_type_sell)
                     setText(R.string.trade_type_sell_label)
-                    setTextColor(
-                        ContextCompat.getColor(
-                            context,
-                            R.color.trade_type_sell_trade_text_color
-                        )
-                    )
+                    setTextColor(ContextCompat.getColor(binding.root.context, R.color.trade_type_sell_trade_text_color))
                 }
             }
         }

@@ -1,31 +1,36 @@
 package com.app.belcobtm.presentation.features.wallet.trade.list.model
 
 import androidx.annotation.DrawableRes
-import androidx.annotation.StringRes
-import com.app.belcobtm.data.model.trade.TradeType
+import com.app.belcobtm.data.model.trade.TraderStatus
 import com.app.belcobtm.domain.wallet.LocalCoinType
 import com.app.belcobtm.presentation.core.adapter.model.ListItem
 
 data class OrderItem(
     val orderId: Int,
-    val tradeId: Int,
-    @TradeType val tradeType: Int,
+    val trade: TradeItem,
+    val myTradeId: Int,
+    val mappedTradeType: Int,
     val coin: LocalCoinType,
-    @StringRes val statusLabelId: Int,
-    @DrawableRes val statusDrawableId: Int,
+    val orderStatus: OrderStatusItem,
     val timestamp: Long,
     val price: Double,
+    val priceFormatted: String,
     val cryptoAmount: Double,
     val fiatAmount: Double,
+    val fiatAmountFormatted: String,
     val paymentOptions: List<TradePayment>,
     val terms: String,
     val makerId: Int,
+    @TraderStatus val makerStatusId: Int,
+    @DrawableRes val makerStatusIconRes: Int,
     val makerPublicId: String,
     val makerLatitude: Double?,
     val makerLongitude: Double?,
     val makerTotalTrades: Int,
     val makerTradingRate: Double,
     val takerId: Int,
+    @TraderStatus val takerStatusId: Int,
+    @DrawableRes val takerStatusIconRes: Int,
     val takerPublicId: String,
     val takerLatitude: Double?,
     val takerLongitude: Double?,

@@ -5,8 +5,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.app.belcobtm.R
 import com.app.belcobtm.data.model.trade.TradeType
-import com.app.belcobtm.domain.trade.details.CreateOrderUseCase
 import com.app.belcobtm.domain.trade.details.GetTradeDetailsUseCase
+import com.app.belcobtm.domain.trade.order.CreateOrderUseCase
 import com.app.belcobtm.domain.wallet.LocalCoinType
 import com.app.belcobtm.domain.wallet.interactor.GetCoinByCodeUseCase
 import com.app.belcobtm.domain.wallet.interactor.GetCoinDetailsUseCase
@@ -33,8 +33,8 @@ class TradeCreateOrderViewModel(
     private val _initialLoadingData = MutableLiveData<LoadingData<Unit>>()
     val initialLoadingData: LiveData<LoadingData<Unit>> = _initialLoadingData
 
-    private val _createTradeLoadingData = MutableLiveData<LoadingData<Unit>>()
-    val createTradeLoadingData: LiveData<LoadingData<Unit>> = _createTradeLoadingData
+    private val _createTradeLoadingData = MutableLiveData<LoadingData<Int>>()
+    val createTradeLoadingData: LiveData<LoadingData<Int>> = _createTradeLoadingData
 
     private val _fiatAmount = MutableLiveData<Double>(0.0)
     val fiatAmount: LiveData<Double> = _fiatAmount
@@ -107,7 +107,7 @@ class TradeCreateOrderViewModel(
             fiatAmount.value ?: 0.0,
             tradeData.terms
         ), onSuccess = {
-            _createTradeLoadingData.value = LoadingData.Success(Unit)
+            _createTradeLoadingData.value = LoadingData.Success(it)
         }, onError = {
             _createTradeLoadingData.value = LoadingData.Error(it)
         })

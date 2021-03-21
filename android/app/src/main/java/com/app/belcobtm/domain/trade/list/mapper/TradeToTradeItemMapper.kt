@@ -8,6 +8,7 @@ import com.app.belcobtm.presentation.features.wallet.trade.list.model.TradeItem
 class TradeToTradeItemMapper(
     private val paymentOptionMapper: TradePaymentOptionMapper,
     private val milesFormatter: Formatter<Double>,
+    private val priceFormatter: Formatter<Double>,
     private val statusMapper: TraderStatusToIconMapper
 ) {
 
@@ -15,7 +16,9 @@ class TradeToTradeItemMapper(
         with(trade) {
             TradeItem(
                 id, type, LocalCoinType.valueOf(coinCode),
-                status, createDate, price, minLimit, maxLimit,
+                status, price, timestamp, priceFormatter.format(price),
+                minLimit, priceFormatter.format(minLimit),
+                maxLimit, priceFormatter.format(maxLimit),
                 ordersCount, paymentMethods.map(paymentOptionMapper::map),
                 terms, makerId, statusMapper.map(makerStatus),
                 makerPublicId, makerTotalTrades, makerTradingRate,

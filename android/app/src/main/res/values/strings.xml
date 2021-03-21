@@ -541,7 +541,6 @@
 
     <!-- New trade screen -->
     <string name="trade_list_screen_title">P2P Trading</string>
-    <string name="trade_list_item_usd_formatted">&#x24;%1$s</string>
     <string name="trade_list_item_price_range_format">%1$s - %2$s</string>
     <string name="trade_list_item_total_trades_formatted">%d trades</string>
     <string name="trade_list_buy_tab_title">Buy</string>
@@ -642,4 +641,14 @@
     <string name="trade_buy_sell_dialog_crypto_amount_formatted">%1$s %2$s</string>
     <string name="trade_buy_sell_dialog_amount_not_in_range_error">Amount is bigger/less than specified limits</string>
     <string name="trade_buy_sell_dialog_amount_too_big_error">Amount is bigger than your reserved balance</string>
+
+    <string name="item_open_orders_crypto_amount_formatted">%1$s %2$s</string>
+
+    <string name="trade_order_details_screen_title">Order details</string>
+    <string name="trade_order_details_crypto_amount_formatted">%1$s %2$s</string>
+    <string name="trade_order_details_screen_update_doing_button_title">Doing</string>
+    <string name="trade_order_details_screen_update_paid_button_title">Paid</string>
+    <string name="trade_order_details_screen_update_dispute_button_title">Dispute</string>
+    <string name="trade_order_details_screen_update_release_button_title">Release</string>
+    <string name="trade_order_details_screen_update_cancel_button_title">Cancel</string>
 </resources>

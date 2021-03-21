@@ -63,14 +63,15 @@ class TradeDetailsViewModel(
             _price.value = priceFormatter.format(it.price)
             _amountRange.value = stringProvider.getString(
                 R.string.trade_list_item_price_range_format,
-                priceFormatter.format(it.minLimit),
-                priceFormatter.format(it.maxLimit)
+                it.minLimitFormatted,
+                it.maxLimitFormatted
             )
             _paymentOptions.value = it.paymentMethods
             _traderRate.value = it.makerTradingRate
             _totalTrades.value = it.makerTotalTrades
             _publicId.value = it.makerPublicId
             _traderStatus.value = it.makerStatusIcon
+            _tradeType.value = it.tradeType
             _terms.value = it.terms
             if (it.distance != UNDEFINED_DISTANCE) {
                 _distance.value = it.distanceFormatted

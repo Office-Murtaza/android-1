@@ -24,7 +24,6 @@ class ObserveMyTradesUseCase(
                 when {
                     it == null -> null
                     it.isRight ->
-                        // TODO take userId only onces?
                         Either.Right(mapper.map((it as Either.Right<TradeData>).b, sharedPreferencesHelper.userId))
                     else ->
                         it as Either.Left<Failure>

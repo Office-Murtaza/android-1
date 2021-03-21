@@ -1,10 +1,13 @@
 package com.app.belcobtm.data.inmemory
 
 import com.app.belcobtm.data.helper.DistanceCalculator
+import com.app.belcobtm.data.mapper.OrderResponseToOrderMapper
 import com.app.belcobtm.data.mapper.TradesResponseToTradeDataMapper
+import com.app.belcobtm.data.model.trade.Order
 import com.app.belcobtm.data.model.trade.Trade
 import com.app.belcobtm.data.model.trade.TradeData
 import com.app.belcobtm.data.model.trade.filter.TradeFilter
+import com.app.belcobtm.data.rest.trade.response.TradeOrderItemResponse
 import com.app.belcobtm.data.rest.trade.response.TradesResponse
 import com.app.belcobtm.domain.Either
 import com.app.belcobtm.domain.Failure
@@ -18,7 +21,8 @@ import kotlinx.coroutines.launch
 class TradeInMemoryCache(
     private val tradesMapper: TradesResponseToTradeDataMapper,
     private val distanceCalculator: DistanceCalculator,
-    private val distanceCalculatorScope: CoroutineScope
+    private val distanceCalculatorScope: CoroutineScope,
+    private val orderMapper: OrderResponseToOrderMapper
 ) {
 
     companion object {
@@ -75,8 +79,22 @@ class TradeInMemoryCache(
         ))
     }
 
-    fun cleanCache() {
-        cache.value = null
+    fun updateOrders(order: TradeOrderItemResponse) {
+        val currentCache = cache.value
+        val mappedOrder = orderMapper.map(order)
+        val tradeData: TradeData =
+            (currentCache?.takeIf { currentCache.isRight } as? Either.Right<TradeData>)?.b ?: return
+        val isNewOrder = tradeData.orders.none { it.id == order.id }
+        val updatedCache = if (isNewOrder) {
+            tradeData.copy(orders = tradeData.orders + mappedOrder)
+        } else {
+            tradeData.copy(
+                orders = tradeData.orders.asSequence()
+                    .map { if (it.id == order.id) mappedOrder else it }
+                    .toList()
+            )
+        }
+        cache.value = Either.Right(updatedCache)
     }
 
     fun findTrade(tradeId: Int): Either<Failure, Trade> {
@@ -91,6 +109,11 @@ class TradeInMemoryCache(
         }
     }
 
+    fun cleanCache() {
+        cache.value = null
+    }
+
+
     private fun startDistanceCalculation() {
         distanceCalculationJob?.cancel()
         if (!calculateDistance) {
@@ -103,6 +126,18 @@ class TradeInMemoryCache(
                 val tradesWithDistance = distanceCalculator.updateDistanceToTrades(tradeData.trades)
                 cache.value = Either.Right(tradeData.copy(trades = tradesWithDistance))
             }
+        }
+    }
+
+    fun findOrder(orderId: Int): Either<Failure, Order> {
+        val currentCache = cache.value ?: return Either.Left(Failure.ServerError())
+        return if (currentCache.isLeft) {
+            currentCache as Either.Left<Failure>
+        } else {
+            val tradeData = (currentCache as Either.Right<TradeData>).b
+            tradeData.orders.find { it.id == orderId }
+                ?.let { Either.Right(it) }
+                ?: Either.Left(Failure.ServerError())
         }
     }
 }

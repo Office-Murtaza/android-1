@@ -5,11 +5,14 @@ import androidx.annotation.IntDef
 @Target(AnnotationTarget.TYPE, AnnotationTarget.PROPERTY, AnnotationTarget.VALUE_PARAMETER)
 @Retention(AnnotationRetention.SOURCE)
 @IntDef(
-    OrderStatus.NEW, OrderStatus.CANCELLED, OrderStatus.DOING,
-    OrderStatus.PAID, OrderStatus. RELEASED, OrderStatus.DISPUTING, OrderStatus.SOLVED
+    OrderStatus.NEW, OrderStatus.CANCELLED, OrderStatus.DOING, OrderStatus.UNDEFINED,
+    OrderStatus.PAID, OrderStatus.RELEASED, OrderStatus.DISPUTING, OrderStatus.SOLVED
 )
 annotation class OrderStatus {
     companion object {
+        // synthetic status
+        const val UNDEFINED = -1
+
         const val NEW = 1
         const val CANCELLED = 2
         const val DOING = 3

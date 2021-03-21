@@ -4,6 +4,7 @@ import android.content.res.Resources
 import com.app.belcobtm.R
 import com.app.belcobtm.data.disk.database.AccountDao
 import com.app.belcobtm.data.inmemory.TradeInMemoryCache
+import com.app.belcobtm.data.model.trade.Order
 import com.app.belcobtm.data.model.trade.PaymentOption
 import com.app.belcobtm.data.model.trade.Trade
 import com.app.belcobtm.data.model.trade.TradeData
@@ -13,11 +14,13 @@ import com.app.belcobtm.data.provider.location.LocationProvider
 import com.app.belcobtm.data.rest.trade.TradeApiService
 import com.app.belcobtm.domain.Either
 import com.app.belcobtm.domain.Failure
+import com.app.belcobtm.domain.map
 import com.app.belcobtm.domain.trade.TradeRepository
 import com.app.belcobtm.domain.wallet.LocalCoinType
 import com.app.belcobtm.presentation.features.wallet.trade.buysell.model.TradeOrderItem
 import com.app.belcobtm.presentation.features.wallet.trade.create.model.CreateTradeItem
 import com.app.belcobtm.presentation.features.wallet.trade.edit.EditTradeItem
+import com.app.belcobtm.presentation.features.wallet.trade.order.details.model.UpdateOrderStatusItem
 import kotlinx.coroutines.flow.Flow
 
 class TradeRepositoryImpl(
@@ -51,6 +54,9 @@ class TradeRepositoryImpl(
 
     override fun getFilter(): TradeFilter? =
         tradeInMemoryCache.filter
+
+    override suspend fun getOrderDetails(orderId: Int): Either<Failure, Order> =
+        tradeInMemoryCache.findOrder(orderId)
 
     override suspend fun updateFilter(filter: TradeFilter) {
         tradeInMemoryCache.updateFilter(filter)
@@ -94,14 +100,17 @@ class TradeRepositoryImpl(
         }
     }
 
-    override suspend fun createOrder(tradeOrder: TradeOrderItem): Either<Failure, Unit> {
+    override suspend fun createOrder(tradeOrder: TradeOrderItem): Either<Failure, Int> {
         val response = tradeApiService.createOrder(tradeOrder)
-        // TODO save to cache?
-        return if (response.isRight) {
-            Either.Right(Unit)
-        } else {
-            response as Either.Left<Failure>
+        return response.map {
+            tradeInMemoryCache.updateOrders(it)
+            it.tradeId
         }
+    }
+
+    override suspend fun updateOrder(status: UpdateOrderStatusItem): Either<Failure, Unit> {
+        val response = tradeApiService.updateOrder(status)
+        return response.map { tradeInMemoryCache.updateOrders(it) }
     }
 
     private suspend fun createInitialFilter(calculateDistance: Boolean): TradeFilter {

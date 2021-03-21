@@ -4,7 +4,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.app.belcobtm.R
-import com.app.belcobtm.data.disk.database.AccountDao
 import com.app.belcobtm.data.model.trade.PaymentOption
 import com.app.belcobtm.data.model.trade.TradeType
 import com.app.belcobtm.domain.Failure
@@ -24,7 +23,6 @@ import com.app.belcobtm.presentation.features.wallet.trade.create.model.CreateTr
 class CreateTradeViewModel(
     private val getAvailableTradePaymentOptionsUseCase: GetAvailableTradePaymentOptionsUseCase,
     private val getCoinListUseCase: GetCoinListUseCase,
-    private val accountDao: AccountDao,
     private val createTradeUseCase: CreateTradeUseCase,
     private val checkTradeCreationAvailabilityUseCase: CheckTradeCreationAvailabilityUseCase,
     private val stringProvider: StringProvider,
@@ -125,7 +123,6 @@ class CreateTradeViewModel(
     }
 
     fun selectCoin(coinDataItem: CoinDataItem) {
-        _initialLoadingData.value = LoadingData.Loading()
         _selectedCoin.value = coinDataItem
     }
 

@@ -63,13 +63,9 @@ class WebSocketWalletObserver(
                     when (it) {
                         is SocketResponse.Opened -> onOpened()
                         is SocketResponse.Failure ->
-                            runBlocking {
-                                processError(it.cause)
-                            }
+                            processError(it.cause)
                         is SocketResponse.Message ->
-                            runBlocking {
-                                processMessage(it.content)
-                            }
+                            processMessage(it.content)
                         is SocketResponse.Disconnected -> {
                             balanceInfo.sendBlocking(WalletBalance.NoInfo)
                         }

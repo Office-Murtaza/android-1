@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.observe
 import androidx.navigation.fragment.navArgs
 import com.app.belcobtm.R
@@ -12,6 +13,7 @@ import com.app.belcobtm.databinding.FragmentMyTradeDetailsBinding
 import com.app.belcobtm.domain.Failure
 import com.app.belcobtm.presentation.core.adapter.MultiTypeAdapter
 import com.app.belcobtm.presentation.core.extensions.resIcon
+import com.app.belcobtm.presentation.core.extensions.setDrawableStart
 import com.app.belcobtm.presentation.core.helper.AlertHelper
 import com.app.belcobtm.presentation.core.mvvm.LoadingData
 import com.app.belcobtm.presentation.core.ui.fragment.BaseFragment
@@ -71,27 +73,17 @@ class MyTradeDetailsFragment : BaseFragment<FragmentMyTradeDetailsBinding>() {
         viewModel.terms.observe(viewLifecycleOwner, terms::setText)
         viewModel.amountRange.observe(viewLifecycleOwner, amountRange::setText)
         viewModel.tradeType.observe(viewLifecycleOwner) {
-            with(tradeTypeChip) {
+            with(tradeType) {
                 if (it == TradeType.BUY) {
                     setBackgroundResource(R.drawable.trade_type_buy_background)
-                    setChipIconResource(R.drawable.ic_trade_type_buy)
+                    setDrawableStart(R.drawable.ic_trade_type_buy)
                     setText(R.string.trade_type_buy_label)
-                    setTextColor(
-                        androidx.core.content.ContextCompat.getColor(
-                            context,
-                            R.color.trade_type_buy_trade_text_color
-                        )
-                    )
+                    setTextColor(ContextCompat.getColor(binding.root.context, R.color.trade_type_buy_trade_text_color))
                 } else {
                     setBackgroundResource(R.drawable.trade_type_sell_background)
-                    setChipIconResource(R.drawable.ic_trade_type_sell)
+                    setDrawableStart(R.drawable.ic_trade_type_sell)
                     setText(R.string.trade_type_sell_label)
-                    setTextColor(
-                        androidx.core.content.ContextCompat.getColor(
-                            context,
-                            R.color.trade_type_sell_trade_text_color
-                        )
-                    )
+                    setTextColor(ContextCompat.getColor(binding.root.context, R.color.trade_type_sell_trade_text_color))
                 }
             }
         }

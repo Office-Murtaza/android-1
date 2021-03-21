@@ -11,6 +11,7 @@ class TradesDataToMyTradeMapper(private val tradeMapper: TradeToTradeItemMapper)
             .asSequence()
             .filter { it.makerId == userId }
             .map(tradeMapper::map)
+            .sortedWith(Comparator { t, t2 -> t2.timestamp.compareTo(t.timestamp) })
             .toList()
             .ifEmpty { listOf(NoTradesCreatedItem()) }
 }

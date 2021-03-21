@@ -1,53 +1,20 @@
 package com.app.belcobtm.data.mapper
 
-import com.app.belcobtm.data.inmemory.TradeInMemoryCache.Companion.UNDEFINED_DISTANCE
-import com.app.belcobtm.data.model.trade.Order
-import com.app.belcobtm.data.model.trade.Trade
 import com.app.belcobtm.data.model.trade.TradeData
 import com.app.belcobtm.data.model.trade.UserTradeStatistics
-import com.app.belcobtm.data.rest.trade.response.TradeItemResponse
-import com.app.belcobtm.data.rest.trade.response.TradeOrderItemResponse
 import com.app.belcobtm.data.rest.trade.response.TradesResponse
 
-class TradesResponseToTradeDataMapper {
-
-    private companion object {
-        const val PAYMENT_DELIMITER = ","
-    }
+class TradesResponseToTradeDataMapper(
+    private val orderMapper: OrderResponseToOrderMapper,
+    private val tradeMapper: TradeResponseToTradeMapper
+) {
 
     fun map(response: TradesResponse): TradeData =
         with(response) {
             TradeData(
-                trades.map(::mapTrade),
-                orders.map(::mapOrder),
+                trades.map(tradeMapper::map),
+                orders.map(orderMapper::map),
                 mapStatistic(this)
-            )
-        }
-
-    private fun mapTrade(trade: TradeItemResponse): Trade =
-        with(trade) {
-            Trade(
-                id, type, coin,
-                status, createDate.orEmpty(),
-                price, minLimit, maxLimit, openOrders,
-                paymentMethods.split(PAYMENT_DELIMITER).map(String::toInt),
-                terms, makerId, makerPublicId, makerStatus,
-                makerLatitude, makerLongitude, makerTotalTrades,
-                makerTradingRate, UNDEFINED_DISTANCE
-            )
-        }
-
-    private fun mapOrder(trade: TradeOrderItemResponse): Order =
-        with(trade) {
-            Order(
-                id, tradeId, type, coin,
-                status, timestamp,
-                price, emptyList(), // TODO get from trade?
-                cryptoAmount, fiatAmount, terms,
-                makerId, makerPublicId, makerLatitude,
-                makerLongitude, makerTotalTrades, makerTradingRate,
-                takerId, takerPublicId, takerLatitude,
-                takerLongitude, takerTotalTrades, takerTradingRate
             )
         }
 

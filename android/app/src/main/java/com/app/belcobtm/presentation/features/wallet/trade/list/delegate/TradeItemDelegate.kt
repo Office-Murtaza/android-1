@@ -10,7 +10,6 @@ import com.app.belcobtm.presentation.core.adapter.MultiTypeAdapter
 import com.app.belcobtm.presentation.core.adapter.delegate.AdapterDelegate
 import com.app.belcobtm.presentation.core.adapter.holder.MultiTypeViewHolder
 import com.app.belcobtm.presentation.core.extensions.resIcon
-import com.app.belcobtm.presentation.core.extensions.toStringUsd
 import com.app.belcobtm.presentation.features.wallet.trade.list.model.TradeItem
 
 class TradeItemDelegate(
@@ -50,13 +49,9 @@ class TradeItemViewHolder(
                 R.drawable.ic_account_circle, 0, makerStatusIcon, 0
             )
             binding.priceRange.text = binding.root.context.getString(
-                R.string.trade_list_item_price_range_format,
-                binding.root.context.getString(R.string.trade_list_item_usd_formatted, minLimit.toStringUsd()),
-                binding.root.context.getString(R.string.trade_list_item_usd_formatted, maxLimit.toStringUsd())
+                R.string.trade_list_item_price_range_format, minLimitFormatted, maxLimitFormatted
             )
-            binding.priceLabel.text = binding.root.context.getString(
-                R.string.trade_list_item_usd_formatted, price.toStringUsd()
-            )
+            binding.priceLabel.text = priceFormatted
             binding.makerTradeCountLabel.text = binding.root.resources
                 .getString(R.string.trade_list_item_total_trades_formatted, makerTotalTrades)
             binding.makerRateLabel.text = makerTradingRate.toString()

@@ -8,6 +8,8 @@ import com.app.belcobtm.data.websockets.base.OkHttpSocketClient
 import com.app.belcobtm.data.websockets.base.SocketClient
 import com.app.belcobtm.data.websockets.serializer.RequestSerializer
 import com.app.belcobtm.data.websockets.serializer.ResponseDeserializer
+import com.app.belcobtm.data.websockets.trade.TradesObserver
+import com.app.belcobtm.data.websockets.trade.WebSocketTradesObserver
 import com.app.belcobtm.data.websockets.wallet.WalletConnectionHandler
 import com.app.belcobtm.data.websockets.wallet.WalletObserver
 import com.app.belcobtm.data.websockets.wallet.WebSocketWalletObserver
@@ -36,7 +38,8 @@ val webSocketModule = module {
             get(), get(authenticatorQualified)
         )
     } bind WalletConnectionHandler::class
-    single<SocketClient> { OkHttpSocketClient(get(WEB_SOCKET_OK_HTTP_CLIENT_QUALIFIER)) }
+    single<TradesObserver> { WebSocketTradesObserver(get(), get(), get(), get(), get()) }
+    factory<SocketClient> { OkHttpSocketClient(get(WEB_SOCKET_OK_HTTP_CLIENT_QUALIFIER)) }
     single<OkHttpClient>(WEB_SOCKET_OK_HTTP_CLIENT_QUALIFIER) {
         OkHttpClient().newBuilder()
             .connectTimeout(60, TimeUnit.SECONDS)

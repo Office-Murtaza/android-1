@@ -2,11 +2,15 @@ package com.app.belcobtm.domain.trade.list.mapper
 
 import com.app.belcobtm.data.inmemory.TradeInMemoryCache.Companion.UNDEFINED_DISTANCE
 import com.app.belcobtm.data.model.trade.TradeData
+import com.app.belcobtm.data.model.trade.TradeType
+import com.app.belcobtm.data.model.trade.filter.SortOption
 import com.app.belcobtm.data.model.trade.filter.TradeFilter
 import com.app.belcobtm.domain.trade.list.ObserveTradesUseCase
 import com.app.belcobtm.presentation.features.wallet.trade.list.model.TradeItem
 
-class TradesDataToTradeListMapper(private val tradeMapper: TradeToTradeItemMapper) {
+class TradesDataToTradeListMapper(
+    private val tradeMapper: TradeToTradeItemMapper
+) {
 
     fun map(
         tradeData: TradeData,
@@ -34,6 +38,15 @@ class TradesDataToTradeListMapper(private val tradeMapper: TradeToTradeItemMappe
             }
             .take(params.numbersToLoad)
             .map(tradeMapper::map)
-            // TODO add sort
+            .sortedWith(Comparator { t, t2 ->
+                when {
+                    filter?.sortOption == SortOption.DISTANCE ->
+                        t.distance.compareTo(t2.distance)
+                    params.tradeType == TradeType.BUY ->
+                        t.price.compareTo(t2.price)
+                    else ->
+                        t2.price.compareTo(t.price)
+                }
+            })
             .toList()
 }

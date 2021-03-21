@@ -1,5 +1,6 @@
 package com.app.belcobtm.domain.trade.list
 
+import com.app.belcobtm.data.disk.shared.preferences.SharedPreferencesHelper
 import com.app.belcobtm.data.model.trade.TradeData
 import com.app.belcobtm.domain.Either
 import com.app.belcobtm.domain.Failure
@@ -13,7 +14,8 @@ import kotlinx.coroutines.flow.map
 
 class ObserveOrdersUseCase(
     private val tradeRepository: TradeRepository,
-    private val mapper: TradesDataToOrderListMapper
+    private val mapper: TradesDataToOrderListMapper,
+    private val preferencesHelper: SharedPreferencesHelper
 ) {
 
     operator fun invoke(): Flow<Either<Failure, List<OrderItem>>?> =
@@ -22,7 +24,7 @@ class ObserveOrdersUseCase(
                 when {
                     it == null -> null
                     it.isRight ->
-                        Either.Right(mapper.map((it as Either.Right<TradeData>).b))
+                        Either.Right(mapper.map((it as Either.Right<TradeData>).b, preferencesHelper.userId))
                     else ->
                         it as Either.Left<Failure>
                 }

@@ -53,6 +53,7 @@ import com.app.belcobtm.presentation.features.wallet.trade.list.filter.TradeFilt
 import com.app.belcobtm.presentation.features.wallet.trade.mytrade.details.MyTradeDetailsViewModel
 import com.app.belcobtm.presentation.features.wallet.trade.mytrade.list.MyTradesViewModel
 import com.app.belcobtm.presentation.features.wallet.trade.order.TradeOrdersViewModel
+import com.app.belcobtm.presentation.features.wallet.trade.order.details.TradeOrderDetailsViewModel
 import com.app.belcobtm.presentation.features.wallet.trade.recall.TradeRecallViewModel
 import com.app.belcobtm.presentation.features.wallet.trade.reserve.TradeReserveViewModel
 import com.app.belcobtm.presentation.features.wallet.trade.statistic.TradeUserStatisticViewModel
@@ -106,7 +107,7 @@ val viewModelModule = module {
     viewModel { (coinCode: String) -> WithdrawViewModel(coinCode, get(), get(), get(), get(), get()) }
     viewModel { (coinCode: String) -> DepositViewModel(coinCode, get()) }
     viewModel { ContactListViewModel(get(), get<PhoneNumberValidator>(), get()) }
-    viewModel { TradeContainerViewModel(get()) }
+    viewModel { TradeContainerViewModel(get(), get(), get()) }
     viewModel { TradeListViewModel(get(), get()) }
     viewModel { TradeUserStatisticViewModel(get()) }
     viewModel { MyTradeDetailsViewModel(get(), get(), get(), get(named(DOUBLE_CURRENCY_PRICE_FORMATTER_QUALIFIER))) }
@@ -123,13 +124,14 @@ val viewModelModule = module {
     viewModel { TradeDetailsViewModel(get(), get(), get(named(DOUBLE_CURRENCY_PRICE_FORMATTER_QUALIFIER))) }
     viewModel {
         CreateTradeViewModel(
-            get(), get(), get(), get(), get(), get(),
+            get(), get(), get(), get(), get(),
             get(named(DOUBLE_CURRENCY_PRICE_FORMATTER_QUALIFIER)),
             get(named(INT_CURRENCY_PRICE_FORMATTER_QUALIFIER)),
             get(named(PRICE_DOUBLE_PARSER_QUALIFIER))
         )
     }
     viewModel { TradeFilterViewModel(get(), get(), get(), get(), get(named(DISTANCE_INT_PARSER_QUALIFIER))) }
+    viewModel { TradeOrderDetailsViewModel(get(), get(), get()) }
     viewModel {
         TradeCreateOrderViewModel(
             get(), get(), get(), get(), get(),

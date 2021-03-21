@@ -40,8 +40,8 @@ class TradeCreateOrderBottomSheetFragment : BottomSheetDialogFragment() {
         }
         viewModel.createTradeLoadingData.observe(viewLifecycleOwner) {
             // TODO handle loading
-            if (it is LoadingData.Success<Unit>) {
-                findNavController().navigate(TradeCreateOrderBottomSheetFragmentDirections.toOrderDetails(0))
+            if (it is LoadingData.Success<Int>) {
+                findNavController().navigate(TradeCreateOrderBottomSheetFragmentDirections.toOrderDetails(it.data))
             }
         }
         viewModel.fiatAmount.observe(viewLifecycleOwner) {

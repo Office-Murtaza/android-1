@@ -10,7 +10,6 @@ import com.app.belcobtm.presentation.core.adapter.MultiTypeAdapter
 import com.app.belcobtm.presentation.core.adapter.delegate.AdapterDelegate
 import com.app.belcobtm.presentation.core.adapter.holder.MultiTypeViewHolder
 import com.app.belcobtm.presentation.core.extensions.resIcon
-import com.app.belcobtm.presentation.core.extensions.toStringUsd
 import com.app.belcobtm.presentation.features.wallet.trade.list.delegate.TradePaymentOptionDelegate
 import com.app.belcobtm.presentation.features.wallet.trade.list.model.TradeItem
 
@@ -49,12 +48,9 @@ class MyTradeViewHolder(
             binding.coinCode.text = coin.name
             binding.priceRange.text = context.getString(
                 R.string.trade_list_item_price_range_format,
-                context.getString(R.string.trade_list_item_usd_formatted, minLimit.toStringUsd()),
-                context.getString(R.string.trade_list_item_usd_formatted, maxLimit.toStringUsd())
+                minLimitFormatted, maxLimitFormatted
             )
-            binding.priceLabel.text = context.getString(
-                R.string.trade_list_item_usd_formatted, price.toStringUsd()
-            )
+            binding.priceLabel.text = priceFormatted
             paymentAdapter.update(paymentMethods)
             with(binding.tradeType) {
                 if (tradeType == TradeType.BUY) {

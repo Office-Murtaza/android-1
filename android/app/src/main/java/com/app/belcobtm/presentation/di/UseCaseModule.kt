@@ -14,7 +14,6 @@ import com.app.belcobtm.domain.trade.create.CreateTradeUseCase
 import com.app.belcobtm.domain.trade.create.GetAvailableTradePaymentOptionsUseCase
 import com.app.belcobtm.domain.trade.create.mapper.PaymentIdToAvailablePaymentOptionMapper
 import com.app.belcobtm.domain.trade.details.CancelTradeUseCase
-import com.app.belcobtm.domain.trade.details.CreateOrderUseCase
 import com.app.belcobtm.domain.trade.details.EditTradeUseCase
 import com.app.belcobtm.domain.trade.details.GetTradeDetailsUseCase
 import com.app.belcobtm.domain.trade.list.*
@@ -25,9 +24,13 @@ import com.app.belcobtm.domain.trade.list.filter.mapper.CoinCodeMapper
 import com.app.belcobtm.domain.trade.list.filter.mapper.TradeFilterItemMapper
 import com.app.belcobtm.domain.trade.list.filter.mapper.TradeFilterMapper
 import com.app.belcobtm.domain.trade.list.mapper.*
+import com.app.belcobtm.domain.trade.order.CreateOrderUseCase
+import com.app.belcobtm.domain.trade.order.ObserveOrderDetailsUseCase
+import com.app.belcobtm.domain.trade.order.UpdateOrderStatusUseCase
 import com.app.belcobtm.domain.transaction.interactor.*
 import com.app.belcobtm.domain.transaction.interactor.trade.TradeRecallTransactionCompleteUseCase
 import com.app.belcobtm.domain.wallet.interactor.*
+import com.app.belcobtm.presentation.core.formatter.DoubleCurrencyPriceFormatter.Companion.DOUBLE_CURRENCY_PRICE_FORMATTER_QUALIFIER
 import com.app.belcobtm.presentation.core.formatter.MilesFormatter.Companion.MILES_FORMATTER_QUALIFIER
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
@@ -90,7 +93,7 @@ val useCaseModule = module {
     single { FetchTradesUseCase(get()) }
     single { ObserveTradesUseCase(get(), get(), get()) }
     single { ObserveUserTradeStatisticUseCase(get(), get()) }
-    single { ObserveOrdersUseCase(get(), get()) }
+    single { ObserveOrdersUseCase(get(), get(), get()) }
     single { ObserveMyTradesUseCase(get(), get(), get()) }
     single { GetAvailableTradePaymentOptionsUseCase(get(), get()) }
     single { CreateTradeUseCase(get()) }
@@ -102,12 +105,22 @@ val useCaseModule = module {
     single { CancelTradeUseCase(get()) }
     single { EditTradeUseCase(get()) }
     single { CreateOrderUseCase(get()) }
+    single { StartObserveTradesUseCase(get()) }
+    single { StopObserveTradesUseCase(get()) }
+    single { ObserveOrderDetailsUseCase(get(), get(), get()) }
+    single { UpdateOrderStatusUseCase(get()) }
     factory { TradePaymentOptionMapper() }
     factory { CoinCodeMapper() }
     factory { TradesDataToTradeListMapper(get()) }
-    factory { TradeToTradeItemMapper(get(), get(named(MILES_FORMATTER_QUALIFIER)), get()) }
+    factory {
+        TradeToTradeItemMapper(
+            get(), get(named(MILES_FORMATTER_QUALIFIER)),
+            get(named(DOUBLE_CURRENCY_PRICE_FORMATTER_QUALIFIER)), get()
+        )
+    }
     factory { TraderStatusToIconMapper() }
     factory { TradesDataToStatisticsMapper(get()) }
+    factory { TradeOrderDataToItemMapper(get(), get(named(DOUBLE_CURRENCY_PRICE_FORMATTER_QUALIFIER)), get()) }
     factory { TradesDataToOrderListMapper(get()) }
     factory { TradesDataToMyTradeMapper(get()) }
     factory { TradeFilterItemMapper(get(), get()) }

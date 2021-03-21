@@ -6,11 +6,15 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.app.belcobtm.domain.Failure
 import com.app.belcobtm.domain.trade.list.FetchTradesUseCase
+import com.app.belcobtm.domain.trade.list.StartObserveTradesUseCase
+import com.app.belcobtm.domain.trade.list.StopObserveTradesUseCase
 import com.app.belcobtm.presentation.core.mvvm.LoadingData
 import kotlinx.coroutines.launch
 
 class TradeContainerViewModel(
     private val fetchTradesUseCase: FetchTradesUseCase,
+    private val startObserveTradesUseCase: StartObserveTradesUseCase,
+    private val stopObserveTradesUseCase: StopObserveTradesUseCase
 ) : ViewModel() {
 
     private val _loadingData = MutableLiveData<LoadingData<Unit>>()
@@ -42,7 +46,11 @@ class TradeContainerViewModel(
         }
     }
 
-    fun enableDistanceCalculation() {
+    fun subscribeOnUpdates() {
+        startObserveTradesUseCase(Unit)
+    }
 
+    fun unsubscribeFromUpdates() {
+        stopObserveTradesUseCase(Unit)
     }
 }
