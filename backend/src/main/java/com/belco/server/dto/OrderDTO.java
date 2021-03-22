@@ -22,7 +22,7 @@ public class OrderDTO {
 
     private Long id;
     private Long tradeId;
-    private Integer tradeRate;
+    private Integer rate;
 
     @JsonFormat(shape = JsonFormat.Shape.OBJECT)
     private CoinService.CoinEnum coin;

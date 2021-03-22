@@ -263,13 +263,13 @@ public class TradeService {
             Trade trade = order.getTrade();
 
             //rate the trade
-            if (dto.getTradeRate() != null) {
-                order.setMakerRate(dto.getTradeRate());
+            if (dto.getRate() != null) {
+                order.setMakerRate(dto.getRate());
 
                 if (userId.compareTo(order.getMaker().getId()) == 0) {
-                    recalculateTradingData(order.getTaker(), dto.getTradeRate());
+                    recalculateTradingData(order.getTaker(), dto.getRate());
                 } else {
-                    recalculateTradingData(order.getMaker(), dto.getTradeRate());
+                    recalculateTradingData(order.getMaker(), dto.getRate());
                 }
             } else if (dto.getStatus() != null) {
                 if (dto.getStatus() == OrderStatus.RELEASED || dto.getStatus() == OrderStatus.SOLVED) {
