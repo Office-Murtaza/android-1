@@ -14,6 +14,7 @@ import java.math.BigDecimal;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class CoinDetailsDTO {
 
+    private String code;
     private BigDecimal txFee;
     private String txFeeStr;
     private BigDecimal convertedTxFee;
@@ -28,6 +29,10 @@ public class CoinDetailsDTO {
     private String platformTradeFeeStr;
     private String walletAddress;
     private String contractAddress;
+
+    public void setCode(String code) {
+        this.code = code;
+    }
 
     public void setTxFee(BigDecimal txFee) {
         this.txFee = txFee;

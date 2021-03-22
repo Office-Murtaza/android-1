@@ -128,6 +128,7 @@ public class CoinService {
 
     public CoinDetailsDTO getCoinDetails(CoinService.CoinEnum coin) {
         CoinDetailsDTO dto = new CoinDetailsDTO();
+        dto.setCode(coin.name());
         dto.setByteFee(coin.getByteFee());
         dto.setTxFee(coin.getTxFee());
         dto.setGasPrice(coin.getGasPrice());
