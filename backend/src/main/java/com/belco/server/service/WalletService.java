@@ -169,6 +169,8 @@ public class WalletService {
                     .map(TxDetailsDTO::getCryptoAmount)
                     .reduce(BigDecimal.ZERO, BigDecimal::add);
 
+            pendingSum = pendingSum.add(coin.getTxFee());
+
             if (coin == CoinService.CoinEnum.XRP) {
                 pendingSum = pendingSum.add(new BigDecimal(20));
             }
@@ -188,10 +190,10 @@ public class WalletService {
             BigDecimal ethBalance = getBalance(CoinService.CoinEnum.ETH, address);
             BigDecimal fee = convertToFee(coin);
 
-            return balance.compareTo(amount.add(fee)) >= 0 && ethBalance.compareTo(coin.getTxFee()) >= 0;
+            return balance.compareTo(amount.add(fee)) >= 0 && ethBalance.compareTo(BigDecimal.ZERO) > 0;
         }
 
-        return balance.compareTo(amount.add(coin.getTxFee())) >= 0;
+        return balance.compareTo(BigDecimal.ZERO) > 0;
     }
 
     public Map<String, List<String>> getReceivingAddressesTxs(CoinService.CoinEnum coinCode, List<String> addresses) {
@@ -199,7 +201,7 @@ public class WalletService {
 
         addresses.stream().forEach(e -> {
             List<String> txIds = coinCode.getNodeTransactions(e).entrySet().stream()
-                    .filter(x -> x.getValue().getToAddress().equalsIgnoreCase(e) && x.getValue().getDate1().getTime() + Constant.HOURS_BETWEEN_TRANSACTIONS * 3600000 >= System.currentTimeMillis() )
+                    .filter(x -> x.getValue().getToAddress().equalsIgnoreCase(e) && x.getValue().getDate1().getTime() + Constant.HOURS_BETWEEN_TRANSACTIONS * 3600000 >= System.currentTimeMillis())
                     .map(x -> x.getKey()).collect(Collectors.toList());
 
             map.put(e, txIds);
@@ -215,8 +217,6 @@ public class WalletService {
             if (balance.compareTo(amount) >= 0 && amount.compareTo(BigDecimal.ZERO) > 0) {
                 String hex = coin.sign(fromAddress, toAddress, amount);
 
-                log.info(" --------- coin: " + coin.name() + ", hex: " + hex);
-
                 TxSubmitDTO dto = new TxSubmitDTO();
                 dto.setHex(hex);
                 dto.setFromAddress(fromAddress);
@@ -224,7 +224,6 @@ public class WalletService {
                 dto.setCryptoAmount(amount);
 
                 String txId = coin.submitTransaction(dto);
-                log.info(" --------- coin: " + coin.name() + ", txId: " + txId);
 
                 if (StringUtils.isNotBlank(txId)) {
                     TransactionRecordWallet wallet = new TransactionRecordWallet();
