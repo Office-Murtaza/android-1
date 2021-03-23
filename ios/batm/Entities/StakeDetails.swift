@@ -39,7 +39,7 @@ enum StakingStatus: Int, Equatable {
         }
     }
     
-    var associatedColor: StatusColorPallete.Type {
+    var associatedColor: StatusColorPalette.Type {
         switch self {
         case .notExist: return UIColor.StatusColor.Gray.self
         case .createPending: return UIColor.StatusColor.Yellow.self

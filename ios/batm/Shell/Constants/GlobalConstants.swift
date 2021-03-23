@@ -5,5 +5,5 @@ struct GlobalConstants {
     static let maxPasswordLength = 15
     static let fcmPushToken = "fcmPushToken"
     static let shortDateForm = "MM/dd/yyyy"
-    static let longDateForm = "MM/dd/yyyy, hh:mma"
+    static let longDateForm = "MM/dd/yyyy, hh:mm a"
 }

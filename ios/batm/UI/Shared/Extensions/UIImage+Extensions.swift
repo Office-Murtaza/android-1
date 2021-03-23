@@ -48,3 +48,13 @@ extension UIImage {
     return image
   }
 }
+
+extension UIImage {
+    func withTint(_ hexString: String) -> UIImage {
+        if #available(iOS 13.0, *) {
+            return withTintColor(UIColor(hexString: hexString))
+        } else {
+            return self
+        }
+    }
+}

@@ -148,7 +148,7 @@ class CoinDetailsUsecaseImpl: CoinDetailsUsecase {
             .flatMapCompletable { [unowned self] account, transactionResultString, toAddress in
                 return self.submit(userId: account.userId,
                                    type: coin.type,
-                                   txType: .sendGift,
+                                   txType: .sendTransfer,
                                    amount: amount,
                                    fee: coinDetails.txFee,
                                    fromAddress: coin.address,
@@ -212,7 +212,7 @@ class CoinDetailsUsecaseImpl: CoinDetailsUsecase {
             .flatMapCompletable { [unowned self] account, transactionResultString in
                 return self.submit(userId: account.userId,
                                    type: fromCoin.type,
-                                   txType: .sendС2С,
+                                   txType: .sendSwap,
                                    amount: amount,
                                    fee: coinDetails.txFee,
                                    fromAddress: fromCoin.address,
