@@ -188,8 +188,8 @@
 "coin_details.buy" = "Buy";
 "coin_details.sell" = "Sell";
 "coin_details.move" = "Move";
-"coin_details.send_c_2_c" = "Send swap";
-"coin_details.receive_c_2_c" = "Recieve swap";
+"coin_details.send_swap" = "Send swap";
+"coin_details.receive_swap" = "Recieve swap";
 "coin_details.reserve" = "Reserve";
 "coin_details.recall" = "Recall";
 "coin_details.se1f" = "Self";
@@ -213,6 +213,20 @@
 "coin_details.transaction_created" = "Transaction was successfully created";
 "coin_details.success.transaction_created" = "%@ successfully created";
 "coin_details.error.transaction_error" = "%@ transaction error";
+"coin_details.status.unknown" = "Unknown";
+"coin_details.status.new" = "New";
+"coin_details.status.doing" = "Doing";
+"coin_details.status.disputing" = "Disputing";
+"coin_details.status.paid" = "Paid";
+"coin_details.status.released" = "Released";
+"coin_details.status.canceled" = "Canceled";
+"coin_details.status.pending" = "Pending";
+"coin_details.status.complete" = "Complete";
+"coin_details.status.fail" = "Fail";
+"coin_details.status.not_available" = "Not available";
+"coin_details.status.available" = "Available";
+"coin_details.status.withdrawn" = "Withdrawn";
+"coin_details.status.not_exist" = "Not Exist";
 
 "coin_deposit.title" = "Deposit %@";
 
@@ -274,6 +288,22 @@
 "transaction_details.header.ref_coin.title" = "Ref coin";
 "transaction_details.header.ref_amount.title" = "Ref amount";
 "transaction_details.header.sell_q_r_code.title" = "Sell QR code";
+
+"transaction_details.header_title.id" = "ID";
+"transaction_details.header_title.type" = "Type";
+"transaction_details.header_title.status" = "Status";
+"transaction_details.header_title.amount" = "Amount";
+"transaction_details.header_title.fee" = "Fee";
+"transaction_details.header_title.confirmations" = "Confirmations";
+"transaction_details.header_title.from_address" = "From address";
+"transaction_details.header_title.to_address" = "To address";
+"transaction_details.header_title.date" = "Date";
+"transaction_details.header_title.from_phone" = "From phone";
+"transaction_details.header_title.to_phone" = "To phone";
+"transaction_details.header_title.swap_id" = "Swap ID";
+"transaction_details.header_title.swap_amount" = "Swap amount";
+"transaction_details.header_title.sell_amount" = "Sell amount";
+"transaction_details.header_title.cash_status" = "Cash status";
 
 "coin_exchange.title" = "Swap";
 
