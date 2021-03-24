@@ -8,7 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.app.belcobtm.R
 import com.app.belcobtm.databinding.FragmentSupportBinding
-import com.app.belcobtm.presentation.core.formatter.Formatter
+import com.app.belcobtm.presentation.core.formatter.PhoneNumberFormatter
 import com.app.belcobtm.presentation.core.ui.fragment.BaseFragment
 import org.koin.android.ext.android.inject
 
@@ -16,7 +16,7 @@ class SupportFragment : BaseFragment<FragmentSupportBinding>() {
 
     override val isHomeButtonEnabled: Boolean = true
 
-    private val phoneNumberFormatter: Formatter<String> by inject()
+    private val phoneNumberFormatter: PhoneNumberFormatter by inject()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
