@@ -1,11 +1,11 @@
 package com.app.belcobtm.data.websockets.wallet.serializer
 
+import com.app.belcobtm.data.websockets.base.model.StompSocketRequest
 import com.app.belcobtm.data.websockets.serializer.RequestSerializer
-import com.app.belcobtm.data.websockets.wallet.model.WalletSocketRequest
 
-class WalletRequestSerializer : RequestSerializer<WalletSocketRequest> {
+class WalletRequestSerializer : RequestSerializer<StompSocketRequest> {
 
-    override fun serialize(request: WalletSocketRequest): String =
+    override fun serialize(request: StompSocketRequest): String =
         StringBuilder().apply {
             append("${request.command}\n")
             request.headers.forEach { (header, value) ->

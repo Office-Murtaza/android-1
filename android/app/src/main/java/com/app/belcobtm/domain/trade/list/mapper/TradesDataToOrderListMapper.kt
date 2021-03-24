@@ -7,6 +7,7 @@ class TradesDataToOrderListMapper(private val orderMapper: TradeOrderDataToItemM
 
     fun map(tradeData: TradeData, userId: Int): List<OrderItem> =
         tradeData.orders
+            .values
             .asSequence()
             .filter { it.makerId == userId || it.takerId == userId }
             .map { orderMapper.map(it, tradeData, userId) }

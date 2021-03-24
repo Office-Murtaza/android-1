@@ -4,7 +4,6 @@ import android.content.res.Resources
 import com.app.belcobtm.R
 import com.app.belcobtm.data.disk.database.AccountDao
 import com.app.belcobtm.data.inmemory.TradeInMemoryCache
-import com.app.belcobtm.data.model.trade.Order
 import com.app.belcobtm.data.model.trade.PaymentOption
 import com.app.belcobtm.data.model.trade.Trade
 import com.app.belcobtm.data.model.trade.TradeData
@@ -17,9 +16,9 @@ import com.app.belcobtm.domain.Failure
 import com.app.belcobtm.domain.map
 import com.app.belcobtm.domain.trade.TradeRepository
 import com.app.belcobtm.domain.wallet.LocalCoinType
-import com.app.belcobtm.presentation.features.wallet.trade.buysell.model.TradeOrderItem
 import com.app.belcobtm.presentation.features.wallet.trade.create.model.CreateTradeItem
 import com.app.belcobtm.presentation.features.wallet.trade.edit.EditTradeItem
+import com.app.belcobtm.presentation.features.wallet.trade.order.create.model.TradeOrderItem
 import com.app.belcobtm.presentation.features.wallet.trade.order.details.model.UpdateOrderStatusItem
 import kotlinx.coroutines.flow.Flow
 
@@ -55,8 +54,9 @@ class TradeRepositoryImpl(
     override fun getFilter(): TradeFilter? =
         tradeInMemoryCache.filter
 
-    override suspend fun getOrderDetails(orderId: Int): Either<Failure, Order> =
-        tradeInMemoryCache.findOrder(orderId)
+    override fun clearCache() {
+        tradeInMemoryCache.clearCache()
+    }
 
     override suspend fun updateFilter(filter: TradeFilter) {
         tradeInMemoryCache.updateFilter(filter)
@@ -75,41 +75,34 @@ class TradeRepositoryImpl(
     override suspend fun createTrade(createTradeItem: CreateTradeItem): Either<Failure, Unit> {
         val location = locationProvider.getCurrentLocation()
         val response = tradeApiService.createTrade(createTradeItem, location)
-        return if (response.isRight) {
-            Either.Right(Unit)
-        } else {
-            response as Either.Left<Failure>
-        }
+        return response.map { Unit }
     }
 
     override suspend fun editTrade(editTrade: EditTradeItem): Either<Failure, Unit> {
         val response = tradeApiService.editTrade(editTrade)
-        return if (response.isRight) {
-            Either.Right(Unit)
-        } else {
-            response as Either.Left<Failure>
-        }
+        return response.map { Unit }
     }
 
     override suspend fun cancelTrade(tradeId: Int): Either<Failure, Unit> {
         val response = tradeApiService.deleteTrade(tradeId)
-        return if (response.isRight) {
-            Either.Right(Unit)
-        } else {
-            response as Either.Left<Failure>
-        }
+        return response.map { Unit }
     }
 
     override suspend fun createOrder(tradeOrder: TradeOrderItem): Either<Failure, Int> {
         val response = tradeApiService.createOrder(tradeOrder)
         return response.map {
             tradeInMemoryCache.updateOrders(it)
-            it.tradeId
+            it.id
         }
     }
 
     override suspend fun updateOrder(status: UpdateOrderStatusItem): Either<Failure, Unit> {
-        val response = tradeApiService.updateOrder(status)
+        val response = tradeApiService.updateOrder(status.orderId, status = status.newStatus)
+        return response.map { tradeInMemoryCache.updateOrders(it) }
+    }
+
+    override suspend fun rateOrder(orderId: Int, rate: Int): Either<Failure, Unit> {
+        val response = tradeApiService.updateOrder(orderId, rate = rate)
         return response.map { tradeInMemoryCache.updateOrders(it) }
     }
 

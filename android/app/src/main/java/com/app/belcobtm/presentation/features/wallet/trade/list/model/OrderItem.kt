@@ -27,7 +27,8 @@ data class OrderItem(
     val makerLatitude: Double?,
     val makerLongitude: Double?,
     val makerTotalTrades: Int,
-    val makerTradingRate: Double,
+    val makerTotalTradesFormatted: String,
+    val makerTradingRate: Double?,
     val takerId: Int,
     @TraderStatus val takerStatusId: Int,
     @DrawableRes val takerStatusIconRes: Int,
@@ -35,7 +36,8 @@ data class OrderItem(
     val takerLatitude: Double?,
     val takerLongitude: Double?,
     val takerTotalTrades: Int,
-    val takerTradingRate: Double
+    val takerTotalTradesFormatted: String,
+    val takerTradingRate: Double?
 ) : ListItem {
 
     companion object {

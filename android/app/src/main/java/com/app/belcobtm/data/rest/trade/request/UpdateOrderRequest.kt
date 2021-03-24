@@ -4,5 +4,6 @@ import com.app.belcobtm.data.model.trade.OrderStatus
 
 data class UpdateOrderRequest(
     val id: Int,
-    @OrderStatus val status: Int
+    @OrderStatus val status: Int?,
+    val rate: Int? = null
 )

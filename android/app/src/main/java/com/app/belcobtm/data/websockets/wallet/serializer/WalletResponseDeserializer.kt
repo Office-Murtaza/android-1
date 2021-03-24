@@ -1,11 +1,11 @@
 package com.app.belcobtm.data.websockets.wallet.serializer
 
+import com.app.belcobtm.data.websockets.base.model.StompSocketResponse
 import com.app.belcobtm.data.websockets.serializer.ResponseDeserializer
-import com.app.belcobtm.data.websockets.wallet.model.WalletSocketResponse
 
-class WalletResponseDeserializer : ResponseDeserializer<WalletSocketResponse> {
+class WalletResponseDeserializer : ResponseDeserializer<StompSocketResponse> {
 
-    override fun deserialize(content: String): WalletSocketResponse {
+    override fun deserialize(content: String): StompSocketResponse {
         val response = content.split("\n")
             .asSequence()
             .map(String::trim)
@@ -16,7 +16,7 @@ class WalletResponseDeserializer : ResponseDeserializer<WalletSocketResponse> {
             val (header, value) = response[i].split(":")
             headers[header] = value
         }
-        return WalletSocketResponse(
+        return StompSocketResponse(
             response.first(), headers, response.last().replace("\u0000", "")
         )
     }

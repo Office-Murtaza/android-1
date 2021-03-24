@@ -112,7 +112,7 @@ val dataModule = module {
     single { get<Retrofit>().create(TradeApi::class.java) }
     single<NotificationTokenRepository> { NotificationTokenRepositoryImpl(get()) }
     single<ContactsRepository> { ContactsRepositoryImpl(get<Context>().contentResolver) }
-    single { TradeInMemoryCache(get(), get(), GlobalScope, get()) }
+    single { TradeInMemoryCache(get(), get(), GlobalScope, get(), get()) }
     single { DistanceCalculator(get()) }
     single<LocationProvider> { ServiceLocationProvider(androidApplication()) }
     factory { TradesResponseToTradeDataMapper(get(), get()) }

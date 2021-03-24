@@ -8,11 +8,11 @@ import com.app.belcobtm.data.rest.wallet.response.BalanceResponse
 import com.app.belcobtm.data.rest.wallet.response.mapToDataItem
 import com.app.belcobtm.data.websockets.base.SocketClient
 import com.app.belcobtm.data.websockets.base.model.SocketResponse
+import com.app.belcobtm.data.websockets.base.model.StompSocketRequest
+import com.app.belcobtm.data.websockets.base.model.StompSocketResponse
+import com.app.belcobtm.data.websockets.base.model.WalletBalance
 import com.app.belcobtm.data.websockets.serializer.RequestSerializer
 import com.app.belcobtm.data.websockets.serializer.ResponseDeserializer
-import com.app.belcobtm.data.websockets.wallet.model.WalletBalance
-import com.app.belcobtm.data.websockets.wallet.model.WalletSocketRequest
-import com.app.belcobtm.data.websockets.wallet.model.WalletSocketResponse
 import com.app.belcobtm.domain.Failure
 import com.app.belcobtm.presentation.core.Endpoint
 import com.squareup.moshi.Moshi
@@ -28,8 +28,8 @@ class WebSocketWalletObserver(
     private val socketClient: SocketClient,
     private val accountDao: AccountDao,
     private val sharedPreferencesHelper: SharedPreferencesHelper,
-    private val serializer: RequestSerializer<WalletSocketRequest>,
-    private val deserializer: ResponseDeserializer<WalletSocketResponse>,
+    private val serializer: RequestSerializer<StompSocketRequest>,
+    private val deserializer: ResponseDeserializer<StompSocketResponse>,
     private val moshi: Moshi,
     private val preferencesHelper: SharedPreferencesHelper,
     private val authApi: AuthApi
@@ -86,8 +86,8 @@ class WebSocketWalletObserver(
 
     override suspend fun disconnect() {
         withContext(ioScope.coroutineContext) {
-            val request = WalletSocketRequest(
-                WalletSocketRequest.UNSUBSCRIBE, mapOf(
+            val request = StompSocketRequest(
+                StompSocketRequest.UNSUBSCRIBE, mapOf(
                     ID_HEADER to sharedPreferencesHelper.userPhone,
                     DESTINATION_HEADER to DESTINATION_VALUE
                 )
@@ -101,9 +101,9 @@ class WebSocketWalletObserver(
     private suspend fun processMessage(content: String) {
         val response = deserializer.deserialize(content)
         when (response.status) {
-            WalletSocketResponse.CONNECTED -> subscribe()
-            WalletSocketResponse.ERROR -> processErrorMessage(response)
-            WalletSocketResponse.CONTENT -> {
+            StompSocketResponse.CONNECTED -> subscribe()
+            StompSocketResponse.ERROR -> processErrorMessage(response)
+            StompSocketResponse.CONTENT -> {
                 moshi.adapter(BalanceResponse::class.java)
                     .fromJson(response.body)
                     ?.let { balance ->
@@ -118,8 +118,8 @@ class WebSocketWalletObserver(
             accountDao.getItemList().orEmpty()
                 .map { it.type.name }
         }.joinToString()
-        val request = WalletSocketRequest(
-            WalletSocketRequest.SUBSCRIBE, mapOf(
+        val request = StompSocketRequest(
+            StompSocketRequest.SUBSCRIBE, mapOf(
                 ID_HEADER to sharedPreferencesHelper.userPhone,
                 DESTINATION_HEADER to DESTINATION_VALUE,
                 COINS_HEADER to coinList
@@ -144,7 +144,7 @@ class WebSocketWalletObserver(
         }
     }
 
-    private suspend fun processErrorMessage(socketResponse: WalletSocketResponse) {
+    private suspend fun processErrorMessage(socketResponse: StompSocketResponse) {
         val isTokenExpired = socketResponse.headers[HEADER_MESSAGE_KEY]
             .orEmpty()
             .contains(AUTH_ERROR_MESSAGE)
@@ -165,8 +165,8 @@ class WebSocketWalletObserver(
     }
 
     private fun onOpened() {
-        val request = WalletSocketRequest(
-            WalletSocketRequest.CONNECT, mapOf(
+        val request = StompSocketRequest(
+            StompSocketRequest.CONNECT, mapOf(
                 ACCEPT_VERSION_HEADER to ACCEPT_VERSION_VALUE,
                 AUTH_HEADER to sharedPreferencesHelper.accessToken,
                 HEARTBEAT_HEADER to HEARTBEAT_VALUE

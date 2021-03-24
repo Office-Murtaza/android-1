@@ -6,6 +6,10 @@ import com.app.belcobtm.data.rest.interceptor.NoConnectionInterceptor
 import com.app.belcobtm.data.rest.interceptor.ResponseInterceptor
 import com.app.belcobtm.data.websockets.base.OkHttpSocketClient
 import com.app.belcobtm.data.websockets.base.SocketClient
+import com.app.belcobtm.data.websockets.base.model.StompSocketRequest
+import com.app.belcobtm.data.websockets.base.model.StompSocketResponse
+import com.app.belcobtm.data.websockets.order.OrdersObserver
+import com.app.belcobtm.data.websockets.order.WebSocketOrdersObserver
 import com.app.belcobtm.data.websockets.serializer.RequestSerializer
 import com.app.belcobtm.data.websockets.serializer.ResponseDeserializer
 import com.app.belcobtm.data.websockets.trade.TradesObserver
@@ -14,8 +18,6 @@ import com.app.belcobtm.data.websockets.wallet.WalletConnectionHandler
 import com.app.belcobtm.data.websockets.wallet.WalletObserver
 import com.app.belcobtm.data.websockets.wallet.WebSocketWalletObserver
 import com.app.belcobtm.data.websockets.wallet.lifecycle.WalletLifecycleObserver
-import com.app.belcobtm.data.websockets.wallet.model.WalletSocketRequest
-import com.app.belcobtm.data.websockets.wallet.model.WalletSocketResponse
 import com.app.belcobtm.data.websockets.wallet.serializer.WalletRequestSerializer
 import com.app.belcobtm.data.websockets.wallet.serializer.WalletResponseDeserializer
 import okhttp3.OkHttpClient
@@ -38,7 +40,8 @@ val webSocketModule = module {
             get(), get(authenticatorQualified)
         )
     } bind WalletConnectionHandler::class
-    single<TradesObserver> { WebSocketTradesObserver(get(), get(), get(), get(), get()) }
+    single<TradesObserver> { WebSocketTradesObserver(get(), get(), get(), get(), get(), get(), get()) }
+    single<OrdersObserver> { WebSocketOrdersObserver(get(), get(), get(), get(), get(), get(), get()) }
     factory<SocketClient> { OkHttpSocketClient(get(WEB_SOCKET_OK_HTTP_CLIENT_QUALIFIER)) }
     single<OkHttpClient>(WEB_SOCKET_OK_HTTP_CLIENT_QUALIFIER) {
         OkHttpClient().newBuilder()
@@ -50,6 +53,6 @@ val webSocketModule = module {
             .addInterceptor(get<HttpLoggingInterceptor>())
             .build()
     }
-    single<RequestSerializer<WalletSocketRequest>> { WalletRequestSerializer() }
-    single<ResponseDeserializer<WalletSocketResponse>> { WalletResponseDeserializer() }
+    single<RequestSerializer<StompSocketRequest>> { WalletRequestSerializer() }
+    single<ResponseDeserializer<StompSocketResponse>> { WalletResponseDeserializer() }
 }

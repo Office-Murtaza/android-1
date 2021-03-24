@@ -1,5 +1,7 @@
 package com.app.belcobtm.presentation.features.wallet.trade.order.details
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -11,10 +13,7 @@ import com.app.belcobtm.R
 import com.app.belcobtm.data.model.trade.TradeType
 import com.app.belcobtm.databinding.FragmentTradeOrderDetailsBinding
 import com.app.belcobtm.presentation.core.adapter.MultiTypeAdapter
-import com.app.belcobtm.presentation.core.extensions.resIcon
-import com.app.belcobtm.presentation.core.extensions.setDrawableEnd
-import com.app.belcobtm.presentation.core.extensions.setDrawableStart
-import com.app.belcobtm.presentation.core.extensions.toggle
+import com.app.belcobtm.presentation.core.extensions.*
 import com.app.belcobtm.presentation.core.mvvm.LoadingData
 import com.app.belcobtm.presentation.core.ui.fragment.BaseFragment
 import com.app.belcobtm.presentation.features.wallet.trade.list.delegate.TradePaymentOptionDelegate
@@ -66,27 +65,42 @@ class TradeOrderDetailsFragment : BaseFragment<FragmentTradeOrderDetailsBinding>
         viewModel.secondaryActionUpdateLoadingData.listen()
         viewModel.price.observe(viewLifecycleOwner, price::setText)
         viewModel.paymentOptions.observe(viewLifecycleOwner, adapter::update)
-        viewModel.traderStatus.observe(viewLifecycleOwner) {
-            binding.makerPublicId.setCompoundDrawablesWithIntrinsicBounds(0, 0, it, 0)
+        viewModel.traderStatusIcon.observe(viewLifecycleOwner) {
+            binding.makerPublicId.setCompoundDrawablesWithIntrinsicBounds(
+                R.drawable.ic_account_circle, 0, it, 0
+            )
         }
-        viewModel.partnerPublicId.observe(viewLifecycleOwner, makerPublicId::setText)
-        viewModel.partnerTotalTrades.observe(viewLifecycleOwner) {
-            makerTradeCountLabel.text = resources.getString(R.string.trade_details_screen_total_trades_formatted, it)
+        viewModel.openRateScreen.observe(viewLifecycleOwner) { showRateDialog ->
+            if (showRateDialog) {
+                navigate(
+                    TradeOrderDetailsFragmentDirections.toRateOrderFragment(
+                        viewModel.partnerPublicId.value.orEmpty(), args.orderId
+                    )
+                )
+            }
+        }
+        viewModel.makerTotalTrades.observe(viewLifecycleOwner) {
+            makerTradeCountLabel.text = it.toHtmlSpan()
         }
         viewModel.orderStatus.observe(viewLifecycleOwner) {
             statusValue.setText(it.statusLabelId)
             statusValue.setDrawableEnd(it.statusDrawableId)
         }
         viewModel.partnerScore.observe(viewLifecycleOwner) {
-            makerRateValue.text = it.toString()
             partnerScoreValue.text = it.toString()
+            partnerScoreValue.toggle(it != null)
         }
         viewModel.myScore.observe(viewLifecycleOwner) {
             myScoreValue.text = it.toString()
+            myScoreValue.toggle(it != null)
         }
         viewModel.distance.observe(viewLifecycleOwner) {
             binding.distanceLabel.text = it
             binding.distanceLabel.toggle(isVisible = true)
+        }
+        viewModel.makerPublicId.observe(viewLifecycleOwner, makerPublicId::setText)
+        viewModel.makerTradeRate.observe(viewLifecycleOwner) {
+            makerRateValue.text = it.toString()
         }
         viewModel.fiatAmount.observe(viewLifecycleOwner, fiatAmountValue::setText)
         viewModel.cryptoAmount.observe(viewLifecycleOwner, cryptoAmountValue::setText)
@@ -116,15 +130,22 @@ class TradeOrderDetailsFragment : BaseFragment<FragmentTradeOrderDetailsBinding>
                 }
             }
         }
+        viewModel.coin.observe(viewLifecycleOwner) {
+            coinIcon.setImageResource(it.resIcon())
+            coinLabel.text = it.name
+        }
         binding.primaryActionButton.setOnClickListener {
             viewModel.updateOrderPrimaryAction(args.orderId)
         }
         binding.secondaryActionButton.setOnClickListener {
             viewModel.updateOrderSecondaryAction(args.orderId)
         }
-        viewModel.coin.observe(viewLifecycleOwner) {
-            coinIcon.setImageResource(it.resIcon())
-            coinLabel.text = it.name
+
+        binding.distanceLabel.setOnClickListener {
+            val gmmIntentUri = Uri.parse(viewModel.getQueryForMap())
+            val mapIntent = Intent(Intent.ACTION_VIEW, gmmIntentUri)
+            mapIntent.setPackage(requireContext().getString(R.string.google_maps_package))
+            startActivity(mapIntent)
         }
     }
 }

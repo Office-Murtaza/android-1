@@ -1,4 +1,4 @@
-package com.app.belcobtm.data.websockets.wallet.model
+package com.app.belcobtm.data.websockets.base.model
 
 import com.app.belcobtm.domain.Failure
 import com.app.belcobtm.domain.wallet.item.BalanceDataItem

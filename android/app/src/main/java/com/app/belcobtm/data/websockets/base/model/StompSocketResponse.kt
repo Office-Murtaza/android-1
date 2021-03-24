@@ -1,6 +1,6 @@
-package com.app.belcobtm.data.websockets.wallet.model
+package com.app.belcobtm.data.websockets.base.model
 
-class WalletSocketResponse(
+class StompSocketResponse(
     val status: String,
     val headers: Map<String, String>,
     val body: String

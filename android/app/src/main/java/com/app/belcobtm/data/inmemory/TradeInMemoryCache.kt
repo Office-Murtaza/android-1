@@ -2,18 +2,22 @@ package com.app.belcobtm.data.inmemory
 
 import com.app.belcobtm.data.helper.DistanceCalculator
 import com.app.belcobtm.data.mapper.OrderResponseToOrderMapper
+import com.app.belcobtm.data.mapper.TradeResponseToTradeMapper
 import com.app.belcobtm.data.mapper.TradesResponseToTradeDataMapper
-import com.app.belcobtm.data.model.trade.Order
 import com.app.belcobtm.data.model.trade.Trade
 import com.app.belcobtm.data.model.trade.TradeData
 import com.app.belcobtm.data.model.trade.filter.TradeFilter
+import com.app.belcobtm.data.rest.trade.response.TradeItemResponse
 import com.app.belcobtm.data.rest.trade.response.TradeOrderItemResponse
 import com.app.belcobtm.data.rest.trade.response.TradesResponse
 import com.app.belcobtm.domain.Either
 import com.app.belcobtm.domain.Failure
+import com.app.belcobtm.domain.flatMap
+import com.app.belcobtm.domain.map
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
@@ -22,7 +26,8 @@ class TradeInMemoryCache(
     private val tradesMapper: TradesResponseToTradeDataMapper,
     private val distanceCalculator: DistanceCalculator,
     private val distanceCalculatorScope: CoroutineScope,
-    private val orderMapper: OrderResponseToOrderMapper
+    private val orderMapper: OrderResponseToOrderMapper,
+    private val tradeMapper: TradeResponseToTradeMapper
 ) {
 
     companion object {
@@ -42,7 +47,7 @@ class TradeInMemoryCache(
     val data: Either<Failure, TradeData>?
         get() = cache.value
 
-    val observableFilter: StateFlow<TradeFilter?>
+    val observableFilter: Flow<TradeFilter?>
         get() = tradeFilter
 
     val filter: TradeFilter?
@@ -67,52 +72,36 @@ class TradeInMemoryCache(
         tradeFilter.value = filter
     }
 
-    fun updateDistances(distances: Map<Int, Double>) {
-        val currentCache = cache.value
-        val tradeData: TradeData =
-            (currentCache?.takeIf { currentCache.isRight } as? Either.Right<TradeData>)?.b ?: return
-        cache.value = Either.Right(tradeData.copy(
-            trades = tradeData.trades.asSequence()
-                .map { it.copy(distance = distances[it.id] ?: UNDEFINED_DISTANCE) }
-                .sortedBy { it.distance }
-                .toList()
-        ))
-    }
-
-    fun updateOrders(order: TradeOrderItemResponse) {
-        val currentCache = cache.value
-        val mappedOrder = orderMapper.map(order)
-        val tradeData: TradeData =
-            (currentCache?.takeIf { currentCache.isRight } as? Either.Right<TradeData>)?.b ?: return
-        val isNewOrder = tradeData.orders.none { it.id == order.id }
-        val updatedCache = if (isNewOrder) {
-            tradeData.copy(orders = tradeData.orders + mappedOrder)
-        } else {
-            tradeData.copy(
-                orders = tradeData.orders.asSequence()
-                    .map { if (it.id == order.id) mappedOrder else it }
-                    .toList()
-            )
-        }
-        cache.value = Either.Right(updatedCache)
-    }
-
     fun findTrade(tradeId: Int): Either<Failure, Trade> {
         val currentCache = cache.value ?: return Either.Left(Failure.ServerError())
-        return if (currentCache.isLeft) {
-            currentCache as Either.Left<Failure>
-        } else {
-            val tradeData = (currentCache as Either.Right<TradeData>).b
-            tradeData.trades.find { it.id == tradeId }
-                ?.let { Either.Right(it) }
+        return currentCache.flatMap { tradeData ->
+            tradeData.trades[tradeId]?.let { Either.Right(it) }
                 ?: Either.Left(Failure.ServerError())
         }
     }
 
-    fun cleanCache() {
-        cache.value = null
+    fun updateTrades(trade: TradeItemResponse) {
+        cache.value?.map {
+            val mappedTrade = tradeMapper.map(trade)
+            val trades = HashMap(it.trades)
+            trades[mappedTrade.id] = mappedTrade
+            cache.value = Either.Right(it.copy(trades = trades))
+            startDistanceCalculation()
+        }
     }
 
+    fun updateOrders(order: TradeOrderItemResponse) {
+        cache.value?.map {
+            val mappedOrder = orderMapper.map(order)
+            val orders = HashMap(it.orders)
+            orders[mappedOrder.id] = mappedOrder
+            cache.value = Either.Right(it.copy(orders = orders))
+        }
+    }
+
+    fun clearCache() {
+        cache.value = null
+    }
 
     private fun startDistanceCalculation() {
         distanceCalculationJob?.cancel()
@@ -126,18 +115,6 @@ class TradeInMemoryCache(
                 val tradesWithDistance = distanceCalculator.updateDistanceToTrades(tradeData.trades)
                 cache.value = Either.Right(tradeData.copy(trades = tradesWithDistance))
             }
-        }
-    }
-
-    fun findOrder(orderId: Int): Either<Failure, Order> {
-        val currentCache = cache.value ?: return Either.Left(Failure.ServerError())
-        return if (currentCache.isLeft) {
-            currentCache as Either.Left<Failure>
-        } else {
-            val tradeData = (currentCache as Either.Right<TradeData>).b
-            tradeData.orders.find { it.id == orderId }
-                ?.let { Either.Right(it) }
-                ?: Either.Left(Failure.ServerError())
         }
     }
 }

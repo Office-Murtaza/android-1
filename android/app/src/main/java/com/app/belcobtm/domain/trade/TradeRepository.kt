@@ -1,15 +1,14 @@
 package com.app.belcobtm.domain.trade
 
-import com.app.belcobtm.data.model.trade.Order
 import com.app.belcobtm.data.model.trade.PaymentOption
 import com.app.belcobtm.data.model.trade.Trade
 import com.app.belcobtm.data.model.trade.TradeData
 import com.app.belcobtm.data.model.trade.filter.TradeFilter
 import com.app.belcobtm.domain.Either
 import com.app.belcobtm.domain.Failure
-import com.app.belcobtm.presentation.features.wallet.trade.buysell.model.TradeOrderItem
 import com.app.belcobtm.presentation.features.wallet.trade.create.model.CreateTradeItem
 import com.app.belcobtm.presentation.features.wallet.trade.edit.EditTradeItem
+import com.app.belcobtm.presentation.features.wallet.trade.order.create.model.TradeOrderItem
 import com.app.belcobtm.presentation.features.wallet.trade.order.details.model.UpdateOrderStatusItem
 import kotlinx.coroutines.flow.Flow
 
@@ -27,7 +26,7 @@ interface TradeRepository {
 
     fun getFilter(): TradeFilter?
 
-    suspend fun getOrderDetails(orderId: Int): Either<Failure, Order>
+    fun clearCache()
 
     suspend fun updateFilter(filter: TradeFilter)
 
@@ -44,4 +43,6 @@ interface TradeRepository {
     suspend fun createOrder(tradeOrder: TradeOrderItem): Either<Failure, Int>
 
     suspend fun updateOrder(status: UpdateOrderStatusItem): Either<Failure, Unit>
+
+    suspend fun rateOrder(orderId: Int, rate: Int): Either<Failure, Unit>
 }

@@ -19,6 +19,7 @@ class TradesDataToTradeListMapper(
         userId: Int
     ): List<TradeItem> =
         tradeData.trades
+            .values
             .asSequence()
             .filter { it.type == params.tradeType }
             .filter { it.makerId != userId }

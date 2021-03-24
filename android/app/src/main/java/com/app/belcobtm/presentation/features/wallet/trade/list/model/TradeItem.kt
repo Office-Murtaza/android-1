@@ -23,7 +23,10 @@ data class TradeItem(
     @DrawableRes val makerStatusIcon: Int,
     val makerPublicId: String,
     val makerTotalTrades: Int,
+    val makerTotalTradesFormatted: String,
     val makerTradingRate: Double,
+    val makerLatitude: Double?,
+    val makerLongitude: Double?,
     val distance: Double,
     val distanceFormatted: String
 ) : ListItem {

@@ -9,6 +9,7 @@ import com.app.belcobtm.domain.settings.interactor.*
 import com.app.belcobtm.domain.tools.interactor.OldSendSmsToDeviceUseCase
 import com.app.belcobtm.domain.tools.interactor.OldVerifySmsCodeUseCase
 import com.app.belcobtm.domain.tools.interactor.SendSmsToDeviceUseCase
+import com.app.belcobtm.domain.trade.ClearCacheUseCase
 import com.app.belcobtm.domain.trade.create.CheckTradeCreationAvailabilityUseCase
 import com.app.belcobtm.domain.trade.create.CreateTradeUseCase
 import com.app.belcobtm.domain.trade.create.GetAvailableTradePaymentOptionsUseCase
@@ -26,12 +27,14 @@ import com.app.belcobtm.domain.trade.list.filter.mapper.TradeFilterMapper
 import com.app.belcobtm.domain.trade.list.mapper.*
 import com.app.belcobtm.domain.trade.order.CreateOrderUseCase
 import com.app.belcobtm.domain.trade.order.ObserveOrderDetailsUseCase
+import com.app.belcobtm.domain.trade.order.RateOrderUseCase
 import com.app.belcobtm.domain.trade.order.UpdateOrderStatusUseCase
 import com.app.belcobtm.domain.transaction.interactor.*
 import com.app.belcobtm.domain.transaction.interactor.trade.TradeRecallTransactionCompleteUseCase
 import com.app.belcobtm.domain.wallet.interactor.*
 import com.app.belcobtm.presentation.core.formatter.DoubleCurrencyPriceFormatter.Companion.DOUBLE_CURRENCY_PRICE_FORMATTER_QUALIFIER
 import com.app.belcobtm.presentation.core.formatter.MilesFormatter.Companion.MILES_FORMATTER_QUALIFIER
+import com.app.belcobtm.presentation.core.formatter.TradeCountFormatter.Companion.TRADE_COUNT_FORMATTER_QUALIFIER
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
 
@@ -105,22 +108,33 @@ val useCaseModule = module {
     single { CancelTradeUseCase(get()) }
     single { EditTradeUseCase(get()) }
     single { CreateOrderUseCase(get()) }
-    single { StartObserveTradesUseCase(get()) }
-    single { StopObserveTradesUseCase(get()) }
+    single { StartObserveTradeDataUseCase(get(), get()) }
+    single { StopObserveTradeDataUseCase(get(), get()) }
     single { ObserveOrderDetailsUseCase(get(), get(), get()) }
     single { UpdateOrderStatusUseCase(get()) }
+    single { ClearCacheUseCase(get()) }
+    single { RateOrderUseCase(get()) }
     factory { TradePaymentOptionMapper() }
     factory { CoinCodeMapper() }
     factory { TradesDataToTradeListMapper(get()) }
     factory {
         TradeToTradeItemMapper(
             get(), get(named(MILES_FORMATTER_QUALIFIER)),
-            get(named(DOUBLE_CURRENCY_PRICE_FORMATTER_QUALIFIER)), get()
+            get(named(DOUBLE_CURRENCY_PRICE_FORMATTER_QUALIFIER)),
+            get(named(TRADE_COUNT_FORMATTER_QUALIFIER)),
+            get()
         )
     }
     factory { TraderStatusToIconMapper() }
     factory { TradesDataToStatisticsMapper(get()) }
-    factory { TradeOrderDataToItemMapper(get(), get(named(DOUBLE_CURRENCY_PRICE_FORMATTER_QUALIFIER)), get()) }
+    factory {
+        TradeOrderDataToItemMapper(
+            get(),
+            get(named(DOUBLE_CURRENCY_PRICE_FORMATTER_QUALIFIER)),
+            get(named(TRADE_COUNT_FORMATTER_QUALIFIER)),
+            get()
+        )
+    }
     factory { TradesDataToOrderListMapper(get()) }
     factory { TradesDataToMyTradeMapper(get()) }
     factory { TradeFilterItemMapper(get(), get()) }

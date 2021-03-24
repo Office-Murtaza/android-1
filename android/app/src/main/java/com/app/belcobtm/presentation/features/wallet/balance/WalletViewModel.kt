@@ -5,8 +5,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.app.belcobtm.data.disk.database.AccountDao
+import com.app.belcobtm.data.websockets.base.model.WalletBalance
 import com.app.belcobtm.data.websockets.wallet.WalletObserver
-import com.app.belcobtm.data.websockets.wallet.model.WalletBalance
 import com.app.belcobtm.presentation.core.mvvm.LoadingData
 import com.app.belcobtm.presentation.features.wallet.balance.adapter.CoinListItem
 import kotlinx.coroutines.flow.map

@@ -7,6 +7,7 @@ import com.app.belcobtm.presentation.core.coin.MinMaxCoinValueProvider
 import com.app.belcobtm.presentation.core.formatter.*
 import com.app.belcobtm.presentation.core.formatter.DoubleCurrencyPriceFormatter.Companion.DOUBLE_CURRENCY_PRICE_FORMATTER_QUALIFIER
 import com.app.belcobtm.presentation.core.formatter.Formatter
+import com.app.belcobtm.presentation.core.formatter.GoogleMapsDirectionQueryFormatter.Companion.GOOGLE_MAPS_DIRECTIONS_QUERY_FORMATTER
 import com.app.belcobtm.presentation.core.formatter.IntCurrencyPriceFormatter.Companion.INT_CURRENCY_PRICE_FORMATTER_QUALIFIER
 import com.app.belcobtm.presentation.core.formatter.MilesFormatter.Companion.MILES_FORMATTER_QUALIFIER
 import com.app.belcobtm.presentation.core.helper.ClipBoardHelper
@@ -43,7 +44,6 @@ import com.app.belcobtm.presentation.features.wallet.add.WalletsViewModel
 import com.app.belcobtm.presentation.features.wallet.balance.WalletViewModel
 import com.app.belcobtm.presentation.features.wallet.deposit.DepositViewModel
 import com.app.belcobtm.presentation.features.wallet.send.gift.SendGiftViewModel
-import com.app.belcobtm.presentation.features.wallet.trade.buysell.TradeCreateOrderViewModel
 import com.app.belcobtm.presentation.features.wallet.trade.container.TradeContainerViewModel
 import com.app.belcobtm.presentation.features.wallet.trade.create.CreateTradeViewModel
 import com.app.belcobtm.presentation.features.wallet.trade.details.TradeDetailsViewModel
@@ -53,7 +53,9 @@ import com.app.belcobtm.presentation.features.wallet.trade.list.filter.TradeFilt
 import com.app.belcobtm.presentation.features.wallet.trade.mytrade.details.MyTradeDetailsViewModel
 import com.app.belcobtm.presentation.features.wallet.trade.mytrade.list.MyTradesViewModel
 import com.app.belcobtm.presentation.features.wallet.trade.order.TradeOrdersViewModel
+import com.app.belcobtm.presentation.features.wallet.trade.order.create.TradeCreateOrderViewModel
 import com.app.belcobtm.presentation.features.wallet.trade.order.details.TradeOrderDetailsViewModel
+import com.app.belcobtm.presentation.features.wallet.trade.rate.TradeOrderRateViewModel
 import com.app.belcobtm.presentation.features.wallet.trade.recall.TradeRecallViewModel
 import com.app.belcobtm.presentation.features.wallet.trade.reserve.TradeReserveViewModel
 import com.app.belcobtm.presentation.features.wallet.trade.statistic.TradeUserStatisticViewModel
@@ -107,7 +109,7 @@ val viewModelModule = module {
     viewModel { (coinCode: String) -> WithdrawViewModel(coinCode, get(), get(), get(), get(), get()) }
     viewModel { (coinCode: String) -> DepositViewModel(coinCode, get()) }
     viewModel { ContactListViewModel(get(), get<PhoneNumberValidator>(), get()) }
-    viewModel { TradeContainerViewModel(get(), get(), get()) }
+    viewModel { TradeContainerViewModel(get(), get(), get(), get()) }
     viewModel { TradeListViewModel(get(), get()) }
     viewModel { TradeUserStatisticViewModel(get()) }
     viewModel { MyTradeDetailsViewModel(get(), get(), get(), get(named(DOUBLE_CURRENCY_PRICE_FORMATTER_QUALIFIER))) }
@@ -121,7 +123,13 @@ val viewModelModule = module {
     }
     viewModel { TradeOrdersViewModel(get()) }
     viewModel { MyTradesViewModel(get()) }
-    viewModel { TradeDetailsViewModel(get(), get(), get(named(DOUBLE_CURRENCY_PRICE_FORMATTER_QUALIFIER))) }
+    viewModel {
+        TradeDetailsViewModel(
+            get(), get(),
+            get(named(DOUBLE_CURRENCY_PRICE_FORMATTER_QUALIFIER)),
+            get(named(GOOGLE_MAPS_DIRECTIONS_QUERY_FORMATTER))
+        )
+    }
     viewModel {
         CreateTradeViewModel(
             get(), get(), get(), get(), get(),
@@ -131,7 +139,7 @@ val viewModelModule = module {
         )
     }
     viewModel { TradeFilterViewModel(get(), get(), get(), get(), get(named(DISTANCE_INT_PARSER_QUALIFIER))) }
-    viewModel { TradeOrderDetailsViewModel(get(), get(), get()) }
+    viewModel { TradeOrderDetailsViewModel(get(), get(), get(), get(named(GOOGLE_MAPS_DIRECTIONS_QUERY_FORMATTER))) }
     viewModel {
         TradeCreateOrderViewModel(
             get(), get(), get(), get(), get(),
@@ -139,6 +147,7 @@ val viewModelModule = module {
             get(named(PRICE_DOUBLE_PARSER_QUALIFIER))
         )
     }
+    viewModel { TradeOrderRateViewModel(get(), get()) }
 }
 
 val viewModelHelperModule = module {
@@ -157,6 +166,10 @@ val helperModule = module {
     factory<Formatter<Double>>(named(DOUBLE_CURRENCY_PRICE_FORMATTER_QUALIFIER)) { DoubleCurrencyPriceFormatter(get()) }
     factory<Formatter<Double>>(named(MILES_FORMATTER_QUALIFIER)) { MilesFormatter(get()) }
     factory<Formatter<Int>>(named(INT_CURRENCY_PRICE_FORMATTER_QUALIFIER)) { IntCurrencyPriceFormatter(get()) }
+    factory<Formatter<GoogleMapsDirectionQueryFormatter.Location>>(named(GOOGLE_MAPS_DIRECTIONS_QUERY_FORMATTER)) {
+        GoogleMapsDirectionQueryFormatter()
+    }
+    factory<Formatter<Int>>(named(TradeCountFormatter.TRADE_COUNT_FORMATTER_QUALIFIER)) { TradeCountFormatter(get()) }
     factory<StringParser<Double>>(named(PRICE_DOUBLE_PARSER_QUALIFIER)) { PriceDoubleParser(get()) }
     factory<StringParser<Int>>(named(DISTANCE_INT_PARSER_QUALIFIER)) { DistanceParser() }
     single<StringProvider> { ResourceStringProvider(androidApplication().resources) }

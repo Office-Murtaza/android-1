@@ -142,9 +142,9 @@
                     android:id="@+id/distance_min_limit_edit_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:digits="1234567890$"
+                    android:digits="1234567890"
                     android:inputType="number"
-                    tools:text="$100" />
+                    tools:text="10 miles" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -162,9 +162,9 @@
                     android:id="@+id/distance_max_limit_edit_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:digits="1234567890$"
+                    android:digits="1234567890"
                     android:inputType="number"
-                    tools:text="$100" />
+                    tools:text="1000 miles" />
 
             </com.google.android.material.textfield.TextInputLayout>
 

@@ -200,7 +200,7 @@
 
         <TextView
             android:id="@+id/payment_options_label"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginEnd="16dp"
@@ -209,7 +209,6 @@
             android:textColor="@color/colorText"
             android:textSize="14sp"
             app:layout_constraintBottom_toBottomOf="@id/payment_options"
-            app:layout_constraintEnd_toStartOf="@id/payment_options"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@id/payment_options" />
 
@@ -246,9 +245,9 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
+            android:drawablePadding="4dp"
             android:textColor="@color/black_text_color"
             android:textSize="12sp"
-            app:drawableStartCompat="@drawable/ic_account_circle"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/payment_details_divider"
             tools:text="I48784RPBVUZ7HHT" />
@@ -362,34 +361,33 @@
 
         <TextView
             android:id="@+id/my_score_label"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
             android:layout_marginEnd="16dp"
             android:gravity="start"
             android:text="My score"
             android:textColor="@color/colorText"
             android:textSize="14sp"
-            app:layout_constraintBottom_toBottomOf="@id/my_score_value"
-            app:layout_constraintEnd_toStartOf="@id/my_score_value"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@id/my_score_value" />
+            app:layout_constraintTop_toBottomOf="@id/terms_divider" />
 
         <TextView
             android:id="@+id/my_score_value"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
             android:layout_marginEnd="16dp"
             android:drawablePadding="4dp"
             android:textColor="@color/black_text_color"
             android:textSize="14sp"
             android:textStyle="bold"
             app:drawableStartCompat="@drawable/ic_grade"
+            app:layout_constraintBottom_toBottomOf="@id/my_score_label"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="1"
             app:layout_constraintStart_toEndOf="@id/my_score_label"
-            app:layout_constraintTop_toBottomOf="@id/terms_divider"
+            app:layout_constraintTop_toTopOf="@id/my_score_label"
             tools:text="4.25" />
 
         <View
@@ -406,34 +404,33 @@
 
         <TextView
             android:id="@+id/partner_score_label"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
             android:layout_marginEnd="16dp"
             android:gravity="start"
             android:text="Score from a partner"
             android:textColor="@color/colorText"
             android:textSize="14sp"
-            app:layout_constraintBottom_toBottomOf="@id/partner_score_value"
-            app:layout_constraintEnd_toStartOf="@id/partner_score_value"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@id/partner_score_value" />
+            app:layout_constraintTop_toBottomOf="@id/my_score_divider" />
 
         <TextView
             android:id="@+id/partner_score_value"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
             android:layout_marginEnd="16dp"
             android:drawablePadding="4dp"
             android:textColor="@color/black_text_color"
             android:textSize="14sp"
             android:textStyle="bold"
             app:drawableStartCompat="@drawable/ic_grade"
+            app:layout_constraintBottom_toBottomOf="@id/partner_score_label"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="1"
             app:layout_constraintStart_toEndOf="@id/my_score_label"
-            app:layout_constraintTop_toBottomOf="@id/my_score_divider"
+            app:layout_constraintTop_toTopOf="@id/partner_score_label"
             tools:text="4.25" />
 
         <Button

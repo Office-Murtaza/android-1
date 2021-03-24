@@ -10,6 +10,7 @@ import com.app.belcobtm.presentation.core.adapter.MultiTypeAdapter
 import com.app.belcobtm.presentation.core.adapter.delegate.AdapterDelegate
 import com.app.belcobtm.presentation.core.adapter.holder.MultiTypeViewHolder
 import com.app.belcobtm.presentation.core.extensions.resIcon
+import com.app.belcobtm.presentation.core.extensions.toHtmlSpan
 import com.app.belcobtm.presentation.features.wallet.trade.list.model.TradeItem
 
 class TradeItemDelegate(
@@ -52,8 +53,7 @@ class TradeItemViewHolder(
                 R.string.trade_list_item_price_range_format, minLimitFormatted, maxLimitFormatted
             )
             binding.priceLabel.text = priceFormatted
-            binding.makerTradeCountLabel.text = binding.root.resources
-                .getString(R.string.trade_list_item_total_trades_formatted, makerTotalTrades)
+            binding.makerTradeCountLabel.text = makerTotalTradesFormatted.toHtmlSpan()
             binding.makerRateLabel.text = makerTradingRate.toString()
             paymentAdapter.update(paymentMethods)
             if (distance == UNDEFINED_DISTANCE) {

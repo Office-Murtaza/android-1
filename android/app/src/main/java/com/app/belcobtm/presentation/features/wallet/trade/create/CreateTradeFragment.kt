@@ -116,7 +116,7 @@ class CreateTradeFragment : BaseFragment<FragmentCreateTradeBinding>() {
         viewModel.priceError.observe(viewLifecycleOwner) {
             coinDetailsView.setErrorText(it, true)
         }
-        viewModel.priceRangeError.observe(viewLifecycleOwner) {
+        viewModel.amountRangeError.observe(viewLifecycleOwner) {
             it?.let(amountRangeError::setText)
             amountRangeError.toggle(it != null)
         }
@@ -186,9 +186,7 @@ class CreateTradeFragment : BaseFragment<FragmentCreateTradeBinding>() {
         )
     }
 
-    private fun showSelectCoinDialog(
-        action: (CoinDataItem) -> Unit
-    ) {
+    private fun showSelectCoinDialog(action: (CoinDataItem) -> Unit) {
         val safeContext = context ?: return
         val coinsList = viewModel.getCoinsToSelect()
         val adapter = CoinDialogAdapter(safeContext, coinsList)

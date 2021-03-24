@@ -61,7 +61,6 @@ class TradeFilterBottomSheetDialogFragment : BottomSheetDialogFragment() {
         viewModel.distanceEnabled.observe(viewLifecycleOwner) {
             with(binding) {
                 distanceLabel.toggle(it)
-                distanceRangeError.toggle(it)
                 distanceRangeSlider.toggle(it)
                 distanceMinLimitInputLayout.toggle(it)
                 distanceMaxLimitInputLayout.toggle(it)
@@ -83,6 +82,10 @@ class TradeFilterBottomSheetDialogFragment : BottomSheetDialogFragment() {
             binding.distanceMinLimitEditText.setTextSilently(
                 minAmountTextWatcher, viewModel.formatDistance(distance), distance.toString().length
             )
+        }
+        viewModel.distanceRangeError.observe(viewLifecycleOwner) {
+            it?.let(binding.distanceRangeError::setText)
+            binding.distanceRangeError.toggle(it != null)
         }
         viewModel.distanceMaxLimit.observe(viewLifecycleOwner) { distance ->
             if (distance <= maxDistanceValue) {
@@ -129,7 +132,7 @@ class TradeFilterBottomSheetDialogFragment : BottomSheetDialogFragment() {
             viewModel.resetFilter()
         }
         binding.applyFilterButton.setOnClickListener {
-            viewModel.applyFilter()
+            viewModel.applyFilter(minDistanceValue, maxDistanceValue)
         }
         return binding.root
     }

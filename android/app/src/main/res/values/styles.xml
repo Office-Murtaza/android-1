@@ -381,7 +381,7 @@
         <item name="tickColorInactive">@android:color/transparent</item>
     </style>
 
-    <style name="CreateTradeDialogStyle" parent="Theme.MaterialComponents.Light.BottomSheetDialog">
+    <style name="DialogStyle" parent="Theme.MaterialComponents.Light.BottomSheetDialog">
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>

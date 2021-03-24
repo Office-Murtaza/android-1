@@ -5,16 +5,18 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.app.belcobtm.domain.Failure
+import com.app.belcobtm.domain.trade.ClearCacheUseCase
 import com.app.belcobtm.domain.trade.list.FetchTradesUseCase
-import com.app.belcobtm.domain.trade.list.StartObserveTradesUseCase
-import com.app.belcobtm.domain.trade.list.StopObserveTradesUseCase
+import com.app.belcobtm.domain.trade.list.StartObserveTradeDataUseCase
+import com.app.belcobtm.domain.trade.list.StopObserveTradeDataUseCase
 import com.app.belcobtm.presentation.core.mvvm.LoadingData
 import kotlinx.coroutines.launch
 
 class TradeContainerViewModel(
     private val fetchTradesUseCase: FetchTradesUseCase,
-    private val startObserveTradesUseCase: StartObserveTradesUseCase,
-    private val stopObserveTradesUseCase: StopObserveTradesUseCase
+    private val startObserveTradeDataUseCase: StartObserveTradeDataUseCase,
+    private val stopObserveTradeDataUseCase: StopObserveTradeDataUseCase,
+    private val clearCacheUseCase: ClearCacheUseCase
 ) : ViewModel() {
 
     private val _loadingData = MutableLiveData<LoadingData<Unit>>()
@@ -47,10 +49,11 @@ class TradeContainerViewModel(
     }
 
     fun subscribeOnUpdates() {
-        startObserveTradesUseCase(Unit)
+        startObserveTradeDataUseCase(Unit)
     }
 
     fun unsubscribeFromUpdates() {
-        stopObserveTradesUseCase(Unit)
+        stopObserveTradeDataUseCase(Unit)
+        clearCacheUseCase(Unit)
     }
 }

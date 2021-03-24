@@ -19,5 +19,5 @@ data class Trade(
     val makerLongitude: Double?,
     val makerTotalTrades: Int,
     val makerTradingRate: Double,
-    val distance: Double
+    var distance: Double
 )

@@ -1,8 +1,8 @@
-package com.app.belcobtm.data.websockets.wallet.model
+package com.app.belcobtm.data.websockets.base.model
 
 import androidx.annotation.StringDef
 
-data class WalletSocketRequest(
+data class StompSocketRequest(
     @Command val command: String,
     val headers: Map<String, String>,
     val body: String = ""

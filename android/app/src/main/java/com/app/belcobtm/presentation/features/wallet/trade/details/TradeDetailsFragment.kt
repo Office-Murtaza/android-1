@@ -1,5 +1,7 @@
 package com.app.belcobtm.presentation.features.wallet.trade.details
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -13,6 +15,7 @@ import com.app.belcobtm.databinding.FragmentTradeDetailsBinding
 import com.app.belcobtm.presentation.core.adapter.MultiTypeAdapter
 import com.app.belcobtm.presentation.core.extensions.resIcon
 import com.app.belcobtm.presentation.core.extensions.setDrawableStart
+import com.app.belcobtm.presentation.core.extensions.toHtmlSpan
 import com.app.belcobtm.presentation.core.extensions.toggle
 import com.app.belcobtm.presentation.core.ui.fragment.BaseFragment
 import com.app.belcobtm.presentation.features.wallet.trade.list.delegate.TradePaymentOptionDelegate
@@ -67,7 +70,7 @@ class TradeDetailsFragment : BaseFragment<FragmentTradeDetailsBinding>() {
             binding.makerPublicId.setCompoundDrawablesWithIntrinsicBounds(0, 0, it, 0)
         }
         viewModel.totalTrades.observe(viewLifecycleOwner) {
-            makerTradeCountLabel.text = resources.getString(R.string.trade_details_screen_total_trades_formatted, it)
+            makerTradeCountLabel.text = it.toHtmlSpan()
         }
         viewModel.distance.observe(viewLifecycleOwner) {
             binding.distanceLabel.text = it
@@ -93,6 +96,12 @@ class TradeDetailsFragment : BaseFragment<FragmentTradeDetailsBinding>() {
         viewModel.selectedCoin.observe(viewLifecycleOwner) {
             coinIcon.setImageResource(it.resIcon())
             coinLabel.text = it.name
+        }
+        binding.distanceLabel.setOnClickListener {
+            val gmmIntentUri = Uri.parse(viewModel.getQueryForMap())
+            val mapIntent = Intent(Intent.ACTION_VIEW, gmmIntentUri)
+            mapIntent.setPackage(requireContext().getString(R.string.google_maps_package))
+            startActivity(mapIntent)
         }
     }
 }

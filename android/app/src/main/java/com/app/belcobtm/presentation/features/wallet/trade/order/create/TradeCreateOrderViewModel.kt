@@ -1,4 +1,4 @@
-package com.app.belcobtm.presentation.features.wallet.trade.buysell
+package com.app.belcobtm.presentation.features.wallet.trade.order.create
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -15,10 +15,10 @@ import com.app.belcobtm.presentation.core.livedata.DoubleCombinedLiveData
 import com.app.belcobtm.presentation.core.mvvm.LoadingData
 import com.app.belcobtm.presentation.core.parser.StringParser
 import com.app.belcobtm.presentation.core.provider.string.StringProvider
-import com.app.belcobtm.presentation.features.wallet.trade.buysell.model.TradeCryptoAmount
-import com.app.belcobtm.presentation.features.wallet.trade.buysell.model.TradeFee
-import com.app.belcobtm.presentation.features.wallet.trade.buysell.model.TradeOrderItem
 import com.app.belcobtm.presentation.features.wallet.trade.list.model.TradeItem
+import com.app.belcobtm.presentation.features.wallet.trade.order.create.model.TradeCryptoAmount
+import com.app.belcobtm.presentation.features.wallet.trade.order.create.model.TradeFee
+import com.app.belcobtm.presentation.features.wallet.trade.order.create.model.TradeOrderItem
 
 class TradeCreateOrderViewModel(
     private val getTradeDetailsUseCase: GetTradeDetailsUseCase,
@@ -78,8 +78,8 @@ class TradeCreateOrderViewModel(
                         this.trade = trade
                         platformFeePercent = coinDetails.platformTradeFee
                         _coin.value = trade.coin
-                        _initialLoadingData.value = LoadingData.Success(Unit)
                         reservedBalanceUsd = coinDataItem.reservedBalanceUsd
+                        _initialLoadingData.value = LoadingData.Success(Unit)
                     }, onError = { _initialLoadingData.value = LoadingData.Error(it) })
                 }, onError = { _initialLoadingData.value = LoadingData.Error(it) })
         }, onError = { _initialLoadingData.value = LoadingData.Error(it) })
@@ -91,6 +91,10 @@ class TradeCreateOrderViewModel(
         val amount = fiatAmount.value ?: 0.0
         val takerActionType = if (tradeData.tradeType == TradeType.BUY) TradeType.SELL else TradeType.BUY
         val tradeAmountRange = tradeData.minLimit..tradeData.maxLimit
+        if (amount == 0.0) {
+            _fiatAmountError.value = stringProvider.getString(R.string.trade_buy_sell_dialog_amount_zero_error)
+            return
+        }
         if (takerActionType == TradeType.BUY && amount !in tradeAmountRange) {
             _fiatAmountError.value = stringProvider.getString(R.string.trade_buy_sell_dialog_amount_not_in_range_error)
             return

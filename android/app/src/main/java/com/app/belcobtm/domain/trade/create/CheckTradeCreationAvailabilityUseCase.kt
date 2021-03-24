@@ -18,7 +18,7 @@ class CheckTradeCreationAvailabilityUseCase(
         return if (cacheData?.isRight == true) {
             val userId = sharedPreferencesHelper.userId
             val trades = (cacheData as Either.Right<TradeData>).b
-            val canCreateTrade = trades.trades.none {
+            val canCreateTrade = trades.trades.values.none {
                 it.makerId == userId && it.type == params.tradeType && it.coinCode == params.coinCode
             }
             Either.Right(canCreateTrade)

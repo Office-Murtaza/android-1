@@ -5,5 +5,4 @@ interface TradesObserver {
     suspend fun connect()
 
     suspend fun disconnect()
-
 }

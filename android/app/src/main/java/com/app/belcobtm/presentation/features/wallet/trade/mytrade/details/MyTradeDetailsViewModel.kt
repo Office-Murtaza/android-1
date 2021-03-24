@@ -52,6 +52,7 @@ class MyTradeDetailsViewModel(
         getTradeDetailsUseCase.invoke(tradeId, onSuccess = {
             _selectedCoin.value = it.coin
             _price.value = priceFormatter.format(it.price)
+            _tradeType.value = it.tradeType
             _amountRange.value = stringProvider.getString(
                 R.string.trade_list_item_price_range_format,
                 priceFormatter.format(it.minLimit),

@@ -186,7 +186,7 @@
 
     <dialog
         android:id="@+id/trade_details_buy_sell"
-        android:name="com.app.belcobtm.presentation.features.wallet.trade.buysell.TradeCreateOrderBottomSheetFragment"
+        android:name="com.app.belcobtm.presentation.features.wallet.trade.order.create.TradeCreateOrderBottomSheetFragment"
         android:label="BuySellTradeFragment"
         tools:layout="@layout/fragment_trade_create_order">
 
@@ -252,6 +252,32 @@
             app:argType="integer"
             app:nullable="false" />
 
+        <action
+            android:id="@+id/to_rate_order_fragment"
+            app:destination="@id/rate_order_fragment"
+            app:enterAnim="@anim/slide_from_right"
+            app:exitAnim="@anim/slide_to_left"
+            app:popEnterAnim="@anim/slide_from_left"
+            app:popExitAnim="@anim/slide_to_right" />
+
     </fragment>
+
+    <dialog
+        android:id="@+id/rate_order_fragment"
+        android:name="com.app.belcobtm.presentation.features.wallet.trade.rate.TradeOrderRateBottomSheetFragment"
+        android:label="OrderDetailsFragment"
+        tools:layout="@layout/fragment_trade_rate">
+
+        <argument
+            android:name="parterPublicId"
+            app:argType="string"
+            app:nullable="false" />
+
+        <argument
+            android:name="orderId"
+            app:argType="integer"
+            app:nullable="false" />
+
+    </dialog>
 
 </navigation>

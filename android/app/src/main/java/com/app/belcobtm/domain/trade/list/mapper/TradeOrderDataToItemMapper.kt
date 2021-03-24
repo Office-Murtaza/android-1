@@ -16,21 +16,24 @@ import com.app.belcobtm.presentation.features.wallet.trade.list.model.TradeItem
 class TradeOrderDataToItemMapper(
     private val tradeItemMapper: TradeToTradeItemMapper,
     private val priceFormatter: Formatter<Double>,
+    private val tradeCountFormatter: Formatter<Int>,
     private val statusMapper: TraderStatusToIconMapper
 ) {
 
     fun map(order: Order, tradeData: TradeData, myId: Int): OrderItem =
         with(order) {
-            val trade = tradeItemMapper.map(tradeData.trades.first { it.id == tradeId })
+            val trade = tradeItemMapper.map(tradeData.trades.getValue(tradeId))
             OrderItem(
                 id, trade, myId, resolveTradeType(order, trade, myId), LocalCoinType.valueOf(coinCode),
                 OrderStatusItem(status, getStatusLabel(status), getStatusDrawable(status)),
                 timestamp, price, priceFormatter.format(price),
                 cryptoAmount, fiatAmount, priceFormatter.format(fiatAmount),
                 trade.paymentMethods, terms, makerId, makerStatusId, statusMapper.map(makerStatusId),
-                makerPublicId, makerLatitude, makerLongitude, makerTotalTrades, makerTradingRate,
+                makerPublicId, makerLatitude, makerLongitude, makerTotalTrades,
+                tradeCountFormatter.format(makerTotalTrades), makerTradingRate,
                 takerId, takerStatusId, statusMapper.map(takerStatusId), takerPublicId,
-                takerLatitude, takerLongitude, takerTotalTrades, takerTradingRate
+                takerLatitude, takerLongitude, takerTotalTrades,
+                tradeCountFormatter.format(takerTotalTrades), takerTradingRate
             )
         }
 

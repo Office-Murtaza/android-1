@@ -15,31 +15,19 @@ class DistanceCalculator(
         const val EARTH_RADIUS_KM = 6371;
     }
 
-    suspend fun updateDistanceToTrades(trades: List<Trade>): List<Trade> {
+    suspend fun updateDistanceToTrades(trades: MutableMap<Int, Trade>): MutableMap<Int, Trade> {
         val currentLocation = locationProvider.getCurrentLocation() ?: return trades
         val currentLat = currentLocation.latitude
         val currentLong = currentLocation.longitude
-        return trades.map {
-            val makerLat = it.makerLatitude
-            val makerLong = it.makerLongitude
+        return trades.mapValuesTo(HashMap()) {
+            val trade = it.value
+            val makerLat = trade.makerLatitude
+            val makerLong = trade.makerLongitude
             if (makerLat != null && makerLong != null) {
-                it.copy(distance = calculateDistance(currentLat, currentLong, makerLat, makerLong))
+                trade.copy(distance = calculateDistance(currentLat, currentLong, makerLat, makerLong))
             } else {
-                it
+                trade
             }
-        }
-    }
-
-    suspend fun updateDistanceToTrade(trade: Trade): Trade {
-        val currentLocation = locationProvider.getCurrentLocation() ?: return trade
-        val currentLat = currentLocation.latitude
-        val currentLong = currentLocation.longitude
-        val makerLat = trade.makerLatitude
-        val makerLong = trade.makerLongitude
-        return if (makerLat != null && makerLong != null) {
-            trade.copy(distance = calculateDistance(currentLat, currentLong, makerLat, makerLong))
-        } else {
-            trade
         }
     }
 

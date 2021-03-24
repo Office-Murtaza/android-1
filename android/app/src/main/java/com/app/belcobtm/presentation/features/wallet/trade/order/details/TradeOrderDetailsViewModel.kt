@@ -14,6 +14,8 @@ import com.app.belcobtm.domain.trade.order.ObserveOrderDetailsUseCase
 import com.app.belcobtm.domain.trade.order.UpdateOrderStatusUseCase
 import com.app.belcobtm.domain.wallet.LocalCoinType
 import com.app.belcobtm.presentation.core.extensions.toStringCoin
+import com.app.belcobtm.presentation.core.formatter.Formatter
+import com.app.belcobtm.presentation.core.formatter.GoogleMapsDirectionQueryFormatter
 import com.app.belcobtm.presentation.core.mvvm.LoadingData
 import com.app.belcobtm.presentation.core.provider.string.StringProvider
 import com.app.belcobtm.presentation.features.wallet.trade.list.model.OrderItem
@@ -28,6 +30,7 @@ class TradeOrderDetailsViewModel(
     private val observeOrderDetailsUseCase: ObserveOrderDetailsUseCase,
     private val updateOrderStatusUseCase: UpdateOrderStatusUseCase,
     private val stringProvider: StringProvider,
+    private val googleMapQueryFormatter: Formatter<GoogleMapsDirectionQueryFormatter.Location>
 ) : ViewModel() {
 
     private val _initialLoadingData = MutableLiveData<LoadingData<Unit>>()
@@ -51,8 +54,14 @@ class TradeOrderDetailsViewModel(
     private val _makerPublicId = MutableLiveData<String>()
     val makerPublicId: LiveData<String> = _makerPublicId
 
-    private val _traderStatus = MutableLiveData<@DrawableRes Int>()
-    val traderStatus: LiveData<Int> = _traderStatus
+    private val _makerTradeRate = MutableLiveData<Double>()
+    val makerTradeRate: LiveData<Double> = _makerTradeRate
+
+    private val _makerTotalTrades = MutableLiveData<String>()
+    val makerTotalTrades: LiveData<String> = _makerTotalTrades
+
+    private val _traderStatusIcon = MutableLiveData<@DrawableRes Int>()
+    val traderStatusIcon: LiveData<Int> = _traderStatusIcon
 
     private val _distance = MutableLiveData<String>()
     val distance: LiveData<String> = _distance
@@ -66,17 +75,14 @@ class TradeOrderDetailsViewModel(
     private val _orderStatus = MutableLiveData<OrderStatusItem>()
     val orderStatus: LiveData<OrderStatusItem> = _orderStatus
 
-    private val _myScore = MutableLiveData<Double>()
-    val myScore: LiveData<Double> = _myScore
+    private val _myScore = MutableLiveData<Double?>()
+    val myScore: LiveData<Double?> = _myScore
 
-    private val _partnerScore = MutableLiveData<Double>()
-    val partnerScore: LiveData<Double> = _partnerScore
+    private val _partnerScore = MutableLiveData<Double?>()
+    val partnerScore: LiveData<Double?> = _partnerScore
 
     private val _partnerPublicId = MutableLiveData<String>()
     val partnerPublicId: LiveData<String> = _partnerPublicId
-
-    private val _partnerTotalTrades = MutableLiveData<Int>()
-    val partnerTotalTrades: LiveData<Int> = _partnerTotalTrades
 
     private val _cryptoAmount = MutableLiveData<String>()
     val cryptoAmount: LiveData<String> = _cryptoAmount
@@ -86,6 +92,12 @@ class TradeOrderDetailsViewModel(
 
     private val _buttonsState = MutableLiveData<OrderActionButtonsState>()
     val buttonsState: LiveData<OrderActionButtonsState> = _buttonsState
+
+    private val _openRateScreen = MutableLiveData<Boolean>()
+    val openRateScreen: LiveData<Boolean> = _openRateScreen
+
+    private var partnerLat: Double? = null
+    private var partnerLong: Double? = null
 
     fun fetchInitialData(orderId: Int) {
         viewModelScope.launch {
@@ -109,10 +121,16 @@ class TradeOrderDetailsViewModel(
     }
 
     fun updateOrderSecondaryAction(orderId: Int) {
-        val newStatus = buttonsState.value?.primaryStatusId ?: return
+        val newStatus = buttonsState.value?.secondaryStatusId ?: return
         if (newStatus != OrderStatus.UNDEFINED) {
             updateStatus(orderId, newStatus, _secondaryActionUpdateLoadingData)
         }
+    }
+
+    fun getQueryForMap(): String? {
+        val toLat = partnerLat ?: return null
+        val toLong = partnerLong ?: return null
+        return googleMapQueryFormatter.format(GoogleMapsDirectionQueryFormatter.Location(toLat, toLong))
     }
 
     private fun updateStatus(orderId: Int, @OrderStatus status: Int, loadingData: MutableLiveData<LoadingData<Unit>>) {
@@ -137,16 +155,23 @@ class TradeOrderDetailsViewModel(
             order.coin.name
         )
         _fiatAmount.value = order.fiatAmountFormatted
+        _makerTradeRate.value = order.trade.makerTradingRate
+        _makerPublicId.value = order.trade.makerPublicId
+        _makerTotalTrades.value = order.trade.makerTotalTradesFormatted
         if (order.myTradeId == order.makerId) {
             _myScore.value = order.makerTradingRate
             _partnerScore.value = order.takerTradingRate
             _partnerPublicId.value = order.takerPublicId
-            _partnerTotalTrades.value = order.takerTotalTrades
+            _openRateScreen.value = order.makerTradingRate == null && order.orderStatus.statusId == OrderStatus.RELEASED
+            partnerLat = order.takerLatitude
+            partnerLong = order.takerLongitude
         } else {
             _myScore.value = order.takerTradingRate
             _partnerScore.value = order.makerTradingRate
             _partnerPublicId.value = order.makerPublicId
-            _partnerTotalTrades.value = order.makerTotalTrades
+            _openRateScreen.value = order.takerTradingRate == null && order.orderStatus.statusId == OrderStatus.RELEASED
+            partnerLat = order.makerLatitude
+            partnerLong = order.makerLongitude
         }
         val isBuyer = order.mappedTradeType == TradeType.BUY
         _buttonsState.value = if (isBuyer) setupBuyerButtons(order) else setupSellerButtons(order)
@@ -190,7 +215,7 @@ class TradeOrderDetailsViewModel(
                     secondaryButtonTitleRes = R.string.trade_order_details_screen_update_cancel_button_title,
                     showPrimaryButton = false,
                     showSecondaryButton = true,
-                    primaryStatusId = OrderStatus.CANCELLED
+                    secondaryStatusId = OrderStatus.CANCELLED
                 )
             OrderStatus.DOING, OrderStatus.PAID ->
                 OrderActionButtonsState(

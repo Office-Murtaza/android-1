@@ -9,6 +9,7 @@ class TradeToTradeItemMapper(
     private val paymentOptionMapper: TradePaymentOptionMapper,
     private val milesFormatter: Formatter<Double>,
     private val priceFormatter: Formatter<Double>,
+    private val tradeCountFormatter: Formatter<Int>,
     private val statusMapper: TraderStatusToIconMapper
 ) {
 
@@ -21,8 +22,9 @@ class TradeToTradeItemMapper(
                 maxLimit, priceFormatter.format(maxLimit),
                 ordersCount, paymentMethods.map(paymentOptionMapper::map),
                 terms, makerId, statusMapper.map(makerStatus),
-                makerPublicId, makerTotalTrades, makerTradingRate,
-                distance, milesFormatter.format(distance)
+                makerPublicId, makerTotalTrades, tradeCountFormatter.format(makerTotalTrades),
+                makerTradingRate, makerLatitude, makerLongitude, distance,
+                milesFormatter.format(distance)
             )
         }
 }

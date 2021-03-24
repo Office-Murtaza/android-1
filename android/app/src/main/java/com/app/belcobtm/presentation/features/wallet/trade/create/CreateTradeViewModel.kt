@@ -54,8 +54,8 @@ class CreateTradeViewModel(
     private val _snackbarMessage = MutableLiveData<String>()
     val snackbarMessage: LiveData<String> = _snackbarMessage
 
-    private val _priceRangeError = MutableLiveData<String?>()
-    val priceRangeError: LiveData<String?> = _priceRangeError
+    private val _amounRangeError = MutableLiveData<String?>()
+    val amountRangeError: LiveData<String?> = _amounRangeError
 
     private val _priceError = MutableLiveData<String?>()
     val priceError: LiveData<String?> = _priceError
@@ -152,16 +152,17 @@ class CreateTradeViewModel(
         val toAmount = _amountMaxLimit.value ?: 0
         if (
             fromAmount < minRangeAmount || fromAmount > maxRangeAmount
-            || toAmount < minRangeAmount || toAmount > maxRangeAmount
+            || toAmount < minRangeAmount || toAmount > maxRangeAmount ||
+            toAmount < fromAmount
         ) {
-            _priceRangeError.value = stringProvider.getString(
+            _amounRangeError.value = stringProvider.getString(
                 R.string.create_trade_amount_range_error,
                 amountFormatter.format(minRangeAmount),
                 amountFormatter.format(maxRangeAmount)
             )
             return
         } else {
-            _priceRangeError.value = null
+            _amounRangeError.value = null
         }
         val cryptoAmount = toAmount / price
         if (type == TradeType.SELL && cryptoAmount > selectedCoin.value?.reservedBalanceCoin ?: 0.0) {

@@ -8,6 +8,7 @@ class TradesDataToMyTradeMapper(private val tradeMapper: TradeToTradeItemMapper)
 
     fun map(tradeData: TradeData, userId: Int): List<ListItem> =
         tradeData.trades
+            .values
             .asSequence()
             .filter { it.makerId == userId }
             .map(tradeMapper::map)
