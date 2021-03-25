@@ -96,6 +96,12 @@ class TradeOrderDetailsViewModel(
     private val _openRateScreen = MutableLiveData<Boolean>()
     val openRateScreen: LiveData<Boolean> = _openRateScreen
 
+    private val _myId = MutableLiveData<Int>()
+    val myId: LiveData<Int> = _myId
+
+    private val _partnerId = MutableLiveData<Int>()
+    val partnerId: LiveData<Int> = _partnerId
+
     private var partnerLat: Double? = null
     private var partnerLong: Double? = null
 
@@ -162,6 +168,7 @@ class TradeOrderDetailsViewModel(
             _myScore.value = order.makerTradingRate
             _partnerScore.value = order.takerTradingRate
             _partnerPublicId.value = order.takerPublicId
+            _partnerId.value = order.takerId
             _openRateScreen.value = order.makerTradingRate == null && order.orderStatus.statusId == OrderStatus.RELEASED
             partnerLat = order.takerLatitude
             partnerLong = order.takerLongitude
@@ -169,11 +176,13 @@ class TradeOrderDetailsViewModel(
             _myScore.value = order.takerTradingRate
             _partnerScore.value = order.makerTradingRate
             _partnerPublicId.value = order.makerPublicId
+            _partnerId.value = order.makerId
             _openRateScreen.value = order.takerTradingRate == null && order.orderStatus.statusId == OrderStatus.RELEASED
             partnerLat = order.makerLatitude
             partnerLong = order.makerLongitude
         }
         val isBuyer = order.mappedTradeType == TradeType.BUY
+        _myId.value = order.myTradeId
         _buttonsState.value = if (isBuyer) setupBuyerButtons(order) else setupSellerButtons(order)
         _initialLoadingData.value = LoadingData.Success(Unit)
     }

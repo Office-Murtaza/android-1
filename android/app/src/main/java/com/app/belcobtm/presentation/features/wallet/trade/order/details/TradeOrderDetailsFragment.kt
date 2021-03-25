@@ -3,9 +3,7 @@ package com.app.belcobtm.presentation.features.wallet.trade.order.details
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.observe
 import androidx.navigation.fragment.navArgs
@@ -147,5 +145,23 @@ class TradeOrderDetailsFragment : BaseFragment<FragmentTradeOrderDetailsBinding>
             mapIntent.setPackage(requireContext().getString(R.string.google_maps_package))
             startActivity(mapIntent)
         }
+    }
+
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.order_details_menu, menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean = when (item.itemId) {
+        R.id.chat_menu_item -> {
+            navigate(
+                TradeOrderDetailsFragmentDirections.toChatOrderFragment(
+                    viewModel.partnerPublicId.value.orEmpty(), args.orderId,
+                    viewModel.myId.value ?: 0, viewModel.partnerId.value ?: 0
+                )
+            )
+            true
+        }
+        else -> super.onOptionsItemSelected(item)
     }
 }

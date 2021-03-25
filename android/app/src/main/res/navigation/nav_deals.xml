@@ -260,16 +260,24 @@
             app:popEnterAnim="@anim/slide_from_left"
             app:popExitAnim="@anim/slide_to_right" />
 
+        <action
+            android:id="@+id/to_chat_order_fragment"
+            app:destination="@id/order_chat_fragment"
+            app:enterAnim="@anim/slide_from_right"
+            app:exitAnim="@anim/slide_to_left"
+            app:popEnterAnim="@anim/slide_from_left"
+            app:popExitAnim="@anim/slide_to_right" />
+
     </fragment>
 
     <dialog
         android:id="@+id/rate_order_fragment"
-        android:name="com.app.belcobtm.presentation.features.wallet.trade.rate.TradeOrderRateBottomSheetFragment"
+        android:name="com.app.belcobtm.presentation.features.wallet.trade.order.rate.TradeOrderRateBottomSheetFragment"
         android:label="OrderDetailsFragment"
         tools:layout="@layout/fragment_trade_rate">
 
         <argument
-            android:name="parterPublicId"
+            android:name="partnerPublicId"
             app:argType="string"
             app:nullable="false" />
 
@@ -279,5 +287,34 @@
             app:nullable="false" />
 
     </dialog>
+
+    <fragment
+        android:id="@+id/order_chat_fragment"
+        android:name="com.app.belcobtm.presentation.features.wallet.trade.order.chat.OrderChatFragment"
+        android:label="OrderChatFragment"
+        tools:layout="@layout/fragment_order_chat">
+
+
+        <argument
+            android:name="partnerPublicId"
+            app:argType="string"
+            app:nullable="false" />
+
+        <argument
+            android:name="orderId"
+            app:argType="integer"
+            app:nullable="false" />
+
+        <argument
+            android:name="myId"
+            app:argType="integer"
+            app:nullable="false" />
+
+        <argument
+            android:name="partnerId"
+            app:argType="integer"
+            app:nullable="false" />
+    </fragment>
+
 
 </navigation>

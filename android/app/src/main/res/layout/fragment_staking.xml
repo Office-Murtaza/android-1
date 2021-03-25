@@ -14,10 +14,9 @@
         android:layout_height="wrap_content">
 
         <com.app.belcobtm.presentation.core.views.CoinInputLayout
-            android:id="@+id/coinInputLayout"
+            android:id="@+id/coin_input_layout"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:background="@color/colorLightGray"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -36,9 +35,9 @@
             android:paddingBottom="@dimen/margin_half"
             android:textAppearance="@style/Text.Regular2"
             android:textColor="@android:color/black"
-            app:layout_constraintBottom_toBottomOf="@id/coinInputLayout"
+            app:layout_constraintBottom_toBottomOf="@id/coin_input_layout"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/coinInputLayout"
+            app:layout_constraintTop_toBottomOf="@id/coin_input_layout"
             tools:text="1 CATM = 0.1 USD" />
 
         <View

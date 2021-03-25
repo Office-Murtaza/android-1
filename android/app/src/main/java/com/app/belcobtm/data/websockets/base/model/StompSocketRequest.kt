@@ -8,7 +8,7 @@ data class StompSocketRequest(
     val body: String = ""
 ) {
     companion object {
-        @StringDef()
+        @StringDef(CONNECT, SUBSCRIBE, UNSUBSCRIBE)
         @Retention(AnnotationRetention.SOURCE)
         annotation class Command
 

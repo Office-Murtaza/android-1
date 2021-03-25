@@ -8,6 +8,17 @@ import com.app.belcobtm.data.websockets.base.OkHttpSocketClient
 import com.app.belcobtm.data.websockets.base.SocketClient
 import com.app.belcobtm.data.websockets.base.model.StompSocketRequest
 import com.app.belcobtm.data.websockets.base.model.StompSocketResponse
+import com.app.belcobtm.data.websockets.base.serializer.StompRequestSerializer
+import com.app.belcobtm.data.websockets.base.serializer.StompRequestSerializer.Companion.STOMP_REQUEST_SERIALIZER_QUALIFIER
+import com.app.belcobtm.data.websockets.base.serializer.StompResponseDeserializer
+import com.app.belcobtm.data.websockets.base.serializer.StompResponseDeserializer.Companion.STOMP_RESPONSE_DESERIALIZER_QUALIFIER
+import com.app.belcobtm.data.websockets.chat.ChatObserver
+import com.app.belcobtm.data.websockets.chat.WebSocketChatObserver
+import com.app.belcobtm.data.websockets.chat.model.ChatMessageResponse
+import com.app.belcobtm.data.websockets.chat.serializer.ChatRequestSerializer
+import com.app.belcobtm.data.websockets.chat.serializer.ChatRequestSerializer.Companion.CHAT_REQUEST_SERIALIZER_QUALIFIER
+import com.app.belcobtm.data.websockets.chat.serializer.ChatResponseDeserializer
+import com.app.belcobtm.data.websockets.chat.serializer.ChatResponseDeserializer.Companion.CHAT_RESPONSE_DESERIALIZER_QUALIFIER
 import com.app.belcobtm.data.websockets.order.OrdersObserver
 import com.app.belcobtm.data.websockets.order.WebSocketOrdersObserver
 import com.app.belcobtm.data.websockets.serializer.RequestSerializer
@@ -18,8 +29,7 @@ import com.app.belcobtm.data.websockets.wallet.WalletConnectionHandler
 import com.app.belcobtm.data.websockets.wallet.WalletObserver
 import com.app.belcobtm.data.websockets.wallet.WebSocketWalletObserver
 import com.app.belcobtm.data.websockets.wallet.lifecycle.WalletLifecycleObserver
-import com.app.belcobtm.data.websockets.wallet.serializer.WalletRequestSerializer
-import com.app.belcobtm.data.websockets.wallet.serializer.WalletResponseDeserializer
+import com.app.belcobtm.presentation.features.wallet.trade.order.chat.NewMessageItem
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import org.koin.core.qualifier.named
@@ -36,12 +46,35 @@ val webSocketModule = module {
     }
     single<WalletObserver> {
         WebSocketWalletObserver(
-            get(), get(), get(), get(), get(), get(),
-            get(), get(authenticatorQualified)
+            get(), get(), get(),
+            get(named(STOMP_REQUEST_SERIALIZER_QUALIFIER)),
+            get(named(STOMP_RESPONSE_DESERIALIZER_QUALIFIER)),
+            get(), get(), get(authenticatorQualified)
         )
     } bind WalletConnectionHandler::class
-    single<TradesObserver> { WebSocketTradesObserver(get(), get(), get(), get(), get(), get(), get()) }
-    single<OrdersObserver> { WebSocketOrdersObserver(get(), get(), get(), get(), get(), get(), get()) }
+    single<TradesObserver> {
+        WebSocketTradesObserver(
+            get(), get(), get(), get(), get(),
+            get(named(STOMP_REQUEST_SERIALIZER_QUALIFIER)),
+            get(named(STOMP_RESPONSE_DESERIALIZER_QUALIFIER)),
+        )
+    }
+    single<OrdersObserver> {
+        WebSocketOrdersObserver(
+            get(), get(), get(), get(), get(),
+            get(named(STOMP_REQUEST_SERIALIZER_QUALIFIER)),
+            get(named(STOMP_RESPONSE_DESERIALIZER_QUALIFIER))
+        )
+    }
+    single<ChatObserver> {
+        WebSocketChatObserver(
+            get(), get(), get(),
+            get(named(STOMP_REQUEST_SERIALIZER_QUALIFIER)),
+            get(named(STOMP_RESPONSE_DESERIALIZER_QUALIFIER)),
+            get(named(CHAT_REQUEST_SERIALIZER_QUALIFIER)),
+            get(named(CHAT_RESPONSE_DESERIALIZER_QUALIFIER))
+        )
+    }
     factory<SocketClient> { OkHttpSocketClient(get(WEB_SOCKET_OK_HTTP_CLIENT_QUALIFIER)) }
     single<OkHttpClient>(WEB_SOCKET_OK_HTTP_CLIENT_QUALIFIER) {
         OkHttpClient().newBuilder()
@@ -53,6 +86,16 @@ val webSocketModule = module {
             .addInterceptor(get<HttpLoggingInterceptor>())
             .build()
     }
-    single<RequestSerializer<StompSocketRequest>> { WalletRequestSerializer() }
-    single<ResponseDeserializer<StompSocketResponse>> { WalletResponseDeserializer() }
+    factory<RequestSerializer<StompSocketRequest>>(named(STOMP_REQUEST_SERIALIZER_QUALIFIER)) {
+        StompRequestSerializer()
+    }
+    factory<ResponseDeserializer<StompSocketResponse>>(named(STOMP_RESPONSE_DESERIALIZER_QUALIFIER)) {
+        StompResponseDeserializer()
+    }
+    factory<RequestSerializer<NewMessageItem>>(named(CHAT_REQUEST_SERIALIZER_QUALIFIER)) {
+        ChatRequestSerializer(get())
+    }
+    factory<ResponseDeserializer<ChatMessageResponse?>>(named(CHAT_RESPONSE_DESERIALIZER_QUALIFIER)) {
+        ChatResponseDeserializer(get())
+    }
 }

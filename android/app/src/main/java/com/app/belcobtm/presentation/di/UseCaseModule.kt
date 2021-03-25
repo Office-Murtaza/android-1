@@ -25,10 +25,7 @@ import com.app.belcobtm.domain.trade.list.filter.mapper.CoinCodeMapper
 import com.app.belcobtm.domain.trade.list.filter.mapper.TradeFilterItemMapper
 import com.app.belcobtm.domain.trade.list.filter.mapper.TradeFilterMapper
 import com.app.belcobtm.domain.trade.list.mapper.*
-import com.app.belcobtm.domain.trade.order.CreateOrderUseCase
-import com.app.belcobtm.domain.trade.order.ObserveOrderDetailsUseCase
-import com.app.belcobtm.domain.trade.order.RateOrderUseCase
-import com.app.belcobtm.domain.trade.order.UpdateOrderStatusUseCase
+import com.app.belcobtm.domain.trade.order.*
 import com.app.belcobtm.domain.transaction.interactor.*
 import com.app.belcobtm.domain.transaction.interactor.trade.TradeRecallTransactionCompleteUseCase
 import com.app.belcobtm.domain.wallet.interactor.*
@@ -114,6 +111,10 @@ val useCaseModule = module {
     single { UpdateOrderStatusUseCase(get()) }
     single { ClearCacheUseCase(get()) }
     single { RateOrderUseCase(get()) }
+    single { SendChatMessageUseCase(get()) }
+    single { ObserveChatMessagesUseCase(get()) }
+    single { ConnectToChatUseCase(get()) }
+    single { DisconnectFromChatUseCase(get()) }
     factory { TradePaymentOptionMapper() }
     factory { CoinCodeMapper() }
     factory { TradesDataToTradeListMapper(get()) }
