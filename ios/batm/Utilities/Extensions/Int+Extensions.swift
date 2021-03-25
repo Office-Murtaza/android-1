@@ -1,5 +1,5 @@
 //
-//  String+Extensions.swift
+//  Int+Extensions.swift
 //  batm
 //
 //  Created by Dmitriy Kolesnyk on 08.03.2021.
