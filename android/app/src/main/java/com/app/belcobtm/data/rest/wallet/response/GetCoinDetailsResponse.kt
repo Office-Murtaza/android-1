@@ -11,6 +11,7 @@ data class GetCoinDetailsResponse(
     val gasLimit: Double?,
     val profitExchange: Double,
     val platformSwapFee: Double,
+    val platformTradeFee: Double,
     val walletAddress: String?,
     val contractAddress: String?,
     val convertedTxFee: Double?,
@@ -27,5 +28,6 @@ fun GetCoinDetailsResponse.mapToDataItem(): CoinDetailsDataItem = CoinDetailsDat
     gasLimit = gasLimit ?: 0.0,
     walletAddress = walletAddress ?: "",
     contractAddress = contractAddress ?: "",
-    convertedTxFee = convertedTxFee ?: 0.0
+    convertedTxFee = convertedTxFee ?: 0.0,
+    platformTradeFee = platformTradeFee
 )

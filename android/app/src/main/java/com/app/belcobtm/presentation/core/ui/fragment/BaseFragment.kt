@@ -13,8 +13,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 import androidx.navigation.NavController
 import androidx.navigation.NavDirections
-import androidx.navigation.Navigation
 import androidx.navigation.Navigator
+import androidx.navigation.fragment.findNavController
 import androidx.viewbinding.ViewBinding
 import com.app.belcobtm.R
 import com.app.belcobtm.databinding.FragmentBaseBinding
@@ -67,7 +67,7 @@ abstract class BaseFragment<V : ViewBinding> : Fragment(),
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setHasOptionsMenu(isToolbarEnabled)
+        setHasOptionsMenu(true)
     }
 
     override fun onCreateView(
@@ -96,11 +96,11 @@ abstract class BaseFragment<V : ViewBinding> : Fragment(),
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        this.navController = Navigation.findNavController(view)
+        this.navController = findNavController()
         updateActionBar()
         baseBinding.interceptableFrameLayout.interceptListner = this
-        baseBinding.errorRetryButtonView.setOnClickListener(retryListener)
-        with (binding) {
+        baseBinding.errorView.errorRetryButtonView.setOnClickListener(retryListener)
+        with(binding) {
             initViews()
             initListeners()
             initObservers()
@@ -248,23 +248,23 @@ abstract class BaseFragment<V : ViewBinding> : Fragment(),
     }
 
     protected open fun showErrorNoInternetConnection() {
-        baseBinding.errorImageView.setImageResource(R.drawable.ic_screen_state_no_internet)
-        baseBinding.errorTitleView.setText(R.string.base_screen_no_internet_title)
-        baseBinding.errorDescriptionView.setText(R.string.base_screen_no_internet_description)
+        baseBinding.errorView.errorImageView.setImageResource(R.drawable.ic_screen_state_no_internet)
+        baseBinding.errorView.errorTitleView.setText(R.string.base_screen_no_internet_title)
+        baseBinding.errorView.errorDescriptionView.setText(R.string.base_screen_no_internet_description)
         updateContentContainer(isErrorVisible = true)
     }
 
     protected open fun showErrorServerError() {
-        baseBinding.errorImageView.setImageResource(R.drawable.ic_screen_state_server_error)
-        baseBinding.errorTitleView.setText(R.string.base_screen_server_error_title)
-        baseBinding.errorDescriptionView.setText(R.string.base_screen_server_error_description)
+        baseBinding.errorView.errorImageView.setImageResource(R.drawable.ic_screen_state_server_error)
+        baseBinding.errorView.errorTitleView.setText(R.string.base_screen_server_error_title)
+        baseBinding.errorView.errorDescriptionView.setText(R.string.base_screen_server_error_description)
         updateContentContainer(isErrorVisible = true)
     }
 
     protected open fun showErrorSomethingWrong() {
-        baseBinding.errorImageView.setImageResource(R.drawable.ic_screen_state_something_wrong)
-        baseBinding.errorTitleView.setText(R.string.base_screen_something_wrong_title)
-        baseBinding.errorDescriptionView.setText(R.string.base_screen_something_wrong_description)
+        baseBinding.errorView.errorImageView.setImageResource(R.drawable.ic_screen_state_something_wrong)
+        baseBinding.errorView.errorTitleView.setText(R.string.base_screen_something_wrong_title)
+        baseBinding.errorView.errorDescriptionView.setText(R.string.base_screen_something_wrong_description)
         updateContentContainer(isErrorVisible = true)
     }
 
@@ -286,11 +286,11 @@ abstract class BaseFragment<V : ViewBinding> : Fragment(),
     ) {
         baseBinding.contentContainerView.toggle(isContentVisible)
         baseBinding.progressView.toggle(isProgressVisible)
-        baseBinding.errorContainerView.toggle(isErrorVisible)
+        baseBinding.errorView.errorContainerView.toggle(isErrorVisible)
     }
 
     protected fun <T> LiveData<LoadingData<T>>.listen(
-        success: (data: T) -> Unit,
+        success: (data: T) -> Unit = {},
         error: (error: Failure?) -> Unit = baseErrorHandler,
         onUpdate: ((LoadingData<T>) -> Unit)? = null
     ) {
@@ -301,7 +301,10 @@ abstract class BaseFragment<V : ViewBinding> : Fragment(),
                     success.invoke(loadingData.data)
                     showContent()
                 }
-                is LoadingData.Error<T> -> error.invoke(loadingData.errorType)
+                is LoadingData.Error<T> -> {
+                    hideKeyboard()
+                    error.invoke(loadingData.errorType)
+                }
             }
             onUpdate?.invoke(loadingData)
         })
@@ -319,7 +322,7 @@ abstract class BaseFragment<V : ViewBinding> : Fragment(),
         }
     }
 
-    private fun updateActionBar() {
+    protected open fun updateActionBar() {
         val activity = requireActivity() as AppCompatActivity
         activity.supportActionBar?.let { actionBar ->
             if (isToolbarEnabled) {

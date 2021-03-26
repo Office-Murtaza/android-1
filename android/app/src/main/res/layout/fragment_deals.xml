@@ -50,17 +50,17 @@
         android:layout_height="@dimen/divider_size"
         android:background="@color/thin_divider" />
 
-    <!--    <com.app.belcobtm.presentation.core.views.SettingsItemView-->
-    <!--        android:id="@+id/tradeItem"-->
-    <!--        android:layout_width="match_parent"-->
-    <!--        android:layout_height="wrap_content"-->
-    <!--        app:src="@drawable/ic_trade"-->
-    <!--        app:text="@string/deals_trade"-->
-    <!--        app:withChevron="true" />-->
+    <com.app.belcobtm.presentation.core.views.SettingsItemView
+        android:id="@+id/trade_item"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:src="@drawable/ic_trade"
+        app:text="@string/deals_trade"
+        app:withChevron="true" />
 
-    <!--    <View-->
-    <!--        android:layout_width="match_parent"-->
-    <!--        android:layout_height="@dimen/divider_size"-->
-    <!--        android:background="@color/thin_divider" />-->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/divider_size"
+        android:background="@color/thin_divider" />
 
 </androidx.appcompat.widget.LinearLayoutCompat>

@@ -4,12 +4,15 @@ import com.app.belcobtm.data.disk.database.AccountDao
 import com.app.belcobtm.data.disk.shared.preferences.SharedPreferencesHelper
 import com.app.belcobtm.data.rest.wallet.WalletApiService
 import com.app.belcobtm.data.rest.wallet.request.PriceChartPeriod
+import com.app.belcobtm.data.websockets.base.model.WalletBalance
 import com.app.belcobtm.data.websockets.wallet.WalletObserver
-import com.app.belcobtm.data.websockets.wallet.model.WalletBalance
 import com.app.belcobtm.domain.Either
 import com.app.belcobtm.domain.Failure
 import com.app.belcobtm.domain.wallet.WalletRepository
-import com.app.belcobtm.domain.wallet.item.*
+import com.app.belcobtm.domain.wallet.item.BalanceDataItem
+import com.app.belcobtm.domain.wallet.item.ChartDataItem
+import com.app.belcobtm.domain.wallet.item.CoinDataItem
+import com.app.belcobtm.domain.wallet.item.CoinDetailsDataItem
 import kotlinx.coroutines.flow.filterIsInstance
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.receiveAsFlow

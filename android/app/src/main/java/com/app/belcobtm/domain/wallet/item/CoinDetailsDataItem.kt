@@ -9,6 +9,7 @@ class CoinDetailsDataItem(
     val gasLimit: Double,
     val profitExchange: Double,
     val platformSwapFee: Double,
+    val platformTradeFee: Double,
     val walletAddress: String, //server address
     val contractAddress: String,
     val convertedTxFee: Double

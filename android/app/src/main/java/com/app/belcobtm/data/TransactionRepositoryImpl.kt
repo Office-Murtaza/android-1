@@ -9,7 +9,6 @@ import com.app.belcobtm.domain.Failure
 import com.app.belcobtm.domain.tools.ToolsRepository
 import com.app.belcobtm.domain.transaction.TransactionRepository
 import com.app.belcobtm.domain.transaction.item.*
-import com.app.belcobtm.domain.transaction.type.TradeSortType
 import com.app.belcobtm.domain.wallet.LocalCoinType
 import com.app.belcobtm.domain.wallet.item.isEthRelatedCoinCode
 
@@ -178,97 +177,6 @@ class TransactionRepositoryImpl(
         }
     }
 
-    override suspend fun tradeGetBuyList(
-        latitude: Double,
-        longitude: Double,
-        coinFrom: String,
-        sortType: TradeSortType,
-        paginationStep: Int
-    ): Either<Failure, TradeInfoDataItem> = when {
-        (latitude > 0 || longitude > 0) && prefHelper.tradeLocationExpirationTime < System.currentTimeMillis() -> {
-            val locationRequest = apiService.sendTradeUserLocation(latitude, longitude)
-            prefHelper.tradeLocationExpirationTime =
-                if (locationRequest.isRight) System.currentTimeMillis() else -1
-            apiService.getTradeBuyList(coinFrom, sortType, paginationStep)
-        }
-        else -> apiService.getTradeBuyList(coinFrom, sortType, paginationStep)
-    }
-
-    override suspend fun getTradeSellList(
-        latitude: Double,
-        longitude: Double,
-        coinFrom: String,
-        sortType: TradeSortType,
-        paginationStep: Int
-    ): Either<Failure, TradeInfoDataItem> = when {
-        (latitude > 0 || longitude > 0) && prefHelper.tradeLocationExpirationTime < System.currentTimeMillis() -> {
-            val locationRequest = apiService.sendTradeUserLocation(latitude, longitude)
-            prefHelper.tradeLocationExpirationTime =
-                if (locationRequest.isRight) System.currentTimeMillis() else -1
-            apiService.getTradeSellList(coinFrom, sortType, paginationStep)
-        }
-        else -> apiService.getTradeSellList(coinFrom, sortType, paginationStep)
-    }
-
-    override suspend fun getTradeMyList(
-        latitude: Double,
-        longitude: Double,
-        coinFrom: String,
-        sortType: TradeSortType,
-        paginationStep: Int
-    ): Either<Failure, TradeInfoDataItem> = when {
-        (latitude > 0 || longitude > 0) && prefHelper.tradeLocationExpirationTime < System.currentTimeMillis() -> {
-            val locationRequest = apiService.sendTradeUserLocation(latitude, longitude)
-            prefHelper.tradeLocationExpirationTime =
-                if (locationRequest.isRight) System.currentTimeMillis() else -1
-            apiService.getTradeMyList(coinFrom, sortType, paginationStep)
-        }
-        else -> apiService.getTradeMyList(coinFrom, sortType, paginationStep)
-    }
-
-    override suspend fun getTradeOpenList(
-        latitude: Double,
-        longitude: Double,
-        coinFrom: String,
-        sortType: TradeSortType,
-        paginationStep: Int
-    ): Either<Failure, TradeInfoDataItem> = when {
-        (latitude > 0 || longitude > 0) && prefHelper.tradeLocationExpirationTime < System.currentTimeMillis() -> {
-            val locationRequest = apiService.sendTradeUserLocation(latitude, longitude)
-            prefHelper.tradeLocationExpirationTime =
-                if (locationRequest.isRight) System.currentTimeMillis() else -1
-            apiService.getTradeOpenList(coinFrom, sortType, paginationStep)
-        }
-        else -> apiService.getTradeOpenList(coinFrom, sortType, paginationStep)
-    }
-
-    override suspend fun tradeBuySell(
-        id: Int,
-        price: Int,
-        fromUsdAmount: Int,
-        toCoin: String,
-        toCoinAmount: Double,
-        detailsText: String
-    ): Either<Failure, Unit> = apiService.tradeBuySell(id, price, fromUsdAmount, toCoin, toCoinAmount, detailsText)
-
-    override suspend fun tradeBuyCreate(
-        coinCode: String,
-        paymentMethod: String,
-        margin: Double,
-        minLimit: Long,
-        maxLimit: Long,
-        terms: String
-    ): Either<Failure, Unit> = apiService.tradeBuyCreate(coinCode, paymentMethod, margin, minLimit, maxLimit, terms)
-
-    override suspend fun tradeSellCreate(
-        coinCode: String,
-        paymentMethod: String,
-        margin: Double,
-        minLimit: Long,
-        maxLimit: Long,
-        terms: String
-    ): Either<Failure, Unit> = apiService.tradeSellCreate(coinCode, paymentMethod, margin, minLimit, maxLimit, terms)
-
     override suspend fun tradeRecallTransactionComplete(
         coinCode: String,
         cryptoAmount: Double
@@ -300,6 +208,7 @@ class TransactionRepositoryImpl(
         val fee = prefHelper.coinsDetails[coinCode]?.txFee ?: 0.0
         return apiService.submitReserve(coinCode, fromAddress, toAddress, cryptoAmount, fee, hash)
     }
+
     override suspend fun stakeDetails(
         coinCode: String
     ): Either<Failure, StakeDetailsDataItem> = apiService.stakeDetails(coinCode)

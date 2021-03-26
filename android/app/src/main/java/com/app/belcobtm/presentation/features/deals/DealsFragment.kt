@@ -20,5 +20,6 @@ class DealsFragment : BaseFragment<FragmentDealsBinding>() {
         swapItem.setOnClickListener { navigate(DealsFragmentDirections.toSwapFragment()) }
         stakingItem.setOnClickListener { navigate(DealsFragmentDirections.toStakingFragment()) }
         transferItem.setOnClickListener { navigate(DealsFragmentDirections.toContactListFragment()) }
+        tradeItem.setOnClickListener { navigate(DealsFragmentDirections.toTradeContainerFragment()) }
     }
 }
