@@ -6,7 +6,7 @@ class DecimalDoubleTransform: TransformType {
 
   open func transformFromJSON(_ value: Any?) -> Decimal? {
     guard let double = value as? Double else { return nil }
-    return Decimal(double)
+    return NSDecimalNumber(value: double).decimalValue
   }
 
   open func transformToJSON(_ value: Decimal?) -> Double? {
@@ -34,3 +34,20 @@ class DecimalIntTransform: TransformType {
   }
 }
 
+extension Optional where Wrapped == Decimal {
+    func toString() -> String {
+        return "\(self ?? 0)"
+    }
+}
+
+extension Optional where Wrapped == Int {
+    func toString() -> String {
+        return "\(self ?? 0)"
+    }
+}
+
+extension Optional where Wrapped == Double {
+    func toString() -> String {
+        return "\(self ?? 0)"
+    }
+}

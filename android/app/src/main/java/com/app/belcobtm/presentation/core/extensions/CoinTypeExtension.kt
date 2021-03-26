@@ -17,7 +17,7 @@ object CoinTypeExtension {
     }
 }
 
-val USDT_UNIT = 1_000_000L
+val USDC_UNIT = 1_000_000L
 
 fun CoinType.verboseValue(): String = when (this) {
     CoinType.BITCOIN -> "Bitcoin"

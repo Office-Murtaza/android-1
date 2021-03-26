@@ -28,6 +28,7 @@ public class CoinBalanceDTO {
     private String reservedFiatBalanceStr;
     private BigDecimal price;
     private String priceStr;
+    private CoinDetailsDTO details;
 
     public void setId(Long id) {
         this.id = id;
@@ -68,5 +69,9 @@ public class CoinBalanceDTO {
     public void setPrice(BigDecimal price) {
         this.price = price;
         this.priceStr = Util.convert(price);
+    }
+
+    public void setDetails(CoinDetailsDTO details) {
+        this.details = details;
     }
 }

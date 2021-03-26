@@ -6,12 +6,12 @@ data class RecoverWalletRequest(
     val deviceModel: String,
     val deviceOS: String,
     val appVersion: String,
+    val latitude: Double?,
+    val longitude: Double?,
+    val timezone: String,
     val notificationsToken: String?,
     val coins: List<RecoverWalletCoinRequest>,
     val platform: Int = 2, //android
-    val latitude: Double = 48.4577020796,
-    val longitude: Double = 35.0733159377,
-    val timezone: String = "GMT+3"
 )
 
 data class RecoverWalletCoinRequest(

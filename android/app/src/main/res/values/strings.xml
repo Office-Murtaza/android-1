@@ -212,7 +212,9 @@
     <string name="transaction_type_sell">Sell</string>
     <string name="transaction_type_move">Move</string>
     <string name="transaction_type_send_exchange">Send swap</string>
+    <string name="transaction_type_send_transfer">Send transfer</string>
     <string name="transaction_type_receive_exchange">Receive swap</string>
+    <string name="transaction_type_receive_transfer">Receive transfer</string>
     <string name="transaction_type_reserve">Reserve</string>
     <string name="transaction_type_recall">Recall</string>
     <string name="transaction_type_self">Self</string>
@@ -223,6 +225,21 @@
     <!-- Transaction Details -->
     <string name="transaction_details_screen_title">Transaction details</string>
     <string name="transaction_details">Transaction details %1$s</string>
+    <string name="transaction_details_amount">Amount</string>
+    <string name="transaction_details_fee">Fee</string>
+    <string name="transaction_details_confirmations">Confirmations</string>
+    <string name="transaction_details_from_address">From address</string>
+    <string name="transaction_details_to_address">To address</string>
+    <string name="transaction_details_date">Date</string>
+    <string name="transaction_details_from_phone">From phone</string>
+    <string name="transaction_details_to_phone">To phone</string>
+    <string name="transaction_details_swap_amount">Swap amount</string>
+    <string name="transaction_details_sell_amount">Sell amount</string>
+    <string name="transaction_details_id">ID</string>
+    <string name="transaction_details_swap_id">Swap ID</string>
+    <string name="transaction_details_type">Type</string>
+    <string name="transaction_details_status">Status</string>
+    <string name="transaction_details_cash_status">Cash status</string>
 
     <!--transaction type-->
     <string name="withdraw">Withdraw</string>

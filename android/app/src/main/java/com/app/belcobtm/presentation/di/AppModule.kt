@@ -4,6 +4,7 @@ import android.content.Context
 import com.app.belcobtm.presentation.core.coin.AmountCoinValidator
 import com.app.belcobtm.presentation.core.coin.CoinCodeProvider
 import com.app.belcobtm.presentation.core.coin.MinMaxCoinValueProvider
+import com.app.belcobtm.presentation.core.formatter.PhoneNumberFormatter
 import com.app.belcobtm.presentation.core.formatter.*
 import com.app.belcobtm.presentation.core.formatter.DoubleCurrencyPriceFormatter.Companion.DOUBLE_CURRENCY_PRICE_FORMATTER_QUALIFIER
 import com.app.belcobtm.presentation.core.formatter.Formatter
@@ -94,7 +95,7 @@ val viewModelModule = module {
         StakingViewModel(get(), get(), get(), get(), get(), get(), get())
     }
     viewModel { (phone: String) ->
-        SmsCodeViewModel(phone, get(), get())
+        SmsCodeViewModel(phone, get())
     }
     viewModel { RecoverSeedViewModel(get()) }
     viewModel { CreateSeedViewModel(get(), get(), get()) }
@@ -104,7 +105,9 @@ val viewModelModule = module {
     viewModel { UpdatePasswordViewModel(get()) }
     viewModel { PhoneChangeViewModel(get(), get(), get(), get<PhoneNumberValidator>()) }
     viewModel { AtmViewModel(get()) }
-    viewModel { (txId: String, coinCode: String) -> TransactionDetailsViewModel(txId, coinCode, get()) }
+    viewModel { (txId: String, coinCode: String) -> TransactionDetailsViewModel(txId, coinCode, get(),
+            get()
+        ) }
     viewModel {
         SendGiftViewModel(get(), get(), get(), get(), get(), get(), get(), get<PhoneNumberValidator>())
     }
@@ -160,7 +163,7 @@ val viewModelHelperModule = module {
     factory { AmountCoinValidator() }
     factory { PhoneNumberUtil.createInstance(get<Context>()) }
     factory { PhoneNumberValidator(get()) }
-    factory<Formatter<String>> { PhoneNumberFormatter(get<Locale>().country) }
+    factory { PhoneNumberFormatter(get<Locale>().country) }
 }
 
 val helperModule = module {

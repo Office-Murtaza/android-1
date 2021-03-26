@@ -1,7 +1,7 @@
 import Foundation
 import TrustWalletCore
 
-protocol TransactionDetailsModule: class {
-  func setup(with details: TransactionDetails, for type: CustomCoinType)
+protocol TransactionDetailsModule: AnyObject {
+    func setup(with details: TransactionDetails)
 }
-protocol TransactionDetailsModuleDelegate: class {}
+protocol TransactionDetailsModuleDelegate: AnyObject {}

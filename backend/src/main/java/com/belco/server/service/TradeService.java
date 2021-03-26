@@ -15,23 +15,28 @@ import com.belco.server.model.TradeType;
 import com.belco.server.repository.OrderRep;
 import com.belco.server.repository.TradeRep;
 import com.belco.server.repository.UserCoinRep;
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang.RandomStringUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.bson.Document;
 import org.jetbrains.annotations.NotNull;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
 import javax.transaction.Transactional;
+import java.io.File;
 import java.math.BigDecimal;
-import java.util.Comparator;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
 @Service
 public class TradeService {
+
+    private static final String COLL_ORDER_CHAT = "order_chat";
 
     private final TradeRep tradeRep;
     private final OrderRep orderRep;
@@ -41,6 +46,9 @@ public class TradeService {
     private final MongoTemplate mongo;
 
     private Map<Long, TradeDTO> tradesMap = new ConcurrentHashMap<>();
+
+    @Value("${upload.path.chat}")
+    private String uploadPath;
 
     public TradeService(TradeRep tradeRep, OrderRep orderRep, UserCoinRep userCoinRep, UserService userService, SimpMessagingTemplate simpMessagingTemplate, MongoTemplate mongo) {
         this.tradeRep = tradeRep;
@@ -64,10 +72,13 @@ public class TradeService {
             List<TradeDTO> trades = tradesMap.values()
                     .stream().sorted(Comparator.comparing(TradeDTO::getPrice)).collect(Collectors.toList());
 
-            List<OrderDTO> orders = orderRep.findAllByMakerOrTaker(user, user)
-                    .stream().map(Order::toDTO).collect(Collectors.toList());
+            Map<Long, OrderDTO> orders = orderRep.findAllByMakerOrTaker(user, user)
+                    .stream().collect(Collectors.toMap(Order::getId, Order::toDTO));
 
-            return Response.ok(new TradesDTO(user.getIdentity().getPublicId(), user.getVerificationStatus(), user.getTotalTrades(), user.getTradingRate(), trades, orders));
+            mongo.getCollection(COLL_ORDER_CHAT).createIndex(new Document("orderId", 1));
+            mongo.getCollection(COLL_ORDER_CHAT).find(new Document("orderId", new Document("$in", orders.keySet()))).into(new ArrayList<>()).stream().forEach(d -> orders.get(d.getLong("orderId")).getChat().add(ChatMessageDTO.toDTO(d)));
+
+            return Response.ok(new TradesDTO(user.getIdentity().getPublicId(), user.getVerificationStatus(), user.getTotalTrades(), user.getTradingRate(), trades, new ArrayList<>(orders.values())));
         } catch (Exception e) {
             e.printStackTrace();
             return Response.serverError();
@@ -252,13 +263,13 @@ public class TradeService {
             Trade trade = order.getTrade();
 
             //rate the trade
-            if (dto.getTradeRate() != null) {
-                order.setMakerRate(dto.getTradeRate());
+            if (dto.getRate() != null) {
+                order.setMakerRate(dto.getRate());
 
                 if (userId.compareTo(order.getMaker().getId()) == 0) {
-                    recalculateTradingData(order.getTaker(), dto.getTradeRate());
+                    recalculateTradingData(order.getTaker(), dto.getRate());
                 } else {
-                    recalculateTradingData(order.getMaker(), dto.getTradeRate());
+                    recalculateTradingData(order.getMaker(), dto.getRate());
                 }
             } else if (dto.getStatus() != null) {
                 if (dto.getStatus() == OrderStatus.RELEASED || dto.getStatus() == OrderStatus.SOLVED) {
@@ -331,11 +342,21 @@ public class TradeService {
         }
     }
 
-    public void processMessage(ChatMessageDTO dto) {
+    public void onChatMessage(ChatMessageDTO dto) {
         try {
-            mongo.save(dto);
+            if (StringUtils.isNotBlank(dto.getFileBase64())) {
+                String newFileName = RandomStringUtils.randomAlphanumeric(20).toLowerCase() + "." + dto.getFileExtension();
+                String newFilePath = uploadPath + File.separator + dto.getOrderId() + "_" + newFileName;
 
-            wsPushChatMessage(userService.findById(dto.getRecipientId()).getPhone(), dto);
+                byte[] decodedBytes = Base64.getDecoder().decode(dto.getFileBase64());
+                FileUtils.writeByteArrayToFile(new File(newFilePath), decodedBytes);
+
+                dto.setFilePath(newFilePath);
+            }
+
+            mongo.getCollection("order_chat").insertOne(dto.toDocument());
+
+            wsPushChatMessage(userService.findById(dto.getToUserId()).getPhone(), dto);
         } catch (Exception e) {
             e.printStackTrace();
         }

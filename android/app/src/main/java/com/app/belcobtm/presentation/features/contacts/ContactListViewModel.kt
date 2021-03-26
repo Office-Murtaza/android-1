@@ -6,13 +6,13 @@ import androidx.lifecycle.ViewModel
 import com.app.belcobtm.domain.contacts.GetContactsUseCase
 import com.app.belcobtm.domain.contacts.item.Contact
 import com.app.belcobtm.presentation.core.adapter.model.ListItem
-import com.app.belcobtm.presentation.core.formatter.Formatter
+import com.app.belcobtm.presentation.core.formatter.PhoneNumberFormatter
 import com.app.belcobtm.presentation.core.validator.Validator
 
 class ContactListViewModel(
     private val getContactsUseCase: GetContactsUseCase,
     private val phoneNumberValidator: Validator<String>,
-    private val phoneNumberFormatter: Formatter<String>
+    private val phoneNumberFormatter: PhoneNumberFormatter
 ) : ViewModel() {
     private val _contacts = MutableLiveData<List<ListItem>>()
     val contacts: LiveData<List<ListItem>>

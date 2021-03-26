@@ -15,6 +15,7 @@ import com.app.belcobtm.domain.wallet.interactor.GetCoinDetailsUseCase
 import com.app.belcobtm.domain.wallet.interactor.GetFreshCoinUseCase
 import com.app.belcobtm.domain.wallet.item.CoinDataItem
 import com.app.belcobtm.domain.wallet.item.CoinDetailsDataItem
+import com.app.belcobtm.presentation.core.DateFormat
 import com.app.belcobtm.presentation.core.SingleLiveData
 import com.app.belcobtm.presentation.core.mvvm.LoadingData
 import kotlinx.coroutines.delay
@@ -40,7 +41,6 @@ class StakingViewModel(
     private lateinit var coinDataItem: CoinDataItem
     private lateinit var etheriumCoinDataItem: CoinDataItem
     private lateinit var coinDetailsDataItem: CoinDetailsDataItem
-    private lateinit var ethCoinDataItem: CoinDataItem
 
     init {
         loadData()
@@ -102,8 +102,8 @@ class StakingViewModel(
                         rewardsPercent = stakeDataItem.rewardsPercent,
                         rewardsAmountAnnual = stakeDataItem.rewardsAnnualAmount,
                         rewardsPercentAnnual = stakeDataItem.rewardsAnnualPercent,
-                        createDate = stakeDataItem.createDate,
-                        cancelDate = stakeDataItem.cancelDate,
+                        createDate = convertToStringRepresentation(stakeDataItem.createTimestamp),
+                        cancelDate = convertToStringRepresentation(stakeDataItem.cancelTimestamp),
                         duration = stakeDataItem.duration,
                         cancelHoldPeriod = stakeDataItem.cancelHoldPeriod,
                         untilWithdraw = stakeDataItem.untilWithdraw
@@ -177,4 +177,11 @@ class StakingViewModel(
     }
 
     fun getUsdPrice(): Double = coinDataItem.priceUsd
+
+    private fun convertToStringRepresentation(timestamp: Long?): String? {
+        if (timestamp == null) {
+            return null
+        }
+        return DateFormat.sdfLong.format(timestamp)
+    }
 }

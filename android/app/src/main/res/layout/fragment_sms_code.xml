@@ -52,7 +52,7 @@
             android:textColor="@color/colorText"
             android:textIsSelectable="false"
             android:textSize="32sp"
-            app:layout_constraintBottom_toTopOf="@id/next_button_view"
+            app:layout_constraintBottom_toTopOf="@id/error_text_view"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/title_view"
@@ -77,7 +77,8 @@
             android:id="@+id/space_view"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            app:layout_constraintBottom_toTopOf="@id/next_button_view"
+            app:layout_constraintBottom_toTopOf="@id/error_text_view"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/error_message_view" />
 
@@ -87,22 +88,11 @@
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/margin_main"
             android:gravity="center"
-            app:layout_constraintBottom_toTopOf="@id/next_button_view"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:textColor="#e02d2d"
             android:text="@string/not_supported_phone"
-            app:layout_constraintStart_toStartOf="parent" />
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/next_button_view"
-            style="@style/Button.Primary"
-            android:layout_marginTop="16dp"
-            android:enabled="false"
-            android:text="@string/next"
+            android:textColor="#e02d2d"
             app:layout_constraintBottom_toTopOf="@id/resendCodeTitleView"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/space_view" />
+            app:layout_constraintStart_toStartOf="parent" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/resendCodeTitleView"

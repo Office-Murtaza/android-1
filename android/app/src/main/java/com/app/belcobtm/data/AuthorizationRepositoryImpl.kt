@@ -1,5 +1,11 @@
 package com.app.belcobtm.data
 
+import android.Manifest
+import android.app.Application
+import android.content.Context
+import android.content.pm.PackageManager
+import android.location.Location
+import android.location.LocationManager
 import com.app.belcobtm.data.disk.database.AccountDao
 import com.app.belcobtm.data.disk.database.AccountEntity
 import com.app.belcobtm.data.disk.shared.preferences.SharedPreferencesHelper
@@ -16,8 +22,11 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import org.web3j.utils.Numeric
 import wallet.core.jni.*
+import java.text.SimpleDateFormat
+import java.util.*
 
 class AuthorizationRepositoryImpl(
+    private val application: Application,
     private val prefHelper: SharedPreferencesHelper,
     private val apiService: AuthApiService,
     private val daoAccount: AccountDao
@@ -81,9 +90,13 @@ class AuthorizationRepositoryImpl(
         password: String,
         notificationToken: String
     ): Either<Failure, Unit> {
+        val location = getLocation()
         val response = apiService.createWallet(
             phone = phone,
             password = password,
+            timezone = getDeviceTimezone(),
+            lat = location?.latitude,
+            lng = location?.longitude,
             notificationToken = notificationToken,
             coinMap = temporaryCoinMap.map { it.key.name to it.value.first }.toMap()
         )
@@ -108,6 +121,7 @@ class AuthorizationRepositoryImpl(
         password: String,
         notificationToken: String
     ): Either<Failure, Unit> {
+        val location = getLocation()
         val wallet = HDWallet(seed, "")
         temporaryCoinMap.clear()
         temporaryCoinMap.putAll(
@@ -115,7 +129,12 @@ class AuthorizationRepositoryImpl(
         )
         val recoverResponse =
             apiService.recoverWallet(
-                phone, password, notificationToken,
+                phone,
+                password,
+                location?.latitude,
+                location?.longitude,
+                getDeviceTimezone(),
+                notificationToken,
                 temporaryCoinMap.map { it.key.name to it.value.first }.toMap()
             )
 
@@ -210,5 +229,35 @@ class AuthorizationRepositoryImpl(
         } else {
             response as Either.Left
         }
+    }
+
+    /**
+     * Should return formatted GMT timezone
+     * e.g GMT+02:00
+     * */
+    private fun getDeviceTimezone(): String {
+        val pattern = "ZZZZ"
+        val currentTimeMs = System.currentTimeMillis()
+        return SimpleDateFormat(pattern, Locale.getDefault())
+            .format(currentTimeMs)
+    }
+
+    private fun getLocation(): Location? {
+        val pm = application.packageManager
+        val pn = application.packageName
+        val fineLocation = pm.checkPermission(Manifest.permission.ACCESS_FINE_LOCATION, pn)
+        val coarseLocation = pm.checkPermission(Manifest.permission.ACCESS_COARSE_LOCATION, pn)
+        if (pm.hasSystemFeature(PackageManager.FEATURE_LOCATION)
+            && (fineLocation == PackageManager.PERMISSION_GRANTED
+                    || coarseLocation == PackageManager.PERMISSION_GRANTED)
+        ) {
+            val locManager = application.getSystemService(Context.LOCATION_SERVICE)
+            if (locManager is LocationManager) {
+                val netLocation = locManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER)
+                val gpsLocation = locManager.getLastKnownLocation(LocationManager.GPS_PROVIDER)
+                return gpsLocation ?: netLocation
+            }
+        }
+        return null
     }
 }

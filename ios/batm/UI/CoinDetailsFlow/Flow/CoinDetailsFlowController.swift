@@ -27,8 +27,8 @@ extension CoinDetailsFlowController: CoinDetailsModuleDelegate {
     step.accept(CoinDetailsFlow.Steps.sell(coin, coinBalances, coinDetails, details))
   }
   
-  func showTransactionDetails(with details: TransactionDetails, for type: CustomCoinType) {
-    step.accept(CoinDetailsFlow.Steps.transactionDetails(details, type))
+  func showTransactionDetails(with details: TransactionDetails) {
+    step.accept(CoinDetailsFlow.Steps.transactionDetails(details))
   }
   
   func showExchangeScreen(coin: BTMCoin, coinBalances: [CoinBalance], coinDetails: CoinDetails) {

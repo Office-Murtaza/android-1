@@ -12,7 +12,6 @@ import com.belco.server.repository.*;
 import com.belco.server.util.Util;
 import liquibase.util.file.FilenameUtils;
 import org.apache.commons.lang.RandomStringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.security.core.GrantedAuthority;
@@ -44,55 +43,45 @@ public class UserService implements UserDetailsService {
     private static final BigDecimal VIP_VERIFIED_DAILY_LIMIT = BigDecimal.valueOf(20_000);
     private static final BigDecimal VIP_VERIFIED_TX_LIMIT = BigDecimal.valueOf(10_000);
 
-    @Lazy
-    @Autowired
-    private PasswordEncoder passwordEncoder;
+    private final PasswordEncoder passwordEncoder;
+    private final UserRep userRep;
+    private final IdentityRep identityRep;
+    private final UserCoinRep userCoinRep;
+    private final LimitRep limitRep;
+    private final IdentityPieceRep identityPieceRep;
+    private final IdentityPieceCellPhoneRep identityPieceCellPhoneRep;
+    private final VerificationReviewRep verificationReviewRep;
+    private final IdentityPiecePersonalInfoRep identityPiecePersonalInfoRep;
+    private final IdentityPieceDocumentRep identityPieceDocumentRep;
+    private final IdentityPieceSelfieRep identityPieceSelfieRep;
+    private final ReferralRep referralRep;
+    private final CoinService coinService;
 
-    @Autowired
-    private UserRep userRep;
+    @Value("${upload.path.verification}")
+    private String uploadPath;
 
-    @Autowired
-    private IdentityRep identityRep;
-
-    @Autowired
-    private UserCoinRep userCoinRep;
-
-    @Autowired
-    private LimitRep limitRep;
-
-    @Autowired
-    private IdentityPieceRep identityPieceRep;
-
-    @Autowired
-    private IdentityPieceCellPhoneRep identityPieceCellPhoneRep;
-
-    @Autowired
-    private VerificationReviewRep verificationReviewRep;
-
-    @Autowired
-    private IdentityPiecePersonalInfoRep identityPiecePersonalInfoRep;
-
-    @Autowired
-    private IdentityPieceDocumentRep identityPieceDocumentRep;
-
-    @Autowired
-    private IdentityPieceSelfieRep identityPieceSelfieRep;
-
-    @Autowired
-    private ReferralRep referralRep;
-
-    @Lazy
-    @Autowired
-    private CoinService coinService;
-
-    @Value("${document.upload.path}")
-    private String documentUploadPath;
+    public UserService(UserRep userRep, @Lazy PasswordEncoder passwordEncoder, IdentityRep identityRep, UserCoinRep userCoinRep, LimitRep limitRep, IdentityPieceRep identityPieceRep, IdentityPieceCellPhoneRep identityPieceCellPhoneRep, VerificationReviewRep verificationReviewRep, ReferralRep referralRep, IdentityPiecePersonalInfoRep identityPiecePersonalInfoRep, IdentityPieceDocumentRep identityPieceDocumentRep, IdentityPieceSelfieRep identityPieceSelfieRep, @Lazy CoinService coinService) {
+        this.userRep = userRep;
+        this.passwordEncoder = passwordEncoder;
+        this.identityRep = identityRep;
+        this.userCoinRep = userCoinRep;
+        this.limitRep = limitRep;
+        this.identityPieceRep = identityPieceRep;
+        this.identityPieceCellPhoneRep = identityPieceCellPhoneRep;
+        this.verificationReviewRep = verificationReviewRep;
+        this.referralRep = referralRep;
+        this.identityPiecePersonalInfoRep = identityPiecePersonalInfoRep;
+        this.identityPieceDocumentRep = identityPieceDocumentRep;
+        this.identityPieceSelfieRep = identityPieceSelfieRep;
+        this.coinService = coinService;
+    }
 
     @Transactional
     public User register(AuthenticationDTO dto) {
         User user = new User();
         user.setPhone(dto.getPhone());
         user.setPassword(passwordEncoder.encode(dto.getPassword()));
+        user.setStatus(VerificationStatus.NOT_VERIFIED.getValue());
         user.setRole("ROLE_USER");
         user.setPlatform(dto.getPlatform());
         user.setDeviceModel(dto.getDeviceModel());
@@ -301,7 +290,7 @@ public class UserService implements UserDetailsService {
             String newFileName = RandomStringUtils.randomAlphanumeric(20).toLowerCase() + "." + fileExtension;
 
             if (dto.getVerificationTier() == VerificationTier.VERIFICATION) {
-                String newFilePath = documentUploadPath + File.separator + ID_CARD_PREFIX + newFileName;
+                String newFilePath = uploadPath + File.separator + ID_CARD_PREFIX + newFileName;
                 Path path = Paths.get(newFilePath);
                 Util.uploadFile(dto.getFile(), path);
 
@@ -320,7 +309,7 @@ public class UserService implements UserDetailsService {
                 verificationReview.setIdCardNumberMimetype(dto.getFile().getContentType());
             } else if (dto.getVerificationTier() == VerificationTier.VIP_VERIFICATION) {
                 verificationReview = verificationReviewRep.findFirstByIdentityOrderByIdDesc(user.getIdentity());
-                String newFilePath = documentUploadPath + File.separator + SELFIE_PREFIX + newFileName;
+                String newFilePath = uploadPath + File.separator + SELFIE_PREFIX + newFileName;
                 Path path = Paths.get(newFilePath);
                 Util.uploadFile(dto.getFile(), path);
 

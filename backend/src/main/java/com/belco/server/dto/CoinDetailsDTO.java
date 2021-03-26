@@ -30,6 +30,10 @@ public class CoinDetailsDTO {
     private String walletAddress;
     private String contractAddress;
 
+    public void setCode(String code) {
+        this.code = code;
+    }
+
     public void setTxFee(BigDecimal txFee) {
         this.txFee = txFee;
         this.txFeeStr = Util.convert(txFee);
@@ -52,10 +56,6 @@ public class CoinDetailsDTO {
     public void setPlatformTradeFee(BigDecimal platformTradeFee) {
         this.platformTradeFee = platformTradeFee;
         this.platformTradeFeeStr = Util.convert(platformTradeFee);
-    }
-
-    public void setCode(String code) {
-        this.code = code;
     }
 
     public void setGasPrice(Long gasPrice) {

@@ -65,6 +65,11 @@
     <color name="rejected_border">#e02d2d</color>
     <color name="not_verified_background">#f3f3f3</color>
     <color name="not_verified_border">#ababab</color>
+
+    <color name="color_status_1">#48C583</color>
+    <color name="color_status_2">#EDB900</color>
+    <color name="color_status_3">#0073E4</color>
+
     <color name="trade_type_buy_trade_text_color">#48C583</color>
     <color name="trade_type_sell_trade_text_color">#EDB900</color>
 

@@ -11,8 +11,8 @@ struct StakeDetails: Equatable {
     var rewardAnnualAmount: Double?
     var rewardAnnualAmountStr: String?
     var annualPercent: Int?
-    var createDate: String?
-    var cancelDate: String?
+    var createTimestamp: String?
+    var cancelTimestamp: String?
     var duration: Int?
     var tillWithdrawal: Int?
     var holdPeriod: Int?
@@ -39,7 +39,7 @@ enum StakingStatus: Int, Equatable {
         }
     }
     
-    var associatedColor: StatusColorPallete.Type {
+    var associatedColor: StatusColorPalette.Type {
         switch self {
         case .notExist: return UIColor.StatusColor.Gray.self
         case .createPending: return UIColor.StatusColor.Yellow.self

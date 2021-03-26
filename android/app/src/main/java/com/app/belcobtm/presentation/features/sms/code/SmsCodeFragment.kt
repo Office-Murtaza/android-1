@@ -33,7 +33,6 @@ class SmsCodeFragment : BaseFragment<FragmentSmsCodeBinding>() {
     override fun FragmentSmsCodeBinding.initViews() {
         setToolbarTitle(R.string.sms_code_screen_title)
         setToolbarTitle()
-        setNextButtonTitle()
         isMenuEnabled = false
     }
 
@@ -43,12 +42,12 @@ class SmsCodeFragment : BaseFragment<FragmentSmsCodeBinding>() {
             pinEntryView.setText("")
             viewModel.sendSmsToDevice()
         }
-        nextButtonView.setOnClickListener { onNextClick() }
-        pinEntryView.actionDoneListener { onNextClick() }
-        pinEntryView.afterTextChanged {
-            nextButtonView.isEnabled = pinEntryView.getString().length >= SMS_CODE_LENGTH
+        pinEntryView.afterTextChanged { editable ->
             errorMessageView.invisible()
             pinEntryView.isError = false
+            if (editable.length == SMS_CODE_LENGTH) {
+                openNextScreen()
+            }
         }
     }
 
@@ -101,10 +100,6 @@ class SmsCodeFragment : BaseFragment<FragmentSmsCodeBinding>() {
         )
     }
 
-    private fun onNextClick() {
-        openNextScreen()
-    }
-
     private fun openNextScreen() {
         val isSuccessLoadingData =
             (viewModel.smsLiveData.value as? LoadingData.Success)?.data == binding.pinEntryView.getString()
@@ -132,10 +127,6 @@ class SmsCodeFragment : BaseFragment<FragmentSmsCodeBinding>() {
 
     private fun setToolbarTitle() {
         setToolbarTitle(R.string.sms_code_screen_title)
-    }
-
-    private fun setNextButtonTitle() {
-        binding.nextButtonView.text = getString(R.string.next)
     }
 
     companion object {

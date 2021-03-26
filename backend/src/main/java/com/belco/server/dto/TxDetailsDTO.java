@@ -17,6 +17,7 @@ import java.math.BigDecimal;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class TxDetailsDTO {
 
+    private String coin;
     private String txId;
     private Long txDBId;
     private String link;
