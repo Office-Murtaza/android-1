@@ -34,7 +34,11 @@ class CoinExchangeFormView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func configure(coin: CustomCoinType, toCoinType: CustomCoinType,fromCoins: [CustomCoinType], toCoins:  [CustomCoinType], fee: Decimal?) {
+    func configure(coin: CustomCoinType,
+                   toCoinType: CustomCoinType,
+                   fromCoins: [CustomCoinType],
+                   toCoins:  [CustomCoinType],
+                   fee: Decimal?) {
         fromCoinView.configure(for: coin, coins: fromCoins)
         toCoinView.configure(for: toCoinType, coins: toCoins)
     }
@@ -95,12 +99,12 @@ class CoinExchangeFormView: UIView {
         
         fromCoinView.snp.remakeConstraints {
             $0.top.left.right.equalToSuperview()
-            $0.height.equalTo(error == nil ? 136 : 150)
+            $0.height.equalTo(150)
         }
         toCoinView.snp.remakeConstraints {
             $0.top.equalTo(fromCoinView.snp.bottom)
             $0.left.right.equalToSuperview()
-            $0.height.equalTo(error == nil ? 136 : 150)
+            $0.height.equalTo(150)
         }
     }
 }

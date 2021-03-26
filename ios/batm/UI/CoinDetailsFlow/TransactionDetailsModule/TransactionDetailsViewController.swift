@@ -27,7 +27,7 @@ final class TransactionDetailsViewController: ModuleViewController<TransactionDe
         tableView.dataSource = dataSource
         dataSource?.tableView = tableView
         
-        guard let dataSource = dataSource, let details = presenter.details else { return }
+        guard let dataSource = dataSource, let details = presenter.transactionDetails else { return }
         
         dataSource.transactionsRelay.accept(details)
     }

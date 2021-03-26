@@ -121,7 +121,7 @@ final class CoinExchangeViewController: ModuleViewController<CoinExchangePresent
     
     Driver.combineLatest(fromCoinDriver, toCoinDriver ,fromCoinBalancesDriver, toCoinBalancesDriver, feeDriver)
       .drive(onNext: { [formView] in
-        formView.configure(coin: $0,toCoinType: $1 ,fromCoins: $2, toCoins: $3, fee: $4)
+        formView.configure(coin: $0, toCoinType: $1, fromCoins: $2, toCoins: $3, fee: $4)
       })
       .disposed(by: disposeBag)
     
@@ -168,8 +168,8 @@ final class CoinExchangeViewController: ModuleViewController<CoinExchangePresent
       .disposed(by: disposeBag)
     
     presenter.state
-      .asObservable()
-      .map { $0.fromCoinAmountError }
+        .asObservable()
+        .map { $0.fromCoinAmountError }
         .subscribeOn(MainScheduler.instance)
         .subscribe { [weak self] result in
             guard let error = result.element else { return }
@@ -177,8 +177,8 @@ final class CoinExchangeViewController: ModuleViewController<CoinExchangePresent
         }.disposed(by: disposeBag)
 
     presenter.state
-      .asObservable()
-      .map { $0.toCoinTypeError }
+        .asObservable()
+        .map { $0.toCoinTypeError }
         .subscribeOn(MainScheduler.instance)
         .subscribe { [weak self] result in
             guard let error = result.element else { return }
