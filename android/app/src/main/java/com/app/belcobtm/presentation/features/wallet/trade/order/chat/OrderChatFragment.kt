@@ -13,9 +13,12 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.lifecycle.observe
 import androidx.navigation.fragment.navArgs
 import com.app.belcobtm.databinding.FragmentOrderChatBinding
+import com.app.belcobtm.presentation.core.adapter.MultiTypeAdapter
 import com.app.belcobtm.presentation.core.extensions.actionDoneListener
 import com.app.belcobtm.presentation.core.extensions.toggle
 import com.app.belcobtm.presentation.core.ui.fragment.BaseFragment
+import com.app.belcobtm.presentation.features.wallet.trade.order.chat.delegate.MyMessageDelegate
+import com.app.belcobtm.presentation.features.wallet.trade.order.chat.delegate.PartnerMessageDelegate
 import org.koin.android.viewmodel.ext.android.viewModel
 
 
@@ -38,11 +41,19 @@ class OrderChatFragment : BaseFragment<FragmentOrderChatBinding>() {
         }
     }
 
+    private val adapter: MultiTypeAdapter by lazy {
+        MultiTypeAdapter().apply {
+            registerDelegate(MyMessageDelegate())
+            registerDelegate(PartnerMessageDelegate())
+        }
+    }
+
     override fun createBinding(inflater: LayoutInflater, container: ViewGroup?): FragmentOrderChatBinding =
         FragmentOrderChatBinding.inflate(inflater, container, false)
 
     override fun FragmentOrderChatBinding.initViews() {
         setToolbarTitle(args.partnerPublicId)
+        binding.chatList.adapter = adapter
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

@@ -8,6 +8,7 @@ import androidx.core.content.ContextCompat
 import androidx.lifecycle.observe
 import androidx.navigation.fragment.navArgs
 import com.app.belcobtm.R
+import com.app.belcobtm.data.model.trade.OrderStatus
 import com.app.belcobtm.data.model.trade.TradeType
 import com.app.belcobtm.databinding.FragmentTradeOrderDetailsBinding
 import com.app.belcobtm.presentation.core.adapter.MultiTypeAdapter
@@ -154,12 +155,21 @@ class TradeOrderDetailsFragment : BaseFragment<FragmentTradeOrderDetailsBinding>
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean = when (item.itemId) {
         R.id.chat_menu_item -> {
-            navigate(
-                TradeOrderDetailsFragmentDirections.toChatOrderFragment(
-                    viewModel.partnerPublicId.value.orEmpty(), args.orderId,
-                    viewModel.myId.value ?: 0, viewModel.partnerId.value ?: 0
+            val statusId = viewModel.orderStatus.value?.statusId
+            if (statusId == OrderStatus.NEW || statusId == OrderStatus.DOING || statusId == OrderStatus.PAID) {
+                navigate(
+                    TradeOrderDetailsFragmentDirections.toChatOrderFragment(
+                        viewModel.partnerPublicId.value.orEmpty(), args.orderId,
+                        viewModel.myId.value ?: 0, viewModel.partnerId.value ?: 0
+                    )
                 )
-            )
+            } else {
+                navigate(
+                    TradeOrderDetailsFragmentDirections.toHistoryChatOrderFragment(
+                        viewModel.partnerPublicId.value.orEmpty(), args.orderId
+                    )
+                )
+            }
             true
         }
         else -> super.onOptionsItemSelected(item)

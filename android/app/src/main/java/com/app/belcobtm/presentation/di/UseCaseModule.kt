@@ -115,6 +115,7 @@ val useCaseModule = module {
     single { ObserveChatMessagesUseCase(get()) }
     single { ConnectToChatUseCase(get()) }
     single { DisconnectFromChatUseCase(get()) }
+    single { GetChatHistoryUseCase(get()) }
     factory { TradePaymentOptionMapper() }
     factory { CoinCodeMapper() }
     factory { TradesDataToTradeListMapper(get()) }

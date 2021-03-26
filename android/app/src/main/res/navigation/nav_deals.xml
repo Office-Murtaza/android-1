@@ -268,6 +268,14 @@
             app:popEnterAnim="@anim/slide_from_left"
             app:popExitAnim="@anim/slide_to_right" />
 
+        <action
+            android:id="@+id/to_history_chat_order_fragment"
+            app:destination="@id/order_history_chat_fragment"
+            app:enterAnim="@anim/slide_from_right"
+            app:exitAnim="@anim/slide_to_left"
+            app:popEnterAnim="@anim/slide_from_left"
+            app:popExitAnim="@anim/slide_to_right" />
+
     </fragment>
 
     <dialog
@@ -312,6 +320,23 @@
 
         <argument
             android:name="partnerId"
+            app:argType="integer"
+            app:nullable="false" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/order_history_chat_fragment"
+        android:name="com.app.belcobtm.presentation.features.wallet.trade.order.historychat.HistoryChatFragment"
+        android:label="OrderHistoryChat"
+        tools:layout="@layout/fragment_history_chat">
+
+        <argument
+            android:name="partnerPublicId"
+            app:argType="string"
+            app:nullable="false" />
+
+        <argument
+            android:name="orderId"
             app:argType="integer"
             app:nullable="false" />
     </fragment>

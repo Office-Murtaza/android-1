@@ -56,6 +56,7 @@ import com.app.belcobtm.presentation.features.wallet.trade.order.TradeOrdersView
 import com.app.belcobtm.presentation.features.wallet.trade.order.chat.OrderChatViewModel
 import com.app.belcobtm.presentation.features.wallet.trade.order.create.TradeCreateOrderViewModel
 import com.app.belcobtm.presentation.features.wallet.trade.order.details.TradeOrderDetailsViewModel
+import com.app.belcobtm.presentation.features.wallet.trade.order.historychat.HistoryChatViewModel
 import com.app.belcobtm.presentation.features.wallet.trade.order.rate.TradeOrderRateViewModel
 import com.app.belcobtm.presentation.features.wallet.trade.recall.TradeRecallViewModel
 import com.app.belcobtm.presentation.features.wallet.trade.reserve.TradeReserveViewModel
@@ -150,6 +151,7 @@ val viewModelModule = module {
     }
     viewModel { TradeOrderRateViewModel(get(), get()) }
     viewModel { OrderChatViewModel(get(), get(), get()) }
+    viewModel { HistoryChatViewModel(get()) }
 }
 
 val viewModelHelperModule = module {
