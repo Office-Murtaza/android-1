@@ -2,9 +2,11 @@ package com.app.belcobtm.presentation.core.ui.fragment
 
 import android.content.ComponentCallbacks
 import android.content.Context
+import android.graphics.Rect
 import android.os.Bundle
 import android.view.*
 import android.view.inputmethod.InputMethodManager
+import android.widget.EditText
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
@@ -98,7 +100,7 @@ abstract class BaseFragment<V : ViewBinding> : Fragment(),
         super.onViewCreated(view, savedInstanceState)
         this.navController = findNavController()
         updateActionBar()
-        baseBinding.interceptableFrameLayout.interceptListner = this
+        baseBinding.interceptableFrameLayout.interceptListener = this
         baseBinding.errorView.errorRetryButtonView.setOnClickListener(retryListener)
         with(binding) {
             initViews()
@@ -130,7 +132,24 @@ abstract class BaseFragment<V : ViewBinding> : Fragment(),
         }
 
     override fun onIntercented(ev: MotionEvent) {
-        if (ev.action == MotionEvent.ACTION_DOWN) hideKeyboard()
+        // On each MotionEvent.ACTION_UP we want to hide the keyboard
+        // because the event will be triggered after any clickable element process the event
+        if (ev.action == MotionEvent.ACTION_UP) {
+            val currentFocusedView = activity?.currentFocus
+            if (currentFocusedView is EditText) {
+                // in case if current focus is on EditText
+                // we want to make sure that the click was performed
+                // outside the given EditText, otherwise - do nothing
+                val rect = Rect()
+                currentFocusedView.getGlobalVisibleRect(rect)
+                // check if current focus does not contains the clicked coordinates
+                if (!rect.contains(ev.rawX.toInt(), ev.rawY.toInt())) {
+                    hideKeyboard()
+                }
+            } else {
+                hideKeyboard()
+            }
+        }
     }
 
     protected inline fun <reified T : Any> ComponentCallbacks.injectPresenter() = lazy {

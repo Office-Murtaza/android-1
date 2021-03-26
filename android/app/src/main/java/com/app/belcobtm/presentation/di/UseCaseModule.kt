@@ -28,6 +28,8 @@ import com.app.belcobtm.domain.trade.list.mapper.*
 import com.app.belcobtm.domain.trade.order.*
 import com.app.belcobtm.domain.transaction.interactor.*
 import com.app.belcobtm.domain.transaction.interactor.trade.TradeRecallTransactionCompleteUseCase
+import com.app.belcobtm.domain.transaction.interactor.trade.TradeReserveTransactionCompleteUseCase
+import com.app.belcobtm.domain.transaction.interactor.trade.TradeReserveTransactionCreateUseCase
 import com.app.belcobtm.domain.wallet.interactor.*
 import com.app.belcobtm.presentation.core.formatter.DoubleCurrencyPriceFormatter.Companion.DOUBLE_CURRENCY_PRICE_FORMATTER_QUALIFIER
 import com.app.belcobtm.presentation.core.formatter.MilesFormatter.Companion.MILES_FORMATTER_QUALIFIER
@@ -116,6 +118,8 @@ val useCaseModule = module {
     single { ConnectToChatUseCase(get()) }
     single { DisconnectFromChatUseCase(get()) }
     single { GetChatHistoryUseCase(get()) }
+    single { TradeReserveTransactionCompleteUseCase(get()) }
+    single { TradeReserveTransactionCreateUseCase(get()) }
     factory { TradePaymentOptionMapper() }
     factory { CoinCodeMapper() }
     factory { TradesDataToTradeListMapper(get()) }
