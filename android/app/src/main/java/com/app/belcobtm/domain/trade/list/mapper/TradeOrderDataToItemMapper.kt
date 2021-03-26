@@ -53,7 +53,7 @@ class TradeOrderDataToItemMapper(
             OrderStatus.PAID -> R.drawable.ic_order_status_paid
             OrderStatus.RELEASED -> R.drawable.ic_order_status_released
             OrderStatus.DISPUTING -> R.drawable.ic_order_status_disputing
-            OrderStatus.SOLVED -> R.drawable.ic_order_status_released // TODO update icon
+            OrderStatus.SOLVED -> R.drawable.ic_order_status_released
             else -> throw RuntimeException("Unknown trade type $status")
         }
 

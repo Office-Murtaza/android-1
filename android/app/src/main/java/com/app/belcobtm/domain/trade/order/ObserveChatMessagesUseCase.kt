@@ -10,7 +10,6 @@ class ObserveChatMessagesUseCase(
     private val chatObserver: ChatObserver
 ) {
 
-    // TODO add mapper to multi type list
     operator fun invoke(params: Int): Flow<List<ChatMessageResponse>> =
         chatObserver.observeChatMessages()
             .flowOn(Dispatchers.Default)

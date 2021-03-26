@@ -18,7 +18,7 @@ enum CoinExchangeAction: Equatable {
     case updateToCoinTypeError(String?)
     case updateValidationState
     case updateToCoinDetails(CoinDetails)
-    case finishFetchingCoinsData(CoinsBalance, CoinDetails, [BTMCoin])
+    case finishFetchingCoinsData(CoinsBalance, [BTMCoin])
     case updateFromCoinDetails(CoinDetails)
     case updateFromCoin(BTMCoin)
     case isCoinActivated(Bool)
@@ -189,11 +189,10 @@ final class CoinExchangeStore: ViewStore<CoinExchangeAction, CoinExchangeState> 
         updateRateViewState(state: &state, amount: 1)
         case let .updateFromCoinDetails(details):
             state.coinDetails = details
-        case let .finishFetchingCoinsData(balances, details, coins):
+        case let .finishFetchingCoinsData(balances, coins):
             state.coinBalance = balances
             state.coinBalances = balances.coins
             state.coins = coins
-            state.coinDetails = details
             let firstCoin = coins.first
             if let type = firstCoin?.type, let address = firstCoin?.address {
                 let coin = BTMCoin(type: type, privateKey: "", address: address)

@@ -3,7 +3,6 @@ package com.belco.server.dto;
 import com.belco.server.model.TradeStatus;
 import com.belco.server.model.TradeType;
 import com.belco.server.service.CoinService;
-import com.belco.server.util.Constant;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;
@@ -12,7 +11,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.math.BigDecimal;
-import java.util.Date;
 
 @Setter
 @Getter
@@ -32,9 +30,7 @@ public class TradeDTO {
     @JsonFormat(shape = JsonFormat.Shape.OBJECT)
     private TradeStatus status;
 
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = Constant.LONG_DATE_FORMAT)
-    private Date createDate;
-    private Long timestamp;
+    private long timestamp;
 
     private BigDecimal price;
     private BigDecimal minLimit;

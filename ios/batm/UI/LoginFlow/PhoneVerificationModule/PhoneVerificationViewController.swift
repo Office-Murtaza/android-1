@@ -19,8 +19,6 @@ final class PhoneVerificationViewController: ModuleViewController<PhoneVerificat
     return label
   }()
   
-  let nextButton = MDCButton.next
-  
   let resendCodeLabel = PhoneVerificationResendCodeLabel()
   
   override func setupUI() {
@@ -29,7 +27,6 @@ final class PhoneVerificationViewController: ModuleViewController<PhoneVerificat
     rootScrollView.contentInsetAdjustmentBehavior = .never
     rootScrollView.contentView.addSubviews(formView,
                                            errorLabel,
-                                           nextButton,
                                            resendCodeLabel)
     
     setupDefaultKeyboardHandling()
@@ -51,11 +48,6 @@ final class PhoneVerificationViewController: ModuleViewController<PhoneVerificat
     }
     errorLabel.snp.makeConstraints {
       $0.left.right.equalToSuperview().inset(15)
-      $0.bottom.equalTo(nextButton.snp.top).offset(-25)
-    }
-    nextButton.snp.makeConstraints {
-      $0.height.equalTo(50)
-      $0.left.right.equalToSuperview().inset(15)
       $0.bottom.equalTo(resendCodeLabel.snp.top).offset(-25)
     }
     resendCodeLabel.snp.makeConstraints {
@@ -73,12 +65,7 @@ final class PhoneVerificationViewController: ModuleViewController<PhoneVerificat
   func setupUIBindings() {
     presenter.state
       .asObservable()
-      .map { $0.isCodeFilled }
-      .bind(to: nextButton.rx.isEnabled)
-      .disposed(by: disposeBag)
-    
-    presenter.state
-      .asObservable()
+      .filter { $0.isCodeFilled }
       .map { $0.codeError }
       .bind(to: errorLabel.rx.text)
       .disposed(by: disposeBag)
@@ -107,33 +94,15 @@ final class PhoneVerificationViewController: ModuleViewController<PhoneVerificat
         }
       })
       .disposed(by: disposeBag)
-    
-    presenter.state
-      .map { $0.mode }
-      .drive(onNext: { [nextButton] mode in
-        switch mode {
-        case .creation:
-          nextButton.setTitle(localize(L.Shared.Button.next), for: .normal)
-        case .updating:
-          nextButton.setTitle(localize(L.Shared.Button.done), for: .normal)
-        }
-      })
-      .disposed(by: disposeBag)
-    
-    nextButton.rx.tap.asDriver()
-      .drive(onNext: { [view] in view?.endEditing(true) })
-      .disposed(by: disposeBag)
   }
   
   override func setupBindings() {
     setupUIBindings()
     
     let codeDriver = formView.rx.codeText
-    let nextDriver = nextButton.rx.tap.asDriver()
     let resendCodeDriver = resendCodeLabel.rx.tap
     
     presenter.bind(input: PhoneVerificationPresenter.Input(code: codeDriver,
-                                                           next: nextDriver,
                                                            resendCode: resendCodeDriver))
   }
 }

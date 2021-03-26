@@ -65,7 +65,7 @@ final class LoginFlow: BaseFlow<BTMNavigationController, LoginFlowController> {
     case let .pinCode(stage, pinCode):
       let module = resolver.resolve(Module<PinCodeModule>.self)!
       module.input.setup(for: stage)
-      
+      module.input.setup(for: .new)
       if stage == .confirmation {
         module.input.setup(shouldShowNavBar: true)
       }

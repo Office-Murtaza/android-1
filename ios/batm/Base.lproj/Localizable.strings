@@ -62,7 +62,7 @@
 "recover_seed_phrase.annotation" = "Enter your secret 12-word phrase here to restore your wallet";
 "recover_seed_phrase.form.error.not_valid_length" = "Seed phrase must be 12 words";
 
-"pin_code.stage.setup.title" = "Enter%@PIN";
+"pin_code.stage.setup.title" = "Setup%@PIN";
 "pin_code.stage.confirmation.title" = "Confirm%@PIN";
 "pin_code.stage.verification.title" = "Enter%@PIN";
 "pin_code.pin_type.old.title" = " old ";
@@ -91,8 +91,8 @@
 "security.cell.update_p_i_n" = "Update PIN";
 "security.cell.seed_phrase" = "Seed phrase";
 "security.cell.unlink" = "Unlink";
-"security.cell.face_id" = "Use FaceID";
-"security.cell.touch_id" = "Use TouchID";
+"security.cell.face_id" = "Use face ID";
+"security.cell.touch_id" = "Use touch ID";
 
 "about.title" = "About";
 "about.cell.terms_and_conditions" = "Terms & Conditions";

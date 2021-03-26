@@ -1,8 +1,8 @@
 package com.belco.server.service;
 
 import com.belco.server.dto.CoinDTO;
-import com.belco.server.dto.TxSubmitDTO;
 import com.belco.server.dto.TxDetailsDTO;
+import com.belco.server.dto.TxSubmitDTO;
 import com.belco.server.entity.Coin;
 import com.belco.server.entity.CoinPath;
 import com.belco.server.entity.TransactionRecordWallet;
@@ -10,10 +10,12 @@ import com.belco.server.model.TransactionStatus;
 import com.belco.server.model.TransactionType;
 import com.belco.server.repository.CoinPathRep;
 import com.belco.server.repository.TransactionRecordWalletRep;
+import com.belco.server.util.Constant;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import wallet.core.jni.*;
 
@@ -36,15 +38,17 @@ public class WalletService {
 
     private final CoinPathRep coinPathRep;
     private final TransactionRecordWalletRep transactionRecordWalletRep;
+    private final GethService gethService;
     private final Map<CoinType, CoinDTO> coinsMap = new HashMap<>();
 
     @Value("${wallet.seed}")
     private String seed;
     private HDWallet wallet = null;
 
-    public WalletService(CoinPathRep coinPathRep, TransactionRecordWalletRep transactionRecordWalletRep) {
+    public WalletService(CoinPathRep coinPathRep, TransactionRecordWalletRep transactionRecordWalletRep, @Lazy GethService gethService) {
         this.coinPathRep = coinPathRep;
         this.transactionRecordWalletRep = transactionRecordWalletRep;
+        this.gethService = gethService;
     }
 
     @PostConstruct
@@ -121,7 +125,8 @@ public class WalletService {
             CoinType coinType = coin.getCoinType();
             Coin coinEntity = coin.getCoinEntity();
 
-            CoinPath existingFreePath = coinPathRep.findFirstByCoinIdAndHoursAgo(coinEntity.getId(), 1);
+            CoinPath existingFreePath = coinPathRep.findFirstByCoinIdAndHoursAgo(coinEntity.getId(), Constant.HOURS_BETWEEN_TRANSACTIONS);
+            String address = null;
 
             //there is no free already generated addresses so need to generate a new one
             if (existingFreePath == null) {
@@ -129,21 +134,25 @@ public class WalletService {
 
                 String path = getPath(coinType);
                 String newPath = generateNewPath(path, index + 1);
-                String address = getAddress(coinType, newPath);
+                address = getAddress(coinType, newPath);
 
                 CoinPath coinPath = new CoinPath();
                 coinPath.setPath(newPath);
                 coinPath.setAddress(address);
                 coinPath.setCoin(coinEntity);
                 coinPathRep.save(coinPath);
-
-                return address;
             } else {
                 existingFreePath.setUpdateDate(new Date());
                 coinPathRep.save(existingFreePath);
 
-                return existingFreePath.getAddress();
+                address = existingFreePath.getAddress();
             }
+
+            if (coin == CoinService.CoinEnum.ETH) {
+                gethService.addAddressToJournal(address);
+            }
+
+            return address;
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -151,12 +160,11 @@ public class WalletService {
         return null;
     }
 
-    public BigDecimal getBalance(CoinService.CoinEnum coin) {
+    public BigDecimal getBalance(CoinService.CoinEnum coin, String address) {
         try {
-            String walletAddress = coin.getWalletAddress();
-            BigDecimal balance = coin.getBalance(walletAddress);
+            BigDecimal balance = coin.getBalance(address);
 
-            BigDecimal pendingSum = coin.getNodeTransactions(walletAddress).values().stream()
+            BigDecimal pendingSum = coin.getNodeTransactions(address).values().stream()
                     .filter(e -> e.getType() == TransactionType.WITHDRAW && e.getStatus() == TransactionStatus.PENDING)
                     .map(TxDetailsDTO::getCryptoAmount)
                     .reduce(BigDecimal.ZERO, BigDecimal::add);
@@ -165,7 +173,7 @@ public class WalletService {
                 pendingSum = pendingSum.add(new BigDecimal(20));
             }
 
-            return balance.subtract(pendingSum);
+            return BigDecimal.ZERO.max(balance.subtract(pendingSum));
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -173,11 +181,11 @@ public class WalletService {
         return BigDecimal.ZERO;
     }
 
-    public boolean isEnoughBalance(CoinService.CoinEnum coin, BigDecimal amount) {
-        BigDecimal balance = getBalance(coin);
+    public boolean isEnoughBalance(CoinService.CoinEnum coin, String address, BigDecimal amount) {
+        BigDecimal balance = getBalance(coin, address);
 
-        if (coin == CoinService.CoinEnum.CATM || coin == CoinService.CoinEnum.USDT) {
-            BigDecimal ethBalance = getBalance(CoinService.CoinEnum.ETH);
+        if (coin == CoinService.CoinEnum.CATM || coin == CoinService.CoinEnum.USDC) {
+            BigDecimal ethBalance = getBalance(CoinService.CoinEnum.ETH, address);
             BigDecimal fee = convertToFee(coin);
 
             return balance.compareTo(amount.add(fee)) >= 0 && ethBalance.compareTo(coin.getTxFee()) >= 0;
@@ -191,7 +199,7 @@ public class WalletService {
 
         addresses.stream().forEach(e -> {
             List<String> txIds = coinCode.getNodeTransactions(e).entrySet().stream()
-                    .filter(x -> x.getValue().getToAddress().equalsIgnoreCase(e))
+                    .filter(x -> x.getValue().getToAddress().equalsIgnoreCase(e) && x.getValue().getTimestamp() + Constant.HOURS_BETWEEN_TRANSACTIONS * 3600000 >= System.currentTimeMillis() )
                     .map(x -> x.getKey()).collect(Collectors.toList());
 
             map.put(e, txIds);
@@ -202,10 +210,12 @@ public class WalletService {
 
     public String transfer(CoinService.CoinEnum coin, String fromAddress, String toAddress, BigDecimal amount) {
         try {
-            BigDecimal balance = getBalance(coin);
+            BigDecimal balance = getBalance(coin, fromAddress);
 
             if (balance.compareTo(amount) >= 0 && amount.compareTo(BigDecimal.ZERO) > 0) {
                 String hex = coin.sign(fromAddress, toAddress, amount);
+
+                log.info(" --------- coin: " + coin.name() + ", hex: " + hex);
 
                 TxSubmitDTO dto = new TxSubmitDTO();
                 dto.setHex(hex);
@@ -214,23 +224,26 @@ public class WalletService {
                 dto.setCryptoAmount(amount);
 
                 String txId = coin.submitTransaction(dto);
+                log.info(" --------- coin: " + coin.name() + ", txId: " + txId);
 
-                TransactionRecordWallet wallet = new TransactionRecordWallet();
-                wallet.setCoin(coin.getCoinEntity());
-                wallet.setAmount(amount);
+                if (StringUtils.isNotBlank(txId)) {
+                    TransactionRecordWallet wallet = new TransactionRecordWallet();
+                    wallet.setCoin(coin.getCoinEntity());
+                    wallet.setAmount(amount);
 
-                if (isServerAddress(coin.getCoinType(), fromAddress)) {
-                    wallet.setType(TransactionType.SELL.getValue());
-                } else {
-                    wallet.setType(TransactionType.MOVE.getValue());
+                    if (isServerAddress(coin.getCoinType(), fromAddress)) {
+                        wallet.setType(TransactionType.SELL.getValue());
+                    } else {
+                        wallet.setType(TransactionType.MOVE.getValue());
+                    }
+
+                    wallet.setTxId(txId);
+                    wallet.setStatus(coin.getTransactionDetails(txId, StringUtils.EMPTY).getStatus().getValue());
+
+                    transactionRecordWalletRep.save(wallet);
+
+                    return txId;
                 }
-
-                wallet.setTxId(txId);
-                wallet.setStatus(coin.getTransactionDetails(txId, StringUtils.EMPTY).getStatus().getValue());
-
-                transactionRecordWalletRep.save(wallet);
-
-                return txId;
             }
         } catch (Exception e) {
             e.printStackTrace();

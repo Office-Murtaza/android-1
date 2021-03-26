@@ -9,7 +9,8 @@ final class CoinSendGiftAssembly: Assembly {
       let viewController = CoinSendGiftViewController()
       let usecase = resolver.resolve(CoinDetailsUsecase.self)!
       let walletUseCase = resolver.resolve(WalletUsecase.self)!
-      let presenter = CoinSendGiftPresenter(usecase: usecase, walletUseCase: walletUseCase)
+      let balanceService = resolver.resolve(BalanceService.self)!
+      let presenter = CoinSendGiftPresenter(usecase: usecase, walletUseCase: walletUseCase, balanceService: balanceService)
       
       presenter.delegate = resolver.resolve(DealsFlowController.self)
       viewController.presenter = presenter

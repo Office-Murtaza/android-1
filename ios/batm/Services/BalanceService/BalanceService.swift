@@ -117,6 +117,7 @@ extension BalanceServiceImpl: BalanceServiceWebSocket {
   func subscribe() {
     guard let userId = account?.userId else { return }
     api.getPhoneNumber(userId: userId)
+      .observeOn(ConcurrentDispatchQueueScheduler(qos: .background))
       .flatMap { [unowned self] (phoneNumber) -> Single<[BTMCoin]> in
         self.phone = phoneNumber.phoneNumber
         return self.walletStorage.get()

@@ -149,7 +149,7 @@ public class BlockbookService {
                 dto.setCryptoFee(new BigDecimal(res.optString("fees")).divide(DIVIDER).stripTrailingZeros());
                 dto.setConfirmations(res.optInt("confirmations"));
                 dto.setStatus(getStatus(res.optInt("confirmations")));
-                dto.setDate2(new Date(res.optLong("blockTime") * 1000));
+                dto.setTimestamp(res.optLong("blockTime") * 1000);
             } catch (HttpClientErrorException he) {
                 dto.setStatus(TransactionStatus.NOT_EXIST);
             } catch (Exception e) {
@@ -270,9 +270,8 @@ public class BlockbookService {
                 BigDecimal amount = Util.format(getAmount(type, fromAddress, toAddress, voutArray, DIVIDER), 6);
 
                 TransactionStatus status = getStatus(json.optInt("confirmations"));
-                Date date1 = new Date(json.optLong("blockTime") * 1000);
 
-                map.put(txId, new TxDetailsDTO(txId, amount, fromAddress, toAddress, type, status, date1));
+                map.put(txId, new TxDetailsDTO(txId, amount, fromAddress, toAddress, type, status, json.optLong("blockTime") * 1000));
             }
         }
 

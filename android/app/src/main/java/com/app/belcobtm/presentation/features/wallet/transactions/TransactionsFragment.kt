@@ -7,7 +7,9 @@ import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.widget.TextViewCompat
+import androidx.lifecycle.Observer
 import androidx.lifecycle.observe
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import com.app.belcobtm.R
 import com.app.belcobtm.data.rest.wallet.request.PriceChartPeriod
@@ -133,8 +135,10 @@ class TransactionsFragment : BaseFragment<FragmentTransactionsBinding>() {
             }
         }
         viewModel.transactionListLiveData.observe(viewLifecycleOwner) {
-            adapter.submitList(it)
-            swipeToRefreshView.isRefreshing = false
+            adapter.submitList(it) {
+                swipeToRefreshView.isRefreshing = false
+                binding.listView.smoothScrollToPosition(0)
+            }
         }
         viewModel.loadingData.listen({})
         viewModel.detailsLiveData.observe(viewLifecycleOwner) {
@@ -154,6 +158,15 @@ class TransactionsFragment : BaseFragment<FragmentTransactionsBinding>() {
                 it.reservedBalanceUsd.toStringUsd()
             )
         }
+        val stateHandle = findNavController().currentBackStackEntry?.savedStateHandle
+        val liveData = stateHandle?.getLiveData<Boolean>(REFETCH_OPTION_KEY)
+        liveData?.observe(viewLifecycleOwner, Observer { refetch ->
+            if (refetch) {
+                // clear value to prevent dup call after config change
+                stateHandle.set(REFETCH_OPTION_KEY, false)
+                viewModel.updateData()
+            }
+        })
     }
 
     private fun initChart() {
@@ -262,5 +275,6 @@ class TransactionsFragment : BaseFragment<FragmentTransactionsBinding>() {
 
     companion object {
         private const val CHART_MARGIN_END_DP = 15F
+        const val REFETCH_OPTION_KEY = "transactions.refetch.option"
     }
 }

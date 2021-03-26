@@ -8,7 +8,6 @@ final class PhoneVerificationPresenter: ModulePresenter, PhoneVerificationModule
 
   struct Input {
     var code: Driver<String>
-    var next: Driver<Void>
     var resendCode: Driver<Void>
   }
   
@@ -36,29 +35,29 @@ final class PhoneVerificationPresenter: ModulePresenter, PhoneVerificationModule
 
   func bind(input: Input) {
     input.code
-      .asObservable()
-      .map { PhoneVerificationAction.updateCode($0) }
-      .bind(to: store.action)
-      .disposed(by: disposeBag)
-    
-    input.next
-      .asObservable()
-      .doOnNext { [store] in store.action.accept(.updateValidationState) }
-      .withLatestFrom(state)
-      .doOnNext { [unowned self] state in
-        if !state.validationState.isValid {
-          self.didTypeWrongCode.accept(())
+        .asObservable()
+        .map { PhoneVerificationAction.updateCode($0) }
+        .bind(to: store.action)
+        .disposed(by: disposeBag)
+        
+    input.code
+        .asObservable()
+        .doOnNext { [store] _ in store.action.accept(.updateValidationState) }
+        .withLatestFrom(state)
+        .doOnNext { [unowned self] state in
+            if state.isCodeFilled, !state.validationState.isValid {
+                self.didTypeWrongCode.accept(())
+            }
         }
-      }
-      .filter { $0.validationState.isValid }
-      .flatMap { [unowned self] state -> Driver<PhoneVerificationState> in
-        switch state.mode {
-        case .creation: return .just(state)
-        case .updating: return self.track(self.update(for: state)).map { state }
+        .filter { $0.validationState.isValid }
+        .flatMap { [unowned self] state -> Driver<PhoneVerificationState> in
+            switch state.mode {
+            case .creation: return .just(state)
+            case .updating: return self.track(self.update(for: state)).map { state }
+            }
         }
-      }
-      .subscribe(onNext: { [delegate] in delegate?.didFinishPhoneVerification(phoneNumber: $0.phoneNumber) })
-      .disposed(by: disposeBag)
+        .subscribe(onNext: { [delegate] in delegate?.didFinishPhoneVerification(phoneNumber: $0.phoneNumber) })
+        .disposed(by: disposeBag)
     
     input.resendCode
       .asObservable()

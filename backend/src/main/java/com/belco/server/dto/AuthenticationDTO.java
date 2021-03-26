@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @Setter
@@ -21,6 +22,9 @@ public class AuthenticationDTO {
     private String deviceModel;
     private String deviceOS;
     private String appVersion;
+    private BigDecimal latitude;
+    private BigDecimal longitude;
+    private String timezone;
     private String notificationsToken;
     private String byReferralCode;
     private List<CoinDTO> coins;

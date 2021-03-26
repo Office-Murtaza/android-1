@@ -64,6 +64,9 @@ class CoinExchangeSwapTextFieldView: UIView, UIPickerViewDataSource, HasDisposeB
             coinTextField.isEnabled = coins.count > 1
             coinTextField.textColor = .black
             fakeToCoinTextField.isEnabled = coins.count > 1
+            
+            coinTextField.rightViewMode = coins.count > 1 ? .always : .never
+            coinTextField.rightView = coinCheckMarkImageView
         }
     }
 
@@ -84,7 +87,6 @@ class CoinExchangeSwapTextFieldView: UIView, UIPickerViewDataSource, HasDisposeB
         addSubviews(coinTextField,
                     fakeToCoinTextField,
                     coinTypeImageView,
-                    coinCheckMarkImageView,
                     balanceLabel,
                     amountTextField,
                     maxButton,
@@ -119,17 +121,10 @@ class CoinExchangeSwapTextFieldView: UIView, UIPickerViewDataSource, HasDisposeB
             $0.width.greaterThanOrEqualTo(40)
         }
         
-        coinCheckMarkImageView.snp.makeConstraints {
-            $0.left.equalTo(coinTextField.snp.right).offset(5)
-            $0.height.equalTo(coinTextField)
-            $0.width.equalTo(30)
-            $0.centerY.equalTo(coinTextField)
-        }
-        
         amountTextField.snp.makeConstraints {
             $0.right.equalToSuperview().offset(-15)
-            $0.left.equalTo(coinCheckMarkImageView.snp.right)
-            $0.centerY.equalTo(coinCheckMarkImageView)
+            $0.left.equalTo(fakeToCoinTextField.snp.right)
+            $0.centerY.equalTo(fakeToCoinTextField)
         }
         
         fakeToCoinTextField.snp.makeConstraints {
@@ -193,6 +188,10 @@ class CoinExchangeSwapTextFieldView: UIView, UIPickerViewDataSource, HasDisposeB
     func configure(for coinType:CustomCoinType, coins: [CustomCoinType]) {
         self.coins = coins
         self.coinType = coinType
+        if let index = coins.firstIndex(of: coinType) {
+            coinPickerView.selectRow(index, inComponent: 0, animated: false)
+        }
+        
     }
     
     func configureBalance(for coinBalance: CoinBalance, coinDetails: CoinDetails, useReserved: Bool = false, weighted: Bool = false) {
@@ -252,7 +251,7 @@ extension Reactive where Base == CoinExchangeSwapTextFieldView {
         return base.didSelectPickerRow.asDriver(onErrorDriveWith: .empty())
     }
     
-    var willCointTypeChanged: Driver<CustomCoinType> {
+    var willCoinTypeChanged: Driver<CustomCoinType> {
         return base.willChangeCoinType.asDriver(onErrorDriveWith: .empty())
     }
     

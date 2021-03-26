@@ -13,7 +13,6 @@ protocol DealsUsecase {
     func withdrawStake(from coin: BTMCoin, with coinDetails: CoinDetails, stakeDetails: StakeDetails) -> Completable
     func getCoinDetails(for type: CustomCoinType) -> Single<CoinDetails>
     func getCoin(for type: CustomCoinType) -> Single<BTMCoin>
-    func getCoinsBalance(by type: CustomCoinType) -> Single<CoinsBalance>
 }
 
 class DealsUsecaseImpl: DealsUsecase {

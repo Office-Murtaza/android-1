@@ -9,7 +9,8 @@ final class CoinExchangeAssembly: Assembly {
       let viewController = CoinExchangeViewController()
       let usecase = resolver.resolve(CoinDetailsUsecase.self)!
       let walletUseCase = resolver.resolve(WalletUsecase.self)!
-      let presenter = CoinExchangePresenter(usecase: usecase, walletUseCase: walletUseCase)
+      let balanceService = resolver.resolve(BalanceService.self)!
+      let presenter = CoinExchangePresenter(usecase: usecase, walletUseCase: walletUseCase, balanceService: balanceService)
       
       presenter.delegate = resolver.resolve(CoinExchangeModuleDelegate.self)
       viewController.presenter = presenter

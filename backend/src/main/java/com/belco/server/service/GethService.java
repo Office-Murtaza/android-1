@@ -8,7 +8,7 @@ import com.belco.server.entity.TransactionRecordWallet;
 import com.belco.server.model.TransactionStatus;
 import com.belco.server.model.TransactionType;
 import com.belco.server.token.CATM;
-import com.belco.server.token.USDT;
+import com.belco.server.token.USDC;
 import com.belco.server.util.Util;
 import com.google.protobuf.ByteString;
 import com.mongodb.BasicDBList;
@@ -50,13 +50,13 @@ import java.util.*;
 public class GethService {
 
     public static final BigDecimal ETH_DIVIDER = BigDecimal.valueOf(1_000_000_000_000_000_000L);
-    public static final BigDecimal USDT_DIVIDER = BigDecimal.valueOf(1_000_000L);
+    public static final BigDecimal USDC_DIVIDER = BigDecimal.valueOf(1_000_000L);
 
     private static final CoinType ETHEREUM = CoinType.ETHEREUM;
     private static final ByteString CHAIN_ID = ByteString.copyFrom(Numeric.hexStringToByteArray("1"));
 
     private static final int START_BLOCK = 10290000;
-    private static final int MAX_BLOCK_COUNT = 500;
+    private static final int MAX_BLOCK_COUNT = 1000;
     private static final long WATCH_TIME = 1800000;
 
     private static final String ADDRESS_COLL = "eth_address";
@@ -66,10 +66,10 @@ public class GethService {
 
     public static Web3j web3;
     public static CATM catm;
-    public static USDT usdt;
+    public static USDC usdc;
 
     private static String catmContractAddress;
-    private static String usdtContractAddress;
+    private static String usdcContractAddress;
 
     private static MongoTemplate mongo;
     private static CacheService cacheService;
@@ -83,7 +83,7 @@ public class GethService {
     private int stakingAnnualPercent;
 
     public GethService(@Value("${catm.contract.address}") String catmContractAddress,
-                       @Value("${usdt.contract.address}") String usdtContractAddress,
+                       @Value("${usdc.contract.address}") String usdcContractAddress,
                        MongoTemplate mongo,
                        CacheService cacheService,
                        WalletService walletService,
@@ -91,7 +91,7 @@ public class GethService {
                        PlatformService platformService) {
 
         GethService.catmContractAddress = catmContractAddress;
-        GethService.usdtContractAddress = usdtContractAddress;
+        GethService.usdcContractAddress = usdcContractAddress;
         GethService.mongo = mongo;
         GethService.cacheService = cacheService;
         GethService.walletService = walletService;
@@ -110,9 +110,9 @@ public class GethService {
                     Credentials.create(Numeric.toHexString(walletService.getCoinsMap().get(CoinType.ETHEREUM).getPrivateKey().data())),
                     new StaticGasProvider(BigInteger.valueOf(getFastGasPrice()), BigInteger.valueOf(platformService.getInitialGasLimits().get(ERC20.CATM.name()))));
 
-            usdt = USDT.load(usdtContractAddress, web3,
+            usdc = USDC.load(usdcContractAddress, web3,
                     Credentials.create(Numeric.toHexString(walletService.getCoinsMap().get(CoinType.ETHEREUM).getPrivateKey().data())),
-                    new StaticGasProvider(BigInteger.valueOf(getFastGasPrice()), BigInteger.valueOf(platformService.getInitialGasLimits().get(ERC20.USDT.name()))));
+                    new StaticGasProvider(BigInteger.valueOf(getFastGasPrice()), BigInteger.valueOf(platformService.getInitialGasLimits().get(ERC20.USDC.name()))));
         } catch (Exception e) {
             if (nodeService.switchToReserveNode(ETHEREUM)) {
                 init();
@@ -172,7 +172,7 @@ public class GethService {
                 dto.setCryptoFee(extractFee(d));
                 dto.setFromAddress(fromAddress);
                 dto.setToAddress(toAddress);
-                dto.setDate1(new Date(d.getLong("blockTime")));
+                dto.setTimestamp(d.getLong("blockTime"));
 
                 map.put(d.getString("txId"), dto);
             } catch (Exception e) {
@@ -216,7 +216,7 @@ public class GethService {
                 dto.setToAddress(toAddress);
                 dto.setCryptoFee(extractFee(txDoc));
                 dto.setStatus(TransactionStatus.valueOf(txDoc.getInteger("status")));
-                dto.setDate2(new Date(txDoc.getLong("blockTime")));
+                dto.setTimestamp(txDoc.getLong("blockTime"));
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -268,7 +268,7 @@ public class GethService {
         return new BasicDBObject("$and", and);
     }
 
-    @Scheduled(cron = "0 */10 * * * *")
+    @Scheduled(cron = "0 */2 * * * *")
     public void storeNodeTransactions() {
         if (nodeService.isNodeAvailable(ETHEREUM)) {
             try {
@@ -279,10 +279,10 @@ public class GethService {
                     int n = Math.min(MAX_BLOCK_COUNT, lastBlockNumber - lastSuccessBlock);
                     int toBlockNumber = lastSuccessBlock + n;
 
-                    for (int i = lastSuccessBlock + 1; i <= toBlockNumber; i++) {
-                        List<UpdateOneModel<Document>> ethTxs = new ArrayList<>();
-                        List<UpdateOneModel<Document>> tokenTxs = new ArrayList<>();
+                    List<UpdateOneModel<Document>> ethTxs = new ArrayList<>();
+                    List<UpdateOneModel<Document>> tokenTxs = new ArrayList<>();
 
+                    for (int i = lastSuccessBlock + 1; i <= toBlockNumber; i++) {
                         EthBlock.Block block = web3.ethGetBlockByNumber(new DefaultBlockParameterNumber(i), true).send().getBlock();
 
                         block.getTransactions().stream().forEach(e -> {
@@ -291,15 +291,15 @@ public class GethService {
 
                             fetchEthTransaction(tx, timestamp, ethTxs, tokenTxs);
                         });
-
-                        bulkWrite(ETH_TX_COLL, ethTxs);
-                        bulkWrite(TOKEN_TX_COLL, tokenTxs);
-
-                        mongo.getCollection(BLOCK_COLL).findOneAndUpdate(
-                                new Document("lastSuccessBlock", new Document("$exists", true)),
-                                new Document("$set", new Document("lastSuccessBlock", i).append("timestamp", System.currentTimeMillis())),
-                                new FindOneAndUpdateOptions().upsert(true));
                     }
+
+                    bulkWrite(ETH_TX_COLL, ethTxs);
+                    bulkWrite(TOKEN_TX_COLL, tokenTxs);
+
+                    mongo.getCollection(BLOCK_COLL).findOneAndUpdate(
+                            new Document("lastSuccessBlock", new Document("$exists", true)),
+                            new Document("$set", new Document("lastSuccessBlock", toBlockNumber).append("timestamp", System.currentTimeMillis())),
+                            new FindOneAndUpdateOptions().upsert(true));
                 }
             } catch (Exception e) {
                 e.printStackTrace();
@@ -501,11 +501,11 @@ public class GethService {
     }
 
     public TxDetailsDTO getTransactionDetails(String txId, String address, String explorerUrl) {
-        return getTransactionFromDB(ETH_TX_COLL, new BasicDBObject("txId", txId.toLowerCase()), address, explorerUrl);
+        return getTransactionFromDB(ETH_TX_COLL, new BasicDBObject("txId", txId.toLowerCase()), address.toLowerCase(), explorerUrl);
     }
 
     public TxDetailsDTO getTransactionDetails(ERC20 token, String txId, String address, String explorerUrl) {
-        return getTransactionFromDB(TOKEN_TX_COLL, new BasicDBObject("txId", txId.toLowerCase()).append("token", token.name()), address, explorerUrl);
+        return getTransactionFromDB(TOKEN_TX_COLL, new BasicDBObject("txId", txId.toLowerCase()).append("token", token.name()), address.toLowerCase(), explorerUrl);
     }
 
     public TxHistoryDTO getTransactionHistory(String address, Integer startIndex, Integer limit, List<TransactionRecord> transactionRecords, List<TransactionRecordWallet> transactionRecordWallets) {
@@ -670,8 +670,8 @@ public class GethService {
     private ERC20 getTokenByContractAddress(String contractAddress) {
         if (catmContractAddress.equalsIgnoreCase(contractAddress)) {
             return ERC20.CATM;
-        } else if (usdtContractAddress.equalsIgnoreCase(contractAddress)) {
-            return ERC20.USDT;
+        } else if (usdcContractAddress.equalsIgnoreCase(contractAddress)) {
+            return ERC20.USDC;
         } else {
             return null;
         }
@@ -797,17 +797,17 @@ public class GethService {
                 return ETH_DIVIDER;
             }
         },
-        USDT {
+        USDC {
             @Override
             public String getContractAddress() {
-                return usdtContractAddress;
+                return usdcContractAddress;
             }
 
             @Override
             public BigDecimal getBalance(String address) {
                 if (nodeService.isNodeAvailable(ETHEREUM)) {
                     try {
-                        return new BigDecimal(usdt.balanceOf(address).send()).divide(USDT_DIVIDER);
+                        return new BigDecimal(usdc.balanceOf(address).send()).divide(USDC_DIVIDER);
                     } catch (Exception e) {
                         e.printStackTrace();
 
@@ -823,7 +823,7 @@ public class GethService {
 
             @Override
             public BigDecimal getDivider() {
-                return USDT_DIVIDER;
+                return USDC_DIVIDER;
             }
         };
 

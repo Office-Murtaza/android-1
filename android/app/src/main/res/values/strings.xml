@@ -24,7 +24,6 @@
 
     <!-- Pin code -->
     <string name="pin_code_screen_enter_pin">Enter PIN</string>
-    <string name="pin_code_screen_confirm_pin">Confirm PIN</string>
     <string name="pin_code_screen_old_pin">Enter old PIN</string>
     <string name="pin_code_screen_new_pin">Enter new PIN</string>
     <string name="pin_code_screen_new_pin_confirm">Confirm new PIN</string>
@@ -33,7 +32,7 @@
     <string name="code_created">Code created successfully</string>
     <string name="code_changed">Code changed successfully</string>
     <string name="pin_code_do_not_match">PINS don\'t match. Please try again</string>
-    <string name="setup_pin_code">Setup PIN code</string>
+    <string name="setup_pin_code">Setup new PIN</string>
 
     <!-- Sms code -->
     <string name="sms_code_screen_title">Verify phone</string>
@@ -569,7 +568,6 @@
     <string name="order_status_cancelled_label">Cancelled</string>
     <string name="order_status_solved_label">Done</string>
 
-    <!--  TODO RENAME  -->
     <string name="trade_create_reserved_balance_formatted"><![CDATA[Reserved %1$s %2$s]]></string>
     <string name="trade_crypto_amount_value"><![CDATA[~%1$s %2$s]]></string>
     <string name="fiat_amount_label">Fiat amount</string>

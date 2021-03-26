@@ -18,7 +18,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
-
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.*;
@@ -85,11 +84,8 @@ public class TransactionService {
                     map.get(e.getDetail()).setType(type);
                     map.get(e.getDetail()).setStatus(status);
                 } else {
-                    TxDetailsDTO txDetailsDTO = new TxDetailsDTO(null, Util.format(e.getCryptoAmount(), 6), type, status, e.getServerTime());
-                    String txDbId = e.getId().toString();
-                    txDetailsDTO.setTxDbId(txDbId);
-
-                    map.put(txDbId, txDetailsDTO);
+                    Long txDBId = e.getId();
+                    map.put(txDBId.toString(), new TxDetailsDTO(txDBId, Util.format(e.getCryptoAmount(), 6), type, status, e.getServerTime().getTime()));
                 }
             });
         }
@@ -98,7 +94,7 @@ public class TransactionService {
     private static List<TxDetailsDTO> convertAndSort(Map<String, TxDetailsDTO> map) {
         if (!map.isEmpty()) {
             List<TxDetailsDTO> list = new ArrayList<>(map.values());
-            list.sort(Comparator.comparing(TxDetailsDTO::getDate1).reversed());
+            list.sort(Comparator.comparing(TxDetailsDTO::getTimestamp).reversed());
 
             return list;
         }
@@ -143,20 +139,20 @@ public class TransactionService {
             TransactionRecordWallet exchange = swapRecOpt.get();
 
             String code = exchange.getRefCoin().getCode();
-            dto.setRefTxId(exchange.getRefTxId());
-            dto.setRefLink(CoinService.CoinEnum.valueOf(code).getExplorerUrl() + "/" + exchange.getRefTxId());
-            dto.setRefCoin(code);
-            dto.setRefCryptoAmount(exchange.getRefAmount());
+            dto.setSwapTxId(exchange.getRefTxId());
+            dto.setSwapLink(CoinService.CoinEnum.valueOf(code).getExplorerUrl() + "/" + exchange.getRefTxId());
+            dto.setSwapCryptoAmount(exchange.getRefAmount());
+            dto.setSwapCoin(code);
             dto.setType(TransactionType.convert(dto.getType(), TransactionType.valueOf(exchange.getType())));
         } else if (buySellRecOpt.isPresent()) {
             TransactionRecord buySell = buySellRecOpt.get();
 
-            //return either txId or txDbId
+            //return txId or txDBId
             if (StringUtils.isBlank(dto.getTxId())) {
                 if (StringUtils.isNotBlank(buySell.getDetail())) {
                     dto.setTxId(buySell.getDetail());
                 } else {
-                    dto.setTxDbId(buySell.getId().toString());
+                    dto.setTxDBId(buySell.getId());
                 }
             }
 
@@ -165,7 +161,7 @@ public class TransactionService {
             dto.setCryptoAmount(buySell.getCryptoAmount().stripTrailingZeros());
             dto.setFiatAmount(buySell.getCashAmount().setScale(0));
             dto.setToAddress(buySell.getCryptoAddress());
-            dto.setDate2(buySell.getServerTime());
+            dto.setTimestamp(buySell.getServerTime().getTime());
 
             if (dto.getType() == TransactionType.SELL) {
                 dto.setCashStatus(CashStatus.getCashStatus(buySell.getCanBeCashedOut(), buySell.getWithdrawn()));
@@ -337,7 +333,7 @@ public class TransactionService {
             record.setAmount(dto.getCryptoAmount());
             record.setType(TransactionType.SEND_SWAP.getValue());
             record.setStatus(TransactionStatus.PENDING.getValue());
-            record.setProfitPercent(platformService.getSwapProfitPercent());
+            record.setProfitPercent(platformService.getPlatformSwapFee());
             record.setRefCoin(refCoin.getCoinEntity());
             record.setRefAmount(dto.getRefCryptoAmount());
 
@@ -367,9 +363,10 @@ public class TransactionService {
         try {
             UserCoin userCoin = userService.getUserCoin(userId, coinCode.name());
             BigDecimal reserved = userCoin.getReservedBalance();
-            BigDecimal txFee = coinCode == CoinService.CoinEnum.CATM || coinCode == CoinService.CoinEnum.USDT ? walletService.convertToFee(coinCode) : coinCode.getTxFee();
+            BigDecimal txFee = coinCode == CoinService.CoinEnum.CATM || coinCode == CoinService.CoinEnum.USDC ? walletService.convertToFee(coinCode) : coinCode.getTxFee();
+            String walletAddress = coinCode.getWalletAddress();
 
-            if (walletService.isEnoughBalance(coinCode, dto.getCryptoAmount()) && reserved.compareTo(dto.getCryptoAmount().add(txFee)) >= 0) {
+            if (walletService.isEnoughBalance(coinCode, walletAddress, dto.getCryptoAmount()) && reserved.compareTo(dto.getCryptoAmount().add(txFee)) >= 0) {
                 String fromAddress = coinCode.getWalletAddress();
                 String toAddress = userCoin.getAddress();
                 String hex = coinCode.sign(fromAddress, toAddress, dto.getCryptoAmount());
@@ -495,7 +492,7 @@ public class TransactionService {
 
                 dto.setStatus(StakingStatus.convert(TransactionType.valueOf(createStakeRec.getType()), TransactionStatus.valueOf(createStakeRec.getStatus())));
                 dto.setAmount(createStakeRec.getAmount().stripTrailingZeros());
-                dto.setCreateDate(createStakeRec.getCreateDate());
+                dto.setCreateTimestamp(createStakeRec.getCreateDate().getTime());
 
                 if (StringUtils.isBlank(createStakeRec.getRefTxId())) {
                     int days = Seconds.secondsBetween(new DateTime(createStakeRec.getCreateDate()), DateTime.now()).getSeconds() / gethService.getStakingBasePeriod();
@@ -515,7 +512,7 @@ public class TransactionService {
                     dto.setDuration(days);
                     dto.setRewardPercent(percent);
                     dto.setStatus(StakingStatus.convert(TransactionType.valueOf(cancelStakeRec.getType()), TransactionStatus.valueOf(cancelStakeRec.getStatus())));
-                    dto.setCancelDate(cancelStakeRec.getCreateDate());
+                    dto.setCancelTimestamp(cancelStakeRec.getCreateDate().getTime());
                     dto.setRewardAmount(createStakeRec.getAmount().multiply(Util.convertPercentToDecimal(percent)).stripTrailingZeros());
                     dto.setRewardAnnualAmount(createStakeRec.getAmount().multiply(Util.convertPercentToDecimal(BigDecimal.valueOf(gethService.getStakingAnnualPercent()))).stripTrailingZeros());
                     dto.setTillWithdrawal(Math.max(0, gethService.getStakingHoldPeriod() / gethService.getStakingBasePeriod() - holdDays));
@@ -589,8 +586,9 @@ public class TransactionService {
             list.stream().forEach(t -> {
                 try {
                     CoinService.CoinEnum coinCode = CoinService.CoinEnum.valueOf(t.getRefCoin().getCode());
+                    String walletAddress = coinCode.getWalletAddress();
 
-                    if (walletService.isEnoughBalance(coinCode, t.getRefAmount())) {
+                    if (walletService.isEnoughBalance(coinCode, walletAddress, t.getRefAmount())) {
                         Identity identity = t.getIdentity();
                         String fromAddress = coinCode.getWalletAddress();
                         String toAddress = userService.getUserCoin(identity.getUser().getId(), coinCode.name()).getAddress();
@@ -650,10 +648,11 @@ public class TransactionService {
 
                     if (receiverOpt.isPresent()) {
                         CoinService.CoinEnum coinCode = CoinService.CoinEnum.valueOf(t.getCoin().getCode());
-                        BigDecimal txFee = coinCode == CoinService.CoinEnum.CATM || coinCode == CoinService.CoinEnum.USDT ? walletService.convertToFee(coinCode) : coinCode.getTxFee();
+                        BigDecimal txFee = coinCode == CoinService.CoinEnum.CATM || coinCode == CoinService.CoinEnum.USDC ? walletService.convertToFee(coinCode) : coinCode.getTxFee();
                         BigDecimal withdrawAmount = t.getAmount().subtract(txFee);
+                        String walletAddress = coinCode.getWalletAddress();
 
-                        if (walletService.isEnoughBalance(coinCode, t.getAmount())) {
+                        if (walletService.isEnoughBalance(coinCode, walletAddress, t.getAmount())) {
                             String fromAddress = coinCode.getWalletAddress();
                             String toAddress = userService.getUserCoin(receiverOpt.get().getId(), t.getCoin().getCode()).getAddress();
                             String hex = coinCode.sign(fromAddress, toAddress, withdrawAmount);

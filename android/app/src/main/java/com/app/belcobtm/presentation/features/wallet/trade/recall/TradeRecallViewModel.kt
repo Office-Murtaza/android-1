@@ -3,6 +3,7 @@ package com.app.belcobtm.presentation.features.wallet.trade.recall
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.app.belcobtm.domain.transaction.interactor.trade.TradeRecallTransactionCompleteUseCase
 import com.app.belcobtm.domain.wallet.LocalCoinType
 import com.app.belcobtm.domain.wallet.interactor.GetCoinByCodeUseCase
@@ -18,6 +19,8 @@ import com.app.belcobtm.presentation.core.item.CoinScreenItem
 import com.app.belcobtm.presentation.core.item.mapToScreenItem
 import com.app.belcobtm.presentation.core.mvvm.LoadingData
 import com.app.belcobtm.presentation.features.wallet.trade.reserve.InputFieldState
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 class TradeRecallViewModel(
     private val coinCode: String,
@@ -81,7 +84,13 @@ class TradeRecallViewModel(
                 coinDataItem.code,
                 selectedAmount
             ),
-            onSuccess = { _transactionLiveData.value = LoadingData.Success(Unit) },
+            onSuccess = {
+                // we need to add some delay as server returns 200 before writting to DB
+                viewModelScope.launch {
+                    delay(1000)
+                    _transactionLiveData.value = LoadingData.Success(Unit)
+                }
+            },
             onError = { _transactionLiveData.value = LoadingData.Error(it) }
         )
     }

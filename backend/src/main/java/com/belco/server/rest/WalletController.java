@@ -68,7 +68,7 @@ public class WalletController {
         }
 
         WalletDTO dto = new WalletDTO();
-        dto.setBalance(walletService.getBalance(coin));
+        dto.setBalance(walletService.getBalance(coin, coin.getWalletAddress()));
 
         return ResponseEntity.ok(dto);
     }
@@ -87,7 +87,7 @@ public class WalletController {
         dto.setTolerance(coin.getCoinEntity().getTolerance().stripTrailingZeros());
         dto.setScale(coin.getCoinEntity().getScale());
 
-        if (coin == CoinService.CoinEnum.CATM || coin == CoinService.CoinEnum.USDT) {
+        if (coin == CoinService.CoinEnum.CATM || coin == CoinService.CoinEnum.USDC) {
             dto.setConvertedTxFee(walletService.convertToFee(coin));
         }
 

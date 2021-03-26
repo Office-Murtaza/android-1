@@ -1,7 +1,6 @@
 package com.belco.server.dto;
 
 import com.belco.server.model.StakingStatus;
-import com.belco.server.util.Constant;
 import com.belco.server.util.Util;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -10,7 +9,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
-import java.util.Date;
 
 @Getter
 @NoArgsConstructor
@@ -31,13 +29,8 @@ public class StakingDetailsDTO {
     private String rewardAnnualAmountStr;
     private int holdPeriod;
     private int annualPercent;
-
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = Constant.LONG_DATE_FORMAT)
-    private Date createDate;
-
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = Constant.LONG_DATE_FORMAT)
-    private Date cancelDate;
-
+    private long createTimestamp;
+    private long cancelTimestamp;
     private int duration;
     private int tillWithdrawal;
 
@@ -73,12 +66,12 @@ public class StakingDetailsDTO {
         this.holdPeriod = holdPeriod;
     }
 
-    public void setCreateDate(Date createDate) {
-        this.createDate = createDate;
+    public void setCreateTimestamp(long createTimestamp) {
+        this.createTimestamp = createTimestamp;
     }
 
-    public void setCancelDate(Date cancelDate) {
-        this.cancelDate = cancelDate;
+    public void setCancelTimestamp(long cancelTimestamp) {
+        this.cancelTimestamp = cancelTimestamp;
     }
 
     public void setDuration(int duration) {

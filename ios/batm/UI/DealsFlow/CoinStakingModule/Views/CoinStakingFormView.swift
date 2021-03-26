@@ -93,7 +93,7 @@ extension Reactive where Base == CoinStakingFormView {
     }
     
     var willChangeFromCoinType: Driver<CustomCoinType> {
-        return base.fromCoinView.rx.willCointTypeChanged
+        return base.fromCoinView.rx.willCoinTypeChanged
     }
     
     var selectFromPickerItem: Driver<CustomCoinType> {

@@ -222,7 +222,7 @@ public class RippledService {
                 dto.setToAddress(res.optString("Destination"));
                 dto.setType(TransactionType.getType(dto.getFromAddress(), dto.getToAddress(), address));
                 dto.setStatus(getStatus(res.optString("status")));
-                dto.setDate2(new Date((res.optLong("date") + 946684800L) * 1000));
+                dto.setTimestamp((res.optLong("date") + 946684800L) * 1000);
             } catch (Exception e) {
                 e.printStackTrace();
 
@@ -316,9 +316,9 @@ public class RippledService {
                 String toAddress = tx.optString("Destination");
                 TransactionType type = TransactionType.getType(tx.optString("Account"), tx.optString("Destination"), address);
                 BigDecimal amount = Util.format(getAmount(tx.optString("Amount")), 6);
-                Date date1 = new Date((tx.optLong("date") + 946684800L) * 1000);
+                long timestamp = (tx.optLong("date") + 946684800L) * 1000;
 
-                map.put(txId, new TxDetailsDTO(txId, amount, fromAddress, toAddress, type, status, date1));
+                map.put(txId, new TxDetailsDTO(txId, amount, fromAddress, toAddress, type, status, timestamp));
             }
         }
 

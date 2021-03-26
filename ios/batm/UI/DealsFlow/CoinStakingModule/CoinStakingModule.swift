@@ -1,7 +1,7 @@
 import Foundation
 
 protocol CoinStakingModule: class {
-    func setup(coin: BTMCoin, coinBalances: [CoinBalance], coinDetails: CoinDetails, stakeDetails: StakeDetails)
+    func setup()
 }
 
 protocol CoinStakingModuleDelegate: class {

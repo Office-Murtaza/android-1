@@ -208,7 +208,7 @@ class PinCodeViewModel(
         return when {
             mode == KEY_PIN_MODE_ENTER -> R.string.pin_code_screen_enter_pin
             mode == KEY_PIN_MODE_CREATE && step == STEP_CREATE -> R.string.setup_pin_code
-            mode == KEY_PIN_MODE_CREATE && step == STEP_CONFIRM -> R.string.pin_code_screen_confirm_pin
+            mode == KEY_PIN_MODE_CREATE && step == STEP_CONFIRM -> R.string.pin_code_screen_new_pin_confirm
             mode == KEY_PIN_MODE_CHANGE && step == STEP_VERIFY -> R.string.pin_code_screen_old_pin
             mode == KEY_PIN_MODE_CHANGE && step == STEP_CREATE -> R.string.pin_code_screen_new_pin
             mode == KEY_PIN_MODE_CHANGE && step == STEP_CONFIRM -> R.string.pin_code_screen_new_pin_confirm

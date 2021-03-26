@@ -133,18 +133,18 @@ public class CoinService {
         dto.setTxFee(coin.getTxFee());
         dto.setGasPrice(coin.getGasPrice());
         dto.setScale(coin.getCoinEntity().getScale());
-        dto.setPlatformSwapFee(platformService.getSwapProfitPercent());
-        dto.setPlatformTradeFee(platformService.getSwapProfitPercent());
+        dto.setPlatformSwapFee(platformService.getPlatformSwapFee());
+        dto.setPlatformTradeFee(platformService.getPlatformSwapFee());
         dto.setWalletAddress(coin.getWalletAddress());
         dto.setContractAddress(coin.getContractAddress());
 
-        if(coin == CoinEnum.ETH) {
+        if (coin == CoinEnum.ETH) {
             dto.setGasLimit(coin.getGasLimit(coin.getWalletAddress()));
-        } else if(coin == CoinEnum.CATM){
+        } else if (coin == CoinEnum.CATM) {
             dto.setGasLimit(coin.getGasLimit(GethService.ERC20.CATM.getContractAddress()));
             dto.setConvertedTxFee(walletService.convertToFee(coin));
-        }else if (coin == CoinEnum.USDT) {
-            dto.setGasLimit(coin.getGasLimit(GethService.ERC20.USDT.getContractAddress()));
+        } else if (coin == CoinEnum.USDC) {
+            dto.setGasLimit(coin.getGasLimit(GethService.ERC20.USDC.getContractAddress()));
             dto.setConvertedTxFee(walletService.convertToFee(coin));
         }
 
@@ -885,7 +885,7 @@ public class CoinService {
                 return GethService.ERC20.CATM.getContractAddress();
             }
         },
-        USDT {
+        USDC {
             @Override
             public BigDecimal getPrice() {
                 return getPriceById(getName());
@@ -893,7 +893,7 @@ public class CoinService {
 
             @Override
             public BigDecimal getBalance(String address) {
-                return GethService.ERC20.USDT.getBalance(address);
+                return GethService.ERC20.USDC.getBalance(address);
             }
 
             @Override
@@ -903,7 +903,7 @@ public class CoinService {
 
             @Override
             public BigDecimal getTxFee() {
-                return gethService.getTxFee(getGasLimit(GethService.ERC20.USDT.getContractAddress()), getGasPrice());
+                return gethService.getTxFee(getGasLimit(GethService.ERC20.USDC.getContractAddress()), getGasPrice());
             }
 
             @Override
@@ -928,12 +928,12 @@ public class CoinService {
 
             @Override
             public TxDetailsDTO getTransactionDetails(String txId, String address) {
-                return gethService.getTransactionDetails(GethService.ERC20.USDT, txId, address, getExplorerUrl());
+                return gethService.getTransactionDetails(GethService.ERC20.USDC, txId, address, getExplorerUrl());
             }
 
             @Override
             public TxHistoryDTO getTransactionHistory(String address, Integer startIndex, Integer limit, List<TransactionRecord> transactionRecords, List<TransactionRecordWallet> transactionRecordWallets) {
-                return gethService.getTransactionHistory(GethService.ERC20.USDT, address, startIndex, limit, transactionRecords, transactionRecordWallets);
+                return gethService.getTransactionHistory(GethService.ERC20.USDC, address, startIndex, limit, transactionRecords, transactionRecordWallets);
             }
 
             @Override
@@ -948,12 +948,12 @@ public class CoinService {
 
             @Override
             public String sign(String fromAddress, String toAddress, BigDecimal amount) {
-                return gethService.sign(GethService.ERC20.USDT, fromAddress, toAddress, amount, getGasLimit(GethService.ERC20.USDT.getContractAddress()), getGasPrice());
+                return gethService.sign(GethService.ERC20.USDC, fromAddress, toAddress, amount, getGasLimit(GethService.ERC20.USDC.getContractAddress()), getGasPrice());
             }
 
             @Override
             public String submitTransaction(TxSubmitDTO dto) {
-                return GethService.submitTransaction(GethService.ERC20.USDT, dto);
+                return GethService.submitTransaction(GethService.ERC20.USDC, dto);
             }
 
             @Override
@@ -963,7 +963,7 @@ public class CoinService {
 
             @Override
             public Map<String, TxDetailsDTO> getNodeTransactions(String address) {
-                return gethService.getNodeTransactions(GethService.ERC20.USDT, address);
+                return gethService.getNodeTransactions(GethService.ERC20.USDC, address);
             }
 
             @Override
@@ -978,7 +978,7 @@ public class CoinService {
 
             @Override
             public String getContractAddress() {
-                return GethService.ERC20.USDT.getContractAddress();
+                return GethService.ERC20.USDC.getContractAddress();
             }
         },
         BNB {

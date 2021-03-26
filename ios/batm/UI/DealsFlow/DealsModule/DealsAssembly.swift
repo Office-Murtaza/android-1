@@ -7,7 +7,8 @@ class DealsAssembly: Assembly {
             let dataSource = DealsTableViewDataSource()
             let viewController = DealsViewController()
             let usecase = resolver.resolve(DealsUsecase.self)!
-            let presenter = DealsPresenter(usecase: usecase)
+            let balanceService = resolver.resolve(BalanceService.self)!
+            let presenter = DealsPresenter(usecase: usecase, balanceService: balanceService)
             
             presenter.delegate = resolver.resolve(DealsModuleDelegate.self)
             viewController.presenter = presenter

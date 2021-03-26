@@ -240,9 +240,9 @@ public class BinanceService {
             com.belco.server.model.TransactionType type = com.belco.server.model.TransactionType.getType(tx.getFromAddr(), tx.getToAddr(), address);
             BigDecimal amount = Util.format(new BigDecimal(tx.getValue()), 6);
             TransactionStatus status = getStatus(tx.getCode());
-            Date date1 = Date.from(ZonedDateTime.parse(tx.getTimeStamp()).toInstant());
+            long timestamp = ZonedDateTime.parse(tx.getTimeStamp()).toInstant().toEpochMilli();
 
-            map.put(txId, new TxDetailsDTO(txId, amount, tx.getFromAddr(), tx.getToAddr(), type, status, date1));
+            map.put(txId, new TxDetailsDTO(txId, amount, tx.getFromAddr(), tx.getToAddr(), type, status, timestamp));
         }
 
         return map;

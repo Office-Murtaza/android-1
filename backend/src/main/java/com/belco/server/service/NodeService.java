@@ -76,15 +76,17 @@ public class NodeService {
     }
 
     public boolean switchToReserveNode(CoinType coinType) {
-        if (reserveNodeMap.containsKey(coinType)) {
-            mainNodeMap.put(coinType, reserveNodeMap.get(coinType));
-            reserveNodeMap.remove(coinType);
+//        if (reserveNodeMap.containsKey(coinType)) {
+//            mainNodeMap.put(coinType, reserveNodeMap.get(coinType));
+//            reserveNodeMap.remove(coinType);
+//
+//            return true;
+//        } else {
+//            mainNodeMap.remove(coinType);
+//
+//            throw new RuntimeException("Nodes for " + coinType.name() + " are down");
+//        }
 
-            return true;
-        } else {
-            mainNodeMap.remove(coinType);
-
-            throw new RuntimeException("Nodes for " + coinType.name() + " are down");
-        }
+        return true;
     }
 }
