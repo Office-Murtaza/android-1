@@ -75,7 +75,7 @@ val dataModule = module {
     single { NetworkUtils(get()) }
     single { FileHelper(get()) }
     single { AssetsDataStore(get()) }
-    single { TransactionHashHelper(get(), get(), get(), get()) }
+    single { TransactionHashHelper(get(), get(), get(), get(), get()) }
     single {
         Room.databaseBuilder(get(), AppDatabase::class.java, "belco_database")
             .fallbackToDestructiveMigration()

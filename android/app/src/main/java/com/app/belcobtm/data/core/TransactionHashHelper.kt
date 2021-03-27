@@ -4,9 +4,12 @@ import com.app.belcobtm.data.core.trx.Trx
 import com.app.belcobtm.data.disk.database.AccountDao
 import com.app.belcobtm.data.disk.shared.preferences.SharedPreferencesHelper
 import com.app.belcobtm.data.rest.transaction.TransactionApiService
+import com.app.belcobtm.data.websockets.base.model.WalletBalance
+import com.app.belcobtm.data.websockets.wallet.WalletObserver
 import com.app.belcobtm.domain.Either
 import com.app.belcobtm.domain.Failure
 import com.app.belcobtm.domain.wallet.LocalCoinType
+import com.app.belcobtm.domain.wallet.item.CoinDataItem
 import com.app.belcobtm.domain.wallet.item.isEthRelatedCoinCode
 import com.app.belcobtm.presentation.core.Numeric
 import com.app.belcobtm.presentation.core.extensions.*
@@ -15,6 +18,10 @@ import com.app.belcobtm.presentation.core.toHexBytes
 import com.app.belcobtm.presentation.core.toHexBytesInByteString
 import com.google.protobuf.ByteString
 import com.squareup.moshi.Moshi
+import kotlinx.coroutines.flow.filterIsInstance
+import kotlinx.coroutines.flow.firstOrNull
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.receiveAsFlow
 import wallet.core.java.AnySigner
 import wallet.core.jni.*
 import wallet.core.jni.proto.*
@@ -24,6 +31,7 @@ import java.util.*
 
 class TransactionHashHelper(
     private val moshi: Moshi,
+    private val walletObserver: WalletObserver,
     private val apiService: TransactionApiService,
     private val prefsHelper: SharedPreferencesHelper,
     private val daoAccount: AccountDao
@@ -183,7 +191,12 @@ class TransactionHashHelper(
         }
     }
 
-    private fun getByteFee(coinName: String?): Long = prefsHelper.coinsDetails[coinName]?.byteFee ?: Long.MIN_VALUE
+    private suspend fun getByteFee(coinName: String?): Long {
+        if (coinName == null) {
+            return Long.MIN_VALUE
+        }
+        return getCoinByCode(coinName)?.details?.byteFee ?: Long.MIN_VALUE
+    }
 
     private suspend fun createTransactionHashETH(
         toAddress: String,
@@ -196,15 +209,16 @@ class TransactionHashHelper(
 
         return if (response.isRight) {
             val nonceResponse = (response as Either.Right).b
-            val coinFee = prefsHelper.coinsDetails[fromCoin.name]
+            val coinItem = getCoinByCode(fromCoin.name)
             val amountMultipliedByDivider = BigDecimal(fromCoinAmount * when (fromCoin) {
                 LocalCoinType.USDC -> USDC_UNIT
                 else -> CoinType.ETHEREUM.unit()
             })
-            val hexAmount = addLeadingZeroes(amountMultipliedByDivider.toLong().toString(16))?.toHexByteArray()
-            val hexNonce = addLeadingZeroes(nonceResponse?.toString(16) ?: "")?.toHexByteArray()
-            val hexGasLimit = addLeadingZeroes((coinFee?.gasLimit?.toLong() ?: 0).toString(16))?.toHexByteArray()
-            val hexGasPrice = addLeadingZeroes((coinFee?.gasPrice?.toLong() ?: 0).toString(16))?.toHexByteArray()
+            // todo find out what should be used for gasLimit / gasPrice
+            val hexAmount = addLeadingZeroes(amountMultipliedByDivider.toLong().toString(16)).toHexByteArray()
+            val hexNonce = addLeadingZeroes(nonceResponse?.toString(16) ?: "").toHexByteArray()
+            val hexGasLimit = addLeadingZeroes((coinItem?.details?.gasLimit ?: 0).toString(16))?.toHexByteArray()
+            val hexGasPrice = addLeadingZeroes((coinItem?.details?.gasPrice ?: 0).toString(16))?.toHexByteArray()
             val input = Ethereum.SigningInput.newBuilder().also {
                 it.chainId = ByteString.copyFrom("0x1".toHexByteArray())
                 it.nonce = ByteString.copyFrom(hexNonce)
@@ -230,7 +244,7 @@ class TransactionHashHelper(
                     }
                 }
                 input.payload = ByteString.copyFrom(EthereumAbi.encode(function))
-                input.toAddress = coinFee?.contractAddress
+                input.toAddress = coinItem?.publicKey
             } else {
                 input.amount = ByteString.copyFrom(hexAmount)
                 input.toAddress = toAddress
@@ -248,7 +262,7 @@ class TransactionHashHelper(
      * custom implementation of adding leading zeroes
      * for hex value (%016llx)
      */
-    private fun addLeadingZeroes(str: String): String? {
+    private fun addLeadingZeroes(str: String): String {
         var res = ""
         if (str.length < 64) {
             var i = 0
@@ -282,7 +296,7 @@ class TransactionHashHelper(
                         it.account = coinEntity.publicKey
                         it.amount = (fromCoinAmount * CoinType.XRP.unit()).toLong()
                         it.destination = toAddress
-                        it.fee = ((prefsHelper.coinsDetails[CoinType.XRP.code()]?.txFee?.toBigDecimal()
+                        it.fee = ((getCoinByCode(CoinType.XRP.code())?.details?.txFee?.toBigDecimal()
                             ?: BigDecimal(0.000020)) * BigDecimal.valueOf(CoinType.XRP.unit())).toLong()
                         it.privateKey = ByteString.copyFrom(privateKey.data())
                     }
@@ -400,6 +414,13 @@ class TransactionHashHelper(
         } else {
             response as Either.Left
         }
+    }
+
+    private suspend fun getCoinByCode(coinCode: String): CoinDataItem? {
+        return walletObserver.observe().receiveAsFlow()
+            .filterIsInstance<WalletBalance.Balance>()
+            .map { balance -> balance.data.coinList.firstOrNull { it.code == coinCode } }
+            .firstOrNull()
     }
 
     private companion object {

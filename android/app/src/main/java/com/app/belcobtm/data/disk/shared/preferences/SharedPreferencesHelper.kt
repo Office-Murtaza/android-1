@@ -2,21 +2,8 @@ package com.app.belcobtm.data.disk.shared.preferences
 
 import android.content.SharedPreferences
 import com.app.belcobtm.data.rest.authorization.response.AuthorizationResponse
-import com.app.belcobtm.domain.wallet.item.CoinDetailsDataItem
-import com.squareup.moshi.JsonAdapter
-import com.squareup.moshi.Moshi
-import com.squareup.moshi.Types
 
 class SharedPreferencesHelper(private val sharedPreferences: SharedPreferences) {
-    private val jsonAdapter: JsonAdapter<Map<String, CoinDetailsDataItem>> by lazy {
-        val moshi: Moshi = Moshi.Builder().build()
-        val listType = Types.newParameterizedType(
-            Map::class.java,
-            String::class.java,
-            CoinDetailsDataItem::class.java
-        )
-        moshi.adapter<Map<String, CoinDetailsDataItem>>(listType)
-    }
 
     var accessToken: String = ""
         set(value) {
@@ -43,12 +30,6 @@ class SharedPreferencesHelper(private val sharedPreferences: SharedPreferences) 
         set(value) = sharedPreferences.set(NOTIFICATION_TOKEN, value)
         get() = sharedPreferences[NOTIFICATION_TOKEN]
 
-    var coinsDetails: Map<String, CoinDetailsDataItem>
-        set(value) = sharedPreferences.set(COINS_FEE, jsonAdapter.toJson(value))
-        get() {
-            val json = sharedPreferences[COINS_FEE] ?: ""
-            return if (json.isBlank()) emptyMap() else jsonAdapter.fromJson(json) ?: emptyMap()
-        }
     var userPhone: String
         set(value) = sharedPreferences.set(USER_PHONE, value)
         get() = sharedPreferences[USER_PHONE] ?: ""

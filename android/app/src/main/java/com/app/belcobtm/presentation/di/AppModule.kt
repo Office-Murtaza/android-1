@@ -76,23 +76,23 @@ val viewModelModule = module {
     viewModel { AboutViewModel(androidApplication(), get()) }
     viewModel { SecurityViewModel(get(), get(), get(), get(), get()) }
     viewModel { WalletViewModel(get(), get()) }
-    viewModel { (coinCode: String) -> TransactionsViewModel(coinCode, get(), get(), get(), get()) }
+    viewModel { (coinCode: String) -> TransactionsViewModel(coinCode, get(), get(), get()) }
     viewModel { RecoverWalletViewModel(get(), get<PhoneNumberValidator>()) }
     viewModel { CreateWalletViewModel(get(), get<PhoneNumberValidator>()) }
     viewModel { PinCodeViewModel(get(), get(), get(), get(), get(), get(), get()) }
     viewModel { VerificationInfoViewModel(get()) }
     viewModel { VerificationBlankViewModel(get(), get()) }
     viewModel { VerificationVipViewModel(get()) }
-    viewModel { SwapViewModel(get(), get(), get(), get(), get(), get(), get()) }
+    viewModel { SwapViewModel(get(), get(), get(), get(), get(), get()) }
     viewModel { WalletsViewModel(get(), get()) }
     viewModel { (coinCode: String) ->
-        TradeRecallViewModel(coinCode, get(), get(), get(), get(), get(), get())
+        TradeRecallViewModel(coinCode, get(), get(), get(), get(), get())
     }
     viewModel { (coinCode: String) ->
-        TradeReserveViewModel(coinCode, get(), get(), get(), get(), get(), get(), get(), get())
+        TradeReserveViewModel(coinCode, get(), get(), get(), get(), get(), get(), get())
     }
     viewModel {
-        StakingViewModel(get(), get(), get(), get(), get(), get(), get())
+        StakingViewModel(get(), get(), get(), get(), get(), get())
     }
     viewModel { (phone: String) ->
         SmsCodeViewModel(phone, get())
@@ -109,9 +109,9 @@ val viewModelModule = module {
             get()
         ) }
     viewModel {
-        SendGiftViewModel(get(), get(), get(), get(), get(), get(), get(), get<PhoneNumberValidator>())
+        SendGiftViewModel(get(), get(), get(), get(), get())
     }
-    viewModel { (coinCode: String) -> WithdrawViewModel(coinCode, get(), get(), get(), get(), get()) }
+    viewModel { (coinCode: String) -> WithdrawViewModel(coinCode, get(), get(), get(), get()) }
     viewModel { (coinCode: String) -> DepositViewModel(coinCode, get()) }
     viewModel { ContactListViewModel(get(), get<PhoneNumberValidator>(), get()) }
     viewModel { TradeContainerViewModel(get(), get(), get(), get()) }
@@ -147,7 +147,7 @@ val viewModelModule = module {
     viewModel { TradeOrderDetailsViewModel(get(), get(), get(), get(named(GOOGLE_MAPS_DIRECTIONS_QUERY_FORMATTER))) }
     viewModel {
         TradeCreateOrderViewModel(
-            get(), get(), get(), get(), get(),
+            get(), get(), get(), get(),
             get(named(DOUBLE_CURRENCY_PRICE_FORMATTER_QUALIFIER)),
             get(named(PRICE_DOUBLE_PARSER_QUALIFIER))
         )

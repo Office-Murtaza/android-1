@@ -11,10 +11,8 @@ import com.app.belcobtm.domain.transaction.interactor.StakeWithdrawUseCase
 import com.app.belcobtm.domain.transaction.item.StakeDetailsDataItem
 import com.app.belcobtm.domain.wallet.LocalCoinType
 import com.app.belcobtm.domain.wallet.interactor.GetCoinByCodeUseCase
-import com.app.belcobtm.domain.wallet.interactor.GetCoinDetailsUseCase
 import com.app.belcobtm.domain.wallet.interactor.GetFreshCoinUseCase
 import com.app.belcobtm.domain.wallet.item.CoinDataItem
-import com.app.belcobtm.domain.wallet.item.CoinDetailsDataItem
 import com.app.belcobtm.presentation.core.DateFormat
 import com.app.belcobtm.presentation.core.SingleLiveData
 import com.app.belcobtm.presentation.core.mvvm.LoadingData
@@ -23,7 +21,6 @@ import kotlinx.coroutines.launch
 
 class StakingViewModel(
     private val getCoinByCodeUseCase: GetCoinByCodeUseCase,
-    private val getCoinDetailsUseCase: GetCoinDetailsUseCase,
     private val getFreshCoinUseCase: GetFreshCoinUseCase,
     private val stakeCreateUseCase: StakeCreateUseCase,
     private val stakeCancelUseCase: StakeCancelUseCase,
@@ -40,7 +37,6 @@ class StakingViewModel(
 
     private lateinit var coinDataItem: CoinDataItem
     private lateinit var etheriumCoinDataItem: CoinDataItem
-    private lateinit var coinDetailsDataItem: CoinDetailsDataItem
 
     init {
         loadData()
@@ -52,26 +48,17 @@ class StakingViewModel(
         getCoinByCodeUseCase(
             catmCoinCode,
             onSuccess = { catmCoin ->
-                coinDataItem = catmCoin
-                getCoinDetailsUseCase.invoke(
-                    GetCoinDetailsUseCase.Params(catmCoinCode),
-                    onSuccess = {
-                        coinDetailsDataItem = it
-                        // it is necessary to get latest data as we will be checking
-                        // balance value to proceess next operations
-                        getFreshCoinUseCase(
-                            GetFreshCoinUseCase.Params(LocalCoinType.ETH.name),
-                            onSuccess = { etherium ->
-                                etheriumCoinDataItem = etherium
-                                loadBaseData()
-                            },
-                            onError = { failure2 ->
-                                _stakeDetailsLiveData.value = LoadingData.Error(failure2)
-                            }
-                        )
+                this.coinDataItem = catmCoin
+                // it is necessary to get latest data as we will be checking
+                // balance value to proceess next operations
+                getFreshCoinUseCase(
+                    GetFreshCoinUseCase.Params(LocalCoinType.ETH.name),
+                    onSuccess = { etherium ->
+                        etheriumCoinDataItem = etherium
+                        loadBaseData()
                     },
-                    onError = {
-                        _stakeDetailsLiveData.value = LoadingData.Error(it)
+                    onError = { failure2 ->
+                        _stakeDetailsLiveData.value = LoadingData.Error(failure2)
                     }
                 )
             },
@@ -92,7 +79,7 @@ class StakingViewModel(
                         price = coinDataItem.priceUsd,
                         balanceCoin = coinDataItem.balanceCoin,
                         balanceUsd = coinDataItem.balanceUsd,
-                        ethFee = coinDetailsDataItem.txFee,
+                        ethFee = coinDataItem.details.txFee,
                         reservedBalanceCoin = coinDataItem.reservedBalanceCoin,
                         reservedBalanceUsd = coinDataItem.reservedBalanceUsd,
                         reservedCode = coinDataItem.code,
@@ -168,12 +155,12 @@ class StakingViewModel(
     }
 
     fun isNotEnoughETHBalanceForCATM(): Boolean =
-        etheriumCoinDataItem.balanceCoin < coinDetailsDataItem.txFee
+        etheriumCoinDataItem.balanceCoin < coinDataItem.details.txFee
 
     fun getMaxValue(): Double = if (coinDataItem.code == LocalCoinType.CATM.name) {
         coinDataItem.balanceCoin
     } else {
-        0.0.coerceAtLeast(coinDataItem.balanceCoin - coinDetailsDataItem.txFee)
+        0.0.coerceAtLeast(coinDataItem.balanceCoin - coinDataItem.details.txFee)
     }
 
     fun getUsdPrice(): Double = coinDataItem.priceUsd

@@ -1,7 +1,6 @@
 package com.app.belcobtm.data
 
 import com.app.belcobtm.data.disk.database.AccountDao
-import com.app.belcobtm.data.disk.shared.preferences.SharedPreferencesHelper
 import com.app.belcobtm.data.rest.wallet.WalletApiService
 import com.app.belcobtm.data.rest.wallet.request.PriceChartPeriod
 import com.app.belcobtm.data.websockets.base.model.WalletBalance
@@ -12,7 +11,6 @@ import com.app.belcobtm.domain.wallet.WalletRepository
 import com.app.belcobtm.domain.wallet.item.BalanceDataItem
 import com.app.belcobtm.domain.wallet.item.ChartDataItem
 import com.app.belcobtm.domain.wallet.item.CoinDataItem
-import com.app.belcobtm.domain.wallet.item.CoinDetailsDataItem
 import kotlinx.coroutines.flow.filterIsInstance
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.receiveAsFlow
@@ -20,15 +18,8 @@ import kotlinx.coroutines.flow.receiveAsFlow
 class WalletRepositoryImpl(
     private val walletObserver: WalletObserver,
     private val apiService: WalletApiService,
-    private val prefHelper: SharedPreferencesHelper,
     private val daoAccount: AccountDao
 ) : WalletRepository {
-
-    override fun getCoinDetailsMap(): Map<String, CoinDetailsDataItem> = prefHelper.coinsDetails
-
-    override fun getCoinDetailsItemByCode(
-        coinCode: String
-    ): CoinDetailsDataItem = prefHelper.coinsDetails.getValue(coinCode)
 
     override suspend fun getCoinItemByCode(
         coinCode: String
@@ -98,15 +89,4 @@ class WalletRepositoryImpl(
         @PriceChartPeriod period: Int
     ): Either<Failure, ChartDataItem> = apiService.getChart(coinCode, period)
 
-    override suspend fun updateCoinDetails(
-        coinCode: String
-    ): Either<Failure, CoinDetailsDataItem> {
-        val response = apiService.getCoinDetails(coinCode)
-        if (response.isRight) {
-            val mutableCoinsFeeMap = prefHelper.coinsDetails.toMutableMap()
-            mutableCoinsFeeMap[coinCode] = (response as Either.Right).b
-            prefHelper.coinsDetails = mutableCoinsFeeMap
-        }
-        return response
-    }
 }

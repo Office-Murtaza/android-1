@@ -10,10 +10,8 @@ import com.app.belcobtm.domain.Failure
 import com.app.belcobtm.domain.transaction.interactor.CheckXRPAddressActivatedUseCase
 import com.app.belcobtm.domain.transaction.interactor.SwapUseCase
 import com.app.belcobtm.domain.wallet.LocalCoinType
-import com.app.belcobtm.domain.wallet.interactor.GetCoinDetailsUseCase
 import com.app.belcobtm.domain.wallet.interactor.GetFreshCoinsUseCase
 import com.app.belcobtm.domain.wallet.item.CoinDataItem
-import com.app.belcobtm.domain.wallet.item.CoinDetailsDataItem
 import com.app.belcobtm.domain.wallet.item.isEthRelatedCoin
 import com.app.belcobtm.presentation.core.SingleLiveData
 import com.app.belcobtm.presentation.core.coin.AmountCoinValidator
@@ -29,13 +27,9 @@ class SwapViewModel(
     private val swapUseCase: SwapUseCase,
     private val checkXRPAddressActivatedUseCase: CheckXRPAddressActivatedUseCase,
     private val minMaxCoinValueProvider: MinMaxCoinValueProvider,
-    private val getCoinDetailsUseCase: GetCoinDetailsUseCase
 ) : ViewModel() {
 
     val originCoinsData = mutableListOf<CoinDataItem>()
-
-    private var coinToSendDetails: CoinDetailsDataItem? = null
-    private var coinToReceiveDetails: CoinDetailsDataItem? = null
 
     private val _coinToSend = MutableLiveData<CoinDataItem>()
     val coinToSend: LiveData<CoinDataItem> = _coinToSend
@@ -64,13 +58,13 @@ class SwapViewModel(
     private val _coinsDetailsLoadingState = MutableLiveData<LoadingData<Unit>>()
     val coinsDetailsLoadingState: LiveData<LoadingData<Unit>> = _coinsDetailsLoadingState
 
-    private val _sendCoinAmount = MutableLiveData<Double>(0.0)
+    private val _sendCoinAmount = MutableLiveData(0.0)
     val sendCoinAmount: LiveData<Double> = _sendCoinAmount
 
     private val _submitEnabled = MutableLiveData(false)
     val submitEnabled: LiveData<Boolean> = _submitEnabled
 
-    private val _receiveCoinAmount = MutableLiveData<Double>(0.0)
+    private val _receiveCoinAmount = MutableLiveData(0.0)
     val receiveCoinAmount: LiveData<Double> = _receiveCoinAmount
 
     private val _swapLoadingData = SingleLiveData<LoadingData<Unit>>()
@@ -145,9 +139,8 @@ class SwapViewModel(
 
     fun setMaxSendAmount() {
         val currentCoinToSend = coinToSend.value ?: return
-        val currentCoinToSendDetails = coinToSendDetails ?: return
         val maxAmount = minMaxCoinValueProvider
-            .getMaxValue(currentCoinToSend, currentCoinToSendDetails)
+            .getMaxValue(currentCoinToSend)
         setSendAmount(maxAmount)
     }
 
@@ -156,16 +149,15 @@ class SwapViewModel(
         val receiveCoinItem = coinToReceive.value ?: return
         val sendCoinAmount = sendCoinAmount.value ?: return
         val receiveCoinAmount = receiveCoinAmount.value ?: return
-        val receiveCoinDetails = coinToReceiveDetails ?: return
         if (!validateCoinToSendAmount(sendCoinAmount) || !validateCoinsAmount()) {
             return
         }
         if (receiveCoinItem.code == LocalCoinType.XRP.name) {
-            val minXRPValue = 20 + receiveCoinDetails.txFee
+            val minXRPValue = 20 + receiveCoinItem.details.txFee
             if (receiveCoinAmount < minXRPValue) {
                 _swapLoadingData.value = LoadingData.Loading()
                 checkXRPAddressActivatedUseCase(
-                    params = CheckXRPAddressActivatedUseCase.Param(receiveCoinDetails.walletAddress),
+                    params = CheckXRPAddressActivatedUseCase.Param(receiveCoinItem.details.walletAddress),
                     onSuccess = { addressActivated ->
                         if (addressActivated) {
                             executeSwapInternal(
@@ -209,60 +201,42 @@ class SwapViewModel(
         if (coinToSend == coinToReceive) {
             return
         }
-        // notify UI that coin details is fetching
-        _coinsDetailsLoadingState.value = LoadingData.Loading()
         // clear up the values to operate with 0 amount in the callbacks
         clearSendAndReceiveAmount()
-        // start fetching only after clearing up amount values
-        getCoinDetailsUseCase(
-            params = GetCoinDetailsUseCase.Params(coinToSend.code),
-            onSuccess = { coinToSendDetails ->
-                getCoinDetailsUseCase(
-                    params = GetCoinDetailsUseCase.Params(coinToReceive.code),
-                    onSuccess = { coinToReceiveDetails ->
-                        _coinToSend.value = coinToSend
-                        _coinToReceive.value = coinToReceive
-                        this.coinToSendDetails = coinToSendDetails
-                        this.coinToReceiveDetails = coinToReceiveDetails
-                        val sendAmount = sendCoinAmount.value ?: 0.0
-                        val atomicSwapAmount = calcCoinsRatio(coinToSend, coinToReceive)
-                        _swapRate.value = SwapRateModelView(
-                            1,
-                            coinToSend.code,
-                            atomicSwapAmount,
-                            coinToReceive.code,
-                        )
-                        updateFeeInfo(sendAmount)
-                        _coinToSendModel.value = CoinPresentationModel(
-                            coinToSend.code,
-                            coinToSend.balanceCoin,
-                            coinToSendDetails.txFee
-                        )
-                        _coinToReceiveModel.value = CoinPresentationModel(
-                            coinToReceive.code,
-                            coinToReceive.balanceCoin,
-                            coinToReceiveDetails.txFee
-                        )
-                        // notify UI that coin details has beed successfully fetched
-                        _coinsDetailsLoadingState.value = LoadingData.Success(Unit)
-                    },
-                    onError = { _coinsDetailsLoadingState.value = LoadingData.Error(it) }
-                )
-            },
-            onError = { _coinsDetailsLoadingState.value = LoadingData.Error(it) }
+        _coinToSend.value = coinToSend
+        _coinToReceive.value = coinToReceive
+        val sendAmount = sendCoinAmount.value ?: 0.0
+        val atomicSwapAmount = calcCoinsRatio(coinToSend, coinToReceive)
+        _swapRate.value = SwapRateModelView(
+            1,
+            coinToSend.code,
+            atomicSwapAmount,
+            coinToReceive.code,
         )
+        updateFeeInfo(sendAmount)
+        _coinToSendModel.value = CoinPresentationModel(
+            coinToSend.code,
+            coinToSend.balanceCoin,
+            coinToSend.details.txFee
+        )
+        _coinToReceiveModel.value = CoinPresentationModel(
+            coinToReceive.code,
+            coinToReceive.balanceCoin,
+            coinToReceive.details.txFee
+        )
+        // notify UI that coin details has beed successfully fetched
+        _coinsDetailsLoadingState.value = LoadingData.Success(Unit)
     }
 
     private fun validateCoinToSendAmount(coinAmount: Double): Boolean {
         val currentCoinToSend = coinToSend.value ?: return false
-        val currentCoinToSendDetails = coinToSendDetails ?: return false
         val balanceValidationResult = amountValidator.validateBalance(
-            coinAmount, currentCoinToSend, currentCoinToSendDetails, originCoinsData
+            coinAmount, currentCoinToSend, originCoinsData
         )
         val minCoinAmount = minMaxCoinValueProvider
-            .getMinValue(currentCoinToSend, currentCoinToSendDetails)
+            .getMinValue(currentCoinToSend)
         val maxCoinAmount = minMaxCoinValueProvider
-            .getMaxValue(currentCoinToSend, currentCoinToSendDetails)
+            .getMaxValue(currentCoinToSend)
         val validationResult = when {
             balanceValidationResult is ValidationResult.InValid -> {
                 balanceValidationResult
@@ -291,13 +265,9 @@ class SwapViewModel(
     private fun calcReceiveAmountFromSend(sendAmount: Double): Double {
         val currentCoinToSend = coinToSend.value ?: return 0.0
         val currentCoinToReceive = coinToReceive.value ?: return 0.0
-        val currentCoinToSendDetails = coinToSendDetails ?: return 0.0
-        val currentCoinToReceiveDetails = coinToReceiveDetails ?: return 0.0
         return calcSwapAmountFromSend(
             currentCoinToSend,
-            currentCoinToSendDetails,
             currentCoinToReceive,
-            currentCoinToReceiveDetails,
             sendAmount
         )
     }
@@ -305,65 +275,56 @@ class SwapViewModel(
     private fun calcSendAmountFromReceive(receiveAmount: Double): Double {
         val currentCoinToSend = coinToSend.value ?: return 0.0
         val currentCoinToReceive = coinToReceive.value ?: return 0.0
-        val currentCoinToSendDetails = coinToSendDetails ?: return 0.0
-        val currentCoinToReceiveDetails = coinToReceiveDetails ?: return 0.0
         return calcSwapAmountFromReceive(
             currentCoinToSend,
-            currentCoinToSendDetails,
             currentCoinToReceive,
-            currentCoinToReceiveDetails,
             receiveAmount
         )
     }
 
     private fun calcSwapAmountFromSend(
         sendCoin: CoinDataItem,
-        sendCoinDetails: CoinDetailsDataItem,
         receiveCoin: CoinDataItem,
-        receiveCoinDetails: CoinDetailsDataItem,
         sendAmount: Double
     ): Double {
         // Case:
         // User swap from A to B, user enter amount(A),
         // amount(B) = amount(A) x price(A) / price(B) x (1 - swapProfitPercent / 100) - fee(B)
         val price = sendAmount * calcCoinsRatio(sendCoin, receiveCoin)
-        val receiveCoinFee = getReceiveCoinFee(receiveCoin, receiveCoinDetails)
-        val sendCoinFee = getCoinFeeActual(sendCoinDetails)
+        val receiveCoinFee = getReceiveCoinFee(receiveCoin)
+        val sendCoinFee = getCoinFeeActual(sendCoin)
         val result = price * sendCoinFee - receiveCoinFee
         return 0.0.coerceAtLeast(result)
     }
 
     private fun calcSwapAmountFromReceive(
         sendCoin: CoinDataItem,
-        sendCoinDetails: CoinDetailsDataItem,
         receiveCoin: CoinDataItem,
-        receiveCoinDetails: CoinDetailsDataItem,
         receiveAmount: Double
     ): Double {
         // Case:
         // User swap from A to B, user enter amount(B),
         // amount(A) = (amount(B) + fee(B)) x price(B) / price(A) / (1 - swapProfitPercent / 100)
-        val receiveCoinFee = getReceiveCoinFee(receiveCoin, receiveCoinDetails)
+        val receiveCoinFee = getReceiveCoinFee(receiveCoin)
         val coinRatio = calcCoinsRatio(receiveCoin, sendCoin)
-        val sendCoinFee = getCoinFeeActual(sendCoinDetails)
+        val sendCoinFee = getCoinFeeActual(sendCoin)
         val result = (receiveAmount + receiveCoinFee) * coinRatio / sendCoinFee
         return 0.0.coerceAtLeast(result)
     }
 
     private fun getReceiveCoinFee(
-        receiveCoin: CoinDataItem,
-        receiveCoinDetails: CoinDetailsDataItem,
+        receiveCoin: CoinDataItem
     ): Double {
         // fee(B) = convertedTxFee(B) in case B is CATM or USDC
         // fee(B) = txFee(B) for the rest of coins.
         return when (receiveCoin.isEthRelatedCoin()) {
-            true -> receiveCoinDetails.convertedTxFee
-            false -> receiveCoinDetails.txFee
+            true -> receiveCoin.details.convertedTxFee!!
+            false -> receiveCoin.details.txFee
         }
     }
 
-    private fun getCoinFeeActual(coinDetailsDataItem: CoinDetailsDataItem): Double {
-        return 1 - coinDetailsDataItem.platformSwapFee / 100
+    private fun getCoinFeeActual(coinDetailsDataItem: CoinDataItem): Double {
+        return 1 - coinDetailsDataItem.details.platformSwapFee / 100
     }
 
     private fun calcCoinsRatio(coin1: CoinDataItem, coin2: CoinDataItem): Double {
@@ -373,10 +334,9 @@ class SwapViewModel(
     private fun updateFeeInfo(sendAmount: Double) {
         val coinToSend = coinToSend.value ?: return
         val coinToReceive = coinToReceive.value ?: return
-        val coinToReceiveDetails = coinToReceiveDetails ?: return
         // Platform fee(B) = amount(A) x price(A) / price(B) x (swapProfitPercent / 100)
         val receiveRawAmount = sendAmount * calcCoinsRatio(coinToSend, coinToReceive)
-        val platformFeeActual = coinToReceiveDetails.platformSwapFee
+        val platformFeeActual = coinToReceive.details.platformSwapFee
         val platformFeeCoinsAmount = receiveRawAmount * (platformFeeActual / 100)
         _swapFee.value = SwapFeeModelView(
             platformFeeActual,

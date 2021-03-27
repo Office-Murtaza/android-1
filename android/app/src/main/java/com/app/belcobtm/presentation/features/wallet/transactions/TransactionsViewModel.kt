@@ -11,7 +11,6 @@ import com.app.belcobtm.data.websockets.wallet.WalletObserver
 import com.app.belcobtm.domain.transaction.interactor.GetTransactionListUseCase
 import com.app.belcobtm.domain.wallet.LocalCoinType
 import com.app.belcobtm.domain.wallet.interactor.GetChartsUseCase
-import com.app.belcobtm.domain.wallet.interactor.UpdateCoinDetailsUseCase
 import com.app.belcobtm.domain.wallet.item.ChartChangesColor
 import com.app.belcobtm.domain.wallet.item.ChartDataItem
 import com.app.belcobtm.presentation.core.mvvm.LoadingData
@@ -29,7 +28,6 @@ class TransactionsViewModel(
     private val walletObserver: WalletObserver,
     private val chartUseCase: GetChartsUseCase,
     private val transactionListUseCase: GetTransactionListUseCase,
-    private val updateCoinDetailsUseCase: UpdateCoinDetailsUseCase
 ) : ViewModel() {
     val chartLiveData: MutableLiveData<LoadingData<CurrentChartInfo>> =
         MutableLiveData(LoadingData.Loading())
@@ -50,22 +48,13 @@ class TransactionsViewModel(
     }
 
     init {
+        _loadingLiveData.value = LoadingData.Loading()
         subscribeToCoinDataItem(coinCode)
         updateData()
     }
 
     fun updateData() {
-        _loadingLiveData.value = LoadingData.Loading()
         loadChartData(PriceChartPeriod.PERIOD_DAY)
-        updateCoinDetailsUseCase.invoke(
-            params = UpdateCoinDetailsUseCase.Params(coinCode),
-            onSuccess = {
-                _loadingLiveData.value = LoadingData.Success(Unit)
-            },
-            onError = {
-                _loadingLiveData.value = LoadingData.Error(it)
-            }
-        )
         refreshTransactionList()
     }
 
@@ -145,8 +134,12 @@ class TransactionsViewModel(
                     }.map { it.mapToUiItem() })
                     transactionListLiveData.value = newList
                 }
+                _loadingLiveData.value = LoadingData.Success(Unit)
             },
-            onError = { it.printStackTrace() }
+            onError = {
+                it.printStackTrace()
+                _loadingLiveData.value = LoadingData.Error(it)
+            }
         )
     }
 

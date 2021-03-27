@@ -2,19 +2,25 @@ package com.app.belcobtm.data
 
 import com.app.belcobtm.data.core.TransactionHashHelper
 import com.app.belcobtm.data.disk.database.AccountDao
-import com.app.belcobtm.data.disk.shared.preferences.SharedPreferencesHelper
 import com.app.belcobtm.data.rest.transaction.TransactionApiService
+import com.app.belcobtm.data.websockets.base.model.WalletBalance
+import com.app.belcobtm.data.websockets.wallet.WalletObserver
 import com.app.belcobtm.domain.Either
 import com.app.belcobtm.domain.Failure
 import com.app.belcobtm.domain.tools.ToolsRepository
 import com.app.belcobtm.domain.transaction.TransactionRepository
 import com.app.belcobtm.domain.transaction.item.*
 import com.app.belcobtm.domain.wallet.LocalCoinType
+import com.app.belcobtm.domain.wallet.item.CoinDataItem
 import com.app.belcobtm.domain.wallet.item.isEthRelatedCoinCode
+import kotlinx.coroutines.flow.filterIsInstance
+import kotlinx.coroutines.flow.firstOrNull
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.receiveAsFlow
 
 class TransactionRepositoryImpl(
     private val apiService: TransactionApiService,
-    private val prefHelper: SharedPreferencesHelper,
+    private val walletObserver: WalletObserver,
     private val toolsRepository: ToolsRepository,
     private val transactionHashRepository: TransactionHashHelper,
     private val daoAccount: AccountDao
@@ -30,7 +36,7 @@ class TransactionRepositoryImpl(
         fromCoinAmount: Double,
         isNeedSendSms: Boolean
     ): Either<Failure, String> {
-        val toAddress = prefHelper.coinsDetails[fromCoin]?.walletAddress ?: ""
+        val toAddress = getCoinByCode(fromCoin)?.details?.walletAddress ?: ""
         val coinType = LocalCoinType.valueOf(fromCoin)
         val hashResponse =
             transactionHashRepository.createTransactionHash(coinType, fromCoinAmount, toAddress)
@@ -57,7 +63,7 @@ class TransactionRepositoryImpl(
         val hashResponse =
             transactionHashRepository.createTransactionHash(coinType, fromCoinAmount, toAddress)
         return if (hashResponse.isRight) {
-            val fee = prefHelper.coinsDetails[fromCoin]?.txFee ?: 0.0
+            val fee = getCoinByCode(fromCoin)?.details?.txFee ?: 0.0
             val fromAddress = daoAccount.getItem(fromCoin).publicKey
             apiService.withdraw(
                 (hashResponse as Either.Right).b,
@@ -86,7 +92,7 @@ class TransactionRepositoryImpl(
             val hashResponse =
                 transactionHashRepository.createTransactionHash(coinType, amount, toAddress)
             if (hashResponse.isRight) {
-                val fee = prefHelper.coinsDetails[coinCode]?.txFee ?: 0.0
+                val fee = getCoinByCode(coinCode)?.details?.txFee ?: 0.0
                 val item = daoAccount.getItem(coinCode)
                 val fromAddress = item.publicKey
                 val hash = (hashResponse as Either.Right).b
@@ -150,16 +156,17 @@ class TransactionRepositoryImpl(
         coinTo: String
     ): Either<Failure, Unit> {
         val coinType = LocalCoinType.valueOf(fromCoin)
+        val fromCoinItem = getCoinByCode(fromCoin)
         val toAddress: String = if (fromCoin.isEthRelatedCoinCode()) {
-            prefHelper.coinsDetails[fromCoin]?.contractAddress
+            fromCoinItem?.publicKey
         } else {
-            prefHelper.coinsDetails[fromCoin]?.walletAddress
+            fromCoinItem?.details?.walletAddress
         } ?: ""
         val hashResponse =
             transactionHashRepository.createTransactionHash(coinType, fromCoinAmount, toAddress)
         return if (hashResponse.isRight) {
-            val toAddressSend = prefHelper.coinsDetails[fromCoin]?.walletAddress ?: ""
-            val fee = prefHelper.coinsDetails[fromCoin]?.txFee ?: 0.0
+            val toAddressSend = fromCoinItem?.details?.walletAddress ?: ""
+            val fee = fromCoinItem?.details?.txFee ?: 0.0
             val fromAddress = daoAccount.getItem(fromCoin).publicKey
             val hash = (hashResponse as Either.Right).b
             apiService.exchange(
@@ -188,7 +195,7 @@ class TransactionRepositoryImpl(
         coinCode: String,
         cryptoAmount: Double
     ): Either<Failure, String> {
-        val toAddress = prefHelper.coinsDetails[coinCode]?.walletAddress ?: ""
+        val toAddress = getCoinByCode(coinCode)?.details?.walletAddress ?: ""
         val coinType = LocalCoinType.valueOf(coinCode)
         val hashResponse =
             transactionHashRepository.createTransactionHash(coinType, cryptoAmount, toAddress)
@@ -203,9 +210,10 @@ class TransactionRepositoryImpl(
         cryptoAmount: Double,
         hash: String
     ): Either<Failure, Unit> {
-        val fromAddress = prefHelper.coinsDetails[coinCode]?.walletAddress ?: ""
-        val toAddress = prefHelper.coinsDetails[coinCode]?.contractAddress ?: ""
-        val fee = prefHelper.coinsDetails[coinCode]?.txFee ?: 0.0
+        val coinItem = getCoinByCode(coinCode)
+        val fromAddress = coinItem?.details?.walletAddress ?: ""
+        val toAddress = coinItem?.publicKey ?: ""
+        val fee = coinItem?.details?.txFee ?: 0.0
         return apiService.submitReserve(coinCode, fromAddress, toAddress, cryptoAmount, fee, hash)
     }
 
@@ -217,15 +225,16 @@ class TransactionRepositoryImpl(
         coinCode: String,
         cryptoAmount: Double
     ): Either<Failure, Unit> {
+        val coinItem = getCoinByCode(coinCode)
         val transactionResponse = transactionHashRepository.createTransactionStakeHash(
             cryptoAmount,
-            prefHelper.coinsDetails[coinCode]?.walletAddress ?: ""
+            coinItem?.details?.walletAddress ?: ""
         )
         return if (transactionResponse.isRight) {
             val hash = (transactionResponse as Either.Right).b
-            val fromAddress = prefHelper.coinsDetails[coinCode]?.walletAddress ?: ""
-            val toAddress = prefHelper.coinsDetails[coinCode]?.contractAddress ?: ""
-            val coinFee = prefHelper.coinsDetails[coinCode]?.txFee ?: 0.0
+            val fromAddress = coinItem?.details?.walletAddress ?: ""
+            val toAddress = coinItem?.publicKey ?: ""
+            val coinFee = coinItem?.details?.txFee ?: 0.0
             apiService.stakeCreate(coinCode, fromAddress, toAddress, cryptoAmount, coinFee, hash)
         } else {
             transactionResponse as Either.Left
@@ -235,16 +244,16 @@ class TransactionRepositoryImpl(
     override suspend fun stakeCancel(
         coinCode: String
     ): Either<Failure, Unit> {
+        val coinItem = getCoinByCode(coinCode)
         val transactionResponse = transactionHashRepository.createTransactionStakeCancelHash(
             0.0,
-            prefHelper.coinsDetails[coinCode]?.walletAddress ?: ""
+            coinItem?.details?.walletAddress ?: ""
         )
-
         return if (transactionResponse.isRight) {
             val hash = (transactionResponse as Either.Right).b
-            val fromAddress = prefHelper.coinsDetails[coinCode]?.walletAddress ?: ""
-            val toAddress = prefHelper.coinsDetails[coinCode]?.contractAddress ?: ""
-            val coinFee = prefHelper.coinsDetails[coinCode]?.txFee ?: 0.0
+            val fromAddress = coinItem?.details?.walletAddress ?: ""
+            val toAddress = coinItem?.publicKey ?: ""
+            val coinFee = coinItem?.details?.txFee ?: 0.0
             apiService.stakeCancel(coinCode, fromAddress, toAddress, 0.0, coinFee, hash)
         } else {
             transactionResponse as Either.Left
@@ -255,16 +264,16 @@ class TransactionRepositoryImpl(
         coinCode: String,
         cryptoAmount: Double
     ): Either<Failure, Unit> {
+        val coinItem = getCoinByCode(coinCode)
         val transactionResponse = transactionHashRepository.createTransactionUnStakeHash(
             cryptoAmount,
-            prefHelper.coinsDetails[coinCode]?.walletAddress ?: ""
+            coinItem?.details?.walletAddress ?: ""
         )
-
         return if (transactionResponse.isRight) {
             val hash = (transactionResponse as Either.Right).b
-            val fromAddress = prefHelper.coinsDetails[coinCode]?.walletAddress ?: ""
-            val toAddress = prefHelper.coinsDetails[coinCode]?.contractAddress ?: ""
-            val coinFee = prefHelper.coinsDetails[coinCode]?.txFee ?: 0.0
+            val fromAddress = coinItem?.details?.walletAddress ?: ""
+            val toAddress = coinItem?.publicKey ?: ""
+            val coinFee = coinItem?.details?.txFee ?: 0.0
             apiService.unStake(coinCode, fromAddress, toAddress, cryptoAmount, coinFee, hash)
         } else {
             transactionResponse as Either.Left
@@ -278,5 +287,12 @@ class TransactionRepositoryImpl(
 
     override suspend fun checkXRPAddressActivated(address: String): Either<Failure, Boolean> {
         return apiService.getXRPAddressActivated(address)
+    }
+
+    private suspend fun getCoinByCode(coidCode: String): CoinDataItem? {
+        return walletObserver.observe().receiveAsFlow()
+            .filterIsInstance<WalletBalance.Balance>()
+            .map { balance -> balance.data.coinList.firstOrNull { it.code == coidCode } }
+            .firstOrNull()
     }
 }
