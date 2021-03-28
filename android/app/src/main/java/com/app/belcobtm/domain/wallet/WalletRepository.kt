@@ -8,12 +8,6 @@ import com.app.belcobtm.domain.wallet.item.*
 
 interface WalletRepository {
 
-    fun getCoinDetailsMap(): Map<String, CoinDetailsDataItem>
-
-    fun getCoinDetailsItemByCode(coinCode: String): CoinDetailsDataItem
-
-    suspend fun updateCoinDetails(coinCode: String): Either<Failure, CoinDetailsDataItem>
-
     /**
      * Returns [CoinDataItem] by the specific [coinCode]
      *

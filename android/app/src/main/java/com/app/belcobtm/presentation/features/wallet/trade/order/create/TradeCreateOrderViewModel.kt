@@ -9,7 +9,6 @@ import com.app.belcobtm.domain.trade.details.GetTradeDetailsUseCase
 import com.app.belcobtm.domain.trade.order.CreateOrderUseCase
 import com.app.belcobtm.domain.wallet.LocalCoinType
 import com.app.belcobtm.domain.wallet.interactor.GetCoinByCodeUseCase
-import com.app.belcobtm.domain.wallet.interactor.GetCoinDetailsUseCase
 import com.app.belcobtm.presentation.core.formatter.Formatter
 import com.app.belcobtm.presentation.core.livedata.DoubleCombinedLiveData
 import com.app.belcobtm.presentation.core.mvvm.LoadingData
@@ -22,7 +21,6 @@ import com.app.belcobtm.presentation.features.wallet.trade.order.create.model.Tr
 
 class TradeCreateOrderViewModel(
     private val getTradeDetailsUseCase: GetTradeDetailsUseCase,
-    private val getCoinDetailsUseCase: GetCoinDetailsUseCase,
     private val getCoinByCodeUseCase: GetCoinByCodeUseCase,
     private val createOrderUseCase: CreateOrderUseCase,
     private val stringProvider: StringProvider,
@@ -71,17 +69,13 @@ class TradeCreateOrderViewModel(
     fun fetchTradeDetails(tradeId: Int) {
         _initialLoadingData.value = LoadingData.Loading()
         getTradeDetailsUseCase(tradeId, onSuccess = { trade ->
-            getCoinDetailsUseCase(
-                params = GetCoinDetailsUseCase.Params(trade.coin.name),
-                onSuccess = { coinDetails ->
-                    getCoinByCodeUseCase(trade.coin.name, onSuccess = { coinDataItem ->
-                        this.trade = trade
-                        platformFeePercent = coinDetails.platformTradeFee
-                        _coin.value = trade.coin
-                        reservedBalanceUsd = coinDataItem.reservedBalanceUsd
-                        _initialLoadingData.value = LoadingData.Success(Unit)
-                    }, onError = { _initialLoadingData.value = LoadingData.Error(it) })
-                }, onError = { _initialLoadingData.value = LoadingData.Error(it) })
+            getCoinByCodeUseCase(trade.coin.name, onSuccess = { coinDataItem ->
+                this.trade = trade
+                this.platformFeePercent = coinDataItem.details.platformTradeFee
+                this._coin.value = trade.coin
+                this.reservedBalanceUsd = coinDataItem.reservedBalanceUsd
+                this._initialLoadingData.value = LoadingData.Success(Unit)
+            }, onError = { _initialLoadingData.value = LoadingData.Error(it) })
         }, onError = { _initialLoadingData.value = LoadingData.Error(it) })
     }
 

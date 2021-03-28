@@ -5,10 +5,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.app.belcobtm.domain.transaction.interactor.WithdrawUseCase
-import com.app.belcobtm.domain.wallet.interactor.GetCoinDetailsUseCase
 import com.app.belcobtm.domain.wallet.interactor.GetCoinListUseCase
 import com.app.belcobtm.domain.wallet.item.CoinDataItem
-import com.app.belcobtm.domain.wallet.item.CoinDetailsDataItem
 import com.app.belcobtm.presentation.core.coin.AmountCoinValidator
 import com.app.belcobtm.presentation.core.coin.MinMaxCoinValueProvider
 import com.app.belcobtm.presentation.core.coin.model.ValidationResult
@@ -18,8 +16,7 @@ import kotlinx.coroutines.launch
 
 class WithdrawViewModel(
     private val coinCode: String,
-    private val getCoinListUseCase: GetCoinListUseCase,
-    getCoinDetailsUseCase: GetCoinDetailsUseCase,
+    getCoinListUseCase: GetCoinListUseCase,
     private val withdrawUseCase: WithdrawUseCase,
     private val minMaxCoinValueProvider: MinMaxCoinValueProvider,
     private val amountCoinValidator: AmountCoinValidator
@@ -29,7 +26,6 @@ class WithdrawViewModel(
 
     private lateinit var fromCoinDataItem: CoinDataItem
     private lateinit var coinDataItemList: List<CoinDataItem>
-    private lateinit var fromCoinDetailsDataItem: CoinDetailsDataItem
 
     private val _loadingLiveData = MutableLiveData<LoadingData<Unit>>()
     val loadingLiveData: LiveData<LoadingData<Unit>>
@@ -37,22 +33,14 @@ class WithdrawViewModel(
 
     init {
         _loadingLiveData.value = LoadingData.Loading()
-        getCoinDetailsUseCase.invoke(
-            GetCoinDetailsUseCase.Params(coinCode),
-            onSuccess = { coinDetails ->
-                getCoinListUseCase.invoke(Unit, onSuccess = {
-                    coinDataItemList = it
-                    fromCoinDataItem = coinDataItemList.find { it.code == coinCode }
-                        ?: throw IllegalStateException("Invalid coin code that is not presented in a list $coinCode")
-                    fromCoinDetailsDataItem = coinDetails
-                    _loadingLiveData.value = LoadingData.Success(Unit)
-                }, onError = {
-                    _loadingLiveData.value = LoadingData.Error(it)
-                })
-            },
-            onError = {
-                _loadingLiveData.value = LoadingData.Error(it)
-            })
+        getCoinListUseCase.invoke(Unit, onSuccess = {
+            coinDataItemList = it
+            fromCoinDataItem = coinDataItemList.find { it.code == coinCode }
+                ?: throw IllegalStateException("Invalid coin code that is not presented in a list $coinCode")
+            _loadingLiveData.value = LoadingData.Success(Unit)
+        }, onError = {
+            _loadingLiveData.value = LoadingData.Error(it)
+        })
     }
 
     fun withdraw(
@@ -74,12 +62,12 @@ class WithdrawViewModel(
     }
 
     fun getMinValue(): Double =
-        minMaxCoinValueProvider.getMinValue(fromCoinDataItem, fromCoinDetailsDataItem)
+        minMaxCoinValueProvider.getMinValue(fromCoinDataItem)
 
     fun getMaxValue(): Double =
-        minMaxCoinValueProvider.getMaxValue(fromCoinDataItem, fromCoinDetailsDataItem)
+        minMaxCoinValueProvider.getMaxValue(fromCoinDataItem)
 
-    fun getTransactionFee(): Double = fromCoinDetailsDataItem.txFee
+    fun getTransactionFee(): Double = fromCoinDataItem.details.txFee
 
     fun getCoinBalance(): Double = fromCoinDataItem.balanceCoin
 
@@ -95,6 +83,6 @@ class WithdrawViewModel(
 
     fun validateAmount(amount: Double): ValidationResult =
         amountCoinValidator.validateBalance(
-            amount, fromCoinDataItem, fromCoinDetailsDataItem, coinDataItemList
+            amount, fromCoinDataItem, coinDataItemList
         )
 }

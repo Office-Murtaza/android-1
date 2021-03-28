@@ -8,10 +8,8 @@ import com.app.belcobtm.domain.transaction.interactor.trade.TradeReserveTransact
 import com.app.belcobtm.domain.transaction.interactor.trade.TradeReserveTransactionCreateUseCase
 import com.app.belcobtm.domain.wallet.LocalCoinType
 import com.app.belcobtm.domain.wallet.interactor.GetCoinByCodeUseCase
-import com.app.belcobtm.domain.wallet.interactor.GetCoinDetailsUseCase
 import com.app.belcobtm.domain.wallet.interactor.GetFreshCoinUseCase
 import com.app.belcobtm.domain.wallet.item.CoinDataItem
-import com.app.belcobtm.domain.wallet.item.CoinDetailsDataItem
 import com.app.belcobtm.domain.wallet.item.isEthRelatedCoin
 import com.app.belcobtm.presentation.core.coin.AmountCoinValidator
 import com.app.belcobtm.presentation.core.coin.CoinCodeProvider
@@ -26,7 +24,6 @@ import kotlinx.coroutines.launch
 class TradeReserveViewModel(
     private val coinCode: String,
     private val getCoinByCodeUseCase: GetCoinByCodeUseCase,
-    private val getCoinDetailsUseCase: GetCoinDetailsUseCase,
     private val getCoinUseCace: GetFreshCoinUseCase,
     private val createTransactionUseCase: TradeReserveTransactionCreateUseCase,
     private val completeTransactionUseCase: TradeReserveTransactionCompleteUseCase,
@@ -48,7 +45,6 @@ class TradeReserveViewModel(
 
     private var etheriumCoinDataItem: CoinDataItem? = null
     private lateinit var coinDataItem: CoinDataItem
-    private lateinit var detailsDataItem: CoinDetailsDataItem
     lateinit var coinItem: CoinScreenItem
         private set
 
@@ -61,20 +57,14 @@ class TradeReserveViewModel(
     fun loadInitialData() {
         _initialLoadLiveData.value = LoadingData.Loading()
         getCoinByCodeUseCase.invoke(coinCode, onSuccess = { coinItem ->
-            coinDataItem = coinItem
+            this.coinDataItem = coinItem
             this.coinItem = coinItem.mapToScreenItem()
-            getCoinDetailsUseCase.invoke(GetCoinDetailsUseCase.Params(coinCode),
-                onSuccess = { coinDetailsItem ->
-                    detailsDataItem = coinDetailsItem
-                    if (coinDataItem.isEthRelatedCoin()) {
-                        // for CATM amount calculation we need ETH coin
-                        fetchEtherium()
-                    } else {
-                        _initialLoadLiveData.value = LoadingData.Success(Unit)
-                    }
-                }, onError = {
-                    _initialLoadLiveData.value = LoadingData.Error(it)
-                })
+            if (coinItem.isEthRelatedCoin()) {
+                // for CATM amount calculation we need ETH coin
+                fetchEtherium()
+            } else {
+                _initialLoadLiveData.value = LoadingData.Success(Unit)
+            }
         }, onError = {
             _initialLoadLiveData.value = LoadingData.Error(it)
         })
@@ -108,15 +98,15 @@ class TradeReserveViewModel(
         )
     }
 
-    fun getTransactionFee(): Double = detailsDataItem.txFee
+    fun getTransactionFee(): Double = coinDataItem.details.txFee
 
     fun getCoinCode(): String = coinCodeProvider.getCoinCode(coinDataItem)
 
     fun getMinValue(): Double =
-        minMaxCoinValueProvider.getMinValue(coinDataItem, detailsDataItem)
+        minMaxCoinValueProvider.getMinValue(coinDataItem)
 
     fun getMaxValue(): Double =
-        minMaxCoinValueProvider.getMaxValue(coinDataItem, detailsDataItem)
+        minMaxCoinValueProvider.getMaxValue(coinDataItem)
 
     fun validateCryptoAmount(amount: Double) {
         selectedAmount = amount
@@ -149,8 +139,7 @@ class TradeReserveViewModel(
         val validationResult = amountCoinValidator.validateBalance(
             amount = 0.0,
             coin = coinDataItem,
-            coinList = coinList,
-            coinDetails = detailsDataItem
+            coinList = coinList
         )
         return validationResult is ValidationResult.Valid
     }

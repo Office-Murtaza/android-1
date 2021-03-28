@@ -9,16 +9,29 @@ data class BalanceResponse(
 )
 
 data class CoinResponse(
-    var id: Int,
+    val id: Int,
     val idx: Int,
-    var balance: Double,
-    var fiatBalance: Double,
-    var code: String,
-    var price: Double,
-    var address: String,
-    var reservedBalance: Double?,
-    var reservedFiatBalance: Double?
-)
+    val code: String,
+    val address: String,
+    val balance: Double,
+    val fiatBalance: Double,
+    val reservedBalance: Double,
+    val reservedFiatBalance: Double,
+    val price: Double,
+    val details: Details
+) {
+    data class Details(
+        val txFee: Double,
+        val byteFee: Long,
+        val scale: Int,
+        val platformSwapFee: Double,
+        val platformTradeFee: Double,
+        val walletAddress: String,
+        val gasLimit: Long?,
+        val gasPrice: Long?,
+        val convertedTxFee: Double?
+    )
+}
 
 fun BalanceResponse.mapToDataItem(): BalanceDataItem = BalanceDataItem(
     balance = totalBalance,
@@ -29,8 +42,21 @@ fun CoinResponse.mapToDataItem(): CoinDataItem = CoinDataItem(
     balanceCoin = balance,
     balanceUsd = fiatBalance,
     priceUsd = price,
-    reservedBalanceCoin = reservedBalance ?: 0.0,
-    reservedBalanceUsd = reservedFiatBalance ?: 0.0,
+    reservedBalanceCoin = reservedBalance,
+    reservedBalanceUsd = reservedFiatBalance,
     publicKey = address,
-    code = code
+    code = code,
+    details = details.mapToDataItem()
+)
+
+fun CoinResponse.Details.mapToDataItem() = CoinDataItem.Details(
+    txFee = txFee,
+    byteFee = byteFee,
+    scale = scale,
+    platformSwapFee = platformSwapFee,
+    platformTradeFee = platformTradeFee,
+    walletAddress = walletAddress,
+    gasLimit = gasLimit,
+    gasPrice = gasPrice,
+    convertedTxFee = convertedTxFee
 )

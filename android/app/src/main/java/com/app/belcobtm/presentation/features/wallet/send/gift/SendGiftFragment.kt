@@ -1,6 +1,5 @@
 package com.app.belcobtm.presentation.features.wallet.send.gift
 
-import android.content.Context
 import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
@@ -14,7 +13,6 @@ import com.app.belcobtm.databinding.FragmentSendGiftBinding
 import com.app.belcobtm.domain.Failure
 import com.app.belcobtm.domain.wallet.LocalCoinType
 import com.app.belcobtm.domain.wallet.item.CoinDataItem
-import com.app.belcobtm.presentation.core.Const.GIPHY_API_KEY
 import com.app.belcobtm.presentation.core.extensions.*
 import com.app.belcobtm.presentation.core.helper.AlertHelper
 import com.app.belcobtm.presentation.core.mvvm.LoadingData
@@ -28,7 +26,6 @@ import com.giphy.sdk.core.models.Media
 import com.giphy.sdk.core.models.enums.RenditionType
 import com.giphy.sdk.ui.GPHContentType
 import com.giphy.sdk.ui.GPHSettings
-import com.giphy.sdk.ui.Giphy
 import com.giphy.sdk.ui.themes.GPHTheme
 import com.giphy.sdk.ui.themes.GridType
 import com.giphy.sdk.ui.views.GiphyDialogFragment
@@ -68,11 +65,6 @@ class SendGiftFragment : BaseFragment<FragmentSendGiftBinding>(),
                 editable.insert(0, "0")
             }
         }
-    }
-
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        Giphy.configure(context, GIPHY_API_KEY)
     }
 
     override fun FragmentSendGiftBinding.initViews() {

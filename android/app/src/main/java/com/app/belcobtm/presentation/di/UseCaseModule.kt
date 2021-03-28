@@ -62,7 +62,6 @@ val useCaseModule = module {
     single { GetBalanceUseCase(get()) }
     single { GetChartsUseCase(get()) }
     single { GetTransactionListUseCase(get()) }
-    single { UpdateCoinDetailsUseCase(get()) }
     single { WithdrawUseCase(get()) }
     single { GetCoinByCodeUseCase(get()) }
     single { GetFreshCoinUseCase(get()) }
@@ -81,9 +80,7 @@ val useCaseModule = module {
     single { StakeCreateUseCase(get()) }
     single { StakeCancelUseCase(get()) }
     single { StakeWithdrawUseCase(get()) }
-    single { ObserveBalanceUseCase(get()) }
     single { ConnectToWalletUseCase(get()) }
-    single { GetCoinDetailsUseCase(get()) }
     single { CheckXRPAddressActivatedUseCase(get()) }
     single { GetFreshCoinsUseCase(get()) }
     single { GetContactsUseCase(get()) }
