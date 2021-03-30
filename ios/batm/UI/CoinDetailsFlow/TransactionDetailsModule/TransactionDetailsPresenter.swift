@@ -8,10 +8,10 @@ final class TransactionDetailsPresenter: ModulePresenter, TransactionDetailsModu
     
     weak var delegate: TransactionDetailsModuleDelegate?
     
-    private(set) var details: TransactionDetails?
+    private(set) var transactionDetails: (details: TransactionDetails, coinType: CustomCoinType)?
     
-    func setup(with details: TransactionDetails) {
-        self.details = details
+    func setup(with details: TransactionDetails, coinType: CustomCoinType) {
+        transactionDetails = (details, coinType)
     }
     
     func bind(input: Input) {}

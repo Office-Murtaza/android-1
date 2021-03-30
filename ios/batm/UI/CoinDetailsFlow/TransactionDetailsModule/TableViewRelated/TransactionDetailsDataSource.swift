@@ -19,7 +19,7 @@ enum TransactionDetailsItemType {
 }
 
 final class TransactionDetailsDataSource: NSObject, HasDisposeBag, ItemsCountProvider {
-    let transactionsRelay = BehaviorRelay<TransactionDetails?>(value: nil)
+    let transactionsRelay = PublishRelay< (details: TransactionDetails, coinType: CustomCoinType)?>()
     var transactionCells: [TransactionDetailsItemType] = []
     
     weak var tableView: UITableView? {
@@ -33,7 +33,7 @@ final class TransactionDetailsDataSource: NSObject, HasDisposeBag, ItemsCountPro
         }
     }
     
-    private var value: TransactionDetails? {
+    private var value:  (details: TransactionDetails, coinType: CustomCoinType)? {
         didSet {
             tableView?.reloadData()
         }
@@ -56,64 +56,66 @@ final class TransactionDetailsDataSource: NSObject, HasDisposeBag, ItemsCountPro
     }
     
     private func setupCells() {
-        guard let value = value, let transactionType = value.type else { return }
+        guard let details = value?.details,
+              let coinType = value?.coinType,
+              let transactionType = details.type else { return }
         
         let id = TransactionDetailsItemType.transactionDetails(title: localize(L.TransactionDetails.HeaderTitle.id),
-                                                               data: value.txId ?? value.txDbId.toString(),
-                                                               link: value.link)
+                                                               data: details.txId ?? details.txDbId.toString(),
+                                                               link: details.link)
         let amount = TransactionDetailsItemType.transactionDetails(title: localize(L.TransactionDetails.HeaderTitle.amount),
-                                                                   data: value.cryptoAmount?.formatted())
+                                                                   data: "\(details.cryptoAmount?.formatted() ?? "") \(coinType.code)")
         let fee = TransactionDetailsItemType.transactionDetails(title: localize(L.TransactionDetails.HeaderTitle.fee),
-                                                                data: value.cryptoFee?.formatted())
+                                                                data: "\(details.cryptoFee?.formatted() ?? "") \(coinType.code)")
         let confirmations = TransactionDetailsItemType.transactionDetails(title: localize(L.TransactionDetails.HeaderTitle.confirmations),
-                                                                          data: value.confirmations.toString())
+                                                                          data: details.confirmations.toString())
         let fromAddress = TransactionDetailsItemType.transactionDetails(title: localize(L.TransactionDetails.HeaderTitle.fromAddress),
-                                                                        data: value.fromAddress)
+                                                                        data: details.fromAddress)
         let toAddress = TransactionDetailsItemType.transactionDetails(title: localize(L.TransactionDetails.HeaderTitle.toAddress),
-                                                                      data: value.toAddress)
+                                                                      data: details.toAddress)
         let date = TransactionDetailsItemType.transactionDetails(title: localize(L.TransactionDetails.HeaderTitle.date),
-                                                                 data: value.date)
+                                                                 data: details.date)
         let fromPhone = TransactionDetailsItemType.transactionDetails(title: localize(L.TransactionDetails.HeaderTitle.fromPhone),
-                                                                      data: value.fromPhone)
+                                                                      data: details.fromPhone)
         let toPhone = TransactionDetailsItemType.transactionDetails(title: localize(L.TransactionDetails.HeaderTitle.toPhone),
-                                                                    data: value.toPhone)
+                                                                    data: details.toPhone)
         let swapId = TransactionDetailsItemType.transactionDetails(title: localize(L.TransactionDetails.HeaderTitle.swapId),
-                                                                   data: value.swapTxId,
-                                                                   link: value.swapLink)
+                                                                   data: details.swapTxId,
+                                                                   link: details.swapLink)
         let swapAmount = TransactionDetailsItemType
             .transactionDetails(title: localize(L.TransactionDetails.HeaderTitle.swapAmount),
-                                data: "\(value.swapCryptoAmount?.formatted() ?? "") \(value.swapCoin?.code ?? "")")
+                                data: "\(details.swapCryptoAmount?.formatted() ?? "") \(details.swapCoin?.code ?? "")")
         let sellAmount = TransactionDetailsItemType.transactionDetails(title: localize(L.TransactionDetails.HeaderTitle.sellAmount),
-                                                                       data: "$\(value.fiatAmount?.formatted() ?? "")")
+                                                                       data: "$\(details.fiatAmount?.formatted() ?? "")")
         let type = TransactionDetailsItemType.type(title: localize(L.TransactionDetails.HeaderTitle.type),
                                                    view: TransactionTypeView(),
                                                    type: transactionType.verboseValue,
                                                    color: transactionType.associatedColor)
         let status = TransactionDetailsItemType.status(title: localize(L.TransactionDetails.HeaderTitle.status),
                                                        view: TransactionStatusView(),
-                                                       status: value.status?.verboseValue,
-                                                       image: value.status?.associatedImage)
+                                                       status: details.status?.verboseValue,
+                                                       image: details.status?.associatedImage)
         let cashStatus = TransactionDetailsItemType.status(title: localize(L.TransactionDetails.HeaderTitle.cashStatus),
                                                            view: TransactionStatusView(),
-                                                           status: value.status?.verboseValue,
-                                                           image: value.status?.associatedImage)
+                                                           status: details.status?.verboseValue,
+                                                           image: details.status?.associatedImage)
         let gif = TransactionDetailsItemType.gif
         let qrCode = TransactionDetailsItemType.qrCode
         
-        if value.txId != nil || value.txDbId != nil {
+        if details.txId != nil || details.txDbId != nil {
             transactionCells.append(id)
         }
         
         transactionCells.append(type)
         transactionCells.append(status)
         
-        if value.confirmations != nil {
+        if details.confirmations != nil {
             transactionCells.append(confirmations)
         }
         
         transactionCells.append(amount)
         
-        if value.cryptoFee != nil, value.fromAddress != nil, value.toAddress != nil {
+        if details.cryptoFee != nil, details.fromAddress != nil, details.toAddress != nil {
             transactionCells.append(fee)
             transactionCells.append(fromAddress)
             transactionCells.append(toAddress)
@@ -121,21 +123,21 @@ final class TransactionDetailsDataSource: NSObject, HasDisposeBag, ItemsCountPro
         
         transactionCells.append(date)
         
-        if value.fromPhone != nil, value.toPhone != nil {
+        if details.fromPhone != nil, details.toPhone != nil {
             transactionCells.append(fromPhone)
             transactionCells.append(toPhone)
         }
         
-        if value.imageId != nil, value.message != nil {
+        if details.imageId != nil, details.message != nil {
             transactionCells.append(gif)
         }
         
-        if value.swapTxId != nil, value.swapLink != nil, value.swapCoin != nil, value.swapCryptoAmount != nil {
+        if details.swapTxId != nil, details.swapLink != nil, details.swapCoin != nil, details.swapCryptoAmount != nil {
             transactionCells.append(swapId)
             transactionCells.append(swapAmount)
         }
         
-        if value.fiatAmount != nil, value.cashStatus != nil, value.sellInfo != nil {
+        if details.fiatAmount != nil, details.cashStatus != nil, details.sellInfo != nil {
             transactionCells.append(sellAmount)
             transactionCells.append(cashStatus)
             transactionCells.append(qrCode)
@@ -170,11 +172,11 @@ extension TransactionDetailsDataSource: UITableViewDataSource {
             return cell
         case .gif:
             let cell = tableView.dequeueReusableCell(TransactionGifCell.self, for: indexPath)
-            cell.configure(imageId: value?.imageId, message: value?.message)
+            cell.configure(imageId: value?.details.imageId, message: value?.details.message)
             return cell
         case .qrCode:
             let cell = tableView.dequeueReusableCell(QRCodeCell.self, for: indexPath)
-            guard let qrCode = UIImage.qrCode(from: value?.sellInfo ?? "") else { return UITableViewCell() }
+            guard let qrCode = UIImage.qrCode(from: value?.details.sellInfo ?? "") else { return UITableViewCell() }
             cell.configure(qrCode: qrCode)
             return cell
         }

@@ -56,6 +56,7 @@ struct CreateAccountRequest: RetriableAPIRequest {
   private let userTimeZone: String = TimeZone.current.localizedName(for: .standard, locale: .current) ?? ""
   private let locationManager = UserLocationManager()
 
+
   var path: String { return "/register" }
   var method: HTTPMethod { return .post }
   var task: HTTPTask {
