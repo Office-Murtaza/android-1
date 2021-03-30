@@ -43,6 +43,7 @@
 		05B582B625ACD71A00A12EFB /* CoinStakingInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05B582B525ACD71A00A12EFB /* CoinStakingInfoView.swift */; };
 		05B7596F25880C3800F23F23 /* CreateWalletResponse+Mapping.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05B7596E25880C3800F23F23 /* CreateWalletResponse+Mapping.swift */; };
 		05C62222257ECE28008787F3 /* KeychainManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05C62221257ECE28008787F3 /* KeychainManager.swift */; };
+		05D56FD4260CE4ED00AA7052 /* LocaltionHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05D56FD3260CE4ED00AA7052 /* LocaltionHelper.swift */; };
 		05E35FE725AE585900E2167C /* WithdrawView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05E35FE625AE585900E2167C /* WithdrawView.swift */; };
 		05E6A8412601604600479414 /* TransactionTypeColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05E6A8402601604600479414 /* TransactionTypeColor.swift */; };
 		05E6A846260163AF00479414 /* TransactionStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05E6A845260163AF00479414 /* TransactionStatus.swift */; };
@@ -88,7 +89,7 @@
 		23F68EB6256DB33100470534 /* PriceChartDetails+Mapping.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23F68EB5256DB33100470534 /* PriceChartDetails+Mapping.swift */; };
 		23F9B20025ACDBF500FE0ACC /* TransferSelectReceiverStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23F9B1FF25ACDBF500FE0ACC /* TransferSelectReceiverStore.swift */; };
 		32C70C2C2AC5257199173D49 /* Pods_batm.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5D2E48FC9C22336570E8297D /* Pods_batm.framework */; };
-		680B948725F69A5700819B2F /* String+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 680B948625F69A5700819B2F /* String+Extensions.swift */; };
+		680B948725F69A5700819B2F /* Int+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 680B948625F69A5700819B2F /* Int+Extensions.swift */; };
 		757DD7261AB321C5873550C2 /* Pods_batmTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 142D5BA6DA2741657FE02671 /* Pods_batmTests.framework */; };
 		DB020DAA246D9A760036B413 /* TradesTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB020DA9246D9A760036B413 /* TradesTableView.swift */; };
 		DB0211BB22CCE42B004065E9 /* RecoverSeedPhraseModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB0211BA22CCE42B004065E9 /* RecoverSeedPhraseModule.swift */; };
@@ -643,6 +644,7 @@
 		05B7596E25880C3800F23F23 /* CreateWalletResponse+Mapping.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CreateWalletResponse+Mapping.swift"; sourceTree = "<group>"; };
 		05C6219F257EB413008787F3 /* batm.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = batm.entitlements; sourceTree = "<group>"; };
 		05C62221257ECE28008787F3 /* KeychainManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainManager.swift; sourceTree = "<group>"; };
+		05D56FD3260CE4ED00AA7052 /* LocaltionHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocaltionHelper.swift; sourceTree = "<group>"; };
 		05E35FE625AE585900E2167C /* WithdrawView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WithdrawView.swift; sourceTree = "<group>"; };
 		05E6A8402601604600479414 /* TransactionTypeColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionTypeColor.swift; sourceTree = "<group>"; };
 		05E6A845260163AF00479414 /* TransactionStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionStatus.swift; sourceTree = "<group>"; };
@@ -690,7 +692,7 @@
 		23F9B1FF25ACDBF500FE0ACC /* TransferSelectReceiverStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransferSelectReceiverStore.swift; sourceTree = "<group>"; };
 		45A08286B5F7CE8E60F5C7D3 /* Pods-batmTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-batmTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-batmTests/Pods-batmTests.release.xcconfig"; sourceTree = "<group>"; };
 		5D2E48FC9C22336570E8297D /* Pods_batm.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_batm.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		680B948625F69A5700819B2F /* String+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Extensions.swift"; sourceTree = "<group>"; };
+		680B948625F69A5700819B2F /* Int+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Int+Extensions.swift"; sourceTree = "<group>"; };
 		92EFAEC3F34F5098AD0B7F2B /* Pods-batm.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-batm.debug.xcconfig"; path = "Pods/Target Support Files/Pods-batm/Pods-batm.debug.xcconfig"; sourceTree = "<group>"; };
 		A084412719F54976481F3BD4 /* Pods-batmTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-batmTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-batmTests/Pods-batmTests.debug.xcconfig"; sourceTree = "<group>"; };
 		DB020DA9246D9A760036B413 /* TradesTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TradesTableView.swift; sourceTree = "<group>"; };
@@ -2382,7 +2384,7 @@
 			children = (
 				DB904A9D22C00E2A007CB734 /* RxFlow+Extensions.swift */,
 				DB96168B22C517C80078E92D /* PhoneNumberKit+Extensions.swift */,
-				680B948625F69A5700819B2F /* String+Extensions.swift */,
+				680B948625F69A5700819B2F /* Int+Extensions.swift */,
 				DB96168D22C52E3D0078E92D /* Observable+Extensions.swift */,
 				DB9616ED22C74EB40078E92D /* RecursiveLock+Extensions.swift */,
 				DB308EBC22E7396A003D91AF /* URL+Extensions.swift */,
@@ -2883,6 +2885,7 @@
 				05A52BB4258D211F00F44A4D /* UserDefaultsHelper.swift */,
 				050625D725A36B6C007E0512 /* UIDevice+Helper.swift */,
 				0561D19225A3804400C1CF70 /* UIApplication+Helper.swift */,
+				05D56FD3260CE4ED00AA7052 /* LocaltionHelper.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -3498,7 +3501,7 @@
 				DBD8C214240AF52300BD8A74 /* KYC.swift in Sources */,
 				DB4D7BC32409A133008C2BD5 /* KYCFlowController.swift in Sources */,
 				DB8D409E22C3EC9D00D5FBD0 /* UIWindow+Transitions.swift in Sources */,
-				680B948725F69A5700819B2F /* String+Extensions.swift in Sources */,
+				680B948725F69A5700819B2F /* Int+Extensions.swift in Sources */,
 				05C62222257ECE28008787F3 /* KeychainManager.swift in Sources */,
 				DB83624F24C205B700A5FEFC /* CodeInputView+Rx.swift in Sources */,
 				DB9616B022C60EFB0078E92D /* UIStackView+Extensions.swift in Sources */,
@@ -3690,6 +3693,7 @@
 				DB96173B22C7B3480078E92D /* BTMWalletStorage.swift in Sources */,
 				DB96168622C50E330078E92D /* ViewStore.swift in Sources */,
 				DB4F395322DEFA4100D53BF3 /* ManageWalletsStore.swift in Sources */,
+				05D56FD4260CE4ED00AA7052 /* LocaltionHelper.swift in Sources */,
 				DB6A578522C1EE5600DEE38A /* WelcomeSliderView.swift in Sources */,
 				DB49463522DF2733001EE56E /* ManageWalletsCell.swift in Sources */,
 				DBCA52BE232BBDEF00483618 /* Utxos+Mapping.swift in Sources */,
