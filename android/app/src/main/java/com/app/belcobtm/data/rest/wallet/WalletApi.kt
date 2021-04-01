@@ -3,7 +3,6 @@ package com.app.belcobtm.data.rest.wallet
 import com.app.belcobtm.data.rest.wallet.request.PriceChartPeriod
 import com.app.belcobtm.data.rest.wallet.response.BalanceResponse
 import com.app.belcobtm.data.rest.wallet.response.ChartResponse
-import com.app.belcobtm.data.rest.wallet.response.GetCoinDetailsResponse
 import kotlinx.coroutines.Deferred
 import retrofit2.Response
 import retrofit2.http.GET
@@ -23,11 +22,6 @@ interface WalletApi {
         @Path("coinId") coinCode: String,
         @Query("period") @PriceChartPeriod period: Int
     ): Deferred<Response<ChartResponse>>
-
-    @GET("coin/{coinId}/details")
-    fun getCoinDetailsAsync(
-        @Path("coinId") coinCode: String
-    ): Deferred<Response<GetCoinDetailsResponse>>
 
     @GET("user/{userId}/coin/{coinId}/manage")
     fun toggleCoinStateAsync(

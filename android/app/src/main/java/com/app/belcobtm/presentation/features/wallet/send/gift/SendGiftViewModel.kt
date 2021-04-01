@@ -6,32 +6,24 @@ import com.app.belcobtm.R
 import com.app.belcobtm.data.disk.database.AccountDao
 import com.app.belcobtm.domain.Failure
 import com.app.belcobtm.domain.transaction.interactor.SendGiftTransactionCreateUseCase
-import com.app.belcobtm.domain.wallet.interactor.GetCoinDetailsUseCase
 import com.app.belcobtm.domain.wallet.interactor.GetFreshCoinsUseCase
 import com.app.belcobtm.domain.wallet.item.CoinDataItem
-import com.app.belcobtm.domain.wallet.item.CoinDetailsDataItem
 import com.app.belcobtm.presentation.core.coin.AmountCoinValidator
-import com.app.belcobtm.presentation.core.coin.CoinCodeProvider
 import com.app.belcobtm.presentation.core.coin.MinMaxCoinValueProvider
 import com.app.belcobtm.presentation.core.coin.model.ValidationResult
 import com.app.belcobtm.presentation.core.extensions.toStringUsd
 import com.app.belcobtm.presentation.core.mvvm.LoadingData
-import com.app.belcobtm.presentation.core.validator.Validator
 import kotlinx.coroutines.launch
 
 class SendGiftViewModel(
     private val transactionCreateUseCase: SendGiftTransactionCreateUseCase,
-    private val getCoinDetailsUseCase: GetCoinDetailsUseCase,
     private val getFreshCoinsUseCase: GetFreshCoinsUseCase,
     private val accountDao: AccountDao,
     private val minMaxCoinValueProvider: MinMaxCoinValueProvider,
-    private val coinCodeProvider: CoinCodeProvider,
-    private val amountCoinValidator: AmountCoinValidator,
-    private val phoneNumberValidator: Validator<String>
+    private val amountCoinValidator: AmountCoinValidator
 ) : ViewModel() {
 
     private lateinit var coinList: List<CoinDataItem>
-    private lateinit var coinToSendDetailsDataItem: CoinDetailsDataItem
 
     private val _initialLoadingData = MutableLiveData<LoadingData<Unit>>()
     val initialLoadingData: LiveData<LoadingData<Unit>> = _initialLoadingData
@@ -97,6 +89,7 @@ class SendGiftViewModel(
                             _initialLoadingData.value = LoadingData.Error(Failure.ServerError())
                         } else {
                             updateCoinInfo(coin)
+                            _initialLoadingData.value = LoadingData.Success(Unit)
                         }
                     },
                     onError = { _initialLoadingData.value = LoadingData.Error(Failure.ServerError()) }
@@ -109,12 +102,12 @@ class SendGiftViewModel(
 
     fun sendGift(amount: Double, phone: String, message: String?, giftId: String?) {
         val coinToSend = coinToSend.value ?: return
-        if (minMaxCoinValueProvider.getMinValue(coinToSend, coinToSendDetailsDataItem) > amount) {
+        if (minMaxCoinValueProvider.getMinValue(coinToSend) > amount) {
             _cryptoAmountError.value = R.string.balance_amount_too_small
             return
         }
         val amountValidationResult = amountCoinValidator.validateBalance(
-            amount, coinToSend, coinToSendDetailsDataItem, coinList
+            amount, coinToSend, coinList
         )
         if (amountValidationResult is ValidationResult.InValid) {
             _cryptoAmountError.value = amountValidationResult.error
@@ -137,29 +130,17 @@ class SendGiftViewModel(
 
     fun setMaxCoinAmount() {
         val currentCoinToSend = coinToSend.value ?: return
-        val currentCoinToSendDetails = coinToSendDetailsDataItem
         val maxAmount = minMaxCoinValueProvider
-            .getMaxValue(currentCoinToSend, currentCoinToSendDetails)
+            .getMaxValue(currentCoinToSend)
         updateAmountToSend(maxAmount)
     }
 
     fun selectCoin(coinDataItem: CoinDataItem) {
-        _initialLoadingData.value = LoadingData.Loading()
         updateCoinInfo(coinDataItem)
     }
 
     private fun updateCoinInfo(coinToSend: CoinDataItem) {
-        getCoinDetailsUseCase(
-            params = GetCoinDetailsUseCase.Params(coinToSend.code),
-            onSuccess = { coinDetails ->
-                _coinToSend.value = coinToSend
-                coinToSendDetailsDataItem = coinDetails
-                _initialLoadingData.value = LoadingData.Success(Unit)
-                _fee.value = coinDetails.txFee
-            },
-            onError = {
-                _initialLoadingData.value = LoadingData.Error(it)
-            }
-        )
+        _coinToSend.value = coinToSend
+        _fee.value = coinToSend.details.txFee
     }
 }

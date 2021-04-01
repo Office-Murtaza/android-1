@@ -9,14 +9,14 @@ class InterceptableFrameLayout @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
 ) : FrameLayout(context, attrs, defStyleAttr) {
 
-    var interceptListner: OnInterceptEventListener? = null
+    var interceptListener: OnInterceptEventListener? = null
 
     override fun onInterceptTouchEvent(ev: MotionEvent?): Boolean {
         return super.onInterceptTouchEvent(ev) || handleInterception(ev)
     }
 
     private fun handleInterception(ev: MotionEvent?): Boolean {
-        if (ev != null) interceptListner?.onIntercented(ev)
+        if (ev != null) interceptListener?.onIntercented(ev)
         return false
     }
 

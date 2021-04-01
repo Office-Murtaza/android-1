@@ -10,7 +10,14 @@ import com.app.belcobtm.data.core.TransactionHashHelper
 import com.app.belcobtm.data.disk.AssetsDataStore
 import com.app.belcobtm.data.disk.database.AppDatabase
 import com.app.belcobtm.data.disk.shared.preferences.SharedPreferencesHelper
+import com.app.belcobtm.data.helper.DistanceCalculator
+import com.app.belcobtm.data.inmemory.TradeInMemoryCache
+import com.app.belcobtm.data.mapper.OrderResponseToOrderMapper
+import com.app.belcobtm.data.mapper.TradeResponseToTradeMapper
+import com.app.belcobtm.data.mapper.TradesResponseToTradeDataMapper
 import com.app.belcobtm.data.notification.NotificationTokenRepositoryImpl
+import com.app.belcobtm.data.provider.location.LocationProvider
+import com.app.belcobtm.data.provider.location.ServiceLocationProvider
 import com.app.belcobtm.data.rest.atm.AtmApi
 import com.app.belcobtm.data.rest.atm.AtmApiService
 import com.app.belcobtm.data.rest.authorization.AuthApi
@@ -23,6 +30,8 @@ import com.app.belcobtm.data.rest.settings.SettingsApi
 import com.app.belcobtm.data.rest.settings.SettingsApiService
 import com.app.belcobtm.data.rest.tools.ToolsApi
 import com.app.belcobtm.data.rest.tools.ToolsApiService
+import com.app.belcobtm.data.rest.trade.TradeApi
+import com.app.belcobtm.data.rest.trade.TradeApiService
 import com.app.belcobtm.data.rest.transaction.TransactionApi
 import com.app.belcobtm.data.rest.transaction.TransactionApiService
 import com.app.belcobtm.data.rest.wallet.WalletApi
@@ -34,8 +43,10 @@ import com.app.belcobtm.domain.tools.IntentActionsImpl
 import com.app.belcobtm.presentation.core.Endpoint
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import com.squareup.moshi.Moshi
+import kotlinx.coroutines.GlobalScope
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
+import org.koin.android.ext.koin.androidApplication
 import org.koin.dsl.module
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
@@ -60,10 +71,11 @@ val dataModule = module {
     single { TransactionApiService(get(), get()) }
     single { ToolsApiService(get(), get()) }
     single { AtmApiService(get()) }
+    single { TradeApiService(get(), get()) }
     single { NetworkUtils(get()) }
     single { FileHelper(get()) }
     single { AssetsDataStore(get()) }
-    single { TransactionHashHelper(get(), get(), get(), get()) }
+    single { TransactionHashHelper(get(), get(), get(), get(), get()) }
     single {
         Room.databaseBuilder(get(), AppDatabase::class.java, "belco_database")
             .fallbackToDestructiveMigration()
@@ -97,6 +109,13 @@ val dataModule = module {
     single { get<Retrofit>().create(WalletApi::class.java) }
     single { get<Retrofit>().create(SettingsApi::class.java) }
     single { get<Retrofit>().create(TransactionApi::class.java) }
+    single { get<Retrofit>().create(TradeApi::class.java) }
     single<NotificationTokenRepository> { NotificationTokenRepositoryImpl(get()) }
     single<ContactsRepository> { ContactsRepositoryImpl(get<Context>().contentResolver) }
+    single { TradeInMemoryCache(get(), get(), GlobalScope, get(), get()) }
+    single { DistanceCalculator(get()) }
+    single<LocationProvider> { ServiceLocationProvider(androidApplication()) }
+    factory { TradesResponseToTradeDataMapper(get(), get()) }
+    factory { OrderResponseToOrderMapper() }
+    factory { TradeResponseToTradeMapper() }
 }

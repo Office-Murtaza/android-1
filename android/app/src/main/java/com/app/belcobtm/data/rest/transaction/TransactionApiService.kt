@@ -9,7 +9,6 @@ import com.app.belcobtm.data.rest.transaction.response.mapToDataItem
 import com.app.belcobtm.domain.Either
 import com.app.belcobtm.domain.Failure
 import com.app.belcobtm.domain.transaction.item.*
-import com.app.belcobtm.domain.transaction.type.TradeSortType
 
 class TransactionApiService(
     private val api: TransactionApi,
@@ -167,149 +166,6 @@ class TransactionApiService(
         failure.printStackTrace()
         Either.Left(failure)
     }
-
-    suspend fun getTradeInfo(coinFrom: String): Either<Failure, TradeInfoDataItem> = try {
-        val request = api.tradeGetInfoAsync(prefHelper.userId, coinFrom).await()
-        request.body()?.let { Either.Right(it.mapToDataItem()) }
-            ?: Either.Left(Failure.ServerError())
-    } catch (failure: Failure) {
-        failure.printStackTrace()
-        Either.Left(failure)
-    }
-
-    suspend fun getTradeBuyList(
-        coinFrom: String,
-        sortType: TradeSortType,
-        paginationStep: Int
-    ): Either<Failure, TradeInfoDataItem> = try {
-        val request =
-            api.getBuyTradeListAsync(prefHelper.userId, coinFrom, sortType.code, paginationStep)
-                .await()
-        request.body()?.let { Either.Right(it.mapToDataItem()) }
-            ?: Either.Left(Failure.ServerError())
-    } catch (failure: Failure) {
-        failure.printStackTrace()
-        Either.Left(failure)
-    }
-
-    suspend fun getTradeSellList(
-        coinFrom: String,
-        sortType: TradeSortType,
-        paginationStep: Int
-    ): Either<Failure, TradeInfoDataItem> = try {
-        val request =
-            api.getSellTradeListAsync(prefHelper.userId, coinFrom, sortType.code, paginationStep)
-                .await()
-        request.body()?.let { Either.Right(it.mapToDataItem()) }
-            ?: Either.Left(Failure.ServerError())
-    } catch (failure: Failure) {
-        failure.printStackTrace()
-        Either.Left(failure)
-    }
-
-    suspend fun getTradeMyList(
-        coinFrom: String,
-        sortType: TradeSortType,
-        paginationStep: Int
-    ): Either<Failure, TradeInfoDataItem> = try {
-        val request =
-            api.getMyTradeListAsync(prefHelper.userId, coinFrom, sortType.code, paginationStep)
-                .await()
-        request.body()?.let { Either.Right(it.mapToDataItem()) }
-            ?: Either.Left(Failure.ServerError())
-    } catch (failure: Failure) {
-        failure.printStackTrace()
-        Either.Left(failure)
-    }
-
-    suspend fun getTradeOpenList(
-        coinFrom: String,
-        sortType: TradeSortType,
-        paginationStep: Int
-    ): Either<Failure, TradeInfoDataItem> = try {
-        val request =
-            api.getOpenTradeListAsync(prefHelper.userId, coinFrom, sortType.code, paginationStep)
-                .await()
-        request.body()?.let { Either.Right(it.mapToDataItem()) }
-            ?: Either.Left(Failure.ServerError())
-    } catch (failure: Failure) {
-        failure.printStackTrace()
-        Either.Left(failure)
-    }
-
-    suspend fun tradeBuySell(
-        id: Int,
-        price: Int,
-        fromUsdAmount: Int,
-        toCoin: String,
-        toCoinAmount: Double,
-        detailsText: String
-    ): Either<Failure, Unit> = try {
-        val requestBody = TradeBuyRequest(id, price, fromUsdAmount, toCoinAmount, detailsText)
-        val request = api.tradeBuySellAsync(prefHelper.userId, toCoin, requestBody).await()
-        request.body()?.let { Either.Right(Unit) } ?: Either.Left(Failure.ServerError())
-    } catch (failure: Failure) {
-        failure.printStackTrace()
-        Either.Left(failure)
-    }
-
-    suspend fun tradeBuyCreate(
-        coinCode: String,
-        paymentMethod: String,
-        margin: Double,
-        minLimit: Long,
-        maxLimit: Long,
-        terms: String
-    ): Either<Failure, Unit> = try {
-        val requestBody =
-            TradeCreateRequest(
-                TRANSACTION_TRADE_CREATE_BUY,
-                paymentMethod,
-                margin,
-                minLimit,
-                maxLimit,
-                terms
-            )
-        val request = api.tradeCreateAsync(prefHelper.userId, coinCode, requestBody).await()
-        request.body()?.let { Either.Right(Unit) } ?: Either.Left(Failure.ServerError())
-    } catch (failure: Failure) {
-        failure.printStackTrace()
-        Either.Left(failure)
-    }
-
-    suspend fun tradeSellCreate(
-        coinCode: String,
-        paymentMethod: String,
-        margin: Double,
-        minLimit: Long,
-        maxLimit: Long,
-        terms: String
-    ): Either<Failure, Unit> = try {
-        val requestBody =
-            TradeCreateRequest(
-                TRANSACTION_TRADE_CREATE_SELL,
-                paymentMethod,
-                margin,
-                minLimit,
-                maxLimit,
-                terms
-            )
-        val request = api.tradeCreateAsync(prefHelper.userId, coinCode, requestBody).await()
-        request.body()?.let { Either.Right(Unit) } ?: Either.Left(Failure.ServerError())
-    } catch (failure: Failure) {
-        failure.printStackTrace()
-        Either.Left(failure)
-    }
-
-    suspend fun sendTradeUserLocation(latitude: Double, longitude: Double): Either<Failure, Unit> =
-        try {
-            val requestBody = TradeLocationRequest(latitude, longitude)
-            val request = api.tradeSendUserLocationAsync(prefHelper.userId, requestBody).await()
-            request.body()?.let { Either.Right(Unit) } ?: Either.Left(Failure.ServerError())
-        } catch (failure: Failure) {
-            failure.printStackTrace()
-            Either.Left(failure)
-        }
 
     suspend fun getUtxoList(
         coinId: String,
@@ -485,8 +341,6 @@ class TransactionApiService(
         const val TRANSACTION_STAKE_CANCEL = 14
         const val TRANSACTION_WITHTRADW_STAKE = 15
 
-        const val TRANSACTION_TRADE_CREATE_BUY = 1
-        const val TRANSACTION_TRADE_CREATE_SELL = 2
         const val TRANSACTION_TRADE_RECALL = 11
         const val TRANSACTION_TRADE_RESERVE = 10
         const val UNIT_USD = "USD"

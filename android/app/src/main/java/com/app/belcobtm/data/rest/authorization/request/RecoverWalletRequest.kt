@@ -11,7 +11,7 @@ data class RecoverWalletRequest(
     val timezone: String,
     val notificationsToken: String?,
     val coins: List<RecoverWalletCoinRequest>,
-    val platform: Int = 2//android
+    val platform: Int = 2, //android
 )
 
 data class RecoverWalletCoinRequest(

@@ -485,7 +485,7 @@
     <string name="seed_phrase_label">Seed phrase</string>
     <string name="unlink_wallet_label">Unlink</string>
     <string name="phone_changed">Phone changed</string>
-    
+
     //support
     <string name="support_title">Support</string>
     <string name="support_phone_label">Phone</string>
@@ -545,7 +545,7 @@
     <string name="deals_toolsbar_title">Deals</string>
     <string name="deals_staking">Staking</string>
     <string name="deals_swap">Swap</string>
-    <string name="deals_trade">Trade</string>
+    <string name="deals_trade">P2P Trading</string>
     <string name="deals_transfer">Transfer</string>
 
     <!-- Transfer flow -->
@@ -554,4 +554,125 @@
     <string name="transfer_phone_number_invalid">Please input correct number</string>
     <string name="empty_amount">0.00 $</string>
     <string name="phone_number_country_code">+1</string>
+
+    <!-- New trade screen -->
+    <string name="trade_list_screen_title">P2P Trading</string>
+    <string name="trade_list_item_price_range_format">%1$s - %2$s</string>
+    <string name="trade_list_item_total_trades_formatted">%d trades</string>
+    <string name="trade_list_buy_tab_title">Buy</string>
+    <string name="trade_list_sell_tab_title">Sell</string>
+    <string name="trade_list_my_info_tab_title">My…</string>
+    <string name="trade_list_account_info_verified_label">Verified</string>
+
+    <string name="user_trade_info_success_rate_label">Success rate</string>
+    <string name="user_trade_info_total_trades_label">Total trades</string>
+    <string name="user_trade_info_not_verified_status_label">Not verified</string>
+    <string name="user_trade_info_verified_status_label">Verified</string>
+    <string name="user_trade_info_vip_verified_status_label">Vip verified</string>
+
+    <string name="trade_info_my_trades_tab_title">Trades</string>
+    <string name="trade_info_open_orders_tab_title">Open orders</string>
+    <string name="trade_info_statistic_tab_title">Info</string>
+
+    <string name="trade_type_buy_label">Buy</string>
+    <string name="trade_type_sell_label">Sell</string>
+
+    <string name="order_status_new_label">New</string>
+    <string name="order_status_doing_label">Doing</string>
+    <string name="order_status_disputing_label">Disputing</string>
+    <string name="order_status_paid_label">Paid</string>
+    <string name="order_status_released_label">Released</string>
+    <string name="order_status_cancelled_label">Cancelled</string>
+    <string name="order_status_solved_label">Done</string>
+
+    <string name="trade_create_reserved_balance_formatted"><![CDATA[Reserved %1$s %2$s]]></string>
+    <string name="trade_crypto_amount_value"><![CDATA[~%1$s %2$s]]></string>
+    <string name="fiat_amount_label">Fiat amount</string>
+    <string name="crypto_amount_label">Crypto amount</string>
+    <string name="no_trades_message">You haven\'t ccreated a single trade yet.</string>
+    <string name="create_trade_screen_title">New trade</string>
+    <string name="open_create_trade_button_title">Create new trade</string>
+    <string name="create_trade_menu_title">Create trade</string>
+    <string name="create_trade_screen_trade_type_label">Trade type</string>
+    <string name="payment_options_label">Payment methods</string>
+    <string name="trade_create_price_limits_label">Limits</string>
+    <string name="trade_create_terms_label">Terms</string>
+    <string name="create_trade_button_title">Submit</string>
+    <string name="create_trade_price_input_hint">Price</string>
+    <string name="trade_create_terms_hint">Type your terms or comments</string>
+    <string name="create_trade_cash_label">Cash</string>
+    <string name="create_trade_paypal_label">PayPal</string>
+    <string name="create_trade_venmo_label">Venmo</string>
+    <string name="create_trade_cash_app_label">Cash app</string>
+    <string name="create_trade_payoneer_label">Payoneer</string>
+    <string name="min_price_value_label">$0</string>
+    <string name="max_price_value_label">$10000</string>
+    <string name="create_trade_price_zero_error">Price cannot be zero</string>
+    <string name="create_trade_amount_range_error">Invalid amount range. Enter value from %1$s to %2$s</string>
+    <string name="create_trade_no_payment_options_selected_error">Select at least one payment option</string>
+    <string name="create_trade_not_enough_crypto_balance">Max limit exceeds reserved balance</string>
+    <string name="create_trade_already_exists">You already have a %1$s %2$s trade</string>
+    <string name="payment_methods_label">Payment methods</string>
+    <string name="open_orders_label">Open orders</string>
+    <string name="edit_trade_button_title">Edit</string>
+    <string name="cancel_trade_button_title">Cancel</string>
+    <string name="from_hint_label">From</string>
+    <string name="to_hint_label">To</string>
+    <string name="create_trade_success_message">Trade successfully posted</string>
+    <string name="price_decimal_separator">.</string>
+    <string name="price_grouping_separator">,</string>
+    <string name="price_format">###,##0.00</string>
+    <string name="no_orders_message">There isn\'t open orders yet</string>
+    <string name="no_trades_result_message">There isn\'t trades with the applied filter</string>
+    <string name="trade_details_buy_sell_button_title">Buy/Sell</string>
+    <string name="trade_buy_sell_crypto_amount_label">Crypto amount</string>
+    <string name="trade_buy_sell_submit_button_label">Submit</string>
+    <string name="usd_amount_label">Fiat amount</string>
+    <string name="item_no_trades_reset_all_filters_button_label">Reset all filters</string>
+
+    <string name="distance_label_formatted">%1$s miles</string>
+    <string name="trade_filter_dialog_sort_option_price_label">Price</string>
+    <string name="trade_filter_dialog_sort_option_distance_label">Distance</string>
+    <string name="trade_filter_dialog_reset_filter_button_label">Reset all</string>
+    <string name="trade_filter_dialog_sort_label">Sort by</string>
+    <string name="trade_filter_distance_label">Distance range</string>
+    <string name="trade_filter_dialog_coins_label">Coins</string>
+
+    <string name="my_trade_details_screen_title">Trade details</string>
+    <string name="my_trade_details_cancel_trade_success_message">Trade successfully canceled</string>
+
+
+    <string name="edit_trade_screen_title">Edit trade</string>
+    <string name="edit_trade_price_zero_error">Price cannot be zero</string>
+    <string name="edit_trade_amount_range_error">Invalid amount range. Enter value from %1$s to %2$s</string>
+    <string name="edit_trade_no_payment_options_selected_error">Select at least one payment option</string>
+    <string name="edit_trade_not_enough_crypto_balance">Max limit exceeds reserved balance</string>
+    <string name="edit_trade_success_message">Trade successfully edited</string>
+    <string name="edit_trade_screen_edit_button_title">Save</string>
+
+    <string name="trade_buy_sell_dialog_platform_fee_formatted">Platform fee %1$s%% ~ %2$s %3$s</string>
+    <string name="trade_buy_sell_dialog_crypto_amount_formatted">%1$s %2$s</string>
+    <string name="trade_buy_sell_dialog_amount_zero_error">Amount cannot be zero</string>
+    <string name="trade_buy_sell_dialog_amount_not_in_range_error">Amount is bigger/less than specified limits</string>
+    <string name="trade_buy_sell_dialog_amount_too_big_error">Amount is bigger than your reserved balance</string>
+
+    <string name="item_open_orders_crypto_amount_formatted">%1$s %2$s</string>
+
+    <string name="trade_order_details_screen_title">Order details</string>
+    <string name="trade_order_details_crypto_amount_formatted">%1$s %2$s</string>
+    <string name="trade_order_details_screen_update_doing_button_title">Doing</string>
+    <string name="trade_order_details_screen_update_paid_button_title">Paid</string>
+    <string name="trade_order_details_screen_update_dispute_button_title">Dispute</string>
+    <string name="trade_order_details_screen_update_release_button_title">Release</string>
+    <string name="trade_order_details_screen_update_cancel_button_title">Cancel</string>
+    <string name="google_maps_package">com.google.android.apps.maps</string>
+    <string name="trade_count_over_threshold_formatted"><![CDATA[<b>%d+</b>]]> trades</string>
+    <string name="trade_count_not_over_threshold_formatted"><![CDATA[<b>%d</b>]]> trades</string>
+    <string name="trade_rate_done_button_title">Done</string>
+    <string name="trade_rate_header_formatted">How was you trade experience with %s</string>
+    <string name="low_rating_label">Awful</string>
+    <string name="bad_rating_label">Bad</string>
+    <string name="normal_rating_label">Good</string>
+    <string name="good_rating_label">Very good</string>
+    <string name="perfect_rating_label">Awesome</string>
 </resources>

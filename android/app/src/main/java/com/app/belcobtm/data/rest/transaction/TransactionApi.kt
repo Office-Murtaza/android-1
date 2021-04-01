@@ -63,64 +63,6 @@ interface TransactionApi {
         @Body request: CoinToCoinExchangeRequest
     ): Deferred<Response<ResponseBody>>
 
-    @GET("user/{userId}/coin/{coinCode}/trade-history?tab=1&index=1&sort=1")
-    fun tradeGetInfoAsync(
-        @Path("userId") userId: Int,
-        @Path("coinCode") coinFrom: String
-    ): Deferred<Response<TradeInfoResponse>>
-
-    @GET("user/{userId}/coin/{coinCode}/trade-history?tab=1")
-    fun getBuyTradeListAsync(
-        @Path("userId") userId: Int,
-        @Path("coinCode") coinFrom: String,
-        @Query("sort") sort: Int,
-        @Query("index") paginationStep: Int
-    ): Deferred<Response<TradeInfoResponse>>
-
-    @GET("user/{userId}/coin/{coinCode}/trade-history?tab=2")
-    fun getSellTradeListAsync(
-        @Path("userId") userId: Int,
-        @Path("coinCode") coinFrom: String,
-        @Query("sort") sort: Int,
-        @Query("index") paginationStep: Int
-    ): Deferred<Response<TradeInfoResponse>>
-
-    @GET("user/{userId}/coin/{coinCode}/trade-history?tab=3")
-    fun getMyTradeListAsync(
-        @Path("userId") userId: Int,
-        @Path("coinCode") coinFrom: String,
-        @Query("sort") sort: Int,
-        @Query("index") paginationStep: Int
-    ): Deferred<Response<TradeInfoResponse>>
-
-    @GET("user/{userId}/coin/{coinCode}/trade-history?tab=4")
-    fun getOpenTradeListAsync(
-        @Path("userId") userId: Int,
-        @Path("coinCode") coinFrom: String,
-        @Query("sort") sort: Int,
-        @Query("index") paginationStep: Int
-    ): Deferred<Response<TradeInfoResponse>>
-
-    @POST("user/{userId}/coin/{coinCode}/trade-request")
-    fun tradeBuySellAsync(
-        @Path("userId") userId: Int,
-        @Path("coinCode") toCoin: String,
-        @Body request: TradeBuyRequest
-    ): Deferred<Response<ResponseBody>>
-
-    @POST("user/{userId}/coin/{coinCode}/trade")
-    fun tradeCreateAsync(
-        @Path("userId") userId: Int,
-        @Path("coinCode") toCoin: String,
-        @Body request: TradeCreateRequest
-    ): Deferred<Response<ResponseBody>>
-
-    @POST("user/{userId}/location")
-    fun tradeSendUserLocationAsync(
-        @Path("userId") userId: Int,
-        @Body request: TradeLocationRequest
-    ): Deferred<Response<ResponseBody>>
-
     @GET("coin/{coinCode}/utxo")
     fun getUtxoListAsync(
         @Path("coinCode") coinCode: String,

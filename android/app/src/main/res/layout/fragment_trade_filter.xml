@@ -1,0 +1,294 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/coin_selector_label"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="16dp"
+                android:text="@string/trade_filter_dialog_coins_label"
+                android:textColor="@color/black_text_color"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/coins"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="16dp"
+                android:orientation="horizontal"
+                app:layoutManager="com.google.android.flexbox.FlexboxLayoutManager"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/coin_selector_label"
+                app:spanCount="4"
+                tools:listitem="@layout/item_trade_filter_coin_code" />
+
+            <View
+                android:id="@+id/coin_details_view_divider"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/divider_size"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="16dp"
+                android:background="@color/thin_divider"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/coins" />
+
+            <TextView
+                android:id="@+id/payment_options_label"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="16dp"
+                android:text="@string/payment_options_label"
+                android:textColor="@color/black_text_color"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/coin_details_view_divider" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/payment_options"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="16dp"
+                android:orientation="horizontal"
+                app:layoutManager="com.google.android.flexbox.FlexboxLayoutManager"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/payment_options_label"
+                app:spanCount="5"
+                tools:listitem="@layout/item_trade_payment_option" />
+
+            <View
+                android:id="@+id/payment_options_view_divider"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/divider_size"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="16dp"
+                android:background="@color/thin_divider"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/payment_options" />
+
+            <TextView
+                android:id="@+id/distance_label"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="16dp"
+                android:text="@string/trade_filter_distance_label"
+                android:textColor="@color/black_text_color"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/payment_options_view_divider" />
+
+            <com.google.android.material.slider.RangeSlider
+                android:id="@+id/distance_range_slider"
+                style="@style/SliderWithoutSteps"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:padding="0dp"
+                android:stepSize="@integer/trade_filter_distance_step"
+                android:valueFrom="@integer/trade_filter_min_distance"
+                android:valueTo="@integer/trade_filter_max_distance"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/distance_label"
+                app:thumbRadius="6dp"
+                app:values="@array/initial_distance_slider_values" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/distance_min_limit_input_layout"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:hint="@string/from_hint_label"
+                app:layout_constraintStart_toStartOf="@id/distance_range_slider"
+                app:layout_constraintTop_toBottomOf="@id/distance_range_slider">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/distance_min_limit_edit_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:digits="1234567890"
+                    android:inputType="number"
+                    tools:text="10 miles" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/distance_max_limit_input_layout"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
+                android:hint="@string/to_hint_label"
+                app:layout_constraintEnd_toEndOf="@id/distance_range_slider"
+                app:layout_constraintTop_toBottomOf="@id/distance_range_slider">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/distance_max_limit_edit_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:digits="1234567890"
+                    android:inputType="number"
+                    tools:text="1000 miles" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <TextView
+                android:id="@+id/distance_range_error"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:textColor="@color/colorError"
+                android:textSize="12sp"
+                android:visibility="gone"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@id/distance_range_slider"
+                app:layout_constraintTop_toBottomOf="@id/distance_max_limit_input_layout"
+                tools:text="Validation error message"
+                tools:visibility="visible" />
+
+            <View
+                android:id="@+id/distance_range_slider_divider"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/divider_size"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="16dp"
+                android:background="@color/thin_divider"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/distance_range_error" />
+
+            <TextView
+                android:id="@+id/sort_label"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="16dp"
+                android:text="@string/trade_filter_dialog_sort_label"
+                android:textColor="@color/black_text_color"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/distance_range_slider_divider" />
+
+            <com.google.android.material.chip.ChipGroup
+                android:id="@+id/sort_chip_group"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="80dp"
+                app:checkedChip="@id/trade_type_buy_chip"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/sort_label"
+                app:singleSelection="true">
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/sort_by_price"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="4dp"
+                    android:layout_marginTop="2dp"
+                    android:layout_marginEnd="4dp"
+                    android:layout_marginBottom="2dp"
+                    android:checkable="true"
+                    android:padding="2dp"
+                    android:text="@string/trade_filter_dialog_sort_option_price_label"
+                    app:checkedIconEnabled="false"
+                    app:chipBackgroundColor="@color/trade_payment_option_background"
+                    app:chipIconVisible="false"
+                    app:chipStrokeColor="#0073E4" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/sort_by_distance"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="4dp"
+                    android:layout_marginTop="2dp"
+                    android:layout_marginEnd="4dp"
+                    android:layout_marginBottom="2dp"
+                    android:checkable="true"
+                    android:padding="2dp"
+                    android:text="@string/trade_filter_dialog_sort_option_distance_label"
+                    app:checkedIconEnabled="false"
+                    app:chipBackgroundColor="@color/trade_payment_option_background"
+                    app:chipIconVisible="false"
+                    app:chipStrokeColor="#0073E4" />
+
+            </com.google.android.material.chip.ChipGroup>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+    <Button
+        android:id="@+id/reset_filters"
+        style="@style/Button.Secondary.NoOutlined"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="90dp"
+        android:layout_marginBottom="44dp"
+        android:text="@string/trade_filter_dialog_reset_filter_button_label"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/no_orders_message" />
+
+    <com.github.clans.fab.FloatingActionButton
+        android:id="@+id/apply_filter_button"
+        style="@style/TradeScreen.FloatingActionButtonChild"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="32dp"
+        android:src="@drawable/ic_done"
+        app:tint="@color/colorPrimary" />
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

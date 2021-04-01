@@ -1,11 +1,5 @@
 package com.app.belcobtm.presentation.features.wallet.transactions
 
-import android.Manifest
-import android.annotation.SuppressLint
-import android.content.Context
-import android.content.Intent
-import android.location.Location
-import android.location.LocationManager
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.View
@@ -26,7 +20,6 @@ import com.app.belcobtm.domain.wallet.item.ChartDataItem
 import com.app.belcobtm.presentation.core.extensions.*
 import com.app.belcobtm.presentation.core.mvvm.LoadingData
 import com.app.belcobtm.presentation.core.ui.fragment.BaseFragment
-import com.app.belcobtm.presentation.features.wallet.trade.main.TradeActivity
 import com.app.belcobtm.presentation.features.wallet.transactions.TransactionsFABType.*
 import com.app.belcobtm.presentation.features.wallet.transactions.adapter.TransactionsAdapter
 import com.app.belcobtm.presentation.features.wallet.transactions.item.CurrentChartInfo
@@ -35,12 +28,7 @@ import com.github.mikephil.charting.data.LineDataSet
 import io.github.kobakei.materialfabspeeddial.FabSpeedDialMenu
 import org.koin.android.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
-import permissions.dispatcher.NeedsPermission
-import permissions.dispatcher.OnNeverAskAgain
-import permissions.dispatcher.OnPermissionDenied
-import permissions.dispatcher.RuntimePermissions
 
-@RuntimePermissions
 class TransactionsFragment : BaseFragment<FragmentTransactionsBinding>() {
     private val viewModel: TransactionsViewModel by viewModel {
         parametersOf(TransactionsFragmentArgs.fromBundle(requireArguments()).coinCode)
@@ -66,23 +54,11 @@ class TransactionsFragment : BaseFragment<FragmentTransactionsBinding>() {
         viewModel.updateData()
     }
 
-    override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<String>,
-        grantResults: IntArray
-    ) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        // NOTE: delegate the permission handling to generated method
-        onRequestPermissionsResult(requestCode, grantResults)
-    }
-
     override fun createBinding(inflater: LayoutInflater, container: ViewGroup?): FragmentTransactionsBinding =
         FragmentTransactionsBinding.inflate(inflater, container, false)
 
     private fun initFabMenu() {
         val menu = FabSpeedDialMenu(requireContext())
-//        addButtonToMenu(groupId, menu, TRADE)
-//        addButtonToMenu(groupId, menu, SELL)
         addButtonToMenu(menu, WITHDRAW)
         addButtonToMenu(menu, DEPOSIT)
         addButtonToMenu(menu, RECALL)
@@ -122,7 +98,6 @@ class TransactionsFragment : BaseFragment<FragmentTransactionsBinding>() {
         swipeToRefreshView.setOnRefreshListener { viewModel.refreshTransactionList() }
         fabListView.addOnMenuItemClickListener { _, _, itemId ->
             when (itemId) {
-                TRADE.id -> tradeOpenWithPermissionCheck()
                 STAKING.id -> navigate(TransactionsFragmentDirections.toStakingFragment())
                 WITHDRAW.id ->
                     navigate(TransactionsFragmentDirections.toWithdrawFragment(viewModel.coinCode))
@@ -132,12 +107,6 @@ class TransactionsFragment : BaseFragment<FragmentTransactionsBinding>() {
                     navigate(TransactionsFragmentDirections.toRecallFragment(viewModel.coinCode))
                 RESERVE.id ->
                     navigate(TransactionsFragmentDirections.toReserveFragment(viewModel.coinCode))
-
-                //SELL.id -> SellActivity.start(
-                //    requireContext(),
-                //    viewModel.coinDataItem,
-                //    viewModel.coinDataItemList
-                //)
             }
         }
     }
@@ -199,22 +168,6 @@ class TransactionsFragment : BaseFragment<FragmentTransactionsBinding>() {
             }
         })
     }
-
-    @SuppressLint("MissingPermission")
-    @NeedsPermission(Manifest.permission.ACCESS_FINE_LOCATION)
-    fun tradeOpen() {
-        val lm = requireActivity().getSystemService(Context.LOCATION_SERVICE) as LocationManager
-        val location: Location? = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER)
-        val latitude: Double = location?.latitude ?: 0.0
-        val longitude: Double = location?.longitude ?: 0.0
-        showTradeScreen(latitude, longitude)
-    }
-
-    @OnNeverAskAgain(Manifest.permission.ACCESS_FINE_LOCATION)
-    fun tradeNeverAskAgain() = showTradeScreen()
-
-    @OnPermissionDenied(Manifest.permission.ACCESS_FINE_LOCATION)
-    fun tradeDenied() = showTradeScreen()
 
     private fun initChart() {
         with(binding.chartView) {
@@ -318,17 +271,6 @@ class TransactionsFragment : BaseFragment<FragmentTransactionsBinding>() {
             chartView.data = LineData(dataSet, circleDataSet)
         }
         chartView.invalidate()
-    }
-
-    private fun showTradeScreen(latitude: Double = 0.0, longitude: Double = 0.0) {
-        val intent = Intent(requireContext(), TradeActivity::class.java)
-        intent.putExtra(
-            TradeActivity.TAG_COIN_CODE,
-            TransactionsFragmentArgs.fromBundle(requireArguments()).coinCode
-        )
-        intent.putExtra(TradeActivity.TAG_LATITUDE, latitude)
-        intent.putExtra(TradeActivity.TAG_LONGITUDE, longitude)
-        startActivity(intent)
     }
 
     companion object {

@@ -3,13 +3,14 @@ package com.app.belcobtm.presentation.features.wallet.transactions
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.app.belcobtm.R
 import com.app.belcobtm.data.rest.wallet.request.PriceChartPeriod
+import com.app.belcobtm.data.websockets.base.model.WalletBalance
+import com.app.belcobtm.data.websockets.wallet.WalletObserver
 import com.app.belcobtm.domain.transaction.interactor.GetTransactionListUseCase
 import com.app.belcobtm.domain.wallet.LocalCoinType
 import com.app.belcobtm.domain.wallet.interactor.GetChartsUseCase
-import com.app.belcobtm.domain.wallet.interactor.GetCoinByCodeUseCase
-import com.app.belcobtm.domain.wallet.interactor.UpdateCoinDetailsUseCase
 import com.app.belcobtm.domain.wallet.item.ChartChangesColor
 import com.app.belcobtm.domain.wallet.item.ChartDataItem
 import com.app.belcobtm.presentation.core.mvvm.LoadingData
@@ -18,14 +19,15 @@ import com.app.belcobtm.presentation.features.wallet.transactions.item.Transacti
 import com.app.belcobtm.presentation.features.wallet.transactions.item.TransactionsScreenItem
 import com.app.belcobtm.presentation.features.wallet.transactions.item.mapToUiItem
 import com.github.mikephil.charting.data.BarEntry
+import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.launch
 import kotlin.collections.set
 
 class TransactionsViewModel(
     val coinCode: String,
-    private val getCoinByCodeUseCase: GetCoinByCodeUseCase,
+    private val walletObserver: WalletObserver,
     private val chartUseCase: GetChartsUseCase,
     private val transactionListUseCase: GetTransactionListUseCase,
-    private val updateCoinDetailsUseCase: UpdateCoinDetailsUseCase
 ) : ViewModel() {
     val chartLiveData: MutableLiveData<LoadingData<CurrentChartInfo>> =
         MutableLiveData(LoadingData.Loading())
@@ -46,22 +48,13 @@ class TransactionsViewModel(
     }
 
     init {
-        loadCoinDataItem(coinCode)
+        _loadingLiveData.value = LoadingData.Loading()
+        subscribeToCoinDataItem(coinCode)
         updateData()
     }
 
     fun updateData() {
-        _loadingLiveData.value = LoadingData.Loading()
         loadChartData(PriceChartPeriod.PERIOD_DAY)
-        updateCoinDetailsUseCase.invoke(
-            params = UpdateCoinDetailsUseCase.Params(coinCode),
-            onSuccess = {
-                _loadingLiveData.value = LoadingData.Success(Unit)
-            },
-            onError = {
-                _loadingLiveData.value = LoadingData.Error(it)
-            }
-        )
         refreshTransactionList()
     }
 
@@ -141,23 +134,31 @@ class TransactionsViewModel(
                     }.map { it.mapToUiItem() })
                     transactionListLiveData.value = newList
                 }
+                _loadingLiveData.value = LoadingData.Success(Unit)
             },
-            onError = { it.printStackTrace() }
+            onError = {
+                it.printStackTrace()
+                _loadingLiveData.value = LoadingData.Error(it)
+            }
         )
     }
 
-    private fun loadCoinDataItem(coinCode: String) {
-        getCoinByCodeUseCase(
-            coinCode,
-            onSuccess = { coinDataItem ->
-                _detailsLiveData.value = TransactionsScreenItem(
-                    balance = coinDataItem.balanceCoin,
-                    priceUsd = coinDataItem.priceUsd,
-                    reservedBalanceUsd = coinDataItem.reservedBalanceUsd,
-                    reservedCode = coinDataItem.code,
-                    reservedBalanceCoin = coinDataItem.reservedBalanceCoin
-                )
-            }
-        )
+    private fun subscribeToCoinDataItem(coinCode: String) {
+        viewModelScope.launch {
+            walletObserver.observe().receiveAsFlow()
+                .filterIsInstance<WalletBalance.Balance>()
+                .mapNotNull { balance -> balance.data.coinList.firstOrNull { it.code == coinCode } }
+                .map { coinDataItem ->
+                    TransactionsScreenItem(
+                        balance = coinDataItem.balanceCoin,
+                        priceUsd = coinDataItem.priceUsd,
+                        reservedBalanceUsd = coinDataItem.reservedBalanceUsd,
+                        reservedCode = coinDataItem.code,
+                        reservedBalanceCoin = coinDataItem.reservedBalanceCoin
+                    )
+                }
+                .onEach { screenItem -> _detailsLiveData.value = screenItem }
+                .collect()
+        }
     }
 }

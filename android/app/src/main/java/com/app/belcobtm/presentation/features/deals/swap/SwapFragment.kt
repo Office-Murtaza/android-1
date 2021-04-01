@@ -1,10 +1,8 @@
 package com.app.belcobtm.presentation.features.deals.swap
 
-import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.EditText
 import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.Observer
 import com.app.belcobtm.R
@@ -67,8 +65,8 @@ class SwapFragment : BaseFragment<FragmentSwapBinding>() {
         setToolbarTitle(R.string.swap_screen_title)
         sendCoinInputLayout.getEditText().setHint(R.string.swap_screen_send_hint)
         receiveCoinInputLayout.getEditText().setHint(R.string.swap_screen_receive_hint)
-        setTextSilently(sendCoinInputLayout.getEditText(), textWatcher.firstTextWatcher, "0")
-        setTextSilently(receiveCoinInputLayout.getEditText(), textWatcher.secondTextWatcher, "0")
+        sendCoinInputLayout.getEditText().setTextSilently(textWatcher.firstTextWatcher, "0")
+        receiveCoinInputLayout.getEditText().setTextSilently(textWatcher.secondTextWatcher, "0")
     }
 
     override fun createBinding(
@@ -184,7 +182,7 @@ class SwapFragment : BaseFragment<FragmentSwapBinding>() {
             }
             val coinAmountString = sendAmount.toStringCoin()
             val watcher = textWatcher.firstTextWatcher
-            setTextSilently(targetEditText, watcher, coinAmountString)
+            targetEditText.setTextSilently(watcher, coinAmountString)
         })
         viewModel.receiveCoinAmount.observe(viewLifecycleOwner, Observer { receiveAmount ->
             val targetEditText = receiveCoinInputLayout.getEditText()
@@ -193,7 +191,7 @@ class SwapFragment : BaseFragment<FragmentSwapBinding>() {
             }
             val coinAmountString = receiveAmount.toStringCoin()
             val watcher = textWatcher.secondTextWatcher
-            setTextSilently(targetEditText, watcher, coinAmountString)
+            targetEditText.setTextSilently(watcher, coinAmountString)
         })
         viewModel.submitEnabled.observe(viewLifecycleOwner, Observer { enabled ->
             nextButtonView.isEnabled = enabled
@@ -217,14 +215,5 @@ class SwapFragment : BaseFragment<FragmentSwapBinding>() {
             .setAdapter(adapter) { _, position -> action.invoke(coinsList[position]) }
             .create()
             .show()
-    }
-
-    private fun setTextSilently(targetEditText: EditText, watcher: TextWatcher, text: String) {
-        targetEditText.removeTextChangedListener(watcher)
-        targetEditText.setText(text)
-        if (targetEditText.isFocused) {
-            targetEditText.setSelection(text.length)
-        }
-        targetEditText.addTextChangedListener(watcher)
     }
 }

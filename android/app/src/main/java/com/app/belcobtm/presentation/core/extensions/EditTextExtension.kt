@@ -39,3 +39,12 @@ fun EditText.actionDoneListener(listener: () -> Unit) {
         false
     }
 }
+
+fun EditText.setTextSilently(watcher: TextWatcher, text: String, selectionPosition: Int = -1) {
+    removeTextChangedListener(watcher)
+    setText(text)
+    if (isFocused) {
+        setSelection(if (selectionPosition < 0) text.length else selectionPosition)
+    }
+    addTextChangedListener(watcher)
+}

@@ -7,14 +7,15 @@ import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.ProcessLifecycleOwner
 import com.app.belcobtm.data.di.*
 import com.app.belcobtm.data.disk.shared.preferences.SharedPreferencesHelper
+import com.app.belcobtm.presentation.core.Const
 import com.app.belcobtm.presentation.di.helperModule
 import com.app.belcobtm.presentation.di.useCaseModule
 import com.app.belcobtm.presentation.di.viewModelHelperModule
 import com.app.belcobtm.presentation.di.viewModelModule
+import com.giphy.sdk.ui.Giphy
 import org.koin.android.ext.android.inject
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
-
 
 class App : Application() {
     private val prefHelper: SharedPreferencesHelper by inject()
@@ -30,6 +31,7 @@ class App : Application() {
         super.onCreate()
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true)
         System.loadLibrary("TrustWalletCore")
+        Giphy.configure(applicationContext, Const.GIPHY_API_KEY)
 
         startKoin {
             modules(
@@ -46,7 +48,6 @@ class App : Application() {
             )
             androidContext(applicationContext)
         }
-        prefHelper.coinsDetails = emptyMap()
         // TODO token cleanup can be removed after force update
         prefHelper.clearValue(SharedPreferencesHelper.ACCESS_TOKEN)
         ProcessLifecycleOwner.get().lifecycle.addObserver(walletLifecycleObserver)

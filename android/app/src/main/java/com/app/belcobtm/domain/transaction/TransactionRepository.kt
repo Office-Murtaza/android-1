@@ -3,7 +3,6 @@ package com.app.belcobtm.domain.transaction
 import com.app.belcobtm.domain.Either
 import com.app.belcobtm.domain.Failure
 import com.app.belcobtm.domain.transaction.item.*
-import com.app.belcobtm.domain.transaction.type.TradeSortType
 
 interface TransactionRepository {
     suspend fun getTransactionList(
@@ -50,65 +49,6 @@ interface TransactionRepository {
         toCoinAmount: Double,
         fromCoin: String,
         coinTo: String
-    ): Either<Failure, Unit>
-
-    suspend fun tradeGetBuyList(
-        latitude: Double,
-        longitude: Double,
-        coinFrom: String,
-        sortType: TradeSortType,
-        paginationStep: Int
-    ): Either<Failure, TradeInfoDataItem>
-
-    suspend fun getTradeSellList(
-        latitude: Double,
-        longitude: Double,
-        coinFrom: String,
-        sortType: TradeSortType,
-        paginationStep: Int
-    ): Either<Failure, TradeInfoDataItem>
-
-    suspend fun getTradeMyList(
-        latitude: Double,
-        longitude: Double,
-        coinFrom: String,
-        sortType: TradeSortType,
-        paginationStep: Int
-    ): Either<Failure, TradeInfoDataItem>
-
-    suspend fun getTradeOpenList(
-        latitude: Double,
-        longitude: Double,
-        coinFrom: String,
-        sortType: TradeSortType,
-        paginationStep: Int
-    ): Either<Failure, TradeInfoDataItem>
-
-    suspend fun tradeBuySell(
-        id: Int,
-        price: Int,
-        fromUsdAmount: Int,
-        toCoin: String,
-        toCoinAmount: Double,
-        detailsText: String
-    ): Either<Failure, Unit>
-
-    suspend fun tradeBuyCreate(
-        coinCode: String,
-        paymentMethod: String,
-        margin: Double,
-        minLimit: Long,
-        maxLimit: Long,
-        terms: String
-    ): Either<Failure, Unit>
-
-    suspend fun tradeSellCreate(
-        coinCode: String,
-        paymentMethod: String,
-        margin: Double,
-        minLimit: Long,
-        maxLimit: Long,
-        terms: String
     ): Either<Failure, Unit>
 
     suspend fun tradeRecallTransactionComplete(

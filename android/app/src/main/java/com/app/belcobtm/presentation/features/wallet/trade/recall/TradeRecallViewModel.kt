@@ -7,10 +7,8 @@ import androidx.lifecycle.viewModelScope
 import com.app.belcobtm.domain.transaction.interactor.trade.TradeRecallTransactionCompleteUseCase
 import com.app.belcobtm.domain.wallet.LocalCoinType
 import com.app.belcobtm.domain.wallet.interactor.GetCoinByCodeUseCase
-import com.app.belcobtm.domain.wallet.interactor.GetCoinDetailsUseCase
 import com.app.belcobtm.domain.wallet.interactor.GetFreshCoinUseCase
 import com.app.belcobtm.domain.wallet.item.CoinDataItem
-import com.app.belcobtm.domain.wallet.item.CoinDetailsDataItem
 import com.app.belcobtm.domain.wallet.item.isEthRelatedCoin
 import com.app.belcobtm.presentation.core.coin.CoinCodeProvider
 import com.app.belcobtm.presentation.core.coin.MinMaxCoinValueProvider
@@ -25,7 +23,6 @@ import kotlinx.coroutines.launch
 class TradeRecallViewModel(
     private val coinCode: String,
     private val getCoinByCodeUseCase: GetCoinByCodeUseCase,
-    private val getCoinDetailsUseCase: GetCoinDetailsUseCase,
     private val getCoinDataUseCase: GetFreshCoinUseCase,
     private val completeTransactionUseCase: TradeRecallTransactionCompleteUseCase,
     private val coinCodeProvider: CoinCodeProvider,
@@ -45,7 +42,6 @@ class TradeRecallViewModel(
 
     private var etheriumCoinDataItem: CoinDataItem? = null
     private lateinit var coinDataItem: CoinDataItem
-    private lateinit var detailsDataItem: CoinDetailsDataItem
     lateinit var coinItem: CoinScreenItem
         private set
 
@@ -58,20 +54,14 @@ class TradeRecallViewModel(
     fun loadInitialData() {
         _initialLoadLiveData.value = LoadingData.Loading()
         getCoinByCodeUseCase.invoke(coinCode, onSuccess = { coinItem ->
-            coinDataItem = coinItem
+            this.coinDataItem = coinItem
             this.coinItem = coinItem.mapToScreenItem()
-            getCoinDetailsUseCase.invoke(GetCoinDetailsUseCase.Params(coinCode),
-                onSuccess = { coinDetailsItem ->
-                    detailsDataItem = coinDetailsItem
-                    if (coinDataItem.isEthRelatedCoin()) {
-                        // for CATM amount calculation we need ETH coin
-                        fetchEtherium()
-                    } else {
-                        _initialLoadLiveData.value = LoadingData.Success(Unit)
-                    }
-                }, onError = {
-                    _initialLoadLiveData.value = LoadingData.Error(it)
-                })
+            if (coinItem.isEthRelatedCoin()) {
+                // for CATM amount calculation we need ETH coin
+                fetchEtherium()
+            } else {
+                _initialLoadLiveData.value = LoadingData.Success(Unit)
+            }
         }, onError = {
             _initialLoadLiveData.value = LoadingData.Error(it)
         })
@@ -121,21 +111,21 @@ class TradeRecallViewModel(
         }
     }
 
-    fun getTransactionFee(): Double = detailsDataItem.txFee
+    fun getTransactionFee(): Double = coinDataItem.details.txFee
 
     fun getCoinCode(): String = coinCodeProvider.getCoinCode(coinDataItem)
 
     fun getMinValue(): Double =
-        minMaxCoinValueProvider.getMinValue(coinDataItem, detailsDataItem)
+        minMaxCoinValueProvider.getMinValue(coinDataItem)
 
     fun getMaxValue(): Double =
-        minMaxCoinValueProvider.getMaxValue(coinDataItem, detailsDataItem)
+        minMaxCoinValueProvider.getMaxValue(coinDataItem)
 
     private fun enoughETHForExtraFee(currentCryptoAmount: Double): Boolean {
         if (coinDataItem.isEthRelatedCoin()) {
             val controlValue =
-                detailsDataItem.txFee * etheriumCoinDataItem!!.priceUsd / coinDataItem.priceUsd
-            return currentCryptoAmount <= controlValue.withScale(detailsDataItem.scale)
+                coinDataItem.details.txFee * etheriumCoinDataItem!!.priceUsd / coinDataItem.priceUsd
+            return currentCryptoAmount <= controlValue.withScale(coinDataItem.details.scale)
         }
         return true
     }

@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/account_icon"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="28dp"
+        android:src="@drawable/ic_trade_account"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/account_public_id"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:textColor="@color/black_text_color"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@id/account_verification_status"
+        app:layout_constraintStart_toEndOf="@id/account_icon"
+        app:layout_constraintTop_toTopOf="@id/account_icon"
+        tools:text="I48784RPBVUZ7HHT" />
+
+    <TextView
+        android:id="@+id/account_verification_status"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="2dp"
+        android:drawablePadding="4dp"
+        android:text="@string/trade_list_account_info_verified_label"
+        android:textColor="@color/black_text_color"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toBottomOf="@id/account_icon"
+        app:layout_constraintStart_toEndOf="@id/account_icon"
+        app:layout_constraintTop_toBottomOf="@id/account_public_id"
+        tools:drawableStart="@drawable/ic_trade_maker_verified" />
+
+    <LinearLayout
+        android:id="@+id/success_rate_container"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="1dp"
+        android:background="@drawable/user_trade_info_background"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toStartOf="@id/total_trades_container"
+        app:layout_constraintStart_toStartOf="@id/account_icon"
+        app:layout_constraintTop_toBottomOf="@id/account_icon">
+
+        <TextView
+            android:id="@+id/success_rate_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:text="@string/user_trade_info_success_rate_label"
+            android:textColor="@color/colorText"
+            android:textSize="12sp"
+            app:layout_constraintStart_toStartOf="@id/account_icon"
+            app:layout_constraintTop_toBottomOf="@id/account_icon" />
+
+        <TextView
+            android:id="@+id/success_rate_value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="16dp"
+            android:drawablePadding="6dp"
+            android:textColor="@color/black_text_color"
+            android:textSize="24sp"
+            app:drawableStartCompat="@drawable/ic_rate_filled"
+            app:layout_constraintStart_toStartOf="@id/account_icon"
+            app:layout_constraintTop_toBottomOf="@id/success_rate_label"
+            tools:text="4.25" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/total_trades_container"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="1dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="16dp"
+        android:background="@drawable/user_trade_info_background"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/success_rate_container"
+        app:layout_constraintTop_toBottomOf="@id/account_icon">
+
+        <TextView
+            android:id="@+id/total_trades_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:text="@string/user_trade_info_total_trades_label"
+            android:textColor="@color/colorText"
+            android:textSize="12sp"
+            app:layout_constraintStart_toStartOf="@id/account_icon"
+            app:layout_constraintTop_toBottomOf="@id/account_icon" />
+
+        <TextView
+            android:id="@+id/total_trades_value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="16dp"
+            android:drawablePadding="6dp"
+            android:textColor="@color/black_text_color"
+            android:textSize="24sp"
+            app:layout_constraintStart_toStartOf="@id/account_icon"
+            app:layout_constraintTop_toBottomOf="@id/success_rate_label"
+            tools:text="152" />
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
