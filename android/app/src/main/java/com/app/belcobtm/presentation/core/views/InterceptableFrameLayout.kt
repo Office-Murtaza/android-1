@@ -16,12 +16,12 @@ class InterceptableFrameLayout @JvmOverloads constructor(
     }
 
     private fun handleInterception(ev: MotionEvent?): Boolean {
-        if (ev != null) interceptListener?.onIntercented(ev)
+        if (ev != null) interceptListener?.onTouchIntercented(ev)
         return false
     }
 
     interface OnInterceptEventListener {
 
-        fun onIntercented(ev: MotionEvent)
+        fun onTouchIntercented(ev: MotionEvent)
     }
 }

@@ -13,6 +13,7 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.NavDirections
 import androidx.navigation.Navigator
@@ -29,6 +30,8 @@ import com.app.belcobtm.presentation.core.views.InterceptableFrameLayout
 import com.app.belcobtm.presentation.features.HostActivity
 import com.app.belcobtm.presentation.features.HostNavigationFragment
 import com.google.android.material.snackbar.Snackbar
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import org.koin.android.ext.android.get
 import org.koin.core.parameter.parametersOf
 
@@ -131,10 +134,10 @@ abstract class BaseFragment<V : ViewBinding> : Fragment(),
             false
         }
 
-    override fun onIntercented(ev: MotionEvent) {
-        // On each MotionEvent.ACTION_UP we want to hide the keyboard
-        // because the event will be triggered after any clickable element process the event
-        if (ev.action == MotionEvent.ACTION_UP) {
+    override fun onTouchIntercented(ev: MotionEvent) {
+        viewLifecycleOwner.lifecycleScope.launch {
+            // give a possibility to any element handle the event first
+            delay(100L)
             val currentFocusedView = activity?.currentFocus
             if (currentFocusedView is EditText) {
                 // in case if current focus is on EditText
@@ -142,13 +145,12 @@ abstract class BaseFragment<V : ViewBinding> : Fragment(),
                 // outside the given EditText, otherwise - do nothing
                 val rect = Rect()
                 currentFocusedView.getGlobalVisibleRect(rect)
-                // check if current focus does not contains the clicked coordinates
-                if (!rect.contains(ev.rawX.toInt(), ev.rawY.toInt())) {
-                    hideKeyboard()
+                // check if current focus does contain the clicked coordinates
+                if (rect.contains(ev.rawX.toInt(), ev.rawY.toInt())) {
+                    return@launch
                 }
-            } else {
-                hideKeyboard()
             }
+            hideKeyboard()
         }
     }
 
