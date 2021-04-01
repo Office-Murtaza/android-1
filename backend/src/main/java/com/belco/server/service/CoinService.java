@@ -6,7 +6,6 @@ import com.belco.server.repository.CoinRep;
 import com.belco.server.util.Util;
 import com.fasterxml.jackson.annotation.JsonValue;
 import net.sf.json.JSONObject;
-import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
@@ -23,13 +22,14 @@ import java.util.stream.Collectors;
 @EnableScheduling
 public class CoinService {
 
+    //TODO: replace with Redis
     public static Map<String, Map<Long, List<String>>> wsMap = new ConcurrentHashMap<>();
 
     private static Map<String, Coin> coinMap;
     private static WalletService walletService;
     private static UserService userService;
     private static CacheService cacheService;
-    private static SimpMessagingTemplate simpMessagingTemplate;
+    private static SocketService socketService;
     private static NodeService nodeService;
     private static BlockbookService blockbookService;
     private static GethService gethService;
@@ -38,13 +38,13 @@ public class CoinService {
     private static TrongridService trongridService;
     private static PlatformService platformService;
 
-    public CoinService(WalletService walletService, UserService userService, CoinRep coinRep, CacheService cacheService, SimpMessagingTemplate simpMessagingTemplate, NodeService nodeService, BlockbookService blockbookService, GethService gethService, BinanceService binanceService, RippledService rippledService, TrongridService trongridService, PlatformService platformService) {
+    public CoinService(WalletService walletService, UserService userService, CoinRep coinRep, CacheService cacheService, SocketService socketService, NodeService nodeService, BlockbookService blockbookService, GethService gethService, BinanceService binanceService, RippledService rippledService, TrongridService trongridService, PlatformService platformService) {
         CoinService.walletService = walletService;
         CoinService.userService = userService;
 
         CoinService.coinMap = coinRep.findAll().stream().collect(Collectors.toMap(Coin::getCode, Function.identity()));
         CoinService.cacheService = cacheService;
-        CoinService.simpMessagingTemplate = simpMessagingTemplate;
+        CoinService.socketService = socketService;
         CoinService.nodeService = nodeService;
 
         CoinService.blockbookService = blockbookService;
@@ -60,12 +60,13 @@ public class CoinService {
     }
 
     @Scheduled(cron = "*/10 * * * * *")
-    public void wsStompBalance() {
-        wsMap.forEach((k, v) -> sendStompBalance(k, (Long) v.keySet().toArray()[0], v.get(v.keySet().toArray()[0])));
+    public void updateBalance() {
+        wsMap.forEach((k, v) -> pushBalance(k, (Long) v.keySet().toArray()[0], v.get(v.keySet().toArray()[0])));
     }
 
-    public void sendStompBalance(String phone, Long userId, List<String> coins) {
-        simpMessagingTemplate.convertAndSendToUser(phone, "/queue/balance", getCoinsBalance(userId, coins));
+    public void pushBalance(String phone, Long userId, List<String> coins) {
+        BalanceDTO dto = getCoinsBalance(userId, coins);
+        socketService.pushBalance(phone, dto);
     }
 
     public BalanceDTO getCoinsBalance(Long userId, List<String> coins) {
@@ -163,7 +164,7 @@ public class CoinService {
                 coins.add(coin.name());
             }
 
-            sendStompBalance(user.getPhone(), userId, coins);
+            socketService.pushBalance(user.getPhone(), getCoinsBalance(userId, coins));
 
             return true;
         }

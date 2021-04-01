@@ -100,7 +100,7 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
                     User user = userService.findByPhone(name).get();
                     CoinService.wsMap.put(authentication.getName(), Collections.singletonMap(user.getId(), coins));
-                    coinService.sendStompBalance(authentication.getName(), user.getId(), coins);
+                    coinService.pushBalance(authentication.getName(), user.getId(), coins);
                 } else if (StompCommand.DISCONNECT.equals(accessor.getCommand()) || StompCommand.UNSUBSCRIBE.equals(accessor.getCommand())) {
                     Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
                     String name = authentication == null ? accessor.getUser().getName() : authentication.getName();

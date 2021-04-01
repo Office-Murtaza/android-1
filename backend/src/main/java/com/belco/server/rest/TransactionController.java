@@ -88,6 +88,8 @@ public class TransactionController {
                     transactionService.withdrawStake(userId, coin, txId, dto.getCryptoAmount());
                 }
 
+                transactionService.postSubmit(userId, coin, txId);
+
                 return Response.ok("txId", txId);
             } else {
                 return Response.validationError(coin.name() + " submit transaction error");

@@ -38,11 +38,12 @@ public class TransactionService {
     private final WalletService walletService;
     private final GethService gethService;
     private final PlatformService platformService;
+    private final SocketService socketService;
 
     @Value("${gb.url}")
     private String gbUrl;
 
-    public TransactionService(TransactionRecordRep recordRep, TransactionRecordWalletRep walletRep, UserCoinRep userCoinRep, UserService userService, TwilioService twilioService, NotificationService notificationService, WalletService walletService, GethService gethService, PlatformService platformService) {
+    public TransactionService(TransactionRecordRep recordRep, TransactionRecordWalletRep walletRep, UserCoinRep userCoinRep, UserService userService, TwilioService twilioService, NotificationService notificationService, WalletService walletService, GethService gethService, PlatformService platformService, SocketService socketService) {
         this.recordRep = recordRep;
         this.walletRep = walletRep;
         this.userCoinRep = userCoinRep;
@@ -52,6 +53,7 @@ public class TransactionService {
         this.walletService = walletService;
         this.gethService = gethService;
         this.platformService = platformService;
+        this.socketService = socketService;
     }
 
     public static TxHistoryDTO buildTxs(Map<String, TxDetailsDTO> map, Integer startIndex, Integer limit, List<TransactionRecord> transactionRecords, List<TransactionRecordWallet> transactionRecordWallets) {
@@ -535,6 +537,13 @@ public class TransactionService {
         }
 
         return dto;
+    }
+
+    public void postSubmit(Long userId, CoinService.CoinEnum coin, String txId) {
+        User user = userService.findById(userId);
+        TxDetailsDTO dto = getTransactionDetails(userId, coin, txId);
+
+        socketService.pushTransaction(user.getPhone(), dto);
     }
 
     @Scheduled(cron = "0 */1 * * * *")

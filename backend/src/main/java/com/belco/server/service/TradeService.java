@@ -22,9 +22,7 @@ import org.bson.Document;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.mongodb.core.MongoTemplate;
-import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
-
 import javax.annotation.PostConstruct;
 import javax.transaction.Transactional;
 import java.io.File;
@@ -42,20 +40,21 @@ public class TradeService {
     private final OrderRep orderRep;
     private final UserCoinRep userCoinRep;
     private final UserService userService;
-    private final SimpMessagingTemplate simpMessagingTemplate;
+    private final SocketService socketService;
     private final MongoTemplate mongo;
 
+    //TODO: replace with Redis
     private Map<Long, TradeDTO> tradesMap = new ConcurrentHashMap<>();
 
     @Value("${upload.path.chat}")
     private String uploadPath;
 
-    public TradeService(TradeRep tradeRep, OrderRep orderRep, UserCoinRep userCoinRep, UserService userService, SimpMessagingTemplate simpMessagingTemplate, MongoTemplate mongo) {
+    public TradeService(TradeRep tradeRep, OrderRep orderRep, UserCoinRep userCoinRep, UserService userService, SocketService socketService, MongoTemplate mongo) {
         this.tradeRep = tradeRep;
         this.orderRep = orderRep;
         this.userCoinRep = userCoinRep;
         this.userService = userService;
-        this.simpMessagingTemplate = simpMessagingTemplate;
+        this.socketService = socketService;
         this.mongo = mongo;
     }
 
@@ -124,7 +123,7 @@ public class TradeService {
 
             TradeDTO rDTO = trade.toDTO();
             tradesMap.put(trade.getId(), rDTO);
-            wsPushTrade(rDTO);
+            socketService.pushTrade(rDTO);
 
             return Response.ok(rDTO);
         } catch (Exception e) {
@@ -167,7 +166,7 @@ public class TradeService {
 
             TradeDTO rDTO = trade.toDTO();
             tradesMap.put(trade.getId(), rDTO);
-            wsPushTrade(rDTO);
+            socketService.pushTrade(rDTO);
 
             return Response.ok(rDTO);
         } catch (Exception e) {
@@ -195,7 +194,7 @@ public class TradeService {
 
             trade = tradeRep.save(trade);
             TradeDTO rDTO = trade.toDTO();
-            wsPushTrade(rDTO);
+            socketService.pushTrade(rDTO);
 
             return Response.ok(rDTO);
         } catch (Exception e) {
@@ -229,7 +228,7 @@ public class TradeService {
             tradesMap.get(trade.getId()).setMaxLimit(trade.getMaxLimit());
             tradesMap.get(trade.getId()).setOpenOrders(trade.getOpenOrders());
             trade = tradeRep.save(trade);
-            wsPushTrade(trade.toDTO());
+            socketService.pushTrade(trade.toDTO());
 
             Order order = new Order();
             order.setStatus(OrderStatus.NEW.getValue());
@@ -246,8 +245,8 @@ public class TradeService {
 
             order = orderRep.save(order);
             OrderDTO rDTO = order.toDTO();
-            wsPushOrder(order.getMaker().getPhone(), rDTO);
-            wsPushOrder(order.getTaker().getPhone(), rDTO);
+            socketService.pushOrder(order.getMaker().getPhone(), rDTO);
+            socketService.pushOrder(order.getTaker().getPhone(), rDTO);
 
             return Response.ok(rDTO);
         } catch (Exception e) {
@@ -286,7 +285,7 @@ public class TradeService {
                     trade.setOpenOrders(trade.getOpenOrders() - 1);
                     tradesMap.get(trade.getId()).setOpenOrders(trade.getOpenOrders());
                     trade = tradeRep.save(trade);
-                    wsPushTrade(trade.toDTO());
+                    socketService.pushTrade(trade.toDTO());
                 }
 
                 order.setStatus(dto.getStatus().getValue());
@@ -294,8 +293,8 @@ public class TradeService {
 
             order = orderRep.save(order);
             OrderDTO rDTO = order.toDTO();
-            wsPushOrder(order.getMaker().getPhone(), rDTO);
-            wsPushOrder(order.getTaker().getPhone(), rDTO);
+            socketService.pushOrder(order.getMaker().getPhone(), rDTO);
+            socketService.pushOrder(order.getTaker().getPhone(), rDTO);
 
             return Response.ok(rDTO);
         } catch (Exception e) {
@@ -321,13 +320,13 @@ public class TradeService {
             tradesMap.get(trade.getId()).setMaxLimit(trade.getMaxLimit());
             tradesMap.get(trade.getId()).setOpenOrders(trade.getOpenOrders());
             trade = tradeRep.save(trade);
-            wsPushTrade(trade.toDTO());
+            socketService.pushTrade(trade.toDTO());
 
             order.setStatus(OrderStatus.CANCELED.getValue());
             order = orderRep.save(order);
             OrderDTO rDTO = order.toDTO();
-            wsPushOrder(order.getMaker().getPhone(), rDTO);
-            wsPushOrder(order.getTaker().getPhone(), rDTO);
+            socketService.pushOrder(order.getMaker().getPhone(), rDTO);
+            socketService.pushOrder(order.getTaker().getPhone(), rDTO);
 
             if (userId.equals(order.getMaker().getId())) {
                 //send push notification to taker
@@ -356,7 +355,7 @@ public class TradeService {
 
             mongo.getCollection("order_chat").insertOne(dto.toDocument());
 
-            wsPushChatMessage(userService.findById(dto.getToUserId()).getPhone(), dto);
+            socketService.pushChatMessage(userService.findById(dto.getToUserId()).getPhone(), dto);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -367,18 +366,6 @@ public class TradeService {
         user.setTotalTrades(user.getTotalTrades() + 1);
 
         userService.save(user);
-    }
-
-    private void wsPushTrade(TradeDTO dto) {
-        simpMessagingTemplate.convertAndSend("/topic/trade", dto);
-    }
-
-    private void wsPushOrder(String phone, OrderDTO dto) {
-        simpMessagingTemplate.convertAndSendToUser(phone, "/queue/order", dto);
-    }
-
-    private void wsPushChatMessage(String phone, ChatMessageDTO dto) {
-        simpMessagingTemplate.convertAndSendToUser(phone, "/queue/order-chat", dto);
     }
 
     @NotNull
