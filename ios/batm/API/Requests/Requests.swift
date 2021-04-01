@@ -53,7 +53,7 @@ struct CreateAccountRequest: RetriableAPIRequest {
   let password: String
   let coinAddresses: [CoinAddress]
   let notificationsToken: String
-  private let userTimeZone: String = TimeZone.current.localizedName(for: .standard, locale: .current) ?? ""
+  private let userTimeZone: String = TimeZone.current.localizedName(for: .standard, locale: nil) ?? ""
   private let locationManager = UserLocationManager()
 
 
@@ -83,7 +83,7 @@ struct RecoverWalletRequest: RetriableAPIRequest {
   let password: String
   let coinAddresses: [CoinAddress]
   let notificationsToken: String
-  private let userTimeZone: String = TimeZone.current.localizedName(for: .standard, locale: .current) ?? ""
+  private let userTimeZone: String = TimeZone.current.localizedName(for: .standard, locale: nil) ?? ""
   private let locationManager = UserLocationManager()
 
   var path: String { return "/recover" }
