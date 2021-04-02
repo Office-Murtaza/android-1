@@ -55,7 +55,7 @@ public class TradeController {
     }
 
     @MessageMapping("/order-chat")
-    public void wsReceiveMessage(@Payload ChatMessageDTO dto) {
-        tradeService.onChatMessage(dto);
+    public void receiveMessage(@Payload ChatMessageDTO dto) {
+        tradeService.processMessage(dto);
     }
 }

@@ -341,21 +341,23 @@ public class TradeService {
         }
     }
 
-    public void onChatMessage(ChatMessageDTO dto) {
+    @Transactional
+    public void processMessage(ChatMessageDTO dto) {
         try {
             if (StringUtils.isNotBlank(dto.getFileBase64())) {
                 String newFileName = RandomStringUtils.randomAlphanumeric(20).toLowerCase() + "." + dto.getFileExtension();
                 String newFilePath = uploadPath + File.separator + dto.getOrderId() + "_" + newFileName;
 
-                byte[] decodedBytes = Base64.getDecoder().decode(dto.getFileBase64());
-                FileUtils.writeByteArrayToFile(new File(newFilePath), decodedBytes);
-
+//                byte[] decodedBytes = Base64.getDecoder().decode(dto.getFileBase64());
+//                FileUtils.writeByteArrayToFile(new File(newFilePath), decodedBytes);
+//
                 dto.setFilePath(newFilePath);
             }
 
             mongo.getCollection("order_chat").insertOne(dto.toDocument());
+            User user = userService.findById(dto.getToUserId());
 
-            socketService.pushChatMessage(userService.findById(dto.getToUserId()).getPhone(), dto);
+            socketService.pushChatMessage(user.getPhone(), dto);
         } catch (Exception e) {
             e.printStackTrace();
         }

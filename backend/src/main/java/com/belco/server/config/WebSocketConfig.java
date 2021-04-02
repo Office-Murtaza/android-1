@@ -90,17 +90,22 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
                         }
                     }
                 } else if (StompCommand.SUBSCRIBE.equals(accessor.getCommand())) {
+                    String destination = accessor.getDestination();
                     Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
                     String name = authentication == null ? accessor.getUser().getName() : authentication.getName();
 
-                    List<String> coinsHeader = accessor.getNativeHeader("coins");
-                    List<String> coins = new ArrayList<>(Arrays.asList(coinsHeader.get(0).split("\\s*,\\s*")));
-
                     System.out.println(" ---- SUBSCRIBE: " + name);
 
-                    User user = userService.findByPhone(name).get();
-                    CoinService.wsMap.put(authentication.getName(), Collections.singletonMap(user.getId(), coins));
-                    coinService.pushBalance(authentication.getName(), user.getId(), coins);
+                    if(destination.equals("/user/queue/balance")) {
+                        List<String> coinsHeader = accessor.getNativeHeader("coins");
+                        List<String> coins = new ArrayList<>(Arrays.asList(coinsHeader.get(0).split("\\s*,\\s*")));
+
+                        System.out.println(" ---- SUBSCRIBE: " + name);
+
+                        User user = userService.findByPhone(name).get();
+                        CoinService.wsMap.put(authentication.getName(), Collections.singletonMap(user.getId(), coins));
+                        coinService.pushBalance(authentication.getName(), user.getId(), coins);
+                    }
                 } else if (StompCommand.DISCONNECT.equals(accessor.getCommand()) || StompCommand.UNSUBSCRIBE.equals(accessor.getCommand())) {
                     Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
                     String name = authentication == null ? accessor.getUser().getName() : authentication.getName();

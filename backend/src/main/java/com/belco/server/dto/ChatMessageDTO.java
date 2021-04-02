@@ -7,6 +7,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.bson.Document;
 
+import javax.persistence.Transient;
+
 @Setter
 @Getter
 @NoArgsConstructor
@@ -23,11 +25,13 @@ public class ChatMessageDTO {
     private String filePath;
     private long timestamp;
 
+    @Transient
     public static ChatMessageDTO toDTO(Document doc) {
         return new ChatMessageDTO(doc.getLong("orderId"), doc.getLong("fromUserId"), doc.getLong("toUserId"), doc.getString("message"),
                 doc.getString("fileBase64"), doc.getString("fileExtension"), doc.getString("filePath"), doc.getLong("timestamp"));
     }
 
+    @Transient
     public Document toDocument() {
         Document doc = new Document();
         doc.append("orderId", orderId);
