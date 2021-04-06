@@ -539,7 +539,11 @@ public class UserService implements UserDetailsService {
     }
 
     private BigDecimal getLastLimit(List<Limit> limits) {
-        return limits.get(limits.size() - 1).getAmount().stripTrailingZeros();
+        if(limits != null && limits.size() > 0) {
+            return limits.get(limits.size() - 1).getAmount().stripTrailingZeros();
+        }
+
+        return BigDecimal.ZERO;
     }
 
     @Override
