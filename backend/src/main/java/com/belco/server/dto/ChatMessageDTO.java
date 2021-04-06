@@ -20,15 +20,12 @@ public class ChatMessageDTO {
     private Long fromUserId;
     private Long toUserId;
     private String message;
-    private String fileBase64;
-    private String fileExtension;
-    private String filePath;
+    private String file;
     private long timestamp;
 
     @Transient
     public static ChatMessageDTO toDTO(Document doc) {
-        return new ChatMessageDTO(doc.getLong("orderId"), doc.getLong("fromUserId"), doc.getLong("toUserId"), doc.getString("message"),
-                doc.getString("fileBase64"), doc.getString("fileExtension"), doc.getString("filePath"), doc.getLong("timestamp"));
+        return new ChatMessageDTO(doc.getLong("orderId"), doc.getLong("fromUserId"), doc.getLong("toUserId"), doc.getString("message"), doc.getString("file"), doc.getLong("timestamp"));
     }
 
     @Transient
@@ -38,9 +35,7 @@ public class ChatMessageDTO {
         doc.append("fromUserId", fromUserId);
         doc.append("toUserId", toUserId);
         doc.append("message", message);
-        doc.append("fileBase64", fileBase64);
-        doc.append("fileExtension", fileExtension);
-        doc.append("filePath", filePath);
+        doc.append("file", file);
         doc.append("timestamp", System.currentTimeMillis());
 
         return doc;

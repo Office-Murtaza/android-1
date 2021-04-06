@@ -15,17 +15,14 @@ import com.belco.server.model.TradeType;
 import com.belco.server.repository.OrderRep;
 import com.belco.server.repository.TradeRep;
 import com.belco.server.repository.UserCoinRep;
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.lang.RandomStringUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.bson.Document;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Service;
+
 import javax.annotation.PostConstruct;
 import javax.transaction.Transactional;
-import java.io.File;
 import java.math.BigDecimal;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
@@ -344,17 +341,7 @@ public class TradeService {
     @Transactional
     public void processMessage(ChatMessageDTO dto) {
         try {
-            if (StringUtils.isNotBlank(dto.getFileBase64())) {
-                String newFileName = RandomStringUtils.randomAlphanumeric(20).toLowerCase() + "." + dto.getFileExtension();
-                String newFilePath = uploadPath + File.separator + dto.getOrderId() + "_" + newFileName;
-
-//                byte[] decodedBytes = Base64.getDecoder().decode(dto.getFileBase64());
-//                FileUtils.writeByteArrayToFile(new File(newFilePath), decodedBytes);
-//
-                dto.setFilePath(newFilePath);
-            }
-
-            mongo.getCollection("order_chat").insertOne(dto.toDocument());
+            mongo.getCollection(COLL_ORDER_CHAT).insertOne(dto.toDocument());
             User user = userService.findById(dto.getToUserId());
 
             socketService.pushChatMessage(user.getPhone(), dto);
