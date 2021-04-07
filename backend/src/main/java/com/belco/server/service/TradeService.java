@@ -341,9 +341,9 @@ public class TradeService {
     @Transactional
     public void processMessage(ChatMessageDTO dto) {
         try {
-            mongo.getCollection(COLL_ORDER_CHAT).insertOne(dto.toDocument());
-            User user = userService.findById(dto.getToUserId());
+            mongo.save(dto);
 
+            User user = userService.findById(dto.getToUserId());
             socketService.pushChatMessage(user.getPhone(), dto);
         } catch (Exception e) {
             e.printStackTrace();

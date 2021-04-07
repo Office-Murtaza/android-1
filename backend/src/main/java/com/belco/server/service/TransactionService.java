@@ -18,6 +18,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.*;
@@ -65,7 +66,7 @@ public class TransactionService {
         int fromIndex = (startIndex - 1) * limit;
         int toIndex = Math.min(list.size(), (startIndex - 1) * limit + limit);
 
-        if(fromIndex <= list.size()) {
+        if (fromIndex <= list.size()) {
             return new TxHistoryDTO(list.size(), list.subList(fromIndex, toIndex));
         } else {
             return new TxHistoryDTO(list.size(), new ArrayList<>());
@@ -198,6 +199,48 @@ public class TransactionService {
         List<TransactionRecordWallet> transactionRecordWallets = walletRep.findAllByIdentityAndCoin(identity, coin);
 
         return coinCode.getTransactionHistory(address, startIndex, 10, transactionRecords, transactionRecordWallets);
+    }
+
+    public String submit(Long userId, CoinService.CoinEnum coin, TxSubmitDTO dto) throws InterruptedException {
+        String txId;
+
+        if (TransactionType.RECALL.getValue() == dto.getType()) {
+            txId = recall(userId, coin, dto);
+        } else {
+            txId = coin.submitTransaction(dto);
+
+            Thread.sleep(2000);
+        }
+
+        if (StringUtils.isNotBlank(txId) && coin.isTransactionSeenOnBlockchain(txId)) {
+            if (TransactionType.SEND_TRANSFER.getValue() == dto.getType()) {
+                persistTransfer(userId, coin, txId, dto);
+            }
+
+            if (TransactionType.SEND_SWAP.getValue() == dto.getType()) {
+                swap(userId, coin, txId, dto);
+            }
+
+            if (TransactionType.RESERVE.getValue() == dto.getType()) {
+                reserve(userId, coin, txId, dto);
+            }
+
+            if (TransactionType.CREATE_STAKE.getValue() == dto.getType()) {
+                createStake(userId, coin, txId, dto.getCryptoAmount());
+            }
+
+            if (TransactionType.CANCEL_STAKE.getValue() == dto.getType()) {
+                cancelStake(userId, coin, txId, dto.getCryptoAmount());
+            }
+
+            if (TransactionType.WITHDRAW_STAKE.getValue() == dto.getType()) {
+                withdrawStake(userId, coin, txId, dto.getCryptoAmount());
+            }
+
+            postSubmit(userId, coin, txId);
+        }
+
+        return txId;
     }
 
     public void persistTransfer(Long userId, CoinService.CoinEnum coinCode, String txId, TxSubmitDTO dto) {
@@ -368,7 +411,7 @@ public class TransactionService {
         }
     }
 
-    public Response recall(Long userId, CoinService.CoinEnum coinCode, TxSubmitDTO dto) {
+    public String recall(Long userId, CoinService.CoinEnum coinCode, TxSubmitDTO dto) {
         try {
             UserCoin userCoin = userService.getUserCoin(userId, coinCode.name());
             BigDecimal reserved = userCoin.getReservedBalance();
@@ -406,18 +449,14 @@ public class TransactionService {
                     userCoin.setReservedBalance(userCoin.getReservedBalance().subtract(dto.getCryptoAmount().add(txFee)));
                     userCoinRep.save(userCoin);
 
-                    return Response.ok("txId", txId);
-                } else {
-                    return Response.error(3, "Error create transaction");
+                    return txId;
                 }
-            } else {
-                return Response.error(2, "Insufficient server wallet balance");
             }
         } catch (Exception e) {
             e.printStackTrace();
-
-            return Response.serverError();
         }
+
+        return null;
     }
 
     public void createStake(Long userId, CoinService.CoinEnum coin, String txId, BigDecimal amount) {
