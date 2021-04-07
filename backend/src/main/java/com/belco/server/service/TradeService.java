@@ -313,7 +313,7 @@ public class TradeService {
         try {
             mongo.save(dto);
 
-            wsPushChatMessage(userService.findById(dto.getRecipientId()).getPhone(), dto);
+            wsPushChatMessage(userService.findById(dto.getToUserId()).getPhone(), dto);
         } catch (Exception e) {
             e.printStackTrace();
         }

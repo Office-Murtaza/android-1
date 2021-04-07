@@ -19,8 +19,9 @@ public class ChatMessageDTO {
     @Id
     private Long id;
     private Long orderId;
-    private Long senderId;
-    private Long recipientId;
+    private Long fromUserId;
+    private Long toUserId;
     private String message;
+    private String file;
     private long timestamp;
 }

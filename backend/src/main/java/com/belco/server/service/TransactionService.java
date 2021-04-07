@@ -195,6 +195,46 @@ public class TransactionService {
         return coinCode.getTransactionHistory(address, startIndex, 10, transactionRecords, transactionRecordWallets);
     }
 
+    public String submit(Long userId, CoinService.CoinEnum coin, TxSubmitDTO dto) throws InterruptedException {
+        String txId;
+
+        if (TransactionType.RECALL.getValue() == dto.getType()) {
+            txId = recall(userId, coin, dto);
+        } else {
+            txId = coin.submitTransaction(dto);
+
+            Thread.sleep(2000);
+        }
+
+        if (StringUtils.isNotBlank(txId) && coin.isTransactionSeenOnBlockchain(txId)) {
+            if (TransactionType.SEND_TRANSFER.getValue() == dto.getType()) {
+                persistTransfer(userId, coin, txId, dto);
+            }
+
+            if (TransactionType.SEND_SWAP.getValue() == dto.getType()) {
+                swap(userId, coin, txId, dto);
+            }
+
+            if (TransactionType.RESERVE.getValue() == dto.getType()) {
+                reserve(userId, coin, txId, dto);
+            }
+
+            if (TransactionType.CREATE_STAKE.getValue() == dto.getType()) {
+                createStake(userId, coin, txId, dto.getCryptoAmount());
+            }
+
+            if (TransactionType.CANCEL_STAKE.getValue() == dto.getType()) {
+                cancelStake(userId, coin, txId, dto.getCryptoAmount());
+            }
+
+            if (TransactionType.WITHDRAW_STAKE.getValue() == dto.getType()) {
+                withdrawStake(userId, coin, txId, dto.getCryptoAmount());
+            }
+        }
+
+        return txId;
+    }
+
     public void persistTransfer(Long userId, CoinService.CoinEnum coinCode, String txId, TxSubmitDTO dto) {
         try {
             User user = userService.findById(userId);
@@ -363,56 +403,48 @@ public class TransactionService {
         }
     }
 
-    public Response recall(Long userId, CoinService.CoinEnum coinCode, TxSubmitDTO dto) {
-        try {
-            UserCoin userCoin = userService.getUserCoin(userId, coinCode.name());
-            BigDecimal reserved = userCoin.getReservedBalance();
-            BigDecimal txFee = coinCode == CoinService.CoinEnum.CATM || coinCode == CoinService.CoinEnum.USDT ? walletService.convertToFee(coinCode) : coinCode.getTxFee();
-            String walletAddress = coinCode.getWalletAddress();
+    public String recall(Long userId, CoinService.CoinEnum coinCode, TxSubmitDTO dto) {
+        UserCoin userCoin = userService.getUserCoin(userId, coinCode.name());
+        BigDecimal reserved = userCoin.getReservedBalance();
+        BigDecimal txFee = coinCode == CoinService.CoinEnum.CATM || coinCode == CoinService.CoinEnum.USDT ? walletService.convertToFee(coinCode) : coinCode.getTxFee();
+        String walletAddress = coinCode.getWalletAddress();
 
-            if (walletService.isEnoughBalance(coinCode, walletAddress, dto.getCryptoAmount()) && reserved.compareTo(dto.getCryptoAmount().add(txFee)) >= 0) {
-                String fromAddress = coinCode.getWalletAddress();
-                String toAddress = userCoin.getAddress();
-                String hex = coinCode.sign(fromAddress, toAddress, dto.getCryptoAmount());
+        if (walletService.isEnoughBalance(coinCode, walletAddress, dto.getCryptoAmount()) && reserved.compareTo(dto.getCryptoAmount().add(txFee)) >= 0) {
+            String fromAddress = coinCode.getWalletAddress();
+            String toAddress = userCoin.getAddress();
+            String hex = coinCode.sign(fromAddress, toAddress, dto.getCryptoAmount());
 
-                TxSubmitDTO submit = new TxSubmitDTO();
-                submit.setHex(hex);
-                submit.setFromAddress(fromAddress);
-                submit.setToAddress(toAddress);
-                submit.setCryptoAmount(dto.getCryptoAmount());
+            TxSubmitDTO submit = new TxSubmitDTO();
+            submit.setHex(hex);
+            submit.setFromAddress(fromAddress);
+            submit.setToAddress(toAddress);
+            submit.setCryptoAmount(dto.getCryptoAmount());
 
-                String txId = coinCode.submitTransaction(submit);
+            String txId = coinCode.submitTransaction(submit);
 
-                if (StringUtils.isNotBlank(txId)) {
-                    TransactionRecordWallet record = new TransactionRecordWallet();
-                    record.setTxId(txId);
-                    record.setIdentity(userService.findById(userId).getIdentity());
-                    record.setCoin(coinCode.getCoinEntity());
-                    record.setAmount(dto.getCryptoAmount());
-                    record.setType(TransactionType.RECALL.getValue());
-                    record.setStatus(TransactionStatus.PENDING.getValue());
+            if (StringUtils.isNotBlank(txId)) {
+                TransactionRecordWallet record = new TransactionRecordWallet();
+                record.setTxId(txId);
+                record.setIdentity(userService.findById(userId).getIdentity());
+                record.setCoin(coinCode.getCoinEntity());
+                record.setAmount(dto.getCryptoAmount());
+                record.setType(TransactionType.RECALL.getValue());
+                record.setStatus(TransactionStatus.PENDING.getValue());
 
-                    walletRep.save(record);
+                walletRep.save(record);
 
-                    dto.setFromAddress(fromAddress);
-                    dto.setToAddress(toAddress);
-                    dto.setCryptoAmount(dto.getCryptoAmount());
+                dto.setFromAddress(fromAddress);
+                dto.setToAddress(toAddress);
+                dto.setCryptoAmount(dto.getCryptoAmount());
 
-                    userCoin.setReservedBalance(userCoin.getReservedBalance().subtract(dto.getCryptoAmount().add(txFee)));
-                    userCoinRep.save(userCoin);
+                userCoin.setReservedBalance(userCoin.getReservedBalance().subtract(dto.getCryptoAmount().add(txFee)));
+                userCoinRep.save(userCoin);
 
-                    return Response.ok("txId", txId);
-                } else {
-                    return Response.error(3, "Error create transaction");
-                }
-            } else {
-                return Response.error(2, "Insufficient server wallet balance");
+                return txId;
             }
-        } catch (Exception e) {
-            e.printStackTrace();
-
-            return Response.serverError();
         }
+
+        return null;
     }
 
     public void createStake(Long userId, CoinService.CoinEnum coin, String txId, BigDecimal amount) {

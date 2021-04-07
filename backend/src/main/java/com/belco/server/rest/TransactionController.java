@@ -2,7 +2,6 @@ package com.belco.server.rest;
 
 import com.belco.server.dto.TxSubmitDTO;
 import com.belco.server.model.Response;
-import com.belco.server.model.TransactionType;
 import com.belco.server.service.CoinService;
 import com.belco.server.service.TransactionService;
 import org.apache.commons.lang.StringUtils;
@@ -53,41 +52,9 @@ public class TransactionController {
     @PostMapping("/user/{userId}/coin/{coin}/submit")
     public Response submit(@PathVariable Long userId, @PathVariable CoinService.CoinEnum coin, @RequestBody TxSubmitDTO dto) {
         try {
-            String txId;
+            String txId = transactionService.submit(userId, coin, dto);
 
-            if (TransactionType.RECALL.getValue() == dto.getType()) {
-                return transactionService.recall(userId, coin, dto);
-            } else {
-                txId = coin.submitTransaction(dto);
-
-                Thread.sleep(2000);
-            }
-
-            if (StringUtils.isNotBlank(txId) && coin.isTransactionSeenOnBlockchain(txId)) {
-                if (TransactionType.SEND_TRANSFER.getValue() == dto.getType()) {
-                    transactionService.persistTransfer(userId, coin, txId, dto);
-                }
-
-                if (TransactionType.SEND_SWAP.getValue() == dto.getType()) {
-                    transactionService.swap(userId, coin, txId, dto);
-                }
-
-                if (TransactionType.RESERVE.getValue() == dto.getType()) {
-                    transactionService.reserve(userId, coin, txId, dto);
-                }
-
-                if (TransactionType.CREATE_STAKE.getValue() == dto.getType()) {
-                    transactionService.createStake(userId, coin, txId, dto.getCryptoAmount());
-                }
-
-                if (TransactionType.CANCEL_STAKE.getValue() == dto.getType()) {
-                    transactionService.cancelStake(userId, coin, txId, dto.getCryptoAmount());
-                }
-
-                if (TransactionType.WITHDRAW_STAKE.getValue() == dto.getType()) {
-                    transactionService.withdrawStake(userId, coin, txId, dto.getCryptoAmount());
-                }
-
+            if (StringUtils.isNotBlank(txId)) {
                 return Response.ok("txId", txId);
             } else {
                 return Response.validationError(coin.name() + " submit transaction error");
