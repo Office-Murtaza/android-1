@@ -34,6 +34,8 @@ class SmsCodeFragment : BaseFragment<FragmentSmsCodeBinding>() {
         setToolbarTitle(R.string.sms_code_screen_title)
         setToolbarTitle()
         isMenuEnabled = false
+        pinEntryView.requestFocus()
+        showKeyboard()
     }
 
     override fun FragmentSmsCodeBinding.initListeners() {
