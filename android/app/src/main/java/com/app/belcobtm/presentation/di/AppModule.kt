@@ -4,7 +4,6 @@ import android.content.Context
 import com.app.belcobtm.presentation.core.coin.AmountCoinValidator
 import com.app.belcobtm.presentation.core.coin.CoinCodeProvider
 import com.app.belcobtm.presentation.core.coin.MinMaxCoinValueProvider
-import com.app.belcobtm.presentation.core.formatter.PhoneNumberFormatter
 import com.app.belcobtm.presentation.core.formatter.*
 import com.app.belcobtm.presentation.core.formatter.DoubleCurrencyPriceFormatter.Companion.DOUBLE_CURRENCY_PRICE_FORMATTER_QUALIFIER
 import com.app.belcobtm.presentation.core.formatter.Formatter
@@ -153,7 +152,7 @@ val viewModelModule = module {
         )
     }
     viewModel { TradeOrderRateViewModel(get(), get()) }
-    viewModel { OrderChatViewModel(get(), get(), get()) }
+    viewModel { OrderChatViewModel(get(), get(), get(), get()) }
     viewModel { HistoryChatViewModel(get()) }
 }
 

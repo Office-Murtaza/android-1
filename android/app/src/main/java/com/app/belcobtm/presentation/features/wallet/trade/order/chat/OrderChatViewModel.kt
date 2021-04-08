@@ -4,15 +4,20 @@ import android.graphics.Bitmap
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.asLiveData
 import com.app.belcobtm.domain.trade.order.ConnectToChatUseCase
 import com.app.belcobtm.domain.trade.order.DisconnectFromChatUseCase
+import com.app.belcobtm.domain.trade.order.ObserveChatMessagesUseCase
 import com.app.belcobtm.domain.trade.order.SendChatMessageUseCase
 import com.app.belcobtm.presentation.core.mvvm.LoadingData
+import com.app.belcobtm.presentation.features.wallet.trade.order.chat.model.ChatMessageItem
+import kotlinx.coroutines.Dispatchers
 
 class OrderChatViewModel(
     private val connectToChatUseCase: ConnectToChatUseCase,
     private val disconnectFromChatUseCase: DisconnectFromChatUseCase,
-    private val sendChatMessageUseCase: SendChatMessageUseCase
+    private val sendChatMessageUseCase: SendChatMessageUseCase,
+    private val observeChatUseCase: ObserveChatMessagesUseCase
 ) : ViewModel() {
 
     private val _chatObserverLoadingData = MutableLiveData<LoadingData<Unit>>()
@@ -20,6 +25,10 @@ class OrderChatViewModel(
 
     private val _attachmentImage = MutableLiveData<Bitmap?>()
     val attachmentImage: LiveData<Bitmap?> = _attachmentImage
+
+    fun chatData(): LiveData<List<ChatMessageItem>> =
+        observeChatUseCase()
+            .asLiveData(Dispatchers.IO)
 
     fun connectToChat() {
         connectToChatUseCase.invoke(Unit)

@@ -24,6 +24,7 @@ class ChatRequestSerializer(
                 fromId,
                 toId,
                 content,
+                System.currentTimeMillis(),
                 request.attachment?.let(::convertBitmapToBase64),
                 request.attachment?.let { CONVERTED_BITMAP_FORMAT }
             )

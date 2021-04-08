@@ -87,6 +87,9 @@ class OrderChatFragment : BaseFragment<FragmentOrderChatBinding>() {
             binding.attachmentRemove.toggle(it != null)
             binding.attachment.setImageBitmap(it)
         }
+        viewModel.chatData().observe(viewLifecycleOwner) {
+            adapter.update(it)
+        }
     }
 
     private fun openPicker() {

@@ -26,16 +26,19 @@ import com.app.belcobtm.domain.trade.list.filter.mapper.TradeFilterItemMapper
 import com.app.belcobtm.domain.trade.list.filter.mapper.TradeFilterMapper
 import com.app.belcobtm.domain.trade.list.mapper.*
 import com.app.belcobtm.domain.trade.order.*
+import com.app.belcobtm.domain.trade.order.mapper.ChatMessageMapper
 import com.app.belcobtm.domain.transaction.interactor.*
 import com.app.belcobtm.domain.transaction.interactor.trade.TradeRecallTransactionCompleteUseCase
 import com.app.belcobtm.domain.transaction.interactor.trade.TradeReserveTransactionCompleteUseCase
 import com.app.belcobtm.domain.transaction.interactor.trade.TradeReserveTransactionCreateUseCase
 import com.app.belcobtm.domain.wallet.interactor.*
+import com.app.belcobtm.presentation.core.DateFormat.CHAT_DATE_FORMAT
 import com.app.belcobtm.presentation.core.formatter.DoubleCurrencyPriceFormatter.Companion.DOUBLE_CURRENCY_PRICE_FORMATTER_QUALIFIER
 import com.app.belcobtm.presentation.core.formatter.MilesFormatter.Companion.MILES_FORMATTER_QUALIFIER
 import com.app.belcobtm.presentation.core.formatter.TradeCountFormatter.Companion.TRADE_COUNT_FORMATTER_QUALIFIER
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
+import java.text.SimpleDateFormat
 
 val useCaseModule = module {
     single { AuthorizationStatusGetUseCase(get()) }
@@ -111,7 +114,7 @@ val useCaseModule = module {
     single { ClearCacheUseCase(get()) }
     single { RateOrderUseCase(get()) }
     single { SendChatMessageUseCase(get()) }
-    single { ObserveChatMessagesUseCase(get()) }
+    single { ObserveChatMessagesUseCase(get(), get()) }
     single { ConnectToChatUseCase(get()) }
     single { DisconnectFromChatUseCase(get()) }
     single { GetChatHistoryUseCase(get()) }
@@ -143,4 +146,5 @@ val useCaseModule = module {
     factory { TradeFilterItemMapper(get(), get()) }
     factory { PaymentIdToAvailablePaymentOptionMapper(get()) }
     factory { TradeFilterMapper() }
+    factory { ChatMessageMapper(get(), SimpleDateFormat(CHAT_DATE_FORMAT)) }
 }

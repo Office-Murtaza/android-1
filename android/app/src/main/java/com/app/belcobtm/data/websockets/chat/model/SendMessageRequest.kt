@@ -5,6 +5,7 @@ data class SendMessageRequest(
     val fromUserId: Int,
     val toUserId: Int,
     val message: String,
+    val timestamp: Long,
     val fileBase64: String?,
     val fileExtension: String?
 )

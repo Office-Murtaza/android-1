@@ -12,10 +12,13 @@ import com.app.belcobtm.data.websockets.serializer.RequestSerializer
 import com.app.belcobtm.data.websockets.serializer.ResponseDeserializer
 import com.app.belcobtm.presentation.core.Endpoint
 import com.app.belcobtm.presentation.features.wallet.trade.order.chat.NewMessageItem
-import kotlinx.coroutines.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class WebSocketChatObserver(
     private val socketClient: SocketClient,
@@ -35,7 +38,8 @@ class WebSocketChatObserver(
         const val COINS_HEADER = "coins"
 
         const val DESTINATION_HEADER = "destination"
-        const val DESTINATION_VALUE = "/queue/order-chat"
+        const val DESTINATION_VALUE = "/user/queue/order-chat"
+        const val DESTINATION_SEND_VALUE = "/app/order-chat"
 
         const val ACCEPT_VERSION_HEADER = "accept-version"
         const val ACCEPT_VERSION_VALUE = "1.1"
@@ -89,7 +93,23 @@ class WebSocketChatObserver(
 
     override suspend fun sendMessage(messageItem: NewMessageItem) {
         withContext(Dispatchers.IO) {
-            socketClient.sendMessage(serializer.serialize(messageItem))
+            chatData.value += ChatMessageResponse(
+                messageItem.orderId,
+                messageItem.fromId,
+                messageItem.toId,
+                messageItem.content,
+                null, null,
+                System.currentTimeMillis()
+            )
+            socketClient.sendMessage(
+                stompSerializer.serialize(
+                    StompSocketRequest(
+                        StompSocketRequest.MESSAGE,
+                        mapOf(DESTINATION_HEADER to DESTINATION_SEND_VALUE),
+                        serializer.serialize(messageItem)
+                    )
+                )
+            )
         }
     }
 
@@ -98,21 +118,17 @@ class WebSocketChatObserver(
         when (response.status) {
             StompSocketResponse.CONNECTED -> subscribe()
             StompSocketResponse.CONTENT -> {
-                chatData.value += deserializer.deserialize(content)
+                val response = stompDeserializer.deserialize(content)
+                chatData.value += deserializer.deserialize(response.body)
             }
         }
     }
 
     private fun subscribe() {
-        val coinList = runBlocking {
-            accountDao.getItemList().orEmpty()
-                .map { it.type.name }
-        }.joinToString()
         val request = StompSocketRequest(
             StompSocketRequest.SUBSCRIBE, mapOf(
                 ID_HEADER to sharedPreferencesHelper.userPhone,
-                DESTINATION_HEADER to DESTINATION_VALUE,
-                COINS_HEADER to coinList
+                DESTINATION_HEADER to DESTINATION_VALUE
             )
         )
         socketClient.sendMessage(stompSerializer.serialize(request))
