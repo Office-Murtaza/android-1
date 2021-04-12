@@ -2,15 +2,15 @@ package com.belco.server.model;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
-
 import java.util.HashMap;
 import java.util.Map;
 
 public enum ProcessedType {
 
-    SUCCESS(0),
-    INSUFFICIENT_WALLET_BALANCE(1),
-    ERROR_CREATE_TRANSACTION(2);
+    PENDING(1),
+    COMPLETE(2),
+    FAIL(3),
+    INSUFFICIENT_BALANCE(4);
 
     private static final Map<Integer, ProcessedType> map = new HashMap<>();
 

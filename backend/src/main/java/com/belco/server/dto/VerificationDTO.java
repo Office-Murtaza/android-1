@@ -33,7 +33,7 @@ public class VerificationDTO {
     private String zipCode;
     private String idNumber;
     private String ssn;
-    private MultipartFile file;
+    private String file;
     private String message;
 
     public VerificationTier getVerificationTier() {

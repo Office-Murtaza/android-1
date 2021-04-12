@@ -23,7 +23,7 @@ public class TransactionRecordWallet extends BaseEntity {
 
     private Integer type;
     private Integer status;
-    private Integer processed = ProcessedType.SUCCESS.getValue();
+    private Integer processed = ProcessedType.COMPLETE.getValue();
     private BigDecimal amount;
     private BigDecimal refAmount;
     private String txId;
