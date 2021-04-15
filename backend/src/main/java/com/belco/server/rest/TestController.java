@@ -20,16 +20,16 @@ import java.math.BigInteger;
 public class TestController {
 
     private final TwilioService twilioService;
-    private final NotificationService pushNotificationService;
+    private final NotificationService notificationService;
     private final UserService userService;
     private final WalletService walletService;
     private final GethService gethService;
     private final NodeService nodeService;
     private final CoinRep coinRep;
 
-    public TestController(TwilioService twilioService, NotificationService pushNotificationService, UserService userService, WalletService walletService, GethService gethService, NodeService nodeService, CoinRep coinRep) {
+    public TestController(TwilioService twilioService, NotificationService notificationService, UserService userService, WalletService walletService, GethService gethService, NodeService nodeService, CoinRep coinRep) {
         this.twilioService = twilioService;
-        this.pushNotificationService = pushNotificationService;
+        this.notificationService = notificationService;
         this.userService = userService;
         this.walletService = walletService;
         this.gethService = gethService;
@@ -106,7 +106,7 @@ public class TestController {
     public Response sendNotification(@RequestParam(required = false) Long userId, @RequestParam(required = false) String token, @RequestParam String title, @RequestParam String message) {
         if (StringUtils.isBlank(token)) token = userService.findById(userId).getNotificationsToken();
 
-        return Response.ok("result", pushNotificationService.sendMessageWithData(new NotificationDTO(title, message, null, token)));
+        return Response.ok("result", notificationService.sendMessageWithData(new NotificationDTO(title, message, null, token)));
     }
 
     @GetMapping("/user/{userId}/delete-verification")

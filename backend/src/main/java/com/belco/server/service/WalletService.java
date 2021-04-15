@@ -166,7 +166,7 @@ public class WalletService {
             BigDecimal balance = coin.getBalance(address);
 
             BigDecimal pendingSum = coin.getNodeTransactions(address).values().stream()
-                    .filter(e -> e.getType() == TransactionType.WITHDRAW && e.getStatus() == TransactionStatus.PENDING)
+                    .filter(e -> e.getType() == TransactionType.WITHDRAW.getValue() && e.getStatus() == TransactionStatus.PENDING.getValue())
                     .map(TxDetailsDTO::getCryptoAmount)
                     .reduce(BigDecimal.ZERO, BigDecimal::add);
 
@@ -238,7 +238,7 @@ public class WalletService {
                     }
 
                     wallet.setTxId(txId);
-                    wallet.setStatus(coin.getTransactionDetails(txId, StringUtils.EMPTY).getStatus().getValue());
+                    wallet.setStatus(coin.getTransactionDetails(txId, StringUtils.EMPTY).getStatus());
 
                     transactionRecordWalletRep.save(wallet);
 

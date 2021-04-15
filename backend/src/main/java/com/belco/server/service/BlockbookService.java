@@ -142,16 +142,16 @@ public class BlockbookService {
 
                 dto.setTxId(txId);
                 dto.setLink(explorerUrl + "/" + txId);
-                dto.setType(type);
+                dto.setType(type.getValue());
                 dto.setCryptoAmount(amount);
                 dto.setFromAddress(fromAddress);
                 dto.setToAddress(toAddress);
                 dto.setCryptoFee(new BigDecimal(res.optString("fees")).divide(DIVIDER).stripTrailingZeros());
                 dto.setConfirmations(res.optInt("confirmations"));
-                dto.setStatus(getStatus(res.optInt("confirmations")));
+                dto.setStatus(getStatus(res.optInt("confirmations")).getValue());
                 dto.setTimestamp(res.optLong("blockTime") * 1000);
             } catch (HttpClientErrorException he) {
-                dto.setStatus(TransactionStatus.NOT_EXIST);
+                dto.setStatus(TransactionStatus.NOT_EXIST.getValue());
             } catch (Exception e) {
                 e.printStackTrace();
 
@@ -271,7 +271,7 @@ public class BlockbookService {
 
                 TransactionStatus status = getStatus(json.optInt("confirmations"));
 
-                map.put(txId, new TxDetailsDTO(txId, amount, fromAddress, toAddress, type, status, json.optLong("blockTime") * 1000));
+                map.put(txId, new TxDetailsDTO(txId, amount, fromAddress, toAddress, type.getValue(), status.getValue(), json.optLong("blockTime") * 1000));
             }
         }
 

@@ -21,15 +21,15 @@ public class SocketService {
         simpMessagingTemplate.convertAndSendToUser(phone, "/queue/transaction", dto);
     }
 
-    public void pushTrade(TradeDTO dto) {
+    public void pushTrade(TradeDetailsDTO dto) {
         simpMessagingTemplate.convertAndSend("/topic/trade", dto);
     }
 
-    public void pushOrder(String phone, OrderDTO dto) {
+    public void pushOrder(String phone, OrderDetailsDTO dto) {
         simpMessagingTemplate.convertAndSendToUser(phone, "/queue/order", dto);
     }
 
-    public void pushChatMessage(String phone, ChatMessageDTO dto) {
+    public void pushChatMessage(String phone, OrderMessageDTO dto) {
         simpMessagingTemplate.convertAndSendToUser(phone, "/queue/order-chat", dto);
     }
 }

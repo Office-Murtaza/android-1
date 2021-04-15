@@ -128,8 +128,8 @@ public class BinanceService {
                 dto.setLink(explorerUrl + "/" + txId);
                 dto.setFromAddress(msg.optJSONObject("value").optJSONArray("inputs").getJSONObject(0).optString("address"));
                 dto.setToAddress(msg.optJSONObject("value").optJSONArray("outputs").getJSONObject(0).optString("address"));
-                dto.setType(com.belco.server.model.TransactionType.getType(dto.getFromAddress(), dto.getToAddress(), address));
-                dto.setStatus(getStatus(res.getInt("code")));
+                dto.setType(com.belco.server.model.TransactionType.getType(dto.getFromAddress(), dto.getToAddress(), address).getValue());
+                dto.setStatus(getStatus(res.getInt("code")).getValue());
                 dto.setCryptoAmount(getAmount(msg.optJSONObject("value").optJSONArray("inputs").getJSONObject(0).getJSONArray("coins").getJSONObject(0).optString("amount")));
                 dto.setCryptoFee(getAmount("1000000"));
             } catch (Exception e) {
@@ -139,7 +139,7 @@ public class BinanceService {
                     return getTransactionDetails(txId, address, explorerUrl);
                 }
 
-                dto.setStatus(TransactionStatus.FAIL);
+                dto.setStatus(TransactionStatus.FAIL.getValue());
             }
         }
 
@@ -242,7 +242,7 @@ public class BinanceService {
             TransactionStatus status = getStatus(tx.getCode());
             long timestamp = ZonedDateTime.parse(tx.getTimeStamp()).toInstant().toEpochMilli();
 
-            map.put(txId, new TxDetailsDTO(txId, amount, tx.getFromAddr(), tx.getToAddr(), type, status, timestamp));
+            map.put(txId, new TxDetailsDTO(txId, amount, tx.getFromAddr(), tx.getToAddr(), type.getValue(), status.getValue(), timestamp));
         }
 
         return map;

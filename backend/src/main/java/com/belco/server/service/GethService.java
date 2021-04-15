@@ -166,8 +166,8 @@ public class GethService {
                 String toAddress = d.getString("toAddress");
 
                 dto.setTxId(d.getString("txId"));
-                dto.setType(TransactionType.getType(fromAddress, toAddress, address));
-                dto.setStatus(TransactionStatus.valueOf(d.getInteger("status")));
+                dto.setType(TransactionType.getType(fromAddress, toAddress, address).getValue());
+                dto.setStatus(TransactionStatus.valueOf(d.getInteger("status")).getValue());
                 dto.setCryptoAmount(d.get("amount", Decimal128.class).bigDecimalValue());
                 dto.setCryptoFee(extractFee(d));
                 dto.setFromAddress(fromAddress);
@@ -202,7 +202,7 @@ public class GethService {
             Document txDoc = mongo.getCollection(coll).find(query).first();
 
             if (txDoc == null) {
-                dto.setStatus(TransactionStatus.NOT_EXIST);
+                dto.setStatus(TransactionStatus.NOT_EXIST.getValue());
             } else {
                 String txId = txDoc.getString("txId");
                 String fromAddress = txDoc.getString("fromAddress");
@@ -210,12 +210,12 @@ public class GethService {
 
                 dto.setTxId(txId);
                 dto.setLink(explorerUrl + "/" + txId);
-                dto.setType(TransactionType.getType(fromAddress, toAddress, address));
+                dto.setType(TransactionType.getType(fromAddress, toAddress, address).getValue());
                 dto.setCryptoAmount(txDoc.get("amount", Decimal128.class).bigDecimalValue());
                 dto.setFromAddress(fromAddress);
                 dto.setToAddress(toAddress);
                 dto.setCryptoFee(extractFee(txDoc));
-                dto.setStatus(TransactionStatus.valueOf(txDoc.getInteger("status")));
+                dto.setStatus(TransactionStatus.valueOf(txDoc.getInteger("status")).getValue());
                 dto.setTimestamp(txDoc.getLong("blockTime"));
             }
         } catch (Exception e) {

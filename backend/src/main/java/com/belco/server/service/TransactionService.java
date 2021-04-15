@@ -9,12 +9,13 @@ import com.belco.server.repository.UserCoinRep;
 import com.belco.server.util.Util;
 import net.sf.json.JSONObject;
 import org.apache.commons.lang3.StringUtils;
-import org.joda.time.DateTime;
-import org.joda.time.Seconds;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
@@ -79,8 +80,8 @@ public class TransactionService {
         if (list != null && !list.isEmpty()) {
             list.stream().forEach(e -> {
                 if (map.containsKey(e.getTxId())) {
-                    TransactionType type = map.get(e.getTxId()).getType();
-                    map.get(e.getTxId()).setType(TransactionType.convert(type, TransactionType.valueOf(e.getType())));
+                    Integer type = map.get(e.getTxId()).getType();
+                    map.get(e.getTxId()).setType(TransactionType.convert(type, e.getType()));
                 }
             });
         }
@@ -93,11 +94,11 @@ public class TransactionService {
                 TransactionStatus status = e.getTransactionStatus(type);
 
                 if (org.apache.commons.lang.StringUtils.isNotBlank(e.getDetail()) && map.containsKey(e.getDetail())) {
-                    map.get(e.getDetail()).setType(type);
-                    map.get(e.getDetail()).setStatus(status);
+                    map.get(e.getDetail()).setType(type.getValue());
+                    map.get(e.getDetail()).setStatus(status.getValue());
                 } else {
                     Long txDBId = e.getId();
-                    map.put(txDBId.toString(), new TxDetailsDTO(txDBId, Util.format(e.getCryptoAmount(), 6), type, status, e.getServerTime().getTime()));
+                    map.put(txDBId.toString(), new TxDetailsDTO(txDBId, Util.format(e.getCryptoAmount(), 6), type.getValue(), status.getValue(), e.getServerTime().getTime()));
                 }
             });
         }
@@ -116,7 +117,6 @@ public class TransactionService {
 
     public TxDetailsDTO getTransactionDetails(Long userId, CoinService.CoinEnum coinCode, String txId) {
         User user = userService.findById(userId);
-        Identity identity = user.getIdentity();
         Coin coin = coinCode.getCoinEntity();
 
         TxDetailsDTO dto = new TxDetailsDTO();
@@ -126,37 +126,19 @@ public class TransactionService {
             buySellRecOpt = recordRep.findById(Long.valueOf(txId));
         } else {                                                    /** consider as txId */
             String address = user.getUserCoin(coinCode.name()).getAddress();
-            dto = coinCode.getTransactionDetails(txId, address);
+            TxDetailsDTO tx = mongo.findOne(new Query(Criteria.where("txId").is(txId)), TxDetailsDTO.class);
+
+            if (tx == null) {
+                dto = coinCode.getTransactionDetails(txId, address);
+            } else {
+                dto = tx;
+                dto.setType(TransactionType.getType(dto.getFromAddress(), dto.getToAddress(), address).getValue());
+            }
+
             buySellRecOpt = recordRep.findOneByIdentityAndDetailAndCryptoCurrency(user.getIdentity(), txId, coinCode.name());
         }
 
-        Optional<TransactionRecordWallet> giftRecOpt = walletRep.findFirstByIdentityAndCoinAndTxIdAndTypeIn(identity, coin, txId, Arrays.asList(TransactionType.SEND_TRANSFER.getValue(), TransactionType.RECEIVE_TRANSFER.getValue()));
-        Optional<TransactionRecordWallet> swapRecOpt = walletRep.findFirstByIdentityAndCoinAndTxIdAndTypeIn(identity, coin, txId, Arrays.asList(TransactionType.SEND_SWAP.getValue(), TransactionType.RECEIVE_SWAP.getValue()));
-        Optional<TransactionRecordWallet> stakeRecOpt = walletRep.findFirstByIdentityAndCoinAndTxIdAndTypeIn(identity, coin, txId, Arrays.asList(TransactionType.CREATE_STAKE.getValue(), TransactionType.CANCEL_STAKE.getValue(), TransactionType.WITHDRAW_STAKE.getValue()));
-        Optional<TransactionRecordWallet> reserveRecOpt = walletRep.findFirstByIdentityAndCoinAndTxIdAndTypeIn(identity, coin, txId, Arrays.asList(TransactionType.RESERVE.getValue(), TransactionType.RECALL.getValue()));
-
-        if (giftRecOpt.isPresent()) {
-            TransactionRecordWallet gift = giftRecOpt.get();
-
-            if (gift.getType() == TransactionType.SEND_TRANSFER.getValue()) {
-                dto.setToPhone(gift.getToPhone());
-            } else if (gift.getType() == TransactionType.RECEIVE_TRANSFER.getValue()) {
-                dto.setFromPhone(gift.getFromPhone());
-            }
-
-            dto.setImageId(gift.getImageId());
-            dto.setMessage(gift.getMessage());
-            dto.setType(TransactionType.convert(dto.getType(), TransactionType.valueOf(gift.getType())));
-        } else if (swapRecOpt.isPresent()) {
-            TransactionRecordWallet exchange = swapRecOpt.get();
-
-            String code = exchange.getRefCoin().getCode();
-            dto.setRefCoin(code);
-            dto.setRefTxId(exchange.getRefTxId());
-            dto.setRefLink(CoinService.CoinEnum.valueOf(code).getExplorerUrl() + "/" + exchange.getRefTxId());
-            dto.setRefCryptoAmount(exchange.getRefAmount());
-            dto.setType(TransactionType.convert(dto.getType(), TransactionType.valueOf(exchange.getType())));
-        } else if (buySellRecOpt.isPresent()) {
+        if (buySellRecOpt.isPresent()) {
             TransactionRecord buySell = buySellRecOpt.get();
 
             //return txId or txDBId
@@ -168,24 +150,20 @@ public class TransactionService {
                 }
             }
 
-            dto.setType(buySell.getTransactionType());
-            dto.setStatus(buySell.getTransactionStatus(dto.getType()));
+            dto.setType(buySell.getTransactionType().getValue());
+            dto.setStatus(buySell.getTransactionStatus(TransactionType.valueOf(dto.getType())).getValue());
             dto.setCryptoAmount(buySell.getCryptoAmount().stripTrailingZeros());
             dto.setFiatAmount(buySell.getCashAmount().setScale(0));
             dto.setToAddress(buySell.getCryptoAddress());
             dto.setTimestamp(buySell.getServerTime().getTime());
 
-            if (dto.getType() == TransactionType.SELL) {
-                dto.setCashStatus(CashStatus.getCashStatus(buySell.getCanBeCashedOut(), buySell.getWithdrawn()));
+            if (dto.getType() == TransactionType.SELL.getValue()) {
+                dto.setCashStatus(CashStatus.getCashStatus(buySell.getCanBeCashedOut(), buySell.getWithdrawn()).getValue());
                 dto.setSellInfo(coin.getName() + ":" + buySell.getCryptoAddress()
                         + "?amount=" + buySell.getCryptoAmount()
                         + "&label=" + buySell.getRemoteTransactionId()
                         + "&uuid=" + buySell.getUuid());
             }
-        } else if (stakeRecOpt.isPresent()) {
-            dto.setType(TransactionType.valueOf(stakeRecOpt.get().getType()));
-        } else if (reserveRecOpt.isPresent()) {
-            dto.setType(TransactionType.valueOf(reserveRecOpt.get().getType()));
         }
 
         return dto;
@@ -252,79 +230,79 @@ public class TransactionService {
             Coin coin = userService.getUserCoin(userId, coinCode.name()).getCoin();
 
             //TODO remove
-                TransactionRecordWallet sendRecord = new TransactionRecordWallet();
-                sendRecord.setTxId(txId);
-                sendRecord.setType(TransactionType.SEND_TRANSFER.getValue());
-                sendRecord.setAmount(dto.getCryptoAmount());
-                sendRecord.setStatus(TransactionStatus.PENDING.getValue());
-                sendRecord.setFromPhone(user.getPhone());
-                sendRecord.setToPhone(dto.getPhone());
-                sendRecord.setMessage(dto.getMessage());
-                sendRecord.setImageId(dto.getImage());
-                sendRecord.setReceiverStatus(receiverOpt.isPresent() ? TransactionRecordWallet.RECEIVER_EXIST : TransactionRecordWallet.RECEIVER_NOT_EXIST);
-                sendRecord.setIdentity(user.getIdentity());
-                sendRecord.setCoin(coin);
-                walletRep.save(sendRecord);
+            TransactionRecordWallet sendRecord = new TransactionRecordWallet();
+            sendRecord.setTxId(txId);
+            sendRecord.setType(TransactionType.SEND_TRANSFER.getValue());
+            sendRecord.setAmount(dto.getCryptoAmount());
+            sendRecord.setStatus(TransactionStatus.PENDING.getValue());
+            sendRecord.setFromPhone(user.getPhone());
+            sendRecord.setToPhone(dto.getPhone());
+            sendRecord.setMessage(dto.getMessage());
+            sendRecord.setImageId(dto.getImage());
+            sendRecord.setReceiverStatus(receiverOpt.isPresent() ? TransactionRecordWallet.RECEIVER_EXIST : TransactionRecordWallet.RECEIVER_NOT_EXIST);
+            sendRecord.setIdentity(user.getIdentity());
+            sendRecord.setCoin(coin);
+            walletRep.save(sendRecord);
 
             TxDetailsDTO tx = new TxDetailsDTO();
             tx.setUserId(userId);
             tx.setTxId(txId);
             tx.setCoin(coinCode.name());
-            tx.setType(TransactionType.SEND_TRANSFER);
-            tx.setStatus(TransactionStatus.PENDING);
+            tx.setType(TransactionType.SEND_TRANSFER.getValue());
+            tx.setStatus(TransactionStatus.PENDING.getValue());
             tx.setCryptoAmount(dto.getCryptoAmount());
             tx.setFromAddress(dto.getFromAddress());
             tx.setToAddress(dto.getToAddress());
             tx.setFromPhone(user.getPhone());
             tx.setToPhone(dto.getPhone());
             tx.setMessage(dto.getMessage());
-            tx.setImageId(dto.getImage());
-            tx.setProcessed(receiverOpt.isPresent() ? ProcessedType.COMPLETE : ProcessedType.PENDING);
+            tx.setImage(dto.getImage());
+            tx.setProcessed(receiverOpt.isPresent() ? ProcessedType.COMPLETE.getValue() : ProcessedType.PENDING.getValue());
             mongo.save(tx);
 
 
-                if (receiverOpt.isPresent()) {
-                    //TODO remove
-                    TransactionRecordWallet receiveRecord = new TransactionRecordWallet();
-                    receiveRecord.setTxId(sendRecord.getTxId());
-                    receiveRecord.setType(TransactionType.RECEIVE_TRANSFER.getValue());
-                    receiveRecord.setStatus(TransactionStatus.PENDING.getValue());
-                    receiveRecord.setFromPhone(sendRecord.getFromPhone());
-                    receiveRecord.setToPhone(sendRecord.getToPhone());
-                    receiveRecord.setMessage(sendRecord.getMessage());
-                    receiveRecord.setImageId(sendRecord.getImageId());
-                    receiveRecord.setReceiverStatus(TransactionRecordWallet.RECEIVER_EXIST);
-                    receiveRecord.setIdentity(receiverOpt.get().getIdentity());
-                    receiveRecord.setCoin(sendRecord.getCoin());
-                    receiveRecord.setAmount(sendRecord.getAmount());
-                    walletRep.save(receiveRecord);
+            if (receiverOpt.isPresent()) {
+                //TODO remove
+                TransactionRecordWallet receiveRecord = new TransactionRecordWallet();
+                receiveRecord.setTxId(sendRecord.getTxId());
+                receiveRecord.setType(TransactionType.RECEIVE_TRANSFER.getValue());
+                receiveRecord.setStatus(TransactionStatus.PENDING.getValue());
+                receiveRecord.setFromPhone(sendRecord.getFromPhone());
+                receiveRecord.setToPhone(sendRecord.getToPhone());
+                receiveRecord.setMessage(sendRecord.getMessage());
+                receiveRecord.setImageId(sendRecord.getImageId());
+                receiveRecord.setReceiverStatus(TransactionRecordWallet.RECEIVER_EXIST);
+                receiveRecord.setIdentity(receiverOpt.get().getIdentity());
+                receiveRecord.setCoin(sendRecord.getCoin());
+                receiveRecord.setAmount(sendRecord.getAmount());
+                walletRep.save(receiveRecord);
 
-                    TxDetailsDTO tx2 = new TxDetailsDTO();
-                    tx2.setUserId(userId);
-                    tx2.setTxId(txId);
-                    tx2.setCoin(coinCode.name());
-                    tx2.setType(TransactionType.RECEIVE_TRANSFER);
-                    tx2.setStatus(TransactionStatus.PENDING);
-                    tx2.setCryptoAmount(dto.getCryptoAmount());
-                    tx2.setFromAddress(dto.getFromAddress());
-                    tx2.setToAddress(dto.getToAddress());
-                    tx2.setFromPhone(user.getPhone());
-                    tx2.setToPhone(dto.getPhone());
-                    tx2.setMessage(dto.getMessage());
-                    tx2.setImageId(dto.getImage());
-                    mongo.save(tx2);
+                TxDetailsDTO tx2 = new TxDetailsDTO();
+                tx2.setUserId(userId);
+                tx2.setTxId(txId);
+                tx2.setCoin(coinCode.name());
+                tx2.setType(TransactionType.RECEIVE_TRANSFER.getValue());
+                tx2.setStatus(TransactionStatus.PENDING.getValue());
+                tx2.setCryptoAmount(dto.getCryptoAmount());
+                tx2.setFromAddress(dto.getFromAddress());
+                tx2.setToAddress(dto.getToAddress());
+                tx2.setFromPhone(user.getPhone());
+                tx2.setToPhone(dto.getPhone());
+                tx2.setMessage(dto.getMessage());
+                tx2.setImage(dto.getImage());
+                mongo.save(tx2);
 
-                    String token = receiverOpt.get().getNotificationsToken();
-                    StringBuilder messageBuilder = new StringBuilder("You just received " + dto.getCryptoAmount().stripTrailingZeros() + " " + coinCode.name());
+                String token = receiverOpt.get().getNotificationsToken();
+                StringBuilder messageBuilder = new StringBuilder("You just received " + dto.getCryptoAmount().stripTrailingZeros() + " " + coinCode.name());
 
-                    if (StringUtils.isNotBlank(dto.getMessage())) {
-                        messageBuilder.append("\n\n").append("\"").append(dto.getMessage()).append("\"").append("\n");
-                    }
-
-                    notificationService.sendMessageWithData(new NotificationDTO("New incoming transfer", messageBuilder.toString(), null, token));
-                } else {
-                    twilioService.sendTransferMessageToNotExistingUser(coinCode, dto.getPhone(), dto.getMessage(), dto.getImage(), dto.getCryptoAmount().stripTrailingZeros());
+                if (StringUtils.isNotBlank(dto.getMessage())) {
+                    messageBuilder.append("\n\n").append("\"").append(dto.getMessage()).append("\"").append("\n");
                 }
+
+                notificationService.sendMessageWithData(new NotificationDTO("New incoming transfer", messageBuilder.toString(), null, token));
+            } else {
+                twilioService.sendTransferMessageToNotExistingUser(coinCode, dto.getPhone(), dto.getMessage(), dto.getImage(), dto.getCryptoAmount().stripTrailingZeros());
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -407,14 +385,14 @@ public class TransactionService {
             tx.setUserId(userId);
             tx.setTxId(txId);
             tx.setCoin(coin.name());
-            tx.setType(TransactionType.SEND_SWAP);
-            tx.setStatus(TransactionStatus.PENDING);
+            tx.setType(TransactionType.SEND_SWAP.getValue());
+            tx.setStatus(TransactionStatus.PENDING.getValue());
             tx.setCryptoAmount(dto.getCryptoAmount());
             tx.setFromAddress(dto.getFromAddress());
             tx.setToAddress(dto.getToAddress());
             tx.setRefCoin(dto.getRefCoin());
             tx.setRefCryptoAmount(dto.getRefCryptoAmount());
-            tx.setProcessed(ProcessedType.PENDING);
+            tx.setProcessed(ProcessedType.PENDING.getValue());
             mongo.save(tx);
         } catch (Exception e) {
             e.printStackTrace();
@@ -437,12 +415,12 @@ public class TransactionService {
             tx.setUserId(userId);
             tx.setTxId(txId);
             tx.setCoin(coin.name());
-            tx.setType(TransactionType.RESERVE);
-            tx.setStatus(TransactionStatus.PENDING);
+            tx.setType(TransactionType.RESERVE.getValue());
+            tx.setStatus(TransactionStatus.PENDING.getValue());
             tx.setCryptoAmount(dto.getCryptoAmount());
             tx.setFromAddress(dto.getFromAddress());
             tx.setToAddress(dto.getToAddress());
-            tx.setProcessed(ProcessedType.PENDING);
+            tx.setProcessed(ProcessedType.PENDING.getValue());
             mongo.save(tx);
         } catch (Exception e) {
             e.printStackTrace();
@@ -484,8 +462,8 @@ public class TransactionService {
                     tx.setUserId(userId);
                     tx.setTxId(txId);
                     tx.setCoin(coinCode.name());
-                    tx.setType(TransactionType.RECALL);
-                    tx.setStatus(TransactionStatus.PENDING);
+                    tx.setType(TransactionType.RECALL.getValue());
+                    tx.setStatus(TransactionStatus.PENDING.getValue());
                     tx.setCryptoAmount(dto.getCryptoAmount());
                     tx.setFromAddress(fromAddress);
                     tx.setToAddress(toAddress);
@@ -506,28 +484,38 @@ public class TransactionService {
 
     public void createStake(Long userId, CoinService.CoinEnum coin, String txId, TxSubmitDTO dto) {
         try {
-            //TODO remove
-            TransactionRecordWallet record = new TransactionRecordWallet();
-            record.setIdentity(userService.findByUserId(userId));
-            record.setCoin(coin.getCoinEntity());
-            record.setType(TransactionType.CREATE_STAKE.getValue());
-            record.setStatus(TransactionStatus.PENDING.getValue());
-            record.setAmount(dto.getCryptoAmount());
-            record.setTxId(txId);
-            walletRep.save(record);
+//            TODO remove
+//            TransactionRecordWallet record = new TransactionRecordWallet();
+//            record.setIdentity(userService.findByUserId(userId));
+//            record.setCoin(coin.getCoinEntity());
+//            record.setType(TransactionType.CREATE_STAKE.getValue());
+//            record.setStatus(TransactionStatus.PENDING.getValue());
+//            record.setAmount(dto.getCryptoAmount());
+//            record.setTxId(txId);
+//            walletRep.save(record);
 
             TxDetailsDTO tx = new TxDetailsDTO();
             tx.setUserId(userId);
             tx.setTxId(txId);
             tx.setCoin(coin.name());
-            tx.setType(TransactionType.CREATE_STAKE);
-            tx.setStatus(TransactionStatus.PENDING);
+            tx.setType(TransactionType.CREATE_STAKE.getValue());
+            tx.setStatus(TransactionStatus.PENDING.getValue());
             tx.setCryptoAmount(dto.getCryptoAmount());
             tx.setFromAddress(dto.getFromAddress());
             tx.setToAddress(dto.getToAddress());
             mongo.save(tx);
 
-            //TODO map record to stake collection
+            StakingDetailsDTO staking = new StakingDetailsDTO();
+            staking.setStatus(StakingStatus.CREATE_PENDING.getValue());
+            staking.setUserId(userId);
+            staking.setCoin(coin.name());
+            staking.setAmount(dto.getCryptoAmount());
+            staking.setAnnualPercent(gethService.getStakingAnnualPercent());
+            staking.setBasePeriod(gethService.getStakingBasePeriod());
+            staking.setHoldPeriod(gethService.getStakingHoldPeriod());
+            staking.setCreateTxId(txId);
+            staking.setCreateTimestamp(System.currentTimeMillis());
+            mongo.save(staking);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -535,36 +523,44 @@ public class TransactionService {
 
     public void cancelStake(Long userId, CoinService.CoinEnum coin, String txId, TxSubmitDTO dto) {
         try {
-            //TODO remove
-            TransactionRecordWallet record = new TransactionRecordWallet();
-            Identity identity = userService.findByUserId(userId);
-            record.setIdentity(identity);
-            record.setCoin(coin.getCoinEntity());
-            record.setType(TransactionType.CANCEL_STAKE.getValue());
-            record.setStatus(TransactionStatus.PENDING.getValue());
-            record.setAmount(dto.getCryptoAmount());
-            record.setTxId(txId);
-            walletRep.save(record);
-
-            Optional<TransactionRecordWallet> createStakeRecOpt = walletRep.findFirstByIdentityAndCoinAndTypeAndStatusOrderByCreateDateDesc(identity, coin.getCoinEntity(), TransactionType.CREATE_STAKE.getValue(), TransactionStatus.COMPLETE.getValue());
-
-            TransactionRecordWallet previousTransaction = linkPreviousTransaction(txId, createStakeRecOpt);
-            if (previousTransaction != null) {
-                walletRep.save(previousTransaction);
-            }
+//            TODO remove
+//            TransactionRecordWallet record = new TransactionRecordWallet();
+//            Identity identity = userService.findByUserId(userId);
+//            record.setIdentity(identity);
+//            record.setCoin(coin.getCoinEntity());
+//            record.setType(TransactionType.CANCEL_STAKE.getValue());
+//            record.setStatus(TransactionStatus.PENDING.getValue());
+//            record.setAmount(dto.getCryptoAmount());
+//            record.setTxId(txId);
+//            walletRep.save(record);
+//
+//            Optional<TransactionRecordWallet> createStakeRecOpt = walletRep.findFirstByIdentityAndCoinAndTypeAndStatusOrderByCreateDateDesc(identity, coin.getCoinEntity(), TransactionType.CREATE_STAKE.getValue(), TransactionStatus.COMPLETE.getValue());
+//
+//            TransactionRecordWallet previousTransaction = linkPreviousTransaction(txId, createStakeRecOpt);
+//            if (previousTransaction != null) {
+//                walletRep.save(previousTransaction);
+//            }
 
             TxDetailsDTO tx = new TxDetailsDTO();
             tx.setUserId(userId);
             tx.setTxId(txId);
             tx.setCoin(coin.name());
-            tx.setType(TransactionType.CANCEL_STAKE);
-            tx.setStatus(TransactionStatus.PENDING);
+            tx.setType(TransactionType.CANCEL_STAKE.getValue());
+            tx.setStatus(TransactionStatus.PENDING.getValue());
             tx.setCryptoAmount(dto.getCryptoAmount());
             tx.setFromAddress(dto.getFromAddress());
             tx.setToAddress(dto.getToAddress());
             mongo.save(tx);
 
-            //TODO map record to stake collection
+            Query query = new Query();
+            query.addCriteria(new Criteria().andOperator(Criteria.where("userId").is(userId), Criteria.where("coin").is(coin.name())));
+            query.with(new Sort(Sort.Direction.DESC, "createTimestamp"));
+
+            StakingDetailsDTO staking = mongo.findOne(query, StakingDetailsDTO.class);
+            staking.setStatus(StakingStatus.CANCEL_PENDING.getValue());
+            staking.setCancelTxId(txId);
+            staking.setCancelTimestamp(System.currentTimeMillis());
+            mongo.save(staking);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -572,92 +568,112 @@ public class TransactionService {
 
     public void withdrawStake(Long userId, CoinService.CoinEnum coin, String txId, TxSubmitDTO dto) {
         try {
-            TransactionRecordWallet record = new TransactionRecordWallet();
-            Identity identity = userService.findByUserId(userId);
-            record.setIdentity(identity);
-            record.setCoin(coin.getCoinEntity());
-            record.setType(TransactionType.WITHDRAW_STAKE.getValue());
-            record.setStatus(TransactionStatus.PENDING.getValue());
-            record.setAmount(dto.getCryptoAmount());
-            record.setTxId(txId);
 
-            walletRep.save(record);
-
-            Optional<TransactionRecordWallet> cancelStakeRecOpt = walletRep.findFirstByIdentityAndCoinAndTypeAndStatusOrderByCreateDateDesc(identity, coin.getCoinEntity(), TransactionType.CANCEL_STAKE.getValue(), TransactionStatus.COMPLETE.getValue());
-
-            TransactionRecordWallet previousTransaction = linkPreviousTransaction(txId, cancelStakeRecOpt);
-            if (previousTransaction != null) {
-                walletRep.save(previousTransaction);
-            }
+//            TransactionRecordWallet record = new TransactionRecordWallet();
+//            Identity identity = userService.findByUserId(userId);
+//            record.setIdentity(identity);
+//            record.setCoin(coin.getCoinEntity());
+//            record.setType(TransactionType.WITHDRAW_STAKE.getValue());
+//            record.setStatus(TransactionStatus.PENDING.getValue());
+//            record.setAmount(dto.getCryptoAmount());
+//            record.setTxId(txId);
+//
+//            walletRep.save(record);
+//
+//            Optional<TransactionRecordWallet> cancelStakeRecOpt = walletRep.findFirstByIdentityAndCoinAndTypeAndStatusOrderByCreateDateDesc(identity, coin.getCoinEntity(), TransactionType.CANCEL_STAKE.getValue(), TransactionStatus.COMPLETE.getValue());
+//
+//            TransactionRecordWallet previousTransaction = linkPreviousTransaction(txId, cancelStakeRecOpt);
+//            if (previousTransaction != null) {
+//                walletRep.save(previousTransaction);
+//            }
 
             TxDetailsDTO tx = new TxDetailsDTO();
             tx.setUserId(userId);
             tx.setTxId(txId);
             tx.setCoin(coin.name());
-            tx.setType(TransactionType.CANCEL_STAKE);
-            tx.setStatus(TransactionStatus.PENDING);
+            tx.setType(TransactionType.CANCEL_STAKE.getValue());
+            tx.setStatus(TransactionStatus.PENDING.getValue());
             tx.setCryptoAmount(dto.getCryptoAmount());
             tx.setFromAddress(dto.getFromAddress());
             tx.setToAddress(dto.getToAddress());
             mongo.save(tx);
 
-            //TODO map record to stake collection
+            Query query = new Query();
+            query.addCriteria(new Criteria().andOperator(Criteria.where("userId").is(userId), Criteria.where("coin").is(coin.name())));
+            query.with(new Sort(Sort.Direction.DESC, "cancelTimestamp"));
+
+            StakingDetailsDTO staking = mongo.findOne(query, StakingDetailsDTO.class);
+            staking.setStatus(StakingStatus.WITHDRAW_PENDING.getValue());
+            staking.setWithdrawTxId(txId);
+            staking.setWithdrawTimestamp(System.currentTimeMillis());
+            mongo.save(staking);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
     public StakingDetailsDTO getStakeDetails(Long userId, CoinService.CoinEnum coin) {
-        StakingDetailsDTO dto = new StakingDetailsDTO();
-        dto.setStatus(StakingStatus.NOT_EXIST);
-        dto.setAnnualPercent(gethService.getStakingAnnualPercent());
-        dto.setHoldPeriod(gethService.getStakingHoldPeriod() / gethService.getStakingBasePeriod());
+        Query query = new Query();
+        query.addCriteria(new Criteria().andOperator(Criteria.where("userId").is(userId), Criteria.where("coin").is(coin.name())));
+        query.with(new Sort(Sort.Direction.DESC, "createTimestamp"));
 
-        try {
-            Identity identity = userService.findByUserId(userId);
-            Optional<TransactionRecordWallet> createStakeRecOpt = walletRep.findFirstByIdentityAndCoinAndTypeAndStatusNotOrderByCreateDateDesc(identity, coin.getCoinEntity(), TransactionType.CREATE_STAKE.getValue(), TransactionStatus.FAIL.getValue());
+        StakingDetailsDTO staking = mongo.findOne(query, StakingDetailsDTO.class);
 
-            if (createStakeRecOpt.isPresent()) {
-                TransactionRecordWallet createStakeRec = createStakeRecOpt.get();
-
-                dto.setStatus(StakingStatus.convert(TransactionType.valueOf(createStakeRec.getType()), TransactionStatus.valueOf(createStakeRec.getStatus())));
-                dto.setAmount(createStakeRec.getAmount().stripTrailingZeros());
-                dto.setCreateTimestamp(createStakeRec.getCreateDate().getTime());
-
-                if (StringUtils.isBlank(createStakeRec.getRefTxId())) {
-                    int days = Seconds.secondsBetween(new DateTime(createStakeRec.getCreateDate()), DateTime.now()).getSeconds() / gethService.getStakingBasePeriod();
-                    BigDecimal percent = calculateStakeRewardPercent(days);
-
-                    dto.setDuration(days);
-                    dto.setRewardPercent(percent);
-                    dto.setRewardAmount(createStakeRec.getAmount().multiply(Util.convertPercentToDecimal(percent)).stripTrailingZeros());
-                    dto.setRewardAnnualAmount(createStakeRec.getAmount().multiply(Util.convertPercentToDecimal(BigDecimal.valueOf(gethService.getStakingAnnualPercent()))).stripTrailingZeros());
-                } else {
-                    TransactionRecordWallet cancelStakeRec = walletRep.findFirstByTxId(createStakeRec.getRefTxId()).get();
-
-                    int days = Seconds.secondsBetween(new DateTime(createStakeRec.getCreateDate()), new DateTime(cancelStakeRec.getCreateDate())).getSeconds() / gethService.getStakingBasePeriod();
-                    int holdDays = Seconds.secondsBetween(new DateTime(cancelStakeRec.getCreateDate()), DateTime.now()).getSeconds() / gethService.getStakingBasePeriod();
-                    BigDecimal percent = calculateStakeRewardPercent(days);
-
-                    dto.setDuration(days);
-                    dto.setRewardPercent(percent);
-                    dto.setStatus(StakingStatus.convert(TransactionType.valueOf(cancelStakeRec.getType()), TransactionStatus.valueOf(cancelStakeRec.getStatus())));
-                    dto.setCancelTimestamp(cancelStakeRec.getCreateDate().getTime());
-                    dto.setRewardAmount(createStakeRec.getAmount().multiply(Util.convertPercentToDecimal(percent)).stripTrailingZeros());
-                    dto.setRewardAnnualAmount(createStakeRec.getAmount().multiply(Util.convertPercentToDecimal(BigDecimal.valueOf(gethService.getStakingAnnualPercent()))).stripTrailingZeros());
-                    dto.setTillWithdrawal(Math.max(0, gethService.getStakingHoldPeriod() / gethService.getStakingBasePeriod() - holdDays));
-
-                    if (StringUtils.isNotBlank(cancelStakeRec.getRefTxId())) {
-                        TransactionRecordWallet withdrawStakeRec = walletRep.findFirstByTxId(cancelStakeRec.getRefTxId()).get();
-                        dto.setStatus(StakingStatus.convert(TransactionType.valueOf(withdrawStakeRec.getType()), TransactionStatus.valueOf(withdrawStakeRec.getStatus())));
-                    }
-                }
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
+        if (staking == null) {
+            staking = new StakingDetailsDTO();
+            staking.setStatus(StakingStatus.NOT_EXIST.getValue());
+            staking.setAnnualPercent(gethService.getStakingAnnualPercent());
+            staking.setBasePeriod(gethService.getStakingBasePeriod());
+            staking.setHoldPeriod(gethService.getStakingHoldPeriod());
         }
 
-        return dto;
+        return staking;
+
+//        try {
+//            Identity identity = userService.findByUserId(userId);
+//            Optional<TransactionRecordWallet> createStakeRecOpt = walletRep.findFirstByIdentityAndCoinAndTypeAndStatusNotOrderByCreateDateDesc(identity, coin.getCoinEntity(), TransactionType.CREATE_STAKE.getValue(), TransactionStatus.FAIL.getValue());
+//
+//            if (createStakeRecOpt.isPresent()) {
+//                TransactionRecordWallet createStakeRec = createStakeRecOpt.get();
+//
+//                dto.setStatus(StakingStatus.convert(TransactionType.valueOf(createStakeRec.getType()), TransactionStatus.valueOf(createStakeRec.getStatus())));
+//                dto.setAmount(createStakeRec.getAmount().stripTrailingZeros());
+//                dto.setCreateTimestamp(createStakeRec.getCreateDate().getTime());
+//
+//                if (StringUtils.isBlank(createStakeRec.getRefTxId())) {
+//                    int days = Seconds.secondsBetween(new DateTime(createStakeRec.getCreateDate()), DateTime.now()).getSeconds() / gethService.getStakingBasePeriod();
+//                    BigDecimal percent = calculateStakeRewardPercent(days);
+//
+//                    dto.setDuration(days);
+//                    dto.setRewardPercent(percent);
+//                    dto.setRewardAmount(createStakeRec.getAmount().multiply(Util.convertPercentToDecimal(percent)).stripTrailingZeros());
+//                    dto.setRewardAnnualAmount(createStakeRec.getAmount().multiply(Util.convertPercentToDecimal(BigDecimal.valueOf(gethService.getStakingAnnualPercent()))).stripTrailingZeros());
+//                } else {
+//                    TransactionRecordWallet cancelStakeRec = walletRep.findFirstByTxId(createStakeRec.getRefTxId()).get();
+//
+//                    int days = Seconds.secondsBetween(new DateTime(createStakeRec.getCreateDate()), new DateTime(cancelStakeRec.getCreateDate())).getSeconds() / gethService.getStakingBasePeriod();
+//                    int holdDays = Seconds.secondsBetween(new DateTime(cancelStakeRec.getCreateDate()), DateTime.now()).getSeconds() / gethService.getStakingBasePeriod();
+//                    BigDecimal percent = calculateStakeRewardPercent(days);
+//
+//                    dto.setDuration(days);
+//                    dto.setRewardPercent(percent);
+//                    dto.setStatus(StakingStatus.convert(TransactionType.valueOf(cancelStakeRec.getType()), TransactionStatus.valueOf(cancelStakeRec.getStatus())));
+//                    dto.setCancelTimestamp(cancelStakeRec.getCreateDate().getTime());
+//                    dto.setRewardAmount(createStakeRec.getAmount().multiply(Util.convertPercentToDecimal(percent)).stripTrailingZeros());
+//                    dto.setRewardAnnualAmount(createStakeRec.getAmount().multiply(Util.convertPercentToDecimal(BigDecimal.valueOf(gethService.getStakingAnnualPercent()))).stripTrailingZeros());
+//                    dto.setTillWithdrawal(Math.max(0, gethService.getStakingHoldPeriod() / gethService.getStakingBasePeriod() - holdDays));
+//
+//                    if (StringUtils.isNotBlank(cancelStakeRec.getRefTxId())) {
+//                        TransactionRecordWallet withdrawStakeRec = walletRep.findFirstByTxId(cancelStakeRec.getRefTxId()).get();
+//                        dto.setStatus(StakingStatus.convert(TransactionType.valueOf(withdrawStakeRec.getType()), TransactionStatus.valueOf(withdrawStakeRec.getStatus())));
+//                    }
+//                }
+//            }
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//
+//        return dto;
     }
 
     public void postSubmit(Long userId, CoinService.CoinEnum coin, String txId) {
@@ -701,10 +717,10 @@ public class TransactionService {
         list.stream().forEach(t -> {
             try {
                 CoinService.CoinEnum coin = CoinService.CoinEnum.valueOf(t.getCoin().getCode());
-                TransactionStatus status = coin.getTransactionDetails(t.getTxId(), StringUtils.EMPTY).getStatus();
+                Integer status = coin.getTransactionDetails(t.getTxId(), StringUtils.EMPTY).getStatus();
 
-                if (status != null && status != TransactionStatus.PENDING) {
-                    t.setStatus(status.getValue());
+                if (status != null && status != TransactionStatus.PENDING.getValue()) {
+                    t.setStatus(status);
 
                     confirmedList.add(t);
                 }
@@ -826,15 +842,15 @@ public class TransactionService {
                                 tx.setUserId(receiverOpt.get().getId());
                                 tx.setTxId(txId);
                                 tx.setCoin(coinCode.name());
-                                tx.setType(TransactionType.RECEIVE_TRANSFER);
-                                tx.setStatus(TransactionStatus.PENDING);
+                                tx.setType(TransactionType.RECEIVE_TRANSFER.getValue());
+                                tx.setStatus(TransactionStatus.PENDING.getValue());
                                 tx.setCryptoAmount(dto.getCryptoAmount());
                                 tx.setFromAddress(dto.getFromAddress());
                                 tx.setToAddress(dto.getToAddress());
                                 tx.setFromPhone(user.getPhone());
                                 tx.setToPhone(dto.getPhone());
                                 tx.setMessage(dto.getMessage());
-                                tx.setImageId(dto.getImage());
+                                tx.setImage(dto.getImage());
                                 mongo.save(tx);
 
                                 t.setReceiverStatus(TransactionRecordWallet.RECEIVER_EXIST);

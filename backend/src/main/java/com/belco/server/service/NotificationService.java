@@ -4,6 +4,7 @@ import com.belco.server.dto.NotificationDTO;
 import com.google.auth.oauth2.GoogleCredentials;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
@@ -39,6 +40,14 @@ public class NotificationService {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public String pushMessage(String title, String message, String token) {
+        if(StringUtils.isNotBlank(token)) {
+            return sendMessageWithData(new NotificationDTO(title, message, null, token));
+        }
+
+        return null;
     }
 
     public String sendMessageWithData(NotificationDTO dto) {

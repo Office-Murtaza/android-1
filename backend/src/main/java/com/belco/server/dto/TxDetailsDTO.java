@@ -1,10 +1,5 @@
 package com.belco.server.dto;
 
-import com.belco.server.model.CashStatus;
-import com.belco.server.model.ProcessedType;
-import com.belco.server.model.TransactionStatus;
-import com.belco.server.model.TransactionType;
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -12,6 +7,7 @@ import lombok.Setter;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
+
 import java.math.BigDecimal;
 
 @Document(collection = "transaction")
@@ -26,6 +22,10 @@ public class TxDetailsDTO {
 
     @Indexed
     private String coin;
+
+    @Indexed
+    private Long userId;
+
     private Long txDBId;
     private String link;
     private BigDecimal cryptoAmount;
@@ -39,7 +39,7 @@ public class TxDetailsDTO {
 
     private String fromPhone;
     private String toPhone;
-    private String imageId;
+    private String image;
     private String message;
 
     private String refTxId;
@@ -47,27 +47,18 @@ public class TxDetailsDTO {
     private String refCoin;
     private BigDecimal refCryptoAmount;
 
-    @JsonFormat(shape = JsonFormat.Shape.OBJECT)
-    private TransactionType type;
-
-    @JsonFormat(shape = JsonFormat.Shape.OBJECT)
-    private TransactionStatus status;
+    private Integer type;
+    private Integer status;
 
     private Integer confirmations;
     private BigDecimal fiatAmount;
-
-    @JsonFormat(shape = JsonFormat.Shape.OBJECT)
-    private CashStatus cashStatus;
-
+    private Integer cashStatus;
     private String sellInfo;
-    private Long userId;
-
-    @JsonFormat(shape = JsonFormat.Shape.OBJECT)
-    private ProcessedType processed;
+    private Integer processed;
 
     private long timestamp;
 
-    public TxDetailsDTO(String txId, BigDecimal cryptoAmount, TransactionType type, TransactionStatus status, long timestamp) {
+    public TxDetailsDTO(String txId, BigDecimal cryptoAmount, Integer type, Integer status, long timestamp) {
         this.txId = txId;
         this.cryptoAmount = cryptoAmount;
         this.type = type;
@@ -75,7 +66,7 @@ public class TxDetailsDTO {
         this.timestamp = timestamp;
     }
 
-    public TxDetailsDTO(Long txDBId, BigDecimal cryptoAmount, TransactionType type, TransactionStatus status, long timestamp) {
+    public TxDetailsDTO(Long txDBId, BigDecimal cryptoAmount, Integer type, Integer status, long timestamp) {
         this.txDBId = txDBId;
         this.cryptoAmount = cryptoAmount;
         this.type = type;
@@ -83,7 +74,7 @@ public class TxDetailsDTO {
         this.timestamp = timestamp;
     }
 
-    public TxDetailsDTO(String txId, BigDecimal cryptoAmount, String fromAddress, String toAddress, TransactionType type, TransactionStatus status, long timestamp) {
+    public TxDetailsDTO(String txId, BigDecimal cryptoAmount, String fromAddress, String toAddress, Integer type, Integer status, long timestamp) {
         this.txId = txId;
         this.cryptoAmount = cryptoAmount;
         this.fromAddress = fromAddress;

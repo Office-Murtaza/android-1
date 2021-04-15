@@ -1,6 +1,5 @@
 package com.belco.server.entity;
 
-import com.belco.server.model.VerificationStatus;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -43,15 +42,6 @@ public class User extends BaseEntity {
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<UserCoin> userCoins = new ArrayList<>();
 
-    @OneToMany(mappedBy = "maker", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private List<Trade> trades = new ArrayList<>();
-
-    @OneToMany(mappedBy = "maker", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private List<Order> madeOrders = new ArrayList<>();
-
-    @OneToMany(mappedBy = "taker", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private List<Order> takenOrders = new ArrayList<>();
-
     @OneToOne(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Token refreshToken;
 
@@ -60,11 +50,6 @@ public class User extends BaseEntity {
 
     @OneToOne(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Referral referral;
-
-    @Transient
-    public VerificationStatus getVerificationStatus() {
-        return VerificationStatus.valueOf(status);
-    }
 
     @Transient
     public UserCoin getUserCoin(String coinCode) {

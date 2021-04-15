@@ -1,7 +1,7 @@
 package com.belco.server.rest;
 
-import com.belco.server.dto.ChatMessageDTO;
 import com.belco.server.dto.OrderDTO;
+import com.belco.server.dto.OrderMessageDTO;
 import com.belco.server.dto.TradeDTO;
 import com.belco.server.model.Response;
 import com.belco.server.service.TradeService;
@@ -19,9 +19,9 @@ public class TradeController {
         this.tradeService = tradeService;
     }
 
-    @GetMapping("/user/{userId}/trades")
-    public Response getTrades(@PathVariable Long userId) {
-        return tradeService.getTrades(userId);
+    @GetMapping("/user/{userId}/trade-history")
+    public Response getTradeHistory(@PathVariable Long userId) {
+        return tradeService.getTradeHistory(userId);
     }
 
     @PostMapping("/user/{userId}/trade")
@@ -35,7 +35,7 @@ public class TradeController {
     }
 
     @DeleteMapping("/user/{userId}/trade")
-    public Response cancelTrade(@PathVariable Long userId, @RequestParam Long id) {
+    public Response cancelTrade(@PathVariable Long userId, @RequestParam String id) {
         return tradeService.cancelTrade(userId, id);
     }
 
@@ -50,12 +50,12 @@ public class TradeController {
     }
 
     @DeleteMapping("/user/{userId}/order")
-    public Response cancelOrder(@PathVariable Long userId, @RequestParam Long id) {
+    public Response cancelOrder(@PathVariable Long userId, @RequestParam String id) {
         return tradeService.cancelOrder(userId, id);
     }
 
     @MessageMapping("/order-chat")
-    public void receiveMessage(@Payload ChatMessageDTO dto) {
+    public void processMessage(@Payload OrderMessageDTO dto) {
         tradeService.processMessage(dto);
     }
 }

@@ -9,36 +9,27 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.math.BigDecimal;
-
-@Document(collection = "staking")
+@Document(collection = "order_chat")
 @Setter
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class StakingDetailsDTO {
+public class OrderMessageDTO {
 
     @Id
     private String id;
 
     @Indexed
-    private String coin;
+    private String orderId;
 
     @Indexed
-    private Long userId;
+    private Long fromUserId;
 
-    private Integer status;
-    private BigDecimal amount;
+    @Indexed
+    private Long toUserId;
 
-    private Integer basePeriod;
-    private Integer holdPeriod;
-    private Integer annualPercent;
-
-    private String createTxId;
-    private Long createTimestamp;
-    private String cancelTxId;
-    private Long cancelTimestamp;
-    private String withdrawTxId;
-    private Long withdrawTimestamp;
+    private String message;
+    private String file;
+    private long timestamp;
 }

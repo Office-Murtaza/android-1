@@ -54,9 +54,6 @@ public class UserService implements UserDetailsService {
     private final ReferralRep referralRep;
     private final CoinService coinService;
 
-    @Value("${upload.path.verification}")
-    private String uploadPath;
-
     public UserService(UserRep userRep, @Lazy PasswordEncoder passwordEncoder, IdentityRep identityRep, UserCoinRep userCoinRep, LimitRep limitRep, IdentityPieceRep identityPieceRep, IdentityPieceCellPhoneRep identityPieceCellPhoneRep, VerificationReviewRep verificationReviewRep, ReferralRep referralRep, IdentityPiecePersonalInfoRep identityPiecePersonalInfoRep, IdentityPieceDocumentRep identityPieceDocumentRep, IdentityPieceSelfieRep identityPieceSelfieRep, @Lazy CoinService coinService) {
         this.userRep = userRep;
         this.passwordEncoder = passwordEncoder;
