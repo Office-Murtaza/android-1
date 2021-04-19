@@ -8,6 +8,7 @@ class P2PCreateTradeViewController: UIViewController {
 
     private var balance: CoinsBalance
     private var payments: [TradePaymentMethods]
+    let submitButton = MDCButton.submit
     
     init(balance: CoinsBalance, payments: [TradePaymentMethods]) {
         self.balance = balance
@@ -41,6 +42,18 @@ class P2PCreateTradeViewController: UIViewController {
     private let limitsView = P2PCreateTradeLimitsView()
     private let limitsSeparator = P2PSeparatorView()
     
+    private let termsSeparator = P2PSeparatorView()
+    private let termsHeader = P2PSectionHeaderView()
+    lazy var termsTextField: MDCMultilineTextField = {
+           let field = MDCMultilineTextField.default
+           field.borderView = nil
+           
+           return field
+       }()
+    
+    var termsTextFieldController: ThemedTextInputControllerOutlinedTextArea?
+    private var emptyFooterView = UIView()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
@@ -55,6 +68,11 @@ class P2PCreateTradeViewController: UIViewController {
         setupPaymentMethodsView(payments: payments)
         limitsView.setup(range: [100, 10000], measureString: "$ ", isMeasurePosistionLast: false)
         limitsHeader.update(title: "Limits")
+        termsHeader.update(title: "Terms")
+        termsTextFieldController = ThemedTextInputControllerOutlinedTextArea(textInput: termsTextField)
+        termsTextFieldController?.placeholderText = "Type your terms or comments"
+        termsTextFieldController?.minimumLines = 3
+        
         
         view.addSubviews([
             scrollView,
@@ -72,7 +90,12 @@ class P2PCreateTradeViewController: UIViewController {
             paymentMethodsView,
             paymentMethodSeparator,
             limitsHeader,
-            limitsView
+            limitsView,
+            termsSeparator,
+            termsHeader,
+            termsTextField,
+            submitButton,
+            emptyFooterView
         ])
         
         coinExchangeView.configure(for: .bitcoin, coins: balance.coins.map { $0.type })
@@ -149,7 +172,8 @@ class P2PCreateTradeViewController: UIViewController {
         paymentMethodSeparator.snp.makeConstraints {
             $0.top.equalTo(paymentMethodsView.snp.bottom)
             $0.height.equalTo(separatorHeight)
-            $0.left.right.equalToSuperview()
+            $0.left.equalToSuperview().offset(15)
+            $0.right.equalToSuperview().offset(-15)
         }
         
         limitsHeader.snp.remakeConstraints {
@@ -162,7 +186,39 @@ class P2PCreateTradeViewController: UIViewController {
             $0.left.equalToSuperview().offset(30)
             $0.right.equalToSuperview().offset(-30)
             $0.top.equalTo(limitsHeader.snp.bottom)
-            $0.height.equalTo(110)
+            $0.height.equalTo(120)
+        }
+        
+        termsSeparator.snp.makeConstraints {
+            $0.top.equalTo(limitsView.snp.bottom).offset(20)
+            $0.height.equalTo(separatorHeight)
+            $0.left.equalToSuperview().offset(15)
+            $0.right.equalToSuperview().offset(-15)
+        }
+        
+        termsHeader.snp.remakeConstraints {
+            $0.top.equalTo(termsSeparator.snp.bottom)
+            $0.right.left.equalToSuperview()
+            $0.height.equalTo(65)
+        }
+        
+        termsTextField.snp.makeConstraints {
+            $0.top.equalTo(termsHeader.snp.bottom)
+            $0.left.equalToSuperview().offset(5)
+            $0.right.equalToSuperview().offset(-5)
+            $0.height.equalTo(105)
+        }
+        
+        submitButton.snp.makeConstraints {
+            $0.top.equalTo(termsTextField.snp.bottom)
+            $0.height.equalTo(50)
+            $0.left.right.equalToSuperview().inset(15)
+        }
+        
+        emptyFooterView.snp.makeConstraints {
+            $0.top.equalTo(submitButton.snp.bottom)
+            $0.left.right.equalToSuperview()
+            $0.height.equalTo(40)
         }
     }
     
