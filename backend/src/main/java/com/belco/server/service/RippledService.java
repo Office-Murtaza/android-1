@@ -1,10 +1,9 @@
 package com.belco.server.service;
 
 import com.belco.server.dto.CurrentAccountDTO;
-import com.belco.server.dto.TxDetailsDTO;
-import com.belco.server.dto.TxHistoryDTO;
+import com.belco.server.dto.TransactionDetailsDTO;
+import com.belco.server.dto.TransactionHistoryDTO;
 import com.belco.server.entity.TransactionRecord;
-import com.belco.server.entity.TransactionRecordWallet;
 import com.belco.server.model.TransactionStatus;
 import com.belco.server.model.TransactionType;
 import com.belco.server.util.Util;
@@ -22,7 +21,10 @@ import wallet.core.jni.PrivateKey;
 import wallet.core.jni.proto.Ripple;
 
 import java.math.BigDecimal;
-import java.util.*;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Getter
 @Service
@@ -200,8 +202,8 @@ public class RippledService {
         return false;
     }
 
-    public TxDetailsDTO getTransactionDetails(String txId, String address, String explorerUrl) {
-        TxDetailsDTO dto = new TxDetailsDTO();
+    public TransactionDetailsDTO getTransactionDetails(String txId, String address, String explorerUrl) {
+        TransactionDetailsDTO dto = new TransactionDetailsDTO();
 
         if (nodeService.isNodeAvailable(COIN_TYPE)) {
             try {
@@ -235,7 +237,7 @@ public class RippledService {
         return dto;
     }
 
-    public Map<String, TxDetailsDTO> getNodeTransactions(String address) {
+    public Map<String, TransactionDetailsDTO> getNodeTransactions(String address) {
         if (nodeService.isNodeAvailable(COIN_TYPE)) {
             try {
                 JSONObject param = new JSONObject();
@@ -265,8 +267,8 @@ public class RippledService {
         return Collections.emptyMap();
     }
 
-    public TxHistoryDTO getTransactionDetails(String address, Integer startIndex, Integer limit, List<TransactionRecord> transactionRecords, List<TransactionRecordWallet> transactionRecordWallets) {
-        return TransactionService.buildTxs(getNodeTransactions(address), startIndex, limit, transactionRecords, transactionRecordWallets);
+    public TransactionHistoryDTO getTransactionDetails(String address, Integer startIndex, Integer limit, List<TransactionRecord> transactionRecords, List<TransactionDetailsDTO> details) {
+        return TransactionService.buildTxs(getNodeTransactions(address), startIndex, limit, transactionRecords, details);
     }
 
     public String sign(String fromAddress, String toAddress, BigDecimal amount, BigDecimal fee) {
@@ -302,23 +304,32 @@ public class RippledService {
         return null;
     }
 
-    private Map<String, TxDetailsDTO> collectNodeTxs(JSONArray array, String address) {
-        Map<String, TxDetailsDTO> map = new HashMap<>();
+    private Map<String, TransactionDetailsDTO> collectNodeTxs(JSONArray array, String address) {
+        Map<String, TransactionDetailsDTO> map = new HashMap<>();
 
         if (array != null && !array.isEmpty()) {
             for (int i = 0; i < array.size(); i++) {
-                JSONObject txs = array.getJSONObject(i);
-                TransactionStatus status = getStatus(txs.optJSONObject("meta").optString("TransactionResult"));
+                JSONObject objs = array.getJSONObject(i);
+                TransactionStatus status = getStatus(objs.optJSONObject("meta").optString("TransactionResult"));
 
-                JSONObject tx = txs.optJSONObject("tx");
-                String txId = tx.optString("hash");
-                String fromAddress = tx.optString("Account");
-                String toAddress = tx.optString("Destination");
-                TransactionType type = TransactionType.getType(tx.optString("Account"), tx.optString("Destination"), address);
-                BigDecimal amount = Util.format(getAmount(tx.optString("Amount")), 6);
-                long timestamp = (tx.optLong("date") + 946684800L) * 1000;
+                JSONObject obj = objs.optJSONObject("tx");
+                String txId = obj.optString("hash");
+                String fromAddress = obj.optString("Account");
+                String toAddress = obj.optString("Destination");
+                TransactionType type = TransactionType.getType(obj.optString("Account"), obj.optString("Destination"), address);
+                BigDecimal amount = Util.format(getAmount(obj.optString("Amount")), 6);
+                long timestamp = (obj.optLong("date") + 946684800L) * 1000;
 
-                map.put(txId, new TxDetailsDTO(txId, amount, fromAddress, toAddress, type.getValue(), status.getValue(), timestamp));
+                TransactionDetailsDTO tx = new TransactionDetailsDTO();
+                tx.setTxId(txId);
+                tx.setType(type.getValue());
+                tx.setStatus(status.getValue());
+                tx.setCryptoAmount(amount);
+                tx.setFromAddress(fromAddress);
+                tx.setToAddress(toAddress);
+                tx.setTimestamp(timestamp);
+
+                map.put(txId, tx);
             }
         }
 

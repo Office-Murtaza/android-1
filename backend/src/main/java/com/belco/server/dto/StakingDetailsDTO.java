@@ -29,9 +29,9 @@ public class StakingDetailsDTO {
     private Long userId;
 
     private Integer status;
-    private BigDecimal amount;
-
+    private BigDecimal cryptoAmount;
     private Integer basePeriod;
+    private Integer annualPeriod;
     private Integer holdPeriod;
     private Integer annualPercent;
 

@@ -73,10 +73,6 @@ public class Util {
         return value.setScale(scale, RoundingMode.DOWN).stripTrailingZeros();
     }
 
-    public static BigDecimal convertPercentToDecimal(BigDecimal percent) {
-        return percent.divide(BigDecimal.valueOf(100));
-    }
-
     public static JSONObject insecureRequest(String path) {
         try {
             TrustManager[] trustAllCerts = new TrustManager[]{

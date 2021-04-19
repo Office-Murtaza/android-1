@@ -1,21 +1,20 @@
 package com.belco.server.service;
 
 import com.belco.server.dto.CoinDTO;
-import com.belco.server.dto.TxDetailsDTO;
-import com.belco.server.dto.TxSubmitDTO;
+import com.belco.server.dto.TransactionDTO;
+import com.belco.server.dto.TransactionDetailsDTO;
 import com.belco.server.entity.Coin;
 import com.belco.server.entity.CoinPath;
-import com.belco.server.entity.TransactionRecordWallet;
 import com.belco.server.model.TransactionStatus;
 import com.belco.server.model.TransactionType;
 import com.belco.server.repository.CoinPathRep;
-import com.belco.server.repository.TransactionRecordWalletRep;
 import com.belco.server.util.Constant;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Service;
 import wallet.core.jni.*;
 
@@ -37,8 +36,8 @@ public class WalletService {
     }
 
     private final CoinPathRep coinPathRep;
-    private final TransactionRecordWalletRep transactionRecordWalletRep;
     private final GethService gethService;
+    private final MongoTemplate mongo;
 
     private final Map<CoinType, CoinDTO> coinsMap = new HashMap<>();
 
@@ -46,10 +45,10 @@ public class WalletService {
     private String seed;
     private HDWallet wallet = null;
 
-    public WalletService(CoinPathRep coinPathRep, TransactionRecordWalletRep transactionRecordWalletRep, @Lazy GethService gethService) {
+    public WalletService(CoinPathRep coinPathRep, @Lazy GethService gethService, MongoTemplate mongo) {
         this.coinPathRep = coinPathRep;
-        this.transactionRecordWalletRep = transactionRecordWalletRep;
         this.gethService = gethService;
+        this.mongo = mongo;
     }
 
     @PostConstruct
@@ -167,7 +166,7 @@ public class WalletService {
 
             BigDecimal pendingSum = coin.getNodeTransactions(address).values().stream()
                     .filter(e -> e.getType() == TransactionType.WITHDRAW.getValue() && e.getStatus() == TransactionStatus.PENDING.getValue())
-                    .map(TxDetailsDTO::getCryptoAmount)
+                    .map(TransactionDetailsDTO::getCryptoAmount)
                     .reduce(BigDecimal.ZERO, BigDecimal::add);
 
             pendingSum = pendingSum.add(coin.getTxFee());
@@ -218,7 +217,7 @@ public class WalletService {
             if (balance.compareTo(amount) >= 0 && amount.compareTo(BigDecimal.ZERO) > 0) {
                 String hex = coin.sign(fromAddress, toAddress, amount);
 
-                TxSubmitDTO dto = new TxSubmitDTO();
+                TransactionDTO dto = new TransactionDTO();
                 dto.setHex(hex);
                 dto.setFromAddress(fromAddress);
                 dto.setToAddress(toAddress);
@@ -227,20 +226,22 @@ public class WalletService {
                 String txId = coin.submitTransaction(dto);
 
                 if (StringUtils.isNotBlank(txId)) {
-                    TransactionRecordWallet wallet = new TransactionRecordWallet();
-                    wallet.setCoin(coin.getCoinEntity());
-                    wallet.setAmount(amount);
+                    TransactionDetailsDTO tx = new TransactionDetailsDTO();
+                    tx.setTxId(txId);
+                    tx.setCoin(coin.name());
+                    tx.setCryptoAmount(amount);
+                    tx.setFromAddress(fromAddress);
+                    tx.setToAddress(toAddress);
 
                     if (isServerAddress(coin.getCoinType(), fromAddress)) {
-                        wallet.setType(TransactionType.SELL.getValue());
+                        tx.setType(TransactionType.SELL.getValue());
                     } else {
-                        wallet.setType(TransactionType.MOVE.getValue());
+                        tx.setType(TransactionType.MOVE.getValue());
                     }
 
-                    wallet.setTxId(txId);
-                    wallet.setStatus(coin.getTransactionDetails(txId, StringUtils.EMPTY).getStatus());
+                    tx.setStatus(coin.getTransactionDetails(txId, StringUtils.EMPTY).getStatus());
 
-                    transactionRecordWalletRep.save(wallet);
+                    mongo.save(tx);
 
                     return txId;
                 }

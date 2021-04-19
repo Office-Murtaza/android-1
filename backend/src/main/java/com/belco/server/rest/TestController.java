@@ -1,7 +1,7 @@
 package com.belco.server.rest;
 
 import com.belco.server.dto.NotificationDTO;
-import com.belco.server.dto.TxSubmitDTO;
+import com.belco.server.dto.TransactionDTO;
 import com.belco.server.model.Response;
 import com.belco.server.repository.CoinRep;
 import com.belco.server.service.*;
@@ -121,7 +121,7 @@ public class TestController {
 
     @GetMapping("/coin/{coin}/submit")
     public Response submit(@PathVariable CoinService.CoinEnum coin, @RequestParam String fromAddress, @RequestParam String toAddress, @RequestParam BigDecimal amount, @RequestParam String hex) {
-        TxSubmitDTO dto = new TxSubmitDTO();
+        TransactionDTO dto = new TransactionDTO();
         dto.setFromAddress(fromAddress);
         dto.setToAddress(toAddress);
         dto.setCryptoAmount(amount);

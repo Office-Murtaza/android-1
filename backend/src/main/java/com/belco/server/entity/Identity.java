@@ -104,7 +104,4 @@ public class Identity extends BaseEntity {
 
     @OneToMany(mappedBy = "identity")
     private List<TransactionRecord> transactionRecords;
-
-    @OneToMany(mappedBy = "identity")
-    private List<TransactionRecordWallet> transactionRecordWallets;
 }

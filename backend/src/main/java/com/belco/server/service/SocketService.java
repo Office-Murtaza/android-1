@@ -17,7 +17,7 @@ public class SocketService {
         simpMessagingTemplate.convertAndSendToUser(phone, "/queue/balance", dto);
     }
 
-    public void pushTransaction(String phone, TxDetailsDTO dto) {
+    public void pushTransaction(String phone, TransactionDetailsDTO dto) {
         simpMessagingTemplate.convertAndSendToUser(phone, "/queue/transaction", dto);
     }
 

@@ -14,8 +14,8 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class TxHistoryDTO {
+public class TransactionHistoryDTO {
 
     private Integer total = 0;
-    private List<TxDetailsDTO> transactions = new ArrayList<>();
+    private List<TransactionDetailsDTO> transactions = new ArrayList<>();
 }

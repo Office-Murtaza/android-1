@@ -1,10 +1,9 @@
 package com.belco.server.service;
 
 import com.belco.server.dto.CurrentBlockDTO;
-import com.belco.server.dto.TxDetailsDTO;
-import com.belco.server.dto.TxHistoryDTO;
+import com.belco.server.dto.TransactionDetailsDTO;
+import com.belco.server.dto.TransactionHistoryDTO;
 import com.belco.server.entity.TransactionRecord;
-import com.belco.server.entity.TransactionRecordWallet;
 import com.belco.server.model.TransactionStatus;
 import com.belco.server.model.TransactionType;
 import com.belco.server.util.Base58;
@@ -23,7 +22,10 @@ import wallet.core.jni.PrivateKey;
 import wallet.core.jni.proto.Tron;
 
 import java.math.BigDecimal;
-import java.util.*;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Getter
 @Service
@@ -108,8 +110,8 @@ public class TrongridService {
         return false;
     }
 
-    public TxDetailsDTO getTransactionDetails(String txId, String address, String explorerUrl) {
-        TxDetailsDTO dto = new TxDetailsDTO();
+    public TransactionDetailsDTO getTransactionDetails(String txId, String address, String explorerUrl) {
+        TransactionDetailsDTO dto = new TransactionDetailsDTO();
 
         if (nodeService.isNodeAvailable(COIN_TYPE)) {
             try {
@@ -141,7 +143,7 @@ public class TrongridService {
         return dto;
     }
 
-    public Map<String, TxDetailsDTO> getNodeTransactions(String address) {
+    public Map<String, TransactionDetailsDTO> getNodeTransactions(String address) {
         if (nodeService.isNodeAvailable(COIN_TYPE)) {
             try {
                 JSONObject res = rest.getForObject(nodeService.getNodeUrl(COIN_TYPE) + "/v1/accounts/" + address + "/transactions?limit=200&search_internal=true", JSONObject.class);
@@ -160,8 +162,8 @@ public class TrongridService {
         return Collections.emptyMap();
     }
 
-    public TxHistoryDTO getTransactionHistory(String address, Integer startIndex, Integer limit, List<TransactionRecord> transactionRecords, List<TransactionRecordWallet> transactionRecordWallets) {
-        return TransactionService.buildTxs(getNodeTransactions(address), startIndex, limit, transactionRecords, transactionRecordWallets);
+    public TransactionHistoryDTO getTransactionHistory(String address, Integer startIndex, Integer limit, List<TransactionRecord> transactionRecords, List<TransactionDetailsDTO> details) {
+        return TransactionService.buildTxs(getNodeTransactions(address), startIndex, limit, transactionRecords, details);
     }
 
     public CurrentBlockDTO getCurrentBlock() {
@@ -230,13 +232,13 @@ public class TrongridService {
         return null;
     }
 
-    private Map<String, TxDetailsDTO> collectNodeTxs(JSONArray array, String address) {
-        Map<String, TxDetailsDTO> map = new HashMap<>();
+    private Map<String, TransactionDetailsDTO> collectNodeTxs(JSONArray array, String address) {
+        Map<String, TransactionDetailsDTO> map = new HashMap<>();
 
         if (array != null && !array.isEmpty()) {
             for (int i = 0; i < array.size(); i++) {
-                JSONObject tx = array.getJSONObject(i);
-                JSONObject row = tx.optJSONObject("raw_data");
+                JSONObject t = array.getJSONObject(i);
+                JSONObject row = t.optJSONObject("raw_data");
 
                 if (row.containsKey("contract")) {
                     row = row.optJSONArray("contract").getJSONObject(0).getJSONObject("parameter").optJSONObject("value");
@@ -248,16 +250,25 @@ public class TrongridService {
                     continue;
                 }
 
-                String txId = tx.optString("txID");
+                String txId = t.optString("txID");
                 String fromAddress = Base58.toBase58(row.optString("owner_address"));
                 String toAddress = Base58.toBase58(row.optString("to_address"));
-                String contractRet = tx.optJSONArray("ret").getJSONObject(0).optString("contractRet");
+                String contractRet = t.optJSONArray("ret").getJSONObject(0).optString("contractRet");
                 TransactionType type = TransactionType.getType(fromAddress, toAddress, address);
                 BigDecimal amount = Util.format(getAmount(row.optLong("amount")), 6);
                 TransactionStatus status = getStatus(contractRet);
-                long timestamp = tx.optJSONObject("raw_data").optLong("timestamp");
+                long timestamp = t.optJSONObject("raw_data").optLong("timestamp");
 
-                map.put(txId, new TxDetailsDTO(txId, amount, fromAddress, toAddress, type.getValue(), status.getValue(), timestamp));
+                TransactionDetailsDTO tx = new TransactionDetailsDTO();
+                tx.setTxId(txId);
+                tx.setType(type.getValue());
+                tx.setStatus(status.getValue());
+                tx.setCryptoAmount(amount);
+                tx.setFromAddress(fromAddress);
+                tx.setToAddress(toAddress);
+                tx.setTimestamp(timestamp);
+
+                map.put(txId, tx);
             }
         }
 

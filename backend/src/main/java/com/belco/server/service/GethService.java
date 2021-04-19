@@ -1,10 +1,9 @@
 package com.belco.server.service;
 
-import com.belco.server.dto.TxDetailsDTO;
-import com.belco.server.dto.TxHistoryDTO;
-import com.belco.server.dto.TxSubmitDTO;
+import com.belco.server.dto.TransactionDTO;
+import com.belco.server.dto.TransactionDetailsDTO;
+import com.belco.server.dto.TransactionHistoryDTO;
 import com.belco.server.entity.TransactionRecord;
-import com.belco.server.entity.TransactionRecordWallet;
 import com.belco.server.model.TransactionStatus;
 import com.belco.server.model.TransactionType;
 import com.belco.server.token.CATM;
@@ -75,7 +74,7 @@ public class GethService {
     private static CacheService cacheService;
     private static WalletService walletService;
     private static NodeService nodeService;
-    private static PlatformService platformService;
+    private static SettingsService settingsService;
 
     private int stakingBasePeriod;
     private int stakingHoldPeriod;
@@ -88,7 +87,7 @@ public class GethService {
                        CacheService cacheService,
                        WalletService walletService,
                        NodeService nodeService,
-                       PlatformService platformService) {
+                       SettingsService settingsService) {
 
         GethService.catmContractAddress = catmContractAddress;
         GethService.usdcContractAddress = usdcContractAddress;
@@ -97,7 +96,7 @@ public class GethService {
         GethService.walletService = walletService;
         GethService.nodeService = nodeService;
         GethService.nodeService = nodeService;
-        GethService.platformService = platformService;
+        GethService.settingsService = settingsService;
 
         init();
     }
@@ -108,11 +107,11 @@ public class GethService {
 
             catm = CATM.load(catmContractAddress, web3,
                     Credentials.create(Numeric.toHexString(walletService.getCoinsMap().get(CoinType.ETHEREUM).getPrivateKey().data())),
-                    new StaticGasProvider(BigInteger.valueOf(getFastGasPrice()), BigInteger.valueOf(platformService.getInitialGasLimits().get(ERC20.CATM.name()))));
+                    new StaticGasProvider(BigInteger.valueOf(getFastGasPrice()), BigInteger.valueOf(settingsService.getInitialGasLimits().get(ERC20.CATM.name()))));
 
             usdc = USDC.load(usdcContractAddress, web3,
                     Credentials.create(Numeric.toHexString(walletService.getCoinsMap().get(CoinType.ETHEREUM).getPrivateKey().data())),
-                    new StaticGasProvider(BigInteger.valueOf(getFastGasPrice()), BigInteger.valueOf(platformService.getInitialGasLimits().get(ERC20.USDC.name()))));
+                    new StaticGasProvider(BigInteger.valueOf(getFastGasPrice()), BigInteger.valueOf(settingsService.getInitialGasLimits().get(ERC20.USDC.name()))));
         } catch (Exception e) {
             if (nodeService.switchToReserveNode(ETHEREUM)) {
                 init();
@@ -128,7 +127,7 @@ public class GethService {
         return Long.valueOf(cacheService.getEtherscanGasPrice().optJSONObject("result").optString("FastGasPrice")) * 1000_000_000;
     }
 
-    public static String submitTransaction(ERC20 token, TxSubmitDTO dto) {
+    public static String submitTransaction(ERC20 token, TransactionDTO dto) {
         if (nodeService.isNodeAvailable(ETHEREUM)) {
             try {
                 String txId = web3.ethSendRawTransaction(dto.getHex()).send().getTransactionHash();
@@ -151,16 +150,16 @@ public class GethService {
         return null;
     }
 
-    private static TxHistoryDTO buildTransactionList(String coll, BasicDBObject query, String address, Integer startIndex, Integer limit, List<TransactionRecord> transactionRecords, List<TransactionRecordWallet> transactionRecordWallets) {
-        return TransactionService.buildTxs(getNodeTransactionsFromDB(coll, query, address), startIndex, limit, transactionRecords, transactionRecordWallets);
+    private static TransactionHistoryDTO buildTransactionList(String coll, BasicDBObject query, String address, Integer startIndex, Integer limit, List<TransactionRecord> transactionRecords, List<TransactionDetailsDTO> details) {
+        return TransactionService.buildTxs(getNodeTransactionsFromDB(coll, query, address), startIndex, limit, transactionRecords, details);
     }
 
-    private static Map<String, TxDetailsDTO> getNodeTransactionsFromDB(String coll, BasicDBObject query, String address) {
-        Map<String, TxDetailsDTO> map = new HashMap<>();
+    private static Map<String, TransactionDetailsDTO> getNodeTransactionsFromDB(String coll, BasicDBObject query, String address) {
+        Map<String, TransactionDetailsDTO> map = new HashMap<>();
 
         mongo.getCollection(coll).find(query).into(new ArrayList<>()).stream().forEach(d -> {
             try {
-                TxDetailsDTO dto = new TxDetailsDTO();
+                TransactionDetailsDTO dto = new TransactionDetailsDTO();
 
                 String fromAddress = d.getString("fromAddress");
                 String toAddress = d.getString("toAddress");
@@ -195,8 +194,8 @@ public class GethService {
         return BigDecimal.ZERO;
     }
 
-    private static TxDetailsDTO getTransactionFromDB(String coll, BasicDBObject query, String address, String explorerUrl) {
-        TxDetailsDTO dto = new TxDetailsDTO();
+    private static TransactionDetailsDTO getTransactionFromDB(String coll, BasicDBObject query, String address, String explorerUrl) {
+        TransactionDetailsDTO dto = new TransactionDetailsDTO();
 
         try {
             Document txDoc = mongo.getCollection(coll).find(query).first();
@@ -354,7 +353,7 @@ public class GethService {
         ERC20 token = getTokenByContractAddress(toAddress);
 
         if (token != null) {
-            return platformService.getInitialGasLimits().get(token.name());
+            return settingsService.getInitialGasLimits().get(token.name());
         } else if (nodeService.isNodeAvailable(ETHEREUM)) {
             try {
                 return web3.ethEstimateGas(org.web3j.protocol.core.methods.request.Transaction.createEthCallTransaction(null, toAddress, null)).send().getAmountUsed().longValue() * 2;
@@ -460,7 +459,7 @@ public class GethService {
         return null;
     }
 
-    public String submitTransaction(TxSubmitDTO dto) {
+    public String submitTransaction(TransactionDTO dto) {
         if (nodeService.isNodeAvailable(ETHEREUM)) {
             try {
                 String txId = web3.ethSendRawTransaction(dto.getHex()).send().getTransactionHash();
@@ -500,33 +499,33 @@ public class GethService {
         mongo.getCollection(ADDRESS_COLL).findOneAndUpdate(new BasicDBObject("address", address.toLowerCase()), new BasicDBObject("$set", new BasicDBObject("address", address.toLowerCase()).append("timestamp", System.currentTimeMillis())), new FindOneAndUpdateOptions().upsert(true));
     }
 
-    public TxDetailsDTO getTransactionDetails(String txId, String address, String explorerUrl) {
+    public TransactionDetailsDTO getTransactionDetails(String txId, String address, String explorerUrl) {
         return getTransactionFromDB(ETH_TX_COLL, new BasicDBObject("txId", txId.toLowerCase()), address.toLowerCase(), explorerUrl);
     }
 
-    public TxDetailsDTO getTransactionDetails(ERC20 token, String txId, String address, String explorerUrl) {
+    public TransactionDetailsDTO getTransactionDetails(ERC20 token, String txId, String address, String explorerUrl) {
         return getTransactionFromDB(TOKEN_TX_COLL, new BasicDBObject("txId", txId.toLowerCase()).append("token", token.name()), address.toLowerCase(), explorerUrl);
     }
 
-    public TxHistoryDTO getTransactionHistory(String address, Integer startIndex, Integer limit, List<TransactionRecord> transactionRecords, List<TransactionRecordWallet> transactionRecordWallets) {
+    public TransactionHistoryDTO getTransactionHistory(String address, Integer startIndex, Integer limit, List<TransactionRecord> transactionRecords, List<TransactionDetailsDTO> details) {
         BasicDBObject query = buildQuery(address);
 
-        return buildTransactionList(ETH_TX_COLL, query, address, startIndex, limit, transactionRecords, transactionRecordWallets);
+        return buildTransactionList(ETH_TX_COLL, query, address, startIndex, limit, transactionRecords, details);
     }
 
-    public TxHistoryDTO getTransactionHistory(ERC20 token, String address, Integer startIndex, Integer limit, List<TransactionRecord> transactionRecords, List<TransactionRecordWallet> transactionRecordWallets) {
+    public TransactionHistoryDTO getTransactionHistory(ERC20 token, String address, Integer startIndex, Integer limit, List<TransactionRecord> transactionRecords, List<TransactionDetailsDTO> details) {
         BasicDBObject query = buildQuery(token, address);
 
-        return buildTransactionList(TOKEN_TX_COLL, query, address, startIndex, limit, transactionRecords, transactionRecordWallets);
+        return buildTransactionList(TOKEN_TX_COLL, query, address, startIndex, limit, transactionRecords, details);
     }
 
-    public Map<String, TxDetailsDTO> getNodeTransactions(String address) {
+    public Map<String, TransactionDetailsDTO> getNodeTransactions(String address) {
         BasicDBObject query = buildQuery(address);
 
         return getNodeTransactionsFromDB(ETH_TX_COLL, query, address);
     }
 
-    public Map<String, TxDetailsDTO> getNodeTransactions(ERC20 token, String address) {
+    public Map<String, TransactionDetailsDTO> getNodeTransactions(ERC20 token, String address) {
         BasicDBObject query = buildQuery(token, address);
 
         return getNodeTransactionsFromDB(ETH_TX_COLL, query, address);

@@ -1,6 +1,7 @@
 package com.belco.server.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -14,11 +15,15 @@ import java.math.BigDecimal;
 @Setter
 @Getter
 @NoArgsConstructor
+@AllArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class TxDetailsDTO {
+public class TransactionDetailsDTO {
 
     @Id
     private String txId;
+
+    private Long txDBId;
+    private String link;
 
     @Indexed
     private String coin;
@@ -26,8 +31,7 @@ public class TxDetailsDTO {
     @Indexed
     private Long userId;
 
-    private Long txDBId;
-    private String link;
+
     private BigDecimal cryptoAmount;
     private BigDecimal cryptoFee;
 
@@ -57,30 +61,4 @@ public class TxDetailsDTO {
     private Integer processed;
 
     private long timestamp;
-
-    public TxDetailsDTO(String txId, BigDecimal cryptoAmount, Integer type, Integer status, long timestamp) {
-        this.txId = txId;
-        this.cryptoAmount = cryptoAmount;
-        this.type = type;
-        this.status = status;
-        this.timestamp = timestamp;
-    }
-
-    public TxDetailsDTO(Long txDBId, BigDecimal cryptoAmount, Integer type, Integer status, long timestamp) {
-        this.txDBId = txDBId;
-        this.cryptoAmount = cryptoAmount;
-        this.type = type;
-        this.status = status;
-        this.timestamp = timestamp;
-    }
-
-    public TxDetailsDTO(String txId, BigDecimal cryptoAmount, String fromAddress, String toAddress, Integer type, Integer status, long timestamp) {
-        this.txId = txId;
-        this.cryptoAmount = cryptoAmount;
-        this.fromAddress = fromAddress;
-        this.toAddress = toAddress;
-        this.type = type;
-        this.status = status;
-        this.timestamp = timestamp;
-    }
 }

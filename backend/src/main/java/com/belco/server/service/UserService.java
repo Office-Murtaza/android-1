@@ -11,7 +11,6 @@ import com.belco.server.model.VerificationTier;
 import com.belco.server.repository.*;
 import com.belco.server.util.Util;
 import org.apache.commons.lang.RandomStringUtils;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -20,7 +19,6 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
 import javax.transaction.Transactional;
 import java.math.BigDecimal;
 import java.util.*;
@@ -29,8 +27,6 @@ import java.util.stream.Collectors;
 @Service
 public class UserService implements UserDetailsService {
 
-    private static final String SELFIE_PREFIX = "selfie_";
-    private static final String ID_CARD_PREFIX = "id_card_";
     private static final String MIME_TYPE = "jpg";
 
     private static final BigDecimal DAILY_LIMIT = BigDecimal.valueOf(900);
@@ -53,8 +49,9 @@ public class UserService implements UserDetailsService {
     private final IdentityPieceSelfieRep identityPieceSelfieRep;
     private final ReferralRep referralRep;
     private final CoinService coinService;
+    private final TransactionService transactionService;
 
-    public UserService(UserRep userRep, @Lazy PasswordEncoder passwordEncoder, IdentityRep identityRep, UserCoinRep userCoinRep, LimitRep limitRep, IdentityPieceRep identityPieceRep, IdentityPieceCellPhoneRep identityPieceCellPhoneRep, VerificationReviewRep verificationReviewRep, ReferralRep referralRep, IdentityPiecePersonalInfoRep identityPiecePersonalInfoRep, IdentityPieceDocumentRep identityPieceDocumentRep, IdentityPieceSelfieRep identityPieceSelfieRep, @Lazy CoinService coinService) {
+    public UserService(UserRep userRep, @Lazy PasswordEncoder passwordEncoder, IdentityRep identityRep, UserCoinRep userCoinRep, LimitRep limitRep, IdentityPieceRep identityPieceRep, IdentityPieceCellPhoneRep identityPieceCellPhoneRep, VerificationReviewRep verificationReviewRep, ReferralRep referralRep, IdentityPiecePersonalInfoRep identityPiecePersonalInfoRep, IdentityPieceDocumentRep identityPieceDocumentRep, IdentityPieceSelfieRep identityPieceSelfieRep, @Lazy CoinService coinService, @Lazy TransactionService transactionService) {
         this.userRep = userRep;
         this.passwordEncoder = passwordEncoder;
         this.identityRep = identityRep;
@@ -68,6 +65,7 @@ public class UserService implements UserDetailsService {
         this.identityPieceDocumentRep = identityPieceDocumentRep;
         this.identityPieceSelfieRep = identityPieceSelfieRep;
         this.coinService = coinService;
+        this.transactionService = transactionService;
     }
 
     @Transactional
@@ -100,6 +98,7 @@ public class UserService implements UserDetailsService {
         }
 
         coinService.addUserCoins(user, dto.getCoins());
+        transactionService.deliverPendingTransfers(dto.getPhone());
 
         return user;
     }

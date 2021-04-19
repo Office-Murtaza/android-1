@@ -13,7 +13,7 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class TxSubmitDTO {
+public class TransactionDTO {
 
     private String hex;
     private Integer type;

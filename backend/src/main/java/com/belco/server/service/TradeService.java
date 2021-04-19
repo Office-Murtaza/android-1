@@ -26,13 +26,15 @@ public class TradeService {
     private final UserService userService;
     private final NotificationService notificationService;
     private final SocketService socketService;
+    private final SettingsService settingsService;
     private final MongoTemplate mongo;
 
-    public TradeService(UserCoinRep userCoinRep, UserService userService, NotificationService notificationService, SocketService socketService, MongoTemplate mongo) {
+    public TradeService(UserCoinRep userCoinRep, UserService userService, NotificationService notificationService, SocketService socketService, SettingsService settingsService, MongoTemplate mongo) {
         this.userCoinRep = userCoinRep;
         this.userService = userService;
         this.notificationService = notificationService;
         this.socketService = socketService;
+        this.settingsService = settingsService;
         this.mongo = mongo;
     }
 
@@ -90,10 +92,11 @@ public class TradeService {
             trade.setTimestamp(System.currentTimeMillis());
             trade = mongo.save(trade);
 
-            //redisTemplate.opsForHash().put(REDIS_TRADE, trade.getId(), trade);
+            //TODO add trade to Redis
+
             socketService.pushTrade(trade);
 
-            return Response.ok("id", trade.getId());
+            return Response.ok(trade);
         } catch (Exception e) {
             e.printStackTrace();
             return Response.serverError();
@@ -123,10 +126,11 @@ public class TradeService {
             trade.setTerms(dto.getTerms());
             trade = mongo.save(trade);
 
-            //redisTemplate.opsForHash().put(REDIS_TRADE, trade.getId(), trade);
+            //TODO add trade to Redis
+
             socketService.pushTrade(trade);
 
-            return Response.ok(true);
+            return Response.ok(trade);
         } catch (Exception e) {
             e.printStackTrace();
             return Response.serverError();
@@ -150,10 +154,11 @@ public class TradeService {
             trade.setStatus(TradeStatus.CANCELED.getValue());
             trade = mongo.save(trade);
 
-            //redisTemplate.opsForHash().delete(REDIS_TRADE, tradeId);
+            //TODO remove trade from Redis
+
             socketService.pushTrade(trade);
 
-            return Response.ok(true);
+            return Response.ok(trade);
         } catch (Exception e) {
             e.printStackTrace();
             return Response.serverError();
@@ -185,7 +190,8 @@ public class TradeService {
             trade.setOpenOrders(trade.getOpenOrders() + 1);
             trade = mongo.save(trade);
 
-            //redisTemplate.opsForHash().put(REDIS_TRADE, trade.getId(), trade);
+            //TODO add trade to Redis
+
             socketService.pushTrade(trade);
 
             OrderDetailsDTO order = new OrderDetailsDTO();
@@ -213,13 +219,12 @@ public class TradeService {
             order.setTimestamp(System.currentTimeMillis());
             order = mongo.save(order);
 
-            //redisTemplate.opsForHash().put(REDIS_ORDER, order.getId(), order);
-            socketService.pushOrder(maker.getPhone(), order);
-            socketService.pushOrder(taker.getPhone(), order);
+            //TODO add order to Redis
 
+            socketService.pushOrder(maker.getPhone(), order);
             notificationService.pushMessage("P2P Trade", "New Order was canceled", maker.getNotificationsToken());
 
-            return Response.ok("id", order.getId());
+            return Response.ok(order);
         } catch (Exception e) {
             e.printStackTrace();
             return Response.serverError();
@@ -234,7 +239,6 @@ public class TradeService {
             User maker = userService.findById(order.getMakerUserId());
             User taker = userService.findById(order.getTakerUserId());
 
-            //rate the trade
             if (dto.getRate() != null) {
                 order.setMakerRate(dto.getRate());
 
@@ -245,12 +249,14 @@ public class TradeService {
                 }
             } else if (dto.getStatus() != null) {
                 if (dto.getStatus() == OrderStatus.RELEASED || dto.getStatus() == OrderStatus.SOLVED) {
+                    BigDecimal multiplier = BigDecimal.ONE.subtract(settingsService.getPlatformTradeFee().divide(BigDecimal.valueOf(100)));
+
                     if (trade.getType() == TradeType.BUY.getValue()) {
                         UserCoin userCoin = maker.getUserCoin(order.getCoin());
-                        userCoin.setReservedBalance(userCoin.getReservedBalance().add(order.getCryptoAmount()).multiply(new BigDecimal("0.98")).stripTrailingZeros());
+                        userCoin.setReservedBalance(userCoin.getReservedBalance().add(order.getCryptoAmount()).multiply(multiplier).stripTrailingZeros());
                     } else if (trade.getType() == TradeType.SELL.getValue()) {
                         UserCoin userCoin = taker.getUserCoin(order.getCoin());
-                        userCoin.setReservedBalance(userCoin.getReservedBalance().add(order.getCryptoAmount()).multiply(new BigDecimal("0.98")).stripTrailingZeros());
+                        userCoin.setReservedBalance(userCoin.getReservedBalance().add(order.getCryptoAmount()).multiply(multiplier).stripTrailingZeros());
                     }
                 }
 
@@ -258,7 +264,8 @@ public class TradeService {
                     trade.setOpenOrders(trade.getOpenOrders() - 1);
                     trade = mongo.save(trade);
 
-                    //redisTemplate.opsForHash().put(REDIS_TRADE, trade.getId(), trade);
+                    //TODO add trade to Redis
+
                     socketService.pushTrade(trade);
                 }
 
@@ -267,17 +274,17 @@ public class TradeService {
 
             order = mongo.save(order);
 
-            //redisTemplate.opsForHash().put(REDIS_ORDER, order.getId(), order);
-            socketService.pushOrder(maker.getPhone(), order);
-            socketService.pushOrder(taker.getPhone(), order);
+            //TODO add order to Redis
 
             if (userId.equals(maker.getId())) {
+                socketService.pushOrder(taker.getPhone(), order);
                 notificationService.pushMessage("P2P Trade", "Order was updated", taker.getNotificationsToken());
             } else {
+                socketService.pushOrder(maker.getPhone(), order);
                 notificationService.pushMessage("P2P Trade", "Order was updated", maker.getNotificationsToken());
             }
 
-            return Response.ok(true);
+            return Response.ok(order);
         } catch (Exception e) {
             e.printStackTrace();
             return Response.serverError();
@@ -302,23 +309,24 @@ public class TradeService {
             trade.setOpenOrders(trade.getOpenOrders() - 1);
             trade = mongo.save(trade);
 
-            //redisTemplate.opsForHash().put(REDIS_TRADE, trade.getId(), trade);
+            //TODO add trade to Redis
+
             socketService.pushTrade(trade);
 
             order.setStatus(OrderStatus.CANCELED.getValue());
             order = mongo.save(order);
 
-            //redisTemplate.opsForHash().put(REDIS_ORDER, order.getId(), order);
-            socketService.pushOrder(maker.getPhone(), order);
-            socketService.pushOrder(taker.getPhone(), order);
+            //TODO remove order from Redis
 
             if (userId.equals(maker.getId())) {
+                socketService.pushOrder(taker.getPhone(), order);
                 notificationService.pushMessage("P2P Trade", "Order was canceled", taker.getNotificationsToken());
             } else {
+                socketService.pushOrder(maker.getPhone(), order);
                 notificationService.pushMessage("P2P Trade", "Order was canceled", maker.getNotificationsToken());
             }
 
-            return Response.ok(true);
+            return Response.ok(order);
         } catch (Exception e) {
             e.printStackTrace();
             return Response.serverError();
@@ -329,8 +337,8 @@ public class TradeService {
     public void processMessage(OrderMessageDTO message) {
         try {
             message = mongo.save(message);
-            //redisTemplate.opsForList().rightPush(REDIS_ORDER_CHAT + message.getFromUserId(), message);
-            //redisTemplate.opsForList().rightPush(REDIS_ORDER_CHAT + message.getToUserId(), message);
+
+            //TODO add message to Redis
 
             User user = userService.findById(message.getToUserId());
             socketService.pushChatMessage(user.getPhone(), message);

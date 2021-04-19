@@ -1,6 +1,6 @@
 package com.belco.server.rest;
 
-import com.belco.server.dto.TxDetailsDTO;
+import com.belco.server.dto.TransactionDetailsDTO;
 import com.belco.server.dto.WalletDTO;
 import com.belco.server.service.CoinService;
 import com.belco.server.service.WalletService;
@@ -109,7 +109,7 @@ public class WalletController {
     }
 
     @GetMapping("/coin/{coin}/transaction")
-    public ResponseEntity<TxDetailsDTO> getTransaction(@PathVariable CoinService.CoinEnum coin, @RequestParam String txId, @RequestParam String address, @RequestParam long timestamp, @RequestParam String signature) {
+    public ResponseEntity<TransactionDetailsDTO> getTransaction(@PathVariable CoinService.CoinEnum coin, @RequestParam String txId, @RequestParam String address, @RequestParam long timestamp, @RequestParam String signature) {
         String signature2 = Util.sign("transaction", coin.name(), timestamp, apiKey, apiSecret);
 
         if (enabled && !signature2.equals(signature)) {
@@ -131,14 +131,14 @@ public class WalletController {
     }
 
     @GetMapping("/coin/{coin}/transfer")
-    public ResponseEntity<TxDetailsDTO> transfer(@PathVariable CoinService.CoinEnum coin, @RequestParam String fromAddress, @RequestParam String toAddress, @RequestParam BigDecimal amount, @RequestParam long timestamp, @RequestParam String signature) {
+    public ResponseEntity<TransactionDetailsDTO> transfer(@PathVariable CoinService.CoinEnum coin, @RequestParam String fromAddress, @RequestParam String toAddress, @RequestParam BigDecimal amount, @RequestParam long timestamp, @RequestParam String signature) {
         String signature2 = Util.sign("transfer", coin.name(), timestamp, apiKey, apiSecret);
 
         if (enabled && !signature2.equals(signature)) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
 
-        TxDetailsDTO dto = new TxDetailsDTO();
+        TransactionDetailsDTO dto = new TransactionDetailsDTO();
         dto.setTxId(walletService.transfer(coin, fromAddress, toAddress, amount));
 
         return ResponseEntity.ok(dto);
