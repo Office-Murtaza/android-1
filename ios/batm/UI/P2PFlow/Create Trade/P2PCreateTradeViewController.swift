@@ -4,11 +4,30 @@ import RxSwift
 import SnapKit
 import MaterialComponents
 
+struct P2PCreateTradeDataModel {
+    let type: Int
+    let coin: String
+    let price: Double
+    let minLimit: Int
+    let maxLimit: Int
+    let paymentMethods: String
+    let terms: String
+}
+
+protocol P2PCreateTradeViewControllerDelegate: class {
+   func didSelectedSubmit(data: P2PCreateTradeDataModel)
+}
+
 class P2PCreateTradeViewController: UIViewController {
+
+    var selectedType: P2PSellBuyViewType = .buy
+    var minRange: Int?
+    var maxRange: Int?
 
     private var balance: CoinsBalance
     private var payments: [TradePaymentMethods]
     let submitButton = MDCButton.submit
+    var delegate: P2PCreateTradeViewControllerDelegate?
     
     init(balance: CoinsBalance, payments: [TradePaymentMethods]) {
         self.balance = balance
@@ -28,9 +47,10 @@ class P2PCreateTradeViewController: UIViewController {
         return stack
     }()
     
-    
     private let tradeTypeHeader = P2PSectionHeaderView()
+    
     private let selectTradeTypeView = P2PCreateTradeSellBuyView()
+    
     private let tradeSeparator = P2PSeparatorView()
     private let coinExchangeView = P2PSelectCoinView()
     private let coinExchangeSeparator = P2PSeparatorView()
@@ -60,6 +80,12 @@ class P2PCreateTradeViewController: UIViewController {
         setupLayout()
         bind()
         tradeTypeHeader.update(title: "Trade Type")
+        addNotificationObserver()
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        removeNotificationObserver()
     }
     
     private func setupUI() {
@@ -72,13 +98,18 @@ class P2PCreateTradeViewController: UIViewController {
         termsTextFieldController = ThemedTextInputControllerOutlinedTextArea(textInput: termsTextField)
         termsTextFieldController?.placeholderText = "Type your terms or comments"
         termsTextFieldController?.minimumLines = 3
-        
-        
+        submitButton.addTarget(self, action: #selector(createTrade), for: .touchUpInside)
+        selectTradeTypeView.delegate = self
         view.addSubviews([
             scrollView,
         ])
         
         scrollView.addSubview(stackView)
+        scrollView.keyboardDismissMode = .onDrag
+        
+        let tapRecognizer = UITapGestureRecognizer(target: self, action: #selector(didTapView))
+        stackView.addGestureRecognizer(tapRecognizer)
+        
         
         stackView.addArrangedSubviews([
             tradeTypeHeader,
@@ -100,12 +131,63 @@ class P2PCreateTradeViewController: UIViewController {
         
         coinExchangeView.configure(for: .bitcoin, coins: balance.coins.map { $0.type })
         
+        
         limitsView.selectedMinRange { [weak self] minRange in
-//            self?.minRange = minRange
+            self?.minRange = minRange
         } maxRange: { [weak self] maxRange in
-//            self?.maxRange = maxRange
+            self?.maxRange = maxRange
+        }
+        
+        
+        scrollView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 300, right: 0)
+    }
+    
+    private func addNotificationObserver() {
+        let notificationCenter = NotificationCenter.default
+        notificationCenter.addObserver(self, selector: #selector(adjustForKeyboard), name: UIResponder.keyboardWillHideNotification, object: nil)
+        notificationCenter.addObserver(self, selector: #selector(adjustForKeyboard), name: UIResponder.keyboardWillChangeFrameNotification, object: nil)
+    }
+    
+    private func removeNotificationObserver() {
+        NotificationCenter.default.removeObserver(self)
+    }
+    
+    @objc func adjustForKeyboard(notification: Notification) {
+        guard termsTextField.isFirstResponder == true else { return }
+        guard let keyboardValue = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue else { return }
+        let keyboardScreenEndFrame = keyboardValue.cgRectValue
+        let keyboardViewEndFrame = view.convert(keyboardScreenEndFrame, from: view.window)
+
+        if notification.name == UIResponder.keyboardWillHideNotification {
+            scrollView.contentInset = .zero
+        } else {
+            scrollView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: keyboardViewEndFrame.height - view.safeAreaInsets.bottom, right: 0)
+            let bottomOffset = CGPoint(x: 0, y: scrollView.contentSize.height - scrollView.frame.size.height + scrollView.contentInset.bottom);
+            scrollView.setContentOffset(bottomOffset, animated: true)
         }
 
+    }
+    
+    @objc private func didTapView() {
+        view.endEditing(true)
+    }
+    
+    @objc private func createTrade() {
+        let selectedPaymentTitles = paymentMethodsView.selectedTitles()
+        let methods = selectedPaymentTitles.compactMap{TradePaymentMethods(method: $0)?.rawValue}.map { String($0)}
+        let paymentMethods = methods.joined(separator: ",")
+        
+        let terms = termsTextField.text
+   
+        let data = P2PCreateTradeDataModel(type: selectedType.rawValue,
+                                coin: coinExchangeView.coinType?.code ?? "",
+                                price: Double(coinExchangeView.amountTextField.text ?? "") ?? 0 ,
+                                minLimit: minRange ?? 0,
+                                maxLimit: maxRange ?? 0,
+                                paymentMethods: paymentMethods,
+                                terms: termsTextField.text ?? "")
+
+        print("create data: \(data)")
     }
     
     private func setupLayout() {
@@ -246,5 +328,11 @@ class P2PCreateTradeViewController: UIViewController {
         }
         
         paymentMethodsView.update(tags: methods)
+    }
+}
+
+extension P2PCreateTradeViewController: P2PCreateTradeSellBuyViewDelegate {
+    func didSelectedType(_ type: P2PSellBuyViewType) {
+        selectedType = type
     }
 }

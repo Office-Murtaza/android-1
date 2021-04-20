@@ -1,9 +1,14 @@
 import UIKit
 
-class P2PCreateTradeSellBuyView: UIView {
+protocol P2PCreateTradeSellBuyViewDelegate: class {
+    func didSelectedType(_ type: P2PSellBuyViewType)
+}
 
+class P2PCreateTradeSellBuyView: UIView {
+    
     let buyView = P2PSellBuyView(radius: 16)
     let sellView = P2PSellBuyView(radius: 16)
+    var delegate: P2PCreateTradeSellBuyViewDelegate?
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -51,5 +56,6 @@ extension P2PCreateTradeSellBuyView: P2PSellBuyViewDelegate {
         buyView.setSelected(false)
         sellView.setSelected(false)
         view.setSelected(true)
+        delegate?.didSelectedType(view.currentType ?? .buy)
     }
 }

@@ -55,7 +55,6 @@ class P2PSelectCoinView: CoinExchangeSwapTextFieldView {
             $0.bottom.equalTo(amountTextField.snp.top)
             $0.top.equalToSuperview().offset(5)
             $0.right.equalToSuperview().offset(-15)
-//            $0.height.equalTo(25)
         }
         
         amountTextField.snp.makeConstraints {

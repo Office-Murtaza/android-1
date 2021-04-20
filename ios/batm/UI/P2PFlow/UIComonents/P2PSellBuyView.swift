@@ -4,8 +4,8 @@ protocol P2PSellBuyViewDelegate: class {
    func didTap(view: P2PSellBuyView)
 }
 
-enum P2PSellBuyViewType {
-    case sell
+enum P2PSellBuyViewType: Int {
+    case sell = 1
     case buy
     
     var backgroundColor: UIColor {
@@ -43,6 +43,10 @@ class P2PSellBuyView: UIView {
         didSet {
             setupRecognizer()
         }
+    }
+    
+    var currentType: P2PSellBuyViewType? {
+        return type
     }
     
     private var selected = false

@@ -232,6 +232,7 @@ extension CoinExchangeSwapTextFieldView: UIPickerViewDelegate {
     }
     
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+        coinType = coins[row]
         return didSelectPickerRow.accept(coins[row])
     }
 }
