@@ -468,7 +468,7 @@ struct KYCRequest: AuthorizedAPIRequest {
   
   let userId: Int
   
-  var path: String { return "/user/\(userId)/kyc-details" }
+  var path: String { return "/user/\(userId)/verification" }
   var method: HTTPMethod { return .get }
   var task: HTTPTask {
     return .requestPlain
@@ -481,22 +481,20 @@ struct SendVerificationRequest: AuthorizedAPIRequest {
   
   let userId: Int
   let userData: VerificationUserData
-  
-  var path: String { return "/user/\(userId)/kyc-submit" }
+  var path: String { return "/user/\(userId)/verification" }
   var method: HTTPMethod { return .post }
   var task: HTTPTask {
-    return .uploadMultipart([
-      MultipartFormData(provider: .data(userData.tierId.data(using: .utf8)!), name: "tierId"),
-      MultipartFormData(provider: .data(userData.idNumber.data(using: .utf8)!), name: "idNumber"),
-      MultipartFormData(provider: .data(userData.firstName.data(using: .utf8)!), name: "firstName"),
-      MultipartFormData(provider: .data(userData.lastName.data(using: .utf8)!), name: "lastName"),
-      MultipartFormData(provider: .data(userData.address.data(using: .utf8)!), name: "address"),
-      MultipartFormData(provider: .data(userData.country.data(using: .utf8)!), name: "country"),
-      MultipartFormData(provider: .data(userData.province.data(using: .utf8)!), name: "province"),
-      MultipartFormData(provider: .data(userData.city.data(using: .utf8)!), name: "city"),
-      MultipartFormData(provider: .data(userData.zipCode.data(using: .utf8)!), name: "zipCode"),
-      MultipartFormData(provider: .data(userData.scanData), name: "file", fileName: "id_scan.png", mimeType: "image/png"),
-    ])
+    return .requestParameters(parameters: ["tierId": userData.tierId, //file from Firebase storage
+                                           "idNumber": userData.idNumber, //tier #1
+                                           "firstName": userData.firstName, //tier #1
+                                           "lastName": userData.lastName,
+                                           "address": userData.address,
+                                           "city": userData.city,
+                                           "country": userData.country,
+                                           "province": userData.province,
+                                           "zipCode": userData.zipCode
+    
+    ], encoding: JSONEncoding.default)
   }
 }
 
@@ -507,14 +505,12 @@ struct SendVIPVerificationRequest: AuthorizedAPIRequest {
   let userId: Int
   let userData: VIPVerificationUserData
   
-  var path: String { return "/user/\(userId)/kyc-submit" }
+  var path: String { return "/user/\(userId)/verification" }
   var method: HTTPMethod { return .post }
   var task: HTTPTask {
-    return .uploadMultipart([
-      MultipartFormData(provider: .data(userData.tierId.data(using: .utf8)!), name: "tierId"),
-      MultipartFormData(provider: .data(userData.ssn.data(using: .utf8)!), name: "ssn"),
-      MultipartFormData(provider: .data(userData.selfieData), name: "file", fileName: "id_selfie.png", mimeType: "image/png"),
-    ])
+    return .requestParameters(parameters: ["tierId": userData.tierId,
+                                           "ssn": userData.ssn],
+                              encoding: JSONEncoding.default)
   }
 }
 

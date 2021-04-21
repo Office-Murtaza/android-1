@@ -2,7 +2,7 @@ import Foundation
 import RxSwift
 import RxFlow
 
-protocol SettingsFlowControllerDelegate: class {}
+protocol SettingsFlowControllerDelegate: AnyObject {}
 
 class SettingsFlowController: FlowController, FlowActivator {
   
@@ -21,8 +21,8 @@ extension SettingsFlowController: SettingsModuleDelegate {
     step.accept(SettingsFlow.Steps.security)
   }
   
-  func didSelectKYC(_ kyc: KYC) {
-    step.accept(SettingsFlow.Steps.kyc(kyc))
+  func didSelectKYC() {
+    step.accept(SettingsFlow.Steps.kyc)
   }
   
   func didSelectAbout() {
