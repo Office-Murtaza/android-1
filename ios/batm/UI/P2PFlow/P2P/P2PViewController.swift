@@ -76,7 +76,7 @@ class P2PViewController: ModuleViewController<P2PPresenter>, MDCTabBarDelegate {
     
     @objc func createTrade() {
         guard let balance = balance else { return }
-        let controller = P2PCreateTradeViewController(balance: balance, payments: TradePaymentMethods.allCases)
+        let controller = P2PCreateTradeViewController(balance: balance, payments: TradePaymentMethods.allCases, delegate: self)
         navigationController?.pushViewController(controller, animated: true)
     }
     
@@ -108,6 +108,10 @@ class P2PViewController: ModuleViewController<P2PPresenter>, MDCTabBarDelegate {
         presenter.balance.observeOn(MainScheduler()).subscribe { [unowned self] (balance) in
             self.balance = balance
         }.disposed(by: disposeBag)
+      
+      presenter.dismissTopController.asObservable().observeOn(MainScheduler()).filter{ $0 != false }.subscribe { [weak self] (event) in
+        self?.navigationController?.popViewController(animated: true)
+      }
     }
     
     override func setupLayout() {
@@ -132,6 +136,12 @@ class P2PViewController: ModuleViewController<P2PPresenter>, MDCTabBarDelegate {
             print(result)
             self?.prevIndex = item.tag
         }
+    }
+}
+
+extension P2PViewController: P2PCreateTradeViewControllerDelegate {
+    func didSelectedSubmit(data: P2PCreateTradeDataModel) {
+      presenter.didSelectedSubmit(data: data)
     }
 }
 

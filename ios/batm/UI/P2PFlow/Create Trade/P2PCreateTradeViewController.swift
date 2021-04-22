@@ -4,7 +4,7 @@ import RxSwift
 import SnapKit
 import MaterialComponents
 
-struct P2PCreateTradeDataModel {
+struct P2PCreateTradeDataModel: Encodable {
     let type: Int
     let coin: String
     let price: Double
@@ -12,6 +12,10 @@ struct P2PCreateTradeDataModel {
     let maxLimit: Int
     let paymentMethods: String
     let terms: String
+  
+  var dictionary: [String: Any] {
+        return (try? JSONSerialization.jsonObject(with: JSONEncoder().encode(self))) as? [String: Any] ?? [:]
+    }
 }
 
 protocol P2PCreateTradeViewControllerDelegate: class {
@@ -27,11 +31,12 @@ class P2PCreateTradeViewController: UIViewController {
     private var balance: CoinsBalance
     private var payments: [TradePaymentMethods]
     let submitButton = MDCButton.submit
-    var delegate: P2PCreateTradeViewControllerDelegate?
+    weak var delegate: P2PCreateTradeViewControllerDelegate?
     
-    init(balance: CoinsBalance, payments: [TradePaymentMethods]) {
+    init(balance: CoinsBalance, payments: [TradePaymentMethods], delegate: P2PCreateTradeViewControllerDelegate) {
         self.balance = balance
         self.payments = payments
+        self.delegate = delegate
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -177,8 +182,6 @@ class P2PCreateTradeViewController: UIViewController {
         let methods = selectedPaymentTitles.compactMap{TradePaymentMethods(method: $0)?.rawValue}.map { String($0)}
         let paymentMethods = methods.joined(separator: ",")
         
-        let terms = termsTextField.text
-   
         let data = P2PCreateTradeDataModel(type: selectedType.rawValue,
                                 coin: coinExchangeView.coinType?.code ?? "",
                                 price: Double(coinExchangeView.amountTextField.text ?? "") ?? 0 ,
@@ -187,7 +190,7 @@ class P2PCreateTradeViewController: UIViewController {
                                 paymentMethods: paymentMethods,
                                 terms: termsTextField.text ?? "")
 
-        print("create data: \(data)")
+        delegate?.didSelectedSubmit(data: data)
     }
     
     private func setupLayout() {
