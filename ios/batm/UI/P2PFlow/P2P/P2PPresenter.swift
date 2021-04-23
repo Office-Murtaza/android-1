@@ -12,7 +12,8 @@ class P2PPresenter: ModulePresenter, P2PModule {
   var walletUseCase: WalletUsecase?
   var userId: Int?
   
-  var dismissTopController = BehaviorRelay<Bool>(value: false)
+  var isCreationError = BehaviorRelay<Bool>(value: false)
+  var isCreatedTradeSuccess = BehaviorRelay<Bool>(value: false)
   
   var balance = PublishRelay<CoinsBalance>()
   private let locationService = GeolocationService()
@@ -42,9 +43,9 @@ class P2PPresenter: ModulePresenter, P2PModule {
   func refreshTrades() {
     walletUseCase?.getTrades().subscribe(onSuccess: { [weak self] (trades) in
       self?.setup(trades: trades, userId: self?.userId ?? 0)
-    }, onError: { (error) in
-      print("error")
-    })
+    }, onError: { [weak self] (error) in
+      self?.isCreationError.accept(true)
+    }).disposed(by: disposeBag)
   }
   
   func checkLocation() {
@@ -59,10 +60,10 @@ class P2PPresenter: ModulePresenter, P2PModule {
     track(useCase.createTrade(data: data))
       .asObservable()
       .subscribe(onNext: { [weak self] (trade) in
-        self?.dismissTopController.accept(true)
+        self?.isCreatedTradeSuccess.accept(true)
         self?.refreshTrades()
-      }, onError: { (error) in
-        print("error")
+      }, onError: { [weak self] (error) in
+          self?.isCreationError.accept(true)
       }).disposed(by: disposeBag)
   }
 }

@@ -31,7 +31,7 @@ class TradesDataSource: NSObject,  TradeListDataSource {
         var buyTrades = trades.trades.filter{ $0.type == type.rawValue }
         
         if let id = userId {
-            buyTrades = buyTrades.filter { $0.makerId != id }
+            buyTrades = buyTrades.filter { $0.makerUserId != id }
         }
         
         if type == .buy {

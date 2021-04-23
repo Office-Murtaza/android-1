@@ -13,7 +13,7 @@ struct Trade: Equatable {
     var paymentMethods: String?
     var terms: String?
     var openOrders: Int?
-    var makerId: Int?
+    var makerUserId: Int?
     var makerPublicId: String?
     var makerLatitude: Double?
     var makerLongitude: Double?
@@ -31,7 +31,7 @@ struct Order: Equatable {
     var cryptoAmount: Double?
     var fiatAmount: Double?
     var terms: String?
-    var makerId: Int?
+    var makerUserId: Int?
     var makerPublicId: String?
     var makerStatus: Int?
     var makerTotalTrades: Double?

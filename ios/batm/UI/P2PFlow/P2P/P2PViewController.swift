@@ -32,7 +32,7 @@ class P2PViewController: ModuleViewController<P2PPresenter>, MDCTabBarDelegate {
     
     let buyTradesItem = UITabBarItem(title: "BUY", image: nil, tag: 0)
     let sellTradesItem = UITabBarItem(title: "SELL", image: nil, tag: 1)
-    let openTradesItem = UITabBarItem(title: "MY...", image: nil, tag: 2)
+    let myTradesItem = UITabBarItem(title: "MY...", image: nil, tag: 2)
     
     lazy var tabBar: MDCTabBar = {
         let tabBar = MDCTabBar()
@@ -42,7 +42,7 @@ class P2PViewController: ModuleViewController<P2PPresenter>, MDCTabBarDelegate {
         tabBar.setTitleColor(.white, for: .normal)
         tabBar.backgroundColor = UIColor(hexString: "#0073E4")
         tabBar.tintColor = .white
-        tabBar.items = [buyTradesItem, sellTradesItem, openTradesItem]
+        tabBar.items = [buyTradesItem, sellTradesItem, myTradesItem]
         return tabBar
     }()
     
@@ -109,9 +109,19 @@ class P2PViewController: ModuleViewController<P2PPresenter>, MDCTabBarDelegate {
             self.balance = balance
         }.disposed(by: disposeBag)
       
-      presenter.dismissTopController.asObservable().observeOn(MainScheduler()).filter{ $0 != false }.subscribe { [weak self] (event) in
+      presenter.isCreatedTradeSuccess
+        .asObservable()
+        .observeOn(MainScheduler())
+        .filter{ $0 != false }
+        .subscribe { [weak self] (event) in
         self?.navigationController?.popViewController(animated: true)
-      }
+        self?.view.makeToast("Trade successfully created")
+        if let myTrades = self?.myTradesItem, let tBar = self?.tabBar {
+          tBar.setSelectedItem(myTrades, animated: true)
+          self?.tabBar(tBar, didSelect: myTrades)
+        }
+      }.disposed(by: disposeBag)
+      
     }
     
     override func setupLayout() {
