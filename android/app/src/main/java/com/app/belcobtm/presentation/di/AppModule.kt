@@ -4,7 +4,6 @@ import android.content.Context
 import com.app.belcobtm.presentation.core.coin.AmountCoinValidator
 import com.app.belcobtm.presentation.core.coin.CoinCodeProvider
 import com.app.belcobtm.presentation.core.coin.MinMaxCoinValueProvider
-import com.app.belcobtm.presentation.core.formatter.PhoneNumberFormatter
 import com.app.belcobtm.presentation.core.formatter.*
 import com.app.belcobtm.presentation.core.formatter.DoubleCurrencyPriceFormatter.Companion.DOUBLE_CURRENCY_PRICE_FORMATTER_QUALIFIER
 import com.app.belcobtm.presentation.core.formatter.Formatter
@@ -76,7 +75,7 @@ val viewModelModule = module {
     viewModel { AboutViewModel(androidApplication(), get()) }
     viewModel { SecurityViewModel(get(), get(), get(), get(), get()) }
     viewModel { WalletViewModel(get(), get()) }
-    viewModel { (coinCode: String) -> TransactionsViewModel(coinCode, get(), get(), get()) }
+    viewModel { (coinCode: String) -> TransactionsViewModel(coinCode, get(), get(), get(), get(), get()) }
     viewModel { RecoverWalletViewModel(get(), get<PhoneNumberValidator>()) }
     viewModel { CreateWalletViewModel(get(), get<PhoneNumberValidator>()) }
     viewModel { PinCodeViewModel(get(), get(), get(), get(), get(), get(), get()) }

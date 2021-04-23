@@ -2,34 +2,44 @@ package com.app.belcobtm.data
 
 import com.app.belcobtm.data.core.TransactionHashHelper
 import com.app.belcobtm.data.disk.database.AccountDao
+import com.app.belcobtm.data.inmemory.transactions.TransactionsInMemoryCache
+import com.app.belcobtm.data.model.transactions.TransactionsData
 import com.app.belcobtm.data.rest.transaction.TransactionApiService
 import com.app.belcobtm.data.websockets.base.model.WalletBalance
 import com.app.belcobtm.data.websockets.wallet.WalletObserver
 import com.app.belcobtm.domain.Either
 import com.app.belcobtm.domain.Failure
+import com.app.belcobtm.domain.map
 import com.app.belcobtm.domain.tools.ToolsRepository
 import com.app.belcobtm.domain.transaction.TransactionRepository
-import com.app.belcobtm.domain.transaction.item.*
+import com.app.belcobtm.domain.transaction.item.SellLimitsDataItem
+import com.app.belcobtm.domain.transaction.item.SellPreSubmitDataItem
+import com.app.belcobtm.domain.transaction.item.StakeDetailsDataItem
 import com.app.belcobtm.domain.wallet.LocalCoinType
 import com.app.belcobtm.domain.wallet.item.CoinDataItem
 import com.app.belcobtm.domain.wallet.item.isEthRelatedCoinCode
-import kotlinx.coroutines.flow.filterIsInstance
-import kotlinx.coroutines.flow.firstOrNull
-import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.receiveAsFlow
+import kotlinx.coroutines.flow.*
 
 class TransactionRepositoryImpl(
     private val apiService: TransactionApiService,
     private val walletObserver: WalletObserver,
     private val toolsRepository: ToolsRepository,
+    private val cache: TransactionsInMemoryCache,
     private val transactionHashRepository: TransactionHashHelper,
     private val daoAccount: AccountDao
 ) : TransactionRepository {
 
-    override suspend fun getTransactionList(
+    override suspend fun fetchTransactionList(
         coinCode: String,
         currentListSize: Int
-    ): Either<Failure, Pair<Int, List<TransactionDataItem>>> = apiService.getTransactions(coinCode, currentListSize)
+    ): Either<Failure, Unit> =
+        apiService.fetchTransactions(coinCode, currentListSize).map {
+            cache.init(it.transactions)
+            Unit
+        }
+
+    override fun observeTransactions(): Flow<TransactionsData> =
+        cache.observableData
 
     override suspend fun createTransaction(
         fromCoin: String,
@@ -72,7 +82,7 @@ class TransactionRepositoryImpl(
                 fee,
                 fromAddress,
                 toAddress
-            )
+            ).map { cache.update(it) }
         } else {
             hashResponse as Either.Left
         }
@@ -110,8 +120,7 @@ class TransactionRepositoryImpl(
                     )
                 } else {
                     apiService.sendGift(hash, coinCode, amount, giftId, phone, message)
-                }
-
+                }.map { cache.update(it) }
             } else {
                 hashResponse as Either.Left
             }
@@ -144,6 +153,7 @@ class TransactionRepositoryImpl(
         return if (transactionResponse.isRight) {
             val hash = (transactionResponse as Either.Right).b
             apiService.sell(fromCoinAmount, fromCoin, hash)
+                .map { cache.update(it) }
         } else {
             transactionResponse as Either.Left
         }
@@ -170,15 +180,10 @@ class TransactionRepositoryImpl(
             val fromAddress = daoAccount.getItem(fromCoin).publicKey
             val hash = (hashResponse as Either.Right).b
             apiService.exchange(
-                fromCoinAmount,
-                toCoinAmount,
-                fromCoin,
-                coinTo,
-                hash,
-                fee,
-                fromAddress,
-                toAddressSend
-            )
+                fromCoinAmount, toCoinAmount,
+                fromCoin, coinTo, hash,
+                fee, fromAddress, toAddressSend
+            ).map { cache.update(it) }
         } else {
             hashResponse as Either.Left
         }
@@ -188,7 +193,7 @@ class TransactionRepositoryImpl(
         coinCode: String,
         cryptoAmount: Double
     ): Either<Failure, Unit> {
-        return apiService.submitRecall(coinCode, cryptoAmount)
+        return apiService.submitRecall(coinCode, cryptoAmount).map { cache.update(it) }
     }
 
     override suspend fun tradeReserveTransactionCreate(
@@ -215,6 +220,7 @@ class TransactionRepositoryImpl(
         val toAddress = coinItem?.publicKey ?: ""
         val fee = coinItem?.details?.txFee ?: 0.0
         return apiService.submitReserve(coinCode, fromAddress, toAddress, cryptoAmount, fee, hash)
+            .map { cache.update(it) }
     }
 
     override suspend fun stakeDetails(
@@ -236,6 +242,7 @@ class TransactionRepositoryImpl(
             val toAddress = coinItem?.publicKey ?: ""
             val coinFee = coinItem?.details?.txFee ?: 0.0
             apiService.stakeCreate(coinCode, fromAddress, toAddress, cryptoAmount, coinFee, hash)
+                .map { cache.update(it) }
         } else {
             transactionResponse as Either.Left
         }
@@ -255,6 +262,7 @@ class TransactionRepositoryImpl(
             val toAddress = coinItem?.publicKey ?: ""
             val coinFee = coinItem?.details?.txFee ?: 0.0
             apiService.stakeCancel(coinCode, fromAddress, toAddress, 0.0, coinFee, hash)
+                .map { cache.update(it) }
         } else {
             transactionResponse as Either.Left
         }
@@ -275,15 +283,11 @@ class TransactionRepositoryImpl(
             val toAddress = coinItem?.publicKey ?: ""
             val coinFee = coinItem?.details?.txFee ?: 0.0
             apiService.unStake(coinCode, fromAddress, toAddress, cryptoAmount, coinFee, hash)
+                .map { cache.update(it) }
         } else {
             transactionResponse as Either.Left
         }
     }
-
-    override suspend fun getTransactionDetails(
-        txId: String,
-        coinCode: String
-    ): Either<Failure, TransactionDetailsDataItem> = apiService.getTransactionDetails(txId, coinCode)
 
     override suspend fun checkXRPAddressActivated(address: String): Either<Failure, Boolean> {
         return apiService.getXRPAddressActivated(address)

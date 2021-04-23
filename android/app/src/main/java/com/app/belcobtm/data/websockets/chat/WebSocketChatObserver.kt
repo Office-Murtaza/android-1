@@ -1,6 +1,5 @@
 package com.app.belcobtm.data.websockets.chat
 
-import android.util.Log
 import com.app.belcobtm.data.disk.database.AccountDao
 import com.app.belcobtm.data.disk.shared.preferences.SharedPreferencesHelper
 import com.app.belcobtm.data.websockets.base.SocketClient
@@ -56,12 +55,9 @@ class WebSocketChatObserver(
                     when (it) {
                         is SocketResponse.Opened -> onOpened()
                         is SocketResponse.Failure ->
-                            Log.e("TradesSocket", "Error", it.cause)
+                            connect()
                         is SocketResponse.Message ->
                             processMessage(it.content)
-                        is SocketResponse.Disconnected -> {
-                            Log.d("TradesSocket", "Close connection")
-                        }
                     }
                 }
         }

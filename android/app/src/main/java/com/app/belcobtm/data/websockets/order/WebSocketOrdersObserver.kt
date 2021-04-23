@@ -1,9 +1,8 @@
 package com.app.belcobtm.data.websockets.order
 
-import android.util.Log
 import com.app.belcobtm.data.disk.database.AccountDao
 import com.app.belcobtm.data.disk.shared.preferences.SharedPreferencesHelper
-import com.app.belcobtm.data.inmemory.TradeInMemoryCache
+import com.app.belcobtm.data.inmemory.trade.TradeInMemoryCache
 import com.app.belcobtm.data.rest.trade.response.TradeOrderItemResponse
 import com.app.belcobtm.data.websockets.base.SocketClient
 import com.app.belcobtm.data.websockets.base.model.SocketResponse
@@ -49,13 +48,9 @@ class WebSocketOrdersObserver(
                 .collect {
                     when (it) {
                         is SocketResponse.Opened -> onOpened()
-                        is SocketResponse.Failure ->
-                            Log.e("TradesSocket", "Error", it.cause)
+                        is SocketResponse.Failure -> connect()
                         is SocketResponse.Message ->
                             processMessage(it.content)
-                        is SocketResponse.Disconnected -> {
-                            Log.d("TradesSocket", "Close connection")
-                        }
                     }
                 }
         }
@@ -79,11 +74,11 @@ class WebSocketOrdersObserver(
         }
     }
 
-    private fun processMessage(content: String) {
+    private suspend fun processMessage(content: String) {
         val response = deserializer.deserialize(content)
         when (response.status) {
             StompSocketResponse.CONNECTED -> subscribe()
-//            StompSocketResponse.ERROR -> processErrorMessage(response)
+            StompSocketResponse.ERROR -> connect()
             StompSocketResponse.CONTENT -> {
                 moshi.adapter(TradeOrderItemResponse::class.java)
                     .fromJson(response.body)

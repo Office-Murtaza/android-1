@@ -1,9 +1,8 @@
-package com.app.belcobtm.data.websockets.trade
+package com.app.belcobtm.data.websockets.transactions
 
-import com.app.belcobtm.data.disk.database.AccountDao
 import com.app.belcobtm.data.disk.shared.preferences.SharedPreferencesHelper
-import com.app.belcobtm.data.inmemory.trade.TradeInMemoryCache
-import com.app.belcobtm.data.rest.trade.response.TradeItemResponse
+import com.app.belcobtm.data.inmemory.transactions.TransactionsInMemoryCache
+import com.app.belcobtm.data.rest.transaction.response.TransactionDetailsResponse
 import com.app.belcobtm.data.websockets.base.SocketClient
 import com.app.belcobtm.data.websockets.base.model.SocketResponse
 import com.app.belcobtm.data.websockets.base.model.StompSocketRequest
@@ -12,18 +11,20 @@ import com.app.belcobtm.data.websockets.serializer.RequestSerializer
 import com.app.belcobtm.data.websockets.serializer.ResponseDeserializer
 import com.app.belcobtm.presentation.core.Endpoint
 import com.squareup.moshi.Moshi
-import kotlinx.coroutines.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
-class WebSocketTradesObserver(
+class WebSocketTransactionsObserver(
     private val socketClient: SocketClient,
     private val moshi: Moshi,
-    private val tradeInMemoryCache: TradeInMemoryCache,
-    private val accountDao: AccountDao,
+    private val transactionsInMemoryCache: TransactionsInMemoryCache,
     private val sharedPreferencesHelper: SharedPreferencesHelper,
     private val serializer: RequestSerializer<StompSocketRequest>,
     private val deserializer: ResponseDeserializer<StompSocketResponse>,
-) : TradesObserver {
+) : TransactionsObserver {
 
     private val ioScope = CoroutineScope(Dispatchers.IO)
 
@@ -33,7 +34,7 @@ class WebSocketTradesObserver(
         const val COINS_HEADER = "coins"
 
         const val DESTINATION_HEADER = "destination"
-        const val DESTINATION_VALUE = "/topic/trade"
+        const val DESTINATION_VALUE = "/user/queue/transaction"
 
         const val ACCEPT_VERSION_HEADER = "accept-version"
         const val ACCEPT_VERSION_VALUE = "1.1"
@@ -80,23 +81,18 @@ class WebSocketTradesObserver(
             StompSocketResponse.CONNECTED -> subscribe()
             StompSocketResponse.ERROR -> connect()
             StompSocketResponse.CONTENT -> {
-                moshi.adapter(TradeItemResponse::class.java)
+                moshi.adapter(TransactionDetailsResponse::class.java)
                     .fromJson(response.body)
-                    ?.let(tradeInMemoryCache::updateTrades)
+                    ?.let(transactionsInMemoryCache::update)
             }
         }
     }
 
     private fun subscribe() {
-        val coinList = runBlocking {
-            accountDao.getItemList().orEmpty()
-                .map { it.type.name }
-        }.joinToString()
         val request = StompSocketRequest(
             StompSocketRequest.SUBSCRIBE, mapOf(
                 ID_HEADER to sharedPreferencesHelper.userPhone,
-                DESTINATION_HEADER to DESTINATION_VALUE,
-                COINS_HEADER to coinList
+                DESTINATION_HEADER to DESTINATION_VALUE
             )
         )
         socketClient.sendMessage(serializer.serialize(request))

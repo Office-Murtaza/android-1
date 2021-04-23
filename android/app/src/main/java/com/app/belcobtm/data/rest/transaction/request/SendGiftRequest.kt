@@ -5,7 +5,7 @@ data class SendGiftRequest(
     val cryptoAmount: Double?,
     val phone: String?,
     val message: String?,
-    val imageId: String?,
+    val image: String?,
     val hex: String?,
     val fee: Double?,
     val fromAddress: String?,

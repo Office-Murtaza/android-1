@@ -15,8 +15,7 @@ import com.app.belcobtm.presentation.features.wallet.transactions.item.Transacti
 import com.app.belcobtm.presentation.features.wallet.transactions.item.TransactionsAdapterItemCallback
 
 class TransactionsAdapter(
-    private val itemClickListener: (item: TransactionsAdapterItem) -> Unit,
-    private val endListListener: () -> Unit
+    private val itemClickListener: (item: TransactionsAdapterItem) -> Unit
 ) : ListAdapter<TransactionsAdapterItem, TransactionsAdapter.Holder>(TransactionsAdapterItemCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {
@@ -34,10 +33,6 @@ class TransactionsAdapter(
             typeView.text = context.getString(item.type.getResText())
             amountView.text = item.cryptoAmount.toStringCoin()
             updateStatusView(statusView, item.status)
-        }
-
-        if (position >= itemCount - 1) {
-            endListListener.invoke()
         }
     }
 
