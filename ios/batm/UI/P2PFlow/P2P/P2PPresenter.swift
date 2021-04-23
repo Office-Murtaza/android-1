@@ -18,6 +18,7 @@ class P2PPresenter: ModulePresenter, P2PModule {
   var balance = PublishRelay<CoinsBalance>()
   private let locationService = GeolocationService()
   private let fetchDataRelay = PublishRelay<Void>()
+  var errorService: ErrorService?
   
   func setup(trades: Trades, userId: Int) {
     self.userId = userId
@@ -44,7 +45,10 @@ class P2PPresenter: ModulePresenter, P2PModule {
     walletUseCase?.getTrades().subscribe(onSuccess: { [weak self] (trades) in
       self?.setup(trades: trades, userId: self?.userId ?? 0)
     }, onError: { [weak self] (error) in
-      self?.isCreationError.accept(true)
+      guard let errorService = self?.errorService, let disposable = self?.disposeBag else {
+        return
+      }
+      errorService.showError(for: .serverError).subscribe().disposed(by: disposable)
     }).disposed(by: disposeBag)
   }
   
@@ -63,7 +67,10 @@ class P2PPresenter: ModulePresenter, P2PModule {
         self?.isCreatedTradeSuccess.accept(true)
         self?.refreshTrades()
       }, onError: { [weak self] (error) in
-          self?.isCreationError.accept(true)
+          guard let errorService = self?.errorService, let disposable = self?.disposeBag else {
+            return
+          }
+          errorService.showError(for: .serverError).subscribe().disposed(by: disposable)
       }).disposed(by: disposeBag)
   }
 }
