@@ -110,6 +110,10 @@
 		23732BAB25FAC11C0062924E /* P2PTradeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23732BAA25FAC11C0062924E /* P2PTradeCell.swift */; };
 		237438D8260A689C0027947B /* P2PResetAllView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 237438D7260A689C0027947B /* P2PResetAllView.swift */; };
 		237438DC260A78F30027947B /* P2PFloatingButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 237438DB260A78F30027947B /* P2PFloatingButton.swift */; };
+		2377EDE626368F2600A47E6E /* P2PTradeDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2377EDE526368F2600A47E6E /* P2PTradeDetailsViewController.swift */; };
+		2377EDF42636965000A47E6E /* P2PTradeDetailsCoinInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2377EDF32636965000A47E6E /* P2PTradeDetailsCoinInfoView.swift */; };
+		2377EDF8263697CB00A47E6E /* P2PTradeDetailsPaymentMethodsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2377EDF7263697CB00A47E6E /* P2PTradeDetailsPaymentMethodsView.swift */; };
+		2377EE0226369F7500A47E6E /* P2PTradeDetailsOpenOrdersView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2377EE0126369F7500A47E6E /* P2PTradeDetailsOpenOrdersView.swift */; };
 		237EC457256DAE8A005BB79B /* PriceChartDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = 237EC456256DAE8A005BB79B /* PriceChartDetails.swift */; };
 		239685DB2575988A00C0FF1E /* CoinExchangeSwapTextFieldView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 239685DA2575988A00C0FF1E /* CoinExchangeSwapTextFieldView.swift */; };
 		23AAC3F3253CCB3E004FD32B /* CoinDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23AAC3F2253CCB3E004FD32B /* CoinDetails.swift */; };
@@ -758,6 +762,10 @@
 		23732BAA25FAC11C0062924E /* P2PTradeCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = P2PTradeCell.swift; sourceTree = "<group>"; };
 		237438D7260A689C0027947B /* P2PResetAllView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = P2PResetAllView.swift; sourceTree = "<group>"; };
 		237438DB260A78F30027947B /* P2PFloatingButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = P2PFloatingButton.swift; sourceTree = "<group>"; };
+		2377EDE526368F2600A47E6E /* P2PTradeDetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = P2PTradeDetailsViewController.swift; sourceTree = "<group>"; };
+		2377EDF32636965000A47E6E /* P2PTradeDetailsCoinInfoView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = P2PTradeDetailsCoinInfoView.swift; sourceTree = "<group>"; };
+		2377EDF7263697CB00A47E6E /* P2PTradeDetailsPaymentMethodsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = P2PTradeDetailsPaymentMethodsView.swift; sourceTree = "<group>"; };
+		2377EE0126369F7500A47E6E /* P2PTradeDetailsOpenOrdersView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = P2PTradeDetailsOpenOrdersView.swift; sourceTree = "<group>"; };
 		237EC456256DAE8A005BB79B /* PriceChartDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PriceChartDetails.swift; sourceTree = "<group>"; };
 		239685DA2575988A00C0FF1E /* CoinExchangeSwapTextFieldView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoinExchangeSwapTextFieldView.swift; sourceTree = "<group>"; };
 		23AAC3F2253CCB3E004FD32B /* CoinDetails.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoinDetails.swift; sourceTree = "<group>"; };
@@ -1463,6 +1471,7 @@
 		2316CD1025F1878200B17D10 /* P2PFlow */ = {
 			isa = PBXGroup;
 			children = (
+				2377EDE426368EE700A47E6E /* Trade Details */,
 				23C8EF982624D1720070C8E1 /* Create Trade */,
 				23FEC18026092E2600FD2472 /* Filter */,
 				2345EC872601EA1400742F77 /* Helpers */,
@@ -1594,6 +1603,17 @@
 				234EE5C925D30AB100884141 /* SecurityTableDataSource.swift */,
 			);
 			path = DataSource;
+			sourceTree = "<group>";
+		};
+		2377EDE426368EE700A47E6E /* Trade Details */ = {
+			isa = PBXGroup;
+			children = (
+				2377EDE526368F2600A47E6E /* P2PTradeDetailsViewController.swift */,
+				2377EE0126369F7500A47E6E /* P2PTradeDetailsOpenOrdersView.swift */,
+				2377EDF32636965000A47E6E /* P2PTradeDetailsCoinInfoView.swift */,
+				2377EDF7263697CB00A47E6E /* P2PTradeDetailsPaymentMethodsView.swift */,
+			);
+			path = "Trade Details";
 			sourceTree = "<group>";
 		};
 		23BF987A25A3A06300119C30 /* TransferFlow */ = {
@@ -3852,6 +3872,7 @@
 				DB8DC1222413009F006AB4F5 /* VIPVerificationStore.swift in Sources */,
 				23F4138425AA4C7B006853CB /* TransferTableDataSource.swift in Sources */,
 				DB2C699A24D88DDF0043C344 /* PhoneVerificationResendCodeLabel.swift in Sources */,
+				2377EDF8263697CB00A47E6E /* P2PTradeDetailsPaymentMethodsView.swift in Sources */,
 				DB21B1F324AA63AA008444D3 /* RecallPresenter.swift in Sources */,
 				DB8F078A24103E8F00770643 /* PickerFlow.swift in Sources */,
 				05E6A846260163AF00479414 /* TransactionStatus.swift in Sources */,
@@ -4029,6 +4050,7 @@
 				DB3C03D822CB5DCE0036F779 /* RecoverViewController.swift in Sources */,
 				DB83661622FA9FCB00454F5C /* SeedPhraseFlow.swift in Sources */,
 				DBDA966222BFDB6E005B93DF /* ModulePresenter.swift in Sources */,
+				2377EE0226369F7500A47E6E /* P2PTradeDetailsOpenOrdersView.swift in Sources */,
 				DBCFBD5224BE53420045B9B4 /* SeedPhraseStore.swift in Sources */,
 				055A9BB92575826200A8E8F1 /* NotificationsAssembly.swift in Sources */,
 				2345EC842601E78F00742F77 /* P2PCoinView.swift in Sources */,
@@ -4117,7 +4139,9 @@
 				235356192603EE3100481F9E /* P2PTagView.swift in Sources */,
 				DB16A871235F4438007E3B20 /* CoinSellDetailsAnotherAddressViewController.swift in Sources */,
 				055A9B72257552B700A8E8F1 /* DealsFlow.swift in Sources */,
+				2377EDF42636965000A47E6E /* P2PTradeDetailsCoinInfoView.swift in Sources */,
 				DB2F250C2360687800274C60 /* CoinSellDetailsCurrentAddressModule.swift in Sources */,
+				2377EDE626368F2600A47E6E /* P2PTradeDetailsViewController.swift in Sources */,
 				DB904AA322C00FC7007CB734 /* UIView+MBProgressHUD.swift in Sources */,
 				DB83663922FAB7CE00454F5C /* UpdatePinFlow.swift in Sources */,
 				DB9616BD22C67FCA0078E92D /* AccountStorage.swift in Sources */,

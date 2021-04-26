@@ -142,9 +142,6 @@ class P2PCreateTradeViewController: UIViewController {
         } maxRange: { [weak self] maxRange in
             self?.maxRange = maxRange
         }
-        
-        
-        scrollView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 300, right: 0)
     }
     
     private func addNotificationObserver() {

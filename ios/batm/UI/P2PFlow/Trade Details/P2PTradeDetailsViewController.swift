@@ -1,0 +1,109 @@
+import UIKit
+
+class P2PTradeDetailsViewController: UIViewController {
+  
+  private let scrollView = UIScrollView()
+  private let coinInfoView = P2PTradeDetailsCoinInfoView()
+
+  private let paymentMethods = P2PTradeDetailsPaymentMethodsView()
+  private let paymentMethodsSeparator = P2PSeparatorView()
+  
+  private let openOrders = P2PTradeDetailsOpenOrdersView()
+  private let openOrdersSeparator = P2PSeparatorView()
+  
+  private lazy var stackView: UIStackView = {
+    let stack = UIStackView()
+    stack.axis = .vertical
+    return stack
+  }()
+  
+  override func viewDidLoad() {
+    super.viewDidLoad()
+    view.backgroundColor = .white
+    setupUI()
+    setupLayout()
+  }
+
+  func setup(trade: Trade) {
+    let infoModel = P2PTradeDetailsCoinInfoModel(trade: trade)
+    coinInfoView.update(data: infoModel)
+    setupPaymenMethodsView(trade: trade)
+  }
+  
+  func setupPaymenMethodsView(trade: Trade) {
+    guard let methods = trade.paymentMethods else { return }
+    let images =  methods
+        .components(separatedBy: ",")
+        .compactMap{ Int($0) }
+        .compactMap{ TradePaymentMethods.init(rawValue: $0)?.image }
+    
+    paymentMethods.update(images: images)
+  }
+  
+  func setupUI() {
+    view.addSubviews([
+      scrollView,
+    ])
+    
+    scrollView.addSubview(stackView)
+    stackView.addArrangedSubviews([
+      coinInfoView,
+      paymentMethods,
+      paymentMethodsSeparator,
+      openOrders,
+      openOrdersSeparator
+    ])
+  }
+  
+  func setupLayout() {
+    let separatorHeight = 1 / UIScreen.main.scale
+    
+    scrollView.snp.makeConstraints {
+      $0.centerX.equalTo(view.snp.centerX)
+      $0.width.equalToSuperview()
+      $0.top.equalToSuperview()
+      $0.bottom.equalToSuperview()
+    }
+    
+    stackView.snp.makeConstraints {
+      $0.top.equalToSuperview()
+      $0.bottom.equalToSuperview()
+      $0.right.equalToSuperview()
+      $0.left.equalToSuperview()
+      $0.width.equalToSuperview()
+    }
+    
+    coinInfoView.snp.makeConstraints {
+      $0.top.left.right.equalToSuperview()
+      $0.height.equalTo(105)
+    }
+    
+    paymentMethods.snp.makeConstraints {
+      $0.top.equalTo(coinInfoView.snp.bottom)
+      $0.left.right.equalToSuperview()
+      $0.height.equalTo(56)
+    }
+    
+    paymentMethodsSeparator.snp.makeConstraints {
+        $0.top.equalTo(paymentMethods.snp.bottom)
+        $0.height.equalTo(separatorHeight)
+        $0.left.equalToSuperview().offset(15)
+        $0.right.equalToSuperview().offset(-15)
+    }
+    
+    openOrders.snp.makeConstraints {
+      $0.top.equalTo(paymentMethodsSeparator.snp.bottom)
+      $0.left.right.equalToSuperview()
+      $0.height.equalTo(56)
+    }
+    
+    openOrdersSeparator.snp.makeConstraints {
+      $0.top.equalTo(openOrders.snp.bottom)
+      $0.height.equalTo(separatorHeight)
+      $0.left.equalToSuperview().offset(15)
+      $0.right.equalToSuperview().offset(-15)
+    }
+    
+  }
+  
+}
