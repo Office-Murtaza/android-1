@@ -46,33 +46,35 @@ class P2PViewController: ModuleViewController<P2PPresenter>, MDCTabBarDelegate {
         return tabBar
     }()
     
-    override func setupUI() {
-        title = "P2P Trading"
-
-        navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(named: "p2p_create_trade"),
-                                                            style: .plain,
-                                                            target: self,
-                                                            action: #selector(createTrade))
-        
-        presenter.checkLocation()
-        tabBar.delegate = self
-        view.addSubview(tabBar)
-        controllers = [
-            buyViewController!,
-            sellViewController!,
-            myViewController!
-        ]
-        pageController.setViewControllers([controllers[0]], direction: .forward, animated: true) { (result) in
-            print(result)
-        }
-        
-        
-        guard let buyController = buyViewController, let sellController = sellViewController else { return }
-        
-        buyDataSource.setup(controller: buyController)
-        sellDataSource.setup(controller: sellController)
-        
+  override func setupUI() {
+    
+    myViewController?.delegate = self
+    title = "P2P Trading"
+    
+    navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(named: "p2p_create_trade"),
+                                                        style: .plain,
+                                                        target: self,
+                                                        action: #selector(createTrade))
+    
+    presenter.checkLocation()
+    tabBar.delegate = self
+    view.addSubview(tabBar)
+    controllers = [
+      buyViewController!,
+      sellViewController!,
+      myViewController!
+    ]
+    pageController.setViewControllers([controllers[0]], direction: .forward, animated: true) { (result) in
+      print(result)
     }
+    
+    
+    guard let buyController = buyViewController, let sellController = sellViewController else { return }
+    
+    buyDataSource.setup(controller: buyController)
+    sellDataSource.setup(controller: sellController)
+    
+  }
     
     @objc func createTrade() {
         guard let balance = balance else { return }
@@ -153,6 +155,12 @@ extension P2PViewController: P2PCreateTradeViewControllerDelegate {
     func didSelectedSubmit(data: P2PCreateTradeDataModel) {
       presenter.didSelectedSubmit(data: data)
     }
+}
+
+extension P2PViewController: MyViewControllerDelegate {
+  func didTapCreateTrade() {
+    createTrade()
+  }
 }
 
 

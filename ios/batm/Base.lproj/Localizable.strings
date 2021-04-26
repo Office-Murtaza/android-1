@@ -20,6 +20,8 @@
 "shared.error.message" = "Server error, try again later";
 "shared.error.no_connection.message" = "No Internet Connection";
 "shared.terms_and_conditions" = "Accept Terms & Conditions";
+"shared.button.edit" = "Edit";
+"shared.button.buy_sell" = "Buy / Sell";
 
 "welcome.first_slide.title" = "All assets in one place";
 "welcome.second_slide.title" = "Private and secure";

@@ -6,14 +6,9 @@ class P2PTradeDetailsBaseViewController: UIViewController {
   private let coinInfoView = P2PTradeDetailsCoinInfoView()
 
   private let paymentMethods = P2PTradeDetailsPaymentMethodsView()
-  private let paymentMethodsSeparator = P2PSeparatorView()
+  let paymentMethodsSeparator = P2PSeparatorView()
   
-//  private let openOrders = P2PTradeDetailsOpenOrdersView()
-//  private let openOrdersSeparator = P2PSeparatorView()
-//
-//  private let infoMessageView = P2PTradeDetailsTextInfoView()
-  
-  private lazy var stackView: UIStackView = {
+  lazy var stackView: UIStackView = {
     let stack = UIStackView()
     stack.axis = .vertical
     return stack
@@ -52,13 +47,7 @@ class P2PTradeDetailsBaseViewController: UIViewController {
       coinInfoView,
       paymentMethods,
       paymentMethodsSeparator,
-//      openOrders,
-//      openOrdersSeparator,
-//      infoMessageView
     ])
-    
-//    infoMessageView.update(message: "Selling cryptocurrency at the best rate. Ready to meet select cash as a method of payment. Always available, write in chat 24/7.")
-    
   }
   
   func setupLayout() {
@@ -96,25 +85,6 @@ class P2PTradeDetailsBaseViewController: UIViewController {
         $0.left.equalToSuperview().offset(15)
         $0.right.equalToSuperview().offset(-15)
     }
-    
-//    openOrders.snp.makeConstraints {
-//      $0.top.equalTo(paymentMethodsSeparator.snp.bottom)
-//      $0.left.right.equalToSuperview()
-//      $0.height.equalTo(56)
-//    }
-//
-//    openOrdersSeparator.snp.makeConstraints {
-//      $0.top.equalTo(openOrders.snp.bottom)
-//      $0.height.equalTo(separatorHeight)
-//      $0.left.equalToSuperview().offset(15)
-//      $0.right.equalToSuperview().offset(-15)
-//    }
-//
-//    infoMessageView.snp.makeConstraints {
-//      $0.top.equalTo(openOrdersSeparator.snp.bottom)
-//      $0.left.right.equalToSuperview()
-//    }
-    
   }
   
 }

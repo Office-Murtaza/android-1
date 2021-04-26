@@ -1,6 +1,10 @@
 import UIKit
 import SnapKit
 
+protocol MyTradesViewControllerDelegate: class {
+  func didTapCreateTrade()
+}
+
 class MyTradesViewController: UIViewController {
   
   private lazy var emptyView = MyTradesEmptyView()
@@ -13,6 +17,8 @@ class MyTradesViewController: UIViewController {
   }()
   
   private let dataSource = MyTradesDataSource()
+  
+  weak var delegate: MyTradesViewControllerDelegate?
   
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -48,13 +54,13 @@ class MyTradesViewController: UIViewController {
 
 extension MyTradesViewController: MyTradesEmptyViewDelegate {
   func didTapCreateTrade() {
-    print("did tap create trade")
+    delegate?.didTapCreateTrade()
   }
 }
 
 extension MyTradesViewController: MyTradesDataSourceDelegate {
   func didSelected(model: MyTradesCellViewModel) {
-    let controller = P2PTradeDetailsViewController()
+    let controller = P2PTradeDetailsBuySellViewController()//P2PTradeDetailsEditViewController()//P2PTradeDetailsBaseViewController()
     controller.setup(trade: model.trade)
     navigationController?.pushViewController(controller, animated: true)
   }
