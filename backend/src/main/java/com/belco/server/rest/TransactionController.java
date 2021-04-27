@@ -5,7 +5,6 @@ import com.belco.server.dto.TransactionDetailsDTO;
 import com.belco.server.model.Response;
 import com.belco.server.service.CoinService;
 import com.belco.server.service.TransactionService;
-import org.apache.commons.lang.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -50,16 +49,6 @@ public class TransactionController {
             index = index == null || index <= 0 ? 1 : index;
 
             return Response.ok(transactionService.getTransactionHistory(userId, coin, index));
-        } catch (Exception e) {
-            e.printStackTrace();
-            return Response.serverError();
-        }
-    }
-
-    @GetMapping("/user/{userId}/coin/{coin}/transaction-details")
-    public Response getTransactionDetails(@PathVariable Long userId, @PathVariable CoinService.CoinEnum coin, @RequestParam String txId) {
-        try {
-            return Response.ok(transactionService.getTransactionDetails(userId, coin, txId));
         } catch (Exception e) {
             e.printStackTrace();
             return Response.serverError();

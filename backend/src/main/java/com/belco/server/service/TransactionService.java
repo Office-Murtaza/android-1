@@ -17,10 +17,12 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.math.BigDecimal;
 import java.util.*;
 
 @Service
+@Transactional
 @EnableScheduling
 public class TransactionService {
 
@@ -172,8 +174,8 @@ public class TransactionService {
 
     public TransactionHistoryDTO getTransactionHistory(Long userId, CoinService.CoinEnum coinCode, Integer startIndex) {
         User user = userService.findById(userId);
-        Identity identity = user.getIdentity();
-        Coin coin = coinCode.getCoinEntity();
+        //Identity identity = user.getIdentity();
+        //Coin coin = coinCode.getCoinEntity();
         String address = user.getUserCoin(coinCode.name()).getAddress();
 
         List<TransactionRecord> transactionRecords = recordRep.findAllByIdentityAndCryptoCurrency(user.getIdentity(), coinCode.name());
@@ -240,12 +242,13 @@ public class TransactionService {
         mongo.find(query, TransactionDetailsDTO.class).stream().forEach(t -> {
             CoinService.CoinEnum coin = CoinService.CoinEnum.valueOf(t.getCoin());
             Integer status = coin.getTransactionDetails(t.getTxId(), StringUtils.EMPTY).getStatus();
+            User user = userService.findById(t.getUserId());
 
             if (status == null || status == TransactionStatus.FAIL.getValue()) {
                 t.setStatus(TransactionStatus.FAIL.getValue());
 
                 if (t.getType() == TransactionType.RECALL.getValue()) {
-                    UserCoin userCoin = userService.getUserCoin(t.getUserId(), t.getCoin());
+                    UserCoin userCoin = user.getUserCoin(t.getCoin());
                     userCoin.setReservedBalance(userCoin.getReservedBalance().add(t.getCryptoAmount().add(t.getCryptoFee())));
                     userCoinRep.save(userCoin);
                 } else if (t.getType() == TransactionType.SEND_SWAP.getValue()) {
@@ -261,7 +264,7 @@ public class TransactionService {
                 }
             } else if (status == TransactionStatus.COMPLETE.getValue()) {
                 if (t.getType() == TransactionType.RESERVE.getValue()) {
-                    UserCoin userCoin = userService.getUserCoin(t.getUserId(), t.getCoin());
+                    UserCoin userCoin = user.getUserCoin(t.getCoin());
                     userCoin.setReservedBalance(userCoin.getReservedBalance().add(t.getCryptoAmount()));
                     userCoinRep.save(userCoin);
                 } else if (t.getType() == TransactionType.SEND_SWAP.getValue()) {
@@ -276,6 +279,7 @@ public class TransactionService {
             }
 
             if (status != TransactionStatus.PENDING.getValue()) {
+                t.setStatus(status);
                 TransactionDetailsDTO tSaved = mongo.save(t);
                 socketService.pushTransaction(userService.findById(t.getUserId()).getPhone(), tSaved);
             }
@@ -302,6 +306,7 @@ public class TransactionService {
             tx.setMessage(dto.getMessage());
             tx.setImage(dto.getImage());
             tx.setProcessed(receiverOpt.isPresent() ? ProcessedType.COMPLETE.getValue() : ProcessedType.PENDING.getValue());
+            tx.setTimestamp(System.currentTimeMillis());
             mongo.save(tx);
 
             if (receiverOpt.isPresent()) {
@@ -319,6 +324,7 @@ public class TransactionService {
                 tx2.setToPhone(dto.getPhone());
                 tx2.setMessage(dto.getMessage());
                 tx2.setImage(dto.getImage());
+                tx2.setTimestamp(System.currentTimeMillis());
                 mongo.save(tx2);
 
                 String token = receiverOpt.get().getNotificationsToken();
@@ -409,6 +415,7 @@ public class TransactionService {
             tx.setRefCoin(dto.getRefCoin());
             tx.setRefCryptoAmount(dto.getRefCryptoAmount());
             tx.setProcessed(ProcessedType.PENDING.getValue());
+            tx.setTimestamp(System.currentTimeMillis());
             mongo.save(tx);
         } catch (Exception e) {
             e.printStackTrace();
@@ -428,6 +435,7 @@ public class TransactionService {
             tx.setFromAddress(dto.getFromAddress());
             tx.setToAddress(dto.getToAddress());
             tx.setProcessed(ProcessedType.PENDING.getValue());
+            tx.setTimestamp(System.currentTimeMillis());
             mongo.save(tx);
         } catch (Exception e) {
             e.printStackTrace();
@@ -466,6 +474,7 @@ public class TransactionService {
                     tx.setCryptoFee(txFee);
                     tx.setFromAddress(fromAddress);
                     tx.setToAddress(toAddress);
+                    tx.setTimestamp(System.currentTimeMillis());
                     mongo.save(tx);
 
                     userCoin.setReservedBalance(userCoin.getReservedBalance().subtract(dto.getCryptoAmount().add(txFee)));
@@ -493,6 +502,7 @@ public class TransactionService {
             tx.setCryptoAmount(dto.getCryptoAmount());
             tx.setFromAddress(dto.getFromAddress());
             tx.setToAddress(dto.getToAddress());
+            tx.setTimestamp(System.currentTimeMillis());
             mongo.save(tx);
 
             StakingDetailsDTO staking = new StakingDetailsDTO();
@@ -523,6 +533,7 @@ public class TransactionService {
             tx.setCryptoAmount(dto.getCryptoAmount());
             tx.setFromAddress(dto.getFromAddress());
             tx.setToAddress(dto.getToAddress());
+            tx.setTimestamp(System.currentTimeMillis());
             mongo.save(tx);
 
             Query query = new Query();
@@ -551,6 +562,7 @@ public class TransactionService {
             tx.setCryptoAmount(dto.getCryptoAmount());
             tx.setFromAddress(dto.getFromAddress());
             tx.setToAddress(dto.getToAddress());
+            tx.setTimestamp(System.currentTimeMillis());
             mongo.save(tx);
 
             Query query = new Query();

@@ -222,7 +222,12 @@ public class RippledService {
                 dto.setCryptoFee(getAmount(res.optString("Fee")));
                 dto.setFromAddress(res.optString("Account"));
                 dto.setToAddress(res.optString("Destination"));
-                dto.setType(TransactionType.getType(dto.getFromAddress(), dto.getToAddress(), address).getValue());
+
+                TransactionType type = TransactionType.getType(dto.getFromAddress(), dto.getToAddress(), address);
+                if(type != null) {
+                    dto.setType(type.getValue());
+                }
+
                 dto.setStatus(getStatus(res.optString("status")).getValue());
                 dto.setTimestamp((res.optLong("date") + 946684800L) * 1000);
             } catch (Exception e) {

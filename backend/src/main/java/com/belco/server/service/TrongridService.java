@@ -127,7 +127,12 @@ public class TrongridService {
                 dto.setCryptoFee(getAmount(res.optJSONObject("raw_data").optLong("fee_limit")));
                 dto.setFromAddress(Base58.toBase58(row.optString("owner_address")));
                 dto.setToAddress(Base58.toBase58(row.optString("to_address")));
-                dto.setType(TransactionType.getType(dto.getFromAddress(), dto.getToAddress(), address).getValue());
+
+                TransactionType type = TransactionType.getType(dto.getFromAddress(), dto.getToAddress(), address);
+                if(type != null) {
+                    dto.setType(type.getValue());
+                }
+
                 dto.setStatus(getStatus(res.optJSONArray("ret").getJSONObject(0).optString("contractRet")).getValue());
                 dto.setConfirmations(TransactionStatus.valueOf(dto.getStatus()).getConfirmations());
                 dto.setTimestamp(res.optJSONObject("raw_data").optLong("timestamp"));

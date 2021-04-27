@@ -144,7 +144,11 @@ public class BlockbookService {
 
                 dto.setTxId(txId);
                 dto.setLink(explorerUrl + "/" + txId);
-                dto.setType(type.getValue());
+
+                if(type != null) {
+                    dto.setType(type.getValue());
+                }
+
                 dto.setCryptoAmount(amount);
                 dto.setFromAddress(fromAddress);
                 dto.setToAddress(toAddress);

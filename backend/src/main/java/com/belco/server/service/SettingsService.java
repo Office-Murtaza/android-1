@@ -27,7 +27,5 @@ public class SettingsService {
         this.platformSwapFee = doc.get("platformSwapFee", Decimal128.class).bigDecimalValue();
         this.platformTradeFee = doc.get("platformTradeFee", Decimal128.class).bigDecimalValue();
         this.initialGasLimits = doc.get("initialGasLimits", Map.class);
-
-        int i = 0;
     }
 }

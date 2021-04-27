@@ -49,7 +49,7 @@ public class NodeService {
         mainNodeMap.put(CoinType.TRON, trxNodeMainUrl);
 
         reserveNodeMap.put(CoinType.BITCOIN, btcNodeReserveUrl);
-        reserveNodeMap.put(CoinType.ETHEREUM, ethNodeReserveUrl);
+        //reserveNodeMap.put(CoinType.ETHEREUM, ethNodeReserveUrl);
         reserveNodeMap.put(CoinType.XRP, xrpNodeReserveUrl);
 
         explorerMap.put(CoinType.BITCOIN, btcExplorerUrl);
@@ -76,17 +76,13 @@ public class NodeService {
     }
 
     public boolean switchToReserveNode(CoinType coinType) {
-//        if (reserveNodeMap.containsKey(coinType)) {
-//            mainNodeMap.put(coinType, reserveNodeMap.get(coinType));
-//            reserveNodeMap.remove(coinType);
-//
-//            return true;
-//        } else {
-//            mainNodeMap.remove(coinType);
-//
-//            throw new RuntimeException("Nodes for " + coinType.name() + " are down");
-//        }
+        if (reserveNodeMap.containsKey(coinType)) {
+            mainNodeMap.put(coinType, reserveNodeMap.get(coinType));
+            reserveNodeMap.remove(coinType);
 
-        return true;
+            return true;
+        }
+
+        return false;
     }
 }

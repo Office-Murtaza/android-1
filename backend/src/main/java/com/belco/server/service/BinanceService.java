@@ -127,7 +127,12 @@ public class BinanceService {
                 dto.setLink(explorerUrl + "/" + txId);
                 dto.setFromAddress(msg.optJSONObject("value").optJSONArray("inputs").getJSONObject(0).optString("address"));
                 dto.setToAddress(msg.optJSONObject("value").optJSONArray("outputs").getJSONObject(0).optString("address"));
-                dto.setType(com.belco.server.model.TransactionType.getType(dto.getFromAddress(), dto.getToAddress(), address).getValue());
+
+                com.belco.server.model.TransactionType type = com.belco.server.model.TransactionType.getType(dto.getFromAddress(), dto.getToAddress(), address);
+                if(type != null) {
+                    dto.setType(type.getValue());
+                }
+
                 dto.setStatus(getStatus(res.getInt("code")).getValue());
                 dto.setCryptoAmount(getAmount(msg.optJSONObject("value").optJSONArray("inputs").getJSONObject(0).getJSONArray("coins").getJSONObject(0).optString("amount")));
                 dto.setCryptoFee(getAmount("1000000"));

@@ -209,7 +209,12 @@ public class GethService {
 
                 dto.setTxId(txId);
                 dto.setLink(explorerUrl + "/" + txId);
-                dto.setType(TransactionType.getType(fromAddress, toAddress, address).getValue());
+
+                TransactionType type = TransactionType.getType(fromAddress, toAddress, address);
+                if(type != null) {
+                    dto.setType(type.getValue());
+                }
+
                 dto.setCryptoAmount(txDoc.get("amount", Decimal128.class).bigDecimalValue());
                 dto.setFromAddress(fromAddress);
                 dto.setToAddress(toAddress);
