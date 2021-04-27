@@ -51,6 +51,7 @@ class P2PSellBuyView: UIView {
     
     private var selected = false
     private var type: P2PSellBuyViewType?
+    private let tapRecognizer = UITapGestureRecognizer(target: self, action: #selector(didTap))
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -70,7 +71,6 @@ class P2PSellBuyView: UIView {
     }
     
     private func setupRecognizer() {
-        let tapRecognizer = UITapGestureRecognizer(target: self, action: #selector(didTap))
         addGestureRecognizer(tapRecognizer)
     }
     
@@ -92,10 +92,21 @@ class P2PSellBuyView: UIView {
         }
     }
     
+  
+  func setTapEnabled( _ isEnabled: Bool) {
+    tapRecognizer.isEnabled = isEnabled
+  }
+  
   func setInactive() {
-    isUserInteractionEnabled = false
     contentView.backgroundColor = UIColor(hexString: "#E1E1E1", alpha: 0.15)
     titleLabel.textColor = UIColor(hexString: "#E1E1E1")
+    contentView.layer.borderColor = UIColor(hexString: "#E1E1E1").cgColor
+    contentView.layer.borderWidth = 2
+    arrowImageView.image?.withRenderingMode(.alwaysTemplate)
+    let image = arrowImageView.image
+    let templateImage = image?.withRenderingMode(.alwaysTemplate)
+    arrowImageView.image = templateImage
+    arrowImageView.tintColor = UIColor(hexString: "#E1E1E1")
   }
   
     private func selectedState() {

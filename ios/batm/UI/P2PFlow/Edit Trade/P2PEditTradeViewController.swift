@@ -36,35 +36,6 @@ class P2PEditTradeViewController: UIViewController {
   let editButton = MDCButton.edit
   weak var delegate: P2PEditTradeViewControllerDelegate?
   
-  
-  init(balance: CoinsBalance,
-       payments: [TradePaymentMethods],
-       delegate: P2PEditTradeViewControllerDelegate,
-       editModel: P2PEditTradeDataModel,
-       coin: String,
-       tradeType: P2PSellBuyViewType) {
-    self.balance = balance
-    self.payments = payments
-    self.delegate = delegate
-    self.currentModel = editModel
-    self.coinType = coin
-    self.selectedType = tradeType
-    minRange = editModel.minLimit
-    maxRange = editModel.maxLimit
-    
-    super.init(nibName: nil, bundle: nil)
-
-    self.termsTextField.text = editModel.terms
-    
-    
-  }
-  
-  required init?(coder: NSCoder) {
-    fatalError("init(coder:) has not been implemented")
-  }
-  
-  private let scrollView = UIScrollView()
-  
   private lazy var stackView: UIStackView = {
     let stack = UIStackView()
     stack.axis = .vertical
@@ -96,6 +67,34 @@ class P2PEditTradeViewController: UIViewController {
   
   var termsTextFieldController: ThemedTextInputControllerOutlinedTextArea?
   private var emptyFooterView = UIView()
+  
+  private let scrollView = UIScrollView()
+  
+  init(balance: CoinsBalance,
+       payments: [TradePaymentMethods],
+       delegate: P2PEditTradeViewControllerDelegate,
+       editModel: P2PEditTradeDataModel,
+       coin: String,
+       tradeType: P2PSellBuyViewType) {
+    self.balance = balance
+    self.payments = payments
+    self.delegate = delegate
+    self.currentModel = editModel
+    self.coinType = coin
+    self.selectedType = tradeType
+    minRange = editModel.minLimit
+    maxRange = editModel.maxLimit
+    
+    super.init(nibName: nil, bundle: nil)
+
+    self.termsTextField.text = editModel.terms
+    
+  }
+  
+  required init?(coder: NSCoder) {
+    fatalError("init(coder:) has not been implemented")
+  }
+  
   
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -129,8 +128,8 @@ class P2PEditTradeViewController: UIViewController {
     termsTextFieldController?.minimumLines = 3
     
     editButton.addTarget(self, action: #selector(editTrade), for: .touchUpInside)
+    selectTradeTypeView.setActive(type: selectedType)
     
-//    selectTradeTypeView.delegate = self
     view.addSubviews([
       scrollView,
     ])
@@ -211,17 +210,7 @@ class P2PEditTradeViewController: UIViewController {
                                      maxLimit: maxRange ?? 0,
                                      paymentMethods: paymentMethods,
                                      terms: termsTextField.text ?? "")
-    
-//    let data = P2PCreateTradeDataModel(type: selectedType.rawValue,
-//                                       coin: coinExchangeView.coinType?.code ?? "",
-//                                       price: Double(coinExchangeView.amountTextField.text ?? "") ?? 0 ,
-//                                       minLimit: minRange ?? 0,
-//                                       maxLimit: maxRange ?? 0,
-//                                       paymentMethods: paymentMethods,
-//                                       terms: termsTextField.text ?? "")
-//
-//    delegate?.didSelectedSubmit(data: data)
-    
+
     delegate?.didSelectEdit(data: data)
   }
   
