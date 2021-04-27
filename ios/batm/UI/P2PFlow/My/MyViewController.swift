@@ -15,6 +15,7 @@ class MyViewController: UIViewController, MDCTabBarDelegate {
   private let infoViewController = MyInfoViewController()
   private var controllers = [UIViewController]()
   private var prevIndex = 0
+  private var balance: CoinsBalance?
   
   weak var delegate: MyViewControllerDelegate?
   
@@ -56,12 +57,17 @@ class MyViewController: UIViewController, MDCTabBarDelegate {
     let myOrders = trades.orders.filter { $0.makerUserId == userId }
     myTradesViewController.update(trades: myTrades)
     openOrdersViewController.update(orders: myOrders)
-    let verificationStatus = TradeVerificationStatus(rawValue: trades.makerStatus ?? 1)
+    let verificationStatus = TradeVerificationStatus(rawValue: trades.makerStatus )
     infoViewController.update(id: trades.makerPublicId,
                               verificationImage: verificationStatus?.image,
                               verificationStatus: verificationStatus?.status ?? "",
                               rate: trades.makerTradingRate.coinFormatted,
                               total: trades.makerTotalTrades.coinFormatted)
+  }
+  
+  func update(balance: CoinsBalance) {
+    self.balance = balance
+    self.myTradesViewController.update(balance: balance)
   }
   
   private func setupUI() {

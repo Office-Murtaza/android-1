@@ -15,7 +15,7 @@ class MyTradesViewController: UIViewController {
     view.addSubview(table)
     return table
   }()
-  
+  private var balance: CoinsBalance?
   private let dataSource = MyTradesDataSource()
   
   weak var delegate: MyTradesViewControllerDelegate?
@@ -25,7 +25,6 @@ class MyTradesViewController: UIViewController {
     setupUI()
     setupLayout()
   }
-  
   
   func update(trades: [Trade]) {
     let viewModels = trades.sorted { $0.timestamp ?? 0 > $1.timestamp ?? 0 }.map { MyTradesCellViewModel(trade: $0) }
@@ -50,6 +49,10 @@ class MyTradesViewController: UIViewController {
       $0.edges.equalToSuperview()
     }
   }
+  
+  func update(balance: CoinsBalance) {
+    self.balance = balance
+  }
 }
 
 extension MyTradesViewController: MyTradesEmptyViewDelegate {
@@ -60,8 +63,9 @@ extension MyTradesViewController: MyTradesEmptyViewDelegate {
 
 extension MyTradesViewController: MyTradesDataSourceDelegate {
   func didSelected(model: MyTradesCellViewModel) {
-    let controller = P2PTradeDetailsBuySellViewController()//P2PTradeDetailsEditViewController()//P2PTradeDetailsBaseViewController()
-    controller.setup(trade: model.trade)
+    guard let balance = self.balance else { return }
+    let controller = P2PTradeDetailsEditViewController()
+    controller.setup(trade: model.trade, balance: balance)
     navigationController?.pushViewController(controller, animated: true)
   }
 }

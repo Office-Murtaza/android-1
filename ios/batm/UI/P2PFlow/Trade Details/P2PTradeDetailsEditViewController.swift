@@ -11,6 +11,12 @@ class P2PTradeDetailsEditViewController: P2PTradeDetailsBaseViewController {
   private let editButton = MDCButton.edit
   private let cancelButton = MDCButton.cancelTransparent
   private let offsetView = UIView()
+  private var balance: CoinsBalance?
+  
+  func setup(trade: Trade, balance: CoinsBalance) {
+    super.setup(trade: trade)
+    self.balance = balance
+  }
   
   override func setupUI() {
     super.setupUI()
@@ -25,6 +31,33 @@ class P2PTradeDetailsEditViewController: P2PTradeDetailsBaseViewController {
     ])
     
     infoMessageView.update(message: "Selling cryptocurrency at the best rate. Ready to meet select cash as a method of payment. Always available, write in chat 24/7.")
+    
+    editButton.addTarget(self, action: #selector(editTrade), for: .touchUpInside)
+    
+  }
+  
+  @objc func editTrade() {
+    
+    guard let balance = balance, let trade = trade else { return }
+    
+    let tradeType = P2PSellBuyViewType(rawValue: trade.type ?? 2) ?? .buy
+ 
+ 
+     let editTradeData = P2PEditTradeDataModel(id: trade.id ?? "",
+                                               price: trade.price ?? 0,
+                                               minLimit: Int(trade.minLimit ?? 0),
+                                               maxLimit: Int(trade.maxLimit ?? 0),
+                                               paymentMethods: trade.paymentMethods ?? "",
+                                               terms: trade.terms ?? "")
+ 
+     let controller = P2PEditTradeViewController(balance: balance,
+                                                 payments: TradePaymentMethods.allCases,
+                                                 delegate: self,
+                                                 editModel: editTradeData,
+                                                 coin: trade.coin ?? "",
+                                                 tradeType: tradeType)
+ 
+     navigationController?.pushViewController(controller, animated: true)
   }
   
   override func setupLayout() {
@@ -69,5 +102,11 @@ class P2PTradeDetailsEditViewController: P2PTradeDetailsBaseViewController {
       $0.left.equalToSuperview().offset(15)
       $0.height.equalTo(50)
     }
+  }
+}
+
+extension P2PTradeDetailsEditViewController: P2PEditTradeViewControllerDelegate {
+  func didSelectEdit(data: P2PEditTradeDataModel) {
+    print("selected edit", data)
   }
 }

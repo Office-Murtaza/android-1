@@ -107,9 +107,13 @@ class P2PViewController: ModuleViewController<P2PPresenter>, MDCTabBarDelegate {
             }.subscribe()
             .disposed(by: disposeBag)
         
-        presenter.balance.observeOn(MainScheduler()).subscribe { [unowned self] (balance) in
-            self.balance = balance
-        }.disposed(by: disposeBag)
+      presenter.balance.observeOn(MainScheduler()).subscribe { [unowned self] (balance) in
+        self.balance = balance
+      }.disposed(by: disposeBag)
+      
+      presenter.balance.observeOn(MainScheduler()).subscribe { [unowned self] (balance) in
+        self.myViewController?.update(balance: balance)
+      }.disposed(by: disposeBag)
       
       presenter.isCreatedTradeSuccess
         .asObservable()

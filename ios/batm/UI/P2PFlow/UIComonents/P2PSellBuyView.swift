@@ -5,8 +5,8 @@ protocol P2PSellBuyViewDelegate: class {
 }
 
 enum P2PSellBuyViewType: Int {
-    case sell = 1
-    case buy
+    case buy = 1
+    case sell
     
     var backgroundColor: UIColor {
         switch self {
@@ -92,6 +92,12 @@ class P2PSellBuyView: UIView {
         }
     }
     
+  func setInactive() {
+    isUserInteractionEnabled = false
+    contentView.backgroundColor = UIColor(hexString: "#E1E1E1", alpha: 0.15)
+    titleLabel.textColor = UIColor(hexString: "#E1E1E1")
+  }
+  
     private func selectedState() {
         contentView.layer.borderColor = type?.contentColor.cgColor
         contentView.layer.borderWidth = 2

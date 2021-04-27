@@ -7,7 +7,7 @@ class P2PDistanceRangeView: UIView {
     
     typealias P2PDistanceRangeAction = (Int) -> Void
     
-    private lazy var distanceSlider: MultiSlider = {
+    lazy var distanceSlider: MultiSlider = {
         let slider = MultiSlider()
         slider.orientation = .horizontal
         slider.tintColor = UIColor(hexString: "0073E4")

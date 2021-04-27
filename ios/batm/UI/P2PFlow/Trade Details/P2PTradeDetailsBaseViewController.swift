@@ -2,6 +2,7 @@ import UIKit
 
 class P2PTradeDetailsBaseViewController: UIViewController {
   
+  var trade: Trade?
   private let scrollView = UIScrollView()
   private let coinInfoView = P2PTradeDetailsCoinInfoView()
 
@@ -22,6 +23,7 @@ class P2PTradeDetailsBaseViewController: UIViewController {
   }
 
   func setup(trade: Trade) {
+    self.trade = trade
     let infoModel = P2PTradeDetailsCoinInfoModel(trade: trade)
     coinInfoView.update(data: infoModel)
     setupPaymenMethodsView(trade: trade)
