@@ -80,13 +80,17 @@ class P2PSelectCoinView: CoinExchangeSwapTextFieldView {
         
         setupPicker()
     }
+  
+  func setCoinBalance(_ balance: CoinBalance) {
+    coinTypeImageView.image = balance.type.mediumLogo
+    coinTextField.text = balance.type.code
+    balanceLabel.text = "Reserved  \(balance.reservedBalance.coinFormatted.withCoinType(balance.type))"
+  }
     
-  func setCoinBalance(_ balance: CoinBalance, amount: String? = nil) {
-        amountTextField.text = amount
-        coinTypeImageView.image = balance.type.mediumLogo
-        coinTextField.text = balance.type.code
-        balanceLabel.text = "Reserved  \(balance.reservedBalance.coinFormatted.withCoinType(balance.type))"
-    }
+  func setCoinBalance(_ balance: CoinBalance, amount: String) {
+    amountTextField.text = amount
+    setCoinBalance(balance)
+  }
 }
 
 

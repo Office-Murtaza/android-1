@@ -116,8 +116,11 @@ class P2PEditTradeViewController: UIViewController {
     setupPaymentMethodsView(payments: payments)
     
     limitsView.setup(range: [100, 10000], measureString: "$ ", isMeasurePosistionLast: false)
-    limitsView.distanceSlider.minimumValue = CGFloat(currentModel.minLimit)
-    limitsView.distanceSlider.maximumValue = CGFloat(currentModel.maxLimit)
+  
+    if currentModel.maxLimit != 0 {
+      limitsView.distanceSlider.value = [CGFloat(currentModel.minLimit), CGFloat(currentModel.maxLimit)]
+      limitsView.setInitFieldsValues(from: CGFloat(currentModel.minLimit), to: CGFloat(currentModel.maxLimit))
+    }
     
     limitsHeader.update(title: "Limits")
     
@@ -332,7 +335,7 @@ class P2PEditTradeViewController: UIViewController {
     
     guard let firstBalance = balance.coins.first else { return }
     let currentBalance = balance.coins.first(where: {$0.type.code == coinType})
-    coinExchangeView.setCoinBalance(currentBalance ?? firstBalance, amount: "$ \(currentModel.price)")
+    coinExchangeView.setCoinBalance(currentBalance ?? firstBalance, amount: "$ \(currentModel.price.formatted() ?? "0")")
     
     coinExchangeView.didSelectPickerRow.asObservable().subscribe { [unowned self] type in
       if let selectedbalance = balance.coins.first(where: { $0.type == type.element }) {

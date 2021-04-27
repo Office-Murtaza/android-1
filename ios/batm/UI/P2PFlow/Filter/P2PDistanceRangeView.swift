@@ -56,6 +56,12 @@ class P2PDistanceRangeView: UIView {
         fromField.update(attributedText: fromAttrString)
         toField.update(attributedText: toAttrString)
     }
+  
+  func setInitFieldsValues(from: CGFloat, to: CGFloat) {
+    let (fromAttrString, toAttrString) = transformToAttributedRange(from: from, to: to)
+    fromField.update(attributedText: fromAttrString)
+    toField.update(attributedText: toAttrString)
+  }
     
     func selectedMinRange(_ minRange: @escaping P2PDistanceRangeAction, maxRange: @escaping P2PDistanceRangeAction) {
         self.minRange = minRange
