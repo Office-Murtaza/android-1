@@ -6,6 +6,7 @@ import MaterialComponents
 
 protocol MyViewControllerDelegate: class {
   func didTapCreateTrade()
+  func didSelectEdit(data: P2PEditTradeDataModel)
 }
 
 class MyViewController: UIViewController, MDCTabBarDelegate {
@@ -113,8 +114,14 @@ class MyViewController: UIViewController, MDCTabBarDelegate {
 }
 
 extension MyViewController: MyTradesViewControllerDelegate {
+  
   func didTapCreateTrade() {
     delegate?.didTapCreateTrade()
   }
+  
+  func didSelectEdit(data: P2PEditTradeDataModel) {
+    delegate?.didSelectEdit(data: data)
+  }
+  
 }
 

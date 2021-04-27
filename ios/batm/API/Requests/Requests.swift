@@ -678,3 +678,18 @@ struct CreateTradesRequest: AuthorizedAPIRequest {
                               encoding: JSONEncoding.default)
   }
 }
+
+struct EditTradesRequest: AuthorizedAPIRequest {
+  typealias ResponseType = APIResponse<Trade>
+  typealias ResponseTrait = SingleResponseTrait
+  
+  let userId: Int
+  let data: P2PEditTradeDataModel
+  
+  var path: String { return "/user/\(userId)/trade" }
+  var method: HTTPMethod { return .put }
+  var task: HTTPTask {
+    return .requestParameters(parameters: data.dictionary,
+                              encoding: JSONEncoding.default)
+  }
+}

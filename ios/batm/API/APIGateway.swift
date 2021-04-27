@@ -73,7 +73,7 @@ protocol APIGateway {
   func getPriceChart(type: CustomCoinType, period: SelectedPeriod) -> Single<PriceChartDetails>
   func getTrades(userId: Int) -> Single<Trades>
   func createTrade(userId: Int, data: P2PCreateTradeDataModel) -> Single<Trade>
-    
+  func editTrade(userId: Int, data: P2PEditTradeDataModel) -> Single<Trade>
 }
 
 final class APIGatewayImpl: APIGateway {
@@ -359,6 +359,11 @@ final class APIGatewayImpl: APIGateway {
     
   func createTrade(userId: Int, data: P2PCreateTradeDataModel) -> Single<Trade> {
     let request = CreateTradesRequest(userId: userId, data: data)
+    return execute(request)
+  }
+  
+  func editTrade(userId: Int, data: P2PEditTradeDataModel) -> Single<Trade> {
+    let request = EditTradesRequest(userId: userId, data: data)
     return execute(request)
   }
   

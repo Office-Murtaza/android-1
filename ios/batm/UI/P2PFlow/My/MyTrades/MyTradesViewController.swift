@@ -3,6 +3,7 @@ import SnapKit
 
 protocol MyTradesViewControllerDelegate: class {
   func didTapCreateTrade()
+  func didSelectEdit(data: P2PEditTradeDataModel)
 }
 
 class MyTradesViewController: UIViewController {
@@ -65,7 +66,14 @@ extension MyTradesViewController: MyTradesDataSourceDelegate {
   func didSelected(model: MyTradesCellViewModel) {
     guard let balance = self.balance else { return }
     let controller = P2PTradeDetailsEditViewController()
+    controller.delegate = self
     controller.setup(trade: model.trade, balance: balance)
     navigationController?.pushViewController(controller, animated: true)
+  }
+}
+
+extension MyTradesViewController: P2PTradeDetailsEditViewControllerDelegate {
+  func didSelectEdit(data: P2PEditTradeDataModel) {
+    delegate?.didSelectEdit(data: data)
   }
 }

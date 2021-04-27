@@ -73,4 +73,21 @@ class P2PPresenter: ModulePresenter, P2PModule {
           errorService.showError(for: .serverError).subscribe().disposed(by: disposable)
       }).disposed(by: disposeBag)
   }
+  
+  func editTrade(data: P2PEditTradeDataModel) {
+    guard let useCase = walletUseCase else { return }
+    //do we need track here?
+    track(useCase.editTrade(data: data))
+      .asObservable()
+      .subscribe(onNext: { [weak self] (trade) in
+        //TODO
+        self?.isCreatedTradeSuccess.accept(true)
+        self?.refreshTrades()
+      }, onError: { [weak self] (error) in
+          guard let errorService = self?.errorService, let disposable = self?.disposeBag else {
+            return
+          }
+          errorService.showError(for: .serverError).subscribe().disposed(by: disposable)
+      }).disposed(by: disposeBag)
+  }
 }

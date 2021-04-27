@@ -115,19 +115,19 @@ class P2PViewController: ModuleViewController<P2PPresenter>, MDCTabBarDelegate {
         self.myViewController?.update(balance: balance)
       }.disposed(by: disposeBag)
       
-      presenter.isCreatedTradeSuccess
-        .asObservable()
-        .observeOn(MainScheduler())
-        .filter{ $0 != false }
-        .subscribe { [weak self] (event) in
-        self?.navigationController?.popViewController(animated: true)
-        self?.view.makeToast("Trade successfully created")
-        if let myTrades = self?.myTradesItem, let tBar = self?.tabBar {
-          tBar.setSelectedItem(myTrades, animated: true)
-          self?.tabBar(tBar, didSelect: myTrades)
-        }
-      }.disposed(by: disposeBag)
-      
+        presenter.isCreatedTradeSuccess
+            .asObservable()
+            .observeOn(MainScheduler())
+            .filter{ $0 != false }
+            .subscribe { [unowned self] (event) in
+                
+                self.navigationController?.popToViewController(self, animated: true)
+                
+                self.view.makeToast("Trade successfully created")
+                self.tabBar.setSelectedItem(self.myTradesItem, animated: true)
+                self.tabBar(tabBar,didSelect: self.myTradesItem)
+            }.disposed(by: disposeBag)
+        
     }
     
     override func setupLayout() {
@@ -162,9 +162,15 @@ extension P2PViewController: P2PCreateTradeViewControllerDelegate {
 }
 
 extension P2PViewController: MyViewControllerDelegate {
+  
   func didTapCreateTrade() {
     createTrade()
   }
+  
+  func didSelectEdit(data: P2PEditTradeDataModel) {
+    presenter.editTrade(data: data)
+  }
+  
 }
 
 

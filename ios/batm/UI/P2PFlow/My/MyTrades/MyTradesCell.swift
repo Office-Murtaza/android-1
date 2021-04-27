@@ -12,6 +12,18 @@ class MyTradesCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        resetPaymentViewContent()
+    }
+    
+    private func resetPaymentViewContent() {
+        for view in paymentMethodsView.arrangedSubviews {
+            paymentMethodsView.removeArrangedSubview(view)
+            view.removeFromSuperview()
+        }
+    }
+    
     private let coinView = P2PCoinView()
     
     private let sellBuyView = P2PSellBuyView()
@@ -93,6 +105,9 @@ class MyTradesCell: UITableViewCell {
     private func setupPaymentMethods(images: [UIImage]?) {
         guard let images = images else { return }
         let imageViews = images.map { UIImageView(image: $0) }
+        
+        resetPaymentViewContent()
+        
         paymentMethodsView.addArrangedSubviews(imageViews)
     }
     

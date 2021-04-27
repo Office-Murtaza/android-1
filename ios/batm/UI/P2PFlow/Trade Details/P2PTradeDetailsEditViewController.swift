@@ -2,6 +2,10 @@ import UIKit
 import SnapKit
 import MaterialComponents
 
+protocol P2PTradeDetailsEditViewControllerDelegate: class {
+  func didSelectEdit(data: P2PEditTradeDataModel)
+}
+
 class P2PTradeDetailsEditViewController: P2PTradeDetailsBaseViewController {
   
   private let openOrders = P2PTradeDetailsOpenOrdersView()
@@ -12,6 +16,8 @@ class P2PTradeDetailsEditViewController: P2PTradeDetailsBaseViewController {
   private let cancelButton = MDCButton.cancelTransparent
   private let offsetView = UIView()
   private var balance: CoinsBalance?
+ 
+  weak var delegate: P2PTradeDetailsEditViewControllerDelegate?
   
   func setup(trade: Trade, balance: CoinsBalance) {
     super.setup(trade: trade)
@@ -107,6 +113,6 @@ class P2PTradeDetailsEditViewController: P2PTradeDetailsBaseViewController {
 
 extension P2PTradeDetailsEditViewController: P2PEditTradeViewControllerDelegate {
   func didSelectEdit(data: P2PEditTradeDataModel) {
-    print("selected edit", data)
+    delegate?.didSelectEdit(data: data)
   }
 }

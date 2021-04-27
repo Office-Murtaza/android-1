@@ -10,7 +10,9 @@ protocol WalletUsecase {
   func getCoinsList() -> Single<[BTMCoin]>
   
   func getTrades() -> Single<Trades>
+  
   func createTrade(data: P2PCreateTradeDataModel) -> Single<Trade>
+  func editTrade(data: P2PEditTradeDataModel) -> Single<Trade>
 }
 
 class WalletUsecaseImpl: WalletUsecase, HasDisposeBag {
@@ -88,6 +90,14 @@ class WalletUsecaseImpl: WalletUsecase, HasDisposeBag {
       .asObservable()
       .flatMap { [api] user in
         api.createTrade(userId: user.userId, data: data)
+      }.asSingle()
+  }
+  
+  func editTrade(data: P2PEditTradeDataModel) -> Single<Trade> {
+    return accountStorage.get()
+      .asObservable()
+      .flatMap { [api] user in
+        api.editTrade(userId: user.userId, data: data)
       }.asSingle()
   }
   
