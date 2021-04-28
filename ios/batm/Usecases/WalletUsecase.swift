@@ -13,6 +13,7 @@ protocol WalletUsecase {
   
   func createTrade(data: P2PCreateTradeDataModel) -> Single<Trade>
   func editTrade(data: P2PEditTradeDataModel) -> Single<Trade>
+  func cancelTrade(id: String) -> Single<Trade>
 }
 
 class WalletUsecaseImpl: WalletUsecase, HasDisposeBag {
@@ -98,6 +99,14 @@ class WalletUsecaseImpl: WalletUsecase, HasDisposeBag {
       .asObservable()
       .flatMap { [api] user in
         api.editTrade(userId: user.userId, data: data)
+      }.asSingle()
+  }
+    
+  func cancelTrade(id: String) -> Single<Trade> {
+    return accountStorage.get()
+      .asObservable()
+      .flatMap { [api] user in
+        api.cancelTrade(userId: user.userId, id: id)
       }.asSingle()
   }
   

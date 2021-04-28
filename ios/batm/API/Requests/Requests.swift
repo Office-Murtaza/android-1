@@ -693,3 +693,18 @@ struct EditTradesRequest: AuthorizedAPIRequest {
                               encoding: JSONEncoding.default)
   }
 }
+
+struct CancelTradesRequest: AuthorizedAPIRequest {
+  typealias ResponseType = APIResponse<Trade>
+  typealias ResponseTrait = SingleResponseTrait
+  
+  let userId: Int
+  let id: String
+  
+  var path: String { return "/user/\(userId)/trade" }
+  var method: HTTPMethod { return .delete }
+  var task: HTTPTask {
+    return .requestParameters(parameters: ["id": id],
+                              encoding: URLEncoding.customDefault)
+  }
+}

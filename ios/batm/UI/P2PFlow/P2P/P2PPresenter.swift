@@ -13,7 +13,7 @@ class P2PPresenter: ModulePresenter, P2PModule {
   var userId: Int?
   
   var isCreationError = BehaviorRelay<Bool>(value: false)
-  var isCreatedTradeSuccess = BehaviorRelay<Bool>(value: false)
+  var tradeSuccessMessage = BehaviorRelay<String>(value: "")
   
   var balance = PublishRelay<CoinsBalance>()
   private let locationService = GeolocationService()
@@ -64,7 +64,7 @@ class P2PPresenter: ModulePresenter, P2PModule {
     track(useCase.createTrade(data: data))
       .asObservable()
       .subscribe(onNext: { [weak self] (trade) in
-        self?.isCreatedTradeSuccess.accept(true)
+        self?.tradeSuccessMessage.accept("Trade successfully created")
         self?.refreshTrades()
       }, onError: { [weak self] (error) in
           guard let errorService = self?.errorService, let disposable = self?.disposeBag else {
@@ -80,8 +80,7 @@ class P2PPresenter: ModulePresenter, P2PModule {
     track(useCase.editTrade(data: data))
       .asObservable()
       .subscribe(onNext: { [weak self] (trade) in
-        //TODO
-        self?.isCreatedTradeSuccess.accept(true)
+        self?.tradeSuccessMessage.accept("Trade successfully updated")
         self?.refreshTrades()
       }, onError: { [weak self] (error) in
           guard let errorService = self?.errorService, let disposable = self?.disposeBag else {
@@ -90,4 +89,20 @@ class P2PPresenter: ModulePresenter, P2PModule {
           errorService.showError(for: .serverError).subscribe().disposed(by: disposable)
       }).disposed(by: disposeBag)
   }
+    
+    func cancelTrade(id: String) {
+      guard let useCase = walletUseCase else { return }
+      //do we need track here?
+      track(useCase.cancelTrade(id: id))
+        .asObservable()
+        .subscribe(onNext: { [weak self] (trade) in
+          self?.tradeSuccessMessage.accept("Trade successfully canceled")
+          self?.refreshTrades()
+        }, onError: { [weak self] (error) in
+            guard let errorService = self?.errorService, let disposable = self?.disposeBag else {
+              return
+            }
+            errorService.showError(for: .serverError).subscribe().disposed(by: disposable)
+        }).disposed(by: disposeBag)
+    }
 }
