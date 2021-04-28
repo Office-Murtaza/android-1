@@ -41,6 +41,7 @@ class P2PTradeDetailsEditViewController: P2PTradeDetailsBaseViewController {
         
         editButton.addTarget(self, action: #selector(editTrade), for: .touchUpInside)
         cancelButton.addTarget(self, action: #selector(cancelTrade), for: .touchUpInside)
+        openOrders.setOpenOrdersValue(trade?.openOrders)
     }
     
     @objc func editTrade() {

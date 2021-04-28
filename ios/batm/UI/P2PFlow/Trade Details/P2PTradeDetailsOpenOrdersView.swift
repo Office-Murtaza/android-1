@@ -17,6 +17,11 @@ class P2PTradeDetailsOpenOrdersView: UIView {
     return label
   }()
   
+  func setOpenOrdersValue( _ openOrders: Int?) {
+    let value = String(openOrders ?? 0)
+    valueLabel.text = value
+  }
+  
   override init(frame: CGRect) {
     super.init(frame: frame)
     setupUI()

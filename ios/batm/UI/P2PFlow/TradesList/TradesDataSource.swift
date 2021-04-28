@@ -1,14 +1,17 @@
 import UIKit
 import CoreLocation
 
+protocol TradesDataSourceDelegate: class {
+  func didSelected(tradeModel: TradeViewModel, type: P2PTradesType)
+}
 
 class TradesDataSource: NSObject,  TradeListDataSource {
     
     var tradesViewModels = [TradeViewModel]()
     var initViewModels = [TradeViewModel]()
-    
+    private var currentType: P2PTradesType?
     weak var controller: TradeListViewController?
-    
+    weak var delegate: TradesDataSourceDelegate?
     weak var tableView: UITableView?
     
     func setup(controller: TradeListViewController) {
@@ -27,24 +30,25 @@ class TradesDataSource: NSObject,  TradeListDataSource {
     }
     
     func setup(trades: Trades, type: P2PTradesType, userId: Int?) {
-        
-        var buyTrades = trades.trades.filter{ $0.type == type.rawValue }
+        currentType = type
+      
+        var listTrades = trades.trades.filter{ $0.type == type.rawValue }
         
         if let id = userId {
-            buyTrades = buyTrades.filter { $0.makerUserId != id }
+            listTrades = listTrades.filter { $0.makerUserId != id }
         }
         
         if type == .buy {
-            buyTrades = buyTrades.sorted(by: { (trade1, trade2) -> Bool in
+            listTrades = listTrades.sorted(by: { (trade1, trade2) -> Bool in
                 return trade1.price ?? 0 > trade2.price ?? 0
             })
         } else {
-            buyTrades = buyTrades.sorted(by: { (trade1, trade2) -> Bool in
+            listTrades = listTrades.sorted(by: { (trade1, trade2) -> Bool in
                 return trade1.price ?? 0 < trade2.price ?? 0
             })
         }
         
-        tradesViewModels = buyTrades.map{ TradeViewModel(trade: $0,
+        tradesViewModels = listTrades.map{ TradeViewModel(trade: $0,
                                                          totalTrades: trades.makerTotalTrades,
                                                          rate: trades.makerTradingRate) }
         
@@ -75,6 +79,14 @@ class TradesDataSource: NSObject,  TradeListDataSource {
         cell.selectionStyle = .none
         return cell
     }
+  
+  func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    let tradeModel = tradesViewModels[indexPath.row]
+    if let type = currentType {
+      delegate?.didSelected(tradeModel: tradeModel, type: type)
+    }
+  }
+  
 }
 
 extension TradesDataSource: TradeListDelegate {

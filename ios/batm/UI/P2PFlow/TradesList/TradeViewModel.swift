@@ -3,7 +3,7 @@ import CoreLocation
 
 class TradeViewModel {
     
-    private let trade: Trade
+    let trade: Trade
     private let total: Double
     private let rate: Double
     

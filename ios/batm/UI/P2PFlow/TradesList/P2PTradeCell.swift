@@ -216,7 +216,7 @@ class P2PCellRateView: UIView {
     public func update(rate: String, tradesCount: String) {
         rateLabel.text = rate
         tradesLabel.text = "\(tradesCount)+"
-        tradesTitleLabel.text = "trades"
+        tradesTitleLabel.text = "Trades"
     }
     
     private lazy var stackView: UIStackView = {

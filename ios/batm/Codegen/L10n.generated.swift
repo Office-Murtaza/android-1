@@ -757,6 +757,7 @@ extension L.Shared {
 
   struct Button {
     static let add = "shared.button.add"
+    static let buy = "shared.button.buy"
     static let buySell = "shared.button.buy_sell"
     static let cancel = "shared.button.cancel"
     static let copy = "shared.button.copy"
@@ -769,6 +770,7 @@ extension L.Shared {
     static let paste = "shared.button.paste"
     static let remove = "shared.button.remove"
     static let retry = "shared.button.retry"
+    static let sell = "shared.button.sell"
     static let send = "shared.button.send"
     static let submit = "shared.button.submit"
     static let unlink = "shared.button.unlink"

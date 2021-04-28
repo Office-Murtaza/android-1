@@ -22,6 +22,8 @@
 "shared.terms_and_conditions" = "Accept Terms & Conditions";
 "shared.button.edit" = "Edit";
 "shared.button.buy_sell" = "Buy / Sell";
+"shared.button.buy" = "Buy";
+"shared.button.sell" = "Sell";
 
 "welcome.first_slide.title" = "All assets in one place";
 "welcome.second_slide.title" = "Private and secure";

@@ -2,13 +2,21 @@ import UIKit
 import SnapKit
 import MaterialComponents
 
-class P2PTradeDetailsBuySellViewController: P2PTradeDetailsBaseViewController {
+class P2PTradeDetailsSellViewController: P2PTradeDetailsBaseViewController {
   private let tradeView =  P2PTradeDetailsRateView()
   private let tradeViewSeparator = P2PSeparatorView()
   
   private let infoMessageView = P2PTradeDetailsTextInfoView()
   
-  private let buySellButton = MDCButton.buySell
+  private let sellButton = MDCButton.sell
+  
+  func setup(trade: Trade, distance: String) {
+    super.setup(trade: trade)
+    guard let makerId = trade.makerPublicId,
+          let tradeRate = trade.makerTradingRate,
+          let totalTrades = trade.makerTotalTrades else { return }
+    tradeView.setup(markerId: makerId , statusImage: nil, rate: tradeRate, totalTrades: totalTrades, distance: distance)
+  }
   
   override func setupUI() {
     super.setupUI()
@@ -17,7 +25,7 @@ class P2PTradeDetailsBuySellViewController: P2PTradeDetailsBaseViewController {
       tradeView,
       tradeViewSeparator,
       infoMessageView,
-      buySellButton
+      sellButton
     ])
     
     infoMessageView.update(message: "Selling cryptocurrency at the best rate. Ready to meet select cash as a method of payment. Always available, write in chat 24/7.")
@@ -32,7 +40,7 @@ class P2PTradeDetailsBuySellViewController: P2PTradeDetailsBaseViewController {
     tradeView.snp.makeConstraints {
       $0.top.equalTo(paymentMethodsSeparator.snp.bottom)
       $0.left.right.equalToSuperview()
-      $0.height.equalTo(56)
+      $0.height.equalTo(70)
     }
     
     tradeViewSeparator.snp.makeConstraints {
@@ -47,7 +55,7 @@ class P2PTradeDetailsBuySellViewController: P2PTradeDetailsBaseViewController {
       $0.left.right.equalToSuperview()
     }
     
-    buySellButton.snp.makeConstraints {
+    sellButton.snp.makeConstraints {
       $0.top.equalTo(infoMessageView.snp.bottom)
       $0.right.equalToSuperview().offset(-15)
       $0.left.equalToSuperview().offset(15)

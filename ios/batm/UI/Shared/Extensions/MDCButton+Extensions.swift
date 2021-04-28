@@ -203,6 +203,18 @@ extension MDCButton {
     return button
   }
   
+  static var buy: MDCButton {
+    let button = MDCButton.contained
+    button.setTitle(localize(L.Shared.Button.buy), for: .normal)
+    return button
+  }
+  
+  static var sell: MDCButton {
+    let button = MDCButton.contained
+    button.setTitle(localize(L.Shared.Button.sell), for: .normal)
+    return button
+  }
+  
   static var cancelTransparent: MDCButton {
     let button = MDCButton.default
     button.applyContainedTheme(withScheme: MDCContainerScheme.transparent)

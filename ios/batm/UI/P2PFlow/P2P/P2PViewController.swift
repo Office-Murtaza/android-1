@@ -73,7 +73,9 @@ class P2PViewController: ModuleViewController<P2PPresenter>, MDCTabBarDelegate {
     
     buyDataSource.setup(controller: buyController)
     sellDataSource.setup(controller: sellController)
-    
+    buyDataSource.delegate = self
+    sellDataSource.delegate = self
+ 
   }
     
     @objc func createTrade() {
@@ -173,7 +175,23 @@ extension P2PViewController: MyViewControllerDelegate {
   func cancelTrade(id: String) {
     presenter.cancelTrade(id: id)
   }
-  
+}
+
+extension P2PViewController: TradesDataSourceDelegate {
+  func didSelected(tradeModel: TradeViewModel, type: P2PTradesType) {
+    
+    switch type {
+    case .buy:
+    let buyController = P2PTradeDetailsBuyViewController()
+      buyController.setup(trade: tradeModel.trade, distance: "\(tradeModel.distanceInMiles ?? "0") Miles")
+      navigationController?.pushViewController(buyController, animated: true)
+    case .sell:
+      let sellController = P2PTradeDetailsSellViewController()
+      sellController.setup(trade: tradeModel.trade, distance: "\(tradeModel.distanceInMiles ?? "0") Miles")
+      navigationController?.pushViewController(sellController, animated: true)
+    }
+    
+  }
 }
 
 
