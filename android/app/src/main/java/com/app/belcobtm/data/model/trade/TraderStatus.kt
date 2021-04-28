@@ -7,6 +7,7 @@ import androidx.annotation.IntDef
 @IntDef(TraderStatus.NOT_VERIFIED, TraderStatus.VERIFIED, TraderStatus.VIP_VERIFIED)
 annotation class TraderStatus {
     companion object {
+        // TODO add other statuses
         const val NOT_VERIFIED = 1
         const val VERIFIED = 4
         const val VIP_VERIFIED = 7

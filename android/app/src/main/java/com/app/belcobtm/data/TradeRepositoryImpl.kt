@@ -48,7 +48,7 @@ class TradeRepositoryImpl(
     override fun getTradeData(): Either<Failure, TradeData>? =
         tradeInMemoryCache.data
 
-    override fun getTrade(tradeId: Int): Either<Failure, Trade> =
+    override fun getTrade(tradeId: String): Either<Failure, Trade> =
         tradeInMemoryCache.findTrade(tradeId)
 
     override fun getFilter(): TradeFilter? =
@@ -83,12 +83,12 @@ class TradeRepositoryImpl(
         return response.map { Unit }
     }
 
-    override suspend fun cancelTrade(tradeId: Int): Either<Failure, Unit> {
+    override suspend fun cancelTrade(tradeId: String): Either<Failure, Unit> {
         val response = tradeApiService.deleteTrade(tradeId)
         return response.map { Unit }
     }
 
-    override suspend fun createOrder(tradeOrder: TradeOrderItem): Either<Failure, Int> {
+    override suspend fun createOrder(tradeOrder: TradeOrderItem): Either<Failure, String> {
         val response = tradeApiService.createOrder(tradeOrder)
         return response.map {
             tradeInMemoryCache.updateOrders(it)
@@ -101,7 +101,7 @@ class TradeRepositoryImpl(
         return response.map { tradeInMemoryCache.updateOrders(it) }
     }
 
-    override suspend fun rateOrder(orderId: Int, rate: Int): Either<Failure, Unit> {
+    override suspend fun rateOrder(orderId: String, rate: Int): Either<Failure, Unit> {
         val response = tradeApiService.updateOrder(orderId, rate = rate)
         return response.map { tradeInMemoryCache.updateOrders(it) }
     }

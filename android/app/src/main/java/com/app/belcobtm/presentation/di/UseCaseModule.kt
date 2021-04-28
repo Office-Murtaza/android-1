@@ -113,8 +113,8 @@ val useCaseModule = module {
     single { UpdateOrderStatusUseCase(get()) }
     single { ClearCacheUseCase(get()) }
     single { RateOrderUseCase(get()) }
-    single { SendChatMessageUseCase(get()) }
-    single { ObserveChatMessagesUseCase(get(), get()) }
+    single { SendChatMessageUseCase(get(), get()) }
+    single { ObserveChatMessagesUseCase(get(), get(), get()) }
     single { ConnectToChatUseCase(get()) }
     single { DisconnectFromChatUseCase(get()) }
     single { GetChatHistoryUseCase(get()) }
@@ -146,5 +146,5 @@ val useCaseModule = module {
     factory { TradeFilterItemMapper(get(), get()) }
     factory { PaymentIdToAvailablePaymentOptionMapper(get()) }
     factory { TradeFilterMapper() }
-    factory { ChatMessageMapper(get(), SimpleDateFormat(CHAT_DATE_FORMAT)) }
+    factory { ChatMessageMapper(get(), get(), SimpleDateFormat(CHAT_DATE_FORMAT)) }
 }

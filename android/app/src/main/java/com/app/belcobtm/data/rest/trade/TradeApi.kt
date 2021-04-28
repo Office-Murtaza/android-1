@@ -11,7 +11,7 @@ import retrofit2.http.*
 
 interface TradeApi {
 
-    @GET("user/{userId}/trades")
+    @GET("user/{userId}/trade-history")
     fun getTradesAsync(@Path("userId") userId: Int): Deferred<Response<TradesResponse>>
 
     @POST("user/{userId}/trade")
@@ -41,6 +41,6 @@ interface TradeApi {
     @DELETE("user/{userId}/trade")
     fun deleteTradeAsync(
         @Path("userId") userId: Int,
-        @Query("id") tradeId: Int
+        @Query("id") tradeId: String
     ): Deferred<Response<DeleteTradeResponse>>
 }

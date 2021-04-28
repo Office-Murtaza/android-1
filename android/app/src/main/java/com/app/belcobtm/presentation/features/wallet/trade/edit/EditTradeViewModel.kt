@@ -84,7 +84,7 @@ class EditTradeViewModel(
 
     fun formatPrice(price: Double) = priceFormatter.format(price)
 
-    fun fetchTradeDetails(tradeId: Int) {
+    fun fetchTradeDetails(tradeId: String) {
         _initialLoadingData.value = LoadingData.Loading(Unit)
         getAvailableTradePaymentOptionsUseCase.invoke(Unit, onSuccess = { availablePaymentOptions ->
             getTradeDetailsUseCase.invoke(tradeId, onSuccess = { trade ->
@@ -135,7 +135,7 @@ class EditTradeViewModel(
     }
 
     fun editTrade(
-        tradeId: Int,
+        tradeId: String,
         terms: String,
         minRangeAmount: Int,
         maxRangeAmount: Int

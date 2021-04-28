@@ -12,6 +12,7 @@ import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.lifecycle.observe
 import androidx.navigation.fragment.navArgs
+import com.app.belcobtm.R
 import com.app.belcobtm.databinding.FragmentOrderChatBinding
 import com.app.belcobtm.presentation.core.adapter.MultiTypeAdapter
 import com.app.belcobtm.presentation.core.extensions.actionDoneListener
@@ -19,6 +20,7 @@ import com.app.belcobtm.presentation.core.extensions.toggle
 import com.app.belcobtm.presentation.core.ui.fragment.BaseFragment
 import com.app.belcobtm.presentation.features.wallet.trade.order.chat.delegate.MyMessageDelegate
 import com.app.belcobtm.presentation.features.wallet.trade.order.chat.delegate.PartnerMessageDelegate
+import com.google.android.material.snackbar.Snackbar
 import org.koin.android.viewmodel.ext.android.viewModel
 
 
@@ -36,7 +38,7 @@ class OrderChatFragment : BaseFragment<FragmentOrderChatBinding>() {
                     val source = ImageDecoder.createSource(requireActivity().contentResolver, uri)
                     ImageDecoder.decodeBitmap(source)
                 }
-                viewModel.setAttachment(bitmap)
+                viewModel.setAttachment(uri, bitmap)
             }
         }
     }
@@ -75,21 +77,21 @@ class OrderChatFragment : BaseFragment<FragmentOrderChatBinding>() {
             openPicker()
         }
         binding.attachmentRemove.setOnClickListener {
-            viewModel.setAttachment(null)
+            viewModel.setAttachment(null, null)
         }
     }
 
     override fun FragmentOrderChatBinding.initObservers() {
-        viewModel.chatObserverLoadingData.listen()
+        viewModel.chatObserverLoadingData.listen(error = {
+            Snackbar.make(binding.root, R.string.send_message_error, Snackbar.LENGTH_SHORT).show()
+        })
         viewModel.attachmentImage.observe(viewLifecycleOwner) {
             binding.attachment.toggle(it != null)
             binding.attachmentBackground.toggle(it != null)
             binding.attachmentRemove.toggle(it != null)
             binding.attachment.setImageBitmap(it)
         }
-        viewModel.chatData().observe(viewLifecycleOwner) {
-            adapter.update(it)
-        }
+        viewModel.chatData(args.orderId).observe(viewLifecycleOwner, adapter::update)
     }
 
     private fun openPicker() {

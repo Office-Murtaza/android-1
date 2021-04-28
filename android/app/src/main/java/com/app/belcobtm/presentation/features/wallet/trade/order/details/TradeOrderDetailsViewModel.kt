@@ -105,7 +105,7 @@ class TradeOrderDetailsViewModel(
     private var partnerLat: Double? = null
     private var partnerLong: Double? = null
 
-    fun fetchInitialData(orderId: Int) {
+    fun fetchInitialData(orderId: String) {
         viewModelScope.launch {
             _initialLoadingData.value = LoadingData.Loading()
             observeOrderDetailsUseCase(orderId)
@@ -119,14 +119,14 @@ class TradeOrderDetailsViewModel(
         }
     }
 
-    fun updateOrderPrimaryAction(orderId: Int) {
+    fun updateOrderPrimaryAction(orderId: String) {
         val newStatus = buttonsState.value?.primaryStatusId ?: return
         if (newStatus != OrderStatus.UNDEFINED) {
             updateStatus(orderId, newStatus, _primaryActionUpdateLoadingData)
         }
     }
 
-    fun updateOrderSecondaryAction(orderId: Int) {
+    fun updateOrderSecondaryAction(orderId: String) {
         val newStatus = buttonsState.value?.secondaryStatusId ?: return
         if (newStatus != OrderStatus.UNDEFINED) {
             updateStatus(orderId, newStatus, _secondaryActionUpdateLoadingData)
@@ -139,7 +139,11 @@ class TradeOrderDetailsViewModel(
         return googleMapQueryFormatter.format(GoogleMapsDirectionQueryFormatter.Location(toLat, toLong))
     }
 
-    private fun updateStatus(orderId: Int, @OrderStatus status: Int, loadingData: MutableLiveData<LoadingData<Unit>>) {
+    private fun updateStatus(
+        orderId: String,
+        @OrderStatus status: Int,
+        loadingData: MutableLiveData<LoadingData<Unit>>
+    ) {
         loadingData.value = LoadingData.Loading()
         updateOrderStatusUseCase(
             UpdateOrderStatusItem(orderId, status),

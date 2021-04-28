@@ -172,7 +172,7 @@
 
         <argument
             android:name="tradeId"
-            app:argType="integer"
+            app:argType="string"
             app:nullable="false" />
 
         <action
@@ -192,7 +192,7 @@
 
         <argument
             android:name="tradeId"
-            app:argType="integer"
+            app:argType="string"
             app:nullable="false" />
 
         <action
@@ -215,7 +215,7 @@
 
         <argument
             android:name="tradeId"
-            app:argType="integer"
+            app:argType="string"
             app:nullable="false" />
 
         <action
@@ -236,7 +236,7 @@
 
         <argument
             android:name="tradeId"
-            app:argType="integer"
+            app:argType="string"
             app:nullable="false" />
 
     </fragment>
@@ -249,7 +249,7 @@
 
         <argument
             android:name="orderId"
-            app:argType="integer"
+            app:argType="string"
             app:nullable="false" />
 
         <action
@@ -291,7 +291,7 @@
 
         <argument
             android:name="orderId"
-            app:argType="integer"
+            app:argType="string"
             app:nullable="false" />
 
     </dialog>
@@ -310,7 +310,7 @@
 
         <argument
             android:name="orderId"
-            app:argType="integer"
+            app:argType="string"
             app:nullable="false" />
 
         <argument
@@ -337,7 +337,7 @@
 
         <argument
             android:name="orderId"
-            app:argType="integer"
+            app:argType="string"
             app:nullable="false" />
     </fragment>
 

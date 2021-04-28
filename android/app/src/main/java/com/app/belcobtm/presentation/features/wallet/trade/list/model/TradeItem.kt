@@ -1,12 +1,13 @@
 package com.app.belcobtm.presentation.features.wallet.trade.list.model
 
 import androidx.annotation.DrawableRes
+import com.app.belcobtm.data.model.trade.TradeType
 import com.app.belcobtm.domain.wallet.LocalCoinType
 import com.app.belcobtm.presentation.core.adapter.model.ListItem
 
 data class TradeItem(
-    val tradeId: Int,
-    val tradeType: Int,
+    val tradeId: String,
+    @TradeType val tradeType: Int,
     val coin: LocalCoinType,
     val status: Int,
     val price: Double,

@@ -3,7 +3,7 @@ package com.app.belcobtm.presentation.features.wallet.trade.edit
 import com.app.belcobtm.data.model.trade.PaymentOption
 
 data class EditTradeItem(
-    val tradeId: Int,
+    val tradeId: String,
     val price: Double,
     val minAmount: Int,
     val maxAmount: Int,

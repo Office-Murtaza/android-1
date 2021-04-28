@@ -6,6 +6,8 @@ import com.app.belcobtm.databinding.ItemMyMessageBinding
 import com.app.belcobtm.presentation.core.adapter.delegate.AdapterDelegate
 import com.app.belcobtm.presentation.core.adapter.holder.MultiTypeViewHolder
 import com.app.belcobtm.presentation.features.wallet.trade.order.chat.model.ChatMessageItem
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 
 class MyMessageDelegate : AdapterDelegate<ChatMessageItem, MyMessageViewHolder>() {
 
@@ -23,6 +25,9 @@ class MyMessageViewHolder(
     override fun bind(model: ChatMessageItem) {
         binding.message.text = model.text
         binding.time.text = model.time
-        binding.attachment.setImageBitmap(model.bitmap)
+        Glide.with(binding.root)
+            .load(model.imageUrl)
+            .apply(RequestOptions().override(binding.attachment.width, binding.attachment.height))
+            .into(binding.attachment)
     }
 }

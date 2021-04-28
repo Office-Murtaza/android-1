@@ -31,8 +31,8 @@ class TradeCreateOrderViewModel(
     private val _initialLoadingData = MutableLiveData<LoadingData<Unit>>()
     val initialLoadingData: LiveData<LoadingData<Unit>> = _initialLoadingData
 
-    private val _createTradeLoadingData = MutableLiveData<LoadingData<Int>>()
-    val createTradeLoadingData: LiveData<LoadingData<Int>> = _createTradeLoadingData
+    private val _createTradeLoadingData = MutableLiveData<LoadingData<String>>()
+    val createTradeLoadingData: LiveData<LoadingData<String>> = _createTradeLoadingData
 
     private val _fiatAmount = MutableLiveData<Double>(0.0)
     val fiatAmount: LiveData<Double> = _fiatAmount
@@ -66,7 +66,7 @@ class TradeCreateOrderViewModel(
         _fiatAmount.value = amount
     }
 
-    fun fetchTradeDetails(tradeId: Int) {
+    fun fetchTradeDetails(tradeId: String) {
         _initialLoadingData.value = LoadingData.Loading()
         getTradeDetailsUseCase(tradeId, onSuccess = { trade ->
             getCoinByCodeUseCase(trade.coin.name, onSuccess = { coinDataItem ->

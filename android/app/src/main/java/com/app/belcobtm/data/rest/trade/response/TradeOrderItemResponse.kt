@@ -4,8 +4,8 @@ import com.app.belcobtm.data.model.trade.OrderStatus
 import com.app.belcobtm.data.model.trade.TraderStatus
 
 data class TradeOrderItemResponse(
-    val id: Int,
-    val tradeId: Int,
+    val id: String,
+    val tradeId: String,
     val coin: String,
     @OrderStatus val status: Int,
     val timestamp: Long,

@@ -98,7 +98,7 @@ class WebSocketChatObserver(
                 messageItem.fromId,
                 messageItem.toId,
                 messageItem.content,
-                null, null,
+                messageItem.attachmentName,
                 System.currentTimeMillis()
             )
             socketClient.sendMessage(

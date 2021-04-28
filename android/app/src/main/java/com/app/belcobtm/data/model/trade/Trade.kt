@@ -1,7 +1,7 @@
 package com.app.belcobtm.data.model.trade
 
 data class Trade(
-    val id: Int,
+    val id: String,
     @TradeType val type: Int,
     val coinCode: String,
     @TradeStatus val status: Int,

@@ -57,7 +57,7 @@ class TradeApiService(
             response.body()?.let { Either.Right(it) } ?: Either.Left(Failure.ServerError())
         }
 
-    suspend fun deleteTrade(tradeId: Int): Either<Failure, DeleteTradeResponse> =
+    suspend fun deleteTrade(tradeId: String): Either<Failure, DeleteTradeResponse> =
         withErrorHandling {
             val response = tradeApi.deleteTradeAsync(prefHelper.userId, tradeId).await()
             response.body()?.let { Either.Right(it) } ?: Either.Left(Failure.ServerError())
@@ -73,7 +73,7 @@ class TradeApiService(
         }
 
     suspend fun updateOrder(
-        orderId: Int,
+        orderId: String,
         @OrderStatus status: Int? = null,
         rate: Int? = null
     ): Either<Failure, TradeOrderItemResponse> =

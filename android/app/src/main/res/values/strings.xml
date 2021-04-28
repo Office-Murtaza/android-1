@@ -675,4 +675,5 @@
     <string name="normal_rating_label">Good</string>
     <string name="good_rating_label">Very good</string>
     <string name="perfect_rating_label">Awesome</string>
+    <string name="send_message_error">Failed to send message please try again</string>
 </resources>

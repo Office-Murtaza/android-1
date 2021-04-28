@@ -5,7 +5,7 @@ import com.app.belcobtm.data.model.trade.TradeType
 import com.app.belcobtm.data.model.trade.TraderStatus
 
 data class TradeItemResponse(
-    val id: Int,
+    val id: String,
     @TradeType val type: Int,
     val coin: String,
     @TradeStatus val status: Int,

@@ -124,7 +124,7 @@ val dataModule = module {
     single { TradeInMemoryCache(get(), get(), GlobalScope, get(), get()) }
     single { DistanceCalculator(get()) }
     single<LocationProvider> { ServiceLocationProvider(androidApplication()) }
-    factory { TradesResponseToTradeDataMapper(get(), get()) }
+    factory { TradesResponseToTradeDataMapper(get(), get(), get()) }
     factory { OrderResponseToOrderMapper() }
     factory { TradeResponseToTradeMapper() }
 }

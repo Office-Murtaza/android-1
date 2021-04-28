@@ -58,7 +58,7 @@ class TradeInMemoryCache(
 
     private var distanceCalculationJob: Job? = null
 
-    fun updateCache(calculateDistance: Boolean, response: Either<Failure, TradesResponse>) {
+    suspend fun updateCache(calculateDistance: Boolean, response: Either<Failure, TradesResponse>) {
         this.calculateDistance = calculateDistance
         if (response.isLeft) {
             cache.value = response as Either.Left<Failure>
@@ -72,7 +72,7 @@ class TradeInMemoryCache(
         tradeFilter.value = filter
     }
 
-    fun findTrade(tradeId: Int): Either<Failure, Trade> {
+    fun findTrade(tradeId: String): Either<Failure, Trade> {
         val currentCache = cache.value ?: return Either.Left(Failure.ServerError())
         return currentCache.flatMap { tradeData ->
             tradeData.trades[tradeId]?.let { Either.Right(it) }
@@ -92,7 +92,7 @@ class TradeInMemoryCache(
 
     fun updateOrders(order: TradeOrderItemResponse) {
         cache.value?.map {
-            val mappedOrder = orderMapper.map(order)
+            val mappedOrder = orderMapper.map(order, it.orders[order.id]?.chatHistory.orEmpty())
             val orders = HashMap(it.orders)
             orders[mappedOrder.id] = mappedOrder
             cache.value = Either.Right(it.copy(orders = orders))
