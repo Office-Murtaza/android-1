@@ -174,8 +174,11 @@ public class RippledService {
     public boolean isTransactionSeenOnBlockchain(String txId) {
         if (nodeService.isNodeAvailable(COIN_TYPE)) {
             try {
+                JSONObject tx = new JSONObject();
+                tx.put("transaction", txId);
+
                 JSONArray params = new JSONArray();
-                params.add(Util.toJsonObject("transaction", txId));
+                params.add(tx);
 
                 JSONObject req = new JSONObject();
                 req.put("method", "tx");
@@ -207,8 +210,11 @@ public class RippledService {
 
         if (nodeService.isNodeAvailable(COIN_TYPE)) {
             try {
+                JSONObject tx = new JSONObject();
+                tx.put("transaction", txId);
+
                 JSONArray params = new JSONArray();
-                params.add(Util.toJsonObject("transaction", txId));
+                params.add(tx);
 
                 JSONObject req = new JSONObject();
                 req.put("method", "tx");
@@ -224,7 +230,7 @@ public class RippledService {
                 dto.setToAddress(res.optString("Destination"));
 
                 TransactionType type = TransactionType.getType(dto.getFromAddress(), dto.getToAddress(), address);
-                if(type != null) {
+                if (type != null) {
                     dto.setType(type.getValue());
                 }
 
@@ -276,15 +282,15 @@ public class RippledService {
         return TransactionService.buildTxs(getNodeTransactions(address), startIndex, limit, transactionRecords, details);
     }
 
-    public String sign(String fromAddress, String toAddress, BigDecimal amount, BigDecimal fee) {
+    public String sign(Long walletId, String fromAddress, String toAddress, BigDecimal amount, BigDecimal fee) {
         try {
             PrivateKey privateKey;
 
-            if (walletService.isServerAddress(CoinType.XRP, fromAddress)) {
-                privateKey = walletService.getCoinsMap().get(CoinType.XRP).getPrivateKey();
+            if (walletService.isServerAddress(fromAddress)) {
+                privateKey = walletService.get(walletId).getCoins().get(CoinType.XRP).getPrivateKey();
             } else {
                 String path = walletService.getPath(fromAddress);
-                privateKey = walletService.getWallet().getKey(CoinType.XRP, path);
+                privateKey = walletService.get(walletId).getWallet().getKey(CoinType.XRP, path);
             }
 
             CurrentAccountDTO accountDTO = getCurrentAccount(fromAddress);

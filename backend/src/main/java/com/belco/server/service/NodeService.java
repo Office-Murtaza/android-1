@@ -22,7 +22,9 @@ public class NodeService {
             @Value("${dash.node.main.url}") String dashNodeMainUrl,
             @Value("${doge.node.main.url}") String dogeNodeMainUrl,
             @Value("${eth.node.main.url}") String ethNodeMainUrl,
-            @Value("${eth.node.reserve.url}") String ethNodeReserveUrl,
+
+            //@Value("${eth.node.reserve.url}") String ethNodeReserveUrl,
+
             @Value("${bnb.node.main.url}") String bnbNodeMainUrl,
             @Value("${xrp.node.main.url}") String xrpNodeMainUrl,
             @Value("${xrp.node.reserve.url}") String xrpNodeReserveUrl,
@@ -49,7 +51,6 @@ public class NodeService {
         mainNodeMap.put(CoinType.TRON, trxNodeMainUrl);
 
         reserveNodeMap.put(CoinType.BITCOIN, btcNodeReserveUrl);
-        //reserveNodeMap.put(CoinType.ETHEREUM, ethNodeReserveUrl);
         reserveNodeMap.put(CoinType.XRP, xrpNodeReserveUrl);
 
         explorerMap.put(CoinType.BITCOIN, btcExplorerUrl);

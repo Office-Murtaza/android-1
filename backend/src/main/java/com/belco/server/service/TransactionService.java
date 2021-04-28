@@ -5,6 +5,7 @@ import com.belco.server.entity.*;
 import com.belco.server.model.*;
 import com.belco.server.repository.TransactionRecordRep;
 import com.belco.server.repository.UserCoinRep;
+import com.belco.server.util.Constant;
 import com.belco.server.util.Util;
 import net.sf.json.JSONObject;
 import org.apache.commons.lang3.StringUtils;
@@ -351,7 +352,7 @@ public class TransactionService {
 
         try {
             User user = userService.findById(userId);
-            BigDecimal txAmount = recordRep.getTransactionsSumByDate(user.getIdentity(), Util.getStartDate(), new Date());
+            BigDecimal txAmount = recordRep.getTransactionsSumByDate(user.getIdentity(), Util.getStartOfDay(), new Date());
 
             // find latest limits
             BigDecimal dailyLimit = user.getIdentity().getLimitCashPerDay().stream()
@@ -447,12 +448,11 @@ public class TransactionService {
             UserCoin userCoin = userService.getUserCoin(userId, coinCode.name());
             BigDecimal reserved = userCoin.getReservedBalance();
             BigDecimal txFee = coinCode == CoinService.CoinEnum.CATM || coinCode == CoinService.CoinEnum.USDC ? walletService.convertToFee(coinCode) : coinCode.getTxFee();
-            String walletAddress = coinCode.getWalletAddress();
+            String fromAddress = coinCode.getWalletAddress(Constant.APP_WALLET_ID);
 
-            if (walletService.isEnoughBalance(coinCode, walletAddress, dto.getCryptoAmount()) && reserved.compareTo(dto.getCryptoAmount().add(txFee)) >= 0) {
-                String fromAddress = coinCode.getWalletAddress();
+            if (walletService.isEnoughBalance(coinCode, fromAddress, dto.getCryptoAmount()) && reserved.compareTo(dto.getCryptoAmount().add(txFee)) >= 0) {
                 String toAddress = userCoin.getAddress();
-                String hex = coinCode.sign(fromAddress, toAddress, dto.getCryptoAmount());
+                String hex = coinCode.sign(Constant.APP_WALLET_ID, fromAddress, toAddress, dto.getCryptoAmount());
 
                 TransactionDTO submit = new TransactionDTO();
                 submit.setHex(hex);
@@ -601,11 +601,11 @@ public class TransactionService {
     private void deliverSwap(TransactionDetailsDTO t) {
         try {
             CoinService.CoinEnum coin = CoinService.CoinEnum.valueOf(t.getRefCoin());
-            String fromAddress = coin.getWalletAddress();
+            String fromAddress = coin.getWalletAddress(Constant.APP_WALLET_ID);
 
             if (walletService.isEnoughBalance(coin, fromAddress, t.getRefCryptoAmount())) {
                 String toAddress = userService.getUserCoin(t.getUserId(), t.getRefCoin()).getAddress();
-                String hex = coin.sign(fromAddress, toAddress, t.getRefCryptoAmount());
+                String hex = coin.sign(Constant.APP_WALLET_ID, fromAddress, toAddress, t.getRefCryptoAmount());
 
                 TransactionDTO submit = new TransactionDTO();
                 submit.setHex(hex);
@@ -657,12 +657,11 @@ public class TransactionService {
                         CoinService.CoinEnum coin = CoinService.CoinEnum.valueOf(t.getCoin());
                         BigDecimal txFee = coin == CoinService.CoinEnum.CATM || coin == CoinService.CoinEnum.USDC ? walletService.convertToFee(coin) : coin.getTxFee();
                         BigDecimal withdrawAmount = t.getCryptoAmount().subtract(txFee);
-                        String walletAddress = coin.getWalletAddress();
+                        String fromAddress = coin.getWalletAddress(Constant.APP_WALLET_ID);
 
-                        if (walletService.isEnoughBalance(coin, walletAddress, t.getCryptoAmount())) {
-                            String fromAddress = coin.getWalletAddress();
+                        if (walletService.isEnoughBalance(coin, fromAddress, t.getCryptoAmount())) {
                             String toAddress = userService.getUserCoin(receiverOpt.get().getId(), t.getCoin()).getAddress();
-                            String hex = coin.sign(fromAddress, toAddress, withdrawAmount);
+                            String hex = coin.sign(Constant.APP_WALLET_ID, fromAddress, toAddress, withdrawAmount);
 
                             TransactionDTO dto = new TransactionDTO();
                             dto.setHex(hex);

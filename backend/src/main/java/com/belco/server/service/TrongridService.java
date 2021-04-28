@@ -129,7 +129,7 @@ public class TrongridService {
                 dto.setToAddress(Base58.toBase58(row.optString("to_address")));
 
                 TransactionType type = TransactionType.getType(dto.getFromAddress(), dto.getToAddress(), address);
-                if(type != null) {
+                if (type != null) {
                     dto.setType(type.getValue());
                 }
 
@@ -190,15 +190,15 @@ public class TrongridService {
         return new CurrentBlockDTO();
     }
 
-    public String sign(String fromAddress, String toAddress, BigDecimal amount) {
+    public String sign(Long walletId, String fromAddress, String toAddress, BigDecimal amount) {
         try {
             PrivateKey privateKey;
 
-            if (walletService.isServerAddress(CoinType.TRON, fromAddress)) {
-                privateKey = walletService.getCoinsMap().get(CoinType.TRON).getPrivateKey();
+            if (walletService.isServerAddress(fromAddress)) {
+                privateKey = walletService.get(walletId).getCoins().get(CoinType.TRON).getPrivateKey();
             } else {
                 String path = walletService.getPath(fromAddress);
-                privateKey = walletService.getWallet().getKey(CoinType.TRON, path);
+                privateKey = walletService.get(walletId).getWallet().getKey(CoinType.TRON, path);
             }
 
             CurrentBlockDTO currentBlockDTO = getCurrentBlock();

@@ -193,7 +193,7 @@ public class BlockbookService {
         return TransactionService.buildTxs(getNodeTransactions(coinType, address), startIndex, limit, transactionRecords, details);
     }
 
-    public String signBTCForks(CoinType coinType, String fromAddress, String toAddress, BigDecimal amount, Long byteFee, List<JSONObject> utxos) {
+    public String signBTCForks(Long walletId, CoinType coinType, String fromAddress, String toAddress, BigDecimal amount, Long byteFee, List<JSONObject> utxos) {
         try {
             Bitcoin.SigningInput.Builder input = Bitcoin.SigningInput.newBuilder();
             input.setCoinType(coinType.value());
@@ -205,7 +205,7 @@ public class BlockbookService {
             input.setUseMaxAmount(false);
 
             utxos.forEach(e -> {
-                PrivateKey privateKey = walletService.getWallet().getKey(coinType, e.optString("path"));
+                PrivateKey privateKey = walletService.get(walletId).getWallet().getKey(coinType, e.optString("path"));
                 input.addPrivateKey(ByteString.copyFrom(privateKey.data()));
             });
 

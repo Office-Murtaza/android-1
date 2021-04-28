@@ -129,7 +129,7 @@ public class BinanceService {
                 dto.setToAddress(msg.optJSONObject("value").optJSONArray("outputs").getJSONObject(0).optString("address"));
 
                 com.belco.server.model.TransactionType type = com.belco.server.model.TransactionType.getType(dto.getFromAddress(), dto.getToAddress(), address);
-                if(type != null) {
+                if (type != null) {
                     dto.setType(type.getValue());
                 }
 
@@ -186,15 +186,15 @@ public class BinanceService {
         return new CurrentAccountDTO();
     }
 
-    public String sign(String fromAddress, String toAddress, BigDecimal amount) {
+    public String sign(Long walletId, String fromAddress, String toAddress, BigDecimal amount) {
         try {
             PrivateKey privateKey;
 
-            if (walletService.isServerAddress(CoinType.BINANCE, fromAddress)) {
-                privateKey = walletService.getCoinsMap().get(CoinType.BINANCE).getPrivateKey();
+            if (walletService.isServerAddress(fromAddress)) {
+                privateKey = walletService.get(walletId).getCoins().get(CoinType.BINANCE).getPrivateKey();
             } else {
                 String path = walletService.getPath(fromAddress);
-                privateKey = walletService.getWallet().getKey(CoinType.BINANCE, path);
+                privateKey = walletService.get(walletId).getWallet().getKey(CoinType.BINANCE, path);
             }
 
             CurrentAccountDTO currentDTO = getCurrentAccount(fromAddress);

@@ -19,6 +19,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
 import javax.transaction.Transactional;
 import java.math.BigDecimal;
 import java.util.*;
@@ -190,7 +191,7 @@ public class UserService implements UserDetailsService {
 
             return address;
         } else {
-            return coinCode.getWalletAddress();
+            return coinCode.getWalletAddress(1L);
         }
     }
 

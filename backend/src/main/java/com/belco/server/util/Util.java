@@ -1,10 +1,9 @@
 package com.belco.server.util;
 
-import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.apache.commons.lang3.RandomStringUtils;
-import org.springframework.web.multipart.MultipartFile;
 
+import javax.crypto.Cipher;
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
 import javax.net.ssl.HttpsURLConnection;
@@ -12,15 +11,13 @@ import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStreamReader;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.net.URL;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.util.ArrayList;
+import java.security.MessageDigest;
 import java.util.Arrays;
+import java.util.Base64;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -54,7 +51,7 @@ public class Util {
         return RandomStringUtils.randomAlphanumeric(250);
     }
 
-    public static Date getStartDate() {
+    public static Date getStartOfDay() {
         Calendar c = Calendar.getInstance();
 
         c.set(Calendar.HOUR_OF_DAY, 0);
@@ -123,10 +120,6 @@ public class Util {
         return phone.substring(0, length - 10) + " " + phone.substring(length - 10, length - 7) + "-" + phone.substring(length - 7, length - 4) + "-" + phone.substring(length - 4, length);
     }
 
-    public static void uploadFile(MultipartFile file, Path path) throws IOException {
-        Files.write(path, file.getBytes());
-    }
-
     public static String sign(String method, String coin, long timestamp, String apiKey, String apiSecret) {
         try {
             String message = method + "," + apiKey + "," + coin + "," + timestamp;
@@ -155,16 +148,6 @@ public class Util {
         }
     }
 
-    public static int distance(double lat1, double lon1, double lat2, double lon2) {
-        double theta = lon1 - lon2;
-        double dist = Math.sin(deg2rad(lat1)) * Math.sin(deg2rad(lat2)) + Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) * Math.cos(deg2rad(theta));
-        dist = Math.acos(dist);
-        dist = rad2deg(dist);
-        dist = dist * 60 * 1.1515 * 1.609344;
-
-        return (int) Math.ceil(dist);
-    }
-
     public static void reverse(byte[] array) {
         for (int i = 0; i < array.length / 2; i++) {
             byte temp = array[i];
@@ -173,25 +156,44 @@ public class Util {
         }
     }
 
-    private static double deg2rad(double deg) {
-        return (deg * Math.PI / 180.0);
+    private static SecretKeySpec getKey(String secret) {
+        try {
+            byte[] key = secret.getBytes("UTF-8");
+            MessageDigest sha = MessageDigest.getInstance("SHA-1");
+            key = sha.digest(key);
+            key = Arrays.copyOf(key, 16);
+
+            return new SecretKeySpec(key, "AES");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return null;
     }
 
-    private static double rad2deg(double rad) {
-        return (rad * 180.0 / Math.PI);
+    public static String encrypt(String strToEncrypt, String secret) {
+        try {
+            Cipher cipher = Cipher.getInstance("AES/ECB/PKCS5Padding");
+            cipher.init(Cipher.ENCRYPT_MODE, getKey(secret));
+
+            return Base64.getEncoder().encodeToString(cipher.doFinal(strToEncrypt.getBytes("UTF-8")));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return null;
     }
 
-    public static JSONObject toJsonObject(String name, Object value) {
-        JSONObject obj = new JSONObject();
-        obj.put(name, value);
+    public static String decrypt(String strToDecrypt, String secret) {
+        try {
+            Cipher cipher = Cipher.getInstance("AES/ECB/PKCS5PADDING");
+            cipher.init(Cipher.DECRYPT_MODE, getKey(secret));
 
-        return obj;
-    }
+            return new String(cipher.doFinal(Base64.getDecoder().decode(strToDecrypt)));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
-    public static JSONArray toJsonArray(JSONObject... objects) {
-        JSONArray array = new JSONArray();
-        array.addAll(Arrays.asList(objects));
-
-        return array;
+        return null;
     }
 }

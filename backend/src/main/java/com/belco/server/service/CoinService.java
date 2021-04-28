@@ -131,6 +131,8 @@ public class CoinService {
     }
 
     public CoinDetailsDTO getCoinDetails(CoinService.CoinEnum coin) {
+        String walletAddress = coin.getWalletAddress(1L);
+
         CoinDetailsDTO dto = new CoinDetailsDTO();
         dto.setCode(coin.name());
         dto.setByteFee(coin.getByteFee());
@@ -139,11 +141,11 @@ public class CoinService {
         dto.setScale(coin.getCoinEntity().getScale());
         dto.setPlatformSwapFee(settingsService.getPlatformSwapFee());
         dto.setPlatformTradeFee(settingsService.getPlatformTradeFee());
-        dto.setWalletAddress(coin.getWalletAddress());
+        dto.setWalletAddress(walletAddress);
         dto.setContractAddress(coin.getContractAddress());
 
         if (coin == CoinEnum.ETH) {
-            dto.setGasLimit(coin.getGasLimit(coin.getWalletAddress()));
+            dto.setGasLimit(coin.getGasLimit(walletAddress));
         } else if (coin == CoinEnum.CATM) {
             dto.setGasLimit(coin.getGasLimit(GethService.ERC20.CATM.getContractAddress()));
             dto.setConvertedTxFee(walletService.convertToFee(coin));
@@ -260,16 +262,16 @@ public class CoinService {
             }
 
             @Override
-            public String getWalletAddress() {
-                return walletService.getCoinsMap().get(getCoinType()).getAddress();
+            public String getWalletAddress(Long walletId) {
+                return walletService.get(walletId).getCoins().get(getCoinType()).getAddress();
             }
 
             @Override
-            public String sign(String fromAddress, String toAddress, BigDecimal amount) {
-                List<JSONObject> utxos = blockbookService.getUtxo(getCoinType(), walletService.getXpub(getCoinType()));
+            public String sign(Long walletId, String fromAddress, String toAddress, BigDecimal amount) {
+                List<JSONObject> utxos = blockbookService.getUtxo(getCoinType(), walletService.getXpub(walletService.get(walletId).getWallet(), getCoinType()));
                 Long byteFee = blockbookService.getByteFee(getCoinType());
 
-                return blockbookService.signBTCForks(getCoinType(), fromAddress, toAddress, amount, byteFee, utxos);
+                return blockbookService.signBTCForks(walletId, getCoinType(), fromAddress, toAddress, amount, byteFee, utxos);
             }
 
             @Override
@@ -359,16 +361,16 @@ public class CoinService {
             }
 
             @Override
-            public String getWalletAddress() {
-                return walletService.getCoinsMap().get(getCoinType()).getAddress();
+            public String getWalletAddress(Long walletId) {
+                return walletService.get(walletId).getCoins().get(getCoinType()).getAddress();
             }
 
             @Override
-            public String sign(String fromAddress, String toAddress, BigDecimal amount) {
-                List<JSONObject> utxos = blockbookService.getUtxo(getCoinType(), walletService.getXpub(getCoinType()));
+            public String sign(Long walletId, String fromAddress, String toAddress, BigDecimal amount) {
+                List<JSONObject> utxos = blockbookService.getUtxo(getCoinType(), walletService.getXpub(walletService.get(walletId).getWallet(), getCoinType()));
                 Long byteFee = blockbookService.getByteFee(getCoinType());
 
-                return blockbookService.signBTCForks(getCoinType(), fromAddress, toAddress, amount, byteFee, utxos);
+                return blockbookService.signBTCForks(walletId, getCoinType(), fromAddress, toAddress, amount, byteFee, utxos);
             }
 
             @Override
@@ -458,16 +460,16 @@ public class CoinService {
             }
 
             @Override
-            public String getWalletAddress() {
-                return walletService.getCoinsMap().get(getCoinType()).getAddress();
+            public String getWalletAddress(Long walletId) {
+                return walletService.get(walletId).getCoins().get(getCoinType()).getAddress();
             }
 
             @Override
-            public String sign(String fromAddress, String toAddress, BigDecimal amount) {
-                List<JSONObject> utxos = blockbookService.getUtxo(getCoinType(), walletService.getXpub(getCoinType()));
+            public String sign(Long walletId, String fromAddress, String toAddress, BigDecimal amount) {
+                List<JSONObject> utxos = blockbookService.getUtxo(getCoinType(), walletService.getXpub(walletService.get(walletId).getWallet(), getCoinType()));
                 Long byteFee = blockbookService.getByteFee(getCoinType());
 
-                return blockbookService.signBTCForks(getCoinType(), fromAddress, toAddress, amount, byteFee, utxos);
+                return blockbookService.signBTCForks(walletId, getCoinType(), fromAddress, toAddress, amount, byteFee, utxos);
             }
 
             @Override
@@ -557,16 +559,16 @@ public class CoinService {
             }
 
             @Override
-            public String getWalletAddress() {
-                return walletService.getCoinsMap().get(getCoinType()).getAddress();
+            public String getWalletAddress(Long walletId) {
+                return walletService.get(walletId).getCoins().get(getCoinType()).getAddress();
             }
 
             @Override
-            public String sign(String fromAddress, String toAddress, BigDecimal amount) {
-                List<JSONObject> utxos = blockbookService.getUtxo(getCoinType(), walletService.getXpub(getCoinType()));
+            public String sign(Long walletId, String fromAddress, String toAddress, BigDecimal amount) {
+                List<JSONObject> utxos = blockbookService.getUtxo(getCoinType(), walletService.getXpub(walletService.get(walletId).getWallet(), getCoinType()));
                 Long byteFee = blockbookService.getByteFee(getCoinType());
 
-                return blockbookService.signBTCForks(getCoinType(), fromAddress, toAddress, amount, byteFee, utxos);
+                return blockbookService.signBTCForks(walletId, getCoinType(), fromAddress, toAddress, amount, byteFee, utxos);
             }
 
             @Override
@@ -656,16 +658,16 @@ public class CoinService {
             }
 
             @Override
-            public String getWalletAddress() {
-                return walletService.getCoinsMap().get(getCoinType()).getAddress();
+            public String getWalletAddress(Long walletId) {
+                return walletService.get(walletId).getCoins().get(getCoinType()).getAddress();
             }
 
             @Override
-            public String sign(String fromAddress, String toAddress, BigDecimal amount) {
-                List<JSONObject> utxos = blockbookService.getUtxo(getCoinType(), walletService.getXpub(getCoinType()));
+            public String sign(Long walletId, String fromAddress, String toAddress, BigDecimal amount) {
+                List<JSONObject> utxos = blockbookService.getUtxo(getCoinType(), walletService.getXpub(walletService.get(walletId).getWallet(), getCoinType()));
                 Long byteFee = blockbookService.getByteFee(getCoinType());
 
-                return blockbookService.signBTCForks(getCoinType(), fromAddress, toAddress, amount, byteFee, utxos);
+                return blockbookService.signBTCForks(walletId, getCoinType(), fromAddress, toAddress, amount, byteFee, utxos);
             }
 
             @Override
@@ -716,7 +718,7 @@ public class CoinService {
 
             @Override
             public BigDecimal getTxFee() {
-                return gethService.getTxFee(getGasLimit(getWalletAddress()), getGasPrice());
+                return gethService.getTxFee(getGasLimit(getWalletAddress(1L)), getGasPrice());
             }
 
             @Override
@@ -755,13 +757,13 @@ public class CoinService {
             }
 
             @Override
-            public String getWalletAddress() {
-                return walletService.getCoinsMap().get(CoinType.ETHEREUM).getAddress();
+            public String getWalletAddress(Long walletId) {
+                return walletService.get(walletId).getCoins().get(getCoinType()).getAddress();
             }
 
             @Override
-            public String sign(String fromAddress, String toAddress, BigDecimal amount) {
-                return gethService.sign(fromAddress, toAddress, amount, getGasLimit(toAddress), getGasPrice());
+            public String sign(Long walletId, String fromAddress, String toAddress, BigDecimal amount) {
+                return gethService.sign(walletId, fromAddress, toAddress, amount, getGasLimit(toAddress), getGasPrice());
             }
 
             @Override
@@ -851,13 +853,13 @@ public class CoinService {
             }
 
             @Override
-            public String getWalletAddress() {
-                return walletService.getCoinsMap().get(CoinType.ETHEREUM).getAddress();
+            public String getWalletAddress(Long walletId) {
+                return walletService.get(walletId).getCoins().get(getCoinType()).getAddress();
             }
 
             @Override
-            public String sign(String fromAddress, String toAddress, BigDecimal amount) {
-                return gethService.sign(GethService.ERC20.CATM, fromAddress, toAddress, amount, getGasLimit(GethService.ERC20.CATM.getContractAddress()), getGasPrice());
+            public String sign(Long walletId, String fromAddress, String toAddress, BigDecimal amount) {
+                return gethService.sign(walletId, GethService.ERC20.CATM, fromAddress, toAddress, amount, getGasLimit(GethService.ERC20.CATM.getContractAddress()), getGasPrice());
             }
 
             @Override
@@ -947,13 +949,13 @@ public class CoinService {
             }
 
             @Override
-            public String getWalletAddress() {
-                return walletService.getCoinsMap().get(CoinType.ETHEREUM).getAddress();
+            public String getWalletAddress(Long walletId) {
+                return walletService.get(walletId).getCoins().get(getCoinType()).getAddress();
             }
 
             @Override
-            public String sign(String fromAddress, String toAddress, BigDecimal amount) {
-                return gethService.sign(GethService.ERC20.USDC, fromAddress, toAddress, amount, getGasLimit(GethService.ERC20.USDC.getContractAddress()), getGasPrice());
+            public String sign(Long walletId, String fromAddress, String toAddress, BigDecimal amount) {
+                return gethService.sign(walletId, GethService.ERC20.USDC, fromAddress, toAddress, amount, getGasLimit(GethService.ERC20.USDC.getContractAddress()), getGasPrice());
             }
 
             @Override
@@ -1043,13 +1045,13 @@ public class CoinService {
             }
 
             @Override
-            public String getWalletAddress() {
-                return walletService.getCoinsMap().get(getCoinType()).getAddress();
+            public String getWalletAddress(Long walletId) {
+                return walletService.get(walletId).getCoins().get(getCoinType()).getAddress();
             }
 
             @Override
-            public String sign(String fromAddress, String toAddress, BigDecimal amount) {
-                return binanceService.sign(fromAddress, toAddress, amount);
+            public String sign(Long walletId, String fromAddress, String toAddress, BigDecimal amount) {
+                return binanceService.sign(walletId, fromAddress, toAddress, amount);
             }
 
             @Override
@@ -1139,21 +1141,13 @@ public class CoinService {
             }
 
             @Override
-            public String getWalletAddress() {
-                return walletService.getCoinsMap().get(getCoinType()).getAddress();
+            public String getWalletAddress(Long walletId) {
+                return walletService.get(walletId).getCoins().get(getCoinType()).getAddress();
             }
 
             @Override
-            public String sign(String fromAddress, String toAddress, BigDecimal amount) {
-                BigDecimal balance = getBalance(fromAddress);
-                BigDecimal fee = getTxFee();
-                BigDecimal maxWithdrawAmount = balance.subtract(new BigDecimal(20).subtract(fee));
-
-                if (maxWithdrawAmount.compareTo(amount) < 0) {
-                    amount = maxWithdrawAmount;
-                }
-
-                return rippledService.sign(fromAddress, toAddress, amount, fee);
+            public String sign(Long walletId, String fromAddress, String toAddress, BigDecimal amount) {
+                return rippledService.sign(walletId, fromAddress, toAddress, amount, getTxFee());
             }
 
             @Override
@@ -1243,13 +1237,13 @@ public class CoinService {
             }
 
             @Override
-            public String getWalletAddress() {
-                return walletService.getCoinsMap().get(getCoinType()).getAddress();
+            public String getWalletAddress(Long walletId) {
+                return walletService.get(walletId).getCoins().get(getCoinType()).getAddress();
             }
 
             @Override
-            public String sign(String fromAddress, String toAddress, BigDecimal amount) {
-                return trongridService.sign(fromAddress, toAddress, amount);
+            public String sign(Long walletId, String fromAddress, String toAddress, BigDecimal amount) {
+                return trongridService.sign(walletId, fromAddress, toAddress, amount);
             }
 
             @Override
@@ -1305,9 +1299,9 @@ public class CoinService {
 
         public abstract CurrentAccountDTO getCurrentAccount(String address);
 
-        public abstract String getWalletAddress();
+        public abstract String getWalletAddress(Long walletId);
 
-        public abstract String sign(String fromAddress, String toAddress, BigDecimal amount);
+        public abstract String sign(Long walletId, String fromAddress, String toAddress, BigDecimal amount);
 
         public abstract String submitTransaction(TransactionDTO dto);
 

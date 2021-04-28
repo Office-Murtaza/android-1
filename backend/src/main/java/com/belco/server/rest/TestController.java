@@ -42,15 +42,16 @@ public class TestController {
         return Response.ok(twilioService.sendMessage(phone, "This is a test message"));
     }
 
-    @GetMapping("/wallet-details")
-    public Response getWalletDetails() {
+    @GetMapping("/wallet/{walletId}/details")
+    public Response getWalletDetails(@PathVariable Long walletId) {
         JSONObject res = new JSONObject();
 
         coinRep.findAllByOrderByIdxAsc().stream().forEach(e -> {
             CoinService.CoinEnum coinEnum = CoinService.CoinEnum.valueOf(e.getCode());
             CoinType coinType = coinEnum.getCoinType();
+            String address = walletService.get(walletId).getCoins().get(coinType).getAddress();
 
-            res.put(e.getCode(), getCoinJson(walletService.getCoinsMap().get(coinType).getAddress(), coinEnum.getBalance(walletService.getCoinsMap().get(coinType).getAddress()), coinEnum.getTxFee(), nodeService.getNodeUrl(coinType)));
+            res.put(e.getCode(), getCoinJson(address, coinEnum.getBalance(address), coinEnum.getTxFee(), nodeService.getNodeUrl(coinType)));
         });
 
         return Response.ok(res);
@@ -114,9 +115,9 @@ public class TestController {
         return Response.ok(userService.deleteVerification(userId));
     }
 
-    @GetMapping("/coin/{coin}/sign")
-    public Response sign(@PathVariable CoinService.CoinEnum coin, @RequestParam String fromAddress, @RequestParam String toAddress, @RequestParam BigDecimal amount) {
-        return Response.ok(coin.sign(fromAddress, toAddress, amount));
+    @GetMapping("/wallet/{walletId}/coin/{coin}/sign")
+    public Response sign(@PathVariable Long walletId, @PathVariable CoinService.CoinEnum coin, @RequestParam String fromAddress, @RequestParam String toAddress, @RequestParam BigDecimal amount) {
+        return Response.ok(coin.sign(walletId, fromAddress, toAddress, amount));
     }
 
     @GetMapping("/coin/{coin}/submit")

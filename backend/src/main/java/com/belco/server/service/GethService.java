@@ -3,6 +3,7 @@ package com.belco.server.service;
 import com.belco.server.dto.TransactionDTO;
 import com.belco.server.dto.TransactionDetailsDTO;
 import com.belco.server.dto.TransactionHistoryDTO;
+import com.belco.server.dto.WalletDetailsDTO;
 import com.belco.server.entity.TransactionRecord;
 import com.belco.server.model.TransactionStatus;
 import com.belco.server.model.TransactionType;
@@ -106,11 +107,11 @@ public class GethService {
             web3 = Web3j.build(new HttpService(nodeService.getNodeUrl(ETHEREUM)));
 
             catm = CATM.load(catmContractAddress, web3,
-                    Credentials.create(Numeric.toHexString(walletService.getCoinsMap().get(CoinType.ETHEREUM).getPrivateKey().data())),
+                    Credentials.create(Numeric.toHexString(walletService.get(1L).getCoins().get(CoinType.ETHEREUM).getPrivateKey().data())),
                     new StaticGasProvider(BigInteger.valueOf(getFastGasPrice()), BigInteger.valueOf(settingsService.getInitialGasLimits().get(ERC20.CATM.name()))));
 
             usdc = USDC.load(usdcContractAddress, web3,
-                    Credentials.create(Numeric.toHexString(walletService.getCoinsMap().get(CoinType.ETHEREUM).getPrivateKey().data())),
+                    Credentials.create(Numeric.toHexString(walletService.get(1L).getCoins().get(CoinType.ETHEREUM).getPrivateKey().data())),
                     new StaticGasProvider(BigInteger.valueOf(getFastGasPrice()), BigInteger.valueOf(settingsService.getInitialGasLimits().get(ERC20.USDC.name()))));
         } catch (Exception e) {
             if (nodeService.switchToReserveNode(ETHEREUM)) {
@@ -409,9 +410,9 @@ public class GethService {
         return TransactionStatus.PENDING;
     }
 
-    public String sign(String fromAddress, String toAddress, BigDecimal amount, Long gasLimit, Long gasPrice) {
+    public String sign(Long walletId, String fromAddress, String toAddress, BigDecimal amount, Long gasLimit, Long gasPrice) {
         try {
-            PrivateKey privateKey = getPrivateKey(fromAddress);
+            PrivateKey privateKey = getPrivateKey(walletId, fromAddress);
             Integer nonce = getNonce(fromAddress);
 
             Ethereum.SigningInput.Builder input = Ethereum.SigningInput.newBuilder();
@@ -433,9 +434,9 @@ public class GethService {
         return null;
     }
 
-    public String sign(ERC20 token, String fromAddress, String toAddress, BigDecimal amount, Long gasLimit, Long gasPrice) {
+    public String sign(Long walletId, ERC20 token, String fromAddress, String toAddress, BigDecimal amount, Long gasLimit, Long gasPrice) {
         try {
-            PrivateKey privateKey = getPrivateKey(fromAddress);
+            PrivateKey privateKey = getPrivateKey(walletId, fromAddress);
             Integer nonce = getNonce(fromAddress);
 
             Ethereum.SigningInput.Builder input = Ethereum.SigningInput.newBuilder();
@@ -547,12 +548,14 @@ public class GethService {
         return mongo.getCollection(ADDRESS_COLL).find(new BasicDBObject("$or", or)).iterator().hasNext();
     }
 
-    private PrivateKey getPrivateKey(String fromAddress) {
-        if (walletService.isServerAddress(CoinType.ETHEREUM, fromAddress)) {
-            return walletService.getCoinsMap().get(CoinType.ETHEREUM).getPrivateKey();
+    private PrivateKey getPrivateKey(Long walletId, String fromAddress) {
+        WalletDetailsDTO wallet = walletService.get(walletId);
+
+        if (walletService.isServerAddress(fromAddress)) {
+            return wallet.getCoins().get(CoinType.ETHEREUM).getPrivateKey();
         } else {
             String path = walletService.getPath(fromAddress);
-            return walletService.getWallet().getKey(CoinType.ETHEREUM, path);
+            return wallet.getWallet().getKey(CoinType.ETHEREUM, path);
         }
     }
 
