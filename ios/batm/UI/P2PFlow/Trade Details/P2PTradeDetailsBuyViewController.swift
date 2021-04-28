@@ -17,6 +17,7 @@ class P2PTradeDetailsBuyViewController: P2PTradeDetailsBaseViewController {
           let tradeRate = trade.makerTradingRate,
           let totalTrades = trade.makerTotalTrades else { return }
     tradeView.setup(markerId: makerId , statusImage: nil, rate: tradeRate, totalTrades: totalTrades, distance: distance)
+    
   }
   
   override func setupUI() {
@@ -31,6 +32,14 @@ class P2PTradeDetailsBuyViewController: P2PTradeDetailsBaseViewController {
     
     infoMessageView.update(message: "Selling cryptocurrency at the best rate. Ready to meet select cash as a method of payment. Always available, write in chat 24/7.")
     
+    buyButton.addTarget(self, action: #selector(buyTrade), for: .touchUpInside)
+  
+  }
+  
+  @objc func buyTrade() {
+    let controller = P2PCreateOrderPopupViewController()
+    controller.modalPresentationStyle = .overCurrentContext
+    present(controller, animated: true, completion: nil)
   }
   
   override func setupLayout() {
