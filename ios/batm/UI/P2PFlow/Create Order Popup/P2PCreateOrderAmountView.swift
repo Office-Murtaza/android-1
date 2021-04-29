@@ -25,9 +25,10 @@ class P2PCreateOrderAmountView: UIView {
     return label
   }()
   
-  lazy var fiatTextField: UITextField = {
+  var fiatTextField: UITextField = {
     let textField = UITextField()
     textField.font = .systemFont(ofSize: 22)
+    textField.keyboardType = .phonePad
     return textField
   }()
   
@@ -75,7 +76,7 @@ class P2PCreateOrderAmountView: UIView {
     }
    
     fiatTextField.snp.makeConstraints {
-      $0.top.equalTo(fiatAmountTitle.snp.top)
+      $0.top.equalTo(fiatAmountTitle.snp.bottom)
       $0.right.equalToSuperview().offset(-15)
     }
     
