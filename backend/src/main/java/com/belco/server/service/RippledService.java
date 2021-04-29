@@ -278,8 +278,8 @@ public class RippledService {
         return Collections.emptyMap();
     }
 
-    public TransactionHistoryDTO getTransactionDetails(String address, Integer startIndex, Integer limit, List<TransactionRecord> transactionRecords, List<TransactionDetailsDTO> details) {
-        return TransactionService.buildTxs(getNodeTransactions(address), startIndex, limit, transactionRecords, details);
+    public TransactionHistoryDTO getTransactionDetails(String address, List<TransactionRecord> transactionRecords, List<TransactionDetailsDTO> details) {
+        return TransactionService.buildTxs(getNodeTransactions(address), transactionRecords, details);
     }
 
     public String sign(Long walletId, String fromAddress, String toAddress, BigDecimal amount, BigDecimal fee) {

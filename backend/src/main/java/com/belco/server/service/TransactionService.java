@@ -56,20 +56,13 @@ public class TransactionService {
         this.mongo = mongo;
     }
 
-    public static TransactionHistoryDTO buildTxs(Map<String, TransactionDetailsDTO> map, Integer startIndex, Integer limit, List<TransactionRecord> transactionRecords, List<TransactionDetailsDTO> details) {
+    public static TransactionHistoryDTO buildTxs(Map<String, TransactionDetailsDTO> map, List<TransactionRecord> transactionRecords, List<TransactionDetailsDTO> details) {
         mergeTransactionRecords(map, transactionRecords);
         mergeTransactionDetails(map, details);
 
         List<TransactionDetailsDTO> list = convertAndSort(map);
 
-        int fromIndex = (startIndex - 1) * limit;
-        int toIndex = Math.min(list.size(), (startIndex - 1) * limit + limit);
-
-        if (fromIndex <= list.size()) {
-            return new TransactionHistoryDTO(list.size(), list.subList(fromIndex, toIndex));
-        } else {
-            return new TransactionHistoryDTO(list.size(), new ArrayList<>());
-        }
+        return new TransactionHistoryDTO(list.size(), list);
     }
 
     private static void mergeTransactionDetails(Map<String, TransactionDetailsDTO> map, List<TransactionDetailsDTO> details) {
@@ -173,12 +166,9 @@ public class TransactionService {
         return dto;
     }
 
-    public TransactionHistoryDTO getTransactionHistory(Long userId, CoinService.CoinEnum coinCode, Integer startIndex) {
+    public TransactionHistoryDTO getTransactionHistory(Long userId, CoinService.CoinEnum coinCode) {
         User user = userService.findById(userId);
-        //Identity identity = user.getIdentity();
-        //Coin coin = coinCode.getCoinEntity();
         String address = user.getUserCoin(coinCode.name()).getAddress();
-
         List<TransactionRecord> transactionRecords = recordRep.findAllByIdentityAndCryptoCurrency(user.getIdentity(), coinCode.name());
 
         Query query = new Query();
@@ -192,7 +182,7 @@ public class TransactionService {
 
         List<TransactionDetailsDTO> details = mongo.find(query, TransactionDetailsDTO.class);
 
-        return coinCode.getTransactionHistory(address, startIndex, 10, transactionRecords, details);
+        return coinCode.getTransactionHistory(address, transactionRecords, details);
     }
 
     public TransactionDetailsDTO submit(Long userId, CoinService.CoinEnum coin, TransactionDTO dto) throws InterruptedException {

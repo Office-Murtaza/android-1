@@ -252,8 +252,8 @@ public class CoinService {
             }
 
             @Override
-            public TransactionHistoryDTO getTransactionHistory(String address, Integer startIndex, Integer limit, List<TransactionRecord> transactionRecords, List<TransactionDetailsDTO> details) {
-                return blockbookService.getTransactionHistory(getCoinType(), address, startIndex, limit, transactionRecords, details);
+            public TransactionHistoryDTO getTransactionHistory(String address, List<TransactionRecord> transactionRecords, List<TransactionDetailsDTO> details) {
+                return blockbookService.getTransactionHistory(getCoinType(), address, transactionRecords, details);
             }
 
             @Override
@@ -351,8 +351,8 @@ public class CoinService {
             }
 
             @Override
-            public TransactionHistoryDTO getTransactionHistory(String address, Integer startIndex, Integer limit, List<TransactionRecord> transactionRecords, List<TransactionDetailsDTO> details) {
-                return blockbookService.getTransactionHistory(getCoinType(), address, startIndex, limit, transactionRecords, details);
+            public TransactionHistoryDTO getTransactionHistory(String address, List<TransactionRecord> transactionRecords, List<TransactionDetailsDTO> details) {
+                return blockbookService.getTransactionHistory(getCoinType(), address, transactionRecords, details);
             }
 
             @Override
@@ -450,8 +450,8 @@ public class CoinService {
             }
 
             @Override
-            public TransactionHistoryDTO getTransactionHistory(String address, Integer startIndex, Integer limit, List<TransactionRecord> transactionRecords, List<TransactionDetailsDTO> details) {
-                return blockbookService.getTransactionHistory(getCoinType(), address, startIndex, limit, transactionRecords, details);
+            public TransactionHistoryDTO getTransactionHistory(String address, List<TransactionRecord> transactionRecords, List<TransactionDetailsDTO> details) {
+                return blockbookService.getTransactionHistory(getCoinType(), address, transactionRecords, details);
             }
 
             @Override
@@ -549,8 +549,8 @@ public class CoinService {
             }
 
             @Override
-            public TransactionHistoryDTO getTransactionHistory(String address, Integer startIndex, Integer limit, List<TransactionRecord> transactionRecords, List<TransactionDetailsDTO> details) {
-                return blockbookService.getTransactionHistory(getCoinType(), address, startIndex, limit, transactionRecords, details);
+            public TransactionHistoryDTO getTransactionHistory(String address, List<TransactionRecord> transactionRecords, List<TransactionDetailsDTO> details) {
+                return blockbookService.getTransactionHistory(getCoinType(), address, transactionRecords, details);
             }
 
             @Override
@@ -648,8 +648,8 @@ public class CoinService {
             }
 
             @Override
-            public TransactionHistoryDTO getTransactionHistory(String address, Integer startIndex, Integer limit, List<TransactionRecord> transactionRecords, List<TransactionDetailsDTO> details) {
-                return blockbookService.getTransactionHistory(getCoinType(), address, startIndex, limit, transactionRecords, details);
+            public TransactionHistoryDTO getTransactionHistory(String address, List<TransactionRecord> transactionRecords, List<TransactionDetailsDTO> details) {
+                return blockbookService.getTransactionHistory(getCoinType(), address, transactionRecords, details);
             }
 
             @Override
@@ -747,8 +747,8 @@ public class CoinService {
             }
 
             @Override
-            public TransactionHistoryDTO getTransactionHistory(String address, Integer startIndex, Integer limit, List<TransactionRecord> transactionRecords, List<TransactionDetailsDTO> details) {
-                return gethService.getTransactionHistory(address, startIndex, limit, transactionRecords, details);
+            public TransactionHistoryDTO getTransactionHistory(String address, List<TransactionRecord> transactionRecords, List<TransactionDetailsDTO> details) {
+                return gethService.getTransactionHistory(address, transactionRecords, details);
             }
 
             @Override
@@ -843,8 +843,8 @@ public class CoinService {
             }
 
             @Override
-            public TransactionHistoryDTO getTransactionHistory(String address, Integer startIndex, Integer limit, List<TransactionRecord> transactionRecords, List<TransactionDetailsDTO> details) {
-                return gethService.getTransactionHistory(GethService.ERC20.CATM, address, startIndex, limit, transactionRecords, details);
+            public TransactionHistoryDTO getTransactionHistory(String address, List<TransactionRecord> transactionRecords, List<TransactionDetailsDTO> details) {
+                return gethService.getTransactionHistory(GethService.ERC20.CATM, address, transactionRecords, details);
             }
 
             @Override
@@ -939,8 +939,8 @@ public class CoinService {
             }
 
             @Override
-            public TransactionHistoryDTO getTransactionHistory(String address, Integer startIndex, Integer limit, List<TransactionRecord> transactionRecords, List<TransactionDetailsDTO> details) {
-                return gethService.getTransactionHistory(GethService.ERC20.USDC, address, startIndex, limit, transactionRecords, details);
+            public TransactionHistoryDTO getTransactionHistory(String address, List<TransactionRecord> transactionRecords, List<TransactionDetailsDTO> details) {
+                return gethService.getTransactionHistory(GethService.ERC20.USDC, address, transactionRecords, details);
             }
 
             @Override
@@ -1035,8 +1035,8 @@ public class CoinService {
             }
 
             @Override
-            public TransactionHistoryDTO getTransactionHistory(String address, Integer startIndex, Integer limit, List<TransactionRecord> transactionRecords, List<TransactionDetailsDTO> details) {
-                return binanceService.getTransactionHistory(address, startIndex, limit, transactionRecords, details);
+            public TransactionHistoryDTO getTransactionHistory(String address, List<TransactionRecord> transactionRecords, List<TransactionDetailsDTO> details) {
+                return binanceService.getTransactionHistory(address, transactionRecords, details);
             }
 
             @Override
@@ -1131,8 +1131,8 @@ public class CoinService {
             }
 
             @Override
-            public TransactionHistoryDTO getTransactionHistory(String address, Integer startIndex, Integer limit, List<TransactionRecord> transactionRecords, List<TransactionDetailsDTO> details) {
-                return rippledService.getTransactionDetails(address, startIndex, limit, transactionRecords, details);
+            public TransactionHistoryDTO getTransactionHistory(String address, List<TransactionRecord> transactionRecords, List<TransactionDetailsDTO> details) {
+                return rippledService.getTransactionDetails(address, transactionRecords, details);
             }
 
             @Override
@@ -1227,8 +1227,8 @@ public class CoinService {
             }
 
             @Override
-            public TransactionHistoryDTO getTransactionHistory(String address, Integer startIndex, Integer limit, List<TransactionRecord> transactionRecords, List<TransactionDetailsDTO> details) {
-                return trongridService.getTransactionHistory(address, startIndex, limit, transactionRecords, details);
+            public TransactionHistoryDTO getTransactionHistory(String address, List<TransactionRecord> transactionRecords, List<TransactionDetailsDTO> details) {
+                return trongridService.getTransactionHistory(address, transactionRecords, details);
             }
 
             @Override
@@ -1295,7 +1295,7 @@ public class CoinService {
 
         public abstract TransactionDetailsDTO getTransactionDetails(String txId, String address);
 
-        public abstract TransactionHistoryDTO getTransactionHistory(String address, Integer startIndex, Integer limit, List<TransactionRecord> transactionRecords, List<TransactionDetailsDTO> details);
+        public abstract TransactionHistoryDTO getTransactionHistory(String address, List<TransactionRecord> transactionRecords, List<TransactionDetailsDTO> details);
 
         public abstract CurrentAccountDTO getCurrentAccount(String address);
 

@@ -189,8 +189,8 @@ public class BlockbookService {
         return Collections.emptyMap();
     }
 
-    public TransactionHistoryDTO getTransactionHistory(CoinType coinType, String address, Integer startIndex, Integer limit, List<TransactionRecord> transactionRecords, List<TransactionDetailsDTO> details) {
-        return TransactionService.buildTxs(getNodeTransactions(coinType, address), startIndex, limit, transactionRecords, details);
+    public TransactionHistoryDTO getTransactionHistory(CoinType coinType, String address, List<TransactionRecord> transactionRecords, List<TransactionDetailsDTO> details) {
+        return TransactionService.buildTxs(getNodeTransactions(coinType, address), transactionRecords, details);
     }
 
     public String signBTCForks(Long walletId, CoinType coinType, String fromAddress, String toAddress, BigDecimal amount, Long byteFee, List<JSONObject> utxos) {

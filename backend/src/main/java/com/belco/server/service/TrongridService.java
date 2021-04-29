@@ -167,8 +167,8 @@ public class TrongridService {
         return Collections.emptyMap();
     }
 
-    public TransactionHistoryDTO getTransactionHistory(String address, Integer startIndex, Integer limit, List<TransactionRecord> transactionRecords, List<TransactionDetailsDTO> details) {
-        return TransactionService.buildTxs(getNodeTransactions(address), startIndex, limit, transactionRecords, details);
+    public TransactionHistoryDTO getTransactionHistory(String address, List<TransactionRecord> transactionRecords, List<TransactionDetailsDTO> details) {
+        return TransactionService.buildTxs(getNodeTransactions(address), transactionRecords, details);
     }
 
     public CurrentBlockDTO getCurrentBlock() {

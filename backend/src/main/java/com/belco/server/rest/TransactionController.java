@@ -44,11 +44,9 @@ public class TransactionController {
     }
 
     @GetMapping("/user/{userId}/coin/{coin}/transaction-history")
-    public Response getTransactionHistory(@PathVariable Long userId, @PathVariable CoinService.CoinEnum coin, @RequestParam(required = false) Integer index) {
+    public Response getTransactionHistory(@PathVariable Long userId, @PathVariable CoinService.CoinEnum coin) {
         try {
-            index = index == null || index <= 0 ? 1 : index;
-
-            return Response.ok(transactionService.getTransactionHistory(userId, coin, index));
+            return Response.ok(transactionService.getTransactionHistory(userId, coin));
         } catch (Exception e) {
             e.printStackTrace();
             return Response.serverError();

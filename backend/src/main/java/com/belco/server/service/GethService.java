@@ -151,8 +151,8 @@ public class GethService {
         return null;
     }
 
-    private static TransactionHistoryDTO buildTransactionList(String coll, BasicDBObject query, String address, Integer startIndex, Integer limit, List<TransactionRecord> transactionRecords, List<TransactionDetailsDTO> details) {
-        return TransactionService.buildTxs(getNodeTransactionsFromDB(coll, query, address), startIndex, limit, transactionRecords, details);
+    private static TransactionHistoryDTO buildTransactionList(String coll, BasicDBObject query, String address, List<TransactionRecord> transactionRecords, List<TransactionDetailsDTO> details) {
+        return TransactionService.buildTxs(getNodeTransactionsFromDB(coll, query, address), transactionRecords, details);
     }
 
     private static Map<String, TransactionDetailsDTO> getNodeTransactionsFromDB(String coll, BasicDBObject query, String address) {
@@ -513,16 +513,16 @@ public class GethService {
         return getTransactionFromDB(TOKEN_TX_COLL, new BasicDBObject("txId", txId.toLowerCase()).append("token", token.name()), address.toLowerCase(), explorerUrl);
     }
 
-    public TransactionHistoryDTO getTransactionHistory(String address, Integer startIndex, Integer limit, List<TransactionRecord> transactionRecords, List<TransactionDetailsDTO> details) {
+    public TransactionHistoryDTO getTransactionHistory(String address, List<TransactionRecord> transactionRecords, List<TransactionDetailsDTO> details) {
         BasicDBObject query = buildQuery(address);
 
-        return buildTransactionList(ETH_TX_COLL, query, address, startIndex, limit, transactionRecords, details);
+        return buildTransactionList(ETH_TX_COLL, query, address, transactionRecords, details);
     }
 
-    public TransactionHistoryDTO getTransactionHistory(ERC20 token, String address, Integer startIndex, Integer limit, List<TransactionRecord> transactionRecords, List<TransactionDetailsDTO> details) {
+    public TransactionHistoryDTO getTransactionHistory(ERC20 token, String address, List<TransactionRecord> transactionRecords, List<TransactionDetailsDTO> details) {
         BasicDBObject query = buildQuery(token, address);
 
-        return buildTransactionList(TOKEN_TX_COLL, query, address, startIndex, limit, transactionRecords, details);
+        return buildTransactionList(TOKEN_TX_COLL, query, address, transactionRecords, details);
     }
 
     public Map<String, TransactionDetailsDTO> getNodeTransactions(String address) {
