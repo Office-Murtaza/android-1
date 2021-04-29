@@ -49,8 +49,8 @@ class TradesDataSource: NSObject,  TradeListDataSource {
         }
         
         tradesViewModels = listTrades.map{ TradeViewModel(trade: $0,
-                                                         totalTrades: trades.makerTotalTrades,
-                                                         rate: trades.makerTradingRate) }
+                                                         totalTrades: trades.makerTotalTrades ?? 0,
+                                                         rate: trades.makerTradingRate ?? 0) }
         
         initViewModels = tradesViewModels
         

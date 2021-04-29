@@ -63,8 +63,8 @@ class MyViewController: UIViewController, MDCTabBarDelegate {
     infoViewController.update(id: trades.makerPublicId,
                               verificationImage: verificationStatus?.image,
                               verificationStatus: verificationStatus?.status ?? "",
-                              rate: trades.makerTradingRate.coinFormatted,
-                              total: trades.makerTotalTrades.coinFormatted)
+                              rate: (trades.makerTradingRate ?? 0).coinFormatted,
+                              total: (trades.makerTotalTrades ?? 0).coinFormatted)
   }
   
   func update(balance: CoinsBalance) {

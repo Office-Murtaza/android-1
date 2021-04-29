@@ -31,6 +31,7 @@ class MyTradesViewController: UIViewController {
     func update(trades: [Trade]) {
         let viewModels = trades.sorted { $0.timestamp ?? 0 > $1.timestamp ?? 0 }.map { MyTradesCellViewModel(trade: $0) }
         dataSource.udpate(vm: viewModels)
+        emptyView.isHidden = dataSource.viewModels.isNotEmpty
     }
     
     func setupUI() {

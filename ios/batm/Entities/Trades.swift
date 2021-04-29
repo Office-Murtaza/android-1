@@ -48,8 +48,8 @@ struct Order: Equatable {
 struct Trades: Equatable {
     var makerPublicId: String
     var makerStatus: Int
-    var makerTotalTrades: Double
-    var makerTradingRate: Double
+    var makerTotalTrades: Double?
+    var makerTradingRate: Double?
     var trades: [Trade]
     var orders: [Order]
 }

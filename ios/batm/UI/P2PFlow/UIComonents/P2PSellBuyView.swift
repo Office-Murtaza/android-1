@@ -51,7 +51,7 @@ class P2PSellBuyView: UIView {
     
     private var selected = false
     private var type: P2PSellBuyViewType?
-    private let tapRecognizer = UITapGestureRecognizer(target: self, action: #selector(didTap))
+    private var tapRecognizer: UITapGestureRecognizer?
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -71,7 +71,9 @@ class P2PSellBuyView: UIView {
     }
     
     private func setupRecognizer() {
-        addGestureRecognizer(tapRecognizer)
+      tapRecognizer = UITapGestureRecognizer(target: self, action: #selector(didTap))
+      guard let recognizer = tapRecognizer else { return }
+      addGestureRecognizer(recognizer)
     }
     
     @objc private func didTap() {
@@ -94,7 +96,7 @@ class P2PSellBuyView: UIView {
     
   
   func setTapEnabled( _ isEnabled: Bool) {
-    tapRecognizer.isEnabled = isEnabled
+    tapRecognizer?.isEnabled = isEnabled
   }
   
   func setInactive() {
