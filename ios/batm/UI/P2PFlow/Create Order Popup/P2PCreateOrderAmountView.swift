@@ -52,8 +52,8 @@ class P2PCreateOrderAmountView: UIView {
       fiatTextField
     ])
     
-    cryptoAmountTitle.text = "Crypto amount"
-    fiatAmountTitle.text = "Fiat amount"
+    cryptoAmountTitle.text = localize(L.P2p.Crypto.Amount.title)
+    fiatAmountTitle.text = localize(L.P2p.Fiat.Amount.title)
     
     cryptoAmountValue.text = "0"
     fiatTextField.text = "0"

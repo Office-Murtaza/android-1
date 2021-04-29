@@ -18,7 +18,7 @@ class MyInfoSuccessRateView: UIView {
         let label = UILabel()
         label.font = .systemFont(ofSize: 12, weight: .regular)
         label.textColor = UIColor.black.withAlphaComponent(0.6)
-        label.text = "Success rate"
+      label.text = localize(L.P2p.Success.Rate.title)
         return label
     }()
 

@@ -60,11 +60,11 @@ class P2PPresenter: ModulePresenter, P2PModule {
   
   func didSelectedSubmit(data: P2PCreateTradeDataModel) {
     guard let useCase = walletUseCase else { return }
-    //do we need track here?
+  
     track(useCase.createTrade(data: data))
       .asObservable()
       .subscribe(onNext: { [weak self] (trade) in
-        self?.tradeSuccessMessage.accept("Trade successfully created")
+        self?.tradeSuccessMessage.accept(localize(L.P2p.Trade.Created.message))
         self?.refreshTrades()
       }, onError: { [weak self] (error) in
           guard let errorService = self?.errorService, let disposable = self?.disposeBag else {
@@ -76,11 +76,11 @@ class P2PPresenter: ModulePresenter, P2PModule {
   
   func editTrade(data: P2PEditTradeDataModel) {
     guard let useCase = walletUseCase else { return }
-    //do we need track here?
+
     track(useCase.editTrade(data: data))
       .asObservable()
       .subscribe(onNext: { [weak self] (trade) in
-        self?.tradeSuccessMessage.accept("Trade successfully updated")
+        self?.tradeSuccessMessage.accept(localize(L.P2p.Trade.Updated.message))
         self?.refreshTrades()
       }, onError: { [weak self] (error) in
           guard let errorService = self?.errorService, let disposable = self?.disposeBag else {
@@ -92,11 +92,11 @@ class P2PPresenter: ModulePresenter, P2PModule {
     
     func cancelTrade(id: String) {
       guard let useCase = walletUseCase else { return }
-      //do we need track here?
+    
       track(useCase.cancelTrade(id: id))
         .asObservable()
         .subscribe(onNext: { [weak self] (trade) in
-          self?.tradeSuccessMessage.accept("Trade successfully canceled")
+          self?.tradeSuccessMessage.accept(localize(L.P2p.Trade.Canceled.message))
           self?.refreshTrades()
         }, onError: { [weak self] (error) in
             guard let errorService = self?.errorService, let disposable = self?.disposeBag else {

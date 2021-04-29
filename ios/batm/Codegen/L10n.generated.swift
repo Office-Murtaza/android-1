@@ -117,6 +117,9 @@ enum L {
     static let title = "notifications.title"
   }
 
+  struct P2p {
+  }
+
   struct Phone {
   }
 
@@ -636,6 +639,269 @@ extension L.Notifications {
 
   struct Cell {
     static let title = "notifications.cell.title"
+  }
+}
+extension L.P2p {
+
+  struct Buy {
+    static let title = "p2p.buy.title"
+  }
+
+  struct Create {
+  }
+
+  struct Crypto {
+  }
+
+  struct Fiat {
+  }
+
+  struct Filter {
+    static let miles = "p2p.filter.miles"
+  }
+
+  struct Have {
+  }
+
+  struct Limits {
+    static let title = "p2p.limits.title"
+  }
+
+  struct No {
+  }
+
+  struct Order {
+  }
+
+  struct Payment {
+  }
+
+  struct PaymentMethod {
+    static let cash = "p2p.payment_method.cash"
+    static let cashApp = "p2p.payment_method.cash_app"
+    static let payoneer = "p2p.payment_method.payoneer"
+    static let paypal = "p2p.payment_method.paypal"
+    static let venmo = "p2p.payment_method.venmo"
+  }
+
+  struct Range {
+    static let from = "p2p.range.from"
+    static let to = "p2p.range.to"
+  }
+
+  struct Reserved {
+    static let title = "p2p.reserved.title"
+  }
+
+  struct Sell {
+    static let title = "p2p.sell.title"
+  }
+
+  struct Success {
+  }
+
+  struct Tabbar {
+  }
+
+  struct Terms {
+    static let placeholder = "p2p.terms.placeholder"
+    static let title = "p2p.terms.title"
+  }
+
+  struct Total {
+  }
+
+  struct Trade {
+  }
+
+  struct TradeType {
+    static let title = "p2p.trade_type.title"
+  }
+
+  struct Trading {
+  }
+}
+extension L.P2p.Create {
+
+  struct New {
+  }
+
+  struct Order {
+    static let platformFee = "p2p.create.order.platform_fee"
+  }
+}
+extension L.P2p.Create.New {
+
+  struct Trade {
+    static let title = "p2p.create.new.trade.title"
+  }
+}
+extension L.P2p.Crypto {
+
+  struct Amount {
+    static let title = "p2p.crypto.amount.title"
+  }
+}
+extension L.P2p.Fiat {
+
+  struct Amount {
+    static let title = "p2p.fiat.amount.title"
+  }
+}
+extension L.P2p.Filter {
+
+  struct Coins {
+    static let title = "p2p.filter.coins.title"
+  }
+
+  struct Distance {
+    static let title = "p2p.filter.distance.title"
+  }
+
+  struct Payment {
+  }
+
+  struct Price {
+    static let title = "p2p.filter.price.title"
+  }
+
+  struct Sort {
+  }
+}
+extension L.P2p.Filter.Distance {
+
+  struct Range {
+    static let title = "p2p.filter.distance.range.title"
+  }
+}
+extension L.P2p.Filter.Payment {
+
+  struct Methods {
+    static let title = "p2p.filter.payment.methods.title"
+  }
+}
+extension L.P2p.Filter.Sort {
+
+  struct By {
+    static let title = "p2p.filter.sort.by.title"
+  }
+}
+extension L.P2p.Have {
+
+  struct Not {
+  }
+}
+extension L.P2p.Have.Not {
+
+  struct Crate {
+    static let trade = "p2p.have.not.crate.trade"
+  }
+}
+extension L.P2p.No {
+
+  struct Open {
+  }
+}
+extension L.P2p.No.Open {
+
+  struct Orders {
+    static let yet = "p2p.no.open.orders.yet"
+  }
+}
+extension L.P2p.Order {
+
+  struct Status {
+    static let canceled = "p2p.order.status.canceled"
+    static let disputing = "p2p.order.status.disputing"
+    static let doing = "p2p.order.status.doing"
+    static let new = "p2p.order.status.new"
+    static let paid = "p2p.order.status.paid"
+    static let released = "p2p.order.status.released"
+    static let solved = "p2p.order.status.solved"
+  }
+}
+extension L.P2p.Payment {
+
+  struct Methods {
+    static let title = "p2p.payment.methods.title"
+  }
+}
+extension L.P2p.Success {
+
+  struct Rate {
+    static let title = "p2p.success.rate.title"
+  }
+}
+extension L.P2p.Tabbar {
+
+  struct Buy {
+    static let title = "p2p.tabbar.buy.title"
+  }
+
+  struct Info {
+    static let title = "p2p.tabbar.info.title"
+  }
+
+  struct My {
+    static let title = "p2p.tabbar.my.title"
+  }
+
+  struct OpenOrders {
+    static let title = "p2p.tabbar.open_orders.title"
+  }
+
+  struct Sell {
+    static let title = "p2p.tabbar.sell.title"
+  }
+
+  struct Trades {
+    static let title = "p2p.tabbar.trades.title"
+  }
+}
+extension L.P2p.Total {
+
+  struct Trades {
+    static let title = "p2p.total.trades.title"
+  }
+}
+extension L.P2p.Trade {
+
+  struct Canceled {
+    static let message = "p2p.trade.canceled.message"
+  }
+
+  struct Created {
+    static let message = "p2p.trade.created.message"
+  }
+
+  struct Details {
+    static let info = "p2p.trade.details.info"
+  }
+
+  struct Status {
+    static let notVerified = "p2p.trade.status.not_verified"
+    static let verified = "p2p.trade.status.verified"
+    static let vipVerified = "p2p.trade.status.vip_verified"
+  }
+
+  struct Updated {
+    static let message = "p2p.trade.updated.message"
+  }
+}
+extension L.P2p.Trade.Details {
+
+  struct Open {
+    static let orders = "p2p.trade.details.open.orders"
+  }
+
+  struct Payment {
+    static let methods = "p2p.trade.details.payment.methods"
+  }
+}
+extension L.P2p.Trading {
+
+  struct Vc {
+    static let title = "p2p.trading.vc.title"
   }
 }
 extension L.Phone {

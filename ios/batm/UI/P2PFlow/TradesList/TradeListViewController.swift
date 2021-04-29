@@ -15,7 +15,7 @@ protocol TradeListDataSource: UITableViewDataSource, UITableViewDelegate {
     func reload(location: CLLocation?)
 }
 
-protocol TradeListDelegate: class {
+protocol TradeListDelegate: AnyObject {
     func applyFilter(scope: FilterScopeModel)
     
     func resetFilter()

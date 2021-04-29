@@ -34,7 +34,7 @@ class MyOpenOrdersCellViewModel {
     //MARK: - Crypto amount
     
     var cryptoAmountTitle: String {
-        return "Crypto amount"
+      return localize(L.P2p.Crypto.Amount.title)
     }
     
     var cryptoAmount: String {
@@ -42,15 +42,11 @@ class MyOpenOrdersCellViewModel {
     }
     
     var fiatAmountTitle: String {
-        return "Fiat amount"
+      return localize(L.P2p.Fiat.Amount.title)
     }
     
     var fiatAmount: String {
         return order.fiatAmount?.coinFormatted ?? ""
     }
-    
-//    var sellbuyType: P2PSellBuyViewType {
-//        return trade.type == 1 ? .buy : .sell
-//    }
-    
+
 }

@@ -1,6 +1,6 @@
 import UIKit
 
-protocol P2PSellBuyViewDelegate: class {
+protocol P2PSellBuyViewDelegate: AnyObject {
    func didTap(view: P2PSellBuyView)
 }
 
@@ -31,8 +31,8 @@ enum P2PSellBuyViewType: Int {
     
     var title: String {
         switch self {
-        case .sell: return "Sell"
-        case .buy: return "Buy"
+        case .sell: return localize(L.P2p.Sell.title)
+        case .buy: return localize(L.P2p.Buy.title)
         }
     }
 }

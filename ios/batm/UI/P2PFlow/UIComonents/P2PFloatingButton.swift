@@ -1,6 +1,6 @@
 import UIKit
 
-protocol P2PFloatingButtonDelegate: class {
+protocol P2PFloatingButtonDelegate: AnyObject {
     func didTapFloadingButton()
 }
 

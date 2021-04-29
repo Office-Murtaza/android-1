@@ -16,9 +16,9 @@ enum TradeVerificationStatus: Int {
     
     var status: String {
         switch self {
-        case .notVerified: return "Not Verified"
-        case .verified: return "Verified"
-        case .vipVerfified: return "Vip Verified"
+        case .notVerified: return localize(L.P2p.Trade.Status.notVerified)
+        case .verified: return localize(L.P2p.Trade.Status.verified)
+        case .vipVerfified: return localize(L.P2p.Trade.Status.vipVerified)
         }
     }
 }

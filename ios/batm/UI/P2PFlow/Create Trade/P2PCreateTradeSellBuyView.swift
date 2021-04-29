@@ -1,6 +1,6 @@
 import UIKit
 
-protocol P2PCreateTradeSellBuyViewDelegate: class {
+protocol P2PCreateTradeSellBuyViewDelegate: AnyObject {
     func didSelectedType(_ type: P2PSellBuyViewType)
 }
 

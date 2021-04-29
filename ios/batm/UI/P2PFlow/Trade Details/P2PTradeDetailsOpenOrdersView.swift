@@ -34,7 +34,7 @@ class P2PTradeDetailsOpenOrdersView: UIView {
   
   private func setupUI() {
     
-    titleLabel.text = "Open orders"
+    titleLabel.text = localize(L.P2p.Trade.Details.Open.orders)
     valueLabel.text = "0"
     
     addSubviews([

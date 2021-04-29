@@ -22,7 +22,7 @@ class OpenOrdersEmptyView: UIView {
     private lazy var titleLabel: UILabel = {
         let label = UILabel()
         label.font = .systemFont(ofSize: 16, weight: .regular)
-        label.text = "There isn't open orders yet."
+        label.text = localize(L.P2p.No.Open.Orders.yet)
         label.textAlignment = .center
         return label
     }()

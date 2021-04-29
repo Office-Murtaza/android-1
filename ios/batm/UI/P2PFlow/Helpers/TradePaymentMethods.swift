@@ -19,11 +19,11 @@ enum TradePaymentMethods: Int, CaseIterable {
     
     var title: String {
         switch self {
-        case .cash: return "Cash"
-        case .payPal: return "PayPal"
-        case .venmo: return "Venmo"
-        case .cashApp: return "Cash app"
-        case .payoneer: return "Payoneer"
+        case .cash: return localize(L.P2p.PaymentMethod.cash)
+        case .payPal: return localize(L.P2p.PaymentMethod.paypal)
+        case .venmo: return localize(L.P2p.PaymentMethod.venmo)
+        case .cashApp: return localize(L.P2p.PaymentMethod.cashApp)
+        case .payoneer: return localize(L.P2p.PaymentMethod.payoneer)
         }
     }
     

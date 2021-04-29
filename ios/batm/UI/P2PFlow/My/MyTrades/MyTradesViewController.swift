@@ -1,7 +1,7 @@
 import UIKit
 import SnapKit
 
-protocol MyTradesViewControllerDelegate: class {
+protocol MyTradesViewControllerDelegate: AnyObject {
     func didTapCreateTrade()
     func didSelectEdit(data: P2PEditTradeDataModel)
     func cancelTrade(id: String)

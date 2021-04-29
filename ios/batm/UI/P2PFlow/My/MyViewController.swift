@@ -4,7 +4,7 @@ import RxCocoa
 import SnapKit
 import MaterialComponents
 
-protocol MyViewControllerDelegate: class {
+protocol MyViewControllerDelegate: AnyObject {
   func didTapCreateTrade()
   func didSelectEdit(data: P2PEditTradeDataModel)
   func cancelTrade(id: String)
@@ -32,9 +32,9 @@ class MyViewController: UIViewController, MDCTabBarDelegate {
     return controller
   }()
   
-  let tradesItem = UITabBarItem(title: "TRADES", image: nil, tag: 0)
-  let openOrdersItem = UITabBarItem(title: "OPEN ORDERS", image: nil, tag: 1)
-  let infoItem = UITabBarItem(title: "INFO", image: nil, tag: 2)
+  let tradesItem = UITabBarItem(title: localize(L.P2p.Tabbar.Trades.title), image: nil, tag: 0)
+  let openOrdersItem = UITabBarItem(title: localize(L.P2p.Tabbar.OpenOrders.title), image: nil, tag: 1)
+  let infoItem = UITabBarItem(title: localize(L.P2p.Tabbar.Info.title), image: nil, tag: 2)
   
   lazy var tabBar: MDCTabBar = {
     let tabBar = MDCTabBar()

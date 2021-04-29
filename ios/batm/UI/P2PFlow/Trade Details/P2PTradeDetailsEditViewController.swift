@@ -2,7 +2,7 @@ import UIKit
 import SnapKit
 import MaterialComponents
 
-protocol P2PTradeDetailsEditViewControllerDelegate: class {
+protocol P2PTradeDetailsEditViewControllerDelegate: AnyObject {
     func didSelectEdit(data: P2PEditTradeDataModel)
     func cancelTrade(id: String)
 }
@@ -37,7 +37,7 @@ class P2PTradeDetailsEditViewController: P2PTradeDetailsBaseViewController {
             
         ])
         
-        infoMessageView.update(message: "Selling cryptocurrency at the best rate. Ready to meet select cash as a method of payment. Always available, write in chat 24/7.")
+      infoMessageView.update(message: localize(L.P2p.Trade.Details.info))
         
         editButton.addTarget(self, action: #selector(editTrade), for: .touchUpInside)
         cancelButton.addTarget(self, action: #selector(cancelTrade), for: .touchUpInside)

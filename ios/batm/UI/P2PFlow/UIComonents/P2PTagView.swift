@@ -1,7 +1,7 @@
 import UIKit
 import SnapKit
 
-protocol P2PTagViewDelegate: class {
+protocol P2PTagViewDelegate: AnyObject {
     func didTapTag(view: P2PTagView)
 }
 

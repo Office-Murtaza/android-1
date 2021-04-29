@@ -16,7 +16,7 @@ class MyInfoTotalTradesView: UIView {
         let label = UILabel()
         label.font = .systemFont(ofSize: 12, weight: .regular)
         label.textColor = UIColor.black.withAlphaComponent(0.6)
-        label.text = "Total trades"
+        label.text = localize(L.P2p.Total.Trades.title)
         return label
     }()
 

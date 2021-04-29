@@ -28,7 +28,7 @@ class P2PTradeDetailsSellViewController: P2PTradeDetailsBaseViewController {
       sellButton
     ])
     
-    infoMessageView.update(message: "Selling cryptocurrency at the best rate. Ready to meet select cash as a method of payment. Always available, write in chat 24/7.")
+    infoMessageView.update(message: localize(L.P2p.Trade.Details.info))
     
   }
   

@@ -30,9 +30,9 @@ class P2PViewController: ModuleViewController<P2PPresenter>, MDCTabBarDelegate {
         return controller
     }()
     
-    let buyTradesItem = UITabBarItem(title: "BUY", image: nil, tag: 0)
-    let sellTradesItem = UITabBarItem(title: "SELL", image: nil, tag: 1)
-    let myTradesItem = UITabBarItem(title: "MY...", image: nil, tag: 2)
+  let buyTradesItem = UITabBarItem(title: localize(L.P2p.Tabbar.Buy.title), image: nil, tag: 0)
+  let sellTradesItem = UITabBarItem(title: localize(L.P2p.Tabbar.Sell.title), image: nil, tag: 1)
+  let myTradesItem = UITabBarItem(title: localize(L.P2p.Tabbar.My.title), image: nil, tag: 2)
     
     lazy var tabBar: MDCTabBar = {
         let tabBar = MDCTabBar()
@@ -49,7 +49,7 @@ class P2PViewController: ModuleViewController<P2PPresenter>, MDCTabBarDelegate {
   override func setupUI() {
     
     myViewController?.delegate = self
-    title = "P2P Trading"
+    title = localize(L.P2p.Trading.Vc.title)
     
     navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(named: "p2p_create_trade"),
                                                         style: .plain,

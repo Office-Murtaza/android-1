@@ -37,7 +37,7 @@ class P2PTradeDetailsPaymentMethodsView: UIView {
   
   private func setupUI() {
     
-    titleLabel.text = "Payment Methods"
+    titleLabel.text = localize(L.P2p.Trade.Details.Payment.methods)
     
     addSubviews([
       titleLabel,

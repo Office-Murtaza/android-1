@@ -1,7 +1,7 @@
 import UIKit
 import CoreLocation
 
-protocol TradesDataSourceDelegate: class {
+protocol TradesDataSourceDelegate: AnyObject {
   func didSelected(tradeModel: TradeViewModel, type: P2PTradesType)
 }
 

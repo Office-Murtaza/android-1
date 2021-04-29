@@ -114,8 +114,8 @@ class P2PDistanceRangeView: UIView {
     
     func setupUI() {
         
-        fromField.setup(placeholder: "From", attributedText: NSAttributedString(), userInteractionEnabled: false)
-        toField.setup(placeholder: "To", attributedText: NSAttributedString(), userInteractionEnabled: false)
+      fromField.setup(placeholder: localize(L.P2p.Range.from), attributedText: NSAttributedString(), userInteractionEnabled: false)
+      toField.setup(placeholder: localize(L.P2p.Range.to), attributedText: NSAttributedString(), userInteractionEnabled: false)
         
         addSubviews([
             distanceSlider,

@@ -415,3 +415,77 @@
 
 "transfer.receiver.phone.placeholder" = "Type mobile number or contact name";
 "transfer.receiver.title" = "Transfer";
+
+"p2p.create.order.platform_fee" = "Platform fee 3% ~";
+"p2p.crypto.amount.title" = "Crypto amount";
+"p2p.fiat.amount.title" = "Fiat amount";
+
+
+"p2p.trade_type.title" = "Trade Type";
+"p2p.payment.methods.title" = "Payment methods";
+"p2p.limits.title" = "Limits";
+"p2p.terms.title" = "Terms";
+"p2p.terms.placeholder" = "Type your terms or comments";
+
+"p2p.trade.details.open.orders" = "Open orders";
+
+"p2p.trade.details.payment.methods" = "Payment Methods";
+
+"p2p.trade.details.info" = "Selling cryptocurrency at the best rate. Ready to meet select cash as a method of payment. Always available, write in chat 24/7.";
+
+"p2p.filter.price.title" = "Price";
+"p2p.filter.distance.title" = "Distance";
+"p2p.filter.coins.title" = "Coins";
+"p2p.filter.payment.methods.title" = "Payment methods";
+"p2p.filter.distance.range.title" = "Distance range";
+"p2p.filter.sort.by.title" = "Sort by";
+"p2p.filter.miles" = " miles";
+
+"p2p.range.from" = "From";
+"p2p.range.to" = "To";
+
+"p2p.trade.status.not_verified" = "Not Verified";
+"p2p.trade.status.verified" = "Verified";
+"p2p.trade.status.vip_verified" = "Vip Verified";
+
+"p2p.payment_method.cash" = "Cash";
+"p2p.payment_method.paypal" = "PayPal";
+"p2p.payment_method.venmo" = "Venmo";
+"p2p.payment_method.cash_app" = "Cash app";
+"p2p.payment_method.payoneer" = "Payoneer";
+
+"p2p.order.status.new" = "New";
+"p2p.order.status.canceled" = "Canceled";
+"p2p.order.status.doing" = "Doing";
+"p2p.order.status.paid" = "Paid";
+"p2p.order.status.released" = "Released";
+"p2p.order.status.disputing" = "Disputing";
+"p2p.order.status.solved" = "Solved";
+
+"p2p.sell.title" = "Sell";
+"p2p.buy.title" = "Buy";
+
+"p2p.reserved.title" = "Reserved";
+
+"p2p.success.rate.title" = "Success rate";
+
+"p2p.total.trades.title" = "Total trades";
+
+"p2p.no.open.orders.yet" = "There isn't open orders yet.";
+
+"p2p.have.not.crate.trade" = "You haven't created a single trade yet.";
+"p2p.create.new.trade.title" = "Create new Trade";
+
+"p2p.tabbar.trades.title" = "TRADES";
+"p2p.tabbar.open_orders.title" = "OPEN ORDERS";
+"p2p.tabbar.info.title" = "INFO";
+
+
+"p2p.tabbar.buy.title" = "BUY";
+"p2p.tabbar.sell.title" = "SELL";
+"p2p.tabbar.my.title" = "MY...";
+"p2p.trading.vc.title" = "P2P Trading";
+
+"p2p.trade.updated.message" = "Trade successfully updated";
+"p2p.trade.created.message" = "Trade successfully created";
+"p2p.trade.canceled.message" = "Trade successfully canceled";

@@ -68,7 +68,7 @@ class P2PCreateOrderPopupViewController: UIViewController {
       platformFeeValueLabel
     ])
     
-    platformFeeTitleLabel.text = "Platform fee 3% ~"
+    platformFeeTitleLabel.text = localize(L.P2p.Create.Order.platformFee)
     platformFeeValueLabel.text = "0"
     
   }

@@ -18,7 +18,7 @@ struct P2PCreateTradeDataModel: Encodable {
     }
 }
 
-protocol P2PCreateTradeViewControllerDelegate: class {
+protocol P2PCreateTradeViewControllerDelegate: AnyObject {
    func didSelectedSubmit(data: P2PCreateTradeDataModel)
 }
 
@@ -84,7 +84,7 @@ class P2PCreateTradeViewController: UIViewController {
         setupUI()
         setupLayout()
         bind()
-        tradeTypeHeader.update(title: "Trade Type")
+      tradeTypeHeader.update(title: localize(L.P2p.TradeType.title))
         addNotificationObserver()
     }
     
@@ -95,13 +95,13 @@ class P2PCreateTradeViewController: UIViewController {
     
     private func setupUI() {
         view.backgroundColor = .white
-        paymentMethodsHeader.update(title: "Payment methods")
+      paymentMethodsHeader.update(title: localize(L.P2p.Payment.Methods.title))
         setupPaymentMethodsView(payments: payments)
         limitsView.setup(range: [100, 10000], measureString: "$ ", isMeasurePosistionLast: false)
-        limitsHeader.update(title: "Limits")
-        termsHeader.update(title: "Terms")
+      limitsHeader.update(title: localize(L.P2p.Limits.title))
+      termsHeader.update(title: localize(L.P2p.Terms.title))
         termsTextFieldController = ThemedTextInputControllerOutlinedTextArea(textInput: termsTextField)
-        termsTextFieldController?.placeholderText = "Type your terms or comments"
+      termsTextFieldController?.placeholderText = localize(L.P2p.Terms.placeholder)
         termsTextFieldController?.minimumLines = 3
         submitButton.addTarget(self, action: #selector(createTrade), for: .touchUpInside)
         selectTradeTypeView.delegate = self

@@ -103,9 +103,6 @@ class MyOpenOrdersCell: UITableViewCell {
     func update(viewModel: MyOpenOrdersCellViewModel) {
         coinView.update(coin: viewModel.coin)
         priceLabel.text = viewModel.price
-        
-//        sellBuyView.update(type: .sell)
-        
         statusView.update(status: viewModel.orderStatus)
         setupPaymentMethods(images: viewModel.paymentMethods)
         cryptoAmountView.update(title: viewModel.cryptoAmountTitle,

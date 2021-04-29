@@ -11,13 +11,13 @@ enum TradeOrderStatus: Int {
     
     var title: String {
         switch self {
-        case .new: return "New"
-        case .canceled: return "Canceled"
-        case .doing: return "Doing"
-        case .paid: return "Paid"
-        case .released: return "Released"
-        case .disputing: return "Disputing"
-        case .solved: return "Solved"
+        case .new: return localize(L.P2p.Order.Status.new)
+        case .canceled: return localize(L.P2p.Order.Status.canceled)
+        case .doing: return localize(L.P2p.Order.Status.doing)
+        case .paid: return localize(L.P2p.Order.Status.paid)
+        case .released: return localize(L.P2p.Order.Status.released)
+        case .disputing: return localize(L.P2p.Order.Status.disputing)
+        case .solved: return localize(L.P2p.Order.Status.solved)
         }
     }
     

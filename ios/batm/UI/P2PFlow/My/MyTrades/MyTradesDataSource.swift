@@ -1,7 +1,7 @@
 import UIKit
 import SnapKit
 
-protocol MyTradesDataSourceDelegate: class {
+protocol MyTradesDataSourceDelegate: AnyObject {
   func didSelected(model: MyTradesCellViewModel)
 }
 

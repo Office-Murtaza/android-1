@@ -8,8 +8,8 @@ enum P2PFilterSortType: CaseIterable {
     
     var title: String {
         switch self {
-        case .price: return "Price"
-        case .distance: return "Distance"
+        case .price: return localize(L.P2p.Filter.Price.title)
+        case .distance: return localize(L.P2p.Filter.Distance.title)
         }
     }
     
@@ -22,7 +22,7 @@ enum P2PFilterSortType: CaseIterable {
     }
 }
 
-protocol P2PFiltersViewControllerDelegate: class {
+protocol P2PFiltersViewControllerDelegate: AnyObject {
     func applyFilter(scope: FilterScopeModel)
     func resetAllFilters()
 }
@@ -100,16 +100,16 @@ class P2PFiltersViewController: UIViewController {
         setupLayout()
         
         setupCoinsView(coins: CustomCoinType.allCases)
-        coinsHeader.update(title: "Coins")
+      coinsHeader.update(title: localize(L.P2p.Filter.Coins.title))
         
-        paymentMethodsHeader.update(title: "Payment methods")
+      paymentMethodsHeader.update(title: localize(L.P2p.Filter.Payment.Methods.title))
         setupPaymentMethodsView(payments: payments)
         
-        distanceHeader.update(title: "Distance range")
+      distanceHeader.update(title: localize(L.P2p.Filter.Distance.title))
         
-        distanceView.setup(range: [CGFloat(minRange ?? 0), CGFloat(maxRange ?? 0)], measureString: " miles")
+      distanceView.setup(range: [CGFloat(minRange ?? 0), CGFloat(maxRange ?? 0)], measureString: localize(L.P2p.Filter.miles))
         
-        sortByHeader.update(title: "Sort by")
+      sortByHeader.update(title: localize(L.P2p.Filter.Sort.By.title))
         setupSortByView(tags: sortType.map{ $0.title })
         
         

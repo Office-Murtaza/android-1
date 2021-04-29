@@ -2,7 +2,7 @@ import UIKit
 import SnapKit
 import MaterialComponents
 
-protocol MyTradesEmptyViewDelegate: class {
+protocol MyTradesEmptyViewDelegate: AnyObject {
     func didTapCreateTrade()
 }
 
@@ -22,14 +22,14 @@ class MyTradesEmptyView: UIView {
     
     private lazy var infoLabel: UILabel = {
         let label = UILabel()
-        label.text = "You haven't created a single trade yet."
+        label.text = localize(L.P2p.Have.Not.Crate.trade)
         label.font = .systemFont(ofSize: 16, weight: .regular)
         return label
     }()
     
     private lazy var createTradeButton: MDCButton = {
         let button = MDCButton.contained
-        button.setTitle("Create new Trade", for: .normal)
+        button.setTitle(localize(L.P2p.Create.New.Trade.title), for: .normal)
         button.addTarget(self, action: #selector(crateTrade), for: .touchUpInside)
         return button
     }()
