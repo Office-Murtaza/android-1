@@ -11,7 +11,8 @@ import com.app.belcobtm.data.disk.AssetsDataStore
 import com.app.belcobtm.data.disk.database.AppDatabase
 import com.app.belcobtm.data.disk.shared.preferences.SharedPreferencesHelper
 import com.app.belcobtm.data.helper.DistanceCalculator
-import com.app.belcobtm.data.inmemory.TradeInMemoryCache
+import com.app.belcobtm.data.inmemory.trade.TradeInMemoryCache
+import com.app.belcobtm.data.inmemory.transactions.TransactionsInMemoryCache
 import com.app.belcobtm.data.mapper.OrderResponseToOrderMapper
 import com.app.belcobtm.data.mapper.TradeResponseToTradeMapper
 import com.app.belcobtm.data.mapper.TradesResponseToTradeDataMapper
@@ -112,9 +113,18 @@ val dataModule = module {
     single { get<Retrofit>().create(TradeApi::class.java) }
     single<NotificationTokenRepository> { NotificationTokenRepositoryImpl(get()) }
     single<ContactsRepository> { ContactsRepositoryImpl(get<Context>().contentResolver) }
-    single { TradeInMemoryCache(get(), get(), GlobalScope, get(), get()) }
+    single {
+        TradeInMemoryCache(
+            get(),
+            get(),
+            GlobalScope,
+            get(),
+            get()
+        )
+    }
     single { DistanceCalculator(get()) }
     single<LocationProvider> { ServiceLocationProvider(androidApplication()) }
+    single { TransactionsInMemoryCache() }
     factory { TradesResponseToTradeDataMapper(get(), get()) }
     factory { OrderResponseToOrderMapper() }
     factory { TradeResponseToTradeMapper() }

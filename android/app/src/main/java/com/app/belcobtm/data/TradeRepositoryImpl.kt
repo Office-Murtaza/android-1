@@ -3,7 +3,7 @@ package com.app.belcobtm.data
 import android.content.res.Resources
 import com.app.belcobtm.R
 import com.app.belcobtm.data.disk.database.AccountDao
-import com.app.belcobtm.data.inmemory.TradeInMemoryCache
+import com.app.belcobtm.data.inmemory.trade.TradeInMemoryCache
 import com.app.belcobtm.data.model.trade.PaymentOption
 import com.app.belcobtm.data.model.trade.Trade
 import com.app.belcobtm.data.model.trade.TradeData

@@ -25,6 +25,8 @@ import com.app.belcobtm.data.websockets.serializer.RequestSerializer
 import com.app.belcobtm.data.websockets.serializer.ResponseDeserializer
 import com.app.belcobtm.data.websockets.trade.TradesObserver
 import com.app.belcobtm.data.websockets.trade.WebSocketTradesObserver
+import com.app.belcobtm.data.websockets.transactions.TransactionsObserver
+import com.app.belcobtm.data.websockets.transactions.WebSocketTransactionsObserver
 import com.app.belcobtm.data.websockets.wallet.WalletConnectionHandler
 import com.app.belcobtm.data.websockets.wallet.WalletObserver
 import com.app.belcobtm.data.websockets.wallet.WebSocketWalletObserver
@@ -55,6 +57,13 @@ val webSocketModule = module {
     single<TradesObserver> {
         WebSocketTradesObserver(
             get(), get(), get(), get(), get(),
+            get(named(STOMP_REQUEST_SERIALIZER_QUALIFIER)),
+            get(named(STOMP_RESPONSE_DESERIALIZER_QUALIFIER)),
+        )
+    }
+    single<TransactionsObserver> {
+        WebSocketTransactionsObserver(
+            get(), get(), get(), get(),
             get(named(STOMP_REQUEST_SERIALIZER_QUALIFIER)),
             get(named(STOMP_RESPONSE_DESERIALIZER_QUALIFIER)),
         )

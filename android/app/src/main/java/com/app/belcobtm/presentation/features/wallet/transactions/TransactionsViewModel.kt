@@ -1,14 +1,13 @@
 package com.app.belcobtm.presentation.features.wallet.transactions
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import com.app.belcobtm.R
 import com.app.belcobtm.data.rest.wallet.request.PriceChartPeriod
 import com.app.belcobtm.data.websockets.base.model.WalletBalance
+import com.app.belcobtm.data.websockets.transactions.TransactionsObserver
 import com.app.belcobtm.data.websockets.wallet.WalletObserver
-import com.app.belcobtm.domain.transaction.interactor.GetTransactionListUseCase
+import com.app.belcobtm.domain.transaction.interactor.FetchTransactionsUseCase
+import com.app.belcobtm.domain.transaction.interactor.ObserveTransactionsUseCase
 import com.app.belcobtm.domain.wallet.LocalCoinType
 import com.app.belcobtm.domain.wallet.interactor.GetChartsUseCase
 import com.app.belcobtm.domain.wallet.item.ChartChangesColor
@@ -17,8 +16,8 @@ import com.app.belcobtm.presentation.core.mvvm.LoadingData
 import com.app.belcobtm.presentation.features.wallet.transactions.item.CurrentChartInfo
 import com.app.belcobtm.presentation.features.wallet.transactions.item.TransactionsAdapterItem
 import com.app.belcobtm.presentation.features.wallet.transactions.item.TransactionsScreenItem
-import com.app.belcobtm.presentation.features.wallet.transactions.item.mapToUiItem
 import com.github.mikephil.charting.data.BarEntry
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import kotlin.collections.set
@@ -27,13 +26,17 @@ class TransactionsViewModel(
     val coinCode: String,
     private val walletObserver: WalletObserver,
     private val chartUseCase: GetChartsUseCase,
-    private val transactionListUseCase: GetTransactionListUseCase,
+    private val transactionsUseCase: FetchTransactionsUseCase,
+    private val observeTransactionsUseCase: ObserveTransactionsUseCase,
+    private val transactionsObserver: TransactionsObserver
 ) : ViewModel() {
+
     val chartLiveData: MutableLiveData<LoadingData<CurrentChartInfo>> =
         MutableLiveData(LoadingData.Loading())
-    val transactionListLiveData: MutableLiveData<List<TransactionsAdapterItem>> = MutableLiveData()
+
+    val transactionListLiveData: LiveData<List<TransactionsAdapterItem>>
+        get() = observeTransactionsUseCase.invoke().asLiveData()
     private val chartInfo = HashMap<@PriceChartPeriod Int, ChartDataItem>()
-    var totalTransactionListSize: Int = 0
 
     private val _detailsLiveData = MutableLiveData<TransactionsScreenItem>()
     val detailsLiveData: LiveData<TransactionsScreenItem> = _detailsLiveData
@@ -55,7 +58,19 @@ class TransactionsViewModel(
 
     fun updateData() {
         loadChartData(PriceChartPeriod.PERIOD_DAY)
-        refreshTransactionList()
+        fetchTransactions()
+    }
+
+    fun observeTransactions() {
+        viewModelScope.launch(Dispatchers.Default) {
+            transactionsObserver.connect()
+        }
+    }
+
+    fun disposeTransactions() {
+        viewModelScope.launch(Dispatchers.Default) {
+            transactionsObserver.disconnect()
+        }
     }
 
     fun changeCurrentTypePeriod(selectedPeriod: Int) {
@@ -107,33 +122,10 @@ class TransactionsViewModel(
         )
     }
 
-    fun updateTransactionList() {
-        val transactionListSize = transactionListLiveData.value?.size ?: 0
-        if (totalTransactionListSize != transactionListSize) {
-            downloadTransactionList(transactionListSize + 1, false)
-        }
-    }
-
-    fun refreshTransactionList() {
-        downloadTransactionList(0, true)
-    }
-
-    private fun downloadTransactionList(currentListSize: Int, isNeedClearList: Boolean) {
-        transactionListUseCase.invoke(
-            GetTransactionListUseCase.Params(coinCode, currentListSize),
+    private fun fetchTransactions() {
+        transactionsUseCase.invoke(
+            FetchTransactionsUseCase.Params(coinCode, 0),
             onSuccess = { dataItem ->
-                totalTransactionListSize = dataItem.first
-                if (transactionListLiveData.value.isNullOrEmpty() || isNeedClearList) {
-                    transactionListLiveData.value = dataItem.second.map { it.mapToUiItem() }
-                } else {
-                    val oldList = transactionListLiveData.value ?: mutableListOf()
-                    val newList: MutableList<TransactionsAdapterItem> = mutableListOf()
-                    newList.addAll(oldList)
-                    newList.addAll(dataItem.second.filter { responseItem ->
-                        oldList.firstOrNull { responseItem.txId == it.id } == null
-                    }.map { it.mapToUiItem() })
-                    transactionListLiveData.value = newList
-                }
                 _loadingLiveData.value = LoadingData.Success(Unit)
             },
             onError = {

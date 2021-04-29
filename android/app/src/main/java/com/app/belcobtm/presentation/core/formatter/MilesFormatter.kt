@@ -1,7 +1,7 @@
 package com.app.belcobtm.presentation.core.formatter
 
 import com.app.belcobtm.R
-import com.app.belcobtm.data.inmemory.TradeInMemoryCache.Companion.UNDEFINED_DISTANCE
+import com.app.belcobtm.data.inmemory.trade.TradeInMemoryCache.Companion.UNDEFINED_DISTANCE
 import com.app.belcobtm.presentation.core.provider.string.StringProvider
 import java.text.NumberFormat
 

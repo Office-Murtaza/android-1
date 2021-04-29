@@ -1,4 +1,4 @@
-package com.app.belcobtm.data.inmemory
+package com.app.belcobtm.data.inmemory.trade
 
 import com.app.belcobtm.data.helper.DistanceCalculator
 import com.app.belcobtm.data.mapper.OrderResponseToOrderMapper

@@ -4,7 +4,6 @@ import com.app.belcobtm.data.rest.transaction.request.*
 import com.app.belcobtm.data.rest.transaction.response.*
 import com.app.belcobtm.data.rest.transaction.response.hash.*
 import kotlinx.coroutines.Deferred
-import okhttp3.ResponseBody
 import retrofit2.Response
 import retrofit2.http.*
 
@@ -22,7 +21,7 @@ interface TransactionApi {
         @Path("userId") userId: Int,
         @Path("coinCode") coinCode: String,
         @Body body: WithdrawRequest
-    ): Deferred<Response<ResponseBody>>
+    ): Deferred<Response<TransactionDetailsResponse>>
 
     @GET("coin/{coinCode}/transfer-address")
     fun getGiftAddressAsync(
@@ -35,7 +34,7 @@ interface TransactionApi {
         @Path("userId") userId: Int,
         @Path("coinCode") coinCode: String,
         @Body body: SendGiftRequest
-    ): Deferred<Response<ResponseBody>>
+    ): Deferred<Response<TransactionDetailsResponse>>
 
     @GET("user/{userId}/limits")
     fun sellGetLimitsAsync(
@@ -54,14 +53,14 @@ interface TransactionApi {
         @Path("userId") userId: Int,
         @Path("coinCode") coinCode: String,
         @Body body: SellRequest
-    ): Deferred<Response<ResponseBody>>
+    ): Deferred<Response<TransactionDetailsResponse>>
 
     @POST("user/{userId}/coin/{coinCode}/submit")
     fun exchangeAsync(
         @Path("userId") userId: Int,
         @Path("coinCode") coinFrom: String,
         @Body request: CoinToCoinExchangeRequest
-    ): Deferred<Response<ResponseBody>>
+    ): Deferred<Response<TransactionDetailsResponse>>
 
     @GET("coin/{coinCode}/utxo")
     fun getUtxoListAsync(
@@ -100,16 +99,16 @@ interface TransactionApi {
         @Path("userId") userId: Int,
         @Path("coinCode") coinCode: String,
         @Body body: TradeRecallRequest
-    ): Deferred<Response<TronBlockResponse>>
+    ): Deferred<Response<TransactionDetailsResponse>>
 
     @POST("user/{userId}/coin/{coinCode}/submit")
     fun submitReserveAsync(
         @Path("userId") userId: Int,
         @Path("coinCode") coinCode: String,
         @Body body: TradeReserveRequest
-    ): Deferred<Response<TronBlockResponse>>
+    ): Deferred<Response<TransactionDetailsResponse>>
 
-    @GET("user/{userId}/coin/{coinCode}/stake-details")
+    @GET("user/{userId}/coin/{coinCode}/staking-details")
     fun stakeDetailsAsync(
         @Path("userId") userId: Int,
         @Path("coinCode") coinCode: String
@@ -120,12 +119,5 @@ interface TransactionApi {
         @Path("userId") userId: Int,
         @Path("coinCode") coinCode: String,
         @Body body: StakeRequest
-    ): Deferred<Response<ResponseBody>>
-
-    @GET("user/{userId}/coin/{coinCode}/transaction-details")
-    fun getTransactionDetailsAsync(
-        @Path("userId") userId: Int,
-        @Path("coinCode") coinCode: String,
-        @Query("txId") txId: String
     ): Deferred<Response<TransactionDetailsResponse>>
 }

@@ -3,11 +3,10 @@ package com.app.belcobtm.presentation.features.wallet.transaction.details
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.asLiveData
 import com.app.belcobtm.R
-import com.app.belcobtm.domain.transaction.interactor.GetTransactionDetailsUseCase
+import com.app.belcobtm.domain.transaction.interactor.ObserveTransactionDetailsUseCase
 import com.app.belcobtm.domain.transaction.item.TransactionDetailsDataItem
 import com.app.belcobtm.domain.transaction.type.TransactionCashStatusType
 import com.app.belcobtm.domain.transaction.type.TransactionStatusType
@@ -17,41 +16,21 @@ import com.app.belcobtm.presentation.core.QRUtils
 import com.app.belcobtm.presentation.core.extensions.toStringCoin
 import com.app.belcobtm.presentation.core.extensions.toStringUsd
 import com.app.belcobtm.presentation.core.formatter.PhoneNumberFormatter
-import com.app.belcobtm.presentation.core.mvvm.LoadingData
 import com.app.belcobtm.presentation.features.wallet.transaction.details.adapter.TransactionDetailsAdapter
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.map
 
 class TransactionDetailsViewModel(
     private val txId: String,
     private val coinCode: String,
     private val phoneFormatter: PhoneNumberFormatter,
-    private val transactionDetailsUseCase: GetTransactionDetailsUseCase
+    private val transactionDetailsUseCase: ObserveTransactionDetailsUseCase
 ) : ViewModel() {
 
-    private val _transactionDetailsLiveData =
-        MutableLiveData<LoadingData<List<TransactionDetailsAdapter.Item>>>()
-    val transactionDetailsLiveData: LiveData<LoadingData<List<TransactionDetailsAdapter.Item>>> =
-        _transactionDetailsLiveData
-
-    init {
-        getTransactionDetails()
-    }
-
-    fun getTransactionDetails() {
-        _transactionDetailsLiveData.value = LoadingData.Loading()
-        transactionDetailsUseCase.invoke(
-            params = GetTransactionDetailsUseCase.Params(txId, coinCode),
-            onSuccess = { dataItem -> processSuccessResult(dataItem) },
-            onError = { _transactionDetailsLiveData.value = LoadingData.Error(it) }
-        )
-    }
-
-    private fun processSuccessResult(result: TransactionDetailsDataItem) {
-        viewModelScope.launch {
-            val mapResult = mapToItemList(result)
-            _transactionDetailsLiveData.value = LoadingData.Success(mapResult)
-        }
-    }
+    val transactionDetailsLiveData: LiveData<List<TransactionDetailsAdapter.Item>>
+        get() = transactionDetailsUseCase.invoke(ObserveTransactionDetailsUseCase.Params(txId, coinCode))
+            .map { mapToItemList(it) }
+            .asLiveData(Dispatchers.Default)
 
     private fun mapToItemList(
         dataItem: TransactionDetailsDataItem
@@ -153,19 +132,20 @@ class TransactionDetailsViewModel(
             result.add(gifBlockItem)
         }
         // swap id
-        if (dataItem.swapId != null && dataItem.swapLink != null) {
+        val isSwap = dataItem.type == TransactionType.SWAP_SEND || dataItem.type == TransactionType.SWAP_RECEIVE
+        if (isSwap && dataItem.refTxId != null && dataItem.refLink != null) {
             val swapBlockItem = TransactionDetailsAdapter.Item.Id(
                 R.string.transaction_details_swap_id,
-                dataItem.swapId,
-                dataItem.swapLink
+                dataItem.refTxId,
+                dataItem.refLink
             )
             result.add(swapBlockItem)
         }
         // swap amount
-        if (dataItem.swapCoin != null && dataItem.swapCryptoAmount != null) {
+        if (isSwap && dataItem.refCoin != null && dataItem.refCryptoAmount != null) {
             val swapBlockItem = TransactionDetailsAdapter.Item.Regular(
                 R.string.transaction_details_swap_amount,
-                dataItem.swapCryptoAmount.toStringCoin().plus(" ").plus(dataItem.swapCoin)
+                dataItem.refCryptoAmount.toStringCoin().plus(" ").plus(dataItem.refCoin)
             )
             result.add(swapBlockItem)
         }
