@@ -19,7 +19,7 @@ class TradeResponseToTradeMapper {
                     ?.split(PAYMENT_DELIMITER)
                     ?.map(String::toInt)
                     .orEmpty(),
-                terms, makerId, makerPublicId, makerStatus,
+                terms, makerUserId, makerPublicId, makerStatus,
                 makerLatitude, makerLongitude, makerTotalTrades,
                 makerTradingRate, TradeInMemoryCache.UNDEFINED_DISTANCE
             )

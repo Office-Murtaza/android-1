@@ -14,9 +14,9 @@ class OrderResponseToOrderMapper() {
             Order(
                 id, tradeId, coin, status, timestamp,
                 price, cryptoAmount, fiatAmount, terms,
-                makerId, makerStatus, makerPublicId, makerLatitude,
+                makerUserId, makerStatus, makerPublicId, makerLatitude,
                 makerLongitude, makerTotalTrades, makerTradingRate,
-                takerId, takerStatus, takerPublicId, takerLatitude,
+                takerUserId, takerStatus, takerPublicId, takerLatitude,
                 takerLongitude, takerTotalTrades, takerTradingRate,
                 chatHistory
             )

@@ -19,8 +19,8 @@ class FirebaseCloudStorage(private val storageReference: StorageReference) : Clo
             val baos = ByteArrayOutputStream()
             bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos)
             val data = baos.toByteArray()
-
-            imageReference.putBytes(data)
+            imageReference
+                .putBytes(data)
                 .addOnFailureListener {
                     continuation.resumeWithException(it)
                 }.addOnSuccessListener {

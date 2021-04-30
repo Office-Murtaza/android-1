@@ -10,7 +10,6 @@ class TraderStatusToIconMapper {
             TraderStatus.NOT_VERIFIED -> R.drawable.ic_trade_maker_not_verified
             TraderStatus.VERIFIED -> R.drawable.ic_trade_maker_verified
             TraderStatus.VIP_VERIFIED -> R.drawable.ic_trade_maker_vip_verified
-            else -> //throw RuntimeException("Unknown status $status")
-                R.drawable.ic_trade_maker_not_verified
+            else -> R.drawable.ic_trade_maker_not_verified
         }
 }

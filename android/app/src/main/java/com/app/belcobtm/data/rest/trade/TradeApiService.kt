@@ -3,10 +3,7 @@ package com.app.belcobtm.data.rest.trade
 import android.location.Location
 import com.app.belcobtm.data.disk.shared.preferences.SharedPreferencesHelper
 import com.app.belcobtm.data.model.trade.OrderStatus
-import com.app.belcobtm.data.rest.trade.request.CreateOrderRequest
-import com.app.belcobtm.data.rest.trade.request.CreateTradeRequest
-import com.app.belcobtm.data.rest.trade.request.EditTradeRequest
-import com.app.belcobtm.data.rest.trade.request.UpdateOrderRequest
+import com.app.belcobtm.data.rest.trade.request.*
 import com.app.belcobtm.data.rest.trade.response.*
 import com.app.belcobtm.domain.Either
 import com.app.belcobtm.domain.Failure
@@ -26,6 +23,17 @@ class TradeApiService(
     suspend fun loadTrades(): Either<Failure, TradesResponse> =
         withErrorHandling {
             val response = tradeApi.getTradesAsync(prefHelper.userId).await()
+            response.body()?.let { Either.Right(it) } ?: Either.Left(Failure.ServerError())
+        }
+
+
+    suspend fun sendLocation(location: Location): Either<Failure, Unit> =
+        withErrorHandling {
+            val response =
+                tradeApi.sendLocation(
+                    prefHelper.userId,
+                    UserLocationRequest(location.latitude, location.longitude)
+                ).await()
             response.body()?.let { Either.Right(it) } ?: Either.Left(Failure.ServerError())
         }
 

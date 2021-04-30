@@ -567,7 +567,11 @@
     <string name="user_trade_info_success_rate_label">Success rate</string>
     <string name="user_trade_info_total_trades_label">Total trades</string>
     <string name="user_trade_info_not_verified_status_label">Not verified</string>
+    <string name="user_trade_info_verification_pending_status_label">Verification pending</string>
+    <string name="user_trade_info_verification_reject_status_label">Verification rejected</string>
     <string name="user_trade_info_verified_status_label">Verified</string>
+    <string name="user_trade_info_vip_verification_pending_status_label">Vip verification pending</string>
+    <string name="user_trade_info_vip_verification_reject_status_label">Vip verification rejected</string>
     <string name="user_trade_info_vip_verified_status_label">Vip verified</string>
 
     <string name="trade_info_my_trades_tab_title">Trades</string>

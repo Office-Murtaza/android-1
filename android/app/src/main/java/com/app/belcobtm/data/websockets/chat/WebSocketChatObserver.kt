@@ -1,8 +1,7 @@
 package com.app.belcobtm.data.websockets.chat
 
-import android.util.Log
-import com.app.belcobtm.data.disk.database.AccountDao
 import com.app.belcobtm.data.disk.shared.preferences.SharedPreferencesHelper
+import com.app.belcobtm.data.inmemory.TradeInMemoryCache
 import com.app.belcobtm.data.websockets.base.SocketClient
 import com.app.belcobtm.data.websockets.base.model.SocketResponse
 import com.app.belcobtm.data.websockets.base.model.StompSocketRequest
@@ -14,15 +13,13 @@ import com.app.belcobtm.presentation.core.Endpoint
 import com.app.belcobtm.presentation.features.wallet.trade.order.chat.NewMessageItem
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 class WebSocketChatObserver(
     private val socketClient: SocketClient,
-    private val accountDao: AccountDao,
+    private val tradeInMemoryCache: TradeInMemoryCache,
     private val sharedPreferencesHelper: SharedPreferencesHelper,
     private val stompSerializer: RequestSerializer<StompSocketRequest>,
     private val stompDeserializer: ResponseDeserializer<StompSocketResponse>,
@@ -46,12 +43,7 @@ class WebSocketChatObserver(
 
         const val HEARTBEAT_HEADER = "heart-beat"
         const val HEARTBEAT_VALUE = "1000,1000"
-
-        const val HEADER_MESSAGE_KEY = "message"
-        const val AUTH_ERROR_MESSAGE = "Access is denied"
     }
-
-    private val chatData = MutableStateFlow<List<ChatMessageResponse>>(emptyList())
 
     init {
         ioScope.launch {
@@ -59,13 +51,8 @@ class WebSocketChatObserver(
                 .collect {
                     when (it) {
                         is SocketResponse.Opened -> onOpened()
-                        is SocketResponse.Failure ->
-                            Log.e("TradesSocket", "Error", it.cause)
                         is SocketResponse.Message ->
                             processMessage(it.content)
-                        is SocketResponse.Disconnected -> {
-                            Log.d("TradesSocket", "Close connection")
-                        }
                     }
                 }
         }
@@ -89,17 +76,17 @@ class WebSocketChatObserver(
         }
     }
 
-    override fun observeChatMessages(): Flow<List<ChatMessageResponse>> = chatData
-
     override suspend fun sendMessage(messageItem: NewMessageItem) {
         withContext(Dispatchers.IO) {
-            chatData.value += ChatMessageResponse(
-                messageItem.orderId,
-                messageItem.fromId,
-                messageItem.toId,
-                messageItem.content,
-                messageItem.attachmentName,
-                System.currentTimeMillis()
+            tradeInMemoryCache.updateChat(
+                ChatMessageResponse(
+                    messageItem.orderId,
+                    messageItem.fromId,
+                    messageItem.toId,
+                    messageItem.content,
+                    messageItem.attachmentName,
+                    System.currentTimeMillis()
+                )
             )
             socketClient.sendMessage(
                 stompSerializer.serialize(
@@ -113,13 +100,13 @@ class WebSocketChatObserver(
         }
     }
 
-    private fun processMessage(content: String) {
+    private suspend fun processMessage(content: String) {
         val response = stompDeserializer.deserialize(content)
         when (response.status) {
             StompSocketResponse.CONNECTED -> subscribe()
             StompSocketResponse.CONTENT -> {
                 val response = stompDeserializer.deserialize(content)
-                chatData.value += deserializer.deserialize(response.body)
+                tradeInMemoryCache.updateChat(deserializer.deserialize(response.body))
             }
         }
     }

@@ -23,7 +23,7 @@ class TradesResponseToTradeDataMapper(
                 orders.map { order ->
                     val chatHistory: List<ChatMessageItem> = chatByOrder[order.id].orEmpty()
                         .sortedBy(ChatMessageResponse::timestamp)
-                        .map { chatMessageMapper.map(it) }
+                        .map { chatMessageMapper.map(it, isFromHistory = true) }
                         .toList()
                     orderMapper.map(order, chatHistory)
                 }

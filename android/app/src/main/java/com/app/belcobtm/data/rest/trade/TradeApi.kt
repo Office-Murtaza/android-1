@@ -1,9 +1,6 @@
 package com.app.belcobtm.data.rest.trade
 
-import com.app.belcobtm.data.rest.trade.request.CreateOrderRequest
-import com.app.belcobtm.data.rest.trade.request.CreateTradeRequest
-import com.app.belcobtm.data.rest.trade.request.EditTradeRequest
-import com.app.belcobtm.data.rest.trade.request.UpdateOrderRequest
+import com.app.belcobtm.data.rest.trade.request.*
 import com.app.belcobtm.data.rest.trade.response.*
 import kotlinx.coroutines.Deferred
 import retrofit2.Response
@@ -13,6 +10,12 @@ interface TradeApi {
 
     @GET("user/{userId}/trade-history")
     fun getTradesAsync(@Path("userId") userId: Int): Deferred<Response<TradesResponse>>
+
+    @POST("user/{userId}/location")
+    fun sendLocation(
+        @Path("userId") userId: Int,
+        @Body body: UserLocationRequest
+    ): Deferred<Response<Unit>>
 
     @POST("user/{userId}/trade")
     fun createTradeAsync(

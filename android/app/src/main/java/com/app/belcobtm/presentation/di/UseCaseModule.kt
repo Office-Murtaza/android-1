@@ -1,5 +1,6 @@
 package com.app.belcobtm.presentation.di
 
+import com.app.belcobtm.data.cloud.storage.FirebaseCloudStorage
 import com.app.belcobtm.domain.account.interactor.GetUserCoinListUseCase
 import com.app.belcobtm.domain.account.interactor.UpdateUserCoinListUseCase
 import com.app.belcobtm.domain.atm.interactor.GetAtmsUseCase
@@ -92,7 +93,7 @@ val useCaseModule = module {
     single { BioAuthAllowedByUserUseCase(get()) }
     single { SetBioAuthStateAllowedUseCase(get()) }
     single { TradeRecallTransactionCompleteUseCase(get()) }
-    single { FetchTradesUseCase(get()) }
+    single { FetchTradesUseCase(get(), get()) }
     single { ObserveTradesUseCase(get(), get(), get()) }
     single { ObserveUserTradeStatisticUseCase(get(), get()) }
     single { ObserveOrdersUseCase(get(), get(), get()) }
@@ -113,13 +114,15 @@ val useCaseModule = module {
     single { UpdateOrderStatusUseCase(get()) }
     single { ClearCacheUseCase(get()) }
     single { RateOrderUseCase(get()) }
-    single { SendChatMessageUseCase(get(), get()) }
-    single { ObserveChatMessagesUseCase(get(), get(), get()) }
+    single { SendChatMessageUseCase(get(), get(), get(named(FirebaseCloudStorage.CHAT_STORAGE)), get()) }
+    single { ObserveChatMessagesUseCase(get()) }
     single { ConnectToChatUseCase(get()) }
     single { DisconnectFromChatUseCase(get()) }
     single { GetChatHistoryUseCase(get()) }
     single { TradeReserveTransactionCompleteUseCase(get()) }
     single { TradeReserveTransactionCreateUseCase(get()) }
+    single { ObserveMissedMessageCountUseCase(get()) }
+    single { UpdateLastSeenMessageTimeStampUseCase(get()) }
     factory { TradePaymentOptionMapper() }
     factory { CoinCodeMapper() }
     factory { TradesDataToTradeListMapper(get()) }
@@ -146,5 +149,12 @@ val useCaseModule = module {
     factory { TradeFilterItemMapper(get(), get()) }
     factory { PaymentIdToAvailablePaymentOptionMapper(get()) }
     factory { TradeFilterMapper() }
-    factory { ChatMessageMapper(get(), get(), SimpleDateFormat(CHAT_DATE_FORMAT)) }
+    factory {
+        ChatMessageMapper(
+            get(),
+            get(named(FirebaseCloudStorage.CHAT_STORAGE)),
+            get(),
+            SimpleDateFormat(CHAT_DATE_FORMAT)
+        )
+    }
 }

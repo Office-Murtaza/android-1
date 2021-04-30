@@ -1,5 +1,6 @@
 package com.app.belcobtm.presentation.features.wallet.trade.order.details
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -8,7 +9,6 @@ import androidx.core.content.ContextCompat
 import androidx.lifecycle.observe
 import androidx.navigation.fragment.navArgs
 import com.app.belcobtm.R
-import com.app.belcobtm.data.model.trade.OrderStatus
 import com.app.belcobtm.data.model.trade.TradeType
 import com.app.belcobtm.databinding.FragmentTradeOrderDetailsBinding
 import com.app.belcobtm.presentation.core.adapter.MultiTypeAdapter
@@ -16,6 +16,9 @@ import com.app.belcobtm.presentation.core.extensions.*
 import com.app.belcobtm.presentation.core.mvvm.LoadingData
 import com.app.belcobtm.presentation.core.ui.fragment.BaseFragment
 import com.app.belcobtm.presentation.features.wallet.trade.list.delegate.TradePaymentOptionDelegate
+import com.google.android.material.badge.BadgeDrawable
+import com.google.android.material.badge.BadgeDrawable.TOP_END
+import com.google.android.material.badge.BadgeUtils
 import org.koin.android.viewmodel.ext.android.viewModel
 
 class TradeOrderDetailsFragment : BaseFragment<FragmentTradeOrderDetailsBinding>() {
@@ -58,6 +61,17 @@ class TradeOrderDetailsFragment : BaseFragment<FragmentTradeOrderDetailsBinding>
         paymentOptions.adapter = adapter
     }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        viewModel.connectToChat()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        viewModel.disconnectFromChat()
+    }
+
+    @SuppressLint("UnsafeExperimentalUsageError")
     override fun FragmentTradeOrderDetailsBinding.initObservers() {
         viewModel.initialLoadingData.listen()
         viewModel.primaryActionUpdateLoadingData.listen()
@@ -139,7 +153,17 @@ class TradeOrderDetailsFragment : BaseFragment<FragmentTradeOrderDetailsBinding>
         binding.secondaryActionButton.setOnClickListener {
             viewModel.updateOrderSecondaryAction(args.orderId)
         }
-
+        viewModel.observeMissedMessageCount(args.orderId).observe(viewLifecycleOwner) {
+            val badge = BadgeDrawable.create(requireContext())
+            badge.badgeGravity = TOP_END
+            badge.backgroundColor = ContextCompat.getColor(requireContext(), R.color.colorPrimary)
+            badge.badgeTextColor = ContextCompat.getColor(requireContext(), R.color.gph_white)
+            BadgeUtils.detachBadgeDrawable(badge, baseBinding.toolbarView, R.id.chat_menu_item)
+            if (it > 0) {
+                badge.number = it
+                BadgeUtils.attachBadgeDrawable(badge, baseBinding.toolbarView, R.id.chat_menu_item)
+            }
+        }
         binding.distanceLabel.setOnClickListener {
             val gmmIntentUri = Uri.parse(viewModel.getQueryForMap())
             val mapIntent = Intent(Intent.ACTION_VIEW, gmmIntentUri)
@@ -155,8 +179,7 @@ class TradeOrderDetailsFragment : BaseFragment<FragmentTradeOrderDetailsBinding>
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean = when (item.itemId) {
         R.id.chat_menu_item -> {
-            val statusId = viewModel.orderStatus.value?.statusId
-            if (statusId == OrderStatus.NEW || statusId == OrderStatus.DOING || statusId == OrderStatus.PAID) {
+            if (viewModel.isActiveOrder()) {
                 navigate(
                     TradeOrderDetailsFragmentDirections.toChatOrderFragment(
                         viewModel.partnerPublicId.value.orEmpty(), args.orderId,

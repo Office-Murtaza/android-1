@@ -4,6 +4,8 @@ import android.content.Context
 import android.preference.PreferenceManager
 import androidx.room.Room
 import com.app.belcobtm.data.ContactsRepositoryImpl
+import com.app.belcobtm.data.cloud.auth.CloudAuth
+import com.app.belcobtm.data.cloud.auth.FirebaseCloudAuth
 import com.app.belcobtm.data.cloud.storage.CloudStorage
 import com.app.belcobtm.data.cloud.storage.FirebaseCloudStorage
 import com.app.belcobtm.data.cloud.storage.FirebaseCloudStorage.Companion.CHAT_STORAGE
@@ -44,7 +46,9 @@ import com.app.belcobtm.domain.notification.NotificationTokenRepository
 import com.app.belcobtm.domain.tools.IntentActions
 import com.app.belcobtm.domain.tools.IntentActionsImpl
 import com.app.belcobtm.presentation.core.Endpoint
+import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.ktx.storage
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import com.squareup.moshi.Moshi
@@ -118,10 +122,12 @@ val dataModule = module {
     single { get<Retrofit>().create(TradeApi::class.java) }
     single<NotificationTokenRepository> { NotificationTokenRepositoryImpl(get()) }
     single<ContactsRepository> { ContactsRepositoryImpl(get<Context>().contentResolver) }
+    single { Firebase.storage("gs://belco-test.appspot.com") }
     single<CloudStorage>(named(CHAT_STORAGE)) {
-        FirebaseCloudStorage(Firebase.storage("gs://belco-test.appspot.com/chat").reference)
+        FirebaseCloudStorage(get<FirebaseStorage>().reference.child("chat"))
     }
-    single { TradeInMemoryCache(get(), get(), GlobalScope, get(), get()) }
+    single<CloudAuth>() { FirebaseCloudAuth(Firebase.auth) }
+    single { TradeInMemoryCache(get(), get(), GlobalScope, get(), get(), get()) }
     single { DistanceCalculator(get()) }
     single<LocationProvider> { ServiceLocationProvider(androidApplication()) }
     factory { TradesResponseToTradeDataMapper(get(), get(), get()) }

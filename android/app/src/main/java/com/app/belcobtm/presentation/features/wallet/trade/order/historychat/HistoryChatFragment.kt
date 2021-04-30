@@ -26,8 +26,12 @@ class HistoryChatFragment : BaseFragment<FragmentHistoryChatBinding>() {
 
     private val adapter: MultiTypeAdapter by lazy {
         MultiTypeAdapter().apply {
-            registerDelegate(MyMessageDelegate())
-            registerDelegate(PartnerMessageDelegate())
+            registerDelegate(MyMessageDelegate {
+                navigate(HistoryChatFragmentDirections.toChatImageDialog(it))
+            })
+            registerDelegate(PartnerMessageDelegate {
+                navigate(HistoryChatFragmentDirections.toChatImageDialog(it))
+            })
         }
     }
 

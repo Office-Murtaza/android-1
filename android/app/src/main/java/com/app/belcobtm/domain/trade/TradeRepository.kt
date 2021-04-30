@@ -1,5 +1,6 @@
 package com.app.belcobtm.domain.trade
 
+import android.location.Location
 import com.app.belcobtm.data.model.trade.PaymentOption
 import com.app.belcobtm.data.model.trade.Trade
 import com.app.belcobtm.data.model.trade.TradeData
@@ -20,6 +21,10 @@ interface TradeRepository {
 
     fun observeFilter(): Flow<TradeFilter?>
 
+    fun observeLastSeenMessageTimestamp(): Flow<Long>
+
+    fun updateLastSeenMessageTimestamp()
+
     fun getTradeData(): Either<Failure, TradeData>?
 
     fun getTrade(tradeId: String): Either<Failure, Trade>
@@ -33,6 +38,8 @@ interface TradeRepository {
     suspend fun resetFilters()
 
     suspend fun fetchTrades(calculateDistance: Boolean)
+
+    suspend fun sendLocation(location: Location)
 
     suspend fun createTrade(createTradeItem: CreateTradeItem): Either<Failure, Unit>
 

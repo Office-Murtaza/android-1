@@ -322,6 +322,14 @@
             android:name="partnerId"
             app:argType="integer"
             app:nullable="false" />
+
+        <action
+            android:id="@+id/to_chat_image_dialog"
+            app:destination="@id/chat_image_dialog"
+            app:enterAnim="@anim/slide_from_right"
+            app:exitAnim="@anim/slide_to_left"
+            app:popEnterAnim="@anim/slide_from_left"
+            app:popExitAnim="@anim/slide_to_right" />
     </fragment>
 
     <fragment
@@ -339,7 +347,26 @@
             android:name="orderId"
             app:argType="string"
             app:nullable="false" />
+
+        <action
+            android:id="@+id/to_chat_image_dialog"
+            app:destination="@id/chat_image_dialog"
+            app:enterAnim="@anim/slide_from_right"
+            app:exitAnim="@anim/slide_to_left"
+            app:popEnterAnim="@anim/slide_from_left"
+            app:popExitAnim="@anim/slide_to_right" />
     </fragment>
 
+    <dialog
+        android:id="@+id/chat_image_dialog"
+        android:name="com.app.belcobtm.presentation.features.wallet.trade.order.chat.dialog.ChatImageDialogFragment"
+        android:label="Chat image dialog">
+
+        <argument
+            android:name="imageUrl"
+            app:argType="string"
+            app:nullable="false" />
+
+    </dialog>
 
 </navigation>

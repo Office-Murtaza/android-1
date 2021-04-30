@@ -8,10 +8,12 @@ import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.lifecycle.observe
 import androidx.navigation.fragment.navArgs
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.app.belcobtm.R
 import com.app.belcobtm.databinding.FragmentOrderChatBinding
 import com.app.belcobtm.presentation.core.adapter.MultiTypeAdapter
@@ -45,8 +47,12 @@ class OrderChatFragment : BaseFragment<FragmentOrderChatBinding>() {
 
     private val adapter: MultiTypeAdapter by lazy {
         MultiTypeAdapter().apply {
-            registerDelegate(MyMessageDelegate())
-            registerDelegate(PartnerMessageDelegate())
+            registerDelegate(MyMessageDelegate {
+                navigate(OrderChatFragmentDirections.toChatImageDialog(it))
+            })
+            registerDelegate(PartnerMessageDelegate {
+                navigate(OrderChatFragmentDirections.toChatImageDialog(it))
+            })
         }
     }
 
@@ -58,14 +64,9 @@ class OrderChatFragment : BaseFragment<FragmentOrderChatBinding>() {
         binding.chatList.adapter = adapter
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        viewModel.connectToChat()
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        viewModel.disconnectFromChat()
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        viewModel.updateTimestamp()
     }
 
     override fun FragmentOrderChatBinding.initListeners() {
@@ -84,6 +85,7 @@ class OrderChatFragment : BaseFragment<FragmentOrderChatBinding>() {
     override fun FragmentOrderChatBinding.initObservers() {
         viewModel.chatObserverLoadingData.listen(error = {
             Snackbar.make(binding.root, R.string.send_message_error, Snackbar.LENGTH_SHORT).show()
+            showContent()
         })
         viewModel.attachmentImage.observe(viewLifecycleOwner) {
             binding.attachment.toggle(it != null)
@@ -91,7 +93,14 @@ class OrderChatFragment : BaseFragment<FragmentOrderChatBinding>() {
             binding.attachmentRemove.toggle(it != null)
             binding.attachment.setImageBitmap(it)
         }
-        viewModel.chatData(args.orderId).observe(viewLifecycleOwner, adapter::update)
+        chatList.layoutManager = LinearLayoutManager(requireContext()).apply {
+            stackFromEnd = true
+        }
+        viewModel.chatData(args.orderId).observe(viewLifecycleOwner) {
+            adapter.update(it)
+            binding.chatList.smoothScrollToPosition(it.size)
+            viewModel.updateTimestamp()
+        }
     }
 
     private fun openPicker() {

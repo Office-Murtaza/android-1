@@ -1,6 +1,5 @@
 package com.app.belcobtm.data.websockets.trade
 
-import android.util.Log
 import com.app.belcobtm.data.disk.database.AccountDao
 import com.app.belcobtm.data.disk.shared.preferences.SharedPreferencesHelper
 import com.app.belcobtm.data.inmemory.TradeInMemoryCache
@@ -52,13 +51,8 @@ class WebSocketTradesObserver(
                 .collect {
                     when (it) {
                         is SocketResponse.Opened -> onOpened()
-                        is SocketResponse.Failure ->
-                            Log.e("TradesSocket", "Error", it.cause)
                         is SocketResponse.Message ->
                             processMessage(it.content)
-                        is SocketResponse.Disconnected -> {
-                            Log.d("TradesSocket", "Close connection")
-                        }
                     }
                 }
         }

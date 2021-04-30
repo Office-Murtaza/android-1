@@ -104,9 +104,9 @@ val viewModelModule = module {
     viewModel { UpdatePasswordViewModel(get()) }
     viewModel { PhoneChangeViewModel(get(), get(), get(), get<PhoneNumberValidator>()) }
     viewModel { AtmViewModel(get()) }
-    viewModel { (txId: String, coinCode: String) -> TransactionDetailsViewModel(txId, coinCode, get(),
-            get()
-        ) }
+    viewModel { (txId: String, coinCode: String) ->
+        TransactionDetailsViewModel(txId, coinCode, get(), get())
+    }
     viewModel {
         SendGiftViewModel(get(), get(), get(), get(), get())
     }
@@ -143,7 +143,12 @@ val viewModelModule = module {
         )
     }
     viewModel { TradeFilterViewModel(get(), get(), get(), get(), get(named(DISTANCE_INT_PARSER_QUALIFIER))) }
-    viewModel { TradeOrderDetailsViewModel(get(), get(), get(), get(named(GOOGLE_MAPS_DIRECTIONS_QUERY_FORMATTER))) }
+    viewModel {
+        TradeOrderDetailsViewModel(
+            get(), get(), get(), get(), get(), get(),
+            get(named(GOOGLE_MAPS_DIRECTIONS_QUERY_FORMATTER))
+        )
+    }
     viewModel {
         TradeCreateOrderViewModel(
             get(), get(), get(), get(),
@@ -152,7 +157,7 @@ val viewModelModule = module {
         )
     }
     viewModel { TradeOrderRateViewModel(get(), get()) }
-    viewModel { OrderChatViewModel(get(), get(), get(), get()) }
+    viewModel { OrderChatViewModel(get(), get(), get()) }
     viewModel { HistoryChatViewModel(get()) }
 }
 

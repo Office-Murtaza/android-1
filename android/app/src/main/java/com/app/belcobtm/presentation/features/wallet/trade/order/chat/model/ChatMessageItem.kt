@@ -5,7 +5,9 @@ import com.app.belcobtm.presentation.core.adapter.model.ListItem
 data class ChatMessageItem(
     val text: String,
     val time: String,
+    val timestamp: Long,
     val imageUrl: String? = null,
+    val isFromHistory: Boolean,
     override val type: Int
 ) : ListItem {
 

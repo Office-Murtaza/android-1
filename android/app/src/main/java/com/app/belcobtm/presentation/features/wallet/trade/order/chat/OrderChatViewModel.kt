@@ -6,19 +6,18 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
-import com.app.belcobtm.domain.trade.order.ConnectToChatUseCase
-import com.app.belcobtm.domain.trade.order.DisconnectFromChatUseCase
 import com.app.belcobtm.domain.trade.order.ObserveChatMessagesUseCase
 import com.app.belcobtm.domain.trade.order.SendChatMessageUseCase
+import com.app.belcobtm.domain.trade.order.UpdateLastSeenMessageTimeStampUseCase
 import com.app.belcobtm.presentation.core.adapter.model.ListItem
 import com.app.belcobtm.presentation.core.mvvm.LoadingData
 import kotlinx.coroutines.Dispatchers
+import java.util.*
 
 class OrderChatViewModel(
-    private val connectToChatUseCase: ConnectToChatUseCase,
-    private val disconnectFromChatUseCase: DisconnectFromChatUseCase,
     private val sendChatMessageUseCase: SendChatMessageUseCase,
-    private val observeChatUseCase: ObserveChatMessagesUseCase
+    private val observeChatUseCase: ObserveChatMessagesUseCase,
+    private val updateLastSeenMessageTimeStampUseCase: UpdateLastSeenMessageTimeStampUseCase
 ) : ViewModel() {
 
     private val _chatObserverLoadingData = MutableLiveData<LoadingData<Unit>>()
@@ -31,22 +30,19 @@ class OrderChatViewModel(
 
     fun chatData(orderId: String): LiveData<List<ListItem>> =
         observeChatUseCase(orderId)
-            .asLiveData(Dispatchers.IO)
+            .asLiveData(Dispatchers.Default)
 
-    fun connectToChat() {
-        connectToChatUseCase.invoke(Unit)
-    }
-
-    fun disconnectFromChat() {
-        disconnectFromChatUseCase.invoke(Unit)
+    fun updateTimestamp() {
+        updateLastSeenMessageTimeStampUseCase(Unit)
     }
 
     fun sendMessage(orderId: String, myId: Int, toId: Int, message: String) {
         val attachment = _attachmentImage.value
+        val name = attachmentName?.let { "${UUID.randomUUID()}_${it}" }
         setAttachment(null, null)
         _chatObserverLoadingData.value = LoadingData.Loading()
         sendChatMessageUseCase(
-            NewMessageItem(orderId, myId, toId, message, attachmentName, attachment),
+            NewMessageItem(orderId, myId, toId, message, name, attachment),
             onSuccess = { _chatObserverLoadingData.value = LoadingData.Success(Unit) },
             onError = { _chatObserverLoadingData.value = LoadingData.Error(it) }
         )
@@ -54,6 +50,6 @@ class OrderChatViewModel(
 
     fun setAttachment(uri: Uri?, attachment: Bitmap?) {
         _attachmentImage.value = attachment
-        attachmentName = uri?.lastPathSegment.orEmpty()
+        attachmentName = uri?.lastPathSegment
     }
 }

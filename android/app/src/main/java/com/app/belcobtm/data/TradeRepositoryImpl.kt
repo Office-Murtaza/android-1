@@ -1,6 +1,7 @@
 package com.app.belcobtm.data
 
 import android.content.res.Resources
+import android.location.Location
 import com.app.belcobtm.R
 import com.app.belcobtm.data.disk.database.AccountDao
 import com.app.belcobtm.data.inmemory.TradeInMemoryCache
@@ -45,6 +46,13 @@ class TradeRepositoryImpl(
     override fun observeFilter(): Flow<TradeFilter?> =
         tradeInMemoryCache.observableFilter
 
+    override fun observeLastSeenMessageTimestamp(): Flow<Long> =
+        tradeInMemoryCache.observableLastSeenMessageTimestamp
+
+    override fun updateLastSeenMessageTimestamp() {
+        tradeInMemoryCache.updateLastSeenMessageTimestamp()
+    }
+
     override fun getTradeData(): Either<Failure, TradeData>? =
         tradeInMemoryCache.data
 
@@ -70,6 +78,10 @@ class TradeRepositoryImpl(
         val result = tradeApiService.loadTrades()
         tradeInMemoryCache.updateFilter(createInitialFilter(calculateDistance))
         tradeInMemoryCache.updateCache(calculateDistance, result)
+    }
+
+    override suspend fun sendLocation(location: Location) {
+        tradeApiService.sendLocation(location)
     }
 
     override suspend fun createTrade(createTradeItem: CreateTradeItem): Either<Failure, Unit> {

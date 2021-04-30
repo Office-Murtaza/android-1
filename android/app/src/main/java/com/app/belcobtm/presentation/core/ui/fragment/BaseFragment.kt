@@ -4,7 +4,6 @@ import android.content.ComponentCallbacks
 import android.content.Context
 import android.graphics.Rect
 import android.os.Bundle
-import android.util.Log
 import android.view.*
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
@@ -99,9 +98,7 @@ abstract class BaseFragment<V : ViewBinding> : Fragment(),
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        this.navController = findNavController().apply {
-            Log.d("NavController", "Instance is $this")
-        }
+        this.navController = findNavController()
         updateActionBar()
         baseBinding.interceptableFrameLayout.interceptListener = this
         baseBinding.errorView.errorRetryButtonView.setOnClickListener(retryListener)

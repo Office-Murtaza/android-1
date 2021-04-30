@@ -6,5 +6,5 @@ data class SendMessageRequest(
     val toUserId: Int,
     val message: String,
     val timestamp: Long,
-    val filename: String?
+    val file: String?
 )

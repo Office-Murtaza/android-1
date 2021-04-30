@@ -16,7 +16,7 @@ data class TradeItemResponse(
     val openOrders: Int,
     val paymentMethods: String,
     val terms: String,
-    val makerId: Int,
+    val makerUserId: Int,
     @TraderStatus val makerStatus: Int,
     val makerPublicId: String,
     val makerLatitude: Double?,

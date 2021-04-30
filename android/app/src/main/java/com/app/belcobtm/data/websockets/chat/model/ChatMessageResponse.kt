@@ -5,6 +5,6 @@ data class ChatMessageResponse(
     val fromUserId: Int,
     val toUserId: Int,
     val message: String,
-    val filename: String?,
+    val file: String?,
     val timestamp: Long
 )
