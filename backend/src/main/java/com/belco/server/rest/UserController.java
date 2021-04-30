@@ -6,16 +6,12 @@ import com.belco.server.entity.User;
 import com.belco.server.model.Response;
 import com.belco.server.repository.TokenRep;
 import com.belco.server.security.JWTTokenProvider;
-import com.belco.server.service.CoinService;
-import com.belco.server.service.TransactionService;
-import com.belco.server.service.TwilioService;
-import com.belco.server.service.UserService;
+import com.belco.server.service.*;
 import com.belco.server.util.Constant;
 import com.belco.server.util.Util;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.access.AccessDeniedException;
@@ -35,32 +31,30 @@ import java.util.stream.Collectors;
 @RequestMapping("/api/v1")
 public class UserController {
 
+    private final JWTTokenProvider tokenProvider;
+    private final AuthenticationManager authenticationManager;
+    private final UserService userService;
+    private final TransactionService transactionService;
+    private final TokenRep refreshTokenRep;
+    private final PasswordEncoder passwordEncoder;
+    private final TwilioService twilioService;
+    private final CoinService coinService;
+    private final NotificationService notificationService;
+
     @Value("${security.jwt.access-token-duration}")
     private Long tokenDuration;
 
-    @Autowired
-    private JWTTokenProvider tokenProvider;
-
-    @Autowired
-    private AuthenticationManager authenticationManager;
-
-    @Autowired
-    private UserService userService;
-
-    @Autowired
-    private TransactionService transactionService;
-
-    @Autowired
-    private TokenRep refreshTokenRep;
-
-    @Autowired
-    private PasswordEncoder passwordEncoder;
-
-    @Autowired
-    private TwilioService twilioService;
-
-    @Autowired
-    private CoinService coinService;
+    public UserController(JWTTokenProvider tokenProvider, AuthenticationManager authenticationManager, UserService userService, TransactionService transactionService, TokenRep refreshTokenRep, PasswordEncoder passwordEncoder, TwilioService twilioService, CoinService coinService, NotificationService notificationService) {
+        this.tokenProvider = tokenProvider;
+        this.authenticationManager = authenticationManager;
+        this.userService = userService;
+        this.transactionService = transactionService;
+        this.refreshTokenRep = refreshTokenRep;
+        this.passwordEncoder = passwordEncoder;
+        this.twilioService = twilioService;
+        this.coinService = coinService;
+        this.notificationService = notificationService;
+    }
 
     @PostMapping("/check")
     public Response check(@RequestBody CheckDTO dto) {
@@ -195,7 +189,7 @@ public class UserController {
             Token refreshToken = refreshTokenRep.findByRefreshToken(dto.getRefreshToken());
 
             if (refreshToken != null) {
-                TokenDTO jwt = getJwt(refreshToken.getUser());
+                TokenDTO jwt = getJwt(refreshToken.getUser().getId(), refreshToken.getUser().getIdentity().getId(), refreshToken.getUser().getPhone(), new String(Base64.decodeBase64(refreshToken.getUser().getPassword())));
 
                 Token token = refreshTokenRep.findByUserId(refreshToken.getUser().getId());
                 token.setRefreshToken(jwt.getRefreshToken());
@@ -342,9 +336,9 @@ public class UserController {
         }
     }
 
-    private TokenDTO getJwt(Long userId, Long identityId, String username, String password) {
-        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(username,
-                password);
+    private TokenDTO getJwt(Long userId, Long identityId, String phone, String password) {
+        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(phone, password);
+        String firebaseToken = notificationService.getFirebaseToken(phone);
 
         Authentication authentication = this.authenticationManager.authenticate(authenticationToken);
         SecurityContextHolder.getContext().setAuthentication(authentication);
@@ -353,21 +347,6 @@ public class UserController {
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.add(Constant.AUTHORIZATION_HEADER, "Bearer " + jwt);
 
-        return new TokenDTO(userId, identityId, jwt, System.currentTimeMillis() + tokenDuration, refreshToken,
-                authentication.getAuthorities().stream().map(role -> role.getAuthority()).collect(Collectors.toList()), null);
-    }
-
-    private TokenDTO getJwt(User user) {
-        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
-                user.getPhone(), new String(Base64.decodeBase64(user.getPassword())));
-
-        Authentication authentication = this.authenticationManager.authenticate(authenticationToken);
-        String jwt = tokenProvider.createToken(authentication);
-        String refreshToken = Util.createRefreshToken();
-        HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.add(Constant.AUTHORIZATION_HEADER, "Bearer " + jwt);
-
-        return new TokenDTO(user.getId(), user.getIdentity().getId(), jwt, System.currentTimeMillis() + tokenDuration, refreshToken,
-                authentication.getAuthorities().stream().map(role -> role.getAuthority()).collect(Collectors.toList()), null);
+        return new TokenDTO(userId, identityId, jwt, System.currentTimeMillis() + tokenDuration, refreshToken, firebaseToken, authentication.getAuthorities().stream().map(role -> role.getAuthority()).collect(Collectors.toList()), null);
     }
 }

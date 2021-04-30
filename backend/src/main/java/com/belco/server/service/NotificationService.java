@@ -4,6 +4,11 @@ import com.belco.server.dto.NotificationDTO;
 import com.google.auth.oauth2.GoogleCredentials;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthException;
+import com.google.firebase.messaging.FirebaseMessaging;
+import com.google.firebase.messaging.Message;
+import com.google.firebase.messaging.Notification;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ClassPathResource;
@@ -11,10 +16,6 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
 import java.util.concurrent.ExecutionException;
-
-import com.google.firebase.messaging.FirebaseMessaging;
-import com.google.firebase.messaging.Message;
-import com.google.firebase.messaging.Notification;
 
 @Service
 public class NotificationService {
@@ -42,8 +43,18 @@ public class NotificationService {
         }
     }
 
+    public String getFirebaseToken(String phone) {
+        try {
+            return FirebaseAuth.getInstance().createCustomToken(phone);
+        } catch (FirebaseAuthException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
     public String pushMessage(String title, String message, String token) {
-        if(StringUtils.isNotBlank(token)) {
+        if (StringUtils.isNotBlank(token)) {
             return sendMessageWithData(new NotificationDTO(title, message, null, token));
         }
 

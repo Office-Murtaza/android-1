@@ -20,6 +20,7 @@ public class TokenDTO {
     private String accessToken;
     private Long expires;
     private String refreshToken;
+    private String firebaseToken;
     private List<String> roles;
     private BalanceDTO balance;
 }
