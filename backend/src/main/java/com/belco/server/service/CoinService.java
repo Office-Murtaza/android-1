@@ -248,7 +248,7 @@ public class CoinService {
 
             @Override
             public TransactionDetailsDTO getTransactionDetails(String txId, String address) {
-                return blockbookService.getTransactionDetails(getCoinType(), txId, address, getExplorerUrl());
+                return blockbookService.getTransactionDetails(getCoinType(), txId, address);
             }
 
             @Override
@@ -347,7 +347,7 @@ public class CoinService {
 
             @Override
             public TransactionDetailsDTO getTransactionDetails(String txId, String address) {
-                return blockbookService.getTransactionDetails(getCoinType(), txId, address, getExplorerUrl());
+                return blockbookService.getTransactionDetails(getCoinType(), txId, address);
             }
 
             @Override
@@ -446,7 +446,7 @@ public class CoinService {
 
             @Override
             public TransactionDetailsDTO getTransactionDetails(String txId, String address) {
-                return blockbookService.getTransactionDetails(getCoinType(), txId, address, getExplorerUrl());
+                return blockbookService.getTransactionDetails(getCoinType(), txId, address);
             }
 
             @Override
@@ -545,7 +545,7 @@ public class CoinService {
 
             @Override
             public TransactionDetailsDTO getTransactionDetails(String txId, String address) {
-                return blockbookService.getTransactionDetails(getCoinType(), txId, address, getExplorerUrl());
+                return blockbookService.getTransactionDetails(getCoinType(), txId, address);
             }
 
             @Override
@@ -644,7 +644,7 @@ public class CoinService {
 
             @Override
             public TransactionDetailsDTO getTransactionDetails(String txId, String address) {
-                return blockbookService.getTransactionDetails(getCoinType(), txId, address, getExplorerUrl());
+                return blockbookService.getTransactionDetails(getCoinType(), txId, address);
             }
 
             @Override
@@ -743,7 +743,7 @@ public class CoinService {
 
             @Override
             public TransactionDetailsDTO getTransactionDetails(String txId, String address) {
-                return gethService.getTransactionDetails(txId, address, getExplorerUrl());
+                return gethService.getTransactionDetails(txId, address);
             }
 
             @Override
@@ -839,7 +839,7 @@ public class CoinService {
 
             @Override
             public TransactionDetailsDTO getTransactionDetails(String txId, String address) {
-                return gethService.getTransactionDetails(GethService.ERC20.CATM, txId, address, getExplorerUrl());
+                return gethService.getTransactionDetails(GethService.ERC20.CATM, txId, address);
             }
 
             @Override
@@ -935,7 +935,7 @@ public class CoinService {
 
             @Override
             public TransactionDetailsDTO getTransactionDetails(String txId, String address) {
-                return gethService.getTransactionDetails(GethService.ERC20.USDC, txId, address, getExplorerUrl());
+                return gethService.getTransactionDetails(GethService.ERC20.USDC, txId, address);
             }
 
             @Override

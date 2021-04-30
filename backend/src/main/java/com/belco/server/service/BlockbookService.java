@@ -128,46 +128,54 @@ public class BlockbookService {
         return false;
     }
 
-    public TransactionDetailsDTO getTransactionDetails(CoinType coinType, String txId, String address, String explorerUrl) {
+    public TransactionDetailsDTO getTransactionDetails(CoinType coinType, String txId, String address) {
         TransactionDetailsDTO dto = new TransactionDetailsDTO();
 
         if (nodeService.isNodeAvailable(coinType)) {
             try {
                 JSONObject res = rest.getForObject(nodeService.getNodeUrl(coinType) + "/api/v2/tx/" + txId, JSONObject.class);
-                JSONArray vinArray = res.optJSONArray("vin");
-                JSONArray voutArray = res.optJSONArray("vout");
-
-                String fromAddress = getFromAddress(vinArray, address);
-                String toAddress = getToAddress(voutArray, address, fromAddress);
-                TransactionType type = TransactionType.getType(fromAddress, toAddress, address);
-                BigDecimal amount = Util.format(getAmount(type, fromAddress, toAddress, voutArray, DIVIDER), 6);
-
-                dto.setTxId(txId);
-                dto.setLink(explorerUrl + "/" + txId);
-
-                if(type != null) {
-                    dto.setType(type.getValue());
-                }
-
-                dto.setCryptoAmount(amount);
-                dto.setFromAddress(fromAddress);
-                dto.setToAddress(toAddress);
-                dto.setCryptoFee(new BigDecimal(res.optString("fees")).divide(DIVIDER).stripTrailingZeros());
-                dto.setConfirmations(res.optInt("confirmations"));
-                dto.setStatus(getStatus(res.optInt("confirmations")).getValue());
-                dto.setTimestamp(res.optLong("blockTime") * 1000);
+                dto = extractTransactionDetails(coinType, address, res);
             } catch (HttpClientErrorException he) {
                 dto.setStatus(TransactionStatus.NOT_EXIST.getValue());
             } catch (Exception e) {
                 e.printStackTrace();
 
                 if (nodeService.switchToReserveNode(coinType)) {
-                    return getTransactionDetails(coinType, txId, address, explorerUrl);
+                    return getTransactionDetails(coinType, txId, address);
                 }
             }
         }
 
         return dto;
+    }
+
+    private TransactionDetailsDTO extractTransactionDetails(CoinType coinType, String address, JSONObject res) {
+        JSONArray vin = res.optJSONArray("vin");
+        JSONArray vout = res.optJSONArray("vout");
+
+        String txId = res.optString("txid");
+        String fromAddress = getFromAddress(vin, address);
+        String toAddress = getToAddress(vout, address, fromAddress);
+        TransactionType type = TransactionType.getType(fromAddress, toAddress, address);
+        BigDecimal amount = Util.format(getAmount(type, fromAddress, toAddress, vout, DIVIDER), 6);
+
+        TransactionDetailsDTO tx = new TransactionDetailsDTO();
+        tx.setTxId(txId);
+        tx.setLink(nodeService.getExplorerUrl(coinType) + "/" + txId);
+
+        if(type != null) {
+            tx.setType(type.getValue());
+        }
+
+        tx.setCryptoAmount(amount);
+        tx.setFromAddress(fromAddress);
+        tx.setToAddress(toAddress);
+        tx.setCryptoFee(Util.format(new BigDecimal(res.optString("fees")).divide(DIVIDER), 6));
+        tx.setConfirmations(res.optInt("confirmations"));
+        tx.setStatus(getStatus(res.optInt("confirmations")).getValue());
+        tx.setTimestamp(res.optLong("blockTime") * 1000);
+
+        return tx;
     }
 
     public Map<String, TransactionDetailsDTO> getNodeTransactions(CoinType coinType, String address) {
@@ -176,7 +184,7 @@ public class BlockbookService {
                 JSONObject res = rest.getForObject(nodeService.getNodeUrl(coinType) + "/api/v2/address/" + address + "?details=txs&pageSize=1000&page=1", JSONObject.class);
                 JSONArray array = res.optJSONArray("transactions");
 
-                return collectNodeTxs(array, address);
+                return collectNodeTxs(coinType, array, address);
             } catch (Exception e) {
                 e.printStackTrace();
 
@@ -258,32 +266,14 @@ public class BlockbookService {
         return BigDecimal.valueOf(getByteFee(coinType)).divide(DIVIDER).multiply(BigDecimal.valueOf(1000)).stripTrailingZeros();
     }
 
-    private Map<String, TransactionDetailsDTO> collectNodeTxs(JSONArray array, String address) {
+    private Map<String, TransactionDetailsDTO> collectNodeTxs(CoinType coinType, JSONArray array, String address) {
         Map<String, TransactionDetailsDTO> map = new HashMap<>();
 
         if (array != null && !array.isEmpty()) {
             for (int i = 0; i < array.size(); i++) {
-                JSONObject json = array.getJSONObject(i);
-                JSONArray vinArray = json.optJSONArray("vin");
-                JSONArray voutArray = json.optJSONArray("vout");
-
-                String txId = json.optString("txid");
-                String fromAddress = getFromAddress(vinArray, address);
-                String toAddress = getToAddress(voutArray, address, fromAddress);
-                TransactionType type = TransactionType.getType(fromAddress, toAddress, address);
-                BigDecimal amount = Util.format(getAmount(type, fromAddress, toAddress, voutArray, DIVIDER), 6);
-                TransactionStatus status = getStatus(json.optInt("confirmations"));
-
-                TransactionDetailsDTO tx = new TransactionDetailsDTO();
-                tx.setTxId(txId);
-                tx.setType(type.getValue());
-                tx.setStatus(status.getValue());
-                tx.setCryptoAmount(amount);
-                tx.setFromAddress(fromAddress);
-                tx.setToAddress(toAddress);
-                tx.setTimestamp(json.optLong("blockTime") * 1000);
-
-                map.put(txId, tx);
+                JSONObject res = array.getJSONObject(i);
+                TransactionDetailsDTO tx = extractTransactionDetails(coinType, address, res);
+                map.put(tx.getTxId(), tx);
             }
         }
 

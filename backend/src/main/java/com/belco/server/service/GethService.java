@@ -160,21 +160,8 @@ public class GethService {
 
         mongo.getCollection(coll).find(query).into(new ArrayList<>()).stream().forEach(d -> {
             try {
-                TransactionDetailsDTO dto = new TransactionDetailsDTO();
-
-                String fromAddress = d.getString("fromAddress");
-                String toAddress = d.getString("toAddress");
-
-                dto.setTxId(d.getString("txId"));
-                dto.setType(TransactionType.getType(fromAddress, toAddress, address).getValue());
-                dto.setStatus(TransactionStatus.valueOf(d.getInteger("status")).getValue());
-                dto.setCryptoAmount(d.get("amount", Decimal128.class).bigDecimalValue());
-                dto.setCryptoFee(extractFee(d));
-                dto.setFromAddress(fromAddress);
-                dto.setToAddress(toAddress);
-                dto.setTimestamp(d.getLong("blockTime"));
-
-                map.put(d.getString("txId"), dto);
+                TransactionDetailsDTO tx = extractTransactionDetails(d, address);
+                map.put(tx.getTxId(), tx);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -195,39 +182,46 @@ public class GethService {
         return BigDecimal.ZERO;
     }
 
-    private static TransactionDetailsDTO getTransactionFromDB(String coll, BasicDBObject query, String address, String explorerUrl) {
-        TransactionDetailsDTO dto = new TransactionDetailsDTO();
+    private static TransactionDetailsDTO getTransactionFromDB(String coll, BasicDBObject query, String address) {
+        TransactionDetailsDTO tx = new TransactionDetailsDTO();
 
         try {
-            Document txDoc = mongo.getCollection(coll).find(query).first();
-
-            if (txDoc == null) {
-                dto.setStatus(TransactionStatus.NOT_EXIST.getValue());
-            } else {
-                String txId = txDoc.getString("txId");
-                String fromAddress = txDoc.getString("fromAddress");
-                String toAddress = txDoc.getString("toAddress");
-
-                dto.setTxId(txId);
-                dto.setLink(explorerUrl + "/" + txId);
-
-                TransactionType type = TransactionType.getType(fromAddress, toAddress, address);
-                if(type != null) {
-                    dto.setType(type.getValue());
-                }
-
-                dto.setCryptoAmount(txDoc.get("amount", Decimal128.class).bigDecimalValue());
-                dto.setFromAddress(fromAddress);
-                dto.setToAddress(toAddress);
-                dto.setCryptoFee(extractFee(txDoc));
-                dto.setStatus(TransactionStatus.valueOf(txDoc.getInteger("status")).getValue());
-                dto.setTimestamp(txDoc.getLong("blockTime"));
-            }
+            Document d = mongo.getCollection(coll).find(query).first();
+            tx = extractTransactionDetails(d, address);
         } catch (Exception e) {
             e.printStackTrace();
         }
 
-        return dto;
+        return tx;
+    }
+
+    private static TransactionDetailsDTO extractTransactionDetails(Document d, String address) {
+        TransactionDetailsDTO tx = new TransactionDetailsDTO();
+
+        if (d == null) {
+            tx.setStatus(TransactionStatus.NOT_EXIST.getValue());
+        } else {
+            String txId = d.getString("txId");
+            String fromAddress = d.getString("fromAddress");
+            String toAddress = d.getString("toAddress");
+
+            tx.setTxId(txId);
+            tx.setLink(nodeService.getExplorerUrl(CoinType.ETHEREUM) + "/" + txId);
+
+            TransactionType type = TransactionType.getType(fromAddress, toAddress, address);
+            if(type != null) {
+                tx.setType(type.getValue());
+            }
+
+            tx.setCryptoAmount(d.get("amount", Decimal128.class).bigDecimalValue());
+            tx.setFromAddress(fromAddress);
+            tx.setToAddress(toAddress);
+            tx.setCryptoFee(extractFee(d));
+            tx.setStatus(TransactionStatus.valueOf(d.getInteger("status")).getValue());
+            tx.setTimestamp(d.getLong("blockTime"));
+        }
+
+        return tx;
     }
 
     private static void addPendingTransaction(String txId, String fromAddress, String toAddress, BigDecimal amount) {
@@ -505,12 +499,12 @@ public class GethService {
         mongo.getCollection(ADDRESS_COLL).findOneAndUpdate(new BasicDBObject("address", address.toLowerCase()), new BasicDBObject("$set", new BasicDBObject("address", address.toLowerCase()).append("timestamp", System.currentTimeMillis())), new FindOneAndUpdateOptions().upsert(true));
     }
 
-    public TransactionDetailsDTO getTransactionDetails(String txId, String address, String explorerUrl) {
-        return getTransactionFromDB(ETH_TX_COLL, new BasicDBObject("txId", txId.toLowerCase()), address.toLowerCase(), explorerUrl);
+    public TransactionDetailsDTO getTransactionDetails(String txId, String address) {
+        return getTransactionFromDB(ETH_TX_COLL, new BasicDBObject("txId", txId.toLowerCase()), address.toLowerCase());
     }
 
-    public TransactionDetailsDTO getTransactionDetails(ERC20 token, String txId, String address, String explorerUrl) {
-        return getTransactionFromDB(TOKEN_TX_COLL, new BasicDBObject("txId", txId.toLowerCase()).append("token", token.name()), address.toLowerCase(), explorerUrl);
+    public TransactionDetailsDTO getTransactionDetails(ERC20 token, String txId, String address) {
+        return getTransactionFromDB(TOKEN_TX_COLL, new BasicDBObject("txId", txId.toLowerCase()).append("token", token.name()), address.toLowerCase());
     }
 
     public TransactionHistoryDTO getTransactionHistory(String address, List<TransactionRecord> transactionRecords, List<TransactionDetailsDTO> details) {
