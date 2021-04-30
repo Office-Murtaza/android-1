@@ -1,0 +1,12 @@
+{
+  "images" : [
+    {
+      "filename" : "p2p_venmo.svg",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}

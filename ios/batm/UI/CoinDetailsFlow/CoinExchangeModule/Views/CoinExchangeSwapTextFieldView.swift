@@ -82,7 +82,7 @@ class CoinExchangeSwapTextFieldView: UIView, UIPickerViewDataSource, HasDisposeB
     }
     
     
-    private func setupUI() {
+    func setupUI() {
         translatesAutoresizingMaskIntoConstraints = false
         addSubviews(coinTextField,
                     fakeToCoinTextField,
@@ -96,7 +96,7 @@ class CoinExchangeSwapTextFieldView: UIView, UIPickerViewDataSource, HasDisposeB
         coinTextField.font = .systemFont(ofSize: 22, weight: .bold)
     }
     
-    private func setupLayout() {
+    func setupLayout() {
         coinTypeImageView.snp.makeConstraints {
             $0.top.equalToSuperview().offset(32)
             $0.left.equalToSuperview().offset(15)
@@ -232,6 +232,7 @@ extension CoinExchangeSwapTextFieldView: UIPickerViewDelegate {
     }
     
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+        coinType = coins[row]
         return didSelectPickerRow.accept(coins[row])
     }
 }

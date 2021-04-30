@@ -71,7 +71,10 @@ protocol APIGateway {
   func getStakeDetails(userId: Int, type: CustomCoinType) -> Single<StakeDetails>
   func manageCoins(userId: Int, coin: String, visible: Bool) -> Completable
   func getPriceChart(type: CustomCoinType, period: SelectedPeriod) -> Single<PriceChartDetails>
-    
+  func getTrades(userId: Int) -> Single<Trades>
+  func createTrade(userId: Int, data: P2PCreateTradeDataModel) -> Single<Trade>
+  func editTrade(userId: Int, data: P2PEditTradeDataModel) -> Single<Trade>
+  func cancelTrade(userId: Int, id: String) -> Single<Trade>
 }
 
 final class APIGatewayImpl: APIGateway {
@@ -349,4 +352,25 @@ final class APIGatewayImpl: APIGateway {
     let request = ManageCoinsRequest(userId: userId, coinId: coin, isVisible: String(visible))
     return execute(request)
   }
+    
+  func getTrades(userId: Int) -> Single<Trades> {
+    let request = TradesRequest(userId: userId)
+    return execute(request)
+  }
+    
+  func createTrade(userId: Int, data: P2PCreateTradeDataModel) -> Single<Trade> {
+    let request = CreateTradesRequest(userId: userId, data: data)
+    return execute(request)
+  }
+  
+  func editTrade(userId: Int, data: P2PEditTradeDataModel) -> Single<Trade> {
+    let request = EditTradesRequest(userId: userId, data: data)
+    return execute(request)
+  }
+  
+  func cancelTrade(userId: Int, id: String) -> Single<Trade> {
+    let request = CancelTradesRequest(userId: userId, id: id)
+    return execute(request)
+  }
+  
 }

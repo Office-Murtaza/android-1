@@ -53,5 +53,27 @@ class DealsPresenter: ModulePresenter, DealsModule {
                 delegate?.didSelectTransfer()
             })
             .disposed(by: disposeBag)
+        
+        input.select
+            .asObservable()
+            .map { [types] in types[$0.item] }
+            .filter { $0 == .p2pTrades }
+            .flatMap { [unowned self] _ in
+                return self.track(Observable.combineLatest(self.usecase.getTrades().asObservable(),
+                                                           self.usecase.getAccount().asObservable()))
+            }
+            .subscribe { [unowned self] (trades, account) in
+                self.store.action.accept(DealsAction.loadedTrades(trades, account))
+            }.disposed(by: disposeBag)
+        
+            state.asObservable()
+            .subscribe(onNext: { [delegate] state in
+                guard let trades = state.trades, let userId = state.userId else {
+                    return
+                }
+                delegate?.didSelectedP2p(trades: trades, userId: userId)
+            })
+            .disposed(by: disposeBag)
+        
     }
 }
