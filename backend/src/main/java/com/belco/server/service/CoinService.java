@@ -1127,12 +1127,12 @@ public class CoinService {
 
             @Override
             public TransactionDetailsDTO getTransactionDetails(String txId, String address) {
-                return rippledService.getTransactionDetails(txId, address, getExplorerUrl());
+                return rippledService.getTransactionDetails(txId, address);
             }
 
             @Override
             public TransactionHistoryDTO getTransactionHistory(String address, List<TransactionRecord> transactionRecords, List<TransactionDetailsDTO> details) {
-                return rippledService.getTransactionDetails(address, transactionRecords, details);
+                return rippledService.getTransactionHistory(address, transactionRecords, details);
             }
 
             @Override
@@ -1223,7 +1223,7 @@ public class CoinService {
 
             @Override
             public TransactionDetailsDTO getTransactionDetails(String txId, String address) {
-                return trongridService.getTransactionDetails(txId, address, getExplorerUrl());
+                return trongridService.getTransactionDetails(txId, address);
             }
 
             @Override

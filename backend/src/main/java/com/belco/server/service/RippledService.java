@@ -205,7 +205,7 @@ public class RippledService {
         return false;
     }
 
-    public TransactionDetailsDTO getTransactionDetails(String txId, String address, String explorerUrl) {
+    public TransactionDetailsDTO getTransactionDetails(String txId, String address) {
         TransactionDetailsDTO dto = new TransactionDetailsDTO();
 
         if (nodeService.isNodeAvailable(COIN_TYPE)) {
@@ -223,7 +223,7 @@ public class RippledService {
                 JSONObject res = rest.postForObject(nodeService.getNodeUrl(COIN_TYPE), req, JSONObject.class).optJSONObject("result");
 
                 dto.setTxId(txId);
-                dto.setLink(explorerUrl + "/" + txId);
+                dto.setLink(nodeService.getExplorerUrl(COIN_TYPE) + "/" + txId);
                 dto.setCryptoAmount(getAmount(res.optString("Amount")));
                 dto.setCryptoFee(getAmount(res.optString("Fee")));
                 dto.setFromAddress(res.optString("Account"));
@@ -240,7 +240,7 @@ public class RippledService {
                 e.printStackTrace();
 
                 if (nodeService.switchToReserveNode(COIN_TYPE)) {
-                    return getTransactionDetails(txId, address, explorerUrl);
+                    return getTransactionDetails(txId, address);
                 }
             }
         }
@@ -278,7 +278,7 @@ public class RippledService {
         return Collections.emptyMap();
     }
 
-    public TransactionHistoryDTO getTransactionDetails(String address, List<TransactionRecord> transactionRecords, List<TransactionDetailsDTO> details) {
+    public TransactionHistoryDTO getTransactionHistory(String address, List<TransactionRecord> transactionRecords, List<TransactionDetailsDTO> details) {
         return TransactionService.buildTxs(getNodeTransactions(address), transactionRecords, details);
     }
 
@@ -329,13 +329,16 @@ public class RippledService {
                 String toAddress = obj.optString("Destination");
                 TransactionType type = TransactionType.getType(obj.optString("Account"), obj.optString("Destination"), address);
                 BigDecimal amount = Util.format(getAmount(obj.optString("Amount")), 6);
+                BigDecimal fee = Util.format(getAmount(obj.optString("Fee")), 6);
                 long timestamp = (obj.optLong("date") + 946684800L) * 1000;
 
                 TransactionDetailsDTO tx = new TransactionDetailsDTO();
                 tx.setTxId(txId);
+                tx.setLink(nodeService.getExplorerUrl(COIN_TYPE) + "/" + txId);
                 tx.setType(type.getValue());
                 tx.setStatus(status.getValue());
                 tx.setCryptoAmount(amount);
+                tx.setCryptoFee(fee);
                 tx.setFromAddress(fromAddress);
                 tx.setToAddress(toAddress);
                 tx.setTimestamp(timestamp);

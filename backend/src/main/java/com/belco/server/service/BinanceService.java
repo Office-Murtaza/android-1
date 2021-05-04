@@ -243,16 +243,19 @@ public class BinanceService {
             String txId = t.getTxHash();
             com.belco.server.model.TransactionType type = com.belco.server.model.TransactionType.getType(t.getFromAddr(), t.getToAddr(), address);
             BigDecimal amount = Util.format(new BigDecimal(t.getValue()), 6);
+            BigDecimal fee = Util.format(new BigDecimal(t.getTxFee()), 6);
             TransactionStatus status = getStatus(t.getCode());
             long timestamp = ZonedDateTime.parse(t.getTimeStamp()).toInstant().toEpochMilli();
 
             TransactionDetailsDTO tx = new TransactionDetailsDTO();
             tx.setTxId(txId);
+            tx.setLink(nodeService.getExplorerUrl(COIN_TYPE) + "/" + txId);
             tx.setType(type.getValue());
             tx.setStatus(status.getValue());
-            tx.setCryptoAmount(amount);
             tx.setFromAddress(t.getFromAddr());
             tx.setToAddress(t.getToAddr());
+            tx.setCryptoAmount(amount);
+            tx.setCryptoFee(fee);
             tx.setTimestamp(timestamp);
 
             map.put(txId, tx);

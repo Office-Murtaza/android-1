@@ -2,6 +2,7 @@ package com.belco.server.rest;
 
 import com.belco.server.dto.NotificationDTO;
 import com.belco.server.dto.TransactionDTO;
+import com.belco.server.dto.TransactionDetailsDTO;
 import com.belco.server.model.Response;
 import com.belco.server.repository.CoinRep;
 import com.belco.server.service.*;
@@ -137,6 +138,19 @@ public class TestController {
             TransactionReceipt receipt = gethService.web3.ethGetTransactionReceipt(txId).send().getTransactionReceipt().get();
 
             return Response.ok(receipt);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return Response.ok("error");
+    }
+
+    @GetMapping("/{coin}/transaction-details")
+    public Response getTransactionDetails(@PathVariable CoinService.CoinEnum coin, @RequestParam String txId, @RequestParam String address) {
+        try {
+            TransactionDetailsDTO tx = coin.getTransactionDetails(txId, address);
+
+            return Response.ok(tx);
         } catch (Exception e) {
             e.printStackTrace();
         }

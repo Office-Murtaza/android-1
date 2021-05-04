@@ -110,7 +110,7 @@ public class TrongridService {
         return false;
     }
 
-    public TransactionDetailsDTO getTransactionDetails(String txId, String address, String explorerUrl) {
+    public TransactionDetailsDTO getTransactionDetails(String txId, String address) {
         TransactionDetailsDTO dto = new TransactionDetailsDTO();
 
         if (nodeService.isNodeAvailable(COIN_TYPE)) {
@@ -122,7 +122,7 @@ public class TrongridService {
                 JSONObject row = res.optJSONObject("raw_data").optJSONArray("contract").getJSONObject(0).getJSONObject("parameter").optJSONObject("value");
 
                 dto.setTxId(txId);
-                dto.setLink(explorerUrl + "/" + txId);
+                dto.setLink(nodeService.getExplorerUrl(COIN_TYPE) + "/" + txId);
                 dto.setCryptoAmount(getAmount(row.optLong("amount")));
                 dto.setCryptoFee(getAmount(res.optJSONObject("raw_data").optLong("fee_limit")));
                 dto.setFromAddress(Base58.toBase58(row.optString("owner_address")));
@@ -134,13 +134,12 @@ public class TrongridService {
                 }
 
                 dto.setStatus(getStatus(res.optJSONArray("ret").getJSONObject(0).optString("contractRet")).getValue());
-                dto.setConfirmations(TransactionStatus.valueOf(dto.getStatus()).getConfirmations());
                 dto.setTimestamp(res.optJSONObject("raw_data").optLong("timestamp"));
             } catch (Exception e) {
                 e.printStackTrace();
 
                 if (nodeService.switchToReserveNode(COIN_TYPE)) {
-                    return getTransactionDetails(txId, address, explorerUrl);
+                    return getTransactionDetails(txId, address);
                 }
             }
         }
@@ -261,14 +260,17 @@ public class TrongridService {
                 String contractRet = t.optJSONArray("ret").getJSONObject(0).optString("contractRet");
                 TransactionType type = TransactionType.getType(fromAddress, toAddress, address);
                 BigDecimal amount = Util.format(getAmount(row.optLong("amount")), 6);
+                BigDecimal fee = Util.format(getAmount(new Long(row.optInt("net_fee"))), 6);
                 TransactionStatus status = getStatus(contractRet);
                 long timestamp = t.optJSONObject("raw_data").optLong("timestamp");
 
                 TransactionDetailsDTO tx = new TransactionDetailsDTO();
                 tx.setTxId(txId);
+                tx.setLink(nodeService.getExplorerUrl(COIN_TYPE) + "/" + txId);
                 tx.setType(type.getValue());
                 tx.setStatus(status.getValue());
                 tx.setCryptoAmount(amount);
+                tx.setCryptoFee(fee);
                 tx.setFromAddress(fromAddress);
                 tx.setToAddress(toAddress);
                 tx.setTimestamp(timestamp);
