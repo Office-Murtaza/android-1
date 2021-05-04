@@ -5,7 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.app.belcobtm.R
-import com.app.belcobtm.data.inmemory.TradeInMemoryCache.Companion.UNDEFINED_DISTANCE
+import com.app.belcobtm.data.inmemory.trade.TradeInMemoryCache.Companion.UNDEFINED_DISTANCE
 import com.app.belcobtm.data.model.trade.TradeType
 import com.app.belcobtm.domain.trade.details.GetTradeDetailsUseCase
 import com.app.belcobtm.domain.wallet.LocalCoinType

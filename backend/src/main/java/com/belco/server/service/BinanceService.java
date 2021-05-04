@@ -1,10 +1,9 @@
 package com.belco.server.service;
 
 import com.belco.server.dto.CurrentAccountDTO;
-import com.belco.server.dto.TxDetailsDTO;
-import com.belco.server.dto.TxHistoryDTO;
+import com.belco.server.dto.TransactionDetailsDTO;
+import com.belco.server.dto.TransactionHistoryDTO;
 import com.belco.server.entity.TransactionRecord;
-import com.belco.server.entity.TransactionRecordWallet;
 import com.belco.server.model.TransactionStatus;
 import com.belco.server.util.Util;
 import com.binance.dex.api.client.BinanceDexApiRestClient;
@@ -116,8 +115,8 @@ public class BinanceService {
         return false;
     }
 
-    public TxDetailsDTO getTransactionDetails(String txId, String address, String explorerUrl) {
-        TxDetailsDTO dto = new TxDetailsDTO();
+    public TransactionDetailsDTO getTransactionDetails(String txId, String address, String explorerUrl) {
+        TransactionDetailsDTO dto = new TransactionDetailsDTO();
 
         if (nodeService.isNodeAvailable(COIN_TYPE)) {
             try {
@@ -128,8 +127,13 @@ public class BinanceService {
                 dto.setLink(explorerUrl + "/" + txId);
                 dto.setFromAddress(msg.optJSONObject("value").optJSONArray("inputs").getJSONObject(0).optString("address"));
                 dto.setToAddress(msg.optJSONObject("value").optJSONArray("outputs").getJSONObject(0).optString("address"));
-                dto.setType(com.belco.server.model.TransactionType.getType(dto.getFromAddress(), dto.getToAddress(), address));
-                dto.setStatus(getStatus(res.getInt("code")));
+
+                com.belco.server.model.TransactionType type = com.belco.server.model.TransactionType.getType(dto.getFromAddress(), dto.getToAddress(), address);
+                if (type != null) {
+                    dto.setType(type.getValue());
+                }
+
+                dto.setStatus(getStatus(res.getInt("code")).getValue());
                 dto.setCryptoAmount(getAmount(msg.optJSONObject("value").optJSONArray("inputs").getJSONObject(0).getJSONArray("coins").getJSONObject(0).optString("amount")));
                 dto.setCryptoFee(getAmount("1000000"));
             } catch (Exception e) {
@@ -139,14 +143,14 @@ public class BinanceService {
                     return getTransactionDetails(txId, address, explorerUrl);
                 }
 
-                dto.setStatus(TransactionStatus.FAIL);
+                dto.setStatus(TransactionStatus.FAIL.getValue());
             }
         }
 
         return dto;
     }
 
-    public Map<String, TxDetailsDTO> getNodeTransactions(String address) {
+    public Map<String, TransactionDetailsDTO> getNodeTransactions(String address) {
         try {
             TransactionsRequest request = new TransactionsRequest();
             request.setStartTime(new SimpleDateFormat("yyyy").parse("2010").getTime());
@@ -166,8 +170,8 @@ public class BinanceService {
         return Collections.emptyMap();
     }
 
-    public TxHistoryDTO getTransactionHistory(String address, Integer startIndex, Integer limit, List<TransactionRecord> transactionRecords, List<TransactionRecordWallet> transactionRecordWallets) {
-        return TransactionService.buildTxs(getNodeTransactions(address), startIndex, limit, transactionRecords, transactionRecordWallets);
+    public TransactionHistoryDTO getTransactionHistory(String address, List<TransactionRecord> transactionRecords, List<TransactionDetailsDTO> details) {
+        return TransactionService.buildTxs(getNodeTransactions(address), transactionRecords, details);
     }
 
     public CurrentAccountDTO getCurrentAccount(String address) {
@@ -182,15 +186,15 @@ public class BinanceService {
         return new CurrentAccountDTO();
     }
 
-    public String sign(String fromAddress, String toAddress, BigDecimal amount) {
+    public String sign(Long walletId, String fromAddress, String toAddress, BigDecimal amount) {
         try {
             PrivateKey privateKey;
 
-            if (walletService.isServerAddress(CoinType.BINANCE, fromAddress)) {
-                privateKey = walletService.getCoinsMap().get(CoinType.BINANCE).getPrivateKey();
+            if (walletService.isServerAddress(fromAddress)) {
+                privateKey = walletService.get(walletId).getCoins().get(CoinType.BINANCE).getPrivateKey();
             } else {
                 String path = walletService.getPath(fromAddress);
-                privateKey = walletService.getWallet().getKey(CoinType.BINANCE, path);
+                privateKey = walletService.get(walletId).getWallet().getKey(CoinType.BINANCE, path);
             }
 
             CurrentAccountDTO currentDTO = getCurrentAccount(fromAddress);
@@ -230,19 +234,31 @@ public class BinanceService {
         return null;
     }
 
-    private Map<String, TxDetailsDTO> collectNodeTxs(TransactionPage page, String address) {
-        Map<String, TxDetailsDTO> map = new HashMap<>();
+    private Map<String, TransactionDetailsDTO> collectNodeTxs(TransactionPage page, String address) {
+        Map<String, TransactionDetailsDTO> map = new HashMap<>();
 
         for (int i = 0; i < page.getTx().size(); i++) {
-            com.binance.dex.api.client.domain.Transaction tx = page.getTx().get(i);
+            com.binance.dex.api.client.domain.Transaction t = page.getTx().get(i);
 
-            String txId = tx.getTxHash();
-            com.belco.server.model.TransactionType type = com.belco.server.model.TransactionType.getType(tx.getFromAddr(), tx.getToAddr(), address);
-            BigDecimal amount = Util.format(new BigDecimal(tx.getValue()), 6);
-            TransactionStatus status = getStatus(tx.getCode());
-            long timestamp = ZonedDateTime.parse(tx.getTimeStamp()).toInstant().toEpochMilli();
+            String txId = t.getTxHash();
+            com.belco.server.model.TransactionType type = com.belco.server.model.TransactionType.getType(t.getFromAddr(), t.getToAddr(), address);
+            BigDecimal amount = Util.format(new BigDecimal(t.getValue()), 6);
+            BigDecimal fee = Util.format(new BigDecimal(t.getTxFee()), 6);
+            TransactionStatus status = getStatus(t.getCode());
+            long timestamp = ZonedDateTime.parse(t.getTimeStamp()).toInstant().toEpochMilli();
 
-            map.put(txId, new TxDetailsDTO(txId, amount, tx.getFromAddr(), tx.getToAddr(), type, status, timestamp));
+            TransactionDetailsDTO tx = new TransactionDetailsDTO();
+            tx.setTxId(txId);
+            tx.setLink(nodeService.getExplorerUrl(COIN_TYPE) + "/" + txId);
+            tx.setType(type.getValue());
+            tx.setStatus(status.getValue());
+            tx.setFromAddress(t.getFromAddr());
+            tx.setToAddress(t.getToAddr());
+            tx.setCryptoAmount(amount);
+            tx.setCryptoFee(fee);
+            tx.setTimestamp(timestamp);
+
+            map.put(txId, tx);
         }
 
         return map;

@@ -12,6 +12,6 @@ public interface CoinPathRep extends JpaRepository<CoinPath, Long> {
 
     CoinPath getCoinPathByAddress(String address);
 
-    @Query(value = "SELECT * FROM w_coinpath WHERE coin_id = :coinId AND update_date < NOW() - INTERVAL :hoursAgo HOUR LIMIT 1", nativeQuery = true)
-    CoinPath findFirstByCoinIdAndHoursAgo(@Param("coinId") Long coinId, @Param("hoursAgo") Integer hours);
+    @Query(value = "SELECT * FROM w_coinpath WHERE wallet_id = :walletId AND coin_id = :coinId AND update_date < NOW() - INTERVAL :hoursAgo HOUR LIMIT 1", nativeQuery = true)
+    CoinPath getFreeCoinPath(@Param("walletId") Long walletId, @Param("coinId") Long coinId, @Param("hoursAgo") Integer hours);
 }

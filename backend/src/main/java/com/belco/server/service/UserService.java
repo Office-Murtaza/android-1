@@ -10,9 +10,7 @@ import com.belco.server.model.VerificationStatus;
 import com.belco.server.model.VerificationTier;
 import com.belco.server.repository.*;
 import com.belco.server.util.Util;
-import liquibase.util.file.FilenameUtils;
 import org.apache.commons.lang.RandomStringUtils;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -23,18 +21,14 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.io.File;
 import java.math.BigDecimal;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
 public class UserService implements UserDetailsService {
 
-    private static final String SELFIE_PREFIX = "selfie_";
-    private static final String ID_CARD_PREFIX = "id_card_";
+    private static final String MIME_TYPE = "jpg";
 
     private static final BigDecimal DAILY_LIMIT = BigDecimal.valueOf(900);
     private static final BigDecimal TX_LIMIT = BigDecimal.valueOf(900);
@@ -56,11 +50,9 @@ public class UserService implements UserDetailsService {
     private final IdentityPieceSelfieRep identityPieceSelfieRep;
     private final ReferralRep referralRep;
     private final CoinService coinService;
+    private final TransactionService transactionService;
 
-    @Value("${upload.path.verification}")
-    private String uploadPath;
-
-    public UserService(UserRep userRep, @Lazy PasswordEncoder passwordEncoder, IdentityRep identityRep, UserCoinRep userCoinRep, LimitRep limitRep, IdentityPieceRep identityPieceRep, IdentityPieceCellPhoneRep identityPieceCellPhoneRep, VerificationReviewRep verificationReviewRep, ReferralRep referralRep, IdentityPiecePersonalInfoRep identityPiecePersonalInfoRep, IdentityPieceDocumentRep identityPieceDocumentRep, IdentityPieceSelfieRep identityPieceSelfieRep, @Lazy CoinService coinService) {
+    public UserService(UserRep userRep, @Lazy PasswordEncoder passwordEncoder, IdentityRep identityRep, UserCoinRep userCoinRep, LimitRep limitRep, IdentityPieceRep identityPieceRep, IdentityPieceCellPhoneRep identityPieceCellPhoneRep, VerificationReviewRep verificationReviewRep, ReferralRep referralRep, IdentityPiecePersonalInfoRep identityPiecePersonalInfoRep, IdentityPieceDocumentRep identityPieceDocumentRep, IdentityPieceSelfieRep identityPieceSelfieRep, @Lazy CoinService coinService, @Lazy TransactionService transactionService) {
         this.userRep = userRep;
         this.passwordEncoder = passwordEncoder;
         this.identityRep = identityRep;
@@ -74,6 +66,7 @@ public class UserService implements UserDetailsService {
         this.identityPieceDocumentRep = identityPieceDocumentRep;
         this.identityPieceSelfieRep = identityPieceSelfieRep;
         this.coinService = coinService;
+        this.transactionService = transactionService;
     }
 
     @Transactional
@@ -106,6 +99,7 @@ public class UserService implements UserDetailsService {
         }
 
         coinService.addUserCoins(user, dto.getCoins());
+        transactionService.deliverPendingTransfers(dto.getPhone());
 
         return user;
     }
@@ -197,7 +191,7 @@ public class UserService implements UserDetailsService {
 
             return address;
         } else {
-            return coinCode.getWalletAddress();
+            return coinCode.getWalletAddress(1L);
         }
     }
 
@@ -262,11 +256,11 @@ public class UserService implements UserDetailsService {
         dto.setStatus(VerificationStatus.NOT_VERIFIED);
 
         User user = userRep.getOne(userId);
-        VerificationReview verificationReview = verificationReviewRep.findFirstByIdentityOrderByIdDesc(user.getIdentity());
+        VerificationReview review = verificationReviewRep.findFirstByIdentityOrderByIdDesc(user.getIdentity());
 
-        if (verificationReview != null) {
-            dto.setStatus(VerificationStatus.valueOf(verificationReview.getStatus()));
-            dto.setMessage(verificationReview.getMessage());
+        if (review != null) {
+            dto.setStatus(VerificationStatus.valueOf(review.getStatus()));
+            dto.setMessage(review.getMessage());
         }
 
         if (dto.getStatus() == VerificationStatus.NOT_VERIFIED) {
@@ -286,14 +280,8 @@ public class UserService implements UserDetailsService {
         try {
             User user = userRep.getOne(userId);
             VerificationReview verificationReview = new VerificationReview();
-            String fileExtension = FilenameUtils.getExtension(dto.getFile().getOriginalFilename());
-            String newFileName = RandomStringUtils.randomAlphanumeric(20).toLowerCase() + "." + fileExtension;
 
             if (dto.getVerificationTier() == VerificationTier.VERIFICATION) {
-                String newFilePath = uploadPath + File.separator + ID_CARD_PREFIX + newFileName;
-                Path path = Paths.get(newFilePath);
-                Util.uploadFile(dto.getFile(), path);
-
                 verificationReview.setTier(dto.getVerificationTier().getValue());
                 verificationReview.setIdentity(user.getIdentity());
                 verificationReview.setStatus(VerificationStatus.VERIFICATION_PENDING.getValue());
@@ -305,19 +293,14 @@ public class UserService implements UserDetailsService {
                 verificationReview.setFirstName(dto.getFirstName());
                 verificationReview.setLastName(dto.getLastName());
                 verificationReview.setIdCardNumber(dto.getIdNumber());
-                verificationReview.setIdCardNumberFilename(newFileName);
-                verificationReview.setIdCardNumberMimetype(dto.getFile().getContentType());
+                verificationReview.setIdCardNumberFilename(dto.getFile());
+                verificationReview.setIdCardNumberMimetype(MIME_TYPE);
             } else if (dto.getVerificationTier() == VerificationTier.VIP_VERIFICATION) {
-                verificationReview = verificationReviewRep.findFirstByIdentityOrderByIdDesc(user.getIdentity());
-                String newFilePath = uploadPath + File.separator + SELFIE_PREFIX + newFileName;
-                Path path = Paths.get(newFilePath);
-                Util.uploadFile(dto.getFile(), path);
-
                 verificationReview.setTier(dto.getVerificationTier().getValue());
                 verificationReview.setStatus(VerificationStatus.VIP_VERIFICATION_PENDING.getValue());
                 verificationReview.setSsn(dto.getSsn());
-                verificationReview.setSsnFilename(newFileName);
-                verificationReview.setSsnMimetype(dto.getFile().getContentType());
+                verificationReview.setSsnFilename(dto.getFile());
+                verificationReview.setSsnMimetype(MIME_TYPE);
             }
 
             verificationReview = verificationReviewRep.save(verificationReview);
@@ -531,7 +514,7 @@ public class UserService implements UserDetailsService {
     }
 
     private BigDecimal getLastLimit(List<Limit> limits) {
-        if(limits != null && limits.size() > 0) {
+        if (limits != null && limits.size() > 0) {
             return limits.get(limits.size() - 1).getAmount().stripTrailingZeros();
         }
 

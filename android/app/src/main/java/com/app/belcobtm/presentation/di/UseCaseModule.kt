@@ -65,7 +65,7 @@ val useCaseModule = module {
     single { UpdateUserCoinListUseCase(get()) }
     single { GetBalanceUseCase(get()) }
     single { GetChartsUseCase(get()) }
-    single { GetTransactionListUseCase(get()) }
+    single { FetchTransactionsUseCase(get()) }
     single { WithdrawUseCase(get()) }
     single { GetCoinByCodeUseCase(get()) }
     single { GetFreshCoinUseCase(get()) }
@@ -77,7 +77,7 @@ val useCaseModule = module {
     single { GetPhoneUseCase(get()) }
     single { UpdatePhoneUseCase(get()) }
     single { GetAtmsUseCase(get()) }
-    single { GetTransactionDetailsUseCase(get()) }
+    single { ObserveTransactionDetailsUseCase(get()) }
     single { GetCoinListUseCase(get()) }
     single { VerifyPhoneUseCase(get()) }
     single { StakeDetailsGetUseCase(get()) }
@@ -123,6 +123,7 @@ val useCaseModule = module {
     single { TradeReserveTransactionCreateUseCase(get()) }
     single { ObserveMissedMessageCountUseCase(get()) }
     single { UpdateLastSeenMessageTimeStampUseCase(get()) }
+    single { ObserveTransactionsUseCase(get()) }
     factory { TradePaymentOptionMapper() }
     factory { CoinCodeMapper() }
     factory { TradesDataToTradeListMapper(get()) }

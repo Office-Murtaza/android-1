@@ -4,7 +4,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.app.belcobtm.R
-import com.app.belcobtm.data.inmemory.TradeInMemoryCache.Companion.UNDEFINED_DISTANCE
+import com.app.belcobtm.data.inmemory.trade.TradeInMemoryCache.Companion.UNDEFINED_DISTANCE
 import com.app.belcobtm.databinding.ItemTradeBinding
 import com.app.belcobtm.presentation.core.adapter.MultiTypeAdapter
 import com.app.belcobtm.presentation.core.adapter.delegate.AdapterDelegate

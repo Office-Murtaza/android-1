@@ -1,6 +1,6 @@
 package com.app.belcobtm.domain.trade.list.mapper
 
-import com.app.belcobtm.data.inmemory.TradeInMemoryCache.Companion.UNDEFINED_DISTANCE
+import com.app.belcobtm.data.inmemory.trade.TradeInMemoryCache.Companion.UNDEFINED_DISTANCE
 import com.app.belcobtm.data.model.trade.TradeData
 import com.app.belcobtm.data.model.trade.TradeType
 import com.app.belcobtm.data.model.trade.filter.SortOption
