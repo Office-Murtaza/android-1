@@ -1,17 +1,13 @@
 package com.app.belcobtm.presentation.features.wallet.trade.order.details
 
 import androidx.annotation.DrawableRes
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import com.app.belcobtm.R
 import com.app.belcobtm.data.model.trade.OrderStatus
 import com.app.belcobtm.data.model.trade.TradeType
 import com.app.belcobtm.domain.Either
 import com.app.belcobtm.domain.Failure
-import com.app.belcobtm.domain.trade.order.ObserveOrderDetailsUseCase
-import com.app.belcobtm.domain.trade.order.UpdateOrderStatusUseCase
+import com.app.belcobtm.domain.trade.order.*
 import com.app.belcobtm.domain.wallet.LocalCoinType
 import com.app.belcobtm.presentation.core.extensions.toStringCoin
 import com.app.belcobtm.presentation.core.formatter.Formatter
@@ -23,10 +19,14 @@ import com.app.belcobtm.presentation.features.wallet.trade.list.model.OrderStatu
 import com.app.belcobtm.presentation.features.wallet.trade.list.model.TradePayment
 import com.app.belcobtm.presentation.features.wallet.trade.order.details.model.OrderActionButtonsState
 import com.app.belcobtm.presentation.features.wallet.trade.order.details.model.UpdateOrderStatusItem
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 class TradeOrderDetailsViewModel(
+    private val connectToChatUseCase: ConnectToChatUseCase,
+    private val disconnectFromChatUseCase: DisconnectFromChatUseCase,
+    private val observeMissedMessageCountUseCase: ObserveMissedMessageCountUseCase,
     private val observeOrderDetailsUseCase: ObserveOrderDetailsUseCase,
     private val updateOrderStatusUseCase: UpdateOrderStatusUseCase,
     private val stringProvider: StringProvider,
@@ -105,7 +105,7 @@ class TradeOrderDetailsViewModel(
     private var partnerLat: Double? = null
     private var partnerLong: Double? = null
 
-    fun fetchInitialData(orderId: Int) {
+    fun fetchInitialData(orderId: String) {
         viewModelScope.launch {
             _initialLoadingData.value = LoadingData.Loading()
             observeOrderDetailsUseCase(orderId)
@@ -119,14 +119,26 @@ class TradeOrderDetailsViewModel(
         }
     }
 
-    fun updateOrderPrimaryAction(orderId: Int) {
+    fun observeMissedMessageCount(orderId: String) =
+        observeMissedMessageCountUseCase(orderId)
+            .asLiveData(Dispatchers.Default)
+
+    fun connectToChat() {
+        connectToChatUseCase.invoke(Unit)
+    }
+
+    fun disconnectFromChat() {
+        disconnectFromChatUseCase.invoke(Unit)
+    }
+
+    fun updateOrderPrimaryAction(orderId: String) {
         val newStatus = buttonsState.value?.primaryStatusId ?: return
         if (newStatus != OrderStatus.UNDEFINED) {
             updateStatus(orderId, newStatus, _primaryActionUpdateLoadingData)
         }
     }
 
-    fun updateOrderSecondaryAction(orderId: Int) {
+    fun updateOrderSecondaryAction(orderId: String) {
         val newStatus = buttonsState.value?.secondaryStatusId ?: return
         if (newStatus != OrderStatus.UNDEFINED) {
             updateStatus(orderId, newStatus, _secondaryActionUpdateLoadingData)
@@ -139,7 +151,16 @@ class TradeOrderDetailsViewModel(
         return googleMapQueryFormatter.format(GoogleMapsDirectionQueryFormatter.Location(toLat, toLong))
     }
 
-    private fun updateStatus(orderId: Int, @OrderStatus status: Int, loadingData: MutableLiveData<LoadingData<Unit>>) {
+    fun isActiveOrder(): Boolean {
+        val statusId = orderStatus.value?.statusId
+        return statusId == OrderStatus.NEW || statusId == OrderStatus.DOING || statusId == OrderStatus.PAID
+    }
+
+    private fun updateStatus(
+        orderId: String,
+        @OrderStatus status: Int,
+        loadingData: MutableLiveData<LoadingData<Unit>>
+    ) {
         loadingData.value = LoadingData.Loading()
         updateOrderStatusUseCase(
             UpdateOrderStatusItem(orderId, status),

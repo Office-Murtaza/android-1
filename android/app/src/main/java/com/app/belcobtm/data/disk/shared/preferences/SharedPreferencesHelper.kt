@@ -18,6 +18,10 @@ class SharedPreferencesHelper(private val sharedPreferences: SharedPreferences) 
         set(value) = sharedPreferences.set(API_SEED, value)
         get() = sharedPreferences[API_SEED] ?: ""
 
+    var firebaseToken: String
+        set(value) = sharedPreferences.set(FIREBASE_TOKEN, value)
+        get() = sharedPreferences[FIREBASE_TOKEN] ?: ""
+
     var userId: Int
         set(value) = sharedPreferences.set(USER_ID, value)
         get() = sharedPreferences[USER_ID] ?: -1
@@ -46,6 +50,7 @@ class SharedPreferencesHelper(private val sharedPreferences: SharedPreferences) 
         authorizationResponse.let {
             accessToken = it.accessToken
             refreshToken = it.refreshToken
+            firebaseToken = it.firebaseToken
             userId = it.userId
         }
     }
@@ -78,6 +83,7 @@ class SharedPreferencesHelper(private val sharedPreferences: SharedPreferences) 
 
         private const val REFRESH_TOKEN = "KEY_API_REFRESH_TOKEN"
         private const val API_SEED = "KEY_API_SEED"
+        private const val FIREBASE_TOKEN = "FIREBASE_TOKEN"
         private const val USER_ID = "KEY_USER_ID"
         private const val USER_PIN = "KEY_PIN"
         private const val NOTIFICATION_TOKEN = "KEY_NOTIFICATION"

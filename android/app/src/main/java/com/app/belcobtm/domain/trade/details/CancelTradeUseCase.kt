@@ -7,8 +7,8 @@ import com.app.belcobtm.domain.trade.TradeRepository
 
 class CancelTradeUseCase(
     private val tradeRepository: TradeRepository
-) : UseCase<Unit, Int>() {
+) : UseCase<Unit, String>() {
 
-    override suspend fun run(params: Int): Either<Failure, Unit> =
+    override suspend fun run(params: String): Either<Failure, Unit> =
         tradeRepository.cancelTrade(params)
 }

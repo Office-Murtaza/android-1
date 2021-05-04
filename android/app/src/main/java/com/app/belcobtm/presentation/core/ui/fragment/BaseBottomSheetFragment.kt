@@ -3,8 +3,8 @@ package com.app.belcobtm.presentation.core.ui.fragment
 import android.content.Context
 import android.os.Bundle
 import android.view.View
-import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
+import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 import com.app.belcobtm.R
@@ -16,7 +16,6 @@ import com.app.belcobtm.presentation.core.extensions.show
 import com.app.belcobtm.presentation.core.extensions.toggle
 import com.app.belcobtm.presentation.core.mvvm.LoadingData
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
-import com.google.android.material.snackbar.Snackbar
 
 abstract class BaseBottomSheetFragment : BottomSheetDialogFragment() {
 
@@ -29,7 +28,7 @@ abstract class BaseBottomSheetFragment : BottomSheetDialogFragment() {
         when (error) {
             is Failure.NetworkConnection -> showErrorNoInternetConnection()
             is Failure.MessageError -> {
-                showSnackBar(error.message ?: "")
+                showToast(error.message ?: "")
                 showContent()
             }
             is Failure.ValidationError -> {
@@ -50,17 +49,11 @@ abstract class BaseBottomSheetFragment : BottomSheetDialogFragment() {
         errorBinding.errorRetryButtonView.setOnClickListener(retryListener)
     }
 
-    protected fun showSnackBar(resMessage: Int) = Snackbar.make(
-        requireActivity().findViewById<ViewGroup>(android.R.id.content),
-        resMessage,
-        Snackbar.LENGTH_SHORT
-    ).show()
+    protected fun showToast(resMessage: Int) =
+        Toast.makeText(requireContext(), resMessage, Toast.LENGTH_SHORT).show()
 
-    protected fun showSnackBar(message: String?): Unit = Snackbar.make(
-        requireActivity().findViewById<ViewGroup>(android.R.id.content),
-        message ?: "",
-        Snackbar.LENGTH_SHORT
-    ).show()
+    protected fun showToast(message: String?): Unit =
+        Toast.makeText(requireContext(), message.orEmpty(), Toast.LENGTH_SHORT).show()
 
     protected open fun showContent() {
         updateContentContainer(isContentVisible = true)
@@ -69,13 +62,13 @@ abstract class BaseBottomSheetFragment : BottomSheetDialogFragment() {
     protected open fun showError(resMessage: Int) {
         contentView.show()
         progressView.hide()
-        showSnackBar(resMessage)
+        showToast(resMessage)
     }
 
     protected open fun showError(message: String) {
         contentView.show()
         progressView.hide()
-        showSnackBar(message)
+        showToast(message)
     }
 
     protected fun <T> LiveData<LoadingData<T>>.listen(

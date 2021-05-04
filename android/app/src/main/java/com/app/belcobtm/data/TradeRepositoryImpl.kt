@@ -1,6 +1,7 @@
 package com.app.belcobtm.data
 
 import android.content.res.Resources
+import android.location.Location
 import com.app.belcobtm.R
 import com.app.belcobtm.data.disk.database.AccountDao
 import com.app.belcobtm.data.inmemory.trade.TradeInMemoryCache
@@ -45,10 +46,17 @@ class TradeRepositoryImpl(
     override fun observeFilter(): Flow<TradeFilter?> =
         tradeInMemoryCache.observableFilter
 
+    override fun observeLastSeenMessageTimestamp(): Flow<Long> =
+        tradeInMemoryCache.observableLastSeenMessageTimestamp
+
+    override fun updateLastSeenMessageTimestamp() {
+        tradeInMemoryCache.updateLastSeenMessageTimestamp()
+    }
+
     override fun getTradeData(): Either<Failure, TradeData>? =
         tradeInMemoryCache.data
 
-    override fun getTrade(tradeId: Int): Either<Failure, Trade> =
+    override fun getTrade(tradeId: String): Either<Failure, Trade> =
         tradeInMemoryCache.findTrade(tradeId)
 
     override fun getFilter(): TradeFilter? =
@@ -72,6 +80,10 @@ class TradeRepositoryImpl(
         tradeInMemoryCache.updateCache(calculateDistance, result)
     }
 
+    override suspend fun sendLocation(location: Location) {
+        tradeApiService.sendLocation(location)
+    }
+
     override suspend fun createTrade(createTradeItem: CreateTradeItem): Either<Failure, Unit> {
         val location = locationProvider.getCurrentLocation()
         val response = tradeApiService.createTrade(createTradeItem, location)
@@ -83,12 +95,12 @@ class TradeRepositoryImpl(
         return response.map { Unit }
     }
 
-    override suspend fun cancelTrade(tradeId: Int): Either<Failure, Unit> {
+    override suspend fun cancelTrade(tradeId: String): Either<Failure, Unit> {
         val response = tradeApiService.deleteTrade(tradeId)
         return response.map { Unit }
     }
 
-    override suspend fun createOrder(tradeOrder: TradeOrderItem): Either<Failure, Int> {
+    override suspend fun createOrder(tradeOrder: TradeOrderItem): Either<Failure, String> {
         val response = tradeApiService.createOrder(tradeOrder)
         return response.map {
             tradeInMemoryCache.updateOrders(it)
@@ -101,7 +113,7 @@ class TradeRepositoryImpl(
         return response.map { tradeInMemoryCache.updateOrders(it) }
     }
 
-    override suspend fun rateOrder(orderId: Int, rate: Int): Either<Failure, Unit> {
+    override suspend fun rateOrder(orderId: String, rate: Int): Either<Failure, Unit> {
         val response = tradeApiService.updateOrder(orderId, rate = rate)
         return response.map { tradeInMemoryCache.updateOrders(it) }
     }

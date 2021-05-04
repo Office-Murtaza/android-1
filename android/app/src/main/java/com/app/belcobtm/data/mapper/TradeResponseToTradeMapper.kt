@@ -15,8 +15,11 @@ class TradeResponseToTradeMapper {
             Trade(
                 id, type, coin, status, timestamp,
                 price, minLimit, maxLimit, openOrders,
-                paymentMethods.split(PAYMENT_DELIMITER).map(String::toInt),
-                terms, makerId, makerPublicId, makerStatus,
+                paymentMethods.takeIf { it.isNotEmpty() }
+                    ?.split(PAYMENT_DELIMITER)
+                    ?.map(String::toInt)
+                    .orEmpty(),
+                terms, makerUserId, makerPublicId, makerStatus,
                 makerLatitude, makerLongitude, makerTotalTrades,
                 makerTradingRate, TradeInMemoryCache.UNDEFINED_DISTANCE
             )

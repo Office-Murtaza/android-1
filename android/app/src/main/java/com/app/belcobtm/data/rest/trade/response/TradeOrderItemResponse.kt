@@ -4,8 +4,8 @@ import com.app.belcobtm.data.model.trade.OrderStatus
 import com.app.belcobtm.data.model.trade.TraderStatus
 
 data class TradeOrderItemResponse(
-    val id: Int,
-    val tradeId: Int,
+    val id: String,
+    val tradeId: String,
     val coin: String,
     @OrderStatus val status: Int,
     val timestamp: Long,
@@ -13,14 +13,14 @@ data class TradeOrderItemResponse(
     val cryptoAmount: Double,
     val fiatAmount: Double,
     val terms: String,
-    val makerId: Int,
+    val makerUserId: Int,
     val makerPublicId: String,
     @TraderStatus val makerStatus: Int,
     val makerLatitude: Double?,
     val makerLongitude: Double?,
     val makerTotalTrades: Int,
     val makerTradingRate: Double?,
-    val takerId: Int,
+    val takerUserId: Int,
     @TraderStatus val takerStatus: Int,
     val takerPublicId: String,
     val takerLatitude: Double?,

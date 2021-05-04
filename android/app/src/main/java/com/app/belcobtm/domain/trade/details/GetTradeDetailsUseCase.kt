@@ -11,9 +11,9 @@ import com.app.belcobtm.presentation.features.wallet.trade.list.model.TradeItem
 class GetTradeDetailsUseCase(
     private val tradeRepository: TradeRepository,
     private val tradeMapper: TradeToTradeItemMapper
-) : UseCase<TradeItem, Int>() {
+) : UseCase<TradeItem, String>() {
 
-    override suspend fun run(params: Int): Either<Failure, TradeItem> =
+    override suspend fun run(params: String): Either<Failure, TradeItem> =
         tradeRepository.getTrade(params)
             .map(tradeMapper::map)
 }

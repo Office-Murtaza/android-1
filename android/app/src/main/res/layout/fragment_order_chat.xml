@@ -11,7 +11,7 @@
         android:layout_height="0dp"
         android:orientation="vertical"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        app:layout_constraintBottom_toTopOf="@id/chat_divider"
+        app:layout_constraintBottom_toTopOf="@id/attachment_background"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -20,7 +20,7 @@
     <View
         android:id="@+id/attachment_background"
         android:layout_width="0dp"
-        android:layout_height="108dp"
+        android:layout_height="88dp"
         android:background="@color/lighter_gray"
         android:visibility="gone"
         app:layout_constraintBottom_toTopOf="@id/chat_divider"
@@ -56,6 +56,7 @@
         android:background="@color/thin_divider"
         app:layout_constraintBottom_toTopOf="@id/chat_input_top_barrier"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintVertical_bias="1"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/chat_list" />
 
