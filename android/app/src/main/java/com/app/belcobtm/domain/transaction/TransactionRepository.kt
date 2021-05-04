@@ -1,14 +1,20 @@
 package com.app.belcobtm.domain.transaction
 
+import com.app.belcobtm.data.model.transactions.TransactionsData
 import com.app.belcobtm.domain.Either
 import com.app.belcobtm.domain.Failure
-import com.app.belcobtm.domain.transaction.item.*
+import com.app.belcobtm.domain.transaction.item.SellLimitsDataItem
+import com.app.belcobtm.domain.transaction.item.SellPreSubmitDataItem
+import com.app.belcobtm.domain.transaction.item.StakeDetailsDataItem
+import kotlinx.coroutines.flow.Flow
 
 interface TransactionRepository {
-    suspend fun getTransactionList(
+    suspend fun fetchTransactionList(
         coinCode: String,
         currentListSize: Int
-    ): Either<Failure, Pair<Int, List<TransactionDataItem>>>
+    ): Either<Failure, Unit>
+
+    fun observeTransactions(): Flow<TransactionsData>
 
     suspend fun createTransaction(
         fromCoin: String,
@@ -84,11 +90,6 @@ interface TransactionRepository {
         coinCode: String,
         cryptoAmount: Double
     ): Either<Failure, Unit>
-
-    suspend fun getTransactionDetails(
-        txId: String,
-        coinCode: String
-    ): Either<Failure, TransactionDetailsDataItem>
 
     suspend fun checkXRPAddressActivated(
         address: String

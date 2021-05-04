@@ -650,3 +650,61 @@ struct ManageCoinsRequest: AuthorizedAPIRequest {
                                 encoding: URLEncoding.customDefault)
   }
 }
+
+struct TradesRequest: AuthorizedAPIRequest {
+  typealias ResponseType = APIResponse<Trades>
+  typealias ResponseTrait = SingleResponseTrait
+  
+  let userId: Int
+  
+  var path: String { return "/user/\(userId)/trade-history" }
+  var method: HTTPMethod { return .get }
+  var task: HTTPTask {
+      return .requestPlain
+  }
+}
+
+struct CreateTradesRequest: AuthorizedAPIRequest {
+  typealias ResponseType = APIResponse<Trade>
+  typealias ResponseTrait = SingleResponseTrait
+  
+  let userId: Int
+  let data: P2PCreateTradeDataModel
+  
+  var path: String { return "/user/\(userId)/trade" }
+  var method: HTTPMethod { return .post }
+  var task: HTTPTask {
+    return .requestParameters(parameters: data.dictionary,
+                              encoding: JSONEncoding.default)
+  }
+}
+
+struct EditTradesRequest: AuthorizedAPIRequest {
+  typealias ResponseType = APIResponse<Trade>
+  typealias ResponseTrait = SingleResponseTrait
+  
+  let userId: Int
+  let data: P2PEditTradeDataModel
+  
+  var path: String { return "/user/\(userId)/trade" }
+  var method: HTTPMethod { return .put }
+  var task: HTTPTask {
+    return .requestParameters(parameters: data.dictionary,
+                              encoding: JSONEncoding.default)
+  }
+}
+
+struct CancelTradesRequest: AuthorizedAPIRequest {
+  typealias ResponseType = APIResponse<Trade>
+  typealias ResponseTrait = SingleResponseTrait
+  
+  let userId: Int
+  let id: String
+  
+  var path: String { return "/user/\(userId)/trade" }
+  var method: HTTPMethod { return .delete }
+  var task: HTTPTask {
+    return .requestParameters(parameters: ["id": id],
+                              encoding: URLEncoding.customDefault)
+  }
+}

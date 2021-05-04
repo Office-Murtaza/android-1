@@ -1,7 +1,8 @@
 package com.belco.server.rest;
 
 import com.belco.server.dto.NotificationDTO;
-import com.belco.server.dto.TxSubmitDTO;
+import com.belco.server.dto.TransactionDTO;
+import com.belco.server.dto.TransactionDetailsDTO;
 import com.belco.server.model.Response;
 import com.belco.server.repository.CoinRep;
 import com.belco.server.service.*;
@@ -20,16 +21,16 @@ import java.math.BigInteger;
 public class TestController {
 
     private final TwilioService twilioService;
-    private final NotificationService pushNotificationService;
+    private final NotificationService notificationService;
     private final UserService userService;
     private final WalletService walletService;
     private final GethService gethService;
     private final NodeService nodeService;
     private final CoinRep coinRep;
 
-    public TestController(TwilioService twilioService, NotificationService pushNotificationService, UserService userService, WalletService walletService, GethService gethService, NodeService nodeService, CoinRep coinRep) {
+    public TestController(TwilioService twilioService, NotificationService notificationService, UserService userService, WalletService walletService, GethService gethService, NodeService nodeService, CoinRep coinRep) {
         this.twilioService = twilioService;
-        this.pushNotificationService = pushNotificationService;
+        this.notificationService = notificationService;
         this.userService = userService;
         this.walletService = walletService;
         this.gethService = gethService;
@@ -42,15 +43,16 @@ public class TestController {
         return Response.ok(twilioService.sendMessage(phone, "This is a test message"));
     }
 
-    @GetMapping("/wallet-details")
-    public Response getWalletDetails() {
+    @GetMapping("/wallet/{walletId}/details")
+    public Response getWalletDetails(@PathVariable Long walletId) {
         JSONObject res = new JSONObject();
 
         coinRep.findAllByOrderByIdxAsc().stream().forEach(e -> {
             CoinService.CoinEnum coinEnum = CoinService.CoinEnum.valueOf(e.getCode());
             CoinType coinType = coinEnum.getCoinType();
+            String address = walletService.get(walletId).getCoins().get(coinType).getAddress();
 
-            res.put(e.getCode(), getCoinJson(walletService.getCoinsMap().get(coinType).getAddress(), coinEnum.getBalance(walletService.getCoinsMap().get(coinType).getAddress()), coinEnum.getTxFee(), nodeService.getNodeUrl(coinType)));
+            res.put(e.getCode(), getCoinJson(address, coinEnum.getBalance(address), coinEnum.getTxFee(), nodeService.getNodeUrl(coinType)));
         });
 
         return Response.ok(res);
@@ -106,7 +108,7 @@ public class TestController {
     public Response sendNotification(@RequestParam(required = false) Long userId, @RequestParam(required = false) String token, @RequestParam String title, @RequestParam String message) {
         if (StringUtils.isBlank(token)) token = userService.findById(userId).getNotificationsToken();
 
-        return Response.ok("result", pushNotificationService.sendMessageWithData(new NotificationDTO(title, message, null, token)));
+        return Response.ok("result", notificationService.sendMessageWithData(new NotificationDTO(title, message, null, token)));
     }
 
     @GetMapping("/user/{userId}/delete-verification")
@@ -114,14 +116,14 @@ public class TestController {
         return Response.ok(userService.deleteVerification(userId));
     }
 
-    @GetMapping("/coin/{coin}/sign")
-    public Response sign(@PathVariable CoinService.CoinEnum coin, @RequestParam String fromAddress, @RequestParam String toAddress, @RequestParam BigDecimal amount) {
-        return Response.ok(coin.sign(fromAddress, toAddress, amount));
+    @GetMapping("/wallet/{walletId}/coin/{coin}/sign")
+    public Response sign(@PathVariable Long walletId, @PathVariable CoinService.CoinEnum coin, @RequestParam String fromAddress, @RequestParam String toAddress, @RequestParam BigDecimal amount) {
+        return Response.ok(coin.sign(walletId, fromAddress, toAddress, amount));
     }
 
     @GetMapping("/coin/{coin}/submit")
     public Response submit(@PathVariable CoinService.CoinEnum coin, @RequestParam String fromAddress, @RequestParam String toAddress, @RequestParam BigDecimal amount, @RequestParam String hex) {
-        TxSubmitDTO dto = new TxSubmitDTO();
+        TransactionDTO dto = new TransactionDTO();
         dto.setFromAddress(fromAddress);
         dto.setToAddress(toAddress);
         dto.setCryptoAmount(amount);
@@ -136,6 +138,19 @@ public class TestController {
             TransactionReceipt receipt = gethService.web3.ethGetTransactionReceipt(txId).send().getTransactionReceipt().get();
 
             return Response.ok(receipt);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return Response.ok("error");
+    }
+
+    @GetMapping("/{coin}/transaction-details")
+    public Response getTransactionDetails(@PathVariable CoinService.CoinEnum coin, @RequestParam String txId, @RequestParam String address) {
+        try {
+            TransactionDetailsDTO tx = coin.getTransactionDetails(txId, address);
+
+            return Response.ok(tx);
         } catch (Exception e) {
             e.printStackTrace();
         }

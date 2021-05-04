@@ -191,6 +191,38 @@ extension MDCButton {
     return button
   }
   
+  static var edit: MDCButton {
+    let button = MDCButton.contained
+    button.setTitle(localize(L.Shared.Button.edit), for: .normal)
+    return button
+  }
+  
+  static var buySell: MDCButton {
+    let button = MDCButton.contained
+    button.setTitle(localize(L.Shared.Button.buySell), for: .normal)
+    return button
+  }
+  
+  static var buy: MDCButton {
+    let button = MDCButton.contained
+    button.setTitle(localize(L.Shared.Button.buy), for: .normal)
+    return button
+  }
+  
+  static var sell: MDCButton {
+    let button = MDCButton.contained
+    button.setTitle(localize(L.Shared.Button.sell), for: .normal)
+    return button
+  }
+  
+  static var cancelTransparent: MDCButton {
+    let button = MDCButton.default
+    button.applyContainedTheme(withScheme: MDCContainerScheme.transparent)
+    button.setShadowColor(.clear, for: .normal)
+    button.setTitle(localize(L.Shared.Button.cancel), for: .normal)
+    return button
+  }
+  
   func set(image: UIImage?, title: String?, spacing: CGFloat = 10) {
     setTitle(title, for: .normal)
     setImage(image, for: .normal)

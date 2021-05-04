@@ -1,11 +1,10 @@
 package com.app.belcobtm.presentation.features.wallet.transactions.item
 
 import androidx.recyclerview.widget.DiffUtil
-import com.app.belcobtm.domain.transaction.item.TransactionDataItem
+import com.app.belcobtm.domain.transaction.item.TransactionDetailsDataItem
 import com.app.belcobtm.domain.transaction.type.TransactionStatusType
 import com.app.belcobtm.domain.transaction.type.TransactionType
 import com.app.belcobtm.presentation.core.DateFormat
-import java.text.SimpleDateFormat
 
 data class TransactionsAdapterItem(
     val id: String,
@@ -16,14 +15,14 @@ data class TransactionsAdapterItem(
     val type: TransactionType
 )
 
-fun TransactionDataItem.mapToUiItem(): TransactionsAdapterItem =
+fun TransactionDetailsDataItem.mapToUiItem(): TransactionsAdapterItem =
     TransactionsAdapterItem(
-        id = txId,
+        id = txId.orEmpty(),
         dbId = txDbId,
         date = DateFormat.sdfShort.format(timestamp),
-        cryptoAmount = cryptoAmount,
+        cryptoAmount = cryptoAmount ?: 0.0,
         type = type,
-        status = status
+        status = statusType
     )
 
 class TransactionsAdapterItemCallback : DiffUtil.ItemCallback<TransactionsAdapterItem>() {

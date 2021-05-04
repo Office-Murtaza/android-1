@@ -1,5 +1,6 @@
 package com.app.belcobtm.presentation.features.wallet.transactions
 
+import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.View
@@ -7,9 +8,7 @@ import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.widget.TextViewCompat
-import androidx.lifecycle.Observer
 import androidx.lifecycle.observe
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import com.app.belcobtm.R
 import com.app.belcobtm.data.rest.wallet.request.PriceChartPeriod
@@ -34,18 +33,15 @@ class TransactionsFragment : BaseFragment<FragmentTransactionsBinding>() {
         parametersOf(TransactionsFragmentArgs.fromBundle(requireArguments()).coinCode)
     }
 
-    private val adapter: TransactionsAdapter = TransactionsAdapter(
-        itemClickListener = {
-            val transactionId = if (it.id.isBlank()) it.dbId else it.id
-            navigate(
-                TransactionsFragmentDirections.toTransactionDetailsFragment(
-                    viewModel.coinCode,
-                    transactionId
-                )
+    private val adapter: TransactionsAdapter = TransactionsAdapter {
+        val transactionId = if (it.id.isBlank()) it.dbId else it.id
+        navigate(
+            TransactionsFragmentDirections.toTransactionDetailsFragment(
+                viewModel.coinCode,
+                transactionId
             )
-        },
-        endListListener = { viewModel.updateTransactionList() }
-    )
+        )
+    }
     override val isToolbarEnabled: Boolean = true
     override val isHomeButtonEnabled: Boolean = true
     override var isMenuEnabled: Boolean = true
@@ -91,11 +87,20 @@ class TransactionsFragment : BaseFragment<FragmentTransactionsBinding>() {
         }
     }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        viewModel.observeTransactions()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        viewModel.disposeTransactions()
+    }
+
     override fun FragmentTransactionsBinding.initListeners() {
         chartChipGroupView.setOnCheckedChangeListener { _, checkedId ->
             viewModel.changeCurrentTypePeriod(checkedId)
         }
-        swipeToRefreshView.setOnRefreshListener { viewModel.refreshTransactionList() }
         fabListView.addOnMenuItemClickListener { _, _, itemId ->
             when (itemId) {
                 STAKING.id -> navigate(TransactionsFragmentDirections.toStakingFragment())
@@ -136,7 +141,6 @@ class TransactionsFragment : BaseFragment<FragmentTransactionsBinding>() {
         }
         viewModel.transactionListLiveData.observe(viewLifecycleOwner) {
             adapter.submitList(it) {
-                swipeToRefreshView.isRefreshing = false
                 binding.listView.smoothScrollToPosition(0)
             }
         }
@@ -158,15 +162,6 @@ class TransactionsFragment : BaseFragment<FragmentTransactionsBinding>() {
                 it.reservedBalanceUsd.toStringUsd()
             )
         }
-        val stateHandle = findNavController().currentBackStackEntry?.savedStateHandle
-        val liveData = stateHandle?.getLiveData<Boolean>(REFETCH_OPTION_KEY)
-        liveData?.observe(viewLifecycleOwner, Observer { refetch ->
-            if (refetch) {
-                // clear value to prevent dup call after config change
-                stateHandle.set(REFETCH_OPTION_KEY, false)
-                viewModel.updateData()
-            }
-        })
     }
 
     private fun initChart() {
@@ -275,6 +270,5 @@ class TransactionsFragment : BaseFragment<FragmentTransactionsBinding>() {
 
     companion object {
         private const val CHART_MARGIN_END_DP = 15F
-        const val REFETCH_OPTION_KEY = "transactions.refetch.option"
     }
 }

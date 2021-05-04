@@ -3,15 +3,14 @@ package com.app.belcobtm.presentation.features.wallet.transaction.details
 import android.content.Intent
 import android.net.Uri
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.observe
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.app.belcobtm.R
 import com.app.belcobtm.databinding.FragmentTransactionDetailsBinding
 import com.app.belcobtm.presentation.core.decorator.DividerDecorator
 import com.app.belcobtm.presentation.core.decorator.SpaceDecorator
-import com.app.belcobtm.presentation.core.extensions.*
 import com.app.belcobtm.presentation.core.ui.fragment.BaseFragment
 import com.app.belcobtm.presentation.features.wallet.transaction.details.adapter.TransactionDetailsAdapter
 import org.koin.android.viewmodel.ext.android.viewModel
@@ -28,8 +27,6 @@ class TransactionDetailsFragment :
     override val isToolbarEnabled: Boolean = true
     override val isHomeButtonEnabled: Boolean = true
     override var isMenuEnabled: Boolean = true
-    override val retryListener: View.OnClickListener =
-        View.OnClickListener { viewModel.getTransactionDetails() }
 
     override fun FragmentTransactionDetailsBinding.initViews() {
         setToolbarTitle(getString(R.string.transaction_details_screen_title))
@@ -37,10 +34,10 @@ class TransactionDetailsFragment :
     }
 
     override fun FragmentTransactionDetailsBinding.initObservers() {
-        viewModel.transactionDetailsLiveData.listen({ list ->
+        viewModel.transactionDetailsLiveData.observe(viewLifecycleOwner) { list ->
             val adapter = binding.rvTransactionDetails.adapter as TransactionDetailsAdapter
             adapter.submitList(list)
-        })
+        }
     }
 
     override fun createBinding(

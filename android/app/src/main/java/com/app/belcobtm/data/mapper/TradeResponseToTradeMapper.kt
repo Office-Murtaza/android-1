@@ -1,6 +1,6 @@
 package com.app.belcobtm.data.mapper
 
-import com.app.belcobtm.data.inmemory.TradeInMemoryCache
+import com.app.belcobtm.data.inmemory.trade.TradeInMemoryCache
 import com.app.belcobtm.data.model.trade.Trade
 import com.app.belcobtm.data.rest.trade.response.TradeItemResponse
 

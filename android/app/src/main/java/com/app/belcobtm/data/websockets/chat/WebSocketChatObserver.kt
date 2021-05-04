@@ -51,6 +51,8 @@ class WebSocketChatObserver(
                 .collect {
                     when (it) {
                         is SocketResponse.Opened -> onOpened()
+                        is SocketResponse.Failure ->
+                            connect()
                         is SocketResponse.Message ->
                             processMessage(it.content)
                     }

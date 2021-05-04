@@ -1,6 +1,6 @@
 package com.belco.server.rest;
 
-import com.belco.server.dto.TxDetailsDTO;
+import com.belco.server.dto.TransactionDetailsDTO;
 import com.belco.server.dto.WalletDTO;
 import com.belco.server.service.CoinService;
 import com.belco.server.service.WalletService;
@@ -59,8 +59,8 @@ public class WalletController {
         return ResponseEntity.ok(dto);
     }
 
-    @GetMapping("/coin/{coin}/balance")
-    public ResponseEntity<WalletDTO> getBalance(@PathVariable CoinService.CoinEnum coin, @RequestParam long timestamp, @RequestParam String signature) {
+    @GetMapping("/{walletId}/coin/{coin}/balance")
+    public ResponseEntity<WalletDTO> getBalance(@PathVariable Long walletId, @PathVariable CoinService.CoinEnum coin, @RequestParam long timestamp, @RequestParam String signature) {
         String signature2 = Util.sign("balance", coin.name(), timestamp, apiKey, apiSecret);
 
         if (enabled && !signature2.equals(signature)) {
@@ -68,13 +68,13 @@ public class WalletController {
         }
 
         WalletDTO dto = new WalletDTO();
-        dto.setBalance(walletService.getBalance(coin, coin.getWalletAddress()));
+        dto.setBalance(walletService.getBalance(coin, coin.getWalletAddress(walletId)));
 
         return ResponseEntity.ok(dto);
     }
 
-    @GetMapping("/coin/{coin}/details")
-    public ResponseEntity<WalletDTO> getSettings(@PathVariable CoinService.CoinEnum coin, @RequestParam long timestamp, @RequestParam String signature) {
+    @GetMapping("/{walletId}/coin/{coin}/details")
+    public ResponseEntity<WalletDTO> getSettings(@PathVariable Long walletId, @PathVariable CoinService.CoinEnum coin, @RequestParam long timestamp, @RequestParam String signature) {
         String signature2 = Util.sign("details", coin.name(), timestamp, apiKey, apiSecret);
 
         if (enabled && !signature2.equals(signature)) {
@@ -82,7 +82,7 @@ public class WalletController {
         }
 
         WalletDTO dto = new WalletDTO();
-        dto.setWalletAddress(coin.getWalletAddress());
+        dto.setWalletAddress(coin.getWalletAddress(walletId));
         dto.setTxFee(coin.getTxFee());
         dto.setTolerance(coin.getCoinEntity().getTolerance().stripTrailingZeros());
         dto.setScale(coin.getCoinEntity().getScale());
@@ -94,8 +94,8 @@ public class WalletController {
         return ResponseEntity.ok(dto);
     }
 
-    @GetMapping("/coin/{coin}/new-address")
-    public ResponseEntity<WalletDTO> getNewAddress(@PathVariable CoinService.CoinEnum coin, @RequestParam long timestamp, @RequestParam String signature) {
+    @GetMapping("/{walletId}/coin/{coin}/new-address")
+    public ResponseEntity<WalletDTO> getNewAddress(@PathVariable Long walletId, @PathVariable CoinService.CoinEnum coin, @RequestParam long timestamp, @RequestParam String signature) {
         String signature2 = Util.sign("receiving-address", coin.name(), timestamp, apiKey, apiSecret);
 
         if (enabled && !signature2.equals(signature)) {
@@ -103,13 +103,13 @@ public class WalletController {
         }
 
         WalletDTO dto = new WalletDTO();
-        dto.setReceivingAddress(walletService.getReceivingAddress(coin));
+        dto.setReceivingAddress(walletService.getReceivingAddress(walletId, coin));
 
         return ResponseEntity.ok(dto);
     }
 
     @GetMapping("/coin/{coin}/transaction")
-    public ResponseEntity<TxDetailsDTO> getTransaction(@PathVariable CoinService.CoinEnum coin, @RequestParam String txId, @RequestParam String address, @RequestParam long timestamp, @RequestParam String signature) {
+    public ResponseEntity<TransactionDetailsDTO> getTransaction(@PathVariable CoinService.CoinEnum coin, @RequestParam String txId, @RequestParam String address, @RequestParam long timestamp, @RequestParam String signature) {
         String signature2 = Util.sign("transaction", coin.name(), timestamp, apiKey, apiSecret);
 
         if (enabled && !signature2.equals(signature)) {
@@ -130,16 +130,16 @@ public class WalletController {
         return ResponseEntity.ok(walletService.getReceivingAddressesTxs(coin, addresses));
     }
 
-    @GetMapping("/coin/{coin}/transfer")
-    public ResponseEntity<TxDetailsDTO> transfer(@PathVariable CoinService.CoinEnum coin, @RequestParam String fromAddress, @RequestParam String toAddress, @RequestParam BigDecimal amount, @RequestParam long timestamp, @RequestParam String signature) {
+    @GetMapping("/{walletId}/coin/{coin}/transfer")
+    public ResponseEntity<TransactionDetailsDTO> transfer(@PathVariable Long walletId, @PathVariable CoinService.CoinEnum coin, @RequestParam String fromAddress, @RequestParam String toAddress, @RequestParam BigDecimal amount, @RequestParam long timestamp, @RequestParam String signature) {
         String signature2 = Util.sign("transfer", coin.name(), timestamp, apiKey, apiSecret);
 
         if (enabled && !signature2.equals(signature)) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
 
-        TxDetailsDTO dto = new TxDetailsDTO();
-        dto.setTxId(walletService.transfer(coin, fromAddress, toAddress, amount));
+        TransactionDetailsDTO dto = new TransactionDetailsDTO();
+        dto.setTxId(walletService.transfer(walletId, coin, fromAddress, toAddress, amount));
 
         return ResponseEntity.ok(dto);
     }

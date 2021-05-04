@@ -24,5 +24,8 @@ public class CoinPath extends BaseEntity {
     @ManyToOne(optional = false)
     private Coin coin;
 
+    @ManyToOne(optional = false)
+    private Wallet wallet;
+
     private Date updateDate;
 }

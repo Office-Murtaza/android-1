@@ -56,24 +56,27 @@ public enum TransactionType {
         return null;
     }
 
-    public static TransactionType convert(TransactionType type, TransactionType type2) {
+    public static Integer convert(Integer t, Integer t2) {
+        TransactionType type = TransactionType.valueOf(t);
+        TransactionType type2 = TransactionType.valueOf(t2);
+
         if (type == TransactionType.SELF) {
-            return type;
+            return type.getValue();
         } else if (type2 == SEND_TRANSFER || type2 == RECEIVE_TRANSFER) {
             if (type == WITHDRAW) {
-                return SEND_TRANSFER;
+                return SEND_TRANSFER.getValue();
             } else if (type == DEPOSIT) {
-                return RECEIVE_TRANSFER;
+                return RECEIVE_TRANSFER.getValue();
             }
         } else if (type2 == RECEIVE_SWAP || type2 == SEND_SWAP) {
             if (type == WITHDRAW) {
-                return SEND_SWAP;
+                return SEND_SWAP.getValue();
             } else if (type == DEPOSIT) {
-                return RECEIVE_SWAP;
+                return RECEIVE_SWAP.getValue();
             }
         }
 
-        return type2;
+        return type2.getValue();
     }
 
     @JsonValue
