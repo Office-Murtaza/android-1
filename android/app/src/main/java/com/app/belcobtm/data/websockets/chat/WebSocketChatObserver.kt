@@ -1,7 +1,7 @@
 package com.app.belcobtm.data.websockets.chat
 
 import com.app.belcobtm.data.disk.shared.preferences.SharedPreferencesHelper
-import com.app.belcobtm.data.inmemory.TradeInMemoryCache
+import com.app.belcobtm.data.inmemory.trade.TradeInMemoryCache
 import com.app.belcobtm.data.websockets.base.SocketClient
 import com.app.belcobtm.data.websockets.base.model.SocketResponse
 import com.app.belcobtm.data.websockets.base.model.StompSocketRequest
