@@ -214,6 +214,7 @@ abstract class BaseFragment<V : ViewBinding> : Fragment(),
 
     protected fun showBackButton(show: Boolean) {
         (requireActivity() as AppCompatActivity).supportActionBar?.setDisplayShowHomeEnabled(show)
+        (requireActivity() as AppCompatActivity).supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_back)
         (requireActivity() as AppCompatActivity).supportActionBar?.setDisplayHomeAsUpEnabled(show)
     }
 

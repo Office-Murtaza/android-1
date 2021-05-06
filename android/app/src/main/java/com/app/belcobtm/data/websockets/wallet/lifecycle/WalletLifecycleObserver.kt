@@ -4,6 +4,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.OnLifecycleEvent
 import com.app.belcobtm.data.disk.shared.preferences.SharedPreferencesHelper
+import com.app.belcobtm.data.websockets.transactions.TransactionsObserver
 import com.app.belcobtm.data.websockets.wallet.WalletConnectionHandler
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -11,7 +12,8 @@ import kotlinx.coroutines.launch
 
 class WalletLifecycleObserver(
     private val sharedPreferencesHelper: SharedPreferencesHelper,
-    private val connectionHandler: WalletConnectionHandler
+    private val connectionHandler: WalletConnectionHandler,
+    private val transactionsObserver: TransactionsObserver
 ) : LifecycleObserver {
 
     private val ioScope = CoroutineScope(Dispatchers.IO)
@@ -21,6 +23,7 @@ class WalletLifecycleObserver(
         ioScope.launch {
             if (sharedPreferencesHelper.accessToken.isNotEmpty()) {
                 connectionHandler.connect()
+                transactionsObserver.connect()
             }
         }
     }
@@ -30,6 +33,7 @@ class WalletLifecycleObserver(
         ioScope.launch {
             if (sharedPreferencesHelper.accessToken.isNotEmpty()) {
                 connectionHandler.disconnect()
+                transactionsObserver.disconnect()
             }
         }
     }

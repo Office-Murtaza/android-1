@@ -381,7 +381,7 @@
     <string name="add_edit_trade_screen_i_want_to">I want to</string>
     <string name="add_edit_trade_screen_buy">Buy</string>
     <string name="add_edit_trade_screen_sell">Sell</string>
-    <string name="add_edit_trade_screen_payment_method">Payment method</string>
+    <string name="add_edit_trade_screen_payment_method">Payment Method</string>
     <string name="add_edit_trade_screen_margin">Margin</string>
     <string name="add_edit_trade_screen_min_limit">Min limit</string>
     <string name="add_edit_trade_screen_max_limit">Max limit</string>
@@ -473,7 +473,7 @@
     <string name="kyc_label">AML/KYC</string>
     <string name="notifications_label">Notifications</string>
     <string name="about_label">About</string>
-    <string name="terms_label">Terms &amp; conditions</string>
+    <string name="terms_label">Terms &amp; Conditions</string>
     <string name="privacy_label">Privacy Policy</string>
     <string name="comlaint_label">Complaint Policy</string>
     <string name="support_label">Support</string>
@@ -495,7 +495,7 @@
     <string name="support_whatapp_label">WhatsApp</string>
     <string name="support_phone">+18888483033</string>
     <string name="support_email">support@belcobtm.com</string>
-    <string name="support_telegram">\@belco_support</string>
+    <string name="support_telegram">\@BelcoBTM</string>
     <string name="support_whatapp">HLM8HlzE5VjDjhEiZJpKJr</string>
     <string name="support_chooser_message">\Choose an option</string>
 
@@ -599,7 +599,7 @@
     <string name="open_create_trade_button_title">Create new trade</string>
     <string name="create_trade_menu_title">Create trade</string>
     <string name="create_trade_screen_trade_type_label">Trade type</string>
-    <string name="payment_options_label">Payment methods</string>
+    <string name="payment_options_label">Payment Methods</string>
     <string name="trade_create_price_limits_label">Limits</string>
     <string name="trade_create_terms_label">Terms</string>
     <string name="create_trade_button_title">Submit</string>
@@ -617,7 +617,7 @@
     <string name="create_trade_no_payment_options_selected_error">Select at least one payment option</string>
     <string name="create_trade_not_enough_crypto_balance">Max limit exceeds reserved balance</string>
     <string name="create_trade_already_exists">You already have a %1$s %2$s trade</string>
-    <string name="payment_methods_label">Payment methods</string>
+    <string name="payment_methods_label">Payment Methods</string>
     <string name="open_orders_label">Open orders</string>
     <string name="edit_trade_button_title">Edit</string>
     <string name="cancel_trade_button_title">Cancel</string>
@@ -663,7 +663,7 @@
 
     <string name="item_open_orders_crypto_amount_formatted">%1$s %2$s</string>
 
-    <string name="trade_order_details_screen_title">Order details</string>
+    <string name="trade_order_details_screen_title">Order Details</string>
     <string name="trade_order_details_crypto_amount_formatted">%1$s %2$s</string>
     <string name="trade_order_details_screen_update_doing_button_title">Doing</string>
     <string name="trade_order_details_screen_update_paid_button_title">Paid</string>
@@ -681,4 +681,8 @@
     <string name="good_rating_label">Very good</string>
     <string name="perfect_rating_label">Awesome</string>
     <string name="send_message_error">Failed to send message please try again</string>
+    <string name="my_score_label">My Score</string>
+    <string name="score_from_a_partner_label">Score From A Partner</string>
+    <string name="trade_order_details_crypto_amount_label">Crypto Amount</string>
+    <string name="trade_order_details_fiat_amount">Fiat Amount</string>
 </resources>

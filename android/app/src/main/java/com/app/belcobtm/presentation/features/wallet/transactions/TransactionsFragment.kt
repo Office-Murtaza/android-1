@@ -1,6 +1,5 @@
 package com.app.belcobtm.presentation.features.wallet.transactions
 
-import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.View
@@ -85,16 +84,6 @@ class TransactionsFragment : BaseFragment<FragmentTransactionsBinding>() {
             dividerItemDecoration.setDrawable(it)
             listView.addItemDecoration(dividerItemDecoration)
         }
-    }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        viewModel.observeTransactions()
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        viewModel.disposeTransactions()
     }
 
     override fun FragmentTransactionsBinding.initListeners() {

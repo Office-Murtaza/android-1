@@ -4,7 +4,6 @@ import androidx.lifecycle.*
 import com.app.belcobtm.R
 import com.app.belcobtm.data.rest.wallet.request.PriceChartPeriod
 import com.app.belcobtm.data.websockets.base.model.WalletBalance
-import com.app.belcobtm.data.websockets.transactions.TransactionsObserver
 import com.app.belcobtm.data.websockets.wallet.WalletObserver
 import com.app.belcobtm.domain.transaction.interactor.FetchTransactionsUseCase
 import com.app.belcobtm.domain.transaction.interactor.ObserveTransactionsUseCase
@@ -17,7 +16,6 @@ import com.app.belcobtm.presentation.features.wallet.transactions.item.CurrentCh
 import com.app.belcobtm.presentation.features.wallet.transactions.item.TransactionsAdapterItem
 import com.app.belcobtm.presentation.features.wallet.transactions.item.TransactionsScreenItem
 import com.github.mikephil.charting.data.BarEntry
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import kotlin.collections.set
@@ -27,8 +25,7 @@ class TransactionsViewModel(
     private val walletObserver: WalletObserver,
     private val chartUseCase: GetChartsUseCase,
     private val transactionsUseCase: FetchTransactionsUseCase,
-    private val observeTransactionsUseCase: ObserveTransactionsUseCase,
-    private val transactionsObserver: TransactionsObserver
+    private val observeTransactionsUseCase: ObserveTransactionsUseCase
 ) : ViewModel() {
 
     val chartLiveData: MutableLiveData<LoadingData<CurrentChartInfo>> =
@@ -59,18 +56,6 @@ class TransactionsViewModel(
     fun updateData() {
         loadChartData(PriceChartPeriod.PERIOD_DAY)
         fetchTransactions()
-    }
-
-    fun observeTransactions() {
-        viewModelScope.launch(Dispatchers.Default) {
-            transactionsObserver.connect()
-        }
-    }
-
-    fun disposeTransactions() {
-        viewModelScope.launch(Dispatchers.Default) {
-            transactionsObserver.disconnect()
-        }
     }
 
     fun changeCurrentTypePeriod(selectedPeriod: Int) {
