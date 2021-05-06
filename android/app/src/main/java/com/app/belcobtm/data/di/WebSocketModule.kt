@@ -44,7 +44,7 @@ val WEB_SOCKET_OK_HTTP_CLIENT_QUALIFIER = named("WebSocketOkHttpClient")
 
 val webSocketModule = module {
     single<LifecycleObserver>(WALLET_LIFECYCLE_OBSERVER_QUALIFIER) {
-        WalletLifecycleObserver(get(), get())
+        WalletLifecycleObserver(get(), get(), get())
     }
     single<WalletObserver> {
         WebSocketWalletObserver(

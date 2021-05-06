@@ -111,7 +111,7 @@ class PinCodeFragment : BaseFragment<FragmentPinCodeBinding>() {
         viewModel.actionData.observe(viewLifecycleOwner) { action ->
             when (action) {
                 is PinCodeAction.Success -> {
-                    viewModel.connectToWallet()
+                    viewModel.connectToWebSockets()
                     (requireActivity() as HostActivity).showMainScreen()
                 }
                 is PinCodeAction.ChangedPin -> {

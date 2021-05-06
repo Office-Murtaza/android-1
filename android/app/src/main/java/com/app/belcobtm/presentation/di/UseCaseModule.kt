@@ -124,6 +124,7 @@ val useCaseModule = module {
     single { ObserveMissedMessageCountUseCase(get()) }
     single { UpdateLastSeenMessageTimeStampUseCase(get()) }
     single { ObserveTransactionsUseCase(get()) }
+    single { ConnectToTransactionsUseCase(get()) }
     factory { TradePaymentOptionMapper() }
     factory { CoinCodeMapper() }
     factory { TradesDataToTradeListMapper(get()) }

@@ -47,7 +47,7 @@ class SupportFragment : BaseFragment<FragmentSupportBinding>() {
             startIntentSafe(mainIntent)
         }
         binding.telegramItem.setOnClickListener {
-            val tgURI = Uri.parse("http://www.telegram.me/belco_support")
+            val tgURI = Uri.parse("https://t.me/BelcoBTM")
             val telegramIntent = Intent(Intent.ACTION_VIEW, tgURI)
             startIntentSafe(telegramIntent)
         }
