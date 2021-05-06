@@ -61,7 +61,7 @@ class TradeDetailsViewModel(
     private var toTradeLat: Double? = null
     private var toTradeLong: Double? = null
 
-    fun fetchTradeDetails(tradeId: Int) {
+    fun fetchTradeDetails(tradeId: String) {
         _initialLoadingData.value = LoadingData.Loading()
         getTradeDetailsUseCase.invoke(tradeId, onSuccess = {
             _selectedCoin.value = it.coin

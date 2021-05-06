@@ -1,7 +1,7 @@
 package com.app.belcobtm.data.model.trade
 
 data class TradeData(
-    val trades: MutableMap<Int, Trade>,
-    val orders: MutableMap<Int, Order>,
+    val trades: MutableMap<String, Trade>,
+    val orders: MutableMap<String, Order>,
     val statistics: UserTradeStatistics
 )

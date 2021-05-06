@@ -15,7 +15,7 @@ class DistanceCalculator(
         const val EARTH_RADIUS_KM = 6371;
     }
 
-    suspend fun updateDistanceToTrades(trades: MutableMap<Int, Trade>): MutableMap<Int, Trade> {
+    suspend fun updateDistanceToTrades(trades: MutableMap<String, Trade>): MutableMap<String, Trade> {
         val currentLocation = locationProvider.getCurrentLocation() ?: return trades
         val currentLat = currentLocation.latitude
         val currentLong = currentLocation.longitude

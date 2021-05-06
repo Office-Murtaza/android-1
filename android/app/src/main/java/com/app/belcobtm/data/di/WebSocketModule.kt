@@ -77,7 +77,7 @@ val webSocketModule = module {
     }
     single<ChatObserver> {
         WebSocketChatObserver(
-            get(), get(),
+            get(), get(), get(),
             get(named(STOMP_REQUEST_SERIALIZER_QUALIFIER)),
             get(named(STOMP_RESPONSE_DESERIALIZER_QUALIFIER)),
             get(named(CHAT_REQUEST_SERIALIZER_QUALIFIER)),

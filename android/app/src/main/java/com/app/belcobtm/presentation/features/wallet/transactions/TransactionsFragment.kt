@@ -144,7 +144,7 @@ class TransactionsFragment : BaseFragment<FragmentTransactionsBinding>() {
                 binding.listView.smoothScrollToPosition(0)
             }
         }
-        viewModel.loadingData.listen({})
+        viewModel.loadingData.listen()
         viewModel.detailsLiveData.observe(viewLifecycleOwner) {
             //important download fee
             priceUsdView.text = getString(R.string.text_usd, it.priceUsd.toStringUsd())

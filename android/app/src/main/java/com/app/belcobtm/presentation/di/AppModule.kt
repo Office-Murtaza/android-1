@@ -3,7 +3,7 @@ package com.app.belcobtm.presentation.di
 import android.content.Context
 import com.app.belcobtm.presentation.core.coin.AmountCoinValidator
 import com.app.belcobtm.presentation.core.coin.CoinCodeProvider
-import com.app.belcobtm.presentation.core.coin.MinMaxCoinValueProvider
+import com.app.belcobtm.presentation.core.coin.CoinLimitsValueProvider
 import com.app.belcobtm.presentation.core.formatter.*
 import com.app.belcobtm.presentation.core.formatter.DoubleCurrencyPriceFormatter.Companion.DOUBLE_CURRENCY_PRICE_FORMATTER_QUALIFIER
 import com.app.belcobtm.presentation.core.formatter.Formatter
@@ -104,9 +104,9 @@ val viewModelModule = module {
     viewModel { UpdatePasswordViewModel(get()) }
     viewModel { PhoneChangeViewModel(get(), get(), get(), get<PhoneNumberValidator>()) }
     viewModel { AtmViewModel(get()) }
-    viewModel { (txId: String, coinCode: String) -> TransactionDetailsViewModel(txId, coinCode, get(),
-            get()
-        ) }
+    viewModel { (txId: String, coinCode: String) ->
+        TransactionDetailsViewModel(txId, coinCode, get(), get())
+    }
     viewModel {
         SendGiftViewModel(get(), get(), get(), get(), get())
     }
@@ -143,7 +143,12 @@ val viewModelModule = module {
         )
     }
     viewModel { TradeFilterViewModel(get(), get(), get(), get(), get(named(DISTANCE_INT_PARSER_QUALIFIER))) }
-    viewModel { TradeOrderDetailsViewModel(get(), get(), get(), get(named(GOOGLE_MAPS_DIRECTIONS_QUERY_FORMATTER))) }
+    viewModel {
+        TradeOrderDetailsViewModel(
+            get(), get(), get(), get(), get(), get(),
+            get(named(GOOGLE_MAPS_DIRECTIONS_QUERY_FORMATTER))
+        )
+    }
     viewModel {
         TradeCreateOrderViewModel(
             get(), get(), get(), get(),
@@ -157,7 +162,7 @@ val viewModelModule = module {
 }
 
 val viewModelHelperModule = module {
-    factory { MinMaxCoinValueProvider() }
+    factory { CoinLimitsValueProvider() }
     factory { CoinCodeProvider() }
     factory { AmountCoinValidator() }
     factory { PhoneNumberUtil.createInstance(get<Context>()) }

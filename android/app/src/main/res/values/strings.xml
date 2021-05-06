@@ -261,7 +261,7 @@
     <string name="should_be_filled">Should be filled</string>
     <string name="not_enough_balance">Not enough balance</string>
     <string name="insufficient_balance">Insufficient balance</string>
-    <string name="balance_amount_too_small">Amount can’t be less than fee</string>
+    <string name="balance_amount_too_small">Amount can\'t be zero</string>
     <string name="balance_amount_exceeded">Amount can’t be higher than your balance</string>
 
     <!-- Transition details screen -->
@@ -302,7 +302,6 @@
     <string name="withdraw_screen_balance">Balance</string>
     <string name="withdraw_screen_recipient_address">Recipient address</string>
     <string name="withdraw_screen_where_money_libovski">Insufficient ETH balance for transaction fee</string>
-    <string name="withdraw_screen_too_small_value">Amount can\'t be less than fee</string>
     <string name="withdraw_screen_max_exceeded">Max amount exceeded</string>
 
     <!-- Sell screen -->
@@ -339,7 +338,7 @@
     <string name="swap_screen_select_coin">Select coin please</string>
     <string name="swap_screen_error_coin_details_fetch">Unable to load coin details. Try again later</string>
     <string name="swap_screen_error_not_enough_balance">Not enough coins on balance</string>
-    <string name="swap_screen_min_error">Amount can\'t be less than fee</string>
+    <string name="swap_screen_min_error">Amount can\'t be zero</string>
     <string name="swap_screen_max_error">Amount can\'t be higher than your balance</string>
     <string name="swap_screen_success_message">@string/transactions_screen_transaction_created</string>
     <string name="swap_screen_send_hint">Send amount</string>
@@ -395,7 +394,7 @@
     <string name="trade_recall_screen_coin_amount">Coin amount</string>
     <string name="trade_recall_screen_fiat_amount">Fiat amount</string>
     <string name="trade_recall_screen_success_message">@string/transactions_screen_transaction_created</string>
-    <string name="trade_recall_screen_min_error">Amount can\'t be less than fee</string>
+    <string name="trade_recall_screen_min_error">Amount can\'t be zero</string>
     <string name="trade_recall_screen_max_error">Amount can\'t be higher than your balance</string>
     <string name="trade_recall_screen_not_enough_eth">Insufficient ETH balance for transaction fee</string>
 
@@ -404,7 +403,7 @@
     <string name="trade_reserve_screen_coin_amount">Coin amount</string>
     <string name="trade_reserve_screen_fiat_amount">Fiat amount</string>
     <string name="trade_reserve_screen_success_message">@string/transactions_screen_transaction_created</string>
-    <string name="trade_reserve_screen_min_error">Amount can\'t be less than fee</string>
+    <string name="trade_reserve_screen_min_error">Amount can\'t be zero</string>
     <string name="trade_reserve_screen_max_error">Amount can\'t be higher than your balance</string>
     <string name="trade_reserve_screen_not_enough_eth">Insufficient ETH balance for transaction fee</string>
 
@@ -569,7 +568,11 @@
     <string name="user_trade_info_success_rate_label">Success rate</string>
     <string name="user_trade_info_total_trades_label">Total trades</string>
     <string name="user_trade_info_not_verified_status_label">Not verified</string>
+    <string name="user_trade_info_verification_pending_status_label">Verification pending</string>
+    <string name="user_trade_info_verification_reject_status_label">Verification rejected</string>
     <string name="user_trade_info_verified_status_label">Verified</string>
+    <string name="user_trade_info_vip_verification_pending_status_label">Vip verification pending</string>
+    <string name="user_trade_info_vip_verification_reject_status_label">Vip verification rejected</string>
     <string name="user_trade_info_vip_verified_status_label">Vip verified</string>
 
     <string name="trade_info_my_trades_tab_title">Trades</string>
@@ -677,4 +680,5 @@
     <string name="normal_rating_label">Good</string>
     <string name="good_rating_label">Very good</string>
     <string name="perfect_rating_label">Awesome</string>
+    <string name="send_message_error">Failed to send message please try again</string>
 </resources>

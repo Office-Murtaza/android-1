@@ -1,12 +1,13 @@
 package com.app.belcobtm.presentation.features.wallet.trade.order.chat.model
 
-import android.graphics.Bitmap
 import com.app.belcobtm.presentation.core.adapter.model.ListItem
 
 data class ChatMessageItem(
     val text: String,
     val time: String,
-    val bitmap: Bitmap? = null,
+    val timestamp: Long,
+    val imageUrl: String? = null,
+    val isFromHistory: Boolean,
     override val type: Int
 ) : ListItem {
 
@@ -16,5 +17,5 @@ data class ChatMessageItem(
     }
 
     override val id: String
-        get() = time + MY_MESSAGE_TYPE
+        get() = time + type
 }

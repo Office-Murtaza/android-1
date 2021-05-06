@@ -46,7 +46,7 @@ class TradeOrderRateViewModel(
         _rateLabel.value = stringProvider.getString(labelId)
     }
 
-    fun rateOrder(orderId: Int) {
+    fun rateOrder(orderId: String) {
         _rateLoadingData.value = LoadingData.Loading()
         rateOrderUseCase(
             RateOrderUseCase.Params(orderId, rateValue),

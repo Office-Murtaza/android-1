@@ -12,5 +12,5 @@ class RateOrderUseCase(
     override suspend fun run(params: Params): Either<Failure, Unit> =
         tradeRepository.rateOrder(params.orderId, params.rate)
 
-    data class Params(val orderId: Int, val rate: Int)
+    data class Params(val orderId: String, val rate: Int)
 }

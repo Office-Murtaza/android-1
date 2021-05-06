@@ -4,6 +4,11 @@ import android.content.Context
 import android.preference.PreferenceManager
 import androidx.room.Room
 import com.app.belcobtm.data.ContactsRepositoryImpl
+import com.app.belcobtm.data.cloud.auth.CloudAuth
+import com.app.belcobtm.data.cloud.auth.FirebaseCloudAuth
+import com.app.belcobtm.data.cloud.storage.CloudStorage
+import com.app.belcobtm.data.cloud.storage.FirebaseCloudStorage
+import com.app.belcobtm.data.cloud.storage.FirebaseCloudStorage.Companion.CHAT_STORAGE
 import com.app.belcobtm.data.core.FileHelper
 import com.app.belcobtm.data.core.NetworkUtils
 import com.app.belcobtm.data.core.TransactionHashHelper
@@ -42,12 +47,17 @@ import com.app.belcobtm.domain.notification.NotificationTokenRepository
 import com.app.belcobtm.domain.tools.IntentActions
 import com.app.belcobtm.domain.tools.IntentActionsImpl
 import com.app.belcobtm.presentation.core.Endpoint
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.ktx.storage
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import com.squareup.moshi.Moshi
 import kotlinx.coroutines.GlobalScope
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import org.koin.android.ext.koin.androidApplication
+import org.koin.core.qualifier.named
 import org.koin.dsl.module
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
@@ -113,19 +123,17 @@ val dataModule = module {
     single { get<Retrofit>().create(TradeApi::class.java) }
     single<NotificationTokenRepository> { NotificationTokenRepositoryImpl(get()) }
     single<ContactsRepository> { ContactsRepositoryImpl(get<Context>().contentResolver) }
-    single {
-        TradeInMemoryCache(
-            get(),
-            get(),
-            GlobalScope,
-            get(),
-            get()
-        )
+    single { Firebase.storage("gs://belco-test.appspot.com") }
+    single<CloudStorage>(named(CHAT_STORAGE)) {
+        FirebaseCloudStorage(get<FirebaseStorage>().reference.child("chat"))
+    }
+    single<CloudAuth>() { FirebaseCloudAuth(Firebase.auth) }
+    single { TradeInMemoryCache(get(), get(), GlobalScope, get(), get(), get())
     }
     single { DistanceCalculator(get()) }
     single<LocationProvider> { ServiceLocationProvider(androidApplication()) }
     single { TransactionsInMemoryCache() }
-    factory { TradesResponseToTradeDataMapper(get(), get()) }
+    factory { TradesResponseToTradeDataMapper(get(), get(), get()) }
     factory { OrderResponseToOrderMapper() }
     factory { TradeResponseToTradeMapper() }
 }

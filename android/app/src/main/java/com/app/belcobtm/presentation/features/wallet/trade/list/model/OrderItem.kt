@@ -6,7 +6,7 @@ import com.app.belcobtm.domain.wallet.LocalCoinType
 import com.app.belcobtm.presentation.core.adapter.model.ListItem
 
 data class OrderItem(
-    val orderId: Int,
+    val orderId: String,
     val trade: TradeItem,
     val myTradeId: Int,
     val mappedTradeType: Int,

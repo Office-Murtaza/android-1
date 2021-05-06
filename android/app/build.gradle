@@ -65,7 +65,7 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation 'androidx.appcompat:appcompat:1.3.0-alpha02'
-    implementation 'com.google.android.material:material:1.2.0'
+    implementation 'com.google.android.material:material:1.3.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.0.1'
     implementation 'com.google.android.gms:play-services-maps:17.0.0'
     implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
@@ -162,6 +162,8 @@ dependencies {
     implementation "com.google.firebase:firebase-messaging:$lib.firebaseMessaging"
     implementation "com.google.firebase:firebase-crashlytics:$lib.crashlytics"
     implementation "com.google.firebase:firebase-analytics-ktx:$lib.firebaseAnalytics"
+    implementation "com.google.firebase:firebase-auth-ktx:$lib.auth"
+    implementation "com.google.firebase:firebase-storage-ktx:$lib.cloudStorage"
     implementation("com.google.firebase:firebase-perf:$lib.performance", {
         // protobuf-lite that firebase-config and Tink depends on.
         exclude group: 'com.google.protobuf'

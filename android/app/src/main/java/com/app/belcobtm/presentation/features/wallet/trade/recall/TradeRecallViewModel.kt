@@ -11,7 +11,7 @@ import com.app.belcobtm.domain.wallet.interactor.GetFreshCoinUseCase
 import com.app.belcobtm.domain.wallet.item.CoinDataItem
 import com.app.belcobtm.domain.wallet.item.isEthRelatedCoin
 import com.app.belcobtm.presentation.core.coin.CoinCodeProvider
-import com.app.belcobtm.presentation.core.coin.MinMaxCoinValueProvider
+import com.app.belcobtm.presentation.core.coin.CoinLimitsValueProvider
 import com.app.belcobtm.presentation.core.extensions.withScale
 import com.app.belcobtm.presentation.core.item.CoinScreenItem
 import com.app.belcobtm.presentation.core.item.mapToScreenItem
@@ -26,7 +26,7 @@ class TradeRecallViewModel(
     private val getCoinDataUseCase: GetFreshCoinUseCase,
     private val completeTransactionUseCase: TradeRecallTransactionCompleteUseCase,
     private val coinCodeProvider: CoinCodeProvider,
-    private val minMaxCoinValueProvider: MinMaxCoinValueProvider
+    private val coinLimitsValueProvider: CoinLimitsValueProvider
 ) : ViewModel() {
     private val _initialLoadLiveData = MutableLiveData<LoadingData<Unit>>()
     val initialLoadLiveData: LiveData<LoadingData<Unit>> = _initialLoadLiveData
@@ -88,25 +88,24 @@ class TradeRecallViewModel(
     fun validateCryptoAmount(amount: Double) {
         selectedAmount = amount
 
-        val minValue = getMinValue()
         val maxValue = getMaxValue()
         val enoughETHForExtraFee = enoughETHForExtraFee(amount)
         when {
-            amount in minValue..maxValue && enoughETHForExtraFee -> {
-                _cryptoFieldState.value = InputFieldState.Valid
-                _submitButtonEnable.value = true
-            }
             amount > maxValue -> {
                 _cryptoFieldState.value = InputFieldState.MoreThanNeedError
                 _submitButtonEnable.value = false
             }
-            amount < minValue -> {
+            amount <= 0 -> {
                 _cryptoFieldState.value = InputFieldState.LessThanNeedError
                 _submitButtonEnable.value = false
             }
             enoughETHForExtraFee.not() -> {
                 _cryptoFieldState.value = InputFieldState.NotEnoughETHError
                 _submitButtonEnable.value = false
+            }
+            amount in 0.0..maxValue && enoughETHForExtraFee -> {
+                _cryptoFieldState.value = InputFieldState.Valid
+                _submitButtonEnable.value = true
             }
         }
     }
@@ -115,11 +114,7 @@ class TradeRecallViewModel(
 
     fun getCoinCode(): String = coinCodeProvider.getCoinCode(coinDataItem)
 
-    fun getMinValue(): Double =
-        minMaxCoinValueProvider.getMinValue(coinDataItem)
-
-    fun getMaxValue(): Double =
-        minMaxCoinValueProvider.getMaxValue(coinDataItem)
+    fun getMaxValue(): Double = coinDataItem.reservedBalanceCoin
 
     private fun enoughETHForExtraFee(currentCryptoAmount: Double): Boolean {
         if (coinDataItem.isEthRelatedCoin()) {

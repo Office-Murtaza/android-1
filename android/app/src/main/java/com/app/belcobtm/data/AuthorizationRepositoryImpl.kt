@@ -107,7 +107,9 @@ class AuthorizationRepositoryImpl(
             daoAccount.insertItemList(accountList)
             prefHelper.accessToken = result.accessToken
             prefHelper.refreshToken = result.refreshToken
+            prefHelper.firebaseToken = result.firebaseToken
             prefHelper.userId = result.userId
+            prefHelper.userPhone = phone
             temporaryCoinMap.clear()
             Either.Right(Unit)
         } else {
@@ -143,8 +145,10 @@ class AuthorizationRepositoryImpl(
             val accountList = createAccountEntityList(temporaryCoinMap, result.balance.coins)
             daoAccount.insertItemList(accountList)
             prefHelper.apiSeed = seed
+            prefHelper.firebaseToken = result.firebaseToken
             prefHelper.accessToken = result.accessToken
             prefHelper.refreshToken = result.refreshToken
+            prefHelper.userPhone = phone
             prefHelper.userId = result.userId
             temporaryCoinMap.clear()
             Either.Right(Unit)

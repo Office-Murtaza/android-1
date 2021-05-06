@@ -1,8 +1,10 @@
 package com.app.belcobtm.data.model.trade
 
+import com.app.belcobtm.presentation.features.wallet.trade.order.chat.model.ChatMessageItem
+
 data class Order(
-    val id: Int,
-    val tradeId: Int,
+    val id: String,
+    val tradeId: String,
     val coinCode: String,
     @OrderStatus val status: Int,
     val timestamp: Long,
@@ -23,5 +25,6 @@ data class Order(
     val takerLatitude: Double?,
     val takerLongitude: Double?,
     val takerTotalTrades: Int,
-    val takerTradingRate: Double?
+    val takerTradingRate: Double?,
+    val chatHistory: List<ChatMessageItem>
 )

@@ -15,7 +15,7 @@ import com.app.belcobtm.domain.wallet.item.CoinDataItem
 import com.app.belcobtm.domain.wallet.item.isEthRelatedCoin
 import com.app.belcobtm.presentation.core.SingleLiveData
 import com.app.belcobtm.presentation.core.coin.AmountCoinValidator
-import com.app.belcobtm.presentation.core.coin.MinMaxCoinValueProvider
+import com.app.belcobtm.presentation.core.coin.CoinLimitsValueProvider
 import com.app.belcobtm.presentation.core.coin.model.ValidationResult
 import com.app.belcobtm.presentation.core.mvvm.LoadingData
 import kotlinx.coroutines.launch
@@ -26,7 +26,7 @@ class SwapViewModel(
     private val amountValidator: AmountCoinValidator,
     private val swapUseCase: SwapUseCase,
     private val checkXRPAddressActivatedUseCase: CheckXRPAddressActivatedUseCase,
-    private val minMaxCoinValueProvider: MinMaxCoinValueProvider,
+    private val coinLimitsValueProvider: CoinLimitsValueProvider,
 ) : ViewModel() {
 
     val originCoinsData = mutableListOf<CoinDataItem>()
@@ -139,7 +139,7 @@ class SwapViewModel(
 
     fun setMaxSendAmount() {
         val currentCoinToSend = coinToSend.value ?: return
-        val maxAmount = minMaxCoinValueProvider
+        val maxAmount = coinLimitsValueProvider
             .getMaxValue(currentCoinToSend)
         setSendAmount(maxAmount)
     }
@@ -233,9 +233,7 @@ class SwapViewModel(
         val balanceValidationResult = amountValidator.validateBalance(
             coinAmount, currentCoinToSend, originCoinsData
         )
-        val minCoinAmount = minMaxCoinValueProvider
-            .getMinValue(currentCoinToSend)
-        val maxCoinAmount = minMaxCoinValueProvider
+        val maxCoinAmount = coinLimitsValueProvider
             .getMaxValue(currentCoinToSend)
         val validationResult = when {
             balanceValidationResult is ValidationResult.InValid -> {
@@ -244,7 +242,7 @@ class SwapViewModel(
             coinAmount > maxCoinAmount -> {
                 ValidationResult.InValid(R.string.swap_screen_max_error)
             }
-            coinAmount < minCoinAmount -> {
+            coinAmount <= 0 -> {
                 ValidationResult.InValid(R.string.swap_screen_min_error)
             }
             else -> {

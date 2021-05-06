@@ -47,7 +47,7 @@ class MyTradeDetailsViewModel(
     private val _amountRange = MutableLiveData<String>()
     val amountRange: LiveData<String> = _amountRange
 
-    fun fetchTradeDetails(tradeId: Int) {
+    fun fetchTradeDetails(tradeId: String) {
         _initialLoadingData.value = LoadingData.Loading()
         getTradeDetailsUseCase.invoke(tradeId, onSuccess = {
             _selectedCoin.value = it.coin
@@ -67,7 +67,7 @@ class MyTradeDetailsViewModel(
         })
     }
 
-    fun cancel(tradeId: Int) {
+    fun cancel(tradeId: String) {
         _cancelTradeLoadingData.value = LoadingData.Loading()
         cancelTradeUseCase(tradeId, onSuccess = {
             _cancelTradeLoadingData.value = LoadingData.Success(Unit)
