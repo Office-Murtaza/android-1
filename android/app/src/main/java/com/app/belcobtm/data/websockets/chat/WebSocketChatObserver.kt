@@ -1,6 +1,5 @@
 package com.app.belcobtm.data.websockets.chat
 
-import com.app.belcobtm.data.disk.database.AccountDao
 import com.app.belcobtm.data.disk.shared.preferences.SharedPreferencesHelper
 import com.app.belcobtm.data.websockets.base.SocketClient
 import com.app.belcobtm.data.websockets.base.model.SocketResponse
@@ -11,14 +10,16 @@ import com.app.belcobtm.data.websockets.serializer.RequestSerializer
 import com.app.belcobtm.data.websockets.serializer.ResponseDeserializer
 import com.app.belcobtm.presentation.core.Endpoint
 import com.app.belcobtm.presentation.features.wallet.trade.order.chat.NewMessageItem
-import kotlinx.coroutines.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class WebSocketChatObserver(
     private val socketClient: SocketClient,
-    private val accountDao: AccountDao,
     private val sharedPreferencesHelper: SharedPreferencesHelper,
     private val stompSerializer: RequestSerializer<StompSocketRequest>,
     private val stompDeserializer: ResponseDeserializer<StompSocketResponse>,
@@ -31,7 +32,6 @@ class WebSocketChatObserver(
     private companion object {
         const val ID_HEADER = "id"
         const val AUTH_HEADER = "Authorization"
-        const val COINS_HEADER = "coins"
 
         const val DESTINATION_HEADER = "destination"
         const val DESTINATION_VALUE = "/queue/order-chat"
@@ -100,15 +100,10 @@ class WebSocketChatObserver(
     }
 
     private fun subscribe() {
-        val coinList = runBlocking {
-            accountDao.getItemList().orEmpty()
-                .map { it.type.name }
-        }.joinToString()
         val request = StompSocketRequest(
             StompSocketRequest.SUBSCRIBE, mapOf(
                 ID_HEADER to sharedPreferencesHelper.userPhone,
                 DESTINATION_HEADER to DESTINATION_VALUE,
-                COINS_HEADER to coinList
             )
         )
         socketClient.sendMessage(stompSerializer.serialize(request))
