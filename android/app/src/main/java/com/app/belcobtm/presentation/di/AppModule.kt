@@ -3,7 +3,7 @@ package com.app.belcobtm.presentation.di
 import android.content.Context
 import com.app.belcobtm.presentation.core.coin.AmountCoinValidator
 import com.app.belcobtm.presentation.core.coin.CoinCodeProvider
-import com.app.belcobtm.presentation.core.coin.MinMaxCoinValueProvider
+import com.app.belcobtm.presentation.core.coin.CoinLimitsValueProvider
 import com.app.belcobtm.presentation.core.formatter.*
 import com.app.belcobtm.presentation.core.formatter.DoubleCurrencyPriceFormatter.Companion.DOUBLE_CURRENCY_PRICE_FORMATTER_QUALIFIER
 import com.app.belcobtm.presentation.core.formatter.Formatter
@@ -162,7 +162,7 @@ val viewModelModule = module {
 }
 
 val viewModelHelperModule = module {
-    factory { MinMaxCoinValueProvider() }
+    factory { CoinLimitsValueProvider() }
     factory { CoinCodeProvider() }
     factory { AmountCoinValidator() }
     factory { PhoneNumberUtil.createInstance(get<Context>()) }

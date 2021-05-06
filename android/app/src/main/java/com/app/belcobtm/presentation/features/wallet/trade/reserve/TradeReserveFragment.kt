@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.navArgs
 import com.app.belcobtm.R
 import com.app.belcobtm.databinding.FragmentTradeReserveBinding
 import com.app.belcobtm.presentation.core.extensions.*
@@ -26,8 +27,9 @@ class TradeReserveFragment : BaseFragment<FragmentTradeReserveBinding>() {
             viewModel.loadInitialData()
         }
     }
+    private val args by navArgs<TradeReserveFragmentArgs>()
     private val viewModel: TradeReserveViewModel by viewModel {
-        parametersOf(TradeReserveFragmentArgs.fromBundle(requireArguments()).coinCode)
+        parametersOf(args.coinCode)
     }
 
     private val cryptoAmountTextWatcher by lazy {
@@ -63,12 +65,11 @@ class TradeReserveFragment : BaseFragment<FragmentTradeReserveBinding>() {
                 viewModel.coinItem.balanceCoin.toStringCoin(),
                 viewModel.coinItem.code
             )
-            balanceUsdView.text =
-                getString(R.string.text_usd, viewModel.coinItem.balanceUsd.toStringUsd())
+            balanceUsdView.text = getString(R.string.text_usd, viewModel.coinItem.balanceUsd.toStringUsd())
             amountCryptoView.helperText = getString(
                 R.string.transaction_helper_text_commission,
                 viewModel.getTransactionFee().toStringCoin(),
-                viewModel.coinItem.code
+                viewModel.getCoinCode()
             )
             reservedCryptoView.text = getString(
                 R.string.text_text,
@@ -96,7 +97,7 @@ class TradeReserveFragment : BaseFragment<FragmentTradeReserveBinding>() {
                     getString(R.string.trade_reserve_screen_min_error)
                 InputFieldState.MoreThanNeedError -> amountCryptoView.error =
                     getString(R.string.trade_reserve_screen_max_error)
-                InputFieldState.NotEnoughETHError -> amountUsdView.error =
+                InputFieldState.NotEnoughETHError -> amountCryptoView.error =
                     getString(R.string.trade_reserve_screen_not_enough_eth)
             }
         })
@@ -106,7 +107,7 @@ class TradeReserveFragment : BaseFragment<FragmentTradeReserveBinding>() {
     }
 
     override fun FragmentTradeReserveBinding.initViews() {
-        setToolbarTitle(R.string.trade_reserve_screen_title)
+        setToolbarTitle(getString(R.string.trade_reserve_screen_title, args.coinCode))
     }
 
     override fun createBinding(inflater: LayoutInflater, container: ViewGroup?): FragmentTradeReserveBinding =

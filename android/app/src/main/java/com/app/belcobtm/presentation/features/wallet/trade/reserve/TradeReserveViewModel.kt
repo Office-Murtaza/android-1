@@ -13,7 +13,7 @@ import com.app.belcobtm.domain.wallet.item.CoinDataItem
 import com.app.belcobtm.domain.wallet.item.isEthRelatedCoin
 import com.app.belcobtm.presentation.core.coin.AmountCoinValidator
 import com.app.belcobtm.presentation.core.coin.CoinCodeProvider
-import com.app.belcobtm.presentation.core.coin.MinMaxCoinValueProvider
+import com.app.belcobtm.presentation.core.coin.CoinLimitsValueProvider
 import com.app.belcobtm.presentation.core.coin.model.ValidationResult
 import com.app.belcobtm.presentation.core.item.CoinScreenItem
 import com.app.belcobtm.presentation.core.item.mapToScreenItem
@@ -27,7 +27,7 @@ class TradeReserveViewModel(
     private val getCoinUseCace: GetFreshCoinUseCase,
     private val createTransactionUseCase: TradeReserveTransactionCreateUseCase,
     private val completeTransactionUseCase: TradeReserveTransactionCompleteUseCase,
-    private val minMaxCoinValueProvider: MinMaxCoinValueProvider,
+    private val coinLimitsValueProvider: CoinLimitsValueProvider,
     private val amountCoinValidator: AmountCoinValidator,
     private val coinCodeProvider: CoinCodeProvider
 ) : ViewModel() {
@@ -102,34 +102,30 @@ class TradeReserveViewModel(
 
     fun getCoinCode(): String = coinCodeProvider.getCoinCode(coinDataItem)
 
-    fun getMinValue(): Double =
-        minMaxCoinValueProvider.getMinValue(coinDataItem)
-
     fun getMaxValue(): Double =
-        minMaxCoinValueProvider.getMaxValue(coinDataItem)
+        coinLimitsValueProvider.getMaxValue(coinDataItem)
 
     fun validateCryptoAmount(amount: Double) {
         selectedAmount = amount
 
-        val minValue = getMinValue()
         val maxValue = getMaxValue()
         val enoughETHForExtraFee = enoughETHForExtraFee()
         when {
-            amount in minValue..maxValue && enoughETHForExtraFee -> {
-                _cryptoFieldState.value = InputFieldState.Valid
-                _submitButtonEnable.value = true
-            }
             amount > maxValue -> {
                 _cryptoFieldState.value = InputFieldState.MoreThanNeedError
                 _submitButtonEnable.value = false
             }
-            amount < minValue -> {
+            amount <= 0 -> {
                 _cryptoFieldState.value = InputFieldState.LessThanNeedError
                 _submitButtonEnable.value = false
             }
             enoughETHForExtraFee.not() -> {
                 _cryptoFieldState.value = InputFieldState.NotEnoughETHError
                 _submitButtonEnable.value = false
+            }
+            amount in 0.0..maxValue && enoughETHForExtraFee -> {
+                _cryptoFieldState.value = InputFieldState.Valid
+                _submitButtonEnable.value = true
             }
         }
     }

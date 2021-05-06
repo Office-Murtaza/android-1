@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.observe
+import androidx.navigation.fragment.navArgs
 import com.app.belcobtm.R
 import com.app.belcobtm.databinding.FragmentTradeRecallBinding
 import com.app.belcobtm.presentation.core.extensions.*
@@ -27,8 +28,9 @@ class TradeRecallFragment : BaseFragment<FragmentTradeRecallBinding>() {
             viewModel.loadInitialData()
         }
     }
+    private val args by navArgs<TradeRecallFragmentArgs>()
     private val viewModel: TradeRecallViewModel by viewModel {
-        parametersOf(TradeRecallFragmentArgs.fromBundle(requireArguments()).coinCode)
+        parametersOf(args.coinCode)
     }
     private val cryptoAmountTextWatcher by lazy {
         SafeDecimalEditTextWatcher { editable ->
@@ -106,7 +108,7 @@ class TradeRecallFragment : BaseFragment<FragmentTradeRecallBinding>() {
     }
 
     override fun FragmentTradeRecallBinding.initViews() {
-        setToolbarTitle(R.string.trade_recall_screen_title)
+        setToolbarTitle(getString(R.string.trade_recall_screen_title, args.coinCode))
     }
 
     override fun createBinding(inflater: LayoutInflater, container: ViewGroup?): FragmentTradeRecallBinding =

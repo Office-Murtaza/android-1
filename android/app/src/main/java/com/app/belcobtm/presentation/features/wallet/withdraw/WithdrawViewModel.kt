@@ -8,7 +8,7 @@ import com.app.belcobtm.domain.transaction.interactor.WithdrawUseCase
 import com.app.belcobtm.domain.wallet.interactor.GetCoinListUseCase
 import com.app.belcobtm.domain.wallet.item.CoinDataItem
 import com.app.belcobtm.presentation.core.coin.AmountCoinValidator
-import com.app.belcobtm.presentation.core.coin.MinMaxCoinValueProvider
+import com.app.belcobtm.presentation.core.coin.CoinLimitsValueProvider
 import com.app.belcobtm.presentation.core.coin.model.ValidationResult
 import com.app.belcobtm.presentation.core.mvvm.LoadingData
 import kotlinx.coroutines.delay
@@ -18,7 +18,7 @@ class WithdrawViewModel(
     private val coinCode: String,
     getCoinListUseCase: GetCoinListUseCase,
     private val withdrawUseCase: WithdrawUseCase,
-    private val minMaxCoinValueProvider: MinMaxCoinValueProvider,
+    private val coinLimitsValueProvider: CoinLimitsValueProvider,
     private val amountCoinValidator: AmountCoinValidator
 ) : ViewModel() {
 
@@ -61,11 +61,8 @@ class WithdrawViewModel(
         )
     }
 
-    fun getMinValue(): Double =
-        minMaxCoinValueProvider.getMinValue(fromCoinDataItem)
-
     fun getMaxValue(): Double =
-        minMaxCoinValueProvider.getMaxValue(fromCoinDataItem)
+        coinLimitsValueProvider.getMaxValue(fromCoinDataItem)
 
     fun getTransactionFee(): Double = fromCoinDataItem.details.txFee
 

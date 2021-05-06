@@ -4,9 +4,7 @@ import com.app.belcobtm.domain.wallet.LocalCoinType
 import com.app.belcobtm.domain.wallet.item.CoinDataItem
 import kotlin.math.max
 
-class MinMaxCoinValueProvider {
-
-    fun getMinValue(coin: CoinDataItem) = coin.details.txFee
+class CoinLimitsValueProvider {
 
     fun getMaxValue(coin: CoinDataItem) = when (coin.code) {
         LocalCoinType.CATM.name -> coin.balanceCoin

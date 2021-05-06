@@ -9,7 +9,7 @@ import com.app.belcobtm.domain.transaction.interactor.SendGiftTransactionCreateU
 import com.app.belcobtm.domain.wallet.interactor.GetFreshCoinsUseCase
 import com.app.belcobtm.domain.wallet.item.CoinDataItem
 import com.app.belcobtm.presentation.core.coin.AmountCoinValidator
-import com.app.belcobtm.presentation.core.coin.MinMaxCoinValueProvider
+import com.app.belcobtm.presentation.core.coin.CoinLimitsValueProvider
 import com.app.belcobtm.presentation.core.coin.model.ValidationResult
 import com.app.belcobtm.presentation.core.extensions.toStringUsd
 import com.app.belcobtm.presentation.core.mvvm.LoadingData
@@ -19,7 +19,7 @@ class SendGiftViewModel(
     private val transactionCreateUseCase: SendGiftTransactionCreateUseCase,
     private val getFreshCoinsUseCase: GetFreshCoinsUseCase,
     private val accountDao: AccountDao,
-    private val minMaxCoinValueProvider: MinMaxCoinValueProvider,
+    private val coinLimitsValueProvider: CoinLimitsValueProvider,
     private val amountCoinValidator: AmountCoinValidator
 ) : ViewModel() {
 
@@ -102,7 +102,7 @@ class SendGiftViewModel(
 
     fun sendGift(amount: Double, phone: String, message: String?, giftId: String?) {
         val coinToSend = coinToSend.value ?: return
-        if (minMaxCoinValueProvider.getMinValue(coinToSend) > amount) {
+        if (amount <= 0) {
             _cryptoAmountError.value = R.string.balance_amount_too_small
             return
         }
@@ -130,7 +130,7 @@ class SendGiftViewModel(
 
     fun setMaxCoinAmount() {
         val currentCoinToSend = coinToSend.value ?: return
-        val maxAmount = minMaxCoinValueProvider
+        val maxAmount = coinLimitsValueProvider
             .getMaxValue(currentCoinToSend)
         updateAmountToSend(maxAmount)
     }
