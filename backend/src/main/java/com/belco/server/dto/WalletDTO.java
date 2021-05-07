@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 @Setter
 @Getter
@@ -24,4 +25,6 @@ public class WalletDTO {
     private BigDecimal convertedTxFee;
     private BigDecimal tolerance;
     private Integer scale;
+    private String seedEncrypted;
+    private List<CoinDTO> coins;
 }

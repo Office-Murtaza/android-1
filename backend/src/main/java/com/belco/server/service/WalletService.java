@@ -80,6 +80,10 @@ public class WalletService {
         });
     }
 
+    public void abc() {
+
+    }
+
     public String getPath(CoinType coinType) {
         if (coinType == CoinType.BITCOIN) {
             return "m/44'/0'/0'/0/0";
