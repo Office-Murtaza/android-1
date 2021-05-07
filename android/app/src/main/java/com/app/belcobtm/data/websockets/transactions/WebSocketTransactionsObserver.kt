@@ -31,7 +31,6 @@ class WebSocketTransactionsObserver(
     private companion object {
         const val ID_HEADER = "id"
         const val AUTH_HEADER = "Authorization"
-        const val COINS_HEADER = "coins"
 
         const val DESTINATION_HEADER = "destination"
         const val DESTINATION_VALUE = "/user/queue/transaction"

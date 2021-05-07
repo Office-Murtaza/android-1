@@ -40,15 +40,12 @@ class TradeReserveViewModel(
     private val _cryptoFieldState = MutableLiveData<InputFieldState>()
     val cryptoFieldState: LiveData<InputFieldState> = _cryptoFieldState
 
-    private val _submitButtonEnable = MutableLiveData(false)
-    val submitButtonEnable: LiveData<Boolean> = _submitButtonEnable
-
     private var etheriumCoinDataItem: CoinDataItem? = null
     private lateinit var coinDataItem: CoinDataItem
     lateinit var coinItem: CoinScreenItem
         private set
 
-    private var selectedAmount: Double = 0.0
+    var selectedAmount: Double = 0.0
 
     init {
         loadInitialData()
@@ -71,6 +68,9 @@ class TradeReserveViewModel(
     }
 
     fun createTransaction() {
+        if (!validateCryptoAmount()) {
+            return
+        }
         _createTransactionLiveData.value = LoadingData.Loading()
         createTransactionUseCase.invoke(
             params = TradeReserveTransactionCreateUseCase.Params(coinDataItem.code, selectedAmount),
@@ -105,29 +105,22 @@ class TradeReserveViewModel(
     fun getMaxValue(): Double =
         coinLimitsValueProvider.getMaxValue(coinDataItem)
 
-    fun validateCryptoAmount(amount: Double) {
-        selectedAmount = amount
-
+    private fun validateCryptoAmount(): Boolean {
         val maxValue = getMaxValue()
         val enoughETHForExtraFee = enoughETHForExtraFee()
         when {
-            amount > maxValue -> {
+            selectedAmount > maxValue ->
                 _cryptoFieldState.value = InputFieldState.MoreThanNeedError
-                _submitButtonEnable.value = false
-            }
-            amount <= 0 -> {
+            selectedAmount <= 0 ->
                 _cryptoFieldState.value = InputFieldState.LessThanNeedError
-                _submitButtonEnable.value = false
-            }
-            enoughETHForExtraFee.not() -> {
+            enoughETHForExtraFee.not() ->
                 _cryptoFieldState.value = InputFieldState.NotEnoughETHError
-                _submitButtonEnable.value = false
-            }
-            amount in 0.0..maxValue && enoughETHForExtraFee -> {
+            selectedAmount in 0.0..maxValue && enoughETHForExtraFee -> {
                 _cryptoFieldState.value = InputFieldState.Valid
-                _submitButtonEnable.value = true
+                return true
             }
         }
+        return false
     }
 
     private fun enoughETHForExtraFee(): Boolean {
