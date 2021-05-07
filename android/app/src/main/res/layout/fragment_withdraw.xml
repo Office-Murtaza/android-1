@@ -209,7 +209,6 @@
         <com.google.android.material.button.MaterialButton
             android:id="@+id/next_button_view"
             style="@style/Button.Primary"
-            android:enabled="false"
             android:text="@string/submit"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

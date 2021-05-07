@@ -40,7 +40,7 @@ class TradeRecallFragment : BaseFragment<FragmentTradeRecallBinding>() {
             } else {
                 getString(R.string.text_usd, "0.0")
             }
-            viewModel.validateCryptoAmount(cryptoAmount)
+            viewModel.selectedAmount = cryptoAmount
         }
     }
 
@@ -101,9 +101,6 @@ class TradeRecallFragment : BaseFragment<FragmentTradeRecallBinding>() {
         }
         amountCryptoView.editText?.actionDoneListener {
             hideKeyboard()
-        }
-        viewModel.submitButtonEnable.observe(viewLifecycleOwner) { enable ->
-            recallButtonView.isEnabled = enable
         }
     }
 

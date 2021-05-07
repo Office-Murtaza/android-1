@@ -35,7 +35,6 @@ class WithdrawFragment : BaseFragment<FragmentWithdrawBinding>() {
             } else {
                 getString(R.string.text_usd, "0.0")
             }
-            binding.updateNextButton()
         }
     )
 
@@ -51,7 +50,6 @@ class WithdrawFragment : BaseFragment<FragmentWithdrawBinding>() {
         addressPasteView.setOnClickListener {
             clipBoardHelper.getTextFromClipboard()?.let {
                 addressView.setText(it)
-                updateNextButton()
             }
         }
         maxCryptoView.setOnClickListener {
@@ -165,6 +163,11 @@ class WithdrawFragment : BaseFragment<FragmentWithdrawBinding>() {
             amountCryptoView.showError(R.string.balance_amount_exceeded)
         }
 
+        if (!isValidAddress()) {
+            errors++
+            addressView.showError(R.string.address_invalid)
+        }
+
         if (errors == 0) {
             viewModel.withdraw(addressView.getString(), amountCryptoView.getDouble())
         }
@@ -174,11 +177,5 @@ class WithdrawFragment : BaseFragment<FragmentWithdrawBinding>() {
         val coinCode = coinCodeProvider.getCoinCode(viewModel.getCoinCode())
         val coinType = CoinTypeExtension.getTypeByCode(coinCode)
         return coinType?.validate(addressView.getString()) ?: false
-    }
-
-    private fun FragmentWithdrawBinding.updateNextButton() {
-        nextButtonView.isEnabled = amountCryptoView.isNotBlank()
-                && amountCryptoView.getDouble() > 0
-                && isValidAddress()
     }
 }
