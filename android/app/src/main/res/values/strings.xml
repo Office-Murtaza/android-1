@@ -519,7 +519,10 @@
     <string name="unlink_text_top">Please, make sure you have stored your credentials and seed phrase before unlinking the wallet. Otherwise, you may lose all assets</string>
 
     //verification
-    <string name="verification_limit">In order to increase daily limit to 3000 USD, please upload a copy of your driver license.</string>
+    <string name="verification_status_not_verified_message"><![CDATA[To increase your limits to <b>$3,000</b> per transaction and <b>$10,000</b> per day, please verify your account.]]></string>
+    <string name="verification_status_pending_message">At this time we are verifying your information. You will receive a push notification when the verification is completed.</string>
+    <string name="verification_status_rejected_message"><![CDATA[To increase your limits to <b>$10,000</b> per transaction and <b>$20,000</b> per day, please verify your account.]]></string>
+    <string name="verification_status_verified_message"><![CDATA[To increase your limits to <b>$3,000</b> per transaction and <b>$10,000</b> per day, please verify your account.]]></string>
     <string name="verify_label">Verify</string>
     <string name="vip_verify_label">VIP Verify</string>
 

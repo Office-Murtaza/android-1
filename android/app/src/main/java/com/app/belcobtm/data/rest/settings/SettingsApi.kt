@@ -1,8 +1,8 @@
 package com.app.belcobtm.data.rest.settings
 
 import com.app.belcobtm.data.rest.settings.request.ChangePassBody
-import com.app.belcobtm.data.rest.settings.response.GetPhoneResponse
 import com.app.belcobtm.data.rest.settings.request.UpdatePhoneParam
+import com.app.belcobtm.data.rest.settings.response.GetPhoneResponse
 import com.app.belcobtm.data.rest.settings.response.UpdateResponse
 import com.app.belcobtm.data.rest.settings.response.VerificationInfoResponse
 import kotlinx.coroutines.Deferred
@@ -13,13 +13,13 @@ import retrofit2.Response
 import retrofit2.http.*
 
 interface SettingsApi {
-    @GET("user/{userId}/kyc-details")
+    @GET("user/{userId}/verification")
     fun getVerificationInfoAsync(
         @Path("userId") userId: Int
     ): Deferred<Response<VerificationInfoResponse>>
 
     @Multipart
-    @POST("user/{userId}/kyc-submit")
+    @POST("user/{userId}/verification")
     fun sendVerificationBlankAsync(
         @Path("userId") userId: Int,
         @Part("tierId") tierId: Int,
@@ -35,7 +35,7 @@ interface SettingsApi {
     ): Deferred<Response<ResponseBody>>
 
     @Multipart
-    @POST("user/{userId}/kyc-submit")
+    @POST("user/{userId}/verification")
     fun sendVerificationVipAsync(
         @Path("userId") userId: Int,
         @Part("tierId") tierId: Int,
