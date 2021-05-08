@@ -24,11 +24,10 @@
         app:layout_constraintVertical_bias="0.002">
 
         <ImageView
-            android:id="@+id/warning"
+            android:id="@+id/banner_icon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_main"
-            android:src="@drawable/ic_warning_outlined"
             app:tint="@color/colorPrimary" />
 
         <TextView

@@ -167,9 +167,9 @@
     </string-array>
     <string name="verification_select">Select</string>
     <string name="verification_remove">Remove</string>
-    <string name="verification_id_number">ID number</string>
-    <string name="verification_first_name">First name</string>
-    <string name="verification_last_name">Last name</string>
+    <string name="verification_id_number">ID Number</string>
+    <string name="verification_first_name">First Name</string>
+    <string name="verification_last_name">Last Name</string>
     <string name="verification_address">Address</string>
     <string name="verification_city">City</string>
     <string name="verification_country">Country</string>
@@ -688,4 +688,6 @@
     <string name="score_from_a_partner_label">Score From A Partner</string>
     <string name="trade_order_details_crypto_amount_label">Crypto Amount</string>
     <string name="trade_order_details_fiat_amount">Fiat Amount</string>
+    <string name="attach_id_scan_label">Attach id Scan</string>
+    <string name="attach_id_selfie_label">Attach id Selfie</string>
 </resources>

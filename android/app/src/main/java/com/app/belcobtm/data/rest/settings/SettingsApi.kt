@@ -2,15 +2,18 @@ package com.app.belcobtm.data.rest.settings
 
 import com.app.belcobtm.data.rest.settings.request.ChangePassBody
 import com.app.belcobtm.data.rest.settings.request.UpdatePhoneParam
+import com.app.belcobtm.data.rest.settings.request.VerificationBlankRequest
+import com.app.belcobtm.data.rest.settings.request.VipVerificationRequest
 import com.app.belcobtm.data.rest.settings.response.GetPhoneResponse
 import com.app.belcobtm.data.rest.settings.response.UpdateResponse
 import com.app.belcobtm.data.rest.settings.response.VerificationInfoResponse
 import kotlinx.coroutines.Deferred
-import okhttp3.MultipartBody
-import okhttp3.RequestBody
 import okhttp3.ResponseBody
 import retrofit2.Response
-import retrofit2.http.*
+import retrofit2.http.Body
+import retrofit2.http.GET
+import retrofit2.http.POST
+import retrofit2.http.Path
 
 interface SettingsApi {
     @GET("user/{userId}/verification")
@@ -18,29 +21,16 @@ interface SettingsApi {
         @Path("userId") userId: Int
     ): Deferred<Response<VerificationInfoResponse>>
 
-    @Multipart
     @POST("user/{userId}/verification")
     fun sendVerificationBlankAsync(
         @Path("userId") userId: Int,
-        @Part("tierId") tierId: Int,
-        @Part("idNumber") idNumber: RequestBody,
-        @Part("firstName") firstName: RequestBody,
-        @Part("lastName") lastName: RequestBody,
-        @Part("address") address: RequestBody,
-        @Part("city") city: RequestBody,
-        @Part("country") country: RequestBody,
-        @Part("province") province: RequestBody,
-        @Part("zipCode") zipCode: RequestBody,
-        @Part file: MultipartBody.Part
+        @Body request: VerificationBlankRequest
     ): Deferred<Response<ResponseBody>>
 
-    @Multipart
     @POST("user/{userId}/verification")
     fun sendVerificationVipAsync(
         @Path("userId") userId: Int,
-        @Part("tierId") tierId: Int,
-        @Part("ssn") ssn: Int,
-        @Part file: MultipartBody.Part
+        @Body request: VipVerificationRequest
     ): Deferred<Response<ResponseBody>>
 
     @GET("user/{userId}/unlink")
@@ -61,9 +51,9 @@ interface SettingsApi {
         @Body updatePhoneParam: UpdatePhoneParam
     ): Deferred<Response<UpdateResponse>>
 
-     @POST("user/{userId}/phone-verify")
-     fun verifyPhone(
-         @Path("userId") userId: String,
-         @Body updatePhoneParam: UpdatePhoneParam
-     ): Deferred<Response<UpdateResponse>>
+    @POST("user/{userId}/phone-verify")
+    fun verifyPhone(
+        @Path("userId") userId: String,
+        @Body updatePhoneParam: UpdatePhoneParam
+    ): Deferred<Response<UpdateResponse>>
 }

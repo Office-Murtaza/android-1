@@ -38,15 +38,17 @@ class SettingsRepositoryImpl(
     }
 
     override suspend fun sendVerificationBlank(
-        blankDataItem: VerificationBlankDataItem
-    ): Either<Failure, Unit> = apiService.sendVerificationBlank(prefHelper.userId, blankDataItem)
+        blankDataItem: VerificationBlankDataItem,
+        fileName: String
+    ): Either<Failure, Unit> = apiService.sendVerificationBlank(prefHelper.userId, blankDataItem, fileName)
 
     override fun getVerificationCountries(): List<VerificationCountryDataItem> =
         assetsDataStore.getCountries()
 
     override suspend fun sendVerificationVip(
-        vipDataItem: VerificationVipDataItem
-    ): Either<Failure, Unit> = apiService.sendVerificationVip(prefHelper.userId, vipDataItem)
+        vipDataItem: VerificationVipDataItem,
+        fileName: String
+    ): Either<Failure, Unit> = apiService.sendVerificationVip(prefHelper.userId, vipDataItem, fileName)
 
     override suspend fun unlink(): Either<Failure, Boolean> = apiService.unlink(prefHelper.userId)
 

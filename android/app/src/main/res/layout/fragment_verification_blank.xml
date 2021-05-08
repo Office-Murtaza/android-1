@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -28,47 +29,78 @@
                 android:visibility="gone" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/image_container"
-                android:layout_width="180dp"
-                android:layout_height="180dp"
+                android:id="@+id/image_placeholder"
+                android:layout_width="match_parent"
+                android:layout_height="128dp"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginTop="16dp"
-                android:layout_marginBottom="@dimen/margin_main"
-                android:backgroundTint="#ebf4fd">
+                android:layout_marginStart="@dimen/margin_main"
+                android:layout_marginTop="@dimen/margin_large"
+                android:layout_marginEnd="@dimen/margin_main"
+                android:background="@drawable/attach_scan_bg"
+                tools:visibility="gone">
 
-                <androidx.appcompat.widget.AppCompatImageView
-                    android:id="@+id/image_view"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="center_horizontal"
-                    android:scaleType="center" />
-
-                <androidx.appcompat.widget.AppCompatImageView
+                <TextView
                     android:id="@+id/select_image_button_view"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="end|bottom"
                     android:layout_marginEnd="@dimen/margin_half"
                     android:layout_marginBottom="@dimen/margin_half"
-                    app:srcCompat="@drawable/ic_add_attachment" />
+                    android:drawablePadding="@dimen/margin_half"
+                    android:gravity="center"
+                    android:text="@string/attach_id_scan_label"
+                    android:textAllCaps="true"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    app:drawableStartCompat="@drawable/ic_add_attachment"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/image_wrapper"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/margin_main"
+                android:layout_marginTop="@dimen/margin_half"
+                android:layout_marginEnd="@dimen/margin_main"
+                android:visibility="gone"
+                tools:visibility="visible">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/image_view"
+                    android:layout_width="0dp"
+                    android:layout_height="128dp"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="16dp"
+                    android:scaleType="center"
+                    app:layout_constraintDimensionRatio="16:9"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:src="@drawable/bg_toolbar" />
 
                 <androidx.appcompat.widget.AppCompatImageView
                     android:id="@+id/remove_image_button_view"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="end|bottom"
-                    android:layout_marginEnd="@dimen/margin_half"
-                    android:layout_marginBottom="@dimen/margin_half"
                     android:background="@drawable/white_round_bg"
-                    android:tint="@color/colorPrimary"
-                    android:visibility="gone"
-                    app:srcCompat="@drawable/ic_clear_mark" />
+                    android:elevation="8dp"
+                    app:layout_constraintBottom_toTopOf="@id/image_view"
+                    app:layout_constraintEnd_toEndOf="@id/image_view"
+                    app:layout_constraintStart_toEndOf="@id/image_view"
+                    app:layout_constraintTop_toTopOf="@id/image_view" />
+
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/id_number_view"
-                style="@style/VerificationBlankScreen.EditTextContainer">
+                style="@style/VerificationBlankScreen.EditTextContainer"
+                android:layout_marginTop="24dp">
 
                 <androidx.appcompat.widget.AppCompatEditText
                     style="@style/VerificationBlankScreen.EditText"

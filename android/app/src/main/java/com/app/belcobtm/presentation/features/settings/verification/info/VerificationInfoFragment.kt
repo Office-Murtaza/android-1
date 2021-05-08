@@ -6,6 +6,7 @@ import androidx.lifecycle.observe
 import com.app.belcobtm.R
 import com.app.belcobtm.databinding.FragmentVerificationInfoBinding
 import com.app.belcobtm.presentation.core.extensions.setDrawableEnd
+import com.app.belcobtm.presentation.core.extensions.toHtmlSpan
 import com.app.belcobtm.presentation.core.extensions.toggle
 import com.app.belcobtm.presentation.core.mvvm.LoadingData
 import com.app.belcobtm.presentation.core.ui.fragment.BaseFragment
@@ -61,7 +62,10 @@ class VerificationInfoFragment : BaseFragment<FragmentVerificationInfoBinding>()
                 }
                 state.message.doIfChanged(appliedState?.commonData?.message) {
                     messageView.toggle(it.isNotEmpty())
-                    messageViewText.text = it
+                    messageViewText.text = it.toHtmlSpan()
+                }
+                state.bannerIcon.doIfChanged(appliedState?.commonData?.bannerIcon) {
+                    bannerIcon.setImageResource(it)
                 }
             },
             onUpdate = {

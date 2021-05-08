@@ -1,6 +1,8 @@
 package com.app.belcobtm.presentation.di
 
 import com.app.belcobtm.data.cloud.storage.FirebaseCloudStorage
+import com.app.belcobtm.data.cloud.storage.FirebaseCloudStorage.Companion.VERIFICATION_STORAGE
+import com.app.belcobtm.data.core.RandomStringGenerator
 import com.app.belcobtm.domain.account.interactor.GetUserCoinListUseCase
 import com.app.belcobtm.domain.account.interactor.UpdateUserCoinListUseCase
 import com.app.belcobtm.domain.atm.interactor.GetAtmsUseCase
@@ -37,6 +39,7 @@ import com.app.belcobtm.presentation.core.DateFormat.CHAT_DATE_FORMAT
 import com.app.belcobtm.presentation.core.formatter.DoubleCurrencyPriceFormatter.Companion.DOUBLE_CURRENCY_PRICE_FORMATTER_QUALIFIER
 import com.app.belcobtm.presentation.core.formatter.MilesFormatter.Companion.MILES_FORMATTER_QUALIFIER
 import com.app.belcobtm.presentation.core.formatter.TradeCountFormatter.Companion.TRADE_COUNT_FORMATTER_QUALIFIER
+import org.koin.android.ext.koin.androidApplication
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
 import java.text.SimpleDateFormat
@@ -50,9 +53,9 @@ val useCaseModule = module {
     single { GetAuthorizePinUseCase(get()) }
     single { SaveAuthorizePinUseCase(get()) }
     single { GetVerificationInfoUseCase(get()) }
-    single { SendVerificationBlankUseCase(get()) }
+    single { SendVerificationBlankUseCase(get(), androidApplication(), get(), get(), get(named(VERIFICATION_STORAGE))) }
     single { GetVerificationCountryListUseCase(get()) }
-    single { SendVerificationVipUseCase(get()) }
+    single { SendVerificationVipUseCase(get(), androidApplication(), get(), get(), get(named(VERIFICATION_STORAGE))) }
     single { SwapUseCase(get()) }
     single { CreateTransactionUseCase(get()) }
     single { SendGiftTransactionCreateUseCase(get()) }
@@ -151,6 +154,7 @@ val useCaseModule = module {
     factory { TradeFilterItemMapper(get(), get()) }
     factory { PaymentIdToAvailablePaymentOptionMapper(get()) }
     factory { TradeFilterMapper() }
+    factory { RandomStringGenerator() }
     factory {
         ChatMessageMapper(
             get(),

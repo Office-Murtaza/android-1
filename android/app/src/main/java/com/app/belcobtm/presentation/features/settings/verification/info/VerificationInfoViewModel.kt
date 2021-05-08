@@ -32,6 +32,7 @@ class VerificationInfoViewModel(
                         statusColor = getColorByStatus(it.status),
                         statusIcon = getStatusIcon(it.status),
                         buttonText = getButtonTextByStatus(it.status),
+                        bannerIcon = getBannerIcon(it.status),
                         statusTextCode = it.status.code,
                         txLimit = priceFormatter.format(it.txLimit),
                         dailyLimit = priceFormatter.format(it.dayLimit),
@@ -45,6 +46,13 @@ class VerificationInfoViewModel(
             }
         )
     }
+
+    private fun getBannerIcon(status: VerificationStatus): Int =
+        when (status) {
+            VerificationStatus.VERIFICATION_PENDING,
+            VerificationStatus.VIP_VERIFICATION_PENDING -> R.drawable.ic_time_outlined
+            else -> R.drawable.ic_warning_outlined
+        }
 
     private fun getBannerMessage(status: VerificationStatus): Int =
         when (status) {
@@ -129,6 +137,7 @@ data class VerificationInfoState(
     val buttonText: Int = R.string.verification_verify,
     @StringRes val statusTextCode: Int = 0,
     @DrawableRes val statusIcon: Int = 0,
+    @DrawableRes val bannerIcon: Int = R.drawable.ic_warning_outlined,
     val txLimit: String = "",
     val dailyLimit: String = "",
     val isButtonEnabled: Boolean = false,
