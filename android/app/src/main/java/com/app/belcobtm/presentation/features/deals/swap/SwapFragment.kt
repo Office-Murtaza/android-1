@@ -7,6 +7,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.Observer
 import com.app.belcobtm.R
 import com.app.belcobtm.databinding.FragmentSwapBinding
+import com.app.belcobtm.domain.Failure
 import com.app.belcobtm.domain.wallet.LocalCoinType
 import com.app.belcobtm.domain.wallet.item.CoinDataItem
 import com.app.belcobtm.domain.wallet.item.isEthRelatedCoinCode
@@ -109,8 +110,22 @@ class SwapFragment : BaseFragment<FragmentSwapBinding>() {
             AlertHelper.showToastShort(requireContext(), R.string.swap_screen_success_message)
             popBackStack()
         })
-        viewModel.initLoadingData.listen(success = {}) // just listen
-        viewModel.coinsDetailsLoadingState.listen(success = {}) // just listen
+        viewModel.initLoadingData.listen(error = {
+            when (it) {
+                is Failure.OperationCannotBePerformed -> {
+                    updateContentContainer(isErrorVisible = true)
+                    baseBinding.errorView.errorImageView.setImageResource(R.drawable.ic_screen_state_something_wrong)
+                    baseBinding.errorView.errorTitleView.setText(R.string.cannot_perform_swap_error)
+                    baseBinding.errorView.errorDescriptionView.setText(R.string.cannot_perform_swap_error_message)
+                    baseBinding.errorView.errorRetryButtonView.toggle(false)
+                }
+                else -> {
+                    hideKeyboard()
+                    baseErrorHandler(it)
+                }
+            }
+        })
+        viewModel.coinsDetailsLoadingState.listen()
         viewModel.coinToSendModel.observe(viewLifecycleOwner, Observer { coin ->
             val coinCode = coin.coinCode
             val coinFee = coin.coinFee.toStringCoin()
