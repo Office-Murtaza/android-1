@@ -40,7 +40,7 @@ class TradeReserveFragment : BaseFragment<FragmentTradeReserveBinding>() {
             } else {
                 getString(R.string.text_usd, "0.0")
             }
-            viewModel.validateCryptoAmount(cryptoAmount)
+            viewModel.selectedAmount = cryptoAmount
         }
     }
 
@@ -100,9 +100,6 @@ class TradeReserveFragment : BaseFragment<FragmentTradeReserveBinding>() {
                 InputFieldState.NotEnoughETHError -> amountCryptoView.error =
                     getString(R.string.trade_reserve_screen_not_enough_eth)
             }
-        })
-        viewModel.submitButtonEnable.observe(viewLifecycleOwner, Observer { enable ->
-            reserveButtonView.isEnabled = enable
         })
     }
 

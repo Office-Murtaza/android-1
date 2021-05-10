@@ -12,7 +12,7 @@ interface TradeApi {
     fun getTradesAsync(@Path("userId") userId: Int): Deferred<Response<TradesResponse>>
 
     @POST("user/{userId}/location")
-    fun sendLocation(
+    fun sendLocationAsync(
         @Path("userId") userId: Int,
         @Body body: UserLocationRequest
     ): Deferred<Response<Unit>>

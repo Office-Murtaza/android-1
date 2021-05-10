@@ -30,7 +30,7 @@ class TradeApiService(
     suspend fun sendLocation(location: Location): Either<Failure, Unit> =
         withErrorHandling {
             val response =
-                tradeApi.sendLocation(
+                tradeApi.sendLocationAsync(
                     prefHelper.userId,
                     UserLocationRequest(location.latitude, location.longitude)
                 ).await()
