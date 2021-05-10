@@ -157,6 +157,15 @@ final class CoinDetailsViewController: ModuleViewController<CoinDetailsPresenter
       .asObservable()
       .bind(to: refreshControl.rx.isRefreshing)
       .disposed(by: disposeBag)
+    
+    presenter.state
+      .map { $0.isLoading }
+      .asObservable()
+      .observeOn(MainScheduler())
+      .distinctUntilChanged()
+      .bind(to: view.rx.showHUD)
+      .disposed(by: disposeBag)
+    
   }
   
   override func setupBindings() {
