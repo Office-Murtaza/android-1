@@ -1,8 +1,8 @@
 package com.belco.server.rest;
 
-import com.belco.server.dto.CoinDTO;
 import com.belco.server.dto.TransactionDetailsDTO;
 import com.belco.server.dto.WalletDTO;
+import com.belco.server.model.Response;
 import com.belco.server.service.CoinService;
 import com.belco.server.service.WalletService;
 import com.belco.server.util.Util;
@@ -10,12 +10,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import wallet.core.jni.BitcoinAddress;
-import wallet.core.jni.CoinType;
-import wallet.core.jni.HDWallet;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -37,24 +33,14 @@ public class WalletController {
     }
 
     @GetMapping("/generate")
-    public ResponseEntity<WalletDTO> generate(@RequestParam long timestamp, @RequestParam String signature) {
+    public Response generate(@RequestParam long timestamp, @RequestParam String signature) {
         String signature2 = Util.sign("generate", "", timestamp, apiKey, apiSecret);
 
         if (enabled && !signature2.equals(signature)) {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+            return Response.forbidden();
         }
 
-        HDWallet hdWallet = new HDWallet(128, "");
-
-        List<CoinDTO> coins = new ArrayList<>();
-        coins.add(new CoinDTO(CoinService.CoinEnum.BTC.name(), new BitcoinAddress(HDWallet.getPublicKeyFromExtended(walletService.getXpub(hdWallet, CoinType.BITCOIN), CoinType.BITCOIN, walletService.getPath(CoinType.BITCOIN)), CoinType.BITCOIN.p2pkhPrefix()).description(), hdWallet.getKeyForCoin(CoinType.BITCOIN)));
-        coins.add(new CoinDTO(CoinService.CoinEnum.ETH.name(), CoinType.ETHEREUM.deriveAddress(hdWallet.getKeyForCoin(CoinType.ETHEREUM)), hdWallet.getKeyForCoin(CoinType.ETHEREUM)));
-
-        WalletDTO dto = new WalletDTO();
-        dto.setSeedEncrypted(hdWallet.mnemonic());
-        dto.setCoins(coins);
-
-        return ResponseEntity.ok(dto);
+        return Response.ok(walletService.generateNewWallet());
     }
 
     @GetMapping("/coin/{coin}/validate")

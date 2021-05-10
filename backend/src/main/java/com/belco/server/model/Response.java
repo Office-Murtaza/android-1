@@ -50,4 +50,8 @@ public class Response {
     public static Response validationError(String message) {
         return Response.error(new com.belco.server.model.Error(2, message));
     }
+
+    public static Response forbidden() {
+        return Response.error(new com.belco.server.model.Error(403, null));
+    }
 }

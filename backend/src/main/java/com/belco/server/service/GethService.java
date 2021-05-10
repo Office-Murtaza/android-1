@@ -332,6 +332,30 @@ public class GethService {
         }
     }
 
+    public void processBlock(int blockNumber) {
+        try {
+            List<UpdateOneModel<Document>> ethTxs = new ArrayList<>();
+            List<UpdateOneModel<Document>> tokenTxs = new ArrayList<>();
+
+            EthBlock.Block block = web3.ethGetBlockByNumber(new DefaultBlockParameterNumber(blockNumber), true).send().getBlock();
+
+            block.getTransactions().stream().forEach(e -> {
+                org.web3j.protocol.core.methods.response.Transaction tx = ((EthBlock.TransactionObject) e.get()).get();
+
+                if(tx.getHash().equalsIgnoreCase("0x8a86366222224c63166c9a80946f35c0a9959cfa7fd60fceec54f944bf96fbf1")) {
+                    long timestamp = block.getTimestamp().longValue() * 1000;
+
+                    fetchEthTransaction(tx, timestamp, ethTxs, tokenTxs);
+                }
+            });
+
+            bulkWrite(ETH_TX_COLL, ethTxs);
+            bulkWrite(TOKEN_TX_COLL, tokenTxs);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     public Integer getNonce(String address) {
         if (nodeService.isNodeAvailable(ETHEREUM)) {
             try {

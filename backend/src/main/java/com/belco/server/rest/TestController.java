@@ -58,6 +58,13 @@ public class TestController {
         return Response.ok(res);
     }
 
+    @GetMapping("/block-details")
+    public Response getBlockDetails(@RequestParam Integer blockNumber) {
+        gethService.processBlock(blockNumber);
+
+        return Response.ok(true);
+    }
+
     @GetMapping("/stake-details")
     public Response getStakeDetails(@RequestParam String address) {
         JSONObject json = new JSONObject();
