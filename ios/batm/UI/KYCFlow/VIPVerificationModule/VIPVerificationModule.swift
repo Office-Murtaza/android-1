@@ -5,5 +5,5 @@ protocol VIPVerificationModule: class {
 }
 protocol VIPVerificationModuleDelegate: class {
   func showPicker(from module: VIPVerificationModule)
-  func didFinishVIPVerification(with kyc: KYC?)
+  func didFinishVIPVerification()
 }

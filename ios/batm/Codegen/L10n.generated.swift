@@ -601,6 +601,8 @@ extension L.Error {
 extension L.KYC {
 
   struct Button {
+    static let addID = "k_y_c.button.add_i_d"
+    static let addIDSelfie = "k_y_c.button.add_i_d_selfie"
     static let verify = "k_y_c.button.verify"
     static let vipVerify = "k_y_c.button.vip_verify"
   }

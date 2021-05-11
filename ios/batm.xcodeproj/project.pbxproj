@@ -19,6 +19,7 @@
 		0522EB632559883B0028CD51 /* SupportModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0522EB622559883B0028CD51 /* SupportModule.swift */; };
 		0522EB67255988490028CD51 /* SupportAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0522EB66255988490028CD51 /* SupportAssembly.swift */; };
 		0522EB6E25598C650028CD51 /* SendHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0522EB6D25598C650028CD51 /* SendHelper.swift */; };
+		052AFB1E2646F04B00CCFA4A /* String+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 052AFB1D2646F04B00CCFA4A /* String+Extension.swift */; };
 		055A9B72257552B700A8E8F1 /* DealsFlow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 055A9B71257552B700A8E8F1 /* DealsFlow.swift */; };
 		055A9B76257552C100A8E8F1 /* DealsFlowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 055A9B75257552C100A8E8F1 /* DealsFlowController.swift */; };
 		055A9B7A257552D000A8E8F1 /* DealsFlow+Dependencies.swift in Sources */ = {isa = PBXBuildFile; fileRef = 055A9B79257552D000A8E8F1 /* DealsFlow+Dependencies.swift */; };
@@ -36,6 +37,11 @@
 		055A9BC52575874D00A8E8F1 /* NotificationsTableViewDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 055A9BC42575874D00A8E8F1 /* NotificationsTableViewDataSource.swift */; };
 		055A9BCB2575875D00A8E8F1 /* NotificationsTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 055A9BCA2575875D00A8E8F1 /* NotificationsTableView.swift */; };
 		0561D19325A3804400C1CF70 /* UIApplication+Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0561D19225A3804400C1CF70 /* UIApplication+Helper.swift */; };
+		059BB10E2625B2A9008E6212 /* KYCStatusCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 059BB10D2625B2A9008E6212 /* KYCStatusCell.swift */; };
+		059BB1102625B2FF008E6212 /* KYCDetailsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 059BB10F2625B2FF008E6212 /* KYCDetailsCell.swift */; };
+		059BB1132625B58B008E6212 /* KYCTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 059BB1122625B58B008E6212 /* KYCTableView.swift */; };
+		059BB1152625B5BB008E6212 /* KYCInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 059BB1142625B5BB008E6212 /* KYCInfoView.swift */; };
+		059BB1172625B81C008E6212 /* KYCDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 059BB1162625B81C008E6212 /* KYCDataSource.swift */; };
 		05A52BB1258D20E800F44A4D /* PropertyWrappers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05A52BB0258D20E800F44A4D /* PropertyWrappers.swift */; };
 		05A52BB5258D211F00F44A4D /* UserDefaultsHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05A52BB4258D211F00F44A4D /* UserDefaultsHelper.swift */; };
 		05A52BF5258D225200F44A4D /* OptionalHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05A52BF4258D225200F44A4D /* OptionalHelper.swift */; };
@@ -677,6 +683,7 @@
 		0522EB622559883B0028CD51 /* SupportModule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SupportModule.swift; sourceTree = "<group>"; };
 		0522EB66255988490028CD51 /* SupportAssembly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SupportAssembly.swift; sourceTree = "<group>"; };
 		0522EB6D25598C650028CD51 /* SendHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendHelper.swift; sourceTree = "<group>"; };
+		052AFB1D2646F04B00CCFA4A /* String+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Extension.swift"; sourceTree = "<group>"; };
 		055A9B71257552B700A8E8F1 /* DealsFlow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DealsFlow.swift; sourceTree = "<group>"; };
 		055A9B75257552C100A8E8F1 /* DealsFlowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DealsFlowController.swift; sourceTree = "<group>"; };
 		055A9B79257552D000A8E8F1 /* DealsFlow+Dependencies.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DealsFlow+Dependencies.swift"; sourceTree = "<group>"; };
@@ -694,6 +701,11 @@
 		055A9BC42575874D00A8E8F1 /* NotificationsTableViewDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationsTableViewDataSource.swift; sourceTree = "<group>"; };
 		055A9BCA2575875D00A8E8F1 /* NotificationsTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationsTableView.swift; sourceTree = "<group>"; };
 		0561D19225A3804400C1CF70 /* UIApplication+Helper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIApplication+Helper.swift"; sourceTree = "<group>"; };
+		059BB10D2625B2A9008E6212 /* KYCStatusCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KYCStatusCell.swift; sourceTree = "<group>"; };
+		059BB10F2625B2FF008E6212 /* KYCDetailsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KYCDetailsCell.swift; sourceTree = "<group>"; };
+		059BB1122625B58B008E6212 /* KYCTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KYCTableView.swift; sourceTree = "<group>"; };
+		059BB1142625B5BB008E6212 /* KYCInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KYCInfoView.swift; sourceTree = "<group>"; };
+		059BB1162625B81C008E6212 /* KYCDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KYCDataSource.swift; sourceTree = "<group>"; };
 		05A52BB0258D20E800F44A4D /* PropertyWrappers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PropertyWrappers.swift; sourceTree = "<group>"; };
 		05A52BB4258D211F00F44A4D /* UserDefaultsHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultsHelper.swift; sourceTree = "<group>"; };
 		05A52BF4258D225200F44A4D /* OptionalHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionalHelper.swift; sourceTree = "<group>"; };
@@ -1442,6 +1454,26 @@
 				055A9BC42575874D00A8E8F1 /* NotificationsTableViewDataSource.swift */,
 			);
 			path = DataSource;
+			sourceTree = "<group>";
+		};
+		059BB10C2625B283008E6212 /* TableViewRelated */ = {
+			isa = PBXGroup;
+			children = (
+				059BB1112625B57E008E6212 /* Cells */,
+				059BB1122625B58B008E6212 /* KYCTableView.swift */,
+				059BB1162625B81C008E6212 /* KYCDataSource.swift */,
+			);
+			path = TableViewRelated;
+			sourceTree = "<group>";
+		};
+		059BB1112625B57E008E6212 /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				059BB10D2625B2A9008E6212 /* KYCStatusCell.swift */,
+				059BB10F2625B2FF008E6212 /* KYCDetailsCell.swift */,
+				059BB1142625B5BB008E6212 /* KYCInfoView.swift */,
+			);
+			path = Cells;
 			sourceTree = "<group>";
 		};
 		05E6A83F2601602F00479414 /* UIColor+Extensions */ = {
@@ -2206,6 +2238,7 @@
 		DB4D7BC52409A157008C2BD5 /* KYCModule */ = {
 			isa = PBXGroup;
 			children = (
+				059BB10C2625B283008E6212 /* TableViewRelated */,
 				DB4D7BC72409A17E008C2BD5 /* KYCViewController.swift */,
 				DB4D7BC82409A17E008C2BD5 /* KYCPresenter.swift */,
 				DB4D7BC62409A17E008C2BD5 /* KYCModule.swift */,
@@ -2675,6 +2708,7 @@
 			isa = PBXGroup;
 			children = (
 				DB904A9D22C00E2A007CB734 /* RxFlow+Extensions.swift */,
+				052AFB1D2646F04B00CCFA4A /* String+Extension.swift */,
 				DB96168B22C517C80078E92D /* PhoneNumberKit+Extensions.swift */,
 				680B948625F69A5700819B2F /* Int+Extensions.swift */,
 				DB96168D22C52E3D0078E92D /* Observable+Extensions.swift */,
@@ -3727,6 +3761,7 @@
 				DBA7A4A5235662AD000BE997 /* CoinSellModule.swift in Sources */,
 				23A6B7B9263B515000DE2738 /* MyInfoSuccessRateView.swift in Sources */,
 				23A6B7C6263B515000DE2738 /* P2PPresenter.swift in Sources */,
+				059BB1172625B81C008E6212 /* KYCDataSource.swift in Sources */,
 				DB5B2DE6230A769300821713 /* CoinDetailsAssembly.swift in Sources */,
 				23A6B7BF263B515000DE2738 /* P2PCreateTradeViewController.swift in Sources */,
 				DBADDE372438DD6600BFD806 /* CoinExchangeViewController.swift in Sources */,
@@ -3754,6 +3789,7 @@
 				DB96171422C75E950078E92D /* Requests.swift in Sources */,
 				DBBD6AA724F723E800610A4E /* WalletHeaderView.swift in Sources */,
 				23A6B7C2263B515000DE2738 /* P2PFiltersViewController.swift in Sources */,
+				059BB1132625B58B008E6212 /* KYCTableView.swift in Sources */,
 				DB3C03D222CB5AA00036F779 /* RecoverModule.swift in Sources */,
 				0561D19325A3804400C1CF70 /* UIApplication+Helper.swift in Sources */,
 				DB382813240CF7D600418D3D /* VerificationModule.swift in Sources */,
@@ -4112,6 +4148,7 @@
 				DBBF299822D3748C00A5DE6A /* UICollectionView+ReusableView.swift in Sources */,
 				DBA4F4A724CE2F1000E6FAAB /* PinCodeKeyboardBackButton.swift in Sources */,
 				DB5B2DDC230A74D000821713 /* CoinDetailsFlow.swift in Sources */,
+				059BB1102625B2FF008E6212 /* KYCDetailsCell.swift in Sources */,
 				DBC68CBF22F87A0A00473247 /* UpdatePhoneFormView.swift in Sources */,
 				DB96174422C7D1070078E92D /* BTMWalletConverter.swift in Sources */,
 				23A6B793263B515000DE2738 /* P2PTradeDetailsEditViewController.swift in Sources */,
@@ -4190,6 +4227,7 @@
 				055A9B72257552B700A8E8F1 /* DealsFlow.swift in Sources */,
 				DB2F250C2360687800274C60 /* CoinSellDetailsCurrentAddressModule.swift in Sources */,
 				DB904AA322C00FC7007CB734 /* UIView+MBProgressHUD.swift in Sources */,
+				052AFB1E2646F04B00CCFA4A /* String+Extension.swift in Sources */,
 				DB83663922FAB7CE00454F5C /* UpdatePinFlow.swift in Sources */,
 				DB9616BD22C67FCA0078E92D /* AccountStorage.swift in Sources */,
 				DBCAC39422F7384F00B77841 /* SettingsCell.swift in Sources */,
@@ -4202,6 +4240,7 @@
 				DB4B9DCB22E5A4710016746A /* GoogleServicesInitializer.swift in Sources */,
 				DB51F31824913BA7007F47B4 /* CreateEditTradeTypeView.swift in Sources */,
 				DBECA63922F7FDB0002C2610 /* ShowPhoneAssembly.swift in Sources */,
+				059BB10E2625B2A9008E6212 /* KYCStatusCell.swift in Sources */,
 				DB2F25182360A8F400274C60 /* TransactionDetailsAssembly.swift in Sources */,
 				DB3C03DF22CB60960036F779 /* RecoverAssembly.swift in Sources */,
 				DB96173522C7B0C90078E92D /* BTMCoinRecord+CoreDataClass.swift in Sources */,
@@ -4244,6 +4283,7 @@
 				DB6A578922C214F500DEE38A /* UISnapKit+Extensions.swift in Sources */,
 				DB83624824C1E11A00A5FEFC /* PhoneVerificationFormView.swift in Sources */,
 				DB83663122FAA76B00454F5C /* UnlinkPresenter.swift in Sources */,
+				059BB1152625B5BB008E6212 /* KYCInfoView.swift in Sources */,
 				DB8F078824103E8F00770643 /* PickerFlowController.swift in Sources */,
 				DBA6845522E45AAC0079429E /* SettingsPresenter.swift in Sources */,
 				DB2F250F2360687800274C60 /* CoinSellDetailsCurrentAddressAssembly.swift in Sources */,

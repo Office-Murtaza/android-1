@@ -1,11 +1,11 @@
 import Foundation
 
-protocol SettingsModule: class {}
-protocol SettingsModuleDelegate: class {
-  func didSelectWallet()
-  func didSelectSecurity()
-  func didSelectKYC(_ kyc: KYC)
-  func didSelectAbout()
-  func didSelectSupport()
-  func didSelectNotifications()
+protocol SettingsModule: AnyObject {}
+protocol SettingsModuleDelegate: AnyObject {
+    func didSelectWallet()
+    func didSelectSecurity()
+    func didSelectKYC()
+    func didSelectAbout()
+    func didSelectSupport()
+    func didSelectNotifications()
 }

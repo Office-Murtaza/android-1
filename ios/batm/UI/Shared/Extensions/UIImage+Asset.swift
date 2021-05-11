@@ -23,4 +23,14 @@ extension UIImage {
         static let available = UIImage(named: "available")
         static let withdrawn = UIImage(named: "withdrawn")
     }
+    
+    enum KYCStatus {
+        static let notVerified = UIImage(named: "not_verified")
+        static let verificationPending = UIImage(named: "pending")
+        static let verificationRejected = UIImage(named: "rejected")
+        static let verified = UIImage(named: "verified")
+        static let vipVerificationPending = UIImage(named: "pending")
+        static let vipVerificationRejected = UIImage(named: "rejected")
+        static let vipVerified = UIImage(named: "vip_verified")
+    }
 }
