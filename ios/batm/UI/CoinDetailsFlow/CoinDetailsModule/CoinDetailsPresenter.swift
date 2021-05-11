@@ -83,7 +83,7 @@ final class CoinDetailsPresenter: ModulePresenter, CoinDetailsModule {
             .filterNil()
             .doOnNext { [store] _ in store.action.accept(.startFetching) }
             .flatMap { [unowned self] in
-                self.track(self.getTransactions(for: $0), trackers: [self.errorTracker])
+                self.track(self.getTransactionsAfterRefresh(for: $0), trackers: [self.errorTracker])
             }
             .subscribe()
             .disposed(by: disposeBag)
@@ -96,7 +96,7 @@ final class CoinDetailsPresenter: ModulePresenter, CoinDetailsModule {
           .filterNil()
           .doOnNext { [store] _ in store.action.accept(.startFetching) }
           .flatMap { [unowned self] in
-              self.track(self.getTransactions(for: $0), trackers: [self.errorTracker])
+              self.track(self.getTransactionsAfterRefresh(for: $0), trackers: [self.errorTracker])
           }
           .subscribe()
           .disposed(by: disposeBag)
@@ -282,7 +282,10 @@ final class CoinDetailsPresenter: ModulePresenter, CoinDetailsModule {
     }
     
     private func getTransactions(for type: CustomCoinType, from index: Int = 0) -> Single<Transactions> {
-        return usecase.getTransactions(for: type, from: index)
+      
+      store.action.accept(.startLoading)
+    
+      return usecase.getTransactions(for: type, from: index)
             .do(onSuccess: { [store] in
                 if index > 0 {
                     store.action.accept(.finishFetchingNextTransactions($0))
@@ -290,9 +293,26 @@ final class CoinDetailsPresenter: ModulePresenter, CoinDetailsModule {
                     store.action.accept(.finishFetchingTransactions($0))
                 }
                 store.action.accept(.updatePage(index))
+                store.action.accept(.finishLoading)
             },
             onError: { [store] _ in
                 store.action.accept(.finishFetching)
+                store.action.accept(.finishLoading)
             })
     }
+  
+  private func getTransactionsAfterRefresh(for type: CustomCoinType, from index: Int = 0) -> Single<Transactions> {
+      return usecase.getTransactions(for: type, from: index)
+          .do(onSuccess: { [store] in
+              if index > 0 {
+                  store.action.accept(.finishFetchingNextTransactions($0))
+              } else {
+                  store.action.accept(.finishFetchingTransactions($0))
+              }
+              store.action.accept(.updatePage(index))
+          },
+          onError: { [store] _ in
+              store.action.accept(.finishFetching)
+          })
+  }
 }
