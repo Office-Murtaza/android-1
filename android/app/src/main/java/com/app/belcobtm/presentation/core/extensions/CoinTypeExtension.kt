@@ -52,6 +52,8 @@ fun CoinType.unit(): Long = when (this) {
     CoinType.BITCOIN,
     CoinType.BITCOINCASH,
     CoinType.LITECOIN,
+    CoinType.DASH,
+    CoinType.DOGECOIN,
     CoinType.BINANCE -> 100_000_000
     CoinType.ETHEREUM -> 1_000_000_000_000_000_000
     CoinType.TRON, CoinType.XRP -> 1_000_000

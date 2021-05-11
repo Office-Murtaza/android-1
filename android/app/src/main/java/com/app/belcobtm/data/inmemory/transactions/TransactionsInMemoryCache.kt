@@ -21,7 +21,10 @@ class TransactionsInMemoryCache {
 
     fun update(response: TransactionDetailsResponse) {
         val transactions = HashMap(cache.value.transactions)
-        transactions[response.txId ?: response.txDbId.orEmpty()] = response.mapToDataItem()
-        cache.value = cache.value.copy(transactions = transactions)
+        val id = response.txId ?: response.txDbId
+        id?.let {
+            transactions[id] = response.mapToDataItem()
+            cache.value = cache.value.copy(transactions = transactions)
+        }
     }
 }
