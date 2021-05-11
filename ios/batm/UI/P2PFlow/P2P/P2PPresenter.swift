@@ -11,6 +11,7 @@ class P2PPresenter: ModulePresenter, P2PModule {
   var accountStorage: AccountStorage?
   var walletUseCase: WalletUsecase?
   var userId: Int?
+  var tradeSocketService: TradeSocketService?
   
   var isCreationError = BehaviorRelay<Bool>(value: false)
   var tradeSuccessMessage = BehaviorRelay<String>(value: "")
@@ -38,6 +39,9 @@ class P2PPresenter: ModulePresenter, P2PModule {
       .disposed(by: disposeBag)
     
     fetchDataRelay.accept(())
+    
+    
+    tradeSocketService?.start()
     
   }
   
