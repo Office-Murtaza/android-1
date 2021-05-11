@@ -12,6 +12,7 @@ import com.app.belcobtm.data.cloud.storage.FirebaseCloudStorage.Companion.CHAT_S
 import com.app.belcobtm.data.core.FileHelper
 import com.app.belcobtm.data.core.NetworkUtils
 import com.app.belcobtm.data.core.TransactionHashHelper
+import com.app.belcobtm.data.core.UnlinkHandler
 import com.app.belcobtm.data.disk.AssetsDataStore
 import com.app.belcobtm.data.disk.database.AppDatabase
 import com.app.belcobtm.data.disk.shared.preferences.SharedPreferencesHelper
@@ -128,11 +129,13 @@ val dataModule = module {
         FirebaseCloudStorage(get<FirebaseStorage>().reference.child("chat"))
     }
     single<CloudAuth>() { FirebaseCloudAuth(Firebase.auth) }
-    single { TradeInMemoryCache(get(), get(), GlobalScope, get(), get(), get())
+    single {
+        TradeInMemoryCache(get(), get(), GlobalScope, get(), get(), get())
     }
     single { DistanceCalculator(get()) }
     single<LocationProvider> { ServiceLocationProvider(androidApplication()) }
     single { TransactionsInMemoryCache() }
+    single { UnlinkHandler(get(), get(authenticatorQualified), get(), get()) }
     factory { TradesResponseToTradeDataMapper(get(), get(), get()) }
     factory { OrderResponseToOrderMapper() }
     factory { TradeResponseToTradeMapper() }

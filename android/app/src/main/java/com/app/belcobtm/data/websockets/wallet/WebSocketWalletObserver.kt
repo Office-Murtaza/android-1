@@ -1,5 +1,6 @@
 package com.app.belcobtm.data.websockets.wallet
 
+import com.app.belcobtm.data.core.UnlinkHandler
 import com.app.belcobtm.data.disk.database.AccountDao
 import com.app.belcobtm.data.disk.shared.preferences.SharedPreferencesHelper
 import com.app.belcobtm.data.rest.authorization.AuthApi
@@ -32,7 +33,8 @@ class WebSocketWalletObserver(
     private val deserializer: ResponseDeserializer<StompSocketResponse>,
     private val moshi: Moshi,
     private val preferencesHelper: SharedPreferencesHelper,
-    private val authApi: AuthApi
+    private val authApi: AuthApi,
+    private val unlinkHandler: UnlinkHandler
 ) : WalletObserver {
 
     private companion object {
@@ -148,19 +150,26 @@ class WebSocketWalletObserver(
         val isTokenExpired = socketResponse.headers[HEADER_MESSAGE_KEY]
             .orEmpty()
             .contains(AUTH_ERROR_MESSAGE)
-        if (isTokenExpired) {
-            val request = RefreshTokenRequest(preferencesHelper.refreshToken)
-            val response = authApi.refereshToken(request).execute()
-            val responseBody = response.body()
-            if (response.code() == HttpURLConnection.HTTP_OK && responseBody != null) {
-                preferencesHelper.processAuthResponse(responseBody)
+        if (!isTokenExpired) {
+            processError(Failure.ServerError())
+            return
+        }
+        val request = RefreshTokenRequest(preferencesHelper.refreshToken)
+        val response = authApi.refereshToken(request).execute()
+        val body = response.body()
+        val code = response.code()
+        when {
+            code == HttpURLConnection.HTTP_OK && body != null -> {
+                preferencesHelper.processAuthResponse(body)
                 disconnect()
                 connect()
-            } else {
-                balanceInfo.send(WalletBalance.Error(Failure.ServerError()))
             }
-        } else {
-            processError(Failure.ServerError())
+            code == HttpURLConnection.HTTP_FORBIDDEN || code == HttpURLConnection.HTTP_UNAUTHORIZED -> {
+                unlinkHandler.performUnlink()
+                disconnect()
+            }
+            else ->
+                balanceInfo.send(WalletBalance.Error(Failure.ServerError()))
         }
     }
 
