@@ -609,6 +609,10 @@ extension L.KYC {
 
   struct Header {
   }
+
+  struct InfoView {
+    static let verificationRejectedTitle = "k_y_c.info_view.verification_rejected_title"
+  }
 }
 extension L.KYC.Header {
 
@@ -1066,6 +1070,10 @@ extension L.Support {
   }
 }
 extension L.Swap {
+
+  struct Alert {
+    static let coinsNotEnough = "swap.alert.coins_not_enough"
+  }
 
   struct Usd {
     static let title = "swap.usd.title"

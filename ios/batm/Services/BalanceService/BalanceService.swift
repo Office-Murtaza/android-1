@@ -53,7 +53,7 @@ class BalanceServiceImpl: BalanceService {
   func getCoinsBalance() -> Observable<CoinsBalance> {
     return balanceProperty.asObservable().filter { balance -> Bool in
       return balance.coins.isNotEmpty
-    };
+    }
   }
   
   func subscribeSystemNotifications() {
@@ -122,7 +122,7 @@ extension BalanceServiceImpl: BalanceServiceWebSocket {
         self.phone = phoneNumber.phoneNumber
         return self.walletStorage.get()
           .map { $0.coins.filter { $0.isVisible } }
-          .flatMap{ Single.just($0)}
+          .flatMap{ Single.just($0) }
       }.subscribe { [weak self] coins in
         let activeCoins = coins.map { $0.type.code }.joined(separator: ",")
         guard let phone = self?.phone else { return }

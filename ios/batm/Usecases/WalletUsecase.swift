@@ -83,7 +83,7 @@ class WalletUsecaseImpl: WalletUsecase, HasDisposeBag {
   }
   
   func getCoinsList() -> Single<[BTMCoin]> {
-    return walletStorage.get().map { $0.coins.sorted(by: { $0.index < $1.index }) }
+    return walletStorage.get().map { $0.coins.filter { $0.isVisible }.sorted(by: { $0.index < $1.index }) }
   }
   
   func createTrade(data: P2PCreateTradeDataModel) -> Single<Trade> {
