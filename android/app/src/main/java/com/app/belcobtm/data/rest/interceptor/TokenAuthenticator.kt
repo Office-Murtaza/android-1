@@ -1,16 +1,10 @@
 package com.app.belcobtm.data.rest.interceptor
 
 import android.content.Context
-import android.content.Intent
-import android.os.Bundle
-import com.app.belcobtm.data.disk.database.AccountDao
+import com.app.belcobtm.data.core.UnlinkHandler
 import com.app.belcobtm.data.disk.shared.preferences.SharedPreferencesHelper
 import com.app.belcobtm.data.rest.authorization.AuthApi
 import com.app.belcobtm.data.rest.authorization.request.RefreshTokenRequest
-import com.app.belcobtm.data.rest.settings.SettingsApi
-import com.app.belcobtm.data.websockets.wallet.WalletConnectionHandler
-import com.app.belcobtm.presentation.features.HostActivity
-import com.app.belcobtm.presentation.features.HostActivity.Companion.FORCE_UNLINK_KEY
 import kotlinx.coroutines.runBlocking
 import okhttp3.Authenticator
 import okhttp3.Request
@@ -23,9 +17,7 @@ class TokenAuthenticator(
     private val context: Context,
     private val authApi: AuthApi,
     private val prefsHelper: SharedPreferencesHelper,
-    private val settingsApi: SettingsApi,
-    private val connectionHandler: WalletConnectionHandler,
-    private val daoAccount: AccountDao
+    private val unlinkHandler: UnlinkHandler
 ) : Authenticator {
 
     override fun authenticate(route: Route?, response: Response): Request? {
@@ -50,17 +42,8 @@ class TokenAuthenticator(
             response.code() == HttpURLConnection.HTTP_FORBIDDEN ||
                     response.code() == HttpURLConnection.HTTP_UNAUTHORIZED -> {
                 runBlocking {
-                    settingsApi.unlink(prefsHelper.userId.toString()).await()
-                    daoAccount.clearTable()
-                    prefsHelper.clearData()
-                    connectionHandler.disconnect()
+                    unlinkHandler.performUnlink()
                 }
-                context.startActivity(Intent(context, HostActivity::class.java).apply {
-                    flags = Intent.FLAG_ACTIVITY_CLEAR_TASK.or(Intent.FLAG_ACTIVITY_NEW_TASK)
-                    putExtras(Bundle().apply {
-                        putBoolean(FORCE_UNLINK_KEY, true)
-                    })
-                })
                 null
             }
             else -> null
