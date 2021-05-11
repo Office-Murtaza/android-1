@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.app.belcobtm.R
 import com.app.belcobtm.data.disk.database.AccountDao
+import com.app.belcobtm.data.disk.database.AccountEntity
 import com.app.belcobtm.domain.Failure
 import com.app.belcobtm.domain.transaction.interactor.CheckXRPAddressActivatedUseCase
 import com.app.belcobtm.domain.transaction.interactor.SwapUseCase
@@ -80,7 +81,7 @@ class SwapViewModel(
     fun fetchInitialData() {
         viewModelScope.launch {
             _initLoadingData.value = LoadingData.Loading(Unit)
-            val allCoins = accountDao.getItemList().orEmpty()
+            val allCoins = accountDao.getItemList().orEmpty().filter(AccountEntity::isEnabled)
             if (allCoins.isNotEmpty()) {
                 val coinCodesList = allCoins.map { it.type.name }
                 getFreshCoinsUseCase(
@@ -89,11 +90,12 @@ class SwapViewModel(
                         originCoinsData.clear()
                         originCoinsData.addAll(coinsDataList)
                         _initLoadingData.value = LoadingData.Success(Unit)
-                        // move to next step
-                        updateCoins(
-                            originCoinsData.first { it.code == LocalCoinType.BTC.name },
-                            originCoinsData.first { it.code == LocalCoinType.USDC.name }
-                        )
+                        if (originCoinsData.size >= 2) {
+                            // move to next step
+                            updateCoins(originCoinsData[0], originCoinsData[1])
+                        } else {
+                            _initLoadingData.value = LoadingData.Error(Failure.OperationCannotBePerformed)
+                        }
                     },
                     onError = { _initLoadingData.value = LoadingData.Error(Failure.ServerError()) }
                 )
@@ -256,7 +258,7 @@ class SwapViewModel(
     private fun validateCoinsAmount(): Boolean {
         val sendAmount = sendCoinAmount.value ?: return false
         val receiveAmount = receiveCoinAmount.value ?: return false
-        val amountsArePositive =  sendAmount > 0 && receiveAmount > 0
+        val amountsArePositive = sendAmount > 0 && receiveAmount > 0
         return amountsArePositive.also { _submitEnabled.value = it }
     }
 
