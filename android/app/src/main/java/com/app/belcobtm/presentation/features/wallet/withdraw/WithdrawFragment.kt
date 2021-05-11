@@ -158,7 +158,7 @@ class WithdrawFragment : BaseFragment<FragmentWithdrawBinding>() {
             amountCryptoView.showError(R.string.balance_amount_too_small)
         }
 
-        if (amountCryptoView.getDouble() >= viewModel.getMaxValue()) {
+        if (amountCryptoView.getDouble() > viewModel.getMaxValue()) {
             errors++
             amountCryptoView.showError(R.string.balance_amount_exceeded)
         }

@@ -13,6 +13,8 @@ object CoinTypeExtension {
         CoinType.ETHEREUM.code() -> CoinType.ETHEREUM
         CoinType.TRON.code() -> CoinType.TRON
         CoinType.XRP.code() -> CoinType.XRP
+        CoinType.DOGECOIN.code() -> CoinType.DOGECOIN
+        CoinType.DASH.code() -> CoinType.DASH
         else -> null
     }
 }
@@ -27,6 +29,8 @@ fun CoinType.verboseValue(): String = when (this) {
     CoinType.BINANCE -> "Binance"
     CoinType.TRON -> "Tron"
     CoinType.XRP -> "Ripple"
+    CoinType.DOGECOIN -> "Doge"
+    CoinType.DASH -> "Dash"
     else -> ""
 }
 
@@ -38,6 +42,8 @@ fun CoinType.code(): String = when (this) {
     CoinType.BINANCE -> "BNB"
     CoinType.TRON -> "TRX"
     CoinType.XRP -> "XRP"
+    CoinType.DOGECOIN -> "Doge"
+    CoinType.DASH -> "Dash"
     else -> ""
 }
 
@@ -51,7 +57,6 @@ fun CoinType.unit(): Long = when (this) {
     CoinType.TRON, CoinType.XRP -> 1_000_000
     else -> 0
 }
-
 
 fun CoinType.customPurpose(): Purpose = if (this == CoinType.BITCOIN) {
     Purpose.BIP44
