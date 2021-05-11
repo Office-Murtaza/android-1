@@ -264,9 +264,11 @@ public class UserService implements UserDetailsService {
         }
 
         if (dto.getStatus() == VerificationStatus.NOT_VERIFIED) {
-            dto.setMessage("To increase your limits to 3000$ per transaction and 10000$ per day, please verify your account");
+            dto.setMessage("To increase your limits to <b>$3000</b> per transaction and <b>$10000</b> per day, please verify your account");
         } else if (dto.getStatus() == VerificationStatus.VERIFIED) {
-            dto.setMessage("To increase your limits to 10000$ per transaction and 20000$ per day, please VIP verify your account");
+            dto.setMessage("To increase your limits to <b>$10000</b> per transaction and <b>$20000</b> per day, please VIP verify your account");
+        } else if(dto.getStatus() == VerificationStatus.VERIFICATION_PENDING || dto.getStatus() == VerificationStatus.VIP_VERIFICATION_PENDING) {
+            dto.setMessage("Currently, we are verifying your information. We will notify you when we're done");
         }
 
         dto.setDailyLimit(getLastLimit(user.getIdentity().getLimitCashPerDay()));

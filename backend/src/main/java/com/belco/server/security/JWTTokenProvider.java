@@ -1,12 +1,11 @@
 package com.belco.server.security;
 
-import java.security.Key;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Date;
-import java.util.stream.Collectors;
-
 import com.belco.server.util.Constant;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.io.Decoders;
+import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -15,11 +14,12 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Component;
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
-import io.jsonwebtoken.io.Decoders;
-import io.jsonwebtoken.security.Keys;
+
+import java.security.Key;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Date;
+import java.util.stream.Collectors;
 
 @Component
 public class JWTTokenProvider implements InitializingBean {
@@ -33,7 +33,7 @@ public class JWTTokenProvider implements InitializingBean {
     private Key key;
 
     @Override
-    public void afterPropertiesSet() throws Exception {
+    public void afterPropertiesSet() {
         byte[] keyBytes = Decoders.BASE64.decode(base64Secret);
         key = Keys.hmacShaKeyFor(keyBytes);
     }
@@ -64,7 +64,8 @@ public class JWTTokenProvider implements InitializingBean {
         try {
             Jwts.parser().setSigningKey(key).parseClaimsJws(authToken);
             return true;
-        } catch (Exception e) {}
+        } catch (Exception e) {
+        }
 
         return false;
     }
