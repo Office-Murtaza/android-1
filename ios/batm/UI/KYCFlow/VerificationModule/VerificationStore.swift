@@ -12,6 +12,7 @@ struct VerificationUserData {
   let province: String
   let city: String
   let zipCode: String
+  let scanFileName: String
   
   var tierId: String { return "1" }
 }

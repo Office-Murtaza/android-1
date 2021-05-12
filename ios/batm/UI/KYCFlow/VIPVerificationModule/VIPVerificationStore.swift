@@ -5,6 +5,7 @@ struct VIPVerificationUserData {
   let userId: Int
   let selfieData: Data
   let ssn: String
+  let selfieFileName: String
   
   var tierId: String { return "2" }
 }

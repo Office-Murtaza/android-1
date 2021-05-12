@@ -19,7 +19,7 @@ final class VIPVerificationViewController: ModuleViewController<VIPVerificationP
         rootScrollView.contentView.addSubviews(filePickerView,
                                                formView,
                                                sendButton)
-        filePickerView.setImageContainer(with: localize(L.KYC.Button.addIDSelfie), color: .systemBlue)
+        filePickerView.setImageContainer(with: localize(L.KYC.Button.addIDSelfie))
         setupDefaultKeyboardHandling()
     }
     

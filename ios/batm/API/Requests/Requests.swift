@@ -484,9 +484,10 @@ struct SendVerificationRequest: AuthorizedAPIRequest {
   var path: String { return "/user/\(userId)/verification" }
   var method: HTTPMethod { return .post }
   var task: HTTPTask {
-    return .requestParameters(parameters: ["tierId": userData.tierId, //file from Firebase storage
-                                           "idNumber": userData.idNumber, //tier #1
-                                           "firstName": userData.firstName, //tier #1
+    return .requestParameters(parameters: ["tierId": userData.tierId,
+                                           "file": userData.scanFileName,
+                                           "idNumber": userData.idNumber,
+                                           "firstName": userData.firstName,
                                            "lastName": userData.lastName,
                                            "address": userData.address,
                                            "city": userData.city,
@@ -509,6 +510,7 @@ struct SendVIPVerificationRequest: AuthorizedAPIRequest {
   var method: HTTPMethod { return .post }
   var task: HTTPTask {
     return .requestParameters(parameters: ["tierId": userData.tierId,
+                                           "file": userData.selfieFileName,
                                            "ssn": userData.ssn],
                               encoding: JSONEncoding.default)
   }

@@ -61,22 +61,26 @@ final class VIPVerificationPresenter: ModulePresenter, VIPVerificationModule {
             .doOnNext { [store] in store.action.accept(.updateValidationState) }
             .withLatestFrom(state)
             .filter { $0.validationState.isValid }
-            .map { VIPVerificationUserData(userId: $0.userId ?? 0,
-                                           selfieData: $0.selectedImageData!,
-                                           ssn: $0.ssn) }
+        
+            .map {
+                let selfieFileName = "\($0.userId ?? 0)_ssn_\(String.randomString(length: 10)).jpg"
+                return VIPVerificationUserData(userId: $0.userId ?? 0,
+                                               selfieData: $0.selectedImageData!,
+                                               ssn: $0.ssn,
+                                               selfieFileName: selfieFileName)
+            }
             .flatMap { [unowned self] in self.track(self.sendVIPVerification(userData: $0)) }
             .subscribe(onNext: { [delegate] _ in delegate?.didFinishVIPVerification() })
             .disposed(by: disposeBag)
     }
     
     private func sendVIPVerification(userData: VIPVerificationUserData) -> Completable {
-        setupFirebaseStorage(userId: userData.userId, userData: userData.selfieData)
+        setupFirebaseStorage(userId: userData.userId, userData: userData.selfieData, fileName: userData.selfieFileName)
         return usecase.sendVIPVerification(userData: userData)
     }
     
-    private func setupFirebaseStorage(userId: Int, userData: Data) {
-        let imageReference = "\(userId)_ssn_\(String.randomString(length: 10)).jpg"
-        let uploadRef = Storage.storage().reference().child("verification").child("\(imageReference)")
+    private func setupFirebaseStorage(userId: Int, userData: Data, fileName: String) {
+        let uploadRef = Storage.storage().reference().child("verification").child("\(fileName)")
         let uploadMetadata = StorageMetadata()
         uploadMetadata.contentType = "image/jpeg"
         
