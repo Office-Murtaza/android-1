@@ -6,7 +6,6 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.appcompat.app.AlertDialog
-import androidx.core.content.ContextCompat
 import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.Observer
 import com.app.belcobtm.R
@@ -39,8 +38,8 @@ class VerificationBlankFragment :
         binding.imageView.scaleType = ImageView.ScaleType.CENTER_CROP
         binding.imageView.setImageURI(viewModel.fileUri)
         validatePhoto()
-        binding.removeImageButtonView.show()
-        binding.selectImageButtonView.hide()
+        binding.imageWrapper.show()
+        binding.imagePlaceholder.hide()
     }
 
     override fun FragmentVerificationBlankBinding.initViews() {
@@ -75,23 +74,16 @@ class VerificationBlankFragment :
         selectImageButtonView.setOnClickListener {
             showFilePickerWithPermissionCheck()
         }
-        imageContainer.setOnClickListener {
+        imagePlaceholder.setOnClickListener {
             showFilePickerWithPermissionCheck()
         }
         verifyButtonView.setOnClickListener { sendBlank() }
 
         removeImageButtonView.setOnClickListener {
             viewModel.fileUri = null
-            imageView.scaleType = ImageView.ScaleType.CENTER
-            imageView.setImageDrawable(
-                ContextCompat.getDrawable(
-                    requireContext(),
-                    R.drawable.ic_add
-                )
-            )
-
-            selectImageButtonView.show()
-            removeImageButtonView.hide()
+            imageView.setImageDrawable(null)
+            imagePlaceholder.show()
+            imageWrapper.hide()
         }
 
         countryView.editText?.keyListener = null

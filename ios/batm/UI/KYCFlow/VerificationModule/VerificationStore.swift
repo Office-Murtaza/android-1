@@ -2,6 +2,7 @@ import Foundation
 import RxSwift
 
 struct VerificationUserData {
+  let userId: Int
   let scanData: Data
   let idNumber: String
   let firstName: String
@@ -11,11 +12,13 @@ struct VerificationUserData {
   let province: String
   let city: String
   let zipCode: String
+  let scanFileName: String
   
   var tierId: String { return "1" }
 }
 
 enum VerificationAction: Equatable {
+  case updateUserId(Int)
   case updateSelectedImage(UIImage?)
   case updateIDNumber(String?)
   case updateFirstName(String?)
@@ -38,6 +41,7 @@ enum VerificationAction: Equatable {
 }
 
 struct VerificationState: Equatable {
+  var userId: Int = 0
   var selectedImage: UIImage?
   var idNumber: String = ""
   var firstName: String = ""
@@ -59,7 +63,7 @@ struct VerificationState: Equatable {
   var validationState: ValidationState = .unknown
   
   var selectedImageData: Data? {
-    return selectedImage?.pngData()
+    return selectedImage?.jpegData(compressionQuality: 0.75)
   }
   
   var displayedCountries: [String] {
@@ -100,6 +104,8 @@ final class VerificationStore: ViewStore<VerificationAction, VerificationState> 
     var state = state
     
     switch action {
+    case .updateUserId(let userId):
+        state.userId = userId
     case let .updateSelectedImage(image):
       state.selectedImage = image
       state.imageError = nil

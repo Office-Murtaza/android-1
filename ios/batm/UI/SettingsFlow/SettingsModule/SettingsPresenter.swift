@@ -24,18 +24,12 @@ class SettingsPresenter: ModulePresenter, SettingsModule {
         switch $0 {
         case .wallet: delegate?.didSelectWallet()
         case .security: delegate?.didSelectSecurity()
-        case .kyc: self.fetchVerificationInfo()
+        case .kyc: delegate?.didSelectKYC()
         case .notifications: delegate?.didSelectNotifications()
         case .support: delegate?.didSelectSupport()
         case .about: delegate?.didSelectAbout()
         }
       })
-      .disposed(by: disposeBag)
-  }
-  
-  private func fetchVerificationInfo() {
-    track(usecase.getKYC())
-      .drive(onNext: { [delegate] in delegate?.didSelectKYC($0) })
       .disposed(by: disposeBag)
   }
 }

@@ -1,6 +1,7 @@
 platform :ios, '11.0'
 
 use_frameworks! :linkage => :static
+inhibit_all_warnings!
 
 target 'batm' do
   
@@ -35,6 +36,7 @@ target 'batm' do
   # Firebase
   pod 'Firebase/Analytics', '6.29.0'
   pod 'Firebase/Messaging'
+  pod 'Firebase/Storage'
   
   target 'batmTests' do
     inherit! :search_paths

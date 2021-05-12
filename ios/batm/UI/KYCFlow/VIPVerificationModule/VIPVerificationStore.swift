@@ -2,13 +2,16 @@ import Foundation
 import RxSwift
 
 struct VIPVerificationUserData {
+  let userId: Int
   let selfieData: Data
   let ssn: String
+  let selfieFileName: String
   
   var tierId: String { return "2" }
 }
 
 enum VIPVerificationAction: Equatable {
+  case getUserId(Int?)
   case updateSelectedImage(UIImage?)
   case updateSSN(String?)
   case updateImageError(String?)
@@ -17,6 +20,7 @@ enum VIPVerificationAction: Equatable {
 }
 
 struct VIPVerificationState: Equatable {
+  var userId: Int?
   var selectedImage: UIImage?
   var ssn: String = ""
   var imageError: String?
@@ -24,7 +28,7 @@ struct VIPVerificationState: Equatable {
   var validationState: ValidationState = .unknown
   
   var selectedImageData: Data? {
-    return selectedImage?.pngData()
+    return selectedImage?.jpegData(compressionQuality: 0.75)
   }
 }
 
@@ -42,6 +46,8 @@ final class VIPVerificationStore: ViewStore<VIPVerificationAction, VIPVerificati
     var state = state
     
     switch action {
+    case .getUserId(let userId):
+        state.userId = userId
     case let .updateSelectedImage(image):
       state.selectedImage = image
       state.imageError = nil

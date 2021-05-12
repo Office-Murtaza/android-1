@@ -13,7 +13,9 @@ class TradesDataSource: NSObject,  TradeListDataSource {
     weak var controller: TradeListViewController?
     weak var delegate: TradesDataSourceDelegate?
     weak var tableView: UITableView?
-    
+    var currentTotal: Double?
+    var currentRate: Double?
+  
     func setup(controller: TradeListViewController) {
         self.controller = controller
         controller.delegate = self
@@ -31,7 +33,9 @@ class TradesDataSource: NSObject,  TradeListDataSource {
     
     func setup(trades: Trades, type: P2PTradesType, userId: Int?) {
         currentType = type
-      
+        currentTotal = trades.makerTotalTrades
+        currentRate = trades.makerTradingRate
+  
         var listTrades = trades.trades.filter{ $0.type == type.rawValue }
         
         if let id = userId {
@@ -55,6 +59,18 @@ class TradesDataSource: NSObject,  TradeListDataSource {
         initViewModels = tradesViewModels
         
         tableView?.reloadData()
+    }
+  
+    func update(trade: Trade) {
+        guard trade.type == currentType?.rawValue else { return }
+        
+        let appendModel = TradeViewModel(trade: trade, totalTrades: currentTotal ?? 0, rate: currentRate ?? 0)
+        tradesViewModels.insert(appendModel, at: 0)
+        initViewModels = tradesViewModels
+
+        DispatchQueue.main.async { [weak self] in
+            self?.tableView?.reloadData()
+        }
     }
     
     func reload(location: CLLocation?) {

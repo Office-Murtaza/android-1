@@ -1,7 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<shape xmlns:android="http://schemas.android.com/apk/res/android">
-
-    <corners android:radius="4dp" />
-
-    <solid android:color="#FFFFFF" />
-</shape>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:bottom="8dp"
+        android:end="8dp"
+        android:start="8dp"
+        android:top="6dp">
+        <shape android:shape="oval">
+            <corners android:radius="40dp" />
+            <gradient
+                android:angle="360"
+                android:centerColor="#666666"
+                android:centerX="50%"
+                android:centerY="50%"
+                android:gradientRadius="50%"
+                android:startColor="#666666"
+                android:type="radial" />
+        </shape>
+    </item>
+    <item android:drawable="@drawable/ic_remove_attachment" />
+</layer-list>

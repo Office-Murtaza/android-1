@@ -6,12 +6,14 @@ import androidx.room.Room
 import com.app.belcobtm.data.ContactsRepositoryImpl
 import com.app.belcobtm.data.cloud.auth.CloudAuth
 import com.app.belcobtm.data.cloud.auth.FirebaseCloudAuth
+import com.app.belcobtm.data.cloud.storage.AuthFirebaseCloudStorage
 import com.app.belcobtm.data.cloud.storage.CloudStorage
 import com.app.belcobtm.data.cloud.storage.FirebaseCloudStorage
 import com.app.belcobtm.data.cloud.storage.FirebaseCloudStorage.Companion.CHAT_STORAGE
-import com.app.belcobtm.data.core.FileHelper
+import com.app.belcobtm.data.cloud.storage.FirebaseCloudStorage.Companion.VERIFICATION_STORAGE
 import com.app.belcobtm.data.core.NetworkUtils
 import com.app.belcobtm.data.core.TransactionHashHelper
+import com.app.belcobtm.data.core.UnlinkHandler
 import com.app.belcobtm.data.disk.AssetsDataStore
 import com.app.belcobtm.data.disk.database.AppDatabase
 import com.app.belcobtm.data.disk.shared.preferences.SharedPreferencesHelper
@@ -77,14 +79,13 @@ val dataModule = module {
         }
     }
     single { AuthApiService(get()) }
-    single { SettingsApiService(get(), get()) }
+    single { SettingsApiService(get()) }
     single { WalletApiService(get(), get()) }
     single { TransactionApiService(get(), get()) }
     single { ToolsApiService(get(), get()) }
     single { AtmApiService(get()) }
     single { TradeApiService(get(), get()) }
     single { NetworkUtils(get()) }
-    single { FileHelper(get()) }
     single { AssetsDataStore(get()) }
     single { TransactionHashHelper(get(), get(), get(), get(), get()) }
     single {
@@ -125,14 +126,25 @@ val dataModule = module {
     single<ContactsRepository> { ContactsRepositoryImpl(get<Context>().contentResolver) }
     single { Firebase.storage("gs://belco-test.appspot.com") }
     single<CloudStorage>(named(CHAT_STORAGE)) {
-        FirebaseCloudStorage(get<FirebaseStorage>().reference.child("chat"))
+        AuthFirebaseCloudStorage(
+            get(), get(),
+            FirebaseCloudStorage(get<FirebaseStorage>().reference.child("chat"))
+        )
+    }
+    single<CloudStorage>(named(VERIFICATION_STORAGE)) {
+        AuthFirebaseCloudStorage(
+            get(), get(),
+            FirebaseCloudStorage(get<FirebaseStorage>().reference.child("verification"))
+        )
     }
     single<CloudAuth>() { FirebaseCloudAuth(Firebase.auth) }
-    single { TradeInMemoryCache(get(), get(), GlobalScope, get(), get(), get())
+    single {
+        TradeInMemoryCache(get(), get(), GlobalScope, get(), get(), get())
     }
     single { DistanceCalculator(get()) }
     single<LocationProvider> { ServiceLocationProvider(androidApplication()) }
     single { TransactionsInMemoryCache() }
+    single { UnlinkHandler(get(), get(authenticatorQualified), get(), get()) }
     factory { TradesResponseToTradeDataMapper(get(), get(), get()) }
     factory { OrderResponseToOrderMapper() }
     factory { TradeResponseToTradeMapper() }

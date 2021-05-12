@@ -27,8 +27,9 @@ public class TestController {
     private final GethService gethService;
     private final NodeService nodeService;
     private final CoinRep coinRep;
+    private final SocketService socketService;
 
-    public TestController(TwilioService twilioService, NotificationService notificationService, UserService userService, WalletService walletService, GethService gethService, NodeService nodeService, CoinRep coinRep) {
+    public TestController(TwilioService twilioService, NotificationService notificationService, UserService userService, WalletService walletService, GethService gethService, NodeService nodeService, CoinRep coinRep, SocketService socketService) {
         this.twilioService = twilioService;
         this.notificationService = notificationService;
         this.userService = userService;
@@ -36,6 +37,17 @@ public class TestController {
         this.gethService = gethService;
         this.nodeService = nodeService;
         this.coinRep = coinRep;
+        this.socketService = socketService;
+    }
+
+    @GetMapping("/push-transaction")
+    public Response pushTransaction(@RequestParam String phone) {
+        TransactionDetailsDTO dto = new TransactionDetailsDTO();
+        dto.setTxId("0xca05a14dfa36e0474f3466c6fba2d1996639d88bbff6a8a7a7bc55242fe60571");
+
+        socketService.pushTransaction(phone, dto);
+
+        return Response.ok(true);
     }
 
     @GetMapping("/send-sms")

@@ -20,6 +20,8 @@ enum CoinDetailsAction: Equatable {
   case finishFetchingCoin(BTMCoin)
   case updatePage(Int)
   case setupPredefinedData(CoinDetailsPredefinedDataConfig)
+  case startLoading
+  case finishLoading
 }
 
 struct CoinDetailsPredefinedDataConfig: Equatable {
@@ -43,6 +45,7 @@ struct CoinDetailsState: Equatable {
   var priceChartDetails: PriceChartDetails?
   var currentBalance: CoinBalance?
   var predefinedData: CoinDetailsPredefinedDataConfig?
+  var isLoading: Bool = false
   
   var nextPage: Int {
     return page + 1
@@ -99,6 +102,10 @@ final class CoinDetailsStore: ViewStore<CoinDetailsAction, CoinDetailsState> {
     case let .finishFetchingCoin(coin):
       state.coin = coin
     case let .updatePage(page): state.page = page
+    case .startLoading:
+      state.isLoading = true
+    case .finishLoading:
+      state.isLoading = false
     }
     
     return state

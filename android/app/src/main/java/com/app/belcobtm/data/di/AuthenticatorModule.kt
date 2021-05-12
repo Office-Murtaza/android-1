@@ -29,7 +29,6 @@ val authenticatorModule = module {
     single {
         TokenAuthenticator(
             androidApplication().applicationContext,
-            get(authenticatorQualified), get(),
             get(authenticatorQualified), get(), get()
         )
     }

@@ -16,6 +16,9 @@ PODS:
   - Firebase/Messaging (6.29.0):
     - Firebase/CoreOnly
     - FirebaseMessaging (~> 4.6.1)
+  - Firebase/Storage (6.29.0):
+    - Firebase/CoreOnly
+    - FirebaseStorage (~> 3.8.0)
   - FirebaseAnalytics (6.7.0):
     - FirebaseCore (~> 6.8)
     - FirebaseInstallations (~> 1.4)
@@ -52,6 +55,9 @@ PODS:
     - GoogleUtilities/Reachability (~> 6.7)
     - GoogleUtilities/UserDefaults (~> 6.7)
     - Protobuf (>= 3.9.2, ~> 3.9)
+  - FirebaseStorage (3.8.0):
+    - FirebaseCore (~> 6.8)
+    - GTMSessionFetcher/Core (~> 1.1)
   - Giphy (1.2.9):
     - DeepDiff
     - libwebp
@@ -88,6 +94,7 @@ PODS:
     - GoogleUtilities/Logger
   - GoogleUtilities/UserDefaults (6.7.1):
     - GoogleUtilities/Logger
+  - GTMSessionFetcher/Core (1.5.0)
   - JJFloatingActionButton (2.4.0)
   - libwebp (1.1.0):
     - libwebp/demux (= 1.1.0)
@@ -764,6 +771,7 @@ DEPENDENCIES:
   - Charts (= 3.4.0)
   - Firebase/Analytics (= 6.29.0)
   - Firebase/Messaging
+  - Firebase/Storage
   - Giphy (= 1.2.9)
   - GoogleMaps (= 3.4.0)
   - JJFloatingActionButton (= 2.4.0)
@@ -798,11 +806,13 @@ SPEC REPOS:
     - FirebaseInstallations
     - FirebaseInstanceID
     - FirebaseMessaging
+    - FirebaseStorage
     - Giphy
     - GoogleAppMeasurement
     - GoogleDataTransport
     - GoogleMaps
     - GoogleUtilities
+    - GTMSessionFetcher
     - JJFloatingActionButton
     - libwebp
     - MaterialComponents
@@ -857,11 +867,13 @@ SPEC CHECKSUMS:
   FirebaseInstallations: 3c520c951305cbf9ca54eb891ff9e6d1fd384881
   FirebaseInstanceID: c4ad474b87787afd27d09541800620993b457d6f
   FirebaseMessaging: 942cfe05b4f53c95ab8959395ca35c200398b2f0
+  FirebaseStorage: 3ef81ca5fa7817f85451ca09d516a34d2c7542a7
   Giphy: 69c3bae5da59c699f222599c877949cf166de726
   GoogleAppMeasurement: 345d365fd105e6682bf5084783a5352a3db26820
   GoogleDataTransport: af0c79193dc59acd37630b4833d0dc6912ae6bd5
   GoogleMaps: 67f4a604f80dd6a22d09c2a507a3a395b9f23060
   GoogleUtilities: e121a3867449ce16b0e35ddf1797ea7a389ffdf2
+  GTMSessionFetcher: b3503b20a988c4e20cc189aa798fd18220133f52
   JJFloatingActionButton: 0d21f5cdd2adde150e62c22c63762ab713c4e16f
   libwebp: 946cb3063cea9236285f7e9a8505d806d30e07f3
   MaterialComponents: 7675cd4b1c9f660b63cddeb725b2de853790402b
@@ -894,6 +906,6 @@ SPEC CHECKSUMS:
   Toast-Swift: 9b6a70f28b3bf0b96c40d46c0c4b9d6639846711
   TrustWalletCore: 6bf9821db20951be01a4d69f8703a5cf36560f36
 
-PODFILE CHECKSUM: d61c97d2684ab8409ad0373a3d13ec122224fa75
+PODFILE CHECKSUM: 249da6bd0a5445de1a7fece9c2d01264f1e6021c
 
 COCOAPODS: 1.10.1

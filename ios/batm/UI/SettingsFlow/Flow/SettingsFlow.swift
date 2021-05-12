@@ -18,7 +18,7 @@ class SettingsFlow: BaseFlow<BTMNavigationController, SettingsFlowController> {
     case settings
     case wallet
     case security
-    case kyc(KYC)
+    case kyc
     case notifications
     case support
     case about
@@ -76,9 +76,9 @@ class SettingsFlow: BaseFlow<BTMNavigationController, SettingsFlowController> {
       let flow = UnlinkFlow(view: view, parent: self)
       let step = UnlinkFlow.Steps.unlink
       return next(flow: flow, step: step)
-    case let .kyc(kyc):
+    case .kyc:
       let flow = KYCFlow(view: view, parent: self)
-      let step = KYCFlow.Steps.kyc(kyc)
+      let step = KYCFlow.Steps.kyc
       return next(flow: flow, step: step)
     case .notifications:
         let module = resolver.resolve(Module<NotificationsModule>.self)!
