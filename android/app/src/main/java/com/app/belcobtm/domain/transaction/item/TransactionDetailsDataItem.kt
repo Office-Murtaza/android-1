@@ -6,6 +6,7 @@ import com.app.belcobtm.domain.transaction.type.TransactionType
 
 data class TransactionDetailsDataItem(
     val txId: String?,
+    val coinCode: String,
     val txDbId: String,
     val cryptoAmount: Double?,
     val fiatAmount: Double?,
