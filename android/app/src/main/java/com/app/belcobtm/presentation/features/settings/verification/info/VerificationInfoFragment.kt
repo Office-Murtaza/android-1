@@ -1,12 +1,12 @@
 package com.app.belcobtm.presentation.features.settings.verification.info
 
-import android.graphics.drawable.GradientDrawable
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat
 import androidx.lifecycle.observe
 import com.app.belcobtm.R
 import com.app.belcobtm.databinding.FragmentVerificationInfoBinding
+import com.app.belcobtm.presentation.core.extensions.setDrawableEnd
+import com.app.belcobtm.presentation.core.extensions.toHtmlSpan
 import com.app.belcobtm.presentation.core.extensions.toggle
 import com.app.belcobtm.presentation.core.mvvm.LoadingData
 import com.app.belcobtm.presentation.core.ui.fragment.BaseFragment
@@ -52,23 +52,20 @@ class VerificationInfoFragment : BaseFragment<FragmentVerificationInfoBinding>()
                     statusValueView.text = resources.getStringArray(R.array.verification_status_array)[it]
                 }
                 state.txLimit.doIfChanged(appliedState?.commonData?.txLimit) {
-                    txLimitValueView.text = getString(R.string.text_usd, it)
+                    txLimitValueView.text = it
                 }
                 state.dailyLimit.doIfChanged(appliedState?.commonData?.dailyLimit) {
-                    dailyLimitValueView.text = getString(R.string.text_usd, it)
+                    dailyLimitValueView.text = it
                 }
-                state.statusColor.doIfChanged(appliedState?.commonData?.statusColor) {
-                    val shape = GradientDrawable()
-                    shape.shape = GradientDrawable.RECTANGLE
-                    shape.cornerRadii = floatArrayOf(8f, 8f, 8f, 8f, 8f, 8f, 8f, 8f)
-                    shape.setStroke(3, ContextCompat.getColor(requireContext(), it.first))
-                    shape.setColor(ContextCompat.getColor(requireContext(), it.second))
-                    statusValueView.setTextColor(ContextCompat.getColor(requireContext(), it.first))
-                    statusValueView.background = shape
+                state.statusIcon.doIfChanged(appliedState?.commonData?.statusIcon) {
+                    statusValueView.setDrawableEnd(it)
                 }
                 state.message.doIfChanged(appliedState?.commonData?.message) {
                     messageView.toggle(it.isNotEmpty())
-                    messageViewText.text = it
+                    messageViewText.text = it.toHtmlSpan()
+                }
+                state.bannerIcon.doIfChanged(appliedState?.commonData?.bannerIcon) {
+                    bannerIcon.setImageResource(it)
                 }
             },
             onUpdate = {

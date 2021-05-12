@@ -167,9 +167,9 @@
     </string-array>
     <string name="verification_select">Select</string>
     <string name="verification_remove">Remove</string>
-    <string name="verification_id_number">ID number</string>
-    <string name="verification_first_name">First name</string>
-    <string name="verification_last_name">Last name</string>
+    <string name="verification_id_number">ID Number</string>
+    <string name="verification_first_name">First Name</string>
+    <string name="verification_last_name">Last Name</string>
     <string name="verification_address">Address</string>
     <string name="verification_city">City</string>
     <string name="verification_country">Country</string>
@@ -520,7 +520,10 @@
     <string name="unlink_text_top">Please, make sure you have stored your credentials and seed phrase before unlinking the wallet. Otherwise, you may lose all assets</string>
 
     //verification
-    <string name="verification_limit">In order to increase daily limit to 3000 USD, please upload a copy of your driver license.</string>
+    <string name="verification_status_not_verified_message"><![CDATA[To increase your limits to <b>$3,000</b> per transaction and <b>$10,000</b> per day, please verify your account.]]></string>
+    <string name="verification_status_pending_message">At this time we are verifying your information. You will receive a push notification when the verification is completed.</string>
+    <string name="verification_status_rejected_message"><![CDATA[To increase your limits to <b>$10,000</b> per transaction and <b>$20,000</b> per day, please verify your account.]]></string>
+    <string name="verification_status_verified_message"><![CDATA[To increase your limits to <b>$3,000</b> per transaction and <b>$10,000</b> per day, please verify your account.]]></string>
     <string name="verify_label">Verify</string>
     <string name="vip_verify_label">VIP Verify</string>
 
@@ -688,4 +691,6 @@
     <string name="trade_order_details_fiat_amount">Fiat Amount</string>
     <string name="cannot_perform_swap_error">Cannot perform swap</string>
     <string name="cannot_perform_swap_error_message">Please, enable coins from Settings/Wallets and try again</string>
+    <string name="attach_id_scan_label">Attach id Scan</string>
+    <string name="attach_id_selfie_label">Attach id Selfie</string>
 </resources>

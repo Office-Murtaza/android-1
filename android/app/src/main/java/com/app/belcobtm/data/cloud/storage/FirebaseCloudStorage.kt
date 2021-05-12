@@ -11,6 +11,7 @@ class FirebaseCloudStorage(private val storageReference: StorageReference) : Clo
 
     companion object {
         const val CHAT_STORAGE = "chat_storage"
+        const val VERIFICATION_STORAGE = "verification_storage"
     }
 
     override suspend fun uploadBitmap(fileName: String, bitmap: Bitmap): Unit =

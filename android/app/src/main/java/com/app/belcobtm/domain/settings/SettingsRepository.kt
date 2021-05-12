@@ -9,9 +9,9 @@ import com.app.belcobtm.domain.settings.item.VerificationVipDataItem
 
 interface SettingsRepository {
     suspend fun getVerificationInfo(): Either<Failure, VerificationInfoDataItem>
-    suspend fun sendVerificationBlank(blankDataItem: VerificationBlankDataItem): Either<Failure, Unit>
+    suspend fun sendVerificationBlank(blankDataItem: VerificationBlankDataItem, fileName: String): Either<Failure, Unit>
     fun getVerificationCountries(): List<VerificationCountryDataItem>
-    suspend fun sendVerificationVip(vipDataItem: VerificationVipDataItem): Either<Failure, Unit>
+    suspend fun sendVerificationVip(vipDataItem: VerificationVipDataItem, fileName: String): Either<Failure, Unit>
     suspend fun unlink(): Either<Failure, Boolean>
     suspend fun getPhone(): Either<Failure, String>
     suspend fun changePass(oldPassword: String, newPassword: String): Either<Failure, Boolean>

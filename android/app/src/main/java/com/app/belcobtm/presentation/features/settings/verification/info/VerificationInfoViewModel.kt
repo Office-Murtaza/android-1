@@ -1,5 +1,7 @@
 package com.app.belcobtm.presentation.features.settings.verification.info
 
+import androidx.annotation.DrawableRes
+import androidx.annotation.StringRes
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.navigation.NavDirections
@@ -8,10 +10,12 @@ import com.app.belcobtm.domain.settings.interactor.GetVerificationInfoUseCase
 import com.app.belcobtm.domain.settings.item.VerificationInfoDataItem
 import com.app.belcobtm.domain.settings.type.VerificationStatus
 import com.app.belcobtm.presentation.core.SingleLiveData
+import com.app.belcobtm.presentation.core.formatter.Formatter
 import com.app.belcobtm.presentation.core.mvvm.LoadingData
 
 class VerificationInfoViewModel(
-    private val getVerificationInfoUseCase: GetVerificationInfoUseCase
+    private val getVerificationInfoUseCase: GetVerificationInfoUseCase,
+    private val priceFormatter: Formatter<Double>
 ) : ViewModel() {
     val stateData = MutableLiveData<LoadingData<VerificationInfoState>>()
     val actionData = SingleLiveData<VerificationInfoAction>()
@@ -26,10 +30,12 @@ class VerificationInfoViewModel(
                 stateData.value = LoadingData.Success(
                     VerificationInfoState(
                         statusColor = getColorByStatus(it.status),
+                        statusIcon = getStatusIcon(it.status),
                         buttonText = getButtonTextByStatus(it.status),
+                        bannerIcon = getBannerIcon(it.status),
                         statusTextCode = it.status.code,
-                        txLimit = it.txLimit.toInt().toString(),
-                        dailyLimit = it.dayLimit.toInt().toString(),
+                        txLimit = priceFormatter.format(it.txLimit),
+                        dailyLimit = priceFormatter.format(it.dayLimit),
                         isButtonEnabled = isButtonEnabled(it),
                         message = it.message
                     )
@@ -40,6 +46,34 @@ class VerificationInfoViewModel(
             }
         )
     }
+
+    private fun getBannerIcon(status: VerificationStatus): Int =
+        when (status) {
+            VerificationStatus.VERIFICATION_PENDING,
+            VerificationStatus.VIP_VERIFICATION_PENDING -> R.drawable.ic_time_outlined
+            else -> R.drawable.ic_warning_outlined
+        }
+
+    private fun getBannerMessage(status: VerificationStatus): Int =
+        when (status) {
+            VerificationStatus.NOT_VERIFIED -> R.string.verification_status_not_verified_message
+            VerificationStatus.VERIFIED -> R.string.verification_status_verified_message
+            VerificationStatus.VERIFICATION_PENDING,
+            VerificationStatus.VIP_VERIFICATION_PENDING -> R.string.verification_status_pending_message
+            VerificationStatus.VERIFICATION_REJECTED -> R.string.verification_status_rejected_message
+            else -> 0
+        }
+
+    private fun getStatusIcon(status: VerificationStatus): Int =
+        when (status) {
+            VerificationStatus.VERIFICATION_PENDING,
+            VerificationStatus.VIP_VERIFICATION_PENDING -> R.drawable.ic_verification_status_pending
+            VerificationStatus.VIP_VERIFICATION_REJECTED,
+            VerificationStatus.VERIFICATION_REJECTED -> R.drawable.ic_verification_status_rejected
+            VerificationStatus.VIP_VERIFIED -> R.drawable.ic_verification_status_vip_verified
+            VerificationStatus.VERIFIED -> R.drawable.ic_verification_status_verified
+            else -> R.drawable.ic_verification_status_not_verified
+        }
 
     fun onNextClick() {
         actionData.value = VerificationInfoAction.NavigateAction(
@@ -101,7 +135,9 @@ class VerificationInfoViewModel(
 data class VerificationInfoState(
     val statusColor: Pair<Int, Int> = Pair(R.color.transaction_red, R.color.transaction_red),
     val buttonText: Int = R.string.verification_verify,
-    val statusTextCode: Int = 0,
+    @StringRes val statusTextCode: Int = 0,
+    @DrawableRes val statusIcon: Int = 0,
+    @DrawableRes val bannerIcon: Int = R.drawable.ic_warning_outlined,
     val txLimit: String = "",
     val dailyLimit: String = "",
     val isButtonEnabled: Boolean = false,

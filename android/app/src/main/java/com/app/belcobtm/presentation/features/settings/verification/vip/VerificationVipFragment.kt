@@ -5,7 +5,6 @@ import android.net.Uri
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.ImageView
-import androidx.core.content.ContextCompat
 import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.observe
 import com.app.belcobtm.R
@@ -38,8 +37,8 @@ class VerificationVipFragment :
         binding.imageView.scaleType = ImageView.ScaleType.CENTER_CROP
         binding.imageView.setImageURI(viewModel.fileUri)
         binding.validatePhoto()
-        binding.removeImageButtonView.show()
-        binding.selectImageButtonView.hide()
+        binding.imageWrapper.show()
+        binding.imagePlaceholder.hide()
     }
 
     @NeedsPermission(
@@ -65,7 +64,7 @@ class VerificationVipFragment :
         selectImageButtonView.setOnClickListener {
             showFilePickerWithPermissionCheck()
         }
-        imageContainer.setOnClickListener {
+        imagePlaceholder.setOnClickListener {
             showFilePickerWithPermissionCheck()
         }
         verifyButtonView.setOnClickListener { sendVip() }
@@ -73,14 +72,9 @@ class VerificationVipFragment :
         removeImageButtonView.setOnClickListener {
             viewModel.fileUri = null
             imageView.scaleType = ImageView.ScaleType.CENTER
-            imageView.setImageDrawable(
-                ContextCompat.getDrawable(
-                    requireContext(),
-                    R.drawable.ic_add
-                )
-            )
-            removeImageButtonView.hide()
-            selectImageButtonView.show()
+            imageView.setImageDrawable(null)
+            imagePlaceholder.show()
+            imageWrapper.hide()
         }
 
         snnView.editText?.addTextChangedListener {

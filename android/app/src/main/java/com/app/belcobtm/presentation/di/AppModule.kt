@@ -79,7 +79,7 @@ val viewModelModule = module {
     viewModel { RecoverWalletViewModel(get(), get<PhoneNumberValidator>()) }
     viewModel { CreateWalletViewModel(get(), get<PhoneNumberValidator>()) }
     viewModel { PinCodeViewModel(get(), get(), get(), get(), get(), get(), get(), get()) }
-    viewModel { VerificationInfoViewModel(get()) }
+    viewModel { VerificationInfoViewModel(get(), get(named(DOUBLE_CURRENCY_PRICE_FORMATTER_QUALIFIER))) }
     viewModel { VerificationBlankViewModel(get(), get()) }
     viewModel { VerificationVipViewModel(get()) }
     viewModel { SwapViewModel(get(), get(), get(), get(), get(), get()) }
