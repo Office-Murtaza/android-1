@@ -3,9 +3,10 @@ package com.app.belcobtm
 import android.app.Application
 import android.content.Context
 import androidx.appcompat.app.AppCompatDelegate
-import androidx.lifecycle.LifecycleObserver
-import androidx.lifecycle.ProcessLifecycleOwner
-import com.app.belcobtm.data.di.*
+import com.app.belcobtm.data.di.authenticatorModule
+import com.app.belcobtm.data.di.dataModule
+import com.app.belcobtm.data.di.repositoryModule
+import com.app.belcobtm.data.di.webSocketModule
 import com.app.belcobtm.data.disk.shared.preferences.SharedPreferencesHelper
 import com.app.belcobtm.presentation.core.Const
 import com.app.belcobtm.presentation.di.helperModule
@@ -19,9 +20,6 @@ import org.koin.core.context.startKoin
 
 class App : Application() {
     private val prefHelper: SharedPreferencesHelper by inject()
-    private val walletLifecycleObserver: LifecycleObserver by inject(
-        WALLET_LIFECYCLE_OBSERVER_QUALIFIER
-    )
 
     init {
         instance = this
@@ -50,7 +48,6 @@ class App : Application() {
         }
         // TODO token cleanup can be removed after force update
         prefHelper.clearValue(SharedPreferencesHelper.ACCESS_TOKEN)
-        ProcessLifecycleOwner.get().lifecycle.addObserver(walletLifecycleObserver)
     }
 
     companion object {

@@ -1,6 +1,5 @@
 package com.app.belcobtm.data.di
 
-import androidx.lifecycle.LifecycleObserver
 import com.app.belcobtm.data.rest.interceptor.BaseInterceptor
 import com.app.belcobtm.data.rest.interceptor.NoConnectionInterceptor
 import com.app.belcobtm.data.rest.interceptor.ResponseInterceptor
@@ -30,7 +29,6 @@ import com.app.belcobtm.data.websockets.transactions.WebSocketTransactionsObserv
 import com.app.belcobtm.data.websockets.wallet.WalletConnectionHandler
 import com.app.belcobtm.data.websockets.wallet.WalletObserver
 import com.app.belcobtm.data.websockets.wallet.WebSocketWalletObserver
-import com.app.belcobtm.data.websockets.wallet.lifecycle.WalletLifecycleObserver
 import com.app.belcobtm.presentation.features.wallet.trade.order.chat.NewMessageItem
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -39,13 +37,9 @@ import org.koin.dsl.bind
 import org.koin.dsl.module
 import java.util.concurrent.TimeUnit
 
-val WALLET_LIFECYCLE_OBSERVER_QUALIFIER = named("WalletLifecycleObserver")
 val WEB_SOCKET_OK_HTTP_CLIENT_QUALIFIER = named("WebSocketOkHttpClient")
 
 val webSocketModule = module {
-    single<LifecycleObserver>(WALLET_LIFECYCLE_OBSERVER_QUALIFIER) {
-        WalletLifecycleObserver(get(), get(), get())
-    }
     single<WalletObserver> {
         WebSocketWalletObserver(
             get(), get(), get(),
