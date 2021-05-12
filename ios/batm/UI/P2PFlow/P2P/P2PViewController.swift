@@ -46,6 +46,12 @@ class P2PViewController: ModuleViewController<P2PPresenter>, MDCTabBarDelegate {
         return tabBar
     }()
     
+  
+  override func viewWillDisappear(_ animated: Bool) {
+    super.viewWillDisappear(animated)
+    presenter.willHideModule()
+  }
+  
   override func setupUI() {
     
     myViewController?.delegate = self
@@ -83,7 +89,7 @@ class P2PViewController: ModuleViewController<P2PPresenter>, MDCTabBarDelegate {
         let controller = P2PCreateTradeViewController(balance: balance, payments: TradePaymentMethods.allCases, delegate: self)
         navigationController?.pushViewController(controller, animated: true)
     }
-    
+  
     override func setupBindings() {
         presenter.currentLocation
             .asObservable()
@@ -129,6 +135,17 @@ class P2PViewController: ModuleViewController<P2PPresenter>, MDCTabBarDelegate {
           self.tabBar(tabBar,didSelect: self.myTradesItem)
         }.disposed(by: disposeBag)
         
+        presenter.socketTrade
+            .subscribe { [unowned self] (trade) in
+                self.buyDataSource.update(trade: trade)
+        }.disposed(by: disposeBag)
+        
+        presenter.socketTrade
+            .subscribe { [unowned self] (trade) in
+                self.sellDataSource.update(trade: trade)
+        }.disposed(by: disposeBag)
+
+
     }
     
     override func setupLayout() {

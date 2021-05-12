@@ -601,11 +601,17 @@ extension L.Error {
 extension L.KYC {
 
   struct Button {
+    static let addID = "k_y_c.button.add_i_d"
+    static let addIDSelfie = "k_y_c.button.add_i_d_selfie"
     static let verify = "k_y_c.button.verify"
     static let vipVerify = "k_y_c.button.vip_verify"
   }
 
   struct Header {
+  }
+
+  struct InfoView {
+    static let verificationRejectedTitle = "k_y_c.info_view.verification_rejected_title"
   }
 }
 extension L.KYC.Header {
@@ -1064,6 +1070,10 @@ extension L.Support {
   }
 }
 extension L.Swap {
+
+  struct Alert {
+    static let coinsNotEnough = "swap.alert.coins_not_enough"
+  }
 
   struct Usd {
     static let title = "swap.usd.title"

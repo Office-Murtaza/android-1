@@ -1,8 +1,9 @@
 import Foundation
 
-protocol CoinExchangeModule: class {
-  func setup()
+protocol CoinExchangeModule: AnyObject {
+    func setup()
 }
-protocol CoinExchangeModuleDelegate: class {
-  func didFinishCoinExchange()
+protocol CoinExchangeModuleDelegate: AnyObject {
+    func didFinishCoinExchange()
+    func handleError()
 }

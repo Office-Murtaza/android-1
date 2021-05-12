@@ -299,7 +299,7 @@ abstract class BaseFragment<V : ViewBinding> : Fragment(),
             }
     }
 
-    private fun updateContentContainer(
+    protected fun updateContentContainer(
         isContentVisible: Boolean = false,
         isProgressVisible: Boolean = false,
         isErrorVisible: Boolean = false
@@ -307,6 +307,7 @@ abstract class BaseFragment<V : ViewBinding> : Fragment(),
         baseBinding.contentContainerView.toggle(isContentVisible)
         baseBinding.progressView.toggle(isProgressVisible)
         baseBinding.errorView.errorContainerView.toggle(isErrorVisible)
+        baseBinding.errorView.errorRetryButtonView.toggle(isErrorVisible)
     }
 
     protected fun <T> LiveData<LoadingData<T>>.listen(

@@ -351,7 +351,7 @@ public class RippledService {
     }
 
     private TransactionStatus getStatus(String str) {
-        if (StringUtils.isNotBlank(str) && str.equalsIgnoreCase("success")) {
+        if (StringUtils.isNotBlank(str) && str.equalsIgnoreCase("tesSUCCESS")) {
             return TransactionStatus.COMPLETE;
         }
 

@@ -13,6 +13,7 @@ import com.app.belcobtm.data.cloud.storage.FirebaseCloudStorage.Companion.CHAT_S
 import com.app.belcobtm.data.cloud.storage.FirebaseCloudStorage.Companion.VERIFICATION_STORAGE
 import com.app.belcobtm.data.core.NetworkUtils
 import com.app.belcobtm.data.core.TransactionHashHelper
+import com.app.belcobtm.data.core.UnlinkHandler
 import com.app.belcobtm.data.disk.AssetsDataStore
 import com.app.belcobtm.data.disk.database.AppDatabase
 import com.app.belcobtm.data.disk.shared.preferences.SharedPreferencesHelper
@@ -143,6 +144,7 @@ val dataModule = module {
     single { DistanceCalculator(get()) }
     single<LocationProvider> { ServiceLocationProvider(androidApplication()) }
     single { TransactionsInMemoryCache() }
+    single { UnlinkHandler(get(), get(authenticatorQualified), get(), get()) }
     factory { TradesResponseToTradeDataMapper(get(), get(), get()) }
     factory { OrderResponseToOrderMapper() }
     factory { TradeResponseToTradeMapper() }

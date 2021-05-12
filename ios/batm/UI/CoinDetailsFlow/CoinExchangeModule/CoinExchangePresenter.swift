@@ -20,12 +20,14 @@ final class CoinExchangePresenter: ModulePresenter, CoinExchangeModule {
         var swap: Driver<Void>
     }
     
+    let didViewAppear = PublishRelay<Void>()
+    var coinTypeDidChange = PublishRelay<Void>()
+    var alertShouldAppear = PublishRelay<Void>()
     private let usecase: CoinDetailsUsecase
     private let store: Store
     private let walletUseCase: WalletUsecase
     private let balanceService: BalanceService
-    private let fetchDataRelay = PublishRelay<Void>()
-    var coinTypeDidChange = PublishRelay<Void>()
+    private var sortedCoins: [BTMCoin] = []
     
     weak var delegate: CoinExchangeModuleDelegate?
     
@@ -46,66 +48,70 @@ final class CoinExchangePresenter: ModulePresenter, CoinExchangeModule {
     func setup() {}
     
     func bind(input: Input) {
-        fetchDataRelay
+        didViewAppear
             .asObservable()
-          .flatMap { [unowned self]  in
-            return self.track(Observable.combineLatest(self.balanceService.getCoinsBalance().single().asObservable(),
-                                                       self.walletUseCase.getCoinsList().asObservable()))
-          }.subscribe({ [weak self] in
-            guard let coinBalance = $0.element?.0, let coins = $0.element?.1 else { return }
-            self?.store.action.accept(.finishFetchingCoinsData(coinBalance, coins))
-          })
-          .disposed(by: disposeBag)
+            .flatMap { [unowned self]  in
+                return self.track(Observable.combineLatest(self.balanceService.getCoinsBalance().single().asObservable(),
+                                                           self.walletUseCase.getCoinsList().asObservable()))
+            }.subscribe({ [weak self] in
+                guard let coins = $0.element?.1, coins.count >= 2 else {
+                    self?.alertShouldAppear.accept(())
+                    return
+                }
+                guard let coinBalance = $0.element?.0 else { return }
+                self?.store.action.accept(.finishFetchingCoinsData(coinBalance, coins))
+            })
+            .disposed(by: disposeBag)
         
-      input.updateFromCoinAmount
-        .asObservable()
-        .map { CoinExchangeAction.updateFromCoinAmount($0) }
-        .bind(to: store.action)
-        .disposed(by: disposeBag)
+        input.updateFromCoinAmount
+            .asObservable()
+            .map { CoinExchangeAction.updateFromCoinAmount($0) }
+            .bind(to: store.action)
+            .disposed(by: disposeBag)
         
         input.updateToCoinAmount
-          .asObservable()
-          .map { CoinExchangeAction.updateToCoinAmount($0) }
-          .bind(to: store.action)
-          .disposed(by: disposeBag)
-      
-      input.toCoinType
-        .asObservable()
-        .distinctUntilChanged()
-        .observeOn(MainScheduler.instance)
-        .flatMap { [unowned self] type in self.track(self.usecase.getCoinDetails(for: type))}
-        .subscribe { [unowned self] result in
-          switch result {
-          case let .next(details):
-            self.store.action.accept(.updateToCoinDetails(details))
-          default: break
-          }
-        }.disposed(by: disposeBag)
+            .asObservable()
+            .map { CoinExchangeAction.updateToCoinAmount($0) }
+            .bind(to: store.action)
+            .disposed(by: disposeBag)
+        
+        input.toCoinType
+            .asObservable()
+            .distinctUntilChanged()
+            .observeOn(MainScheduler.instance)
+            .flatMap { [unowned self] type in self.track(self.usecase.getCoinDetails(for: type))}
+            .subscribe { [unowned self] result in
+                switch result {
+                case let .next(details):
+                    self.store.action.accept(.updateToCoinDetails(details))
+                default: break
+                }
+            }.disposed(by: disposeBag)
         
         
         input.fromCoinType
-          .asObservable()
-          .distinctUntilChanged()
-          .observeOn(MainScheduler.instance)
-          .flatMap { [unowned self] type in self.track(self.usecase.getCoinDetails(for: type))}
-          .subscribe { [unowned self] result in
-            switch result {
-            case let .next(details):
-              self.store.action.accept(.updateFromCoinDetails(details))
-            default: break
-            }
-          }.disposed(by: disposeBag)
+            .asObservable()
+            .distinctUntilChanged()
+            .observeOn(MainScheduler.instance)
+            .flatMap { [unowned self] type in self.track(self.usecase.getCoinDetails(for: type))}
+            .subscribe { [unowned self] result in
+                switch result {
+                case let .next(details):
+                    self.store.action.accept(.updateFromCoinDetails(details))
+                default: break
+                }
+            }.disposed(by: disposeBag)
         
         input.updateToPickerItem
             .drive(onNext: { [unowned self, store] in
-                    store.action.accept(.updateToCoinType($0))
+                store.action.accept(.updateToCoinType($0))
                 self.coinTypeDidChange.accept(())
             })
             .disposed(by: disposeBag)
         
         input.updateToPickerItem
             .asObservable()
-          .observeOn(MainScheduler.instance)
+            .observeOn(MainScheduler.instance)
             .filter{ $0 == .ripple}
             .flatMap { [unowned self] type in
                 self.track( self.usecase.getCoin(for: type))
@@ -117,24 +123,24 @@ final class CoinExchangePresenter: ModulePresenter, CoinExchangeModule {
                     self.store.action.accept(.isCoinActivated(isActivated))
                 default: break
                 }
-              }.disposed(by: disposeBag)
-
+            }.disposed(by: disposeBag)
+        
         input.updateFromPickerItem
-          .asObservable()
-        .observeOn(MainScheduler.instance)
-          .flatMap { [unowned self] type in
-            self.track(self.usecase.getCoin(for: type))
-          }
-          .subscribe { [unowned self] result in
-            switch result {
-            case let .next(coin):
-                self.store.action.accept(.updateFromCoin(coin))
-                self.store.action.accept(.updateFromCoinType(coin.type))
-                self.coinTypeDidChange.accept(())
-            default: break
+            .asObservable()
+            .observeOn(MainScheduler.instance)
+            .flatMap { [unowned self] type in
+                self.track(self.usecase.getCoin(for: type))
             }
-          }.disposed(by: disposeBag)
-     
+            .subscribe { [unowned self] result in
+                switch result {
+                case let .next(coin):
+                    self.store.action.accept(.updateFromCoin(coin))
+                    self.store.action.accept(.updateFromCoinType(coin.type))
+                    self.coinTypeDidChange.accept(())
+                default: break
+                }
+            }.disposed(by: disposeBag)
+        
         input.maxFrom
             .asObservable()
             .withLatestFrom(state)
@@ -165,8 +171,10 @@ final class CoinExchangePresenter: ModulePresenter, CoinExchangeModule {
             .map{ CoinExchangeAction.swap }
             .bind(to: store.action)
             .disposed(by: disposeBag)
-        
-        fetchDataRelay.accept(())
+    }
+    
+    func handleError() {
+        delegate?.handleError()
     }
     
     private func exchange(for state: CoinExchangeState) -> Completable {

@@ -11,6 +11,7 @@ final class AppAssembly: Assembly {
     case prodApiUrl
     case apiUrl
     case socketUrl
+    case tradeSocketUrl
   }
   
   func assemble(container: Container) {
@@ -24,10 +25,14 @@ final class AppAssembly: Assembly {
     container.register(URL.self, name: Keys.testApiUrl.rawValue) { _ in URL(string: "http://test.belcobtm.com/api/v1")! }
     container.register(URL.self, name: Keys.prodApiUrl.rawValue) { _ in URL(string: "https://prod.belcobtm.com/api/v1")! }
     container.register(URL.self, name: Keys.apiUrl.rawValue) { ioc in ioc.resolve(URL.self, name: Keys.testApiUrl.rawValue)! }
+    
     container.register(URL.self, name: Keys.socketUrl.rawValue) { ioc in
       let apiUrl = ioc.resolve(URL.self, name: Keys.apiUrl.rawValue)!
       return apiUrl.appendingPathComponent("ws")
     }
+    
+    
+    
     container.register(NetworkService.self) { (ioc, baseUrl: URL) in
       let provider = MoyaProvider<MultiTarget>()
       return NetworkService(baseApiUrl: baseUrl, provider: provider)
@@ -120,6 +125,23 @@ final class AppAssembly: Assembly {
                                 errorService: errorService,
                                 socketURL: socketURL)
     }.inObjectScope(.container)
+    
+    container.register(TradeSocketService.self) { ioc in
+      let api = ioc.resolve(APIGateway.self)!
+      let accountStorage = ioc.resolve(AccountStorage.self)!
+      let walletStorage = ioc.resolve(BTMWalletStorage.self)!
+      let errorService = ioc.resolve(ErrorService.self)!
+     
+      let socketURL = ioc.resolve(URL.self, name: Keys.socketUrl.rawValue)!
+      
+      return TradeServiceImpl(api: api,
+                              accountStorage: accountStorage,
+                              walletStorage: walletStorage,
+                              errorService: errorService,
+                              socketURL: socketURL)
+    }.inObjectScope(.container)
+    
+    
   }
   
   fileprivate func assembleUsecases(container: Container) {

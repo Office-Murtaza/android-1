@@ -264,9 +264,11 @@ public class UserService implements UserDetailsService {
         }
 
         if (dto.getStatus() == VerificationStatus.NOT_VERIFIED) {
-            dto.setMessage("To increase your limits to 3000$ per transaction and 10000$ per day, please verify your account");
+            dto.setMessage("To increase your limits to <b>$3000</b> per transaction and <b>$10000</b> per day, please verify your account");
         } else if (dto.getStatus() == VerificationStatus.VERIFIED) {
-            dto.setMessage("To increase your limits to 10000$ per transaction and 20000$ per day, please VIP verify your account");
+            dto.setMessage("To increase your limits to <b>$10000</b> per transaction and <b>$20000</b> per day, please VIP verify your account");
+        } else if(dto.getStatus() == VerificationStatus.VERIFICATION_PENDING || dto.getStatus() == VerificationStatus.VIP_VERIFICATION_PENDING) {
+            dto.setMessage("Currently, we are verifying your information. We will notify you when we're done");
         }
 
         dto.setDailyLimit(getLastLimit(user.getIdentity().getLimitCashPerDay()));
@@ -297,6 +299,7 @@ public class UserService implements UserDetailsService {
                 verificationReview.setIdCardNumberMimetype(MIME_TYPE);
             } else if (dto.getVerificationTier() == VerificationTier.VIP_VERIFICATION) {
                 verificationReview.setTier(dto.getVerificationTier().getValue());
+                verificationReview.setIdentity(user.getIdentity());
                 verificationReview.setStatus(VerificationStatus.VIP_VERIFICATION_PENDING.getValue());
                 verificationReview.setSsn(dto.getSsn());
                 verificationReview.setSsnFilename(dto.getFile());
@@ -306,6 +309,10 @@ public class UserService implements UserDetailsService {
             verificationReview = verificationReviewRep.save(verificationReview);
             user.setStatus(verificationReview.getStatus());
             save(user);
+
+            //TODO remove
+            dto.setId(verificationReview.getId());
+            updateVerification(user.getId(), dto);
 
             return Response.ok(verificationReview != null);
         } catch (Exception e) {

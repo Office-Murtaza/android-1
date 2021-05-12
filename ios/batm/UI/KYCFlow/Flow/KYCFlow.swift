@@ -11,7 +11,7 @@ class KYCFlow: BaseFlow<BTMNavigationController, KYCFlowController> {
   }
   
   enum Steps: Step, Equatable {
-    case kyc(KYC)
+    case kyc
     case verification
     case vipVerification
     case showPicker
@@ -26,9 +26,8 @@ class KYCFlow: BaseFlow<BTMNavigationController, KYCFlowController> {
   
   private func handleFlow(step: Steps) -> NextFlowItems {
     switch step {
-    case let .kyc(kyc):
+    case .kyc:
       let module = resolver.resolve(Module<KYCModule>.self)!
-      module.input.setup(with: kyc)
       return push(module.controller)
     case .verification:
       let module = resolver.resolve(Module<VerificationModule>.self)!

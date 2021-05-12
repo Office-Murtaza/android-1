@@ -7,6 +7,7 @@ import kotlinx.coroutines.channels.sendBlocking
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.consumeAsFlow
 import okhttp3.*
+import java.io.EOFException
 import java.net.SocketException
 
 class OkHttpSocketClient(
@@ -49,10 +50,13 @@ class OkHttpSocketClient(
 
     override fun onFailure(webSocket: WebSocket, t: Throwable, response: Response?) {
         this.webSocket = null
-        if (t is SocketException && t.message.orEmpty().contains(NO_INTERNET_MESSAGE)) {
-            messages.sendBlocking(SocketResponse.Failure(Failure.NetworkConnection))
-        } else {
-            messages.sendBlocking(SocketResponse.Failure(t))
+        when {
+            t is EOFException ->
+                connect(webSocket.request().url().toString())
+            t is SocketException && t.message.orEmpty().contains(NO_INTERNET_MESSAGE) ->
+                messages.sendBlocking(SocketResponse.Failure(Failure.NetworkConnection))
+            else ->
+                messages.sendBlocking(SocketResponse.Failure(t))
         }
     }
 

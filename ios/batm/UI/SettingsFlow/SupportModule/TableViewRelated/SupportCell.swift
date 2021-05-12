@@ -13,14 +13,14 @@ enum SupportCellType: CaseIterable, SettingsCellTypeRepresentable {
         enum Naming {
             static let phone = "+1 (888) 848-3033"
             static let email = "support@belcobtm.com"
-            static let telegram = "@belco_support"
+            static let telegram = "@BelcoBTM"
             static let whatsApp = "HLM8HlzE5VjDjhEiZJpKJr"
         }
         
         enum Link {
             static let phone = "+18888483033"
             static let email = "support@belcobtm.com"
-            static let telegram = "https://t.me/belco_support"
+            static let telegram = "https://t.me/BelcoBTM"
             static let whatsApp = "https://chat.whatsapp.com/HLM8HlzE5VjDjhEiZJpKJr"
         }
     }

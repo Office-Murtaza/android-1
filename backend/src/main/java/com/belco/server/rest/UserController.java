@@ -9,10 +9,14 @@ import com.belco.server.security.JWTTokenProvider;
 import com.belco.server.service.*;
 import com.belco.server.util.Constant;
 import com.belco.server.util.Util;
+import com.mongodb.BasicDBObject;
+import com.mongodb.client.model.UpdateOptions;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang3.StringUtils;
+import org.bson.Document;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -21,7 +25,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -30,6 +33,8 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/api/v1")
 public class UserController {
+
+    private static final String COLL_PHONE_VERIFY_TRACKER = "phone_verify_tracker";
 
     private final JWTTokenProvider tokenProvider;
     private final AuthenticationManager authenticationManager;
@@ -40,11 +45,15 @@ public class UserController {
     private final TwilioService twilioService;
     private final CoinService coinService;
     private final NotificationService notificationService;
+    private final MongoTemplate mongo;
 
     @Value("${security.jwt.access-token-duration}")
     private Long tokenDuration;
 
-    public UserController(JWTTokenProvider tokenProvider, AuthenticationManager authenticationManager, UserService userService, TransactionService transactionService, TokenRep refreshTokenRep, PasswordEncoder passwordEncoder, TwilioService twilioService, CoinService coinService, NotificationService notificationService) {
+    @Value("${twilio.verify-delay}")
+    private Long verifyDelay;
+
+    public UserController(JWTTokenProvider tokenProvider, AuthenticationManager authenticationManager, UserService userService, TransactionService transactionService, TokenRep refreshTokenRep, PasswordEncoder passwordEncoder, TwilioService twilioService, CoinService coinService, NotificationService notificationService, MongoTemplate mongo) {
         this.tokenProvider = tokenProvider;
         this.authenticationManager = authenticationManager;
         this.userService = userService;
@@ -54,6 +63,7 @@ public class UserController {
         this.twilioService = twilioService;
         this.coinService = coinService;
         this.notificationService = notificationService;
+        this.mongo = mongo;
     }
 
     @PostMapping("/check")
@@ -75,15 +85,24 @@ public class UserController {
     @PostMapping("/verify")
     public Response verify(@RequestBody VerificationDTO dto) {
         try {
-            String code = twilioService.sendVerificationCode(dto.getPhone());
+            Document d = mongo.getCollection(COLL_PHONE_VERIFY_TRACKER).find(new Document("phone", dto.getPhone())).first();
+            long time = System.currentTimeMillis() - verifyDelay;
 
-            if (StringUtils.isBlank(code)) {
-                return Response.validationError("Not supported phone number");
+            if(d == null || d.getLong("timestamp") < time) {
+                String code = twilioService.sendVerificationCode(dto.getPhone());
+
+                if (StringUtils.isBlank(code)) {
+                    return Response.validationError("Not supported phone number");
+                }
+
+                log.info("phone: " + dto.getPhone() + ", code: " + code);
+
+                mongo.getCollection(COLL_PHONE_VERIFY_TRACKER).updateOne(new Document("phone", dto.getPhone()), new Document("$set", new Document("phone", dto.getPhone()).append("timestamp", System.currentTimeMillis())), new UpdateOptions().upsert(true));
+
+                return Response.ok("code", code);
+            } else {
+                return Response.validationError("Too many requests. Please, wait " + (d.getLong("timestamp") - time) / 1000 + " seconds");
             }
-
-            log.info("phone: " + dto.getPhone() + ", code: " + code);
-
-            return Response.ok("code", code);
         } catch (Exception e) {
             e.printStackTrace();
             return Response.serverError();

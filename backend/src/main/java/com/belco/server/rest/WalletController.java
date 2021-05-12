@@ -2,6 +2,7 @@ package com.belco.server.rest;
 
 import com.belco.server.dto.TransactionDetailsDTO;
 import com.belco.server.dto.WalletDTO;
+import com.belco.server.model.Response;
 import com.belco.server.service.CoinService;
 import com.belco.server.service.WalletService;
 import com.belco.server.util.Util;
@@ -29,6 +30,17 @@ public class WalletController {
 
     public WalletController(WalletService walletService) {
         this.walletService = walletService;
+    }
+
+    @GetMapping("/generate")
+    public Response generate(@RequestParam long timestamp, @RequestParam String signature) {
+        String signature2 = Util.sign("generate", "", timestamp, apiKey, apiSecret);
+
+        if (enabled && !signature2.equals(signature)) {
+            return Response.forbidden();
+        }
+
+        return Response.ok(walletService.generateNewWallet());
     }
 
     @GetMapping("/coin/{coin}/validate")

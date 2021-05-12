@@ -263,6 +263,7 @@
     <string name="insufficient_balance">Insufficient balance</string>
     <string name="balance_amount_too_small">Amount can\'t be zero</string>
     <string name="balance_amount_exceeded">Amount can’t be higher than your balance</string>
+    <string name="address_invalid">Invalid address</string>
 
     <!-- Transition details screen -->
     <string name="transition_details_screen_id">ID</string>
@@ -688,6 +689,8 @@
     <string name="score_from_a_partner_label">Score From A Partner</string>
     <string name="trade_order_details_crypto_amount_label">Crypto Amount</string>
     <string name="trade_order_details_fiat_amount">Fiat Amount</string>
+    <string name="cannot_perform_swap_error">Cannot perform swap</string>
+    <string name="cannot_perform_swap_error_message">Please, enable coins from Settings/Wallets and try again</string>
     <string name="attach_id_scan_label">Attach id Scan</string>
     <string name="attach_id_selfie_label">Attach id Selfie</string>
 </resources>

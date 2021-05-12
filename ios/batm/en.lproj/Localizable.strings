@@ -135,7 +135,9 @@
 "unlink.annotation" = "Make sure you stored your credentials and seed phrase before unlinking the wallet, otherwise, you would lose all assets.";
 "unlink.unlinked" = "Wallet was successfully deleted from the device";
 
-"k_y_c.title" = "KYC";
+"k_y_c.title" = "AML/KYC";
+"k_y_c.button.add_i_d" = "Attach ID Scan";
+"k_y_c.button.add_i_d_selfie" = "Attach ID Selfie";
 "k_y_c.header.status.title" = "Status";
 "k_y_c.header.transaction_limit.title" = "Transaction limit";
 "k_y_c.header.daily_limit.title" = "Daily limit";
@@ -149,6 +151,7 @@
 "k_y_c.header.status.value.vip_verified" = "VIP verified";
 "k_y_c.button.verify" = "Verify";
 "k_y_c.button.vip_verify" = "VIP Verify";
+"k_y_c.info_view.verification_rejected_title" = "At this time we are verifying your information. You will receive a push notification when the verification is completed.";
 
 "verification.title" = "Verify";
 "verification.id_scan" = "ID scan";
@@ -412,6 +415,7 @@
 "swap.tilda" = "~";
 "swap.percent" = "%";
 "swap.usd.title" = "USD converted value";
+"swap.alert.coins_not_enough" = "Please, enable coins from Settings/Wallets and try again";
 
 "transfer.receiver.phone.placeholder" = "Type mobile number or contact name";
 "transfer.receiver.title" = "Transfer";

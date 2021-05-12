@@ -19,6 +19,24 @@ struct Trade: Equatable {
     var makerLongitude: Double?
     var makerTotalTrades: Double?
     var makerTradingRate: Double?
+  
+  static var empty = Trade(id: nil,
+                           type: nil,
+                           coin: nil,
+                           status: nil,
+                           timestamp: nil,
+                           price: nil,
+                           minLimit: nil,
+                           maxLimit: nil,
+                           paymentMethods: nil,
+                           terms: nil,
+                           openOrders: nil,
+                           makerUserId: nil,
+                           makerPublicId: nil,
+                           makerLatitude: nil,
+                           makerLongitude: nil,
+                           makerTotalTrades: nil,
+                           makerTradingRate: nil)
 }
 
 struct Order: Equatable {

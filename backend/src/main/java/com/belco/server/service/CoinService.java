@@ -925,7 +925,7 @@ public class CoinService {
 
             @Override
             public String getName() {
-                return "tether";
+                return "usd-coin";
             }
 
             @Override

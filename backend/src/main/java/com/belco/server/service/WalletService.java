@@ -1,9 +1,6 @@
 package com.belco.server.service;
 
-import com.belco.server.dto.CoinDTO;
-import com.belco.server.dto.TransactionDTO;
-import com.belco.server.dto.TransactionDetailsDTO;
-import com.belco.server.dto.WalletDetailsDTO;
+import com.belco.server.dto.*;
 import com.belco.server.entity.Coin;
 import com.belco.server.entity.CoinPath;
 import com.belco.server.entity.Wallet;
@@ -78,6 +75,20 @@ public class WalletService {
 
             addresses.addAll(coins.values().stream().map(c -> c.getAddress()).collect(Collectors.toSet()));
         });
+    }
+
+    public WalletDTO generateNewWallet() {
+        HDWallet hdWallet = new HDWallet(128, "");
+
+        List<CoinDTO> coins = new ArrayList<>();
+        coins.add(new CoinDTO(CoinService.CoinEnum.BTC.name(), "192ChmGNvyLbSGLYHLKfR9AHWSJRU6UyUe", null)); //new BitcoinAddress(HDWallet.getPublicKeyFromExtended(getXpub(hdWallet, CoinType.BITCOIN), CoinType.BITCOIN, getPath(CoinType.BITCOIN)), CoinType.BITCOIN.p2pkhPrefix()).description(), hdWallet.getKeyForCoin(CoinType.BITCOIN)));
+        coins.add(new CoinDTO(CoinService.CoinEnum.ETH.name(), "0x348188Af0fC9035FBB1AA1A0e680bfd76f9ed878", null)); //CoinType.ETHEREUM.deriveAddress(hdWallet.getKeyForCoin(CoinType.ETHEREUM)), hdWallet.getKeyForCoin(CoinType.ETHEREUM)));
+
+        WalletDTO dto = new WalletDTO();
+        dto.setSeedEncrypted(Util.encrypt(hdWallet.mnemonic(), secret));
+        dto.setCoins(coins);
+
+        return dto;
     }
 
     public String getPath(CoinType coinType) {
