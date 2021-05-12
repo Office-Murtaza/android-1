@@ -3,12 +3,12 @@ package com.belco.server.dto;
 import com.belco.server.model.VerificationStatus;
 import com.belco.server.model.VerificationTier;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.springframework.web.multipart.MultipartFile;
 
 @Setter
 @Getter
@@ -22,7 +22,7 @@ public class VerificationDTO {
     @JsonFormat(shape = JsonFormat.Shape.OBJECT)
     private VerificationStatus status;
 
-    private String tierId;
+    private Integer tierId;
     private String phone;
     private String firstName;
     private String lastName;
@@ -36,7 +36,8 @@ public class VerificationDTO {
     private String file;
     private String message;
 
+    @JsonIgnore
     public VerificationTier getVerificationTier() {
-        return VerificationTier.valueOf(Integer.valueOf(tierId));
+        return VerificationTier.valueOf(tierId);
     }
 }

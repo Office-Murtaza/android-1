@@ -299,6 +299,7 @@ public class UserService implements UserDetailsService {
                 verificationReview.setIdCardNumberMimetype(MIME_TYPE);
             } else if (dto.getVerificationTier() == VerificationTier.VIP_VERIFICATION) {
                 verificationReview.setTier(dto.getVerificationTier().getValue());
+                verificationReview.setIdentity(user.getIdentity());
                 verificationReview.setStatus(VerificationStatus.VIP_VERIFICATION_PENDING.getValue());
                 verificationReview.setSsn(dto.getSsn());
                 verificationReview.setSsnFilename(dto.getFile());
@@ -308,6 +309,10 @@ public class UserService implements UserDetailsService {
             verificationReview = verificationReviewRep.save(verificationReview);
             user.setStatus(verificationReview.getStatus());
             save(user);
+
+            //TODO remove
+            dto.setId(verificationReview.getId());
+            updateVerification(user.getId(), dto);
 
             return Response.ok(verificationReview != null);
         } catch (Exception e) {
