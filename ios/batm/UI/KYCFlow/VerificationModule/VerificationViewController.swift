@@ -19,7 +19,7 @@ final class VerificationViewController: ModuleViewController<VerificationPresent
         rootScrollView.contentView.addSubviews(filePickerView,
                                                formView,
                                                sendButton)
-        filePickerView.setImageContainer(with: localize(L.KYC.Button.addID), color: .lightGray)
+        filePickerView.setImageContainer(with: localize(L.KYC.Button.addID))
         setupDefaultKeyboardHandling()
     }
     

@@ -104,25 +104,28 @@ final class VerificationPresenter: ModulePresenter, VerificationModule {
     
     private func sendVerification(state: VerificationState) -> Completable {
         return Single.just(state)
-            .map { VerificationUserData(userId: $0.userId,
-                                        scanData: $0.selectedImageData!,
-                                        idNumber: $0.idNumber,
-                                        firstName: $0.firstName,
-                                        lastName: $0.lastName,
-                                        address: $0.address,
-                                        country: $0.country,
-                                        province: $0.province,
-                                        city: $0.city,
-                                        zipCode: $0.zipCode) }
+            .map { userData -> VerificationUserData in
+                let fileName = "\(userData.userId)_idcard_\(String.randomString(length: 10)).jpg"
+                return VerificationUserData(userId: userData.userId,
+                                            scanData: userData.selectedImageData!,
+                                            idNumber: userData.idNumber,
+                                            firstName: userData.firstName,
+                                            lastName: userData.lastName,
+                                            address: userData.address,
+                                            country: userData.country,
+                                            province: userData.province,
+                                            city: userData.city,
+                                            zipCode: userData.zipCode,
+                                            scanFileName: fileName)
+            }
             .flatMapCompletable { [weak self, usecase] in
-                self?.setupFirebaseStorage(userId: $0.userId, userData: $0.scanData)
+                self?.setupFirebaseStorage(userId: $0.userId, userData: $0.scanData, fileName: $0.scanFileName)
                 return usecase.sendVerification(userData: $0)
             }
     }
     
-    private func setupFirebaseStorage(userId: Int, userData: Data) {
-        let imageReference = "\(userId)_idcard_\(String.randomString(length: 10)).jpg"
-        let uploadRef = Storage.storage().reference().child("verification").child("\(imageReference)")
+    private func setupFirebaseStorage(userId: Int, userData: Data, fileName: String) {
+        let uploadRef = Storage.storage().reference().child("verification").child("\(fileName)")
         let uploadMetadata = StorageMetadata()
         uploadMetadata.contentType = "image/jpeg"
         

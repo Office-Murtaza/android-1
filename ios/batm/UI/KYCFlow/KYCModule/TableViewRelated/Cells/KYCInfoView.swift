@@ -14,10 +14,7 @@ final class KYCInfoView: UITableViewCell {
         
     private lazy var label: UILabel = {
         let label = UILabel()
-        label.font = .systemFont(ofSize: 16, weight: .regular)
-        label.textColor = .ceruleanBlue
         label.numberOfLines = 0
-        label.textAlignment = .center
         return label
     }()
     
@@ -33,7 +30,7 @@ final class KYCInfoView: UITableViewCell {
     
     func setup(with text: String?) {
         isHidden = text == nil
-        label.text = text
+        label.attributedText = text?.htmlAttributedString(size: 16, color: .ceruleanBlue)
     }
     
     private func setupUI() {
@@ -65,5 +62,48 @@ final class KYCInfoView: UITableViewCell {
             $0.left.right.equalToSuperview().inset(12)
             $0.bottom.equalToSuperview().offset(-24)
         }
+    }
+}
+
+extension String {
+    func htmlAttributedString(size: CGFloat, color: UIColor) -> NSAttributedString? {
+        let htmlTemplate = """
+                <!doctype html>
+                <html>
+                  <head>
+                    <style>
+                      body {
+                        color: \(color.hexString!);
+                        font-family: -apple-system;
+                        font-size: \(size)px;
+                        text-align: center;
+                      }
+                    </style>
+                  </head>
+                  <body>
+                    \(self)
+                  </body>
+                </html>
+                """
+        
+        guard let data = htmlTemplate.data(using: .utf8) else { return nil }
+        
+        guard let attributedString = try? NSAttributedString(data: data,
+                                                             options: [.documentType: NSAttributedString.DocumentType.html],
+                                                             documentAttributes: nil) else { return nil }
+        
+        return attributedString
+    }
+}
+
+extension UIColor {
+    var hexString:String? {
+        if let components = self.cgColor.components {
+            let r = components[0]
+            let g = components[1]
+            let b = components[2]
+            return  String(format: "#%02x%02x%02x", (Int)(r * 255), (Int)(g * 255), (Int)(b * 255))
+        }
+        return nil
     }
 }

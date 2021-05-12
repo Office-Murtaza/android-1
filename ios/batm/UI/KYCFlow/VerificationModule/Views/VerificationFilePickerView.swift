@@ -50,8 +50,8 @@ final class VerificationFilePickerView: UIView, HasDisposeBag {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func setImageContainer(with title: String, color: UIColor) {
-        container.tintColor = color
+    func setImageContainer(with title: String) {
+        container.tintColor = .lightGray
         addScanButton.setTitle(title, for: .normal)
     }
 
