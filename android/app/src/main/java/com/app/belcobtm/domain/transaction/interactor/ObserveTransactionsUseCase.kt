@@ -11,10 +11,11 @@ import kotlinx.coroutines.flow.map
 
 class ObserveTransactionsUseCase(private val repository: TransactionRepository) {
 
-    fun invoke(): Flow<List<TransactionsAdapterItem>> =
+    fun invoke(coinCode: String): Flow<List<TransactionsAdapterItem>> =
         repository.observeTransactions()
             .map { transactionsData ->
                 transactionsData.transactions.values
+                    .filter { it.coinCode == coinCode }
                     .sortedByDescending { it.timestamp }
                     .map(TransactionDetailsDataItem::mapToUiItem)
             }

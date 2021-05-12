@@ -32,7 +32,7 @@ class TransactionsViewModel(
         MutableLiveData(LoadingData.Loading())
 
     val transactionListLiveData: LiveData<List<TransactionsAdapterItem>>
-        get() = observeTransactionsUseCase.invoke().asLiveData()
+        get() = observeTransactionsUseCase.invoke(coinCode).asLiveData()
     private val chartInfo = HashMap<@PriceChartPeriod Int, ChartDataItem>()
 
     private val _detailsLiveData = MutableLiveData<TransactionsScreenItem>()

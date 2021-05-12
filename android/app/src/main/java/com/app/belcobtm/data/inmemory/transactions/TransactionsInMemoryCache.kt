@@ -13,9 +13,13 @@ class TransactionsInMemoryCache {
     val observableData: Flow<TransactionsData>
         get() = cache
 
-    fun init(transactions: List<TransactionDetailsResponse>) {
-        cache.value = TransactionsData(transactions.associateByTo(
-            HashMap(), { (it.txId ?: it.txDbId).orEmpty() }) { it.mapToDataItem() }
+    fun init(coinCode: String, response: List<TransactionDetailsResponse>) {
+        val transactions = response.associateByTo(
+            HashMap(), { (it.txId ?: it.txDbId).orEmpty() }) { it.mapToDataItem(coinCode) }
+        cache.value = TransactionsData(
+            cache.value.transactions.toMutableMap().apply {
+                putAll(transactions)
+            }
         )
     }
 
@@ -23,7 +27,7 @@ class TransactionsInMemoryCache {
         val transactions = HashMap(cache.value.transactions)
         val id = response.txId ?: response.txDbId
         id?.let {
-            transactions[id] = response.mapToDataItem()
+            transactions[id] = response.mapToDataItem(response.coin.orEmpty())
             cache.value = cache.value.copy(transactions = transactions)
         }
     }

@@ -34,7 +34,7 @@ class TransactionRepositoryImpl(
         currentListSize: Int
     ): Either<Failure, Unit> =
         apiService.fetchTransactions(coinCode, currentListSize).map {
-            cache.init(it.transactions)
+            cache.init(coinCode, it.transactions)
             Unit
         }
 

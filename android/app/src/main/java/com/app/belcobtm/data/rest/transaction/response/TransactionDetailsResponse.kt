@@ -32,8 +32,9 @@ data class TransactionDetailsResponse(
     val confirmations: Int?
 )
 
-fun TransactionDetailsResponse.mapToDataItem(): TransactionDetailsDataItem =
+fun TransactionDetailsResponse.mapToDataItem(coinCode: String): TransactionDetailsDataItem =
     TransactionDetailsDataItem(
+        coinCode = coinCode,
         cryptoAmount = cryptoAmount,
         fiatAmount = fiatAmount,
         cryptoFee = cryptoFee,
