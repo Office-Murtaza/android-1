@@ -415,6 +415,7 @@
 "swap.tilda" = "~";
 "swap.percent" = "%";
 "swap.usd.title" = "USD converted value";
+"swap.alert.coins_not_enough" = "Please, enable coins from Settings/Wallets and try again";
 
 "transfer.receiver.phone.placeholder" = "Type mobile number or contact name";
 "transfer.receiver.title" = "Transfer";

@@ -58,7 +58,7 @@ final class KYCDataSource: NSObject, HasDisposeBag, ItemsCountProvider {
         var message: String?
         
         if value?.status == .verificationPending {
-            message = "At this time we are verifying your information. You will receive a push notification when the verification is completed."
+            message = localize(L.KYC.InfoView.verificationRejectedTitle)
         } else {
             message = value?.message
         }

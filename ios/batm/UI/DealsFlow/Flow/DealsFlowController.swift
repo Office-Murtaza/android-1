@@ -2,7 +2,7 @@ import Foundation
 import RxSwift
 import RxFlow
 
-protocol DealsFlowControllerDelegate: class {}
+protocol DealsFlowControllerDelegate: AnyObject {}
 
 class DealsFlowController: FlowController, FlowActivator {
     var initialStep: Step = DealsFlow.Steps.deals
@@ -30,6 +30,10 @@ extension DealsFlowController: DealsModuleDelegate {
 extension DealsFlowController: CoinExchangeModuleDelegate {
     func didFinishCoinExchange() {
         step.accept(DealsFlow.Steps.popToRoot(localize(L.CoinDetails.transactionCreated)))
+    }
+    
+    func handleError() {
+        step.accept(DealsFlow.Steps.popToRoot())
     }
 }
 
