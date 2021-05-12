@@ -17,6 +17,8 @@ class P2PPresenter: ModulePresenter, P2PModule {
   var tradeSuccessMessage = BehaviorRelay<String>(value: "")
   
   var balance = PublishRelay<CoinsBalance>()
+  var socketTrade = PublishRelay<Trade>()
+    
   private let locationService = GeolocationService()
   private let fetchDataRelay = PublishRelay<Void>()
   var errorService: ErrorService?
@@ -40,9 +42,19 @@ class P2PPresenter: ModulePresenter, P2PModule {
     
     fetchDataRelay.accept(())
     
-    
     tradeSocketService?.start()
     
+    tradeSocketService?.getTrade().subscribe(onNext: { [weak self] (trade) in
+        self?.socketTrade.accept(trade)
+    }).disposed(by: disposeBag)
+    
+  }
+  
+  func willHideModule() {
+    tradeSocketService?
+      .unsubscribe()
+      .subscribe()
+      .disposed(by: disposeBag)
   }
   
   func refreshTrades() {
