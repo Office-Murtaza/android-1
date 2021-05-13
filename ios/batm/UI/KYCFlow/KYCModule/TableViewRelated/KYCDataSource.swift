@@ -55,15 +55,8 @@ final class KYCDataSource: NSObject, HasDisposeBag, ItemsCountProvider {
     private func setupCells() {
         cells = []
         guard let status = value?.status else { return }
-        var message: String?
         
-        if value?.status == .verificationPending {
-            message = localize(L.KYC.InfoView.verificationRejectedTitle)
-        } else {
-            message = value?.message
-        }
-        
-        let infoViewCell = KYCItemType.infoView(text: message)
+        let infoViewCell = KYCItemType.infoView(text: value?.message)
         
         let statusCell = KYCItemType.status(title: localize(L.KYC.Header.Status.title),
                                             view: TransactionStatusView(),
@@ -73,7 +66,7 @@ final class KYCDataSource: NSObject, HasDisposeBag, ItemsCountProvider {
                                                     leftData: "\(value?.txLimit ?? 0)",
                                                     rightTitle: localize(L.KYC.Header.DailyLimit.title),
                                                     rightData: "\(value?.dailyLimit ?? 0)")
-        if message != nil {
+        if value?.message != nil {
             cells.append(infoViewCell)
         }
         cells.append(statusCell)

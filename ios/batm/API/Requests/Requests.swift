@@ -484,9 +484,9 @@ struct SendVerificationRequest: AuthorizedAPIRequest {
   var path: String { return "/user/\(userId)/verification" }
   var method: HTTPMethod { return .post }
   var task: HTTPTask {
-    return .requestParameters(parameters: ["tierId": userData.tierId,
-                                           "file": userData.scanFileName,
-                                           "idNumber": userData.idNumber,
+    return .requestParameters(parameters: ["tier": userData.tierId,
+                                           "idCardNumberFilename": userData.scanFileName,
+                                           "idCardNumber": userData.idNumber,
                                            "firstName": userData.firstName,
                                            "lastName": userData.lastName,
                                            "address": userData.address,
@@ -509,8 +509,8 @@ struct SendVIPVerificationRequest: AuthorizedAPIRequest {
   var path: String { return "/user/\(userId)/verification" }
   var method: HTTPMethod { return .post }
   var task: HTTPTask {
-    return .requestParameters(parameters: ["tierId": userData.tierId,
-                                           "file": userData.selfieFileName,
+    return .requestParameters(parameters: ["tier": userData.tierId,
+                                           "ssnFilename": userData.selfieFileName,
                                            "ssn": userData.ssn],
                               encoding: JSONEncoding.default)
   }
