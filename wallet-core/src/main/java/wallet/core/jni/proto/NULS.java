@@ -20,21 +20,25 @@ public final class NULS {
 
     /**
      * <code>string from_address = 1;</code>
+     * @return The fromAddress.
      */
     java.lang.String getFromAddress();
     /**
      * <code>string from_address = 1;</code>
+     * @return The bytes for fromAddress.
      */
     com.google.protobuf.ByteString
         getFromAddressBytes();
 
     /**
      * <code>uint32 assets_chainid = 2;</code>
+     * @return The assetsChainid.
      */
     int getAssetsChainid();
 
     /**
      * <code>uint32 assets_id = 3;</code>
+     * @return The assetsId.
      */
     int getAssetsId();
 
@@ -44,6 +48,7 @@ public final class NULS {
      * </pre>
      *
      * <code>bytes id_amount = 4;</code>
+     * @return The idAmount.
      */
     com.google.protobuf.ByteString getIdAmount();
 
@@ -53,6 +58,7 @@ public final class NULS {
      * </pre>
      *
      * <code>bytes nonce = 5;</code>
+     * @return The nonce.
      */
     com.google.protobuf.ByteString getNonce();
 
@@ -62,13 +68,14 @@ public final class NULS {
      * </pre>
      *
      * <code>uint32 locked = 6;</code>
+     * @return The locked.
      */
     int getLocked();
   }
   /**
    * Protobuf type {@code TW.NULS.Proto.TransactionCoinFrom}
    */
-  public  static final class TransactionCoinFrom extends
+  public static final class TransactionCoinFrom extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:TW.NULS.Proto.TransactionCoinFrom)
       TransactionCoinFromOrBuilder {
@@ -180,7 +187,9 @@ public final class NULS {
     private volatile java.lang.Object fromAddress_;
     /**
      * <code>string from_address = 1;</code>
+     * @return The fromAddress.
      */
+    @java.lang.Override
     public java.lang.String getFromAddress() {
       java.lang.Object ref = fromAddress_;
       if (ref instanceof java.lang.String) {
@@ -195,7 +204,9 @@ public final class NULS {
     }
     /**
      * <code>string from_address = 1;</code>
+     * @return The bytes for fromAddress.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString
         getFromAddressBytes() {
       java.lang.Object ref = fromAddress_;
@@ -214,7 +225,9 @@ public final class NULS {
     private int assetsChainid_;
     /**
      * <code>uint32 assets_chainid = 2;</code>
+     * @return The assetsChainid.
      */
+    @java.lang.Override
     public int getAssetsChainid() {
       return assetsChainid_;
     }
@@ -223,7 +236,9 @@ public final class NULS {
     private int assetsId_;
     /**
      * <code>uint32 assets_id = 3;</code>
+     * @return The assetsId.
      */
+    @java.lang.Override
     public int getAssetsId() {
       return assetsId_;
     }
@@ -236,7 +251,9 @@ public final class NULS {
      * </pre>
      *
      * <code>bytes id_amount = 4;</code>
+     * @return The idAmount.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString getIdAmount() {
       return idAmount_;
     }
@@ -249,7 +266,9 @@ public final class NULS {
      * </pre>
      *
      * <code>bytes nonce = 5;</code>
+     * @return The nonce.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString getNonce() {
       return nonce_;
     }
@@ -262,7 +281,9 @@ public final class NULS {
      * </pre>
      *
      * <code>uint32 locked = 6;</code>
+     * @return The locked.
      */
+    @java.lang.Override
     public int getLocked() {
       return locked_;
     }
@@ -657,6 +678,7 @@ public final class NULS {
       private java.lang.Object fromAddress_ = "";
       /**
        * <code>string from_address = 1;</code>
+       * @return The fromAddress.
        */
       public java.lang.String getFromAddress() {
         java.lang.Object ref = fromAddress_;
@@ -672,6 +694,7 @@ public final class NULS {
       }
       /**
        * <code>string from_address = 1;</code>
+       * @return The bytes for fromAddress.
        */
       public com.google.protobuf.ByteString
           getFromAddressBytes() {
@@ -688,6 +711,8 @@ public final class NULS {
       }
       /**
        * <code>string from_address = 1;</code>
+       * @param value The fromAddress to set.
+       * @return This builder for chaining.
        */
       public Builder setFromAddress(
           java.lang.String value) {
@@ -701,6 +726,7 @@ public final class NULS {
       }
       /**
        * <code>string from_address = 1;</code>
+       * @return This builder for chaining.
        */
       public Builder clearFromAddress() {
         
@@ -710,6 +736,8 @@ public final class NULS {
       }
       /**
        * <code>string from_address = 1;</code>
+       * @param value The bytes for fromAddress to set.
+       * @return This builder for chaining.
        */
       public Builder setFromAddressBytes(
           com.google.protobuf.ByteString value) {
@@ -726,12 +754,16 @@ public final class NULS {
       private int assetsChainid_ ;
       /**
        * <code>uint32 assets_chainid = 2;</code>
+       * @return The assetsChainid.
        */
+      @java.lang.Override
       public int getAssetsChainid() {
         return assetsChainid_;
       }
       /**
        * <code>uint32 assets_chainid = 2;</code>
+       * @param value The assetsChainid to set.
+       * @return This builder for chaining.
        */
       public Builder setAssetsChainid(int value) {
         
@@ -741,6 +773,7 @@ public final class NULS {
       }
       /**
        * <code>uint32 assets_chainid = 2;</code>
+       * @return This builder for chaining.
        */
       public Builder clearAssetsChainid() {
         
@@ -752,12 +785,16 @@ public final class NULS {
       private int assetsId_ ;
       /**
        * <code>uint32 assets_id = 3;</code>
+       * @return The assetsId.
        */
+      @java.lang.Override
       public int getAssetsId() {
         return assetsId_;
       }
       /**
        * <code>uint32 assets_id = 3;</code>
+       * @param value The assetsId to set.
+       * @return This builder for chaining.
        */
       public Builder setAssetsId(int value) {
         
@@ -767,6 +804,7 @@ public final class NULS {
       }
       /**
        * <code>uint32 assets_id = 3;</code>
+       * @return This builder for chaining.
        */
       public Builder clearAssetsId() {
         
@@ -782,7 +820,9 @@ public final class NULS {
        * </pre>
        *
        * <code>bytes id_amount = 4;</code>
+       * @return The idAmount.
        */
+      @java.lang.Override
       public com.google.protobuf.ByteString getIdAmount() {
         return idAmount_;
       }
@@ -792,6 +832,8 @@ public final class NULS {
        * </pre>
        *
        * <code>bytes id_amount = 4;</code>
+       * @param value The idAmount to set.
+       * @return This builder for chaining.
        */
       public Builder setIdAmount(com.google.protobuf.ByteString value) {
         if (value == null) {
@@ -808,6 +850,7 @@ public final class NULS {
        * </pre>
        *
        * <code>bytes id_amount = 4;</code>
+       * @return This builder for chaining.
        */
       public Builder clearIdAmount() {
         
@@ -823,7 +866,9 @@ public final class NULS {
        * </pre>
        *
        * <code>bytes nonce = 5;</code>
+       * @return The nonce.
        */
+      @java.lang.Override
       public com.google.protobuf.ByteString getNonce() {
         return nonce_;
       }
@@ -833,6 +878,8 @@ public final class NULS {
        * </pre>
        *
        * <code>bytes nonce = 5;</code>
+       * @param value The nonce to set.
+       * @return This builder for chaining.
        */
       public Builder setNonce(com.google.protobuf.ByteString value) {
         if (value == null) {
@@ -849,6 +896,7 @@ public final class NULS {
        * </pre>
        *
        * <code>bytes nonce = 5;</code>
+       * @return This builder for chaining.
        */
       public Builder clearNonce() {
         
@@ -864,7 +912,9 @@ public final class NULS {
        * </pre>
        *
        * <code>uint32 locked = 6;</code>
+       * @return The locked.
        */
+      @java.lang.Override
       public int getLocked() {
         return locked_;
       }
@@ -874,6 +924,8 @@ public final class NULS {
        * </pre>
        *
        * <code>uint32 locked = 6;</code>
+       * @param value The locked to set.
+       * @return This builder for chaining.
        */
       public Builder setLocked(int value) {
         
@@ -887,6 +939,7 @@ public final class NULS {
        * </pre>
        *
        * <code>uint32 locked = 6;</code>
+       * @return This builder for chaining.
        */
       public Builder clearLocked() {
         
@@ -953,21 +1006,25 @@ public final class NULS {
 
     /**
      * <code>string to_address = 1;</code>
+     * @return The toAddress.
      */
     java.lang.String getToAddress();
     /**
      * <code>string to_address = 1;</code>
+     * @return The bytes for toAddress.
      */
     com.google.protobuf.ByteString
         getToAddressBytes();
 
     /**
      * <code>uint32 assets_chainid = 2;</code>
+     * @return The assetsChainid.
      */
     int getAssetsChainid();
 
     /**
      * <code>uint32 assets_id = 3;</code>
+     * @return The assetsId.
      */
     int getAssetsId();
 
@@ -977,18 +1034,20 @@ public final class NULS {
      * </pre>
      *
      * <code>bytes id_amount = 4;</code>
+     * @return The idAmount.
      */
     com.google.protobuf.ByteString getIdAmount();
 
     /**
      * <code>uint32 lock_time = 5;</code>
+     * @return The lockTime.
      */
     int getLockTime();
   }
   /**
    * Protobuf type {@code TW.NULS.Proto.TransactionCoinTo}
    */
-  public  static final class TransactionCoinTo extends
+  public static final class TransactionCoinTo extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:TW.NULS.Proto.TransactionCoinTo)
       TransactionCoinToOrBuilder {
@@ -1094,7 +1153,9 @@ public final class NULS {
     private volatile java.lang.Object toAddress_;
     /**
      * <code>string to_address = 1;</code>
+     * @return The toAddress.
      */
+    @java.lang.Override
     public java.lang.String getToAddress() {
       java.lang.Object ref = toAddress_;
       if (ref instanceof java.lang.String) {
@@ -1109,7 +1170,9 @@ public final class NULS {
     }
     /**
      * <code>string to_address = 1;</code>
+     * @return The bytes for toAddress.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString
         getToAddressBytes() {
       java.lang.Object ref = toAddress_;
@@ -1128,7 +1191,9 @@ public final class NULS {
     private int assetsChainid_;
     /**
      * <code>uint32 assets_chainid = 2;</code>
+     * @return The assetsChainid.
      */
+    @java.lang.Override
     public int getAssetsChainid() {
       return assetsChainid_;
     }
@@ -1137,7 +1202,9 @@ public final class NULS {
     private int assetsId_;
     /**
      * <code>uint32 assets_id = 3;</code>
+     * @return The assetsId.
      */
+    @java.lang.Override
     public int getAssetsId() {
       return assetsId_;
     }
@@ -1150,7 +1217,9 @@ public final class NULS {
      * </pre>
      *
      * <code>bytes id_amount = 4;</code>
+     * @return The idAmount.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString getIdAmount() {
       return idAmount_;
     }
@@ -1159,7 +1228,9 @@ public final class NULS {
     private int lockTime_;
     /**
      * <code>uint32 lock_time = 5;</code>
+     * @return The lockTime.
      */
+    @java.lang.Override
     public int getLockTime() {
       return lockTime_;
     }
@@ -1537,6 +1608,7 @@ public final class NULS {
       private java.lang.Object toAddress_ = "";
       /**
        * <code>string to_address = 1;</code>
+       * @return The toAddress.
        */
       public java.lang.String getToAddress() {
         java.lang.Object ref = toAddress_;
@@ -1552,6 +1624,7 @@ public final class NULS {
       }
       /**
        * <code>string to_address = 1;</code>
+       * @return The bytes for toAddress.
        */
       public com.google.protobuf.ByteString
           getToAddressBytes() {
@@ -1568,6 +1641,8 @@ public final class NULS {
       }
       /**
        * <code>string to_address = 1;</code>
+       * @param value The toAddress to set.
+       * @return This builder for chaining.
        */
       public Builder setToAddress(
           java.lang.String value) {
@@ -1581,6 +1656,7 @@ public final class NULS {
       }
       /**
        * <code>string to_address = 1;</code>
+       * @return This builder for chaining.
        */
       public Builder clearToAddress() {
         
@@ -1590,6 +1666,8 @@ public final class NULS {
       }
       /**
        * <code>string to_address = 1;</code>
+       * @param value The bytes for toAddress to set.
+       * @return This builder for chaining.
        */
       public Builder setToAddressBytes(
           com.google.protobuf.ByteString value) {
@@ -1606,12 +1684,16 @@ public final class NULS {
       private int assetsChainid_ ;
       /**
        * <code>uint32 assets_chainid = 2;</code>
+       * @return The assetsChainid.
        */
+      @java.lang.Override
       public int getAssetsChainid() {
         return assetsChainid_;
       }
       /**
        * <code>uint32 assets_chainid = 2;</code>
+       * @param value The assetsChainid to set.
+       * @return This builder for chaining.
        */
       public Builder setAssetsChainid(int value) {
         
@@ -1621,6 +1703,7 @@ public final class NULS {
       }
       /**
        * <code>uint32 assets_chainid = 2;</code>
+       * @return This builder for chaining.
        */
       public Builder clearAssetsChainid() {
         
@@ -1632,12 +1715,16 @@ public final class NULS {
       private int assetsId_ ;
       /**
        * <code>uint32 assets_id = 3;</code>
+       * @return The assetsId.
        */
+      @java.lang.Override
       public int getAssetsId() {
         return assetsId_;
       }
       /**
        * <code>uint32 assets_id = 3;</code>
+       * @param value The assetsId to set.
+       * @return This builder for chaining.
        */
       public Builder setAssetsId(int value) {
         
@@ -1647,6 +1734,7 @@ public final class NULS {
       }
       /**
        * <code>uint32 assets_id = 3;</code>
+       * @return This builder for chaining.
        */
       public Builder clearAssetsId() {
         
@@ -1662,7 +1750,9 @@ public final class NULS {
        * </pre>
        *
        * <code>bytes id_amount = 4;</code>
+       * @return The idAmount.
        */
+      @java.lang.Override
       public com.google.protobuf.ByteString getIdAmount() {
         return idAmount_;
       }
@@ -1672,6 +1762,8 @@ public final class NULS {
        * </pre>
        *
        * <code>bytes id_amount = 4;</code>
+       * @param value The idAmount to set.
+       * @return This builder for chaining.
        */
       public Builder setIdAmount(com.google.protobuf.ByteString value) {
         if (value == null) {
@@ -1688,6 +1780,7 @@ public final class NULS {
        * </pre>
        *
        * <code>bytes id_amount = 4;</code>
+       * @return This builder for chaining.
        */
       public Builder clearIdAmount() {
         
@@ -1699,12 +1792,16 @@ public final class NULS {
       private int lockTime_ ;
       /**
        * <code>uint32 lock_time = 5;</code>
+       * @return The lockTime.
        */
+      @java.lang.Override
       public int getLockTime() {
         return lockTime_;
       }
       /**
        * <code>uint32 lock_time = 5;</code>
+       * @param value The lockTime to set.
+       * @return This builder for chaining.
        */
       public Builder setLockTime(int value) {
         
@@ -1714,6 +1811,7 @@ public final class NULS {
       }
       /**
        * <code>uint32 lock_time = 5;</code>
+       * @return This builder for chaining.
        */
       public Builder clearLockTime() {
         
@@ -1780,28 +1878,32 @@ public final class NULS {
 
     /**
      * <code>uint32 pkey_len = 1;</code>
+     * @return The pkeyLen.
      */
     int getPkeyLen();
 
     /**
      * <code>bytes public_key = 2;</code>
+     * @return The publicKey.
      */
     com.google.protobuf.ByteString getPublicKey();
 
     /**
      * <code>uint32 sig_len = 3;</code>
+     * @return The sigLen.
      */
     int getSigLen();
 
     /**
      * <code>bytes signature = 4;</code>
+     * @return The signature.
      */
     com.google.protobuf.ByteString getSignature();
   }
   /**
    * Protobuf type {@code TW.NULS.Proto.Signature}
    */
-  public  static final class Signature extends
+  public static final class Signature extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:TW.NULS.Proto.Signature)
       SignatureOrBuilder {
@@ -1901,7 +2003,9 @@ public final class NULS {
     private int pkeyLen_;
     /**
      * <code>uint32 pkey_len = 1;</code>
+     * @return The pkeyLen.
      */
+    @java.lang.Override
     public int getPkeyLen() {
       return pkeyLen_;
     }
@@ -1910,7 +2014,9 @@ public final class NULS {
     private com.google.protobuf.ByteString publicKey_;
     /**
      * <code>bytes public_key = 2;</code>
+     * @return The publicKey.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString getPublicKey() {
       return publicKey_;
     }
@@ -1919,7 +2025,9 @@ public final class NULS {
     private int sigLen_;
     /**
      * <code>uint32 sig_len = 3;</code>
+     * @return The sigLen.
      */
+    @java.lang.Override
     public int getSigLen() {
       return sigLen_;
     }
@@ -1928,7 +2036,9 @@ public final class NULS {
     private com.google.protobuf.ByteString signature_;
     /**
      * <code>bytes signature = 4;</code>
+     * @return The signature.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString getSignature() {
       return signature_;
     }
@@ -2289,12 +2399,16 @@ public final class NULS {
       private int pkeyLen_ ;
       /**
        * <code>uint32 pkey_len = 1;</code>
+       * @return The pkeyLen.
        */
+      @java.lang.Override
       public int getPkeyLen() {
         return pkeyLen_;
       }
       /**
        * <code>uint32 pkey_len = 1;</code>
+       * @param value The pkeyLen to set.
+       * @return This builder for chaining.
        */
       public Builder setPkeyLen(int value) {
         
@@ -2304,6 +2418,7 @@ public final class NULS {
       }
       /**
        * <code>uint32 pkey_len = 1;</code>
+       * @return This builder for chaining.
        */
       public Builder clearPkeyLen() {
         
@@ -2315,12 +2430,16 @@ public final class NULS {
       private com.google.protobuf.ByteString publicKey_ = com.google.protobuf.ByteString.EMPTY;
       /**
        * <code>bytes public_key = 2;</code>
+       * @return The publicKey.
        */
+      @java.lang.Override
       public com.google.protobuf.ByteString getPublicKey() {
         return publicKey_;
       }
       /**
        * <code>bytes public_key = 2;</code>
+       * @param value The publicKey to set.
+       * @return This builder for chaining.
        */
       public Builder setPublicKey(com.google.protobuf.ByteString value) {
         if (value == null) {
@@ -2333,6 +2452,7 @@ public final class NULS {
       }
       /**
        * <code>bytes public_key = 2;</code>
+       * @return This builder for chaining.
        */
       public Builder clearPublicKey() {
         
@@ -2344,12 +2464,16 @@ public final class NULS {
       private int sigLen_ ;
       /**
        * <code>uint32 sig_len = 3;</code>
+       * @return The sigLen.
        */
+      @java.lang.Override
       public int getSigLen() {
         return sigLen_;
       }
       /**
        * <code>uint32 sig_len = 3;</code>
+       * @param value The sigLen to set.
+       * @return This builder for chaining.
        */
       public Builder setSigLen(int value) {
         
@@ -2359,6 +2483,7 @@ public final class NULS {
       }
       /**
        * <code>uint32 sig_len = 3;</code>
+       * @return This builder for chaining.
        */
       public Builder clearSigLen() {
         
@@ -2370,12 +2495,16 @@ public final class NULS {
       private com.google.protobuf.ByteString signature_ = com.google.protobuf.ByteString.EMPTY;
       /**
        * <code>bytes signature = 4;</code>
+       * @return The signature.
        */
+      @java.lang.Override
       public com.google.protobuf.ByteString getSignature() {
         return signature_;
       }
       /**
        * <code>bytes signature = 4;</code>
+       * @param value The signature to set.
+       * @return This builder for chaining.
        */
       public Builder setSignature(com.google.protobuf.ByteString value) {
         if (value == null) {
@@ -2388,6 +2517,7 @@ public final class NULS {
       }
       /**
        * <code>bytes signature = 4;</code>
+       * @return This builder for chaining.
        */
       public Builder clearSignature() {
         
@@ -2454,26 +2584,31 @@ public final class NULS {
 
     /**
      * <code>uint32 type = 1;</code>
+     * @return The type.
      */
     int getType();
 
     /**
      * <code>uint32 timestamp = 2;</code>
+     * @return The timestamp.
      */
     int getTimestamp();
 
     /**
      * <code>string remark = 3;</code>
+     * @return The remark.
      */
     java.lang.String getRemark();
     /**
      * <code>string remark = 3;</code>
+     * @return The bytes for remark.
      */
     com.google.protobuf.ByteString
         getRemarkBytes();
 
     /**
      * <code>bytes tx_data = 4;</code>
+     * @return The txData.
      */
     com.google.protobuf.ByteString getTxData();
 
@@ -2483,6 +2618,7 @@ public final class NULS {
      * </pre>
      *
      * <code>.TW.NULS.Proto.TransactionCoinFrom input = 5;</code>
+     * @return Whether the input field is set.
      */
     boolean hasInput();
     /**
@@ -2491,6 +2627,7 @@ public final class NULS {
      * </pre>
      *
      * <code>.TW.NULS.Proto.TransactionCoinFrom input = 5;</code>
+     * @return The input.
      */
     wallet.core.jni.proto.NULS.TransactionCoinFrom getInput();
     /**
@@ -2508,6 +2645,7 @@ public final class NULS {
      * </pre>
      *
      * <code>.TW.NULS.Proto.TransactionCoinTo output = 6;</code>
+     * @return Whether the output field is set.
      */
     boolean hasOutput();
     /**
@@ -2516,6 +2654,7 @@ public final class NULS {
      * </pre>
      *
      * <code>.TW.NULS.Proto.TransactionCoinTo output = 6;</code>
+     * @return The output.
      */
     wallet.core.jni.proto.NULS.TransactionCoinTo getOutput();
     /**
@@ -2529,10 +2668,12 @@ public final class NULS {
 
     /**
      * <code>.TW.NULS.Proto.Signature tx_sigs = 7;</code>
+     * @return Whether the txSigs field is set.
      */
     boolean hasTxSigs();
     /**
      * <code>.TW.NULS.Proto.Signature tx_sigs = 7;</code>
+     * @return The txSigs.
      */
     wallet.core.jni.proto.NULS.Signature getTxSigs();
     /**
@@ -2542,13 +2683,14 @@ public final class NULS {
 
     /**
      * <code>uint32 hash = 8;</code>
+     * @return The hash.
      */
     int getHash();
   }
   /**
    * Protobuf type {@code TW.NULS.Proto.Transaction}
    */
-  public  static final class Transaction extends
+  public static final class Transaction extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:TW.NULS.Proto.Transaction)
       TransactionOrBuilder {
@@ -2693,7 +2835,9 @@ public final class NULS {
     private int type_;
     /**
      * <code>uint32 type = 1;</code>
+     * @return The type.
      */
+    @java.lang.Override
     public int getType() {
       return type_;
     }
@@ -2702,7 +2846,9 @@ public final class NULS {
     private int timestamp_;
     /**
      * <code>uint32 timestamp = 2;</code>
+     * @return The timestamp.
      */
+    @java.lang.Override
     public int getTimestamp() {
       return timestamp_;
     }
@@ -2711,7 +2857,9 @@ public final class NULS {
     private volatile java.lang.Object remark_;
     /**
      * <code>string remark = 3;</code>
+     * @return The remark.
      */
+    @java.lang.Override
     public java.lang.String getRemark() {
       java.lang.Object ref = remark_;
       if (ref instanceof java.lang.String) {
@@ -2726,7 +2874,9 @@ public final class NULS {
     }
     /**
      * <code>string remark = 3;</code>
+     * @return The bytes for remark.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString
         getRemarkBytes() {
       java.lang.Object ref = remark_;
@@ -2745,7 +2895,9 @@ public final class NULS {
     private com.google.protobuf.ByteString txData_;
     /**
      * <code>bytes tx_data = 4;</code>
+     * @return The txData.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString getTxData() {
       return txData_;
     }
@@ -2758,7 +2910,9 @@ public final class NULS {
      * </pre>
      *
      * <code>.TW.NULS.Proto.TransactionCoinFrom input = 5;</code>
+     * @return Whether the input field is set.
      */
+    @java.lang.Override
     public boolean hasInput() {
       return input_ != null;
     }
@@ -2768,7 +2922,9 @@ public final class NULS {
      * </pre>
      *
      * <code>.TW.NULS.Proto.TransactionCoinFrom input = 5;</code>
+     * @return The input.
      */
+    @java.lang.Override
     public wallet.core.jni.proto.NULS.TransactionCoinFrom getInput() {
       return input_ == null ? wallet.core.jni.proto.NULS.TransactionCoinFrom.getDefaultInstance() : input_;
     }
@@ -2779,6 +2935,7 @@ public final class NULS {
      *
      * <code>.TW.NULS.Proto.TransactionCoinFrom input = 5;</code>
      */
+    @java.lang.Override
     public wallet.core.jni.proto.NULS.TransactionCoinFromOrBuilder getInputOrBuilder() {
       return getInput();
     }
@@ -2791,7 +2948,9 @@ public final class NULS {
      * </pre>
      *
      * <code>.TW.NULS.Proto.TransactionCoinTo output = 6;</code>
+     * @return Whether the output field is set.
      */
+    @java.lang.Override
     public boolean hasOutput() {
       return output_ != null;
     }
@@ -2801,7 +2960,9 @@ public final class NULS {
      * </pre>
      *
      * <code>.TW.NULS.Proto.TransactionCoinTo output = 6;</code>
+     * @return The output.
      */
+    @java.lang.Override
     public wallet.core.jni.proto.NULS.TransactionCoinTo getOutput() {
       return output_ == null ? wallet.core.jni.proto.NULS.TransactionCoinTo.getDefaultInstance() : output_;
     }
@@ -2812,6 +2973,7 @@ public final class NULS {
      *
      * <code>.TW.NULS.Proto.TransactionCoinTo output = 6;</code>
      */
+    @java.lang.Override
     public wallet.core.jni.proto.NULS.TransactionCoinToOrBuilder getOutputOrBuilder() {
       return getOutput();
     }
@@ -2820,19 +2982,24 @@ public final class NULS {
     private wallet.core.jni.proto.NULS.Signature txSigs_;
     /**
      * <code>.TW.NULS.Proto.Signature tx_sigs = 7;</code>
+     * @return Whether the txSigs field is set.
      */
+    @java.lang.Override
     public boolean hasTxSigs() {
       return txSigs_ != null;
     }
     /**
      * <code>.TW.NULS.Proto.Signature tx_sigs = 7;</code>
+     * @return The txSigs.
      */
+    @java.lang.Override
     public wallet.core.jni.proto.NULS.Signature getTxSigs() {
       return txSigs_ == null ? wallet.core.jni.proto.NULS.Signature.getDefaultInstance() : txSigs_;
     }
     /**
      * <code>.TW.NULS.Proto.Signature tx_sigs = 7;</code>
      */
+    @java.lang.Override
     public wallet.core.jni.proto.NULS.SignatureOrBuilder getTxSigsOrBuilder() {
       return getTxSigs();
     }
@@ -2841,7 +3008,9 @@ public final class NULS {
     private int hash_;
     /**
      * <code>uint32 hash = 8;</code>
+     * @return The hash.
      */
+    @java.lang.Override
     public int getHash() {
       return hash_;
     }
@@ -3309,12 +3478,16 @@ public final class NULS {
       private int type_ ;
       /**
        * <code>uint32 type = 1;</code>
+       * @return The type.
        */
+      @java.lang.Override
       public int getType() {
         return type_;
       }
       /**
        * <code>uint32 type = 1;</code>
+       * @param value The type to set.
+       * @return This builder for chaining.
        */
       public Builder setType(int value) {
         
@@ -3324,6 +3497,7 @@ public final class NULS {
       }
       /**
        * <code>uint32 type = 1;</code>
+       * @return This builder for chaining.
        */
       public Builder clearType() {
         
@@ -3335,12 +3509,16 @@ public final class NULS {
       private int timestamp_ ;
       /**
        * <code>uint32 timestamp = 2;</code>
+       * @return The timestamp.
        */
+      @java.lang.Override
       public int getTimestamp() {
         return timestamp_;
       }
       /**
        * <code>uint32 timestamp = 2;</code>
+       * @param value The timestamp to set.
+       * @return This builder for chaining.
        */
       public Builder setTimestamp(int value) {
         
@@ -3350,6 +3528,7 @@ public final class NULS {
       }
       /**
        * <code>uint32 timestamp = 2;</code>
+       * @return This builder for chaining.
        */
       public Builder clearTimestamp() {
         
@@ -3361,6 +3540,7 @@ public final class NULS {
       private java.lang.Object remark_ = "";
       /**
        * <code>string remark = 3;</code>
+       * @return The remark.
        */
       public java.lang.String getRemark() {
         java.lang.Object ref = remark_;
@@ -3376,6 +3556,7 @@ public final class NULS {
       }
       /**
        * <code>string remark = 3;</code>
+       * @return The bytes for remark.
        */
       public com.google.protobuf.ByteString
           getRemarkBytes() {
@@ -3392,6 +3573,8 @@ public final class NULS {
       }
       /**
        * <code>string remark = 3;</code>
+       * @param value The remark to set.
+       * @return This builder for chaining.
        */
       public Builder setRemark(
           java.lang.String value) {
@@ -3405,6 +3588,7 @@ public final class NULS {
       }
       /**
        * <code>string remark = 3;</code>
+       * @return This builder for chaining.
        */
       public Builder clearRemark() {
         
@@ -3414,6 +3598,8 @@ public final class NULS {
       }
       /**
        * <code>string remark = 3;</code>
+       * @param value The bytes for remark to set.
+       * @return This builder for chaining.
        */
       public Builder setRemarkBytes(
           com.google.protobuf.ByteString value) {
@@ -3430,12 +3616,16 @@ public final class NULS {
       private com.google.protobuf.ByteString txData_ = com.google.protobuf.ByteString.EMPTY;
       /**
        * <code>bytes tx_data = 4;</code>
+       * @return The txData.
        */
+      @java.lang.Override
       public com.google.protobuf.ByteString getTxData() {
         return txData_;
       }
       /**
        * <code>bytes tx_data = 4;</code>
+       * @param value The txData to set.
+       * @return This builder for chaining.
        */
       public Builder setTxData(com.google.protobuf.ByteString value) {
         if (value == null) {
@@ -3448,6 +3638,7 @@ public final class NULS {
       }
       /**
        * <code>bytes tx_data = 4;</code>
+       * @return This builder for chaining.
        */
       public Builder clearTxData() {
         
@@ -3465,6 +3656,7 @@ public final class NULS {
        * </pre>
        *
        * <code>.TW.NULS.Proto.TransactionCoinFrom input = 5;</code>
+       * @return Whether the input field is set.
        */
       public boolean hasInput() {
         return inputBuilder_ != null || input_ != null;
@@ -3475,6 +3667,7 @@ public final class NULS {
        * </pre>
        *
        * <code>.TW.NULS.Proto.TransactionCoinFrom input = 5;</code>
+       * @return The input.
        */
       public wallet.core.jni.proto.NULS.TransactionCoinFrom getInput() {
         if (inputBuilder_ == null) {
@@ -3618,6 +3811,7 @@ public final class NULS {
        * </pre>
        *
        * <code>.TW.NULS.Proto.TransactionCoinTo output = 6;</code>
+       * @return Whether the output field is set.
        */
       public boolean hasOutput() {
         return outputBuilder_ != null || output_ != null;
@@ -3628,6 +3822,7 @@ public final class NULS {
        * </pre>
        *
        * <code>.TW.NULS.Proto.TransactionCoinTo output = 6;</code>
+       * @return The output.
        */
       public wallet.core.jni.proto.NULS.TransactionCoinTo getOutput() {
         if (outputBuilder_ == null) {
@@ -3767,12 +3962,14 @@ public final class NULS {
           wallet.core.jni.proto.NULS.Signature, wallet.core.jni.proto.NULS.Signature.Builder, wallet.core.jni.proto.NULS.SignatureOrBuilder> txSigsBuilder_;
       /**
        * <code>.TW.NULS.Proto.Signature tx_sigs = 7;</code>
+       * @return Whether the txSigs field is set.
        */
       public boolean hasTxSigs() {
         return txSigsBuilder_ != null || txSigs_ != null;
       }
       /**
        * <code>.TW.NULS.Proto.Signature tx_sigs = 7;</code>
+       * @return The txSigs.
        */
       public wallet.core.jni.proto.NULS.Signature getTxSigs() {
         if (txSigsBuilder_ == null) {
@@ -3882,12 +4079,16 @@ public final class NULS {
       private int hash_ ;
       /**
        * <code>uint32 hash = 8;</code>
+       * @return The hash.
        */
+      @java.lang.Override
       public int getHash() {
         return hash_;
       }
       /**
        * <code>uint32 hash = 8;</code>
+       * @param value The hash to set.
+       * @return This builder for chaining.
        */
       public Builder setHash(int value) {
         
@@ -3897,6 +4098,7 @@ public final class NULS {
       }
       /**
        * <code>uint32 hash = 8;</code>
+       * @return This builder for chaining.
        */
       public Builder clearHash() {
         
@@ -3963,41 +4165,49 @@ public final class NULS {
 
     /**
      * <code>bytes private_key = 1;</code>
+     * @return The privateKey.
      */
     com.google.protobuf.ByteString getPrivateKey();
 
     /**
      * <code>string from = 2;</code>
+     * @return The from.
      */
     java.lang.String getFrom();
     /**
      * <code>string from = 2;</code>
+     * @return The bytes for from.
      */
     com.google.protobuf.ByteString
         getFromBytes();
 
     /**
      * <code>string to = 3;</code>
+     * @return The to.
      */
     java.lang.String getTo();
     /**
      * <code>string to = 3;</code>
+     * @return The bytes for to.
      */
     com.google.protobuf.ByteString
         getToBytes();
 
     /**
      * <code>bytes amount = 4;</code>
+     * @return The amount.
      */
     com.google.protobuf.ByteString getAmount();
 
     /**
      * <code>uint32 chain_id = 5;</code>
+     * @return The chainId.
      */
     int getChainId();
 
     /**
      * <code>uint32 idassets_id = 6;</code>
+     * @return The idassetsId.
      */
     int getIdassetsId();
 
@@ -4007,15 +4217,18 @@ public final class NULS {
      * </pre>
      *
      * <code>bytes nonce = 7;</code>
+     * @return The nonce.
      */
     com.google.protobuf.ByteString getNonce();
 
     /**
      * <code>string remark = 8;</code>
+     * @return The remark.
      */
     java.lang.String getRemark();
     /**
      * <code>string remark = 8;</code>
+     * @return The bytes for remark.
      */
     com.google.protobuf.ByteString
         getRemarkBytes();
@@ -4026,6 +4239,7 @@ public final class NULS {
      * </pre>
      *
      * <code>bytes balance = 9;</code>
+     * @return The balance.
      */
     com.google.protobuf.ByteString getBalance();
 
@@ -4035,6 +4249,7 @@ public final class NULS {
      * </pre>
      *
      * <code>uint32 timestamp = 10;</code>
+     * @return The timestamp.
      */
     int getTimestamp();
   }
@@ -4045,7 +4260,7 @@ public final class NULS {
    *
    * Protobuf type {@code TW.NULS.Proto.SigningInput}
    */
-  public  static final class SigningInput extends
+  public static final class SigningInput extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:TW.NULS.Proto.SigningInput)
       SigningInputOrBuilder {
@@ -4183,7 +4398,9 @@ public final class NULS {
     private com.google.protobuf.ByteString privateKey_;
     /**
      * <code>bytes private_key = 1;</code>
+     * @return The privateKey.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString getPrivateKey() {
       return privateKey_;
     }
@@ -4192,7 +4409,9 @@ public final class NULS {
     private volatile java.lang.Object from_;
     /**
      * <code>string from = 2;</code>
+     * @return The from.
      */
+    @java.lang.Override
     public java.lang.String getFrom() {
       java.lang.Object ref = from_;
       if (ref instanceof java.lang.String) {
@@ -4207,7 +4426,9 @@ public final class NULS {
     }
     /**
      * <code>string from = 2;</code>
+     * @return The bytes for from.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString
         getFromBytes() {
       java.lang.Object ref = from_;
@@ -4226,7 +4447,9 @@ public final class NULS {
     private volatile java.lang.Object to_;
     /**
      * <code>string to = 3;</code>
+     * @return The to.
      */
+    @java.lang.Override
     public java.lang.String getTo() {
       java.lang.Object ref = to_;
       if (ref instanceof java.lang.String) {
@@ -4241,7 +4464,9 @@ public final class NULS {
     }
     /**
      * <code>string to = 3;</code>
+     * @return The bytes for to.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString
         getToBytes() {
       java.lang.Object ref = to_;
@@ -4260,7 +4485,9 @@ public final class NULS {
     private com.google.protobuf.ByteString amount_;
     /**
      * <code>bytes amount = 4;</code>
+     * @return The amount.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString getAmount() {
       return amount_;
     }
@@ -4269,7 +4496,9 @@ public final class NULS {
     private int chainId_;
     /**
      * <code>uint32 chain_id = 5;</code>
+     * @return The chainId.
      */
+    @java.lang.Override
     public int getChainId() {
       return chainId_;
     }
@@ -4278,7 +4507,9 @@ public final class NULS {
     private int idassetsId_;
     /**
      * <code>uint32 idassets_id = 6;</code>
+     * @return The idassetsId.
      */
+    @java.lang.Override
     public int getIdassetsId() {
       return idassetsId_;
     }
@@ -4291,7 +4522,9 @@ public final class NULS {
      * </pre>
      *
      * <code>bytes nonce = 7;</code>
+     * @return The nonce.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString getNonce() {
       return nonce_;
     }
@@ -4300,7 +4533,9 @@ public final class NULS {
     private volatile java.lang.Object remark_;
     /**
      * <code>string remark = 8;</code>
+     * @return The remark.
      */
+    @java.lang.Override
     public java.lang.String getRemark() {
       java.lang.Object ref = remark_;
       if (ref instanceof java.lang.String) {
@@ -4315,7 +4550,9 @@ public final class NULS {
     }
     /**
      * <code>string remark = 8;</code>
+     * @return The bytes for remark.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString
         getRemarkBytes() {
       java.lang.Object ref = remark_;
@@ -4338,7 +4575,9 @@ public final class NULS {
      * </pre>
      *
      * <code>bytes balance = 9;</code>
+     * @return The balance.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString getBalance() {
       return balance_;
     }
@@ -4351,7 +4590,9 @@ public final class NULS {
      * </pre>
      *
      * <code>uint32 timestamp = 10;</code>
+     * @return The timestamp.
      */
+    @java.lang.Override
     public int getTimestamp() {
       return timestamp_;
     }
@@ -4818,12 +5059,16 @@ public final class NULS {
       private com.google.protobuf.ByteString privateKey_ = com.google.protobuf.ByteString.EMPTY;
       /**
        * <code>bytes private_key = 1;</code>
+       * @return The privateKey.
        */
+      @java.lang.Override
       public com.google.protobuf.ByteString getPrivateKey() {
         return privateKey_;
       }
       /**
        * <code>bytes private_key = 1;</code>
+       * @param value The privateKey to set.
+       * @return This builder for chaining.
        */
       public Builder setPrivateKey(com.google.protobuf.ByteString value) {
         if (value == null) {
@@ -4836,6 +5081,7 @@ public final class NULS {
       }
       /**
        * <code>bytes private_key = 1;</code>
+       * @return This builder for chaining.
        */
       public Builder clearPrivateKey() {
         
@@ -4847,6 +5093,7 @@ public final class NULS {
       private java.lang.Object from_ = "";
       /**
        * <code>string from = 2;</code>
+       * @return The from.
        */
       public java.lang.String getFrom() {
         java.lang.Object ref = from_;
@@ -4862,6 +5109,7 @@ public final class NULS {
       }
       /**
        * <code>string from = 2;</code>
+       * @return The bytes for from.
        */
       public com.google.protobuf.ByteString
           getFromBytes() {
@@ -4878,6 +5126,8 @@ public final class NULS {
       }
       /**
        * <code>string from = 2;</code>
+       * @param value The from to set.
+       * @return This builder for chaining.
        */
       public Builder setFrom(
           java.lang.String value) {
@@ -4891,6 +5141,7 @@ public final class NULS {
       }
       /**
        * <code>string from = 2;</code>
+       * @return This builder for chaining.
        */
       public Builder clearFrom() {
         
@@ -4900,6 +5151,8 @@ public final class NULS {
       }
       /**
        * <code>string from = 2;</code>
+       * @param value The bytes for from to set.
+       * @return This builder for chaining.
        */
       public Builder setFromBytes(
           com.google.protobuf.ByteString value) {
@@ -4916,6 +5169,7 @@ public final class NULS {
       private java.lang.Object to_ = "";
       /**
        * <code>string to = 3;</code>
+       * @return The to.
        */
       public java.lang.String getTo() {
         java.lang.Object ref = to_;
@@ -4931,6 +5185,7 @@ public final class NULS {
       }
       /**
        * <code>string to = 3;</code>
+       * @return The bytes for to.
        */
       public com.google.protobuf.ByteString
           getToBytes() {
@@ -4947,6 +5202,8 @@ public final class NULS {
       }
       /**
        * <code>string to = 3;</code>
+       * @param value The to to set.
+       * @return This builder for chaining.
        */
       public Builder setTo(
           java.lang.String value) {
@@ -4960,6 +5217,7 @@ public final class NULS {
       }
       /**
        * <code>string to = 3;</code>
+       * @return This builder for chaining.
        */
       public Builder clearTo() {
         
@@ -4969,6 +5227,8 @@ public final class NULS {
       }
       /**
        * <code>string to = 3;</code>
+       * @param value The bytes for to to set.
+       * @return This builder for chaining.
        */
       public Builder setToBytes(
           com.google.protobuf.ByteString value) {
@@ -4985,12 +5245,16 @@ public final class NULS {
       private com.google.protobuf.ByteString amount_ = com.google.protobuf.ByteString.EMPTY;
       /**
        * <code>bytes amount = 4;</code>
+       * @return The amount.
        */
+      @java.lang.Override
       public com.google.protobuf.ByteString getAmount() {
         return amount_;
       }
       /**
        * <code>bytes amount = 4;</code>
+       * @param value The amount to set.
+       * @return This builder for chaining.
        */
       public Builder setAmount(com.google.protobuf.ByteString value) {
         if (value == null) {
@@ -5003,6 +5267,7 @@ public final class NULS {
       }
       /**
        * <code>bytes amount = 4;</code>
+       * @return This builder for chaining.
        */
       public Builder clearAmount() {
         
@@ -5014,12 +5279,16 @@ public final class NULS {
       private int chainId_ ;
       /**
        * <code>uint32 chain_id = 5;</code>
+       * @return The chainId.
        */
+      @java.lang.Override
       public int getChainId() {
         return chainId_;
       }
       /**
        * <code>uint32 chain_id = 5;</code>
+       * @param value The chainId to set.
+       * @return This builder for chaining.
        */
       public Builder setChainId(int value) {
         
@@ -5029,6 +5298,7 @@ public final class NULS {
       }
       /**
        * <code>uint32 chain_id = 5;</code>
+       * @return This builder for chaining.
        */
       public Builder clearChainId() {
         
@@ -5040,12 +5310,16 @@ public final class NULS {
       private int idassetsId_ ;
       /**
        * <code>uint32 idassets_id = 6;</code>
+       * @return The idassetsId.
        */
+      @java.lang.Override
       public int getIdassetsId() {
         return idassetsId_;
       }
       /**
        * <code>uint32 idassets_id = 6;</code>
+       * @param value The idassetsId to set.
+       * @return This builder for chaining.
        */
       public Builder setIdassetsId(int value) {
         
@@ -5055,6 +5329,7 @@ public final class NULS {
       }
       /**
        * <code>uint32 idassets_id = 6;</code>
+       * @return This builder for chaining.
        */
       public Builder clearIdassetsId() {
         
@@ -5070,7 +5345,9 @@ public final class NULS {
        * </pre>
        *
        * <code>bytes nonce = 7;</code>
+       * @return The nonce.
        */
+      @java.lang.Override
       public com.google.protobuf.ByteString getNonce() {
         return nonce_;
       }
@@ -5080,6 +5357,8 @@ public final class NULS {
        * </pre>
        *
        * <code>bytes nonce = 7;</code>
+       * @param value The nonce to set.
+       * @return This builder for chaining.
        */
       public Builder setNonce(com.google.protobuf.ByteString value) {
         if (value == null) {
@@ -5096,6 +5375,7 @@ public final class NULS {
        * </pre>
        *
        * <code>bytes nonce = 7;</code>
+       * @return This builder for chaining.
        */
       public Builder clearNonce() {
         
@@ -5107,6 +5387,7 @@ public final class NULS {
       private java.lang.Object remark_ = "";
       /**
        * <code>string remark = 8;</code>
+       * @return The remark.
        */
       public java.lang.String getRemark() {
         java.lang.Object ref = remark_;
@@ -5122,6 +5403,7 @@ public final class NULS {
       }
       /**
        * <code>string remark = 8;</code>
+       * @return The bytes for remark.
        */
       public com.google.protobuf.ByteString
           getRemarkBytes() {
@@ -5138,6 +5420,8 @@ public final class NULS {
       }
       /**
        * <code>string remark = 8;</code>
+       * @param value The remark to set.
+       * @return This builder for chaining.
        */
       public Builder setRemark(
           java.lang.String value) {
@@ -5151,6 +5435,7 @@ public final class NULS {
       }
       /**
        * <code>string remark = 8;</code>
+       * @return This builder for chaining.
        */
       public Builder clearRemark() {
         
@@ -5160,6 +5445,8 @@ public final class NULS {
       }
       /**
        * <code>string remark = 8;</code>
+       * @param value The bytes for remark to set.
+       * @return This builder for chaining.
        */
       public Builder setRemarkBytes(
           com.google.protobuf.ByteString value) {
@@ -5180,7 +5467,9 @@ public final class NULS {
        * </pre>
        *
        * <code>bytes balance = 9;</code>
+       * @return The balance.
        */
+      @java.lang.Override
       public com.google.protobuf.ByteString getBalance() {
         return balance_;
       }
@@ -5190,6 +5479,8 @@ public final class NULS {
        * </pre>
        *
        * <code>bytes balance = 9;</code>
+       * @param value The balance to set.
+       * @return This builder for chaining.
        */
       public Builder setBalance(com.google.protobuf.ByteString value) {
         if (value == null) {
@@ -5206,6 +5497,7 @@ public final class NULS {
        * </pre>
        *
        * <code>bytes balance = 9;</code>
+       * @return This builder for chaining.
        */
       public Builder clearBalance() {
         
@@ -5221,7 +5513,9 @@ public final class NULS {
        * </pre>
        *
        * <code>uint32 timestamp = 10;</code>
+       * @return The timestamp.
        */
+      @java.lang.Override
       public int getTimestamp() {
         return timestamp_;
       }
@@ -5231,6 +5525,8 @@ public final class NULS {
        * </pre>
        *
        * <code>uint32 timestamp = 10;</code>
+       * @param value The timestamp to set.
+       * @return This builder for chaining.
        */
       public Builder setTimestamp(int value) {
         
@@ -5244,6 +5540,7 @@ public final class NULS {
        * </pre>
        *
        * <code>uint32 timestamp = 10;</code>
+       * @return This builder for chaining.
        */
       public Builder clearTimestamp() {
         
@@ -5310,13 +5607,14 @@ public final class NULS {
 
     /**
      * <code>bytes encoded = 1;</code>
+     * @return The encoded.
      */
     com.google.protobuf.ByteString getEncoded();
   }
   /**
    * Protobuf type {@code TW.NULS.Proto.SigningOutput}
    */
-  public  static final class SigningOutput extends
+  public static final class SigningOutput extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:TW.NULS.Proto.SigningOutput)
       SigningOutputOrBuilder {
@@ -5400,7 +5698,9 @@ public final class NULS {
     private com.google.protobuf.ByteString encoded_;
     /**
      * <code>bytes encoded = 1;</code>
+     * @return The encoded.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString getEncoded() {
       return encoded_;
     }
@@ -5710,12 +6010,16 @@ public final class NULS {
       private com.google.protobuf.ByteString encoded_ = com.google.protobuf.ByteString.EMPTY;
       /**
        * <code>bytes encoded = 1;</code>
+       * @return The encoded.
        */
+      @java.lang.Override
       public com.google.protobuf.ByteString getEncoded() {
         return encoded_;
       }
       /**
        * <code>bytes encoded = 1;</code>
+       * @param value The encoded to set.
+       * @return This builder for chaining.
        */
       public Builder setEncoded(com.google.protobuf.ByteString value) {
         if (value == null) {
@@ -5728,6 +6032,7 @@ public final class NULS {
       }
       /**
        * <code>bytes encoded = 1;</code>
+       * @return This builder for chaining.
        */
       public Builder clearEncoded() {
         

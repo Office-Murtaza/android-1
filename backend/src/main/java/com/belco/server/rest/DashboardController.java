@@ -35,8 +35,18 @@ public class DashboardController {
         return userController.updatePassword(userId, dto);
     }
 
+    @GetMapping("/user/{userId}/verification")
+    public Response getVerificationDetails(@PathVariable Long userId) {
+        try {
+            return Response.ok(userService.getVerificationDetails(userId));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Response.serverError();
+        }
+    }
+
     @PostMapping("/user/{userId}/verification")
-    public Response submitVerification(@PathVariable Long userId, @RequestBody @ModelAttribute VerificationDTO dto) {
+    public Response submitVerification(@PathVariable Long userId, @RequestBody VerificationDTO dto) {
         return userService.submitVerification(userId, dto);
     }
 

@@ -20,56 +20,67 @@ public final class Ripple {
 
     /**
      * <code>int64 amount = 1;</code>
+     * @return The amount.
      */
     long getAmount();
 
     /**
      * <code>int64 fee = 2;</code>
+     * @return The fee.
      */
     long getFee();
 
     /**
      * <code>int32 sequence = 3;</code>
+     * @return The sequence.
      */
     int getSequence();
 
     /**
      * <code>int32 last_ledger_sequence = 4;</code>
+     * @return The lastLedgerSequence.
      */
     int getLastLedgerSequence();
 
     /**
      * <code>string account = 5;</code>
+     * @return The account.
      */
     java.lang.String getAccount();
     /**
      * <code>string account = 5;</code>
+     * @return The bytes for account.
      */
     com.google.protobuf.ByteString
         getAccountBytes();
 
     /**
      * <code>string destination = 6;</code>
+     * @return The destination.
      */
     java.lang.String getDestination();
     /**
      * <code>string destination = 6;</code>
+     * @return The bytes for destination.
      */
     com.google.protobuf.ByteString
         getDestinationBytes();
 
     /**
      * <code>int64 destination_tag = 7;</code>
+     * @return The destinationTag.
      */
     long getDestinationTag();
 
     /**
      * <code>int64 flags = 8;</code>
+     * @return The flags.
      */
     long getFlags();
 
     /**
      * <code>bytes private_key = 9;</code>
+     * @return The privateKey.
      */
     com.google.protobuf.ByteString getPrivateKey();
   }
@@ -80,7 +91,7 @@ public final class Ripple {
    *
    * Protobuf type {@code TW.Ripple.Proto.SigningInput}
    */
-  public  static final class SigningInput extends
+  public static final class SigningInput extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:TW.Ripple.Proto.SigningInput)
       SigningInputOrBuilder {
@@ -208,7 +219,9 @@ public final class Ripple {
     private long amount_;
     /**
      * <code>int64 amount = 1;</code>
+     * @return The amount.
      */
+    @java.lang.Override
     public long getAmount() {
       return amount_;
     }
@@ -217,7 +230,9 @@ public final class Ripple {
     private long fee_;
     /**
      * <code>int64 fee = 2;</code>
+     * @return The fee.
      */
+    @java.lang.Override
     public long getFee() {
       return fee_;
     }
@@ -226,7 +241,9 @@ public final class Ripple {
     private int sequence_;
     /**
      * <code>int32 sequence = 3;</code>
+     * @return The sequence.
      */
+    @java.lang.Override
     public int getSequence() {
       return sequence_;
     }
@@ -235,7 +252,9 @@ public final class Ripple {
     private int lastLedgerSequence_;
     /**
      * <code>int32 last_ledger_sequence = 4;</code>
+     * @return The lastLedgerSequence.
      */
+    @java.lang.Override
     public int getLastLedgerSequence() {
       return lastLedgerSequence_;
     }
@@ -244,7 +263,9 @@ public final class Ripple {
     private volatile java.lang.Object account_;
     /**
      * <code>string account = 5;</code>
+     * @return The account.
      */
+    @java.lang.Override
     public java.lang.String getAccount() {
       java.lang.Object ref = account_;
       if (ref instanceof java.lang.String) {
@@ -259,7 +280,9 @@ public final class Ripple {
     }
     /**
      * <code>string account = 5;</code>
+     * @return The bytes for account.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString
         getAccountBytes() {
       java.lang.Object ref = account_;
@@ -278,7 +301,9 @@ public final class Ripple {
     private volatile java.lang.Object destination_;
     /**
      * <code>string destination = 6;</code>
+     * @return The destination.
      */
+    @java.lang.Override
     public java.lang.String getDestination() {
       java.lang.Object ref = destination_;
       if (ref instanceof java.lang.String) {
@@ -293,7 +318,9 @@ public final class Ripple {
     }
     /**
      * <code>string destination = 6;</code>
+     * @return The bytes for destination.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString
         getDestinationBytes() {
       java.lang.Object ref = destination_;
@@ -312,7 +339,9 @@ public final class Ripple {
     private long destinationTag_;
     /**
      * <code>int64 destination_tag = 7;</code>
+     * @return The destinationTag.
      */
+    @java.lang.Override
     public long getDestinationTag() {
       return destinationTag_;
     }
@@ -321,7 +350,9 @@ public final class Ripple {
     private long flags_;
     /**
      * <code>int64 flags = 8;</code>
+     * @return The flags.
      */
+    @java.lang.Override
     public long getFlags() {
       return flags_;
     }
@@ -330,7 +361,9 @@ public final class Ripple {
     private com.google.protobuf.ByteString privateKey_;
     /**
      * <code>bytes private_key = 9;</code>
+     * @return The privateKey.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString getPrivateKey() {
       return privateKey_;
     }
@@ -784,12 +817,16 @@ public final class Ripple {
       private long amount_ ;
       /**
        * <code>int64 amount = 1;</code>
+       * @return The amount.
        */
+      @java.lang.Override
       public long getAmount() {
         return amount_;
       }
       /**
        * <code>int64 amount = 1;</code>
+       * @param value The amount to set.
+       * @return This builder for chaining.
        */
       public Builder setAmount(long value) {
         
@@ -799,6 +836,7 @@ public final class Ripple {
       }
       /**
        * <code>int64 amount = 1;</code>
+       * @return This builder for chaining.
        */
       public Builder clearAmount() {
         
@@ -810,12 +848,16 @@ public final class Ripple {
       private long fee_ ;
       /**
        * <code>int64 fee = 2;</code>
+       * @return The fee.
        */
+      @java.lang.Override
       public long getFee() {
         return fee_;
       }
       /**
        * <code>int64 fee = 2;</code>
+       * @param value The fee to set.
+       * @return This builder for chaining.
        */
       public Builder setFee(long value) {
         
@@ -825,6 +867,7 @@ public final class Ripple {
       }
       /**
        * <code>int64 fee = 2;</code>
+       * @return This builder for chaining.
        */
       public Builder clearFee() {
         
@@ -836,12 +879,16 @@ public final class Ripple {
       private int sequence_ ;
       /**
        * <code>int32 sequence = 3;</code>
+       * @return The sequence.
        */
+      @java.lang.Override
       public int getSequence() {
         return sequence_;
       }
       /**
        * <code>int32 sequence = 3;</code>
+       * @param value The sequence to set.
+       * @return This builder for chaining.
        */
       public Builder setSequence(int value) {
         
@@ -851,6 +898,7 @@ public final class Ripple {
       }
       /**
        * <code>int32 sequence = 3;</code>
+       * @return This builder for chaining.
        */
       public Builder clearSequence() {
         
@@ -862,12 +910,16 @@ public final class Ripple {
       private int lastLedgerSequence_ ;
       /**
        * <code>int32 last_ledger_sequence = 4;</code>
+       * @return The lastLedgerSequence.
        */
+      @java.lang.Override
       public int getLastLedgerSequence() {
         return lastLedgerSequence_;
       }
       /**
        * <code>int32 last_ledger_sequence = 4;</code>
+       * @param value The lastLedgerSequence to set.
+       * @return This builder for chaining.
        */
       public Builder setLastLedgerSequence(int value) {
         
@@ -877,6 +929,7 @@ public final class Ripple {
       }
       /**
        * <code>int32 last_ledger_sequence = 4;</code>
+       * @return This builder for chaining.
        */
       public Builder clearLastLedgerSequence() {
         
@@ -888,6 +941,7 @@ public final class Ripple {
       private java.lang.Object account_ = "";
       /**
        * <code>string account = 5;</code>
+       * @return The account.
        */
       public java.lang.String getAccount() {
         java.lang.Object ref = account_;
@@ -903,6 +957,7 @@ public final class Ripple {
       }
       /**
        * <code>string account = 5;</code>
+       * @return The bytes for account.
        */
       public com.google.protobuf.ByteString
           getAccountBytes() {
@@ -919,6 +974,8 @@ public final class Ripple {
       }
       /**
        * <code>string account = 5;</code>
+       * @param value The account to set.
+       * @return This builder for chaining.
        */
       public Builder setAccount(
           java.lang.String value) {
@@ -932,6 +989,7 @@ public final class Ripple {
       }
       /**
        * <code>string account = 5;</code>
+       * @return This builder for chaining.
        */
       public Builder clearAccount() {
         
@@ -941,6 +999,8 @@ public final class Ripple {
       }
       /**
        * <code>string account = 5;</code>
+       * @param value The bytes for account to set.
+       * @return This builder for chaining.
        */
       public Builder setAccountBytes(
           com.google.protobuf.ByteString value) {
@@ -957,6 +1017,7 @@ public final class Ripple {
       private java.lang.Object destination_ = "";
       /**
        * <code>string destination = 6;</code>
+       * @return The destination.
        */
       public java.lang.String getDestination() {
         java.lang.Object ref = destination_;
@@ -972,6 +1033,7 @@ public final class Ripple {
       }
       /**
        * <code>string destination = 6;</code>
+       * @return The bytes for destination.
        */
       public com.google.protobuf.ByteString
           getDestinationBytes() {
@@ -988,6 +1050,8 @@ public final class Ripple {
       }
       /**
        * <code>string destination = 6;</code>
+       * @param value The destination to set.
+       * @return This builder for chaining.
        */
       public Builder setDestination(
           java.lang.String value) {
@@ -1001,6 +1065,7 @@ public final class Ripple {
       }
       /**
        * <code>string destination = 6;</code>
+       * @return This builder for chaining.
        */
       public Builder clearDestination() {
         
@@ -1010,6 +1075,8 @@ public final class Ripple {
       }
       /**
        * <code>string destination = 6;</code>
+       * @param value The bytes for destination to set.
+       * @return This builder for chaining.
        */
       public Builder setDestinationBytes(
           com.google.protobuf.ByteString value) {
@@ -1026,12 +1093,16 @@ public final class Ripple {
       private long destinationTag_ ;
       /**
        * <code>int64 destination_tag = 7;</code>
+       * @return The destinationTag.
        */
+      @java.lang.Override
       public long getDestinationTag() {
         return destinationTag_;
       }
       /**
        * <code>int64 destination_tag = 7;</code>
+       * @param value The destinationTag to set.
+       * @return This builder for chaining.
        */
       public Builder setDestinationTag(long value) {
         
@@ -1041,6 +1112,7 @@ public final class Ripple {
       }
       /**
        * <code>int64 destination_tag = 7;</code>
+       * @return This builder for chaining.
        */
       public Builder clearDestinationTag() {
         
@@ -1052,12 +1124,16 @@ public final class Ripple {
       private long flags_ ;
       /**
        * <code>int64 flags = 8;</code>
+       * @return The flags.
        */
+      @java.lang.Override
       public long getFlags() {
         return flags_;
       }
       /**
        * <code>int64 flags = 8;</code>
+       * @param value The flags to set.
+       * @return This builder for chaining.
        */
       public Builder setFlags(long value) {
         
@@ -1067,6 +1143,7 @@ public final class Ripple {
       }
       /**
        * <code>int64 flags = 8;</code>
+       * @return This builder for chaining.
        */
       public Builder clearFlags() {
         
@@ -1078,12 +1155,16 @@ public final class Ripple {
       private com.google.protobuf.ByteString privateKey_ = com.google.protobuf.ByteString.EMPTY;
       /**
        * <code>bytes private_key = 9;</code>
+       * @return The privateKey.
        */
+      @java.lang.Override
       public com.google.protobuf.ByteString getPrivateKey() {
         return privateKey_;
       }
       /**
        * <code>bytes private_key = 9;</code>
+       * @param value The privateKey to set.
+       * @return This builder for chaining.
        */
       public Builder setPrivateKey(com.google.protobuf.ByteString value) {
         if (value == null) {
@@ -1096,6 +1177,7 @@ public final class Ripple {
       }
       /**
        * <code>bytes private_key = 9;</code>
+       * @return This builder for chaining.
        */
       public Builder clearPrivateKey() {
         
@@ -1162,6 +1244,7 @@ public final class Ripple {
 
     /**
      * <code>bytes encoded = 1;</code>
+     * @return The encoded.
      */
     com.google.protobuf.ByteString getEncoded();
   }
@@ -1172,7 +1255,7 @@ public final class Ripple {
    *
    * Protobuf type {@code TW.Ripple.Proto.SigningOutput}
    */
-  public  static final class SigningOutput extends
+  public static final class SigningOutput extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:TW.Ripple.Proto.SigningOutput)
       SigningOutputOrBuilder {
@@ -1256,7 +1339,9 @@ public final class Ripple {
     private com.google.protobuf.ByteString encoded_;
     /**
      * <code>bytes encoded = 1;</code>
+     * @return The encoded.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString getEncoded() {
       return encoded_;
     }
@@ -1570,12 +1655,16 @@ public final class Ripple {
       private com.google.protobuf.ByteString encoded_ = com.google.protobuf.ByteString.EMPTY;
       /**
        * <code>bytes encoded = 1;</code>
+       * @return The encoded.
        */
+      @java.lang.Override
       public com.google.protobuf.ByteString getEncoded() {
         return encoded_;
       }
       /**
        * <code>bytes encoded = 1;</code>
+       * @param value The encoded to set.
+       * @return This builder for chaining.
        */
       public Builder setEncoded(com.google.protobuf.ByteString value) {
         if (value == null) {
@@ -1588,6 +1677,7 @@ public final class Ripple {
       }
       /**
        * <code>bytes encoded = 1;</code>
+       * @return This builder for chaining.
        */
       public Builder clearEncoded() {
         

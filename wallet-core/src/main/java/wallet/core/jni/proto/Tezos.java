@@ -20,10 +20,12 @@ public final class Tezos {
 
     /**
      * <code>.TW.Tezos.Proto.OperationList operation_list = 1;</code>
+     * @return Whether the operationList field is set.
      */
     boolean hasOperationList();
     /**
      * <code>.TW.Tezos.Proto.OperationList operation_list = 1;</code>
+     * @return The operationList.
      */
     wallet.core.jni.proto.Tezos.OperationList getOperationList();
     /**
@@ -33,6 +35,7 @@ public final class Tezos {
 
     /**
      * <code>bytes private_key = 2;</code>
+     * @return The privateKey.
      */
     com.google.protobuf.ByteString getPrivateKey();
   }
@@ -44,7 +47,7 @@ public final class Tezos {
    *
    * Protobuf type {@code TW.Tezos.Proto.SigningInput}
    */
-  public  static final class SigningInput extends
+  public static final class SigningInput extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:TW.Tezos.Proto.SigningInput)
       SigningInputOrBuilder {
@@ -141,19 +144,24 @@ public final class Tezos {
     private wallet.core.jni.proto.Tezos.OperationList operationList_;
     /**
      * <code>.TW.Tezos.Proto.OperationList operation_list = 1;</code>
+     * @return Whether the operationList field is set.
      */
+    @java.lang.Override
     public boolean hasOperationList() {
       return operationList_ != null;
     }
     /**
      * <code>.TW.Tezos.Proto.OperationList operation_list = 1;</code>
+     * @return The operationList.
      */
+    @java.lang.Override
     public wallet.core.jni.proto.Tezos.OperationList getOperationList() {
       return operationList_ == null ? wallet.core.jni.proto.Tezos.OperationList.getDefaultInstance() : operationList_;
     }
     /**
      * <code>.TW.Tezos.Proto.OperationList operation_list = 1;</code>
      */
+    @java.lang.Override
     public wallet.core.jni.proto.Tezos.OperationListOrBuilder getOperationListOrBuilder() {
       return getOperationList();
     }
@@ -162,7 +170,9 @@ public final class Tezos {
     private com.google.protobuf.ByteString privateKey_;
     /**
      * <code>bytes private_key = 2;</code>
+     * @return The privateKey.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString getPrivateKey() {
       return privateKey_;
     }
@@ -509,12 +519,14 @@ public final class Tezos {
           wallet.core.jni.proto.Tezos.OperationList, wallet.core.jni.proto.Tezos.OperationList.Builder, wallet.core.jni.proto.Tezos.OperationListOrBuilder> operationListBuilder_;
       /**
        * <code>.TW.Tezos.Proto.OperationList operation_list = 1;</code>
+       * @return Whether the operationList field is set.
        */
       public boolean hasOperationList() {
         return operationListBuilder_ != null || operationList_ != null;
       }
       /**
        * <code>.TW.Tezos.Proto.OperationList operation_list = 1;</code>
+       * @return The operationList.
        */
       public wallet.core.jni.proto.Tezos.OperationList getOperationList() {
         if (operationListBuilder_ == null) {
@@ -624,12 +636,16 @@ public final class Tezos {
       private com.google.protobuf.ByteString privateKey_ = com.google.protobuf.ByteString.EMPTY;
       /**
        * <code>bytes private_key = 2;</code>
+       * @return The privateKey.
        */
+      @java.lang.Override
       public com.google.protobuf.ByteString getPrivateKey() {
         return privateKey_;
       }
       /**
        * <code>bytes private_key = 2;</code>
+       * @param value The privateKey to set.
+       * @return This builder for chaining.
        */
       public Builder setPrivateKey(com.google.protobuf.ByteString value) {
         if (value == null) {
@@ -642,6 +658,7 @@ public final class Tezos {
       }
       /**
        * <code>bytes private_key = 2;</code>
+       * @return This builder for chaining.
        */
       public Builder clearPrivateKey() {
         
@@ -708,6 +725,7 @@ public final class Tezos {
 
     /**
      * <code>bytes encoded = 1;</code>
+     * @return The encoded.
      */
     com.google.protobuf.ByteString getEncoded();
   }
@@ -719,7 +737,7 @@ public final class Tezos {
    *
    * Protobuf type {@code TW.Tezos.Proto.SigningOutput}
    */
-  public  static final class SigningOutput extends
+  public static final class SigningOutput extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:TW.Tezos.Proto.SigningOutput)
       SigningOutputOrBuilder {
@@ -803,7 +821,9 @@ public final class Tezos {
     private com.google.protobuf.ByteString encoded_;
     /**
      * <code>bytes encoded = 1;</code>
+     * @return The encoded.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString getEncoded() {
       return encoded_;
     }
@@ -1118,12 +1138,16 @@ public final class Tezos {
       private com.google.protobuf.ByteString encoded_ = com.google.protobuf.ByteString.EMPTY;
       /**
        * <code>bytes encoded = 1;</code>
+       * @return The encoded.
        */
+      @java.lang.Override
       public com.google.protobuf.ByteString getEncoded() {
         return encoded_;
       }
       /**
        * <code>bytes encoded = 1;</code>
+       * @param value The encoded to set.
+       * @return This builder for chaining.
        */
       public Builder setEncoded(com.google.protobuf.ByteString value) {
         if (value == null) {
@@ -1136,6 +1160,7 @@ public final class Tezos {
       }
       /**
        * <code>bytes encoded = 1;</code>
+       * @return This builder for chaining.
        */
       public Builder clearEncoded() {
         
@@ -1202,10 +1227,12 @@ public final class Tezos {
 
     /**
      * <code>string branch = 1;</code>
+     * @return The branch.
      */
     java.lang.String getBranch();
     /**
      * <code>string branch = 1;</code>
+     * @return The bytes for branch.
      */
     com.google.protobuf.ByteString
         getBranchBytes();
@@ -1242,7 +1269,7 @@ public final class Tezos {
    *
    * Protobuf type {@code TW.Tezos.Proto.OperationList}
    */
-  public  static final class OperationList extends
+  public static final class OperationList extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:TW.Tezos.Proto.OperationList)
       OperationListOrBuilder {
@@ -1341,7 +1368,9 @@ public final class Tezos {
     private volatile java.lang.Object branch_;
     /**
      * <code>string branch = 1;</code>
+     * @return The branch.
      */
+    @java.lang.Override
     public java.lang.String getBranch() {
       java.lang.Object ref = branch_;
       if (ref instanceof java.lang.String) {
@@ -1356,7 +1385,9 @@ public final class Tezos {
     }
     /**
      * <code>string branch = 1;</code>
+     * @return The bytes for branch.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString
         getBranchBytes() {
       java.lang.Object ref = branch_;
@@ -1376,12 +1407,14 @@ public final class Tezos {
     /**
      * <code>repeated .TW.Tezos.Proto.Operation operations = 2;</code>
      */
+    @java.lang.Override
     public java.util.List<wallet.core.jni.proto.Tezos.Operation> getOperationsList() {
       return operations_;
     }
     /**
      * <code>repeated .TW.Tezos.Proto.Operation operations = 2;</code>
      */
+    @java.lang.Override
     public java.util.List<? extends wallet.core.jni.proto.Tezos.OperationOrBuilder> 
         getOperationsOrBuilderList() {
       return operations_;
@@ -1389,18 +1422,21 @@ public final class Tezos {
     /**
      * <code>repeated .TW.Tezos.Proto.Operation operations = 2;</code>
      */
+    @java.lang.Override
     public int getOperationsCount() {
       return operations_.size();
     }
     /**
      * <code>repeated .TW.Tezos.Proto.Operation operations = 2;</code>
      */
+    @java.lang.Override
     public wallet.core.jni.proto.Tezos.Operation getOperations(int index) {
       return operations_.get(index);
     }
     /**
      * <code>repeated .TW.Tezos.Proto.Operation operations = 2;</code>
      */
+    @java.lang.Override
     public wallet.core.jni.proto.Tezos.OperationOrBuilder getOperationsOrBuilder(
         int index) {
       return operations_.get(index);
@@ -1773,6 +1809,7 @@ public final class Tezos {
       private java.lang.Object branch_ = "";
       /**
        * <code>string branch = 1;</code>
+       * @return The branch.
        */
       public java.lang.String getBranch() {
         java.lang.Object ref = branch_;
@@ -1788,6 +1825,7 @@ public final class Tezos {
       }
       /**
        * <code>string branch = 1;</code>
+       * @return The bytes for branch.
        */
       public com.google.protobuf.ByteString
           getBranchBytes() {
@@ -1804,6 +1842,8 @@ public final class Tezos {
       }
       /**
        * <code>string branch = 1;</code>
+       * @param value The branch to set.
+       * @return This builder for chaining.
        */
       public Builder setBranch(
           java.lang.String value) {
@@ -1817,6 +1857,7 @@ public final class Tezos {
       }
       /**
        * <code>string branch = 1;</code>
+       * @return This builder for chaining.
        */
       public Builder clearBranch() {
         
@@ -1826,6 +1867,8 @@ public final class Tezos {
       }
       /**
        * <code>string branch = 1;</code>
+       * @param value The bytes for branch to set.
+       * @return This builder for chaining.
        */
       public Builder setBranchBytes(
           com.google.protobuf.ByteString value) {
@@ -2137,49 +2180,59 @@ public final class Tezos {
 
     /**
      * <code>int64 counter = 1;</code>
+     * @return The counter.
      */
     long getCounter();
 
     /**
      * <code>string source = 2;</code>
+     * @return The source.
      */
     java.lang.String getSource();
     /**
      * <code>string source = 2;</code>
+     * @return The bytes for source.
      */
     com.google.protobuf.ByteString
         getSourceBytes();
 
     /**
      * <code>int64 fee = 3;</code>
+     * @return The fee.
      */
     long getFee();
 
     /**
      * <code>int64 gas_limit = 4;</code>
+     * @return The gasLimit.
      */
     long getGasLimit();
 
     /**
      * <code>int64 storage_limit = 5;</code>
+     * @return The storageLimit.
      */
     long getStorageLimit();
 
     /**
      * <code>.TW.Tezos.Proto.Operation.OperationKind kind = 7;</code>
+     * @return The enum numeric value on the wire for kind.
      */
     int getKindValue();
     /**
      * <code>.TW.Tezos.Proto.Operation.OperationKind kind = 7;</code>
+     * @return The kind.
      */
     wallet.core.jni.proto.Tezos.Operation.OperationKind getKind();
 
     /**
      * <code>.TW.Tezos.Proto.RevealOperationData reveal_operation_data = 8;</code>
+     * @return Whether the revealOperationData field is set.
      */
     boolean hasRevealOperationData();
     /**
      * <code>.TW.Tezos.Proto.RevealOperationData reveal_operation_data = 8;</code>
+     * @return The revealOperationData.
      */
     wallet.core.jni.proto.Tezos.RevealOperationData getRevealOperationData();
     /**
@@ -2189,10 +2242,12 @@ public final class Tezos {
 
     /**
      * <code>.TW.Tezos.Proto.TransactionOperationData transaction_operation_data = 9;</code>
+     * @return Whether the transactionOperationData field is set.
      */
     boolean hasTransactionOperationData();
     /**
      * <code>.TW.Tezos.Proto.TransactionOperationData transaction_operation_data = 9;</code>
+     * @return The transactionOperationData.
      */
     wallet.core.jni.proto.Tezos.TransactionOperationData getTransactionOperationData();
     /**
@@ -2202,10 +2257,12 @@ public final class Tezos {
 
     /**
      * <code>.TW.Tezos.Proto.DelegationOperationData delegation_operation_data = 11;</code>
+     * @return Whether the delegationOperationData field is set.
      */
     boolean hasDelegationOperationData();
     /**
      * <code>.TW.Tezos.Proto.DelegationOperationData delegation_operation_data = 11;</code>
+     * @return The delegationOperationData.
      */
     wallet.core.jni.proto.Tezos.DelegationOperationData getDelegationOperationData();
     /**
@@ -2223,7 +2280,7 @@ public final class Tezos {
    *
    * Protobuf type {@code TW.Tezos.Proto.Operation}
    */
-  public  static final class Operation extends
+  public static final class Operation extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:TW.Tezos.Proto.Operation)
       OperationOrBuilder {
@@ -2432,6 +2489,8 @@ public final class Tezos {
       }
 
       /**
+       * @param value The numeric wire value of the corresponding enum entry.
+       * @return The enum associated with the given numeric wire value.
        * @deprecated Use {@link #forNumber(int)} instead.
        */
       @java.lang.Deprecated
@@ -2439,6 +2498,10 @@ public final class Tezos {
         return forNumber(value);
       }
 
+      /**
+       * @param value The numeric wire value of the corresponding enum entry.
+       * @return The enum associated with the given numeric wire value.
+       */
       public static OperationKind forNumber(int value) {
         switch (value) {
           case 0: return ENDORSEMENT;
@@ -2463,6 +2526,10 @@ public final class Tezos {
 
       public final com.google.protobuf.Descriptors.EnumValueDescriptor
           getValueDescriptor() {
+        if (this == UNRECOGNIZED) {
+          throw new java.lang.IllegalStateException(
+              "Can't get the descriptor of an unrecognized enum value.");
+        }
         return getDescriptor().getValues().get(ordinal());
       }
       public final com.google.protobuf.Descriptors.EnumDescriptor
@@ -2500,7 +2567,8 @@ public final class Tezos {
     private int operationDataCase_ = 0;
     private java.lang.Object operationData_;
     public enum OperationDataCase
-        implements com.google.protobuf.Internal.EnumLite {
+        implements com.google.protobuf.Internal.EnumLite,
+            com.google.protobuf.AbstractMessage.InternalOneOfEnum {
       REVEAL_OPERATION_DATA(8),
       TRANSACTION_OPERATION_DATA(9),
       DELEGATION_OPERATION_DATA(11),
@@ -2510,6 +2578,8 @@ public final class Tezos {
         this.value = value;
       }
       /**
+       * @param value The number of the enum to look for.
+       * @return The enum associated with the given number.
        * @deprecated Use {@link #forNumber(int)} instead.
        */
       @java.lang.Deprecated
@@ -2541,7 +2611,9 @@ public final class Tezos {
     private long counter_;
     /**
      * <code>int64 counter = 1;</code>
+     * @return The counter.
      */
+    @java.lang.Override
     public long getCounter() {
       return counter_;
     }
@@ -2550,7 +2622,9 @@ public final class Tezos {
     private volatile java.lang.Object source_;
     /**
      * <code>string source = 2;</code>
+     * @return The source.
      */
+    @java.lang.Override
     public java.lang.String getSource() {
       java.lang.Object ref = source_;
       if (ref instanceof java.lang.String) {
@@ -2565,7 +2639,9 @@ public final class Tezos {
     }
     /**
      * <code>string source = 2;</code>
+     * @return The bytes for source.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString
         getSourceBytes() {
       java.lang.Object ref = source_;
@@ -2584,7 +2660,9 @@ public final class Tezos {
     private long fee_;
     /**
      * <code>int64 fee = 3;</code>
+     * @return The fee.
      */
+    @java.lang.Override
     public long getFee() {
       return fee_;
     }
@@ -2593,7 +2671,9 @@ public final class Tezos {
     private long gasLimit_;
     /**
      * <code>int64 gas_limit = 4;</code>
+     * @return The gasLimit.
      */
+    @java.lang.Override
     public long getGasLimit() {
       return gasLimit_;
     }
@@ -2602,7 +2682,9 @@ public final class Tezos {
     private long storageLimit_;
     /**
      * <code>int64 storage_limit = 5;</code>
+     * @return The storageLimit.
      */
+    @java.lang.Override
     public long getStorageLimit() {
       return storageLimit_;
     }
@@ -2611,14 +2693,16 @@ public final class Tezos {
     private int kind_;
     /**
      * <code>.TW.Tezos.Proto.Operation.OperationKind kind = 7;</code>
+     * @return The enum numeric value on the wire for kind.
      */
-    public int getKindValue() {
+    @java.lang.Override public int getKindValue() {
       return kind_;
     }
     /**
      * <code>.TW.Tezos.Proto.Operation.OperationKind kind = 7;</code>
+     * @return The kind.
      */
-    public wallet.core.jni.proto.Tezos.Operation.OperationKind getKind() {
+    @java.lang.Override public wallet.core.jni.proto.Tezos.Operation.OperationKind getKind() {
       @SuppressWarnings("deprecation")
       wallet.core.jni.proto.Tezos.Operation.OperationKind result = wallet.core.jni.proto.Tezos.Operation.OperationKind.valueOf(kind_);
       return result == null ? wallet.core.jni.proto.Tezos.Operation.OperationKind.UNRECOGNIZED : result;
@@ -2627,13 +2711,17 @@ public final class Tezos {
     public static final int REVEAL_OPERATION_DATA_FIELD_NUMBER = 8;
     /**
      * <code>.TW.Tezos.Proto.RevealOperationData reveal_operation_data = 8;</code>
+     * @return Whether the revealOperationData field is set.
      */
+    @java.lang.Override
     public boolean hasRevealOperationData() {
       return operationDataCase_ == 8;
     }
     /**
      * <code>.TW.Tezos.Proto.RevealOperationData reveal_operation_data = 8;</code>
+     * @return The revealOperationData.
      */
+    @java.lang.Override
     public wallet.core.jni.proto.Tezos.RevealOperationData getRevealOperationData() {
       if (operationDataCase_ == 8) {
          return (wallet.core.jni.proto.Tezos.RevealOperationData) operationData_;
@@ -2643,6 +2731,7 @@ public final class Tezos {
     /**
      * <code>.TW.Tezos.Proto.RevealOperationData reveal_operation_data = 8;</code>
      */
+    @java.lang.Override
     public wallet.core.jni.proto.Tezos.RevealOperationDataOrBuilder getRevealOperationDataOrBuilder() {
       if (operationDataCase_ == 8) {
          return (wallet.core.jni.proto.Tezos.RevealOperationData) operationData_;
@@ -2653,13 +2742,17 @@ public final class Tezos {
     public static final int TRANSACTION_OPERATION_DATA_FIELD_NUMBER = 9;
     /**
      * <code>.TW.Tezos.Proto.TransactionOperationData transaction_operation_data = 9;</code>
+     * @return Whether the transactionOperationData field is set.
      */
+    @java.lang.Override
     public boolean hasTransactionOperationData() {
       return operationDataCase_ == 9;
     }
     /**
      * <code>.TW.Tezos.Proto.TransactionOperationData transaction_operation_data = 9;</code>
+     * @return The transactionOperationData.
      */
+    @java.lang.Override
     public wallet.core.jni.proto.Tezos.TransactionOperationData getTransactionOperationData() {
       if (operationDataCase_ == 9) {
          return (wallet.core.jni.proto.Tezos.TransactionOperationData) operationData_;
@@ -2669,6 +2762,7 @@ public final class Tezos {
     /**
      * <code>.TW.Tezos.Proto.TransactionOperationData transaction_operation_data = 9;</code>
      */
+    @java.lang.Override
     public wallet.core.jni.proto.Tezos.TransactionOperationDataOrBuilder getTransactionOperationDataOrBuilder() {
       if (operationDataCase_ == 9) {
          return (wallet.core.jni.proto.Tezos.TransactionOperationData) operationData_;
@@ -2679,13 +2773,17 @@ public final class Tezos {
     public static final int DELEGATION_OPERATION_DATA_FIELD_NUMBER = 11;
     /**
      * <code>.TW.Tezos.Proto.DelegationOperationData delegation_operation_data = 11;</code>
+     * @return Whether the delegationOperationData field is set.
      */
+    @java.lang.Override
     public boolean hasDelegationOperationData() {
       return operationDataCase_ == 11;
     }
     /**
      * <code>.TW.Tezos.Proto.DelegationOperationData delegation_operation_data = 11;</code>
+     * @return The delegationOperationData.
      */
+    @java.lang.Override
     public wallet.core.jni.proto.Tezos.DelegationOperationData getDelegationOperationData() {
       if (operationDataCase_ == 11) {
          return (wallet.core.jni.proto.Tezos.DelegationOperationData) operationData_;
@@ -2695,6 +2793,7 @@ public final class Tezos {
     /**
      * <code>.TW.Tezos.Proto.DelegationOperationData delegation_operation_data = 11;</code>
      */
+    @java.lang.Override
     public wallet.core.jni.proto.Tezos.DelegationOperationDataOrBuilder getDelegationOperationDataOrBuilder() {
       if (operationDataCase_ == 11) {
          return (wallet.core.jni.proto.Tezos.DelegationOperationData) operationData_;
@@ -3210,12 +3309,16 @@ public final class Tezos {
       private long counter_ ;
       /**
        * <code>int64 counter = 1;</code>
+       * @return The counter.
        */
+      @java.lang.Override
       public long getCounter() {
         return counter_;
       }
       /**
        * <code>int64 counter = 1;</code>
+       * @param value The counter to set.
+       * @return This builder for chaining.
        */
       public Builder setCounter(long value) {
         
@@ -3225,6 +3328,7 @@ public final class Tezos {
       }
       /**
        * <code>int64 counter = 1;</code>
+       * @return This builder for chaining.
        */
       public Builder clearCounter() {
         
@@ -3236,6 +3340,7 @@ public final class Tezos {
       private java.lang.Object source_ = "";
       /**
        * <code>string source = 2;</code>
+       * @return The source.
        */
       public java.lang.String getSource() {
         java.lang.Object ref = source_;
@@ -3251,6 +3356,7 @@ public final class Tezos {
       }
       /**
        * <code>string source = 2;</code>
+       * @return The bytes for source.
        */
       public com.google.protobuf.ByteString
           getSourceBytes() {
@@ -3267,6 +3373,8 @@ public final class Tezos {
       }
       /**
        * <code>string source = 2;</code>
+       * @param value The source to set.
+       * @return This builder for chaining.
        */
       public Builder setSource(
           java.lang.String value) {
@@ -3280,6 +3388,7 @@ public final class Tezos {
       }
       /**
        * <code>string source = 2;</code>
+       * @return This builder for chaining.
        */
       public Builder clearSource() {
         
@@ -3289,6 +3398,8 @@ public final class Tezos {
       }
       /**
        * <code>string source = 2;</code>
+       * @param value The bytes for source to set.
+       * @return This builder for chaining.
        */
       public Builder setSourceBytes(
           com.google.protobuf.ByteString value) {
@@ -3305,12 +3416,16 @@ public final class Tezos {
       private long fee_ ;
       /**
        * <code>int64 fee = 3;</code>
+       * @return The fee.
        */
+      @java.lang.Override
       public long getFee() {
         return fee_;
       }
       /**
        * <code>int64 fee = 3;</code>
+       * @param value The fee to set.
+       * @return This builder for chaining.
        */
       public Builder setFee(long value) {
         
@@ -3320,6 +3435,7 @@ public final class Tezos {
       }
       /**
        * <code>int64 fee = 3;</code>
+       * @return This builder for chaining.
        */
       public Builder clearFee() {
         
@@ -3331,12 +3447,16 @@ public final class Tezos {
       private long gasLimit_ ;
       /**
        * <code>int64 gas_limit = 4;</code>
+       * @return The gasLimit.
        */
+      @java.lang.Override
       public long getGasLimit() {
         return gasLimit_;
       }
       /**
        * <code>int64 gas_limit = 4;</code>
+       * @param value The gasLimit to set.
+       * @return This builder for chaining.
        */
       public Builder setGasLimit(long value) {
         
@@ -3346,6 +3466,7 @@ public final class Tezos {
       }
       /**
        * <code>int64 gas_limit = 4;</code>
+       * @return This builder for chaining.
        */
       public Builder clearGasLimit() {
         
@@ -3357,12 +3478,16 @@ public final class Tezos {
       private long storageLimit_ ;
       /**
        * <code>int64 storage_limit = 5;</code>
+       * @return The storageLimit.
        */
+      @java.lang.Override
       public long getStorageLimit() {
         return storageLimit_;
       }
       /**
        * <code>int64 storage_limit = 5;</code>
+       * @param value The storageLimit to set.
+       * @return This builder for chaining.
        */
       public Builder setStorageLimit(long value) {
         
@@ -3372,6 +3497,7 @@ public final class Tezos {
       }
       /**
        * <code>int64 storage_limit = 5;</code>
+       * @return This builder for chaining.
        */
       public Builder clearStorageLimit() {
         
@@ -3383,21 +3509,27 @@ public final class Tezos {
       private int kind_ = 0;
       /**
        * <code>.TW.Tezos.Proto.Operation.OperationKind kind = 7;</code>
+       * @return The enum numeric value on the wire for kind.
        */
-      public int getKindValue() {
+      @java.lang.Override public int getKindValue() {
         return kind_;
       }
       /**
        * <code>.TW.Tezos.Proto.Operation.OperationKind kind = 7;</code>
+       * @param value The enum numeric value on the wire for kind to set.
+       * @return This builder for chaining.
        */
       public Builder setKindValue(int value) {
+        
         kind_ = value;
         onChanged();
         return this;
       }
       /**
        * <code>.TW.Tezos.Proto.Operation.OperationKind kind = 7;</code>
+       * @return The kind.
        */
+      @java.lang.Override
       public wallet.core.jni.proto.Tezos.Operation.OperationKind getKind() {
         @SuppressWarnings("deprecation")
         wallet.core.jni.proto.Tezos.Operation.OperationKind result = wallet.core.jni.proto.Tezos.Operation.OperationKind.valueOf(kind_);
@@ -3405,6 +3537,8 @@ public final class Tezos {
       }
       /**
        * <code>.TW.Tezos.Proto.Operation.OperationKind kind = 7;</code>
+       * @param value The kind to set.
+       * @return This builder for chaining.
        */
       public Builder setKind(wallet.core.jni.proto.Tezos.Operation.OperationKind value) {
         if (value == null) {
@@ -3417,6 +3551,7 @@ public final class Tezos {
       }
       /**
        * <code>.TW.Tezos.Proto.Operation.OperationKind kind = 7;</code>
+       * @return This builder for chaining.
        */
       public Builder clearKind() {
         
@@ -3429,13 +3564,17 @@ public final class Tezos {
           wallet.core.jni.proto.Tezos.RevealOperationData, wallet.core.jni.proto.Tezos.RevealOperationData.Builder, wallet.core.jni.proto.Tezos.RevealOperationDataOrBuilder> revealOperationDataBuilder_;
       /**
        * <code>.TW.Tezos.Proto.RevealOperationData reveal_operation_data = 8;</code>
+       * @return Whether the revealOperationData field is set.
        */
+      @java.lang.Override
       public boolean hasRevealOperationData() {
         return operationDataCase_ == 8;
       }
       /**
        * <code>.TW.Tezos.Proto.RevealOperationData reveal_operation_data = 8;</code>
+       * @return The revealOperationData.
        */
+      @java.lang.Override
       public wallet.core.jni.proto.Tezos.RevealOperationData getRevealOperationData() {
         if (revealOperationDataBuilder_ == null) {
           if (operationDataCase_ == 8) {
@@ -3529,6 +3668,7 @@ public final class Tezos {
       /**
        * <code>.TW.Tezos.Proto.RevealOperationData reveal_operation_data = 8;</code>
        */
+      @java.lang.Override
       public wallet.core.jni.proto.Tezos.RevealOperationDataOrBuilder getRevealOperationDataOrBuilder() {
         if ((operationDataCase_ == 8) && (revealOperationDataBuilder_ != null)) {
           return revealOperationDataBuilder_.getMessageOrBuilder();
@@ -3565,13 +3705,17 @@ public final class Tezos {
           wallet.core.jni.proto.Tezos.TransactionOperationData, wallet.core.jni.proto.Tezos.TransactionOperationData.Builder, wallet.core.jni.proto.Tezos.TransactionOperationDataOrBuilder> transactionOperationDataBuilder_;
       /**
        * <code>.TW.Tezos.Proto.TransactionOperationData transaction_operation_data = 9;</code>
+       * @return Whether the transactionOperationData field is set.
        */
+      @java.lang.Override
       public boolean hasTransactionOperationData() {
         return operationDataCase_ == 9;
       }
       /**
        * <code>.TW.Tezos.Proto.TransactionOperationData transaction_operation_data = 9;</code>
+       * @return The transactionOperationData.
        */
+      @java.lang.Override
       public wallet.core.jni.proto.Tezos.TransactionOperationData getTransactionOperationData() {
         if (transactionOperationDataBuilder_ == null) {
           if (operationDataCase_ == 9) {
@@ -3665,6 +3809,7 @@ public final class Tezos {
       /**
        * <code>.TW.Tezos.Proto.TransactionOperationData transaction_operation_data = 9;</code>
        */
+      @java.lang.Override
       public wallet.core.jni.proto.Tezos.TransactionOperationDataOrBuilder getTransactionOperationDataOrBuilder() {
         if ((operationDataCase_ == 9) && (transactionOperationDataBuilder_ != null)) {
           return transactionOperationDataBuilder_.getMessageOrBuilder();
@@ -3701,13 +3846,17 @@ public final class Tezos {
           wallet.core.jni.proto.Tezos.DelegationOperationData, wallet.core.jni.proto.Tezos.DelegationOperationData.Builder, wallet.core.jni.proto.Tezos.DelegationOperationDataOrBuilder> delegationOperationDataBuilder_;
       /**
        * <code>.TW.Tezos.Proto.DelegationOperationData delegation_operation_data = 11;</code>
+       * @return Whether the delegationOperationData field is set.
        */
+      @java.lang.Override
       public boolean hasDelegationOperationData() {
         return operationDataCase_ == 11;
       }
       /**
        * <code>.TW.Tezos.Proto.DelegationOperationData delegation_operation_data = 11;</code>
+       * @return The delegationOperationData.
        */
+      @java.lang.Override
       public wallet.core.jni.proto.Tezos.DelegationOperationData getDelegationOperationData() {
         if (delegationOperationDataBuilder_ == null) {
           if (operationDataCase_ == 11) {
@@ -3801,6 +3950,7 @@ public final class Tezos {
       /**
        * <code>.TW.Tezos.Proto.DelegationOperationData delegation_operation_data = 11;</code>
        */
+      @java.lang.Override
       public wallet.core.jni.proto.Tezos.DelegationOperationDataOrBuilder getDelegationOperationDataOrBuilder() {
         if ((operationDataCase_ == 11) && (delegationOperationDataBuilder_ != null)) {
           return delegationOperationDataBuilder_.getMessageOrBuilder();
@@ -3891,16 +4041,19 @@ public final class Tezos {
 
     /**
      * <code>string destination = 1;</code>
+     * @return The destination.
      */
     java.lang.String getDestination();
     /**
      * <code>string destination = 1;</code>
+     * @return The bytes for destination.
      */
     com.google.protobuf.ByteString
         getDestinationBytes();
 
     /**
      * <code>int64 amount = 2;</code>
+     * @return The amount.
      */
     long getAmount();
   }
@@ -3912,7 +4065,7 @@ public final class Tezos {
    *
    * Protobuf type {@code TW.Tezos.Proto.TransactionOperationData}
    */
-  public  static final class TransactionOperationData extends
+  public static final class TransactionOperationData extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:TW.Tezos.Proto.TransactionOperationData)
       TransactionOperationDataOrBuilder {
@@ -4002,7 +4155,9 @@ public final class Tezos {
     private volatile java.lang.Object destination_;
     /**
      * <code>string destination = 1;</code>
+     * @return The destination.
      */
+    @java.lang.Override
     public java.lang.String getDestination() {
       java.lang.Object ref = destination_;
       if (ref instanceof java.lang.String) {
@@ -4017,7 +4172,9 @@ public final class Tezos {
     }
     /**
      * <code>string destination = 1;</code>
+     * @return The bytes for destination.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString
         getDestinationBytes() {
       java.lang.Object ref = destination_;
@@ -4036,7 +4193,9 @@ public final class Tezos {
     private long amount_;
     /**
      * <code>int64 amount = 2;</code>
+     * @return The amount.
      */
+    @java.lang.Override
     public long getAmount() {
       return amount_;
     }
@@ -4369,6 +4528,7 @@ public final class Tezos {
       private java.lang.Object destination_ = "";
       /**
        * <code>string destination = 1;</code>
+       * @return The destination.
        */
       public java.lang.String getDestination() {
         java.lang.Object ref = destination_;
@@ -4384,6 +4544,7 @@ public final class Tezos {
       }
       /**
        * <code>string destination = 1;</code>
+       * @return The bytes for destination.
        */
       public com.google.protobuf.ByteString
           getDestinationBytes() {
@@ -4400,6 +4561,8 @@ public final class Tezos {
       }
       /**
        * <code>string destination = 1;</code>
+       * @param value The destination to set.
+       * @return This builder for chaining.
        */
       public Builder setDestination(
           java.lang.String value) {
@@ -4413,6 +4576,7 @@ public final class Tezos {
       }
       /**
        * <code>string destination = 1;</code>
+       * @return This builder for chaining.
        */
       public Builder clearDestination() {
         
@@ -4422,6 +4586,8 @@ public final class Tezos {
       }
       /**
        * <code>string destination = 1;</code>
+       * @param value The bytes for destination to set.
+       * @return This builder for chaining.
        */
       public Builder setDestinationBytes(
           com.google.protobuf.ByteString value) {
@@ -4438,12 +4604,16 @@ public final class Tezos {
       private long amount_ ;
       /**
        * <code>int64 amount = 2;</code>
+       * @return The amount.
        */
+      @java.lang.Override
       public long getAmount() {
         return amount_;
       }
       /**
        * <code>int64 amount = 2;</code>
+       * @param value The amount to set.
+       * @return This builder for chaining.
        */
       public Builder setAmount(long value) {
         
@@ -4453,6 +4623,7 @@ public final class Tezos {
       }
       /**
        * <code>int64 amount = 2;</code>
+       * @return This builder for chaining.
        */
       public Builder clearAmount() {
         
@@ -4519,6 +4690,7 @@ public final class Tezos {
 
     /**
      * <code>bytes public_key = 1;</code>
+     * @return The publicKey.
      */
     com.google.protobuf.ByteString getPublicKey();
   }
@@ -4530,7 +4702,7 @@ public final class Tezos {
    *
    * Protobuf type {@code TW.Tezos.Proto.RevealOperationData}
    */
-  public  static final class RevealOperationData extends
+  public static final class RevealOperationData extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:TW.Tezos.Proto.RevealOperationData)
       RevealOperationDataOrBuilder {
@@ -4614,7 +4786,9 @@ public final class Tezos {
     private com.google.protobuf.ByteString publicKey_;
     /**
      * <code>bytes public_key = 1;</code>
+     * @return The publicKey.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString getPublicKey() {
       return publicKey_;
     }
@@ -4929,12 +5103,16 @@ public final class Tezos {
       private com.google.protobuf.ByteString publicKey_ = com.google.protobuf.ByteString.EMPTY;
       /**
        * <code>bytes public_key = 1;</code>
+       * @return The publicKey.
        */
+      @java.lang.Override
       public com.google.protobuf.ByteString getPublicKey() {
         return publicKey_;
       }
       /**
        * <code>bytes public_key = 1;</code>
+       * @param value The publicKey to set.
+       * @return This builder for chaining.
        */
       public Builder setPublicKey(com.google.protobuf.ByteString value) {
         if (value == null) {
@@ -4947,6 +5125,7 @@ public final class Tezos {
       }
       /**
        * <code>bytes public_key = 1;</code>
+       * @return This builder for chaining.
        */
       public Builder clearPublicKey() {
         
@@ -5013,10 +5192,12 @@ public final class Tezos {
 
     /**
      * <code>string delegate = 1;</code>
+     * @return The delegate.
      */
     java.lang.String getDelegate();
     /**
      * <code>string delegate = 1;</code>
+     * @return The bytes for delegate.
      */
     com.google.protobuf.ByteString
         getDelegateBytes();
@@ -5029,7 +5210,7 @@ public final class Tezos {
    *
    * Protobuf type {@code TW.Tezos.Proto.DelegationOperationData}
    */
-  public  static final class DelegationOperationData extends
+  public static final class DelegationOperationData extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:TW.Tezos.Proto.DelegationOperationData)
       DelegationOperationDataOrBuilder {
@@ -5114,7 +5295,9 @@ public final class Tezos {
     private volatile java.lang.Object delegate_;
     /**
      * <code>string delegate = 1;</code>
+     * @return The delegate.
      */
+    @java.lang.Override
     public java.lang.String getDelegate() {
       java.lang.Object ref = delegate_;
       if (ref instanceof java.lang.String) {
@@ -5129,7 +5312,9 @@ public final class Tezos {
     }
     /**
      * <code>string delegate = 1;</code>
+     * @return The bytes for delegate.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString
         getDelegateBytes() {
       java.lang.Object ref = delegate_;
@@ -5454,6 +5639,7 @@ public final class Tezos {
       private java.lang.Object delegate_ = "";
       /**
        * <code>string delegate = 1;</code>
+       * @return The delegate.
        */
       public java.lang.String getDelegate() {
         java.lang.Object ref = delegate_;
@@ -5469,6 +5655,7 @@ public final class Tezos {
       }
       /**
        * <code>string delegate = 1;</code>
+       * @return The bytes for delegate.
        */
       public com.google.protobuf.ByteString
           getDelegateBytes() {
@@ -5485,6 +5672,8 @@ public final class Tezos {
       }
       /**
        * <code>string delegate = 1;</code>
+       * @param value The delegate to set.
+       * @return This builder for chaining.
        */
       public Builder setDelegate(
           java.lang.String value) {
@@ -5498,6 +5687,7 @@ public final class Tezos {
       }
       /**
        * <code>string delegate = 1;</code>
+       * @return This builder for chaining.
        */
       public Builder clearDelegate() {
         
@@ -5507,6 +5697,8 @@ public final class Tezos {
       }
       /**
        * <code>string delegate = 1;</code>
+       * @param value The bytes for delegate to set.
+       * @return This builder for chaining.
        */
       public Builder setDelegateBytes(
           com.google.protobuf.ByteString value) {

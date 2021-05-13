@@ -57,6 +57,8 @@ public final class EOS {
     }
 
     /**
+     * @param value The numeric wire value of the corresponding enum entry.
+     * @return The enum associated with the given numeric wire value.
      * @deprecated Use {@link #forNumber(int)} instead.
      */
     @java.lang.Deprecated
@@ -64,6 +66,10 @@ public final class EOS {
       return forNumber(value);
     }
 
+    /**
+     * @param value The numeric wire value of the corresponding enum entry.
+     * @return The enum associated with the given numeric wire value.
+     */
     public static KeyType forNumber(int value) {
       switch (value) {
         case 0: return LEGACY;
@@ -87,6 +93,10 @@ public final class EOS {
 
     public final com.google.protobuf.Descriptors.EnumValueDescriptor
         getValueDescriptor() {
+      if (this == UNRECOGNIZED) {
+        throw new java.lang.IllegalStateException(
+            "Can't get the descriptor of an unrecognized enum value.");
+      }
       return getDescriptor().getValues().get(ordinal());
     }
     public final com.google.protobuf.Descriptors.EnumDescriptor
@@ -127,20 +137,24 @@ public final class EOS {
 
     /**
      * <code>int64 amount = 1;</code>
+     * @return The amount.
      */
     long getAmount();
 
     /**
      * <code>uint32 decimals = 2;</code>
+     * @return The decimals.
      */
     int getDecimals();
 
     /**
      * <code>string symbol = 3;</code>
+     * @return The symbol.
      */
     java.lang.String getSymbol();
     /**
      * <code>string symbol = 3;</code>
+     * @return The bytes for symbol.
      */
     com.google.protobuf.ByteString
         getSymbolBytes();
@@ -152,7 +166,7 @@ public final class EOS {
    *
    * Protobuf type {@code TW.EOS.Proto.Asset}
    */
-  public  static final class Asset extends
+  public static final class Asset extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:TW.EOS.Proto.Asset)
       AssetOrBuilder {
@@ -247,7 +261,9 @@ public final class EOS {
     private long amount_;
     /**
      * <code>int64 amount = 1;</code>
+     * @return The amount.
      */
+    @java.lang.Override
     public long getAmount() {
       return amount_;
     }
@@ -256,7 +272,9 @@ public final class EOS {
     private int decimals_;
     /**
      * <code>uint32 decimals = 2;</code>
+     * @return The decimals.
      */
+    @java.lang.Override
     public int getDecimals() {
       return decimals_;
     }
@@ -265,7 +283,9 @@ public final class EOS {
     private volatile java.lang.Object symbol_;
     /**
      * <code>string symbol = 3;</code>
+     * @return The symbol.
      */
+    @java.lang.Override
     public java.lang.String getSymbol() {
       java.lang.Object ref = symbol_;
       if (ref instanceof java.lang.String) {
@@ -280,7 +300,9 @@ public final class EOS {
     }
     /**
      * <code>string symbol = 3;</code>
+     * @return The bytes for symbol.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString
         getSymbolBytes() {
       java.lang.Object ref = symbol_;
@@ -639,12 +661,16 @@ public final class EOS {
       private long amount_ ;
       /**
        * <code>int64 amount = 1;</code>
+       * @return The amount.
        */
+      @java.lang.Override
       public long getAmount() {
         return amount_;
       }
       /**
        * <code>int64 amount = 1;</code>
+       * @param value The amount to set.
+       * @return This builder for chaining.
        */
       public Builder setAmount(long value) {
         
@@ -654,6 +680,7 @@ public final class EOS {
       }
       /**
        * <code>int64 amount = 1;</code>
+       * @return This builder for chaining.
        */
       public Builder clearAmount() {
         
@@ -665,12 +692,16 @@ public final class EOS {
       private int decimals_ ;
       /**
        * <code>uint32 decimals = 2;</code>
+       * @return The decimals.
        */
+      @java.lang.Override
       public int getDecimals() {
         return decimals_;
       }
       /**
        * <code>uint32 decimals = 2;</code>
+       * @param value The decimals to set.
+       * @return This builder for chaining.
        */
       public Builder setDecimals(int value) {
         
@@ -680,6 +711,7 @@ public final class EOS {
       }
       /**
        * <code>uint32 decimals = 2;</code>
+       * @return This builder for chaining.
        */
       public Builder clearDecimals() {
         
@@ -691,6 +723,7 @@ public final class EOS {
       private java.lang.Object symbol_ = "";
       /**
        * <code>string symbol = 3;</code>
+       * @return The symbol.
        */
       public java.lang.String getSymbol() {
         java.lang.Object ref = symbol_;
@@ -706,6 +739,7 @@ public final class EOS {
       }
       /**
        * <code>string symbol = 3;</code>
+       * @return The bytes for symbol.
        */
       public com.google.protobuf.ByteString
           getSymbolBytes() {
@@ -722,6 +756,8 @@ public final class EOS {
       }
       /**
        * <code>string symbol = 3;</code>
+       * @param value The symbol to set.
+       * @return This builder for chaining.
        */
       public Builder setSymbol(
           java.lang.String value) {
@@ -735,6 +771,7 @@ public final class EOS {
       }
       /**
        * <code>string symbol = 3;</code>
+       * @return This builder for chaining.
        */
       public Builder clearSymbol() {
         
@@ -744,6 +781,8 @@ public final class EOS {
       }
       /**
        * <code>string symbol = 3;</code>
+       * @param value The bytes for symbol to set.
+       * @return This builder for chaining.
        */
       public Builder setSymbolBytes(
           com.google.protobuf.ByteString value) {
@@ -819,6 +858,7 @@ public final class EOS {
      * </pre>
      *
      * <code>bytes chain_id = 1;</code>
+     * @return The chainId.
      */
     com.google.protobuf.ByteString getChainId();
 
@@ -828,6 +868,7 @@ public final class EOS {
      * </pre>
      *
      * <code>bytes reference_block_id = 2;</code>
+     * @return The referenceBlockId.
      */
     com.google.protobuf.ByteString getReferenceBlockId();
 
@@ -837,6 +878,7 @@ public final class EOS {
      * </pre>
      *
      * <code>sfixed32 reference_block_time = 3;</code>
+     * @return The referenceBlockTime.
      */
     int getReferenceBlockTime();
 
@@ -846,6 +888,7 @@ public final class EOS {
      * </pre>
      *
      * <code>string currency = 4;</code>
+     * @return The currency.
      */
     java.lang.String getCurrency();
     /**
@@ -854,6 +897,7 @@ public final class EOS {
      * </pre>
      *
      * <code>string currency = 4;</code>
+     * @return The bytes for currency.
      */
     com.google.protobuf.ByteString
         getCurrencyBytes();
@@ -864,6 +908,7 @@ public final class EOS {
      * </pre>
      *
      * <code>string sender = 5;</code>
+     * @return The sender.
      */
     java.lang.String getSender();
     /**
@@ -872,6 +917,7 @@ public final class EOS {
      * </pre>
      *
      * <code>string sender = 5;</code>
+     * @return The bytes for sender.
      */
     com.google.protobuf.ByteString
         getSenderBytes();
@@ -882,6 +928,7 @@ public final class EOS {
      * </pre>
      *
      * <code>string recipient = 6;</code>
+     * @return The recipient.
      */
     java.lang.String getRecipient();
     /**
@@ -890,6 +937,7 @@ public final class EOS {
      * </pre>
      *
      * <code>string recipient = 6;</code>
+     * @return The bytes for recipient.
      */
     com.google.protobuf.ByteString
         getRecipientBytes();
@@ -900,6 +948,7 @@ public final class EOS {
      * </pre>
      *
      * <code>string memo = 7;</code>
+     * @return The memo.
      */
     java.lang.String getMemo();
     /**
@@ -908,6 +957,7 @@ public final class EOS {
      * </pre>
      *
      * <code>string memo = 7;</code>
+     * @return The bytes for memo.
      */
     com.google.protobuf.ByteString
         getMemoBytes();
@@ -918,6 +968,7 @@ public final class EOS {
      * </pre>
      *
      * <code>.TW.EOS.Proto.Asset asset = 8;</code>
+     * @return Whether the asset field is set.
      */
     boolean hasAsset();
     /**
@@ -926,6 +977,7 @@ public final class EOS {
      * </pre>
      *
      * <code>.TW.EOS.Proto.Asset asset = 8;</code>
+     * @return The asset.
      */
     wallet.core.jni.proto.EOS.Asset getAsset();
     /**
@@ -943,6 +995,7 @@ public final class EOS {
      * </pre>
      *
      * <code>bytes private_key = 9;</code>
+     * @return The privateKey.
      */
     com.google.protobuf.ByteString getPrivateKey();
 
@@ -952,6 +1005,7 @@ public final class EOS {
      * </pre>
      *
      * <code>.TW.EOS.Proto.KeyType private_key_type = 10;</code>
+     * @return The enum numeric value on the wire for privateKeyType.
      */
     int getPrivateKeyTypeValue();
     /**
@@ -960,6 +1014,7 @@ public final class EOS {
      * </pre>
      *
      * <code>.TW.EOS.Proto.KeyType private_key_type = 10;</code>
+     * @return The privateKeyType.
      */
     wallet.core.jni.proto.EOS.KeyType getPrivateKeyType();
   }
@@ -970,7 +1025,7 @@ public final class EOS {
    *
    * Protobuf type {@code TW.EOS.Proto.SigningInput}
    */
-  public  static final class SigningInput extends
+  public static final class SigningInput extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:TW.EOS.Proto.SigningInput)
       SigningInputOrBuilder {
@@ -1123,7 +1178,9 @@ public final class EOS {
      * </pre>
      *
      * <code>bytes chain_id = 1;</code>
+     * @return The chainId.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString getChainId() {
       return chainId_;
     }
@@ -1136,7 +1193,9 @@ public final class EOS {
      * </pre>
      *
      * <code>bytes reference_block_id = 2;</code>
+     * @return The referenceBlockId.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString getReferenceBlockId() {
       return referenceBlockId_;
     }
@@ -1149,7 +1208,9 @@ public final class EOS {
      * </pre>
      *
      * <code>sfixed32 reference_block_time = 3;</code>
+     * @return The referenceBlockTime.
      */
+    @java.lang.Override
     public int getReferenceBlockTime() {
       return referenceBlockTime_;
     }
@@ -1162,7 +1223,9 @@ public final class EOS {
      * </pre>
      *
      * <code>string currency = 4;</code>
+     * @return The currency.
      */
+    @java.lang.Override
     public java.lang.String getCurrency() {
       java.lang.Object ref = currency_;
       if (ref instanceof java.lang.String) {
@@ -1181,7 +1244,9 @@ public final class EOS {
      * </pre>
      *
      * <code>string currency = 4;</code>
+     * @return The bytes for currency.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString
         getCurrencyBytes() {
       java.lang.Object ref = currency_;
@@ -1204,7 +1269,9 @@ public final class EOS {
      * </pre>
      *
      * <code>string sender = 5;</code>
+     * @return The sender.
      */
+    @java.lang.Override
     public java.lang.String getSender() {
       java.lang.Object ref = sender_;
       if (ref instanceof java.lang.String) {
@@ -1223,7 +1290,9 @@ public final class EOS {
      * </pre>
      *
      * <code>string sender = 5;</code>
+     * @return The bytes for sender.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString
         getSenderBytes() {
       java.lang.Object ref = sender_;
@@ -1246,7 +1315,9 @@ public final class EOS {
      * </pre>
      *
      * <code>string recipient = 6;</code>
+     * @return The recipient.
      */
+    @java.lang.Override
     public java.lang.String getRecipient() {
       java.lang.Object ref = recipient_;
       if (ref instanceof java.lang.String) {
@@ -1265,7 +1336,9 @@ public final class EOS {
      * </pre>
      *
      * <code>string recipient = 6;</code>
+     * @return The bytes for recipient.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString
         getRecipientBytes() {
       java.lang.Object ref = recipient_;
@@ -1288,7 +1361,9 @@ public final class EOS {
      * </pre>
      *
      * <code>string memo = 7;</code>
+     * @return The memo.
      */
+    @java.lang.Override
     public java.lang.String getMemo() {
       java.lang.Object ref = memo_;
       if (ref instanceof java.lang.String) {
@@ -1307,7 +1382,9 @@ public final class EOS {
      * </pre>
      *
      * <code>string memo = 7;</code>
+     * @return The bytes for memo.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString
         getMemoBytes() {
       java.lang.Object ref = memo_;
@@ -1330,7 +1407,9 @@ public final class EOS {
      * </pre>
      *
      * <code>.TW.EOS.Proto.Asset asset = 8;</code>
+     * @return Whether the asset field is set.
      */
+    @java.lang.Override
     public boolean hasAsset() {
       return asset_ != null;
     }
@@ -1340,7 +1419,9 @@ public final class EOS {
      * </pre>
      *
      * <code>.TW.EOS.Proto.Asset asset = 8;</code>
+     * @return The asset.
      */
+    @java.lang.Override
     public wallet.core.jni.proto.EOS.Asset getAsset() {
       return asset_ == null ? wallet.core.jni.proto.EOS.Asset.getDefaultInstance() : asset_;
     }
@@ -1351,6 +1432,7 @@ public final class EOS {
      *
      * <code>.TW.EOS.Proto.Asset asset = 8;</code>
      */
+    @java.lang.Override
     public wallet.core.jni.proto.EOS.AssetOrBuilder getAssetOrBuilder() {
       return getAsset();
     }
@@ -1363,7 +1445,9 @@ public final class EOS {
      * </pre>
      *
      * <code>bytes private_key = 9;</code>
+     * @return The privateKey.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString getPrivateKey() {
       return privateKey_;
     }
@@ -1376,8 +1460,9 @@ public final class EOS {
      * </pre>
      *
      * <code>.TW.EOS.Proto.KeyType private_key_type = 10;</code>
+     * @return The enum numeric value on the wire for privateKeyType.
      */
-    public int getPrivateKeyTypeValue() {
+    @java.lang.Override public int getPrivateKeyTypeValue() {
       return privateKeyType_;
     }
     /**
@@ -1386,8 +1471,9 @@ public final class EOS {
      * </pre>
      *
      * <code>.TW.EOS.Proto.KeyType private_key_type = 10;</code>
+     * @return The privateKeyType.
      */
-    public wallet.core.jni.proto.EOS.KeyType getPrivateKeyType() {
+    @java.lang.Override public wallet.core.jni.proto.EOS.KeyType getPrivateKeyType() {
       @SuppressWarnings("deprecation")
       wallet.core.jni.proto.EOS.KeyType result = wallet.core.jni.proto.EOS.KeyType.valueOf(privateKeyType_);
       return result == null ? wallet.core.jni.proto.EOS.KeyType.UNRECOGNIZED : result;
@@ -1871,7 +1957,9 @@ public final class EOS {
        * </pre>
        *
        * <code>bytes chain_id = 1;</code>
+       * @return The chainId.
        */
+      @java.lang.Override
       public com.google.protobuf.ByteString getChainId() {
         return chainId_;
       }
@@ -1881,6 +1969,8 @@ public final class EOS {
        * </pre>
        *
        * <code>bytes chain_id = 1;</code>
+       * @param value The chainId to set.
+       * @return This builder for chaining.
        */
       public Builder setChainId(com.google.protobuf.ByteString value) {
         if (value == null) {
@@ -1897,6 +1987,7 @@ public final class EOS {
        * </pre>
        *
        * <code>bytes chain_id = 1;</code>
+       * @return This builder for chaining.
        */
       public Builder clearChainId() {
         
@@ -1912,7 +2003,9 @@ public final class EOS {
        * </pre>
        *
        * <code>bytes reference_block_id = 2;</code>
+       * @return The referenceBlockId.
        */
+      @java.lang.Override
       public com.google.protobuf.ByteString getReferenceBlockId() {
         return referenceBlockId_;
       }
@@ -1922,6 +2015,8 @@ public final class EOS {
        * </pre>
        *
        * <code>bytes reference_block_id = 2;</code>
+       * @param value The referenceBlockId to set.
+       * @return This builder for chaining.
        */
       public Builder setReferenceBlockId(com.google.protobuf.ByteString value) {
         if (value == null) {
@@ -1938,6 +2033,7 @@ public final class EOS {
        * </pre>
        *
        * <code>bytes reference_block_id = 2;</code>
+       * @return This builder for chaining.
        */
       public Builder clearReferenceBlockId() {
         
@@ -1953,7 +2049,9 @@ public final class EOS {
        * </pre>
        *
        * <code>sfixed32 reference_block_time = 3;</code>
+       * @return The referenceBlockTime.
        */
+      @java.lang.Override
       public int getReferenceBlockTime() {
         return referenceBlockTime_;
       }
@@ -1963,6 +2061,8 @@ public final class EOS {
        * </pre>
        *
        * <code>sfixed32 reference_block_time = 3;</code>
+       * @param value The referenceBlockTime to set.
+       * @return This builder for chaining.
        */
       public Builder setReferenceBlockTime(int value) {
         
@@ -1976,6 +2076,7 @@ public final class EOS {
        * </pre>
        *
        * <code>sfixed32 reference_block_time = 3;</code>
+       * @return This builder for chaining.
        */
       public Builder clearReferenceBlockTime() {
         
@@ -1991,6 +2092,7 @@ public final class EOS {
        * </pre>
        *
        * <code>string currency = 4;</code>
+       * @return The currency.
        */
       public java.lang.String getCurrency() {
         java.lang.Object ref = currency_;
@@ -2010,6 +2112,7 @@ public final class EOS {
        * </pre>
        *
        * <code>string currency = 4;</code>
+       * @return The bytes for currency.
        */
       public com.google.protobuf.ByteString
           getCurrencyBytes() {
@@ -2030,6 +2133,8 @@ public final class EOS {
        * </pre>
        *
        * <code>string currency = 4;</code>
+       * @param value The currency to set.
+       * @return This builder for chaining.
        */
       public Builder setCurrency(
           java.lang.String value) {
@@ -2047,6 +2152,7 @@ public final class EOS {
        * </pre>
        *
        * <code>string currency = 4;</code>
+       * @return This builder for chaining.
        */
       public Builder clearCurrency() {
         
@@ -2060,6 +2166,8 @@ public final class EOS {
        * </pre>
        *
        * <code>string currency = 4;</code>
+       * @param value The bytes for currency to set.
+       * @return This builder for chaining.
        */
       public Builder setCurrencyBytes(
           com.google.protobuf.ByteString value) {
@@ -2080,6 +2188,7 @@ public final class EOS {
        * </pre>
        *
        * <code>string sender = 5;</code>
+       * @return The sender.
        */
       public java.lang.String getSender() {
         java.lang.Object ref = sender_;
@@ -2099,6 +2208,7 @@ public final class EOS {
        * </pre>
        *
        * <code>string sender = 5;</code>
+       * @return The bytes for sender.
        */
       public com.google.protobuf.ByteString
           getSenderBytes() {
@@ -2119,6 +2229,8 @@ public final class EOS {
        * </pre>
        *
        * <code>string sender = 5;</code>
+       * @param value The sender to set.
+       * @return This builder for chaining.
        */
       public Builder setSender(
           java.lang.String value) {
@@ -2136,6 +2248,7 @@ public final class EOS {
        * </pre>
        *
        * <code>string sender = 5;</code>
+       * @return This builder for chaining.
        */
       public Builder clearSender() {
         
@@ -2149,6 +2262,8 @@ public final class EOS {
        * </pre>
        *
        * <code>string sender = 5;</code>
+       * @param value The bytes for sender to set.
+       * @return This builder for chaining.
        */
       public Builder setSenderBytes(
           com.google.protobuf.ByteString value) {
@@ -2169,6 +2284,7 @@ public final class EOS {
        * </pre>
        *
        * <code>string recipient = 6;</code>
+       * @return The recipient.
        */
       public java.lang.String getRecipient() {
         java.lang.Object ref = recipient_;
@@ -2188,6 +2304,7 @@ public final class EOS {
        * </pre>
        *
        * <code>string recipient = 6;</code>
+       * @return The bytes for recipient.
        */
       public com.google.protobuf.ByteString
           getRecipientBytes() {
@@ -2208,6 +2325,8 @@ public final class EOS {
        * </pre>
        *
        * <code>string recipient = 6;</code>
+       * @param value The recipient to set.
+       * @return This builder for chaining.
        */
       public Builder setRecipient(
           java.lang.String value) {
@@ -2225,6 +2344,7 @@ public final class EOS {
        * </pre>
        *
        * <code>string recipient = 6;</code>
+       * @return This builder for chaining.
        */
       public Builder clearRecipient() {
         
@@ -2238,6 +2358,8 @@ public final class EOS {
        * </pre>
        *
        * <code>string recipient = 6;</code>
+       * @param value The bytes for recipient to set.
+       * @return This builder for chaining.
        */
       public Builder setRecipientBytes(
           com.google.protobuf.ByteString value) {
@@ -2258,6 +2380,7 @@ public final class EOS {
        * </pre>
        *
        * <code>string memo = 7;</code>
+       * @return The memo.
        */
       public java.lang.String getMemo() {
         java.lang.Object ref = memo_;
@@ -2277,6 +2400,7 @@ public final class EOS {
        * </pre>
        *
        * <code>string memo = 7;</code>
+       * @return The bytes for memo.
        */
       public com.google.protobuf.ByteString
           getMemoBytes() {
@@ -2297,6 +2421,8 @@ public final class EOS {
        * </pre>
        *
        * <code>string memo = 7;</code>
+       * @param value The memo to set.
+       * @return This builder for chaining.
        */
       public Builder setMemo(
           java.lang.String value) {
@@ -2314,6 +2440,7 @@ public final class EOS {
        * </pre>
        *
        * <code>string memo = 7;</code>
+       * @return This builder for chaining.
        */
       public Builder clearMemo() {
         
@@ -2327,6 +2454,8 @@ public final class EOS {
        * </pre>
        *
        * <code>string memo = 7;</code>
+       * @param value The bytes for memo to set.
+       * @return This builder for chaining.
        */
       public Builder setMemoBytes(
           com.google.protobuf.ByteString value) {
@@ -2349,6 +2478,7 @@ public final class EOS {
        * </pre>
        *
        * <code>.TW.EOS.Proto.Asset asset = 8;</code>
+       * @return Whether the asset field is set.
        */
       public boolean hasAsset() {
         return assetBuilder_ != null || asset_ != null;
@@ -2359,6 +2489,7 @@ public final class EOS {
        * </pre>
        *
        * <code>.TW.EOS.Proto.Asset asset = 8;</code>
+       * @return The asset.
        */
       public wallet.core.jni.proto.EOS.Asset getAsset() {
         if (assetBuilder_ == null) {
@@ -2500,7 +2631,9 @@ public final class EOS {
        * </pre>
        *
        * <code>bytes private_key = 9;</code>
+       * @return The privateKey.
        */
+      @java.lang.Override
       public com.google.protobuf.ByteString getPrivateKey() {
         return privateKey_;
       }
@@ -2510,6 +2643,8 @@ public final class EOS {
        * </pre>
        *
        * <code>bytes private_key = 9;</code>
+       * @param value The privateKey to set.
+       * @return This builder for chaining.
        */
       public Builder setPrivateKey(com.google.protobuf.ByteString value) {
         if (value == null) {
@@ -2526,6 +2661,7 @@ public final class EOS {
        * </pre>
        *
        * <code>bytes private_key = 9;</code>
+       * @return This builder for chaining.
        */
       public Builder clearPrivateKey() {
         
@@ -2541,8 +2677,9 @@ public final class EOS {
        * </pre>
        *
        * <code>.TW.EOS.Proto.KeyType private_key_type = 10;</code>
+       * @return The enum numeric value on the wire for privateKeyType.
        */
-      public int getPrivateKeyTypeValue() {
+      @java.lang.Override public int getPrivateKeyTypeValue() {
         return privateKeyType_;
       }
       /**
@@ -2551,8 +2688,11 @@ public final class EOS {
        * </pre>
        *
        * <code>.TW.EOS.Proto.KeyType private_key_type = 10;</code>
+       * @param value The enum numeric value on the wire for privateKeyType to set.
+       * @return This builder for chaining.
        */
       public Builder setPrivateKeyTypeValue(int value) {
+        
         privateKeyType_ = value;
         onChanged();
         return this;
@@ -2563,7 +2703,9 @@ public final class EOS {
        * </pre>
        *
        * <code>.TW.EOS.Proto.KeyType private_key_type = 10;</code>
+       * @return The privateKeyType.
        */
+      @java.lang.Override
       public wallet.core.jni.proto.EOS.KeyType getPrivateKeyType() {
         @SuppressWarnings("deprecation")
         wallet.core.jni.proto.EOS.KeyType result = wallet.core.jni.proto.EOS.KeyType.valueOf(privateKeyType_);
@@ -2575,6 +2717,8 @@ public final class EOS {
        * </pre>
        *
        * <code>.TW.EOS.Proto.KeyType private_key_type = 10;</code>
+       * @param value The privateKeyType to set.
+       * @return This builder for chaining.
        */
       public Builder setPrivateKeyType(wallet.core.jni.proto.EOS.KeyType value) {
         if (value == null) {
@@ -2591,6 +2735,7 @@ public final class EOS {
        * </pre>
        *
        * <code>.TW.EOS.Proto.KeyType private_key_type = 10;</code>
+       * @return This builder for chaining.
        */
       public Builder clearPrivateKeyType() {
         
@@ -2661,6 +2806,7 @@ public final class EOS {
      * </pre>
      *
      * <code>string json_encoded = 1;</code>
+     * @return The jsonEncoded.
      */
     java.lang.String getJsonEncoded();
     /**
@@ -2669,19 +2815,29 @@ public final class EOS {
      * </pre>
      *
      * <code>string json_encoded = 1;</code>
+     * @return The bytes for jsonEncoded.
      */
     com.google.protobuf.ByteString
         getJsonEncodedBytes();
 
     /**
-     * <code>string error = 2;</code>
+     * <pre>
+     * Optional error
+     * </pre>
+     *
+     * <code>.TW.Common.Proto.SigningError error = 2;</code>
+     * @return The enum numeric value on the wire for error.
      */
-    java.lang.String getError();
+    int getErrorValue();
     /**
-     * <code>string error = 2;</code>
+     * <pre>
+     * Optional error
+     * </pre>
+     *
+     * <code>.TW.Common.Proto.SigningError error = 2;</code>
+     * @return The error.
      */
-    com.google.protobuf.ByteString
-        getErrorBytes();
+    wallet.core.jni.proto.Common.SigningError getError();
   }
   /**
    * <pre>
@@ -2690,7 +2846,7 @@ public final class EOS {
    *
    * Protobuf type {@code TW.EOS.Proto.SigningOutput}
    */
-  public  static final class SigningOutput extends
+  public static final class SigningOutput extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:TW.EOS.Proto.SigningOutput)
       SigningOutputOrBuilder {
@@ -2701,7 +2857,7 @@ public final class EOS {
     }
     private SigningOutput() {
       jsonEncoded_ = "";
-      error_ = "";
+      error_ = 0;
     }
 
     @java.lang.Override
@@ -2740,10 +2896,10 @@ public final class EOS {
               jsonEncoded_ = s;
               break;
             }
-            case 18: {
-              java.lang.String s = input.readStringRequireUtf8();
+            case 16: {
+              int rawValue = input.readEnum();
 
-              error_ = s;
+              error_ = rawValue;
               break;
             }
             default: {
@@ -2786,7 +2942,9 @@ public final class EOS {
      * </pre>
      *
      * <code>string json_encoded = 1;</code>
+     * @return The jsonEncoded.
      */
+    @java.lang.Override
     public java.lang.String getJsonEncoded() {
       java.lang.Object ref = jsonEncoded_;
       if (ref instanceof java.lang.String) {
@@ -2805,7 +2963,9 @@ public final class EOS {
      * </pre>
      *
      * <code>string json_encoded = 1;</code>
+     * @return The bytes for jsonEncoded.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString
         getJsonEncodedBytes() {
       java.lang.Object ref = jsonEncoded_;
@@ -2821,37 +2981,30 @@ public final class EOS {
     }
 
     public static final int ERROR_FIELD_NUMBER = 2;
-    private volatile java.lang.Object error_;
+    private int error_;
     /**
-     * <code>string error = 2;</code>
+     * <pre>
+     * Optional error
+     * </pre>
+     *
+     * <code>.TW.Common.Proto.SigningError error = 2;</code>
+     * @return The enum numeric value on the wire for error.
      */
-    public java.lang.String getError() {
-      java.lang.Object ref = error_;
-      if (ref instanceof java.lang.String) {
-        return (java.lang.String) ref;
-      } else {
-        com.google.protobuf.ByteString bs = 
-            (com.google.protobuf.ByteString) ref;
-        java.lang.String s = bs.toStringUtf8();
-        error_ = s;
-        return s;
-      }
+    @java.lang.Override public int getErrorValue() {
+      return error_;
     }
     /**
-     * <code>string error = 2;</code>
+     * <pre>
+     * Optional error
+     * </pre>
+     *
+     * <code>.TW.Common.Proto.SigningError error = 2;</code>
+     * @return The error.
      */
-    public com.google.protobuf.ByteString
-        getErrorBytes() {
-      java.lang.Object ref = error_;
-      if (ref instanceof java.lang.String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
-        error_ = b;
-        return b;
-      } else {
-        return (com.google.protobuf.ByteString) ref;
-      }
+    @java.lang.Override public wallet.core.jni.proto.Common.SigningError getError() {
+      @SuppressWarnings("deprecation")
+      wallet.core.jni.proto.Common.SigningError result = wallet.core.jni.proto.Common.SigningError.valueOf(error_);
+      return result == null ? wallet.core.jni.proto.Common.SigningError.UNRECOGNIZED : result;
     }
 
     private byte memoizedIsInitialized = -1;
@@ -2871,8 +3024,8 @@ public final class EOS {
       if (!getJsonEncodedBytes().isEmpty()) {
         com.google.protobuf.GeneratedMessageV3.writeString(output, 1, jsonEncoded_);
       }
-      if (!getErrorBytes().isEmpty()) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 2, error_);
+      if (error_ != wallet.core.jni.proto.Common.SigningError.OK.getNumber()) {
+        output.writeEnum(2, error_);
       }
       unknownFields.writeTo(output);
     }
@@ -2886,8 +3039,9 @@ public final class EOS {
       if (!getJsonEncodedBytes().isEmpty()) {
         size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, jsonEncoded_);
       }
-      if (!getErrorBytes().isEmpty()) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, error_);
+      if (error_ != wallet.core.jni.proto.Common.SigningError.OK.getNumber()) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeEnumSize(2, error_);
       }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
@@ -2906,8 +3060,7 @@ public final class EOS {
 
       if (!getJsonEncoded()
           .equals(other.getJsonEncoded())) return false;
-      if (!getError()
-          .equals(other.getError())) return false;
+      if (error_ != other.error_) return false;
       if (!unknownFields.equals(other.unknownFields)) return false;
       return true;
     }
@@ -2922,7 +3075,7 @@ public final class EOS {
       hash = (37 * hash) + JSON_ENCODED_FIELD_NUMBER;
       hash = (53 * hash) + getJsonEncoded().hashCode();
       hash = (37 * hash) + ERROR_FIELD_NUMBER;
-      hash = (53 * hash) + getError().hashCode();
+      hash = (53 * hash) + error_;
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
       return hash;
@@ -3062,7 +3215,7 @@ public final class EOS {
         super.clear();
         jsonEncoded_ = "";
 
-        error_ = "";
+        error_ = 0;
 
         return this;
       }
@@ -3144,9 +3297,8 @@ public final class EOS {
           jsonEncoded_ = other.jsonEncoded_;
           onChanged();
         }
-        if (!other.getError().isEmpty()) {
-          error_ = other.error_;
-          onChanged();
+        if (other.error_ != 0) {
+          setErrorValue(other.getErrorValue());
         }
         this.mergeUnknownFields(other.unknownFields);
         onChanged();
@@ -3184,6 +3336,7 @@ public final class EOS {
        * </pre>
        *
        * <code>string json_encoded = 1;</code>
+       * @return The jsonEncoded.
        */
       public java.lang.String getJsonEncoded() {
         java.lang.Object ref = jsonEncoded_;
@@ -3203,6 +3356,7 @@ public final class EOS {
        * </pre>
        *
        * <code>string json_encoded = 1;</code>
+       * @return The bytes for jsonEncoded.
        */
       public com.google.protobuf.ByteString
           getJsonEncodedBytes() {
@@ -3223,6 +3377,8 @@ public final class EOS {
        * </pre>
        *
        * <code>string json_encoded = 1;</code>
+       * @param value The jsonEncoded to set.
+       * @return This builder for chaining.
        */
       public Builder setJsonEncoded(
           java.lang.String value) {
@@ -3240,6 +3396,7 @@ public final class EOS {
        * </pre>
        *
        * <code>string json_encoded = 1;</code>
+       * @return This builder for chaining.
        */
       public Builder clearJsonEncoded() {
         
@@ -3253,6 +3410,8 @@ public final class EOS {
        * </pre>
        *
        * <code>string json_encoded = 1;</code>
+       * @param value The bytes for jsonEncoded to set.
+       * @return This builder for chaining.
        */
       public Builder setJsonEncodedBytes(
           com.google.protobuf.ByteString value) {
@@ -3266,71 +3425,76 @@ public final class EOS {
         return this;
       }
 
-      private java.lang.Object error_ = "";
+      private int error_ = 0;
       /**
-       * <code>string error = 2;</code>
+       * <pre>
+       * Optional error
+       * </pre>
+       *
+       * <code>.TW.Common.Proto.SigningError error = 2;</code>
+       * @return The enum numeric value on the wire for error.
        */
-      public java.lang.String getError() {
-        java.lang.Object ref = error_;
-        if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          error_ = s;
-          return s;
-        } else {
-          return (java.lang.String) ref;
-        }
+      @java.lang.Override public int getErrorValue() {
+        return error_;
       }
       /**
-       * <code>string error = 2;</code>
+       * <pre>
+       * Optional error
+       * </pre>
+       *
+       * <code>.TW.Common.Proto.SigningError error = 2;</code>
+       * @param value The enum numeric value on the wire for error to set.
+       * @return This builder for chaining.
        */
-      public com.google.protobuf.ByteString
-          getErrorBytes() {
-        java.lang.Object ref = error_;
-        if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
-              com.google.protobuf.ByteString.copyFromUtf8(
-                  (java.lang.String) ref);
-          error_ = b;
-          return b;
-        } else {
-          return (com.google.protobuf.ByteString) ref;
-        }
-      }
-      /**
-       * <code>string error = 2;</code>
-       */
-      public Builder setError(
-          java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  
+      public Builder setErrorValue(int value) {
+        
         error_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>string error = 2;</code>
+       * <pre>
+       * Optional error
+       * </pre>
+       *
+       * <code>.TW.Common.Proto.SigningError error = 2;</code>
+       * @return The error.
+       */
+      @java.lang.Override
+      public wallet.core.jni.proto.Common.SigningError getError() {
+        @SuppressWarnings("deprecation")
+        wallet.core.jni.proto.Common.SigningError result = wallet.core.jni.proto.Common.SigningError.valueOf(error_);
+        return result == null ? wallet.core.jni.proto.Common.SigningError.UNRECOGNIZED : result;
+      }
+      /**
+       * <pre>
+       * Optional error
+       * </pre>
+       *
+       * <code>.TW.Common.Proto.SigningError error = 2;</code>
+       * @param value The error to set.
+       * @return This builder for chaining.
+       */
+      public Builder setError(wallet.core.jni.proto.Common.SigningError value) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        
+        error_ = value.getNumber();
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * Optional error
+       * </pre>
+       *
+       * <code>.TW.Common.Proto.SigningError error = 2;</code>
+       * @return This builder for chaining.
        */
       public Builder clearError() {
         
-        error_ = getDefaultInstance().getError();
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>string error = 2;</code>
-       */
-      public Builder setErrorBytes(
-          com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  checkByteStringIsUtf8(value);
-        
-        error_ = value;
+        error_ = 0;
         onChanged();
         return this;
       }
@@ -3411,23 +3575,25 @@ public final class EOS {
       descriptor;
   static {
     java.lang.String[] descriptorData = {
-      "\n\tEOS.proto\022\014TW.EOS.Proto\"9\n\005Asset\022\016\n\006am" +
-      "ount\030\001 \001(\003\022\020\n\010decimals\030\002 \001(\r\022\016\n\006symbol\030\003" +
-      " \001(\t\"\207\002\n\014SigningInput\022\020\n\010chain_id\030\001 \001(\014\022" +
-      "\032\n\022reference_block_id\030\002 \001(\014\022\034\n\024reference" +
-      "_block_time\030\003 \001(\017\022\020\n\010currency\030\004 \001(\t\022\016\n\006s" +
-      "ender\030\005 \001(\t\022\021\n\trecipient\030\006 \001(\t\022\014\n\004memo\030\007" +
-      " \001(\t\022\"\n\005asset\030\010 \001(\0132\023.TW.EOS.Proto.Asset" +
-      "\022\023\n\013private_key\030\t \001(\014\022/\n\020private_key_typ" +
-      "e\030\n \001(\0162\025.TW.EOS.Proto.KeyType\"4\n\rSignin" +
-      "gOutput\022\024\n\014json_encoded\030\001 \001(\t\022\r\n\005error\030\002" +
-      " \001(\t*1\n\007KeyType\022\n\n\006LEGACY\020\000\022\014\n\010MODERNK1\020" +
-      "\001\022\014\n\010MODERNR1\020\002B\027\n\025wallet.core.jni.proto" +
-      "b\006proto3"
+      "\n\tEOS.proto\022\014TW.EOS.Proto\032\014Common.proto\"" +
+      "9\n\005Asset\022\016\n\006amount\030\001 \001(\003\022\020\n\010decimals\030\002 \001" +
+      "(\r\022\016\n\006symbol\030\003 \001(\t\"\207\002\n\014SigningInput\022\020\n\010c" +
+      "hain_id\030\001 \001(\014\022\032\n\022reference_block_id\030\002 \001(" +
+      "\014\022\034\n\024reference_block_time\030\003 \001(\017\022\020\n\010curre" +
+      "ncy\030\004 \001(\t\022\016\n\006sender\030\005 \001(\t\022\021\n\trecipient\030\006" +
+      " \001(\t\022\014\n\004memo\030\007 \001(\t\022\"\n\005asset\030\010 \001(\0132\023.TW.E" +
+      "OS.Proto.Asset\022\023\n\013private_key\030\t \001(\014\022/\n\020p" +
+      "rivate_key_type\030\n \001(\0162\025.TW.EOS.Proto.Key" +
+      "Type\"S\n\rSigningOutput\022\024\n\014json_encoded\030\001 " +
+      "\001(\t\022,\n\005error\030\002 \001(\0162\035.TW.Common.Proto.Sig" +
+      "ningError*1\n\007KeyType\022\n\n\006LEGACY\020\000\022\014\n\010MODE" +
+      "RNK1\020\001\022\014\n\010MODERNR1\020\002B\027\n\025wallet.core.jni." +
+      "protob\006proto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
         new com.google.protobuf.Descriptors.FileDescriptor[] {
+          wallet.core.jni.proto.Common.getDescriptor(),
         });
     internal_static_TW_EOS_Proto_Asset_descriptor =
       getDescriptor().getMessageTypes().get(0);
@@ -3447,6 +3613,7 @@ public final class EOS {
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_TW_EOS_Proto_SigningOutput_descriptor,
         new java.lang.String[] { "JsonEncoded", "Error", });
+    wallet.core.jni.proto.Common.getDescriptor();
   }
 
   // @@protoc_insertion_point(outer_class_scope)

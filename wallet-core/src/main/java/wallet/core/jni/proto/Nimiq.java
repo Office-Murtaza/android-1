@@ -20,31 +20,37 @@ public final class Nimiq {
 
     /**
      * <code>bytes private_key = 1;</code>
+     * @return The privateKey.
      */
     com.google.protobuf.ByteString getPrivateKey();
 
     /**
      * <code>string destination = 2;</code>
+     * @return The destination.
      */
     java.lang.String getDestination();
     /**
      * <code>string destination = 2;</code>
+     * @return The bytes for destination.
      */
     com.google.protobuf.ByteString
         getDestinationBytes();
 
     /**
      * <code>uint64 value = 3;</code>
+     * @return The value.
      */
     long getValue();
 
     /**
      * <code>uint64 fee = 4;</code>
+     * @return The fee.
      */
     long getFee();
 
     /**
      * <code>uint32 validity_start_height = 5;</code>
+     * @return The validityStartHeight.
      */
     int getValidityStartHeight();
   }
@@ -55,7 +61,7 @@ public final class Nimiq {
    *
    * Protobuf type {@code TW.Nimiq.Proto.SigningInput}
    */
-  public  static final class SigningInput extends
+  public static final class SigningInput extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:TW.Nimiq.Proto.SigningInput)
       SigningInputOrBuilder {
@@ -161,7 +167,9 @@ public final class Nimiq {
     private com.google.protobuf.ByteString privateKey_;
     /**
      * <code>bytes private_key = 1;</code>
+     * @return The privateKey.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString getPrivateKey() {
       return privateKey_;
     }
@@ -170,7 +178,9 @@ public final class Nimiq {
     private volatile java.lang.Object destination_;
     /**
      * <code>string destination = 2;</code>
+     * @return The destination.
      */
+    @java.lang.Override
     public java.lang.String getDestination() {
       java.lang.Object ref = destination_;
       if (ref instanceof java.lang.String) {
@@ -185,7 +195,9 @@ public final class Nimiq {
     }
     /**
      * <code>string destination = 2;</code>
+     * @return The bytes for destination.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString
         getDestinationBytes() {
       java.lang.Object ref = destination_;
@@ -204,7 +216,9 @@ public final class Nimiq {
     private long value_;
     /**
      * <code>uint64 value = 3;</code>
+     * @return The value.
      */
+    @java.lang.Override
     public long getValue() {
       return value_;
     }
@@ -213,7 +227,9 @@ public final class Nimiq {
     private long fee_;
     /**
      * <code>uint64 fee = 4;</code>
+     * @return The fee.
      */
+    @java.lang.Override
     public long getFee() {
       return fee_;
     }
@@ -222,7 +238,9 @@ public final class Nimiq {
     private int validityStartHeight_;
     /**
      * <code>uint32 validity_start_height = 5;</code>
+     * @return The validityStartHeight.
      */
+    @java.lang.Override
     public int getValidityStartHeight() {
       return validityStartHeight_;
     }
@@ -606,12 +624,16 @@ public final class Nimiq {
       private com.google.protobuf.ByteString privateKey_ = com.google.protobuf.ByteString.EMPTY;
       /**
        * <code>bytes private_key = 1;</code>
+       * @return The privateKey.
        */
+      @java.lang.Override
       public com.google.protobuf.ByteString getPrivateKey() {
         return privateKey_;
       }
       /**
        * <code>bytes private_key = 1;</code>
+       * @param value The privateKey to set.
+       * @return This builder for chaining.
        */
       public Builder setPrivateKey(com.google.protobuf.ByteString value) {
         if (value == null) {
@@ -624,6 +646,7 @@ public final class Nimiq {
       }
       /**
        * <code>bytes private_key = 1;</code>
+       * @return This builder for chaining.
        */
       public Builder clearPrivateKey() {
         
@@ -635,6 +658,7 @@ public final class Nimiq {
       private java.lang.Object destination_ = "";
       /**
        * <code>string destination = 2;</code>
+       * @return The destination.
        */
       public java.lang.String getDestination() {
         java.lang.Object ref = destination_;
@@ -650,6 +674,7 @@ public final class Nimiq {
       }
       /**
        * <code>string destination = 2;</code>
+       * @return The bytes for destination.
        */
       public com.google.protobuf.ByteString
           getDestinationBytes() {
@@ -666,6 +691,8 @@ public final class Nimiq {
       }
       /**
        * <code>string destination = 2;</code>
+       * @param value The destination to set.
+       * @return This builder for chaining.
        */
       public Builder setDestination(
           java.lang.String value) {
@@ -679,6 +706,7 @@ public final class Nimiq {
       }
       /**
        * <code>string destination = 2;</code>
+       * @return This builder for chaining.
        */
       public Builder clearDestination() {
         
@@ -688,6 +716,8 @@ public final class Nimiq {
       }
       /**
        * <code>string destination = 2;</code>
+       * @param value The bytes for destination to set.
+       * @return This builder for chaining.
        */
       public Builder setDestinationBytes(
           com.google.protobuf.ByteString value) {
@@ -704,12 +734,16 @@ public final class Nimiq {
       private long value_ ;
       /**
        * <code>uint64 value = 3;</code>
+       * @return The value.
        */
+      @java.lang.Override
       public long getValue() {
         return value_;
       }
       /**
        * <code>uint64 value = 3;</code>
+       * @param value The value to set.
+       * @return This builder for chaining.
        */
       public Builder setValue(long value) {
         
@@ -719,6 +753,7 @@ public final class Nimiq {
       }
       /**
        * <code>uint64 value = 3;</code>
+       * @return This builder for chaining.
        */
       public Builder clearValue() {
         
@@ -730,12 +765,16 @@ public final class Nimiq {
       private long fee_ ;
       /**
        * <code>uint64 fee = 4;</code>
+       * @return The fee.
        */
+      @java.lang.Override
       public long getFee() {
         return fee_;
       }
       /**
        * <code>uint64 fee = 4;</code>
+       * @param value The fee to set.
+       * @return This builder for chaining.
        */
       public Builder setFee(long value) {
         
@@ -745,6 +784,7 @@ public final class Nimiq {
       }
       /**
        * <code>uint64 fee = 4;</code>
+       * @return This builder for chaining.
        */
       public Builder clearFee() {
         
@@ -756,12 +796,16 @@ public final class Nimiq {
       private int validityStartHeight_ ;
       /**
        * <code>uint32 validity_start_height = 5;</code>
+       * @return The validityStartHeight.
        */
+      @java.lang.Override
       public int getValidityStartHeight() {
         return validityStartHeight_;
       }
       /**
        * <code>uint32 validity_start_height = 5;</code>
+       * @param value The validityStartHeight to set.
+       * @return This builder for chaining.
        */
       public Builder setValidityStartHeight(int value) {
         
@@ -771,6 +815,7 @@ public final class Nimiq {
       }
       /**
        * <code>uint32 validity_start_height = 5;</code>
+       * @return This builder for chaining.
        */
       public Builder clearValidityStartHeight() {
         
@@ -837,6 +882,7 @@ public final class Nimiq {
 
     /**
      * <code>bytes encoded = 1;</code>
+     * @return The encoded.
      */
     com.google.protobuf.ByteString getEncoded();
   }
@@ -847,7 +893,7 @@ public final class Nimiq {
    *
    * Protobuf type {@code TW.Nimiq.Proto.SigningOutput}
    */
-  public  static final class SigningOutput extends
+  public static final class SigningOutput extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:TW.Nimiq.Proto.SigningOutput)
       SigningOutputOrBuilder {
@@ -931,7 +977,9 @@ public final class Nimiq {
     private com.google.protobuf.ByteString encoded_;
     /**
      * <code>bytes encoded = 1;</code>
+     * @return The encoded.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString getEncoded() {
       return encoded_;
     }
@@ -1245,12 +1293,16 @@ public final class Nimiq {
       private com.google.protobuf.ByteString encoded_ = com.google.protobuf.ByteString.EMPTY;
       /**
        * <code>bytes encoded = 1;</code>
+       * @return The encoded.
        */
+      @java.lang.Override
       public com.google.protobuf.ByteString getEncoded() {
         return encoded_;
       }
       /**
        * <code>bytes encoded = 1;</code>
+       * @param value The encoded to set.
+       * @return This builder for chaining.
        */
       public Builder setEncoded(com.google.protobuf.ByteString value) {
         if (value == null) {
@@ -1263,6 +1315,7 @@ public final class Nimiq {
       }
       /**
        * <code>bytes encoded = 1;</code>
+       * @return This builder for chaining.
        */
       public Builder clearEncoded() {
         

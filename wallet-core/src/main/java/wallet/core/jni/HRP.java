@@ -25,12 +25,13 @@ public enum HRP {
     ZILLIQA (11),
     TERRA (12),
     KAVA (13),
-    BANDCHAIN (14),
-    ELROND (15),
-    BINANCE (16),
-    HARMONY (17),
-    CARDANO (18),
-    QTUM (19);
+    OASIS (14),
+    BANDCHAIN (15),
+    ELROND (16),
+    BINANCE (17),
+    HARMONY (18),
+    CARDANO (19),
+    QTUM (20);
 
     private final int value;
     HRP(int value) {
@@ -54,12 +55,13 @@ public enum HRP {
             case 11: return HRP.ZILLIQA;
             case 12: return HRP.TERRA;
             case 13: return HRP.KAVA;
-            case 14: return HRP.BANDCHAIN;
-            case 15: return HRP.ELROND;
-            case 16: return HRP.BINANCE;
-            case 17: return HRP.HARMONY;
-            case 18: return HRP.CARDANO;
-            case 19: return HRP.QTUM;
+            case 14: return HRP.OASIS;
+            case 15: return HRP.BANDCHAIN;
+            case 16: return HRP.ELROND;
+            case 17: return HRP.BINANCE;
+            case 18: return HRP.HARMONY;
+            case 19: return HRP.CARDANO;
+            case 20: return HRP.QTUM;
             default: return null;
         }
     }
@@ -81,6 +83,7 @@ public enum HRP {
         case ZILLIQA: return "zil";
         case TERRA: return "terra";
         case KAVA: return "kava";
+        case OASIS: return "oasis";
         case BANDCHAIN: return "band";
         case ELROND: return "erd";
         case BINANCE: return "bnb";

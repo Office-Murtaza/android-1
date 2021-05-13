@@ -24,6 +24,7 @@ public final class Tron {
      * </pre>
      *
      * <code>string owner_address = 1;</code>
+     * @return The ownerAddress.
      */
     java.lang.String getOwnerAddress();
     /**
@@ -32,6 +33,7 @@ public final class Tron {
      * </pre>
      *
      * <code>string owner_address = 1;</code>
+     * @return The bytes for ownerAddress.
      */
     com.google.protobuf.ByteString
         getOwnerAddressBytes();
@@ -42,6 +44,7 @@ public final class Tron {
      * </pre>
      *
      * <code>string to_address = 2;</code>
+     * @return The toAddress.
      */
     java.lang.String getToAddress();
     /**
@@ -50,6 +53,7 @@ public final class Tron {
      * </pre>
      *
      * <code>string to_address = 2;</code>
+     * @return The bytes for toAddress.
      */
     com.google.protobuf.ByteString
         getToAddressBytes();
@@ -60,13 +64,14 @@ public final class Tron {
      * </pre>
      *
      * <code>int64 amount = 3;</code>
+     * @return The amount.
      */
     long getAmount();
   }
   /**
    * Protobuf type {@code TW.Tron.Proto.TransferContract}
    */
-  public  static final class TransferContract extends
+  public static final class TransferContract extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:TW.Tron.Proto.TransferContract)
       TransferContractOrBuilder {
@@ -167,7 +172,9 @@ public final class Tron {
      * </pre>
      *
      * <code>string owner_address = 1;</code>
+     * @return The ownerAddress.
      */
+    @java.lang.Override
     public java.lang.String getOwnerAddress() {
       java.lang.Object ref = ownerAddress_;
       if (ref instanceof java.lang.String) {
@@ -186,7 +193,9 @@ public final class Tron {
      * </pre>
      *
      * <code>string owner_address = 1;</code>
+     * @return The bytes for ownerAddress.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString
         getOwnerAddressBytes() {
       java.lang.Object ref = ownerAddress_;
@@ -209,7 +218,9 @@ public final class Tron {
      * </pre>
      *
      * <code>string to_address = 2;</code>
+     * @return The toAddress.
      */
+    @java.lang.Override
     public java.lang.String getToAddress() {
       java.lang.Object ref = toAddress_;
       if (ref instanceof java.lang.String) {
@@ -228,7 +239,9 @@ public final class Tron {
      * </pre>
      *
      * <code>string to_address = 2;</code>
+     * @return The bytes for toAddress.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString
         getToAddressBytes() {
       java.lang.Object ref = toAddress_;
@@ -251,7 +264,9 @@ public final class Tron {
      * </pre>
      *
      * <code>int64 amount = 3;</code>
+     * @return The amount.
      */
+    @java.lang.Override
     public long getAmount() {
       return amount_;
     }
@@ -600,6 +615,7 @@ public final class Tron {
        * </pre>
        *
        * <code>string owner_address = 1;</code>
+       * @return The ownerAddress.
        */
       public java.lang.String getOwnerAddress() {
         java.lang.Object ref = ownerAddress_;
@@ -619,6 +635,7 @@ public final class Tron {
        * </pre>
        *
        * <code>string owner_address = 1;</code>
+       * @return The bytes for ownerAddress.
        */
       public com.google.protobuf.ByteString
           getOwnerAddressBytes() {
@@ -639,6 +656,8 @@ public final class Tron {
        * </pre>
        *
        * <code>string owner_address = 1;</code>
+       * @param value The ownerAddress to set.
+       * @return This builder for chaining.
        */
       public Builder setOwnerAddress(
           java.lang.String value) {
@@ -656,6 +675,7 @@ public final class Tron {
        * </pre>
        *
        * <code>string owner_address = 1;</code>
+       * @return This builder for chaining.
        */
       public Builder clearOwnerAddress() {
         
@@ -669,6 +689,8 @@ public final class Tron {
        * </pre>
        *
        * <code>string owner_address = 1;</code>
+       * @param value The bytes for ownerAddress to set.
+       * @return This builder for chaining.
        */
       public Builder setOwnerAddressBytes(
           com.google.protobuf.ByteString value) {
@@ -689,6 +711,7 @@ public final class Tron {
        * </pre>
        *
        * <code>string to_address = 2;</code>
+       * @return The toAddress.
        */
       public java.lang.String getToAddress() {
         java.lang.Object ref = toAddress_;
@@ -708,6 +731,7 @@ public final class Tron {
        * </pre>
        *
        * <code>string to_address = 2;</code>
+       * @return The bytes for toAddress.
        */
       public com.google.protobuf.ByteString
           getToAddressBytes() {
@@ -728,6 +752,8 @@ public final class Tron {
        * </pre>
        *
        * <code>string to_address = 2;</code>
+       * @param value The toAddress to set.
+       * @return This builder for chaining.
        */
       public Builder setToAddress(
           java.lang.String value) {
@@ -745,6 +771,7 @@ public final class Tron {
        * </pre>
        *
        * <code>string to_address = 2;</code>
+       * @return This builder for chaining.
        */
       public Builder clearToAddress() {
         
@@ -758,6 +785,8 @@ public final class Tron {
        * </pre>
        *
        * <code>string to_address = 2;</code>
+       * @param value The bytes for toAddress to set.
+       * @return This builder for chaining.
        */
       public Builder setToAddressBytes(
           com.google.protobuf.ByteString value) {
@@ -778,7 +807,9 @@ public final class Tron {
        * </pre>
        *
        * <code>int64 amount = 3;</code>
+       * @return The amount.
        */
+      @java.lang.Override
       public long getAmount() {
         return amount_;
       }
@@ -788,6 +819,8 @@ public final class Tron {
        * </pre>
        *
        * <code>int64 amount = 3;</code>
+       * @param value The amount to set.
+       * @return This builder for chaining.
        */
       public Builder setAmount(long value) {
         
@@ -801,6 +834,7 @@ public final class Tron {
        * </pre>
        *
        * <code>int64 amount = 3;</code>
+       * @return This builder for chaining.
        */
       public Builder clearAmount() {
         
@@ -871,6 +905,7 @@ public final class Tron {
      * </pre>
      *
      * <code>string asset_name = 1;</code>
+     * @return The assetName.
      */
     java.lang.String getAssetName();
     /**
@@ -879,6 +914,7 @@ public final class Tron {
      * </pre>
      *
      * <code>string asset_name = 1;</code>
+     * @return The bytes for assetName.
      */
     com.google.protobuf.ByteString
         getAssetNameBytes();
@@ -889,6 +925,7 @@ public final class Tron {
      * </pre>
      *
      * <code>string owner_address = 2;</code>
+     * @return The ownerAddress.
      */
     java.lang.String getOwnerAddress();
     /**
@@ -897,6 +934,7 @@ public final class Tron {
      * </pre>
      *
      * <code>string owner_address = 2;</code>
+     * @return The bytes for ownerAddress.
      */
     com.google.protobuf.ByteString
         getOwnerAddressBytes();
@@ -907,6 +945,7 @@ public final class Tron {
      * </pre>
      *
      * <code>string to_address = 3;</code>
+     * @return The toAddress.
      */
     java.lang.String getToAddress();
     /**
@@ -915,6 +954,7 @@ public final class Tron {
      * </pre>
      *
      * <code>string to_address = 3;</code>
+     * @return The bytes for toAddress.
      */
     com.google.protobuf.ByteString
         getToAddressBytes();
@@ -925,13 +965,14 @@ public final class Tron {
      * </pre>
      *
      * <code>int64 amount = 4;</code>
+     * @return The amount.
      */
     long getAmount();
   }
   /**
    * Protobuf type {@code TW.Tron.Proto.TransferAssetContract}
    */
-  public  static final class TransferAssetContract extends
+  public static final class TransferAssetContract extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:TW.Tron.Proto.TransferAssetContract)
       TransferAssetContractOrBuilder {
@@ -1039,7 +1080,9 @@ public final class Tron {
      * </pre>
      *
      * <code>string asset_name = 1;</code>
+     * @return The assetName.
      */
+    @java.lang.Override
     public java.lang.String getAssetName() {
       java.lang.Object ref = assetName_;
       if (ref instanceof java.lang.String) {
@@ -1058,7 +1101,9 @@ public final class Tron {
      * </pre>
      *
      * <code>string asset_name = 1;</code>
+     * @return The bytes for assetName.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString
         getAssetNameBytes() {
       java.lang.Object ref = assetName_;
@@ -1081,7 +1126,9 @@ public final class Tron {
      * </pre>
      *
      * <code>string owner_address = 2;</code>
+     * @return The ownerAddress.
      */
+    @java.lang.Override
     public java.lang.String getOwnerAddress() {
       java.lang.Object ref = ownerAddress_;
       if (ref instanceof java.lang.String) {
@@ -1100,7 +1147,9 @@ public final class Tron {
      * </pre>
      *
      * <code>string owner_address = 2;</code>
+     * @return The bytes for ownerAddress.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString
         getOwnerAddressBytes() {
       java.lang.Object ref = ownerAddress_;
@@ -1123,7 +1172,9 @@ public final class Tron {
      * </pre>
      *
      * <code>string to_address = 3;</code>
+     * @return The toAddress.
      */
+    @java.lang.Override
     public java.lang.String getToAddress() {
       java.lang.Object ref = toAddress_;
       if (ref instanceof java.lang.String) {
@@ -1142,7 +1193,9 @@ public final class Tron {
      * </pre>
      *
      * <code>string to_address = 3;</code>
+     * @return The bytes for toAddress.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString
         getToAddressBytes() {
       java.lang.Object ref = toAddress_;
@@ -1165,7 +1218,9 @@ public final class Tron {
      * </pre>
      *
      * <code>int64 amount = 4;</code>
+     * @return The amount.
      */
+    @java.lang.Override
     public long getAmount() {
       return amount_;
     }
@@ -1531,6 +1586,7 @@ public final class Tron {
        * </pre>
        *
        * <code>string asset_name = 1;</code>
+       * @return The assetName.
        */
       public java.lang.String getAssetName() {
         java.lang.Object ref = assetName_;
@@ -1550,6 +1606,7 @@ public final class Tron {
        * </pre>
        *
        * <code>string asset_name = 1;</code>
+       * @return The bytes for assetName.
        */
       public com.google.protobuf.ByteString
           getAssetNameBytes() {
@@ -1570,6 +1627,8 @@ public final class Tron {
        * </pre>
        *
        * <code>string asset_name = 1;</code>
+       * @param value The assetName to set.
+       * @return This builder for chaining.
        */
       public Builder setAssetName(
           java.lang.String value) {
@@ -1587,6 +1646,7 @@ public final class Tron {
        * </pre>
        *
        * <code>string asset_name = 1;</code>
+       * @return This builder for chaining.
        */
       public Builder clearAssetName() {
         
@@ -1600,6 +1660,8 @@ public final class Tron {
        * </pre>
        *
        * <code>string asset_name = 1;</code>
+       * @param value The bytes for assetName to set.
+       * @return This builder for chaining.
        */
       public Builder setAssetNameBytes(
           com.google.protobuf.ByteString value) {
@@ -1620,6 +1682,7 @@ public final class Tron {
        * </pre>
        *
        * <code>string owner_address = 2;</code>
+       * @return The ownerAddress.
        */
       public java.lang.String getOwnerAddress() {
         java.lang.Object ref = ownerAddress_;
@@ -1639,6 +1702,7 @@ public final class Tron {
        * </pre>
        *
        * <code>string owner_address = 2;</code>
+       * @return The bytes for ownerAddress.
        */
       public com.google.protobuf.ByteString
           getOwnerAddressBytes() {
@@ -1659,6 +1723,8 @@ public final class Tron {
        * </pre>
        *
        * <code>string owner_address = 2;</code>
+       * @param value The ownerAddress to set.
+       * @return This builder for chaining.
        */
       public Builder setOwnerAddress(
           java.lang.String value) {
@@ -1676,6 +1742,7 @@ public final class Tron {
        * </pre>
        *
        * <code>string owner_address = 2;</code>
+       * @return This builder for chaining.
        */
       public Builder clearOwnerAddress() {
         
@@ -1689,6 +1756,8 @@ public final class Tron {
        * </pre>
        *
        * <code>string owner_address = 2;</code>
+       * @param value The bytes for ownerAddress to set.
+       * @return This builder for chaining.
        */
       public Builder setOwnerAddressBytes(
           com.google.protobuf.ByteString value) {
@@ -1709,6 +1778,7 @@ public final class Tron {
        * </pre>
        *
        * <code>string to_address = 3;</code>
+       * @return The toAddress.
        */
       public java.lang.String getToAddress() {
         java.lang.Object ref = toAddress_;
@@ -1728,6 +1798,7 @@ public final class Tron {
        * </pre>
        *
        * <code>string to_address = 3;</code>
+       * @return The bytes for toAddress.
        */
       public com.google.protobuf.ByteString
           getToAddressBytes() {
@@ -1748,6 +1819,8 @@ public final class Tron {
        * </pre>
        *
        * <code>string to_address = 3;</code>
+       * @param value The toAddress to set.
+       * @return This builder for chaining.
        */
       public Builder setToAddress(
           java.lang.String value) {
@@ -1765,6 +1838,7 @@ public final class Tron {
        * </pre>
        *
        * <code>string to_address = 3;</code>
+       * @return This builder for chaining.
        */
       public Builder clearToAddress() {
         
@@ -1778,6 +1852,8 @@ public final class Tron {
        * </pre>
        *
        * <code>string to_address = 3;</code>
+       * @param value The bytes for toAddress to set.
+       * @return This builder for chaining.
        */
       public Builder setToAddressBytes(
           com.google.protobuf.ByteString value) {
@@ -1798,7 +1874,9 @@ public final class Tron {
        * </pre>
        *
        * <code>int64 amount = 4;</code>
+       * @return The amount.
        */
+      @java.lang.Override
       public long getAmount() {
         return amount_;
       }
@@ -1808,6 +1886,8 @@ public final class Tron {
        * </pre>
        *
        * <code>int64 amount = 4;</code>
+       * @param value The amount to set.
+       * @return This builder for chaining.
        */
       public Builder setAmount(long value) {
         
@@ -1821,6 +1901,7 @@ public final class Tron {
        * </pre>
        *
        * <code>int64 amount = 4;</code>
+       * @return This builder for chaining.
        */
       public Builder clearAmount() {
         
@@ -1891,6 +1972,7 @@ public final class Tron {
      * </pre>
      *
      * <code>string contract_address = 1;</code>
+     * @return The contractAddress.
      */
     java.lang.String getContractAddress();
     /**
@@ -1899,6 +1981,7 @@ public final class Tron {
      * </pre>
      *
      * <code>string contract_address = 1;</code>
+     * @return The bytes for contractAddress.
      */
     com.google.protobuf.ByteString
         getContractAddressBytes();
@@ -1909,6 +1992,7 @@ public final class Tron {
      * </pre>
      *
      * <code>string owner_address = 2;</code>
+     * @return The ownerAddress.
      */
     java.lang.String getOwnerAddress();
     /**
@@ -1917,6 +2001,7 @@ public final class Tron {
      * </pre>
      *
      * <code>string owner_address = 2;</code>
+     * @return The bytes for ownerAddress.
      */
     com.google.protobuf.ByteString
         getOwnerAddressBytes();
@@ -1927,6 +2012,7 @@ public final class Tron {
      * </pre>
      *
      * <code>string to_address = 3;</code>
+     * @return The toAddress.
      */
     java.lang.String getToAddress();
     /**
@@ -1935,6 +2021,7 @@ public final class Tron {
      * </pre>
      *
      * <code>string to_address = 3;</code>
+     * @return The bytes for toAddress.
      */
     com.google.protobuf.ByteString
         getToAddressBytes();
@@ -1945,13 +2032,14 @@ public final class Tron {
      * </pre>
      *
      * <code>bytes amount = 4;</code>
+     * @return The amount.
      */
     com.google.protobuf.ByteString getAmount();
   }
   /**
    * Protobuf type {@code TW.Tron.Proto.TransferTRC20Contract}
    */
-  public  static final class TransferTRC20Contract extends
+  public static final class TransferTRC20Contract extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:TW.Tron.Proto.TransferTRC20Contract)
       TransferTRC20ContractOrBuilder {
@@ -2060,7 +2148,9 @@ public final class Tron {
      * </pre>
      *
      * <code>string contract_address = 1;</code>
+     * @return The contractAddress.
      */
+    @java.lang.Override
     public java.lang.String getContractAddress() {
       java.lang.Object ref = contractAddress_;
       if (ref instanceof java.lang.String) {
@@ -2079,7 +2169,9 @@ public final class Tron {
      * </pre>
      *
      * <code>string contract_address = 1;</code>
+     * @return The bytes for contractAddress.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString
         getContractAddressBytes() {
       java.lang.Object ref = contractAddress_;
@@ -2102,7 +2194,9 @@ public final class Tron {
      * </pre>
      *
      * <code>string owner_address = 2;</code>
+     * @return The ownerAddress.
      */
+    @java.lang.Override
     public java.lang.String getOwnerAddress() {
       java.lang.Object ref = ownerAddress_;
       if (ref instanceof java.lang.String) {
@@ -2121,7 +2215,9 @@ public final class Tron {
      * </pre>
      *
      * <code>string owner_address = 2;</code>
+     * @return The bytes for ownerAddress.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString
         getOwnerAddressBytes() {
       java.lang.Object ref = ownerAddress_;
@@ -2144,7 +2240,9 @@ public final class Tron {
      * </pre>
      *
      * <code>string to_address = 3;</code>
+     * @return The toAddress.
      */
+    @java.lang.Override
     public java.lang.String getToAddress() {
       java.lang.Object ref = toAddress_;
       if (ref instanceof java.lang.String) {
@@ -2163,7 +2261,9 @@ public final class Tron {
      * </pre>
      *
      * <code>string to_address = 3;</code>
+     * @return The bytes for toAddress.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString
         getToAddressBytes() {
       java.lang.Object ref = toAddress_;
@@ -2186,7 +2286,9 @@ public final class Tron {
      * </pre>
      *
      * <code>bytes amount = 4;</code>
+     * @return The amount.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString getAmount() {
       return amount_;
     }
@@ -2551,6 +2653,7 @@ public final class Tron {
        * </pre>
        *
        * <code>string contract_address = 1;</code>
+       * @return The contractAddress.
        */
       public java.lang.String getContractAddress() {
         java.lang.Object ref = contractAddress_;
@@ -2570,6 +2673,7 @@ public final class Tron {
        * </pre>
        *
        * <code>string contract_address = 1;</code>
+       * @return The bytes for contractAddress.
        */
       public com.google.protobuf.ByteString
           getContractAddressBytes() {
@@ -2590,6 +2694,8 @@ public final class Tron {
        * </pre>
        *
        * <code>string contract_address = 1;</code>
+       * @param value The contractAddress to set.
+       * @return This builder for chaining.
        */
       public Builder setContractAddress(
           java.lang.String value) {
@@ -2607,6 +2713,7 @@ public final class Tron {
        * </pre>
        *
        * <code>string contract_address = 1;</code>
+       * @return This builder for chaining.
        */
       public Builder clearContractAddress() {
         
@@ -2620,6 +2727,8 @@ public final class Tron {
        * </pre>
        *
        * <code>string contract_address = 1;</code>
+       * @param value The bytes for contractAddress to set.
+       * @return This builder for chaining.
        */
       public Builder setContractAddressBytes(
           com.google.protobuf.ByteString value) {
@@ -2640,6 +2749,7 @@ public final class Tron {
        * </pre>
        *
        * <code>string owner_address = 2;</code>
+       * @return The ownerAddress.
        */
       public java.lang.String getOwnerAddress() {
         java.lang.Object ref = ownerAddress_;
@@ -2659,6 +2769,7 @@ public final class Tron {
        * </pre>
        *
        * <code>string owner_address = 2;</code>
+       * @return The bytes for ownerAddress.
        */
       public com.google.protobuf.ByteString
           getOwnerAddressBytes() {
@@ -2679,6 +2790,8 @@ public final class Tron {
        * </pre>
        *
        * <code>string owner_address = 2;</code>
+       * @param value The ownerAddress to set.
+       * @return This builder for chaining.
        */
       public Builder setOwnerAddress(
           java.lang.String value) {
@@ -2696,6 +2809,7 @@ public final class Tron {
        * </pre>
        *
        * <code>string owner_address = 2;</code>
+       * @return This builder for chaining.
        */
       public Builder clearOwnerAddress() {
         
@@ -2709,6 +2823,8 @@ public final class Tron {
        * </pre>
        *
        * <code>string owner_address = 2;</code>
+       * @param value The bytes for ownerAddress to set.
+       * @return This builder for chaining.
        */
       public Builder setOwnerAddressBytes(
           com.google.protobuf.ByteString value) {
@@ -2729,6 +2845,7 @@ public final class Tron {
        * </pre>
        *
        * <code>string to_address = 3;</code>
+       * @return The toAddress.
        */
       public java.lang.String getToAddress() {
         java.lang.Object ref = toAddress_;
@@ -2748,6 +2865,7 @@ public final class Tron {
        * </pre>
        *
        * <code>string to_address = 3;</code>
+       * @return The bytes for toAddress.
        */
       public com.google.protobuf.ByteString
           getToAddressBytes() {
@@ -2768,6 +2886,8 @@ public final class Tron {
        * </pre>
        *
        * <code>string to_address = 3;</code>
+       * @param value The toAddress to set.
+       * @return This builder for chaining.
        */
       public Builder setToAddress(
           java.lang.String value) {
@@ -2785,6 +2905,7 @@ public final class Tron {
        * </pre>
        *
        * <code>string to_address = 3;</code>
+       * @return This builder for chaining.
        */
       public Builder clearToAddress() {
         
@@ -2798,6 +2919,8 @@ public final class Tron {
        * </pre>
        *
        * <code>string to_address = 3;</code>
+       * @param value The bytes for toAddress to set.
+       * @return This builder for chaining.
        */
       public Builder setToAddressBytes(
           com.google.protobuf.ByteString value) {
@@ -2818,7 +2941,9 @@ public final class Tron {
        * </pre>
        *
        * <code>bytes amount = 4;</code>
+       * @return The amount.
        */
+      @java.lang.Override
       public com.google.protobuf.ByteString getAmount() {
         return amount_;
       }
@@ -2828,6 +2953,8 @@ public final class Tron {
        * </pre>
        *
        * <code>bytes amount = 4;</code>
+       * @param value The amount to set.
+       * @return This builder for chaining.
        */
       public Builder setAmount(com.google.protobuf.ByteString value) {
         if (value == null) {
@@ -2844,6 +2971,7 @@ public final class Tron {
        * </pre>
        *
        * <code>bytes amount = 4;</code>
+       * @return This builder for chaining.
        */
       public Builder clearAmount() {
         
@@ -2914,6 +3042,7 @@ public final class Tron {
      * </pre>
      *
      * <code>string owner_address = 1;</code>
+     * @return The ownerAddress.
      */
     java.lang.String getOwnerAddress();
     /**
@@ -2922,6 +3051,7 @@ public final class Tron {
      * </pre>
      *
      * <code>string owner_address = 1;</code>
+     * @return The bytes for ownerAddress.
      */
     com.google.protobuf.ByteString
         getOwnerAddressBytes();
@@ -2932,6 +3062,7 @@ public final class Tron {
      * </pre>
      *
      * <code>int64 frozen_balance = 2;</code>
+     * @return The frozenBalance.
      */
     long getFrozenBalance();
 
@@ -2941,6 +3072,7 @@ public final class Tron {
      * </pre>
      *
      * <code>int64 frozen_duration = 3;</code>
+     * @return The frozenDuration.
      */
     long getFrozenDuration();
 
@@ -2950,6 +3082,7 @@ public final class Tron {
      * </pre>
      *
      * <code>string resource = 10;</code>
+     * @return The resource.
      */
     java.lang.String getResource();
     /**
@@ -2958,6 +3091,7 @@ public final class Tron {
      * </pre>
      *
      * <code>string resource = 10;</code>
+     * @return The bytes for resource.
      */
     com.google.protobuf.ByteString
         getResourceBytes();
@@ -2968,6 +3102,7 @@ public final class Tron {
      * </pre>
      *
      * <code>string receiver_address = 15;</code>
+     * @return The receiverAddress.
      */
     java.lang.String getReceiverAddress();
     /**
@@ -2976,6 +3111,7 @@ public final class Tron {
      * </pre>
      *
      * <code>string receiver_address = 15;</code>
+     * @return The bytes for receiverAddress.
      */
     com.google.protobuf.ByteString
         getReceiverAddressBytes();
@@ -2983,7 +3119,7 @@ public final class Tron {
   /**
    * Protobuf type {@code TW.Tron.Proto.FreezeBalanceContract}
    */
-  public  static final class FreezeBalanceContract extends
+  public static final class FreezeBalanceContract extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:TW.Tron.Proto.FreezeBalanceContract)
       FreezeBalanceContractOrBuilder {
@@ -3096,7 +3232,9 @@ public final class Tron {
      * </pre>
      *
      * <code>string owner_address = 1;</code>
+     * @return The ownerAddress.
      */
+    @java.lang.Override
     public java.lang.String getOwnerAddress() {
       java.lang.Object ref = ownerAddress_;
       if (ref instanceof java.lang.String) {
@@ -3115,7 +3253,9 @@ public final class Tron {
      * </pre>
      *
      * <code>string owner_address = 1;</code>
+     * @return The bytes for ownerAddress.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString
         getOwnerAddressBytes() {
       java.lang.Object ref = ownerAddress_;
@@ -3138,7 +3278,9 @@ public final class Tron {
      * </pre>
      *
      * <code>int64 frozen_balance = 2;</code>
+     * @return The frozenBalance.
      */
+    @java.lang.Override
     public long getFrozenBalance() {
       return frozenBalance_;
     }
@@ -3151,7 +3293,9 @@ public final class Tron {
      * </pre>
      *
      * <code>int64 frozen_duration = 3;</code>
+     * @return The frozenDuration.
      */
+    @java.lang.Override
     public long getFrozenDuration() {
       return frozenDuration_;
     }
@@ -3164,7 +3308,9 @@ public final class Tron {
      * </pre>
      *
      * <code>string resource = 10;</code>
+     * @return The resource.
      */
+    @java.lang.Override
     public java.lang.String getResource() {
       java.lang.Object ref = resource_;
       if (ref instanceof java.lang.String) {
@@ -3183,7 +3329,9 @@ public final class Tron {
      * </pre>
      *
      * <code>string resource = 10;</code>
+     * @return The bytes for resource.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString
         getResourceBytes() {
       java.lang.Object ref = resource_;
@@ -3206,7 +3354,9 @@ public final class Tron {
      * </pre>
      *
      * <code>string receiver_address = 15;</code>
+     * @return The receiverAddress.
      */
+    @java.lang.Override
     public java.lang.String getReceiverAddress() {
       java.lang.Object ref = receiverAddress_;
       if (ref instanceof java.lang.String) {
@@ -3225,7 +3375,9 @@ public final class Tron {
      * </pre>
      *
      * <code>string receiver_address = 15;</code>
+     * @return The bytes for receiverAddress.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString
         getReceiverAddressBytes() {
       java.lang.Object ref = receiverAddress_;
@@ -3619,6 +3771,7 @@ public final class Tron {
        * </pre>
        *
        * <code>string owner_address = 1;</code>
+       * @return The ownerAddress.
        */
       public java.lang.String getOwnerAddress() {
         java.lang.Object ref = ownerAddress_;
@@ -3638,6 +3791,7 @@ public final class Tron {
        * </pre>
        *
        * <code>string owner_address = 1;</code>
+       * @return The bytes for ownerAddress.
        */
       public com.google.protobuf.ByteString
           getOwnerAddressBytes() {
@@ -3658,6 +3812,8 @@ public final class Tron {
        * </pre>
        *
        * <code>string owner_address = 1;</code>
+       * @param value The ownerAddress to set.
+       * @return This builder for chaining.
        */
       public Builder setOwnerAddress(
           java.lang.String value) {
@@ -3675,6 +3831,7 @@ public final class Tron {
        * </pre>
        *
        * <code>string owner_address = 1;</code>
+       * @return This builder for chaining.
        */
       public Builder clearOwnerAddress() {
         
@@ -3688,6 +3845,8 @@ public final class Tron {
        * </pre>
        *
        * <code>string owner_address = 1;</code>
+       * @param value The bytes for ownerAddress to set.
+       * @return This builder for chaining.
        */
       public Builder setOwnerAddressBytes(
           com.google.protobuf.ByteString value) {
@@ -3708,7 +3867,9 @@ public final class Tron {
        * </pre>
        *
        * <code>int64 frozen_balance = 2;</code>
+       * @return The frozenBalance.
        */
+      @java.lang.Override
       public long getFrozenBalance() {
         return frozenBalance_;
       }
@@ -3718,6 +3879,8 @@ public final class Tron {
        * </pre>
        *
        * <code>int64 frozen_balance = 2;</code>
+       * @param value The frozenBalance to set.
+       * @return This builder for chaining.
        */
       public Builder setFrozenBalance(long value) {
         
@@ -3731,6 +3894,7 @@ public final class Tron {
        * </pre>
        *
        * <code>int64 frozen_balance = 2;</code>
+       * @return This builder for chaining.
        */
       public Builder clearFrozenBalance() {
         
@@ -3746,7 +3910,9 @@ public final class Tron {
        * </pre>
        *
        * <code>int64 frozen_duration = 3;</code>
+       * @return The frozenDuration.
        */
+      @java.lang.Override
       public long getFrozenDuration() {
         return frozenDuration_;
       }
@@ -3756,6 +3922,8 @@ public final class Tron {
        * </pre>
        *
        * <code>int64 frozen_duration = 3;</code>
+       * @param value The frozenDuration to set.
+       * @return This builder for chaining.
        */
       public Builder setFrozenDuration(long value) {
         
@@ -3769,6 +3937,7 @@ public final class Tron {
        * </pre>
        *
        * <code>int64 frozen_duration = 3;</code>
+       * @return This builder for chaining.
        */
       public Builder clearFrozenDuration() {
         
@@ -3784,6 +3953,7 @@ public final class Tron {
        * </pre>
        *
        * <code>string resource = 10;</code>
+       * @return The resource.
        */
       public java.lang.String getResource() {
         java.lang.Object ref = resource_;
@@ -3803,6 +3973,7 @@ public final class Tron {
        * </pre>
        *
        * <code>string resource = 10;</code>
+       * @return The bytes for resource.
        */
       public com.google.protobuf.ByteString
           getResourceBytes() {
@@ -3823,6 +3994,8 @@ public final class Tron {
        * </pre>
        *
        * <code>string resource = 10;</code>
+       * @param value The resource to set.
+       * @return This builder for chaining.
        */
       public Builder setResource(
           java.lang.String value) {
@@ -3840,6 +4013,7 @@ public final class Tron {
        * </pre>
        *
        * <code>string resource = 10;</code>
+       * @return This builder for chaining.
        */
       public Builder clearResource() {
         
@@ -3853,6 +4027,8 @@ public final class Tron {
        * </pre>
        *
        * <code>string resource = 10;</code>
+       * @param value The bytes for resource to set.
+       * @return This builder for chaining.
        */
       public Builder setResourceBytes(
           com.google.protobuf.ByteString value) {
@@ -3873,6 +4049,7 @@ public final class Tron {
        * </pre>
        *
        * <code>string receiver_address = 15;</code>
+       * @return The receiverAddress.
        */
       public java.lang.String getReceiverAddress() {
         java.lang.Object ref = receiverAddress_;
@@ -3892,6 +4069,7 @@ public final class Tron {
        * </pre>
        *
        * <code>string receiver_address = 15;</code>
+       * @return The bytes for receiverAddress.
        */
       public com.google.protobuf.ByteString
           getReceiverAddressBytes() {
@@ -3912,6 +4090,8 @@ public final class Tron {
        * </pre>
        *
        * <code>string receiver_address = 15;</code>
+       * @param value The receiverAddress to set.
+       * @return This builder for chaining.
        */
       public Builder setReceiverAddress(
           java.lang.String value) {
@@ -3929,6 +4109,7 @@ public final class Tron {
        * </pre>
        *
        * <code>string receiver_address = 15;</code>
+       * @return This builder for chaining.
        */
       public Builder clearReceiverAddress() {
         
@@ -3942,6 +4123,8 @@ public final class Tron {
        * </pre>
        *
        * <code>string receiver_address = 15;</code>
+       * @param value The bytes for receiverAddress to set.
+       * @return This builder for chaining.
        */
       public Builder setReceiverAddressBytes(
           com.google.protobuf.ByteString value) {
@@ -4017,6 +4200,7 @@ public final class Tron {
      * </pre>
      *
      * <code>string owner_address = 1;</code>
+     * @return The ownerAddress.
      */
     java.lang.String getOwnerAddress();
     /**
@@ -4025,6 +4209,7 @@ public final class Tron {
      * </pre>
      *
      * <code>string owner_address = 1;</code>
+     * @return The bytes for ownerAddress.
      */
     com.google.protobuf.ByteString
         getOwnerAddressBytes();
@@ -4035,6 +4220,7 @@ public final class Tron {
      * </pre>
      *
      * <code>string resource = 10;</code>
+     * @return The resource.
      */
     java.lang.String getResource();
     /**
@@ -4043,6 +4229,7 @@ public final class Tron {
      * </pre>
      *
      * <code>string resource = 10;</code>
+     * @return The bytes for resource.
      */
     com.google.protobuf.ByteString
         getResourceBytes();
@@ -4053,6 +4240,7 @@ public final class Tron {
      * </pre>
      *
      * <code>string receiver_address = 15;</code>
+     * @return The receiverAddress.
      */
     java.lang.String getReceiverAddress();
     /**
@@ -4061,6 +4249,7 @@ public final class Tron {
      * </pre>
      *
      * <code>string receiver_address = 15;</code>
+     * @return The bytes for receiverAddress.
      */
     com.google.protobuf.ByteString
         getReceiverAddressBytes();
@@ -4068,7 +4257,7 @@ public final class Tron {
   /**
    * Protobuf type {@code TW.Tron.Proto.UnfreezeBalanceContract}
    */
-  public  static final class UnfreezeBalanceContract extends
+  public static final class UnfreezeBalanceContract extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:TW.Tron.Proto.UnfreezeBalanceContract)
       UnfreezeBalanceContractOrBuilder {
@@ -4171,7 +4360,9 @@ public final class Tron {
      * </pre>
      *
      * <code>string owner_address = 1;</code>
+     * @return The ownerAddress.
      */
+    @java.lang.Override
     public java.lang.String getOwnerAddress() {
       java.lang.Object ref = ownerAddress_;
       if (ref instanceof java.lang.String) {
@@ -4190,7 +4381,9 @@ public final class Tron {
      * </pre>
      *
      * <code>string owner_address = 1;</code>
+     * @return The bytes for ownerAddress.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString
         getOwnerAddressBytes() {
       java.lang.Object ref = ownerAddress_;
@@ -4213,7 +4406,9 @@ public final class Tron {
      * </pre>
      *
      * <code>string resource = 10;</code>
+     * @return The resource.
      */
+    @java.lang.Override
     public java.lang.String getResource() {
       java.lang.Object ref = resource_;
       if (ref instanceof java.lang.String) {
@@ -4232,7 +4427,9 @@ public final class Tron {
      * </pre>
      *
      * <code>string resource = 10;</code>
+     * @return The bytes for resource.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString
         getResourceBytes() {
       java.lang.Object ref = resource_;
@@ -4255,7 +4452,9 @@ public final class Tron {
      * </pre>
      *
      * <code>string receiver_address = 15;</code>
+     * @return The receiverAddress.
      */
+    @java.lang.Override
     public java.lang.String getReceiverAddress() {
       java.lang.Object ref = receiverAddress_;
       if (ref instanceof java.lang.String) {
@@ -4274,7 +4473,9 @@ public final class Tron {
      * </pre>
      *
      * <code>string receiver_address = 15;</code>
+     * @return The bytes for receiverAddress.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString
         getReceiverAddressBytes() {
       java.lang.Object ref = receiverAddress_;
@@ -4632,6 +4833,7 @@ public final class Tron {
        * </pre>
        *
        * <code>string owner_address = 1;</code>
+       * @return The ownerAddress.
        */
       public java.lang.String getOwnerAddress() {
         java.lang.Object ref = ownerAddress_;
@@ -4651,6 +4853,7 @@ public final class Tron {
        * </pre>
        *
        * <code>string owner_address = 1;</code>
+       * @return The bytes for ownerAddress.
        */
       public com.google.protobuf.ByteString
           getOwnerAddressBytes() {
@@ -4671,6 +4874,8 @@ public final class Tron {
        * </pre>
        *
        * <code>string owner_address = 1;</code>
+       * @param value The ownerAddress to set.
+       * @return This builder for chaining.
        */
       public Builder setOwnerAddress(
           java.lang.String value) {
@@ -4688,6 +4893,7 @@ public final class Tron {
        * </pre>
        *
        * <code>string owner_address = 1;</code>
+       * @return This builder for chaining.
        */
       public Builder clearOwnerAddress() {
         
@@ -4701,6 +4907,8 @@ public final class Tron {
        * </pre>
        *
        * <code>string owner_address = 1;</code>
+       * @param value The bytes for ownerAddress to set.
+       * @return This builder for chaining.
        */
       public Builder setOwnerAddressBytes(
           com.google.protobuf.ByteString value) {
@@ -4721,6 +4929,7 @@ public final class Tron {
        * </pre>
        *
        * <code>string resource = 10;</code>
+       * @return The resource.
        */
       public java.lang.String getResource() {
         java.lang.Object ref = resource_;
@@ -4740,6 +4949,7 @@ public final class Tron {
        * </pre>
        *
        * <code>string resource = 10;</code>
+       * @return The bytes for resource.
        */
       public com.google.protobuf.ByteString
           getResourceBytes() {
@@ -4760,6 +4970,8 @@ public final class Tron {
        * </pre>
        *
        * <code>string resource = 10;</code>
+       * @param value The resource to set.
+       * @return This builder for chaining.
        */
       public Builder setResource(
           java.lang.String value) {
@@ -4777,6 +4989,7 @@ public final class Tron {
        * </pre>
        *
        * <code>string resource = 10;</code>
+       * @return This builder for chaining.
        */
       public Builder clearResource() {
         
@@ -4790,6 +5003,8 @@ public final class Tron {
        * </pre>
        *
        * <code>string resource = 10;</code>
+       * @param value The bytes for resource to set.
+       * @return This builder for chaining.
        */
       public Builder setResourceBytes(
           com.google.protobuf.ByteString value) {
@@ -4810,6 +5025,7 @@ public final class Tron {
        * </pre>
        *
        * <code>string receiver_address = 15;</code>
+       * @return The receiverAddress.
        */
       public java.lang.String getReceiverAddress() {
         java.lang.Object ref = receiverAddress_;
@@ -4829,6 +5045,7 @@ public final class Tron {
        * </pre>
        *
        * <code>string receiver_address = 15;</code>
+       * @return The bytes for receiverAddress.
        */
       public com.google.protobuf.ByteString
           getReceiverAddressBytes() {
@@ -4849,6 +5066,8 @@ public final class Tron {
        * </pre>
        *
        * <code>string receiver_address = 15;</code>
+       * @param value The receiverAddress to set.
+       * @return This builder for chaining.
        */
       public Builder setReceiverAddress(
           java.lang.String value) {
@@ -4866,6 +5085,7 @@ public final class Tron {
        * </pre>
        *
        * <code>string receiver_address = 15;</code>
+       * @return This builder for chaining.
        */
       public Builder clearReceiverAddress() {
         
@@ -4879,6 +5099,8 @@ public final class Tron {
        * </pre>
        *
        * <code>string receiver_address = 15;</code>
+       * @param value The bytes for receiverAddress to set.
+       * @return This builder for chaining.
        */
       public Builder setReceiverAddressBytes(
           com.google.protobuf.ByteString value) {
@@ -4954,6 +5176,7 @@ public final class Tron {
      * </pre>
      *
      * <code>string owner_address = 1;</code>
+     * @return The ownerAddress.
      */
     java.lang.String getOwnerAddress();
     /**
@@ -4962,6 +5185,7 @@ public final class Tron {
      * </pre>
      *
      * <code>string owner_address = 1;</code>
+     * @return The bytes for ownerAddress.
      */
     com.google.protobuf.ByteString
         getOwnerAddressBytes();
@@ -4969,7 +5193,7 @@ public final class Tron {
   /**
    * Protobuf type {@code TW.Tron.Proto.UnfreezeAssetContract}
    */
-  public  static final class UnfreezeAssetContract extends
+  public static final class UnfreezeAssetContract extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:TW.Tron.Proto.UnfreezeAssetContract)
       UnfreezeAssetContractOrBuilder {
@@ -5058,7 +5282,9 @@ public final class Tron {
      * </pre>
      *
      * <code>string owner_address = 1;</code>
+     * @return The ownerAddress.
      */
+    @java.lang.Override
     public java.lang.String getOwnerAddress() {
       java.lang.Object ref = ownerAddress_;
       if (ref instanceof java.lang.String) {
@@ -5077,7 +5303,9 @@ public final class Tron {
      * </pre>
      *
      * <code>string owner_address = 1;</code>
+     * @return The bytes for ownerAddress.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString
         getOwnerAddressBytes() {
       java.lang.Object ref = ownerAddress_;
@@ -5401,6 +5629,7 @@ public final class Tron {
        * </pre>
        *
        * <code>string owner_address = 1;</code>
+       * @return The ownerAddress.
        */
       public java.lang.String getOwnerAddress() {
         java.lang.Object ref = ownerAddress_;
@@ -5420,6 +5649,7 @@ public final class Tron {
        * </pre>
        *
        * <code>string owner_address = 1;</code>
+       * @return The bytes for ownerAddress.
        */
       public com.google.protobuf.ByteString
           getOwnerAddressBytes() {
@@ -5440,6 +5670,8 @@ public final class Tron {
        * </pre>
        *
        * <code>string owner_address = 1;</code>
+       * @param value The ownerAddress to set.
+       * @return This builder for chaining.
        */
       public Builder setOwnerAddress(
           java.lang.String value) {
@@ -5457,6 +5689,7 @@ public final class Tron {
        * </pre>
        *
        * <code>string owner_address = 1;</code>
+       * @return This builder for chaining.
        */
       public Builder clearOwnerAddress() {
         
@@ -5470,6 +5703,8 @@ public final class Tron {
        * </pre>
        *
        * <code>string owner_address = 1;</code>
+       * @param value The bytes for ownerAddress to set.
+       * @return This builder for chaining.
        */
       public Builder setOwnerAddressBytes(
           com.google.protobuf.ByteString value) {
@@ -5545,6 +5780,7 @@ public final class Tron {
      * </pre>
      *
      * <code>string owner_address = 1;</code>
+     * @return The ownerAddress.
      */
     java.lang.String getOwnerAddress();
     /**
@@ -5553,6 +5789,7 @@ public final class Tron {
      * </pre>
      *
      * <code>string owner_address = 1;</code>
+     * @return The bytes for ownerAddress.
      */
     com.google.protobuf.ByteString
         getOwnerAddressBytes();
@@ -5563,6 +5800,7 @@ public final class Tron {
      * </pre>
      *
      * <code>repeated string vote_address = 2;</code>
+     * @return A list containing the voteAddress.
      */
     java.util.List<java.lang.String>
         getVoteAddressList();
@@ -5572,6 +5810,7 @@ public final class Tron {
      * </pre>
      *
      * <code>repeated string vote_address = 2;</code>
+     * @return The count of voteAddress.
      */
     int getVoteAddressCount();
     /**
@@ -5580,6 +5819,8 @@ public final class Tron {
      * </pre>
      *
      * <code>repeated string vote_address = 2;</code>
+     * @param index The index of the element to return.
+     * @return The voteAddress at the given index.
      */
     java.lang.String getVoteAddress(int index);
     /**
@@ -5588,24 +5829,28 @@ public final class Tron {
      * </pre>
      *
      * <code>repeated string vote_address = 2;</code>
+     * @param index The index of the value to return.
+     * @return The bytes of the voteAddress at the given index.
      */
     com.google.protobuf.ByteString
         getVoteAddressBytes(int index);
 
     /**
      * <code>bool support = 3;</code>
+     * @return The support.
      */
     boolean getSupport();
 
     /**
      * <code>int32 count = 5;</code>
+     * @return The count.
      */
     int getCount();
   }
   /**
    * Protobuf type {@code TW.Tron.Proto.VoteAssetContract}
    */
-  public  static final class VoteAssetContract extends
+  public static final class VoteAssetContract extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:TW.Tron.Proto.VoteAssetContract)
       VoteAssetContractOrBuilder {
@@ -5718,7 +5963,9 @@ public final class Tron {
      * </pre>
      *
      * <code>string owner_address = 1;</code>
+     * @return The ownerAddress.
      */
+    @java.lang.Override
     public java.lang.String getOwnerAddress() {
       java.lang.Object ref = ownerAddress_;
       if (ref instanceof java.lang.String) {
@@ -5737,7 +5984,9 @@ public final class Tron {
      * </pre>
      *
      * <code>string owner_address = 1;</code>
+     * @return The bytes for ownerAddress.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString
         getOwnerAddressBytes() {
       java.lang.Object ref = ownerAddress_;
@@ -5760,6 +6009,7 @@ public final class Tron {
      * </pre>
      *
      * <code>repeated string vote_address = 2;</code>
+     * @return A list containing the voteAddress.
      */
     public com.google.protobuf.ProtocolStringList
         getVoteAddressList() {
@@ -5771,6 +6021,7 @@ public final class Tron {
      * </pre>
      *
      * <code>repeated string vote_address = 2;</code>
+     * @return The count of voteAddress.
      */
     public int getVoteAddressCount() {
       return voteAddress_.size();
@@ -5781,6 +6032,8 @@ public final class Tron {
      * </pre>
      *
      * <code>repeated string vote_address = 2;</code>
+     * @param index The index of the element to return.
+     * @return The voteAddress at the given index.
      */
     public java.lang.String getVoteAddress(int index) {
       return voteAddress_.get(index);
@@ -5791,6 +6044,8 @@ public final class Tron {
      * </pre>
      *
      * <code>repeated string vote_address = 2;</code>
+     * @param index The index of the value to return.
+     * @return The bytes of the voteAddress at the given index.
      */
     public com.google.protobuf.ByteString
         getVoteAddressBytes(int index) {
@@ -5801,7 +6056,9 @@ public final class Tron {
     private boolean support_;
     /**
      * <code>bool support = 3;</code>
+     * @return The support.
      */
+    @java.lang.Override
     public boolean getSupport() {
       return support_;
     }
@@ -5810,7 +6067,9 @@ public final class Tron {
     private int count_;
     /**
      * <code>int32 count = 5;</code>
+     * @return The count.
      */
+    @java.lang.Override
     public int getCount() {
       return count_;
     }
@@ -6195,6 +6454,7 @@ public final class Tron {
        * </pre>
        *
        * <code>string owner_address = 1;</code>
+       * @return The ownerAddress.
        */
       public java.lang.String getOwnerAddress() {
         java.lang.Object ref = ownerAddress_;
@@ -6214,6 +6474,7 @@ public final class Tron {
        * </pre>
        *
        * <code>string owner_address = 1;</code>
+       * @return The bytes for ownerAddress.
        */
       public com.google.protobuf.ByteString
           getOwnerAddressBytes() {
@@ -6234,6 +6495,8 @@ public final class Tron {
        * </pre>
        *
        * <code>string owner_address = 1;</code>
+       * @param value The ownerAddress to set.
+       * @return This builder for chaining.
        */
       public Builder setOwnerAddress(
           java.lang.String value) {
@@ -6251,6 +6514,7 @@ public final class Tron {
        * </pre>
        *
        * <code>string owner_address = 1;</code>
+       * @return This builder for chaining.
        */
       public Builder clearOwnerAddress() {
         
@@ -6264,6 +6528,8 @@ public final class Tron {
        * </pre>
        *
        * <code>string owner_address = 1;</code>
+       * @param value The bytes for ownerAddress to set.
+       * @return This builder for chaining.
        */
       public Builder setOwnerAddressBytes(
           com.google.protobuf.ByteString value) {
@@ -6290,6 +6556,7 @@ public final class Tron {
        * </pre>
        *
        * <code>repeated string vote_address = 2;</code>
+       * @return A list containing the voteAddress.
        */
       public com.google.protobuf.ProtocolStringList
           getVoteAddressList() {
@@ -6301,6 +6568,7 @@ public final class Tron {
        * </pre>
        *
        * <code>repeated string vote_address = 2;</code>
+       * @return The count of voteAddress.
        */
       public int getVoteAddressCount() {
         return voteAddress_.size();
@@ -6311,6 +6579,8 @@ public final class Tron {
        * </pre>
        *
        * <code>repeated string vote_address = 2;</code>
+       * @param index The index of the element to return.
+       * @return The voteAddress at the given index.
        */
       public java.lang.String getVoteAddress(int index) {
         return voteAddress_.get(index);
@@ -6321,6 +6591,8 @@ public final class Tron {
        * </pre>
        *
        * <code>repeated string vote_address = 2;</code>
+       * @param index The index of the value to return.
+       * @return The bytes of the voteAddress at the given index.
        */
       public com.google.protobuf.ByteString
           getVoteAddressBytes(int index) {
@@ -6332,6 +6604,9 @@ public final class Tron {
        * </pre>
        *
        * <code>repeated string vote_address = 2;</code>
+       * @param index The index to set the value at.
+       * @param value The voteAddress to set.
+       * @return This builder for chaining.
        */
       public Builder setVoteAddress(
           int index, java.lang.String value) {
@@ -6349,6 +6624,8 @@ public final class Tron {
        * </pre>
        *
        * <code>repeated string vote_address = 2;</code>
+       * @param value The voteAddress to add.
+       * @return This builder for chaining.
        */
       public Builder addVoteAddress(
           java.lang.String value) {
@@ -6366,6 +6643,8 @@ public final class Tron {
        * </pre>
        *
        * <code>repeated string vote_address = 2;</code>
+       * @param values The voteAddress to add.
+       * @return This builder for chaining.
        */
       public Builder addAllVoteAddress(
           java.lang.Iterable<java.lang.String> values) {
@@ -6381,6 +6660,7 @@ public final class Tron {
        * </pre>
        *
        * <code>repeated string vote_address = 2;</code>
+       * @return This builder for chaining.
        */
       public Builder clearVoteAddress() {
         voteAddress_ = com.google.protobuf.LazyStringArrayList.EMPTY;
@@ -6394,6 +6674,8 @@ public final class Tron {
        * </pre>
        *
        * <code>repeated string vote_address = 2;</code>
+       * @param value The bytes of the voteAddress to add.
+       * @return This builder for chaining.
        */
       public Builder addVoteAddressBytes(
           com.google.protobuf.ByteString value) {
@@ -6410,12 +6692,16 @@ public final class Tron {
       private boolean support_ ;
       /**
        * <code>bool support = 3;</code>
+       * @return The support.
        */
+      @java.lang.Override
       public boolean getSupport() {
         return support_;
       }
       /**
        * <code>bool support = 3;</code>
+       * @param value The support to set.
+       * @return This builder for chaining.
        */
       public Builder setSupport(boolean value) {
         
@@ -6425,6 +6711,7 @@ public final class Tron {
       }
       /**
        * <code>bool support = 3;</code>
+       * @return This builder for chaining.
        */
       public Builder clearSupport() {
         
@@ -6436,12 +6723,16 @@ public final class Tron {
       private int count_ ;
       /**
        * <code>int32 count = 5;</code>
+       * @return The count.
        */
+      @java.lang.Override
       public int getCount() {
         return count_;
       }
       /**
        * <code>int32 count = 5;</code>
+       * @param value The count to set.
+       * @return This builder for chaining.
        */
       public Builder setCount(int value) {
         
@@ -6451,6 +6742,7 @@ public final class Tron {
       }
       /**
        * <code>int32 count = 5;</code>
+       * @return This builder for chaining.
        */
       public Builder clearCount() {
         
@@ -6517,10 +6809,12 @@ public final class Tron {
 
     /**
      * <code>string owner_address = 1;</code>
+     * @return The ownerAddress.
      */
     java.lang.String getOwnerAddress();
     /**
      * <code>string owner_address = 1;</code>
+     * @return The bytes for ownerAddress.
      */
     com.google.protobuf.ByteString
         getOwnerAddressBytes();
@@ -6551,13 +6845,14 @@ public final class Tron {
 
     /**
      * <code>bool support = 3;</code>
+     * @return The support.
      */
     boolean getSupport();
   }
   /**
    * Protobuf type {@code TW.Tron.Proto.VoteWitnessContract}
    */
-  public  static final class VoteWitnessContract extends
+  public static final class VoteWitnessContract extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:TW.Tron.Proto.VoteWitnessContract)
       VoteWitnessContractOrBuilder {
@@ -6663,23 +6958,26 @@ public final class Tron {
 
       /**
        * <code>string vote_address = 1;</code>
+       * @return The voteAddress.
        */
       java.lang.String getVoteAddress();
       /**
        * <code>string vote_address = 1;</code>
+       * @return The bytes for voteAddress.
        */
       com.google.protobuf.ByteString
           getVoteAddressBytes();
 
       /**
        * <code>int64 vote_count = 2;</code>
+       * @return The voteCount.
        */
       long getVoteCount();
     }
     /**
      * Protobuf type {@code TW.Tron.Proto.VoteWitnessContract.Vote}
      */
-    public  static final class Vote extends
+    public static final class Vote extends
         com.google.protobuf.GeneratedMessageV3 implements
         // @@protoc_insertion_point(message_implements:TW.Tron.Proto.VoteWitnessContract.Vote)
         VoteOrBuilder {
@@ -6769,7 +7067,9 @@ public final class Tron {
       private volatile java.lang.Object voteAddress_;
       /**
        * <code>string vote_address = 1;</code>
+       * @return The voteAddress.
        */
+      @java.lang.Override
       public java.lang.String getVoteAddress() {
         java.lang.Object ref = voteAddress_;
         if (ref instanceof java.lang.String) {
@@ -6784,7 +7084,9 @@ public final class Tron {
       }
       /**
        * <code>string vote_address = 1;</code>
+       * @return The bytes for voteAddress.
        */
+      @java.lang.Override
       public com.google.protobuf.ByteString
           getVoteAddressBytes() {
         java.lang.Object ref = voteAddress_;
@@ -6803,7 +7105,9 @@ public final class Tron {
       private long voteCount_;
       /**
        * <code>int64 vote_count = 2;</code>
+       * @return The voteCount.
        */
+      @java.lang.Override
       public long getVoteCount() {
         return voteCount_;
       }
@@ -7131,6 +7435,7 @@ public final class Tron {
         private java.lang.Object voteAddress_ = "";
         /**
          * <code>string vote_address = 1;</code>
+         * @return The voteAddress.
          */
         public java.lang.String getVoteAddress() {
           java.lang.Object ref = voteAddress_;
@@ -7146,6 +7451,7 @@ public final class Tron {
         }
         /**
          * <code>string vote_address = 1;</code>
+         * @return The bytes for voteAddress.
          */
         public com.google.protobuf.ByteString
             getVoteAddressBytes() {
@@ -7162,6 +7468,8 @@ public final class Tron {
         }
         /**
          * <code>string vote_address = 1;</code>
+         * @param value The voteAddress to set.
+         * @return This builder for chaining.
          */
         public Builder setVoteAddress(
             java.lang.String value) {
@@ -7175,6 +7483,7 @@ public final class Tron {
         }
         /**
          * <code>string vote_address = 1;</code>
+         * @return This builder for chaining.
          */
         public Builder clearVoteAddress() {
           
@@ -7184,6 +7493,8 @@ public final class Tron {
         }
         /**
          * <code>string vote_address = 1;</code>
+         * @param value The bytes for voteAddress to set.
+         * @return This builder for chaining.
          */
         public Builder setVoteAddressBytes(
             com.google.protobuf.ByteString value) {
@@ -7200,12 +7511,16 @@ public final class Tron {
         private long voteCount_ ;
         /**
          * <code>int64 vote_count = 2;</code>
+         * @return The voteCount.
          */
+        @java.lang.Override
         public long getVoteCount() {
           return voteCount_;
         }
         /**
          * <code>int64 vote_count = 2;</code>
+         * @param value The voteCount to set.
+         * @return This builder for chaining.
          */
         public Builder setVoteCount(long value) {
           
@@ -7215,6 +7530,7 @@ public final class Tron {
         }
         /**
          * <code>int64 vote_count = 2;</code>
+         * @return This builder for chaining.
          */
         public Builder clearVoteCount() {
           
@@ -7279,7 +7595,9 @@ public final class Tron {
     private volatile java.lang.Object ownerAddress_;
     /**
      * <code>string owner_address = 1;</code>
+     * @return The ownerAddress.
      */
+    @java.lang.Override
     public java.lang.String getOwnerAddress() {
       java.lang.Object ref = ownerAddress_;
       if (ref instanceof java.lang.String) {
@@ -7294,7 +7612,9 @@ public final class Tron {
     }
     /**
      * <code>string owner_address = 1;</code>
+     * @return The bytes for ownerAddress.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString
         getOwnerAddressBytes() {
       java.lang.Object ref = ownerAddress_;
@@ -7314,12 +7634,14 @@ public final class Tron {
     /**
      * <code>repeated .TW.Tron.Proto.VoteWitnessContract.Vote votes = 2;</code>
      */
+    @java.lang.Override
     public java.util.List<wallet.core.jni.proto.Tron.VoteWitnessContract.Vote> getVotesList() {
       return votes_;
     }
     /**
      * <code>repeated .TW.Tron.Proto.VoteWitnessContract.Vote votes = 2;</code>
      */
+    @java.lang.Override
     public java.util.List<? extends wallet.core.jni.proto.Tron.VoteWitnessContract.VoteOrBuilder> 
         getVotesOrBuilderList() {
       return votes_;
@@ -7327,18 +7649,21 @@ public final class Tron {
     /**
      * <code>repeated .TW.Tron.Proto.VoteWitnessContract.Vote votes = 2;</code>
      */
+    @java.lang.Override
     public int getVotesCount() {
       return votes_.size();
     }
     /**
      * <code>repeated .TW.Tron.Proto.VoteWitnessContract.Vote votes = 2;</code>
      */
+    @java.lang.Override
     public wallet.core.jni.proto.Tron.VoteWitnessContract.Vote getVotes(int index) {
       return votes_.get(index);
     }
     /**
      * <code>repeated .TW.Tron.Proto.VoteWitnessContract.Vote votes = 2;</code>
      */
+    @java.lang.Override
     public wallet.core.jni.proto.Tron.VoteWitnessContract.VoteOrBuilder getVotesOrBuilder(
         int index) {
       return votes_.get(index);
@@ -7348,7 +7673,9 @@ public final class Tron {
     private boolean support_;
     /**
      * <code>bool support = 3;</code>
+     * @return The support.
      */
+    @java.lang.Override
     public boolean getSupport() {
       return support_;
     }
@@ -7733,6 +8060,7 @@ public final class Tron {
       private java.lang.Object ownerAddress_ = "";
       /**
        * <code>string owner_address = 1;</code>
+       * @return The ownerAddress.
        */
       public java.lang.String getOwnerAddress() {
         java.lang.Object ref = ownerAddress_;
@@ -7748,6 +8076,7 @@ public final class Tron {
       }
       /**
        * <code>string owner_address = 1;</code>
+       * @return The bytes for ownerAddress.
        */
       public com.google.protobuf.ByteString
           getOwnerAddressBytes() {
@@ -7764,6 +8093,8 @@ public final class Tron {
       }
       /**
        * <code>string owner_address = 1;</code>
+       * @param value The ownerAddress to set.
+       * @return This builder for chaining.
        */
       public Builder setOwnerAddress(
           java.lang.String value) {
@@ -7777,6 +8108,7 @@ public final class Tron {
       }
       /**
        * <code>string owner_address = 1;</code>
+       * @return This builder for chaining.
        */
       public Builder clearOwnerAddress() {
         
@@ -7786,6 +8118,8 @@ public final class Tron {
       }
       /**
        * <code>string owner_address = 1;</code>
+       * @param value The bytes for ownerAddress to set.
+       * @return This builder for chaining.
        */
       public Builder setOwnerAddressBytes(
           com.google.protobuf.ByteString value) {
@@ -8042,12 +8376,16 @@ public final class Tron {
       private boolean support_ ;
       /**
        * <code>bool support = 3;</code>
+       * @return The support.
        */
+      @java.lang.Override
       public boolean getSupport() {
         return support_;
       }
       /**
        * <code>bool support = 3;</code>
+       * @param value The support to set.
+       * @return This builder for chaining.
        */
       public Builder setSupport(boolean value) {
         
@@ -8057,6 +8395,7 @@ public final class Tron {
       }
       /**
        * <code>bool support = 3;</code>
+       * @return This builder for chaining.
        */
       public Builder clearSupport() {
         
@@ -8127,6 +8466,7 @@ public final class Tron {
      * </pre>
      *
      * <code>string owner_address = 1;</code>
+     * @return The ownerAddress.
      */
     java.lang.String getOwnerAddress();
     /**
@@ -8135,6 +8475,7 @@ public final class Tron {
      * </pre>
      *
      * <code>string owner_address = 1;</code>
+     * @return The bytes for ownerAddress.
      */
     com.google.protobuf.ByteString
         getOwnerAddressBytes();
@@ -8142,7 +8483,7 @@ public final class Tron {
   /**
    * Protobuf type {@code TW.Tron.Proto.WithdrawBalanceContract}
    */
-  public  static final class WithdrawBalanceContract extends
+  public static final class WithdrawBalanceContract extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:TW.Tron.Proto.WithdrawBalanceContract)
       WithdrawBalanceContractOrBuilder {
@@ -8231,7 +8572,9 @@ public final class Tron {
      * </pre>
      *
      * <code>string owner_address = 1;</code>
+     * @return The ownerAddress.
      */
+    @java.lang.Override
     public java.lang.String getOwnerAddress() {
       java.lang.Object ref = ownerAddress_;
       if (ref instanceof java.lang.String) {
@@ -8250,7 +8593,9 @@ public final class Tron {
      * </pre>
      *
      * <code>string owner_address = 1;</code>
+     * @return The bytes for ownerAddress.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString
         getOwnerAddressBytes() {
       java.lang.Object ref = ownerAddress_;
@@ -8574,6 +8919,7 @@ public final class Tron {
        * </pre>
        *
        * <code>string owner_address = 1;</code>
+       * @return The ownerAddress.
        */
       public java.lang.String getOwnerAddress() {
         java.lang.Object ref = ownerAddress_;
@@ -8593,6 +8939,7 @@ public final class Tron {
        * </pre>
        *
        * <code>string owner_address = 1;</code>
+       * @return The bytes for ownerAddress.
        */
       public com.google.protobuf.ByteString
           getOwnerAddressBytes() {
@@ -8613,6 +8960,8 @@ public final class Tron {
        * </pre>
        *
        * <code>string owner_address = 1;</code>
+       * @param value The ownerAddress to set.
+       * @return This builder for chaining.
        */
       public Builder setOwnerAddress(
           java.lang.String value) {
@@ -8630,6 +8979,7 @@ public final class Tron {
        * </pre>
        *
        * <code>string owner_address = 1;</code>
+       * @return This builder for chaining.
        */
       public Builder clearOwnerAddress() {
         
@@ -8643,6 +8993,8 @@ public final class Tron {
        * </pre>
        *
        * <code>string owner_address = 1;</code>
+       * @param value The bytes for ownerAddress to set.
+       * @return This builder for chaining.
        */
       public Builder setOwnerAddressBytes(
           com.google.protobuf.ByteString value) {
@@ -8714,48 +9066,56 @@ public final class Tron {
 
     /**
      * <code>string owner_address = 1;</code>
+     * @return The ownerAddress.
      */
     java.lang.String getOwnerAddress();
     /**
      * <code>string owner_address = 1;</code>
+     * @return The bytes for ownerAddress.
      */
     com.google.protobuf.ByteString
         getOwnerAddressBytes();
 
     /**
      * <code>string contract_address = 2;</code>
+     * @return The contractAddress.
      */
     java.lang.String getContractAddress();
     /**
      * <code>string contract_address = 2;</code>
+     * @return The bytes for contractAddress.
      */
     com.google.protobuf.ByteString
         getContractAddressBytes();
 
     /**
      * <code>int64 call_value = 3;</code>
+     * @return The callValue.
      */
     long getCallValue();
 
     /**
      * <code>bytes data = 4;</code>
+     * @return The data.
      */
     com.google.protobuf.ByteString getData();
 
     /**
      * <code>int64 call_token_value = 5;</code>
+     * @return The callTokenValue.
      */
     long getCallTokenValue();
 
     /**
      * <code>int64 token_id = 6;</code>
+     * @return The tokenId.
      */
     long getTokenId();
   }
   /**
    * Protobuf type {@code TW.Tron.Proto.TriggerSmartContract}
    */
-  public  static final class TriggerSmartContract extends
+  public static final class TriggerSmartContract extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:TW.Tron.Proto.TriggerSmartContract)
       TriggerSmartContractOrBuilder {
@@ -8868,7 +9228,9 @@ public final class Tron {
     private volatile java.lang.Object ownerAddress_;
     /**
      * <code>string owner_address = 1;</code>
+     * @return The ownerAddress.
      */
+    @java.lang.Override
     public java.lang.String getOwnerAddress() {
       java.lang.Object ref = ownerAddress_;
       if (ref instanceof java.lang.String) {
@@ -8883,7 +9245,9 @@ public final class Tron {
     }
     /**
      * <code>string owner_address = 1;</code>
+     * @return The bytes for ownerAddress.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString
         getOwnerAddressBytes() {
       java.lang.Object ref = ownerAddress_;
@@ -8902,7 +9266,9 @@ public final class Tron {
     private volatile java.lang.Object contractAddress_;
     /**
      * <code>string contract_address = 2;</code>
+     * @return The contractAddress.
      */
+    @java.lang.Override
     public java.lang.String getContractAddress() {
       java.lang.Object ref = contractAddress_;
       if (ref instanceof java.lang.String) {
@@ -8917,7 +9283,9 @@ public final class Tron {
     }
     /**
      * <code>string contract_address = 2;</code>
+     * @return The bytes for contractAddress.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString
         getContractAddressBytes() {
       java.lang.Object ref = contractAddress_;
@@ -8936,7 +9304,9 @@ public final class Tron {
     private long callValue_;
     /**
      * <code>int64 call_value = 3;</code>
+     * @return The callValue.
      */
+    @java.lang.Override
     public long getCallValue() {
       return callValue_;
     }
@@ -8945,7 +9315,9 @@ public final class Tron {
     private com.google.protobuf.ByteString data_;
     /**
      * <code>bytes data = 4;</code>
+     * @return The data.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString getData() {
       return data_;
     }
@@ -8954,7 +9326,9 @@ public final class Tron {
     private long callTokenValue_;
     /**
      * <code>int64 call_token_value = 5;</code>
+     * @return The callTokenValue.
      */
+    @java.lang.Override
     public long getCallTokenValue() {
       return callTokenValue_;
     }
@@ -8963,7 +9337,9 @@ public final class Tron {
     private long tokenId_;
     /**
      * <code>int64 token_id = 6;</code>
+     * @return The tokenId.
      */
+    @java.lang.Override
     public long getTokenId() {
       return tokenId_;
     }
@@ -9361,6 +9737,7 @@ public final class Tron {
       private java.lang.Object ownerAddress_ = "";
       /**
        * <code>string owner_address = 1;</code>
+       * @return The ownerAddress.
        */
       public java.lang.String getOwnerAddress() {
         java.lang.Object ref = ownerAddress_;
@@ -9376,6 +9753,7 @@ public final class Tron {
       }
       /**
        * <code>string owner_address = 1;</code>
+       * @return The bytes for ownerAddress.
        */
       public com.google.protobuf.ByteString
           getOwnerAddressBytes() {
@@ -9392,6 +9770,8 @@ public final class Tron {
       }
       /**
        * <code>string owner_address = 1;</code>
+       * @param value The ownerAddress to set.
+       * @return This builder for chaining.
        */
       public Builder setOwnerAddress(
           java.lang.String value) {
@@ -9405,6 +9785,7 @@ public final class Tron {
       }
       /**
        * <code>string owner_address = 1;</code>
+       * @return This builder for chaining.
        */
       public Builder clearOwnerAddress() {
         
@@ -9414,6 +9795,8 @@ public final class Tron {
       }
       /**
        * <code>string owner_address = 1;</code>
+       * @param value The bytes for ownerAddress to set.
+       * @return This builder for chaining.
        */
       public Builder setOwnerAddressBytes(
           com.google.protobuf.ByteString value) {
@@ -9430,6 +9813,7 @@ public final class Tron {
       private java.lang.Object contractAddress_ = "";
       /**
        * <code>string contract_address = 2;</code>
+       * @return The contractAddress.
        */
       public java.lang.String getContractAddress() {
         java.lang.Object ref = contractAddress_;
@@ -9445,6 +9829,7 @@ public final class Tron {
       }
       /**
        * <code>string contract_address = 2;</code>
+       * @return The bytes for contractAddress.
        */
       public com.google.protobuf.ByteString
           getContractAddressBytes() {
@@ -9461,6 +9846,8 @@ public final class Tron {
       }
       /**
        * <code>string contract_address = 2;</code>
+       * @param value The contractAddress to set.
+       * @return This builder for chaining.
        */
       public Builder setContractAddress(
           java.lang.String value) {
@@ -9474,6 +9861,7 @@ public final class Tron {
       }
       /**
        * <code>string contract_address = 2;</code>
+       * @return This builder for chaining.
        */
       public Builder clearContractAddress() {
         
@@ -9483,6 +9871,8 @@ public final class Tron {
       }
       /**
        * <code>string contract_address = 2;</code>
+       * @param value The bytes for contractAddress to set.
+       * @return This builder for chaining.
        */
       public Builder setContractAddressBytes(
           com.google.protobuf.ByteString value) {
@@ -9499,12 +9889,16 @@ public final class Tron {
       private long callValue_ ;
       /**
        * <code>int64 call_value = 3;</code>
+       * @return The callValue.
        */
+      @java.lang.Override
       public long getCallValue() {
         return callValue_;
       }
       /**
        * <code>int64 call_value = 3;</code>
+       * @param value The callValue to set.
+       * @return This builder for chaining.
        */
       public Builder setCallValue(long value) {
         
@@ -9514,6 +9908,7 @@ public final class Tron {
       }
       /**
        * <code>int64 call_value = 3;</code>
+       * @return This builder for chaining.
        */
       public Builder clearCallValue() {
         
@@ -9525,12 +9920,16 @@ public final class Tron {
       private com.google.protobuf.ByteString data_ = com.google.protobuf.ByteString.EMPTY;
       /**
        * <code>bytes data = 4;</code>
+       * @return The data.
        */
+      @java.lang.Override
       public com.google.protobuf.ByteString getData() {
         return data_;
       }
       /**
        * <code>bytes data = 4;</code>
+       * @param value The data to set.
+       * @return This builder for chaining.
        */
       public Builder setData(com.google.protobuf.ByteString value) {
         if (value == null) {
@@ -9543,6 +9942,7 @@ public final class Tron {
       }
       /**
        * <code>bytes data = 4;</code>
+       * @return This builder for chaining.
        */
       public Builder clearData() {
         
@@ -9554,12 +9954,16 @@ public final class Tron {
       private long callTokenValue_ ;
       /**
        * <code>int64 call_token_value = 5;</code>
+       * @return The callTokenValue.
        */
+      @java.lang.Override
       public long getCallTokenValue() {
         return callTokenValue_;
       }
       /**
        * <code>int64 call_token_value = 5;</code>
+       * @param value The callTokenValue to set.
+       * @return This builder for chaining.
        */
       public Builder setCallTokenValue(long value) {
         
@@ -9569,6 +9973,7 @@ public final class Tron {
       }
       /**
        * <code>int64 call_token_value = 5;</code>
+       * @return This builder for chaining.
        */
       public Builder clearCallTokenValue() {
         
@@ -9580,12 +9985,16 @@ public final class Tron {
       private long tokenId_ ;
       /**
        * <code>int64 token_id = 6;</code>
+       * @return The tokenId.
        */
+      @java.lang.Override
       public long getTokenId() {
         return tokenId_;
       }
       /**
        * <code>int64 token_id = 6;</code>
+       * @param value The tokenId to set.
+       * @return This builder for chaining.
        */
       public Builder setTokenId(long value) {
         
@@ -9595,6 +10004,7 @@ public final class Tron {
       }
       /**
        * <code>int64 token_id = 6;</code>
+       * @return This builder for chaining.
        */
       public Builder clearTokenId() {
         
@@ -9661,38 +10071,44 @@ public final class Tron {
 
     /**
      * <code>int64 timestamp = 1;</code>
+     * @return The timestamp.
      */
     long getTimestamp();
 
     /**
      * <code>bytes tx_trie_root = 2;</code>
+     * @return The txTrieRoot.
      */
     com.google.protobuf.ByteString getTxTrieRoot();
 
     /**
      * <code>bytes parent_hash = 3;</code>
+     * @return The parentHash.
      */
     com.google.protobuf.ByteString getParentHash();
 
     /**
      * <code>int64 number = 7;</code>
+     * @return The number.
      */
     long getNumber();
 
     /**
      * <code>bytes witness_address = 9;</code>
+     * @return The witnessAddress.
      */
     com.google.protobuf.ByteString getWitnessAddress();
 
     /**
      * <code>int32 version = 10;</code>
+     * @return The version.
      */
     int getVersion();
   }
   /**
    * Protobuf type {@code TW.Tron.Proto.BlockHeader}
    */
-  public  static final class BlockHeader extends
+  public static final class BlockHeader extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:TW.Tron.Proto.BlockHeader)
       BlockHeaderOrBuilder {
@@ -9803,7 +10219,9 @@ public final class Tron {
     private long timestamp_;
     /**
      * <code>int64 timestamp = 1;</code>
+     * @return The timestamp.
      */
+    @java.lang.Override
     public long getTimestamp() {
       return timestamp_;
     }
@@ -9812,7 +10230,9 @@ public final class Tron {
     private com.google.protobuf.ByteString txTrieRoot_;
     /**
      * <code>bytes tx_trie_root = 2;</code>
+     * @return The txTrieRoot.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString getTxTrieRoot() {
       return txTrieRoot_;
     }
@@ -9821,7 +10241,9 @@ public final class Tron {
     private com.google.protobuf.ByteString parentHash_;
     /**
      * <code>bytes parent_hash = 3;</code>
+     * @return The parentHash.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString getParentHash() {
       return parentHash_;
     }
@@ -9830,7 +10252,9 @@ public final class Tron {
     private long number_;
     /**
      * <code>int64 number = 7;</code>
+     * @return The number.
      */
+    @java.lang.Override
     public long getNumber() {
       return number_;
     }
@@ -9839,7 +10263,9 @@ public final class Tron {
     private com.google.protobuf.ByteString witnessAddress_;
     /**
      * <code>bytes witness_address = 9;</code>
+     * @return The witnessAddress.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString getWitnessAddress() {
       return witnessAddress_;
     }
@@ -9848,7 +10274,9 @@ public final class Tron {
     private int version_;
     /**
      * <code>int32 version = 10;</code>
+     * @return The version.
      */
+    @java.lang.Override
     public int getVersion() {
       return version_;
     }
@@ -10245,12 +10673,16 @@ public final class Tron {
       private long timestamp_ ;
       /**
        * <code>int64 timestamp = 1;</code>
+       * @return The timestamp.
        */
+      @java.lang.Override
       public long getTimestamp() {
         return timestamp_;
       }
       /**
        * <code>int64 timestamp = 1;</code>
+       * @param value The timestamp to set.
+       * @return This builder for chaining.
        */
       public Builder setTimestamp(long value) {
         
@@ -10260,6 +10692,7 @@ public final class Tron {
       }
       /**
        * <code>int64 timestamp = 1;</code>
+       * @return This builder for chaining.
        */
       public Builder clearTimestamp() {
         
@@ -10271,12 +10704,16 @@ public final class Tron {
       private com.google.protobuf.ByteString txTrieRoot_ = com.google.protobuf.ByteString.EMPTY;
       /**
        * <code>bytes tx_trie_root = 2;</code>
+       * @return The txTrieRoot.
        */
+      @java.lang.Override
       public com.google.protobuf.ByteString getTxTrieRoot() {
         return txTrieRoot_;
       }
       /**
        * <code>bytes tx_trie_root = 2;</code>
+       * @param value The txTrieRoot to set.
+       * @return This builder for chaining.
        */
       public Builder setTxTrieRoot(com.google.protobuf.ByteString value) {
         if (value == null) {
@@ -10289,6 +10726,7 @@ public final class Tron {
       }
       /**
        * <code>bytes tx_trie_root = 2;</code>
+       * @return This builder for chaining.
        */
       public Builder clearTxTrieRoot() {
         
@@ -10300,12 +10738,16 @@ public final class Tron {
       private com.google.protobuf.ByteString parentHash_ = com.google.protobuf.ByteString.EMPTY;
       /**
        * <code>bytes parent_hash = 3;</code>
+       * @return The parentHash.
        */
+      @java.lang.Override
       public com.google.protobuf.ByteString getParentHash() {
         return parentHash_;
       }
       /**
        * <code>bytes parent_hash = 3;</code>
+       * @param value The parentHash to set.
+       * @return This builder for chaining.
        */
       public Builder setParentHash(com.google.protobuf.ByteString value) {
         if (value == null) {
@@ -10318,6 +10760,7 @@ public final class Tron {
       }
       /**
        * <code>bytes parent_hash = 3;</code>
+       * @return This builder for chaining.
        */
       public Builder clearParentHash() {
         
@@ -10329,12 +10772,16 @@ public final class Tron {
       private long number_ ;
       /**
        * <code>int64 number = 7;</code>
+       * @return The number.
        */
+      @java.lang.Override
       public long getNumber() {
         return number_;
       }
       /**
        * <code>int64 number = 7;</code>
+       * @param value The number to set.
+       * @return This builder for chaining.
        */
       public Builder setNumber(long value) {
         
@@ -10344,6 +10791,7 @@ public final class Tron {
       }
       /**
        * <code>int64 number = 7;</code>
+       * @return This builder for chaining.
        */
       public Builder clearNumber() {
         
@@ -10355,12 +10803,16 @@ public final class Tron {
       private com.google.protobuf.ByteString witnessAddress_ = com.google.protobuf.ByteString.EMPTY;
       /**
        * <code>bytes witness_address = 9;</code>
+       * @return The witnessAddress.
        */
+      @java.lang.Override
       public com.google.protobuf.ByteString getWitnessAddress() {
         return witnessAddress_;
       }
       /**
        * <code>bytes witness_address = 9;</code>
+       * @param value The witnessAddress to set.
+       * @return This builder for chaining.
        */
       public Builder setWitnessAddress(com.google.protobuf.ByteString value) {
         if (value == null) {
@@ -10373,6 +10825,7 @@ public final class Tron {
       }
       /**
        * <code>bytes witness_address = 9;</code>
+       * @return This builder for chaining.
        */
       public Builder clearWitnessAddress() {
         
@@ -10384,12 +10837,16 @@ public final class Tron {
       private int version_ ;
       /**
        * <code>int32 version = 10;</code>
+       * @return The version.
        */
+      @java.lang.Override
       public int getVersion() {
         return version_;
       }
       /**
        * <code>int32 version = 10;</code>
+       * @param value The version to set.
+       * @return This builder for chaining.
        */
       public Builder setVersion(int value) {
         
@@ -10399,6 +10856,7 @@ public final class Tron {
       }
       /**
        * <code>int32 version = 10;</code>
+       * @return This builder for chaining.
        */
       public Builder clearVersion() {
         
@@ -10469,6 +10927,7 @@ public final class Tron {
      * </pre>
      *
      * <code>int64 timestamp = 1;</code>
+     * @return The timestamp.
      */
     long getTimestamp();
 
@@ -10478,6 +10937,7 @@ public final class Tron {
      * </pre>
      *
      * <code>int64 expiration = 2;</code>
+     * @return The expiration.
      */
     long getExpiration();
 
@@ -10487,6 +10947,7 @@ public final class Tron {
      * </pre>
      *
      * <code>.TW.Tron.Proto.BlockHeader block_header = 3;</code>
+     * @return Whether the blockHeader field is set.
      */
     boolean hasBlockHeader();
     /**
@@ -10495,6 +10956,7 @@ public final class Tron {
      * </pre>
      *
      * <code>.TW.Tron.Proto.BlockHeader block_header = 3;</code>
+     * @return The blockHeader.
      */
     wallet.core.jni.proto.Tron.BlockHeader getBlockHeader();
     /**
@@ -10512,15 +10974,18 @@ public final class Tron {
      * </pre>
      *
      * <code>int64 fee_limit = 4;</code>
+     * @return The feeLimit.
      */
     long getFeeLimit();
 
     /**
      * <code>.TW.Tron.Proto.TransferContract transfer = 10;</code>
+     * @return Whether the transfer field is set.
      */
     boolean hasTransfer();
     /**
      * <code>.TW.Tron.Proto.TransferContract transfer = 10;</code>
+     * @return The transfer.
      */
     wallet.core.jni.proto.Tron.TransferContract getTransfer();
     /**
@@ -10530,10 +10995,12 @@ public final class Tron {
 
     /**
      * <code>.TW.Tron.Proto.TransferAssetContract transfer_asset = 11;</code>
+     * @return Whether the transferAsset field is set.
      */
     boolean hasTransferAsset();
     /**
      * <code>.TW.Tron.Proto.TransferAssetContract transfer_asset = 11;</code>
+     * @return The transferAsset.
      */
     wallet.core.jni.proto.Tron.TransferAssetContract getTransferAsset();
     /**
@@ -10543,10 +11010,12 @@ public final class Tron {
 
     /**
      * <code>.TW.Tron.Proto.FreezeBalanceContract freeze_balance = 12;</code>
+     * @return Whether the freezeBalance field is set.
      */
     boolean hasFreezeBalance();
     /**
      * <code>.TW.Tron.Proto.FreezeBalanceContract freeze_balance = 12;</code>
+     * @return The freezeBalance.
      */
     wallet.core.jni.proto.Tron.FreezeBalanceContract getFreezeBalance();
     /**
@@ -10556,10 +11025,12 @@ public final class Tron {
 
     /**
      * <code>.TW.Tron.Proto.UnfreezeBalanceContract unfreeze_balance = 13;</code>
+     * @return Whether the unfreezeBalance field is set.
      */
     boolean hasUnfreezeBalance();
     /**
      * <code>.TW.Tron.Proto.UnfreezeBalanceContract unfreeze_balance = 13;</code>
+     * @return The unfreezeBalance.
      */
     wallet.core.jni.proto.Tron.UnfreezeBalanceContract getUnfreezeBalance();
     /**
@@ -10569,10 +11040,12 @@ public final class Tron {
 
     /**
      * <code>.TW.Tron.Proto.UnfreezeAssetContract unfreeze_asset = 14;</code>
+     * @return Whether the unfreezeAsset field is set.
      */
     boolean hasUnfreezeAsset();
     /**
      * <code>.TW.Tron.Proto.UnfreezeAssetContract unfreeze_asset = 14;</code>
+     * @return The unfreezeAsset.
      */
     wallet.core.jni.proto.Tron.UnfreezeAssetContract getUnfreezeAsset();
     /**
@@ -10582,10 +11055,12 @@ public final class Tron {
 
     /**
      * <code>.TW.Tron.Proto.WithdrawBalanceContract withdraw_balance = 15;</code>
+     * @return Whether the withdrawBalance field is set.
      */
     boolean hasWithdrawBalance();
     /**
      * <code>.TW.Tron.Proto.WithdrawBalanceContract withdraw_balance = 15;</code>
+     * @return The withdrawBalance.
      */
     wallet.core.jni.proto.Tron.WithdrawBalanceContract getWithdrawBalance();
     /**
@@ -10595,10 +11070,12 @@ public final class Tron {
 
     /**
      * <code>.TW.Tron.Proto.VoteAssetContract vote_asset = 16;</code>
+     * @return Whether the voteAsset field is set.
      */
     boolean hasVoteAsset();
     /**
      * <code>.TW.Tron.Proto.VoteAssetContract vote_asset = 16;</code>
+     * @return The voteAsset.
      */
     wallet.core.jni.proto.Tron.VoteAssetContract getVoteAsset();
     /**
@@ -10608,10 +11085,12 @@ public final class Tron {
 
     /**
      * <code>.TW.Tron.Proto.VoteWitnessContract vote_witness = 17;</code>
+     * @return Whether the voteWitness field is set.
      */
     boolean hasVoteWitness();
     /**
      * <code>.TW.Tron.Proto.VoteWitnessContract vote_witness = 17;</code>
+     * @return The voteWitness.
      */
     wallet.core.jni.proto.Tron.VoteWitnessContract getVoteWitness();
     /**
@@ -10621,10 +11100,12 @@ public final class Tron {
 
     /**
      * <code>.TW.Tron.Proto.TriggerSmartContract trigger_smart_contract = 18;</code>
+     * @return Whether the triggerSmartContract field is set.
      */
     boolean hasTriggerSmartContract();
     /**
      * <code>.TW.Tron.Proto.TriggerSmartContract trigger_smart_contract = 18;</code>
+     * @return The triggerSmartContract.
      */
     wallet.core.jni.proto.Tron.TriggerSmartContract getTriggerSmartContract();
     /**
@@ -10634,10 +11115,12 @@ public final class Tron {
 
     /**
      * <code>.TW.Tron.Proto.TransferTRC20Contract transfer_trc20_contract = 19;</code>
+     * @return Whether the transferTrc20Contract field is set.
      */
     boolean hasTransferTrc20Contract();
     /**
      * <code>.TW.Tron.Proto.TransferTRC20Contract transfer_trc20_contract = 19;</code>
+     * @return The transferTrc20Contract.
      */
     wallet.core.jni.proto.Tron.TransferTRC20Contract getTransferTrc20Contract();
     /**
@@ -10650,7 +11133,7 @@ public final class Tron {
   /**
    * Protobuf type {@code TW.Tron.Proto.Transaction}
    */
-  public  static final class Transaction extends
+  public static final class Transaction extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:TW.Tron.Proto.Transaction)
       TransactionOrBuilder {
@@ -10895,7 +11378,8 @@ public final class Tron {
     private int contractOneofCase_ = 0;
     private java.lang.Object contractOneof_;
     public enum ContractOneofCase
-        implements com.google.protobuf.Internal.EnumLite {
+        implements com.google.protobuf.Internal.EnumLite,
+            com.google.protobuf.AbstractMessage.InternalOneOfEnum {
       TRANSFER(10),
       TRANSFER_ASSET(11),
       FREEZE_BALANCE(12),
@@ -10912,6 +11396,8 @@ public final class Tron {
         this.value = value;
       }
       /**
+       * @param value The number of the enum to look for.
+       * @return The enum associated with the given number.
        * @deprecated Use {@link #forNumber(int)} instead.
        */
       @java.lang.Deprecated
@@ -10954,7 +11440,9 @@ public final class Tron {
      * </pre>
      *
      * <code>int64 timestamp = 1;</code>
+     * @return The timestamp.
      */
+    @java.lang.Override
     public long getTimestamp() {
       return timestamp_;
     }
@@ -10967,7 +11455,9 @@ public final class Tron {
      * </pre>
      *
      * <code>int64 expiration = 2;</code>
+     * @return The expiration.
      */
+    @java.lang.Override
     public long getExpiration() {
       return expiration_;
     }
@@ -10980,7 +11470,9 @@ public final class Tron {
      * </pre>
      *
      * <code>.TW.Tron.Proto.BlockHeader block_header = 3;</code>
+     * @return Whether the blockHeader field is set.
      */
+    @java.lang.Override
     public boolean hasBlockHeader() {
       return blockHeader_ != null;
     }
@@ -10990,7 +11482,9 @@ public final class Tron {
      * </pre>
      *
      * <code>.TW.Tron.Proto.BlockHeader block_header = 3;</code>
+     * @return The blockHeader.
      */
+    @java.lang.Override
     public wallet.core.jni.proto.Tron.BlockHeader getBlockHeader() {
       return blockHeader_ == null ? wallet.core.jni.proto.Tron.BlockHeader.getDefaultInstance() : blockHeader_;
     }
@@ -11001,6 +11495,7 @@ public final class Tron {
      *
      * <code>.TW.Tron.Proto.BlockHeader block_header = 3;</code>
      */
+    @java.lang.Override
     public wallet.core.jni.proto.Tron.BlockHeaderOrBuilder getBlockHeaderOrBuilder() {
       return getBlockHeader();
     }
@@ -11013,7 +11508,9 @@ public final class Tron {
      * </pre>
      *
      * <code>int64 fee_limit = 4;</code>
+     * @return The feeLimit.
      */
+    @java.lang.Override
     public long getFeeLimit() {
       return feeLimit_;
     }
@@ -11021,13 +11518,17 @@ public final class Tron {
     public static final int TRANSFER_FIELD_NUMBER = 10;
     /**
      * <code>.TW.Tron.Proto.TransferContract transfer = 10;</code>
+     * @return Whether the transfer field is set.
      */
+    @java.lang.Override
     public boolean hasTransfer() {
       return contractOneofCase_ == 10;
     }
     /**
      * <code>.TW.Tron.Proto.TransferContract transfer = 10;</code>
+     * @return The transfer.
      */
+    @java.lang.Override
     public wallet.core.jni.proto.Tron.TransferContract getTransfer() {
       if (contractOneofCase_ == 10) {
          return (wallet.core.jni.proto.Tron.TransferContract) contractOneof_;
@@ -11037,6 +11538,7 @@ public final class Tron {
     /**
      * <code>.TW.Tron.Proto.TransferContract transfer = 10;</code>
      */
+    @java.lang.Override
     public wallet.core.jni.proto.Tron.TransferContractOrBuilder getTransferOrBuilder() {
       if (contractOneofCase_ == 10) {
          return (wallet.core.jni.proto.Tron.TransferContract) contractOneof_;
@@ -11047,13 +11549,17 @@ public final class Tron {
     public static final int TRANSFER_ASSET_FIELD_NUMBER = 11;
     /**
      * <code>.TW.Tron.Proto.TransferAssetContract transfer_asset = 11;</code>
+     * @return Whether the transferAsset field is set.
      */
+    @java.lang.Override
     public boolean hasTransferAsset() {
       return contractOneofCase_ == 11;
     }
     /**
      * <code>.TW.Tron.Proto.TransferAssetContract transfer_asset = 11;</code>
+     * @return The transferAsset.
      */
+    @java.lang.Override
     public wallet.core.jni.proto.Tron.TransferAssetContract getTransferAsset() {
       if (contractOneofCase_ == 11) {
          return (wallet.core.jni.proto.Tron.TransferAssetContract) contractOneof_;
@@ -11063,6 +11569,7 @@ public final class Tron {
     /**
      * <code>.TW.Tron.Proto.TransferAssetContract transfer_asset = 11;</code>
      */
+    @java.lang.Override
     public wallet.core.jni.proto.Tron.TransferAssetContractOrBuilder getTransferAssetOrBuilder() {
       if (contractOneofCase_ == 11) {
          return (wallet.core.jni.proto.Tron.TransferAssetContract) contractOneof_;
@@ -11073,13 +11580,17 @@ public final class Tron {
     public static final int FREEZE_BALANCE_FIELD_NUMBER = 12;
     /**
      * <code>.TW.Tron.Proto.FreezeBalanceContract freeze_balance = 12;</code>
+     * @return Whether the freezeBalance field is set.
      */
+    @java.lang.Override
     public boolean hasFreezeBalance() {
       return contractOneofCase_ == 12;
     }
     /**
      * <code>.TW.Tron.Proto.FreezeBalanceContract freeze_balance = 12;</code>
+     * @return The freezeBalance.
      */
+    @java.lang.Override
     public wallet.core.jni.proto.Tron.FreezeBalanceContract getFreezeBalance() {
       if (contractOneofCase_ == 12) {
          return (wallet.core.jni.proto.Tron.FreezeBalanceContract) contractOneof_;
@@ -11089,6 +11600,7 @@ public final class Tron {
     /**
      * <code>.TW.Tron.Proto.FreezeBalanceContract freeze_balance = 12;</code>
      */
+    @java.lang.Override
     public wallet.core.jni.proto.Tron.FreezeBalanceContractOrBuilder getFreezeBalanceOrBuilder() {
       if (contractOneofCase_ == 12) {
          return (wallet.core.jni.proto.Tron.FreezeBalanceContract) contractOneof_;
@@ -11099,13 +11611,17 @@ public final class Tron {
     public static final int UNFREEZE_BALANCE_FIELD_NUMBER = 13;
     /**
      * <code>.TW.Tron.Proto.UnfreezeBalanceContract unfreeze_balance = 13;</code>
+     * @return Whether the unfreezeBalance field is set.
      */
+    @java.lang.Override
     public boolean hasUnfreezeBalance() {
       return contractOneofCase_ == 13;
     }
     /**
      * <code>.TW.Tron.Proto.UnfreezeBalanceContract unfreeze_balance = 13;</code>
+     * @return The unfreezeBalance.
      */
+    @java.lang.Override
     public wallet.core.jni.proto.Tron.UnfreezeBalanceContract getUnfreezeBalance() {
       if (contractOneofCase_ == 13) {
          return (wallet.core.jni.proto.Tron.UnfreezeBalanceContract) contractOneof_;
@@ -11115,6 +11631,7 @@ public final class Tron {
     /**
      * <code>.TW.Tron.Proto.UnfreezeBalanceContract unfreeze_balance = 13;</code>
      */
+    @java.lang.Override
     public wallet.core.jni.proto.Tron.UnfreezeBalanceContractOrBuilder getUnfreezeBalanceOrBuilder() {
       if (contractOneofCase_ == 13) {
          return (wallet.core.jni.proto.Tron.UnfreezeBalanceContract) contractOneof_;
@@ -11125,13 +11642,17 @@ public final class Tron {
     public static final int UNFREEZE_ASSET_FIELD_NUMBER = 14;
     /**
      * <code>.TW.Tron.Proto.UnfreezeAssetContract unfreeze_asset = 14;</code>
+     * @return Whether the unfreezeAsset field is set.
      */
+    @java.lang.Override
     public boolean hasUnfreezeAsset() {
       return contractOneofCase_ == 14;
     }
     /**
      * <code>.TW.Tron.Proto.UnfreezeAssetContract unfreeze_asset = 14;</code>
+     * @return The unfreezeAsset.
      */
+    @java.lang.Override
     public wallet.core.jni.proto.Tron.UnfreezeAssetContract getUnfreezeAsset() {
       if (contractOneofCase_ == 14) {
          return (wallet.core.jni.proto.Tron.UnfreezeAssetContract) contractOneof_;
@@ -11141,6 +11662,7 @@ public final class Tron {
     /**
      * <code>.TW.Tron.Proto.UnfreezeAssetContract unfreeze_asset = 14;</code>
      */
+    @java.lang.Override
     public wallet.core.jni.proto.Tron.UnfreezeAssetContractOrBuilder getUnfreezeAssetOrBuilder() {
       if (contractOneofCase_ == 14) {
          return (wallet.core.jni.proto.Tron.UnfreezeAssetContract) contractOneof_;
@@ -11151,13 +11673,17 @@ public final class Tron {
     public static final int WITHDRAW_BALANCE_FIELD_NUMBER = 15;
     /**
      * <code>.TW.Tron.Proto.WithdrawBalanceContract withdraw_balance = 15;</code>
+     * @return Whether the withdrawBalance field is set.
      */
+    @java.lang.Override
     public boolean hasWithdrawBalance() {
       return contractOneofCase_ == 15;
     }
     /**
      * <code>.TW.Tron.Proto.WithdrawBalanceContract withdraw_balance = 15;</code>
+     * @return The withdrawBalance.
      */
+    @java.lang.Override
     public wallet.core.jni.proto.Tron.WithdrawBalanceContract getWithdrawBalance() {
       if (contractOneofCase_ == 15) {
          return (wallet.core.jni.proto.Tron.WithdrawBalanceContract) contractOneof_;
@@ -11167,6 +11693,7 @@ public final class Tron {
     /**
      * <code>.TW.Tron.Proto.WithdrawBalanceContract withdraw_balance = 15;</code>
      */
+    @java.lang.Override
     public wallet.core.jni.proto.Tron.WithdrawBalanceContractOrBuilder getWithdrawBalanceOrBuilder() {
       if (contractOneofCase_ == 15) {
          return (wallet.core.jni.proto.Tron.WithdrawBalanceContract) contractOneof_;
@@ -11177,13 +11704,17 @@ public final class Tron {
     public static final int VOTE_ASSET_FIELD_NUMBER = 16;
     /**
      * <code>.TW.Tron.Proto.VoteAssetContract vote_asset = 16;</code>
+     * @return Whether the voteAsset field is set.
      */
+    @java.lang.Override
     public boolean hasVoteAsset() {
       return contractOneofCase_ == 16;
     }
     /**
      * <code>.TW.Tron.Proto.VoteAssetContract vote_asset = 16;</code>
+     * @return The voteAsset.
      */
+    @java.lang.Override
     public wallet.core.jni.proto.Tron.VoteAssetContract getVoteAsset() {
       if (contractOneofCase_ == 16) {
          return (wallet.core.jni.proto.Tron.VoteAssetContract) contractOneof_;
@@ -11193,6 +11724,7 @@ public final class Tron {
     /**
      * <code>.TW.Tron.Proto.VoteAssetContract vote_asset = 16;</code>
      */
+    @java.lang.Override
     public wallet.core.jni.proto.Tron.VoteAssetContractOrBuilder getVoteAssetOrBuilder() {
       if (contractOneofCase_ == 16) {
          return (wallet.core.jni.proto.Tron.VoteAssetContract) contractOneof_;
@@ -11203,13 +11735,17 @@ public final class Tron {
     public static final int VOTE_WITNESS_FIELD_NUMBER = 17;
     /**
      * <code>.TW.Tron.Proto.VoteWitnessContract vote_witness = 17;</code>
+     * @return Whether the voteWitness field is set.
      */
+    @java.lang.Override
     public boolean hasVoteWitness() {
       return contractOneofCase_ == 17;
     }
     /**
      * <code>.TW.Tron.Proto.VoteWitnessContract vote_witness = 17;</code>
+     * @return The voteWitness.
      */
+    @java.lang.Override
     public wallet.core.jni.proto.Tron.VoteWitnessContract getVoteWitness() {
       if (contractOneofCase_ == 17) {
          return (wallet.core.jni.proto.Tron.VoteWitnessContract) contractOneof_;
@@ -11219,6 +11755,7 @@ public final class Tron {
     /**
      * <code>.TW.Tron.Proto.VoteWitnessContract vote_witness = 17;</code>
      */
+    @java.lang.Override
     public wallet.core.jni.proto.Tron.VoteWitnessContractOrBuilder getVoteWitnessOrBuilder() {
       if (contractOneofCase_ == 17) {
          return (wallet.core.jni.proto.Tron.VoteWitnessContract) contractOneof_;
@@ -11229,13 +11766,17 @@ public final class Tron {
     public static final int TRIGGER_SMART_CONTRACT_FIELD_NUMBER = 18;
     /**
      * <code>.TW.Tron.Proto.TriggerSmartContract trigger_smart_contract = 18;</code>
+     * @return Whether the triggerSmartContract field is set.
      */
+    @java.lang.Override
     public boolean hasTriggerSmartContract() {
       return contractOneofCase_ == 18;
     }
     /**
      * <code>.TW.Tron.Proto.TriggerSmartContract trigger_smart_contract = 18;</code>
+     * @return The triggerSmartContract.
      */
+    @java.lang.Override
     public wallet.core.jni.proto.Tron.TriggerSmartContract getTriggerSmartContract() {
       if (contractOneofCase_ == 18) {
          return (wallet.core.jni.proto.Tron.TriggerSmartContract) contractOneof_;
@@ -11245,6 +11786,7 @@ public final class Tron {
     /**
      * <code>.TW.Tron.Proto.TriggerSmartContract trigger_smart_contract = 18;</code>
      */
+    @java.lang.Override
     public wallet.core.jni.proto.Tron.TriggerSmartContractOrBuilder getTriggerSmartContractOrBuilder() {
       if (contractOneofCase_ == 18) {
          return (wallet.core.jni.proto.Tron.TriggerSmartContract) contractOneof_;
@@ -11255,13 +11797,17 @@ public final class Tron {
     public static final int TRANSFER_TRC20_CONTRACT_FIELD_NUMBER = 19;
     /**
      * <code>.TW.Tron.Proto.TransferTRC20Contract transfer_trc20_contract = 19;</code>
+     * @return Whether the transferTrc20Contract field is set.
      */
+    @java.lang.Override
     public boolean hasTransferTrc20Contract() {
       return contractOneofCase_ == 19;
     }
     /**
      * <code>.TW.Tron.Proto.TransferTRC20Contract transfer_trc20_contract = 19;</code>
+     * @return The transferTrc20Contract.
      */
+    @java.lang.Override
     public wallet.core.jni.proto.Tron.TransferTRC20Contract getTransferTrc20Contract() {
       if (contractOneofCase_ == 19) {
          return (wallet.core.jni.proto.Tron.TransferTRC20Contract) contractOneof_;
@@ -11271,6 +11817,7 @@ public final class Tron {
     /**
      * <code>.TW.Tron.Proto.TransferTRC20Contract transfer_trc20_contract = 19;</code>
      */
+    @java.lang.Override
     public wallet.core.jni.proto.Tron.TransferTRC20ContractOrBuilder getTransferTrc20ContractOrBuilder() {
       if (contractOneofCase_ == 19) {
          return (wallet.core.jni.proto.Tron.TransferTRC20Contract) contractOneof_;
@@ -11946,7 +12493,9 @@ public final class Tron {
        * </pre>
        *
        * <code>int64 timestamp = 1;</code>
+       * @return The timestamp.
        */
+      @java.lang.Override
       public long getTimestamp() {
         return timestamp_;
       }
@@ -11956,6 +12505,8 @@ public final class Tron {
        * </pre>
        *
        * <code>int64 timestamp = 1;</code>
+       * @param value The timestamp to set.
+       * @return This builder for chaining.
        */
       public Builder setTimestamp(long value) {
         
@@ -11969,6 +12520,7 @@ public final class Tron {
        * </pre>
        *
        * <code>int64 timestamp = 1;</code>
+       * @return This builder for chaining.
        */
       public Builder clearTimestamp() {
         
@@ -11984,7 +12536,9 @@ public final class Tron {
        * </pre>
        *
        * <code>int64 expiration = 2;</code>
+       * @return The expiration.
        */
+      @java.lang.Override
       public long getExpiration() {
         return expiration_;
       }
@@ -11994,6 +12548,8 @@ public final class Tron {
        * </pre>
        *
        * <code>int64 expiration = 2;</code>
+       * @param value The expiration to set.
+       * @return This builder for chaining.
        */
       public Builder setExpiration(long value) {
         
@@ -12007,6 +12563,7 @@ public final class Tron {
        * </pre>
        *
        * <code>int64 expiration = 2;</code>
+       * @return This builder for chaining.
        */
       public Builder clearExpiration() {
         
@@ -12024,6 +12581,7 @@ public final class Tron {
        * </pre>
        *
        * <code>.TW.Tron.Proto.BlockHeader block_header = 3;</code>
+       * @return Whether the blockHeader field is set.
        */
       public boolean hasBlockHeader() {
         return blockHeaderBuilder_ != null || blockHeader_ != null;
@@ -12034,6 +12592,7 @@ public final class Tron {
        * </pre>
        *
        * <code>.TW.Tron.Proto.BlockHeader block_header = 3;</code>
+       * @return The blockHeader.
        */
       public wallet.core.jni.proto.Tron.BlockHeader getBlockHeader() {
         if (blockHeaderBuilder_ == null) {
@@ -12175,7 +12734,9 @@ public final class Tron {
        * </pre>
        *
        * <code>int64 fee_limit = 4;</code>
+       * @return The feeLimit.
        */
+      @java.lang.Override
       public long getFeeLimit() {
         return feeLimit_;
       }
@@ -12185,6 +12746,8 @@ public final class Tron {
        * </pre>
        *
        * <code>int64 fee_limit = 4;</code>
+       * @param value The feeLimit to set.
+       * @return This builder for chaining.
        */
       public Builder setFeeLimit(long value) {
         
@@ -12198,6 +12761,7 @@ public final class Tron {
        * </pre>
        *
        * <code>int64 fee_limit = 4;</code>
+       * @return This builder for chaining.
        */
       public Builder clearFeeLimit() {
         
@@ -12210,13 +12774,17 @@ public final class Tron {
           wallet.core.jni.proto.Tron.TransferContract, wallet.core.jni.proto.Tron.TransferContract.Builder, wallet.core.jni.proto.Tron.TransferContractOrBuilder> transferBuilder_;
       /**
        * <code>.TW.Tron.Proto.TransferContract transfer = 10;</code>
+       * @return Whether the transfer field is set.
        */
+      @java.lang.Override
       public boolean hasTransfer() {
         return contractOneofCase_ == 10;
       }
       /**
        * <code>.TW.Tron.Proto.TransferContract transfer = 10;</code>
+       * @return The transfer.
        */
+      @java.lang.Override
       public wallet.core.jni.proto.Tron.TransferContract getTransfer() {
         if (transferBuilder_ == null) {
           if (contractOneofCase_ == 10) {
@@ -12310,6 +12878,7 @@ public final class Tron {
       /**
        * <code>.TW.Tron.Proto.TransferContract transfer = 10;</code>
        */
+      @java.lang.Override
       public wallet.core.jni.proto.Tron.TransferContractOrBuilder getTransferOrBuilder() {
         if ((contractOneofCase_ == 10) && (transferBuilder_ != null)) {
           return transferBuilder_.getMessageOrBuilder();
@@ -12346,13 +12915,17 @@ public final class Tron {
           wallet.core.jni.proto.Tron.TransferAssetContract, wallet.core.jni.proto.Tron.TransferAssetContract.Builder, wallet.core.jni.proto.Tron.TransferAssetContractOrBuilder> transferAssetBuilder_;
       /**
        * <code>.TW.Tron.Proto.TransferAssetContract transfer_asset = 11;</code>
+       * @return Whether the transferAsset field is set.
        */
+      @java.lang.Override
       public boolean hasTransferAsset() {
         return contractOneofCase_ == 11;
       }
       /**
        * <code>.TW.Tron.Proto.TransferAssetContract transfer_asset = 11;</code>
+       * @return The transferAsset.
        */
+      @java.lang.Override
       public wallet.core.jni.proto.Tron.TransferAssetContract getTransferAsset() {
         if (transferAssetBuilder_ == null) {
           if (contractOneofCase_ == 11) {
@@ -12446,6 +13019,7 @@ public final class Tron {
       /**
        * <code>.TW.Tron.Proto.TransferAssetContract transfer_asset = 11;</code>
        */
+      @java.lang.Override
       public wallet.core.jni.proto.Tron.TransferAssetContractOrBuilder getTransferAssetOrBuilder() {
         if ((contractOneofCase_ == 11) && (transferAssetBuilder_ != null)) {
           return transferAssetBuilder_.getMessageOrBuilder();
@@ -12482,13 +13056,17 @@ public final class Tron {
           wallet.core.jni.proto.Tron.FreezeBalanceContract, wallet.core.jni.proto.Tron.FreezeBalanceContract.Builder, wallet.core.jni.proto.Tron.FreezeBalanceContractOrBuilder> freezeBalanceBuilder_;
       /**
        * <code>.TW.Tron.Proto.FreezeBalanceContract freeze_balance = 12;</code>
+       * @return Whether the freezeBalance field is set.
        */
+      @java.lang.Override
       public boolean hasFreezeBalance() {
         return contractOneofCase_ == 12;
       }
       /**
        * <code>.TW.Tron.Proto.FreezeBalanceContract freeze_balance = 12;</code>
+       * @return The freezeBalance.
        */
+      @java.lang.Override
       public wallet.core.jni.proto.Tron.FreezeBalanceContract getFreezeBalance() {
         if (freezeBalanceBuilder_ == null) {
           if (contractOneofCase_ == 12) {
@@ -12582,6 +13160,7 @@ public final class Tron {
       /**
        * <code>.TW.Tron.Proto.FreezeBalanceContract freeze_balance = 12;</code>
        */
+      @java.lang.Override
       public wallet.core.jni.proto.Tron.FreezeBalanceContractOrBuilder getFreezeBalanceOrBuilder() {
         if ((contractOneofCase_ == 12) && (freezeBalanceBuilder_ != null)) {
           return freezeBalanceBuilder_.getMessageOrBuilder();
@@ -12618,13 +13197,17 @@ public final class Tron {
           wallet.core.jni.proto.Tron.UnfreezeBalanceContract, wallet.core.jni.proto.Tron.UnfreezeBalanceContract.Builder, wallet.core.jni.proto.Tron.UnfreezeBalanceContractOrBuilder> unfreezeBalanceBuilder_;
       /**
        * <code>.TW.Tron.Proto.UnfreezeBalanceContract unfreeze_balance = 13;</code>
+       * @return Whether the unfreezeBalance field is set.
        */
+      @java.lang.Override
       public boolean hasUnfreezeBalance() {
         return contractOneofCase_ == 13;
       }
       /**
        * <code>.TW.Tron.Proto.UnfreezeBalanceContract unfreeze_balance = 13;</code>
+       * @return The unfreezeBalance.
        */
+      @java.lang.Override
       public wallet.core.jni.proto.Tron.UnfreezeBalanceContract getUnfreezeBalance() {
         if (unfreezeBalanceBuilder_ == null) {
           if (contractOneofCase_ == 13) {
@@ -12718,6 +13301,7 @@ public final class Tron {
       /**
        * <code>.TW.Tron.Proto.UnfreezeBalanceContract unfreeze_balance = 13;</code>
        */
+      @java.lang.Override
       public wallet.core.jni.proto.Tron.UnfreezeBalanceContractOrBuilder getUnfreezeBalanceOrBuilder() {
         if ((contractOneofCase_ == 13) && (unfreezeBalanceBuilder_ != null)) {
           return unfreezeBalanceBuilder_.getMessageOrBuilder();
@@ -12754,13 +13338,17 @@ public final class Tron {
           wallet.core.jni.proto.Tron.UnfreezeAssetContract, wallet.core.jni.proto.Tron.UnfreezeAssetContract.Builder, wallet.core.jni.proto.Tron.UnfreezeAssetContractOrBuilder> unfreezeAssetBuilder_;
       /**
        * <code>.TW.Tron.Proto.UnfreezeAssetContract unfreeze_asset = 14;</code>
+       * @return Whether the unfreezeAsset field is set.
        */
+      @java.lang.Override
       public boolean hasUnfreezeAsset() {
         return contractOneofCase_ == 14;
       }
       /**
        * <code>.TW.Tron.Proto.UnfreezeAssetContract unfreeze_asset = 14;</code>
+       * @return The unfreezeAsset.
        */
+      @java.lang.Override
       public wallet.core.jni.proto.Tron.UnfreezeAssetContract getUnfreezeAsset() {
         if (unfreezeAssetBuilder_ == null) {
           if (contractOneofCase_ == 14) {
@@ -12854,6 +13442,7 @@ public final class Tron {
       /**
        * <code>.TW.Tron.Proto.UnfreezeAssetContract unfreeze_asset = 14;</code>
        */
+      @java.lang.Override
       public wallet.core.jni.proto.Tron.UnfreezeAssetContractOrBuilder getUnfreezeAssetOrBuilder() {
         if ((contractOneofCase_ == 14) && (unfreezeAssetBuilder_ != null)) {
           return unfreezeAssetBuilder_.getMessageOrBuilder();
@@ -12890,13 +13479,17 @@ public final class Tron {
           wallet.core.jni.proto.Tron.WithdrawBalanceContract, wallet.core.jni.proto.Tron.WithdrawBalanceContract.Builder, wallet.core.jni.proto.Tron.WithdrawBalanceContractOrBuilder> withdrawBalanceBuilder_;
       /**
        * <code>.TW.Tron.Proto.WithdrawBalanceContract withdraw_balance = 15;</code>
+       * @return Whether the withdrawBalance field is set.
        */
+      @java.lang.Override
       public boolean hasWithdrawBalance() {
         return contractOneofCase_ == 15;
       }
       /**
        * <code>.TW.Tron.Proto.WithdrawBalanceContract withdraw_balance = 15;</code>
+       * @return The withdrawBalance.
        */
+      @java.lang.Override
       public wallet.core.jni.proto.Tron.WithdrawBalanceContract getWithdrawBalance() {
         if (withdrawBalanceBuilder_ == null) {
           if (contractOneofCase_ == 15) {
@@ -12990,6 +13583,7 @@ public final class Tron {
       /**
        * <code>.TW.Tron.Proto.WithdrawBalanceContract withdraw_balance = 15;</code>
        */
+      @java.lang.Override
       public wallet.core.jni.proto.Tron.WithdrawBalanceContractOrBuilder getWithdrawBalanceOrBuilder() {
         if ((contractOneofCase_ == 15) && (withdrawBalanceBuilder_ != null)) {
           return withdrawBalanceBuilder_.getMessageOrBuilder();
@@ -13026,13 +13620,17 @@ public final class Tron {
           wallet.core.jni.proto.Tron.VoteAssetContract, wallet.core.jni.proto.Tron.VoteAssetContract.Builder, wallet.core.jni.proto.Tron.VoteAssetContractOrBuilder> voteAssetBuilder_;
       /**
        * <code>.TW.Tron.Proto.VoteAssetContract vote_asset = 16;</code>
+       * @return Whether the voteAsset field is set.
        */
+      @java.lang.Override
       public boolean hasVoteAsset() {
         return contractOneofCase_ == 16;
       }
       /**
        * <code>.TW.Tron.Proto.VoteAssetContract vote_asset = 16;</code>
+       * @return The voteAsset.
        */
+      @java.lang.Override
       public wallet.core.jni.proto.Tron.VoteAssetContract getVoteAsset() {
         if (voteAssetBuilder_ == null) {
           if (contractOneofCase_ == 16) {
@@ -13126,6 +13724,7 @@ public final class Tron {
       /**
        * <code>.TW.Tron.Proto.VoteAssetContract vote_asset = 16;</code>
        */
+      @java.lang.Override
       public wallet.core.jni.proto.Tron.VoteAssetContractOrBuilder getVoteAssetOrBuilder() {
         if ((contractOneofCase_ == 16) && (voteAssetBuilder_ != null)) {
           return voteAssetBuilder_.getMessageOrBuilder();
@@ -13162,13 +13761,17 @@ public final class Tron {
           wallet.core.jni.proto.Tron.VoteWitnessContract, wallet.core.jni.proto.Tron.VoteWitnessContract.Builder, wallet.core.jni.proto.Tron.VoteWitnessContractOrBuilder> voteWitnessBuilder_;
       /**
        * <code>.TW.Tron.Proto.VoteWitnessContract vote_witness = 17;</code>
+       * @return Whether the voteWitness field is set.
        */
+      @java.lang.Override
       public boolean hasVoteWitness() {
         return contractOneofCase_ == 17;
       }
       /**
        * <code>.TW.Tron.Proto.VoteWitnessContract vote_witness = 17;</code>
+       * @return The voteWitness.
        */
+      @java.lang.Override
       public wallet.core.jni.proto.Tron.VoteWitnessContract getVoteWitness() {
         if (voteWitnessBuilder_ == null) {
           if (contractOneofCase_ == 17) {
@@ -13262,6 +13865,7 @@ public final class Tron {
       /**
        * <code>.TW.Tron.Proto.VoteWitnessContract vote_witness = 17;</code>
        */
+      @java.lang.Override
       public wallet.core.jni.proto.Tron.VoteWitnessContractOrBuilder getVoteWitnessOrBuilder() {
         if ((contractOneofCase_ == 17) && (voteWitnessBuilder_ != null)) {
           return voteWitnessBuilder_.getMessageOrBuilder();
@@ -13298,13 +13902,17 @@ public final class Tron {
           wallet.core.jni.proto.Tron.TriggerSmartContract, wallet.core.jni.proto.Tron.TriggerSmartContract.Builder, wallet.core.jni.proto.Tron.TriggerSmartContractOrBuilder> triggerSmartContractBuilder_;
       /**
        * <code>.TW.Tron.Proto.TriggerSmartContract trigger_smart_contract = 18;</code>
+       * @return Whether the triggerSmartContract field is set.
        */
+      @java.lang.Override
       public boolean hasTriggerSmartContract() {
         return contractOneofCase_ == 18;
       }
       /**
        * <code>.TW.Tron.Proto.TriggerSmartContract trigger_smart_contract = 18;</code>
+       * @return The triggerSmartContract.
        */
+      @java.lang.Override
       public wallet.core.jni.proto.Tron.TriggerSmartContract getTriggerSmartContract() {
         if (triggerSmartContractBuilder_ == null) {
           if (contractOneofCase_ == 18) {
@@ -13398,6 +14006,7 @@ public final class Tron {
       /**
        * <code>.TW.Tron.Proto.TriggerSmartContract trigger_smart_contract = 18;</code>
        */
+      @java.lang.Override
       public wallet.core.jni.proto.Tron.TriggerSmartContractOrBuilder getTriggerSmartContractOrBuilder() {
         if ((contractOneofCase_ == 18) && (triggerSmartContractBuilder_ != null)) {
           return triggerSmartContractBuilder_.getMessageOrBuilder();
@@ -13434,13 +14043,17 @@ public final class Tron {
           wallet.core.jni.proto.Tron.TransferTRC20Contract, wallet.core.jni.proto.Tron.TransferTRC20Contract.Builder, wallet.core.jni.proto.Tron.TransferTRC20ContractOrBuilder> transferTrc20ContractBuilder_;
       /**
        * <code>.TW.Tron.Proto.TransferTRC20Contract transfer_trc20_contract = 19;</code>
+       * @return Whether the transferTrc20Contract field is set.
        */
+      @java.lang.Override
       public boolean hasTransferTrc20Contract() {
         return contractOneofCase_ == 19;
       }
       /**
        * <code>.TW.Tron.Proto.TransferTRC20Contract transfer_trc20_contract = 19;</code>
+       * @return The transferTrc20Contract.
        */
+      @java.lang.Override
       public wallet.core.jni.proto.Tron.TransferTRC20Contract getTransferTrc20Contract() {
         if (transferTrc20ContractBuilder_ == null) {
           if (contractOneofCase_ == 19) {
@@ -13534,6 +14147,7 @@ public final class Tron {
       /**
        * <code>.TW.Tron.Proto.TransferTRC20Contract transfer_trc20_contract = 19;</code>
        */
+      @java.lang.Override
       public wallet.core.jni.proto.Tron.TransferTRC20ContractOrBuilder getTransferTrc20ContractOrBuilder() {
         if ((contractOneofCase_ == 19) && (transferTrc20ContractBuilder_ != null)) {
           return transferTrc20ContractBuilder_.getMessageOrBuilder();
@@ -13628,6 +14242,7 @@ public final class Tron {
      * </pre>
      *
      * <code>.TW.Tron.Proto.Transaction transaction = 1;</code>
+     * @return Whether the transaction field is set.
      */
     boolean hasTransaction();
     /**
@@ -13636,6 +14251,7 @@ public final class Tron {
      * </pre>
      *
      * <code>.TW.Tron.Proto.Transaction transaction = 1;</code>
+     * @return The transaction.
      */
     wallet.core.jni.proto.Tron.Transaction getTransaction();
     /**
@@ -13653,13 +14269,14 @@ public final class Tron {
      * </pre>
      *
      * <code>bytes private_key = 2;</code>
+     * @return The privateKey.
      */
     com.google.protobuf.ByteString getPrivateKey();
   }
   /**
    * Protobuf type {@code TW.Tron.Proto.SigningInput}
    */
-  public  static final class SigningInput extends
+  public static final class SigningInput extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:TW.Tron.Proto.SigningInput)
       SigningInputOrBuilder {
@@ -13760,7 +14377,9 @@ public final class Tron {
      * </pre>
      *
      * <code>.TW.Tron.Proto.Transaction transaction = 1;</code>
+     * @return Whether the transaction field is set.
      */
+    @java.lang.Override
     public boolean hasTransaction() {
       return transaction_ != null;
     }
@@ -13770,7 +14389,9 @@ public final class Tron {
      * </pre>
      *
      * <code>.TW.Tron.Proto.Transaction transaction = 1;</code>
+     * @return The transaction.
      */
+    @java.lang.Override
     public wallet.core.jni.proto.Tron.Transaction getTransaction() {
       return transaction_ == null ? wallet.core.jni.proto.Tron.Transaction.getDefaultInstance() : transaction_;
     }
@@ -13781,6 +14402,7 @@ public final class Tron {
      *
      * <code>.TW.Tron.Proto.Transaction transaction = 1;</code>
      */
+    @java.lang.Override
     public wallet.core.jni.proto.Tron.TransactionOrBuilder getTransactionOrBuilder() {
       return getTransaction();
     }
@@ -13793,7 +14415,9 @@ public final class Tron {
      * </pre>
      *
      * <code>bytes private_key = 2;</code>
+     * @return The privateKey.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString getPrivateKey() {
       return privateKey_;
     }
@@ -14139,6 +14763,7 @@ public final class Tron {
        * </pre>
        *
        * <code>.TW.Tron.Proto.Transaction transaction = 1;</code>
+       * @return Whether the transaction field is set.
        */
       public boolean hasTransaction() {
         return transactionBuilder_ != null || transaction_ != null;
@@ -14149,6 +14774,7 @@ public final class Tron {
        * </pre>
        *
        * <code>.TW.Tron.Proto.Transaction transaction = 1;</code>
+       * @return The transaction.
        */
       public wallet.core.jni.proto.Tron.Transaction getTransaction() {
         if (transactionBuilder_ == null) {
@@ -14290,7 +14916,9 @@ public final class Tron {
        * </pre>
        *
        * <code>bytes private_key = 2;</code>
+       * @return The privateKey.
        */
+      @java.lang.Override
       public com.google.protobuf.ByteString getPrivateKey() {
         return privateKey_;
       }
@@ -14300,6 +14928,8 @@ public final class Tron {
        * </pre>
        *
        * <code>bytes private_key = 2;</code>
+       * @param value The privateKey to set.
+       * @return This builder for chaining.
        */
       public Builder setPrivateKey(com.google.protobuf.ByteString value) {
         if (value == null) {
@@ -14316,6 +14946,7 @@ public final class Tron {
        * </pre>
        *
        * <code>bytes private_key = 2;</code>
+       * @return This builder for chaining.
        */
       public Builder clearPrivateKey() {
         
@@ -14386,6 +15017,7 @@ public final class Tron {
      * </pre>
      *
      * <code>bytes id = 1;</code>
+     * @return The id.
      */
     com.google.protobuf.ByteString getId();
 
@@ -14395,25 +15027,30 @@ public final class Tron {
      * </pre>
      *
      * <code>bytes signature = 2;</code>
+     * @return The signature.
      */
     com.google.protobuf.ByteString getSignature();
 
     /**
      * <code>bytes ref_block_bytes = 3;</code>
+     * @return The refBlockBytes.
      */
     com.google.protobuf.ByteString getRefBlockBytes();
 
     /**
      * <code>bytes ref_block_hash = 4;</code>
+     * @return The refBlockHash.
      */
     com.google.protobuf.ByteString getRefBlockHash();
 
     /**
      * <code>string json = 5;</code>
+     * @return The json.
      */
     java.lang.String getJson();
     /**
      * <code>string json = 5;</code>
+     * @return The bytes for json.
      */
     com.google.protobuf.ByteString
         getJsonBytes();
@@ -14425,7 +15062,7 @@ public final class Tron {
    *
    * Protobuf type {@code TW.Tron.Proto.SigningOutput}
    */
-  public  static final class SigningOutput extends
+  public static final class SigningOutput extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:TW.Tron.Proto.SigningOutput)
       SigningOutputOrBuilder {
@@ -14538,7 +15175,9 @@ public final class Tron {
      * </pre>
      *
      * <code>bytes id = 1;</code>
+     * @return The id.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString getId() {
       return id_;
     }
@@ -14551,7 +15190,9 @@ public final class Tron {
      * </pre>
      *
      * <code>bytes signature = 2;</code>
+     * @return The signature.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString getSignature() {
       return signature_;
     }
@@ -14560,7 +15201,9 @@ public final class Tron {
     private com.google.protobuf.ByteString refBlockBytes_;
     /**
      * <code>bytes ref_block_bytes = 3;</code>
+     * @return The refBlockBytes.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString getRefBlockBytes() {
       return refBlockBytes_;
     }
@@ -14569,7 +15212,9 @@ public final class Tron {
     private com.google.protobuf.ByteString refBlockHash_;
     /**
      * <code>bytes ref_block_hash = 4;</code>
+     * @return The refBlockHash.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString getRefBlockHash() {
       return refBlockHash_;
     }
@@ -14578,7 +15223,9 @@ public final class Tron {
     private volatile java.lang.Object json_;
     /**
      * <code>string json = 5;</code>
+     * @return The json.
      */
+    @java.lang.Override
     public java.lang.String getJson() {
       java.lang.Object ref = json_;
       if (ref instanceof java.lang.String) {
@@ -14593,7 +15240,9 @@ public final class Tron {
     }
     /**
      * <code>string json = 5;</code>
+     * @return The bytes for json.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString
         getJsonBytes() {
       java.lang.Object ref = json_;
@@ -14989,7 +15638,9 @@ public final class Tron {
        * </pre>
        *
        * <code>bytes id = 1;</code>
+       * @return The id.
        */
+      @java.lang.Override
       public com.google.protobuf.ByteString getId() {
         return id_;
       }
@@ -14999,6 +15650,8 @@ public final class Tron {
        * </pre>
        *
        * <code>bytes id = 1;</code>
+       * @param value The id to set.
+       * @return This builder for chaining.
        */
       public Builder setId(com.google.protobuf.ByteString value) {
         if (value == null) {
@@ -15015,6 +15668,7 @@ public final class Tron {
        * </pre>
        *
        * <code>bytes id = 1;</code>
+       * @return This builder for chaining.
        */
       public Builder clearId() {
         
@@ -15030,7 +15684,9 @@ public final class Tron {
        * </pre>
        *
        * <code>bytes signature = 2;</code>
+       * @return The signature.
        */
+      @java.lang.Override
       public com.google.protobuf.ByteString getSignature() {
         return signature_;
       }
@@ -15040,6 +15696,8 @@ public final class Tron {
        * </pre>
        *
        * <code>bytes signature = 2;</code>
+       * @param value The signature to set.
+       * @return This builder for chaining.
        */
       public Builder setSignature(com.google.protobuf.ByteString value) {
         if (value == null) {
@@ -15056,6 +15714,7 @@ public final class Tron {
        * </pre>
        *
        * <code>bytes signature = 2;</code>
+       * @return This builder for chaining.
        */
       public Builder clearSignature() {
         
@@ -15067,12 +15726,16 @@ public final class Tron {
       private com.google.protobuf.ByteString refBlockBytes_ = com.google.protobuf.ByteString.EMPTY;
       /**
        * <code>bytes ref_block_bytes = 3;</code>
+       * @return The refBlockBytes.
        */
+      @java.lang.Override
       public com.google.protobuf.ByteString getRefBlockBytes() {
         return refBlockBytes_;
       }
       /**
        * <code>bytes ref_block_bytes = 3;</code>
+       * @param value The refBlockBytes to set.
+       * @return This builder for chaining.
        */
       public Builder setRefBlockBytes(com.google.protobuf.ByteString value) {
         if (value == null) {
@@ -15085,6 +15748,7 @@ public final class Tron {
       }
       /**
        * <code>bytes ref_block_bytes = 3;</code>
+       * @return This builder for chaining.
        */
       public Builder clearRefBlockBytes() {
         
@@ -15096,12 +15760,16 @@ public final class Tron {
       private com.google.protobuf.ByteString refBlockHash_ = com.google.protobuf.ByteString.EMPTY;
       /**
        * <code>bytes ref_block_hash = 4;</code>
+       * @return The refBlockHash.
        */
+      @java.lang.Override
       public com.google.protobuf.ByteString getRefBlockHash() {
         return refBlockHash_;
       }
       /**
        * <code>bytes ref_block_hash = 4;</code>
+       * @param value The refBlockHash to set.
+       * @return This builder for chaining.
        */
       public Builder setRefBlockHash(com.google.protobuf.ByteString value) {
         if (value == null) {
@@ -15114,6 +15782,7 @@ public final class Tron {
       }
       /**
        * <code>bytes ref_block_hash = 4;</code>
+       * @return This builder for chaining.
        */
       public Builder clearRefBlockHash() {
         
@@ -15125,6 +15794,7 @@ public final class Tron {
       private java.lang.Object json_ = "";
       /**
        * <code>string json = 5;</code>
+       * @return The json.
        */
       public java.lang.String getJson() {
         java.lang.Object ref = json_;
@@ -15140,6 +15810,7 @@ public final class Tron {
       }
       /**
        * <code>string json = 5;</code>
+       * @return The bytes for json.
        */
       public com.google.protobuf.ByteString
           getJsonBytes() {
@@ -15156,6 +15827,8 @@ public final class Tron {
       }
       /**
        * <code>string json = 5;</code>
+       * @param value The json to set.
+       * @return This builder for chaining.
        */
       public Builder setJson(
           java.lang.String value) {
@@ -15169,6 +15842,7 @@ public final class Tron {
       }
       /**
        * <code>string json = 5;</code>
+       * @return This builder for chaining.
        */
       public Builder clearJson() {
         
@@ -15178,6 +15852,8 @@ public final class Tron {
       }
       /**
        * <code>string json = 5;</code>
+       * @param value The bytes for json to set.
+       * @return This builder for chaining.
        */
       public Builder setJsonBytes(
           com.google.protobuf.ByteString value) {

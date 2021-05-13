@@ -19,7 +19,9 @@ public enum EthereumChainID {
     VECHAIN (74),
     THUNDERTOKEN (108),
     TOMOCHAIN (88),
-    BINANCESMARTCHAIN (56);
+    BINANCESMARTCHAIN (56),
+    MATIC (137),
+    WANCHAIN (888);
 
     private final int value;
     EthereumChainID(int value) {
@@ -38,6 +40,8 @@ public enum EthereumChainID {
             case 108: return EthereumChainID.THUNDERTOKEN;
             case 88: return EthereumChainID.TOMOCHAIN;
             case 56: return EthereumChainID.BINANCESMARTCHAIN;
+            case 137: return EthereumChainID.MATIC;
+            case 888: return EthereumChainID.WANCHAIN;
             default: return null;
         }
     }

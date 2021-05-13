@@ -24,6 +24,7 @@ public final class Nebulas {
      * </pre>
      *
      * <code>string from_address = 1;</code>
+     * @return The fromAddress.
      */
     java.lang.String getFromAddress();
     /**
@@ -32,6 +33,7 @@ public final class Nebulas {
      * </pre>
      *
      * <code>string from_address = 1;</code>
+     * @return The bytes for fromAddress.
      */
     com.google.protobuf.ByteString
         getFromAddressBytes();
@@ -42,6 +44,7 @@ public final class Nebulas {
      * </pre>
      *
      * <code>bytes chain_id = 2;</code>
+     * @return The chainId.
      */
     com.google.protobuf.ByteString getChainId();
 
@@ -51,6 +54,7 @@ public final class Nebulas {
      * </pre>
      *
      * <code>bytes nonce = 3;</code>
+     * @return The nonce.
      */
     com.google.protobuf.ByteString getNonce();
 
@@ -60,6 +64,7 @@ public final class Nebulas {
      * </pre>
      *
      * <code>bytes gas_price = 4;</code>
+     * @return The gasPrice.
      */
     com.google.protobuf.ByteString getGasPrice();
 
@@ -69,6 +74,7 @@ public final class Nebulas {
      * </pre>
      *
      * <code>bytes gas_limit = 5;</code>
+     * @return The gasLimit.
      */
     com.google.protobuf.ByteString getGasLimit();
 
@@ -78,6 +84,7 @@ public final class Nebulas {
      * </pre>
      *
      * <code>string to_address = 6;</code>
+     * @return The toAddress.
      */
     java.lang.String getToAddress();
     /**
@@ -86,6 +93,7 @@ public final class Nebulas {
      * </pre>
      *
      * <code>string to_address = 6;</code>
+     * @return The bytes for toAddress.
      */
     com.google.protobuf.ByteString
         getToAddressBytes();
@@ -96,6 +104,7 @@ public final class Nebulas {
      * </pre>
      *
      * <code>bytes amount = 7;</code>
+     * @return The amount.
      */
     com.google.protobuf.ByteString getAmount();
 
@@ -105,6 +114,7 @@ public final class Nebulas {
      * </pre>
      *
      * <code>bytes timestamp = 8;</code>
+     * @return The timestamp.
      */
     com.google.protobuf.ByteString getTimestamp();
 
@@ -114,6 +124,7 @@ public final class Nebulas {
      * </pre>
      *
      * <code>string payload = 9;</code>
+     * @return The payload.
      */
     java.lang.String getPayload();
     /**
@@ -122,6 +133,7 @@ public final class Nebulas {
      * </pre>
      *
      * <code>string payload = 9;</code>
+     * @return The bytes for payload.
      */
     com.google.protobuf.ByteString
         getPayloadBytes();
@@ -132,6 +144,7 @@ public final class Nebulas {
      * </pre>
      *
      * <code>bytes private_key = 10;</code>
+     * @return The privateKey.
      */
     com.google.protobuf.ByteString getPrivateKey();
   }
@@ -142,7 +155,7 @@ public final class Nebulas {
    *
    * Protobuf type {@code TW.Nebulas.Proto.SigningInput}
    */
-  public  static final class SigningInput extends
+  public static final class SigningInput extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:TW.Nebulas.Proto.SigningInput)
       SigningInputOrBuilder {
@@ -287,7 +300,9 @@ public final class Nebulas {
      * </pre>
      *
      * <code>string from_address = 1;</code>
+     * @return The fromAddress.
      */
+    @java.lang.Override
     public java.lang.String getFromAddress() {
       java.lang.Object ref = fromAddress_;
       if (ref instanceof java.lang.String) {
@@ -306,7 +321,9 @@ public final class Nebulas {
      * </pre>
      *
      * <code>string from_address = 1;</code>
+     * @return The bytes for fromAddress.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString
         getFromAddressBytes() {
       java.lang.Object ref = fromAddress_;
@@ -329,7 +346,9 @@ public final class Nebulas {
      * </pre>
      *
      * <code>bytes chain_id = 2;</code>
+     * @return The chainId.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString getChainId() {
       return chainId_;
     }
@@ -342,7 +361,9 @@ public final class Nebulas {
      * </pre>
      *
      * <code>bytes nonce = 3;</code>
+     * @return The nonce.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString getNonce() {
       return nonce_;
     }
@@ -355,7 +376,9 @@ public final class Nebulas {
      * </pre>
      *
      * <code>bytes gas_price = 4;</code>
+     * @return The gasPrice.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString getGasPrice() {
       return gasPrice_;
     }
@@ -368,7 +391,9 @@ public final class Nebulas {
      * </pre>
      *
      * <code>bytes gas_limit = 5;</code>
+     * @return The gasLimit.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString getGasLimit() {
       return gasLimit_;
     }
@@ -381,7 +406,9 @@ public final class Nebulas {
      * </pre>
      *
      * <code>string to_address = 6;</code>
+     * @return The toAddress.
      */
+    @java.lang.Override
     public java.lang.String getToAddress() {
       java.lang.Object ref = toAddress_;
       if (ref instanceof java.lang.String) {
@@ -400,7 +427,9 @@ public final class Nebulas {
      * </pre>
      *
      * <code>string to_address = 6;</code>
+     * @return The bytes for toAddress.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString
         getToAddressBytes() {
       java.lang.Object ref = toAddress_;
@@ -423,7 +452,9 @@ public final class Nebulas {
      * </pre>
      *
      * <code>bytes amount = 7;</code>
+     * @return The amount.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString getAmount() {
       return amount_;
     }
@@ -436,7 +467,9 @@ public final class Nebulas {
      * </pre>
      *
      * <code>bytes timestamp = 8;</code>
+     * @return The timestamp.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString getTimestamp() {
       return timestamp_;
     }
@@ -449,7 +482,9 @@ public final class Nebulas {
      * </pre>
      *
      * <code>string payload = 9;</code>
+     * @return The payload.
      */
+    @java.lang.Override
     public java.lang.String getPayload() {
       java.lang.Object ref = payload_;
       if (ref instanceof java.lang.String) {
@@ -468,7 +503,9 @@ public final class Nebulas {
      * </pre>
      *
      * <code>string payload = 9;</code>
+     * @return The bytes for payload.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString
         getPayloadBytes() {
       java.lang.Object ref = payload_;
@@ -491,7 +528,9 @@ public final class Nebulas {
      * </pre>
      *
      * <code>bytes private_key = 10;</code>
+     * @return The privateKey.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString getPrivateKey() {
       return privateKey_;
     }
@@ -962,6 +1001,7 @@ public final class Nebulas {
        * </pre>
        *
        * <code>string from_address = 1;</code>
+       * @return The fromAddress.
        */
       public java.lang.String getFromAddress() {
         java.lang.Object ref = fromAddress_;
@@ -981,6 +1021,7 @@ public final class Nebulas {
        * </pre>
        *
        * <code>string from_address = 1;</code>
+       * @return The bytes for fromAddress.
        */
       public com.google.protobuf.ByteString
           getFromAddressBytes() {
@@ -1001,6 +1042,8 @@ public final class Nebulas {
        * </pre>
        *
        * <code>string from_address = 1;</code>
+       * @param value The fromAddress to set.
+       * @return This builder for chaining.
        */
       public Builder setFromAddress(
           java.lang.String value) {
@@ -1018,6 +1061,7 @@ public final class Nebulas {
        * </pre>
        *
        * <code>string from_address = 1;</code>
+       * @return This builder for chaining.
        */
       public Builder clearFromAddress() {
         
@@ -1031,6 +1075,8 @@ public final class Nebulas {
        * </pre>
        *
        * <code>string from_address = 1;</code>
+       * @param value The bytes for fromAddress to set.
+       * @return This builder for chaining.
        */
       public Builder setFromAddressBytes(
           com.google.protobuf.ByteString value) {
@@ -1051,7 +1097,9 @@ public final class Nebulas {
        * </pre>
        *
        * <code>bytes chain_id = 2;</code>
+       * @return The chainId.
        */
+      @java.lang.Override
       public com.google.protobuf.ByteString getChainId() {
         return chainId_;
       }
@@ -1061,6 +1109,8 @@ public final class Nebulas {
        * </pre>
        *
        * <code>bytes chain_id = 2;</code>
+       * @param value The chainId to set.
+       * @return This builder for chaining.
        */
       public Builder setChainId(com.google.protobuf.ByteString value) {
         if (value == null) {
@@ -1077,6 +1127,7 @@ public final class Nebulas {
        * </pre>
        *
        * <code>bytes chain_id = 2;</code>
+       * @return This builder for chaining.
        */
       public Builder clearChainId() {
         
@@ -1092,7 +1143,9 @@ public final class Nebulas {
        * </pre>
        *
        * <code>bytes nonce = 3;</code>
+       * @return The nonce.
        */
+      @java.lang.Override
       public com.google.protobuf.ByteString getNonce() {
         return nonce_;
       }
@@ -1102,6 +1155,8 @@ public final class Nebulas {
        * </pre>
        *
        * <code>bytes nonce = 3;</code>
+       * @param value The nonce to set.
+       * @return This builder for chaining.
        */
       public Builder setNonce(com.google.protobuf.ByteString value) {
         if (value == null) {
@@ -1118,6 +1173,7 @@ public final class Nebulas {
        * </pre>
        *
        * <code>bytes nonce = 3;</code>
+       * @return This builder for chaining.
        */
       public Builder clearNonce() {
         
@@ -1133,7 +1189,9 @@ public final class Nebulas {
        * </pre>
        *
        * <code>bytes gas_price = 4;</code>
+       * @return The gasPrice.
        */
+      @java.lang.Override
       public com.google.protobuf.ByteString getGasPrice() {
         return gasPrice_;
       }
@@ -1143,6 +1201,8 @@ public final class Nebulas {
        * </pre>
        *
        * <code>bytes gas_price = 4;</code>
+       * @param value The gasPrice to set.
+       * @return This builder for chaining.
        */
       public Builder setGasPrice(com.google.protobuf.ByteString value) {
         if (value == null) {
@@ -1159,6 +1219,7 @@ public final class Nebulas {
        * </pre>
        *
        * <code>bytes gas_price = 4;</code>
+       * @return This builder for chaining.
        */
       public Builder clearGasPrice() {
         
@@ -1174,7 +1235,9 @@ public final class Nebulas {
        * </pre>
        *
        * <code>bytes gas_limit = 5;</code>
+       * @return The gasLimit.
        */
+      @java.lang.Override
       public com.google.protobuf.ByteString getGasLimit() {
         return gasLimit_;
       }
@@ -1184,6 +1247,8 @@ public final class Nebulas {
        * </pre>
        *
        * <code>bytes gas_limit = 5;</code>
+       * @param value The gasLimit to set.
+       * @return This builder for chaining.
        */
       public Builder setGasLimit(com.google.protobuf.ByteString value) {
         if (value == null) {
@@ -1200,6 +1265,7 @@ public final class Nebulas {
        * </pre>
        *
        * <code>bytes gas_limit = 5;</code>
+       * @return This builder for chaining.
        */
       public Builder clearGasLimit() {
         
@@ -1215,6 +1281,7 @@ public final class Nebulas {
        * </pre>
        *
        * <code>string to_address = 6;</code>
+       * @return The toAddress.
        */
       public java.lang.String getToAddress() {
         java.lang.Object ref = toAddress_;
@@ -1234,6 +1301,7 @@ public final class Nebulas {
        * </pre>
        *
        * <code>string to_address = 6;</code>
+       * @return The bytes for toAddress.
        */
       public com.google.protobuf.ByteString
           getToAddressBytes() {
@@ -1254,6 +1322,8 @@ public final class Nebulas {
        * </pre>
        *
        * <code>string to_address = 6;</code>
+       * @param value The toAddress to set.
+       * @return This builder for chaining.
        */
       public Builder setToAddress(
           java.lang.String value) {
@@ -1271,6 +1341,7 @@ public final class Nebulas {
        * </pre>
        *
        * <code>string to_address = 6;</code>
+       * @return This builder for chaining.
        */
       public Builder clearToAddress() {
         
@@ -1284,6 +1355,8 @@ public final class Nebulas {
        * </pre>
        *
        * <code>string to_address = 6;</code>
+       * @param value The bytes for toAddress to set.
+       * @return This builder for chaining.
        */
       public Builder setToAddressBytes(
           com.google.protobuf.ByteString value) {
@@ -1304,7 +1377,9 @@ public final class Nebulas {
        * </pre>
        *
        * <code>bytes amount = 7;</code>
+       * @return The amount.
        */
+      @java.lang.Override
       public com.google.protobuf.ByteString getAmount() {
         return amount_;
       }
@@ -1314,6 +1389,8 @@ public final class Nebulas {
        * </pre>
        *
        * <code>bytes amount = 7;</code>
+       * @param value The amount to set.
+       * @return This builder for chaining.
        */
       public Builder setAmount(com.google.protobuf.ByteString value) {
         if (value == null) {
@@ -1330,6 +1407,7 @@ public final class Nebulas {
        * </pre>
        *
        * <code>bytes amount = 7;</code>
+       * @return This builder for chaining.
        */
       public Builder clearAmount() {
         
@@ -1345,7 +1423,9 @@ public final class Nebulas {
        * </pre>
        *
        * <code>bytes timestamp = 8;</code>
+       * @return The timestamp.
        */
+      @java.lang.Override
       public com.google.protobuf.ByteString getTimestamp() {
         return timestamp_;
       }
@@ -1355,6 +1435,8 @@ public final class Nebulas {
        * </pre>
        *
        * <code>bytes timestamp = 8;</code>
+       * @param value The timestamp to set.
+       * @return This builder for chaining.
        */
       public Builder setTimestamp(com.google.protobuf.ByteString value) {
         if (value == null) {
@@ -1371,6 +1453,7 @@ public final class Nebulas {
        * </pre>
        *
        * <code>bytes timestamp = 8;</code>
+       * @return This builder for chaining.
        */
       public Builder clearTimestamp() {
         
@@ -1386,6 +1469,7 @@ public final class Nebulas {
        * </pre>
        *
        * <code>string payload = 9;</code>
+       * @return The payload.
        */
       public java.lang.String getPayload() {
         java.lang.Object ref = payload_;
@@ -1405,6 +1489,7 @@ public final class Nebulas {
        * </pre>
        *
        * <code>string payload = 9;</code>
+       * @return The bytes for payload.
        */
       public com.google.protobuf.ByteString
           getPayloadBytes() {
@@ -1425,6 +1510,8 @@ public final class Nebulas {
        * </pre>
        *
        * <code>string payload = 9;</code>
+       * @param value The payload to set.
+       * @return This builder for chaining.
        */
       public Builder setPayload(
           java.lang.String value) {
@@ -1442,6 +1529,7 @@ public final class Nebulas {
        * </pre>
        *
        * <code>string payload = 9;</code>
+       * @return This builder for chaining.
        */
       public Builder clearPayload() {
         
@@ -1455,6 +1543,8 @@ public final class Nebulas {
        * </pre>
        *
        * <code>string payload = 9;</code>
+       * @param value The bytes for payload to set.
+       * @return This builder for chaining.
        */
       public Builder setPayloadBytes(
           com.google.protobuf.ByteString value) {
@@ -1475,7 +1565,9 @@ public final class Nebulas {
        * </pre>
        *
        * <code>bytes private_key = 10;</code>
+       * @return The privateKey.
        */
+      @java.lang.Override
       public com.google.protobuf.ByteString getPrivateKey() {
         return privateKey_;
       }
@@ -1485,6 +1577,8 @@ public final class Nebulas {
        * </pre>
        *
        * <code>bytes private_key = 10;</code>
+       * @param value The privateKey to set.
+       * @return This builder for chaining.
        */
       public Builder setPrivateKey(com.google.protobuf.ByteString value) {
         if (value == null) {
@@ -1501,6 +1595,7 @@ public final class Nebulas {
        * </pre>
        *
        * <code>bytes private_key = 10;</code>
+       * @return This builder for chaining.
        */
       public Builder clearPrivateKey() {
         
@@ -1567,20 +1662,24 @@ public final class Nebulas {
 
     /**
      * <code>uint32 algorithm = 1;</code>
+     * @return The algorithm.
      */
     int getAlgorithm();
 
     /**
      * <code>bytes signature = 2;</code>
+     * @return The signature.
      */
     com.google.protobuf.ByteString getSignature();
 
     /**
      * <code>string raw = 3;</code>
+     * @return The raw.
      */
     java.lang.String getRaw();
     /**
      * <code>string raw = 3;</code>
+     * @return The bytes for raw.
      */
     com.google.protobuf.ByteString
         getRawBytes();
@@ -1592,7 +1691,7 @@ public final class Nebulas {
    *
    * Protobuf type {@code TW.Nebulas.Proto.SigningOutput}
    */
-  public  static final class SigningOutput extends
+  public static final class SigningOutput extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:TW.Nebulas.Proto.SigningOutput)
       SigningOutputOrBuilder {
@@ -1688,7 +1787,9 @@ public final class Nebulas {
     private int algorithm_;
     /**
      * <code>uint32 algorithm = 1;</code>
+     * @return The algorithm.
      */
+    @java.lang.Override
     public int getAlgorithm() {
       return algorithm_;
     }
@@ -1697,7 +1798,9 @@ public final class Nebulas {
     private com.google.protobuf.ByteString signature_;
     /**
      * <code>bytes signature = 2;</code>
+     * @return The signature.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString getSignature() {
       return signature_;
     }
@@ -1706,7 +1809,9 @@ public final class Nebulas {
     private volatile java.lang.Object raw_;
     /**
      * <code>string raw = 3;</code>
+     * @return The raw.
      */
+    @java.lang.Override
     public java.lang.String getRaw() {
       java.lang.Object ref = raw_;
       if (ref instanceof java.lang.String) {
@@ -1721,7 +1826,9 @@ public final class Nebulas {
     }
     /**
      * <code>string raw = 3;</code>
+     * @return The bytes for raw.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString
         getRawBytes() {
       java.lang.Object ref = raw_;
@@ -2079,12 +2186,16 @@ public final class Nebulas {
       private int algorithm_ ;
       /**
        * <code>uint32 algorithm = 1;</code>
+       * @return The algorithm.
        */
+      @java.lang.Override
       public int getAlgorithm() {
         return algorithm_;
       }
       /**
        * <code>uint32 algorithm = 1;</code>
+       * @param value The algorithm to set.
+       * @return This builder for chaining.
        */
       public Builder setAlgorithm(int value) {
         
@@ -2094,6 +2205,7 @@ public final class Nebulas {
       }
       /**
        * <code>uint32 algorithm = 1;</code>
+       * @return This builder for chaining.
        */
       public Builder clearAlgorithm() {
         
@@ -2105,12 +2217,16 @@ public final class Nebulas {
       private com.google.protobuf.ByteString signature_ = com.google.protobuf.ByteString.EMPTY;
       /**
        * <code>bytes signature = 2;</code>
+       * @return The signature.
        */
+      @java.lang.Override
       public com.google.protobuf.ByteString getSignature() {
         return signature_;
       }
       /**
        * <code>bytes signature = 2;</code>
+       * @param value The signature to set.
+       * @return This builder for chaining.
        */
       public Builder setSignature(com.google.protobuf.ByteString value) {
         if (value == null) {
@@ -2123,6 +2239,7 @@ public final class Nebulas {
       }
       /**
        * <code>bytes signature = 2;</code>
+       * @return This builder for chaining.
        */
       public Builder clearSignature() {
         
@@ -2134,6 +2251,7 @@ public final class Nebulas {
       private java.lang.Object raw_ = "";
       /**
        * <code>string raw = 3;</code>
+       * @return The raw.
        */
       public java.lang.String getRaw() {
         java.lang.Object ref = raw_;
@@ -2149,6 +2267,7 @@ public final class Nebulas {
       }
       /**
        * <code>string raw = 3;</code>
+       * @return The bytes for raw.
        */
       public com.google.protobuf.ByteString
           getRawBytes() {
@@ -2165,6 +2284,8 @@ public final class Nebulas {
       }
       /**
        * <code>string raw = 3;</code>
+       * @param value The raw to set.
+       * @return This builder for chaining.
        */
       public Builder setRaw(
           java.lang.String value) {
@@ -2178,6 +2299,7 @@ public final class Nebulas {
       }
       /**
        * <code>string raw = 3;</code>
+       * @return This builder for chaining.
        */
       public Builder clearRaw() {
         
@@ -2187,6 +2309,8 @@ public final class Nebulas {
       }
       /**
        * <code>string raw = 3;</code>
+       * @param value The bytes for raw to set.
+       * @return This builder for chaining.
        */
       public Builder setRawBytes(
           com.google.protobuf.ByteString value) {
@@ -2258,16 +2382,19 @@ public final class Nebulas {
 
     /**
      * <code>string type = 1;</code>
+     * @return The type.
      */
     java.lang.String getType();
     /**
      * <code>string type = 1;</code>
+     * @return The bytes for type.
      */
     com.google.protobuf.ByteString
         getTypeBytes();
 
     /**
      * <code>bytes payload = 2;</code>
+     * @return The payload.
      */
     com.google.protobuf.ByteString getPayload();
   }
@@ -2277,7 +2404,7 @@ public final class Nebulas {
    *
    * Protobuf type {@code TW.Nebulas.Proto.Data}
    */
-  public  static final class Data extends
+  public static final class Data extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:TW.Nebulas.Proto.Data)
       DataOrBuilder {
@@ -2368,7 +2495,9 @@ public final class Nebulas {
     private volatile java.lang.Object type_;
     /**
      * <code>string type = 1;</code>
+     * @return The type.
      */
+    @java.lang.Override
     public java.lang.String getType() {
       java.lang.Object ref = type_;
       if (ref instanceof java.lang.String) {
@@ -2383,7 +2512,9 @@ public final class Nebulas {
     }
     /**
      * <code>string type = 1;</code>
+     * @return The bytes for type.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString
         getTypeBytes() {
       java.lang.Object ref = type_;
@@ -2402,7 +2533,9 @@ public final class Nebulas {
     private com.google.protobuf.ByteString payload_;
     /**
      * <code>bytes payload = 2;</code>
+     * @return The payload.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString getPayload() {
       return payload_;
     }
@@ -2732,6 +2865,7 @@ public final class Nebulas {
       private java.lang.Object type_ = "";
       /**
        * <code>string type = 1;</code>
+       * @return The type.
        */
       public java.lang.String getType() {
         java.lang.Object ref = type_;
@@ -2747,6 +2881,7 @@ public final class Nebulas {
       }
       /**
        * <code>string type = 1;</code>
+       * @return The bytes for type.
        */
       public com.google.protobuf.ByteString
           getTypeBytes() {
@@ -2763,6 +2898,8 @@ public final class Nebulas {
       }
       /**
        * <code>string type = 1;</code>
+       * @param value The type to set.
+       * @return This builder for chaining.
        */
       public Builder setType(
           java.lang.String value) {
@@ -2776,6 +2913,7 @@ public final class Nebulas {
       }
       /**
        * <code>string type = 1;</code>
+       * @return This builder for chaining.
        */
       public Builder clearType() {
         
@@ -2785,6 +2923,8 @@ public final class Nebulas {
       }
       /**
        * <code>string type = 1;</code>
+       * @param value The bytes for type to set.
+       * @return This builder for chaining.
        */
       public Builder setTypeBytes(
           com.google.protobuf.ByteString value) {
@@ -2801,12 +2941,16 @@ public final class Nebulas {
       private com.google.protobuf.ByteString payload_ = com.google.protobuf.ByteString.EMPTY;
       /**
        * <code>bytes payload = 2;</code>
+       * @return The payload.
        */
+      @java.lang.Override
       public com.google.protobuf.ByteString getPayload() {
         return payload_;
       }
       /**
        * <code>bytes payload = 2;</code>
+       * @param value The payload to set.
+       * @return This builder for chaining.
        */
       public Builder setPayload(com.google.protobuf.ByteString value) {
         if (value == null) {
@@ -2819,6 +2963,7 @@ public final class Nebulas {
       }
       /**
        * <code>bytes payload = 2;</code>
+       * @return This builder for chaining.
        */
       public Builder clearPayload() {
         
@@ -2885,40 +3030,48 @@ public final class Nebulas {
 
     /**
      * <code>bytes hash = 1;</code>
+     * @return The hash.
      */
     com.google.protobuf.ByteString getHash();
 
     /**
      * <code>bytes from = 2;</code>
+     * @return The from.
      */
     com.google.protobuf.ByteString getFrom();
 
     /**
      * <code>bytes to = 3;</code>
+     * @return The to.
      */
     com.google.protobuf.ByteString getTo();
 
     /**
      * <code>bytes value = 4;</code>
+     * @return The value.
      */
     com.google.protobuf.ByteString getValue();
 
     /**
      * <code>uint64 nonce = 5;</code>
+     * @return The nonce.
      */
     long getNonce();
 
     /**
      * <code>int64 timestamp = 6;</code>
+     * @return The timestamp.
      */
     long getTimestamp();
 
     /**
      * <code>.TW.Nebulas.Proto.Data data = 7;</code>
+     * @return Whether the data field is set.
      */
     boolean hasData();
     /**
      * <code>.TW.Nebulas.Proto.Data data = 7;</code>
+     * @return The data.
      */
     wallet.core.jni.proto.Nebulas.Data getData();
     /**
@@ -2928,26 +3081,31 @@ public final class Nebulas {
 
     /**
      * <code>uint32 chain_id = 8;</code>
+     * @return The chainId.
      */
     int getChainId();
 
     /**
      * <code>bytes gas_price = 9;</code>
+     * @return The gasPrice.
      */
     com.google.protobuf.ByteString getGasPrice();
 
     /**
      * <code>bytes gas_limit = 10;</code>
+     * @return The gasLimit.
      */
     com.google.protobuf.ByteString getGasLimit();
 
     /**
      * <code>uint32 alg = 11;</code>
+     * @return The alg.
      */
     int getAlg();
 
     /**
      * <code>bytes sign = 12;</code>
+     * @return The sign.
      */
     com.google.protobuf.ByteString getSign();
   }
@@ -2958,7 +3116,7 @@ public final class Nebulas {
    *
    * Protobuf type {@code TW.Nebulas.Proto.RawTransaction}
    */
-  public  static final class RawTransaction extends
+  public static final class RawTransaction extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:TW.Nebulas.Proto.RawTransaction)
       RawTransactionOrBuilder {
@@ -3111,7 +3269,9 @@ public final class Nebulas {
     private com.google.protobuf.ByteString hash_;
     /**
      * <code>bytes hash = 1;</code>
+     * @return The hash.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString getHash() {
       return hash_;
     }
@@ -3120,7 +3280,9 @@ public final class Nebulas {
     private com.google.protobuf.ByteString from_;
     /**
      * <code>bytes from = 2;</code>
+     * @return The from.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString getFrom() {
       return from_;
     }
@@ -3129,7 +3291,9 @@ public final class Nebulas {
     private com.google.protobuf.ByteString to_;
     /**
      * <code>bytes to = 3;</code>
+     * @return The to.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString getTo() {
       return to_;
     }
@@ -3138,7 +3302,9 @@ public final class Nebulas {
     private com.google.protobuf.ByteString value_;
     /**
      * <code>bytes value = 4;</code>
+     * @return The value.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString getValue() {
       return value_;
     }
@@ -3147,7 +3313,9 @@ public final class Nebulas {
     private long nonce_;
     /**
      * <code>uint64 nonce = 5;</code>
+     * @return The nonce.
      */
+    @java.lang.Override
     public long getNonce() {
       return nonce_;
     }
@@ -3156,7 +3324,9 @@ public final class Nebulas {
     private long timestamp_;
     /**
      * <code>int64 timestamp = 6;</code>
+     * @return The timestamp.
      */
+    @java.lang.Override
     public long getTimestamp() {
       return timestamp_;
     }
@@ -3165,19 +3335,24 @@ public final class Nebulas {
     private wallet.core.jni.proto.Nebulas.Data data_;
     /**
      * <code>.TW.Nebulas.Proto.Data data = 7;</code>
+     * @return Whether the data field is set.
      */
+    @java.lang.Override
     public boolean hasData() {
       return data_ != null;
     }
     /**
      * <code>.TW.Nebulas.Proto.Data data = 7;</code>
+     * @return The data.
      */
+    @java.lang.Override
     public wallet.core.jni.proto.Nebulas.Data getData() {
       return data_ == null ? wallet.core.jni.proto.Nebulas.Data.getDefaultInstance() : data_;
     }
     /**
      * <code>.TW.Nebulas.Proto.Data data = 7;</code>
      */
+    @java.lang.Override
     public wallet.core.jni.proto.Nebulas.DataOrBuilder getDataOrBuilder() {
       return getData();
     }
@@ -3186,7 +3361,9 @@ public final class Nebulas {
     private int chainId_;
     /**
      * <code>uint32 chain_id = 8;</code>
+     * @return The chainId.
      */
+    @java.lang.Override
     public int getChainId() {
       return chainId_;
     }
@@ -3195,7 +3372,9 @@ public final class Nebulas {
     private com.google.protobuf.ByteString gasPrice_;
     /**
      * <code>bytes gas_price = 9;</code>
+     * @return The gasPrice.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString getGasPrice() {
       return gasPrice_;
     }
@@ -3204,7 +3383,9 @@ public final class Nebulas {
     private com.google.protobuf.ByteString gasLimit_;
     /**
      * <code>bytes gas_limit = 10;</code>
+     * @return The gasLimit.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString getGasLimit() {
       return gasLimit_;
     }
@@ -3213,7 +3394,9 @@ public final class Nebulas {
     private int alg_;
     /**
      * <code>uint32 alg = 11;</code>
+     * @return The alg.
      */
+    @java.lang.Override
     public int getAlg() {
       return alg_;
     }
@@ -3222,7 +3405,9 @@ public final class Nebulas {
     private com.google.protobuf.ByteString sign_;
     /**
      * <code>bytes sign = 12;</code>
+     * @return The sign.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString getSign() {
       return sign_;
     }
@@ -3738,12 +3923,16 @@ public final class Nebulas {
       private com.google.protobuf.ByteString hash_ = com.google.protobuf.ByteString.EMPTY;
       /**
        * <code>bytes hash = 1;</code>
+       * @return The hash.
        */
+      @java.lang.Override
       public com.google.protobuf.ByteString getHash() {
         return hash_;
       }
       /**
        * <code>bytes hash = 1;</code>
+       * @param value The hash to set.
+       * @return This builder for chaining.
        */
       public Builder setHash(com.google.protobuf.ByteString value) {
         if (value == null) {
@@ -3756,6 +3945,7 @@ public final class Nebulas {
       }
       /**
        * <code>bytes hash = 1;</code>
+       * @return This builder for chaining.
        */
       public Builder clearHash() {
         
@@ -3767,12 +3957,16 @@ public final class Nebulas {
       private com.google.protobuf.ByteString from_ = com.google.protobuf.ByteString.EMPTY;
       /**
        * <code>bytes from = 2;</code>
+       * @return The from.
        */
+      @java.lang.Override
       public com.google.protobuf.ByteString getFrom() {
         return from_;
       }
       /**
        * <code>bytes from = 2;</code>
+       * @param value The from to set.
+       * @return This builder for chaining.
        */
       public Builder setFrom(com.google.protobuf.ByteString value) {
         if (value == null) {
@@ -3785,6 +3979,7 @@ public final class Nebulas {
       }
       /**
        * <code>bytes from = 2;</code>
+       * @return This builder for chaining.
        */
       public Builder clearFrom() {
         
@@ -3796,12 +3991,16 @@ public final class Nebulas {
       private com.google.protobuf.ByteString to_ = com.google.protobuf.ByteString.EMPTY;
       /**
        * <code>bytes to = 3;</code>
+       * @return The to.
        */
+      @java.lang.Override
       public com.google.protobuf.ByteString getTo() {
         return to_;
       }
       /**
        * <code>bytes to = 3;</code>
+       * @param value The to to set.
+       * @return This builder for chaining.
        */
       public Builder setTo(com.google.protobuf.ByteString value) {
         if (value == null) {
@@ -3814,6 +4013,7 @@ public final class Nebulas {
       }
       /**
        * <code>bytes to = 3;</code>
+       * @return This builder for chaining.
        */
       public Builder clearTo() {
         
@@ -3825,12 +4025,16 @@ public final class Nebulas {
       private com.google.protobuf.ByteString value_ = com.google.protobuf.ByteString.EMPTY;
       /**
        * <code>bytes value = 4;</code>
+       * @return The value.
        */
+      @java.lang.Override
       public com.google.protobuf.ByteString getValue() {
         return value_;
       }
       /**
        * <code>bytes value = 4;</code>
+       * @param value The value to set.
+       * @return This builder for chaining.
        */
       public Builder setValue(com.google.protobuf.ByteString value) {
         if (value == null) {
@@ -3843,6 +4047,7 @@ public final class Nebulas {
       }
       /**
        * <code>bytes value = 4;</code>
+       * @return This builder for chaining.
        */
       public Builder clearValue() {
         
@@ -3854,12 +4059,16 @@ public final class Nebulas {
       private long nonce_ ;
       /**
        * <code>uint64 nonce = 5;</code>
+       * @return The nonce.
        */
+      @java.lang.Override
       public long getNonce() {
         return nonce_;
       }
       /**
        * <code>uint64 nonce = 5;</code>
+       * @param value The nonce to set.
+       * @return This builder for chaining.
        */
       public Builder setNonce(long value) {
         
@@ -3869,6 +4078,7 @@ public final class Nebulas {
       }
       /**
        * <code>uint64 nonce = 5;</code>
+       * @return This builder for chaining.
        */
       public Builder clearNonce() {
         
@@ -3880,12 +4090,16 @@ public final class Nebulas {
       private long timestamp_ ;
       /**
        * <code>int64 timestamp = 6;</code>
+       * @return The timestamp.
        */
+      @java.lang.Override
       public long getTimestamp() {
         return timestamp_;
       }
       /**
        * <code>int64 timestamp = 6;</code>
+       * @param value The timestamp to set.
+       * @return This builder for chaining.
        */
       public Builder setTimestamp(long value) {
         
@@ -3895,6 +4109,7 @@ public final class Nebulas {
       }
       /**
        * <code>int64 timestamp = 6;</code>
+       * @return This builder for chaining.
        */
       public Builder clearTimestamp() {
         
@@ -3908,12 +4123,14 @@ public final class Nebulas {
           wallet.core.jni.proto.Nebulas.Data, wallet.core.jni.proto.Nebulas.Data.Builder, wallet.core.jni.proto.Nebulas.DataOrBuilder> dataBuilder_;
       /**
        * <code>.TW.Nebulas.Proto.Data data = 7;</code>
+       * @return Whether the data field is set.
        */
       public boolean hasData() {
         return dataBuilder_ != null || data_ != null;
       }
       /**
        * <code>.TW.Nebulas.Proto.Data data = 7;</code>
+       * @return The data.
        */
       public wallet.core.jni.proto.Nebulas.Data getData() {
         if (dataBuilder_ == null) {
@@ -4023,12 +4240,16 @@ public final class Nebulas {
       private int chainId_ ;
       /**
        * <code>uint32 chain_id = 8;</code>
+       * @return The chainId.
        */
+      @java.lang.Override
       public int getChainId() {
         return chainId_;
       }
       /**
        * <code>uint32 chain_id = 8;</code>
+       * @param value The chainId to set.
+       * @return This builder for chaining.
        */
       public Builder setChainId(int value) {
         
@@ -4038,6 +4259,7 @@ public final class Nebulas {
       }
       /**
        * <code>uint32 chain_id = 8;</code>
+       * @return This builder for chaining.
        */
       public Builder clearChainId() {
         
@@ -4049,12 +4271,16 @@ public final class Nebulas {
       private com.google.protobuf.ByteString gasPrice_ = com.google.protobuf.ByteString.EMPTY;
       /**
        * <code>bytes gas_price = 9;</code>
+       * @return The gasPrice.
        */
+      @java.lang.Override
       public com.google.protobuf.ByteString getGasPrice() {
         return gasPrice_;
       }
       /**
        * <code>bytes gas_price = 9;</code>
+       * @param value The gasPrice to set.
+       * @return This builder for chaining.
        */
       public Builder setGasPrice(com.google.protobuf.ByteString value) {
         if (value == null) {
@@ -4067,6 +4293,7 @@ public final class Nebulas {
       }
       /**
        * <code>bytes gas_price = 9;</code>
+       * @return This builder for chaining.
        */
       public Builder clearGasPrice() {
         
@@ -4078,12 +4305,16 @@ public final class Nebulas {
       private com.google.protobuf.ByteString gasLimit_ = com.google.protobuf.ByteString.EMPTY;
       /**
        * <code>bytes gas_limit = 10;</code>
+       * @return The gasLimit.
        */
+      @java.lang.Override
       public com.google.protobuf.ByteString getGasLimit() {
         return gasLimit_;
       }
       /**
        * <code>bytes gas_limit = 10;</code>
+       * @param value The gasLimit to set.
+       * @return This builder for chaining.
        */
       public Builder setGasLimit(com.google.protobuf.ByteString value) {
         if (value == null) {
@@ -4096,6 +4327,7 @@ public final class Nebulas {
       }
       /**
        * <code>bytes gas_limit = 10;</code>
+       * @return This builder for chaining.
        */
       public Builder clearGasLimit() {
         
@@ -4107,12 +4339,16 @@ public final class Nebulas {
       private int alg_ ;
       /**
        * <code>uint32 alg = 11;</code>
+       * @return The alg.
        */
+      @java.lang.Override
       public int getAlg() {
         return alg_;
       }
       /**
        * <code>uint32 alg = 11;</code>
+       * @param value The alg to set.
+       * @return This builder for chaining.
        */
       public Builder setAlg(int value) {
         
@@ -4122,6 +4358,7 @@ public final class Nebulas {
       }
       /**
        * <code>uint32 alg = 11;</code>
+       * @return This builder for chaining.
        */
       public Builder clearAlg() {
         
@@ -4133,12 +4370,16 @@ public final class Nebulas {
       private com.google.protobuf.ByteString sign_ = com.google.protobuf.ByteString.EMPTY;
       /**
        * <code>bytes sign = 12;</code>
+       * @return The sign.
        */
+      @java.lang.Override
       public com.google.protobuf.ByteString getSign() {
         return sign_;
       }
       /**
        * <code>bytes sign = 12;</code>
+       * @param value The sign to set.
+       * @return This builder for chaining.
        */
       public Builder setSign(com.google.protobuf.ByteString value) {
         if (value == null) {
@@ -4151,6 +4392,7 @@ public final class Nebulas {
       }
       /**
        * <code>bytes sign = 12;</code>
+       * @return This builder for chaining.
        */
       public Builder clearSign() {
         

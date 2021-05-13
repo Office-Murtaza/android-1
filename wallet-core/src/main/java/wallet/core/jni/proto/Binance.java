@@ -25,6 +25,7 @@ public final class Binance {
      * </pre>
      *
      * <code>repeated bytes msgs = 1;</code>
+     * @return A list containing the msgs.
      */
     java.util.List<com.google.protobuf.ByteString> getMsgsList();
     /**
@@ -34,6 +35,7 @@ public final class Binance {
      * </pre>
      *
      * <code>repeated bytes msgs = 1;</code>
+     * @return The count of msgs.
      */
     int getMsgsCount();
     /**
@@ -43,6 +45,8 @@ public final class Binance {
      * </pre>
      *
      * <code>repeated bytes msgs = 1;</code>
+     * @param index The index of the element to return.
+     * @return The msgs at the given index.
      */
     com.google.protobuf.ByteString getMsgs(int index);
 
@@ -52,6 +56,7 @@ public final class Binance {
      * </pre>
      *
      * <code>repeated bytes signatures = 2;</code>
+     * @return A list containing the signatures.
      */
     java.util.List<com.google.protobuf.ByteString> getSignaturesList();
     /**
@@ -60,6 +65,7 @@ public final class Binance {
      * </pre>
      *
      * <code>repeated bytes signatures = 2;</code>
+     * @return The count of signatures.
      */
     int getSignaturesCount();
     /**
@@ -68,6 +74,8 @@ public final class Binance {
      * </pre>
      *
      * <code>repeated bytes signatures = 2;</code>
+     * @param index The index of the element to return.
+     * @return The signatures at the given index.
      */
     com.google.protobuf.ByteString getSignatures(int index);
 
@@ -77,6 +85,7 @@ public final class Binance {
      * </pre>
      *
      * <code>string memo = 3;</code>
+     * @return The memo.
      */
     java.lang.String getMemo();
     /**
@@ -85,6 +94,7 @@ public final class Binance {
      * </pre>
      *
      * <code>string memo = 3;</code>
+     * @return The bytes for memo.
      */
     com.google.protobuf.ByteString
         getMemoBytes();
@@ -95,6 +105,7 @@ public final class Binance {
      * </pre>
      *
      * <code>int64 source = 4;</code>
+     * @return The source.
      */
     long getSource();
 
@@ -104,13 +115,14 @@ public final class Binance {
      * </pre>
      *
      * <code>bytes data = 5;</code>
+     * @return The data.
      */
     com.google.protobuf.ByteString getData();
   }
   /**
    * Protobuf type {@code TW.Binance.Proto.Transaction}
    */
-  public  static final class Transaction extends
+  public static final class Transaction extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:TW.Binance.Proto.Transaction)
       TransactionOrBuilder {
@@ -236,7 +248,9 @@ public final class Binance {
      * </pre>
      *
      * <code>repeated bytes msgs = 1;</code>
+     * @return A list containing the msgs.
      */
+    @java.lang.Override
     public java.util.List<com.google.protobuf.ByteString>
         getMsgsList() {
       return msgs_;
@@ -248,6 +262,7 @@ public final class Binance {
      * </pre>
      *
      * <code>repeated bytes msgs = 1;</code>
+     * @return The count of msgs.
      */
     public int getMsgsCount() {
       return msgs_.size();
@@ -259,6 +274,8 @@ public final class Binance {
      * </pre>
      *
      * <code>repeated bytes msgs = 1;</code>
+     * @param index The index of the element to return.
+     * @return The msgs at the given index.
      */
     public com.google.protobuf.ByteString getMsgs(int index) {
       return msgs_.get(index);
@@ -272,7 +289,9 @@ public final class Binance {
      * </pre>
      *
      * <code>repeated bytes signatures = 2;</code>
+     * @return A list containing the signatures.
      */
+    @java.lang.Override
     public java.util.List<com.google.protobuf.ByteString>
         getSignaturesList() {
       return signatures_;
@@ -283,6 +302,7 @@ public final class Binance {
      * </pre>
      *
      * <code>repeated bytes signatures = 2;</code>
+     * @return The count of signatures.
      */
     public int getSignaturesCount() {
       return signatures_.size();
@@ -293,6 +313,8 @@ public final class Binance {
      * </pre>
      *
      * <code>repeated bytes signatures = 2;</code>
+     * @param index The index of the element to return.
+     * @return The signatures at the given index.
      */
     public com.google.protobuf.ByteString getSignatures(int index) {
       return signatures_.get(index);
@@ -306,7 +328,9 @@ public final class Binance {
      * </pre>
      *
      * <code>string memo = 3;</code>
+     * @return The memo.
      */
+    @java.lang.Override
     public java.lang.String getMemo() {
       java.lang.Object ref = memo_;
       if (ref instanceof java.lang.String) {
@@ -325,7 +349,9 @@ public final class Binance {
      * </pre>
      *
      * <code>string memo = 3;</code>
+     * @return The bytes for memo.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString
         getMemoBytes() {
       java.lang.Object ref = memo_;
@@ -348,7 +374,9 @@ public final class Binance {
      * </pre>
      *
      * <code>int64 source = 4;</code>
+     * @return The source.
      */
+    @java.lang.Override
     public long getSource() {
       return source_;
     }
@@ -361,7 +389,9 @@ public final class Binance {
      * </pre>
      *
      * <code>bytes data = 5;</code>
+     * @return The data.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString getData() {
       return data_;
     }
@@ -789,6 +819,7 @@ public final class Binance {
        * </pre>
        *
        * <code>repeated bytes msgs = 1;</code>
+       * @return A list containing the msgs.
        */
       public java.util.List<com.google.protobuf.ByteString>
           getMsgsList() {
@@ -802,6 +833,7 @@ public final class Binance {
        * </pre>
        *
        * <code>repeated bytes msgs = 1;</code>
+       * @return The count of msgs.
        */
       public int getMsgsCount() {
         return msgs_.size();
@@ -813,6 +845,8 @@ public final class Binance {
        * </pre>
        *
        * <code>repeated bytes msgs = 1;</code>
+       * @param index The index of the element to return.
+       * @return The msgs at the given index.
        */
       public com.google.protobuf.ByteString getMsgs(int index) {
         return msgs_.get(index);
@@ -824,6 +858,9 @@ public final class Binance {
        * </pre>
        *
        * <code>repeated bytes msgs = 1;</code>
+       * @param index The index to set the value at.
+       * @param value The msgs to set.
+       * @return This builder for chaining.
        */
       public Builder setMsgs(
           int index, com.google.protobuf.ByteString value) {
@@ -842,6 +879,8 @@ public final class Binance {
        * </pre>
        *
        * <code>repeated bytes msgs = 1;</code>
+       * @param value The msgs to add.
+       * @return This builder for chaining.
        */
       public Builder addMsgs(com.google.protobuf.ByteString value) {
         if (value == null) {
@@ -859,6 +898,8 @@ public final class Binance {
        * </pre>
        *
        * <code>repeated bytes msgs = 1;</code>
+       * @param values The msgs to add.
+       * @return This builder for chaining.
        */
       public Builder addAllMsgs(
           java.lang.Iterable<? extends com.google.protobuf.ByteString> values) {
@@ -875,6 +916,7 @@ public final class Binance {
        * </pre>
        *
        * <code>repeated bytes msgs = 1;</code>
+       * @return This builder for chaining.
        */
       public Builder clearMsgs() {
         msgs_ = java.util.Collections.emptyList();
@@ -896,6 +938,7 @@ public final class Binance {
        * </pre>
        *
        * <code>repeated bytes signatures = 2;</code>
+       * @return A list containing the signatures.
        */
       public java.util.List<com.google.protobuf.ByteString>
           getSignaturesList() {
@@ -908,6 +951,7 @@ public final class Binance {
        * </pre>
        *
        * <code>repeated bytes signatures = 2;</code>
+       * @return The count of signatures.
        */
       public int getSignaturesCount() {
         return signatures_.size();
@@ -918,6 +962,8 @@ public final class Binance {
        * </pre>
        *
        * <code>repeated bytes signatures = 2;</code>
+       * @param index The index of the element to return.
+       * @return The signatures at the given index.
        */
       public com.google.protobuf.ByteString getSignatures(int index) {
         return signatures_.get(index);
@@ -928,6 +974,9 @@ public final class Binance {
        * </pre>
        *
        * <code>repeated bytes signatures = 2;</code>
+       * @param index The index to set the value at.
+       * @param value The signatures to set.
+       * @return This builder for chaining.
        */
       public Builder setSignatures(
           int index, com.google.protobuf.ByteString value) {
@@ -945,6 +994,8 @@ public final class Binance {
        * </pre>
        *
        * <code>repeated bytes signatures = 2;</code>
+       * @param value The signatures to add.
+       * @return This builder for chaining.
        */
       public Builder addSignatures(com.google.protobuf.ByteString value) {
         if (value == null) {
@@ -961,6 +1012,8 @@ public final class Binance {
        * </pre>
        *
        * <code>repeated bytes signatures = 2;</code>
+       * @param values The signatures to add.
+       * @return This builder for chaining.
        */
       public Builder addAllSignatures(
           java.lang.Iterable<? extends com.google.protobuf.ByteString> values) {
@@ -976,6 +1029,7 @@ public final class Binance {
        * </pre>
        *
        * <code>repeated bytes signatures = 2;</code>
+       * @return This builder for chaining.
        */
       public Builder clearSignatures() {
         signatures_ = java.util.Collections.emptyList();
@@ -991,6 +1045,7 @@ public final class Binance {
        * </pre>
        *
        * <code>string memo = 3;</code>
+       * @return The memo.
        */
       public java.lang.String getMemo() {
         java.lang.Object ref = memo_;
@@ -1010,6 +1065,7 @@ public final class Binance {
        * </pre>
        *
        * <code>string memo = 3;</code>
+       * @return The bytes for memo.
        */
       public com.google.protobuf.ByteString
           getMemoBytes() {
@@ -1030,6 +1086,8 @@ public final class Binance {
        * </pre>
        *
        * <code>string memo = 3;</code>
+       * @param value The memo to set.
+       * @return This builder for chaining.
        */
       public Builder setMemo(
           java.lang.String value) {
@@ -1047,6 +1105,7 @@ public final class Binance {
        * </pre>
        *
        * <code>string memo = 3;</code>
+       * @return This builder for chaining.
        */
       public Builder clearMemo() {
         
@@ -1060,6 +1119,8 @@ public final class Binance {
        * </pre>
        *
        * <code>string memo = 3;</code>
+       * @param value The bytes for memo to set.
+       * @return This builder for chaining.
        */
       public Builder setMemoBytes(
           com.google.protobuf.ByteString value) {
@@ -1080,7 +1141,9 @@ public final class Binance {
        * </pre>
        *
        * <code>int64 source = 4;</code>
+       * @return The source.
        */
+      @java.lang.Override
       public long getSource() {
         return source_;
       }
@@ -1090,6 +1153,8 @@ public final class Binance {
        * </pre>
        *
        * <code>int64 source = 4;</code>
+       * @param value The source to set.
+       * @return This builder for chaining.
        */
       public Builder setSource(long value) {
         
@@ -1103,6 +1168,7 @@ public final class Binance {
        * </pre>
        *
        * <code>int64 source = 4;</code>
+       * @return This builder for chaining.
        */
       public Builder clearSource() {
         
@@ -1118,7 +1184,9 @@ public final class Binance {
        * </pre>
        *
        * <code>bytes data = 5;</code>
+       * @return The data.
        */
+      @java.lang.Override
       public com.google.protobuf.ByteString getData() {
         return data_;
       }
@@ -1128,6 +1196,8 @@ public final class Binance {
        * </pre>
        *
        * <code>bytes data = 5;</code>
+       * @param value The data to set.
+       * @return This builder for chaining.
        */
       public Builder setData(com.google.protobuf.ByteString value) {
         if (value == null) {
@@ -1144,6 +1214,7 @@ public final class Binance {
        * </pre>
        *
        * <code>bytes data = 5;</code>
+       * @return This builder for chaining.
        */
       public Builder clearData() {
         
@@ -1214,6 +1285,7 @@ public final class Binance {
      * </pre>
      *
      * <code>bytes pub_key = 1;</code>
+     * @return The pubKey.
      */
     com.google.protobuf.ByteString getPubKey();
 
@@ -1223,6 +1295,7 @@ public final class Binance {
      * </pre>
      *
      * <code>bytes signature = 2;</code>
+     * @return The signature.
      */
     com.google.protobuf.ByteString getSignature();
 
@@ -1232,6 +1305,7 @@ public final class Binance {
      * </pre>
      *
      * <code>int64 account_number = 3;</code>
+     * @return The accountNumber.
      */
     long getAccountNumber();
 
@@ -1241,13 +1315,14 @@ public final class Binance {
      * </pre>
      *
      * <code>int64 sequence = 4;</code>
+     * @return The sequence.
      */
     long getSequence();
   }
   /**
    * Protobuf type {@code TW.Binance.Proto.Signature}
    */
-  public  static final class Signature extends
+  public static final class Signature extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:TW.Binance.Proto.Signature)
       SignatureOrBuilder {
@@ -1355,7 +1430,7 @@ public final class Binance {
      *
      * Protobuf type {@code TW.Binance.Proto.Signature.PubKey}
      */
-    public  static final class PubKey extends
+    public static final class PubKey extends
         com.google.protobuf.GeneratedMessageV3 implements
         // @@protoc_insertion_point(message_implements:TW.Binance.Proto.Signature.PubKey)
         PubKeyOrBuilder {
@@ -1779,7 +1854,9 @@ public final class Binance {
      * </pre>
      *
      * <code>bytes pub_key = 1;</code>
+     * @return The pubKey.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString getPubKey() {
       return pubKey_;
     }
@@ -1792,7 +1869,9 @@ public final class Binance {
      * </pre>
      *
      * <code>bytes signature = 2;</code>
+     * @return The signature.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString getSignature() {
       return signature_;
     }
@@ -1805,7 +1884,9 @@ public final class Binance {
      * </pre>
      *
      * <code>int64 account_number = 3;</code>
+     * @return The accountNumber.
      */
+    @java.lang.Override
     public long getAccountNumber() {
       return accountNumber_;
     }
@@ -1818,7 +1899,9 @@ public final class Binance {
      * </pre>
      *
      * <code>int64 sequence = 4;</code>
+     * @return The sequence.
      */
+    @java.lang.Override
     public long getSequence() {
       return sequence_;
     }
@@ -2185,7 +2268,9 @@ public final class Binance {
        * </pre>
        *
        * <code>bytes pub_key = 1;</code>
+       * @return The pubKey.
        */
+      @java.lang.Override
       public com.google.protobuf.ByteString getPubKey() {
         return pubKey_;
       }
@@ -2195,6 +2280,8 @@ public final class Binance {
        * </pre>
        *
        * <code>bytes pub_key = 1;</code>
+       * @param value The pubKey to set.
+       * @return This builder for chaining.
        */
       public Builder setPubKey(com.google.protobuf.ByteString value) {
         if (value == null) {
@@ -2211,6 +2298,7 @@ public final class Binance {
        * </pre>
        *
        * <code>bytes pub_key = 1;</code>
+       * @return This builder for chaining.
        */
       public Builder clearPubKey() {
         
@@ -2226,7 +2314,9 @@ public final class Binance {
        * </pre>
        *
        * <code>bytes signature = 2;</code>
+       * @return The signature.
        */
+      @java.lang.Override
       public com.google.protobuf.ByteString getSignature() {
         return signature_;
       }
@@ -2236,6 +2326,8 @@ public final class Binance {
        * </pre>
        *
        * <code>bytes signature = 2;</code>
+       * @param value The signature to set.
+       * @return This builder for chaining.
        */
       public Builder setSignature(com.google.protobuf.ByteString value) {
         if (value == null) {
@@ -2252,6 +2344,7 @@ public final class Binance {
        * </pre>
        *
        * <code>bytes signature = 2;</code>
+       * @return This builder for chaining.
        */
       public Builder clearSignature() {
         
@@ -2267,7 +2360,9 @@ public final class Binance {
        * </pre>
        *
        * <code>int64 account_number = 3;</code>
+       * @return The accountNumber.
        */
+      @java.lang.Override
       public long getAccountNumber() {
         return accountNumber_;
       }
@@ -2277,6 +2372,8 @@ public final class Binance {
        * </pre>
        *
        * <code>int64 account_number = 3;</code>
+       * @param value The accountNumber to set.
+       * @return This builder for chaining.
        */
       public Builder setAccountNumber(long value) {
         
@@ -2290,6 +2387,7 @@ public final class Binance {
        * </pre>
        *
        * <code>int64 account_number = 3;</code>
+       * @return This builder for chaining.
        */
       public Builder clearAccountNumber() {
         
@@ -2305,7 +2403,9 @@ public final class Binance {
        * </pre>
        *
        * <code>int64 sequence = 4;</code>
+       * @return The sequence.
        */
+      @java.lang.Override
       public long getSequence() {
         return sequence_;
       }
@@ -2315,6 +2415,8 @@ public final class Binance {
        * </pre>
        *
        * <code>int64 sequence = 4;</code>
+       * @param value The sequence to set.
+       * @return This builder for chaining.
        */
       public Builder setSequence(long value) {
         
@@ -2328,6 +2430,7 @@ public final class Binance {
        * </pre>
        *
        * <code>int64 sequence = 4;</code>
+       * @return This builder for chaining.
        */
       public Builder clearSequence() {
         
@@ -2398,6 +2501,7 @@ public final class Binance {
      * </pre>
      *
      * <code>bytes sender = 1;</code>
+     * @return The sender.
      */
     com.google.protobuf.ByteString getSender();
 
@@ -2407,6 +2511,7 @@ public final class Binance {
      * </pre>
      *
      * <code>string id = 2;</code>
+     * @return The id.
      */
     java.lang.String getId();
     /**
@@ -2415,6 +2520,7 @@ public final class Binance {
      * </pre>
      *
      * <code>string id = 2;</code>
+     * @return The bytes for id.
      */
     com.google.protobuf.ByteString
         getIdBytes();
@@ -2425,6 +2531,7 @@ public final class Binance {
      * </pre>
      *
      * <code>string symbol = 3;</code>
+     * @return The symbol.
      */
     java.lang.String getSymbol();
     /**
@@ -2433,6 +2540,7 @@ public final class Binance {
      * </pre>
      *
      * <code>string symbol = 3;</code>
+     * @return The bytes for symbol.
      */
     com.google.protobuf.ByteString
         getSymbolBytes();
@@ -2443,6 +2551,7 @@ public final class Binance {
      * </pre>
      *
      * <code>int64 ordertype = 4;</code>
+     * @return The ordertype.
      */
     long getOrdertype();
 
@@ -2452,6 +2561,7 @@ public final class Binance {
      * </pre>
      *
      * <code>int64 side = 5;</code>
+     * @return The side.
      */
     long getSide();
 
@@ -2461,6 +2571,7 @@ public final class Binance {
      * </pre>
      *
      * <code>int64 price = 6;</code>
+     * @return The price.
      */
     long getPrice();
 
@@ -2470,6 +2581,7 @@ public final class Binance {
      * </pre>
      *
      * <code>int64 quantity = 7;</code>
+     * @return The quantity.
      */
     long getQuantity();
 
@@ -2479,13 +2591,14 @@ public final class Binance {
      * </pre>
      *
      * <code>int64 timeinforce = 8;</code>
+     * @return The timeinforce.
      */
     long getTimeinforce();
   }
   /**
    * Protobuf type {@code TW.Binance.Proto.TradeOrder}
    */
-  public  static final class TradeOrder extends
+  public static final class TradeOrder extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:TW.Binance.Proto.TradeOrder)
       TradeOrderOrBuilder {
@@ -2612,7 +2725,9 @@ public final class Binance {
      * </pre>
      *
      * <code>bytes sender = 1;</code>
+     * @return The sender.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString getSender() {
       return sender_;
     }
@@ -2625,7 +2740,9 @@ public final class Binance {
      * </pre>
      *
      * <code>string id = 2;</code>
+     * @return The id.
      */
+    @java.lang.Override
     public java.lang.String getId() {
       java.lang.Object ref = id_;
       if (ref instanceof java.lang.String) {
@@ -2644,7 +2761,9 @@ public final class Binance {
      * </pre>
      *
      * <code>string id = 2;</code>
+     * @return The bytes for id.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString
         getIdBytes() {
       java.lang.Object ref = id_;
@@ -2667,7 +2786,9 @@ public final class Binance {
      * </pre>
      *
      * <code>string symbol = 3;</code>
+     * @return The symbol.
      */
+    @java.lang.Override
     public java.lang.String getSymbol() {
       java.lang.Object ref = symbol_;
       if (ref instanceof java.lang.String) {
@@ -2686,7 +2807,9 @@ public final class Binance {
      * </pre>
      *
      * <code>string symbol = 3;</code>
+     * @return The bytes for symbol.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString
         getSymbolBytes() {
       java.lang.Object ref = symbol_;
@@ -2709,7 +2832,9 @@ public final class Binance {
      * </pre>
      *
      * <code>int64 ordertype = 4;</code>
+     * @return The ordertype.
      */
+    @java.lang.Override
     public long getOrdertype() {
       return ordertype_;
     }
@@ -2722,7 +2847,9 @@ public final class Binance {
      * </pre>
      *
      * <code>int64 side = 5;</code>
+     * @return The side.
      */
+    @java.lang.Override
     public long getSide() {
       return side_;
     }
@@ -2735,7 +2862,9 @@ public final class Binance {
      * </pre>
      *
      * <code>int64 price = 6;</code>
+     * @return The price.
      */
+    @java.lang.Override
     public long getPrice() {
       return price_;
     }
@@ -2748,7 +2877,9 @@ public final class Binance {
      * </pre>
      *
      * <code>int64 quantity = 7;</code>
+     * @return The quantity.
      */
+    @java.lang.Override
     public long getQuantity() {
       return quantity_;
     }
@@ -2761,7 +2892,9 @@ public final class Binance {
      * </pre>
      *
      * <code>int64 timeinforce = 8;</code>
+     * @return The timeinforce.
      */
+    @java.lang.Override
     public long getTimeinforce() {
       return timeinforce_;
     }
@@ -3199,7 +3332,9 @@ public final class Binance {
        * </pre>
        *
        * <code>bytes sender = 1;</code>
+       * @return The sender.
        */
+      @java.lang.Override
       public com.google.protobuf.ByteString getSender() {
         return sender_;
       }
@@ -3209,6 +3344,8 @@ public final class Binance {
        * </pre>
        *
        * <code>bytes sender = 1;</code>
+       * @param value The sender to set.
+       * @return This builder for chaining.
        */
       public Builder setSender(com.google.protobuf.ByteString value) {
         if (value == null) {
@@ -3225,6 +3362,7 @@ public final class Binance {
        * </pre>
        *
        * <code>bytes sender = 1;</code>
+       * @return This builder for chaining.
        */
       public Builder clearSender() {
         
@@ -3240,6 +3378,7 @@ public final class Binance {
        * </pre>
        *
        * <code>string id = 2;</code>
+       * @return The id.
        */
       public java.lang.String getId() {
         java.lang.Object ref = id_;
@@ -3259,6 +3398,7 @@ public final class Binance {
        * </pre>
        *
        * <code>string id = 2;</code>
+       * @return The bytes for id.
        */
       public com.google.protobuf.ByteString
           getIdBytes() {
@@ -3279,6 +3419,8 @@ public final class Binance {
        * </pre>
        *
        * <code>string id = 2;</code>
+       * @param value The id to set.
+       * @return This builder for chaining.
        */
       public Builder setId(
           java.lang.String value) {
@@ -3296,6 +3438,7 @@ public final class Binance {
        * </pre>
        *
        * <code>string id = 2;</code>
+       * @return This builder for chaining.
        */
       public Builder clearId() {
         
@@ -3309,6 +3452,8 @@ public final class Binance {
        * </pre>
        *
        * <code>string id = 2;</code>
+       * @param value The bytes for id to set.
+       * @return This builder for chaining.
        */
       public Builder setIdBytes(
           com.google.protobuf.ByteString value) {
@@ -3329,6 +3474,7 @@ public final class Binance {
        * </pre>
        *
        * <code>string symbol = 3;</code>
+       * @return The symbol.
        */
       public java.lang.String getSymbol() {
         java.lang.Object ref = symbol_;
@@ -3348,6 +3494,7 @@ public final class Binance {
        * </pre>
        *
        * <code>string symbol = 3;</code>
+       * @return The bytes for symbol.
        */
       public com.google.protobuf.ByteString
           getSymbolBytes() {
@@ -3368,6 +3515,8 @@ public final class Binance {
        * </pre>
        *
        * <code>string symbol = 3;</code>
+       * @param value The symbol to set.
+       * @return This builder for chaining.
        */
       public Builder setSymbol(
           java.lang.String value) {
@@ -3385,6 +3534,7 @@ public final class Binance {
        * </pre>
        *
        * <code>string symbol = 3;</code>
+       * @return This builder for chaining.
        */
       public Builder clearSymbol() {
         
@@ -3398,6 +3548,8 @@ public final class Binance {
        * </pre>
        *
        * <code>string symbol = 3;</code>
+       * @param value The bytes for symbol to set.
+       * @return This builder for chaining.
        */
       public Builder setSymbolBytes(
           com.google.protobuf.ByteString value) {
@@ -3418,7 +3570,9 @@ public final class Binance {
        * </pre>
        *
        * <code>int64 ordertype = 4;</code>
+       * @return The ordertype.
        */
+      @java.lang.Override
       public long getOrdertype() {
         return ordertype_;
       }
@@ -3428,6 +3582,8 @@ public final class Binance {
        * </pre>
        *
        * <code>int64 ordertype = 4;</code>
+       * @param value The ordertype to set.
+       * @return This builder for chaining.
        */
       public Builder setOrdertype(long value) {
         
@@ -3441,6 +3597,7 @@ public final class Binance {
        * </pre>
        *
        * <code>int64 ordertype = 4;</code>
+       * @return This builder for chaining.
        */
       public Builder clearOrdertype() {
         
@@ -3456,7 +3613,9 @@ public final class Binance {
        * </pre>
        *
        * <code>int64 side = 5;</code>
+       * @return The side.
        */
+      @java.lang.Override
       public long getSide() {
         return side_;
       }
@@ -3466,6 +3625,8 @@ public final class Binance {
        * </pre>
        *
        * <code>int64 side = 5;</code>
+       * @param value The side to set.
+       * @return This builder for chaining.
        */
       public Builder setSide(long value) {
         
@@ -3479,6 +3640,7 @@ public final class Binance {
        * </pre>
        *
        * <code>int64 side = 5;</code>
+       * @return This builder for chaining.
        */
       public Builder clearSide() {
         
@@ -3494,7 +3656,9 @@ public final class Binance {
        * </pre>
        *
        * <code>int64 price = 6;</code>
+       * @return The price.
        */
+      @java.lang.Override
       public long getPrice() {
         return price_;
       }
@@ -3504,6 +3668,8 @@ public final class Binance {
        * </pre>
        *
        * <code>int64 price = 6;</code>
+       * @param value The price to set.
+       * @return This builder for chaining.
        */
       public Builder setPrice(long value) {
         
@@ -3517,6 +3683,7 @@ public final class Binance {
        * </pre>
        *
        * <code>int64 price = 6;</code>
+       * @return This builder for chaining.
        */
       public Builder clearPrice() {
         
@@ -3532,7 +3699,9 @@ public final class Binance {
        * </pre>
        *
        * <code>int64 quantity = 7;</code>
+       * @return The quantity.
        */
+      @java.lang.Override
       public long getQuantity() {
         return quantity_;
       }
@@ -3542,6 +3711,8 @@ public final class Binance {
        * </pre>
        *
        * <code>int64 quantity = 7;</code>
+       * @param value The quantity to set.
+       * @return This builder for chaining.
        */
       public Builder setQuantity(long value) {
         
@@ -3555,6 +3726,7 @@ public final class Binance {
        * </pre>
        *
        * <code>int64 quantity = 7;</code>
+       * @return This builder for chaining.
        */
       public Builder clearQuantity() {
         
@@ -3570,7 +3742,9 @@ public final class Binance {
        * </pre>
        *
        * <code>int64 timeinforce = 8;</code>
+       * @return The timeinforce.
        */
+      @java.lang.Override
       public long getTimeinforce() {
         return timeinforce_;
       }
@@ -3580,6 +3754,8 @@ public final class Binance {
        * </pre>
        *
        * <code>int64 timeinforce = 8;</code>
+       * @param value The timeinforce to set.
+       * @return This builder for chaining.
        */
       public Builder setTimeinforce(long value) {
         
@@ -3593,6 +3769,7 @@ public final class Binance {
        * </pre>
        *
        * <code>int64 timeinforce = 8;</code>
+       * @return This builder for chaining.
        */
       public Builder clearTimeinforce() {
         
@@ -3663,6 +3840,7 @@ public final class Binance {
      * </pre>
      *
      * <code>bytes sender = 1;</code>
+     * @return The sender.
      */
     com.google.protobuf.ByteString getSender();
 
@@ -3672,6 +3850,7 @@ public final class Binance {
      * </pre>
      *
      * <code>string symbol = 2;</code>
+     * @return The symbol.
      */
     java.lang.String getSymbol();
     /**
@@ -3680,6 +3859,7 @@ public final class Binance {
      * </pre>
      *
      * <code>string symbol = 2;</code>
+     * @return The bytes for symbol.
      */
     com.google.protobuf.ByteString
         getSymbolBytes();
@@ -3690,6 +3870,7 @@ public final class Binance {
      * </pre>
      *
      * <code>string refid = 3;</code>
+     * @return The refid.
      */
     java.lang.String getRefid();
     /**
@@ -3698,6 +3879,7 @@ public final class Binance {
      * </pre>
      *
      * <code>string refid = 3;</code>
+     * @return The bytes for refid.
      */
     com.google.protobuf.ByteString
         getRefidBytes();
@@ -3705,7 +3887,7 @@ public final class Binance {
   /**
    * Protobuf type {@code TW.Binance.Proto.CancelTradeOrder}
    */
-  public  static final class CancelTradeOrder extends
+  public static final class CancelTradeOrder extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:TW.Binance.Proto.CancelTradeOrder)
       CancelTradeOrderOrBuilder {
@@ -3807,7 +3989,9 @@ public final class Binance {
      * </pre>
      *
      * <code>bytes sender = 1;</code>
+     * @return The sender.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString getSender() {
       return sender_;
     }
@@ -3820,7 +4004,9 @@ public final class Binance {
      * </pre>
      *
      * <code>string symbol = 2;</code>
+     * @return The symbol.
      */
+    @java.lang.Override
     public java.lang.String getSymbol() {
       java.lang.Object ref = symbol_;
       if (ref instanceof java.lang.String) {
@@ -3839,7 +4025,9 @@ public final class Binance {
      * </pre>
      *
      * <code>string symbol = 2;</code>
+     * @return The bytes for symbol.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString
         getSymbolBytes() {
       java.lang.Object ref = symbol_;
@@ -3862,7 +4050,9 @@ public final class Binance {
      * </pre>
      *
      * <code>string refid = 3;</code>
+     * @return The refid.
      */
+    @java.lang.Override
     public java.lang.String getRefid() {
       java.lang.Object ref = refid_;
       if (ref instanceof java.lang.String) {
@@ -3881,7 +4071,9 @@ public final class Binance {
      * </pre>
      *
      * <code>string refid = 3;</code>
+     * @return The bytes for refid.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString
         getRefidBytes() {
       java.lang.Object ref = refid_;
@@ -4239,7 +4431,9 @@ public final class Binance {
        * </pre>
        *
        * <code>bytes sender = 1;</code>
+       * @return The sender.
        */
+      @java.lang.Override
       public com.google.protobuf.ByteString getSender() {
         return sender_;
       }
@@ -4249,6 +4443,8 @@ public final class Binance {
        * </pre>
        *
        * <code>bytes sender = 1;</code>
+       * @param value The sender to set.
+       * @return This builder for chaining.
        */
       public Builder setSender(com.google.protobuf.ByteString value) {
         if (value == null) {
@@ -4265,6 +4461,7 @@ public final class Binance {
        * </pre>
        *
        * <code>bytes sender = 1;</code>
+       * @return This builder for chaining.
        */
       public Builder clearSender() {
         
@@ -4280,6 +4477,7 @@ public final class Binance {
        * </pre>
        *
        * <code>string symbol = 2;</code>
+       * @return The symbol.
        */
       public java.lang.String getSymbol() {
         java.lang.Object ref = symbol_;
@@ -4299,6 +4497,7 @@ public final class Binance {
        * </pre>
        *
        * <code>string symbol = 2;</code>
+       * @return The bytes for symbol.
        */
       public com.google.protobuf.ByteString
           getSymbolBytes() {
@@ -4319,6 +4518,8 @@ public final class Binance {
        * </pre>
        *
        * <code>string symbol = 2;</code>
+       * @param value The symbol to set.
+       * @return This builder for chaining.
        */
       public Builder setSymbol(
           java.lang.String value) {
@@ -4336,6 +4537,7 @@ public final class Binance {
        * </pre>
        *
        * <code>string symbol = 2;</code>
+       * @return This builder for chaining.
        */
       public Builder clearSymbol() {
         
@@ -4349,6 +4551,8 @@ public final class Binance {
        * </pre>
        *
        * <code>string symbol = 2;</code>
+       * @param value The bytes for symbol to set.
+       * @return This builder for chaining.
        */
       public Builder setSymbolBytes(
           com.google.protobuf.ByteString value) {
@@ -4369,6 +4573,7 @@ public final class Binance {
        * </pre>
        *
        * <code>string refid = 3;</code>
+       * @return The refid.
        */
       public java.lang.String getRefid() {
         java.lang.Object ref = refid_;
@@ -4388,6 +4593,7 @@ public final class Binance {
        * </pre>
        *
        * <code>string refid = 3;</code>
+       * @return The bytes for refid.
        */
       public com.google.protobuf.ByteString
           getRefidBytes() {
@@ -4408,6 +4614,8 @@ public final class Binance {
        * </pre>
        *
        * <code>string refid = 3;</code>
+       * @param value The refid to set.
+       * @return This builder for chaining.
        */
       public Builder setRefid(
           java.lang.String value) {
@@ -4425,6 +4633,7 @@ public final class Binance {
        * </pre>
        *
        * <code>string refid = 3;</code>
+       * @return This builder for chaining.
        */
       public Builder clearRefid() {
         
@@ -4438,6 +4647,8 @@ public final class Binance {
        * </pre>
        *
        * <code>string refid = 3;</code>
+       * @param value The bytes for refid to set.
+       * @return This builder for chaining.
        */
       public Builder setRefidBytes(
           com.google.protobuf.ByteString value) {
@@ -4558,7 +4769,7 @@ public final class Binance {
   /**
    * Protobuf type {@code TW.Binance.Proto.SendOrder}
    */
-  public  static final class SendOrder extends
+  public static final class SendOrder extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:TW.Binance.Proto.SendOrder)
       SendOrderOrBuilder {
@@ -4665,27 +4876,31 @@ public final class Binance {
 
       /**
        * <code>string denom = 1;</code>
+       * @return The denom.
        */
       java.lang.String getDenom();
       /**
        * <code>string denom = 1;</code>
+       * @return The bytes for denom.
        */
       com.google.protobuf.ByteString
           getDenomBytes();
 
       /**
        * <code>int64 amount = 2;</code>
+       * @return The amount.
        */
       long getAmount();
     }
     /**
      * <pre>
      * 0x2A2C87FA
+     * A symbol-amount pair.  Could be moved out of SendOrder; kept here for backward compatibility.
      * </pre>
      *
      * Protobuf type {@code TW.Binance.Proto.SendOrder.Token}
      */
-    public  static final class Token extends
+    public static final class Token extends
         com.google.protobuf.GeneratedMessageV3 implements
         // @@protoc_insertion_point(message_implements:TW.Binance.Proto.SendOrder.Token)
         TokenOrBuilder {
@@ -4775,7 +4990,9 @@ public final class Binance {
       private volatile java.lang.Object denom_;
       /**
        * <code>string denom = 1;</code>
+       * @return The denom.
        */
+      @java.lang.Override
       public java.lang.String getDenom() {
         java.lang.Object ref = denom_;
         if (ref instanceof java.lang.String) {
@@ -4790,7 +5007,9 @@ public final class Binance {
       }
       /**
        * <code>string denom = 1;</code>
+       * @return The bytes for denom.
        */
+      @java.lang.Override
       public com.google.protobuf.ByteString
           getDenomBytes() {
         java.lang.Object ref = denom_;
@@ -4809,7 +5028,9 @@ public final class Binance {
       private long amount_;
       /**
        * <code>int64 amount = 2;</code>
+       * @return The amount.
        */
+      @java.lang.Override
       public long getAmount() {
         return amount_;
       }
@@ -4983,6 +5204,7 @@ public final class Binance {
       /**
        * <pre>
        * 0x2A2C87FA
+       * A symbol-amount pair.  Could be moved out of SendOrder; kept here for backward compatibility.
        * </pre>
        *
        * Protobuf type {@code TW.Binance.Proto.SendOrder.Token}
@@ -5141,6 +5363,7 @@ public final class Binance {
         private java.lang.Object denom_ = "";
         /**
          * <code>string denom = 1;</code>
+         * @return The denom.
          */
         public java.lang.String getDenom() {
           java.lang.Object ref = denom_;
@@ -5156,6 +5379,7 @@ public final class Binance {
         }
         /**
          * <code>string denom = 1;</code>
+         * @return The bytes for denom.
          */
         public com.google.protobuf.ByteString
             getDenomBytes() {
@@ -5172,6 +5396,8 @@ public final class Binance {
         }
         /**
          * <code>string denom = 1;</code>
+         * @param value The denom to set.
+         * @return This builder for chaining.
          */
         public Builder setDenom(
             java.lang.String value) {
@@ -5185,6 +5411,7 @@ public final class Binance {
         }
         /**
          * <code>string denom = 1;</code>
+         * @return This builder for chaining.
          */
         public Builder clearDenom() {
           
@@ -5194,6 +5421,8 @@ public final class Binance {
         }
         /**
          * <code>string denom = 1;</code>
+         * @param value The bytes for denom to set.
+         * @return This builder for chaining.
          */
         public Builder setDenomBytes(
             com.google.protobuf.ByteString value) {
@@ -5210,12 +5439,16 @@ public final class Binance {
         private long amount_ ;
         /**
          * <code>int64 amount = 2;</code>
+         * @return The amount.
          */
+        @java.lang.Override
         public long getAmount() {
           return amount_;
         }
         /**
          * <code>int64 amount = 2;</code>
+         * @param value The amount to set.
+         * @return This builder for chaining.
          */
         public Builder setAmount(long value) {
           
@@ -5225,6 +5458,7 @@ public final class Binance {
         }
         /**
          * <code>int64 amount = 2;</code>
+         * @return This builder for chaining.
          */
         public Builder clearAmount() {
           
@@ -5291,6 +5525,7 @@ public final class Binance {
 
       /**
        * <code>bytes address = 1;</code>
+       * @return The address.
        */
       com.google.protobuf.ByteString getAddress();
 
@@ -5321,7 +5556,7 @@ public final class Binance {
     /**
      * Protobuf type {@code TW.Binance.Proto.SendOrder.Input}
      */
-    public  static final class Input extends
+    public static final class Input extends
         com.google.protobuf.GeneratedMessageV3 implements
         // @@protoc_insertion_point(message_implements:TW.Binance.Proto.SendOrder.Input)
         InputOrBuilder {
@@ -5419,7 +5654,9 @@ public final class Binance {
       private com.google.protobuf.ByteString address_;
       /**
        * <code>bytes address = 1;</code>
+       * @return The address.
        */
+      @java.lang.Override
       public com.google.protobuf.ByteString getAddress() {
         return address_;
       }
@@ -5429,12 +5666,14 @@ public final class Binance {
       /**
        * <code>repeated .TW.Binance.Proto.SendOrder.Token coins = 2;</code>
        */
+      @java.lang.Override
       public java.util.List<wallet.core.jni.proto.Binance.SendOrder.Token> getCoinsList() {
         return coins_;
       }
       /**
        * <code>repeated .TW.Binance.Proto.SendOrder.Token coins = 2;</code>
        */
+      @java.lang.Override
       public java.util.List<? extends wallet.core.jni.proto.Binance.SendOrder.TokenOrBuilder> 
           getCoinsOrBuilderList() {
         return coins_;
@@ -5442,18 +5681,21 @@ public final class Binance {
       /**
        * <code>repeated .TW.Binance.Proto.SendOrder.Token coins = 2;</code>
        */
+      @java.lang.Override
       public int getCoinsCount() {
         return coins_.size();
       }
       /**
        * <code>repeated .TW.Binance.Proto.SendOrder.Token coins = 2;</code>
        */
+      @java.lang.Override
       public wallet.core.jni.proto.Binance.SendOrder.Token getCoins(int index) {
         return coins_.get(index);
       }
       /**
        * <code>repeated .TW.Binance.Proto.SendOrder.Token coins = 2;</code>
        */
+      @java.lang.Override
       public wallet.core.jni.proto.Binance.SendOrder.TokenOrBuilder getCoinsOrBuilder(
           int index) {
         return coins_.get(index);
@@ -5821,12 +6063,16 @@ public final class Binance {
         private com.google.protobuf.ByteString address_ = com.google.protobuf.ByteString.EMPTY;
         /**
          * <code>bytes address = 1;</code>
+         * @return The address.
          */
+        @java.lang.Override
         public com.google.protobuf.ByteString getAddress() {
           return address_;
         }
         /**
          * <code>bytes address = 1;</code>
+         * @param value The address to set.
+         * @return This builder for chaining.
          */
         public Builder setAddress(com.google.protobuf.ByteString value) {
           if (value == null) {
@@ -5839,6 +6085,7 @@ public final class Binance {
         }
         /**
          * <code>bytes address = 1;</code>
+         * @return This builder for chaining.
          */
         public Builder clearAddress() {
           
@@ -6145,6 +6392,7 @@ public final class Binance {
 
       /**
        * <code>bytes address = 1;</code>
+       * @return The address.
        */
       com.google.protobuf.ByteString getAddress();
 
@@ -6175,7 +6423,7 @@ public final class Binance {
     /**
      * Protobuf type {@code TW.Binance.Proto.SendOrder.Output}
      */
-    public  static final class Output extends
+    public static final class Output extends
         com.google.protobuf.GeneratedMessageV3 implements
         // @@protoc_insertion_point(message_implements:TW.Binance.Proto.SendOrder.Output)
         OutputOrBuilder {
@@ -6273,7 +6521,9 @@ public final class Binance {
       private com.google.protobuf.ByteString address_;
       /**
        * <code>bytes address = 1;</code>
+       * @return The address.
        */
+      @java.lang.Override
       public com.google.protobuf.ByteString getAddress() {
         return address_;
       }
@@ -6283,12 +6533,14 @@ public final class Binance {
       /**
        * <code>repeated .TW.Binance.Proto.SendOrder.Token coins = 2;</code>
        */
+      @java.lang.Override
       public java.util.List<wallet.core.jni.proto.Binance.SendOrder.Token> getCoinsList() {
         return coins_;
       }
       /**
        * <code>repeated .TW.Binance.Proto.SendOrder.Token coins = 2;</code>
        */
+      @java.lang.Override
       public java.util.List<? extends wallet.core.jni.proto.Binance.SendOrder.TokenOrBuilder> 
           getCoinsOrBuilderList() {
         return coins_;
@@ -6296,18 +6548,21 @@ public final class Binance {
       /**
        * <code>repeated .TW.Binance.Proto.SendOrder.Token coins = 2;</code>
        */
+      @java.lang.Override
       public int getCoinsCount() {
         return coins_.size();
       }
       /**
        * <code>repeated .TW.Binance.Proto.SendOrder.Token coins = 2;</code>
        */
+      @java.lang.Override
       public wallet.core.jni.proto.Binance.SendOrder.Token getCoins(int index) {
         return coins_.get(index);
       }
       /**
        * <code>repeated .TW.Binance.Proto.SendOrder.Token coins = 2;</code>
        */
+      @java.lang.Override
       public wallet.core.jni.proto.Binance.SendOrder.TokenOrBuilder getCoinsOrBuilder(
           int index) {
         return coins_.get(index);
@@ -6675,12 +6930,16 @@ public final class Binance {
         private com.google.protobuf.ByteString address_ = com.google.protobuf.ByteString.EMPTY;
         /**
          * <code>bytes address = 1;</code>
+         * @return The address.
          */
+        @java.lang.Override
         public com.google.protobuf.ByteString getAddress() {
           return address_;
         }
         /**
          * <code>bytes address = 1;</code>
+         * @param value The address to set.
+         * @return This builder for chaining.
          */
         public Builder setAddress(com.google.protobuf.ByteString value) {
           if (value == null) {
@@ -6693,6 +6952,7 @@ public final class Binance {
         }
         /**
          * <code>bytes address = 1;</code>
+         * @return This builder for chaining.
          */
         public Builder clearAddress() {
           
@@ -6998,12 +7258,14 @@ public final class Binance {
     /**
      * <code>repeated .TW.Binance.Proto.SendOrder.Input inputs = 1;</code>
      */
+    @java.lang.Override
     public java.util.List<wallet.core.jni.proto.Binance.SendOrder.Input> getInputsList() {
       return inputs_;
     }
     /**
      * <code>repeated .TW.Binance.Proto.SendOrder.Input inputs = 1;</code>
      */
+    @java.lang.Override
     public java.util.List<? extends wallet.core.jni.proto.Binance.SendOrder.InputOrBuilder> 
         getInputsOrBuilderList() {
       return inputs_;
@@ -7011,18 +7273,21 @@ public final class Binance {
     /**
      * <code>repeated .TW.Binance.Proto.SendOrder.Input inputs = 1;</code>
      */
+    @java.lang.Override
     public int getInputsCount() {
       return inputs_.size();
     }
     /**
      * <code>repeated .TW.Binance.Proto.SendOrder.Input inputs = 1;</code>
      */
+    @java.lang.Override
     public wallet.core.jni.proto.Binance.SendOrder.Input getInputs(int index) {
       return inputs_.get(index);
     }
     /**
      * <code>repeated .TW.Binance.Proto.SendOrder.Input inputs = 1;</code>
      */
+    @java.lang.Override
     public wallet.core.jni.proto.Binance.SendOrder.InputOrBuilder getInputsOrBuilder(
         int index) {
       return inputs_.get(index);
@@ -7033,12 +7298,14 @@ public final class Binance {
     /**
      * <code>repeated .TW.Binance.Proto.SendOrder.Output outputs = 2;</code>
      */
+    @java.lang.Override
     public java.util.List<wallet.core.jni.proto.Binance.SendOrder.Output> getOutputsList() {
       return outputs_;
     }
     /**
      * <code>repeated .TW.Binance.Proto.SendOrder.Output outputs = 2;</code>
      */
+    @java.lang.Override
     public java.util.List<? extends wallet.core.jni.proto.Binance.SendOrder.OutputOrBuilder> 
         getOutputsOrBuilderList() {
       return outputs_;
@@ -7046,18 +7313,21 @@ public final class Binance {
     /**
      * <code>repeated .TW.Binance.Proto.SendOrder.Output outputs = 2;</code>
      */
+    @java.lang.Override
     public int getOutputsCount() {
       return outputs_.size();
     }
     /**
      * <code>repeated .TW.Binance.Proto.SendOrder.Output outputs = 2;</code>
      */
+    @java.lang.Override
     public wallet.core.jni.proto.Binance.SendOrder.Output getOutputs(int index) {
       return outputs_.get(index);
     }
     /**
      * <code>repeated .TW.Binance.Proto.SendOrder.Output outputs = 2;</code>
      */
+    @java.lang.Override
     public wallet.core.jni.proto.Binance.SendOrder.OutputOrBuilder getOutputsOrBuilder(
         int index) {
       return outputs_.get(index);
@@ -8002,6 +8272,7 @@ public final class Binance {
      * </pre>
      *
      * <code>bytes from = 1;</code>
+     * @return The from.
      */
     com.google.protobuf.ByteString getFrom();
 
@@ -8011,6 +8282,7 @@ public final class Binance {
      * </pre>
      *
      * <code>string name = 2;</code>
+     * @return The name.
      */
     java.lang.String getName();
     /**
@@ -8019,6 +8291,7 @@ public final class Binance {
      * </pre>
      *
      * <code>string name = 2;</code>
+     * @return The bytes for name.
      */
     com.google.protobuf.ByteString
         getNameBytes();
@@ -8029,6 +8302,7 @@ public final class Binance {
      * </pre>
      *
      * <code>string symbol = 3;</code>
+     * @return The symbol.
      */
     java.lang.String getSymbol();
     /**
@@ -8037,6 +8311,7 @@ public final class Binance {
      * </pre>
      *
      * <code>string symbol = 3;</code>
+     * @return The bytes for symbol.
      */
     com.google.protobuf.ByteString
         getSymbolBytes();
@@ -8047,6 +8322,7 @@ public final class Binance {
      * </pre>
      *
      * <code>int64 total_supply = 4;</code>
+     * @return The totalSupply.
      */
     long getTotalSupply();
 
@@ -8056,13 +8332,14 @@ public final class Binance {
      * </pre>
      *
      * <code>bool mintable = 5;</code>
+     * @return The mintable.
      */
     boolean getMintable();
   }
   /**
    * Protobuf type {@code TW.Binance.Proto.TokenIssueOrder}
    */
-  public  static final class TokenIssueOrder extends
+  public static final class TokenIssueOrder extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:TW.Binance.Proto.TokenIssueOrder)
       TokenIssueOrderOrBuilder {
@@ -8174,7 +8451,9 @@ public final class Binance {
      * </pre>
      *
      * <code>bytes from = 1;</code>
+     * @return The from.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString getFrom() {
       return from_;
     }
@@ -8187,7 +8466,9 @@ public final class Binance {
      * </pre>
      *
      * <code>string name = 2;</code>
+     * @return The name.
      */
+    @java.lang.Override
     public java.lang.String getName() {
       java.lang.Object ref = name_;
       if (ref instanceof java.lang.String) {
@@ -8206,7 +8487,9 @@ public final class Binance {
      * </pre>
      *
      * <code>string name = 2;</code>
+     * @return The bytes for name.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString
         getNameBytes() {
       java.lang.Object ref = name_;
@@ -8229,7 +8512,9 @@ public final class Binance {
      * </pre>
      *
      * <code>string symbol = 3;</code>
+     * @return The symbol.
      */
+    @java.lang.Override
     public java.lang.String getSymbol() {
       java.lang.Object ref = symbol_;
       if (ref instanceof java.lang.String) {
@@ -8248,7 +8533,9 @@ public final class Binance {
      * </pre>
      *
      * <code>string symbol = 3;</code>
+     * @return The bytes for symbol.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString
         getSymbolBytes() {
       java.lang.Object ref = symbol_;
@@ -8271,7 +8558,9 @@ public final class Binance {
      * </pre>
      *
      * <code>int64 total_supply = 4;</code>
+     * @return The totalSupply.
      */
+    @java.lang.Override
     public long getTotalSupply() {
       return totalSupply_;
     }
@@ -8284,7 +8573,9 @@ public final class Binance {
      * </pre>
      *
      * <code>bool mintable = 5;</code>
+     * @return The mintable.
      */
+    @java.lang.Override
     public boolean getMintable() {
       return mintable_;
     }
@@ -8668,7 +8959,9 @@ public final class Binance {
        * </pre>
        *
        * <code>bytes from = 1;</code>
+       * @return The from.
        */
+      @java.lang.Override
       public com.google.protobuf.ByteString getFrom() {
         return from_;
       }
@@ -8678,6 +8971,8 @@ public final class Binance {
        * </pre>
        *
        * <code>bytes from = 1;</code>
+       * @param value The from to set.
+       * @return This builder for chaining.
        */
       public Builder setFrom(com.google.protobuf.ByteString value) {
         if (value == null) {
@@ -8694,6 +8989,7 @@ public final class Binance {
        * </pre>
        *
        * <code>bytes from = 1;</code>
+       * @return This builder for chaining.
        */
       public Builder clearFrom() {
         
@@ -8709,6 +9005,7 @@ public final class Binance {
        * </pre>
        *
        * <code>string name = 2;</code>
+       * @return The name.
        */
       public java.lang.String getName() {
         java.lang.Object ref = name_;
@@ -8728,6 +9025,7 @@ public final class Binance {
        * </pre>
        *
        * <code>string name = 2;</code>
+       * @return The bytes for name.
        */
       public com.google.protobuf.ByteString
           getNameBytes() {
@@ -8748,6 +9046,8 @@ public final class Binance {
        * </pre>
        *
        * <code>string name = 2;</code>
+       * @param value The name to set.
+       * @return This builder for chaining.
        */
       public Builder setName(
           java.lang.String value) {
@@ -8765,6 +9065,7 @@ public final class Binance {
        * </pre>
        *
        * <code>string name = 2;</code>
+       * @return This builder for chaining.
        */
       public Builder clearName() {
         
@@ -8778,6 +9079,8 @@ public final class Binance {
        * </pre>
        *
        * <code>string name = 2;</code>
+       * @param value The bytes for name to set.
+       * @return This builder for chaining.
        */
       public Builder setNameBytes(
           com.google.protobuf.ByteString value) {
@@ -8798,6 +9101,7 @@ public final class Binance {
        * </pre>
        *
        * <code>string symbol = 3;</code>
+       * @return The symbol.
        */
       public java.lang.String getSymbol() {
         java.lang.Object ref = symbol_;
@@ -8817,6 +9121,7 @@ public final class Binance {
        * </pre>
        *
        * <code>string symbol = 3;</code>
+       * @return The bytes for symbol.
        */
       public com.google.protobuf.ByteString
           getSymbolBytes() {
@@ -8837,6 +9142,8 @@ public final class Binance {
        * </pre>
        *
        * <code>string symbol = 3;</code>
+       * @param value The symbol to set.
+       * @return This builder for chaining.
        */
       public Builder setSymbol(
           java.lang.String value) {
@@ -8854,6 +9161,7 @@ public final class Binance {
        * </pre>
        *
        * <code>string symbol = 3;</code>
+       * @return This builder for chaining.
        */
       public Builder clearSymbol() {
         
@@ -8867,6 +9175,8 @@ public final class Binance {
        * </pre>
        *
        * <code>string symbol = 3;</code>
+       * @param value The bytes for symbol to set.
+       * @return This builder for chaining.
        */
       public Builder setSymbolBytes(
           com.google.protobuf.ByteString value) {
@@ -8887,7 +9197,9 @@ public final class Binance {
        * </pre>
        *
        * <code>int64 total_supply = 4;</code>
+       * @return The totalSupply.
        */
+      @java.lang.Override
       public long getTotalSupply() {
         return totalSupply_;
       }
@@ -8897,6 +9209,8 @@ public final class Binance {
        * </pre>
        *
        * <code>int64 total_supply = 4;</code>
+       * @param value The totalSupply to set.
+       * @return This builder for chaining.
        */
       public Builder setTotalSupply(long value) {
         
@@ -8910,6 +9224,7 @@ public final class Binance {
        * </pre>
        *
        * <code>int64 total_supply = 4;</code>
+       * @return This builder for chaining.
        */
       public Builder clearTotalSupply() {
         
@@ -8925,7 +9240,9 @@ public final class Binance {
        * </pre>
        *
        * <code>bool mintable = 5;</code>
+       * @return The mintable.
        */
+      @java.lang.Override
       public boolean getMintable() {
         return mintable_;
       }
@@ -8935,6 +9252,8 @@ public final class Binance {
        * </pre>
        *
        * <code>bool mintable = 5;</code>
+       * @param value The mintable to set.
+       * @return This builder for chaining.
        */
       public Builder setMintable(boolean value) {
         
@@ -8948,6 +9267,7 @@ public final class Binance {
        * </pre>
        *
        * <code>bool mintable = 5;</code>
+       * @return This builder for chaining.
        */
       public Builder clearMintable() {
         
@@ -9018,6 +9338,7 @@ public final class Binance {
      * </pre>
      *
      * <code>bytes from = 1;</code>
+     * @return The from.
      */
     com.google.protobuf.ByteString getFrom();
 
@@ -9027,6 +9348,7 @@ public final class Binance {
      * </pre>
      *
      * <code>string symbol = 2;</code>
+     * @return The symbol.
      */
     java.lang.String getSymbol();
     /**
@@ -9035,6 +9357,7 @@ public final class Binance {
      * </pre>
      *
      * <code>string symbol = 2;</code>
+     * @return The bytes for symbol.
      */
     com.google.protobuf.ByteString
         getSymbolBytes();
@@ -9045,13 +9368,14 @@ public final class Binance {
      * </pre>
      *
      * <code>int64 amount = 3;</code>
+     * @return The amount.
      */
     long getAmount();
   }
   /**
    * Protobuf type {@code TW.Binance.Proto.TokenMintOrder}
    */
-  public  static final class TokenMintOrder extends
+  public static final class TokenMintOrder extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:TW.Binance.Proto.TokenMintOrder)
       TokenMintOrderOrBuilder {
@@ -9151,7 +9475,9 @@ public final class Binance {
      * </pre>
      *
      * <code>bytes from = 1;</code>
+     * @return The from.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString getFrom() {
       return from_;
     }
@@ -9164,7 +9490,9 @@ public final class Binance {
      * </pre>
      *
      * <code>string symbol = 2;</code>
+     * @return The symbol.
      */
+    @java.lang.Override
     public java.lang.String getSymbol() {
       java.lang.Object ref = symbol_;
       if (ref instanceof java.lang.String) {
@@ -9183,7 +9511,9 @@ public final class Binance {
      * </pre>
      *
      * <code>string symbol = 2;</code>
+     * @return The bytes for symbol.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString
         getSymbolBytes() {
       java.lang.Object ref = symbol_;
@@ -9206,7 +9536,9 @@ public final class Binance {
      * </pre>
      *
      * <code>int64 amount = 3;</code>
+     * @return The amount.
      */
+    @java.lang.Override
     public long getAmount() {
       return amount_;
     }
@@ -9555,7 +9887,9 @@ public final class Binance {
        * </pre>
        *
        * <code>bytes from = 1;</code>
+       * @return The from.
        */
+      @java.lang.Override
       public com.google.protobuf.ByteString getFrom() {
         return from_;
       }
@@ -9565,6 +9899,8 @@ public final class Binance {
        * </pre>
        *
        * <code>bytes from = 1;</code>
+       * @param value The from to set.
+       * @return This builder for chaining.
        */
       public Builder setFrom(com.google.protobuf.ByteString value) {
         if (value == null) {
@@ -9581,6 +9917,7 @@ public final class Binance {
        * </pre>
        *
        * <code>bytes from = 1;</code>
+       * @return This builder for chaining.
        */
       public Builder clearFrom() {
         
@@ -9596,6 +9933,7 @@ public final class Binance {
        * </pre>
        *
        * <code>string symbol = 2;</code>
+       * @return The symbol.
        */
       public java.lang.String getSymbol() {
         java.lang.Object ref = symbol_;
@@ -9615,6 +9953,7 @@ public final class Binance {
        * </pre>
        *
        * <code>string symbol = 2;</code>
+       * @return The bytes for symbol.
        */
       public com.google.protobuf.ByteString
           getSymbolBytes() {
@@ -9635,6 +9974,8 @@ public final class Binance {
        * </pre>
        *
        * <code>string symbol = 2;</code>
+       * @param value The symbol to set.
+       * @return This builder for chaining.
        */
       public Builder setSymbol(
           java.lang.String value) {
@@ -9652,6 +9993,7 @@ public final class Binance {
        * </pre>
        *
        * <code>string symbol = 2;</code>
+       * @return This builder for chaining.
        */
       public Builder clearSymbol() {
         
@@ -9665,6 +10007,8 @@ public final class Binance {
        * </pre>
        *
        * <code>string symbol = 2;</code>
+       * @param value The bytes for symbol to set.
+       * @return This builder for chaining.
        */
       public Builder setSymbolBytes(
           com.google.protobuf.ByteString value) {
@@ -9685,7 +10029,9 @@ public final class Binance {
        * </pre>
        *
        * <code>int64 amount = 3;</code>
+       * @return The amount.
        */
+      @java.lang.Override
       public long getAmount() {
         return amount_;
       }
@@ -9695,6 +10041,8 @@ public final class Binance {
        * </pre>
        *
        * <code>int64 amount = 3;</code>
+       * @param value The amount to set.
+       * @return This builder for chaining.
        */
       public Builder setAmount(long value) {
         
@@ -9708,6 +10056,7 @@ public final class Binance {
        * </pre>
        *
        * <code>int64 amount = 3;</code>
+       * @return This builder for chaining.
        */
       public Builder clearAmount() {
         
@@ -9778,6 +10127,7 @@ public final class Binance {
      * </pre>
      *
      * <code>bytes from = 1;</code>
+     * @return The from.
      */
     com.google.protobuf.ByteString getFrom();
 
@@ -9787,6 +10137,7 @@ public final class Binance {
      * </pre>
      *
      * <code>string symbol = 2;</code>
+     * @return The symbol.
      */
     java.lang.String getSymbol();
     /**
@@ -9795,6 +10146,7 @@ public final class Binance {
      * </pre>
      *
      * <code>string symbol = 2;</code>
+     * @return The bytes for symbol.
      */
     com.google.protobuf.ByteString
         getSymbolBytes();
@@ -9805,13 +10157,14 @@ public final class Binance {
      * </pre>
      *
      * <code>int64 amount = 3;</code>
+     * @return The amount.
      */
     long getAmount();
   }
   /**
    * Protobuf type {@code TW.Binance.Proto.TokenBurnOrder}
    */
-  public  static final class TokenBurnOrder extends
+  public static final class TokenBurnOrder extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:TW.Binance.Proto.TokenBurnOrder)
       TokenBurnOrderOrBuilder {
@@ -9911,7 +10264,9 @@ public final class Binance {
      * </pre>
      *
      * <code>bytes from = 1;</code>
+     * @return The from.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString getFrom() {
       return from_;
     }
@@ -9924,7 +10279,9 @@ public final class Binance {
      * </pre>
      *
      * <code>string symbol = 2;</code>
+     * @return The symbol.
      */
+    @java.lang.Override
     public java.lang.String getSymbol() {
       java.lang.Object ref = symbol_;
       if (ref instanceof java.lang.String) {
@@ -9943,7 +10300,9 @@ public final class Binance {
      * </pre>
      *
      * <code>string symbol = 2;</code>
+     * @return The bytes for symbol.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString
         getSymbolBytes() {
       java.lang.Object ref = symbol_;
@@ -9966,7 +10325,9 @@ public final class Binance {
      * </pre>
      *
      * <code>int64 amount = 3;</code>
+     * @return The amount.
      */
+    @java.lang.Override
     public long getAmount() {
       return amount_;
     }
@@ -10315,7 +10676,9 @@ public final class Binance {
        * </pre>
        *
        * <code>bytes from = 1;</code>
+       * @return The from.
        */
+      @java.lang.Override
       public com.google.protobuf.ByteString getFrom() {
         return from_;
       }
@@ -10325,6 +10688,8 @@ public final class Binance {
        * </pre>
        *
        * <code>bytes from = 1;</code>
+       * @param value The from to set.
+       * @return This builder for chaining.
        */
       public Builder setFrom(com.google.protobuf.ByteString value) {
         if (value == null) {
@@ -10341,6 +10706,7 @@ public final class Binance {
        * </pre>
        *
        * <code>bytes from = 1;</code>
+       * @return This builder for chaining.
        */
       public Builder clearFrom() {
         
@@ -10356,6 +10722,7 @@ public final class Binance {
        * </pre>
        *
        * <code>string symbol = 2;</code>
+       * @return The symbol.
        */
       public java.lang.String getSymbol() {
         java.lang.Object ref = symbol_;
@@ -10375,6 +10742,7 @@ public final class Binance {
        * </pre>
        *
        * <code>string symbol = 2;</code>
+       * @return The bytes for symbol.
        */
       public com.google.protobuf.ByteString
           getSymbolBytes() {
@@ -10395,6 +10763,8 @@ public final class Binance {
        * </pre>
        *
        * <code>string symbol = 2;</code>
+       * @param value The symbol to set.
+       * @return This builder for chaining.
        */
       public Builder setSymbol(
           java.lang.String value) {
@@ -10412,6 +10782,7 @@ public final class Binance {
        * </pre>
        *
        * <code>string symbol = 2;</code>
+       * @return This builder for chaining.
        */
       public Builder clearSymbol() {
         
@@ -10425,6 +10796,8 @@ public final class Binance {
        * </pre>
        *
        * <code>string symbol = 2;</code>
+       * @param value The bytes for symbol to set.
+       * @return This builder for chaining.
        */
       public Builder setSymbolBytes(
           com.google.protobuf.ByteString value) {
@@ -10445,7 +10818,9 @@ public final class Binance {
        * </pre>
        *
        * <code>int64 amount = 3;</code>
+       * @return The amount.
        */
+      @java.lang.Override
       public long getAmount() {
         return amount_;
       }
@@ -10455,6 +10830,8 @@ public final class Binance {
        * </pre>
        *
        * <code>int64 amount = 3;</code>
+       * @param value The amount to set.
+       * @return This builder for chaining.
        */
       public Builder setAmount(long value) {
         
@@ -10468,6 +10845,7 @@ public final class Binance {
        * </pre>
        *
        * <code>int64 amount = 3;</code>
+       * @return This builder for chaining.
        */
       public Builder clearAmount() {
         
@@ -10538,6 +10916,7 @@ public final class Binance {
      * </pre>
      *
      * <code>bytes from = 1;</code>
+     * @return The from.
      */
     com.google.protobuf.ByteString getFrom();
 
@@ -10547,6 +10926,7 @@ public final class Binance {
      * </pre>
      *
      * <code>string symbol = 2;</code>
+     * @return The symbol.
      */
     java.lang.String getSymbol();
     /**
@@ -10555,6 +10935,7 @@ public final class Binance {
      * </pre>
      *
      * <code>string symbol = 2;</code>
+     * @return The bytes for symbol.
      */
     com.google.protobuf.ByteString
         getSymbolBytes();
@@ -10565,13 +10946,14 @@ public final class Binance {
      * </pre>
      *
      * <code>int64 amount = 3;</code>
+     * @return The amount.
      */
     long getAmount();
   }
   /**
    * Protobuf type {@code TW.Binance.Proto.TokenFreezeOrder}
    */
-  public  static final class TokenFreezeOrder extends
+  public static final class TokenFreezeOrder extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:TW.Binance.Proto.TokenFreezeOrder)
       TokenFreezeOrderOrBuilder {
@@ -10671,7 +11053,9 @@ public final class Binance {
      * </pre>
      *
      * <code>bytes from = 1;</code>
+     * @return The from.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString getFrom() {
       return from_;
     }
@@ -10684,7 +11068,9 @@ public final class Binance {
      * </pre>
      *
      * <code>string symbol = 2;</code>
+     * @return The symbol.
      */
+    @java.lang.Override
     public java.lang.String getSymbol() {
       java.lang.Object ref = symbol_;
       if (ref instanceof java.lang.String) {
@@ -10703,7 +11089,9 @@ public final class Binance {
      * </pre>
      *
      * <code>string symbol = 2;</code>
+     * @return The bytes for symbol.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString
         getSymbolBytes() {
       java.lang.Object ref = symbol_;
@@ -10726,7 +11114,9 @@ public final class Binance {
      * </pre>
      *
      * <code>int64 amount = 3;</code>
+     * @return The amount.
      */
+    @java.lang.Override
     public long getAmount() {
       return amount_;
     }
@@ -11075,7 +11465,9 @@ public final class Binance {
        * </pre>
        *
        * <code>bytes from = 1;</code>
+       * @return The from.
        */
+      @java.lang.Override
       public com.google.protobuf.ByteString getFrom() {
         return from_;
       }
@@ -11085,6 +11477,8 @@ public final class Binance {
        * </pre>
        *
        * <code>bytes from = 1;</code>
+       * @param value The from to set.
+       * @return This builder for chaining.
        */
       public Builder setFrom(com.google.protobuf.ByteString value) {
         if (value == null) {
@@ -11101,6 +11495,7 @@ public final class Binance {
        * </pre>
        *
        * <code>bytes from = 1;</code>
+       * @return This builder for chaining.
        */
       public Builder clearFrom() {
         
@@ -11116,6 +11511,7 @@ public final class Binance {
        * </pre>
        *
        * <code>string symbol = 2;</code>
+       * @return The symbol.
        */
       public java.lang.String getSymbol() {
         java.lang.Object ref = symbol_;
@@ -11135,6 +11531,7 @@ public final class Binance {
        * </pre>
        *
        * <code>string symbol = 2;</code>
+       * @return The bytes for symbol.
        */
       public com.google.protobuf.ByteString
           getSymbolBytes() {
@@ -11155,6 +11552,8 @@ public final class Binance {
        * </pre>
        *
        * <code>string symbol = 2;</code>
+       * @param value The symbol to set.
+       * @return This builder for chaining.
        */
       public Builder setSymbol(
           java.lang.String value) {
@@ -11172,6 +11571,7 @@ public final class Binance {
        * </pre>
        *
        * <code>string symbol = 2;</code>
+       * @return This builder for chaining.
        */
       public Builder clearSymbol() {
         
@@ -11185,6 +11585,8 @@ public final class Binance {
        * </pre>
        *
        * <code>string symbol = 2;</code>
+       * @param value The bytes for symbol to set.
+       * @return This builder for chaining.
        */
       public Builder setSymbolBytes(
           com.google.protobuf.ByteString value) {
@@ -11205,7 +11607,9 @@ public final class Binance {
        * </pre>
        *
        * <code>int64 amount = 3;</code>
+       * @return The amount.
        */
+      @java.lang.Override
       public long getAmount() {
         return amount_;
       }
@@ -11215,6 +11619,8 @@ public final class Binance {
        * </pre>
        *
        * <code>int64 amount = 3;</code>
+       * @param value The amount to set.
+       * @return This builder for chaining.
        */
       public Builder setAmount(long value) {
         
@@ -11228,6 +11634,7 @@ public final class Binance {
        * </pre>
        *
        * <code>int64 amount = 3;</code>
+       * @return This builder for chaining.
        */
       public Builder clearAmount() {
         
@@ -11298,6 +11705,7 @@ public final class Binance {
      * </pre>
      *
      * <code>bytes from = 1;</code>
+     * @return The from.
      */
     com.google.protobuf.ByteString getFrom();
 
@@ -11307,6 +11715,7 @@ public final class Binance {
      * </pre>
      *
      * <code>string symbol = 2;</code>
+     * @return The symbol.
      */
     java.lang.String getSymbol();
     /**
@@ -11315,6 +11724,7 @@ public final class Binance {
      * </pre>
      *
      * <code>string symbol = 2;</code>
+     * @return The bytes for symbol.
      */
     com.google.protobuf.ByteString
         getSymbolBytes();
@@ -11325,13 +11735,14 @@ public final class Binance {
      * </pre>
      *
      * <code>int64 amount = 3;</code>
+     * @return The amount.
      */
     long getAmount();
   }
   /**
    * Protobuf type {@code TW.Binance.Proto.TokenUnfreezeOrder}
    */
-  public  static final class TokenUnfreezeOrder extends
+  public static final class TokenUnfreezeOrder extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:TW.Binance.Proto.TokenUnfreezeOrder)
       TokenUnfreezeOrderOrBuilder {
@@ -11431,7 +11842,9 @@ public final class Binance {
      * </pre>
      *
      * <code>bytes from = 1;</code>
+     * @return The from.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString getFrom() {
       return from_;
     }
@@ -11444,7 +11857,9 @@ public final class Binance {
      * </pre>
      *
      * <code>string symbol = 2;</code>
+     * @return The symbol.
      */
+    @java.lang.Override
     public java.lang.String getSymbol() {
       java.lang.Object ref = symbol_;
       if (ref instanceof java.lang.String) {
@@ -11463,7 +11878,9 @@ public final class Binance {
      * </pre>
      *
      * <code>string symbol = 2;</code>
+     * @return The bytes for symbol.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString
         getSymbolBytes() {
       java.lang.Object ref = symbol_;
@@ -11486,7 +11903,9 @@ public final class Binance {
      * </pre>
      *
      * <code>int64 amount = 3;</code>
+     * @return The amount.
      */
+    @java.lang.Override
     public long getAmount() {
       return amount_;
     }
@@ -11835,7 +12254,9 @@ public final class Binance {
        * </pre>
        *
        * <code>bytes from = 1;</code>
+       * @return The from.
        */
+      @java.lang.Override
       public com.google.protobuf.ByteString getFrom() {
         return from_;
       }
@@ -11845,6 +12266,8 @@ public final class Binance {
        * </pre>
        *
        * <code>bytes from = 1;</code>
+       * @param value The from to set.
+       * @return This builder for chaining.
        */
       public Builder setFrom(com.google.protobuf.ByteString value) {
         if (value == null) {
@@ -11861,6 +12284,7 @@ public final class Binance {
        * </pre>
        *
        * <code>bytes from = 1;</code>
+       * @return This builder for chaining.
        */
       public Builder clearFrom() {
         
@@ -11876,6 +12300,7 @@ public final class Binance {
        * </pre>
        *
        * <code>string symbol = 2;</code>
+       * @return The symbol.
        */
       public java.lang.String getSymbol() {
         java.lang.Object ref = symbol_;
@@ -11895,6 +12320,7 @@ public final class Binance {
        * </pre>
        *
        * <code>string symbol = 2;</code>
+       * @return The bytes for symbol.
        */
       public com.google.protobuf.ByteString
           getSymbolBytes() {
@@ -11915,6 +12341,8 @@ public final class Binance {
        * </pre>
        *
        * <code>string symbol = 2;</code>
+       * @param value The symbol to set.
+       * @return This builder for chaining.
        */
       public Builder setSymbol(
           java.lang.String value) {
@@ -11932,6 +12360,7 @@ public final class Binance {
        * </pre>
        *
        * <code>string symbol = 2;</code>
+       * @return This builder for chaining.
        */
       public Builder clearSymbol() {
         
@@ -11945,6 +12374,8 @@ public final class Binance {
        * </pre>
        *
        * <code>string symbol = 2;</code>
+       * @param value The bytes for symbol to set.
+       * @return This builder for chaining.
        */
       public Builder setSymbolBytes(
           com.google.protobuf.ByteString value) {
@@ -11965,7 +12396,9 @@ public final class Binance {
        * </pre>
        *
        * <code>int64 amount = 3;</code>
+       * @return The amount.
        */
+      @java.lang.Override
       public long getAmount() {
         return amount_;
       }
@@ -11975,6 +12408,8 @@ public final class Binance {
        * </pre>
        *
        * <code>int64 amount = 3;</code>
+       * @param value The amount to set.
+       * @return This builder for chaining.
        */
       public Builder setAmount(long value) {
         
@@ -11988,6 +12423,7 @@ public final class Binance {
        * </pre>
        *
        * <code>int64 amount = 3;</code>
+       * @return This builder for chaining.
        */
       public Builder clearAmount() {
         
@@ -12058,6 +12494,7 @@ public final class Binance {
      * </pre>
      *
      * <code>bytes from = 1;</code>
+     * @return The from.
      */
     com.google.protobuf.ByteString getFrom();
 
@@ -12067,25 +12504,30 @@ public final class Binance {
      * </pre>
      *
      * <code>bytes to = 2;</code>
+     * @return The to.
      */
     com.google.protobuf.ByteString getTo();
 
     /**
      * <code>string recipient_other_chain = 3;</code>
+     * @return The recipientOtherChain.
      */
     java.lang.String getRecipientOtherChain();
     /**
      * <code>string recipient_other_chain = 3;</code>
+     * @return The bytes for recipientOtherChain.
      */
     com.google.protobuf.ByteString
         getRecipientOtherChainBytes();
 
     /**
      * <code>string sender_other_chain = 4;</code>
+     * @return The senderOtherChain.
      */
     java.lang.String getSenderOtherChain();
     /**
      * <code>string sender_other_chain = 4;</code>
+     * @return The bytes for senderOtherChain.
      */
     com.google.protobuf.ByteString
         getSenderOtherChainBytes();
@@ -12096,11 +12538,13 @@ public final class Binance {
      * </pre>
      *
      * <code>bytes random_number_hash = 5;</code>
+     * @return The randomNumberHash.
      */
     com.google.protobuf.ByteString getRandomNumberHash();
 
     /**
      * <code>int64 timestamp = 6;</code>
+     * @return The timestamp.
      */
     long getTimestamp();
 
@@ -12134,6 +12578,7 @@ public final class Binance {
      * </pre>
      *
      * <code>string expected_income = 8;</code>
+     * @return The expectedIncome.
      */
     java.lang.String getExpectedIncome();
     /**
@@ -12142,24 +12587,27 @@ public final class Binance {
      * </pre>
      *
      * <code>string expected_income = 8;</code>
+     * @return The bytes for expectedIncome.
      */
     com.google.protobuf.ByteString
         getExpectedIncomeBytes();
 
     /**
      * <code>int64 height_span = 9;</code>
+     * @return The heightSpan.
      */
     long getHeightSpan();
 
     /**
      * <code>bool cross_chain = 10;</code>
+     * @return The crossChain.
      */
     boolean getCrossChain();
   }
   /**
    * Protobuf type {@code TW.Binance.Proto.HTLTOrder}
    */
-  public  static final class HTLTOrder extends
+  public static final class HTLTOrder extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:TW.Binance.Proto.HTLTOrder)
       HTLTOrderOrBuilder {
@@ -12309,7 +12757,9 @@ public final class Binance {
      * </pre>
      *
      * <code>bytes from = 1;</code>
+     * @return The from.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString getFrom() {
       return from_;
     }
@@ -12322,7 +12772,9 @@ public final class Binance {
      * </pre>
      *
      * <code>bytes to = 2;</code>
+     * @return The to.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString getTo() {
       return to_;
     }
@@ -12331,7 +12783,9 @@ public final class Binance {
     private volatile java.lang.Object recipientOtherChain_;
     /**
      * <code>string recipient_other_chain = 3;</code>
+     * @return The recipientOtherChain.
      */
+    @java.lang.Override
     public java.lang.String getRecipientOtherChain() {
       java.lang.Object ref = recipientOtherChain_;
       if (ref instanceof java.lang.String) {
@@ -12346,7 +12800,9 @@ public final class Binance {
     }
     /**
      * <code>string recipient_other_chain = 3;</code>
+     * @return The bytes for recipientOtherChain.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString
         getRecipientOtherChainBytes() {
       java.lang.Object ref = recipientOtherChain_;
@@ -12365,7 +12821,9 @@ public final class Binance {
     private volatile java.lang.Object senderOtherChain_;
     /**
      * <code>string sender_other_chain = 4;</code>
+     * @return The senderOtherChain.
      */
+    @java.lang.Override
     public java.lang.String getSenderOtherChain() {
       java.lang.Object ref = senderOtherChain_;
       if (ref instanceof java.lang.String) {
@@ -12380,7 +12838,9 @@ public final class Binance {
     }
     /**
      * <code>string sender_other_chain = 4;</code>
+     * @return The bytes for senderOtherChain.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString
         getSenderOtherChainBytes() {
       java.lang.Object ref = senderOtherChain_;
@@ -12403,7 +12863,9 @@ public final class Binance {
      * </pre>
      *
      * <code>bytes random_number_hash = 5;</code>
+     * @return The randomNumberHash.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString getRandomNumberHash() {
       return randomNumberHash_;
     }
@@ -12412,7 +12874,9 @@ public final class Binance {
     private long timestamp_;
     /**
      * <code>int64 timestamp = 6;</code>
+     * @return The timestamp.
      */
+    @java.lang.Override
     public long getTimestamp() {
       return timestamp_;
     }
@@ -12422,12 +12886,14 @@ public final class Binance {
     /**
      * <code>repeated .TW.Binance.Proto.SendOrder.Token amount = 7;</code>
      */
+    @java.lang.Override
     public java.util.List<wallet.core.jni.proto.Binance.SendOrder.Token> getAmountList() {
       return amount_;
     }
     /**
      * <code>repeated .TW.Binance.Proto.SendOrder.Token amount = 7;</code>
      */
+    @java.lang.Override
     public java.util.List<? extends wallet.core.jni.proto.Binance.SendOrder.TokenOrBuilder> 
         getAmountOrBuilderList() {
       return amount_;
@@ -12435,18 +12901,21 @@ public final class Binance {
     /**
      * <code>repeated .TW.Binance.Proto.SendOrder.Token amount = 7;</code>
      */
+    @java.lang.Override
     public int getAmountCount() {
       return amount_.size();
     }
     /**
      * <code>repeated .TW.Binance.Proto.SendOrder.Token amount = 7;</code>
      */
+    @java.lang.Override
     public wallet.core.jni.proto.Binance.SendOrder.Token getAmount(int index) {
       return amount_.get(index);
     }
     /**
      * <code>repeated .TW.Binance.Proto.SendOrder.Token amount = 7;</code>
      */
+    @java.lang.Override
     public wallet.core.jni.proto.Binance.SendOrder.TokenOrBuilder getAmountOrBuilder(
         int index) {
       return amount_.get(index);
@@ -12460,7 +12929,9 @@ public final class Binance {
      * </pre>
      *
      * <code>string expected_income = 8;</code>
+     * @return The expectedIncome.
      */
+    @java.lang.Override
     public java.lang.String getExpectedIncome() {
       java.lang.Object ref = expectedIncome_;
       if (ref instanceof java.lang.String) {
@@ -12479,7 +12950,9 @@ public final class Binance {
      * </pre>
      *
      * <code>string expected_income = 8;</code>
+     * @return The bytes for expectedIncome.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString
         getExpectedIncomeBytes() {
       java.lang.Object ref = expectedIncome_;
@@ -12498,7 +12971,9 @@ public final class Binance {
     private long heightSpan_;
     /**
      * <code>int64 height_span = 9;</code>
+     * @return The heightSpan.
      */
+    @java.lang.Override
     public long getHeightSpan() {
       return heightSpan_;
     }
@@ -12507,7 +12982,9 @@ public final class Binance {
     private boolean crossChain_;
     /**
      * <code>bool cross_chain = 10;</code>
+     * @return The crossChain.
      */
+    @java.lang.Override
     public boolean getCrossChain() {
       return crossChain_;
     }
@@ -13017,7 +13494,9 @@ public final class Binance {
        * </pre>
        *
        * <code>bytes from = 1;</code>
+       * @return The from.
        */
+      @java.lang.Override
       public com.google.protobuf.ByteString getFrom() {
         return from_;
       }
@@ -13027,6 +13506,8 @@ public final class Binance {
        * </pre>
        *
        * <code>bytes from = 1;</code>
+       * @param value The from to set.
+       * @return This builder for chaining.
        */
       public Builder setFrom(com.google.protobuf.ByteString value) {
         if (value == null) {
@@ -13043,6 +13524,7 @@ public final class Binance {
        * </pre>
        *
        * <code>bytes from = 1;</code>
+       * @return This builder for chaining.
        */
       public Builder clearFrom() {
         
@@ -13058,7 +13540,9 @@ public final class Binance {
        * </pre>
        *
        * <code>bytes to = 2;</code>
+       * @return The to.
        */
+      @java.lang.Override
       public com.google.protobuf.ByteString getTo() {
         return to_;
       }
@@ -13068,6 +13552,8 @@ public final class Binance {
        * </pre>
        *
        * <code>bytes to = 2;</code>
+       * @param value The to to set.
+       * @return This builder for chaining.
        */
       public Builder setTo(com.google.protobuf.ByteString value) {
         if (value == null) {
@@ -13084,6 +13570,7 @@ public final class Binance {
        * </pre>
        *
        * <code>bytes to = 2;</code>
+       * @return This builder for chaining.
        */
       public Builder clearTo() {
         
@@ -13095,6 +13582,7 @@ public final class Binance {
       private java.lang.Object recipientOtherChain_ = "";
       /**
        * <code>string recipient_other_chain = 3;</code>
+       * @return The recipientOtherChain.
        */
       public java.lang.String getRecipientOtherChain() {
         java.lang.Object ref = recipientOtherChain_;
@@ -13110,6 +13598,7 @@ public final class Binance {
       }
       /**
        * <code>string recipient_other_chain = 3;</code>
+       * @return The bytes for recipientOtherChain.
        */
       public com.google.protobuf.ByteString
           getRecipientOtherChainBytes() {
@@ -13126,6 +13615,8 @@ public final class Binance {
       }
       /**
        * <code>string recipient_other_chain = 3;</code>
+       * @param value The recipientOtherChain to set.
+       * @return This builder for chaining.
        */
       public Builder setRecipientOtherChain(
           java.lang.String value) {
@@ -13139,6 +13630,7 @@ public final class Binance {
       }
       /**
        * <code>string recipient_other_chain = 3;</code>
+       * @return This builder for chaining.
        */
       public Builder clearRecipientOtherChain() {
         
@@ -13148,6 +13640,8 @@ public final class Binance {
       }
       /**
        * <code>string recipient_other_chain = 3;</code>
+       * @param value The bytes for recipientOtherChain to set.
+       * @return This builder for chaining.
        */
       public Builder setRecipientOtherChainBytes(
           com.google.protobuf.ByteString value) {
@@ -13164,6 +13658,7 @@ public final class Binance {
       private java.lang.Object senderOtherChain_ = "";
       /**
        * <code>string sender_other_chain = 4;</code>
+       * @return The senderOtherChain.
        */
       public java.lang.String getSenderOtherChain() {
         java.lang.Object ref = senderOtherChain_;
@@ -13179,6 +13674,7 @@ public final class Binance {
       }
       /**
        * <code>string sender_other_chain = 4;</code>
+       * @return The bytes for senderOtherChain.
        */
       public com.google.protobuf.ByteString
           getSenderOtherChainBytes() {
@@ -13195,6 +13691,8 @@ public final class Binance {
       }
       /**
        * <code>string sender_other_chain = 4;</code>
+       * @param value The senderOtherChain to set.
+       * @return This builder for chaining.
        */
       public Builder setSenderOtherChain(
           java.lang.String value) {
@@ -13208,6 +13706,7 @@ public final class Binance {
       }
       /**
        * <code>string sender_other_chain = 4;</code>
+       * @return This builder for chaining.
        */
       public Builder clearSenderOtherChain() {
         
@@ -13217,6 +13716,8 @@ public final class Binance {
       }
       /**
        * <code>string sender_other_chain = 4;</code>
+       * @param value The bytes for senderOtherChain to set.
+       * @return This builder for chaining.
        */
       public Builder setSenderOtherChainBytes(
           com.google.protobuf.ByteString value) {
@@ -13237,7 +13738,9 @@ public final class Binance {
        * </pre>
        *
        * <code>bytes random_number_hash = 5;</code>
+       * @return The randomNumberHash.
        */
+      @java.lang.Override
       public com.google.protobuf.ByteString getRandomNumberHash() {
         return randomNumberHash_;
       }
@@ -13247,6 +13750,8 @@ public final class Binance {
        * </pre>
        *
        * <code>bytes random_number_hash = 5;</code>
+       * @param value The randomNumberHash to set.
+       * @return This builder for chaining.
        */
       public Builder setRandomNumberHash(com.google.protobuf.ByteString value) {
         if (value == null) {
@@ -13263,6 +13768,7 @@ public final class Binance {
        * </pre>
        *
        * <code>bytes random_number_hash = 5;</code>
+       * @return This builder for chaining.
        */
       public Builder clearRandomNumberHash() {
         
@@ -13274,12 +13780,16 @@ public final class Binance {
       private long timestamp_ ;
       /**
        * <code>int64 timestamp = 6;</code>
+       * @return The timestamp.
        */
+      @java.lang.Override
       public long getTimestamp() {
         return timestamp_;
       }
       /**
        * <code>int64 timestamp = 6;</code>
+       * @param value The timestamp to set.
+       * @return This builder for chaining.
        */
       public Builder setTimestamp(long value) {
         
@@ -13289,6 +13799,7 @@ public final class Binance {
       }
       /**
        * <code>int64 timestamp = 6;</code>
+       * @return This builder for chaining.
        */
       public Builder clearTimestamp() {
         
@@ -13544,6 +14055,7 @@ public final class Binance {
        * </pre>
        *
        * <code>string expected_income = 8;</code>
+       * @return The expectedIncome.
        */
       public java.lang.String getExpectedIncome() {
         java.lang.Object ref = expectedIncome_;
@@ -13563,6 +14075,7 @@ public final class Binance {
        * </pre>
        *
        * <code>string expected_income = 8;</code>
+       * @return The bytes for expectedIncome.
        */
       public com.google.protobuf.ByteString
           getExpectedIncomeBytes() {
@@ -13583,6 +14096,8 @@ public final class Binance {
        * </pre>
        *
        * <code>string expected_income = 8;</code>
+       * @param value The expectedIncome to set.
+       * @return This builder for chaining.
        */
       public Builder setExpectedIncome(
           java.lang.String value) {
@@ -13600,6 +14115,7 @@ public final class Binance {
        * </pre>
        *
        * <code>string expected_income = 8;</code>
+       * @return This builder for chaining.
        */
       public Builder clearExpectedIncome() {
         
@@ -13613,6 +14129,8 @@ public final class Binance {
        * </pre>
        *
        * <code>string expected_income = 8;</code>
+       * @param value The bytes for expectedIncome to set.
+       * @return This builder for chaining.
        */
       public Builder setExpectedIncomeBytes(
           com.google.protobuf.ByteString value) {
@@ -13629,12 +14147,16 @@ public final class Binance {
       private long heightSpan_ ;
       /**
        * <code>int64 height_span = 9;</code>
+       * @return The heightSpan.
        */
+      @java.lang.Override
       public long getHeightSpan() {
         return heightSpan_;
       }
       /**
        * <code>int64 height_span = 9;</code>
+       * @param value The heightSpan to set.
+       * @return This builder for chaining.
        */
       public Builder setHeightSpan(long value) {
         
@@ -13644,6 +14166,7 @@ public final class Binance {
       }
       /**
        * <code>int64 height_span = 9;</code>
+       * @return This builder for chaining.
        */
       public Builder clearHeightSpan() {
         
@@ -13655,12 +14178,16 @@ public final class Binance {
       private boolean crossChain_ ;
       /**
        * <code>bool cross_chain = 10;</code>
+       * @return The crossChain.
        */
+      @java.lang.Override
       public boolean getCrossChain() {
         return crossChain_;
       }
       /**
        * <code>bool cross_chain = 10;</code>
+       * @param value The crossChain to set.
+       * @return This builder for chaining.
        */
       public Builder setCrossChain(boolean value) {
         
@@ -13670,6 +14197,7 @@ public final class Binance {
       }
       /**
        * <code>bool cross_chain = 10;</code>
+       * @return This builder for chaining.
        */
       public Builder clearCrossChain() {
         
@@ -13740,6 +14268,7 @@ public final class Binance {
      * </pre>
      *
      * <code>bytes from = 1;</code>
+     * @return The from.
      */
     com.google.protobuf.ByteString getFrom();
 
@@ -13769,13 +14298,14 @@ public final class Binance {
 
     /**
      * <code>bytes swap_id = 3;</code>
+     * @return The swapId.
      */
     com.google.protobuf.ByteString getSwapId();
   }
   /**
    * Protobuf type {@code TW.Binance.Proto.DepositHTLTOrder}
    */
-  public  static final class DepositHTLTOrder extends
+  public static final class DepositHTLTOrder extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:TW.Binance.Proto.DepositHTLTOrder)
       DepositHTLTOrderOrBuilder {
@@ -13883,7 +14413,9 @@ public final class Binance {
      * </pre>
      *
      * <code>bytes from = 1;</code>
+     * @return The from.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString getFrom() {
       return from_;
     }
@@ -13893,12 +14425,14 @@ public final class Binance {
     /**
      * <code>repeated .TW.Binance.Proto.SendOrder.Token amount = 2;</code>
      */
+    @java.lang.Override
     public java.util.List<wallet.core.jni.proto.Binance.SendOrder.Token> getAmountList() {
       return amount_;
     }
     /**
      * <code>repeated .TW.Binance.Proto.SendOrder.Token amount = 2;</code>
      */
+    @java.lang.Override
     public java.util.List<? extends wallet.core.jni.proto.Binance.SendOrder.TokenOrBuilder> 
         getAmountOrBuilderList() {
       return amount_;
@@ -13906,18 +14440,21 @@ public final class Binance {
     /**
      * <code>repeated .TW.Binance.Proto.SendOrder.Token amount = 2;</code>
      */
+    @java.lang.Override
     public int getAmountCount() {
       return amount_.size();
     }
     /**
      * <code>repeated .TW.Binance.Proto.SendOrder.Token amount = 2;</code>
      */
+    @java.lang.Override
     public wallet.core.jni.proto.Binance.SendOrder.Token getAmount(int index) {
       return amount_.get(index);
     }
     /**
      * <code>repeated .TW.Binance.Proto.SendOrder.Token amount = 2;</code>
      */
+    @java.lang.Override
     public wallet.core.jni.proto.Binance.SendOrder.TokenOrBuilder getAmountOrBuilder(
         int index) {
       return amount_.get(index);
@@ -13927,7 +14464,9 @@ public final class Binance {
     private com.google.protobuf.ByteString swapId_;
     /**
      * <code>bytes swap_id = 3;</code>
+     * @return The swapId.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString getSwapId() {
       return swapId_;
     }
@@ -14315,7 +14854,9 @@ public final class Binance {
        * </pre>
        *
        * <code>bytes from = 1;</code>
+       * @return The from.
        */
+      @java.lang.Override
       public com.google.protobuf.ByteString getFrom() {
         return from_;
       }
@@ -14325,6 +14866,8 @@ public final class Binance {
        * </pre>
        *
        * <code>bytes from = 1;</code>
+       * @param value The from to set.
+       * @return This builder for chaining.
        */
       public Builder setFrom(com.google.protobuf.ByteString value) {
         if (value == null) {
@@ -14341,6 +14884,7 @@ public final class Binance {
        * </pre>
        *
        * <code>bytes from = 1;</code>
+       * @return This builder for chaining.
        */
       public Builder clearFrom() {
         
@@ -14592,12 +15136,16 @@ public final class Binance {
       private com.google.protobuf.ByteString swapId_ = com.google.protobuf.ByteString.EMPTY;
       /**
        * <code>bytes swap_id = 3;</code>
+       * @return The swapId.
        */
+      @java.lang.Override
       public com.google.protobuf.ByteString getSwapId() {
         return swapId_;
       }
       /**
        * <code>bytes swap_id = 3;</code>
+       * @param value The swapId to set.
+       * @return This builder for chaining.
        */
       public Builder setSwapId(com.google.protobuf.ByteString value) {
         if (value == null) {
@@ -14610,6 +15158,7 @@ public final class Binance {
       }
       /**
        * <code>bytes swap_id = 3;</code>
+       * @return This builder for chaining.
        */
       public Builder clearSwapId() {
         
@@ -14680,23 +15229,26 @@ public final class Binance {
      * </pre>
      *
      * <code>bytes from = 1;</code>
+     * @return The from.
      */
     com.google.protobuf.ByteString getFrom();
 
     /**
      * <code>bytes swap_id = 2;</code>
+     * @return The swapId.
      */
     com.google.protobuf.ByteString getSwapId();
 
     /**
      * <code>bytes random_number = 3;</code>
+     * @return The randomNumber.
      */
     com.google.protobuf.ByteString getRandomNumber();
   }
   /**
    * Protobuf type {@code TW.Binance.Proto.ClaimHTLOrder}
    */
-  public  static final class ClaimHTLOrder extends
+  public static final class ClaimHTLOrder extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:TW.Binance.Proto.ClaimHTLOrder)
       ClaimHTLOrderOrBuilder {
@@ -14796,7 +15348,9 @@ public final class Binance {
      * </pre>
      *
      * <code>bytes from = 1;</code>
+     * @return The from.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString getFrom() {
       return from_;
     }
@@ -14805,7 +15359,9 @@ public final class Binance {
     private com.google.protobuf.ByteString swapId_;
     /**
      * <code>bytes swap_id = 2;</code>
+     * @return The swapId.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString getSwapId() {
       return swapId_;
     }
@@ -14814,7 +15370,9 @@ public final class Binance {
     private com.google.protobuf.ByteString randomNumber_;
     /**
      * <code>bytes random_number = 3;</code>
+     * @return The randomNumber.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString getRandomNumber() {
       return randomNumber_;
     }
@@ -15162,7 +15720,9 @@ public final class Binance {
        * </pre>
        *
        * <code>bytes from = 1;</code>
+       * @return The from.
        */
+      @java.lang.Override
       public com.google.protobuf.ByteString getFrom() {
         return from_;
       }
@@ -15172,6 +15732,8 @@ public final class Binance {
        * </pre>
        *
        * <code>bytes from = 1;</code>
+       * @param value The from to set.
+       * @return This builder for chaining.
        */
       public Builder setFrom(com.google.protobuf.ByteString value) {
         if (value == null) {
@@ -15188,6 +15750,7 @@ public final class Binance {
        * </pre>
        *
        * <code>bytes from = 1;</code>
+       * @return This builder for chaining.
        */
       public Builder clearFrom() {
         
@@ -15199,12 +15762,16 @@ public final class Binance {
       private com.google.protobuf.ByteString swapId_ = com.google.protobuf.ByteString.EMPTY;
       /**
        * <code>bytes swap_id = 2;</code>
+       * @return The swapId.
        */
+      @java.lang.Override
       public com.google.protobuf.ByteString getSwapId() {
         return swapId_;
       }
       /**
        * <code>bytes swap_id = 2;</code>
+       * @param value The swapId to set.
+       * @return This builder for chaining.
        */
       public Builder setSwapId(com.google.protobuf.ByteString value) {
         if (value == null) {
@@ -15217,6 +15784,7 @@ public final class Binance {
       }
       /**
        * <code>bytes swap_id = 2;</code>
+       * @return This builder for chaining.
        */
       public Builder clearSwapId() {
         
@@ -15228,12 +15796,16 @@ public final class Binance {
       private com.google.protobuf.ByteString randomNumber_ = com.google.protobuf.ByteString.EMPTY;
       /**
        * <code>bytes random_number = 3;</code>
+       * @return The randomNumber.
        */
+      @java.lang.Override
       public com.google.protobuf.ByteString getRandomNumber() {
         return randomNumber_;
       }
       /**
        * <code>bytes random_number = 3;</code>
+       * @param value The randomNumber to set.
+       * @return This builder for chaining.
        */
       public Builder setRandomNumber(com.google.protobuf.ByteString value) {
         if (value == null) {
@@ -15246,6 +15818,7 @@ public final class Binance {
       }
       /**
        * <code>bytes random_number = 3;</code>
+       * @return This builder for chaining.
        */
       public Builder clearRandomNumber() {
         
@@ -15316,18 +15889,20 @@ public final class Binance {
      * </pre>
      *
      * <code>bytes from = 1;</code>
+     * @return The from.
      */
     com.google.protobuf.ByteString getFrom();
 
     /**
      * <code>bytes swap_id = 2;</code>
+     * @return The swapId.
      */
     com.google.protobuf.ByteString getSwapId();
   }
   /**
    * Protobuf type {@code TW.Binance.Proto.RefundHTLTOrder}
    */
-  public  static final class RefundHTLTOrder extends
+  public static final class RefundHTLTOrder extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:TW.Binance.Proto.RefundHTLTOrder)
       RefundHTLTOrderOrBuilder {
@@ -15421,7 +15996,9 @@ public final class Binance {
      * </pre>
      *
      * <code>bytes from = 1;</code>
+     * @return The from.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString getFrom() {
       return from_;
     }
@@ -15430,7 +16007,9 @@ public final class Binance {
     private com.google.protobuf.ByteString swapId_;
     /**
      * <code>bytes swap_id = 2;</code>
+     * @return The swapId.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString getSwapId() {
       return swapId_;
     }
@@ -15761,7 +16340,9 @@ public final class Binance {
        * </pre>
        *
        * <code>bytes from = 1;</code>
+       * @return The from.
        */
+      @java.lang.Override
       public com.google.protobuf.ByteString getFrom() {
         return from_;
       }
@@ -15771,6 +16352,8 @@ public final class Binance {
        * </pre>
        *
        * <code>bytes from = 1;</code>
+       * @param value The from to set.
+       * @return This builder for chaining.
        */
       public Builder setFrom(com.google.protobuf.ByteString value) {
         if (value == null) {
@@ -15787,6 +16370,7 @@ public final class Binance {
        * </pre>
        *
        * <code>bytes from = 1;</code>
+       * @return This builder for chaining.
        */
       public Builder clearFrom() {
         
@@ -15798,12 +16382,16 @@ public final class Binance {
       private com.google.protobuf.ByteString swapId_ = com.google.protobuf.ByteString.EMPTY;
       /**
        * <code>bytes swap_id = 2;</code>
+       * @return The swapId.
        */
+      @java.lang.Override
       public com.google.protobuf.ByteString getSwapId() {
         return swapId_;
       }
       /**
        * <code>bytes swap_id = 2;</code>
+       * @param value The swapId to set.
+       * @return This builder for chaining.
        */
       public Builder setSwapId(com.google.protobuf.ByteString value) {
         if (value == null) {
@@ -15816,6 +16404,7 @@ public final class Binance {
       }
       /**
        * <code>bytes swap_id = 2;</code>
+       * @return This builder for chaining.
        */
       public Builder clearSwapId() {
         
@@ -15882,20 +16471,24 @@ public final class Binance {
 
     /**
      * <code>bytes from = 1;</code>
+     * @return The from.
      */
     com.google.protobuf.ByteString getFrom();
 
     /**
      * <code>bytes to = 2;</code>
+     * @return The to.
      */
     com.google.protobuf.ByteString getTo();
 
     /**
      * <code>.TW.Binance.Proto.SendOrder.Token amount = 3;</code>
+     * @return Whether the amount field is set.
      */
     boolean hasAmount();
     /**
      * <code>.TW.Binance.Proto.SendOrder.Token amount = 3;</code>
+     * @return The amount.
      */
     wallet.core.jni.proto.Binance.SendOrder.Token getAmount();
     /**
@@ -15905,13 +16498,14 @@ public final class Binance {
 
     /**
      * <code>int64 expire_time = 4;</code>
+     * @return The expireTime.
      */
     long getExpireTime();
   }
   /**
    * Protobuf type {@code TW.Binance.Proto.TransferOut}
    */
-  public  static final class TransferOut extends
+  public static final class TransferOut extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:TW.Binance.Proto.TransferOut)
       TransferOutOrBuilder {
@@ -16019,7 +16613,9 @@ public final class Binance {
     private com.google.protobuf.ByteString from_;
     /**
      * <code>bytes from = 1;</code>
+     * @return The from.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString getFrom() {
       return from_;
     }
@@ -16028,7 +16624,9 @@ public final class Binance {
     private com.google.protobuf.ByteString to_;
     /**
      * <code>bytes to = 2;</code>
+     * @return The to.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString getTo() {
       return to_;
     }
@@ -16037,19 +16635,24 @@ public final class Binance {
     private wallet.core.jni.proto.Binance.SendOrder.Token amount_;
     /**
      * <code>.TW.Binance.Proto.SendOrder.Token amount = 3;</code>
+     * @return Whether the amount field is set.
      */
+    @java.lang.Override
     public boolean hasAmount() {
       return amount_ != null;
     }
     /**
      * <code>.TW.Binance.Proto.SendOrder.Token amount = 3;</code>
+     * @return The amount.
      */
+    @java.lang.Override
     public wallet.core.jni.proto.Binance.SendOrder.Token getAmount() {
       return amount_ == null ? wallet.core.jni.proto.Binance.SendOrder.Token.getDefaultInstance() : amount_;
     }
     /**
      * <code>.TW.Binance.Proto.SendOrder.Token amount = 3;</code>
      */
+    @java.lang.Override
     public wallet.core.jni.proto.Binance.SendOrder.TokenOrBuilder getAmountOrBuilder() {
       return getAmount();
     }
@@ -16058,7 +16661,9 @@ public final class Binance {
     private long expireTime_;
     /**
      * <code>int64 expire_time = 4;</code>
+     * @return The expireTime.
      */
+    @java.lang.Override
     public long getExpireTime() {
       return expireTime_;
     }
@@ -16433,12 +17038,16 @@ public final class Binance {
       private com.google.protobuf.ByteString from_ = com.google.protobuf.ByteString.EMPTY;
       /**
        * <code>bytes from = 1;</code>
+       * @return The from.
        */
+      @java.lang.Override
       public com.google.protobuf.ByteString getFrom() {
         return from_;
       }
       /**
        * <code>bytes from = 1;</code>
+       * @param value The from to set.
+       * @return This builder for chaining.
        */
       public Builder setFrom(com.google.protobuf.ByteString value) {
         if (value == null) {
@@ -16451,6 +17060,7 @@ public final class Binance {
       }
       /**
        * <code>bytes from = 1;</code>
+       * @return This builder for chaining.
        */
       public Builder clearFrom() {
         
@@ -16462,12 +17072,16 @@ public final class Binance {
       private com.google.protobuf.ByteString to_ = com.google.protobuf.ByteString.EMPTY;
       /**
        * <code>bytes to = 2;</code>
+       * @return The to.
        */
+      @java.lang.Override
       public com.google.protobuf.ByteString getTo() {
         return to_;
       }
       /**
        * <code>bytes to = 2;</code>
+       * @param value The to to set.
+       * @return This builder for chaining.
        */
       public Builder setTo(com.google.protobuf.ByteString value) {
         if (value == null) {
@@ -16480,6 +17094,7 @@ public final class Binance {
       }
       /**
        * <code>bytes to = 2;</code>
+       * @return This builder for chaining.
        */
       public Builder clearTo() {
         
@@ -16493,12 +17108,14 @@ public final class Binance {
           wallet.core.jni.proto.Binance.SendOrder.Token, wallet.core.jni.proto.Binance.SendOrder.Token.Builder, wallet.core.jni.proto.Binance.SendOrder.TokenOrBuilder> amountBuilder_;
       /**
        * <code>.TW.Binance.Proto.SendOrder.Token amount = 3;</code>
+       * @return Whether the amount field is set.
        */
       public boolean hasAmount() {
         return amountBuilder_ != null || amount_ != null;
       }
       /**
        * <code>.TW.Binance.Proto.SendOrder.Token amount = 3;</code>
+       * @return The amount.
        */
       public wallet.core.jni.proto.Binance.SendOrder.Token getAmount() {
         if (amountBuilder_ == null) {
@@ -16608,12 +17225,16 @@ public final class Binance {
       private long expireTime_ ;
       /**
        * <code>int64 expire_time = 4;</code>
+       * @return The expireTime.
        */
+      @java.lang.Override
       public long getExpireTime() {
         return expireTime_;
       }
       /**
        * <code>int64 expire_time = 4;</code>
+       * @param value The expireTime to set.
+       * @return This builder for chaining.
        */
       public Builder setExpireTime(long value) {
         
@@ -16623,6 +17244,7 @@ public final class Binance {
       }
       /**
        * <code>int64 expire_time = 4;</code>
+       * @return This builder for chaining.
        */
       public Builder clearExpireTime() {
         
@@ -16689,20 +17311,24 @@ public final class Binance {
 
     /**
      * <code>bytes delegator_addr = 1;</code>
+     * @return The delegatorAddr.
      */
     com.google.protobuf.ByteString getDelegatorAddr();
 
     /**
      * <code>bytes validator_addr = 2;</code>
+     * @return The validatorAddr.
      */
     com.google.protobuf.ByteString getValidatorAddr();
 
     /**
      * <code>.TW.Binance.Proto.SendOrder.Token delegation = 3;</code>
+     * @return Whether the delegation field is set.
      */
     boolean hasDelegation();
     /**
      * <code>.TW.Binance.Proto.SendOrder.Token delegation = 3;</code>
+     * @return The delegation.
      */
     wallet.core.jni.proto.Binance.SendOrder.Token getDelegation();
     /**
@@ -16712,10 +17338,12 @@ public final class Binance {
 
     /**
      * <code>string chain_id = 4;</code>
+     * @return The chainId.
      */
     java.lang.String getChainId();
     /**
      * <code>string chain_id = 4;</code>
+     * @return The bytes for chainId.
      */
     com.google.protobuf.ByteString
         getChainIdBytes();
@@ -16723,7 +17351,7 @@ public final class Binance {
   /**
    * Protobuf type {@code TW.Binance.Proto.SideChainDelegate}
    */
-  public  static final class SideChainDelegate extends
+  public static final class SideChainDelegate extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:TW.Binance.Proto.SideChainDelegate)
       SideChainDelegateOrBuilder {
@@ -16833,7 +17461,9 @@ public final class Binance {
     private com.google.protobuf.ByteString delegatorAddr_;
     /**
      * <code>bytes delegator_addr = 1;</code>
+     * @return The delegatorAddr.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString getDelegatorAddr() {
       return delegatorAddr_;
     }
@@ -16842,7 +17472,9 @@ public final class Binance {
     private com.google.protobuf.ByteString validatorAddr_;
     /**
      * <code>bytes validator_addr = 2;</code>
+     * @return The validatorAddr.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString getValidatorAddr() {
       return validatorAddr_;
     }
@@ -16851,19 +17483,24 @@ public final class Binance {
     private wallet.core.jni.proto.Binance.SendOrder.Token delegation_;
     /**
      * <code>.TW.Binance.Proto.SendOrder.Token delegation = 3;</code>
+     * @return Whether the delegation field is set.
      */
+    @java.lang.Override
     public boolean hasDelegation() {
       return delegation_ != null;
     }
     /**
      * <code>.TW.Binance.Proto.SendOrder.Token delegation = 3;</code>
+     * @return The delegation.
      */
+    @java.lang.Override
     public wallet.core.jni.proto.Binance.SendOrder.Token getDelegation() {
       return delegation_ == null ? wallet.core.jni.proto.Binance.SendOrder.Token.getDefaultInstance() : delegation_;
     }
     /**
      * <code>.TW.Binance.Proto.SendOrder.Token delegation = 3;</code>
      */
+    @java.lang.Override
     public wallet.core.jni.proto.Binance.SendOrder.TokenOrBuilder getDelegationOrBuilder() {
       return getDelegation();
     }
@@ -16872,7 +17509,9 @@ public final class Binance {
     private volatile java.lang.Object chainId_;
     /**
      * <code>string chain_id = 4;</code>
+     * @return The chainId.
      */
+    @java.lang.Override
     public java.lang.String getChainId() {
       java.lang.Object ref = chainId_;
       if (ref instanceof java.lang.String) {
@@ -16887,7 +17526,9 @@ public final class Binance {
     }
     /**
      * <code>string chain_id = 4;</code>
+     * @return The bytes for chainId.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString
         getChainIdBytes() {
       java.lang.Object ref = chainId_;
@@ -17271,12 +17912,16 @@ public final class Binance {
       private com.google.protobuf.ByteString delegatorAddr_ = com.google.protobuf.ByteString.EMPTY;
       /**
        * <code>bytes delegator_addr = 1;</code>
+       * @return The delegatorAddr.
        */
+      @java.lang.Override
       public com.google.protobuf.ByteString getDelegatorAddr() {
         return delegatorAddr_;
       }
       /**
        * <code>bytes delegator_addr = 1;</code>
+       * @param value The delegatorAddr to set.
+       * @return This builder for chaining.
        */
       public Builder setDelegatorAddr(com.google.protobuf.ByteString value) {
         if (value == null) {
@@ -17289,6 +17934,7 @@ public final class Binance {
       }
       /**
        * <code>bytes delegator_addr = 1;</code>
+       * @return This builder for chaining.
        */
       public Builder clearDelegatorAddr() {
         
@@ -17300,12 +17946,16 @@ public final class Binance {
       private com.google.protobuf.ByteString validatorAddr_ = com.google.protobuf.ByteString.EMPTY;
       /**
        * <code>bytes validator_addr = 2;</code>
+       * @return The validatorAddr.
        */
+      @java.lang.Override
       public com.google.protobuf.ByteString getValidatorAddr() {
         return validatorAddr_;
       }
       /**
        * <code>bytes validator_addr = 2;</code>
+       * @param value The validatorAddr to set.
+       * @return This builder for chaining.
        */
       public Builder setValidatorAddr(com.google.protobuf.ByteString value) {
         if (value == null) {
@@ -17318,6 +17968,7 @@ public final class Binance {
       }
       /**
        * <code>bytes validator_addr = 2;</code>
+       * @return This builder for chaining.
        */
       public Builder clearValidatorAddr() {
         
@@ -17331,12 +17982,14 @@ public final class Binance {
           wallet.core.jni.proto.Binance.SendOrder.Token, wallet.core.jni.proto.Binance.SendOrder.Token.Builder, wallet.core.jni.proto.Binance.SendOrder.TokenOrBuilder> delegationBuilder_;
       /**
        * <code>.TW.Binance.Proto.SendOrder.Token delegation = 3;</code>
+       * @return Whether the delegation field is set.
        */
       public boolean hasDelegation() {
         return delegationBuilder_ != null || delegation_ != null;
       }
       /**
        * <code>.TW.Binance.Proto.SendOrder.Token delegation = 3;</code>
+       * @return The delegation.
        */
       public wallet.core.jni.proto.Binance.SendOrder.Token getDelegation() {
         if (delegationBuilder_ == null) {
@@ -17446,6 +18099,7 @@ public final class Binance {
       private java.lang.Object chainId_ = "";
       /**
        * <code>string chain_id = 4;</code>
+       * @return The chainId.
        */
       public java.lang.String getChainId() {
         java.lang.Object ref = chainId_;
@@ -17461,6 +18115,7 @@ public final class Binance {
       }
       /**
        * <code>string chain_id = 4;</code>
+       * @return The bytes for chainId.
        */
       public com.google.protobuf.ByteString
           getChainIdBytes() {
@@ -17477,6 +18132,8 @@ public final class Binance {
       }
       /**
        * <code>string chain_id = 4;</code>
+       * @param value The chainId to set.
+       * @return This builder for chaining.
        */
       public Builder setChainId(
           java.lang.String value) {
@@ -17490,6 +18147,7 @@ public final class Binance {
       }
       /**
        * <code>string chain_id = 4;</code>
+       * @return This builder for chaining.
        */
       public Builder clearChainId() {
         
@@ -17499,6 +18157,8 @@ public final class Binance {
       }
       /**
        * <code>string chain_id = 4;</code>
+       * @param value The bytes for chainId to set.
+       * @return This builder for chaining.
        */
       public Builder setChainIdBytes(
           com.google.protobuf.ByteString value) {
@@ -17570,25 +18230,30 @@ public final class Binance {
 
     /**
      * <code>bytes delegator_addr = 1;</code>
+     * @return The delegatorAddr.
      */
     com.google.protobuf.ByteString getDelegatorAddr();
 
     /**
      * <code>bytes validator_src_addr = 2;</code>
+     * @return The validatorSrcAddr.
      */
     com.google.protobuf.ByteString getValidatorSrcAddr();
 
     /**
      * <code>bytes validator_dst_addr = 3;</code>
+     * @return The validatorDstAddr.
      */
     com.google.protobuf.ByteString getValidatorDstAddr();
 
     /**
      * <code>.TW.Binance.Proto.SendOrder.Token amount = 4;</code>
+     * @return Whether the amount field is set.
      */
     boolean hasAmount();
     /**
      * <code>.TW.Binance.Proto.SendOrder.Token amount = 4;</code>
+     * @return The amount.
      */
     wallet.core.jni.proto.Binance.SendOrder.Token getAmount();
     /**
@@ -17598,10 +18263,12 @@ public final class Binance {
 
     /**
      * <code>string chain_id = 5;</code>
+     * @return The chainId.
      */
     java.lang.String getChainId();
     /**
      * <code>string chain_id = 5;</code>
+     * @return The bytes for chainId.
      */
     com.google.protobuf.ByteString
         getChainIdBytes();
@@ -17609,7 +18276,7 @@ public final class Binance {
   /**
    * Protobuf type {@code TW.Binance.Proto.SideChainRedelegate}
    */
-  public  static final class SideChainRedelegate extends
+  public static final class SideChainRedelegate extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:TW.Binance.Proto.SideChainRedelegate)
       SideChainRedelegateOrBuilder {
@@ -17725,7 +18392,9 @@ public final class Binance {
     private com.google.protobuf.ByteString delegatorAddr_;
     /**
      * <code>bytes delegator_addr = 1;</code>
+     * @return The delegatorAddr.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString getDelegatorAddr() {
       return delegatorAddr_;
     }
@@ -17734,7 +18403,9 @@ public final class Binance {
     private com.google.protobuf.ByteString validatorSrcAddr_;
     /**
      * <code>bytes validator_src_addr = 2;</code>
+     * @return The validatorSrcAddr.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString getValidatorSrcAddr() {
       return validatorSrcAddr_;
     }
@@ -17743,7 +18414,9 @@ public final class Binance {
     private com.google.protobuf.ByteString validatorDstAddr_;
     /**
      * <code>bytes validator_dst_addr = 3;</code>
+     * @return The validatorDstAddr.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString getValidatorDstAddr() {
       return validatorDstAddr_;
     }
@@ -17752,19 +18425,24 @@ public final class Binance {
     private wallet.core.jni.proto.Binance.SendOrder.Token amount_;
     /**
      * <code>.TW.Binance.Proto.SendOrder.Token amount = 4;</code>
+     * @return Whether the amount field is set.
      */
+    @java.lang.Override
     public boolean hasAmount() {
       return amount_ != null;
     }
     /**
      * <code>.TW.Binance.Proto.SendOrder.Token amount = 4;</code>
+     * @return The amount.
      */
+    @java.lang.Override
     public wallet.core.jni.proto.Binance.SendOrder.Token getAmount() {
       return amount_ == null ? wallet.core.jni.proto.Binance.SendOrder.Token.getDefaultInstance() : amount_;
     }
     /**
      * <code>.TW.Binance.Proto.SendOrder.Token amount = 4;</code>
      */
+    @java.lang.Override
     public wallet.core.jni.proto.Binance.SendOrder.TokenOrBuilder getAmountOrBuilder() {
       return getAmount();
     }
@@ -17773,7 +18451,9 @@ public final class Binance {
     private volatile java.lang.Object chainId_;
     /**
      * <code>string chain_id = 5;</code>
+     * @return The chainId.
      */
+    @java.lang.Override
     public java.lang.String getChainId() {
       java.lang.Object ref = chainId_;
       if (ref instanceof java.lang.String) {
@@ -17788,7 +18468,9 @@ public final class Binance {
     }
     /**
      * <code>string chain_id = 5;</code>
+     * @return The bytes for chainId.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString
         getChainIdBytes() {
       java.lang.Object ref = chainId_;
@@ -18189,12 +18871,16 @@ public final class Binance {
       private com.google.protobuf.ByteString delegatorAddr_ = com.google.protobuf.ByteString.EMPTY;
       /**
        * <code>bytes delegator_addr = 1;</code>
+       * @return The delegatorAddr.
        */
+      @java.lang.Override
       public com.google.protobuf.ByteString getDelegatorAddr() {
         return delegatorAddr_;
       }
       /**
        * <code>bytes delegator_addr = 1;</code>
+       * @param value The delegatorAddr to set.
+       * @return This builder for chaining.
        */
       public Builder setDelegatorAddr(com.google.protobuf.ByteString value) {
         if (value == null) {
@@ -18207,6 +18893,7 @@ public final class Binance {
       }
       /**
        * <code>bytes delegator_addr = 1;</code>
+       * @return This builder for chaining.
        */
       public Builder clearDelegatorAddr() {
         
@@ -18218,12 +18905,16 @@ public final class Binance {
       private com.google.protobuf.ByteString validatorSrcAddr_ = com.google.protobuf.ByteString.EMPTY;
       /**
        * <code>bytes validator_src_addr = 2;</code>
+       * @return The validatorSrcAddr.
        */
+      @java.lang.Override
       public com.google.protobuf.ByteString getValidatorSrcAddr() {
         return validatorSrcAddr_;
       }
       /**
        * <code>bytes validator_src_addr = 2;</code>
+       * @param value The validatorSrcAddr to set.
+       * @return This builder for chaining.
        */
       public Builder setValidatorSrcAddr(com.google.protobuf.ByteString value) {
         if (value == null) {
@@ -18236,6 +18927,7 @@ public final class Binance {
       }
       /**
        * <code>bytes validator_src_addr = 2;</code>
+       * @return This builder for chaining.
        */
       public Builder clearValidatorSrcAddr() {
         
@@ -18247,12 +18939,16 @@ public final class Binance {
       private com.google.protobuf.ByteString validatorDstAddr_ = com.google.protobuf.ByteString.EMPTY;
       /**
        * <code>bytes validator_dst_addr = 3;</code>
+       * @return The validatorDstAddr.
        */
+      @java.lang.Override
       public com.google.protobuf.ByteString getValidatorDstAddr() {
         return validatorDstAddr_;
       }
       /**
        * <code>bytes validator_dst_addr = 3;</code>
+       * @param value The validatorDstAddr to set.
+       * @return This builder for chaining.
        */
       public Builder setValidatorDstAddr(com.google.protobuf.ByteString value) {
         if (value == null) {
@@ -18265,6 +18961,7 @@ public final class Binance {
       }
       /**
        * <code>bytes validator_dst_addr = 3;</code>
+       * @return This builder for chaining.
        */
       public Builder clearValidatorDstAddr() {
         
@@ -18278,12 +18975,14 @@ public final class Binance {
           wallet.core.jni.proto.Binance.SendOrder.Token, wallet.core.jni.proto.Binance.SendOrder.Token.Builder, wallet.core.jni.proto.Binance.SendOrder.TokenOrBuilder> amountBuilder_;
       /**
        * <code>.TW.Binance.Proto.SendOrder.Token amount = 4;</code>
+       * @return Whether the amount field is set.
        */
       public boolean hasAmount() {
         return amountBuilder_ != null || amount_ != null;
       }
       /**
        * <code>.TW.Binance.Proto.SendOrder.Token amount = 4;</code>
+       * @return The amount.
        */
       public wallet.core.jni.proto.Binance.SendOrder.Token getAmount() {
         if (amountBuilder_ == null) {
@@ -18393,6 +19092,7 @@ public final class Binance {
       private java.lang.Object chainId_ = "";
       /**
        * <code>string chain_id = 5;</code>
+       * @return The chainId.
        */
       public java.lang.String getChainId() {
         java.lang.Object ref = chainId_;
@@ -18408,6 +19108,7 @@ public final class Binance {
       }
       /**
        * <code>string chain_id = 5;</code>
+       * @return The bytes for chainId.
        */
       public com.google.protobuf.ByteString
           getChainIdBytes() {
@@ -18424,6 +19125,8 @@ public final class Binance {
       }
       /**
        * <code>string chain_id = 5;</code>
+       * @param value The chainId to set.
+       * @return This builder for chaining.
        */
       public Builder setChainId(
           java.lang.String value) {
@@ -18437,6 +19140,7 @@ public final class Binance {
       }
       /**
        * <code>string chain_id = 5;</code>
+       * @return This builder for chaining.
        */
       public Builder clearChainId() {
         
@@ -18446,6 +19150,8 @@ public final class Binance {
       }
       /**
        * <code>string chain_id = 5;</code>
+       * @param value The bytes for chainId to set.
+       * @return This builder for chaining.
        */
       public Builder setChainIdBytes(
           com.google.protobuf.ByteString value) {
@@ -18517,20 +19223,24 @@ public final class Binance {
 
     /**
      * <code>bytes delegator_addr = 1;</code>
+     * @return The delegatorAddr.
      */
     com.google.protobuf.ByteString getDelegatorAddr();
 
     /**
      * <code>bytes validator_addr = 2;</code>
+     * @return The validatorAddr.
      */
     com.google.protobuf.ByteString getValidatorAddr();
 
     /**
      * <code>.TW.Binance.Proto.SendOrder.Token amount = 3;</code>
+     * @return Whether the amount field is set.
      */
     boolean hasAmount();
     /**
      * <code>.TW.Binance.Proto.SendOrder.Token amount = 3;</code>
+     * @return The amount.
      */
     wallet.core.jni.proto.Binance.SendOrder.Token getAmount();
     /**
@@ -18540,10 +19250,12 @@ public final class Binance {
 
     /**
      * <code>string chain_id = 4;</code>
+     * @return The chainId.
      */
     java.lang.String getChainId();
     /**
      * <code>string chain_id = 4;</code>
+     * @return The bytes for chainId.
      */
     com.google.protobuf.ByteString
         getChainIdBytes();
@@ -18551,7 +19263,7 @@ public final class Binance {
   /**
    * Protobuf type {@code TW.Binance.Proto.SideChainUndelegate}
    */
-  public  static final class SideChainUndelegate extends
+  public static final class SideChainUndelegate extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:TW.Binance.Proto.SideChainUndelegate)
       SideChainUndelegateOrBuilder {
@@ -18661,7 +19373,9 @@ public final class Binance {
     private com.google.protobuf.ByteString delegatorAddr_;
     /**
      * <code>bytes delegator_addr = 1;</code>
+     * @return The delegatorAddr.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString getDelegatorAddr() {
       return delegatorAddr_;
     }
@@ -18670,7 +19384,9 @@ public final class Binance {
     private com.google.protobuf.ByteString validatorAddr_;
     /**
      * <code>bytes validator_addr = 2;</code>
+     * @return The validatorAddr.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString getValidatorAddr() {
       return validatorAddr_;
     }
@@ -18679,19 +19395,24 @@ public final class Binance {
     private wallet.core.jni.proto.Binance.SendOrder.Token amount_;
     /**
      * <code>.TW.Binance.Proto.SendOrder.Token amount = 3;</code>
+     * @return Whether the amount field is set.
      */
+    @java.lang.Override
     public boolean hasAmount() {
       return amount_ != null;
     }
     /**
      * <code>.TW.Binance.Proto.SendOrder.Token amount = 3;</code>
+     * @return The amount.
      */
+    @java.lang.Override
     public wallet.core.jni.proto.Binance.SendOrder.Token getAmount() {
       return amount_ == null ? wallet.core.jni.proto.Binance.SendOrder.Token.getDefaultInstance() : amount_;
     }
     /**
      * <code>.TW.Binance.Proto.SendOrder.Token amount = 3;</code>
      */
+    @java.lang.Override
     public wallet.core.jni.proto.Binance.SendOrder.TokenOrBuilder getAmountOrBuilder() {
       return getAmount();
     }
@@ -18700,7 +19421,9 @@ public final class Binance {
     private volatile java.lang.Object chainId_;
     /**
      * <code>string chain_id = 4;</code>
+     * @return The chainId.
      */
+    @java.lang.Override
     public java.lang.String getChainId() {
       java.lang.Object ref = chainId_;
       if (ref instanceof java.lang.String) {
@@ -18715,7 +19438,9 @@ public final class Binance {
     }
     /**
      * <code>string chain_id = 4;</code>
+     * @return The bytes for chainId.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString
         getChainIdBytes() {
       java.lang.Object ref = chainId_;
@@ -19099,12 +19824,16 @@ public final class Binance {
       private com.google.protobuf.ByteString delegatorAddr_ = com.google.protobuf.ByteString.EMPTY;
       /**
        * <code>bytes delegator_addr = 1;</code>
+       * @return The delegatorAddr.
        */
+      @java.lang.Override
       public com.google.protobuf.ByteString getDelegatorAddr() {
         return delegatorAddr_;
       }
       /**
        * <code>bytes delegator_addr = 1;</code>
+       * @param value The delegatorAddr to set.
+       * @return This builder for chaining.
        */
       public Builder setDelegatorAddr(com.google.protobuf.ByteString value) {
         if (value == null) {
@@ -19117,6 +19846,7 @@ public final class Binance {
       }
       /**
        * <code>bytes delegator_addr = 1;</code>
+       * @return This builder for chaining.
        */
       public Builder clearDelegatorAddr() {
         
@@ -19128,12 +19858,16 @@ public final class Binance {
       private com.google.protobuf.ByteString validatorAddr_ = com.google.protobuf.ByteString.EMPTY;
       /**
        * <code>bytes validator_addr = 2;</code>
+       * @return The validatorAddr.
        */
+      @java.lang.Override
       public com.google.protobuf.ByteString getValidatorAddr() {
         return validatorAddr_;
       }
       /**
        * <code>bytes validator_addr = 2;</code>
+       * @param value The validatorAddr to set.
+       * @return This builder for chaining.
        */
       public Builder setValidatorAddr(com.google.protobuf.ByteString value) {
         if (value == null) {
@@ -19146,6 +19880,7 @@ public final class Binance {
       }
       /**
        * <code>bytes validator_addr = 2;</code>
+       * @return This builder for chaining.
        */
       public Builder clearValidatorAddr() {
         
@@ -19159,12 +19894,14 @@ public final class Binance {
           wallet.core.jni.proto.Binance.SendOrder.Token, wallet.core.jni.proto.Binance.SendOrder.Token.Builder, wallet.core.jni.proto.Binance.SendOrder.TokenOrBuilder> amountBuilder_;
       /**
        * <code>.TW.Binance.Proto.SendOrder.Token amount = 3;</code>
+       * @return Whether the amount field is set.
        */
       public boolean hasAmount() {
         return amountBuilder_ != null || amount_ != null;
       }
       /**
        * <code>.TW.Binance.Proto.SendOrder.Token amount = 3;</code>
+       * @return The amount.
        */
       public wallet.core.jni.proto.Binance.SendOrder.Token getAmount() {
         if (amountBuilder_ == null) {
@@ -19274,6 +20011,7 @@ public final class Binance {
       private java.lang.Object chainId_ = "";
       /**
        * <code>string chain_id = 4;</code>
+       * @return The chainId.
        */
       public java.lang.String getChainId() {
         java.lang.Object ref = chainId_;
@@ -19289,6 +20027,7 @@ public final class Binance {
       }
       /**
        * <code>string chain_id = 4;</code>
+       * @return The bytes for chainId.
        */
       public com.google.protobuf.ByteString
           getChainIdBytes() {
@@ -19305,6 +20044,8 @@ public final class Binance {
       }
       /**
        * <code>string chain_id = 4;</code>
+       * @param value The chainId to set.
+       * @return This builder for chaining.
        */
       public Builder setChainId(
           java.lang.String value) {
@@ -19318,6 +20059,7 @@ public final class Binance {
       }
       /**
        * <code>string chain_id = 4;</code>
+       * @return This builder for chaining.
        */
       public Builder clearChainId() {
         
@@ -19327,6 +20069,8 @@ public final class Binance {
       }
       /**
        * <code>string chain_id = 4;</code>
+       * @param value The bytes for chainId to set.
+       * @return This builder for chaining.
        */
       public Builder setChainIdBytes(
           com.google.protobuf.ByteString value) {
@@ -19392,56 +20136,3200 @@ public final class Binance {
 
   }
 
+  public interface TimeLockOrderOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:TW.Binance.Proto.TimeLockOrder)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <pre>
+     * owner address
+     * </pre>
+     *
+     * <code>bytes from_address = 1;</code>
+     * @return The fromAddress.
+     */
+    com.google.protobuf.ByteString getFromAddress();
+
+    /**
+     * <code>string description = 2;</code>
+     * @return The description.
+     */
+    java.lang.String getDescription();
+    /**
+     * <code>string description = 2;</code>
+     * @return The bytes for description.
+     */
+    com.google.protobuf.ByteString
+        getDescriptionBytes();
+
+    /**
+     * <pre>
+     * Array of symbol/amount pairs. see SDK https://github.com/binance-chain/javascript-sdk/blob/master/docs/api-docs/classes/tokenmanagement.md#timelock
+     * </pre>
+     *
+     * <code>repeated .TW.Binance.Proto.SendOrder.Token amount = 3;</code>
+     */
+    java.util.List<wallet.core.jni.proto.Binance.SendOrder.Token> 
+        getAmountList();
+    /**
+     * <pre>
+     * Array of symbol/amount pairs. see SDK https://github.com/binance-chain/javascript-sdk/blob/master/docs/api-docs/classes/tokenmanagement.md#timelock
+     * </pre>
+     *
+     * <code>repeated .TW.Binance.Proto.SendOrder.Token amount = 3;</code>
+     */
+    wallet.core.jni.proto.Binance.SendOrder.Token getAmount(int index);
+    /**
+     * <pre>
+     * Array of symbol/amount pairs. see SDK https://github.com/binance-chain/javascript-sdk/blob/master/docs/api-docs/classes/tokenmanagement.md#timelock
+     * </pre>
+     *
+     * <code>repeated .TW.Binance.Proto.SendOrder.Token amount = 3;</code>
+     */
+    int getAmountCount();
+    /**
+     * <pre>
+     * Array of symbol/amount pairs. see SDK https://github.com/binance-chain/javascript-sdk/blob/master/docs/api-docs/classes/tokenmanagement.md#timelock
+     * </pre>
+     *
+     * <code>repeated .TW.Binance.Proto.SendOrder.Token amount = 3;</code>
+     */
+    java.util.List<? extends wallet.core.jni.proto.Binance.SendOrder.TokenOrBuilder> 
+        getAmountOrBuilderList();
+    /**
+     * <pre>
+     * Array of symbol/amount pairs. see SDK https://github.com/binance-chain/javascript-sdk/blob/master/docs/api-docs/classes/tokenmanagement.md#timelock
+     * </pre>
+     *
+     * <code>repeated .TW.Binance.Proto.SendOrder.Token amount = 3;</code>
+     */
+    wallet.core.jni.proto.Binance.SendOrder.TokenOrBuilder getAmountOrBuilder(
+        int index);
+
+    /**
+     * <code>int64 lock_time = 4;</code>
+     * @return The lockTime.
+     */
+    long getLockTime();
+  }
+  /**
+   * Protobuf type {@code TW.Binance.Proto.TimeLockOrder}
+   */
+  public static final class TimeLockOrder extends
+      com.google.protobuf.GeneratedMessageV3 implements
+      // @@protoc_insertion_point(message_implements:TW.Binance.Proto.TimeLockOrder)
+      TimeLockOrderOrBuilder {
+  private static final long serialVersionUID = 0L;
+    // Use TimeLockOrder.newBuilder() to construct.
+    private TimeLockOrder(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+      super(builder);
+    }
+    private TimeLockOrder() {
+      fromAddress_ = com.google.protobuf.ByteString.EMPTY;
+      description_ = "";
+      amount_ = java.util.Collections.emptyList();
+    }
+
+    @java.lang.Override
+    @SuppressWarnings({"unused"})
+    protected java.lang.Object newInstance(
+        UnusedPrivateParameter unused) {
+      return new TimeLockOrder();
+    }
+
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+    getUnknownFields() {
+      return this.unknownFields;
+    }
+    private TimeLockOrder(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      this();
+      if (extensionRegistry == null) {
+        throw new java.lang.NullPointerException();
+      }
+      int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            case 10: {
+
+              fromAddress_ = input.readBytes();
+              break;
+            }
+            case 18: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              description_ = s;
+              break;
+            }
+            case 26: {
+              if (!((mutable_bitField0_ & 0x00000001) != 0)) {
+                amount_ = new java.util.ArrayList<wallet.core.jni.proto.Binance.SendOrder.Token>();
+                mutable_bitField0_ |= 0x00000001;
+              }
+              amount_.add(
+                  input.readMessage(wallet.core.jni.proto.Binance.SendOrder.Token.parser(), extensionRegistry));
+              break;
+            }
+            case 32: {
+
+              lockTime_ = input.readInt64();
+              break;
+            }
+            default: {
+              if (!parseUnknownField(
+                  input, unknownFields, extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e).setUnfinishedMessage(this);
+      } finally {
+        if (((mutable_bitField0_ & 0x00000001) != 0)) {
+          amount_ = java.util.Collections.unmodifiableList(amount_);
+        }
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return wallet.core.jni.proto.Binance.internal_static_TW_Binance_Proto_TimeLockOrder_descriptor;
+    }
+
+    @java.lang.Override
+    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return wallet.core.jni.proto.Binance.internal_static_TW_Binance_Proto_TimeLockOrder_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              wallet.core.jni.proto.Binance.TimeLockOrder.class, wallet.core.jni.proto.Binance.TimeLockOrder.Builder.class);
+    }
+
+    public static final int FROM_ADDRESS_FIELD_NUMBER = 1;
+    private com.google.protobuf.ByteString fromAddress_;
+    /**
+     * <pre>
+     * owner address
+     * </pre>
+     *
+     * <code>bytes from_address = 1;</code>
+     * @return The fromAddress.
+     */
+    @java.lang.Override
+    public com.google.protobuf.ByteString getFromAddress() {
+      return fromAddress_;
+    }
+
+    public static final int DESCRIPTION_FIELD_NUMBER = 2;
+    private volatile java.lang.Object description_;
+    /**
+     * <code>string description = 2;</code>
+     * @return The description.
+     */
+    @java.lang.Override
+    public java.lang.String getDescription() {
+      java.lang.Object ref = description_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        description_ = s;
+        return s;
+      }
+    }
+    /**
+     * <code>string description = 2;</code>
+     * @return The bytes for description.
+     */
+    @java.lang.Override
+    public com.google.protobuf.ByteString
+        getDescriptionBytes() {
+      java.lang.Object ref = description_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        description_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int AMOUNT_FIELD_NUMBER = 3;
+    private java.util.List<wallet.core.jni.proto.Binance.SendOrder.Token> amount_;
+    /**
+     * <pre>
+     * Array of symbol/amount pairs. see SDK https://github.com/binance-chain/javascript-sdk/blob/master/docs/api-docs/classes/tokenmanagement.md#timelock
+     * </pre>
+     *
+     * <code>repeated .TW.Binance.Proto.SendOrder.Token amount = 3;</code>
+     */
+    @java.lang.Override
+    public java.util.List<wallet.core.jni.proto.Binance.SendOrder.Token> getAmountList() {
+      return amount_;
+    }
+    /**
+     * <pre>
+     * Array of symbol/amount pairs. see SDK https://github.com/binance-chain/javascript-sdk/blob/master/docs/api-docs/classes/tokenmanagement.md#timelock
+     * </pre>
+     *
+     * <code>repeated .TW.Binance.Proto.SendOrder.Token amount = 3;</code>
+     */
+    @java.lang.Override
+    public java.util.List<? extends wallet.core.jni.proto.Binance.SendOrder.TokenOrBuilder> 
+        getAmountOrBuilderList() {
+      return amount_;
+    }
+    /**
+     * <pre>
+     * Array of symbol/amount pairs. see SDK https://github.com/binance-chain/javascript-sdk/blob/master/docs/api-docs/classes/tokenmanagement.md#timelock
+     * </pre>
+     *
+     * <code>repeated .TW.Binance.Proto.SendOrder.Token amount = 3;</code>
+     */
+    @java.lang.Override
+    public int getAmountCount() {
+      return amount_.size();
+    }
+    /**
+     * <pre>
+     * Array of symbol/amount pairs. see SDK https://github.com/binance-chain/javascript-sdk/blob/master/docs/api-docs/classes/tokenmanagement.md#timelock
+     * </pre>
+     *
+     * <code>repeated .TW.Binance.Proto.SendOrder.Token amount = 3;</code>
+     */
+    @java.lang.Override
+    public wallet.core.jni.proto.Binance.SendOrder.Token getAmount(int index) {
+      return amount_.get(index);
+    }
+    /**
+     * <pre>
+     * Array of symbol/amount pairs. see SDK https://github.com/binance-chain/javascript-sdk/blob/master/docs/api-docs/classes/tokenmanagement.md#timelock
+     * </pre>
+     *
+     * <code>repeated .TW.Binance.Proto.SendOrder.Token amount = 3;</code>
+     */
+    @java.lang.Override
+    public wallet.core.jni.proto.Binance.SendOrder.TokenOrBuilder getAmountOrBuilder(
+        int index) {
+      return amount_.get(index);
+    }
+
+    public static final int LOCK_TIME_FIELD_NUMBER = 4;
+    private long lockTime_;
+    /**
+     * <code>int64 lock_time = 4;</code>
+     * @return The lockTime.
+     */
+    @java.lang.Override
+    public long getLockTime() {
+      return lockTime_;
+    }
+
+    private byte memoizedIsInitialized = -1;
+    @java.lang.Override
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    @java.lang.Override
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      if (!fromAddress_.isEmpty()) {
+        output.writeBytes(1, fromAddress_);
+      }
+      if (!getDescriptionBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 2, description_);
+      }
+      for (int i = 0; i < amount_.size(); i++) {
+        output.writeMessage(3, amount_.get(i));
+      }
+      if (lockTime_ != 0L) {
+        output.writeInt64(4, lockTime_);
+      }
+      unknownFields.writeTo(output);
+    }
+
+    @java.lang.Override
+    public int getSerializedSize() {
+      int size = memoizedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (!fromAddress_.isEmpty()) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(1, fromAddress_);
+      }
+      if (!getDescriptionBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, description_);
+      }
+      for (int i = 0; i < amount_.size(); i++) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(3, amount_.get(i));
+      }
+      if (lockTime_ != 0L) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt64Size(4, lockTime_);
+      }
+      size += unknownFields.getSerializedSize();
+      memoizedSize = size;
+      return size;
+    }
+
+    @java.lang.Override
+    public boolean equals(final java.lang.Object obj) {
+      if (obj == this) {
+       return true;
+      }
+      if (!(obj instanceof wallet.core.jni.proto.Binance.TimeLockOrder)) {
+        return super.equals(obj);
+      }
+      wallet.core.jni.proto.Binance.TimeLockOrder other = (wallet.core.jni.proto.Binance.TimeLockOrder) obj;
+
+      if (!getFromAddress()
+          .equals(other.getFromAddress())) return false;
+      if (!getDescription()
+          .equals(other.getDescription())) return false;
+      if (!getAmountList()
+          .equals(other.getAmountList())) return false;
+      if (getLockTime()
+          != other.getLockTime()) return false;
+      if (!unknownFields.equals(other.unknownFields)) return false;
+      return true;
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+      if (memoizedHashCode != 0) {
+        return memoizedHashCode;
+      }
+      int hash = 41;
+      hash = (19 * hash) + getDescriptor().hashCode();
+      hash = (37 * hash) + FROM_ADDRESS_FIELD_NUMBER;
+      hash = (53 * hash) + getFromAddress().hashCode();
+      hash = (37 * hash) + DESCRIPTION_FIELD_NUMBER;
+      hash = (53 * hash) + getDescription().hashCode();
+      if (getAmountCount() > 0) {
+        hash = (37 * hash) + AMOUNT_FIELD_NUMBER;
+        hash = (53 * hash) + getAmountList().hashCode();
+      }
+      hash = (37 * hash) + LOCK_TIME_FIELD_NUMBER;
+      hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
+          getLockTime());
+      hash = (29 * hash) + unknownFields.hashCode();
+      memoizedHashCode = hash;
+      return hash;
+    }
+
+    public static wallet.core.jni.proto.Binance.TimeLockOrder parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static wallet.core.jni.proto.Binance.TimeLockOrder parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static wallet.core.jni.proto.Binance.TimeLockOrder parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static wallet.core.jni.proto.Binance.TimeLockOrder parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static wallet.core.jni.proto.Binance.TimeLockOrder parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static wallet.core.jni.proto.Binance.TimeLockOrder parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static wallet.core.jni.proto.Binance.TimeLockOrder parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static wallet.core.jni.proto.Binance.TimeLockOrder parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static wallet.core.jni.proto.Binance.TimeLockOrder parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input);
+    }
+    public static wallet.core.jni.proto.Binance.TimeLockOrder parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static wallet.core.jni.proto.Binance.TimeLockOrder parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static wallet.core.jni.proto.Binance.TimeLockOrder parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    @java.lang.Override
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder() {
+      return DEFAULT_INSTANCE.toBuilder();
+    }
+    public static Builder newBuilder(wallet.core.jni.proto.Binance.TimeLockOrder prototype) {
+      return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
+    }
+    @java.lang.Override
+    public Builder toBuilder() {
+      return this == DEFAULT_INSTANCE
+          ? new Builder() : new Builder().mergeFrom(this);
+    }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code TW.Binance.Proto.TimeLockOrder}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:TW.Binance.Proto.TimeLockOrder)
+        wallet.core.jni.proto.Binance.TimeLockOrderOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return wallet.core.jni.proto.Binance.internal_static_TW_Binance_Proto_TimeLockOrder_descriptor;
+      }
+
+      @java.lang.Override
+      protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return wallet.core.jni.proto.Binance.internal_static_TW_Binance_Proto_TimeLockOrder_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                wallet.core.jni.proto.Binance.TimeLockOrder.class, wallet.core.jni.proto.Binance.TimeLockOrder.Builder.class);
+      }
+
+      // Construct using wallet.core.jni.proto.Binance.TimeLockOrder.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessageV3
+                .alwaysUseFieldBuilders) {
+          getAmountFieldBuilder();
+        }
+      }
+      @java.lang.Override
+      public Builder clear() {
+        super.clear();
+        fromAddress_ = com.google.protobuf.ByteString.EMPTY;
+
+        description_ = "";
+
+        if (amountBuilder_ == null) {
+          amount_ = java.util.Collections.emptyList();
+          bitField0_ = (bitField0_ & ~0x00000001);
+        } else {
+          amountBuilder_.clear();
+        }
+        lockTime_ = 0L;
+
+        return this;
+      }
+
+      @java.lang.Override
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return wallet.core.jni.proto.Binance.internal_static_TW_Binance_Proto_TimeLockOrder_descriptor;
+      }
+
+      @java.lang.Override
+      public wallet.core.jni.proto.Binance.TimeLockOrder getDefaultInstanceForType() {
+        return wallet.core.jni.proto.Binance.TimeLockOrder.getDefaultInstance();
+      }
+
+      @java.lang.Override
+      public wallet.core.jni.proto.Binance.TimeLockOrder build() {
+        wallet.core.jni.proto.Binance.TimeLockOrder result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      @java.lang.Override
+      public wallet.core.jni.proto.Binance.TimeLockOrder buildPartial() {
+        wallet.core.jni.proto.Binance.TimeLockOrder result = new wallet.core.jni.proto.Binance.TimeLockOrder(this);
+        int from_bitField0_ = bitField0_;
+        result.fromAddress_ = fromAddress_;
+        result.description_ = description_;
+        if (amountBuilder_ == null) {
+          if (((bitField0_ & 0x00000001) != 0)) {
+            amount_ = java.util.Collections.unmodifiableList(amount_);
+            bitField0_ = (bitField0_ & ~0x00000001);
+          }
+          result.amount_ = amount_;
+        } else {
+          result.amount_ = amountBuilder_.build();
+        }
+        result.lockTime_ = lockTime_;
+        onBuilt();
+        return result;
+      }
+
+      @java.lang.Override
+      public Builder clone() {
+        return super.clone();
+      }
+      @java.lang.Override
+      public Builder setField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return super.setField(field, value);
+      }
+      @java.lang.Override
+      public Builder clearField(
+          com.google.protobuf.Descriptors.FieldDescriptor field) {
+        return super.clearField(field);
+      }
+      @java.lang.Override
+      public Builder clearOneof(
+          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
+        return super.clearOneof(oneof);
+      }
+      @java.lang.Override
+      public Builder setRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          int index, java.lang.Object value) {
+        return super.setRepeatedField(field, index, value);
+      }
+      @java.lang.Override
+      public Builder addRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return super.addRepeatedField(field, value);
+      }
+      @java.lang.Override
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof wallet.core.jni.proto.Binance.TimeLockOrder) {
+          return mergeFrom((wallet.core.jni.proto.Binance.TimeLockOrder)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(wallet.core.jni.proto.Binance.TimeLockOrder other) {
+        if (other == wallet.core.jni.proto.Binance.TimeLockOrder.getDefaultInstance()) return this;
+        if (other.getFromAddress() != com.google.protobuf.ByteString.EMPTY) {
+          setFromAddress(other.getFromAddress());
+        }
+        if (!other.getDescription().isEmpty()) {
+          description_ = other.description_;
+          onChanged();
+        }
+        if (amountBuilder_ == null) {
+          if (!other.amount_.isEmpty()) {
+            if (amount_.isEmpty()) {
+              amount_ = other.amount_;
+              bitField0_ = (bitField0_ & ~0x00000001);
+            } else {
+              ensureAmountIsMutable();
+              amount_.addAll(other.amount_);
+            }
+            onChanged();
+          }
+        } else {
+          if (!other.amount_.isEmpty()) {
+            if (amountBuilder_.isEmpty()) {
+              amountBuilder_.dispose();
+              amountBuilder_ = null;
+              amount_ = other.amount_;
+              bitField0_ = (bitField0_ & ~0x00000001);
+              amountBuilder_ = 
+                com.google.protobuf.GeneratedMessageV3.alwaysUseFieldBuilders ?
+                   getAmountFieldBuilder() : null;
+            } else {
+              amountBuilder_.addAllMessages(other.amount_);
+            }
+          }
+        }
+        if (other.getLockTime() != 0L) {
+          setLockTime(other.getLockTime());
+        }
+        this.mergeUnknownFields(other.unknownFields);
+        onChanged();
+        return this;
+      }
+
+      @java.lang.Override
+      public final boolean isInitialized() {
+        return true;
+      }
+
+      @java.lang.Override
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        wallet.core.jni.proto.Binance.TimeLockOrder parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (wallet.core.jni.proto.Binance.TimeLockOrder) e.getUnfinishedMessage();
+          throw e.unwrapIOException();
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+      private int bitField0_;
+
+      private com.google.protobuf.ByteString fromAddress_ = com.google.protobuf.ByteString.EMPTY;
+      /**
+       * <pre>
+       * owner address
+       * </pre>
+       *
+       * <code>bytes from_address = 1;</code>
+       * @return The fromAddress.
+       */
+      @java.lang.Override
+      public com.google.protobuf.ByteString getFromAddress() {
+        return fromAddress_;
+      }
+      /**
+       * <pre>
+       * owner address
+       * </pre>
+       *
+       * <code>bytes from_address = 1;</code>
+       * @param value The fromAddress to set.
+       * @return This builder for chaining.
+       */
+      public Builder setFromAddress(com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        fromAddress_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * owner address
+       * </pre>
+       *
+       * <code>bytes from_address = 1;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearFromAddress() {
+        
+        fromAddress_ = getDefaultInstance().getFromAddress();
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object description_ = "";
+      /**
+       * <code>string description = 2;</code>
+       * @return The description.
+       */
+      public java.lang.String getDescription() {
+        java.lang.Object ref = description_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          description_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>string description = 2;</code>
+       * @return The bytes for description.
+       */
+      public com.google.protobuf.ByteString
+          getDescriptionBytes() {
+        java.lang.Object ref = description_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          description_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>string description = 2;</code>
+       * @param value The description to set.
+       * @return This builder for chaining.
+       */
+      public Builder setDescription(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        description_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string description = 2;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearDescription() {
+        
+        description_ = getDefaultInstance().getDescription();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string description = 2;</code>
+       * @param value The bytes for description to set.
+       * @return This builder for chaining.
+       */
+      public Builder setDescriptionBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        description_ = value;
+        onChanged();
+        return this;
+      }
+
+      private java.util.List<wallet.core.jni.proto.Binance.SendOrder.Token> amount_ =
+        java.util.Collections.emptyList();
+      private void ensureAmountIsMutable() {
+        if (!((bitField0_ & 0x00000001) != 0)) {
+          amount_ = new java.util.ArrayList<wallet.core.jni.proto.Binance.SendOrder.Token>(amount_);
+          bitField0_ |= 0x00000001;
+         }
+      }
+
+      private com.google.protobuf.RepeatedFieldBuilderV3<
+          wallet.core.jni.proto.Binance.SendOrder.Token, wallet.core.jni.proto.Binance.SendOrder.Token.Builder, wallet.core.jni.proto.Binance.SendOrder.TokenOrBuilder> amountBuilder_;
+
+      /**
+       * <pre>
+       * Array of symbol/amount pairs. see SDK https://github.com/binance-chain/javascript-sdk/blob/master/docs/api-docs/classes/tokenmanagement.md#timelock
+       * </pre>
+       *
+       * <code>repeated .TW.Binance.Proto.SendOrder.Token amount = 3;</code>
+       */
+      public java.util.List<wallet.core.jni.proto.Binance.SendOrder.Token> getAmountList() {
+        if (amountBuilder_ == null) {
+          return java.util.Collections.unmodifiableList(amount_);
+        } else {
+          return amountBuilder_.getMessageList();
+        }
+      }
+      /**
+       * <pre>
+       * Array of symbol/amount pairs. see SDK https://github.com/binance-chain/javascript-sdk/blob/master/docs/api-docs/classes/tokenmanagement.md#timelock
+       * </pre>
+       *
+       * <code>repeated .TW.Binance.Proto.SendOrder.Token amount = 3;</code>
+       */
+      public int getAmountCount() {
+        if (amountBuilder_ == null) {
+          return amount_.size();
+        } else {
+          return amountBuilder_.getCount();
+        }
+      }
+      /**
+       * <pre>
+       * Array of symbol/amount pairs. see SDK https://github.com/binance-chain/javascript-sdk/blob/master/docs/api-docs/classes/tokenmanagement.md#timelock
+       * </pre>
+       *
+       * <code>repeated .TW.Binance.Proto.SendOrder.Token amount = 3;</code>
+       */
+      public wallet.core.jni.proto.Binance.SendOrder.Token getAmount(int index) {
+        if (amountBuilder_ == null) {
+          return amount_.get(index);
+        } else {
+          return amountBuilder_.getMessage(index);
+        }
+      }
+      /**
+       * <pre>
+       * Array of symbol/amount pairs. see SDK https://github.com/binance-chain/javascript-sdk/blob/master/docs/api-docs/classes/tokenmanagement.md#timelock
+       * </pre>
+       *
+       * <code>repeated .TW.Binance.Proto.SendOrder.Token amount = 3;</code>
+       */
+      public Builder setAmount(
+          int index, wallet.core.jni.proto.Binance.SendOrder.Token value) {
+        if (amountBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureAmountIsMutable();
+          amount_.set(index, value);
+          onChanged();
+        } else {
+          amountBuilder_.setMessage(index, value);
+        }
+        return this;
+      }
+      /**
+       * <pre>
+       * Array of symbol/amount pairs. see SDK https://github.com/binance-chain/javascript-sdk/blob/master/docs/api-docs/classes/tokenmanagement.md#timelock
+       * </pre>
+       *
+       * <code>repeated .TW.Binance.Proto.SendOrder.Token amount = 3;</code>
+       */
+      public Builder setAmount(
+          int index, wallet.core.jni.proto.Binance.SendOrder.Token.Builder builderForValue) {
+        if (amountBuilder_ == null) {
+          ensureAmountIsMutable();
+          amount_.set(index, builderForValue.build());
+          onChanged();
+        } else {
+          amountBuilder_.setMessage(index, builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <pre>
+       * Array of symbol/amount pairs. see SDK https://github.com/binance-chain/javascript-sdk/blob/master/docs/api-docs/classes/tokenmanagement.md#timelock
+       * </pre>
+       *
+       * <code>repeated .TW.Binance.Proto.SendOrder.Token amount = 3;</code>
+       */
+      public Builder addAmount(wallet.core.jni.proto.Binance.SendOrder.Token value) {
+        if (amountBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureAmountIsMutable();
+          amount_.add(value);
+          onChanged();
+        } else {
+          amountBuilder_.addMessage(value);
+        }
+        return this;
+      }
+      /**
+       * <pre>
+       * Array of symbol/amount pairs. see SDK https://github.com/binance-chain/javascript-sdk/blob/master/docs/api-docs/classes/tokenmanagement.md#timelock
+       * </pre>
+       *
+       * <code>repeated .TW.Binance.Proto.SendOrder.Token amount = 3;</code>
+       */
+      public Builder addAmount(
+          int index, wallet.core.jni.proto.Binance.SendOrder.Token value) {
+        if (amountBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureAmountIsMutable();
+          amount_.add(index, value);
+          onChanged();
+        } else {
+          amountBuilder_.addMessage(index, value);
+        }
+        return this;
+      }
+      /**
+       * <pre>
+       * Array of symbol/amount pairs. see SDK https://github.com/binance-chain/javascript-sdk/blob/master/docs/api-docs/classes/tokenmanagement.md#timelock
+       * </pre>
+       *
+       * <code>repeated .TW.Binance.Proto.SendOrder.Token amount = 3;</code>
+       */
+      public Builder addAmount(
+          wallet.core.jni.proto.Binance.SendOrder.Token.Builder builderForValue) {
+        if (amountBuilder_ == null) {
+          ensureAmountIsMutable();
+          amount_.add(builderForValue.build());
+          onChanged();
+        } else {
+          amountBuilder_.addMessage(builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <pre>
+       * Array of symbol/amount pairs. see SDK https://github.com/binance-chain/javascript-sdk/blob/master/docs/api-docs/classes/tokenmanagement.md#timelock
+       * </pre>
+       *
+       * <code>repeated .TW.Binance.Proto.SendOrder.Token amount = 3;</code>
+       */
+      public Builder addAmount(
+          int index, wallet.core.jni.proto.Binance.SendOrder.Token.Builder builderForValue) {
+        if (amountBuilder_ == null) {
+          ensureAmountIsMutable();
+          amount_.add(index, builderForValue.build());
+          onChanged();
+        } else {
+          amountBuilder_.addMessage(index, builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <pre>
+       * Array of symbol/amount pairs. see SDK https://github.com/binance-chain/javascript-sdk/blob/master/docs/api-docs/classes/tokenmanagement.md#timelock
+       * </pre>
+       *
+       * <code>repeated .TW.Binance.Proto.SendOrder.Token amount = 3;</code>
+       */
+      public Builder addAllAmount(
+          java.lang.Iterable<? extends wallet.core.jni.proto.Binance.SendOrder.Token> values) {
+        if (amountBuilder_ == null) {
+          ensureAmountIsMutable();
+          com.google.protobuf.AbstractMessageLite.Builder.addAll(
+              values, amount_);
+          onChanged();
+        } else {
+          amountBuilder_.addAllMessages(values);
+        }
+        return this;
+      }
+      /**
+       * <pre>
+       * Array of symbol/amount pairs. see SDK https://github.com/binance-chain/javascript-sdk/blob/master/docs/api-docs/classes/tokenmanagement.md#timelock
+       * </pre>
+       *
+       * <code>repeated .TW.Binance.Proto.SendOrder.Token amount = 3;</code>
+       */
+      public Builder clearAmount() {
+        if (amountBuilder_ == null) {
+          amount_ = java.util.Collections.emptyList();
+          bitField0_ = (bitField0_ & ~0x00000001);
+          onChanged();
+        } else {
+          amountBuilder_.clear();
+        }
+        return this;
+      }
+      /**
+       * <pre>
+       * Array of symbol/amount pairs. see SDK https://github.com/binance-chain/javascript-sdk/blob/master/docs/api-docs/classes/tokenmanagement.md#timelock
+       * </pre>
+       *
+       * <code>repeated .TW.Binance.Proto.SendOrder.Token amount = 3;</code>
+       */
+      public Builder removeAmount(int index) {
+        if (amountBuilder_ == null) {
+          ensureAmountIsMutable();
+          amount_.remove(index);
+          onChanged();
+        } else {
+          amountBuilder_.remove(index);
+        }
+        return this;
+      }
+      /**
+       * <pre>
+       * Array of symbol/amount pairs. see SDK https://github.com/binance-chain/javascript-sdk/blob/master/docs/api-docs/classes/tokenmanagement.md#timelock
+       * </pre>
+       *
+       * <code>repeated .TW.Binance.Proto.SendOrder.Token amount = 3;</code>
+       */
+      public wallet.core.jni.proto.Binance.SendOrder.Token.Builder getAmountBuilder(
+          int index) {
+        return getAmountFieldBuilder().getBuilder(index);
+      }
+      /**
+       * <pre>
+       * Array of symbol/amount pairs. see SDK https://github.com/binance-chain/javascript-sdk/blob/master/docs/api-docs/classes/tokenmanagement.md#timelock
+       * </pre>
+       *
+       * <code>repeated .TW.Binance.Proto.SendOrder.Token amount = 3;</code>
+       */
+      public wallet.core.jni.proto.Binance.SendOrder.TokenOrBuilder getAmountOrBuilder(
+          int index) {
+        if (amountBuilder_ == null) {
+          return amount_.get(index);  } else {
+          return amountBuilder_.getMessageOrBuilder(index);
+        }
+      }
+      /**
+       * <pre>
+       * Array of symbol/amount pairs. see SDK https://github.com/binance-chain/javascript-sdk/blob/master/docs/api-docs/classes/tokenmanagement.md#timelock
+       * </pre>
+       *
+       * <code>repeated .TW.Binance.Proto.SendOrder.Token amount = 3;</code>
+       */
+      public java.util.List<? extends wallet.core.jni.proto.Binance.SendOrder.TokenOrBuilder> 
+           getAmountOrBuilderList() {
+        if (amountBuilder_ != null) {
+          return amountBuilder_.getMessageOrBuilderList();
+        } else {
+          return java.util.Collections.unmodifiableList(amount_);
+        }
+      }
+      /**
+       * <pre>
+       * Array of symbol/amount pairs. see SDK https://github.com/binance-chain/javascript-sdk/blob/master/docs/api-docs/classes/tokenmanagement.md#timelock
+       * </pre>
+       *
+       * <code>repeated .TW.Binance.Proto.SendOrder.Token amount = 3;</code>
+       */
+      public wallet.core.jni.proto.Binance.SendOrder.Token.Builder addAmountBuilder() {
+        return getAmountFieldBuilder().addBuilder(
+            wallet.core.jni.proto.Binance.SendOrder.Token.getDefaultInstance());
+      }
+      /**
+       * <pre>
+       * Array of symbol/amount pairs. see SDK https://github.com/binance-chain/javascript-sdk/blob/master/docs/api-docs/classes/tokenmanagement.md#timelock
+       * </pre>
+       *
+       * <code>repeated .TW.Binance.Proto.SendOrder.Token amount = 3;</code>
+       */
+      public wallet.core.jni.proto.Binance.SendOrder.Token.Builder addAmountBuilder(
+          int index) {
+        return getAmountFieldBuilder().addBuilder(
+            index, wallet.core.jni.proto.Binance.SendOrder.Token.getDefaultInstance());
+      }
+      /**
+       * <pre>
+       * Array of symbol/amount pairs. see SDK https://github.com/binance-chain/javascript-sdk/blob/master/docs/api-docs/classes/tokenmanagement.md#timelock
+       * </pre>
+       *
+       * <code>repeated .TW.Binance.Proto.SendOrder.Token amount = 3;</code>
+       */
+      public java.util.List<wallet.core.jni.proto.Binance.SendOrder.Token.Builder> 
+           getAmountBuilderList() {
+        return getAmountFieldBuilder().getBuilderList();
+      }
+      private com.google.protobuf.RepeatedFieldBuilderV3<
+          wallet.core.jni.proto.Binance.SendOrder.Token, wallet.core.jni.proto.Binance.SendOrder.Token.Builder, wallet.core.jni.proto.Binance.SendOrder.TokenOrBuilder> 
+          getAmountFieldBuilder() {
+        if (amountBuilder_ == null) {
+          amountBuilder_ = new com.google.protobuf.RepeatedFieldBuilderV3<
+              wallet.core.jni.proto.Binance.SendOrder.Token, wallet.core.jni.proto.Binance.SendOrder.Token.Builder, wallet.core.jni.proto.Binance.SendOrder.TokenOrBuilder>(
+                  amount_,
+                  ((bitField0_ & 0x00000001) != 0),
+                  getParentForChildren(),
+                  isClean());
+          amount_ = null;
+        }
+        return amountBuilder_;
+      }
+
+      private long lockTime_ ;
+      /**
+       * <code>int64 lock_time = 4;</code>
+       * @return The lockTime.
+       */
+      @java.lang.Override
+      public long getLockTime() {
+        return lockTime_;
+      }
+      /**
+       * <code>int64 lock_time = 4;</code>
+       * @param value The lockTime to set.
+       * @return This builder for chaining.
+       */
+      public Builder setLockTime(long value) {
+        
+        lockTime_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>int64 lock_time = 4;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearLockTime() {
+        
+        lockTime_ = 0L;
+        onChanged();
+        return this;
+      }
+      @java.lang.Override
+      public final Builder setUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.setUnknownFields(unknownFields);
+      }
+
+      @java.lang.Override
+      public final Builder mergeUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.mergeUnknownFields(unknownFields);
+      }
+
+
+      // @@protoc_insertion_point(builder_scope:TW.Binance.Proto.TimeLockOrder)
+    }
+
+    // @@protoc_insertion_point(class_scope:TW.Binance.Proto.TimeLockOrder)
+    private static final wallet.core.jni.proto.Binance.TimeLockOrder DEFAULT_INSTANCE;
+    static {
+      DEFAULT_INSTANCE = new wallet.core.jni.proto.Binance.TimeLockOrder();
+    }
+
+    public static wallet.core.jni.proto.Binance.TimeLockOrder getDefaultInstance() {
+      return DEFAULT_INSTANCE;
+    }
+
+    private static final com.google.protobuf.Parser<TimeLockOrder>
+        PARSER = new com.google.protobuf.AbstractParser<TimeLockOrder>() {
+      @java.lang.Override
+      public TimeLockOrder parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new TimeLockOrder(input, extensionRegistry);
+      }
+    };
+
+    public static com.google.protobuf.Parser<TimeLockOrder> parser() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<TimeLockOrder> getParserForType() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public wallet.core.jni.proto.Binance.TimeLockOrder getDefaultInstanceForType() {
+      return DEFAULT_INSTANCE;
+    }
+
+  }
+
+  public interface TimeRelockOrderOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:TW.Binance.Proto.TimeRelockOrder)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <pre>
+     * owner address
+     * </pre>
+     *
+     * <code>bytes from_address = 1;</code>
+     * @return The fromAddress.
+     */
+    com.google.protobuf.ByteString getFromAddress();
+
+    /**
+     * <pre>
+     * order ID
+     * </pre>
+     *
+     * <code>int64 id = 2;</code>
+     * @return The id.
+     */
+    long getId();
+
+    /**
+     * <code>string description = 3;</code>
+     * @return The description.
+     */
+    java.lang.String getDescription();
+    /**
+     * <code>string description = 3;</code>
+     * @return The bytes for description.
+     */
+    com.google.protobuf.ByteString
+        getDescriptionBytes();
+
+    /**
+     * <pre>
+     * Array of symbol/amount pairs.
+     * </pre>
+     *
+     * <code>repeated .TW.Binance.Proto.SendOrder.Token amount = 4;</code>
+     */
+    java.util.List<wallet.core.jni.proto.Binance.SendOrder.Token> 
+        getAmountList();
+    /**
+     * <pre>
+     * Array of symbol/amount pairs.
+     * </pre>
+     *
+     * <code>repeated .TW.Binance.Proto.SendOrder.Token amount = 4;</code>
+     */
+    wallet.core.jni.proto.Binance.SendOrder.Token getAmount(int index);
+    /**
+     * <pre>
+     * Array of symbol/amount pairs.
+     * </pre>
+     *
+     * <code>repeated .TW.Binance.Proto.SendOrder.Token amount = 4;</code>
+     */
+    int getAmountCount();
+    /**
+     * <pre>
+     * Array of symbol/amount pairs.
+     * </pre>
+     *
+     * <code>repeated .TW.Binance.Proto.SendOrder.Token amount = 4;</code>
+     */
+    java.util.List<? extends wallet.core.jni.proto.Binance.SendOrder.TokenOrBuilder> 
+        getAmountOrBuilderList();
+    /**
+     * <pre>
+     * Array of symbol/amount pairs.
+     * </pre>
+     *
+     * <code>repeated .TW.Binance.Proto.SendOrder.Token amount = 4;</code>
+     */
+    wallet.core.jni.proto.Binance.SendOrder.TokenOrBuilder getAmountOrBuilder(
+        int index);
+
+    /**
+     * <code>int64 lock_time = 5;</code>
+     * @return The lockTime.
+     */
+    long getLockTime();
+  }
+  /**
+   * Protobuf type {@code TW.Binance.Proto.TimeRelockOrder}
+   */
+  public static final class TimeRelockOrder extends
+      com.google.protobuf.GeneratedMessageV3 implements
+      // @@protoc_insertion_point(message_implements:TW.Binance.Proto.TimeRelockOrder)
+      TimeRelockOrderOrBuilder {
+  private static final long serialVersionUID = 0L;
+    // Use TimeRelockOrder.newBuilder() to construct.
+    private TimeRelockOrder(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+      super(builder);
+    }
+    private TimeRelockOrder() {
+      fromAddress_ = com.google.protobuf.ByteString.EMPTY;
+      description_ = "";
+      amount_ = java.util.Collections.emptyList();
+    }
+
+    @java.lang.Override
+    @SuppressWarnings({"unused"})
+    protected java.lang.Object newInstance(
+        UnusedPrivateParameter unused) {
+      return new TimeRelockOrder();
+    }
+
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+    getUnknownFields() {
+      return this.unknownFields;
+    }
+    private TimeRelockOrder(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      this();
+      if (extensionRegistry == null) {
+        throw new java.lang.NullPointerException();
+      }
+      int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            case 10: {
+
+              fromAddress_ = input.readBytes();
+              break;
+            }
+            case 16: {
+
+              id_ = input.readInt64();
+              break;
+            }
+            case 26: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              description_ = s;
+              break;
+            }
+            case 34: {
+              if (!((mutable_bitField0_ & 0x00000001) != 0)) {
+                amount_ = new java.util.ArrayList<wallet.core.jni.proto.Binance.SendOrder.Token>();
+                mutable_bitField0_ |= 0x00000001;
+              }
+              amount_.add(
+                  input.readMessage(wallet.core.jni.proto.Binance.SendOrder.Token.parser(), extensionRegistry));
+              break;
+            }
+            case 40: {
+
+              lockTime_ = input.readInt64();
+              break;
+            }
+            default: {
+              if (!parseUnknownField(
+                  input, unknownFields, extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e).setUnfinishedMessage(this);
+      } finally {
+        if (((mutable_bitField0_ & 0x00000001) != 0)) {
+          amount_ = java.util.Collections.unmodifiableList(amount_);
+        }
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return wallet.core.jni.proto.Binance.internal_static_TW_Binance_Proto_TimeRelockOrder_descriptor;
+    }
+
+    @java.lang.Override
+    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return wallet.core.jni.proto.Binance.internal_static_TW_Binance_Proto_TimeRelockOrder_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              wallet.core.jni.proto.Binance.TimeRelockOrder.class, wallet.core.jni.proto.Binance.TimeRelockOrder.Builder.class);
+    }
+
+    public static final int FROM_ADDRESS_FIELD_NUMBER = 1;
+    private com.google.protobuf.ByteString fromAddress_;
+    /**
+     * <pre>
+     * owner address
+     * </pre>
+     *
+     * <code>bytes from_address = 1;</code>
+     * @return The fromAddress.
+     */
+    @java.lang.Override
+    public com.google.protobuf.ByteString getFromAddress() {
+      return fromAddress_;
+    }
+
+    public static final int ID_FIELD_NUMBER = 2;
+    private long id_;
+    /**
+     * <pre>
+     * order ID
+     * </pre>
+     *
+     * <code>int64 id = 2;</code>
+     * @return The id.
+     */
+    @java.lang.Override
+    public long getId() {
+      return id_;
+    }
+
+    public static final int DESCRIPTION_FIELD_NUMBER = 3;
+    private volatile java.lang.Object description_;
+    /**
+     * <code>string description = 3;</code>
+     * @return The description.
+     */
+    @java.lang.Override
+    public java.lang.String getDescription() {
+      java.lang.Object ref = description_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        description_ = s;
+        return s;
+      }
+    }
+    /**
+     * <code>string description = 3;</code>
+     * @return The bytes for description.
+     */
+    @java.lang.Override
+    public com.google.protobuf.ByteString
+        getDescriptionBytes() {
+      java.lang.Object ref = description_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        description_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int AMOUNT_FIELD_NUMBER = 4;
+    private java.util.List<wallet.core.jni.proto.Binance.SendOrder.Token> amount_;
+    /**
+     * <pre>
+     * Array of symbol/amount pairs.
+     * </pre>
+     *
+     * <code>repeated .TW.Binance.Proto.SendOrder.Token amount = 4;</code>
+     */
+    @java.lang.Override
+    public java.util.List<wallet.core.jni.proto.Binance.SendOrder.Token> getAmountList() {
+      return amount_;
+    }
+    /**
+     * <pre>
+     * Array of symbol/amount pairs.
+     * </pre>
+     *
+     * <code>repeated .TW.Binance.Proto.SendOrder.Token amount = 4;</code>
+     */
+    @java.lang.Override
+    public java.util.List<? extends wallet.core.jni.proto.Binance.SendOrder.TokenOrBuilder> 
+        getAmountOrBuilderList() {
+      return amount_;
+    }
+    /**
+     * <pre>
+     * Array of symbol/amount pairs.
+     * </pre>
+     *
+     * <code>repeated .TW.Binance.Proto.SendOrder.Token amount = 4;</code>
+     */
+    @java.lang.Override
+    public int getAmountCount() {
+      return amount_.size();
+    }
+    /**
+     * <pre>
+     * Array of symbol/amount pairs.
+     * </pre>
+     *
+     * <code>repeated .TW.Binance.Proto.SendOrder.Token amount = 4;</code>
+     */
+    @java.lang.Override
+    public wallet.core.jni.proto.Binance.SendOrder.Token getAmount(int index) {
+      return amount_.get(index);
+    }
+    /**
+     * <pre>
+     * Array of symbol/amount pairs.
+     * </pre>
+     *
+     * <code>repeated .TW.Binance.Proto.SendOrder.Token amount = 4;</code>
+     */
+    @java.lang.Override
+    public wallet.core.jni.proto.Binance.SendOrder.TokenOrBuilder getAmountOrBuilder(
+        int index) {
+      return amount_.get(index);
+    }
+
+    public static final int LOCK_TIME_FIELD_NUMBER = 5;
+    private long lockTime_;
+    /**
+     * <code>int64 lock_time = 5;</code>
+     * @return The lockTime.
+     */
+    @java.lang.Override
+    public long getLockTime() {
+      return lockTime_;
+    }
+
+    private byte memoizedIsInitialized = -1;
+    @java.lang.Override
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    @java.lang.Override
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      if (!fromAddress_.isEmpty()) {
+        output.writeBytes(1, fromAddress_);
+      }
+      if (id_ != 0L) {
+        output.writeInt64(2, id_);
+      }
+      if (!getDescriptionBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 3, description_);
+      }
+      for (int i = 0; i < amount_.size(); i++) {
+        output.writeMessage(4, amount_.get(i));
+      }
+      if (lockTime_ != 0L) {
+        output.writeInt64(5, lockTime_);
+      }
+      unknownFields.writeTo(output);
+    }
+
+    @java.lang.Override
+    public int getSerializedSize() {
+      int size = memoizedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (!fromAddress_.isEmpty()) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(1, fromAddress_);
+      }
+      if (id_ != 0L) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt64Size(2, id_);
+      }
+      if (!getDescriptionBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(3, description_);
+      }
+      for (int i = 0; i < amount_.size(); i++) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(4, amount_.get(i));
+      }
+      if (lockTime_ != 0L) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt64Size(5, lockTime_);
+      }
+      size += unknownFields.getSerializedSize();
+      memoizedSize = size;
+      return size;
+    }
+
+    @java.lang.Override
+    public boolean equals(final java.lang.Object obj) {
+      if (obj == this) {
+       return true;
+      }
+      if (!(obj instanceof wallet.core.jni.proto.Binance.TimeRelockOrder)) {
+        return super.equals(obj);
+      }
+      wallet.core.jni.proto.Binance.TimeRelockOrder other = (wallet.core.jni.proto.Binance.TimeRelockOrder) obj;
+
+      if (!getFromAddress()
+          .equals(other.getFromAddress())) return false;
+      if (getId()
+          != other.getId()) return false;
+      if (!getDescription()
+          .equals(other.getDescription())) return false;
+      if (!getAmountList()
+          .equals(other.getAmountList())) return false;
+      if (getLockTime()
+          != other.getLockTime()) return false;
+      if (!unknownFields.equals(other.unknownFields)) return false;
+      return true;
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+      if (memoizedHashCode != 0) {
+        return memoizedHashCode;
+      }
+      int hash = 41;
+      hash = (19 * hash) + getDescriptor().hashCode();
+      hash = (37 * hash) + FROM_ADDRESS_FIELD_NUMBER;
+      hash = (53 * hash) + getFromAddress().hashCode();
+      hash = (37 * hash) + ID_FIELD_NUMBER;
+      hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
+          getId());
+      hash = (37 * hash) + DESCRIPTION_FIELD_NUMBER;
+      hash = (53 * hash) + getDescription().hashCode();
+      if (getAmountCount() > 0) {
+        hash = (37 * hash) + AMOUNT_FIELD_NUMBER;
+        hash = (53 * hash) + getAmountList().hashCode();
+      }
+      hash = (37 * hash) + LOCK_TIME_FIELD_NUMBER;
+      hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
+          getLockTime());
+      hash = (29 * hash) + unknownFields.hashCode();
+      memoizedHashCode = hash;
+      return hash;
+    }
+
+    public static wallet.core.jni.proto.Binance.TimeRelockOrder parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static wallet.core.jni.proto.Binance.TimeRelockOrder parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static wallet.core.jni.proto.Binance.TimeRelockOrder parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static wallet.core.jni.proto.Binance.TimeRelockOrder parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static wallet.core.jni.proto.Binance.TimeRelockOrder parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static wallet.core.jni.proto.Binance.TimeRelockOrder parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static wallet.core.jni.proto.Binance.TimeRelockOrder parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static wallet.core.jni.proto.Binance.TimeRelockOrder parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static wallet.core.jni.proto.Binance.TimeRelockOrder parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input);
+    }
+    public static wallet.core.jni.proto.Binance.TimeRelockOrder parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static wallet.core.jni.proto.Binance.TimeRelockOrder parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static wallet.core.jni.proto.Binance.TimeRelockOrder parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    @java.lang.Override
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder() {
+      return DEFAULT_INSTANCE.toBuilder();
+    }
+    public static Builder newBuilder(wallet.core.jni.proto.Binance.TimeRelockOrder prototype) {
+      return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
+    }
+    @java.lang.Override
+    public Builder toBuilder() {
+      return this == DEFAULT_INSTANCE
+          ? new Builder() : new Builder().mergeFrom(this);
+    }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code TW.Binance.Proto.TimeRelockOrder}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:TW.Binance.Proto.TimeRelockOrder)
+        wallet.core.jni.proto.Binance.TimeRelockOrderOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return wallet.core.jni.proto.Binance.internal_static_TW_Binance_Proto_TimeRelockOrder_descriptor;
+      }
+
+      @java.lang.Override
+      protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return wallet.core.jni.proto.Binance.internal_static_TW_Binance_Proto_TimeRelockOrder_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                wallet.core.jni.proto.Binance.TimeRelockOrder.class, wallet.core.jni.proto.Binance.TimeRelockOrder.Builder.class);
+      }
+
+      // Construct using wallet.core.jni.proto.Binance.TimeRelockOrder.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessageV3
+                .alwaysUseFieldBuilders) {
+          getAmountFieldBuilder();
+        }
+      }
+      @java.lang.Override
+      public Builder clear() {
+        super.clear();
+        fromAddress_ = com.google.protobuf.ByteString.EMPTY;
+
+        id_ = 0L;
+
+        description_ = "";
+
+        if (amountBuilder_ == null) {
+          amount_ = java.util.Collections.emptyList();
+          bitField0_ = (bitField0_ & ~0x00000001);
+        } else {
+          amountBuilder_.clear();
+        }
+        lockTime_ = 0L;
+
+        return this;
+      }
+
+      @java.lang.Override
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return wallet.core.jni.proto.Binance.internal_static_TW_Binance_Proto_TimeRelockOrder_descriptor;
+      }
+
+      @java.lang.Override
+      public wallet.core.jni.proto.Binance.TimeRelockOrder getDefaultInstanceForType() {
+        return wallet.core.jni.proto.Binance.TimeRelockOrder.getDefaultInstance();
+      }
+
+      @java.lang.Override
+      public wallet.core.jni.proto.Binance.TimeRelockOrder build() {
+        wallet.core.jni.proto.Binance.TimeRelockOrder result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      @java.lang.Override
+      public wallet.core.jni.proto.Binance.TimeRelockOrder buildPartial() {
+        wallet.core.jni.proto.Binance.TimeRelockOrder result = new wallet.core.jni.proto.Binance.TimeRelockOrder(this);
+        int from_bitField0_ = bitField0_;
+        result.fromAddress_ = fromAddress_;
+        result.id_ = id_;
+        result.description_ = description_;
+        if (amountBuilder_ == null) {
+          if (((bitField0_ & 0x00000001) != 0)) {
+            amount_ = java.util.Collections.unmodifiableList(amount_);
+            bitField0_ = (bitField0_ & ~0x00000001);
+          }
+          result.amount_ = amount_;
+        } else {
+          result.amount_ = amountBuilder_.build();
+        }
+        result.lockTime_ = lockTime_;
+        onBuilt();
+        return result;
+      }
+
+      @java.lang.Override
+      public Builder clone() {
+        return super.clone();
+      }
+      @java.lang.Override
+      public Builder setField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return super.setField(field, value);
+      }
+      @java.lang.Override
+      public Builder clearField(
+          com.google.protobuf.Descriptors.FieldDescriptor field) {
+        return super.clearField(field);
+      }
+      @java.lang.Override
+      public Builder clearOneof(
+          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
+        return super.clearOneof(oneof);
+      }
+      @java.lang.Override
+      public Builder setRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          int index, java.lang.Object value) {
+        return super.setRepeatedField(field, index, value);
+      }
+      @java.lang.Override
+      public Builder addRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return super.addRepeatedField(field, value);
+      }
+      @java.lang.Override
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof wallet.core.jni.proto.Binance.TimeRelockOrder) {
+          return mergeFrom((wallet.core.jni.proto.Binance.TimeRelockOrder)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(wallet.core.jni.proto.Binance.TimeRelockOrder other) {
+        if (other == wallet.core.jni.proto.Binance.TimeRelockOrder.getDefaultInstance()) return this;
+        if (other.getFromAddress() != com.google.protobuf.ByteString.EMPTY) {
+          setFromAddress(other.getFromAddress());
+        }
+        if (other.getId() != 0L) {
+          setId(other.getId());
+        }
+        if (!other.getDescription().isEmpty()) {
+          description_ = other.description_;
+          onChanged();
+        }
+        if (amountBuilder_ == null) {
+          if (!other.amount_.isEmpty()) {
+            if (amount_.isEmpty()) {
+              amount_ = other.amount_;
+              bitField0_ = (bitField0_ & ~0x00000001);
+            } else {
+              ensureAmountIsMutable();
+              amount_.addAll(other.amount_);
+            }
+            onChanged();
+          }
+        } else {
+          if (!other.amount_.isEmpty()) {
+            if (amountBuilder_.isEmpty()) {
+              amountBuilder_.dispose();
+              amountBuilder_ = null;
+              amount_ = other.amount_;
+              bitField0_ = (bitField0_ & ~0x00000001);
+              amountBuilder_ = 
+                com.google.protobuf.GeneratedMessageV3.alwaysUseFieldBuilders ?
+                   getAmountFieldBuilder() : null;
+            } else {
+              amountBuilder_.addAllMessages(other.amount_);
+            }
+          }
+        }
+        if (other.getLockTime() != 0L) {
+          setLockTime(other.getLockTime());
+        }
+        this.mergeUnknownFields(other.unknownFields);
+        onChanged();
+        return this;
+      }
+
+      @java.lang.Override
+      public final boolean isInitialized() {
+        return true;
+      }
+
+      @java.lang.Override
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        wallet.core.jni.proto.Binance.TimeRelockOrder parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (wallet.core.jni.proto.Binance.TimeRelockOrder) e.getUnfinishedMessage();
+          throw e.unwrapIOException();
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+      private int bitField0_;
+
+      private com.google.protobuf.ByteString fromAddress_ = com.google.protobuf.ByteString.EMPTY;
+      /**
+       * <pre>
+       * owner address
+       * </pre>
+       *
+       * <code>bytes from_address = 1;</code>
+       * @return The fromAddress.
+       */
+      @java.lang.Override
+      public com.google.protobuf.ByteString getFromAddress() {
+        return fromAddress_;
+      }
+      /**
+       * <pre>
+       * owner address
+       * </pre>
+       *
+       * <code>bytes from_address = 1;</code>
+       * @param value The fromAddress to set.
+       * @return This builder for chaining.
+       */
+      public Builder setFromAddress(com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        fromAddress_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * owner address
+       * </pre>
+       *
+       * <code>bytes from_address = 1;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearFromAddress() {
+        
+        fromAddress_ = getDefaultInstance().getFromAddress();
+        onChanged();
+        return this;
+      }
+
+      private long id_ ;
+      /**
+       * <pre>
+       * order ID
+       * </pre>
+       *
+       * <code>int64 id = 2;</code>
+       * @return The id.
+       */
+      @java.lang.Override
+      public long getId() {
+        return id_;
+      }
+      /**
+       * <pre>
+       * order ID
+       * </pre>
+       *
+       * <code>int64 id = 2;</code>
+       * @param value The id to set.
+       * @return This builder for chaining.
+       */
+      public Builder setId(long value) {
+        
+        id_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * order ID
+       * </pre>
+       *
+       * <code>int64 id = 2;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearId() {
+        
+        id_ = 0L;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object description_ = "";
+      /**
+       * <code>string description = 3;</code>
+       * @return The description.
+       */
+      public java.lang.String getDescription() {
+        java.lang.Object ref = description_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          description_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>string description = 3;</code>
+       * @return The bytes for description.
+       */
+      public com.google.protobuf.ByteString
+          getDescriptionBytes() {
+        java.lang.Object ref = description_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          description_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>string description = 3;</code>
+       * @param value The description to set.
+       * @return This builder for chaining.
+       */
+      public Builder setDescription(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        description_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string description = 3;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearDescription() {
+        
+        description_ = getDefaultInstance().getDescription();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string description = 3;</code>
+       * @param value The bytes for description to set.
+       * @return This builder for chaining.
+       */
+      public Builder setDescriptionBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        description_ = value;
+        onChanged();
+        return this;
+      }
+
+      private java.util.List<wallet.core.jni.proto.Binance.SendOrder.Token> amount_ =
+        java.util.Collections.emptyList();
+      private void ensureAmountIsMutable() {
+        if (!((bitField0_ & 0x00000001) != 0)) {
+          amount_ = new java.util.ArrayList<wallet.core.jni.proto.Binance.SendOrder.Token>(amount_);
+          bitField0_ |= 0x00000001;
+         }
+      }
+
+      private com.google.protobuf.RepeatedFieldBuilderV3<
+          wallet.core.jni.proto.Binance.SendOrder.Token, wallet.core.jni.proto.Binance.SendOrder.Token.Builder, wallet.core.jni.proto.Binance.SendOrder.TokenOrBuilder> amountBuilder_;
+
+      /**
+       * <pre>
+       * Array of symbol/amount pairs.
+       * </pre>
+       *
+       * <code>repeated .TW.Binance.Proto.SendOrder.Token amount = 4;</code>
+       */
+      public java.util.List<wallet.core.jni.proto.Binance.SendOrder.Token> getAmountList() {
+        if (amountBuilder_ == null) {
+          return java.util.Collections.unmodifiableList(amount_);
+        } else {
+          return amountBuilder_.getMessageList();
+        }
+      }
+      /**
+       * <pre>
+       * Array of symbol/amount pairs.
+       * </pre>
+       *
+       * <code>repeated .TW.Binance.Proto.SendOrder.Token amount = 4;</code>
+       */
+      public int getAmountCount() {
+        if (amountBuilder_ == null) {
+          return amount_.size();
+        } else {
+          return amountBuilder_.getCount();
+        }
+      }
+      /**
+       * <pre>
+       * Array of symbol/amount pairs.
+       * </pre>
+       *
+       * <code>repeated .TW.Binance.Proto.SendOrder.Token amount = 4;</code>
+       */
+      public wallet.core.jni.proto.Binance.SendOrder.Token getAmount(int index) {
+        if (amountBuilder_ == null) {
+          return amount_.get(index);
+        } else {
+          return amountBuilder_.getMessage(index);
+        }
+      }
+      /**
+       * <pre>
+       * Array of symbol/amount pairs.
+       * </pre>
+       *
+       * <code>repeated .TW.Binance.Proto.SendOrder.Token amount = 4;</code>
+       */
+      public Builder setAmount(
+          int index, wallet.core.jni.proto.Binance.SendOrder.Token value) {
+        if (amountBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureAmountIsMutable();
+          amount_.set(index, value);
+          onChanged();
+        } else {
+          amountBuilder_.setMessage(index, value);
+        }
+        return this;
+      }
+      /**
+       * <pre>
+       * Array of symbol/amount pairs.
+       * </pre>
+       *
+       * <code>repeated .TW.Binance.Proto.SendOrder.Token amount = 4;</code>
+       */
+      public Builder setAmount(
+          int index, wallet.core.jni.proto.Binance.SendOrder.Token.Builder builderForValue) {
+        if (amountBuilder_ == null) {
+          ensureAmountIsMutable();
+          amount_.set(index, builderForValue.build());
+          onChanged();
+        } else {
+          amountBuilder_.setMessage(index, builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <pre>
+       * Array of symbol/amount pairs.
+       * </pre>
+       *
+       * <code>repeated .TW.Binance.Proto.SendOrder.Token amount = 4;</code>
+       */
+      public Builder addAmount(wallet.core.jni.proto.Binance.SendOrder.Token value) {
+        if (amountBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureAmountIsMutable();
+          amount_.add(value);
+          onChanged();
+        } else {
+          amountBuilder_.addMessage(value);
+        }
+        return this;
+      }
+      /**
+       * <pre>
+       * Array of symbol/amount pairs.
+       * </pre>
+       *
+       * <code>repeated .TW.Binance.Proto.SendOrder.Token amount = 4;</code>
+       */
+      public Builder addAmount(
+          int index, wallet.core.jni.proto.Binance.SendOrder.Token value) {
+        if (amountBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureAmountIsMutable();
+          amount_.add(index, value);
+          onChanged();
+        } else {
+          amountBuilder_.addMessage(index, value);
+        }
+        return this;
+      }
+      /**
+       * <pre>
+       * Array of symbol/amount pairs.
+       * </pre>
+       *
+       * <code>repeated .TW.Binance.Proto.SendOrder.Token amount = 4;</code>
+       */
+      public Builder addAmount(
+          wallet.core.jni.proto.Binance.SendOrder.Token.Builder builderForValue) {
+        if (amountBuilder_ == null) {
+          ensureAmountIsMutable();
+          amount_.add(builderForValue.build());
+          onChanged();
+        } else {
+          amountBuilder_.addMessage(builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <pre>
+       * Array of symbol/amount pairs.
+       * </pre>
+       *
+       * <code>repeated .TW.Binance.Proto.SendOrder.Token amount = 4;</code>
+       */
+      public Builder addAmount(
+          int index, wallet.core.jni.proto.Binance.SendOrder.Token.Builder builderForValue) {
+        if (amountBuilder_ == null) {
+          ensureAmountIsMutable();
+          amount_.add(index, builderForValue.build());
+          onChanged();
+        } else {
+          amountBuilder_.addMessage(index, builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <pre>
+       * Array of symbol/amount pairs.
+       * </pre>
+       *
+       * <code>repeated .TW.Binance.Proto.SendOrder.Token amount = 4;</code>
+       */
+      public Builder addAllAmount(
+          java.lang.Iterable<? extends wallet.core.jni.proto.Binance.SendOrder.Token> values) {
+        if (amountBuilder_ == null) {
+          ensureAmountIsMutable();
+          com.google.protobuf.AbstractMessageLite.Builder.addAll(
+              values, amount_);
+          onChanged();
+        } else {
+          amountBuilder_.addAllMessages(values);
+        }
+        return this;
+      }
+      /**
+       * <pre>
+       * Array of symbol/amount pairs.
+       * </pre>
+       *
+       * <code>repeated .TW.Binance.Proto.SendOrder.Token amount = 4;</code>
+       */
+      public Builder clearAmount() {
+        if (amountBuilder_ == null) {
+          amount_ = java.util.Collections.emptyList();
+          bitField0_ = (bitField0_ & ~0x00000001);
+          onChanged();
+        } else {
+          amountBuilder_.clear();
+        }
+        return this;
+      }
+      /**
+       * <pre>
+       * Array of symbol/amount pairs.
+       * </pre>
+       *
+       * <code>repeated .TW.Binance.Proto.SendOrder.Token amount = 4;</code>
+       */
+      public Builder removeAmount(int index) {
+        if (amountBuilder_ == null) {
+          ensureAmountIsMutable();
+          amount_.remove(index);
+          onChanged();
+        } else {
+          amountBuilder_.remove(index);
+        }
+        return this;
+      }
+      /**
+       * <pre>
+       * Array of symbol/amount pairs.
+       * </pre>
+       *
+       * <code>repeated .TW.Binance.Proto.SendOrder.Token amount = 4;</code>
+       */
+      public wallet.core.jni.proto.Binance.SendOrder.Token.Builder getAmountBuilder(
+          int index) {
+        return getAmountFieldBuilder().getBuilder(index);
+      }
+      /**
+       * <pre>
+       * Array of symbol/amount pairs.
+       * </pre>
+       *
+       * <code>repeated .TW.Binance.Proto.SendOrder.Token amount = 4;</code>
+       */
+      public wallet.core.jni.proto.Binance.SendOrder.TokenOrBuilder getAmountOrBuilder(
+          int index) {
+        if (amountBuilder_ == null) {
+          return amount_.get(index);  } else {
+          return amountBuilder_.getMessageOrBuilder(index);
+        }
+      }
+      /**
+       * <pre>
+       * Array of symbol/amount pairs.
+       * </pre>
+       *
+       * <code>repeated .TW.Binance.Proto.SendOrder.Token amount = 4;</code>
+       */
+      public java.util.List<? extends wallet.core.jni.proto.Binance.SendOrder.TokenOrBuilder> 
+           getAmountOrBuilderList() {
+        if (amountBuilder_ != null) {
+          return amountBuilder_.getMessageOrBuilderList();
+        } else {
+          return java.util.Collections.unmodifiableList(amount_);
+        }
+      }
+      /**
+       * <pre>
+       * Array of symbol/amount pairs.
+       * </pre>
+       *
+       * <code>repeated .TW.Binance.Proto.SendOrder.Token amount = 4;</code>
+       */
+      public wallet.core.jni.proto.Binance.SendOrder.Token.Builder addAmountBuilder() {
+        return getAmountFieldBuilder().addBuilder(
+            wallet.core.jni.proto.Binance.SendOrder.Token.getDefaultInstance());
+      }
+      /**
+       * <pre>
+       * Array of symbol/amount pairs.
+       * </pre>
+       *
+       * <code>repeated .TW.Binance.Proto.SendOrder.Token amount = 4;</code>
+       */
+      public wallet.core.jni.proto.Binance.SendOrder.Token.Builder addAmountBuilder(
+          int index) {
+        return getAmountFieldBuilder().addBuilder(
+            index, wallet.core.jni.proto.Binance.SendOrder.Token.getDefaultInstance());
+      }
+      /**
+       * <pre>
+       * Array of symbol/amount pairs.
+       * </pre>
+       *
+       * <code>repeated .TW.Binance.Proto.SendOrder.Token amount = 4;</code>
+       */
+      public java.util.List<wallet.core.jni.proto.Binance.SendOrder.Token.Builder> 
+           getAmountBuilderList() {
+        return getAmountFieldBuilder().getBuilderList();
+      }
+      private com.google.protobuf.RepeatedFieldBuilderV3<
+          wallet.core.jni.proto.Binance.SendOrder.Token, wallet.core.jni.proto.Binance.SendOrder.Token.Builder, wallet.core.jni.proto.Binance.SendOrder.TokenOrBuilder> 
+          getAmountFieldBuilder() {
+        if (amountBuilder_ == null) {
+          amountBuilder_ = new com.google.protobuf.RepeatedFieldBuilderV3<
+              wallet.core.jni.proto.Binance.SendOrder.Token, wallet.core.jni.proto.Binance.SendOrder.Token.Builder, wallet.core.jni.proto.Binance.SendOrder.TokenOrBuilder>(
+                  amount_,
+                  ((bitField0_ & 0x00000001) != 0),
+                  getParentForChildren(),
+                  isClean());
+          amount_ = null;
+        }
+        return amountBuilder_;
+      }
+
+      private long lockTime_ ;
+      /**
+       * <code>int64 lock_time = 5;</code>
+       * @return The lockTime.
+       */
+      @java.lang.Override
+      public long getLockTime() {
+        return lockTime_;
+      }
+      /**
+       * <code>int64 lock_time = 5;</code>
+       * @param value The lockTime to set.
+       * @return This builder for chaining.
+       */
+      public Builder setLockTime(long value) {
+        
+        lockTime_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>int64 lock_time = 5;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearLockTime() {
+        
+        lockTime_ = 0L;
+        onChanged();
+        return this;
+      }
+      @java.lang.Override
+      public final Builder setUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.setUnknownFields(unknownFields);
+      }
+
+      @java.lang.Override
+      public final Builder mergeUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.mergeUnknownFields(unknownFields);
+      }
+
+
+      // @@protoc_insertion_point(builder_scope:TW.Binance.Proto.TimeRelockOrder)
+    }
+
+    // @@protoc_insertion_point(class_scope:TW.Binance.Proto.TimeRelockOrder)
+    private static final wallet.core.jni.proto.Binance.TimeRelockOrder DEFAULT_INSTANCE;
+    static {
+      DEFAULT_INSTANCE = new wallet.core.jni.proto.Binance.TimeRelockOrder();
+    }
+
+    public static wallet.core.jni.proto.Binance.TimeRelockOrder getDefaultInstance() {
+      return DEFAULT_INSTANCE;
+    }
+
+    private static final com.google.protobuf.Parser<TimeRelockOrder>
+        PARSER = new com.google.protobuf.AbstractParser<TimeRelockOrder>() {
+      @java.lang.Override
+      public TimeRelockOrder parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new TimeRelockOrder(input, extensionRegistry);
+      }
+    };
+
+    public static com.google.protobuf.Parser<TimeRelockOrder> parser() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<TimeRelockOrder> getParserForType() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public wallet.core.jni.proto.Binance.TimeRelockOrder getDefaultInstanceForType() {
+      return DEFAULT_INSTANCE;
+    }
+
+  }
+
+  public interface TimeUnlockOrderOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:TW.Binance.Proto.TimeUnlockOrder)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <pre>
+     * owner address
+     * </pre>
+     *
+     * <code>bytes from_address = 1;</code>
+     * @return The fromAddress.
+     */
+    com.google.protobuf.ByteString getFromAddress();
+
+    /**
+     * <pre>
+     * order ID
+     * </pre>
+     *
+     * <code>int64 id = 2;</code>
+     * @return The id.
+     */
+    long getId();
+  }
+  /**
+   * Protobuf type {@code TW.Binance.Proto.TimeUnlockOrder}
+   */
+  public static final class TimeUnlockOrder extends
+      com.google.protobuf.GeneratedMessageV3 implements
+      // @@protoc_insertion_point(message_implements:TW.Binance.Proto.TimeUnlockOrder)
+      TimeUnlockOrderOrBuilder {
+  private static final long serialVersionUID = 0L;
+    // Use TimeUnlockOrder.newBuilder() to construct.
+    private TimeUnlockOrder(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+      super(builder);
+    }
+    private TimeUnlockOrder() {
+      fromAddress_ = com.google.protobuf.ByteString.EMPTY;
+    }
+
+    @java.lang.Override
+    @SuppressWarnings({"unused"})
+    protected java.lang.Object newInstance(
+        UnusedPrivateParameter unused) {
+      return new TimeUnlockOrder();
+    }
+
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+    getUnknownFields() {
+      return this.unknownFields;
+    }
+    private TimeUnlockOrder(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      this();
+      if (extensionRegistry == null) {
+        throw new java.lang.NullPointerException();
+      }
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            case 10: {
+
+              fromAddress_ = input.readBytes();
+              break;
+            }
+            case 16: {
+
+              id_ = input.readInt64();
+              break;
+            }
+            default: {
+              if (!parseUnknownField(
+                  input, unknownFields, extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e).setUnfinishedMessage(this);
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return wallet.core.jni.proto.Binance.internal_static_TW_Binance_Proto_TimeUnlockOrder_descriptor;
+    }
+
+    @java.lang.Override
+    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return wallet.core.jni.proto.Binance.internal_static_TW_Binance_Proto_TimeUnlockOrder_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              wallet.core.jni.proto.Binance.TimeUnlockOrder.class, wallet.core.jni.proto.Binance.TimeUnlockOrder.Builder.class);
+    }
+
+    public static final int FROM_ADDRESS_FIELD_NUMBER = 1;
+    private com.google.protobuf.ByteString fromAddress_;
+    /**
+     * <pre>
+     * owner address
+     * </pre>
+     *
+     * <code>bytes from_address = 1;</code>
+     * @return The fromAddress.
+     */
+    @java.lang.Override
+    public com.google.protobuf.ByteString getFromAddress() {
+      return fromAddress_;
+    }
+
+    public static final int ID_FIELD_NUMBER = 2;
+    private long id_;
+    /**
+     * <pre>
+     * order ID
+     * </pre>
+     *
+     * <code>int64 id = 2;</code>
+     * @return The id.
+     */
+    @java.lang.Override
+    public long getId() {
+      return id_;
+    }
+
+    private byte memoizedIsInitialized = -1;
+    @java.lang.Override
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    @java.lang.Override
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      if (!fromAddress_.isEmpty()) {
+        output.writeBytes(1, fromAddress_);
+      }
+      if (id_ != 0L) {
+        output.writeInt64(2, id_);
+      }
+      unknownFields.writeTo(output);
+    }
+
+    @java.lang.Override
+    public int getSerializedSize() {
+      int size = memoizedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (!fromAddress_.isEmpty()) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(1, fromAddress_);
+      }
+      if (id_ != 0L) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt64Size(2, id_);
+      }
+      size += unknownFields.getSerializedSize();
+      memoizedSize = size;
+      return size;
+    }
+
+    @java.lang.Override
+    public boolean equals(final java.lang.Object obj) {
+      if (obj == this) {
+       return true;
+      }
+      if (!(obj instanceof wallet.core.jni.proto.Binance.TimeUnlockOrder)) {
+        return super.equals(obj);
+      }
+      wallet.core.jni.proto.Binance.TimeUnlockOrder other = (wallet.core.jni.proto.Binance.TimeUnlockOrder) obj;
+
+      if (!getFromAddress()
+          .equals(other.getFromAddress())) return false;
+      if (getId()
+          != other.getId()) return false;
+      if (!unknownFields.equals(other.unknownFields)) return false;
+      return true;
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+      if (memoizedHashCode != 0) {
+        return memoizedHashCode;
+      }
+      int hash = 41;
+      hash = (19 * hash) + getDescriptor().hashCode();
+      hash = (37 * hash) + FROM_ADDRESS_FIELD_NUMBER;
+      hash = (53 * hash) + getFromAddress().hashCode();
+      hash = (37 * hash) + ID_FIELD_NUMBER;
+      hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
+          getId());
+      hash = (29 * hash) + unknownFields.hashCode();
+      memoizedHashCode = hash;
+      return hash;
+    }
+
+    public static wallet.core.jni.proto.Binance.TimeUnlockOrder parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static wallet.core.jni.proto.Binance.TimeUnlockOrder parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static wallet.core.jni.proto.Binance.TimeUnlockOrder parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static wallet.core.jni.proto.Binance.TimeUnlockOrder parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static wallet.core.jni.proto.Binance.TimeUnlockOrder parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static wallet.core.jni.proto.Binance.TimeUnlockOrder parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static wallet.core.jni.proto.Binance.TimeUnlockOrder parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static wallet.core.jni.proto.Binance.TimeUnlockOrder parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static wallet.core.jni.proto.Binance.TimeUnlockOrder parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input);
+    }
+    public static wallet.core.jni.proto.Binance.TimeUnlockOrder parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static wallet.core.jni.proto.Binance.TimeUnlockOrder parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static wallet.core.jni.proto.Binance.TimeUnlockOrder parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    @java.lang.Override
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder() {
+      return DEFAULT_INSTANCE.toBuilder();
+    }
+    public static Builder newBuilder(wallet.core.jni.proto.Binance.TimeUnlockOrder prototype) {
+      return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
+    }
+    @java.lang.Override
+    public Builder toBuilder() {
+      return this == DEFAULT_INSTANCE
+          ? new Builder() : new Builder().mergeFrom(this);
+    }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code TW.Binance.Proto.TimeUnlockOrder}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:TW.Binance.Proto.TimeUnlockOrder)
+        wallet.core.jni.proto.Binance.TimeUnlockOrderOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return wallet.core.jni.proto.Binance.internal_static_TW_Binance_Proto_TimeUnlockOrder_descriptor;
+      }
+
+      @java.lang.Override
+      protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return wallet.core.jni.proto.Binance.internal_static_TW_Binance_Proto_TimeUnlockOrder_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                wallet.core.jni.proto.Binance.TimeUnlockOrder.class, wallet.core.jni.proto.Binance.TimeUnlockOrder.Builder.class);
+      }
+
+      // Construct using wallet.core.jni.proto.Binance.TimeUnlockOrder.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessageV3
+                .alwaysUseFieldBuilders) {
+        }
+      }
+      @java.lang.Override
+      public Builder clear() {
+        super.clear();
+        fromAddress_ = com.google.protobuf.ByteString.EMPTY;
+
+        id_ = 0L;
+
+        return this;
+      }
+
+      @java.lang.Override
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return wallet.core.jni.proto.Binance.internal_static_TW_Binance_Proto_TimeUnlockOrder_descriptor;
+      }
+
+      @java.lang.Override
+      public wallet.core.jni.proto.Binance.TimeUnlockOrder getDefaultInstanceForType() {
+        return wallet.core.jni.proto.Binance.TimeUnlockOrder.getDefaultInstance();
+      }
+
+      @java.lang.Override
+      public wallet.core.jni.proto.Binance.TimeUnlockOrder build() {
+        wallet.core.jni.proto.Binance.TimeUnlockOrder result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      @java.lang.Override
+      public wallet.core.jni.proto.Binance.TimeUnlockOrder buildPartial() {
+        wallet.core.jni.proto.Binance.TimeUnlockOrder result = new wallet.core.jni.proto.Binance.TimeUnlockOrder(this);
+        result.fromAddress_ = fromAddress_;
+        result.id_ = id_;
+        onBuilt();
+        return result;
+      }
+
+      @java.lang.Override
+      public Builder clone() {
+        return super.clone();
+      }
+      @java.lang.Override
+      public Builder setField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return super.setField(field, value);
+      }
+      @java.lang.Override
+      public Builder clearField(
+          com.google.protobuf.Descriptors.FieldDescriptor field) {
+        return super.clearField(field);
+      }
+      @java.lang.Override
+      public Builder clearOneof(
+          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
+        return super.clearOneof(oneof);
+      }
+      @java.lang.Override
+      public Builder setRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          int index, java.lang.Object value) {
+        return super.setRepeatedField(field, index, value);
+      }
+      @java.lang.Override
+      public Builder addRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return super.addRepeatedField(field, value);
+      }
+      @java.lang.Override
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof wallet.core.jni.proto.Binance.TimeUnlockOrder) {
+          return mergeFrom((wallet.core.jni.proto.Binance.TimeUnlockOrder)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(wallet.core.jni.proto.Binance.TimeUnlockOrder other) {
+        if (other == wallet.core.jni.proto.Binance.TimeUnlockOrder.getDefaultInstance()) return this;
+        if (other.getFromAddress() != com.google.protobuf.ByteString.EMPTY) {
+          setFromAddress(other.getFromAddress());
+        }
+        if (other.getId() != 0L) {
+          setId(other.getId());
+        }
+        this.mergeUnknownFields(other.unknownFields);
+        onChanged();
+        return this;
+      }
+
+      @java.lang.Override
+      public final boolean isInitialized() {
+        return true;
+      }
+
+      @java.lang.Override
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        wallet.core.jni.proto.Binance.TimeUnlockOrder parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (wallet.core.jni.proto.Binance.TimeUnlockOrder) e.getUnfinishedMessage();
+          throw e.unwrapIOException();
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+
+      private com.google.protobuf.ByteString fromAddress_ = com.google.protobuf.ByteString.EMPTY;
+      /**
+       * <pre>
+       * owner address
+       * </pre>
+       *
+       * <code>bytes from_address = 1;</code>
+       * @return The fromAddress.
+       */
+      @java.lang.Override
+      public com.google.protobuf.ByteString getFromAddress() {
+        return fromAddress_;
+      }
+      /**
+       * <pre>
+       * owner address
+       * </pre>
+       *
+       * <code>bytes from_address = 1;</code>
+       * @param value The fromAddress to set.
+       * @return This builder for chaining.
+       */
+      public Builder setFromAddress(com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        fromAddress_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * owner address
+       * </pre>
+       *
+       * <code>bytes from_address = 1;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearFromAddress() {
+        
+        fromAddress_ = getDefaultInstance().getFromAddress();
+        onChanged();
+        return this;
+      }
+
+      private long id_ ;
+      /**
+       * <pre>
+       * order ID
+       * </pre>
+       *
+       * <code>int64 id = 2;</code>
+       * @return The id.
+       */
+      @java.lang.Override
+      public long getId() {
+        return id_;
+      }
+      /**
+       * <pre>
+       * order ID
+       * </pre>
+       *
+       * <code>int64 id = 2;</code>
+       * @param value The id to set.
+       * @return This builder for chaining.
+       */
+      public Builder setId(long value) {
+        
+        id_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * order ID
+       * </pre>
+       *
+       * <code>int64 id = 2;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearId() {
+        
+        id_ = 0L;
+        onChanged();
+        return this;
+      }
+      @java.lang.Override
+      public final Builder setUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.setUnknownFields(unknownFields);
+      }
+
+      @java.lang.Override
+      public final Builder mergeUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.mergeUnknownFields(unknownFields);
+      }
+
+
+      // @@protoc_insertion_point(builder_scope:TW.Binance.Proto.TimeUnlockOrder)
+    }
+
+    // @@protoc_insertion_point(class_scope:TW.Binance.Proto.TimeUnlockOrder)
+    private static final wallet.core.jni.proto.Binance.TimeUnlockOrder DEFAULT_INSTANCE;
+    static {
+      DEFAULT_INSTANCE = new wallet.core.jni.proto.Binance.TimeUnlockOrder();
+    }
+
+    public static wallet.core.jni.proto.Binance.TimeUnlockOrder getDefaultInstance() {
+      return DEFAULT_INSTANCE;
+    }
+
+    private static final com.google.protobuf.Parser<TimeUnlockOrder>
+        PARSER = new com.google.protobuf.AbstractParser<TimeUnlockOrder>() {
+      @java.lang.Override
+      public TimeUnlockOrder parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new TimeUnlockOrder(input, extensionRegistry);
+      }
+    };
+
+    public static com.google.protobuf.Parser<TimeUnlockOrder> parser() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<TimeUnlockOrder> getParserForType() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public wallet.core.jni.proto.Binance.TimeUnlockOrder getDefaultInstanceForType() {
+      return DEFAULT_INSTANCE;
+    }
+
+  }
+
   public interface SigningInputOrBuilder extends
       // @@protoc_insertion_point(interface_extends:TW.Binance.Proto.SigningInput)
       com.google.protobuf.MessageOrBuilder {
 
     /**
      * <code>string chain_id = 1;</code>
+     * @return The chainId.
      */
     java.lang.String getChainId();
     /**
      * <code>string chain_id = 1;</code>
+     * @return The bytes for chainId.
      */
     com.google.protobuf.ByteString
         getChainIdBytes();
 
     /**
      * <code>int64 account_number = 2;</code>
+     * @return The accountNumber.
      */
     long getAccountNumber();
 
     /**
      * <code>int64 sequence = 3;</code>
+     * @return The sequence.
      */
     long getSequence();
 
     /**
      * <code>int64 source = 4;</code>
+     * @return The source.
      */
     long getSource();
 
     /**
      * <code>string memo = 5;</code>
+     * @return The memo.
      */
     java.lang.String getMemo();
     /**
      * <code>string memo = 5;</code>
+     * @return The bytes for memo.
      */
     com.google.protobuf.ByteString
         getMemoBytes();
 
     /**
      * <code>bytes private_key = 6;</code>
+     * @return The privateKey.
      */
     com.google.protobuf.ByteString getPrivateKey();
 
     /**
      * <code>.TW.Binance.Proto.TradeOrder trade_order = 8;</code>
+     * @return Whether the tradeOrder field is set.
      */
     boolean hasTradeOrder();
     /**
      * <code>.TW.Binance.Proto.TradeOrder trade_order = 8;</code>
+     * @return The tradeOrder.
      */
     wallet.core.jni.proto.Binance.TradeOrder getTradeOrder();
     /**
@@ -19451,10 +23339,12 @@ public final class Binance {
 
     /**
      * <code>.TW.Binance.Proto.CancelTradeOrder cancel_trade_order = 9;</code>
+     * @return Whether the cancelTradeOrder field is set.
      */
     boolean hasCancelTradeOrder();
     /**
      * <code>.TW.Binance.Proto.CancelTradeOrder cancel_trade_order = 9;</code>
+     * @return The cancelTradeOrder.
      */
     wallet.core.jni.proto.Binance.CancelTradeOrder getCancelTradeOrder();
     /**
@@ -19464,10 +23354,12 @@ public final class Binance {
 
     /**
      * <code>.TW.Binance.Proto.SendOrder send_order = 10;</code>
+     * @return Whether the sendOrder field is set.
      */
     boolean hasSendOrder();
     /**
      * <code>.TW.Binance.Proto.SendOrder send_order = 10;</code>
+     * @return The sendOrder.
      */
     wallet.core.jni.proto.Binance.SendOrder getSendOrder();
     /**
@@ -19477,10 +23369,12 @@ public final class Binance {
 
     /**
      * <code>.TW.Binance.Proto.TokenFreezeOrder freeze_order = 11;</code>
+     * @return Whether the freezeOrder field is set.
      */
     boolean hasFreezeOrder();
     /**
      * <code>.TW.Binance.Proto.TokenFreezeOrder freeze_order = 11;</code>
+     * @return The freezeOrder.
      */
     wallet.core.jni.proto.Binance.TokenFreezeOrder getFreezeOrder();
     /**
@@ -19490,10 +23384,12 @@ public final class Binance {
 
     /**
      * <code>.TW.Binance.Proto.TokenUnfreezeOrder unfreeze_order = 12;</code>
+     * @return Whether the unfreezeOrder field is set.
      */
     boolean hasUnfreezeOrder();
     /**
      * <code>.TW.Binance.Proto.TokenUnfreezeOrder unfreeze_order = 12;</code>
+     * @return The unfreezeOrder.
      */
     wallet.core.jni.proto.Binance.TokenUnfreezeOrder getUnfreezeOrder();
     /**
@@ -19503,10 +23399,12 @@ public final class Binance {
 
     /**
      * <code>.TW.Binance.Proto.HTLTOrder htlt_order = 13;</code>
+     * @return Whether the htltOrder field is set.
      */
     boolean hasHtltOrder();
     /**
      * <code>.TW.Binance.Proto.HTLTOrder htlt_order = 13;</code>
+     * @return The htltOrder.
      */
     wallet.core.jni.proto.Binance.HTLTOrder getHtltOrder();
     /**
@@ -19516,10 +23414,12 @@ public final class Binance {
 
     /**
      * <code>.TW.Binance.Proto.DepositHTLTOrder depositHTLT_order = 14;</code>
+     * @return Whether the depositHTLTOrder field is set.
      */
     boolean hasDepositHTLTOrder();
     /**
      * <code>.TW.Binance.Proto.DepositHTLTOrder depositHTLT_order = 14;</code>
+     * @return The depositHTLTOrder.
      */
     wallet.core.jni.proto.Binance.DepositHTLTOrder getDepositHTLTOrder();
     /**
@@ -19529,10 +23429,12 @@ public final class Binance {
 
     /**
      * <code>.TW.Binance.Proto.ClaimHTLOrder claimHTLT_order = 15;</code>
+     * @return Whether the claimHTLTOrder field is set.
      */
     boolean hasClaimHTLTOrder();
     /**
      * <code>.TW.Binance.Proto.ClaimHTLOrder claimHTLT_order = 15;</code>
+     * @return The claimHTLTOrder.
      */
     wallet.core.jni.proto.Binance.ClaimHTLOrder getClaimHTLTOrder();
     /**
@@ -19542,10 +23444,12 @@ public final class Binance {
 
     /**
      * <code>.TW.Binance.Proto.RefundHTLTOrder refundHTLT_order = 16;</code>
+     * @return Whether the refundHTLTOrder field is set.
      */
     boolean hasRefundHTLTOrder();
     /**
      * <code>.TW.Binance.Proto.RefundHTLTOrder refundHTLT_order = 16;</code>
+     * @return The refundHTLTOrder.
      */
     wallet.core.jni.proto.Binance.RefundHTLTOrder getRefundHTLTOrder();
     /**
@@ -19555,10 +23459,12 @@ public final class Binance {
 
     /**
      * <code>.TW.Binance.Proto.TokenIssueOrder issue_order = 17;</code>
+     * @return Whether the issueOrder field is set.
      */
     boolean hasIssueOrder();
     /**
      * <code>.TW.Binance.Proto.TokenIssueOrder issue_order = 17;</code>
+     * @return The issueOrder.
      */
     wallet.core.jni.proto.Binance.TokenIssueOrder getIssueOrder();
     /**
@@ -19568,10 +23474,12 @@ public final class Binance {
 
     /**
      * <code>.TW.Binance.Proto.TokenMintOrder mint_order = 18;</code>
+     * @return Whether the mintOrder field is set.
      */
     boolean hasMintOrder();
     /**
      * <code>.TW.Binance.Proto.TokenMintOrder mint_order = 18;</code>
+     * @return The mintOrder.
      */
     wallet.core.jni.proto.Binance.TokenMintOrder getMintOrder();
     /**
@@ -19581,10 +23489,12 @@ public final class Binance {
 
     /**
      * <code>.TW.Binance.Proto.TokenBurnOrder burn_order = 19;</code>
+     * @return Whether the burnOrder field is set.
      */
     boolean hasBurnOrder();
     /**
      * <code>.TW.Binance.Proto.TokenBurnOrder burn_order = 19;</code>
+     * @return The burnOrder.
      */
     wallet.core.jni.proto.Binance.TokenBurnOrder getBurnOrder();
     /**
@@ -19594,10 +23504,12 @@ public final class Binance {
 
     /**
      * <code>.TW.Binance.Proto.TransferOut transfer_out_order = 20;</code>
+     * @return Whether the transferOutOrder field is set.
      */
     boolean hasTransferOutOrder();
     /**
      * <code>.TW.Binance.Proto.TransferOut transfer_out_order = 20;</code>
+     * @return The transferOutOrder.
      */
     wallet.core.jni.proto.Binance.TransferOut getTransferOutOrder();
     /**
@@ -19607,10 +23519,12 @@ public final class Binance {
 
     /**
      * <code>.TW.Binance.Proto.SideChainDelegate side_delegate_order = 21;</code>
+     * @return Whether the sideDelegateOrder field is set.
      */
     boolean hasSideDelegateOrder();
     /**
      * <code>.TW.Binance.Proto.SideChainDelegate side_delegate_order = 21;</code>
+     * @return The sideDelegateOrder.
      */
     wallet.core.jni.proto.Binance.SideChainDelegate getSideDelegateOrder();
     /**
@@ -19620,10 +23534,12 @@ public final class Binance {
 
     /**
      * <code>.TW.Binance.Proto.SideChainRedelegate side_redelegate_order = 22;</code>
+     * @return Whether the sideRedelegateOrder field is set.
      */
     boolean hasSideRedelegateOrder();
     /**
      * <code>.TW.Binance.Proto.SideChainRedelegate side_redelegate_order = 22;</code>
+     * @return The sideRedelegateOrder.
      */
     wallet.core.jni.proto.Binance.SideChainRedelegate getSideRedelegateOrder();
     /**
@@ -19633,16 +23549,63 @@ public final class Binance {
 
     /**
      * <code>.TW.Binance.Proto.SideChainUndelegate side_undelegate_order = 23;</code>
+     * @return Whether the sideUndelegateOrder field is set.
      */
     boolean hasSideUndelegateOrder();
     /**
      * <code>.TW.Binance.Proto.SideChainUndelegate side_undelegate_order = 23;</code>
+     * @return The sideUndelegateOrder.
      */
     wallet.core.jni.proto.Binance.SideChainUndelegate getSideUndelegateOrder();
     /**
      * <code>.TW.Binance.Proto.SideChainUndelegate side_undelegate_order = 23;</code>
      */
     wallet.core.jni.proto.Binance.SideChainUndelegateOrBuilder getSideUndelegateOrderOrBuilder();
+
+    /**
+     * <code>.TW.Binance.Proto.TimeLockOrder time_lock_order = 24;</code>
+     * @return Whether the timeLockOrder field is set.
+     */
+    boolean hasTimeLockOrder();
+    /**
+     * <code>.TW.Binance.Proto.TimeLockOrder time_lock_order = 24;</code>
+     * @return The timeLockOrder.
+     */
+    wallet.core.jni.proto.Binance.TimeLockOrder getTimeLockOrder();
+    /**
+     * <code>.TW.Binance.Proto.TimeLockOrder time_lock_order = 24;</code>
+     */
+    wallet.core.jni.proto.Binance.TimeLockOrderOrBuilder getTimeLockOrderOrBuilder();
+
+    /**
+     * <code>.TW.Binance.Proto.TimeRelockOrder time_relock_order = 25;</code>
+     * @return Whether the timeRelockOrder field is set.
+     */
+    boolean hasTimeRelockOrder();
+    /**
+     * <code>.TW.Binance.Proto.TimeRelockOrder time_relock_order = 25;</code>
+     * @return The timeRelockOrder.
+     */
+    wallet.core.jni.proto.Binance.TimeRelockOrder getTimeRelockOrder();
+    /**
+     * <code>.TW.Binance.Proto.TimeRelockOrder time_relock_order = 25;</code>
+     */
+    wallet.core.jni.proto.Binance.TimeRelockOrderOrBuilder getTimeRelockOrderOrBuilder();
+
+    /**
+     * <code>.TW.Binance.Proto.TimeUnlockOrder time_unlock_order = 26;</code>
+     * @return Whether the timeUnlockOrder field is set.
+     */
+    boolean hasTimeUnlockOrder();
+    /**
+     * <code>.TW.Binance.Proto.TimeUnlockOrder time_unlock_order = 26;</code>
+     * @return The timeUnlockOrder.
+     */
+    wallet.core.jni.proto.Binance.TimeUnlockOrder getTimeUnlockOrder();
+    /**
+     * <code>.TW.Binance.Proto.TimeUnlockOrder time_unlock_order = 26;</code>
+     */
+    wallet.core.jni.proto.Binance.TimeUnlockOrderOrBuilder getTimeUnlockOrderOrBuilder();
 
     public wallet.core.jni.proto.Binance.SigningInput.OrderOneofCase getOrderOneofCase();
   }
@@ -19653,7 +23616,7 @@ public final class Binance {
    *
    * Protobuf type {@code TW.Binance.Proto.SigningInput}
    */
-  public  static final class SigningInput extends
+  public static final class SigningInput extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:TW.Binance.Proto.SigningInput)
       SigningInputOrBuilder {
@@ -19954,6 +23917,48 @@ public final class Binance {
               orderOneofCase_ = 23;
               break;
             }
+            case 194: {
+              wallet.core.jni.proto.Binance.TimeLockOrder.Builder subBuilder = null;
+              if (orderOneofCase_ == 24) {
+                subBuilder = ((wallet.core.jni.proto.Binance.TimeLockOrder) orderOneof_).toBuilder();
+              }
+              orderOneof_ =
+                  input.readMessage(wallet.core.jni.proto.Binance.TimeLockOrder.parser(), extensionRegistry);
+              if (subBuilder != null) {
+                subBuilder.mergeFrom((wallet.core.jni.proto.Binance.TimeLockOrder) orderOneof_);
+                orderOneof_ = subBuilder.buildPartial();
+              }
+              orderOneofCase_ = 24;
+              break;
+            }
+            case 202: {
+              wallet.core.jni.proto.Binance.TimeRelockOrder.Builder subBuilder = null;
+              if (orderOneofCase_ == 25) {
+                subBuilder = ((wallet.core.jni.proto.Binance.TimeRelockOrder) orderOneof_).toBuilder();
+              }
+              orderOneof_ =
+                  input.readMessage(wallet.core.jni.proto.Binance.TimeRelockOrder.parser(), extensionRegistry);
+              if (subBuilder != null) {
+                subBuilder.mergeFrom((wallet.core.jni.proto.Binance.TimeRelockOrder) orderOneof_);
+                orderOneof_ = subBuilder.buildPartial();
+              }
+              orderOneofCase_ = 25;
+              break;
+            }
+            case 210: {
+              wallet.core.jni.proto.Binance.TimeUnlockOrder.Builder subBuilder = null;
+              if (orderOneofCase_ == 26) {
+                subBuilder = ((wallet.core.jni.proto.Binance.TimeUnlockOrder) orderOneof_).toBuilder();
+              }
+              orderOneof_ =
+                  input.readMessage(wallet.core.jni.proto.Binance.TimeUnlockOrder.parser(), extensionRegistry);
+              if (subBuilder != null) {
+                subBuilder.mergeFrom((wallet.core.jni.proto.Binance.TimeUnlockOrder) orderOneof_);
+                orderOneof_ = subBuilder.buildPartial();
+              }
+              orderOneofCase_ = 26;
+              break;
+            }
             default: {
               if (!parseUnknownField(
                   input, unknownFields, extensionRegistry, tag)) {
@@ -19989,7 +23994,8 @@ public final class Binance {
     private int orderOneofCase_ = 0;
     private java.lang.Object orderOneof_;
     public enum OrderOneofCase
-        implements com.google.protobuf.Internal.EnumLite {
+        implements com.google.protobuf.Internal.EnumLite,
+            com.google.protobuf.AbstractMessage.InternalOneOfEnum {
       TRADE_ORDER(8),
       CANCEL_TRADE_ORDER(9),
       SEND_ORDER(10),
@@ -20006,12 +24012,17 @@ public final class Binance {
       SIDE_DELEGATE_ORDER(21),
       SIDE_REDELEGATE_ORDER(22),
       SIDE_UNDELEGATE_ORDER(23),
+      TIME_LOCK_ORDER(24),
+      TIME_RELOCK_ORDER(25),
+      TIME_UNLOCK_ORDER(26),
       ORDERONEOF_NOT_SET(0);
       private final int value;
       private OrderOneofCase(int value) {
         this.value = value;
       }
       /**
+       * @param value The number of the enum to look for.
+       * @return The enum associated with the given number.
        * @deprecated Use {@link #forNumber(int)} instead.
        */
       @java.lang.Deprecated
@@ -20037,6 +24048,9 @@ public final class Binance {
           case 21: return SIDE_DELEGATE_ORDER;
           case 22: return SIDE_REDELEGATE_ORDER;
           case 23: return SIDE_UNDELEGATE_ORDER;
+          case 24: return TIME_LOCK_ORDER;
+          case 25: return TIME_RELOCK_ORDER;
+          case 26: return TIME_UNLOCK_ORDER;
           case 0: return ORDERONEOF_NOT_SET;
           default: return null;
         }
@@ -20056,7 +24070,9 @@ public final class Binance {
     private volatile java.lang.Object chainId_;
     /**
      * <code>string chain_id = 1;</code>
+     * @return The chainId.
      */
+    @java.lang.Override
     public java.lang.String getChainId() {
       java.lang.Object ref = chainId_;
       if (ref instanceof java.lang.String) {
@@ -20071,7 +24087,9 @@ public final class Binance {
     }
     /**
      * <code>string chain_id = 1;</code>
+     * @return The bytes for chainId.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString
         getChainIdBytes() {
       java.lang.Object ref = chainId_;
@@ -20090,7 +24108,9 @@ public final class Binance {
     private long accountNumber_;
     /**
      * <code>int64 account_number = 2;</code>
+     * @return The accountNumber.
      */
+    @java.lang.Override
     public long getAccountNumber() {
       return accountNumber_;
     }
@@ -20099,7 +24119,9 @@ public final class Binance {
     private long sequence_;
     /**
      * <code>int64 sequence = 3;</code>
+     * @return The sequence.
      */
+    @java.lang.Override
     public long getSequence() {
       return sequence_;
     }
@@ -20108,7 +24130,9 @@ public final class Binance {
     private long source_;
     /**
      * <code>int64 source = 4;</code>
+     * @return The source.
      */
+    @java.lang.Override
     public long getSource() {
       return source_;
     }
@@ -20117,7 +24141,9 @@ public final class Binance {
     private volatile java.lang.Object memo_;
     /**
      * <code>string memo = 5;</code>
+     * @return The memo.
      */
+    @java.lang.Override
     public java.lang.String getMemo() {
       java.lang.Object ref = memo_;
       if (ref instanceof java.lang.String) {
@@ -20132,7 +24158,9 @@ public final class Binance {
     }
     /**
      * <code>string memo = 5;</code>
+     * @return The bytes for memo.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString
         getMemoBytes() {
       java.lang.Object ref = memo_;
@@ -20151,7 +24179,9 @@ public final class Binance {
     private com.google.protobuf.ByteString privateKey_;
     /**
      * <code>bytes private_key = 6;</code>
+     * @return The privateKey.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString getPrivateKey() {
       return privateKey_;
     }
@@ -20159,13 +24189,17 @@ public final class Binance {
     public static final int TRADE_ORDER_FIELD_NUMBER = 8;
     /**
      * <code>.TW.Binance.Proto.TradeOrder trade_order = 8;</code>
+     * @return Whether the tradeOrder field is set.
      */
+    @java.lang.Override
     public boolean hasTradeOrder() {
       return orderOneofCase_ == 8;
     }
     /**
      * <code>.TW.Binance.Proto.TradeOrder trade_order = 8;</code>
+     * @return The tradeOrder.
      */
+    @java.lang.Override
     public wallet.core.jni.proto.Binance.TradeOrder getTradeOrder() {
       if (orderOneofCase_ == 8) {
          return (wallet.core.jni.proto.Binance.TradeOrder) orderOneof_;
@@ -20175,6 +24209,7 @@ public final class Binance {
     /**
      * <code>.TW.Binance.Proto.TradeOrder trade_order = 8;</code>
      */
+    @java.lang.Override
     public wallet.core.jni.proto.Binance.TradeOrderOrBuilder getTradeOrderOrBuilder() {
       if (orderOneofCase_ == 8) {
          return (wallet.core.jni.proto.Binance.TradeOrder) orderOneof_;
@@ -20185,13 +24220,17 @@ public final class Binance {
     public static final int CANCEL_TRADE_ORDER_FIELD_NUMBER = 9;
     /**
      * <code>.TW.Binance.Proto.CancelTradeOrder cancel_trade_order = 9;</code>
+     * @return Whether the cancelTradeOrder field is set.
      */
+    @java.lang.Override
     public boolean hasCancelTradeOrder() {
       return orderOneofCase_ == 9;
     }
     /**
      * <code>.TW.Binance.Proto.CancelTradeOrder cancel_trade_order = 9;</code>
+     * @return The cancelTradeOrder.
      */
+    @java.lang.Override
     public wallet.core.jni.proto.Binance.CancelTradeOrder getCancelTradeOrder() {
       if (orderOneofCase_ == 9) {
          return (wallet.core.jni.proto.Binance.CancelTradeOrder) orderOneof_;
@@ -20201,6 +24240,7 @@ public final class Binance {
     /**
      * <code>.TW.Binance.Proto.CancelTradeOrder cancel_trade_order = 9;</code>
      */
+    @java.lang.Override
     public wallet.core.jni.proto.Binance.CancelTradeOrderOrBuilder getCancelTradeOrderOrBuilder() {
       if (orderOneofCase_ == 9) {
          return (wallet.core.jni.proto.Binance.CancelTradeOrder) orderOneof_;
@@ -20211,13 +24251,17 @@ public final class Binance {
     public static final int SEND_ORDER_FIELD_NUMBER = 10;
     /**
      * <code>.TW.Binance.Proto.SendOrder send_order = 10;</code>
+     * @return Whether the sendOrder field is set.
      */
+    @java.lang.Override
     public boolean hasSendOrder() {
       return orderOneofCase_ == 10;
     }
     /**
      * <code>.TW.Binance.Proto.SendOrder send_order = 10;</code>
+     * @return The sendOrder.
      */
+    @java.lang.Override
     public wallet.core.jni.proto.Binance.SendOrder getSendOrder() {
       if (orderOneofCase_ == 10) {
          return (wallet.core.jni.proto.Binance.SendOrder) orderOneof_;
@@ -20227,6 +24271,7 @@ public final class Binance {
     /**
      * <code>.TW.Binance.Proto.SendOrder send_order = 10;</code>
      */
+    @java.lang.Override
     public wallet.core.jni.proto.Binance.SendOrderOrBuilder getSendOrderOrBuilder() {
       if (orderOneofCase_ == 10) {
          return (wallet.core.jni.proto.Binance.SendOrder) orderOneof_;
@@ -20237,13 +24282,17 @@ public final class Binance {
     public static final int FREEZE_ORDER_FIELD_NUMBER = 11;
     /**
      * <code>.TW.Binance.Proto.TokenFreezeOrder freeze_order = 11;</code>
+     * @return Whether the freezeOrder field is set.
      */
+    @java.lang.Override
     public boolean hasFreezeOrder() {
       return orderOneofCase_ == 11;
     }
     /**
      * <code>.TW.Binance.Proto.TokenFreezeOrder freeze_order = 11;</code>
+     * @return The freezeOrder.
      */
+    @java.lang.Override
     public wallet.core.jni.proto.Binance.TokenFreezeOrder getFreezeOrder() {
       if (orderOneofCase_ == 11) {
          return (wallet.core.jni.proto.Binance.TokenFreezeOrder) orderOneof_;
@@ -20253,6 +24302,7 @@ public final class Binance {
     /**
      * <code>.TW.Binance.Proto.TokenFreezeOrder freeze_order = 11;</code>
      */
+    @java.lang.Override
     public wallet.core.jni.proto.Binance.TokenFreezeOrderOrBuilder getFreezeOrderOrBuilder() {
       if (orderOneofCase_ == 11) {
          return (wallet.core.jni.proto.Binance.TokenFreezeOrder) orderOneof_;
@@ -20263,13 +24313,17 @@ public final class Binance {
     public static final int UNFREEZE_ORDER_FIELD_NUMBER = 12;
     /**
      * <code>.TW.Binance.Proto.TokenUnfreezeOrder unfreeze_order = 12;</code>
+     * @return Whether the unfreezeOrder field is set.
      */
+    @java.lang.Override
     public boolean hasUnfreezeOrder() {
       return orderOneofCase_ == 12;
     }
     /**
      * <code>.TW.Binance.Proto.TokenUnfreezeOrder unfreeze_order = 12;</code>
+     * @return The unfreezeOrder.
      */
+    @java.lang.Override
     public wallet.core.jni.proto.Binance.TokenUnfreezeOrder getUnfreezeOrder() {
       if (orderOneofCase_ == 12) {
          return (wallet.core.jni.proto.Binance.TokenUnfreezeOrder) orderOneof_;
@@ -20279,6 +24333,7 @@ public final class Binance {
     /**
      * <code>.TW.Binance.Proto.TokenUnfreezeOrder unfreeze_order = 12;</code>
      */
+    @java.lang.Override
     public wallet.core.jni.proto.Binance.TokenUnfreezeOrderOrBuilder getUnfreezeOrderOrBuilder() {
       if (orderOneofCase_ == 12) {
          return (wallet.core.jni.proto.Binance.TokenUnfreezeOrder) orderOneof_;
@@ -20289,13 +24344,17 @@ public final class Binance {
     public static final int HTLT_ORDER_FIELD_NUMBER = 13;
     /**
      * <code>.TW.Binance.Proto.HTLTOrder htlt_order = 13;</code>
+     * @return Whether the htltOrder field is set.
      */
+    @java.lang.Override
     public boolean hasHtltOrder() {
       return orderOneofCase_ == 13;
     }
     /**
      * <code>.TW.Binance.Proto.HTLTOrder htlt_order = 13;</code>
+     * @return The htltOrder.
      */
+    @java.lang.Override
     public wallet.core.jni.proto.Binance.HTLTOrder getHtltOrder() {
       if (orderOneofCase_ == 13) {
          return (wallet.core.jni.proto.Binance.HTLTOrder) orderOneof_;
@@ -20305,6 +24364,7 @@ public final class Binance {
     /**
      * <code>.TW.Binance.Proto.HTLTOrder htlt_order = 13;</code>
      */
+    @java.lang.Override
     public wallet.core.jni.proto.Binance.HTLTOrderOrBuilder getHtltOrderOrBuilder() {
       if (orderOneofCase_ == 13) {
          return (wallet.core.jni.proto.Binance.HTLTOrder) orderOneof_;
@@ -20315,13 +24375,17 @@ public final class Binance {
     public static final int DEPOSITHTLT_ORDER_FIELD_NUMBER = 14;
     /**
      * <code>.TW.Binance.Proto.DepositHTLTOrder depositHTLT_order = 14;</code>
+     * @return Whether the depositHTLTOrder field is set.
      */
+    @java.lang.Override
     public boolean hasDepositHTLTOrder() {
       return orderOneofCase_ == 14;
     }
     /**
      * <code>.TW.Binance.Proto.DepositHTLTOrder depositHTLT_order = 14;</code>
+     * @return The depositHTLTOrder.
      */
+    @java.lang.Override
     public wallet.core.jni.proto.Binance.DepositHTLTOrder getDepositHTLTOrder() {
       if (orderOneofCase_ == 14) {
          return (wallet.core.jni.proto.Binance.DepositHTLTOrder) orderOneof_;
@@ -20331,6 +24395,7 @@ public final class Binance {
     /**
      * <code>.TW.Binance.Proto.DepositHTLTOrder depositHTLT_order = 14;</code>
      */
+    @java.lang.Override
     public wallet.core.jni.proto.Binance.DepositHTLTOrderOrBuilder getDepositHTLTOrderOrBuilder() {
       if (orderOneofCase_ == 14) {
          return (wallet.core.jni.proto.Binance.DepositHTLTOrder) orderOneof_;
@@ -20341,13 +24406,17 @@ public final class Binance {
     public static final int CLAIMHTLT_ORDER_FIELD_NUMBER = 15;
     /**
      * <code>.TW.Binance.Proto.ClaimHTLOrder claimHTLT_order = 15;</code>
+     * @return Whether the claimHTLTOrder field is set.
      */
+    @java.lang.Override
     public boolean hasClaimHTLTOrder() {
       return orderOneofCase_ == 15;
     }
     /**
      * <code>.TW.Binance.Proto.ClaimHTLOrder claimHTLT_order = 15;</code>
+     * @return The claimHTLTOrder.
      */
+    @java.lang.Override
     public wallet.core.jni.proto.Binance.ClaimHTLOrder getClaimHTLTOrder() {
       if (orderOneofCase_ == 15) {
          return (wallet.core.jni.proto.Binance.ClaimHTLOrder) orderOneof_;
@@ -20357,6 +24426,7 @@ public final class Binance {
     /**
      * <code>.TW.Binance.Proto.ClaimHTLOrder claimHTLT_order = 15;</code>
      */
+    @java.lang.Override
     public wallet.core.jni.proto.Binance.ClaimHTLOrderOrBuilder getClaimHTLTOrderOrBuilder() {
       if (orderOneofCase_ == 15) {
          return (wallet.core.jni.proto.Binance.ClaimHTLOrder) orderOneof_;
@@ -20367,13 +24437,17 @@ public final class Binance {
     public static final int REFUNDHTLT_ORDER_FIELD_NUMBER = 16;
     /**
      * <code>.TW.Binance.Proto.RefundHTLTOrder refundHTLT_order = 16;</code>
+     * @return Whether the refundHTLTOrder field is set.
      */
+    @java.lang.Override
     public boolean hasRefundHTLTOrder() {
       return orderOneofCase_ == 16;
     }
     /**
      * <code>.TW.Binance.Proto.RefundHTLTOrder refundHTLT_order = 16;</code>
+     * @return The refundHTLTOrder.
      */
+    @java.lang.Override
     public wallet.core.jni.proto.Binance.RefundHTLTOrder getRefundHTLTOrder() {
       if (orderOneofCase_ == 16) {
          return (wallet.core.jni.proto.Binance.RefundHTLTOrder) orderOneof_;
@@ -20383,6 +24457,7 @@ public final class Binance {
     /**
      * <code>.TW.Binance.Proto.RefundHTLTOrder refundHTLT_order = 16;</code>
      */
+    @java.lang.Override
     public wallet.core.jni.proto.Binance.RefundHTLTOrderOrBuilder getRefundHTLTOrderOrBuilder() {
       if (orderOneofCase_ == 16) {
          return (wallet.core.jni.proto.Binance.RefundHTLTOrder) orderOneof_;
@@ -20393,13 +24468,17 @@ public final class Binance {
     public static final int ISSUE_ORDER_FIELD_NUMBER = 17;
     /**
      * <code>.TW.Binance.Proto.TokenIssueOrder issue_order = 17;</code>
+     * @return Whether the issueOrder field is set.
      */
+    @java.lang.Override
     public boolean hasIssueOrder() {
       return orderOneofCase_ == 17;
     }
     /**
      * <code>.TW.Binance.Proto.TokenIssueOrder issue_order = 17;</code>
+     * @return The issueOrder.
      */
+    @java.lang.Override
     public wallet.core.jni.proto.Binance.TokenIssueOrder getIssueOrder() {
       if (orderOneofCase_ == 17) {
          return (wallet.core.jni.proto.Binance.TokenIssueOrder) orderOneof_;
@@ -20409,6 +24488,7 @@ public final class Binance {
     /**
      * <code>.TW.Binance.Proto.TokenIssueOrder issue_order = 17;</code>
      */
+    @java.lang.Override
     public wallet.core.jni.proto.Binance.TokenIssueOrderOrBuilder getIssueOrderOrBuilder() {
       if (orderOneofCase_ == 17) {
          return (wallet.core.jni.proto.Binance.TokenIssueOrder) orderOneof_;
@@ -20419,13 +24499,17 @@ public final class Binance {
     public static final int MINT_ORDER_FIELD_NUMBER = 18;
     /**
      * <code>.TW.Binance.Proto.TokenMintOrder mint_order = 18;</code>
+     * @return Whether the mintOrder field is set.
      */
+    @java.lang.Override
     public boolean hasMintOrder() {
       return orderOneofCase_ == 18;
     }
     /**
      * <code>.TW.Binance.Proto.TokenMintOrder mint_order = 18;</code>
+     * @return The mintOrder.
      */
+    @java.lang.Override
     public wallet.core.jni.proto.Binance.TokenMintOrder getMintOrder() {
       if (orderOneofCase_ == 18) {
          return (wallet.core.jni.proto.Binance.TokenMintOrder) orderOneof_;
@@ -20435,6 +24519,7 @@ public final class Binance {
     /**
      * <code>.TW.Binance.Proto.TokenMintOrder mint_order = 18;</code>
      */
+    @java.lang.Override
     public wallet.core.jni.proto.Binance.TokenMintOrderOrBuilder getMintOrderOrBuilder() {
       if (orderOneofCase_ == 18) {
          return (wallet.core.jni.proto.Binance.TokenMintOrder) orderOneof_;
@@ -20445,13 +24530,17 @@ public final class Binance {
     public static final int BURN_ORDER_FIELD_NUMBER = 19;
     /**
      * <code>.TW.Binance.Proto.TokenBurnOrder burn_order = 19;</code>
+     * @return Whether the burnOrder field is set.
      */
+    @java.lang.Override
     public boolean hasBurnOrder() {
       return orderOneofCase_ == 19;
     }
     /**
      * <code>.TW.Binance.Proto.TokenBurnOrder burn_order = 19;</code>
+     * @return The burnOrder.
      */
+    @java.lang.Override
     public wallet.core.jni.proto.Binance.TokenBurnOrder getBurnOrder() {
       if (orderOneofCase_ == 19) {
          return (wallet.core.jni.proto.Binance.TokenBurnOrder) orderOneof_;
@@ -20461,6 +24550,7 @@ public final class Binance {
     /**
      * <code>.TW.Binance.Proto.TokenBurnOrder burn_order = 19;</code>
      */
+    @java.lang.Override
     public wallet.core.jni.proto.Binance.TokenBurnOrderOrBuilder getBurnOrderOrBuilder() {
       if (orderOneofCase_ == 19) {
          return (wallet.core.jni.proto.Binance.TokenBurnOrder) orderOneof_;
@@ -20471,13 +24561,17 @@ public final class Binance {
     public static final int TRANSFER_OUT_ORDER_FIELD_NUMBER = 20;
     /**
      * <code>.TW.Binance.Proto.TransferOut transfer_out_order = 20;</code>
+     * @return Whether the transferOutOrder field is set.
      */
+    @java.lang.Override
     public boolean hasTransferOutOrder() {
       return orderOneofCase_ == 20;
     }
     /**
      * <code>.TW.Binance.Proto.TransferOut transfer_out_order = 20;</code>
+     * @return The transferOutOrder.
      */
+    @java.lang.Override
     public wallet.core.jni.proto.Binance.TransferOut getTransferOutOrder() {
       if (orderOneofCase_ == 20) {
          return (wallet.core.jni.proto.Binance.TransferOut) orderOneof_;
@@ -20487,6 +24581,7 @@ public final class Binance {
     /**
      * <code>.TW.Binance.Proto.TransferOut transfer_out_order = 20;</code>
      */
+    @java.lang.Override
     public wallet.core.jni.proto.Binance.TransferOutOrBuilder getTransferOutOrderOrBuilder() {
       if (orderOneofCase_ == 20) {
          return (wallet.core.jni.proto.Binance.TransferOut) orderOneof_;
@@ -20497,13 +24592,17 @@ public final class Binance {
     public static final int SIDE_DELEGATE_ORDER_FIELD_NUMBER = 21;
     /**
      * <code>.TW.Binance.Proto.SideChainDelegate side_delegate_order = 21;</code>
+     * @return Whether the sideDelegateOrder field is set.
      */
+    @java.lang.Override
     public boolean hasSideDelegateOrder() {
       return orderOneofCase_ == 21;
     }
     /**
      * <code>.TW.Binance.Proto.SideChainDelegate side_delegate_order = 21;</code>
+     * @return The sideDelegateOrder.
      */
+    @java.lang.Override
     public wallet.core.jni.proto.Binance.SideChainDelegate getSideDelegateOrder() {
       if (orderOneofCase_ == 21) {
          return (wallet.core.jni.proto.Binance.SideChainDelegate) orderOneof_;
@@ -20513,6 +24612,7 @@ public final class Binance {
     /**
      * <code>.TW.Binance.Proto.SideChainDelegate side_delegate_order = 21;</code>
      */
+    @java.lang.Override
     public wallet.core.jni.proto.Binance.SideChainDelegateOrBuilder getSideDelegateOrderOrBuilder() {
       if (orderOneofCase_ == 21) {
          return (wallet.core.jni.proto.Binance.SideChainDelegate) orderOneof_;
@@ -20523,13 +24623,17 @@ public final class Binance {
     public static final int SIDE_REDELEGATE_ORDER_FIELD_NUMBER = 22;
     /**
      * <code>.TW.Binance.Proto.SideChainRedelegate side_redelegate_order = 22;</code>
+     * @return Whether the sideRedelegateOrder field is set.
      */
+    @java.lang.Override
     public boolean hasSideRedelegateOrder() {
       return orderOneofCase_ == 22;
     }
     /**
      * <code>.TW.Binance.Proto.SideChainRedelegate side_redelegate_order = 22;</code>
+     * @return The sideRedelegateOrder.
      */
+    @java.lang.Override
     public wallet.core.jni.proto.Binance.SideChainRedelegate getSideRedelegateOrder() {
       if (orderOneofCase_ == 22) {
          return (wallet.core.jni.proto.Binance.SideChainRedelegate) orderOneof_;
@@ -20539,6 +24643,7 @@ public final class Binance {
     /**
      * <code>.TW.Binance.Proto.SideChainRedelegate side_redelegate_order = 22;</code>
      */
+    @java.lang.Override
     public wallet.core.jni.proto.Binance.SideChainRedelegateOrBuilder getSideRedelegateOrderOrBuilder() {
       if (orderOneofCase_ == 22) {
          return (wallet.core.jni.proto.Binance.SideChainRedelegate) orderOneof_;
@@ -20549,13 +24654,17 @@ public final class Binance {
     public static final int SIDE_UNDELEGATE_ORDER_FIELD_NUMBER = 23;
     /**
      * <code>.TW.Binance.Proto.SideChainUndelegate side_undelegate_order = 23;</code>
+     * @return Whether the sideUndelegateOrder field is set.
      */
+    @java.lang.Override
     public boolean hasSideUndelegateOrder() {
       return orderOneofCase_ == 23;
     }
     /**
      * <code>.TW.Binance.Proto.SideChainUndelegate side_undelegate_order = 23;</code>
+     * @return The sideUndelegateOrder.
      */
+    @java.lang.Override
     public wallet.core.jni.proto.Binance.SideChainUndelegate getSideUndelegateOrder() {
       if (orderOneofCase_ == 23) {
          return (wallet.core.jni.proto.Binance.SideChainUndelegate) orderOneof_;
@@ -20565,11 +24674,105 @@ public final class Binance {
     /**
      * <code>.TW.Binance.Proto.SideChainUndelegate side_undelegate_order = 23;</code>
      */
+    @java.lang.Override
     public wallet.core.jni.proto.Binance.SideChainUndelegateOrBuilder getSideUndelegateOrderOrBuilder() {
       if (orderOneofCase_ == 23) {
          return (wallet.core.jni.proto.Binance.SideChainUndelegate) orderOneof_;
       }
       return wallet.core.jni.proto.Binance.SideChainUndelegate.getDefaultInstance();
+    }
+
+    public static final int TIME_LOCK_ORDER_FIELD_NUMBER = 24;
+    /**
+     * <code>.TW.Binance.Proto.TimeLockOrder time_lock_order = 24;</code>
+     * @return Whether the timeLockOrder field is set.
+     */
+    @java.lang.Override
+    public boolean hasTimeLockOrder() {
+      return orderOneofCase_ == 24;
+    }
+    /**
+     * <code>.TW.Binance.Proto.TimeLockOrder time_lock_order = 24;</code>
+     * @return The timeLockOrder.
+     */
+    @java.lang.Override
+    public wallet.core.jni.proto.Binance.TimeLockOrder getTimeLockOrder() {
+      if (orderOneofCase_ == 24) {
+         return (wallet.core.jni.proto.Binance.TimeLockOrder) orderOneof_;
+      }
+      return wallet.core.jni.proto.Binance.TimeLockOrder.getDefaultInstance();
+    }
+    /**
+     * <code>.TW.Binance.Proto.TimeLockOrder time_lock_order = 24;</code>
+     */
+    @java.lang.Override
+    public wallet.core.jni.proto.Binance.TimeLockOrderOrBuilder getTimeLockOrderOrBuilder() {
+      if (orderOneofCase_ == 24) {
+         return (wallet.core.jni.proto.Binance.TimeLockOrder) orderOneof_;
+      }
+      return wallet.core.jni.proto.Binance.TimeLockOrder.getDefaultInstance();
+    }
+
+    public static final int TIME_RELOCK_ORDER_FIELD_NUMBER = 25;
+    /**
+     * <code>.TW.Binance.Proto.TimeRelockOrder time_relock_order = 25;</code>
+     * @return Whether the timeRelockOrder field is set.
+     */
+    @java.lang.Override
+    public boolean hasTimeRelockOrder() {
+      return orderOneofCase_ == 25;
+    }
+    /**
+     * <code>.TW.Binance.Proto.TimeRelockOrder time_relock_order = 25;</code>
+     * @return The timeRelockOrder.
+     */
+    @java.lang.Override
+    public wallet.core.jni.proto.Binance.TimeRelockOrder getTimeRelockOrder() {
+      if (orderOneofCase_ == 25) {
+         return (wallet.core.jni.proto.Binance.TimeRelockOrder) orderOneof_;
+      }
+      return wallet.core.jni.proto.Binance.TimeRelockOrder.getDefaultInstance();
+    }
+    /**
+     * <code>.TW.Binance.Proto.TimeRelockOrder time_relock_order = 25;</code>
+     */
+    @java.lang.Override
+    public wallet.core.jni.proto.Binance.TimeRelockOrderOrBuilder getTimeRelockOrderOrBuilder() {
+      if (orderOneofCase_ == 25) {
+         return (wallet.core.jni.proto.Binance.TimeRelockOrder) orderOneof_;
+      }
+      return wallet.core.jni.proto.Binance.TimeRelockOrder.getDefaultInstance();
+    }
+
+    public static final int TIME_UNLOCK_ORDER_FIELD_NUMBER = 26;
+    /**
+     * <code>.TW.Binance.Proto.TimeUnlockOrder time_unlock_order = 26;</code>
+     * @return Whether the timeUnlockOrder field is set.
+     */
+    @java.lang.Override
+    public boolean hasTimeUnlockOrder() {
+      return orderOneofCase_ == 26;
+    }
+    /**
+     * <code>.TW.Binance.Proto.TimeUnlockOrder time_unlock_order = 26;</code>
+     * @return The timeUnlockOrder.
+     */
+    @java.lang.Override
+    public wallet.core.jni.proto.Binance.TimeUnlockOrder getTimeUnlockOrder() {
+      if (orderOneofCase_ == 26) {
+         return (wallet.core.jni.proto.Binance.TimeUnlockOrder) orderOneof_;
+      }
+      return wallet.core.jni.proto.Binance.TimeUnlockOrder.getDefaultInstance();
+    }
+    /**
+     * <code>.TW.Binance.Proto.TimeUnlockOrder time_unlock_order = 26;</code>
+     */
+    @java.lang.Override
+    public wallet.core.jni.proto.Binance.TimeUnlockOrderOrBuilder getTimeUnlockOrderOrBuilder() {
+      if (orderOneofCase_ == 26) {
+         return (wallet.core.jni.proto.Binance.TimeUnlockOrder) orderOneof_;
+      }
+      return wallet.core.jni.proto.Binance.TimeUnlockOrder.getDefaultInstance();
     }
 
     private byte memoizedIsInitialized = -1;
@@ -20651,6 +24854,15 @@ public final class Binance {
       }
       if (orderOneofCase_ == 23) {
         output.writeMessage(23, (wallet.core.jni.proto.Binance.SideChainUndelegate) orderOneof_);
+      }
+      if (orderOneofCase_ == 24) {
+        output.writeMessage(24, (wallet.core.jni.proto.Binance.TimeLockOrder) orderOneof_);
+      }
+      if (orderOneofCase_ == 25) {
+        output.writeMessage(25, (wallet.core.jni.proto.Binance.TimeRelockOrder) orderOneof_);
+      }
+      if (orderOneofCase_ == 26) {
+        output.writeMessage(26, (wallet.core.jni.proto.Binance.TimeUnlockOrder) orderOneof_);
       }
       unknownFields.writeTo(output);
     }
@@ -20747,6 +24959,18 @@ public final class Binance {
         size += com.google.protobuf.CodedOutputStream
           .computeMessageSize(23, (wallet.core.jni.proto.Binance.SideChainUndelegate) orderOneof_);
       }
+      if (orderOneofCase_ == 24) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(24, (wallet.core.jni.proto.Binance.TimeLockOrder) orderOneof_);
+      }
+      if (orderOneofCase_ == 25) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(25, (wallet.core.jni.proto.Binance.TimeRelockOrder) orderOneof_);
+      }
+      if (orderOneofCase_ == 26) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(26, (wallet.core.jni.proto.Binance.TimeUnlockOrder) orderOneof_);
+      }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
       return size;
@@ -20839,6 +25063,18 @@ public final class Binance {
         case 23:
           if (!getSideUndelegateOrder()
               .equals(other.getSideUndelegateOrder())) return false;
+          break;
+        case 24:
+          if (!getTimeLockOrder()
+              .equals(other.getTimeLockOrder())) return false;
+          break;
+        case 25:
+          if (!getTimeRelockOrder()
+              .equals(other.getTimeRelockOrder())) return false;
+          break;
+        case 26:
+          if (!getTimeUnlockOrder()
+              .equals(other.getTimeUnlockOrder())) return false;
           break;
         case 0:
         default:
@@ -20933,6 +25169,18 @@ public final class Binance {
         case 23:
           hash = (37 * hash) + SIDE_UNDELEGATE_ORDER_FIELD_NUMBER;
           hash = (53 * hash) + getSideUndelegateOrder().hashCode();
+          break;
+        case 24:
+          hash = (37 * hash) + TIME_LOCK_ORDER_FIELD_NUMBER;
+          hash = (53 * hash) + getTimeLockOrder().hashCode();
+          break;
+        case 25:
+          hash = (37 * hash) + TIME_RELOCK_ORDER_FIELD_NUMBER;
+          hash = (53 * hash) + getTimeRelockOrder().hashCode();
+          break;
+        case 26:
+          hash = (37 * hash) + TIME_UNLOCK_ORDER_FIELD_NUMBER;
+          hash = (53 * hash) + getTimeUnlockOrder().hashCode();
           break;
         case 0:
         default:
@@ -21232,6 +25480,27 @@ public final class Binance {
             result.orderOneof_ = sideUndelegateOrderBuilder_.build();
           }
         }
+        if (orderOneofCase_ == 24) {
+          if (timeLockOrderBuilder_ == null) {
+            result.orderOneof_ = orderOneof_;
+          } else {
+            result.orderOneof_ = timeLockOrderBuilder_.build();
+          }
+        }
+        if (orderOneofCase_ == 25) {
+          if (timeRelockOrderBuilder_ == null) {
+            result.orderOneof_ = orderOneof_;
+          } else {
+            result.orderOneof_ = timeRelockOrderBuilder_.build();
+          }
+        }
+        if (orderOneofCase_ == 26) {
+          if (timeUnlockOrderBuilder_ == null) {
+            result.orderOneof_ = orderOneof_;
+          } else {
+            result.orderOneof_ = timeUnlockOrderBuilder_.build();
+          }
+        }
         result.orderOneofCase_ = orderOneofCase_;
         onBuilt();
         return result;
@@ -21366,6 +25635,18 @@ public final class Binance {
             mergeSideUndelegateOrder(other.getSideUndelegateOrder());
             break;
           }
+          case TIME_LOCK_ORDER: {
+            mergeTimeLockOrder(other.getTimeLockOrder());
+            break;
+          }
+          case TIME_RELOCK_ORDER: {
+            mergeTimeRelockOrder(other.getTimeRelockOrder());
+            break;
+          }
+          case TIME_UNLOCK_ORDER: {
+            mergeTimeUnlockOrder(other.getTimeUnlockOrder());
+            break;
+          }
           case ORDERONEOF_NOT_SET: {
             break;
           }
@@ -21417,6 +25698,7 @@ public final class Binance {
       private java.lang.Object chainId_ = "";
       /**
        * <code>string chain_id = 1;</code>
+       * @return The chainId.
        */
       public java.lang.String getChainId() {
         java.lang.Object ref = chainId_;
@@ -21432,6 +25714,7 @@ public final class Binance {
       }
       /**
        * <code>string chain_id = 1;</code>
+       * @return The bytes for chainId.
        */
       public com.google.protobuf.ByteString
           getChainIdBytes() {
@@ -21448,6 +25731,8 @@ public final class Binance {
       }
       /**
        * <code>string chain_id = 1;</code>
+       * @param value The chainId to set.
+       * @return This builder for chaining.
        */
       public Builder setChainId(
           java.lang.String value) {
@@ -21461,6 +25746,7 @@ public final class Binance {
       }
       /**
        * <code>string chain_id = 1;</code>
+       * @return This builder for chaining.
        */
       public Builder clearChainId() {
         
@@ -21470,6 +25756,8 @@ public final class Binance {
       }
       /**
        * <code>string chain_id = 1;</code>
+       * @param value The bytes for chainId to set.
+       * @return This builder for chaining.
        */
       public Builder setChainIdBytes(
           com.google.protobuf.ByteString value) {
@@ -21486,12 +25774,16 @@ public final class Binance {
       private long accountNumber_ ;
       /**
        * <code>int64 account_number = 2;</code>
+       * @return The accountNumber.
        */
+      @java.lang.Override
       public long getAccountNumber() {
         return accountNumber_;
       }
       /**
        * <code>int64 account_number = 2;</code>
+       * @param value The accountNumber to set.
+       * @return This builder for chaining.
        */
       public Builder setAccountNumber(long value) {
         
@@ -21501,6 +25793,7 @@ public final class Binance {
       }
       /**
        * <code>int64 account_number = 2;</code>
+       * @return This builder for chaining.
        */
       public Builder clearAccountNumber() {
         
@@ -21512,12 +25805,16 @@ public final class Binance {
       private long sequence_ ;
       /**
        * <code>int64 sequence = 3;</code>
+       * @return The sequence.
        */
+      @java.lang.Override
       public long getSequence() {
         return sequence_;
       }
       /**
        * <code>int64 sequence = 3;</code>
+       * @param value The sequence to set.
+       * @return This builder for chaining.
        */
       public Builder setSequence(long value) {
         
@@ -21527,6 +25824,7 @@ public final class Binance {
       }
       /**
        * <code>int64 sequence = 3;</code>
+       * @return This builder for chaining.
        */
       public Builder clearSequence() {
         
@@ -21538,12 +25836,16 @@ public final class Binance {
       private long source_ ;
       /**
        * <code>int64 source = 4;</code>
+       * @return The source.
        */
+      @java.lang.Override
       public long getSource() {
         return source_;
       }
       /**
        * <code>int64 source = 4;</code>
+       * @param value The source to set.
+       * @return This builder for chaining.
        */
       public Builder setSource(long value) {
         
@@ -21553,6 +25855,7 @@ public final class Binance {
       }
       /**
        * <code>int64 source = 4;</code>
+       * @return This builder for chaining.
        */
       public Builder clearSource() {
         
@@ -21564,6 +25867,7 @@ public final class Binance {
       private java.lang.Object memo_ = "";
       /**
        * <code>string memo = 5;</code>
+       * @return The memo.
        */
       public java.lang.String getMemo() {
         java.lang.Object ref = memo_;
@@ -21579,6 +25883,7 @@ public final class Binance {
       }
       /**
        * <code>string memo = 5;</code>
+       * @return The bytes for memo.
        */
       public com.google.protobuf.ByteString
           getMemoBytes() {
@@ -21595,6 +25900,8 @@ public final class Binance {
       }
       /**
        * <code>string memo = 5;</code>
+       * @param value The memo to set.
+       * @return This builder for chaining.
        */
       public Builder setMemo(
           java.lang.String value) {
@@ -21608,6 +25915,7 @@ public final class Binance {
       }
       /**
        * <code>string memo = 5;</code>
+       * @return This builder for chaining.
        */
       public Builder clearMemo() {
         
@@ -21617,6 +25925,8 @@ public final class Binance {
       }
       /**
        * <code>string memo = 5;</code>
+       * @param value The bytes for memo to set.
+       * @return This builder for chaining.
        */
       public Builder setMemoBytes(
           com.google.protobuf.ByteString value) {
@@ -21633,12 +25943,16 @@ public final class Binance {
       private com.google.protobuf.ByteString privateKey_ = com.google.protobuf.ByteString.EMPTY;
       /**
        * <code>bytes private_key = 6;</code>
+       * @return The privateKey.
        */
+      @java.lang.Override
       public com.google.protobuf.ByteString getPrivateKey() {
         return privateKey_;
       }
       /**
        * <code>bytes private_key = 6;</code>
+       * @param value The privateKey to set.
+       * @return This builder for chaining.
        */
       public Builder setPrivateKey(com.google.protobuf.ByteString value) {
         if (value == null) {
@@ -21651,6 +25965,7 @@ public final class Binance {
       }
       /**
        * <code>bytes private_key = 6;</code>
+       * @return This builder for chaining.
        */
       public Builder clearPrivateKey() {
         
@@ -21663,13 +25978,17 @@ public final class Binance {
           wallet.core.jni.proto.Binance.TradeOrder, wallet.core.jni.proto.Binance.TradeOrder.Builder, wallet.core.jni.proto.Binance.TradeOrderOrBuilder> tradeOrderBuilder_;
       /**
        * <code>.TW.Binance.Proto.TradeOrder trade_order = 8;</code>
+       * @return Whether the tradeOrder field is set.
        */
+      @java.lang.Override
       public boolean hasTradeOrder() {
         return orderOneofCase_ == 8;
       }
       /**
        * <code>.TW.Binance.Proto.TradeOrder trade_order = 8;</code>
+       * @return The tradeOrder.
        */
+      @java.lang.Override
       public wallet.core.jni.proto.Binance.TradeOrder getTradeOrder() {
         if (tradeOrderBuilder_ == null) {
           if (orderOneofCase_ == 8) {
@@ -21763,6 +26082,7 @@ public final class Binance {
       /**
        * <code>.TW.Binance.Proto.TradeOrder trade_order = 8;</code>
        */
+      @java.lang.Override
       public wallet.core.jni.proto.Binance.TradeOrderOrBuilder getTradeOrderOrBuilder() {
         if ((orderOneofCase_ == 8) && (tradeOrderBuilder_ != null)) {
           return tradeOrderBuilder_.getMessageOrBuilder();
@@ -21799,13 +26119,17 @@ public final class Binance {
           wallet.core.jni.proto.Binance.CancelTradeOrder, wallet.core.jni.proto.Binance.CancelTradeOrder.Builder, wallet.core.jni.proto.Binance.CancelTradeOrderOrBuilder> cancelTradeOrderBuilder_;
       /**
        * <code>.TW.Binance.Proto.CancelTradeOrder cancel_trade_order = 9;</code>
+       * @return Whether the cancelTradeOrder field is set.
        */
+      @java.lang.Override
       public boolean hasCancelTradeOrder() {
         return orderOneofCase_ == 9;
       }
       /**
        * <code>.TW.Binance.Proto.CancelTradeOrder cancel_trade_order = 9;</code>
+       * @return The cancelTradeOrder.
        */
+      @java.lang.Override
       public wallet.core.jni.proto.Binance.CancelTradeOrder getCancelTradeOrder() {
         if (cancelTradeOrderBuilder_ == null) {
           if (orderOneofCase_ == 9) {
@@ -21899,6 +26223,7 @@ public final class Binance {
       /**
        * <code>.TW.Binance.Proto.CancelTradeOrder cancel_trade_order = 9;</code>
        */
+      @java.lang.Override
       public wallet.core.jni.proto.Binance.CancelTradeOrderOrBuilder getCancelTradeOrderOrBuilder() {
         if ((orderOneofCase_ == 9) && (cancelTradeOrderBuilder_ != null)) {
           return cancelTradeOrderBuilder_.getMessageOrBuilder();
@@ -21935,13 +26260,17 @@ public final class Binance {
           wallet.core.jni.proto.Binance.SendOrder, wallet.core.jni.proto.Binance.SendOrder.Builder, wallet.core.jni.proto.Binance.SendOrderOrBuilder> sendOrderBuilder_;
       /**
        * <code>.TW.Binance.Proto.SendOrder send_order = 10;</code>
+       * @return Whether the sendOrder field is set.
        */
+      @java.lang.Override
       public boolean hasSendOrder() {
         return orderOneofCase_ == 10;
       }
       /**
        * <code>.TW.Binance.Proto.SendOrder send_order = 10;</code>
+       * @return The sendOrder.
        */
+      @java.lang.Override
       public wallet.core.jni.proto.Binance.SendOrder getSendOrder() {
         if (sendOrderBuilder_ == null) {
           if (orderOneofCase_ == 10) {
@@ -22035,6 +26364,7 @@ public final class Binance {
       /**
        * <code>.TW.Binance.Proto.SendOrder send_order = 10;</code>
        */
+      @java.lang.Override
       public wallet.core.jni.proto.Binance.SendOrderOrBuilder getSendOrderOrBuilder() {
         if ((orderOneofCase_ == 10) && (sendOrderBuilder_ != null)) {
           return sendOrderBuilder_.getMessageOrBuilder();
@@ -22071,13 +26401,17 @@ public final class Binance {
           wallet.core.jni.proto.Binance.TokenFreezeOrder, wallet.core.jni.proto.Binance.TokenFreezeOrder.Builder, wallet.core.jni.proto.Binance.TokenFreezeOrderOrBuilder> freezeOrderBuilder_;
       /**
        * <code>.TW.Binance.Proto.TokenFreezeOrder freeze_order = 11;</code>
+       * @return Whether the freezeOrder field is set.
        */
+      @java.lang.Override
       public boolean hasFreezeOrder() {
         return orderOneofCase_ == 11;
       }
       /**
        * <code>.TW.Binance.Proto.TokenFreezeOrder freeze_order = 11;</code>
+       * @return The freezeOrder.
        */
+      @java.lang.Override
       public wallet.core.jni.proto.Binance.TokenFreezeOrder getFreezeOrder() {
         if (freezeOrderBuilder_ == null) {
           if (orderOneofCase_ == 11) {
@@ -22171,6 +26505,7 @@ public final class Binance {
       /**
        * <code>.TW.Binance.Proto.TokenFreezeOrder freeze_order = 11;</code>
        */
+      @java.lang.Override
       public wallet.core.jni.proto.Binance.TokenFreezeOrderOrBuilder getFreezeOrderOrBuilder() {
         if ((orderOneofCase_ == 11) && (freezeOrderBuilder_ != null)) {
           return freezeOrderBuilder_.getMessageOrBuilder();
@@ -22207,13 +26542,17 @@ public final class Binance {
           wallet.core.jni.proto.Binance.TokenUnfreezeOrder, wallet.core.jni.proto.Binance.TokenUnfreezeOrder.Builder, wallet.core.jni.proto.Binance.TokenUnfreezeOrderOrBuilder> unfreezeOrderBuilder_;
       /**
        * <code>.TW.Binance.Proto.TokenUnfreezeOrder unfreeze_order = 12;</code>
+       * @return Whether the unfreezeOrder field is set.
        */
+      @java.lang.Override
       public boolean hasUnfreezeOrder() {
         return orderOneofCase_ == 12;
       }
       /**
        * <code>.TW.Binance.Proto.TokenUnfreezeOrder unfreeze_order = 12;</code>
+       * @return The unfreezeOrder.
        */
+      @java.lang.Override
       public wallet.core.jni.proto.Binance.TokenUnfreezeOrder getUnfreezeOrder() {
         if (unfreezeOrderBuilder_ == null) {
           if (orderOneofCase_ == 12) {
@@ -22307,6 +26646,7 @@ public final class Binance {
       /**
        * <code>.TW.Binance.Proto.TokenUnfreezeOrder unfreeze_order = 12;</code>
        */
+      @java.lang.Override
       public wallet.core.jni.proto.Binance.TokenUnfreezeOrderOrBuilder getUnfreezeOrderOrBuilder() {
         if ((orderOneofCase_ == 12) && (unfreezeOrderBuilder_ != null)) {
           return unfreezeOrderBuilder_.getMessageOrBuilder();
@@ -22343,13 +26683,17 @@ public final class Binance {
           wallet.core.jni.proto.Binance.HTLTOrder, wallet.core.jni.proto.Binance.HTLTOrder.Builder, wallet.core.jni.proto.Binance.HTLTOrderOrBuilder> htltOrderBuilder_;
       /**
        * <code>.TW.Binance.Proto.HTLTOrder htlt_order = 13;</code>
+       * @return Whether the htltOrder field is set.
        */
+      @java.lang.Override
       public boolean hasHtltOrder() {
         return orderOneofCase_ == 13;
       }
       /**
        * <code>.TW.Binance.Proto.HTLTOrder htlt_order = 13;</code>
+       * @return The htltOrder.
        */
+      @java.lang.Override
       public wallet.core.jni.proto.Binance.HTLTOrder getHtltOrder() {
         if (htltOrderBuilder_ == null) {
           if (orderOneofCase_ == 13) {
@@ -22443,6 +26787,7 @@ public final class Binance {
       /**
        * <code>.TW.Binance.Proto.HTLTOrder htlt_order = 13;</code>
        */
+      @java.lang.Override
       public wallet.core.jni.proto.Binance.HTLTOrderOrBuilder getHtltOrderOrBuilder() {
         if ((orderOneofCase_ == 13) && (htltOrderBuilder_ != null)) {
           return htltOrderBuilder_.getMessageOrBuilder();
@@ -22479,13 +26824,17 @@ public final class Binance {
           wallet.core.jni.proto.Binance.DepositHTLTOrder, wallet.core.jni.proto.Binance.DepositHTLTOrder.Builder, wallet.core.jni.proto.Binance.DepositHTLTOrderOrBuilder> depositHTLTOrderBuilder_;
       /**
        * <code>.TW.Binance.Proto.DepositHTLTOrder depositHTLT_order = 14;</code>
+       * @return Whether the depositHTLTOrder field is set.
        */
+      @java.lang.Override
       public boolean hasDepositHTLTOrder() {
         return orderOneofCase_ == 14;
       }
       /**
        * <code>.TW.Binance.Proto.DepositHTLTOrder depositHTLT_order = 14;</code>
+       * @return The depositHTLTOrder.
        */
+      @java.lang.Override
       public wallet.core.jni.proto.Binance.DepositHTLTOrder getDepositHTLTOrder() {
         if (depositHTLTOrderBuilder_ == null) {
           if (orderOneofCase_ == 14) {
@@ -22579,6 +26928,7 @@ public final class Binance {
       /**
        * <code>.TW.Binance.Proto.DepositHTLTOrder depositHTLT_order = 14;</code>
        */
+      @java.lang.Override
       public wallet.core.jni.proto.Binance.DepositHTLTOrderOrBuilder getDepositHTLTOrderOrBuilder() {
         if ((orderOneofCase_ == 14) && (depositHTLTOrderBuilder_ != null)) {
           return depositHTLTOrderBuilder_.getMessageOrBuilder();
@@ -22615,13 +26965,17 @@ public final class Binance {
           wallet.core.jni.proto.Binance.ClaimHTLOrder, wallet.core.jni.proto.Binance.ClaimHTLOrder.Builder, wallet.core.jni.proto.Binance.ClaimHTLOrderOrBuilder> claimHTLTOrderBuilder_;
       /**
        * <code>.TW.Binance.Proto.ClaimHTLOrder claimHTLT_order = 15;</code>
+       * @return Whether the claimHTLTOrder field is set.
        */
+      @java.lang.Override
       public boolean hasClaimHTLTOrder() {
         return orderOneofCase_ == 15;
       }
       /**
        * <code>.TW.Binance.Proto.ClaimHTLOrder claimHTLT_order = 15;</code>
+       * @return The claimHTLTOrder.
        */
+      @java.lang.Override
       public wallet.core.jni.proto.Binance.ClaimHTLOrder getClaimHTLTOrder() {
         if (claimHTLTOrderBuilder_ == null) {
           if (orderOneofCase_ == 15) {
@@ -22715,6 +27069,7 @@ public final class Binance {
       /**
        * <code>.TW.Binance.Proto.ClaimHTLOrder claimHTLT_order = 15;</code>
        */
+      @java.lang.Override
       public wallet.core.jni.proto.Binance.ClaimHTLOrderOrBuilder getClaimHTLTOrderOrBuilder() {
         if ((orderOneofCase_ == 15) && (claimHTLTOrderBuilder_ != null)) {
           return claimHTLTOrderBuilder_.getMessageOrBuilder();
@@ -22751,13 +27106,17 @@ public final class Binance {
           wallet.core.jni.proto.Binance.RefundHTLTOrder, wallet.core.jni.proto.Binance.RefundHTLTOrder.Builder, wallet.core.jni.proto.Binance.RefundHTLTOrderOrBuilder> refundHTLTOrderBuilder_;
       /**
        * <code>.TW.Binance.Proto.RefundHTLTOrder refundHTLT_order = 16;</code>
+       * @return Whether the refundHTLTOrder field is set.
        */
+      @java.lang.Override
       public boolean hasRefundHTLTOrder() {
         return orderOneofCase_ == 16;
       }
       /**
        * <code>.TW.Binance.Proto.RefundHTLTOrder refundHTLT_order = 16;</code>
+       * @return The refundHTLTOrder.
        */
+      @java.lang.Override
       public wallet.core.jni.proto.Binance.RefundHTLTOrder getRefundHTLTOrder() {
         if (refundHTLTOrderBuilder_ == null) {
           if (orderOneofCase_ == 16) {
@@ -22851,6 +27210,7 @@ public final class Binance {
       /**
        * <code>.TW.Binance.Proto.RefundHTLTOrder refundHTLT_order = 16;</code>
        */
+      @java.lang.Override
       public wallet.core.jni.proto.Binance.RefundHTLTOrderOrBuilder getRefundHTLTOrderOrBuilder() {
         if ((orderOneofCase_ == 16) && (refundHTLTOrderBuilder_ != null)) {
           return refundHTLTOrderBuilder_.getMessageOrBuilder();
@@ -22887,13 +27247,17 @@ public final class Binance {
           wallet.core.jni.proto.Binance.TokenIssueOrder, wallet.core.jni.proto.Binance.TokenIssueOrder.Builder, wallet.core.jni.proto.Binance.TokenIssueOrderOrBuilder> issueOrderBuilder_;
       /**
        * <code>.TW.Binance.Proto.TokenIssueOrder issue_order = 17;</code>
+       * @return Whether the issueOrder field is set.
        */
+      @java.lang.Override
       public boolean hasIssueOrder() {
         return orderOneofCase_ == 17;
       }
       /**
        * <code>.TW.Binance.Proto.TokenIssueOrder issue_order = 17;</code>
+       * @return The issueOrder.
        */
+      @java.lang.Override
       public wallet.core.jni.proto.Binance.TokenIssueOrder getIssueOrder() {
         if (issueOrderBuilder_ == null) {
           if (orderOneofCase_ == 17) {
@@ -22987,6 +27351,7 @@ public final class Binance {
       /**
        * <code>.TW.Binance.Proto.TokenIssueOrder issue_order = 17;</code>
        */
+      @java.lang.Override
       public wallet.core.jni.proto.Binance.TokenIssueOrderOrBuilder getIssueOrderOrBuilder() {
         if ((orderOneofCase_ == 17) && (issueOrderBuilder_ != null)) {
           return issueOrderBuilder_.getMessageOrBuilder();
@@ -23023,13 +27388,17 @@ public final class Binance {
           wallet.core.jni.proto.Binance.TokenMintOrder, wallet.core.jni.proto.Binance.TokenMintOrder.Builder, wallet.core.jni.proto.Binance.TokenMintOrderOrBuilder> mintOrderBuilder_;
       /**
        * <code>.TW.Binance.Proto.TokenMintOrder mint_order = 18;</code>
+       * @return Whether the mintOrder field is set.
        */
+      @java.lang.Override
       public boolean hasMintOrder() {
         return orderOneofCase_ == 18;
       }
       /**
        * <code>.TW.Binance.Proto.TokenMintOrder mint_order = 18;</code>
+       * @return The mintOrder.
        */
+      @java.lang.Override
       public wallet.core.jni.proto.Binance.TokenMintOrder getMintOrder() {
         if (mintOrderBuilder_ == null) {
           if (orderOneofCase_ == 18) {
@@ -23123,6 +27492,7 @@ public final class Binance {
       /**
        * <code>.TW.Binance.Proto.TokenMintOrder mint_order = 18;</code>
        */
+      @java.lang.Override
       public wallet.core.jni.proto.Binance.TokenMintOrderOrBuilder getMintOrderOrBuilder() {
         if ((orderOneofCase_ == 18) && (mintOrderBuilder_ != null)) {
           return mintOrderBuilder_.getMessageOrBuilder();
@@ -23159,13 +27529,17 @@ public final class Binance {
           wallet.core.jni.proto.Binance.TokenBurnOrder, wallet.core.jni.proto.Binance.TokenBurnOrder.Builder, wallet.core.jni.proto.Binance.TokenBurnOrderOrBuilder> burnOrderBuilder_;
       /**
        * <code>.TW.Binance.Proto.TokenBurnOrder burn_order = 19;</code>
+       * @return Whether the burnOrder field is set.
        */
+      @java.lang.Override
       public boolean hasBurnOrder() {
         return orderOneofCase_ == 19;
       }
       /**
        * <code>.TW.Binance.Proto.TokenBurnOrder burn_order = 19;</code>
+       * @return The burnOrder.
        */
+      @java.lang.Override
       public wallet.core.jni.proto.Binance.TokenBurnOrder getBurnOrder() {
         if (burnOrderBuilder_ == null) {
           if (orderOneofCase_ == 19) {
@@ -23259,6 +27633,7 @@ public final class Binance {
       /**
        * <code>.TW.Binance.Proto.TokenBurnOrder burn_order = 19;</code>
        */
+      @java.lang.Override
       public wallet.core.jni.proto.Binance.TokenBurnOrderOrBuilder getBurnOrderOrBuilder() {
         if ((orderOneofCase_ == 19) && (burnOrderBuilder_ != null)) {
           return burnOrderBuilder_.getMessageOrBuilder();
@@ -23295,13 +27670,17 @@ public final class Binance {
           wallet.core.jni.proto.Binance.TransferOut, wallet.core.jni.proto.Binance.TransferOut.Builder, wallet.core.jni.proto.Binance.TransferOutOrBuilder> transferOutOrderBuilder_;
       /**
        * <code>.TW.Binance.Proto.TransferOut transfer_out_order = 20;</code>
+       * @return Whether the transferOutOrder field is set.
        */
+      @java.lang.Override
       public boolean hasTransferOutOrder() {
         return orderOneofCase_ == 20;
       }
       /**
        * <code>.TW.Binance.Proto.TransferOut transfer_out_order = 20;</code>
+       * @return The transferOutOrder.
        */
+      @java.lang.Override
       public wallet.core.jni.proto.Binance.TransferOut getTransferOutOrder() {
         if (transferOutOrderBuilder_ == null) {
           if (orderOneofCase_ == 20) {
@@ -23395,6 +27774,7 @@ public final class Binance {
       /**
        * <code>.TW.Binance.Proto.TransferOut transfer_out_order = 20;</code>
        */
+      @java.lang.Override
       public wallet.core.jni.proto.Binance.TransferOutOrBuilder getTransferOutOrderOrBuilder() {
         if ((orderOneofCase_ == 20) && (transferOutOrderBuilder_ != null)) {
           return transferOutOrderBuilder_.getMessageOrBuilder();
@@ -23431,13 +27811,17 @@ public final class Binance {
           wallet.core.jni.proto.Binance.SideChainDelegate, wallet.core.jni.proto.Binance.SideChainDelegate.Builder, wallet.core.jni.proto.Binance.SideChainDelegateOrBuilder> sideDelegateOrderBuilder_;
       /**
        * <code>.TW.Binance.Proto.SideChainDelegate side_delegate_order = 21;</code>
+       * @return Whether the sideDelegateOrder field is set.
        */
+      @java.lang.Override
       public boolean hasSideDelegateOrder() {
         return orderOneofCase_ == 21;
       }
       /**
        * <code>.TW.Binance.Proto.SideChainDelegate side_delegate_order = 21;</code>
+       * @return The sideDelegateOrder.
        */
+      @java.lang.Override
       public wallet.core.jni.proto.Binance.SideChainDelegate getSideDelegateOrder() {
         if (sideDelegateOrderBuilder_ == null) {
           if (orderOneofCase_ == 21) {
@@ -23531,6 +27915,7 @@ public final class Binance {
       /**
        * <code>.TW.Binance.Proto.SideChainDelegate side_delegate_order = 21;</code>
        */
+      @java.lang.Override
       public wallet.core.jni.proto.Binance.SideChainDelegateOrBuilder getSideDelegateOrderOrBuilder() {
         if ((orderOneofCase_ == 21) && (sideDelegateOrderBuilder_ != null)) {
           return sideDelegateOrderBuilder_.getMessageOrBuilder();
@@ -23567,13 +27952,17 @@ public final class Binance {
           wallet.core.jni.proto.Binance.SideChainRedelegate, wallet.core.jni.proto.Binance.SideChainRedelegate.Builder, wallet.core.jni.proto.Binance.SideChainRedelegateOrBuilder> sideRedelegateOrderBuilder_;
       /**
        * <code>.TW.Binance.Proto.SideChainRedelegate side_redelegate_order = 22;</code>
+       * @return Whether the sideRedelegateOrder field is set.
        */
+      @java.lang.Override
       public boolean hasSideRedelegateOrder() {
         return orderOneofCase_ == 22;
       }
       /**
        * <code>.TW.Binance.Proto.SideChainRedelegate side_redelegate_order = 22;</code>
+       * @return The sideRedelegateOrder.
        */
+      @java.lang.Override
       public wallet.core.jni.proto.Binance.SideChainRedelegate getSideRedelegateOrder() {
         if (sideRedelegateOrderBuilder_ == null) {
           if (orderOneofCase_ == 22) {
@@ -23667,6 +28056,7 @@ public final class Binance {
       /**
        * <code>.TW.Binance.Proto.SideChainRedelegate side_redelegate_order = 22;</code>
        */
+      @java.lang.Override
       public wallet.core.jni.proto.Binance.SideChainRedelegateOrBuilder getSideRedelegateOrderOrBuilder() {
         if ((orderOneofCase_ == 22) && (sideRedelegateOrderBuilder_ != null)) {
           return sideRedelegateOrderBuilder_.getMessageOrBuilder();
@@ -23703,13 +28093,17 @@ public final class Binance {
           wallet.core.jni.proto.Binance.SideChainUndelegate, wallet.core.jni.proto.Binance.SideChainUndelegate.Builder, wallet.core.jni.proto.Binance.SideChainUndelegateOrBuilder> sideUndelegateOrderBuilder_;
       /**
        * <code>.TW.Binance.Proto.SideChainUndelegate side_undelegate_order = 23;</code>
+       * @return Whether the sideUndelegateOrder field is set.
        */
+      @java.lang.Override
       public boolean hasSideUndelegateOrder() {
         return orderOneofCase_ == 23;
       }
       /**
        * <code>.TW.Binance.Proto.SideChainUndelegate side_undelegate_order = 23;</code>
+       * @return The sideUndelegateOrder.
        */
+      @java.lang.Override
       public wallet.core.jni.proto.Binance.SideChainUndelegate getSideUndelegateOrder() {
         if (sideUndelegateOrderBuilder_ == null) {
           if (orderOneofCase_ == 23) {
@@ -23803,6 +28197,7 @@ public final class Binance {
       /**
        * <code>.TW.Binance.Proto.SideChainUndelegate side_undelegate_order = 23;</code>
        */
+      @java.lang.Override
       public wallet.core.jni.proto.Binance.SideChainUndelegateOrBuilder getSideUndelegateOrderOrBuilder() {
         if ((orderOneofCase_ == 23) && (sideUndelegateOrderBuilder_ != null)) {
           return sideUndelegateOrderBuilder_.getMessageOrBuilder();
@@ -23833,6 +28228,429 @@ public final class Binance {
         orderOneofCase_ = 23;
         onChanged();;
         return sideUndelegateOrderBuilder_;
+      }
+
+      private com.google.protobuf.SingleFieldBuilderV3<
+          wallet.core.jni.proto.Binance.TimeLockOrder, wallet.core.jni.proto.Binance.TimeLockOrder.Builder, wallet.core.jni.proto.Binance.TimeLockOrderOrBuilder> timeLockOrderBuilder_;
+      /**
+       * <code>.TW.Binance.Proto.TimeLockOrder time_lock_order = 24;</code>
+       * @return Whether the timeLockOrder field is set.
+       */
+      @java.lang.Override
+      public boolean hasTimeLockOrder() {
+        return orderOneofCase_ == 24;
+      }
+      /**
+       * <code>.TW.Binance.Proto.TimeLockOrder time_lock_order = 24;</code>
+       * @return The timeLockOrder.
+       */
+      @java.lang.Override
+      public wallet.core.jni.proto.Binance.TimeLockOrder getTimeLockOrder() {
+        if (timeLockOrderBuilder_ == null) {
+          if (orderOneofCase_ == 24) {
+            return (wallet.core.jni.proto.Binance.TimeLockOrder) orderOneof_;
+          }
+          return wallet.core.jni.proto.Binance.TimeLockOrder.getDefaultInstance();
+        } else {
+          if (orderOneofCase_ == 24) {
+            return timeLockOrderBuilder_.getMessage();
+          }
+          return wallet.core.jni.proto.Binance.TimeLockOrder.getDefaultInstance();
+        }
+      }
+      /**
+       * <code>.TW.Binance.Proto.TimeLockOrder time_lock_order = 24;</code>
+       */
+      public Builder setTimeLockOrder(wallet.core.jni.proto.Binance.TimeLockOrder value) {
+        if (timeLockOrderBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          orderOneof_ = value;
+          onChanged();
+        } else {
+          timeLockOrderBuilder_.setMessage(value);
+        }
+        orderOneofCase_ = 24;
+        return this;
+      }
+      /**
+       * <code>.TW.Binance.Proto.TimeLockOrder time_lock_order = 24;</code>
+       */
+      public Builder setTimeLockOrder(
+          wallet.core.jni.proto.Binance.TimeLockOrder.Builder builderForValue) {
+        if (timeLockOrderBuilder_ == null) {
+          orderOneof_ = builderForValue.build();
+          onChanged();
+        } else {
+          timeLockOrderBuilder_.setMessage(builderForValue.build());
+        }
+        orderOneofCase_ = 24;
+        return this;
+      }
+      /**
+       * <code>.TW.Binance.Proto.TimeLockOrder time_lock_order = 24;</code>
+       */
+      public Builder mergeTimeLockOrder(wallet.core.jni.proto.Binance.TimeLockOrder value) {
+        if (timeLockOrderBuilder_ == null) {
+          if (orderOneofCase_ == 24 &&
+              orderOneof_ != wallet.core.jni.proto.Binance.TimeLockOrder.getDefaultInstance()) {
+            orderOneof_ = wallet.core.jni.proto.Binance.TimeLockOrder.newBuilder((wallet.core.jni.proto.Binance.TimeLockOrder) orderOneof_)
+                .mergeFrom(value).buildPartial();
+          } else {
+            orderOneof_ = value;
+          }
+          onChanged();
+        } else {
+          if (orderOneofCase_ == 24) {
+            timeLockOrderBuilder_.mergeFrom(value);
+          }
+          timeLockOrderBuilder_.setMessage(value);
+        }
+        orderOneofCase_ = 24;
+        return this;
+      }
+      /**
+       * <code>.TW.Binance.Proto.TimeLockOrder time_lock_order = 24;</code>
+       */
+      public Builder clearTimeLockOrder() {
+        if (timeLockOrderBuilder_ == null) {
+          if (orderOneofCase_ == 24) {
+            orderOneofCase_ = 0;
+            orderOneof_ = null;
+            onChanged();
+          }
+        } else {
+          if (orderOneofCase_ == 24) {
+            orderOneofCase_ = 0;
+            orderOneof_ = null;
+          }
+          timeLockOrderBuilder_.clear();
+        }
+        return this;
+      }
+      /**
+       * <code>.TW.Binance.Proto.TimeLockOrder time_lock_order = 24;</code>
+       */
+      public wallet.core.jni.proto.Binance.TimeLockOrder.Builder getTimeLockOrderBuilder() {
+        return getTimeLockOrderFieldBuilder().getBuilder();
+      }
+      /**
+       * <code>.TW.Binance.Proto.TimeLockOrder time_lock_order = 24;</code>
+       */
+      @java.lang.Override
+      public wallet.core.jni.proto.Binance.TimeLockOrderOrBuilder getTimeLockOrderOrBuilder() {
+        if ((orderOneofCase_ == 24) && (timeLockOrderBuilder_ != null)) {
+          return timeLockOrderBuilder_.getMessageOrBuilder();
+        } else {
+          if (orderOneofCase_ == 24) {
+            return (wallet.core.jni.proto.Binance.TimeLockOrder) orderOneof_;
+          }
+          return wallet.core.jni.proto.Binance.TimeLockOrder.getDefaultInstance();
+        }
+      }
+      /**
+       * <code>.TW.Binance.Proto.TimeLockOrder time_lock_order = 24;</code>
+       */
+      private com.google.protobuf.SingleFieldBuilderV3<
+          wallet.core.jni.proto.Binance.TimeLockOrder, wallet.core.jni.proto.Binance.TimeLockOrder.Builder, wallet.core.jni.proto.Binance.TimeLockOrderOrBuilder> 
+          getTimeLockOrderFieldBuilder() {
+        if (timeLockOrderBuilder_ == null) {
+          if (!(orderOneofCase_ == 24)) {
+            orderOneof_ = wallet.core.jni.proto.Binance.TimeLockOrder.getDefaultInstance();
+          }
+          timeLockOrderBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+              wallet.core.jni.proto.Binance.TimeLockOrder, wallet.core.jni.proto.Binance.TimeLockOrder.Builder, wallet.core.jni.proto.Binance.TimeLockOrderOrBuilder>(
+                  (wallet.core.jni.proto.Binance.TimeLockOrder) orderOneof_,
+                  getParentForChildren(),
+                  isClean());
+          orderOneof_ = null;
+        }
+        orderOneofCase_ = 24;
+        onChanged();;
+        return timeLockOrderBuilder_;
+      }
+
+      private com.google.protobuf.SingleFieldBuilderV3<
+          wallet.core.jni.proto.Binance.TimeRelockOrder, wallet.core.jni.proto.Binance.TimeRelockOrder.Builder, wallet.core.jni.proto.Binance.TimeRelockOrderOrBuilder> timeRelockOrderBuilder_;
+      /**
+       * <code>.TW.Binance.Proto.TimeRelockOrder time_relock_order = 25;</code>
+       * @return Whether the timeRelockOrder field is set.
+       */
+      @java.lang.Override
+      public boolean hasTimeRelockOrder() {
+        return orderOneofCase_ == 25;
+      }
+      /**
+       * <code>.TW.Binance.Proto.TimeRelockOrder time_relock_order = 25;</code>
+       * @return The timeRelockOrder.
+       */
+      @java.lang.Override
+      public wallet.core.jni.proto.Binance.TimeRelockOrder getTimeRelockOrder() {
+        if (timeRelockOrderBuilder_ == null) {
+          if (orderOneofCase_ == 25) {
+            return (wallet.core.jni.proto.Binance.TimeRelockOrder) orderOneof_;
+          }
+          return wallet.core.jni.proto.Binance.TimeRelockOrder.getDefaultInstance();
+        } else {
+          if (orderOneofCase_ == 25) {
+            return timeRelockOrderBuilder_.getMessage();
+          }
+          return wallet.core.jni.proto.Binance.TimeRelockOrder.getDefaultInstance();
+        }
+      }
+      /**
+       * <code>.TW.Binance.Proto.TimeRelockOrder time_relock_order = 25;</code>
+       */
+      public Builder setTimeRelockOrder(wallet.core.jni.proto.Binance.TimeRelockOrder value) {
+        if (timeRelockOrderBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          orderOneof_ = value;
+          onChanged();
+        } else {
+          timeRelockOrderBuilder_.setMessage(value);
+        }
+        orderOneofCase_ = 25;
+        return this;
+      }
+      /**
+       * <code>.TW.Binance.Proto.TimeRelockOrder time_relock_order = 25;</code>
+       */
+      public Builder setTimeRelockOrder(
+          wallet.core.jni.proto.Binance.TimeRelockOrder.Builder builderForValue) {
+        if (timeRelockOrderBuilder_ == null) {
+          orderOneof_ = builderForValue.build();
+          onChanged();
+        } else {
+          timeRelockOrderBuilder_.setMessage(builderForValue.build());
+        }
+        orderOneofCase_ = 25;
+        return this;
+      }
+      /**
+       * <code>.TW.Binance.Proto.TimeRelockOrder time_relock_order = 25;</code>
+       */
+      public Builder mergeTimeRelockOrder(wallet.core.jni.proto.Binance.TimeRelockOrder value) {
+        if (timeRelockOrderBuilder_ == null) {
+          if (orderOneofCase_ == 25 &&
+              orderOneof_ != wallet.core.jni.proto.Binance.TimeRelockOrder.getDefaultInstance()) {
+            orderOneof_ = wallet.core.jni.proto.Binance.TimeRelockOrder.newBuilder((wallet.core.jni.proto.Binance.TimeRelockOrder) orderOneof_)
+                .mergeFrom(value).buildPartial();
+          } else {
+            orderOneof_ = value;
+          }
+          onChanged();
+        } else {
+          if (orderOneofCase_ == 25) {
+            timeRelockOrderBuilder_.mergeFrom(value);
+          }
+          timeRelockOrderBuilder_.setMessage(value);
+        }
+        orderOneofCase_ = 25;
+        return this;
+      }
+      /**
+       * <code>.TW.Binance.Proto.TimeRelockOrder time_relock_order = 25;</code>
+       */
+      public Builder clearTimeRelockOrder() {
+        if (timeRelockOrderBuilder_ == null) {
+          if (orderOneofCase_ == 25) {
+            orderOneofCase_ = 0;
+            orderOneof_ = null;
+            onChanged();
+          }
+        } else {
+          if (orderOneofCase_ == 25) {
+            orderOneofCase_ = 0;
+            orderOneof_ = null;
+          }
+          timeRelockOrderBuilder_.clear();
+        }
+        return this;
+      }
+      /**
+       * <code>.TW.Binance.Proto.TimeRelockOrder time_relock_order = 25;</code>
+       */
+      public wallet.core.jni.proto.Binance.TimeRelockOrder.Builder getTimeRelockOrderBuilder() {
+        return getTimeRelockOrderFieldBuilder().getBuilder();
+      }
+      /**
+       * <code>.TW.Binance.Proto.TimeRelockOrder time_relock_order = 25;</code>
+       */
+      @java.lang.Override
+      public wallet.core.jni.proto.Binance.TimeRelockOrderOrBuilder getTimeRelockOrderOrBuilder() {
+        if ((orderOneofCase_ == 25) && (timeRelockOrderBuilder_ != null)) {
+          return timeRelockOrderBuilder_.getMessageOrBuilder();
+        } else {
+          if (orderOneofCase_ == 25) {
+            return (wallet.core.jni.proto.Binance.TimeRelockOrder) orderOneof_;
+          }
+          return wallet.core.jni.proto.Binance.TimeRelockOrder.getDefaultInstance();
+        }
+      }
+      /**
+       * <code>.TW.Binance.Proto.TimeRelockOrder time_relock_order = 25;</code>
+       */
+      private com.google.protobuf.SingleFieldBuilderV3<
+          wallet.core.jni.proto.Binance.TimeRelockOrder, wallet.core.jni.proto.Binance.TimeRelockOrder.Builder, wallet.core.jni.proto.Binance.TimeRelockOrderOrBuilder> 
+          getTimeRelockOrderFieldBuilder() {
+        if (timeRelockOrderBuilder_ == null) {
+          if (!(orderOneofCase_ == 25)) {
+            orderOneof_ = wallet.core.jni.proto.Binance.TimeRelockOrder.getDefaultInstance();
+          }
+          timeRelockOrderBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+              wallet.core.jni.proto.Binance.TimeRelockOrder, wallet.core.jni.proto.Binance.TimeRelockOrder.Builder, wallet.core.jni.proto.Binance.TimeRelockOrderOrBuilder>(
+                  (wallet.core.jni.proto.Binance.TimeRelockOrder) orderOneof_,
+                  getParentForChildren(),
+                  isClean());
+          orderOneof_ = null;
+        }
+        orderOneofCase_ = 25;
+        onChanged();;
+        return timeRelockOrderBuilder_;
+      }
+
+      private com.google.protobuf.SingleFieldBuilderV3<
+          wallet.core.jni.proto.Binance.TimeUnlockOrder, wallet.core.jni.proto.Binance.TimeUnlockOrder.Builder, wallet.core.jni.proto.Binance.TimeUnlockOrderOrBuilder> timeUnlockOrderBuilder_;
+      /**
+       * <code>.TW.Binance.Proto.TimeUnlockOrder time_unlock_order = 26;</code>
+       * @return Whether the timeUnlockOrder field is set.
+       */
+      @java.lang.Override
+      public boolean hasTimeUnlockOrder() {
+        return orderOneofCase_ == 26;
+      }
+      /**
+       * <code>.TW.Binance.Proto.TimeUnlockOrder time_unlock_order = 26;</code>
+       * @return The timeUnlockOrder.
+       */
+      @java.lang.Override
+      public wallet.core.jni.proto.Binance.TimeUnlockOrder getTimeUnlockOrder() {
+        if (timeUnlockOrderBuilder_ == null) {
+          if (orderOneofCase_ == 26) {
+            return (wallet.core.jni.proto.Binance.TimeUnlockOrder) orderOneof_;
+          }
+          return wallet.core.jni.proto.Binance.TimeUnlockOrder.getDefaultInstance();
+        } else {
+          if (orderOneofCase_ == 26) {
+            return timeUnlockOrderBuilder_.getMessage();
+          }
+          return wallet.core.jni.proto.Binance.TimeUnlockOrder.getDefaultInstance();
+        }
+      }
+      /**
+       * <code>.TW.Binance.Proto.TimeUnlockOrder time_unlock_order = 26;</code>
+       */
+      public Builder setTimeUnlockOrder(wallet.core.jni.proto.Binance.TimeUnlockOrder value) {
+        if (timeUnlockOrderBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          orderOneof_ = value;
+          onChanged();
+        } else {
+          timeUnlockOrderBuilder_.setMessage(value);
+        }
+        orderOneofCase_ = 26;
+        return this;
+      }
+      /**
+       * <code>.TW.Binance.Proto.TimeUnlockOrder time_unlock_order = 26;</code>
+       */
+      public Builder setTimeUnlockOrder(
+          wallet.core.jni.proto.Binance.TimeUnlockOrder.Builder builderForValue) {
+        if (timeUnlockOrderBuilder_ == null) {
+          orderOneof_ = builderForValue.build();
+          onChanged();
+        } else {
+          timeUnlockOrderBuilder_.setMessage(builderForValue.build());
+        }
+        orderOneofCase_ = 26;
+        return this;
+      }
+      /**
+       * <code>.TW.Binance.Proto.TimeUnlockOrder time_unlock_order = 26;</code>
+       */
+      public Builder mergeTimeUnlockOrder(wallet.core.jni.proto.Binance.TimeUnlockOrder value) {
+        if (timeUnlockOrderBuilder_ == null) {
+          if (orderOneofCase_ == 26 &&
+              orderOneof_ != wallet.core.jni.proto.Binance.TimeUnlockOrder.getDefaultInstance()) {
+            orderOneof_ = wallet.core.jni.proto.Binance.TimeUnlockOrder.newBuilder((wallet.core.jni.proto.Binance.TimeUnlockOrder) orderOneof_)
+                .mergeFrom(value).buildPartial();
+          } else {
+            orderOneof_ = value;
+          }
+          onChanged();
+        } else {
+          if (orderOneofCase_ == 26) {
+            timeUnlockOrderBuilder_.mergeFrom(value);
+          }
+          timeUnlockOrderBuilder_.setMessage(value);
+        }
+        orderOneofCase_ = 26;
+        return this;
+      }
+      /**
+       * <code>.TW.Binance.Proto.TimeUnlockOrder time_unlock_order = 26;</code>
+       */
+      public Builder clearTimeUnlockOrder() {
+        if (timeUnlockOrderBuilder_ == null) {
+          if (orderOneofCase_ == 26) {
+            orderOneofCase_ = 0;
+            orderOneof_ = null;
+            onChanged();
+          }
+        } else {
+          if (orderOneofCase_ == 26) {
+            orderOneofCase_ = 0;
+            orderOneof_ = null;
+          }
+          timeUnlockOrderBuilder_.clear();
+        }
+        return this;
+      }
+      /**
+       * <code>.TW.Binance.Proto.TimeUnlockOrder time_unlock_order = 26;</code>
+       */
+      public wallet.core.jni.proto.Binance.TimeUnlockOrder.Builder getTimeUnlockOrderBuilder() {
+        return getTimeUnlockOrderFieldBuilder().getBuilder();
+      }
+      /**
+       * <code>.TW.Binance.Proto.TimeUnlockOrder time_unlock_order = 26;</code>
+       */
+      @java.lang.Override
+      public wallet.core.jni.proto.Binance.TimeUnlockOrderOrBuilder getTimeUnlockOrderOrBuilder() {
+        if ((orderOneofCase_ == 26) && (timeUnlockOrderBuilder_ != null)) {
+          return timeUnlockOrderBuilder_.getMessageOrBuilder();
+        } else {
+          if (orderOneofCase_ == 26) {
+            return (wallet.core.jni.proto.Binance.TimeUnlockOrder) orderOneof_;
+          }
+          return wallet.core.jni.proto.Binance.TimeUnlockOrder.getDefaultInstance();
+        }
+      }
+      /**
+       * <code>.TW.Binance.Proto.TimeUnlockOrder time_unlock_order = 26;</code>
+       */
+      private com.google.protobuf.SingleFieldBuilderV3<
+          wallet.core.jni.proto.Binance.TimeUnlockOrder, wallet.core.jni.proto.Binance.TimeUnlockOrder.Builder, wallet.core.jni.proto.Binance.TimeUnlockOrderOrBuilder> 
+          getTimeUnlockOrderFieldBuilder() {
+        if (timeUnlockOrderBuilder_ == null) {
+          if (!(orderOneofCase_ == 26)) {
+            orderOneof_ = wallet.core.jni.proto.Binance.TimeUnlockOrder.getDefaultInstance();
+          }
+          timeUnlockOrderBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+              wallet.core.jni.proto.Binance.TimeUnlockOrder, wallet.core.jni.proto.Binance.TimeUnlockOrder.Builder, wallet.core.jni.proto.Binance.TimeUnlockOrderOrBuilder>(
+                  (wallet.core.jni.proto.Binance.TimeUnlockOrder) orderOneof_,
+                  getParentForChildren(),
+                  isClean());
+          orderOneof_ = null;
+        }
+        orderOneofCase_ = 26;
+        onChanged();;
+        return timeUnlockOrderBuilder_;
       }
       @java.lang.Override
       public final Builder setUnknownFields(
@@ -23897,6 +28715,7 @@ public final class Binance {
      * </pre>
      *
      * <code>bytes encoded = 1;</code>
+     * @return The encoded.
      */
     com.google.protobuf.ByteString getEncoded();
   }
@@ -23907,7 +28726,7 @@ public final class Binance {
    *
    * Protobuf type {@code TW.Binance.Proto.SigningOutput}
    */
-  public  static final class SigningOutput extends
+  public static final class SigningOutput extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:TW.Binance.Proto.SigningOutput)
       SigningOutputOrBuilder {
@@ -23995,7 +28814,9 @@ public final class Binance {
      * </pre>
      *
      * <code>bytes encoded = 1;</code>
+     * @return The encoded.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString getEncoded() {
       return encoded_;
     }
@@ -24313,7 +29134,9 @@ public final class Binance {
        * </pre>
        *
        * <code>bytes encoded = 1;</code>
+       * @return The encoded.
        */
+      @java.lang.Override
       public com.google.protobuf.ByteString getEncoded() {
         return encoded_;
       }
@@ -24323,6 +29146,8 @@ public final class Binance {
        * </pre>
        *
        * <code>bytes encoded = 1;</code>
+       * @param value The encoded to set.
+       * @return This builder for chaining.
        */
       public Builder setEncoded(com.google.protobuf.ByteString value) {
         if (value == null) {
@@ -24339,6 +29164,7 @@ public final class Binance {
        * </pre>
        *
        * <code>bytes encoded = 1;</code>
+       * @return This builder for chaining.
        */
       public Builder clearEncoded() {
         
@@ -24510,6 +29336,21 @@ public final class Binance {
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internal_static_TW_Binance_Proto_SideChainUndelegate_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_TW_Binance_Proto_TimeLockOrder_descriptor;
+  private static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_TW_Binance_Proto_TimeLockOrder_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_TW_Binance_Proto_TimeRelockOrder_descriptor;
+  private static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_TW_Binance_Proto_TimeRelockOrder_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_TW_Binance_Proto_TimeUnlockOrder_descriptor;
+  private static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_TW_Binance_Proto_TimeUnlockOrder_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_TW_Binance_Proto_SigningInput_descriptor;
   private static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
@@ -24582,36 +29423,49 @@ public final class Binance {
       "eChainUndelegate\022\026\n\016delegator_addr\030\001 \001(\014" +
       "\022\026\n\016validator_addr\030\002 \001(\014\0221\n\006amount\030\003 \001(\013" +
       "2!.TW.Binance.Proto.SendOrder.Token\022\020\n\010c" +
-      "hain_id\030\004 \001(\t\"\334\010\n\014SigningInput\022\020\n\010chain_" +
-      "id\030\001 \001(\t\022\026\n\016account_number\030\002 \001(\003\022\020\n\010sequ" +
-      "ence\030\003 \001(\003\022\016\n\006source\030\004 \001(\003\022\014\n\004memo\030\005 \001(\t" +
-      "\022\023\n\013private_key\030\006 \001(\014\0223\n\013trade_order\030\010 \001" +
-      "(\0132\034.TW.Binance.Proto.TradeOrderH\000\022@\n\022ca" +
-      "ncel_trade_order\030\t \001(\0132\".TW.Binance.Prot" +
-      "o.CancelTradeOrderH\000\0221\n\nsend_order\030\n \001(\013" +
-      "2\033.TW.Binance.Proto.SendOrderH\000\022:\n\014freez" +
-      "e_order\030\013 \001(\0132\".TW.Binance.Proto.TokenFr" +
-      "eezeOrderH\000\022>\n\016unfreeze_order\030\014 \001(\0132$.TW" +
-      ".Binance.Proto.TokenUnfreezeOrderH\000\0221\n\nh" +
-      "tlt_order\030\r \001(\0132\033.TW.Binance.Proto.HTLTO" +
-      "rderH\000\022?\n\021depositHTLT_order\030\016 \001(\0132\".TW.B" +
-      "inance.Proto.DepositHTLTOrderH\000\022:\n\017claim" +
-      "HTLT_order\030\017 \001(\0132\037.TW.Binance.Proto.Clai" +
-      "mHTLOrderH\000\022=\n\020refundHTLT_order\030\020 \001(\0132!." +
-      "TW.Binance.Proto.RefundHTLTOrderH\000\0228\n\013is" +
-      "sue_order\030\021 \001(\0132!.TW.Binance.Proto.Token" +
-      "IssueOrderH\000\0226\n\nmint_order\030\022 \001(\0132 .TW.Bi" +
-      "nance.Proto.TokenMintOrderH\000\0226\n\nburn_ord" +
-      "er\030\023 \001(\0132 .TW.Binance.Proto.TokenBurnOrd" +
-      "erH\000\022;\n\022transfer_out_order\030\024 \001(\0132\035.TW.Bi" +
-      "nance.Proto.TransferOutH\000\022B\n\023side_delega" +
-      "te_order\030\025 \001(\0132#.TW.Binance.Proto.SideCh" +
-      "ainDelegateH\000\022F\n\025side_redelegate_order\030\026" +
-      " \001(\0132%.TW.Binance.Proto.SideChainRedeleg" +
-      "ateH\000\022F\n\025side_undelegate_order\030\027 \001(\0132%.T" +
-      "W.Binance.Proto.SideChainUndelegateH\000B\r\n" +
-      "\013order_oneof\" \n\rSigningOutput\022\017\n\007encoded" +
-      "\030\001 \001(\014B\027\n\025wallet.core.jni.protob\006proto3"
+      "hain_id\030\004 \001(\t\"\200\001\n\rTimeLockOrder\022\024\n\014from_" +
+      "address\030\001 \001(\014\022\023\n\013description\030\002 \001(\t\0221\n\006am" +
+      "ount\030\003 \003(\0132!.TW.Binance.Proto.SendOrder." +
+      "Token\022\021\n\tlock_time\030\004 \001(\003\"\216\001\n\017TimeRelockO" +
+      "rder\022\024\n\014from_address\030\001 \001(\014\022\n\n\002id\030\002 \001(\003\022\023" +
+      "\n\013description\030\003 \001(\t\0221\n\006amount\030\004 \003(\0132!.TW" +
+      ".Binance.Proto.SendOrder.Token\022\021\n\tlock_t" +
+      "ime\030\005 \001(\003\"3\n\017TimeUnlockOrder\022\024\n\014from_add" +
+      "ress\030\001 \001(\014\022\n\n\002id\030\002 \001(\003\"\230\n\n\014SigningInput\022" +
+      "\020\n\010chain_id\030\001 \001(\t\022\026\n\016account_number\030\002 \001(" +
+      "\003\022\020\n\010sequence\030\003 \001(\003\022\016\n\006source\030\004 \001(\003\022\014\n\004m" +
+      "emo\030\005 \001(\t\022\023\n\013private_key\030\006 \001(\014\0223\n\013trade_" +
+      "order\030\010 \001(\0132\034.TW.Binance.Proto.TradeOrde" +
+      "rH\000\022@\n\022cancel_trade_order\030\t \001(\0132\".TW.Bin" +
+      "ance.Proto.CancelTradeOrderH\000\0221\n\nsend_or" +
+      "der\030\n \001(\0132\033.TW.Binance.Proto.SendOrderH\000" +
+      "\022:\n\014freeze_order\030\013 \001(\0132\".TW.Binance.Prot" +
+      "o.TokenFreezeOrderH\000\022>\n\016unfreeze_order\030\014" +
+      " \001(\0132$.TW.Binance.Proto.TokenUnfreezeOrd" +
+      "erH\000\0221\n\nhtlt_order\030\r \001(\0132\033.TW.Binance.Pr" +
+      "oto.HTLTOrderH\000\022?\n\021depositHTLT_order\030\016 \001" +
+      "(\0132\".TW.Binance.Proto.DepositHTLTOrderH\000" +
+      "\022:\n\017claimHTLT_order\030\017 \001(\0132\037.TW.Binance.P" +
+      "roto.ClaimHTLOrderH\000\022=\n\020refundHTLT_order" +
+      "\030\020 \001(\0132!.TW.Binance.Proto.RefundHTLTOrde" +
+      "rH\000\0228\n\013issue_order\030\021 \001(\0132!.TW.Binance.Pr" +
+      "oto.TokenIssueOrderH\000\0226\n\nmint_order\030\022 \001(" +
+      "\0132 .TW.Binance.Proto.TokenMintOrderH\000\0226\n" +
+      "\nburn_order\030\023 \001(\0132 .TW.Binance.Proto.Tok" +
+      "enBurnOrderH\000\022;\n\022transfer_out_order\030\024 \001(" +
+      "\0132\035.TW.Binance.Proto.TransferOutH\000\022B\n\023si" +
+      "de_delegate_order\030\025 \001(\0132#.TW.Binance.Pro" +
+      "to.SideChainDelegateH\000\022F\n\025side_redelegat" +
+      "e_order\030\026 \001(\0132%.TW.Binance.Proto.SideCha" +
+      "inRedelegateH\000\022F\n\025side_undelegate_order\030" +
+      "\027 \001(\0132%.TW.Binance.Proto.SideChainUndele" +
+      "gateH\000\022:\n\017time_lock_order\030\030 \001(\0132\037.TW.Bin" +
+      "ance.Proto.TimeLockOrderH\000\022>\n\021time_reloc" +
+      "k_order\030\031 \001(\0132!.TW.Binance.Proto.TimeRel" +
+      "ockOrderH\000\022>\n\021time_unlock_order\030\032 \001(\0132!." +
+      "TW.Binance.Proto.TimeUnlockOrderH\000B\r\n\013or" +
+      "der_oneof\" \n\rSigningOutput\022\017\n\007encoded\030\001 " +
+      "\001(\014B\027\n\025wallet.core.jni.protob\006proto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
@@ -24749,14 +29603,32 @@ public final class Binance {
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_TW_Binance_Proto_SideChainUndelegate_descriptor,
         new java.lang.String[] { "DelegatorAddr", "ValidatorAddr", "Amount", "ChainId", });
-    internal_static_TW_Binance_Proto_SigningInput_descriptor =
+    internal_static_TW_Binance_Proto_TimeLockOrder_descriptor =
       getDescriptor().getMessageTypes().get(18);
+    internal_static_TW_Binance_Proto_TimeLockOrder_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_TW_Binance_Proto_TimeLockOrder_descriptor,
+        new java.lang.String[] { "FromAddress", "Description", "Amount", "LockTime", });
+    internal_static_TW_Binance_Proto_TimeRelockOrder_descriptor =
+      getDescriptor().getMessageTypes().get(19);
+    internal_static_TW_Binance_Proto_TimeRelockOrder_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_TW_Binance_Proto_TimeRelockOrder_descriptor,
+        new java.lang.String[] { "FromAddress", "Id", "Description", "Amount", "LockTime", });
+    internal_static_TW_Binance_Proto_TimeUnlockOrder_descriptor =
+      getDescriptor().getMessageTypes().get(20);
+    internal_static_TW_Binance_Proto_TimeUnlockOrder_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_TW_Binance_Proto_TimeUnlockOrder_descriptor,
+        new java.lang.String[] { "FromAddress", "Id", });
+    internal_static_TW_Binance_Proto_SigningInput_descriptor =
+      getDescriptor().getMessageTypes().get(21);
     internal_static_TW_Binance_Proto_SigningInput_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_TW_Binance_Proto_SigningInput_descriptor,
-        new java.lang.String[] { "ChainId", "AccountNumber", "Sequence", "Source", "Memo", "PrivateKey", "TradeOrder", "CancelTradeOrder", "SendOrder", "FreezeOrder", "UnfreezeOrder", "HtltOrder", "DepositHTLTOrder", "ClaimHTLTOrder", "RefundHTLTOrder", "IssueOrder", "MintOrder", "BurnOrder", "TransferOutOrder", "SideDelegateOrder", "SideRedelegateOrder", "SideUndelegateOrder", "OrderOneof", });
+        new java.lang.String[] { "ChainId", "AccountNumber", "Sequence", "Source", "Memo", "PrivateKey", "TradeOrder", "CancelTradeOrder", "SendOrder", "FreezeOrder", "UnfreezeOrder", "HtltOrder", "DepositHTLTOrder", "ClaimHTLTOrder", "RefundHTLTOrder", "IssueOrder", "MintOrder", "BurnOrder", "TransferOutOrder", "SideDelegateOrder", "SideRedelegateOrder", "SideUndelegateOrder", "TimeLockOrder", "TimeRelockOrder", "TimeUnlockOrder", "OrderOneof", });
     internal_static_TW_Binance_Proto_SigningOutput_descriptor =
-      getDescriptor().getMessageTypes().get(19);
+      getDescriptor().getMessageTypes().get(22);
     internal_static_TW_Binance_Proto_SigningOutput_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_TW_Binance_Proto_SigningOutput_descriptor,

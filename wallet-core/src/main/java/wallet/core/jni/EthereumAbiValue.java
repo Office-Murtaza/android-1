@@ -36,6 +36,8 @@ public class EthereumAbiValue {
     public static native byte[] encodeBytes(byte[] value);
     public static native byte[] encodeBytesDyn(byte[] value);
     public static native String decodeUInt256(byte[] input);
+    public static native String decodeValue(byte[] input, String type);
+    public static native String decodeArray(byte[] input, String type);
 
 }
 

@@ -24,6 +24,7 @@ public final class Decred {
      * </pre>
      *
      * <code>uint32 serializeType = 1;</code>
+     * @return The serializeType.
      */
     int getSerializeType();
 
@@ -33,6 +34,7 @@ public final class Decred {
      * </pre>
      *
      * <code>uint32 version = 2;</code>
+     * @return The version.
      */
     int getVersion();
 
@@ -130,6 +132,7 @@ public final class Decred {
      * </pre>
      *
      * <code>uint32 lockTime = 5;</code>
+     * @return The lockTime.
      */
     int getLockTime();
 
@@ -139,13 +142,14 @@ public final class Decred {
      * </pre>
      *
      * <code>uint32 expiry = 6;</code>
+     * @return The expiry.
      */
     int getExpiry();
   }
   /**
    * Protobuf type {@code TW.Decred.Proto.Transaction}
    */
-  public  static final class Transaction extends
+  public static final class Transaction extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:TW.Decred.Proto.Transaction)
       TransactionOrBuilder {
@@ -274,7 +278,9 @@ public final class Decred {
      * </pre>
      *
      * <code>uint32 serializeType = 1;</code>
+     * @return The serializeType.
      */
+    @java.lang.Override
     public int getSerializeType() {
       return serializeType_;
     }
@@ -287,7 +293,9 @@ public final class Decred {
      * </pre>
      *
      * <code>uint32 version = 2;</code>
+     * @return The version.
      */
+    @java.lang.Override
     public int getVersion() {
       return version_;
     }
@@ -301,6 +309,7 @@ public final class Decred {
      *
      * <code>repeated .TW.Decred.Proto.TransactionInput inputs = 3;</code>
      */
+    @java.lang.Override
     public java.util.List<wallet.core.jni.proto.Decred.TransactionInput> getInputsList() {
       return inputs_;
     }
@@ -311,6 +320,7 @@ public final class Decred {
      *
      * <code>repeated .TW.Decred.Proto.TransactionInput inputs = 3;</code>
      */
+    @java.lang.Override
     public java.util.List<? extends wallet.core.jni.proto.Decred.TransactionInputOrBuilder> 
         getInputsOrBuilderList() {
       return inputs_;
@@ -322,6 +332,7 @@ public final class Decred {
      *
      * <code>repeated .TW.Decred.Proto.TransactionInput inputs = 3;</code>
      */
+    @java.lang.Override
     public int getInputsCount() {
       return inputs_.size();
     }
@@ -332,6 +343,7 @@ public final class Decred {
      *
      * <code>repeated .TW.Decred.Proto.TransactionInput inputs = 3;</code>
      */
+    @java.lang.Override
     public wallet.core.jni.proto.Decred.TransactionInput getInputs(int index) {
       return inputs_.get(index);
     }
@@ -342,6 +354,7 @@ public final class Decred {
      *
      * <code>repeated .TW.Decred.Proto.TransactionInput inputs = 3;</code>
      */
+    @java.lang.Override
     public wallet.core.jni.proto.Decred.TransactionInputOrBuilder getInputsOrBuilder(
         int index) {
       return inputs_.get(index);
@@ -356,6 +369,7 @@ public final class Decred {
      *
      * <code>repeated .TW.Decred.Proto.TransactionOutput outputs = 4;</code>
      */
+    @java.lang.Override
     public java.util.List<wallet.core.jni.proto.Decred.TransactionOutput> getOutputsList() {
       return outputs_;
     }
@@ -366,6 +380,7 @@ public final class Decred {
      *
      * <code>repeated .TW.Decred.Proto.TransactionOutput outputs = 4;</code>
      */
+    @java.lang.Override
     public java.util.List<? extends wallet.core.jni.proto.Decred.TransactionOutputOrBuilder> 
         getOutputsOrBuilderList() {
       return outputs_;
@@ -377,6 +392,7 @@ public final class Decred {
      *
      * <code>repeated .TW.Decred.Proto.TransactionOutput outputs = 4;</code>
      */
+    @java.lang.Override
     public int getOutputsCount() {
       return outputs_.size();
     }
@@ -387,6 +403,7 @@ public final class Decred {
      *
      * <code>repeated .TW.Decred.Proto.TransactionOutput outputs = 4;</code>
      */
+    @java.lang.Override
     public wallet.core.jni.proto.Decred.TransactionOutput getOutputs(int index) {
       return outputs_.get(index);
     }
@@ -397,6 +414,7 @@ public final class Decred {
      *
      * <code>repeated .TW.Decred.Proto.TransactionOutput outputs = 4;</code>
      */
+    @java.lang.Override
     public wallet.core.jni.proto.Decred.TransactionOutputOrBuilder getOutputsOrBuilder(
         int index) {
       return outputs_.get(index);
@@ -410,7 +428,9 @@ public final class Decred {
      * </pre>
      *
      * <code>uint32 lockTime = 5;</code>
+     * @return The lockTime.
      */
+    @java.lang.Override
     public int getLockTime() {
       return lockTime_;
     }
@@ -423,7 +443,9 @@ public final class Decred {
      * </pre>
      *
      * <code>uint32 expiry = 6;</code>
+     * @return The expiry.
      */
+    @java.lang.Override
     public int getExpiry() {
       return expiry_;
     }
@@ -900,7 +922,9 @@ public final class Decred {
        * </pre>
        *
        * <code>uint32 serializeType = 1;</code>
+       * @return The serializeType.
        */
+      @java.lang.Override
       public int getSerializeType() {
         return serializeType_;
       }
@@ -910,6 +934,8 @@ public final class Decred {
        * </pre>
        *
        * <code>uint32 serializeType = 1;</code>
+       * @param value The serializeType to set.
+       * @return This builder for chaining.
        */
       public Builder setSerializeType(int value) {
         
@@ -923,6 +949,7 @@ public final class Decred {
        * </pre>
        *
        * <code>uint32 serializeType = 1;</code>
+       * @return This builder for chaining.
        */
       public Builder clearSerializeType() {
         
@@ -938,7 +965,9 @@ public final class Decred {
        * </pre>
        *
        * <code>uint32 version = 2;</code>
+       * @return The version.
        */
+      @java.lang.Override
       public int getVersion() {
         return version_;
       }
@@ -948,6 +977,8 @@ public final class Decred {
        * </pre>
        *
        * <code>uint32 version = 2;</code>
+       * @param value The version to set.
+       * @return This builder for chaining.
        */
       public Builder setVersion(int value) {
         
@@ -961,6 +992,7 @@ public final class Decred {
        * </pre>
        *
        * <code>uint32 version = 2;</code>
+       * @return This builder for chaining.
        */
       public Builder clearVersion() {
         
@@ -1600,7 +1632,9 @@ public final class Decred {
        * </pre>
        *
        * <code>uint32 lockTime = 5;</code>
+       * @return The lockTime.
        */
+      @java.lang.Override
       public int getLockTime() {
         return lockTime_;
       }
@@ -1610,6 +1644,8 @@ public final class Decred {
        * </pre>
        *
        * <code>uint32 lockTime = 5;</code>
+       * @param value The lockTime to set.
+       * @return This builder for chaining.
        */
       public Builder setLockTime(int value) {
         
@@ -1623,6 +1659,7 @@ public final class Decred {
        * </pre>
        *
        * <code>uint32 lockTime = 5;</code>
+       * @return This builder for chaining.
        */
       public Builder clearLockTime() {
         
@@ -1638,7 +1675,9 @@ public final class Decred {
        * </pre>
        *
        * <code>uint32 expiry = 6;</code>
+       * @return The expiry.
        */
+      @java.lang.Override
       public int getExpiry() {
         return expiry_;
       }
@@ -1648,6 +1687,8 @@ public final class Decred {
        * </pre>
        *
        * <code>uint32 expiry = 6;</code>
+       * @param value The expiry to set.
+       * @return This builder for chaining.
        */
       public Builder setExpiry(int value) {
         
@@ -1661,6 +1702,7 @@ public final class Decred {
        * </pre>
        *
        * <code>uint32 expiry = 6;</code>
+       * @return This builder for chaining.
        */
       public Builder clearExpiry() {
         
@@ -1731,6 +1773,7 @@ public final class Decred {
      * </pre>
      *
      * <code>.TW.Bitcoin.Proto.OutPoint previousOutput = 1;</code>
+     * @return Whether the previousOutput field is set.
      */
     boolean hasPreviousOutput();
     /**
@@ -1739,6 +1782,7 @@ public final class Decred {
      * </pre>
      *
      * <code>.TW.Bitcoin.Proto.OutPoint previousOutput = 1;</code>
+     * @return The previousOutput.
      */
     wallet.core.jni.proto.Bitcoin.OutPoint getPreviousOutput();
     /**
@@ -1756,21 +1800,25 @@ public final class Decred {
      * </pre>
      *
      * <code>uint32 sequence = 2;</code>
+     * @return The sequence.
      */
     int getSequence();
 
     /**
      * <code>int64 valueIn = 3;</code>
+     * @return The valueIn.
      */
     long getValueIn();
 
     /**
      * <code>uint32 blockHeight = 4;</code>
+     * @return The blockHeight.
      */
     int getBlockHeight();
 
     /**
      * <code>uint32 blockIndex = 5;</code>
+     * @return The blockIndex.
      */
     int getBlockIndex();
 
@@ -1780,6 +1828,7 @@ public final class Decred {
      * </pre>
      *
      * <code>bytes script = 6;</code>
+     * @return The script.
      */
     com.google.protobuf.ByteString getScript();
   }
@@ -1790,7 +1839,7 @@ public final class Decred {
    *
    * Protobuf type {@code TW.Decred.Proto.TransactionInput}
    */
-  public  static final class TransactionInput extends
+  public static final class TransactionInput extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:TW.Decred.Proto.TransactionInput)
       TransactionInputOrBuilder {
@@ -1911,7 +1960,9 @@ public final class Decred {
      * </pre>
      *
      * <code>.TW.Bitcoin.Proto.OutPoint previousOutput = 1;</code>
+     * @return Whether the previousOutput field is set.
      */
+    @java.lang.Override
     public boolean hasPreviousOutput() {
       return previousOutput_ != null;
     }
@@ -1921,7 +1972,9 @@ public final class Decred {
      * </pre>
      *
      * <code>.TW.Bitcoin.Proto.OutPoint previousOutput = 1;</code>
+     * @return The previousOutput.
      */
+    @java.lang.Override
     public wallet.core.jni.proto.Bitcoin.OutPoint getPreviousOutput() {
       return previousOutput_ == null ? wallet.core.jni.proto.Bitcoin.OutPoint.getDefaultInstance() : previousOutput_;
     }
@@ -1932,6 +1985,7 @@ public final class Decred {
      *
      * <code>.TW.Bitcoin.Proto.OutPoint previousOutput = 1;</code>
      */
+    @java.lang.Override
     public wallet.core.jni.proto.Bitcoin.OutPointOrBuilder getPreviousOutputOrBuilder() {
       return getPreviousOutput();
     }
@@ -1944,7 +1998,9 @@ public final class Decred {
      * </pre>
      *
      * <code>uint32 sequence = 2;</code>
+     * @return The sequence.
      */
+    @java.lang.Override
     public int getSequence() {
       return sequence_;
     }
@@ -1953,7 +2009,9 @@ public final class Decred {
     private long valueIn_;
     /**
      * <code>int64 valueIn = 3;</code>
+     * @return The valueIn.
      */
+    @java.lang.Override
     public long getValueIn() {
       return valueIn_;
     }
@@ -1962,7 +2020,9 @@ public final class Decred {
     private int blockHeight_;
     /**
      * <code>uint32 blockHeight = 4;</code>
+     * @return The blockHeight.
      */
+    @java.lang.Override
     public int getBlockHeight() {
       return blockHeight_;
     }
@@ -1971,7 +2031,9 @@ public final class Decred {
     private int blockIndex_;
     /**
      * <code>uint32 blockIndex = 5;</code>
+     * @return The blockIndex.
      */
+    @java.lang.Override
     public int getBlockIndex() {
       return blockIndex_;
     }
@@ -1984,7 +2046,9 @@ public final class Decred {
      * </pre>
      *
      * <code>bytes script = 6;</code>
+     * @return The script.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString getScript() {
       return script_;
     }
@@ -2403,6 +2467,7 @@ public final class Decred {
        * </pre>
        *
        * <code>.TW.Bitcoin.Proto.OutPoint previousOutput = 1;</code>
+       * @return Whether the previousOutput field is set.
        */
       public boolean hasPreviousOutput() {
         return previousOutputBuilder_ != null || previousOutput_ != null;
@@ -2413,6 +2478,7 @@ public final class Decred {
        * </pre>
        *
        * <code>.TW.Bitcoin.Proto.OutPoint previousOutput = 1;</code>
+       * @return The previousOutput.
        */
       public wallet.core.jni.proto.Bitcoin.OutPoint getPreviousOutput() {
         if (previousOutputBuilder_ == null) {
@@ -2554,7 +2620,9 @@ public final class Decred {
        * </pre>
        *
        * <code>uint32 sequence = 2;</code>
+       * @return The sequence.
        */
+      @java.lang.Override
       public int getSequence() {
         return sequence_;
       }
@@ -2564,6 +2632,8 @@ public final class Decred {
        * </pre>
        *
        * <code>uint32 sequence = 2;</code>
+       * @param value The sequence to set.
+       * @return This builder for chaining.
        */
       public Builder setSequence(int value) {
         
@@ -2577,6 +2647,7 @@ public final class Decred {
        * </pre>
        *
        * <code>uint32 sequence = 2;</code>
+       * @return This builder for chaining.
        */
       public Builder clearSequence() {
         
@@ -2588,12 +2659,16 @@ public final class Decred {
       private long valueIn_ ;
       /**
        * <code>int64 valueIn = 3;</code>
+       * @return The valueIn.
        */
+      @java.lang.Override
       public long getValueIn() {
         return valueIn_;
       }
       /**
        * <code>int64 valueIn = 3;</code>
+       * @param value The valueIn to set.
+       * @return This builder for chaining.
        */
       public Builder setValueIn(long value) {
         
@@ -2603,6 +2678,7 @@ public final class Decred {
       }
       /**
        * <code>int64 valueIn = 3;</code>
+       * @return This builder for chaining.
        */
       public Builder clearValueIn() {
         
@@ -2614,12 +2690,16 @@ public final class Decred {
       private int blockHeight_ ;
       /**
        * <code>uint32 blockHeight = 4;</code>
+       * @return The blockHeight.
        */
+      @java.lang.Override
       public int getBlockHeight() {
         return blockHeight_;
       }
       /**
        * <code>uint32 blockHeight = 4;</code>
+       * @param value The blockHeight to set.
+       * @return This builder for chaining.
        */
       public Builder setBlockHeight(int value) {
         
@@ -2629,6 +2709,7 @@ public final class Decred {
       }
       /**
        * <code>uint32 blockHeight = 4;</code>
+       * @return This builder for chaining.
        */
       public Builder clearBlockHeight() {
         
@@ -2640,12 +2721,16 @@ public final class Decred {
       private int blockIndex_ ;
       /**
        * <code>uint32 blockIndex = 5;</code>
+       * @return The blockIndex.
        */
+      @java.lang.Override
       public int getBlockIndex() {
         return blockIndex_;
       }
       /**
        * <code>uint32 blockIndex = 5;</code>
+       * @param value The blockIndex to set.
+       * @return This builder for chaining.
        */
       public Builder setBlockIndex(int value) {
         
@@ -2655,6 +2740,7 @@ public final class Decred {
       }
       /**
        * <code>uint32 blockIndex = 5;</code>
+       * @return This builder for chaining.
        */
       public Builder clearBlockIndex() {
         
@@ -2670,7 +2756,9 @@ public final class Decred {
        * </pre>
        *
        * <code>bytes script = 6;</code>
+       * @return The script.
        */
+      @java.lang.Override
       public com.google.protobuf.ByteString getScript() {
         return script_;
       }
@@ -2680,6 +2768,8 @@ public final class Decred {
        * </pre>
        *
        * <code>bytes script = 6;</code>
+       * @param value The script to set.
+       * @return This builder for chaining.
        */
       public Builder setScript(com.google.protobuf.ByteString value) {
         if (value == null) {
@@ -2696,6 +2786,7 @@ public final class Decred {
        * </pre>
        *
        * <code>bytes script = 6;</code>
+       * @return This builder for chaining.
        */
       public Builder clearScript() {
         
@@ -2766,6 +2857,7 @@ public final class Decred {
      * </pre>
      *
      * <code>int64 value = 1;</code>
+     * @return The value.
      */
     long getValue();
 
@@ -2775,6 +2867,7 @@ public final class Decred {
      * </pre>
      *
      * <code>uint32 version = 2;</code>
+     * @return The version.
      */
     int getVersion();
 
@@ -2784,6 +2877,7 @@ public final class Decred {
      * </pre>
      *
      * <code>bytes script = 3;</code>
+     * @return The script.
      */
     com.google.protobuf.ByteString getScript();
   }
@@ -2794,7 +2888,7 @@ public final class Decred {
    *
    * Protobuf type {@code TW.Decred.Proto.TransactionOutput}
    */
-  public  static final class TransactionOutput extends
+  public static final class TransactionOutput extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:TW.Decred.Proto.TransactionOutput)
       TransactionOutputOrBuilder {
@@ -2892,7 +2986,9 @@ public final class Decred {
      * </pre>
      *
      * <code>int64 value = 1;</code>
+     * @return The value.
      */
+    @java.lang.Override
     public long getValue() {
       return value_;
     }
@@ -2905,7 +3001,9 @@ public final class Decred {
      * </pre>
      *
      * <code>uint32 version = 2;</code>
+     * @return The version.
      */
+    @java.lang.Override
     public int getVersion() {
       return version_;
     }
@@ -2918,7 +3016,9 @@ public final class Decred {
      * </pre>
      *
      * <code>bytes script = 3;</code>
+     * @return The script.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString getScript() {
       return script_;
     }
@@ -3271,7 +3371,9 @@ public final class Decred {
        * </pre>
        *
        * <code>int64 value = 1;</code>
+       * @return The value.
        */
+      @java.lang.Override
       public long getValue() {
         return value_;
       }
@@ -3281,6 +3383,8 @@ public final class Decred {
        * </pre>
        *
        * <code>int64 value = 1;</code>
+       * @param value The value to set.
+       * @return This builder for chaining.
        */
       public Builder setValue(long value) {
         
@@ -3294,6 +3398,7 @@ public final class Decred {
        * </pre>
        *
        * <code>int64 value = 1;</code>
+       * @return This builder for chaining.
        */
       public Builder clearValue() {
         
@@ -3309,7 +3414,9 @@ public final class Decred {
        * </pre>
        *
        * <code>uint32 version = 2;</code>
+       * @return The version.
        */
+      @java.lang.Override
       public int getVersion() {
         return version_;
       }
@@ -3319,6 +3426,8 @@ public final class Decred {
        * </pre>
        *
        * <code>uint32 version = 2;</code>
+       * @param value The version to set.
+       * @return This builder for chaining.
        */
       public Builder setVersion(int value) {
         
@@ -3332,6 +3441,7 @@ public final class Decred {
        * </pre>
        *
        * <code>uint32 version = 2;</code>
+       * @return This builder for chaining.
        */
       public Builder clearVersion() {
         
@@ -3347,7 +3457,9 @@ public final class Decred {
        * </pre>
        *
        * <code>bytes script = 3;</code>
+       * @return The script.
        */
+      @java.lang.Override
       public com.google.protobuf.ByteString getScript() {
         return script_;
       }
@@ -3357,6 +3469,8 @@ public final class Decred {
        * </pre>
        *
        * <code>bytes script = 3;</code>
+       * @param value The script to set.
+       * @return This builder for chaining.
        */
       public Builder setScript(com.google.protobuf.ByteString value) {
         if (value == null) {
@@ -3373,6 +3487,7 @@ public final class Decred {
        * </pre>
        *
        * <code>bytes script = 3;</code>
+       * @return This builder for chaining.
        */
       public Builder clearScript() {
         
@@ -3443,6 +3558,7 @@ public final class Decred {
      * </pre>
      *
      * <code>.TW.Decred.Proto.Transaction transaction = 1;</code>
+     * @return Whether the transaction field is set.
      */
     boolean hasTransaction();
     /**
@@ -3451,6 +3567,7 @@ public final class Decred {
      * </pre>
      *
      * <code>.TW.Decred.Proto.Transaction transaction = 1;</code>
+     * @return The transaction.
      */
     wallet.core.jni.proto.Decred.Transaction getTransaction();
     /**
@@ -3468,6 +3585,7 @@ public final class Decred {
      * </pre>
      *
      * <code>bytes encoded = 2;</code>
+     * @return The encoded.
      */
     com.google.protobuf.ByteString getEncoded();
 
@@ -3477,6 +3595,7 @@ public final class Decred {
      * </pre>
      *
      * <code>string transaction_id = 3;</code>
+     * @return The transactionId.
      */
     java.lang.String getTransactionId();
     /**
@@ -3485,27 +3604,29 @@ public final class Decred {
      * </pre>
      *
      * <code>string transaction_id = 3;</code>
+     * @return The bytes for transactionId.
      */
     com.google.protobuf.ByteString
         getTransactionIdBytes();
 
     /**
      * <pre>
-     * Optional error message
+     * Optional error
      * </pre>
      *
-     * <code>string error = 4;</code>
+     * <code>.TW.Common.Proto.SigningError error = 4;</code>
+     * @return The enum numeric value on the wire for error.
      */
-    java.lang.String getError();
+    int getErrorValue();
     /**
      * <pre>
-     * Optional error message
+     * Optional error
      * </pre>
      *
-     * <code>string error = 4;</code>
+     * <code>.TW.Common.Proto.SigningError error = 4;</code>
+     * @return The error.
      */
-    com.google.protobuf.ByteString
-        getErrorBytes();
+    wallet.core.jni.proto.Common.SigningError getError();
   }
   /**
    * <pre>
@@ -3514,7 +3635,7 @@ public final class Decred {
    *
    * Protobuf type {@code TW.Decred.Proto.SigningOutput}
    */
-  public  static final class SigningOutput extends
+  public static final class SigningOutput extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:TW.Decred.Proto.SigningOutput)
       SigningOutputOrBuilder {
@@ -3526,7 +3647,7 @@ public final class Decred {
     private SigningOutput() {
       encoded_ = com.google.protobuf.ByteString.EMPTY;
       transactionId_ = "";
-      error_ = "";
+      error_ = 0;
     }
 
     @java.lang.Override
@@ -3583,10 +3704,10 @@ public final class Decred {
               transactionId_ = s;
               break;
             }
-            case 34: {
-              java.lang.String s = input.readStringRequireUtf8();
+            case 32: {
+              int rawValue = input.readEnum();
 
-              error_ = s;
+              error_ = rawValue;
               break;
             }
             default: {
@@ -3629,7 +3750,9 @@ public final class Decred {
      * </pre>
      *
      * <code>.TW.Decred.Proto.Transaction transaction = 1;</code>
+     * @return Whether the transaction field is set.
      */
+    @java.lang.Override
     public boolean hasTransaction() {
       return transaction_ != null;
     }
@@ -3639,7 +3762,9 @@ public final class Decred {
      * </pre>
      *
      * <code>.TW.Decred.Proto.Transaction transaction = 1;</code>
+     * @return The transaction.
      */
+    @java.lang.Override
     public wallet.core.jni.proto.Decred.Transaction getTransaction() {
       return transaction_ == null ? wallet.core.jni.proto.Decred.Transaction.getDefaultInstance() : transaction_;
     }
@@ -3650,6 +3775,7 @@ public final class Decred {
      *
      * <code>.TW.Decred.Proto.Transaction transaction = 1;</code>
      */
+    @java.lang.Override
     public wallet.core.jni.proto.Decred.TransactionOrBuilder getTransactionOrBuilder() {
       return getTransaction();
     }
@@ -3662,7 +3788,9 @@ public final class Decred {
      * </pre>
      *
      * <code>bytes encoded = 2;</code>
+     * @return The encoded.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString getEncoded() {
       return encoded_;
     }
@@ -3675,7 +3803,9 @@ public final class Decred {
      * </pre>
      *
      * <code>string transaction_id = 3;</code>
+     * @return The transactionId.
      */
+    @java.lang.Override
     public java.lang.String getTransactionId() {
       java.lang.Object ref = transactionId_;
       if (ref instanceof java.lang.String) {
@@ -3694,7 +3824,9 @@ public final class Decred {
      * </pre>
      *
      * <code>string transaction_id = 3;</code>
+     * @return The bytes for transactionId.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString
         getTransactionIdBytes() {
       java.lang.Object ref = transactionId_;
@@ -3710,45 +3842,30 @@ public final class Decred {
     }
 
     public static final int ERROR_FIELD_NUMBER = 4;
-    private volatile java.lang.Object error_;
+    private int error_;
     /**
      * <pre>
-     * Optional error message
+     * Optional error
      * </pre>
      *
-     * <code>string error = 4;</code>
+     * <code>.TW.Common.Proto.SigningError error = 4;</code>
+     * @return The enum numeric value on the wire for error.
      */
-    public java.lang.String getError() {
-      java.lang.Object ref = error_;
-      if (ref instanceof java.lang.String) {
-        return (java.lang.String) ref;
-      } else {
-        com.google.protobuf.ByteString bs = 
-            (com.google.protobuf.ByteString) ref;
-        java.lang.String s = bs.toStringUtf8();
-        error_ = s;
-        return s;
-      }
+    @java.lang.Override public int getErrorValue() {
+      return error_;
     }
     /**
      * <pre>
-     * Optional error message
+     * Optional error
      * </pre>
      *
-     * <code>string error = 4;</code>
+     * <code>.TW.Common.Proto.SigningError error = 4;</code>
+     * @return The error.
      */
-    public com.google.protobuf.ByteString
-        getErrorBytes() {
-      java.lang.Object ref = error_;
-      if (ref instanceof java.lang.String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
-        error_ = b;
-        return b;
-      } else {
-        return (com.google.protobuf.ByteString) ref;
-      }
+    @java.lang.Override public wallet.core.jni.proto.Common.SigningError getError() {
+      @SuppressWarnings("deprecation")
+      wallet.core.jni.proto.Common.SigningError result = wallet.core.jni.proto.Common.SigningError.valueOf(error_);
+      return result == null ? wallet.core.jni.proto.Common.SigningError.UNRECOGNIZED : result;
     }
 
     private byte memoizedIsInitialized = -1;
@@ -3774,8 +3891,8 @@ public final class Decred {
       if (!getTransactionIdBytes().isEmpty()) {
         com.google.protobuf.GeneratedMessageV3.writeString(output, 3, transactionId_);
       }
-      if (!getErrorBytes().isEmpty()) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 4, error_);
+      if (error_ != wallet.core.jni.proto.Common.SigningError.OK.getNumber()) {
+        output.writeEnum(4, error_);
       }
       unknownFields.writeTo(output);
     }
@@ -3797,8 +3914,9 @@ public final class Decred {
       if (!getTransactionIdBytes().isEmpty()) {
         size += com.google.protobuf.GeneratedMessageV3.computeStringSize(3, transactionId_);
       }
-      if (!getErrorBytes().isEmpty()) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(4, error_);
+      if (error_ != wallet.core.jni.proto.Common.SigningError.OK.getNumber()) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeEnumSize(4, error_);
       }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
@@ -3824,8 +3942,7 @@ public final class Decred {
           .equals(other.getEncoded())) return false;
       if (!getTransactionId()
           .equals(other.getTransactionId())) return false;
-      if (!getError()
-          .equals(other.getError())) return false;
+      if (error_ != other.error_) return false;
       if (!unknownFields.equals(other.unknownFields)) return false;
       return true;
     }
@@ -3846,7 +3963,7 @@ public final class Decred {
       hash = (37 * hash) + TRANSACTION_ID_FIELD_NUMBER;
       hash = (53 * hash) + getTransactionId().hashCode();
       hash = (37 * hash) + ERROR_FIELD_NUMBER;
-      hash = (53 * hash) + getError().hashCode();
+      hash = (53 * hash) + error_;
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
       return hash;
@@ -3994,7 +4111,7 @@ public final class Decred {
 
         transactionId_ = "";
 
-        error_ = "";
+        error_ = 0;
 
         return this;
       }
@@ -4088,9 +4205,8 @@ public final class Decred {
           transactionId_ = other.transactionId_;
           onChanged();
         }
-        if (!other.getError().isEmpty()) {
-          error_ = other.error_;
-          onChanged();
+        if (other.error_ != 0) {
+          setErrorValue(other.getErrorValue());
         }
         this.mergeUnknownFields(other.unknownFields);
         onChanged();
@@ -4130,6 +4246,7 @@ public final class Decred {
        * </pre>
        *
        * <code>.TW.Decred.Proto.Transaction transaction = 1;</code>
+       * @return Whether the transaction field is set.
        */
       public boolean hasTransaction() {
         return transactionBuilder_ != null || transaction_ != null;
@@ -4140,6 +4257,7 @@ public final class Decred {
        * </pre>
        *
        * <code>.TW.Decred.Proto.Transaction transaction = 1;</code>
+       * @return The transaction.
        */
       public wallet.core.jni.proto.Decred.Transaction getTransaction() {
         if (transactionBuilder_ == null) {
@@ -4281,7 +4399,9 @@ public final class Decred {
        * </pre>
        *
        * <code>bytes encoded = 2;</code>
+       * @return The encoded.
        */
+      @java.lang.Override
       public com.google.protobuf.ByteString getEncoded() {
         return encoded_;
       }
@@ -4291,6 +4411,8 @@ public final class Decred {
        * </pre>
        *
        * <code>bytes encoded = 2;</code>
+       * @param value The encoded to set.
+       * @return This builder for chaining.
        */
       public Builder setEncoded(com.google.protobuf.ByteString value) {
         if (value == null) {
@@ -4307,6 +4429,7 @@ public final class Decred {
        * </pre>
        *
        * <code>bytes encoded = 2;</code>
+       * @return This builder for chaining.
        */
       public Builder clearEncoded() {
         
@@ -4322,6 +4445,7 @@ public final class Decred {
        * </pre>
        *
        * <code>string transaction_id = 3;</code>
+       * @return The transactionId.
        */
       public java.lang.String getTransactionId() {
         java.lang.Object ref = transactionId_;
@@ -4341,6 +4465,7 @@ public final class Decred {
        * </pre>
        *
        * <code>string transaction_id = 3;</code>
+       * @return The bytes for transactionId.
        */
       public com.google.protobuf.ByteString
           getTransactionIdBytes() {
@@ -4361,6 +4486,8 @@ public final class Decred {
        * </pre>
        *
        * <code>string transaction_id = 3;</code>
+       * @param value The transactionId to set.
+       * @return This builder for chaining.
        */
       public Builder setTransactionId(
           java.lang.String value) {
@@ -4378,6 +4505,7 @@ public final class Decred {
        * </pre>
        *
        * <code>string transaction_id = 3;</code>
+       * @return This builder for chaining.
        */
       public Builder clearTransactionId() {
         
@@ -4391,6 +4519,8 @@ public final class Decred {
        * </pre>
        *
        * <code>string transaction_id = 3;</code>
+       * @param value The bytes for transactionId to set.
+       * @return This builder for chaining.
        */
       public Builder setTransactionIdBytes(
           com.google.protobuf.ByteString value) {
@@ -4404,91 +4534,76 @@ public final class Decred {
         return this;
       }
 
-      private java.lang.Object error_ = "";
+      private int error_ = 0;
       /**
        * <pre>
-       * Optional error message
+       * Optional error
        * </pre>
        *
-       * <code>string error = 4;</code>
+       * <code>.TW.Common.Proto.SigningError error = 4;</code>
+       * @return The enum numeric value on the wire for error.
        */
-      public java.lang.String getError() {
-        java.lang.Object ref = error_;
-        if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          error_ = s;
-          return s;
-        } else {
-          return (java.lang.String) ref;
-        }
+      @java.lang.Override public int getErrorValue() {
+        return error_;
       }
       /**
        * <pre>
-       * Optional error message
+       * Optional error
        * </pre>
        *
-       * <code>string error = 4;</code>
+       * <code>.TW.Common.Proto.SigningError error = 4;</code>
+       * @param value The enum numeric value on the wire for error to set.
+       * @return This builder for chaining.
        */
-      public com.google.protobuf.ByteString
-          getErrorBytes() {
-        java.lang.Object ref = error_;
-        if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
-              com.google.protobuf.ByteString.copyFromUtf8(
-                  (java.lang.String) ref);
-          error_ = b;
-          return b;
-        } else {
-          return (com.google.protobuf.ByteString) ref;
-        }
-      }
-      /**
-       * <pre>
-       * Optional error message
-       * </pre>
-       *
-       * <code>string error = 4;</code>
-       */
-      public Builder setError(
-          java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  
+      public Builder setErrorValue(int value) {
+        
         error_ = value;
         onChanged();
         return this;
       }
       /**
        * <pre>
-       * Optional error message
+       * Optional error
        * </pre>
        *
-       * <code>string error = 4;</code>
+       * <code>.TW.Common.Proto.SigningError error = 4;</code>
+       * @return The error.
+       */
+      @java.lang.Override
+      public wallet.core.jni.proto.Common.SigningError getError() {
+        @SuppressWarnings("deprecation")
+        wallet.core.jni.proto.Common.SigningError result = wallet.core.jni.proto.Common.SigningError.valueOf(error_);
+        return result == null ? wallet.core.jni.proto.Common.SigningError.UNRECOGNIZED : result;
+      }
+      /**
+       * <pre>
+       * Optional error
+       * </pre>
+       *
+       * <code>.TW.Common.Proto.SigningError error = 4;</code>
+       * @param value The error to set.
+       * @return This builder for chaining.
+       */
+      public Builder setError(wallet.core.jni.proto.Common.SigningError value) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        
+        error_ = value.getNumber();
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * Optional error
+       * </pre>
+       *
+       * <code>.TW.Common.Proto.SigningError error = 4;</code>
+       * @return This builder for chaining.
        */
       public Builder clearError() {
         
-        error_ = getDefaultInstance().getError();
-        onChanged();
-        return this;
-      }
-      /**
-       * <pre>
-       * Optional error message
-       * </pre>
-       *
-       * <code>string error = 4;</code>
-       */
-      public Builder setErrorBytes(
-          com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  checkByteStringIsUtf8(value);
-        
-        error_ = value;
+        error_ = 0;
         onChanged();
         return this;
       }
@@ -4575,26 +4690,28 @@ public final class Decred {
   static {
     java.lang.String[] descriptorData = {
       "\n\014Decred.proto\022\017TW.Decred.Proto\032\rBitcoin" +
-      ".proto\"\277\001\n\013Transaction\022\025\n\rserializeType\030" +
-      "\001 \001(\r\022\017\n\007version\030\002 \001(\r\0221\n\006inputs\030\003 \003(\0132!" +
-      ".TW.Decred.Proto.TransactionInput\0223\n\007out" +
-      "puts\030\004 \003(\0132\".TW.Decred.Proto.Transaction" +
-      "Output\022\020\n\010lockTime\030\005 \001(\r\022\016\n\006expiry\030\006 \001(\r" +
-      "\"\242\001\n\020TransactionInput\0222\n\016previousOutput\030" +
-      "\001 \001(\0132\032.TW.Bitcoin.Proto.OutPoint\022\020\n\010seq" +
-      "uence\030\002 \001(\r\022\017\n\007valueIn\030\003 \001(\003\022\023\n\013blockHei" +
-      "ght\030\004 \001(\r\022\022\n\nblockIndex\030\005 \001(\r\022\016\n\006script\030" +
-      "\006 \001(\014\"C\n\021TransactionOutput\022\r\n\005value\030\001 \001(" +
-      "\003\022\017\n\007version\030\002 \001(\r\022\016\n\006script\030\003 \001(\014\"z\n\rSi" +
-      "gningOutput\0221\n\013transaction\030\001 \001(\0132\034.TW.De" +
-      "cred.Proto.Transaction\022\017\n\007encoded\030\002 \001(\014\022" +
-      "\026\n\016transaction_id\030\003 \001(\t\022\r\n\005error\030\004 \001(\tB\027" +
-      "\n\025wallet.core.jni.protob\006proto3"
+      ".proto\032\014Common.proto\"\277\001\n\013Transaction\022\025\n\r" +
+      "serializeType\030\001 \001(\r\022\017\n\007version\030\002 \001(\r\0221\n\006" +
+      "inputs\030\003 \003(\0132!.TW.Decred.Proto.Transacti" +
+      "onInput\0223\n\007outputs\030\004 \003(\0132\".TW.Decred.Pro" +
+      "to.TransactionOutput\022\020\n\010lockTime\030\005 \001(\r\022\016" +
+      "\n\006expiry\030\006 \001(\r\"\242\001\n\020TransactionInput\0222\n\016p" +
+      "reviousOutput\030\001 \001(\0132\032.TW.Bitcoin.Proto.O" +
+      "utPoint\022\020\n\010sequence\030\002 \001(\r\022\017\n\007valueIn\030\003 \001" +
+      "(\003\022\023\n\013blockHeight\030\004 \001(\r\022\022\n\nblockIndex\030\005 " +
+      "\001(\r\022\016\n\006script\030\006 \001(\014\"C\n\021TransactionOutput" +
+      "\022\r\n\005value\030\001 \001(\003\022\017\n\007version\030\002 \001(\r\022\016\n\006scri" +
+      "pt\030\003 \001(\014\"\231\001\n\rSigningOutput\0221\n\013transactio" +
+      "n\030\001 \001(\0132\034.TW.Decred.Proto.Transaction\022\017\n" +
+      "\007encoded\030\002 \001(\014\022\026\n\016transaction_id\030\003 \001(\t\022," +
+      "\n\005error\030\004 \001(\0162\035.TW.Common.Proto.SigningE" +
+      "rrorB\027\n\025wallet.core.jni.protob\006proto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
         new com.google.protobuf.Descriptors.FileDescriptor[] {
           wallet.core.jni.proto.Bitcoin.getDescriptor(),
+          wallet.core.jni.proto.Common.getDescriptor(),
         });
     internal_static_TW_Decred_Proto_Transaction_descriptor =
       getDescriptor().getMessageTypes().get(0);
@@ -4621,6 +4738,7 @@ public final class Decred {
         internal_static_TW_Decred_Proto_SigningOutput_descriptor,
         new java.lang.String[] { "Transaction", "Encoded", "TransactionId", "Error", });
     wallet.core.jni.proto.Bitcoin.getDescriptor();
+    wallet.core.jni.proto.Common.getDescriptor();
   }
 
   // @@protoc_insertion_point(outer_class_scope)

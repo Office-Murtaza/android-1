@@ -24,6 +24,7 @@ public final class Aeternity {
      * </pre>
      *
      * <code>string from_address = 1;</code>
+     * @return The fromAddress.
      */
     java.lang.String getFromAddress();
     /**
@@ -32,6 +33,7 @@ public final class Aeternity {
      * </pre>
      *
      * <code>string from_address = 1;</code>
+     * @return The bytes for fromAddress.
      */
     com.google.protobuf.ByteString
         getFromAddressBytes();
@@ -42,6 +44,7 @@ public final class Aeternity {
      * </pre>
      *
      * <code>string to_address = 2;</code>
+     * @return The toAddress.
      */
     java.lang.String getToAddress();
     /**
@@ -50,17 +53,20 @@ public final class Aeternity {
      * </pre>
      *
      * <code>string to_address = 2;</code>
+     * @return The bytes for toAddress.
      */
     com.google.protobuf.ByteString
         getToAddressBytes();
 
     /**
      * <code>bytes amount = 3;</code>
+     * @return The amount.
      */
     com.google.protobuf.ByteString getAmount();
 
     /**
      * <code>bytes fee = 4;</code>
+     * @return The fee.
      */
     com.google.protobuf.ByteString getFee();
 
@@ -70,6 +76,7 @@ public final class Aeternity {
      * </pre>
      *
      * <code>string payload = 5;</code>
+     * @return The payload.
      */
     java.lang.String getPayload();
     /**
@@ -78,6 +85,7 @@ public final class Aeternity {
      * </pre>
      *
      * <code>string payload = 5;</code>
+     * @return The bytes for payload.
      */
     com.google.protobuf.ByteString
         getPayloadBytes();
@@ -88,16 +96,19 @@ public final class Aeternity {
      * </pre>
      *
      * <code>uint64 ttl = 6;</code>
+     * @return The ttl.
      */
     long getTtl();
 
     /**
      * <code>uint64 nonce = 7;</code>
+     * @return The nonce.
      */
     long getNonce();
 
     /**
      * <code>bytes private_key = 8;</code>
+     * @return The privateKey.
      */
     com.google.protobuf.ByteString getPrivateKey();
   }
@@ -108,7 +119,7 @@ public final class Aeternity {
    *
    * Protobuf type {@code TW.Aeternity.Proto.SigningInput}
    */
-  public  static final class SigningInput extends
+  public static final class SigningInput extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:TW.Aeternity.Proto.SigningInput)
       SigningInputOrBuilder {
@@ -239,7 +250,9 @@ public final class Aeternity {
      * </pre>
      *
      * <code>string from_address = 1;</code>
+     * @return The fromAddress.
      */
+    @java.lang.Override
     public java.lang.String getFromAddress() {
       java.lang.Object ref = fromAddress_;
       if (ref instanceof java.lang.String) {
@@ -258,7 +271,9 @@ public final class Aeternity {
      * </pre>
      *
      * <code>string from_address = 1;</code>
+     * @return The bytes for fromAddress.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString
         getFromAddressBytes() {
       java.lang.Object ref = fromAddress_;
@@ -281,7 +296,9 @@ public final class Aeternity {
      * </pre>
      *
      * <code>string to_address = 2;</code>
+     * @return The toAddress.
      */
+    @java.lang.Override
     public java.lang.String getToAddress() {
       java.lang.Object ref = toAddress_;
       if (ref instanceof java.lang.String) {
@@ -300,7 +317,9 @@ public final class Aeternity {
      * </pre>
      *
      * <code>string to_address = 2;</code>
+     * @return The bytes for toAddress.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString
         getToAddressBytes() {
       java.lang.Object ref = toAddress_;
@@ -319,7 +338,9 @@ public final class Aeternity {
     private com.google.protobuf.ByteString amount_;
     /**
      * <code>bytes amount = 3;</code>
+     * @return The amount.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString getAmount() {
       return amount_;
     }
@@ -328,7 +349,9 @@ public final class Aeternity {
     private com.google.protobuf.ByteString fee_;
     /**
      * <code>bytes fee = 4;</code>
+     * @return The fee.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString getFee() {
       return fee_;
     }
@@ -341,7 +364,9 @@ public final class Aeternity {
      * </pre>
      *
      * <code>string payload = 5;</code>
+     * @return The payload.
      */
+    @java.lang.Override
     public java.lang.String getPayload() {
       java.lang.Object ref = payload_;
       if (ref instanceof java.lang.String) {
@@ -360,7 +385,9 @@ public final class Aeternity {
      * </pre>
      *
      * <code>string payload = 5;</code>
+     * @return The bytes for payload.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString
         getPayloadBytes() {
       java.lang.Object ref = payload_;
@@ -383,7 +410,9 @@ public final class Aeternity {
      * </pre>
      *
      * <code>uint64 ttl = 6;</code>
+     * @return The ttl.
      */
+    @java.lang.Override
     public long getTtl() {
       return ttl_;
     }
@@ -392,7 +421,9 @@ public final class Aeternity {
     private long nonce_;
     /**
      * <code>uint64 nonce = 7;</code>
+     * @return The nonce.
      */
+    @java.lang.Override
     public long getNonce() {
       return nonce_;
     }
@@ -401,7 +432,9 @@ public final class Aeternity {
     private com.google.protobuf.ByteString privateKey_;
     /**
      * <code>bytes private_key = 8;</code>
+     * @return The privateKey.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString getPrivateKey() {
       return privateKey_;
     }
@@ -840,6 +873,7 @@ public final class Aeternity {
        * </pre>
        *
        * <code>string from_address = 1;</code>
+       * @return The fromAddress.
        */
       public java.lang.String getFromAddress() {
         java.lang.Object ref = fromAddress_;
@@ -859,6 +893,7 @@ public final class Aeternity {
        * </pre>
        *
        * <code>string from_address = 1;</code>
+       * @return The bytes for fromAddress.
        */
       public com.google.protobuf.ByteString
           getFromAddressBytes() {
@@ -879,6 +914,8 @@ public final class Aeternity {
        * </pre>
        *
        * <code>string from_address = 1;</code>
+       * @param value The fromAddress to set.
+       * @return This builder for chaining.
        */
       public Builder setFromAddress(
           java.lang.String value) {
@@ -896,6 +933,7 @@ public final class Aeternity {
        * </pre>
        *
        * <code>string from_address = 1;</code>
+       * @return This builder for chaining.
        */
       public Builder clearFromAddress() {
         
@@ -909,6 +947,8 @@ public final class Aeternity {
        * </pre>
        *
        * <code>string from_address = 1;</code>
+       * @param value The bytes for fromAddress to set.
+       * @return This builder for chaining.
        */
       public Builder setFromAddressBytes(
           com.google.protobuf.ByteString value) {
@@ -929,6 +969,7 @@ public final class Aeternity {
        * </pre>
        *
        * <code>string to_address = 2;</code>
+       * @return The toAddress.
        */
       public java.lang.String getToAddress() {
         java.lang.Object ref = toAddress_;
@@ -948,6 +989,7 @@ public final class Aeternity {
        * </pre>
        *
        * <code>string to_address = 2;</code>
+       * @return The bytes for toAddress.
        */
       public com.google.protobuf.ByteString
           getToAddressBytes() {
@@ -968,6 +1010,8 @@ public final class Aeternity {
        * </pre>
        *
        * <code>string to_address = 2;</code>
+       * @param value The toAddress to set.
+       * @return This builder for chaining.
        */
       public Builder setToAddress(
           java.lang.String value) {
@@ -985,6 +1029,7 @@ public final class Aeternity {
        * </pre>
        *
        * <code>string to_address = 2;</code>
+       * @return This builder for chaining.
        */
       public Builder clearToAddress() {
         
@@ -998,6 +1043,8 @@ public final class Aeternity {
        * </pre>
        *
        * <code>string to_address = 2;</code>
+       * @param value The bytes for toAddress to set.
+       * @return This builder for chaining.
        */
       public Builder setToAddressBytes(
           com.google.protobuf.ByteString value) {
@@ -1014,12 +1061,16 @@ public final class Aeternity {
       private com.google.protobuf.ByteString amount_ = com.google.protobuf.ByteString.EMPTY;
       /**
        * <code>bytes amount = 3;</code>
+       * @return The amount.
        */
+      @java.lang.Override
       public com.google.protobuf.ByteString getAmount() {
         return amount_;
       }
       /**
        * <code>bytes amount = 3;</code>
+       * @param value The amount to set.
+       * @return This builder for chaining.
        */
       public Builder setAmount(com.google.protobuf.ByteString value) {
         if (value == null) {
@@ -1032,6 +1083,7 @@ public final class Aeternity {
       }
       /**
        * <code>bytes amount = 3;</code>
+       * @return This builder for chaining.
        */
       public Builder clearAmount() {
         
@@ -1043,12 +1095,16 @@ public final class Aeternity {
       private com.google.protobuf.ByteString fee_ = com.google.protobuf.ByteString.EMPTY;
       /**
        * <code>bytes fee = 4;</code>
+       * @return The fee.
        */
+      @java.lang.Override
       public com.google.protobuf.ByteString getFee() {
         return fee_;
       }
       /**
        * <code>bytes fee = 4;</code>
+       * @param value The fee to set.
+       * @return This builder for chaining.
        */
       public Builder setFee(com.google.protobuf.ByteString value) {
         if (value == null) {
@@ -1061,6 +1117,7 @@ public final class Aeternity {
       }
       /**
        * <code>bytes fee = 4;</code>
+       * @return This builder for chaining.
        */
       public Builder clearFee() {
         
@@ -1076,6 +1133,7 @@ public final class Aeternity {
        * </pre>
        *
        * <code>string payload = 5;</code>
+       * @return The payload.
        */
       public java.lang.String getPayload() {
         java.lang.Object ref = payload_;
@@ -1095,6 +1153,7 @@ public final class Aeternity {
        * </pre>
        *
        * <code>string payload = 5;</code>
+       * @return The bytes for payload.
        */
       public com.google.protobuf.ByteString
           getPayloadBytes() {
@@ -1115,6 +1174,8 @@ public final class Aeternity {
        * </pre>
        *
        * <code>string payload = 5;</code>
+       * @param value The payload to set.
+       * @return This builder for chaining.
        */
       public Builder setPayload(
           java.lang.String value) {
@@ -1132,6 +1193,7 @@ public final class Aeternity {
        * </pre>
        *
        * <code>string payload = 5;</code>
+       * @return This builder for chaining.
        */
       public Builder clearPayload() {
         
@@ -1145,6 +1207,8 @@ public final class Aeternity {
        * </pre>
        *
        * <code>string payload = 5;</code>
+       * @param value The bytes for payload to set.
+       * @return This builder for chaining.
        */
       public Builder setPayloadBytes(
           com.google.protobuf.ByteString value) {
@@ -1165,7 +1229,9 @@ public final class Aeternity {
        * </pre>
        *
        * <code>uint64 ttl = 6;</code>
+       * @return The ttl.
        */
+      @java.lang.Override
       public long getTtl() {
         return ttl_;
       }
@@ -1175,6 +1241,8 @@ public final class Aeternity {
        * </pre>
        *
        * <code>uint64 ttl = 6;</code>
+       * @param value The ttl to set.
+       * @return This builder for chaining.
        */
       public Builder setTtl(long value) {
         
@@ -1188,6 +1256,7 @@ public final class Aeternity {
        * </pre>
        *
        * <code>uint64 ttl = 6;</code>
+       * @return This builder for chaining.
        */
       public Builder clearTtl() {
         
@@ -1199,12 +1268,16 @@ public final class Aeternity {
       private long nonce_ ;
       /**
        * <code>uint64 nonce = 7;</code>
+       * @return The nonce.
        */
+      @java.lang.Override
       public long getNonce() {
         return nonce_;
       }
       /**
        * <code>uint64 nonce = 7;</code>
+       * @param value The nonce to set.
+       * @return This builder for chaining.
        */
       public Builder setNonce(long value) {
         
@@ -1214,6 +1287,7 @@ public final class Aeternity {
       }
       /**
        * <code>uint64 nonce = 7;</code>
+       * @return This builder for chaining.
        */
       public Builder clearNonce() {
         
@@ -1225,12 +1299,16 @@ public final class Aeternity {
       private com.google.protobuf.ByteString privateKey_ = com.google.protobuf.ByteString.EMPTY;
       /**
        * <code>bytes private_key = 8;</code>
+       * @return The privateKey.
        */
+      @java.lang.Override
       public com.google.protobuf.ByteString getPrivateKey() {
         return privateKey_;
       }
       /**
        * <code>bytes private_key = 8;</code>
+       * @param value The privateKey to set.
+       * @return This builder for chaining.
        */
       public Builder setPrivateKey(com.google.protobuf.ByteString value) {
         if (value == null) {
@@ -1243,6 +1321,7 @@ public final class Aeternity {
       }
       /**
        * <code>bytes private_key = 8;</code>
+       * @return This builder for chaining.
        */
       public Builder clearPrivateKey() {
         
@@ -1313,6 +1392,7 @@ public final class Aeternity {
      * </pre>
      *
      * <code>string encoded = 1;</code>
+     * @return The encoded.
      */
     java.lang.String getEncoded();
     /**
@@ -1321,6 +1401,7 @@ public final class Aeternity {
      * </pre>
      *
      * <code>string encoded = 1;</code>
+     * @return The bytes for encoded.
      */
     com.google.protobuf.ByteString
         getEncodedBytes();
@@ -1331,6 +1412,7 @@ public final class Aeternity {
      * </pre>
      *
      * <code>string signature = 2;</code>
+     * @return The signature.
      */
     java.lang.String getSignature();
     /**
@@ -1339,6 +1421,7 @@ public final class Aeternity {
      * </pre>
      *
      * <code>string signature = 2;</code>
+     * @return The bytes for signature.
      */
     com.google.protobuf.ByteString
         getSignatureBytes();
@@ -1350,7 +1433,7 @@ public final class Aeternity {
    *
    * Protobuf type {@code TW.Aeternity.Proto.SigningOutput}
    */
-  public  static final class SigningOutput extends
+  public static final class SigningOutput extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:TW.Aeternity.Proto.SigningOutput)
       SigningOutputOrBuilder {
@@ -1446,7 +1529,9 @@ public final class Aeternity {
      * </pre>
      *
      * <code>string encoded = 1;</code>
+     * @return The encoded.
      */
+    @java.lang.Override
     public java.lang.String getEncoded() {
       java.lang.Object ref = encoded_;
       if (ref instanceof java.lang.String) {
@@ -1465,7 +1550,9 @@ public final class Aeternity {
      * </pre>
      *
      * <code>string encoded = 1;</code>
+     * @return The bytes for encoded.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString
         getEncodedBytes() {
       java.lang.Object ref = encoded_;
@@ -1488,7 +1575,9 @@ public final class Aeternity {
      * </pre>
      *
      * <code>string signature = 2;</code>
+     * @return The signature.
      */
+    @java.lang.Override
     public java.lang.String getSignature() {
       java.lang.Object ref = signature_;
       if (ref instanceof java.lang.String) {
@@ -1507,7 +1596,9 @@ public final class Aeternity {
      * </pre>
      *
      * <code>string signature = 2;</code>
+     * @return The bytes for signature.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString
         getSignatureBytes() {
       java.lang.Object ref = signature_;
@@ -1852,6 +1943,7 @@ public final class Aeternity {
        * </pre>
        *
        * <code>string encoded = 1;</code>
+       * @return The encoded.
        */
       public java.lang.String getEncoded() {
         java.lang.Object ref = encoded_;
@@ -1871,6 +1963,7 @@ public final class Aeternity {
        * </pre>
        *
        * <code>string encoded = 1;</code>
+       * @return The bytes for encoded.
        */
       public com.google.protobuf.ByteString
           getEncodedBytes() {
@@ -1891,6 +1984,8 @@ public final class Aeternity {
        * </pre>
        *
        * <code>string encoded = 1;</code>
+       * @param value The encoded to set.
+       * @return This builder for chaining.
        */
       public Builder setEncoded(
           java.lang.String value) {
@@ -1908,6 +2003,7 @@ public final class Aeternity {
        * </pre>
        *
        * <code>string encoded = 1;</code>
+       * @return This builder for chaining.
        */
       public Builder clearEncoded() {
         
@@ -1921,6 +2017,8 @@ public final class Aeternity {
        * </pre>
        *
        * <code>string encoded = 1;</code>
+       * @param value The bytes for encoded to set.
+       * @return This builder for chaining.
        */
       public Builder setEncodedBytes(
           com.google.protobuf.ByteString value) {
@@ -1941,6 +2039,7 @@ public final class Aeternity {
        * </pre>
        *
        * <code>string signature = 2;</code>
+       * @return The signature.
        */
       public java.lang.String getSignature() {
         java.lang.Object ref = signature_;
@@ -1960,6 +2059,7 @@ public final class Aeternity {
        * </pre>
        *
        * <code>string signature = 2;</code>
+       * @return The bytes for signature.
        */
       public com.google.protobuf.ByteString
           getSignatureBytes() {
@@ -1980,6 +2080,8 @@ public final class Aeternity {
        * </pre>
        *
        * <code>string signature = 2;</code>
+       * @param value The signature to set.
+       * @return This builder for chaining.
        */
       public Builder setSignature(
           java.lang.String value) {
@@ -1997,6 +2099,7 @@ public final class Aeternity {
        * </pre>
        *
        * <code>string signature = 2;</code>
+       * @return This builder for chaining.
        */
       public Builder clearSignature() {
         
@@ -2010,6 +2113,8 @@ public final class Aeternity {
        * </pre>
        *
        * <code>string signature = 2;</code>
+       * @param value The bytes for signature to set.
+       * @return This builder for chaining.
        */
       public Builder setSignatureBytes(
           com.google.protobuf.ByteString value) {

@@ -3,7 +3,6 @@ package com.belco.server.service;
 import com.belco.server.dto.AuthenticationDTO;
 import com.belco.server.dto.LocationDTO;
 import com.belco.server.dto.VerificationDTO;
-import com.belco.server.dto.VerificationDetailsDTO;
 import com.belco.server.entity.*;
 import com.belco.server.model.Response;
 import com.belco.server.model.VerificationStatus;
@@ -251,23 +250,22 @@ public class UserService implements UserDetailsService {
         return savedIdentity;
     }
 
-    public VerificationDetailsDTO getVerificationDetails(Long userId) {
-        VerificationDetailsDTO dto = new VerificationDetailsDTO();
+    public VerificationDTO getVerificationDetails(Long userId) {
+        VerificationDTO dto = new VerificationDTO();
         dto.setStatus(VerificationStatus.NOT_VERIFIED);
 
         User user = userRep.getOne(userId);
         VerificationReview review = verificationReviewRep.findFirstByIdentityOrderByIdDesc(user.getIdentity());
 
         if (review != null) {
-            dto.setStatus(VerificationStatus.valueOf(review.getStatus()));
-            dto.setMessage(review.getMessage());
+            dto = review.toDTO();
         }
 
         if (dto.getStatus() == VerificationStatus.NOT_VERIFIED) {
             dto.setMessage("To increase your limits to <b>$3000</b> per transaction and <b>$10000</b> per day, please verify your account");
         } else if (dto.getStatus() == VerificationStatus.VERIFIED) {
             dto.setMessage("To increase your limits to <b>$10000</b> per transaction and <b>$20000</b> per day, please VIP verify your account");
-        } else if(dto.getStatus() == VerificationStatus.VERIFICATION_PENDING || dto.getStatus() == VerificationStatus.VIP_VERIFICATION_PENDING) {
+        } else if (dto.getStatus() == VerificationStatus.VERIFICATION_PENDING || dto.getStatus() == VerificationStatus.VIP_VERIFICATION_PENDING) {
             dto.setMessage("Currently, we are verifying your information. We will notify you when we're done");
         }
 
@@ -283,8 +281,8 @@ public class UserService implements UserDetailsService {
             User user = userRep.getOne(userId);
             VerificationReview verificationReview = new VerificationReview();
 
-            if (dto.getVerificationTier() == VerificationTier.VERIFICATION) {
-                verificationReview.setTier(dto.getVerificationTier().getValue());
+            if (dto.getTier() == VerificationTier.VERIFICATION) {
+                verificationReview.setTier(dto.getTier().getValue());
                 verificationReview.setIdentity(user.getIdentity());
                 verificationReview.setStatus(VerificationStatus.VERIFICATION_PENDING.getValue());
                 verificationReview.setAddress(dto.getAddress());
@@ -294,15 +292,15 @@ public class UserService implements UserDetailsService {
                 verificationReview.setZipCode(dto.getZipCode());
                 verificationReview.setFirstName(dto.getFirstName());
                 verificationReview.setLastName(dto.getLastName());
-                verificationReview.setIdCardNumber(dto.getIdNumber());
-                verificationReview.setIdCardNumberFilename(dto.getFile());
+                verificationReview.setIdCardNumber(dto.getIdCardNumber());
+                verificationReview.setIdCardNumberFilename(dto.getIdCardNumberFilename());
                 verificationReview.setIdCardNumberMimetype(MIME_TYPE);
-            } else if (dto.getVerificationTier() == VerificationTier.VIP_VERIFICATION) {
-                verificationReview.setTier(dto.getVerificationTier().getValue());
+            } else if (dto.getTier() == VerificationTier.VIP_VERIFICATION) {
+                verificationReview.setTier(dto.getTier().getValue());
                 verificationReview.setIdentity(user.getIdentity());
                 verificationReview.setStatus(VerificationStatus.VIP_VERIFICATION_PENDING.getValue());
                 verificationReview.setSsn(dto.getSsn());
-                verificationReview.setSsnFilename(dto.getFile());
+                verificationReview.setSsnFilename(dto.getSsnFilename());
                 verificationReview.setSsnMimetype(MIME_TYPE);
             }
 
@@ -310,9 +308,10 @@ public class UserService implements UserDetailsService {
             user.setStatus(verificationReview.getStatus());
             save(user);
 
-            //TODO remove
-            dto.setId(verificationReview.getId());
-            updateVerification(user.getId(), dto);
+            if (dto.isAutoConfirm()) {
+                dto.setId(verificationReview.getId());
+                updateVerification(user.getId(), dto);
+            }
 
             return Response.ok(verificationReview != null);
         } catch (Exception e) {
@@ -329,7 +328,7 @@ public class UserService implements UserDetailsService {
             verificationReview.setStatus(dto.getStatus().getValue());
             verificationReview.setMessage(dto.getMessage());
             verificationReviewRep.save(verificationReview);
-        } else if (verificationReview.getVerificationTier() == VerificationTier.VERIFICATION) {
+        } else if (verificationReview.getTier() == VerificationTier.VERIFICATION.getValue()) {
             IdentityPiece idScan = identityPieceRep.findFirstByIdentityAndPieceTypeOrderByIdDesc(verificationReview.getIdentity(), IdentityPiece.TYPE_ID_SCAN);
 
             if (idScan != null) {
@@ -404,7 +403,7 @@ public class UserService implements UserDetailsService {
             addTransactionLimit(verificationReview, VERIFIED_TX_LIMIT);
             verificationReview.setStatus(VerificationStatus.VERIFIED.getValue());
             verificationReviewRep.save(verificationReview);
-        } else if (verificationReview.getVerificationTier() == VerificationTier.VIP_VERIFICATION) {
+        } else if (verificationReview.getTier() == VerificationTier.VIP_VERIFICATION.getValue()) {
             IdentityPiece selfie = identityPieceRep.findFirstByIdentityAndPieceTypeOrderByIdDesc(verificationReview.getIdentity(), IdentityPiece.TYPE_SELFIE);
 
             if (selfie != null) {

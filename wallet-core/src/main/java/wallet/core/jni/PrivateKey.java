@@ -35,6 +35,7 @@ public class PrivateKey {
     public native PublicKey getPublicKeyEd25519Blake2b();
     public native PublicKey getPublicKeyEd25519Extended();
     public native PublicKey getPublicKeyCurve25519();
+    public native byte[] getSharedKey(PublicKey publicKey, Curve curve);
     public native byte[] sign(byte[] digest, Curve curve);
     public native byte[] signAsDER(byte[] digest, Curve curve);
     public native byte[] signSchnorr(byte[] message, Curve curve);

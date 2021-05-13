@@ -24,6 +24,7 @@ public final class Icon {
      * </pre>
      *
      * <code>string from_address = 1;</code>
+     * @return The fromAddress.
      */
     java.lang.String getFromAddress();
     /**
@@ -32,6 +33,7 @@ public final class Icon {
      * </pre>
      *
      * <code>string from_address = 1;</code>
+     * @return The bytes for fromAddress.
      */
     com.google.protobuf.ByteString
         getFromAddressBytes();
@@ -42,6 +44,7 @@ public final class Icon {
      * </pre>
      *
      * <code>string to_address = 2;</code>
+     * @return The toAddress.
      */
     java.lang.String getToAddress();
     /**
@@ -50,6 +53,7 @@ public final class Icon {
      * </pre>
      *
      * <code>string to_address = 2;</code>
+     * @return The bytes for toAddress.
      */
     com.google.protobuf.ByteString
         getToAddressBytes();
@@ -60,6 +64,7 @@ public final class Icon {
      * </pre>
      *
      * <code>bytes value = 3;</code>
+     * @return The value.
      */
     com.google.protobuf.ByteString getValue();
 
@@ -69,6 +74,7 @@ public final class Icon {
      * </pre>
      *
      * <code>bytes step_limit = 4;</code>
+     * @return The stepLimit.
      */
     com.google.protobuf.ByteString getStepLimit();
 
@@ -78,6 +84,7 @@ public final class Icon {
      * </pre>
      *
      * <code>int64 timestamp = 5;</code>
+     * @return The timestamp.
      */
     long getTimestamp();
 
@@ -87,6 +94,7 @@ public final class Icon {
      * </pre>
      *
      * <code>bytes nonce = 6;</code>
+     * @return The nonce.
      */
     com.google.protobuf.ByteString getNonce();
 
@@ -96,6 +104,7 @@ public final class Icon {
      * </pre>
      *
      * <code>bytes network_id = 7;</code>
+     * @return The networkId.
      */
     com.google.protobuf.ByteString getNetworkId();
 
@@ -105,6 +114,7 @@ public final class Icon {
      * </pre>
      *
      * <code>bytes private_key = 8;</code>
+     * @return The privateKey.
      */
     com.google.protobuf.ByteString getPrivateKey();
   }
@@ -115,7 +125,7 @@ public final class Icon {
    *
    * Protobuf type {@code TW.Icon.Proto.SigningInput}
    */
-  public  static final class SigningInput extends
+  public static final class SigningInput extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:TW.Icon.Proto.SigningInput)
       SigningInputOrBuilder {
@@ -246,7 +256,9 @@ public final class Icon {
      * </pre>
      *
      * <code>string from_address = 1;</code>
+     * @return The fromAddress.
      */
+    @java.lang.Override
     public java.lang.String getFromAddress() {
       java.lang.Object ref = fromAddress_;
       if (ref instanceof java.lang.String) {
@@ -265,7 +277,9 @@ public final class Icon {
      * </pre>
      *
      * <code>string from_address = 1;</code>
+     * @return The bytes for fromAddress.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString
         getFromAddressBytes() {
       java.lang.Object ref = fromAddress_;
@@ -288,7 +302,9 @@ public final class Icon {
      * </pre>
      *
      * <code>string to_address = 2;</code>
+     * @return The toAddress.
      */
+    @java.lang.Override
     public java.lang.String getToAddress() {
       java.lang.Object ref = toAddress_;
       if (ref instanceof java.lang.String) {
@@ -307,7 +323,9 @@ public final class Icon {
      * </pre>
      *
      * <code>string to_address = 2;</code>
+     * @return The bytes for toAddress.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString
         getToAddressBytes() {
       java.lang.Object ref = toAddress_;
@@ -330,7 +348,9 @@ public final class Icon {
      * </pre>
      *
      * <code>bytes value = 3;</code>
+     * @return The value.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString getValue() {
       return value_;
     }
@@ -343,7 +363,9 @@ public final class Icon {
      * </pre>
      *
      * <code>bytes step_limit = 4;</code>
+     * @return The stepLimit.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString getStepLimit() {
       return stepLimit_;
     }
@@ -356,7 +378,9 @@ public final class Icon {
      * </pre>
      *
      * <code>int64 timestamp = 5;</code>
+     * @return The timestamp.
      */
+    @java.lang.Override
     public long getTimestamp() {
       return timestamp_;
     }
@@ -369,7 +393,9 @@ public final class Icon {
      * </pre>
      *
      * <code>bytes nonce = 6;</code>
+     * @return The nonce.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString getNonce() {
       return nonce_;
     }
@@ -382,7 +408,9 @@ public final class Icon {
      * </pre>
      *
      * <code>bytes network_id = 7;</code>
+     * @return The networkId.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString getNetworkId() {
       return networkId_;
     }
@@ -395,7 +423,9 @@ public final class Icon {
      * </pre>
      *
      * <code>bytes private_key = 8;</code>
+     * @return The privateKey.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString getPrivateKey() {
       return privateKey_;
     }
@@ -833,6 +863,7 @@ public final class Icon {
        * </pre>
        *
        * <code>string from_address = 1;</code>
+       * @return The fromAddress.
        */
       public java.lang.String getFromAddress() {
         java.lang.Object ref = fromAddress_;
@@ -852,6 +883,7 @@ public final class Icon {
        * </pre>
        *
        * <code>string from_address = 1;</code>
+       * @return The bytes for fromAddress.
        */
       public com.google.protobuf.ByteString
           getFromAddressBytes() {
@@ -872,6 +904,8 @@ public final class Icon {
        * </pre>
        *
        * <code>string from_address = 1;</code>
+       * @param value The fromAddress to set.
+       * @return This builder for chaining.
        */
       public Builder setFromAddress(
           java.lang.String value) {
@@ -889,6 +923,7 @@ public final class Icon {
        * </pre>
        *
        * <code>string from_address = 1;</code>
+       * @return This builder for chaining.
        */
       public Builder clearFromAddress() {
         
@@ -902,6 +937,8 @@ public final class Icon {
        * </pre>
        *
        * <code>string from_address = 1;</code>
+       * @param value The bytes for fromAddress to set.
+       * @return This builder for chaining.
        */
       public Builder setFromAddressBytes(
           com.google.protobuf.ByteString value) {
@@ -922,6 +959,7 @@ public final class Icon {
        * </pre>
        *
        * <code>string to_address = 2;</code>
+       * @return The toAddress.
        */
       public java.lang.String getToAddress() {
         java.lang.Object ref = toAddress_;
@@ -941,6 +979,7 @@ public final class Icon {
        * </pre>
        *
        * <code>string to_address = 2;</code>
+       * @return The bytes for toAddress.
        */
       public com.google.protobuf.ByteString
           getToAddressBytes() {
@@ -961,6 +1000,8 @@ public final class Icon {
        * </pre>
        *
        * <code>string to_address = 2;</code>
+       * @param value The toAddress to set.
+       * @return This builder for chaining.
        */
       public Builder setToAddress(
           java.lang.String value) {
@@ -978,6 +1019,7 @@ public final class Icon {
        * </pre>
        *
        * <code>string to_address = 2;</code>
+       * @return This builder for chaining.
        */
       public Builder clearToAddress() {
         
@@ -991,6 +1033,8 @@ public final class Icon {
        * </pre>
        *
        * <code>string to_address = 2;</code>
+       * @param value The bytes for toAddress to set.
+       * @return This builder for chaining.
        */
       public Builder setToAddressBytes(
           com.google.protobuf.ByteString value) {
@@ -1011,7 +1055,9 @@ public final class Icon {
        * </pre>
        *
        * <code>bytes value = 3;</code>
+       * @return The value.
        */
+      @java.lang.Override
       public com.google.protobuf.ByteString getValue() {
         return value_;
       }
@@ -1021,6 +1067,8 @@ public final class Icon {
        * </pre>
        *
        * <code>bytes value = 3;</code>
+       * @param value The value to set.
+       * @return This builder for chaining.
        */
       public Builder setValue(com.google.protobuf.ByteString value) {
         if (value == null) {
@@ -1037,6 +1085,7 @@ public final class Icon {
        * </pre>
        *
        * <code>bytes value = 3;</code>
+       * @return This builder for chaining.
        */
       public Builder clearValue() {
         
@@ -1052,7 +1101,9 @@ public final class Icon {
        * </pre>
        *
        * <code>bytes step_limit = 4;</code>
+       * @return The stepLimit.
        */
+      @java.lang.Override
       public com.google.protobuf.ByteString getStepLimit() {
         return stepLimit_;
       }
@@ -1062,6 +1113,8 @@ public final class Icon {
        * </pre>
        *
        * <code>bytes step_limit = 4;</code>
+       * @param value The stepLimit to set.
+       * @return This builder for chaining.
        */
       public Builder setStepLimit(com.google.protobuf.ByteString value) {
         if (value == null) {
@@ -1078,6 +1131,7 @@ public final class Icon {
        * </pre>
        *
        * <code>bytes step_limit = 4;</code>
+       * @return This builder for chaining.
        */
       public Builder clearStepLimit() {
         
@@ -1093,7 +1147,9 @@ public final class Icon {
        * </pre>
        *
        * <code>int64 timestamp = 5;</code>
+       * @return The timestamp.
        */
+      @java.lang.Override
       public long getTimestamp() {
         return timestamp_;
       }
@@ -1103,6 +1159,8 @@ public final class Icon {
        * </pre>
        *
        * <code>int64 timestamp = 5;</code>
+       * @param value The timestamp to set.
+       * @return This builder for chaining.
        */
       public Builder setTimestamp(long value) {
         
@@ -1116,6 +1174,7 @@ public final class Icon {
        * </pre>
        *
        * <code>int64 timestamp = 5;</code>
+       * @return This builder for chaining.
        */
       public Builder clearTimestamp() {
         
@@ -1131,7 +1190,9 @@ public final class Icon {
        * </pre>
        *
        * <code>bytes nonce = 6;</code>
+       * @return The nonce.
        */
+      @java.lang.Override
       public com.google.protobuf.ByteString getNonce() {
         return nonce_;
       }
@@ -1141,6 +1202,8 @@ public final class Icon {
        * </pre>
        *
        * <code>bytes nonce = 6;</code>
+       * @param value The nonce to set.
+       * @return This builder for chaining.
        */
       public Builder setNonce(com.google.protobuf.ByteString value) {
         if (value == null) {
@@ -1157,6 +1220,7 @@ public final class Icon {
        * </pre>
        *
        * <code>bytes nonce = 6;</code>
+       * @return This builder for chaining.
        */
       public Builder clearNonce() {
         
@@ -1172,7 +1236,9 @@ public final class Icon {
        * </pre>
        *
        * <code>bytes network_id = 7;</code>
+       * @return The networkId.
        */
+      @java.lang.Override
       public com.google.protobuf.ByteString getNetworkId() {
         return networkId_;
       }
@@ -1182,6 +1248,8 @@ public final class Icon {
        * </pre>
        *
        * <code>bytes network_id = 7;</code>
+       * @param value The networkId to set.
+       * @return This builder for chaining.
        */
       public Builder setNetworkId(com.google.protobuf.ByteString value) {
         if (value == null) {
@@ -1198,6 +1266,7 @@ public final class Icon {
        * </pre>
        *
        * <code>bytes network_id = 7;</code>
+       * @return This builder for chaining.
        */
       public Builder clearNetworkId() {
         
@@ -1213,7 +1282,9 @@ public final class Icon {
        * </pre>
        *
        * <code>bytes private_key = 8;</code>
+       * @return The privateKey.
        */
+      @java.lang.Override
       public com.google.protobuf.ByteString getPrivateKey() {
         return privateKey_;
       }
@@ -1223,6 +1294,8 @@ public final class Icon {
        * </pre>
        *
        * <code>bytes private_key = 8;</code>
+       * @param value The privateKey to set.
+       * @return This builder for chaining.
        */
       public Builder setPrivateKey(com.google.protobuf.ByteString value) {
         if (value == null) {
@@ -1239,6 +1312,7 @@ public final class Icon {
        * </pre>
        *
        * <code>bytes private_key = 8;</code>
+       * @return This builder for chaining.
        */
       public Builder clearPrivateKey() {
         
@@ -1309,6 +1383,7 @@ public final class Icon {
      * </pre>
      *
      * <code>string encoded = 1;</code>
+     * @return The encoded.
      */
     java.lang.String getEncoded();
     /**
@@ -1317,6 +1392,7 @@ public final class Icon {
      * </pre>
      *
      * <code>string encoded = 1;</code>
+     * @return The bytes for encoded.
      */
     com.google.protobuf.ByteString
         getEncodedBytes();
@@ -1327,6 +1403,7 @@ public final class Icon {
      * </pre>
      *
      * <code>bytes signature = 2;</code>
+     * @return The signature.
      */
     com.google.protobuf.ByteString getSignature();
   }
@@ -1337,7 +1414,7 @@ public final class Icon {
    *
    * Protobuf type {@code TW.Icon.Proto.SigningOutput}
    */
-  public  static final class SigningOutput extends
+  public static final class SigningOutput extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:TW.Icon.Proto.SigningOutput)
       SigningOutputOrBuilder {
@@ -1432,7 +1509,9 @@ public final class Icon {
      * </pre>
      *
      * <code>string encoded = 1;</code>
+     * @return The encoded.
      */
+    @java.lang.Override
     public java.lang.String getEncoded() {
       java.lang.Object ref = encoded_;
       if (ref instanceof java.lang.String) {
@@ -1451,7 +1530,9 @@ public final class Icon {
      * </pre>
      *
      * <code>string encoded = 1;</code>
+     * @return The bytes for encoded.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString
         getEncodedBytes() {
       java.lang.Object ref = encoded_;
@@ -1474,7 +1555,9 @@ public final class Icon {
      * </pre>
      *
      * <code>bytes signature = 2;</code>
+     * @return The signature.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString getSignature() {
       return signature_;
     }
@@ -1809,6 +1892,7 @@ public final class Icon {
        * </pre>
        *
        * <code>string encoded = 1;</code>
+       * @return The encoded.
        */
       public java.lang.String getEncoded() {
         java.lang.Object ref = encoded_;
@@ -1828,6 +1912,7 @@ public final class Icon {
        * </pre>
        *
        * <code>string encoded = 1;</code>
+       * @return The bytes for encoded.
        */
       public com.google.protobuf.ByteString
           getEncodedBytes() {
@@ -1848,6 +1933,8 @@ public final class Icon {
        * </pre>
        *
        * <code>string encoded = 1;</code>
+       * @param value The encoded to set.
+       * @return This builder for chaining.
        */
       public Builder setEncoded(
           java.lang.String value) {
@@ -1865,6 +1952,7 @@ public final class Icon {
        * </pre>
        *
        * <code>string encoded = 1;</code>
+       * @return This builder for chaining.
        */
       public Builder clearEncoded() {
         
@@ -1878,6 +1966,8 @@ public final class Icon {
        * </pre>
        *
        * <code>string encoded = 1;</code>
+       * @param value The bytes for encoded to set.
+       * @return This builder for chaining.
        */
       public Builder setEncodedBytes(
           com.google.protobuf.ByteString value) {
@@ -1898,7 +1988,9 @@ public final class Icon {
        * </pre>
        *
        * <code>bytes signature = 2;</code>
+       * @return The signature.
        */
+      @java.lang.Override
       public com.google.protobuf.ByteString getSignature() {
         return signature_;
       }
@@ -1908,6 +2000,8 @@ public final class Icon {
        * </pre>
        *
        * <code>bytes signature = 2;</code>
+       * @param value The signature to set.
+       * @return This builder for chaining.
        */
       public Builder setSignature(com.google.protobuf.ByteString value) {
         if (value == null) {
@@ -1924,6 +2018,7 @@ public final class Icon {
        * </pre>
        *
        * <code>bytes signature = 2;</code>
+       * @return This builder for chaining.
        */
       public Builder clearSignature() {
         

@@ -20,71 +20,85 @@ public final class Elrond {
 
     /**
      * <code>uint64 nonce = 1;</code>
+     * @return The nonce.
      */
     long getNonce();
 
     /**
      * <code>string value = 2;</code>
+     * @return The value.
      */
     java.lang.String getValue();
     /**
      * <code>string value = 2;</code>
+     * @return The bytes for value.
      */
     com.google.protobuf.ByteString
         getValueBytes();
 
     /**
      * <code>string receiver = 3;</code>
+     * @return The receiver.
      */
     java.lang.String getReceiver();
     /**
      * <code>string receiver = 3;</code>
+     * @return The bytes for receiver.
      */
     com.google.protobuf.ByteString
         getReceiverBytes();
 
     /**
      * <code>string sender = 4;</code>
+     * @return The sender.
      */
     java.lang.String getSender();
     /**
      * <code>string sender = 4;</code>
+     * @return The bytes for sender.
      */
     com.google.protobuf.ByteString
         getSenderBytes();
 
     /**
      * <code>uint64 gas_price = 5;</code>
+     * @return The gasPrice.
      */
     long getGasPrice();
 
     /**
      * <code>uint64 gas_limit = 6;</code>
+     * @return The gasLimit.
      */
     long getGasLimit();
 
     /**
      * <code>string data = 7;</code>
+     * @return The data.
      */
     java.lang.String getData();
     /**
      * <code>string data = 7;</code>
+     * @return The bytes for data.
      */
     com.google.protobuf.ByteString
         getDataBytes();
 
     /**
      * <code>string chain_id = 8;</code>
+     * @return The chainId.
      */
     java.lang.String getChainId();
     /**
      * <code>string chain_id = 8;</code>
+     * @return The bytes for chainId.
      */
     com.google.protobuf.ByteString
         getChainIdBytes();
 
     /**
      * <code>uint32 version = 9;</code>
+     * @return The version.
      */
     int getVersion();
   }
@@ -95,7 +109,7 @@ public final class Elrond {
    *
    * Protobuf type {@code TW.Elrond.Proto.TransactionMessage}
    */
-  public  static final class TransactionMessage extends
+  public static final class TransactionMessage extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:TW.Elrond.Proto.TransactionMessage)
       TransactionMessageOrBuilder {
@@ -228,7 +242,9 @@ public final class Elrond {
     private long nonce_;
     /**
      * <code>uint64 nonce = 1;</code>
+     * @return The nonce.
      */
+    @java.lang.Override
     public long getNonce() {
       return nonce_;
     }
@@ -237,7 +253,9 @@ public final class Elrond {
     private volatile java.lang.Object value_;
     /**
      * <code>string value = 2;</code>
+     * @return The value.
      */
+    @java.lang.Override
     public java.lang.String getValue() {
       java.lang.Object ref = value_;
       if (ref instanceof java.lang.String) {
@@ -252,7 +270,9 @@ public final class Elrond {
     }
     /**
      * <code>string value = 2;</code>
+     * @return The bytes for value.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString
         getValueBytes() {
       java.lang.Object ref = value_;
@@ -271,7 +291,9 @@ public final class Elrond {
     private volatile java.lang.Object receiver_;
     /**
      * <code>string receiver = 3;</code>
+     * @return The receiver.
      */
+    @java.lang.Override
     public java.lang.String getReceiver() {
       java.lang.Object ref = receiver_;
       if (ref instanceof java.lang.String) {
@@ -286,7 +308,9 @@ public final class Elrond {
     }
     /**
      * <code>string receiver = 3;</code>
+     * @return The bytes for receiver.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString
         getReceiverBytes() {
       java.lang.Object ref = receiver_;
@@ -305,7 +329,9 @@ public final class Elrond {
     private volatile java.lang.Object sender_;
     /**
      * <code>string sender = 4;</code>
+     * @return The sender.
      */
+    @java.lang.Override
     public java.lang.String getSender() {
       java.lang.Object ref = sender_;
       if (ref instanceof java.lang.String) {
@@ -320,7 +346,9 @@ public final class Elrond {
     }
     /**
      * <code>string sender = 4;</code>
+     * @return The bytes for sender.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString
         getSenderBytes() {
       java.lang.Object ref = sender_;
@@ -339,7 +367,9 @@ public final class Elrond {
     private long gasPrice_;
     /**
      * <code>uint64 gas_price = 5;</code>
+     * @return The gasPrice.
      */
+    @java.lang.Override
     public long getGasPrice() {
       return gasPrice_;
     }
@@ -348,7 +378,9 @@ public final class Elrond {
     private long gasLimit_;
     /**
      * <code>uint64 gas_limit = 6;</code>
+     * @return The gasLimit.
      */
+    @java.lang.Override
     public long getGasLimit() {
       return gasLimit_;
     }
@@ -357,7 +389,9 @@ public final class Elrond {
     private volatile java.lang.Object data_;
     /**
      * <code>string data = 7;</code>
+     * @return The data.
      */
+    @java.lang.Override
     public java.lang.String getData() {
       java.lang.Object ref = data_;
       if (ref instanceof java.lang.String) {
@@ -372,7 +406,9 @@ public final class Elrond {
     }
     /**
      * <code>string data = 7;</code>
+     * @return The bytes for data.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString
         getDataBytes() {
       java.lang.Object ref = data_;
@@ -391,7 +427,9 @@ public final class Elrond {
     private volatile java.lang.Object chainId_;
     /**
      * <code>string chain_id = 8;</code>
+     * @return The chainId.
      */
+    @java.lang.Override
     public java.lang.String getChainId() {
       java.lang.Object ref = chainId_;
       if (ref instanceof java.lang.String) {
@@ -406,7 +444,9 @@ public final class Elrond {
     }
     /**
      * <code>string chain_id = 8;</code>
+     * @return The bytes for chainId.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString
         getChainIdBytes() {
       java.lang.Object ref = chainId_;
@@ -425,7 +465,9 @@ public final class Elrond {
     private int version_;
     /**
      * <code>uint32 version = 9;</code>
+     * @return The version.
      */
+    @java.lang.Override
     public int getVersion() {
       return version_;
     }
@@ -878,12 +920,16 @@ public final class Elrond {
       private long nonce_ ;
       /**
        * <code>uint64 nonce = 1;</code>
+       * @return The nonce.
        */
+      @java.lang.Override
       public long getNonce() {
         return nonce_;
       }
       /**
        * <code>uint64 nonce = 1;</code>
+       * @param value The nonce to set.
+       * @return This builder for chaining.
        */
       public Builder setNonce(long value) {
         
@@ -893,6 +939,7 @@ public final class Elrond {
       }
       /**
        * <code>uint64 nonce = 1;</code>
+       * @return This builder for chaining.
        */
       public Builder clearNonce() {
         
@@ -904,6 +951,7 @@ public final class Elrond {
       private java.lang.Object value_ = "";
       /**
        * <code>string value = 2;</code>
+       * @return The value.
        */
       public java.lang.String getValue() {
         java.lang.Object ref = value_;
@@ -919,6 +967,7 @@ public final class Elrond {
       }
       /**
        * <code>string value = 2;</code>
+       * @return The bytes for value.
        */
       public com.google.protobuf.ByteString
           getValueBytes() {
@@ -935,6 +984,8 @@ public final class Elrond {
       }
       /**
        * <code>string value = 2;</code>
+       * @param value The value to set.
+       * @return This builder for chaining.
        */
       public Builder setValue(
           java.lang.String value) {
@@ -948,6 +999,7 @@ public final class Elrond {
       }
       /**
        * <code>string value = 2;</code>
+       * @return This builder for chaining.
        */
       public Builder clearValue() {
         
@@ -957,6 +1009,8 @@ public final class Elrond {
       }
       /**
        * <code>string value = 2;</code>
+       * @param value The bytes for value to set.
+       * @return This builder for chaining.
        */
       public Builder setValueBytes(
           com.google.protobuf.ByteString value) {
@@ -973,6 +1027,7 @@ public final class Elrond {
       private java.lang.Object receiver_ = "";
       /**
        * <code>string receiver = 3;</code>
+       * @return The receiver.
        */
       public java.lang.String getReceiver() {
         java.lang.Object ref = receiver_;
@@ -988,6 +1043,7 @@ public final class Elrond {
       }
       /**
        * <code>string receiver = 3;</code>
+       * @return The bytes for receiver.
        */
       public com.google.protobuf.ByteString
           getReceiverBytes() {
@@ -1004,6 +1060,8 @@ public final class Elrond {
       }
       /**
        * <code>string receiver = 3;</code>
+       * @param value The receiver to set.
+       * @return This builder for chaining.
        */
       public Builder setReceiver(
           java.lang.String value) {
@@ -1017,6 +1075,7 @@ public final class Elrond {
       }
       /**
        * <code>string receiver = 3;</code>
+       * @return This builder for chaining.
        */
       public Builder clearReceiver() {
         
@@ -1026,6 +1085,8 @@ public final class Elrond {
       }
       /**
        * <code>string receiver = 3;</code>
+       * @param value The bytes for receiver to set.
+       * @return This builder for chaining.
        */
       public Builder setReceiverBytes(
           com.google.protobuf.ByteString value) {
@@ -1042,6 +1103,7 @@ public final class Elrond {
       private java.lang.Object sender_ = "";
       /**
        * <code>string sender = 4;</code>
+       * @return The sender.
        */
       public java.lang.String getSender() {
         java.lang.Object ref = sender_;
@@ -1057,6 +1119,7 @@ public final class Elrond {
       }
       /**
        * <code>string sender = 4;</code>
+       * @return The bytes for sender.
        */
       public com.google.protobuf.ByteString
           getSenderBytes() {
@@ -1073,6 +1136,8 @@ public final class Elrond {
       }
       /**
        * <code>string sender = 4;</code>
+       * @param value The sender to set.
+       * @return This builder for chaining.
        */
       public Builder setSender(
           java.lang.String value) {
@@ -1086,6 +1151,7 @@ public final class Elrond {
       }
       /**
        * <code>string sender = 4;</code>
+       * @return This builder for chaining.
        */
       public Builder clearSender() {
         
@@ -1095,6 +1161,8 @@ public final class Elrond {
       }
       /**
        * <code>string sender = 4;</code>
+       * @param value The bytes for sender to set.
+       * @return This builder for chaining.
        */
       public Builder setSenderBytes(
           com.google.protobuf.ByteString value) {
@@ -1111,12 +1179,16 @@ public final class Elrond {
       private long gasPrice_ ;
       /**
        * <code>uint64 gas_price = 5;</code>
+       * @return The gasPrice.
        */
+      @java.lang.Override
       public long getGasPrice() {
         return gasPrice_;
       }
       /**
        * <code>uint64 gas_price = 5;</code>
+       * @param value The gasPrice to set.
+       * @return This builder for chaining.
        */
       public Builder setGasPrice(long value) {
         
@@ -1126,6 +1198,7 @@ public final class Elrond {
       }
       /**
        * <code>uint64 gas_price = 5;</code>
+       * @return This builder for chaining.
        */
       public Builder clearGasPrice() {
         
@@ -1137,12 +1210,16 @@ public final class Elrond {
       private long gasLimit_ ;
       /**
        * <code>uint64 gas_limit = 6;</code>
+       * @return The gasLimit.
        */
+      @java.lang.Override
       public long getGasLimit() {
         return gasLimit_;
       }
       /**
        * <code>uint64 gas_limit = 6;</code>
+       * @param value The gasLimit to set.
+       * @return This builder for chaining.
        */
       public Builder setGasLimit(long value) {
         
@@ -1152,6 +1229,7 @@ public final class Elrond {
       }
       /**
        * <code>uint64 gas_limit = 6;</code>
+       * @return This builder for chaining.
        */
       public Builder clearGasLimit() {
         
@@ -1163,6 +1241,7 @@ public final class Elrond {
       private java.lang.Object data_ = "";
       /**
        * <code>string data = 7;</code>
+       * @return The data.
        */
       public java.lang.String getData() {
         java.lang.Object ref = data_;
@@ -1178,6 +1257,7 @@ public final class Elrond {
       }
       /**
        * <code>string data = 7;</code>
+       * @return The bytes for data.
        */
       public com.google.protobuf.ByteString
           getDataBytes() {
@@ -1194,6 +1274,8 @@ public final class Elrond {
       }
       /**
        * <code>string data = 7;</code>
+       * @param value The data to set.
+       * @return This builder for chaining.
        */
       public Builder setData(
           java.lang.String value) {
@@ -1207,6 +1289,7 @@ public final class Elrond {
       }
       /**
        * <code>string data = 7;</code>
+       * @return This builder for chaining.
        */
       public Builder clearData() {
         
@@ -1216,6 +1299,8 @@ public final class Elrond {
       }
       /**
        * <code>string data = 7;</code>
+       * @param value The bytes for data to set.
+       * @return This builder for chaining.
        */
       public Builder setDataBytes(
           com.google.protobuf.ByteString value) {
@@ -1232,6 +1317,7 @@ public final class Elrond {
       private java.lang.Object chainId_ = "";
       /**
        * <code>string chain_id = 8;</code>
+       * @return The chainId.
        */
       public java.lang.String getChainId() {
         java.lang.Object ref = chainId_;
@@ -1247,6 +1333,7 @@ public final class Elrond {
       }
       /**
        * <code>string chain_id = 8;</code>
+       * @return The bytes for chainId.
        */
       public com.google.protobuf.ByteString
           getChainIdBytes() {
@@ -1263,6 +1350,8 @@ public final class Elrond {
       }
       /**
        * <code>string chain_id = 8;</code>
+       * @param value The chainId to set.
+       * @return This builder for chaining.
        */
       public Builder setChainId(
           java.lang.String value) {
@@ -1276,6 +1365,7 @@ public final class Elrond {
       }
       /**
        * <code>string chain_id = 8;</code>
+       * @return This builder for chaining.
        */
       public Builder clearChainId() {
         
@@ -1285,6 +1375,8 @@ public final class Elrond {
       }
       /**
        * <code>string chain_id = 8;</code>
+       * @param value The bytes for chainId to set.
+       * @return This builder for chaining.
        */
       public Builder setChainIdBytes(
           com.google.protobuf.ByteString value) {
@@ -1301,12 +1393,16 @@ public final class Elrond {
       private int version_ ;
       /**
        * <code>uint32 version = 9;</code>
+       * @return The version.
        */
+      @java.lang.Override
       public int getVersion() {
         return version_;
       }
       /**
        * <code>uint32 version = 9;</code>
+       * @param value The version to set.
+       * @return This builder for chaining.
        */
       public Builder setVersion(int value) {
         
@@ -1316,6 +1412,7 @@ public final class Elrond {
       }
       /**
        * <code>uint32 version = 9;</code>
+       * @return This builder for chaining.
        */
       public Builder clearVersion() {
         
@@ -1382,15 +1479,18 @@ public final class Elrond {
 
     /**
      * <code>bytes private_key = 1;</code>
+     * @return The privateKey.
      */
     com.google.protobuf.ByteString getPrivateKey();
 
     /**
      * <code>.TW.Elrond.Proto.TransactionMessage transaction = 2;</code>
+     * @return Whether the transaction field is set.
      */
     boolean hasTransaction();
     /**
      * <code>.TW.Elrond.Proto.TransactionMessage transaction = 2;</code>
+     * @return The transaction.
      */
     wallet.core.jni.proto.Elrond.TransactionMessage getTransaction();
     /**
@@ -1407,7 +1507,7 @@ public final class Elrond {
    *
    * Protobuf type {@code TW.Elrond.Proto.SigningInput}
    */
-  public  static final class SigningInput extends
+  public static final class SigningInput extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:TW.Elrond.Proto.SigningInput)
       SigningInputOrBuilder {
@@ -1504,7 +1604,8 @@ public final class Elrond {
     private int messageOneofCase_ = 0;
     private java.lang.Object messageOneof_;
     public enum MessageOneofCase
-        implements com.google.protobuf.Internal.EnumLite {
+        implements com.google.protobuf.Internal.EnumLite,
+            com.google.protobuf.AbstractMessage.InternalOneOfEnum {
       TRANSACTION(2),
       MESSAGEONEOF_NOT_SET(0);
       private final int value;
@@ -1512,6 +1613,8 @@ public final class Elrond {
         this.value = value;
       }
       /**
+       * @param value The number of the enum to look for.
+       * @return The enum associated with the given number.
        * @deprecated Use {@link #forNumber(int)} instead.
        */
       @java.lang.Deprecated
@@ -1541,7 +1644,9 @@ public final class Elrond {
     private com.google.protobuf.ByteString privateKey_;
     /**
      * <code>bytes private_key = 1;</code>
+     * @return The privateKey.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString getPrivateKey() {
       return privateKey_;
     }
@@ -1549,13 +1654,17 @@ public final class Elrond {
     public static final int TRANSACTION_FIELD_NUMBER = 2;
     /**
      * <code>.TW.Elrond.Proto.TransactionMessage transaction = 2;</code>
+     * @return Whether the transaction field is set.
      */
+    @java.lang.Override
     public boolean hasTransaction() {
       return messageOneofCase_ == 2;
     }
     /**
      * <code>.TW.Elrond.Proto.TransactionMessage transaction = 2;</code>
+     * @return The transaction.
      */
+    @java.lang.Override
     public wallet.core.jni.proto.Elrond.TransactionMessage getTransaction() {
       if (messageOneofCase_ == 2) {
          return (wallet.core.jni.proto.Elrond.TransactionMessage) messageOneof_;
@@ -1565,6 +1674,7 @@ public final class Elrond {
     /**
      * <code>.TW.Elrond.Proto.TransactionMessage transaction = 2;</code>
      */
+    @java.lang.Override
     public wallet.core.jni.proto.Elrond.TransactionMessageOrBuilder getTransactionOrBuilder() {
       if (messageOneofCase_ == 2) {
          return (wallet.core.jni.proto.Elrond.TransactionMessage) messageOneof_;
@@ -1939,12 +2049,16 @@ public final class Elrond {
       private com.google.protobuf.ByteString privateKey_ = com.google.protobuf.ByteString.EMPTY;
       /**
        * <code>bytes private_key = 1;</code>
+       * @return The privateKey.
        */
+      @java.lang.Override
       public com.google.protobuf.ByteString getPrivateKey() {
         return privateKey_;
       }
       /**
        * <code>bytes private_key = 1;</code>
+       * @param value The privateKey to set.
+       * @return This builder for chaining.
        */
       public Builder setPrivateKey(com.google.protobuf.ByteString value) {
         if (value == null) {
@@ -1957,6 +2071,7 @@ public final class Elrond {
       }
       /**
        * <code>bytes private_key = 1;</code>
+       * @return This builder for chaining.
        */
       public Builder clearPrivateKey() {
         
@@ -1969,13 +2084,17 @@ public final class Elrond {
           wallet.core.jni.proto.Elrond.TransactionMessage, wallet.core.jni.proto.Elrond.TransactionMessage.Builder, wallet.core.jni.proto.Elrond.TransactionMessageOrBuilder> transactionBuilder_;
       /**
        * <code>.TW.Elrond.Proto.TransactionMessage transaction = 2;</code>
+       * @return Whether the transaction field is set.
        */
+      @java.lang.Override
       public boolean hasTransaction() {
         return messageOneofCase_ == 2;
       }
       /**
        * <code>.TW.Elrond.Proto.TransactionMessage transaction = 2;</code>
+       * @return The transaction.
        */
+      @java.lang.Override
       public wallet.core.jni.proto.Elrond.TransactionMessage getTransaction() {
         if (transactionBuilder_ == null) {
           if (messageOneofCase_ == 2) {
@@ -2069,6 +2188,7 @@ public final class Elrond {
       /**
        * <code>.TW.Elrond.Proto.TransactionMessage transaction = 2;</code>
        */
+      @java.lang.Override
       public wallet.core.jni.proto.Elrond.TransactionMessageOrBuilder getTransactionOrBuilder() {
         if ((messageOneofCase_ == 2) && (transactionBuilder_ != null)) {
           return transactionBuilder_.getMessageOrBuilder();
@@ -2159,20 +2279,24 @@ public final class Elrond {
 
     /**
      * <code>string encoded = 1;</code>
+     * @return The encoded.
      */
     java.lang.String getEncoded();
     /**
      * <code>string encoded = 1;</code>
+     * @return The bytes for encoded.
      */
     com.google.protobuf.ByteString
         getEncodedBytes();
 
     /**
      * <code>string signature = 2;</code>
+     * @return The signature.
      */
     java.lang.String getSignature();
     /**
      * <code>string signature = 2;</code>
+     * @return The bytes for signature.
      */
     com.google.protobuf.ByteString
         getSignatureBytes();
@@ -2184,7 +2308,7 @@ public final class Elrond {
    *
    * Protobuf type {@code TW.Elrond.Proto.SigningOutput}
    */
-  public  static final class SigningOutput extends
+  public static final class SigningOutput extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:TW.Elrond.Proto.SigningOutput)
       SigningOutputOrBuilder {
@@ -2276,7 +2400,9 @@ public final class Elrond {
     private volatile java.lang.Object encoded_;
     /**
      * <code>string encoded = 1;</code>
+     * @return The encoded.
      */
+    @java.lang.Override
     public java.lang.String getEncoded() {
       java.lang.Object ref = encoded_;
       if (ref instanceof java.lang.String) {
@@ -2291,7 +2417,9 @@ public final class Elrond {
     }
     /**
      * <code>string encoded = 1;</code>
+     * @return The bytes for encoded.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString
         getEncodedBytes() {
       java.lang.Object ref = encoded_;
@@ -2310,7 +2438,9 @@ public final class Elrond {
     private volatile java.lang.Object signature_;
     /**
      * <code>string signature = 2;</code>
+     * @return The signature.
      */
+    @java.lang.Override
     public java.lang.String getSignature() {
       java.lang.Object ref = signature_;
       if (ref instanceof java.lang.String) {
@@ -2325,7 +2455,9 @@ public final class Elrond {
     }
     /**
      * <code>string signature = 2;</code>
+     * @return The bytes for signature.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString
         getSignatureBytes() {
       java.lang.Object ref = signature_;
@@ -2666,6 +2798,7 @@ public final class Elrond {
       private java.lang.Object encoded_ = "";
       /**
        * <code>string encoded = 1;</code>
+       * @return The encoded.
        */
       public java.lang.String getEncoded() {
         java.lang.Object ref = encoded_;
@@ -2681,6 +2814,7 @@ public final class Elrond {
       }
       /**
        * <code>string encoded = 1;</code>
+       * @return The bytes for encoded.
        */
       public com.google.protobuf.ByteString
           getEncodedBytes() {
@@ -2697,6 +2831,8 @@ public final class Elrond {
       }
       /**
        * <code>string encoded = 1;</code>
+       * @param value The encoded to set.
+       * @return This builder for chaining.
        */
       public Builder setEncoded(
           java.lang.String value) {
@@ -2710,6 +2846,7 @@ public final class Elrond {
       }
       /**
        * <code>string encoded = 1;</code>
+       * @return This builder for chaining.
        */
       public Builder clearEncoded() {
         
@@ -2719,6 +2856,8 @@ public final class Elrond {
       }
       /**
        * <code>string encoded = 1;</code>
+       * @param value The bytes for encoded to set.
+       * @return This builder for chaining.
        */
       public Builder setEncodedBytes(
           com.google.protobuf.ByteString value) {
@@ -2735,6 +2874,7 @@ public final class Elrond {
       private java.lang.Object signature_ = "";
       /**
        * <code>string signature = 2;</code>
+       * @return The signature.
        */
       public java.lang.String getSignature() {
         java.lang.Object ref = signature_;
@@ -2750,6 +2890,7 @@ public final class Elrond {
       }
       /**
        * <code>string signature = 2;</code>
+       * @return The bytes for signature.
        */
       public com.google.protobuf.ByteString
           getSignatureBytes() {
@@ -2766,6 +2907,8 @@ public final class Elrond {
       }
       /**
        * <code>string signature = 2;</code>
+       * @param value The signature to set.
+       * @return This builder for chaining.
        */
       public Builder setSignature(
           java.lang.String value) {
@@ -2779,6 +2922,7 @@ public final class Elrond {
       }
       /**
        * <code>string signature = 2;</code>
+       * @return This builder for chaining.
        */
       public Builder clearSignature() {
         
@@ -2788,6 +2932,8 @@ public final class Elrond {
       }
       /**
        * <code>string signature = 2;</code>
+       * @param value The bytes for signature to set.
+       * @return This builder for chaining.
        */
       public Builder setSignatureBytes(
           com.google.protobuf.ByteString value) {

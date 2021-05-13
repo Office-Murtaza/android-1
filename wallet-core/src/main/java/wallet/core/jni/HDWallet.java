@@ -39,7 +39,7 @@ public class HDWallet {
     public native PrivateKey getKeyForCoin(CoinType coin);
     public native String getAddressForCoin(CoinType coin);
     public native PrivateKey getKey(CoinType coin, String derivationPath);
-    public native PrivateKey getKeyBIP44(CoinType coin, int account, int change, int address);
+    public native PrivateKey getDerivedKey(CoinType coin, int account, int change, int address);
     public native String getExtendedPrivateKey(Purpose purpose, CoinType coin, HDVersion version);
     public native String getExtendedPublicKey(Purpose purpose, CoinType coin, HDVersion version);
 

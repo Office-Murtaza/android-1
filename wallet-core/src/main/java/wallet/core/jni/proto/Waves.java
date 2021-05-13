@@ -20,15 +20,18 @@ public final class Waves {
 
     /**
      * <code>int64 amount = 1;</code>
+     * @return The amount.
      */
     long getAmount();
 
     /**
      * <code>string asset = 2;</code>
+     * @return The asset.
      */
     java.lang.String getAsset();
     /**
      * <code>string asset = 2;</code>
+     * @return The bytes for asset.
      */
     com.google.protobuf.ByteString
         getAssetBytes();
@@ -39,25 +42,30 @@ public final class Waves {
      * </pre>
      *
      * <code>int64 fee = 3;</code>
+     * @return The fee.
      */
     long getFee();
 
     /**
      * <code>string fee_asset = 4;</code>
+     * @return The feeAsset.
      */
     java.lang.String getFeeAsset();
     /**
      * <code>string fee_asset = 4;</code>
+     * @return The bytes for feeAsset.
      */
     com.google.protobuf.ByteString
         getFeeAssetBytes();
 
     /**
      * <code>string to = 5;</code>
+     * @return The to.
      */
     java.lang.String getTo();
     /**
      * <code>string to = 5;</code>
+     * @return The bytes for to.
      */
     com.google.protobuf.ByteString
         getToBytes();
@@ -68,6 +76,7 @@ public final class Waves {
      * </pre>
      *
      * <code>bytes attachment = 6;</code>
+     * @return The attachment.
      */
     com.google.protobuf.ByteString getAttachment();
   }
@@ -78,7 +87,7 @@ public final class Waves {
    *
    * Protobuf type {@code TW.Waves.Proto.TransferMessage}
    */
-  public  static final class TransferMessage extends
+  public static final class TransferMessage extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:TW.Waves.Proto.TransferMessage)
       TransferMessageOrBuilder {
@@ -193,7 +202,9 @@ public final class Waves {
     private long amount_;
     /**
      * <code>int64 amount = 1;</code>
+     * @return The amount.
      */
+    @java.lang.Override
     public long getAmount() {
       return amount_;
     }
@@ -202,7 +213,9 @@ public final class Waves {
     private volatile java.lang.Object asset_;
     /**
      * <code>string asset = 2;</code>
+     * @return The asset.
      */
+    @java.lang.Override
     public java.lang.String getAsset() {
       java.lang.Object ref = asset_;
       if (ref instanceof java.lang.String) {
@@ -217,7 +230,9 @@ public final class Waves {
     }
     /**
      * <code>string asset = 2;</code>
+     * @return The bytes for asset.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString
         getAssetBytes() {
       java.lang.Object ref = asset_;
@@ -240,7 +255,9 @@ public final class Waves {
      * </pre>
      *
      * <code>int64 fee = 3;</code>
+     * @return The fee.
      */
+    @java.lang.Override
     public long getFee() {
       return fee_;
     }
@@ -249,7 +266,9 @@ public final class Waves {
     private volatile java.lang.Object feeAsset_;
     /**
      * <code>string fee_asset = 4;</code>
+     * @return The feeAsset.
      */
+    @java.lang.Override
     public java.lang.String getFeeAsset() {
       java.lang.Object ref = feeAsset_;
       if (ref instanceof java.lang.String) {
@@ -264,7 +283,9 @@ public final class Waves {
     }
     /**
      * <code>string fee_asset = 4;</code>
+     * @return The bytes for feeAsset.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString
         getFeeAssetBytes() {
       java.lang.Object ref = feeAsset_;
@@ -283,7 +304,9 @@ public final class Waves {
     private volatile java.lang.Object to_;
     /**
      * <code>string to = 5;</code>
+     * @return The to.
      */
+    @java.lang.Override
     public java.lang.String getTo() {
       java.lang.Object ref = to_;
       if (ref instanceof java.lang.String) {
@@ -298,7 +321,9 @@ public final class Waves {
     }
     /**
      * <code>string to = 5;</code>
+     * @return The bytes for to.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString
         getToBytes() {
       java.lang.Object ref = to_;
@@ -321,7 +346,9 @@ public final class Waves {
      * </pre>
      *
      * <code>bytes attachment = 6;</code>
+     * @return The attachment.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString getAttachment() {
       return attachment_;
     }
@@ -722,12 +749,16 @@ public final class Waves {
       private long amount_ ;
       /**
        * <code>int64 amount = 1;</code>
+       * @return The amount.
        */
+      @java.lang.Override
       public long getAmount() {
         return amount_;
       }
       /**
        * <code>int64 amount = 1;</code>
+       * @param value The amount to set.
+       * @return This builder for chaining.
        */
       public Builder setAmount(long value) {
         
@@ -737,6 +768,7 @@ public final class Waves {
       }
       /**
        * <code>int64 amount = 1;</code>
+       * @return This builder for chaining.
        */
       public Builder clearAmount() {
         
@@ -748,6 +780,7 @@ public final class Waves {
       private java.lang.Object asset_ = "";
       /**
        * <code>string asset = 2;</code>
+       * @return The asset.
        */
       public java.lang.String getAsset() {
         java.lang.Object ref = asset_;
@@ -763,6 +796,7 @@ public final class Waves {
       }
       /**
        * <code>string asset = 2;</code>
+       * @return The bytes for asset.
        */
       public com.google.protobuf.ByteString
           getAssetBytes() {
@@ -779,6 +813,8 @@ public final class Waves {
       }
       /**
        * <code>string asset = 2;</code>
+       * @param value The asset to set.
+       * @return This builder for chaining.
        */
       public Builder setAsset(
           java.lang.String value) {
@@ -792,6 +828,7 @@ public final class Waves {
       }
       /**
        * <code>string asset = 2;</code>
+       * @return This builder for chaining.
        */
       public Builder clearAsset() {
         
@@ -801,6 +838,8 @@ public final class Waves {
       }
       /**
        * <code>string asset = 2;</code>
+       * @param value The bytes for asset to set.
+       * @return This builder for chaining.
        */
       public Builder setAssetBytes(
           com.google.protobuf.ByteString value) {
@@ -821,7 +860,9 @@ public final class Waves {
        * </pre>
        *
        * <code>int64 fee = 3;</code>
+       * @return The fee.
        */
+      @java.lang.Override
       public long getFee() {
         return fee_;
       }
@@ -831,6 +872,8 @@ public final class Waves {
        * </pre>
        *
        * <code>int64 fee = 3;</code>
+       * @param value The fee to set.
+       * @return This builder for chaining.
        */
       public Builder setFee(long value) {
         
@@ -844,6 +887,7 @@ public final class Waves {
        * </pre>
        *
        * <code>int64 fee = 3;</code>
+       * @return This builder for chaining.
        */
       public Builder clearFee() {
         
@@ -855,6 +899,7 @@ public final class Waves {
       private java.lang.Object feeAsset_ = "";
       /**
        * <code>string fee_asset = 4;</code>
+       * @return The feeAsset.
        */
       public java.lang.String getFeeAsset() {
         java.lang.Object ref = feeAsset_;
@@ -870,6 +915,7 @@ public final class Waves {
       }
       /**
        * <code>string fee_asset = 4;</code>
+       * @return The bytes for feeAsset.
        */
       public com.google.protobuf.ByteString
           getFeeAssetBytes() {
@@ -886,6 +932,8 @@ public final class Waves {
       }
       /**
        * <code>string fee_asset = 4;</code>
+       * @param value The feeAsset to set.
+       * @return This builder for chaining.
        */
       public Builder setFeeAsset(
           java.lang.String value) {
@@ -899,6 +947,7 @@ public final class Waves {
       }
       /**
        * <code>string fee_asset = 4;</code>
+       * @return This builder for chaining.
        */
       public Builder clearFeeAsset() {
         
@@ -908,6 +957,8 @@ public final class Waves {
       }
       /**
        * <code>string fee_asset = 4;</code>
+       * @param value The bytes for feeAsset to set.
+       * @return This builder for chaining.
        */
       public Builder setFeeAssetBytes(
           com.google.protobuf.ByteString value) {
@@ -924,6 +975,7 @@ public final class Waves {
       private java.lang.Object to_ = "";
       /**
        * <code>string to = 5;</code>
+       * @return The to.
        */
       public java.lang.String getTo() {
         java.lang.Object ref = to_;
@@ -939,6 +991,7 @@ public final class Waves {
       }
       /**
        * <code>string to = 5;</code>
+       * @return The bytes for to.
        */
       public com.google.protobuf.ByteString
           getToBytes() {
@@ -955,6 +1008,8 @@ public final class Waves {
       }
       /**
        * <code>string to = 5;</code>
+       * @param value The to to set.
+       * @return This builder for chaining.
        */
       public Builder setTo(
           java.lang.String value) {
@@ -968,6 +1023,7 @@ public final class Waves {
       }
       /**
        * <code>string to = 5;</code>
+       * @return This builder for chaining.
        */
       public Builder clearTo() {
         
@@ -977,6 +1033,8 @@ public final class Waves {
       }
       /**
        * <code>string to = 5;</code>
+       * @param value The bytes for to to set.
+       * @return This builder for chaining.
        */
       public Builder setToBytes(
           com.google.protobuf.ByteString value) {
@@ -997,7 +1055,9 @@ public final class Waves {
        * </pre>
        *
        * <code>bytes attachment = 6;</code>
+       * @return The attachment.
        */
+      @java.lang.Override
       public com.google.protobuf.ByteString getAttachment() {
         return attachment_;
       }
@@ -1007,6 +1067,8 @@ public final class Waves {
        * </pre>
        *
        * <code>bytes attachment = 6;</code>
+       * @param value The attachment to set.
+       * @return This builder for chaining.
        */
       public Builder setAttachment(com.google.protobuf.ByteString value) {
         if (value == null) {
@@ -1023,6 +1085,7 @@ public final class Waves {
        * </pre>
        *
        * <code>bytes attachment = 6;</code>
+       * @return This builder for chaining.
        */
       public Builder clearAttachment() {
         
@@ -1089,15 +1152,18 @@ public final class Waves {
 
     /**
      * <code>int64 amount = 1;</code>
+     * @return The amount.
      */
     long getAmount();
 
     /**
      * <code>string to = 2;</code>
+     * @return The to.
      */
     java.lang.String getTo();
     /**
      * <code>string to = 2;</code>
+     * @return The bytes for to.
      */
     com.google.protobuf.ByteString
         getToBytes();
@@ -1108,6 +1174,7 @@ public final class Waves {
      * </pre>
      *
      * <code>int64 fee = 3;</code>
+     * @return The fee.
      */
     long getFee();
   }
@@ -1118,7 +1185,7 @@ public final class Waves {
    *
    * Protobuf type {@code TW.Waves.Proto.LeaseMessage}
    */
-  public  static final class LeaseMessage extends
+  public static final class LeaseMessage extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:TW.Waves.Proto.LeaseMessage)
       LeaseMessageOrBuilder {
@@ -1213,7 +1280,9 @@ public final class Waves {
     private long amount_;
     /**
      * <code>int64 amount = 1;</code>
+     * @return The amount.
      */
+    @java.lang.Override
     public long getAmount() {
       return amount_;
     }
@@ -1222,7 +1291,9 @@ public final class Waves {
     private volatile java.lang.Object to_;
     /**
      * <code>string to = 2;</code>
+     * @return The to.
      */
+    @java.lang.Override
     public java.lang.String getTo() {
       java.lang.Object ref = to_;
       if (ref instanceof java.lang.String) {
@@ -1237,7 +1308,9 @@ public final class Waves {
     }
     /**
      * <code>string to = 2;</code>
+     * @return The bytes for to.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString
         getToBytes() {
       java.lang.Object ref = to_;
@@ -1260,7 +1333,9 @@ public final class Waves {
      * </pre>
      *
      * <code>int64 fee = 3;</code>
+     * @return The fee.
      */
+    @java.lang.Override
     public long getFee() {
       return fee_;
     }
@@ -1610,12 +1685,16 @@ public final class Waves {
       private long amount_ ;
       /**
        * <code>int64 amount = 1;</code>
+       * @return The amount.
        */
+      @java.lang.Override
       public long getAmount() {
         return amount_;
       }
       /**
        * <code>int64 amount = 1;</code>
+       * @param value The amount to set.
+       * @return This builder for chaining.
        */
       public Builder setAmount(long value) {
         
@@ -1625,6 +1704,7 @@ public final class Waves {
       }
       /**
        * <code>int64 amount = 1;</code>
+       * @return This builder for chaining.
        */
       public Builder clearAmount() {
         
@@ -1636,6 +1716,7 @@ public final class Waves {
       private java.lang.Object to_ = "";
       /**
        * <code>string to = 2;</code>
+       * @return The to.
        */
       public java.lang.String getTo() {
         java.lang.Object ref = to_;
@@ -1651,6 +1732,7 @@ public final class Waves {
       }
       /**
        * <code>string to = 2;</code>
+       * @return The bytes for to.
        */
       public com.google.protobuf.ByteString
           getToBytes() {
@@ -1667,6 +1749,8 @@ public final class Waves {
       }
       /**
        * <code>string to = 2;</code>
+       * @param value The to to set.
+       * @return This builder for chaining.
        */
       public Builder setTo(
           java.lang.String value) {
@@ -1680,6 +1764,7 @@ public final class Waves {
       }
       /**
        * <code>string to = 2;</code>
+       * @return This builder for chaining.
        */
       public Builder clearTo() {
         
@@ -1689,6 +1774,8 @@ public final class Waves {
       }
       /**
        * <code>string to = 2;</code>
+       * @param value The bytes for to to set.
+       * @return This builder for chaining.
        */
       public Builder setToBytes(
           com.google.protobuf.ByteString value) {
@@ -1709,7 +1796,9 @@ public final class Waves {
        * </pre>
        *
        * <code>int64 fee = 3;</code>
+       * @return The fee.
        */
+      @java.lang.Override
       public long getFee() {
         return fee_;
       }
@@ -1719,6 +1808,8 @@ public final class Waves {
        * </pre>
        *
        * <code>int64 fee = 3;</code>
+       * @param value The fee to set.
+       * @return This builder for chaining.
        */
       public Builder setFee(long value) {
         
@@ -1732,6 +1823,7 @@ public final class Waves {
        * </pre>
        *
        * <code>int64 fee = 3;</code>
+       * @return This builder for chaining.
        */
       public Builder clearFee() {
         
@@ -1798,16 +1890,19 @@ public final class Waves {
 
     /**
      * <code>string lease_id = 1;</code>
+     * @return The leaseId.
      */
     java.lang.String getLeaseId();
     /**
      * <code>string lease_id = 1;</code>
+     * @return The bytes for leaseId.
      */
     com.google.protobuf.ByteString
         getLeaseIdBytes();
 
     /**
      * <code>int64 fee = 2;</code>
+     * @return The fee.
      */
     long getFee();
   }
@@ -1818,7 +1913,7 @@ public final class Waves {
    *
    * Protobuf type {@code TW.Waves.Proto.CancelLeaseMessage}
    */
-  public  static final class CancelLeaseMessage extends
+  public static final class CancelLeaseMessage extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:TW.Waves.Proto.CancelLeaseMessage)
       CancelLeaseMessageOrBuilder {
@@ -1908,7 +2003,9 @@ public final class Waves {
     private volatile java.lang.Object leaseId_;
     /**
      * <code>string lease_id = 1;</code>
+     * @return The leaseId.
      */
+    @java.lang.Override
     public java.lang.String getLeaseId() {
       java.lang.Object ref = leaseId_;
       if (ref instanceof java.lang.String) {
@@ -1923,7 +2020,9 @@ public final class Waves {
     }
     /**
      * <code>string lease_id = 1;</code>
+     * @return The bytes for leaseId.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString
         getLeaseIdBytes() {
       java.lang.Object ref = leaseId_;
@@ -1942,7 +2041,9 @@ public final class Waves {
     private long fee_;
     /**
      * <code>int64 fee = 2;</code>
+     * @return The fee.
      */
+    @java.lang.Override
     public long getFee() {
       return fee_;
     }
@@ -2274,6 +2375,7 @@ public final class Waves {
       private java.lang.Object leaseId_ = "";
       /**
        * <code>string lease_id = 1;</code>
+       * @return The leaseId.
        */
       public java.lang.String getLeaseId() {
         java.lang.Object ref = leaseId_;
@@ -2289,6 +2391,7 @@ public final class Waves {
       }
       /**
        * <code>string lease_id = 1;</code>
+       * @return The bytes for leaseId.
        */
       public com.google.protobuf.ByteString
           getLeaseIdBytes() {
@@ -2305,6 +2408,8 @@ public final class Waves {
       }
       /**
        * <code>string lease_id = 1;</code>
+       * @param value The leaseId to set.
+       * @return This builder for chaining.
        */
       public Builder setLeaseId(
           java.lang.String value) {
@@ -2318,6 +2423,7 @@ public final class Waves {
       }
       /**
        * <code>string lease_id = 1;</code>
+       * @return This builder for chaining.
        */
       public Builder clearLeaseId() {
         
@@ -2327,6 +2433,8 @@ public final class Waves {
       }
       /**
        * <code>string lease_id = 1;</code>
+       * @param value The bytes for leaseId to set.
+       * @return This builder for chaining.
        */
       public Builder setLeaseIdBytes(
           com.google.protobuf.ByteString value) {
@@ -2343,12 +2451,16 @@ public final class Waves {
       private long fee_ ;
       /**
        * <code>int64 fee = 2;</code>
+       * @return The fee.
        */
+      @java.lang.Override
       public long getFee() {
         return fee_;
       }
       /**
        * <code>int64 fee = 2;</code>
+       * @param value The fee to set.
+       * @return This builder for chaining.
        */
       public Builder setFee(long value) {
         
@@ -2358,6 +2470,7 @@ public final class Waves {
       }
       /**
        * <code>int64 fee = 2;</code>
+       * @return This builder for chaining.
        */
       public Builder clearFee() {
         
@@ -2428,20 +2541,24 @@ public final class Waves {
      * </pre>
      *
      * <code>int64 timestamp = 1;</code>
+     * @return The timestamp.
      */
     long getTimestamp();
 
     /**
      * <code>bytes private_key = 2;</code>
+     * @return The privateKey.
      */
     com.google.protobuf.ByteString getPrivateKey();
 
     /**
      * <code>.TW.Waves.Proto.TransferMessage transfer_message = 3;</code>
+     * @return Whether the transferMessage field is set.
      */
     boolean hasTransferMessage();
     /**
      * <code>.TW.Waves.Proto.TransferMessage transfer_message = 3;</code>
+     * @return The transferMessage.
      */
     wallet.core.jni.proto.Waves.TransferMessage getTransferMessage();
     /**
@@ -2451,10 +2568,12 @@ public final class Waves {
 
     /**
      * <code>.TW.Waves.Proto.LeaseMessage lease_message = 4;</code>
+     * @return Whether the leaseMessage field is set.
      */
     boolean hasLeaseMessage();
     /**
      * <code>.TW.Waves.Proto.LeaseMessage lease_message = 4;</code>
+     * @return The leaseMessage.
      */
     wallet.core.jni.proto.Waves.LeaseMessage getLeaseMessage();
     /**
@@ -2464,10 +2583,12 @@ public final class Waves {
 
     /**
      * <code>.TW.Waves.Proto.CancelLeaseMessage cancel_lease_message = 5;</code>
+     * @return Whether the cancelLeaseMessage field is set.
      */
     boolean hasCancelLeaseMessage();
     /**
      * <code>.TW.Waves.Proto.CancelLeaseMessage cancel_lease_message = 5;</code>
+     * @return The cancelLeaseMessage.
      */
     wallet.core.jni.proto.Waves.CancelLeaseMessage getCancelLeaseMessage();
     /**
@@ -2484,7 +2605,7 @@ public final class Waves {
    *
    * Protobuf type {@code TW.Waves.Proto.SigningInput}
    */
-  public  static final class SigningInput extends
+  public static final class SigningInput extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:TW.Waves.Proto.SigningInput)
       SigningInputOrBuilder {
@@ -2614,7 +2735,8 @@ public final class Waves {
     private int messageOneofCase_ = 0;
     private java.lang.Object messageOneof_;
     public enum MessageOneofCase
-        implements com.google.protobuf.Internal.EnumLite {
+        implements com.google.protobuf.Internal.EnumLite,
+            com.google.protobuf.AbstractMessage.InternalOneOfEnum {
       TRANSFER_MESSAGE(3),
       LEASE_MESSAGE(4),
       CANCEL_LEASE_MESSAGE(5),
@@ -2624,6 +2746,8 @@ public final class Waves {
         this.value = value;
       }
       /**
+       * @param value The number of the enum to look for.
+       * @return The enum associated with the given number.
        * @deprecated Use {@link #forNumber(int)} instead.
        */
       @java.lang.Deprecated
@@ -2659,7 +2783,9 @@ public final class Waves {
      * </pre>
      *
      * <code>int64 timestamp = 1;</code>
+     * @return The timestamp.
      */
+    @java.lang.Override
     public long getTimestamp() {
       return timestamp_;
     }
@@ -2668,7 +2794,9 @@ public final class Waves {
     private com.google.protobuf.ByteString privateKey_;
     /**
      * <code>bytes private_key = 2;</code>
+     * @return The privateKey.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString getPrivateKey() {
       return privateKey_;
     }
@@ -2676,13 +2804,17 @@ public final class Waves {
     public static final int TRANSFER_MESSAGE_FIELD_NUMBER = 3;
     /**
      * <code>.TW.Waves.Proto.TransferMessage transfer_message = 3;</code>
+     * @return Whether the transferMessage field is set.
      */
+    @java.lang.Override
     public boolean hasTransferMessage() {
       return messageOneofCase_ == 3;
     }
     /**
      * <code>.TW.Waves.Proto.TransferMessage transfer_message = 3;</code>
+     * @return The transferMessage.
      */
+    @java.lang.Override
     public wallet.core.jni.proto.Waves.TransferMessage getTransferMessage() {
       if (messageOneofCase_ == 3) {
          return (wallet.core.jni.proto.Waves.TransferMessage) messageOneof_;
@@ -2692,6 +2824,7 @@ public final class Waves {
     /**
      * <code>.TW.Waves.Proto.TransferMessage transfer_message = 3;</code>
      */
+    @java.lang.Override
     public wallet.core.jni.proto.Waves.TransferMessageOrBuilder getTransferMessageOrBuilder() {
       if (messageOneofCase_ == 3) {
          return (wallet.core.jni.proto.Waves.TransferMessage) messageOneof_;
@@ -2702,13 +2835,17 @@ public final class Waves {
     public static final int LEASE_MESSAGE_FIELD_NUMBER = 4;
     /**
      * <code>.TW.Waves.Proto.LeaseMessage lease_message = 4;</code>
+     * @return Whether the leaseMessage field is set.
      */
+    @java.lang.Override
     public boolean hasLeaseMessage() {
       return messageOneofCase_ == 4;
     }
     /**
      * <code>.TW.Waves.Proto.LeaseMessage lease_message = 4;</code>
+     * @return The leaseMessage.
      */
+    @java.lang.Override
     public wallet.core.jni.proto.Waves.LeaseMessage getLeaseMessage() {
       if (messageOneofCase_ == 4) {
          return (wallet.core.jni.proto.Waves.LeaseMessage) messageOneof_;
@@ -2718,6 +2855,7 @@ public final class Waves {
     /**
      * <code>.TW.Waves.Proto.LeaseMessage lease_message = 4;</code>
      */
+    @java.lang.Override
     public wallet.core.jni.proto.Waves.LeaseMessageOrBuilder getLeaseMessageOrBuilder() {
       if (messageOneofCase_ == 4) {
          return (wallet.core.jni.proto.Waves.LeaseMessage) messageOneof_;
@@ -2728,13 +2866,17 @@ public final class Waves {
     public static final int CANCEL_LEASE_MESSAGE_FIELD_NUMBER = 5;
     /**
      * <code>.TW.Waves.Proto.CancelLeaseMessage cancel_lease_message = 5;</code>
+     * @return Whether the cancelLeaseMessage field is set.
      */
+    @java.lang.Override
     public boolean hasCancelLeaseMessage() {
       return messageOneofCase_ == 5;
     }
     /**
      * <code>.TW.Waves.Proto.CancelLeaseMessage cancel_lease_message = 5;</code>
+     * @return The cancelLeaseMessage.
      */
+    @java.lang.Override
     public wallet.core.jni.proto.Waves.CancelLeaseMessage getCancelLeaseMessage() {
       if (messageOneofCase_ == 5) {
          return (wallet.core.jni.proto.Waves.CancelLeaseMessage) messageOneof_;
@@ -2744,6 +2886,7 @@ public final class Waves {
     /**
      * <code>.TW.Waves.Proto.CancelLeaseMessage cancel_lease_message = 5;</code>
      */
+    @java.lang.Override
     public wallet.core.jni.proto.Waves.CancelLeaseMessageOrBuilder getCancelLeaseMessageOrBuilder() {
       if (messageOneofCase_ == 5) {
          return (wallet.core.jni.proto.Waves.CancelLeaseMessage) messageOneof_;
@@ -3192,7 +3335,9 @@ public final class Waves {
        * </pre>
        *
        * <code>int64 timestamp = 1;</code>
+       * @return The timestamp.
        */
+      @java.lang.Override
       public long getTimestamp() {
         return timestamp_;
       }
@@ -3202,6 +3347,8 @@ public final class Waves {
        * </pre>
        *
        * <code>int64 timestamp = 1;</code>
+       * @param value The timestamp to set.
+       * @return This builder for chaining.
        */
       public Builder setTimestamp(long value) {
         
@@ -3215,6 +3362,7 @@ public final class Waves {
        * </pre>
        *
        * <code>int64 timestamp = 1;</code>
+       * @return This builder for chaining.
        */
       public Builder clearTimestamp() {
         
@@ -3226,12 +3374,16 @@ public final class Waves {
       private com.google.protobuf.ByteString privateKey_ = com.google.protobuf.ByteString.EMPTY;
       /**
        * <code>bytes private_key = 2;</code>
+       * @return The privateKey.
        */
+      @java.lang.Override
       public com.google.protobuf.ByteString getPrivateKey() {
         return privateKey_;
       }
       /**
        * <code>bytes private_key = 2;</code>
+       * @param value The privateKey to set.
+       * @return This builder for chaining.
        */
       public Builder setPrivateKey(com.google.protobuf.ByteString value) {
         if (value == null) {
@@ -3244,6 +3396,7 @@ public final class Waves {
       }
       /**
        * <code>bytes private_key = 2;</code>
+       * @return This builder for chaining.
        */
       public Builder clearPrivateKey() {
         
@@ -3256,13 +3409,17 @@ public final class Waves {
           wallet.core.jni.proto.Waves.TransferMessage, wallet.core.jni.proto.Waves.TransferMessage.Builder, wallet.core.jni.proto.Waves.TransferMessageOrBuilder> transferMessageBuilder_;
       /**
        * <code>.TW.Waves.Proto.TransferMessage transfer_message = 3;</code>
+       * @return Whether the transferMessage field is set.
        */
+      @java.lang.Override
       public boolean hasTransferMessage() {
         return messageOneofCase_ == 3;
       }
       /**
        * <code>.TW.Waves.Proto.TransferMessage transfer_message = 3;</code>
+       * @return The transferMessage.
        */
+      @java.lang.Override
       public wallet.core.jni.proto.Waves.TransferMessage getTransferMessage() {
         if (transferMessageBuilder_ == null) {
           if (messageOneofCase_ == 3) {
@@ -3356,6 +3513,7 @@ public final class Waves {
       /**
        * <code>.TW.Waves.Proto.TransferMessage transfer_message = 3;</code>
        */
+      @java.lang.Override
       public wallet.core.jni.proto.Waves.TransferMessageOrBuilder getTransferMessageOrBuilder() {
         if ((messageOneofCase_ == 3) && (transferMessageBuilder_ != null)) {
           return transferMessageBuilder_.getMessageOrBuilder();
@@ -3392,13 +3550,17 @@ public final class Waves {
           wallet.core.jni.proto.Waves.LeaseMessage, wallet.core.jni.proto.Waves.LeaseMessage.Builder, wallet.core.jni.proto.Waves.LeaseMessageOrBuilder> leaseMessageBuilder_;
       /**
        * <code>.TW.Waves.Proto.LeaseMessage lease_message = 4;</code>
+       * @return Whether the leaseMessage field is set.
        */
+      @java.lang.Override
       public boolean hasLeaseMessage() {
         return messageOneofCase_ == 4;
       }
       /**
        * <code>.TW.Waves.Proto.LeaseMessage lease_message = 4;</code>
+       * @return The leaseMessage.
        */
+      @java.lang.Override
       public wallet.core.jni.proto.Waves.LeaseMessage getLeaseMessage() {
         if (leaseMessageBuilder_ == null) {
           if (messageOneofCase_ == 4) {
@@ -3492,6 +3654,7 @@ public final class Waves {
       /**
        * <code>.TW.Waves.Proto.LeaseMessage lease_message = 4;</code>
        */
+      @java.lang.Override
       public wallet.core.jni.proto.Waves.LeaseMessageOrBuilder getLeaseMessageOrBuilder() {
         if ((messageOneofCase_ == 4) && (leaseMessageBuilder_ != null)) {
           return leaseMessageBuilder_.getMessageOrBuilder();
@@ -3528,13 +3691,17 @@ public final class Waves {
           wallet.core.jni.proto.Waves.CancelLeaseMessage, wallet.core.jni.proto.Waves.CancelLeaseMessage.Builder, wallet.core.jni.proto.Waves.CancelLeaseMessageOrBuilder> cancelLeaseMessageBuilder_;
       /**
        * <code>.TW.Waves.Proto.CancelLeaseMessage cancel_lease_message = 5;</code>
+       * @return Whether the cancelLeaseMessage field is set.
        */
+      @java.lang.Override
       public boolean hasCancelLeaseMessage() {
         return messageOneofCase_ == 5;
       }
       /**
        * <code>.TW.Waves.Proto.CancelLeaseMessage cancel_lease_message = 5;</code>
+       * @return The cancelLeaseMessage.
        */
+      @java.lang.Override
       public wallet.core.jni.proto.Waves.CancelLeaseMessage getCancelLeaseMessage() {
         if (cancelLeaseMessageBuilder_ == null) {
           if (messageOneofCase_ == 5) {
@@ -3628,6 +3795,7 @@ public final class Waves {
       /**
        * <code>.TW.Waves.Proto.CancelLeaseMessage cancel_lease_message = 5;</code>
        */
+      @java.lang.Override
       public wallet.core.jni.proto.Waves.CancelLeaseMessageOrBuilder getCancelLeaseMessageOrBuilder() {
         if ((messageOneofCase_ == 5) && (cancelLeaseMessageBuilder_ != null)) {
           return cancelLeaseMessageBuilder_.getMessageOrBuilder();
@@ -3718,15 +3886,18 @@ public final class Waves {
 
     /**
      * <code>bytes signature = 1;</code>
+     * @return The signature.
      */
     com.google.protobuf.ByteString getSignature();
 
     /**
      * <code>string json = 2;</code>
+     * @return The json.
      */
     java.lang.String getJson();
     /**
      * <code>string json = 2;</code>
+     * @return The bytes for json.
      */
     com.google.protobuf.ByteString
         getJsonBytes();
@@ -3738,7 +3909,7 @@ public final class Waves {
    *
    * Protobuf type {@code TW.Waves.Proto.SigningOutput}
    */
-  public  static final class SigningOutput extends
+  public static final class SigningOutput extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:TW.Waves.Proto.SigningOutput)
       SigningOutputOrBuilder {
@@ -3829,7 +4000,9 @@ public final class Waves {
     private com.google.protobuf.ByteString signature_;
     /**
      * <code>bytes signature = 1;</code>
+     * @return The signature.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString getSignature() {
       return signature_;
     }
@@ -3838,7 +4011,9 @@ public final class Waves {
     private volatile java.lang.Object json_;
     /**
      * <code>string json = 2;</code>
+     * @return The json.
      */
+    @java.lang.Override
     public java.lang.String getJson() {
       java.lang.Object ref = json_;
       if (ref instanceof java.lang.String) {
@@ -3853,7 +4028,9 @@ public final class Waves {
     }
     /**
      * <code>string json = 2;</code>
+     * @return The bytes for json.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString
         getJsonBytes() {
       java.lang.Object ref = json_;
@@ -4194,12 +4371,16 @@ public final class Waves {
       private com.google.protobuf.ByteString signature_ = com.google.protobuf.ByteString.EMPTY;
       /**
        * <code>bytes signature = 1;</code>
+       * @return The signature.
        */
+      @java.lang.Override
       public com.google.protobuf.ByteString getSignature() {
         return signature_;
       }
       /**
        * <code>bytes signature = 1;</code>
+       * @param value The signature to set.
+       * @return This builder for chaining.
        */
       public Builder setSignature(com.google.protobuf.ByteString value) {
         if (value == null) {
@@ -4212,6 +4393,7 @@ public final class Waves {
       }
       /**
        * <code>bytes signature = 1;</code>
+       * @return This builder for chaining.
        */
       public Builder clearSignature() {
         
@@ -4223,6 +4405,7 @@ public final class Waves {
       private java.lang.Object json_ = "";
       /**
        * <code>string json = 2;</code>
+       * @return The json.
        */
       public java.lang.String getJson() {
         java.lang.Object ref = json_;
@@ -4238,6 +4421,7 @@ public final class Waves {
       }
       /**
        * <code>string json = 2;</code>
+       * @return The bytes for json.
        */
       public com.google.protobuf.ByteString
           getJsonBytes() {
@@ -4254,6 +4438,8 @@ public final class Waves {
       }
       /**
        * <code>string json = 2;</code>
+       * @param value The json to set.
+       * @return This builder for chaining.
        */
       public Builder setJson(
           java.lang.String value) {
@@ -4267,6 +4453,7 @@ public final class Waves {
       }
       /**
        * <code>string json = 2;</code>
+       * @return This builder for chaining.
        */
       public Builder clearJson() {
         
@@ -4276,6 +4463,8 @@ public final class Waves {
       }
       /**
        * <code>string json = 2;</code>
+       * @param value The bytes for json to set.
+       * @return This builder for chaining.
        */
       public Builder setJsonBytes(
           com.google.protobuf.ByteString value) {

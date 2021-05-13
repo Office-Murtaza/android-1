@@ -24,6 +24,7 @@ public final class Filecoin {
      * </pre>
      *
      * <code>bytes private_key = 1;</code>
+     * @return The privateKey.
      */
     com.google.protobuf.ByteString getPrivateKey();
 
@@ -32,18 +33,20 @@ public final class Filecoin {
      * Recipient's address.
      * </pre>
      *
-     * <code>string to_address = 2;</code>
+     * <code>string to = 2;</code>
+     * @return The to.
      */
-    java.lang.String getToAddress();
+    java.lang.String getTo();
     /**
      * <pre>
      * Recipient's address.
      * </pre>
      *
-     * <code>string to_address = 2;</code>
+     * <code>string to = 2;</code>
+     * @return The bytes for to.
      */
     com.google.protobuf.ByteString
-        getToAddressBytes();
+        getToBytes();
 
     /**
      * <pre>
@@ -51,6 +54,7 @@ public final class Filecoin {
      * </pre>
      *
      * <code>uint64 nonce = 3;</code>
+     * @return The nonce.
      */
     long getNonce();
 
@@ -60,26 +64,39 @@ public final class Filecoin {
      * </pre>
      *
      * <code>bytes value = 4;</code>
+     * @return The value.
      */
     com.google.protobuf.ByteString getValue();
-
-    /**
-     * <pre>
-     * Gas price.
-     * </pre>
-     *
-     * <code>bytes gas_price = 5;</code>
-     */
-    com.google.protobuf.ByteString getGasPrice();
 
     /**
      * <pre>
      * Gas limit.
      * </pre>
      *
-     * <code>uint64 gas_limit = 6;</code>
+     * <code>int64 gas_limit = 5;</code>
+     * @return The gasLimit.
      */
     long getGasLimit();
+
+    /**
+     * <pre>
+     * Gas fee cap.
+     * </pre>
+     *
+     * <code>bytes gas_fee_cap = 6;</code>
+     * @return The gasFeeCap.
+     */
+    com.google.protobuf.ByteString getGasFeeCap();
+
+    /**
+     * <pre>
+     * Gas premium.
+     * </pre>
+     *
+     * <code>bytes gas_premium = 7;</code>
+     * @return The gasPremium.
+     */
+    com.google.protobuf.ByteString getGasPremium();
   }
   /**
    * <pre>
@@ -88,7 +105,7 @@ public final class Filecoin {
    *
    * Protobuf type {@code TW.Filecoin.Proto.SigningInput}
    */
-  public  static final class SigningInput extends
+  public static final class SigningInput extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:TW.Filecoin.Proto.SigningInput)
       SigningInputOrBuilder {
@@ -99,9 +116,10 @@ public final class Filecoin {
     }
     private SigningInput() {
       privateKey_ = com.google.protobuf.ByteString.EMPTY;
-      toAddress_ = "";
+      to_ = "";
       value_ = com.google.protobuf.ByteString.EMPTY;
-      gasPrice_ = com.google.protobuf.ByteString.EMPTY;
+      gasFeeCap_ = com.google.protobuf.ByteString.EMPTY;
+      gasPremium_ = com.google.protobuf.ByteString.EMPTY;
     }
 
     @java.lang.Override
@@ -142,7 +160,7 @@ public final class Filecoin {
             case 18: {
               java.lang.String s = input.readStringRequireUtf8();
 
-              toAddress_ = s;
+              to_ = s;
               break;
             }
             case 24: {
@@ -155,14 +173,19 @@ public final class Filecoin {
               value_ = input.readBytes();
               break;
             }
-            case 42: {
+            case 40: {
 
-              gasPrice_ = input.readBytes();
+              gasLimit_ = input.readInt64();
               break;
             }
-            case 48: {
+            case 50: {
 
-              gasLimit_ = input.readUInt64();
+              gasFeeCap_ = input.readBytes();
+              break;
+            }
+            case 58: {
+
+              gasPremium_ = input.readBytes();
               break;
             }
             default: {
@@ -205,29 +228,33 @@ public final class Filecoin {
      * </pre>
      *
      * <code>bytes private_key = 1;</code>
+     * @return The privateKey.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString getPrivateKey() {
       return privateKey_;
     }
 
-    public static final int TO_ADDRESS_FIELD_NUMBER = 2;
-    private volatile java.lang.Object toAddress_;
+    public static final int TO_FIELD_NUMBER = 2;
+    private volatile java.lang.Object to_;
     /**
      * <pre>
      * Recipient's address.
      * </pre>
      *
-     * <code>string to_address = 2;</code>
+     * <code>string to = 2;</code>
+     * @return The to.
      */
-    public java.lang.String getToAddress() {
-      java.lang.Object ref = toAddress_;
+    @java.lang.Override
+    public java.lang.String getTo() {
+      java.lang.Object ref = to_;
       if (ref instanceof java.lang.String) {
         return (java.lang.String) ref;
       } else {
         com.google.protobuf.ByteString bs = 
             (com.google.protobuf.ByteString) ref;
         java.lang.String s = bs.toStringUtf8();
-        toAddress_ = s;
+        to_ = s;
         return s;
       }
     }
@@ -236,16 +263,18 @@ public final class Filecoin {
      * Recipient's address.
      * </pre>
      *
-     * <code>string to_address = 2;</code>
+     * <code>string to = 2;</code>
+     * @return The bytes for to.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString
-        getToAddressBytes() {
-      java.lang.Object ref = toAddress_;
+        getToBytes() {
+      java.lang.Object ref = to_;
       if (ref instanceof java.lang.String) {
         com.google.protobuf.ByteString b = 
             com.google.protobuf.ByteString.copyFromUtf8(
                 (java.lang.String) ref);
-        toAddress_ = b;
+        to_ = b;
         return b;
       } else {
         return (com.google.protobuf.ByteString) ref;
@@ -260,7 +289,9 @@ public final class Filecoin {
      * </pre>
      *
      * <code>uint64 nonce = 3;</code>
+     * @return The nonce.
      */
+    @java.lang.Override
     public long getNonce() {
       return nonce_;
     }
@@ -273,35 +304,56 @@ public final class Filecoin {
      * </pre>
      *
      * <code>bytes value = 4;</code>
+     * @return The value.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString getValue() {
       return value_;
     }
 
-    public static final int GAS_PRICE_FIELD_NUMBER = 5;
-    private com.google.protobuf.ByteString gasPrice_;
-    /**
-     * <pre>
-     * Gas price.
-     * </pre>
-     *
-     * <code>bytes gas_price = 5;</code>
-     */
-    public com.google.protobuf.ByteString getGasPrice() {
-      return gasPrice_;
-    }
-
-    public static final int GAS_LIMIT_FIELD_NUMBER = 6;
+    public static final int GAS_LIMIT_FIELD_NUMBER = 5;
     private long gasLimit_;
     /**
      * <pre>
      * Gas limit.
      * </pre>
      *
-     * <code>uint64 gas_limit = 6;</code>
+     * <code>int64 gas_limit = 5;</code>
+     * @return The gasLimit.
      */
+    @java.lang.Override
     public long getGasLimit() {
       return gasLimit_;
+    }
+
+    public static final int GAS_FEE_CAP_FIELD_NUMBER = 6;
+    private com.google.protobuf.ByteString gasFeeCap_;
+    /**
+     * <pre>
+     * Gas fee cap.
+     * </pre>
+     *
+     * <code>bytes gas_fee_cap = 6;</code>
+     * @return The gasFeeCap.
+     */
+    @java.lang.Override
+    public com.google.protobuf.ByteString getGasFeeCap() {
+      return gasFeeCap_;
+    }
+
+    public static final int GAS_PREMIUM_FIELD_NUMBER = 7;
+    private com.google.protobuf.ByteString gasPremium_;
+    /**
+     * <pre>
+     * Gas premium.
+     * </pre>
+     *
+     * <code>bytes gas_premium = 7;</code>
+     * @return The gasPremium.
+     */
+    @java.lang.Override
+    public com.google.protobuf.ByteString getGasPremium() {
+      return gasPremium_;
     }
 
     private byte memoizedIsInitialized = -1;
@@ -321,8 +373,8 @@ public final class Filecoin {
       if (!privateKey_.isEmpty()) {
         output.writeBytes(1, privateKey_);
       }
-      if (!getToAddressBytes().isEmpty()) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 2, toAddress_);
+      if (!getToBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 2, to_);
       }
       if (nonce_ != 0L) {
         output.writeUInt64(3, nonce_);
@@ -330,11 +382,14 @@ public final class Filecoin {
       if (!value_.isEmpty()) {
         output.writeBytes(4, value_);
       }
-      if (!gasPrice_.isEmpty()) {
-        output.writeBytes(5, gasPrice_);
-      }
       if (gasLimit_ != 0L) {
-        output.writeUInt64(6, gasLimit_);
+        output.writeInt64(5, gasLimit_);
+      }
+      if (!gasFeeCap_.isEmpty()) {
+        output.writeBytes(6, gasFeeCap_);
+      }
+      if (!gasPremium_.isEmpty()) {
+        output.writeBytes(7, gasPremium_);
       }
       unknownFields.writeTo(output);
     }
@@ -349,8 +404,8 @@ public final class Filecoin {
         size += com.google.protobuf.CodedOutputStream
           .computeBytesSize(1, privateKey_);
       }
-      if (!getToAddressBytes().isEmpty()) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, toAddress_);
+      if (!getToBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, to_);
       }
       if (nonce_ != 0L) {
         size += com.google.protobuf.CodedOutputStream
@@ -360,13 +415,17 @@ public final class Filecoin {
         size += com.google.protobuf.CodedOutputStream
           .computeBytesSize(4, value_);
       }
-      if (!gasPrice_.isEmpty()) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeBytesSize(5, gasPrice_);
-      }
       if (gasLimit_ != 0L) {
         size += com.google.protobuf.CodedOutputStream
-          .computeUInt64Size(6, gasLimit_);
+          .computeInt64Size(5, gasLimit_);
+      }
+      if (!gasFeeCap_.isEmpty()) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(6, gasFeeCap_);
+      }
+      if (!gasPremium_.isEmpty()) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(7, gasPremium_);
       }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
@@ -385,16 +444,18 @@ public final class Filecoin {
 
       if (!getPrivateKey()
           .equals(other.getPrivateKey())) return false;
-      if (!getToAddress()
-          .equals(other.getToAddress())) return false;
+      if (!getTo()
+          .equals(other.getTo())) return false;
       if (getNonce()
           != other.getNonce()) return false;
       if (!getValue()
           .equals(other.getValue())) return false;
-      if (!getGasPrice()
-          .equals(other.getGasPrice())) return false;
       if (getGasLimit()
           != other.getGasLimit()) return false;
+      if (!getGasFeeCap()
+          .equals(other.getGasFeeCap())) return false;
+      if (!getGasPremium()
+          .equals(other.getGasPremium())) return false;
       if (!unknownFields.equals(other.unknownFields)) return false;
       return true;
     }
@@ -408,18 +469,20 @@ public final class Filecoin {
       hash = (19 * hash) + getDescriptor().hashCode();
       hash = (37 * hash) + PRIVATE_KEY_FIELD_NUMBER;
       hash = (53 * hash) + getPrivateKey().hashCode();
-      hash = (37 * hash) + TO_ADDRESS_FIELD_NUMBER;
-      hash = (53 * hash) + getToAddress().hashCode();
+      hash = (37 * hash) + TO_FIELD_NUMBER;
+      hash = (53 * hash) + getTo().hashCode();
       hash = (37 * hash) + NONCE_FIELD_NUMBER;
       hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
           getNonce());
       hash = (37 * hash) + VALUE_FIELD_NUMBER;
       hash = (53 * hash) + getValue().hashCode();
-      hash = (37 * hash) + GAS_PRICE_FIELD_NUMBER;
-      hash = (53 * hash) + getGasPrice().hashCode();
       hash = (37 * hash) + GAS_LIMIT_FIELD_NUMBER;
       hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
           getGasLimit());
+      hash = (37 * hash) + GAS_FEE_CAP_FIELD_NUMBER;
+      hash = (53 * hash) + getGasFeeCap().hashCode();
+      hash = (37 * hash) + GAS_PREMIUM_FIELD_NUMBER;
+      hash = (53 * hash) + getGasPremium().hashCode();
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
       return hash;
@@ -559,15 +622,17 @@ public final class Filecoin {
         super.clear();
         privateKey_ = com.google.protobuf.ByteString.EMPTY;
 
-        toAddress_ = "";
+        to_ = "";
 
         nonce_ = 0L;
 
         value_ = com.google.protobuf.ByteString.EMPTY;
 
-        gasPrice_ = com.google.protobuf.ByteString.EMPTY;
-
         gasLimit_ = 0L;
+
+        gasFeeCap_ = com.google.protobuf.ByteString.EMPTY;
+
+        gasPremium_ = com.google.protobuf.ByteString.EMPTY;
 
         return this;
       }
@@ -596,11 +661,12 @@ public final class Filecoin {
       public wallet.core.jni.proto.Filecoin.SigningInput buildPartial() {
         wallet.core.jni.proto.Filecoin.SigningInput result = new wallet.core.jni.proto.Filecoin.SigningInput(this);
         result.privateKey_ = privateKey_;
-        result.toAddress_ = toAddress_;
+        result.to_ = to_;
         result.nonce_ = nonce_;
         result.value_ = value_;
-        result.gasPrice_ = gasPrice_;
         result.gasLimit_ = gasLimit_;
+        result.gasFeeCap_ = gasFeeCap_;
+        result.gasPremium_ = gasPremium_;
         onBuilt();
         return result;
       }
@@ -652,8 +718,8 @@ public final class Filecoin {
         if (other.getPrivateKey() != com.google.protobuf.ByteString.EMPTY) {
           setPrivateKey(other.getPrivateKey());
         }
-        if (!other.getToAddress().isEmpty()) {
-          toAddress_ = other.toAddress_;
+        if (!other.getTo().isEmpty()) {
+          to_ = other.to_;
           onChanged();
         }
         if (other.getNonce() != 0L) {
@@ -662,11 +728,14 @@ public final class Filecoin {
         if (other.getValue() != com.google.protobuf.ByteString.EMPTY) {
           setValue(other.getValue());
         }
-        if (other.getGasPrice() != com.google.protobuf.ByteString.EMPTY) {
-          setGasPrice(other.getGasPrice());
-        }
         if (other.getGasLimit() != 0L) {
           setGasLimit(other.getGasLimit());
+        }
+        if (other.getGasFeeCap() != com.google.protobuf.ByteString.EMPTY) {
+          setGasFeeCap(other.getGasFeeCap());
+        }
+        if (other.getGasPremium() != com.google.protobuf.ByteString.EMPTY) {
+          setGasPremium(other.getGasPremium());
         }
         this.mergeUnknownFields(other.unknownFields);
         onChanged();
@@ -704,7 +773,9 @@ public final class Filecoin {
        * </pre>
        *
        * <code>bytes private_key = 1;</code>
+       * @return The privateKey.
        */
+      @java.lang.Override
       public com.google.protobuf.ByteString getPrivateKey() {
         return privateKey_;
       }
@@ -714,6 +785,8 @@ public final class Filecoin {
        * </pre>
        *
        * <code>bytes private_key = 1;</code>
+       * @param value The privateKey to set.
+       * @return This builder for chaining.
        */
       public Builder setPrivateKey(com.google.protobuf.ByteString value) {
         if (value == null) {
@@ -730,6 +803,7 @@ public final class Filecoin {
        * </pre>
        *
        * <code>bytes private_key = 1;</code>
+       * @return This builder for chaining.
        */
       public Builder clearPrivateKey() {
         
@@ -738,21 +812,22 @@ public final class Filecoin {
         return this;
       }
 
-      private java.lang.Object toAddress_ = "";
+      private java.lang.Object to_ = "";
       /**
        * <pre>
        * Recipient's address.
        * </pre>
        *
-       * <code>string to_address = 2;</code>
+       * <code>string to = 2;</code>
+       * @return The to.
        */
-      public java.lang.String getToAddress() {
-        java.lang.Object ref = toAddress_;
+      public java.lang.String getTo() {
+        java.lang.Object ref = to_;
         if (!(ref instanceof java.lang.String)) {
           com.google.protobuf.ByteString bs =
               (com.google.protobuf.ByteString) ref;
           java.lang.String s = bs.toStringUtf8();
-          toAddress_ = s;
+          to_ = s;
           return s;
         } else {
           return (java.lang.String) ref;
@@ -763,16 +838,17 @@ public final class Filecoin {
        * Recipient's address.
        * </pre>
        *
-       * <code>string to_address = 2;</code>
+       * <code>string to = 2;</code>
+       * @return The bytes for to.
        */
       public com.google.protobuf.ByteString
-          getToAddressBytes() {
-        java.lang.Object ref = toAddress_;
+          getToBytes() {
+        java.lang.Object ref = to_;
         if (ref instanceof String) {
           com.google.protobuf.ByteString b = 
               com.google.protobuf.ByteString.copyFromUtf8(
                   (java.lang.String) ref);
-          toAddress_ = b;
+          to_ = b;
           return b;
         } else {
           return (com.google.protobuf.ByteString) ref;
@@ -783,15 +859,17 @@ public final class Filecoin {
        * Recipient's address.
        * </pre>
        *
-       * <code>string to_address = 2;</code>
+       * <code>string to = 2;</code>
+       * @param value The to to set.
+       * @return This builder for chaining.
        */
-      public Builder setToAddress(
+      public Builder setTo(
           java.lang.String value) {
         if (value == null) {
     throw new NullPointerException();
   }
   
-        toAddress_ = value;
+        to_ = value;
         onChanged();
         return this;
       }
@@ -800,11 +878,12 @@ public final class Filecoin {
        * Recipient's address.
        * </pre>
        *
-       * <code>string to_address = 2;</code>
+       * <code>string to = 2;</code>
+       * @return This builder for chaining.
        */
-      public Builder clearToAddress() {
+      public Builder clearTo() {
         
-        toAddress_ = getDefaultInstance().getToAddress();
+        to_ = getDefaultInstance().getTo();
         onChanged();
         return this;
       }
@@ -813,16 +892,18 @@ public final class Filecoin {
        * Recipient's address.
        * </pre>
        *
-       * <code>string to_address = 2;</code>
+       * <code>string to = 2;</code>
+       * @param value The bytes for to to set.
+       * @return This builder for chaining.
        */
-      public Builder setToAddressBytes(
+      public Builder setToBytes(
           com.google.protobuf.ByteString value) {
         if (value == null) {
     throw new NullPointerException();
   }
   checkByteStringIsUtf8(value);
         
-        toAddress_ = value;
+        to_ = value;
         onChanged();
         return this;
       }
@@ -834,7 +915,9 @@ public final class Filecoin {
        * </pre>
        *
        * <code>uint64 nonce = 3;</code>
+       * @return The nonce.
        */
+      @java.lang.Override
       public long getNonce() {
         return nonce_;
       }
@@ -844,6 +927,8 @@ public final class Filecoin {
        * </pre>
        *
        * <code>uint64 nonce = 3;</code>
+       * @param value The nonce to set.
+       * @return This builder for chaining.
        */
       public Builder setNonce(long value) {
         
@@ -857,6 +942,7 @@ public final class Filecoin {
        * </pre>
        *
        * <code>uint64 nonce = 3;</code>
+       * @return This builder for chaining.
        */
       public Builder clearNonce() {
         
@@ -872,7 +958,9 @@ public final class Filecoin {
        * </pre>
        *
        * <code>bytes value = 4;</code>
+       * @return The value.
        */
+      @java.lang.Override
       public com.google.protobuf.ByteString getValue() {
         return value_;
       }
@@ -882,6 +970,8 @@ public final class Filecoin {
        * </pre>
        *
        * <code>bytes value = 4;</code>
+       * @param value The value to set.
+       * @return This builder for chaining.
        */
       public Builder setValue(com.google.protobuf.ByteString value) {
         if (value == null) {
@@ -898,51 +988,11 @@ public final class Filecoin {
        * </pre>
        *
        * <code>bytes value = 4;</code>
+       * @return This builder for chaining.
        */
       public Builder clearValue() {
         
         value_ = getDefaultInstance().getValue();
-        onChanged();
-        return this;
-      }
-
-      private com.google.protobuf.ByteString gasPrice_ = com.google.protobuf.ByteString.EMPTY;
-      /**
-       * <pre>
-       * Gas price.
-       * </pre>
-       *
-       * <code>bytes gas_price = 5;</code>
-       */
-      public com.google.protobuf.ByteString getGasPrice() {
-        return gasPrice_;
-      }
-      /**
-       * <pre>
-       * Gas price.
-       * </pre>
-       *
-       * <code>bytes gas_price = 5;</code>
-       */
-      public Builder setGasPrice(com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  
-        gasPrice_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <pre>
-       * Gas price.
-       * </pre>
-       *
-       * <code>bytes gas_price = 5;</code>
-       */
-      public Builder clearGasPrice() {
-        
-        gasPrice_ = getDefaultInstance().getGasPrice();
         onChanged();
         return this;
       }
@@ -953,8 +1003,10 @@ public final class Filecoin {
        * Gas limit.
        * </pre>
        *
-       * <code>uint64 gas_limit = 6;</code>
+       * <code>int64 gas_limit = 5;</code>
+       * @return The gasLimit.
        */
+      @java.lang.Override
       public long getGasLimit() {
         return gasLimit_;
       }
@@ -963,7 +1015,9 @@ public final class Filecoin {
        * Gas limit.
        * </pre>
        *
-       * <code>uint64 gas_limit = 6;</code>
+       * <code>int64 gas_limit = 5;</code>
+       * @param value The gasLimit to set.
+       * @return This builder for chaining.
        */
       public Builder setGasLimit(long value) {
         
@@ -976,11 +1030,104 @@ public final class Filecoin {
        * Gas limit.
        * </pre>
        *
-       * <code>uint64 gas_limit = 6;</code>
+       * <code>int64 gas_limit = 5;</code>
+       * @return This builder for chaining.
        */
       public Builder clearGasLimit() {
         
         gasLimit_ = 0L;
+        onChanged();
+        return this;
+      }
+
+      private com.google.protobuf.ByteString gasFeeCap_ = com.google.protobuf.ByteString.EMPTY;
+      /**
+       * <pre>
+       * Gas fee cap.
+       * </pre>
+       *
+       * <code>bytes gas_fee_cap = 6;</code>
+       * @return The gasFeeCap.
+       */
+      @java.lang.Override
+      public com.google.protobuf.ByteString getGasFeeCap() {
+        return gasFeeCap_;
+      }
+      /**
+       * <pre>
+       * Gas fee cap.
+       * </pre>
+       *
+       * <code>bytes gas_fee_cap = 6;</code>
+       * @param value The gasFeeCap to set.
+       * @return This builder for chaining.
+       */
+      public Builder setGasFeeCap(com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        gasFeeCap_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * Gas fee cap.
+       * </pre>
+       *
+       * <code>bytes gas_fee_cap = 6;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearGasFeeCap() {
+        
+        gasFeeCap_ = getDefaultInstance().getGasFeeCap();
+        onChanged();
+        return this;
+      }
+
+      private com.google.protobuf.ByteString gasPremium_ = com.google.protobuf.ByteString.EMPTY;
+      /**
+       * <pre>
+       * Gas premium.
+       * </pre>
+       *
+       * <code>bytes gas_premium = 7;</code>
+       * @return The gasPremium.
+       */
+      @java.lang.Override
+      public com.google.protobuf.ByteString getGasPremium() {
+        return gasPremium_;
+      }
+      /**
+       * <pre>
+       * Gas premium.
+       * </pre>
+       *
+       * <code>bytes gas_premium = 7;</code>
+       * @param value The gasPremium to set.
+       * @return This builder for chaining.
+       */
+      public Builder setGasPremium(com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        gasPremium_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * Gas premium.
+       * </pre>
+       *
+       * <code>bytes gas_premium = 7;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearGasPremium() {
+        
+        gasPremium_ = getDefaultInstance().getGasPremium();
         onChanged();
         return this;
       }
@@ -1042,9 +1189,16 @@ public final class Filecoin {
       com.google.protobuf.MessageOrBuilder {
 
     /**
-     * <code>bytes encoded = 1;</code>
+     * <code>string json = 1;</code>
+     * @return The json.
      */
-    com.google.protobuf.ByteString getEncoded();
+    java.lang.String getJson();
+    /**
+     * <code>string json = 1;</code>
+     * @return The bytes for json.
+     */
+    com.google.protobuf.ByteString
+        getJsonBytes();
   }
   /**
    * <pre>
@@ -1053,7 +1207,7 @@ public final class Filecoin {
    *
    * Protobuf type {@code TW.Filecoin.Proto.SigningOutput}
    */
-  public  static final class SigningOutput extends
+  public static final class SigningOutput extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:TW.Filecoin.Proto.SigningOutput)
       SigningOutputOrBuilder {
@@ -1063,7 +1217,7 @@ public final class Filecoin {
       super(builder);
     }
     private SigningOutput() {
-      encoded_ = com.google.protobuf.ByteString.EMPTY;
+      json_ = "";
     }
 
     @java.lang.Override
@@ -1097,8 +1251,9 @@ public final class Filecoin {
               done = true;
               break;
             case 10: {
+              java.lang.String s = input.readStringRequireUtf8();
 
-              encoded_ = input.readBytes();
+              json_ = s;
               break;
             }
             default: {
@@ -1133,13 +1288,42 @@ public final class Filecoin {
               wallet.core.jni.proto.Filecoin.SigningOutput.class, wallet.core.jni.proto.Filecoin.SigningOutput.Builder.class);
     }
 
-    public static final int ENCODED_FIELD_NUMBER = 1;
-    private com.google.protobuf.ByteString encoded_;
+    public static final int JSON_FIELD_NUMBER = 1;
+    private volatile java.lang.Object json_;
     /**
-     * <code>bytes encoded = 1;</code>
+     * <code>string json = 1;</code>
+     * @return The json.
      */
-    public com.google.protobuf.ByteString getEncoded() {
-      return encoded_;
+    @java.lang.Override
+    public java.lang.String getJson() {
+      java.lang.Object ref = json_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        json_ = s;
+        return s;
+      }
+    }
+    /**
+     * <code>string json = 1;</code>
+     * @return The bytes for json.
+     */
+    @java.lang.Override
+    public com.google.protobuf.ByteString
+        getJsonBytes() {
+      java.lang.Object ref = json_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        json_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
     }
 
     private byte memoizedIsInitialized = -1;
@@ -1156,8 +1340,8 @@ public final class Filecoin {
     @java.lang.Override
     public void writeTo(com.google.protobuf.CodedOutputStream output)
                         throws java.io.IOException {
-      if (!encoded_.isEmpty()) {
-        output.writeBytes(1, encoded_);
+      if (!getJsonBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 1, json_);
       }
       unknownFields.writeTo(output);
     }
@@ -1168,9 +1352,8 @@ public final class Filecoin {
       if (size != -1) return size;
 
       size = 0;
-      if (!encoded_.isEmpty()) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeBytesSize(1, encoded_);
+      if (!getJsonBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, json_);
       }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
@@ -1187,8 +1370,8 @@ public final class Filecoin {
       }
       wallet.core.jni.proto.Filecoin.SigningOutput other = (wallet.core.jni.proto.Filecoin.SigningOutput) obj;
 
-      if (!getEncoded()
-          .equals(other.getEncoded())) return false;
+      if (!getJson()
+          .equals(other.getJson())) return false;
       if (!unknownFields.equals(other.unknownFields)) return false;
       return true;
     }
@@ -1200,8 +1383,8 @@ public final class Filecoin {
       }
       int hash = 41;
       hash = (19 * hash) + getDescriptor().hashCode();
-      hash = (37 * hash) + ENCODED_FIELD_NUMBER;
-      hash = (53 * hash) + getEncoded().hashCode();
+      hash = (37 * hash) + JSON_FIELD_NUMBER;
+      hash = (53 * hash) + getJson().hashCode();
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
       return hash;
@@ -1339,7 +1522,7 @@ public final class Filecoin {
       @java.lang.Override
       public Builder clear() {
         super.clear();
-        encoded_ = com.google.protobuf.ByteString.EMPTY;
+        json_ = "";
 
         return this;
       }
@@ -1367,7 +1550,7 @@ public final class Filecoin {
       @java.lang.Override
       public wallet.core.jni.proto.Filecoin.SigningOutput buildPartial() {
         wallet.core.jni.proto.Filecoin.SigningOutput result = new wallet.core.jni.proto.Filecoin.SigningOutput(this);
-        result.encoded_ = encoded_;
+        result.json_ = json_;
         onBuilt();
         return result;
       }
@@ -1416,8 +1599,9 @@ public final class Filecoin {
 
       public Builder mergeFrom(wallet.core.jni.proto.Filecoin.SigningOutput other) {
         if (other == wallet.core.jni.proto.Filecoin.SigningOutput.getDefaultInstance()) return this;
-        if (other.getEncoded() != com.google.protobuf.ByteString.EMPTY) {
-          setEncoded(other.getEncoded());
+        if (!other.getJson().isEmpty()) {
+          json_ = other.json_;
+          onChanged();
         }
         this.mergeUnknownFields(other.unknownFields);
         onChanged();
@@ -1448,31 +1632,78 @@ public final class Filecoin {
         return this;
       }
 
-      private com.google.protobuf.ByteString encoded_ = com.google.protobuf.ByteString.EMPTY;
+      private java.lang.Object json_ = "";
       /**
-       * <code>bytes encoded = 1;</code>
+       * <code>string json = 1;</code>
+       * @return The json.
        */
-      public com.google.protobuf.ByteString getEncoded() {
-        return encoded_;
+      public java.lang.String getJson() {
+        java.lang.Object ref = json_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          json_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
       }
       /**
-       * <code>bytes encoded = 1;</code>
+       * <code>string json = 1;</code>
+       * @return The bytes for json.
        */
-      public Builder setEncoded(com.google.protobuf.ByteString value) {
+      public com.google.protobuf.ByteString
+          getJsonBytes() {
+        java.lang.Object ref = json_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          json_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>string json = 1;</code>
+       * @param value The json to set.
+       * @return This builder for chaining.
+       */
+      public Builder setJson(
+          java.lang.String value) {
         if (value == null) {
     throw new NullPointerException();
   }
   
-        encoded_ = value;
+        json_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>bytes encoded = 1;</code>
+       * <code>string json = 1;</code>
+       * @return This builder for chaining.
        */
-      public Builder clearEncoded() {
+      public Builder clearJson() {
         
-        encoded_ = getDefaultInstance().getEncoded();
+        json_ = getDefaultInstance().getJson();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string json = 1;</code>
+       * @param value The bytes for json to set.
+       * @return This builder for chaining.
+       */
+      public Builder setJsonBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        json_ = value;
         onChanged();
         return this;
       }
@@ -1548,12 +1779,12 @@ public final class Filecoin {
       descriptor;
   static {
     java.lang.String[] descriptorData = {
-      "\n\016Filecoin.proto\022\021TW.Filecoin.Proto\"{\n\014S" +
-      "igningInput\022\023\n\013private_key\030\001 \001(\014\022\022\n\nto_a" +
-      "ddress\030\002 \001(\t\022\r\n\005nonce\030\003 \001(\004\022\r\n\005value\030\004 \001" +
-      "(\014\022\021\n\tgas_price\030\005 \001(\014\022\021\n\tgas_limit\030\006 \001(\004" +
-      "\" \n\rSigningOutput\022\017\n\007encoded\030\001 \001(\014B\027\n\025wa" +
-      "llet.core.jni.protob\006proto3"
+      "\n\016Filecoin.proto\022\021TW.Filecoin.Proto\"\212\001\n\014" +
+      "SigningInput\022\023\n\013private_key\030\001 \001(\014\022\n\n\002to\030" +
+      "\002 \001(\t\022\r\n\005nonce\030\003 \001(\004\022\r\n\005value\030\004 \001(\014\022\021\n\tg" +
+      "as_limit\030\005 \001(\003\022\023\n\013gas_fee_cap\030\006 \001(\014\022\023\n\013g" +
+      "as_premium\030\007 \001(\014\"\035\n\rSigningOutput\022\014\n\004jso" +
+      "n\030\001 \001(\tB\027\n\025wallet.core.jni.protob\006proto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
@@ -1564,13 +1795,13 @@ public final class Filecoin {
     internal_static_TW_Filecoin_Proto_SigningInput_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_TW_Filecoin_Proto_SigningInput_descriptor,
-        new java.lang.String[] { "PrivateKey", "ToAddress", "Nonce", "Value", "GasPrice", "GasLimit", });
+        new java.lang.String[] { "PrivateKey", "To", "Nonce", "Value", "GasLimit", "GasFeeCap", "GasPremium", });
     internal_static_TW_Filecoin_Proto_SigningOutput_descriptor =
       getDescriptor().getMessageTypes().get(1);
     internal_static_TW_Filecoin_Proto_SigningOutput_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_TW_Filecoin_Proto_SigningOutput_descriptor,
-        new java.lang.String[] { "Encoded", });
+        new java.lang.String[] { "Json", });
   }
 
   // @@protoc_insertion_point(outer_class_scope)

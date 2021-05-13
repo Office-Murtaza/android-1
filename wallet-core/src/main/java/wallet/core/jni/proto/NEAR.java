@@ -20,18 +20,20 @@ public final class NEAR {
 
     /**
      * <code>uint32 key_type = 1;</code>
+     * @return The keyType.
      */
     int getKeyType();
 
     /**
      * <code>bytes data = 2;</code>
+     * @return The data.
      */
     com.google.protobuf.ByteString getData();
   }
   /**
    * Protobuf type {@code TW.NEAR.Proto.PublicKey}
    */
-  public  static final class PublicKey extends
+  public static final class PublicKey extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:TW.NEAR.Proto.PublicKey)
       PublicKeyOrBuilder {
@@ -120,7 +122,9 @@ public final class NEAR {
     private int keyType_;
     /**
      * <code>uint32 key_type = 1;</code>
+     * @return The keyType.
      */
+    @java.lang.Override
     public int getKeyType() {
       return keyType_;
     }
@@ -129,7 +133,9 @@ public final class NEAR {
     private com.google.protobuf.ByteString data_;
     /**
      * <code>bytes data = 2;</code>
+     * @return The data.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString getData() {
       return data_;
     }
@@ -456,12 +462,16 @@ public final class NEAR {
       private int keyType_ ;
       /**
        * <code>uint32 key_type = 1;</code>
+       * @return The keyType.
        */
+      @java.lang.Override
       public int getKeyType() {
         return keyType_;
       }
       /**
        * <code>uint32 key_type = 1;</code>
+       * @param value The keyType to set.
+       * @return This builder for chaining.
        */
       public Builder setKeyType(int value) {
         
@@ -471,6 +481,7 @@ public final class NEAR {
       }
       /**
        * <code>uint32 key_type = 1;</code>
+       * @return This builder for chaining.
        */
       public Builder clearKeyType() {
         
@@ -482,12 +493,16 @@ public final class NEAR {
       private com.google.protobuf.ByteString data_ = com.google.protobuf.ByteString.EMPTY;
       /**
        * <code>bytes data = 2;</code>
+       * @return The data.
        */
+      @java.lang.Override
       public com.google.protobuf.ByteString getData() {
         return data_;
       }
       /**
        * <code>bytes data = 2;</code>
+       * @param value The data to set.
+       * @return This builder for chaining.
        */
       public Builder setData(com.google.protobuf.ByteString value) {
         if (value == null) {
@@ -500,6 +515,7 @@ public final class NEAR {
       }
       /**
        * <code>bytes data = 2;</code>
+       * @return This builder for chaining.
        */
       public Builder clearData() {
         
@@ -566,19 +582,22 @@ public final class NEAR {
 
     /**
      * <pre>
-     * uint128
+     * uint128 / little endian byte order
      * </pre>
      *
      * <code>bytes allowance = 1;</code>
+     * @return The allowance.
      */
     com.google.protobuf.ByteString getAllowance();
 
     /**
      * <code>string receiver_id = 2;</code>
+     * @return The receiverId.
      */
     java.lang.String getReceiverId();
     /**
      * <code>string receiver_id = 2;</code>
+     * @return The bytes for receiverId.
      */
     com.google.protobuf.ByteString
         getReceiverIdBytes();
@@ -586,7 +605,7 @@ public final class NEAR {
   /**
    * Protobuf type {@code TW.NEAR.Proto.FunctionCallPermission}
    */
-  public  static final class FunctionCallPermission extends
+  public static final class FunctionCallPermission extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:TW.NEAR.Proto.FunctionCallPermission)
       FunctionCallPermissionOrBuilder {
@@ -677,11 +696,13 @@ public final class NEAR {
     private com.google.protobuf.ByteString allowance_;
     /**
      * <pre>
-     * uint128
+     * uint128 / little endian byte order
      * </pre>
      *
      * <code>bytes allowance = 1;</code>
+     * @return The allowance.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString getAllowance() {
       return allowance_;
     }
@@ -690,7 +711,9 @@ public final class NEAR {
     private volatile java.lang.Object receiverId_;
     /**
      * <code>string receiver_id = 2;</code>
+     * @return The receiverId.
      */
+    @java.lang.Override
     public java.lang.String getReceiverId() {
       java.lang.Object ref = receiverId_;
       if (ref instanceof java.lang.String) {
@@ -705,7 +728,9 @@ public final class NEAR {
     }
     /**
      * <code>string receiver_id = 2;</code>
+     * @return The bytes for receiverId.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString
         getReceiverIdBytes() {
       java.lang.Object ref = receiverId_;
@@ -1042,20 +1067,24 @@ public final class NEAR {
       private com.google.protobuf.ByteString allowance_ = com.google.protobuf.ByteString.EMPTY;
       /**
        * <pre>
-       * uint128
+       * uint128 / little endian byte order
        * </pre>
        *
        * <code>bytes allowance = 1;</code>
+       * @return The allowance.
        */
+      @java.lang.Override
       public com.google.protobuf.ByteString getAllowance() {
         return allowance_;
       }
       /**
        * <pre>
-       * uint128
+       * uint128 / little endian byte order
        * </pre>
        *
        * <code>bytes allowance = 1;</code>
+       * @param value The allowance to set.
+       * @return This builder for chaining.
        */
       public Builder setAllowance(com.google.protobuf.ByteString value) {
         if (value == null) {
@@ -1068,10 +1097,11 @@ public final class NEAR {
       }
       /**
        * <pre>
-       * uint128
+       * uint128 / little endian byte order
        * </pre>
        *
        * <code>bytes allowance = 1;</code>
+       * @return This builder for chaining.
        */
       public Builder clearAllowance() {
         
@@ -1083,6 +1113,7 @@ public final class NEAR {
       private java.lang.Object receiverId_ = "";
       /**
        * <code>string receiver_id = 2;</code>
+       * @return The receiverId.
        */
       public java.lang.String getReceiverId() {
         java.lang.Object ref = receiverId_;
@@ -1098,6 +1129,7 @@ public final class NEAR {
       }
       /**
        * <code>string receiver_id = 2;</code>
+       * @return The bytes for receiverId.
        */
       public com.google.protobuf.ByteString
           getReceiverIdBytes() {
@@ -1114,6 +1146,8 @@ public final class NEAR {
       }
       /**
        * <code>string receiver_id = 2;</code>
+       * @param value The receiverId to set.
+       * @return This builder for chaining.
        */
       public Builder setReceiverId(
           java.lang.String value) {
@@ -1127,6 +1161,7 @@ public final class NEAR {
       }
       /**
        * <code>string receiver_id = 2;</code>
+       * @return This builder for chaining.
        */
       public Builder clearReceiverId() {
         
@@ -1136,6 +1171,8 @@ public final class NEAR {
       }
       /**
        * <code>string receiver_id = 2;</code>
+       * @param value The bytes for receiverId to set.
+       * @return This builder for chaining.
        */
       public Builder setReceiverIdBytes(
           com.google.protobuf.ByteString value) {
@@ -1208,7 +1245,7 @@ public final class NEAR {
   /**
    * Protobuf type {@code TW.NEAR.Proto.FullAccessPermission}
    */
-  public  static final class FullAccessPermission extends
+  public static final class FullAccessPermission extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:TW.NEAR.Proto.FullAccessPermission)
       FullAccessPermissionOrBuilder {
@@ -1625,15 +1662,18 @@ public final class NEAR {
 
     /**
      * <code>uint64 nonce = 1;</code>
+     * @return The nonce.
      */
     long getNonce();
 
     /**
      * <code>.TW.NEAR.Proto.FunctionCallPermission function_call = 2;</code>
+     * @return Whether the functionCall field is set.
      */
     boolean hasFunctionCall();
     /**
      * <code>.TW.NEAR.Proto.FunctionCallPermission function_call = 2;</code>
+     * @return The functionCall.
      */
     wallet.core.jni.proto.NEAR.FunctionCallPermission getFunctionCall();
     /**
@@ -1643,10 +1683,12 @@ public final class NEAR {
 
     /**
      * <code>.TW.NEAR.Proto.FullAccessPermission full_access = 3;</code>
+     * @return Whether the fullAccess field is set.
      */
     boolean hasFullAccess();
     /**
      * <code>.TW.NEAR.Proto.FullAccessPermission full_access = 3;</code>
+     * @return The fullAccess.
      */
     wallet.core.jni.proto.NEAR.FullAccessPermission getFullAccess();
     /**
@@ -1659,7 +1701,7 @@ public final class NEAR {
   /**
    * Protobuf type {@code TW.NEAR.Proto.AccessKey}
    */
-  public  static final class AccessKey extends
+  public static final class AccessKey extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:TW.NEAR.Proto.AccessKey)
       AccessKeyOrBuilder {
@@ -1769,7 +1811,8 @@ public final class NEAR {
     private int permissionCase_ = 0;
     private java.lang.Object permission_;
     public enum PermissionCase
-        implements com.google.protobuf.Internal.EnumLite {
+        implements com.google.protobuf.Internal.EnumLite,
+            com.google.protobuf.AbstractMessage.InternalOneOfEnum {
       FUNCTION_CALL(2),
       FULL_ACCESS(3),
       PERMISSION_NOT_SET(0);
@@ -1778,6 +1821,8 @@ public final class NEAR {
         this.value = value;
       }
       /**
+       * @param value The number of the enum to look for.
+       * @return The enum associated with the given number.
        * @deprecated Use {@link #forNumber(int)} instead.
        */
       @java.lang.Deprecated
@@ -1808,7 +1853,9 @@ public final class NEAR {
     private long nonce_;
     /**
      * <code>uint64 nonce = 1;</code>
+     * @return The nonce.
      */
+    @java.lang.Override
     public long getNonce() {
       return nonce_;
     }
@@ -1816,13 +1863,17 @@ public final class NEAR {
     public static final int FUNCTION_CALL_FIELD_NUMBER = 2;
     /**
      * <code>.TW.NEAR.Proto.FunctionCallPermission function_call = 2;</code>
+     * @return Whether the functionCall field is set.
      */
+    @java.lang.Override
     public boolean hasFunctionCall() {
       return permissionCase_ == 2;
     }
     /**
      * <code>.TW.NEAR.Proto.FunctionCallPermission function_call = 2;</code>
+     * @return The functionCall.
      */
+    @java.lang.Override
     public wallet.core.jni.proto.NEAR.FunctionCallPermission getFunctionCall() {
       if (permissionCase_ == 2) {
          return (wallet.core.jni.proto.NEAR.FunctionCallPermission) permission_;
@@ -1832,6 +1883,7 @@ public final class NEAR {
     /**
      * <code>.TW.NEAR.Proto.FunctionCallPermission function_call = 2;</code>
      */
+    @java.lang.Override
     public wallet.core.jni.proto.NEAR.FunctionCallPermissionOrBuilder getFunctionCallOrBuilder() {
       if (permissionCase_ == 2) {
          return (wallet.core.jni.proto.NEAR.FunctionCallPermission) permission_;
@@ -1842,13 +1894,17 @@ public final class NEAR {
     public static final int FULL_ACCESS_FIELD_NUMBER = 3;
     /**
      * <code>.TW.NEAR.Proto.FullAccessPermission full_access = 3;</code>
+     * @return Whether the fullAccess field is set.
      */
+    @java.lang.Override
     public boolean hasFullAccess() {
       return permissionCase_ == 3;
     }
     /**
      * <code>.TW.NEAR.Proto.FullAccessPermission full_access = 3;</code>
+     * @return The fullAccess.
      */
+    @java.lang.Override
     public wallet.core.jni.proto.NEAR.FullAccessPermission getFullAccess() {
       if (permissionCase_ == 3) {
          return (wallet.core.jni.proto.NEAR.FullAccessPermission) permission_;
@@ -1858,6 +1914,7 @@ public final class NEAR {
     /**
      * <code>.TW.NEAR.Proto.FullAccessPermission full_access = 3;</code>
      */
+    @java.lang.Override
     public wallet.core.jni.proto.NEAR.FullAccessPermissionOrBuilder getFullAccessOrBuilder() {
       if (permissionCase_ == 3) {
          return (wallet.core.jni.proto.NEAR.FullAccessPermission) permission_;
@@ -2255,12 +2312,16 @@ public final class NEAR {
       private long nonce_ ;
       /**
        * <code>uint64 nonce = 1;</code>
+       * @return The nonce.
        */
+      @java.lang.Override
       public long getNonce() {
         return nonce_;
       }
       /**
        * <code>uint64 nonce = 1;</code>
+       * @param value The nonce to set.
+       * @return This builder for chaining.
        */
       public Builder setNonce(long value) {
         
@@ -2270,6 +2331,7 @@ public final class NEAR {
       }
       /**
        * <code>uint64 nonce = 1;</code>
+       * @return This builder for chaining.
        */
       public Builder clearNonce() {
         
@@ -2282,13 +2344,17 @@ public final class NEAR {
           wallet.core.jni.proto.NEAR.FunctionCallPermission, wallet.core.jni.proto.NEAR.FunctionCallPermission.Builder, wallet.core.jni.proto.NEAR.FunctionCallPermissionOrBuilder> functionCallBuilder_;
       /**
        * <code>.TW.NEAR.Proto.FunctionCallPermission function_call = 2;</code>
+       * @return Whether the functionCall field is set.
        */
+      @java.lang.Override
       public boolean hasFunctionCall() {
         return permissionCase_ == 2;
       }
       /**
        * <code>.TW.NEAR.Proto.FunctionCallPermission function_call = 2;</code>
+       * @return The functionCall.
        */
+      @java.lang.Override
       public wallet.core.jni.proto.NEAR.FunctionCallPermission getFunctionCall() {
         if (functionCallBuilder_ == null) {
           if (permissionCase_ == 2) {
@@ -2382,6 +2448,7 @@ public final class NEAR {
       /**
        * <code>.TW.NEAR.Proto.FunctionCallPermission function_call = 2;</code>
        */
+      @java.lang.Override
       public wallet.core.jni.proto.NEAR.FunctionCallPermissionOrBuilder getFunctionCallOrBuilder() {
         if ((permissionCase_ == 2) && (functionCallBuilder_ != null)) {
           return functionCallBuilder_.getMessageOrBuilder();
@@ -2418,13 +2485,17 @@ public final class NEAR {
           wallet.core.jni.proto.NEAR.FullAccessPermission, wallet.core.jni.proto.NEAR.FullAccessPermission.Builder, wallet.core.jni.proto.NEAR.FullAccessPermissionOrBuilder> fullAccessBuilder_;
       /**
        * <code>.TW.NEAR.Proto.FullAccessPermission full_access = 3;</code>
+       * @return Whether the fullAccess field is set.
        */
+      @java.lang.Override
       public boolean hasFullAccess() {
         return permissionCase_ == 3;
       }
       /**
        * <code>.TW.NEAR.Proto.FullAccessPermission full_access = 3;</code>
+       * @return The fullAccess.
        */
+      @java.lang.Override
       public wallet.core.jni.proto.NEAR.FullAccessPermission getFullAccess() {
         if (fullAccessBuilder_ == null) {
           if (permissionCase_ == 3) {
@@ -2518,6 +2589,7 @@ public final class NEAR {
       /**
        * <code>.TW.NEAR.Proto.FullAccessPermission full_access = 3;</code>
        */
+      @java.lang.Override
       public wallet.core.jni.proto.NEAR.FullAccessPermissionOrBuilder getFullAccessOrBuilder() {
         if ((permissionCase_ == 3) && (fullAccessBuilder_ != null)) {
           return fullAccessBuilder_.getMessageOrBuilder();
@@ -2609,7 +2681,7 @@ public final class NEAR {
   /**
    * Protobuf type {@code TW.NEAR.Proto.CreateAccount}
    */
-  public  static final class CreateAccount extends
+  public static final class CreateAccount extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:TW.NEAR.Proto.CreateAccount)
       CreateAccountOrBuilder {
@@ -3026,13 +3098,14 @@ public final class NEAR {
 
     /**
      * <code>bytes code = 1;</code>
+     * @return The code.
      */
     com.google.protobuf.ByteString getCode();
   }
   /**
    * Protobuf type {@code TW.NEAR.Proto.DeployContract}
    */
-  public  static final class DeployContract extends
+  public static final class DeployContract extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:TW.NEAR.Proto.DeployContract)
       DeployContractOrBuilder {
@@ -3116,7 +3189,9 @@ public final class NEAR {
     private com.google.protobuf.ByteString code_;
     /**
      * <code>bytes code = 1;</code>
+     * @return The code.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString getCode() {
       return code_;
     }
@@ -3426,12 +3501,16 @@ public final class NEAR {
       private com.google.protobuf.ByteString code_ = com.google.protobuf.ByteString.EMPTY;
       /**
        * <code>bytes code = 1;</code>
+       * @return The code.
        */
+      @java.lang.Override
       public com.google.protobuf.ByteString getCode() {
         return code_;
       }
       /**
        * <code>bytes code = 1;</code>
+       * @param value The code to set.
+       * @return This builder for chaining.
        */
       public Builder setCode(com.google.protobuf.ByteString value) {
         if (value == null) {
@@ -3444,6 +3523,7 @@ public final class NEAR {
       }
       /**
        * <code>bytes code = 1;</code>
+       * @return This builder for chaining.
        */
       public Builder clearCode() {
         
@@ -3510,32 +3590,36 @@ public final class NEAR {
 
     /**
      * <code>bytes method_name = 1;</code>
+     * @return The methodName.
      */
     com.google.protobuf.ByteString getMethodName();
 
     /**
      * <code>bytes args = 2;</code>
+     * @return The args.
      */
     com.google.protobuf.ByteString getArgs();
 
     /**
      * <code>uint64 gas = 3;</code>
+     * @return The gas.
      */
     long getGas();
 
     /**
      * <pre>
-     * uint128
+     * uint128 / little endian byte order
      * </pre>
      *
      * <code>bytes deposit = 4;</code>
+     * @return The deposit.
      */
     com.google.protobuf.ByteString getDeposit();
   }
   /**
    * Protobuf type {@code TW.NEAR.Proto.FunctionCall}
    */
-  public  static final class FunctionCall extends
+  public static final class FunctionCall extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:TW.NEAR.Proto.FunctionCall)
       FunctionCallOrBuilder {
@@ -3636,7 +3720,9 @@ public final class NEAR {
     private com.google.protobuf.ByteString methodName_;
     /**
      * <code>bytes method_name = 1;</code>
+     * @return The methodName.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString getMethodName() {
       return methodName_;
     }
@@ -3645,7 +3731,9 @@ public final class NEAR {
     private com.google.protobuf.ByteString args_;
     /**
      * <code>bytes args = 2;</code>
+     * @return The args.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString getArgs() {
       return args_;
     }
@@ -3654,7 +3742,9 @@ public final class NEAR {
     private long gas_;
     /**
      * <code>uint64 gas = 3;</code>
+     * @return The gas.
      */
+    @java.lang.Override
     public long getGas() {
       return gas_;
     }
@@ -3663,11 +3753,13 @@ public final class NEAR {
     private com.google.protobuf.ByteString deposit_;
     /**
      * <pre>
-     * uint128
+     * uint128 / little endian byte order
      * </pre>
      *
      * <code>bytes deposit = 4;</code>
+     * @return The deposit.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString getDeposit() {
       return deposit_;
     }
@@ -4029,12 +4121,16 @@ public final class NEAR {
       private com.google.protobuf.ByteString methodName_ = com.google.protobuf.ByteString.EMPTY;
       /**
        * <code>bytes method_name = 1;</code>
+       * @return The methodName.
        */
+      @java.lang.Override
       public com.google.protobuf.ByteString getMethodName() {
         return methodName_;
       }
       /**
        * <code>bytes method_name = 1;</code>
+       * @param value The methodName to set.
+       * @return This builder for chaining.
        */
       public Builder setMethodName(com.google.protobuf.ByteString value) {
         if (value == null) {
@@ -4047,6 +4143,7 @@ public final class NEAR {
       }
       /**
        * <code>bytes method_name = 1;</code>
+       * @return This builder for chaining.
        */
       public Builder clearMethodName() {
         
@@ -4058,12 +4155,16 @@ public final class NEAR {
       private com.google.protobuf.ByteString args_ = com.google.protobuf.ByteString.EMPTY;
       /**
        * <code>bytes args = 2;</code>
+       * @return The args.
        */
+      @java.lang.Override
       public com.google.protobuf.ByteString getArgs() {
         return args_;
       }
       /**
        * <code>bytes args = 2;</code>
+       * @param value The args to set.
+       * @return This builder for chaining.
        */
       public Builder setArgs(com.google.protobuf.ByteString value) {
         if (value == null) {
@@ -4076,6 +4177,7 @@ public final class NEAR {
       }
       /**
        * <code>bytes args = 2;</code>
+       * @return This builder for chaining.
        */
       public Builder clearArgs() {
         
@@ -4087,12 +4189,16 @@ public final class NEAR {
       private long gas_ ;
       /**
        * <code>uint64 gas = 3;</code>
+       * @return The gas.
        */
+      @java.lang.Override
       public long getGas() {
         return gas_;
       }
       /**
        * <code>uint64 gas = 3;</code>
+       * @param value The gas to set.
+       * @return This builder for chaining.
        */
       public Builder setGas(long value) {
         
@@ -4102,6 +4208,7 @@ public final class NEAR {
       }
       /**
        * <code>uint64 gas = 3;</code>
+       * @return This builder for chaining.
        */
       public Builder clearGas() {
         
@@ -4113,20 +4220,24 @@ public final class NEAR {
       private com.google.protobuf.ByteString deposit_ = com.google.protobuf.ByteString.EMPTY;
       /**
        * <pre>
-       * uint128
+       * uint128 / little endian byte order
        * </pre>
        *
        * <code>bytes deposit = 4;</code>
+       * @return The deposit.
        */
+      @java.lang.Override
       public com.google.protobuf.ByteString getDeposit() {
         return deposit_;
       }
       /**
        * <pre>
-       * uint128
+       * uint128 / little endian byte order
        * </pre>
        *
        * <code>bytes deposit = 4;</code>
+       * @param value The deposit to set.
+       * @return This builder for chaining.
        */
       public Builder setDeposit(com.google.protobuf.ByteString value) {
         if (value == null) {
@@ -4139,10 +4250,11 @@ public final class NEAR {
       }
       /**
        * <pre>
-       * uint128
+       * uint128 / little endian byte order
        * </pre>
        *
        * <code>bytes deposit = 4;</code>
+       * @return This builder for chaining.
        */
       public Builder clearDeposit() {
         
@@ -4209,17 +4321,18 @@ public final class NEAR {
 
     /**
      * <pre>
-     * uint128
+     * uint128 / little endian byte order
      * </pre>
      *
      * <code>bytes deposit = 1;</code>
+     * @return The deposit.
      */
     com.google.protobuf.ByteString getDeposit();
   }
   /**
    * Protobuf type {@code TW.NEAR.Proto.Transfer}
    */
-  public  static final class Transfer extends
+  public static final class Transfer extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:TW.NEAR.Proto.Transfer)
       TransferOrBuilder {
@@ -4303,11 +4416,13 @@ public final class NEAR {
     private com.google.protobuf.ByteString deposit_;
     /**
      * <pre>
-     * uint128
+     * uint128 / little endian byte order
      * </pre>
      *
      * <code>bytes deposit = 1;</code>
+     * @return The deposit.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString getDeposit() {
       return deposit_;
     }
@@ -4617,20 +4732,24 @@ public final class NEAR {
       private com.google.protobuf.ByteString deposit_ = com.google.protobuf.ByteString.EMPTY;
       /**
        * <pre>
-       * uint128
+       * uint128 / little endian byte order
        * </pre>
        *
        * <code>bytes deposit = 1;</code>
+       * @return The deposit.
        */
+      @java.lang.Override
       public com.google.protobuf.ByteString getDeposit() {
         return deposit_;
       }
       /**
        * <pre>
-       * uint128
+       * uint128 / little endian byte order
        * </pre>
        *
        * <code>bytes deposit = 1;</code>
+       * @param value The deposit to set.
+       * @return This builder for chaining.
        */
       public Builder setDeposit(com.google.protobuf.ByteString value) {
         if (value == null) {
@@ -4643,10 +4762,11 @@ public final class NEAR {
       }
       /**
        * <pre>
-       * uint128
+       * uint128 / little endian byte order
        * </pre>
        *
        * <code>bytes deposit = 1;</code>
+       * @return This builder for chaining.
        */
       public Builder clearDeposit() {
         
@@ -4713,19 +4833,22 @@ public final class NEAR {
 
     /**
      * <pre>
-     * uint128
+     * uint128 / little endian byte order
      * </pre>
      *
      * <code>bytes stake = 1;</code>
+     * @return The stake.
      */
     com.google.protobuf.ByteString getStake();
 
     /**
      * <code>string public_key = 2;</code>
+     * @return The publicKey.
      */
     java.lang.String getPublicKey();
     /**
      * <code>string public_key = 2;</code>
+     * @return The bytes for publicKey.
      */
     com.google.protobuf.ByteString
         getPublicKeyBytes();
@@ -4733,7 +4856,7 @@ public final class NEAR {
   /**
    * Protobuf type {@code TW.NEAR.Proto.Stake}
    */
-  public  static final class Stake extends
+  public static final class Stake extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:TW.NEAR.Proto.Stake)
       StakeOrBuilder {
@@ -4824,11 +4947,13 @@ public final class NEAR {
     private com.google.protobuf.ByteString stake_;
     /**
      * <pre>
-     * uint128
+     * uint128 / little endian byte order
      * </pre>
      *
      * <code>bytes stake = 1;</code>
+     * @return The stake.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString getStake() {
       return stake_;
     }
@@ -4837,7 +4962,9 @@ public final class NEAR {
     private volatile java.lang.Object publicKey_;
     /**
      * <code>string public_key = 2;</code>
+     * @return The publicKey.
      */
+    @java.lang.Override
     public java.lang.String getPublicKey() {
       java.lang.Object ref = publicKey_;
       if (ref instanceof java.lang.String) {
@@ -4852,7 +4979,9 @@ public final class NEAR {
     }
     /**
      * <code>string public_key = 2;</code>
+     * @return The bytes for publicKey.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString
         getPublicKeyBytes() {
       java.lang.Object ref = publicKey_;
@@ -5189,20 +5318,24 @@ public final class NEAR {
       private com.google.protobuf.ByteString stake_ = com.google.protobuf.ByteString.EMPTY;
       /**
        * <pre>
-       * uint128
+       * uint128 / little endian byte order
        * </pre>
        *
        * <code>bytes stake = 1;</code>
+       * @return The stake.
        */
+      @java.lang.Override
       public com.google.protobuf.ByteString getStake() {
         return stake_;
       }
       /**
        * <pre>
-       * uint128
+       * uint128 / little endian byte order
        * </pre>
        *
        * <code>bytes stake = 1;</code>
+       * @param value The stake to set.
+       * @return This builder for chaining.
        */
       public Builder setStake(com.google.protobuf.ByteString value) {
         if (value == null) {
@@ -5215,10 +5348,11 @@ public final class NEAR {
       }
       /**
        * <pre>
-       * uint128
+       * uint128 / little endian byte order
        * </pre>
        *
        * <code>bytes stake = 1;</code>
+       * @return This builder for chaining.
        */
       public Builder clearStake() {
         
@@ -5230,6 +5364,7 @@ public final class NEAR {
       private java.lang.Object publicKey_ = "";
       /**
        * <code>string public_key = 2;</code>
+       * @return The publicKey.
        */
       public java.lang.String getPublicKey() {
         java.lang.Object ref = publicKey_;
@@ -5245,6 +5380,7 @@ public final class NEAR {
       }
       /**
        * <code>string public_key = 2;</code>
+       * @return The bytes for publicKey.
        */
       public com.google.protobuf.ByteString
           getPublicKeyBytes() {
@@ -5261,6 +5397,8 @@ public final class NEAR {
       }
       /**
        * <code>string public_key = 2;</code>
+       * @param value The publicKey to set.
+       * @return This builder for chaining.
        */
       public Builder setPublicKey(
           java.lang.String value) {
@@ -5274,6 +5412,7 @@ public final class NEAR {
       }
       /**
        * <code>string public_key = 2;</code>
+       * @return This builder for chaining.
        */
       public Builder clearPublicKey() {
         
@@ -5283,6 +5422,8 @@ public final class NEAR {
       }
       /**
        * <code>string public_key = 2;</code>
+       * @param value The bytes for publicKey to set.
+       * @return This builder for chaining.
        */
       public Builder setPublicKeyBytes(
           com.google.protobuf.ByteString value) {
@@ -5354,10 +5495,12 @@ public final class NEAR {
 
     /**
      * <code>.TW.NEAR.Proto.PublicKey public_key = 1;</code>
+     * @return Whether the publicKey field is set.
      */
     boolean hasPublicKey();
     /**
      * <code>.TW.NEAR.Proto.PublicKey public_key = 1;</code>
+     * @return The publicKey.
      */
     wallet.core.jni.proto.NEAR.PublicKey getPublicKey();
     /**
@@ -5367,10 +5510,12 @@ public final class NEAR {
 
     /**
      * <code>.TW.NEAR.Proto.AccessKey access_key = 2;</code>
+     * @return Whether the accessKey field is set.
      */
     boolean hasAccessKey();
     /**
      * <code>.TW.NEAR.Proto.AccessKey access_key = 2;</code>
+     * @return The accessKey.
      */
     wallet.core.jni.proto.NEAR.AccessKey getAccessKey();
     /**
@@ -5381,7 +5526,7 @@ public final class NEAR {
   /**
    * Protobuf type {@code TW.NEAR.Proto.AddKey}
    */
-  public  static final class AddKey extends
+  public static final class AddKey extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:TW.NEAR.Proto.AddKey)
       AddKeyOrBuilder {
@@ -5485,19 +5630,24 @@ public final class NEAR {
     private wallet.core.jni.proto.NEAR.PublicKey publicKey_;
     /**
      * <code>.TW.NEAR.Proto.PublicKey public_key = 1;</code>
+     * @return Whether the publicKey field is set.
      */
+    @java.lang.Override
     public boolean hasPublicKey() {
       return publicKey_ != null;
     }
     /**
      * <code>.TW.NEAR.Proto.PublicKey public_key = 1;</code>
+     * @return The publicKey.
      */
+    @java.lang.Override
     public wallet.core.jni.proto.NEAR.PublicKey getPublicKey() {
       return publicKey_ == null ? wallet.core.jni.proto.NEAR.PublicKey.getDefaultInstance() : publicKey_;
     }
     /**
      * <code>.TW.NEAR.Proto.PublicKey public_key = 1;</code>
      */
+    @java.lang.Override
     public wallet.core.jni.proto.NEAR.PublicKeyOrBuilder getPublicKeyOrBuilder() {
       return getPublicKey();
     }
@@ -5506,19 +5656,24 @@ public final class NEAR {
     private wallet.core.jni.proto.NEAR.AccessKey accessKey_;
     /**
      * <code>.TW.NEAR.Proto.AccessKey access_key = 2;</code>
+     * @return Whether the accessKey field is set.
      */
+    @java.lang.Override
     public boolean hasAccessKey() {
       return accessKey_ != null;
     }
     /**
      * <code>.TW.NEAR.Proto.AccessKey access_key = 2;</code>
+     * @return The accessKey.
      */
+    @java.lang.Override
     public wallet.core.jni.proto.NEAR.AccessKey getAccessKey() {
       return accessKey_ == null ? wallet.core.jni.proto.NEAR.AccessKey.getDefaultInstance() : accessKey_;
     }
     /**
      * <code>.TW.NEAR.Proto.AccessKey access_key = 2;</code>
      */
+    @java.lang.Override
     public wallet.core.jni.proto.NEAR.AccessKeyOrBuilder getAccessKeyOrBuilder() {
       return getAccessKey();
     }
@@ -5873,12 +6028,14 @@ public final class NEAR {
           wallet.core.jni.proto.NEAR.PublicKey, wallet.core.jni.proto.NEAR.PublicKey.Builder, wallet.core.jni.proto.NEAR.PublicKeyOrBuilder> publicKeyBuilder_;
       /**
        * <code>.TW.NEAR.Proto.PublicKey public_key = 1;</code>
+       * @return Whether the publicKey field is set.
        */
       public boolean hasPublicKey() {
         return publicKeyBuilder_ != null || publicKey_ != null;
       }
       /**
        * <code>.TW.NEAR.Proto.PublicKey public_key = 1;</code>
+       * @return The publicKey.
        */
       public wallet.core.jni.proto.NEAR.PublicKey getPublicKey() {
         if (publicKeyBuilder_ == null) {
@@ -5990,12 +6147,14 @@ public final class NEAR {
           wallet.core.jni.proto.NEAR.AccessKey, wallet.core.jni.proto.NEAR.AccessKey.Builder, wallet.core.jni.proto.NEAR.AccessKeyOrBuilder> accessKeyBuilder_;
       /**
        * <code>.TW.NEAR.Proto.AccessKey access_key = 2;</code>
+       * @return Whether the accessKey field is set.
        */
       public boolean hasAccessKey() {
         return accessKeyBuilder_ != null || accessKey_ != null;
       }
       /**
        * <code>.TW.NEAR.Proto.AccessKey access_key = 2;</code>
+       * @return The accessKey.
        */
       public wallet.core.jni.proto.NEAR.AccessKey getAccessKey() {
         if (accessKeyBuilder_ == null) {
@@ -6160,10 +6319,12 @@ public final class NEAR {
 
     /**
      * <code>.TW.NEAR.Proto.PublicKey public_key = 1;</code>
+     * @return Whether the publicKey field is set.
      */
     boolean hasPublicKey();
     /**
      * <code>.TW.NEAR.Proto.PublicKey public_key = 1;</code>
+     * @return The publicKey.
      */
     wallet.core.jni.proto.NEAR.PublicKey getPublicKey();
     /**
@@ -6174,7 +6335,7 @@ public final class NEAR {
   /**
    * Protobuf type {@code TW.NEAR.Proto.DeleteKey}
    */
-  public  static final class DeleteKey extends
+  public static final class DeleteKey extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:TW.NEAR.Proto.DeleteKey)
       DeleteKeyOrBuilder {
@@ -6265,19 +6426,24 @@ public final class NEAR {
     private wallet.core.jni.proto.NEAR.PublicKey publicKey_;
     /**
      * <code>.TW.NEAR.Proto.PublicKey public_key = 1;</code>
+     * @return Whether the publicKey field is set.
      */
+    @java.lang.Override
     public boolean hasPublicKey() {
       return publicKey_ != null;
     }
     /**
      * <code>.TW.NEAR.Proto.PublicKey public_key = 1;</code>
+     * @return The publicKey.
      */
+    @java.lang.Override
     public wallet.core.jni.proto.NEAR.PublicKey getPublicKey() {
       return publicKey_ == null ? wallet.core.jni.proto.NEAR.PublicKey.getDefaultInstance() : publicKey_;
     }
     /**
      * <code>.TW.NEAR.Proto.PublicKey public_key = 1;</code>
      */
+    @java.lang.Override
     public wallet.core.jni.proto.NEAR.PublicKeyOrBuilder getPublicKeyOrBuilder() {
       return getPublicKey();
     }
@@ -6602,12 +6768,14 @@ public final class NEAR {
           wallet.core.jni.proto.NEAR.PublicKey, wallet.core.jni.proto.NEAR.PublicKey.Builder, wallet.core.jni.proto.NEAR.PublicKeyOrBuilder> publicKeyBuilder_;
       /**
        * <code>.TW.NEAR.Proto.PublicKey public_key = 1;</code>
+       * @return Whether the publicKey field is set.
        */
       public boolean hasPublicKey() {
         return publicKeyBuilder_ != null || publicKey_ != null;
       }
       /**
        * <code>.TW.NEAR.Proto.PublicKey public_key = 1;</code>
+       * @return The publicKey.
        */
       public wallet.core.jni.proto.NEAR.PublicKey getPublicKey() {
         if (publicKeyBuilder_ == null) {
@@ -6772,10 +6940,12 @@ public final class NEAR {
 
     /**
      * <code>string beneficiary_id = 1;</code>
+     * @return The beneficiaryId.
      */
     java.lang.String getBeneficiaryId();
     /**
      * <code>string beneficiary_id = 1;</code>
+     * @return The bytes for beneficiaryId.
      */
     com.google.protobuf.ByteString
         getBeneficiaryIdBytes();
@@ -6783,7 +6953,7 @@ public final class NEAR {
   /**
    * Protobuf type {@code TW.NEAR.Proto.DeleteAccount}
    */
-  public  static final class DeleteAccount extends
+  public static final class DeleteAccount extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:TW.NEAR.Proto.DeleteAccount)
       DeleteAccountOrBuilder {
@@ -6868,7 +7038,9 @@ public final class NEAR {
     private volatile java.lang.Object beneficiaryId_;
     /**
      * <code>string beneficiary_id = 1;</code>
+     * @return The beneficiaryId.
      */
+    @java.lang.Override
     public java.lang.String getBeneficiaryId() {
       java.lang.Object ref = beneficiaryId_;
       if (ref instanceof java.lang.String) {
@@ -6883,7 +7055,9 @@ public final class NEAR {
     }
     /**
      * <code>string beneficiary_id = 1;</code>
+     * @return The bytes for beneficiaryId.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString
         getBeneficiaryIdBytes() {
       java.lang.Object ref = beneficiaryId_;
@@ -7203,6 +7377,7 @@ public final class NEAR {
       private java.lang.Object beneficiaryId_ = "";
       /**
        * <code>string beneficiary_id = 1;</code>
+       * @return The beneficiaryId.
        */
       public java.lang.String getBeneficiaryId() {
         java.lang.Object ref = beneficiaryId_;
@@ -7218,6 +7393,7 @@ public final class NEAR {
       }
       /**
        * <code>string beneficiary_id = 1;</code>
+       * @return The bytes for beneficiaryId.
        */
       public com.google.protobuf.ByteString
           getBeneficiaryIdBytes() {
@@ -7234,6 +7410,8 @@ public final class NEAR {
       }
       /**
        * <code>string beneficiary_id = 1;</code>
+       * @param value The beneficiaryId to set.
+       * @return This builder for chaining.
        */
       public Builder setBeneficiaryId(
           java.lang.String value) {
@@ -7247,6 +7425,7 @@ public final class NEAR {
       }
       /**
        * <code>string beneficiary_id = 1;</code>
+       * @return This builder for chaining.
        */
       public Builder clearBeneficiaryId() {
         
@@ -7256,6 +7435,8 @@ public final class NEAR {
       }
       /**
        * <code>string beneficiary_id = 1;</code>
+       * @param value The bytes for beneficiaryId to set.
+       * @return This builder for chaining.
        */
       public Builder setBeneficiaryIdBytes(
           com.google.protobuf.ByteString value) {
@@ -7327,10 +7508,12 @@ public final class NEAR {
 
     /**
      * <code>.TW.NEAR.Proto.CreateAccount create_account = 1;</code>
+     * @return Whether the createAccount field is set.
      */
     boolean hasCreateAccount();
     /**
      * <code>.TW.NEAR.Proto.CreateAccount create_account = 1;</code>
+     * @return The createAccount.
      */
     wallet.core.jni.proto.NEAR.CreateAccount getCreateAccount();
     /**
@@ -7340,10 +7523,12 @@ public final class NEAR {
 
     /**
      * <code>.TW.NEAR.Proto.DeployContract deploy_contract = 2;</code>
+     * @return Whether the deployContract field is set.
      */
     boolean hasDeployContract();
     /**
      * <code>.TW.NEAR.Proto.DeployContract deploy_contract = 2;</code>
+     * @return The deployContract.
      */
     wallet.core.jni.proto.NEAR.DeployContract getDeployContract();
     /**
@@ -7353,10 +7538,12 @@ public final class NEAR {
 
     /**
      * <code>.TW.NEAR.Proto.FunctionCall function_call = 3;</code>
+     * @return Whether the functionCall field is set.
      */
     boolean hasFunctionCall();
     /**
      * <code>.TW.NEAR.Proto.FunctionCall function_call = 3;</code>
+     * @return The functionCall.
      */
     wallet.core.jni.proto.NEAR.FunctionCall getFunctionCall();
     /**
@@ -7366,10 +7553,12 @@ public final class NEAR {
 
     /**
      * <code>.TW.NEAR.Proto.Transfer transfer = 4;</code>
+     * @return Whether the transfer field is set.
      */
     boolean hasTransfer();
     /**
      * <code>.TW.NEAR.Proto.Transfer transfer = 4;</code>
+     * @return The transfer.
      */
     wallet.core.jni.proto.NEAR.Transfer getTransfer();
     /**
@@ -7379,10 +7568,12 @@ public final class NEAR {
 
     /**
      * <code>.TW.NEAR.Proto.Stake stake = 5;</code>
+     * @return Whether the stake field is set.
      */
     boolean hasStake();
     /**
      * <code>.TW.NEAR.Proto.Stake stake = 5;</code>
+     * @return The stake.
      */
     wallet.core.jni.proto.NEAR.Stake getStake();
     /**
@@ -7392,10 +7583,12 @@ public final class NEAR {
 
     /**
      * <code>.TW.NEAR.Proto.AddKey add_key = 6;</code>
+     * @return Whether the addKey field is set.
      */
     boolean hasAddKey();
     /**
      * <code>.TW.NEAR.Proto.AddKey add_key = 6;</code>
+     * @return The addKey.
      */
     wallet.core.jni.proto.NEAR.AddKey getAddKey();
     /**
@@ -7405,10 +7598,12 @@ public final class NEAR {
 
     /**
      * <code>.TW.NEAR.Proto.DeleteKey delete_key = 7;</code>
+     * @return Whether the deleteKey field is set.
      */
     boolean hasDeleteKey();
     /**
      * <code>.TW.NEAR.Proto.DeleteKey delete_key = 7;</code>
+     * @return The deleteKey.
      */
     wallet.core.jni.proto.NEAR.DeleteKey getDeleteKey();
     /**
@@ -7418,10 +7613,12 @@ public final class NEAR {
 
     /**
      * <code>.TW.NEAR.Proto.DeleteAccount delete_account = 8;</code>
+     * @return Whether the deleteAccount field is set.
      */
     boolean hasDeleteAccount();
     /**
      * <code>.TW.NEAR.Proto.DeleteAccount delete_account = 8;</code>
+     * @return The deleteAccount.
      */
     wallet.core.jni.proto.NEAR.DeleteAccount getDeleteAccount();
     /**
@@ -7434,7 +7631,7 @@ public final class NEAR {
   /**
    * Protobuf type {@code TW.NEAR.Proto.Action}
    */
-  public  static final class Action extends
+  public static final class Action extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:TW.NEAR.Proto.Action)
       ActionOrBuilder {
@@ -7623,7 +7820,8 @@ public final class NEAR {
     private int payloadCase_ = 0;
     private java.lang.Object payload_;
     public enum PayloadCase
-        implements com.google.protobuf.Internal.EnumLite {
+        implements com.google.protobuf.Internal.EnumLite,
+            com.google.protobuf.AbstractMessage.InternalOneOfEnum {
       CREATE_ACCOUNT(1),
       DEPLOY_CONTRACT(2),
       FUNCTION_CALL(3),
@@ -7638,6 +7836,8 @@ public final class NEAR {
         this.value = value;
       }
       /**
+       * @param value The number of the enum to look for.
+       * @return The enum associated with the given number.
        * @deprecated Use {@link #forNumber(int)} instead.
        */
       @java.lang.Deprecated
@@ -7673,13 +7873,17 @@ public final class NEAR {
     public static final int CREATE_ACCOUNT_FIELD_NUMBER = 1;
     /**
      * <code>.TW.NEAR.Proto.CreateAccount create_account = 1;</code>
+     * @return Whether the createAccount field is set.
      */
+    @java.lang.Override
     public boolean hasCreateAccount() {
       return payloadCase_ == 1;
     }
     /**
      * <code>.TW.NEAR.Proto.CreateAccount create_account = 1;</code>
+     * @return The createAccount.
      */
+    @java.lang.Override
     public wallet.core.jni.proto.NEAR.CreateAccount getCreateAccount() {
       if (payloadCase_ == 1) {
          return (wallet.core.jni.proto.NEAR.CreateAccount) payload_;
@@ -7689,6 +7893,7 @@ public final class NEAR {
     /**
      * <code>.TW.NEAR.Proto.CreateAccount create_account = 1;</code>
      */
+    @java.lang.Override
     public wallet.core.jni.proto.NEAR.CreateAccountOrBuilder getCreateAccountOrBuilder() {
       if (payloadCase_ == 1) {
          return (wallet.core.jni.proto.NEAR.CreateAccount) payload_;
@@ -7699,13 +7904,17 @@ public final class NEAR {
     public static final int DEPLOY_CONTRACT_FIELD_NUMBER = 2;
     /**
      * <code>.TW.NEAR.Proto.DeployContract deploy_contract = 2;</code>
+     * @return Whether the deployContract field is set.
      */
+    @java.lang.Override
     public boolean hasDeployContract() {
       return payloadCase_ == 2;
     }
     /**
      * <code>.TW.NEAR.Proto.DeployContract deploy_contract = 2;</code>
+     * @return The deployContract.
      */
+    @java.lang.Override
     public wallet.core.jni.proto.NEAR.DeployContract getDeployContract() {
       if (payloadCase_ == 2) {
          return (wallet.core.jni.proto.NEAR.DeployContract) payload_;
@@ -7715,6 +7924,7 @@ public final class NEAR {
     /**
      * <code>.TW.NEAR.Proto.DeployContract deploy_contract = 2;</code>
      */
+    @java.lang.Override
     public wallet.core.jni.proto.NEAR.DeployContractOrBuilder getDeployContractOrBuilder() {
       if (payloadCase_ == 2) {
          return (wallet.core.jni.proto.NEAR.DeployContract) payload_;
@@ -7725,13 +7935,17 @@ public final class NEAR {
     public static final int FUNCTION_CALL_FIELD_NUMBER = 3;
     /**
      * <code>.TW.NEAR.Proto.FunctionCall function_call = 3;</code>
+     * @return Whether the functionCall field is set.
      */
+    @java.lang.Override
     public boolean hasFunctionCall() {
       return payloadCase_ == 3;
     }
     /**
      * <code>.TW.NEAR.Proto.FunctionCall function_call = 3;</code>
+     * @return The functionCall.
      */
+    @java.lang.Override
     public wallet.core.jni.proto.NEAR.FunctionCall getFunctionCall() {
       if (payloadCase_ == 3) {
          return (wallet.core.jni.proto.NEAR.FunctionCall) payload_;
@@ -7741,6 +7955,7 @@ public final class NEAR {
     /**
      * <code>.TW.NEAR.Proto.FunctionCall function_call = 3;</code>
      */
+    @java.lang.Override
     public wallet.core.jni.proto.NEAR.FunctionCallOrBuilder getFunctionCallOrBuilder() {
       if (payloadCase_ == 3) {
          return (wallet.core.jni.proto.NEAR.FunctionCall) payload_;
@@ -7751,13 +7966,17 @@ public final class NEAR {
     public static final int TRANSFER_FIELD_NUMBER = 4;
     /**
      * <code>.TW.NEAR.Proto.Transfer transfer = 4;</code>
+     * @return Whether the transfer field is set.
      */
+    @java.lang.Override
     public boolean hasTransfer() {
       return payloadCase_ == 4;
     }
     /**
      * <code>.TW.NEAR.Proto.Transfer transfer = 4;</code>
+     * @return The transfer.
      */
+    @java.lang.Override
     public wallet.core.jni.proto.NEAR.Transfer getTransfer() {
       if (payloadCase_ == 4) {
          return (wallet.core.jni.proto.NEAR.Transfer) payload_;
@@ -7767,6 +7986,7 @@ public final class NEAR {
     /**
      * <code>.TW.NEAR.Proto.Transfer transfer = 4;</code>
      */
+    @java.lang.Override
     public wallet.core.jni.proto.NEAR.TransferOrBuilder getTransferOrBuilder() {
       if (payloadCase_ == 4) {
          return (wallet.core.jni.proto.NEAR.Transfer) payload_;
@@ -7777,13 +7997,17 @@ public final class NEAR {
     public static final int STAKE_FIELD_NUMBER = 5;
     /**
      * <code>.TW.NEAR.Proto.Stake stake = 5;</code>
+     * @return Whether the stake field is set.
      */
+    @java.lang.Override
     public boolean hasStake() {
       return payloadCase_ == 5;
     }
     /**
      * <code>.TW.NEAR.Proto.Stake stake = 5;</code>
+     * @return The stake.
      */
+    @java.lang.Override
     public wallet.core.jni.proto.NEAR.Stake getStake() {
       if (payloadCase_ == 5) {
          return (wallet.core.jni.proto.NEAR.Stake) payload_;
@@ -7793,6 +8017,7 @@ public final class NEAR {
     /**
      * <code>.TW.NEAR.Proto.Stake stake = 5;</code>
      */
+    @java.lang.Override
     public wallet.core.jni.proto.NEAR.StakeOrBuilder getStakeOrBuilder() {
       if (payloadCase_ == 5) {
          return (wallet.core.jni.proto.NEAR.Stake) payload_;
@@ -7803,13 +8028,17 @@ public final class NEAR {
     public static final int ADD_KEY_FIELD_NUMBER = 6;
     /**
      * <code>.TW.NEAR.Proto.AddKey add_key = 6;</code>
+     * @return Whether the addKey field is set.
      */
+    @java.lang.Override
     public boolean hasAddKey() {
       return payloadCase_ == 6;
     }
     /**
      * <code>.TW.NEAR.Proto.AddKey add_key = 6;</code>
+     * @return The addKey.
      */
+    @java.lang.Override
     public wallet.core.jni.proto.NEAR.AddKey getAddKey() {
       if (payloadCase_ == 6) {
          return (wallet.core.jni.proto.NEAR.AddKey) payload_;
@@ -7819,6 +8048,7 @@ public final class NEAR {
     /**
      * <code>.TW.NEAR.Proto.AddKey add_key = 6;</code>
      */
+    @java.lang.Override
     public wallet.core.jni.proto.NEAR.AddKeyOrBuilder getAddKeyOrBuilder() {
       if (payloadCase_ == 6) {
          return (wallet.core.jni.proto.NEAR.AddKey) payload_;
@@ -7829,13 +8059,17 @@ public final class NEAR {
     public static final int DELETE_KEY_FIELD_NUMBER = 7;
     /**
      * <code>.TW.NEAR.Proto.DeleteKey delete_key = 7;</code>
+     * @return Whether the deleteKey field is set.
      */
+    @java.lang.Override
     public boolean hasDeleteKey() {
       return payloadCase_ == 7;
     }
     /**
      * <code>.TW.NEAR.Proto.DeleteKey delete_key = 7;</code>
+     * @return The deleteKey.
      */
+    @java.lang.Override
     public wallet.core.jni.proto.NEAR.DeleteKey getDeleteKey() {
       if (payloadCase_ == 7) {
          return (wallet.core.jni.proto.NEAR.DeleteKey) payload_;
@@ -7845,6 +8079,7 @@ public final class NEAR {
     /**
      * <code>.TW.NEAR.Proto.DeleteKey delete_key = 7;</code>
      */
+    @java.lang.Override
     public wallet.core.jni.proto.NEAR.DeleteKeyOrBuilder getDeleteKeyOrBuilder() {
       if (payloadCase_ == 7) {
          return (wallet.core.jni.proto.NEAR.DeleteKey) payload_;
@@ -7855,13 +8090,17 @@ public final class NEAR {
     public static final int DELETE_ACCOUNT_FIELD_NUMBER = 8;
     /**
      * <code>.TW.NEAR.Proto.DeleteAccount delete_account = 8;</code>
+     * @return Whether the deleteAccount field is set.
      */
+    @java.lang.Override
     public boolean hasDeleteAccount() {
       return payloadCase_ == 8;
     }
     /**
      * <code>.TW.NEAR.Proto.DeleteAccount delete_account = 8;</code>
+     * @return The deleteAccount.
      */
+    @java.lang.Override
     public wallet.core.jni.proto.NEAR.DeleteAccount getDeleteAccount() {
       if (payloadCase_ == 8) {
          return (wallet.core.jni.proto.NEAR.DeleteAccount) payload_;
@@ -7871,6 +8110,7 @@ public final class NEAR {
     /**
      * <code>.TW.NEAR.Proto.DeleteAccount delete_account = 8;</code>
      */
+    @java.lang.Override
     public wallet.core.jni.proto.NEAR.DeleteAccountOrBuilder getDeleteAccountOrBuilder() {
       if (payloadCase_ == 8) {
          return (wallet.core.jni.proto.NEAR.DeleteAccount) payload_;
@@ -8407,13 +8647,17 @@ public final class NEAR {
           wallet.core.jni.proto.NEAR.CreateAccount, wallet.core.jni.proto.NEAR.CreateAccount.Builder, wallet.core.jni.proto.NEAR.CreateAccountOrBuilder> createAccountBuilder_;
       /**
        * <code>.TW.NEAR.Proto.CreateAccount create_account = 1;</code>
+       * @return Whether the createAccount field is set.
        */
+      @java.lang.Override
       public boolean hasCreateAccount() {
         return payloadCase_ == 1;
       }
       /**
        * <code>.TW.NEAR.Proto.CreateAccount create_account = 1;</code>
+       * @return The createAccount.
        */
+      @java.lang.Override
       public wallet.core.jni.proto.NEAR.CreateAccount getCreateAccount() {
         if (createAccountBuilder_ == null) {
           if (payloadCase_ == 1) {
@@ -8507,6 +8751,7 @@ public final class NEAR {
       /**
        * <code>.TW.NEAR.Proto.CreateAccount create_account = 1;</code>
        */
+      @java.lang.Override
       public wallet.core.jni.proto.NEAR.CreateAccountOrBuilder getCreateAccountOrBuilder() {
         if ((payloadCase_ == 1) && (createAccountBuilder_ != null)) {
           return createAccountBuilder_.getMessageOrBuilder();
@@ -8543,13 +8788,17 @@ public final class NEAR {
           wallet.core.jni.proto.NEAR.DeployContract, wallet.core.jni.proto.NEAR.DeployContract.Builder, wallet.core.jni.proto.NEAR.DeployContractOrBuilder> deployContractBuilder_;
       /**
        * <code>.TW.NEAR.Proto.DeployContract deploy_contract = 2;</code>
+       * @return Whether the deployContract field is set.
        */
+      @java.lang.Override
       public boolean hasDeployContract() {
         return payloadCase_ == 2;
       }
       /**
        * <code>.TW.NEAR.Proto.DeployContract deploy_contract = 2;</code>
+       * @return The deployContract.
        */
+      @java.lang.Override
       public wallet.core.jni.proto.NEAR.DeployContract getDeployContract() {
         if (deployContractBuilder_ == null) {
           if (payloadCase_ == 2) {
@@ -8643,6 +8892,7 @@ public final class NEAR {
       /**
        * <code>.TW.NEAR.Proto.DeployContract deploy_contract = 2;</code>
        */
+      @java.lang.Override
       public wallet.core.jni.proto.NEAR.DeployContractOrBuilder getDeployContractOrBuilder() {
         if ((payloadCase_ == 2) && (deployContractBuilder_ != null)) {
           return deployContractBuilder_.getMessageOrBuilder();
@@ -8679,13 +8929,17 @@ public final class NEAR {
           wallet.core.jni.proto.NEAR.FunctionCall, wallet.core.jni.proto.NEAR.FunctionCall.Builder, wallet.core.jni.proto.NEAR.FunctionCallOrBuilder> functionCallBuilder_;
       /**
        * <code>.TW.NEAR.Proto.FunctionCall function_call = 3;</code>
+       * @return Whether the functionCall field is set.
        */
+      @java.lang.Override
       public boolean hasFunctionCall() {
         return payloadCase_ == 3;
       }
       /**
        * <code>.TW.NEAR.Proto.FunctionCall function_call = 3;</code>
+       * @return The functionCall.
        */
+      @java.lang.Override
       public wallet.core.jni.proto.NEAR.FunctionCall getFunctionCall() {
         if (functionCallBuilder_ == null) {
           if (payloadCase_ == 3) {
@@ -8779,6 +9033,7 @@ public final class NEAR {
       /**
        * <code>.TW.NEAR.Proto.FunctionCall function_call = 3;</code>
        */
+      @java.lang.Override
       public wallet.core.jni.proto.NEAR.FunctionCallOrBuilder getFunctionCallOrBuilder() {
         if ((payloadCase_ == 3) && (functionCallBuilder_ != null)) {
           return functionCallBuilder_.getMessageOrBuilder();
@@ -8815,13 +9070,17 @@ public final class NEAR {
           wallet.core.jni.proto.NEAR.Transfer, wallet.core.jni.proto.NEAR.Transfer.Builder, wallet.core.jni.proto.NEAR.TransferOrBuilder> transferBuilder_;
       /**
        * <code>.TW.NEAR.Proto.Transfer transfer = 4;</code>
+       * @return Whether the transfer field is set.
        */
+      @java.lang.Override
       public boolean hasTransfer() {
         return payloadCase_ == 4;
       }
       /**
        * <code>.TW.NEAR.Proto.Transfer transfer = 4;</code>
+       * @return The transfer.
        */
+      @java.lang.Override
       public wallet.core.jni.proto.NEAR.Transfer getTransfer() {
         if (transferBuilder_ == null) {
           if (payloadCase_ == 4) {
@@ -8915,6 +9174,7 @@ public final class NEAR {
       /**
        * <code>.TW.NEAR.Proto.Transfer transfer = 4;</code>
        */
+      @java.lang.Override
       public wallet.core.jni.proto.NEAR.TransferOrBuilder getTransferOrBuilder() {
         if ((payloadCase_ == 4) && (transferBuilder_ != null)) {
           return transferBuilder_.getMessageOrBuilder();
@@ -8951,13 +9211,17 @@ public final class NEAR {
           wallet.core.jni.proto.NEAR.Stake, wallet.core.jni.proto.NEAR.Stake.Builder, wallet.core.jni.proto.NEAR.StakeOrBuilder> stakeBuilder_;
       /**
        * <code>.TW.NEAR.Proto.Stake stake = 5;</code>
+       * @return Whether the stake field is set.
        */
+      @java.lang.Override
       public boolean hasStake() {
         return payloadCase_ == 5;
       }
       /**
        * <code>.TW.NEAR.Proto.Stake stake = 5;</code>
+       * @return The stake.
        */
+      @java.lang.Override
       public wallet.core.jni.proto.NEAR.Stake getStake() {
         if (stakeBuilder_ == null) {
           if (payloadCase_ == 5) {
@@ -9051,6 +9315,7 @@ public final class NEAR {
       /**
        * <code>.TW.NEAR.Proto.Stake stake = 5;</code>
        */
+      @java.lang.Override
       public wallet.core.jni.proto.NEAR.StakeOrBuilder getStakeOrBuilder() {
         if ((payloadCase_ == 5) && (stakeBuilder_ != null)) {
           return stakeBuilder_.getMessageOrBuilder();
@@ -9087,13 +9352,17 @@ public final class NEAR {
           wallet.core.jni.proto.NEAR.AddKey, wallet.core.jni.proto.NEAR.AddKey.Builder, wallet.core.jni.proto.NEAR.AddKeyOrBuilder> addKeyBuilder_;
       /**
        * <code>.TW.NEAR.Proto.AddKey add_key = 6;</code>
+       * @return Whether the addKey field is set.
        */
+      @java.lang.Override
       public boolean hasAddKey() {
         return payloadCase_ == 6;
       }
       /**
        * <code>.TW.NEAR.Proto.AddKey add_key = 6;</code>
+       * @return The addKey.
        */
+      @java.lang.Override
       public wallet.core.jni.proto.NEAR.AddKey getAddKey() {
         if (addKeyBuilder_ == null) {
           if (payloadCase_ == 6) {
@@ -9187,6 +9456,7 @@ public final class NEAR {
       /**
        * <code>.TW.NEAR.Proto.AddKey add_key = 6;</code>
        */
+      @java.lang.Override
       public wallet.core.jni.proto.NEAR.AddKeyOrBuilder getAddKeyOrBuilder() {
         if ((payloadCase_ == 6) && (addKeyBuilder_ != null)) {
           return addKeyBuilder_.getMessageOrBuilder();
@@ -9223,13 +9493,17 @@ public final class NEAR {
           wallet.core.jni.proto.NEAR.DeleteKey, wallet.core.jni.proto.NEAR.DeleteKey.Builder, wallet.core.jni.proto.NEAR.DeleteKeyOrBuilder> deleteKeyBuilder_;
       /**
        * <code>.TW.NEAR.Proto.DeleteKey delete_key = 7;</code>
+       * @return Whether the deleteKey field is set.
        */
+      @java.lang.Override
       public boolean hasDeleteKey() {
         return payloadCase_ == 7;
       }
       /**
        * <code>.TW.NEAR.Proto.DeleteKey delete_key = 7;</code>
+       * @return The deleteKey.
        */
+      @java.lang.Override
       public wallet.core.jni.proto.NEAR.DeleteKey getDeleteKey() {
         if (deleteKeyBuilder_ == null) {
           if (payloadCase_ == 7) {
@@ -9323,6 +9597,7 @@ public final class NEAR {
       /**
        * <code>.TW.NEAR.Proto.DeleteKey delete_key = 7;</code>
        */
+      @java.lang.Override
       public wallet.core.jni.proto.NEAR.DeleteKeyOrBuilder getDeleteKeyOrBuilder() {
         if ((payloadCase_ == 7) && (deleteKeyBuilder_ != null)) {
           return deleteKeyBuilder_.getMessageOrBuilder();
@@ -9359,13 +9634,17 @@ public final class NEAR {
           wallet.core.jni.proto.NEAR.DeleteAccount, wallet.core.jni.proto.NEAR.DeleteAccount.Builder, wallet.core.jni.proto.NEAR.DeleteAccountOrBuilder> deleteAccountBuilder_;
       /**
        * <code>.TW.NEAR.Proto.DeleteAccount delete_account = 8;</code>
+       * @return Whether the deleteAccount field is set.
        */
+      @java.lang.Override
       public boolean hasDeleteAccount() {
         return payloadCase_ == 8;
       }
       /**
        * <code>.TW.NEAR.Proto.DeleteAccount delete_account = 8;</code>
+       * @return The deleteAccount.
        */
+      @java.lang.Override
       public wallet.core.jni.proto.NEAR.DeleteAccount getDeleteAccount() {
         if (deleteAccountBuilder_ == null) {
           if (payloadCase_ == 8) {
@@ -9459,6 +9738,7 @@ public final class NEAR {
       /**
        * <code>.TW.NEAR.Proto.DeleteAccount delete_account = 8;</code>
        */
+      @java.lang.Override
       public wallet.core.jni.proto.NEAR.DeleteAccountOrBuilder getDeleteAccountOrBuilder() {
         if ((payloadCase_ == 8) && (deleteAccountBuilder_ != null)) {
           return deleteAccountBuilder_.getMessageOrBuilder();
@@ -9549,31 +9829,37 @@ public final class NEAR {
 
     /**
      * <code>string signer_id = 1;</code>
+     * @return The signerId.
      */
     java.lang.String getSignerId();
     /**
      * <code>string signer_id = 1;</code>
+     * @return The bytes for signerId.
      */
     com.google.protobuf.ByteString
         getSignerIdBytes();
 
     /**
      * <code>uint64 nonce = 2;</code>
+     * @return The nonce.
      */
     long getNonce();
 
     /**
      * <code>string receiver_id = 3;</code>
+     * @return The receiverId.
      */
     java.lang.String getReceiverId();
     /**
      * <code>string receiver_id = 3;</code>
+     * @return The bytes for receiverId.
      */
     com.google.protobuf.ByteString
         getReceiverIdBytes();
 
     /**
      * <code>bytes block_hash = 4;</code>
+     * @return The blockHash.
      */
     com.google.protobuf.ByteString getBlockHash();
 
@@ -9603,6 +9889,7 @@ public final class NEAR {
 
     /**
      * <code>bytes private_key = 6;</code>
+     * @return The privateKey.
      */
     com.google.protobuf.ByteString getPrivateKey();
   }
@@ -9613,7 +9900,7 @@ public final class NEAR {
    *
    * Protobuf type {@code TW.NEAR.Proto.SigningInput}
    */
-  public  static final class SigningInput extends
+  public static final class SigningInput extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:TW.NEAR.Proto.SigningInput)
       SigningInputOrBuilder {
@@ -9736,7 +10023,9 @@ public final class NEAR {
     private volatile java.lang.Object signerId_;
     /**
      * <code>string signer_id = 1;</code>
+     * @return The signerId.
      */
+    @java.lang.Override
     public java.lang.String getSignerId() {
       java.lang.Object ref = signerId_;
       if (ref instanceof java.lang.String) {
@@ -9751,7 +10040,9 @@ public final class NEAR {
     }
     /**
      * <code>string signer_id = 1;</code>
+     * @return The bytes for signerId.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString
         getSignerIdBytes() {
       java.lang.Object ref = signerId_;
@@ -9770,7 +10061,9 @@ public final class NEAR {
     private long nonce_;
     /**
      * <code>uint64 nonce = 2;</code>
+     * @return The nonce.
      */
+    @java.lang.Override
     public long getNonce() {
       return nonce_;
     }
@@ -9779,7 +10072,9 @@ public final class NEAR {
     private volatile java.lang.Object receiverId_;
     /**
      * <code>string receiver_id = 3;</code>
+     * @return The receiverId.
      */
+    @java.lang.Override
     public java.lang.String getReceiverId() {
       java.lang.Object ref = receiverId_;
       if (ref instanceof java.lang.String) {
@@ -9794,7 +10089,9 @@ public final class NEAR {
     }
     /**
      * <code>string receiver_id = 3;</code>
+     * @return The bytes for receiverId.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString
         getReceiverIdBytes() {
       java.lang.Object ref = receiverId_;
@@ -9813,7 +10110,9 @@ public final class NEAR {
     private com.google.protobuf.ByteString blockHash_;
     /**
      * <code>bytes block_hash = 4;</code>
+     * @return The blockHash.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString getBlockHash() {
       return blockHash_;
     }
@@ -9823,12 +10122,14 @@ public final class NEAR {
     /**
      * <code>repeated .TW.NEAR.Proto.Action actions = 5;</code>
      */
+    @java.lang.Override
     public java.util.List<wallet.core.jni.proto.NEAR.Action> getActionsList() {
       return actions_;
     }
     /**
      * <code>repeated .TW.NEAR.Proto.Action actions = 5;</code>
      */
+    @java.lang.Override
     public java.util.List<? extends wallet.core.jni.proto.NEAR.ActionOrBuilder> 
         getActionsOrBuilderList() {
       return actions_;
@@ -9836,18 +10137,21 @@ public final class NEAR {
     /**
      * <code>repeated .TW.NEAR.Proto.Action actions = 5;</code>
      */
+    @java.lang.Override
     public int getActionsCount() {
       return actions_.size();
     }
     /**
      * <code>repeated .TW.NEAR.Proto.Action actions = 5;</code>
      */
+    @java.lang.Override
     public wallet.core.jni.proto.NEAR.Action getActions(int index) {
       return actions_.get(index);
     }
     /**
      * <code>repeated .TW.NEAR.Proto.Action actions = 5;</code>
      */
+    @java.lang.Override
     public wallet.core.jni.proto.NEAR.ActionOrBuilder getActionsOrBuilder(
         int index) {
       return actions_.get(index);
@@ -9857,7 +10161,9 @@ public final class NEAR {
     private com.google.protobuf.ByteString privateKey_;
     /**
      * <code>bytes private_key = 6;</code>
+     * @return The privateKey.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString getPrivateKey() {
       return privateKey_;
     }
@@ -10297,6 +10603,7 @@ public final class NEAR {
       private java.lang.Object signerId_ = "";
       /**
        * <code>string signer_id = 1;</code>
+       * @return The signerId.
        */
       public java.lang.String getSignerId() {
         java.lang.Object ref = signerId_;
@@ -10312,6 +10619,7 @@ public final class NEAR {
       }
       /**
        * <code>string signer_id = 1;</code>
+       * @return The bytes for signerId.
        */
       public com.google.protobuf.ByteString
           getSignerIdBytes() {
@@ -10328,6 +10636,8 @@ public final class NEAR {
       }
       /**
        * <code>string signer_id = 1;</code>
+       * @param value The signerId to set.
+       * @return This builder for chaining.
        */
       public Builder setSignerId(
           java.lang.String value) {
@@ -10341,6 +10651,7 @@ public final class NEAR {
       }
       /**
        * <code>string signer_id = 1;</code>
+       * @return This builder for chaining.
        */
       public Builder clearSignerId() {
         
@@ -10350,6 +10661,8 @@ public final class NEAR {
       }
       /**
        * <code>string signer_id = 1;</code>
+       * @param value The bytes for signerId to set.
+       * @return This builder for chaining.
        */
       public Builder setSignerIdBytes(
           com.google.protobuf.ByteString value) {
@@ -10366,12 +10679,16 @@ public final class NEAR {
       private long nonce_ ;
       /**
        * <code>uint64 nonce = 2;</code>
+       * @return The nonce.
        */
+      @java.lang.Override
       public long getNonce() {
         return nonce_;
       }
       /**
        * <code>uint64 nonce = 2;</code>
+       * @param value The nonce to set.
+       * @return This builder for chaining.
        */
       public Builder setNonce(long value) {
         
@@ -10381,6 +10698,7 @@ public final class NEAR {
       }
       /**
        * <code>uint64 nonce = 2;</code>
+       * @return This builder for chaining.
        */
       public Builder clearNonce() {
         
@@ -10392,6 +10710,7 @@ public final class NEAR {
       private java.lang.Object receiverId_ = "";
       /**
        * <code>string receiver_id = 3;</code>
+       * @return The receiverId.
        */
       public java.lang.String getReceiverId() {
         java.lang.Object ref = receiverId_;
@@ -10407,6 +10726,7 @@ public final class NEAR {
       }
       /**
        * <code>string receiver_id = 3;</code>
+       * @return The bytes for receiverId.
        */
       public com.google.protobuf.ByteString
           getReceiverIdBytes() {
@@ -10423,6 +10743,8 @@ public final class NEAR {
       }
       /**
        * <code>string receiver_id = 3;</code>
+       * @param value The receiverId to set.
+       * @return This builder for chaining.
        */
       public Builder setReceiverId(
           java.lang.String value) {
@@ -10436,6 +10758,7 @@ public final class NEAR {
       }
       /**
        * <code>string receiver_id = 3;</code>
+       * @return This builder for chaining.
        */
       public Builder clearReceiverId() {
         
@@ -10445,6 +10768,8 @@ public final class NEAR {
       }
       /**
        * <code>string receiver_id = 3;</code>
+       * @param value The bytes for receiverId to set.
+       * @return This builder for chaining.
        */
       public Builder setReceiverIdBytes(
           com.google.protobuf.ByteString value) {
@@ -10461,12 +10786,16 @@ public final class NEAR {
       private com.google.protobuf.ByteString blockHash_ = com.google.protobuf.ByteString.EMPTY;
       /**
        * <code>bytes block_hash = 4;</code>
+       * @return The blockHash.
        */
+      @java.lang.Override
       public com.google.protobuf.ByteString getBlockHash() {
         return blockHash_;
       }
       /**
        * <code>bytes block_hash = 4;</code>
+       * @param value The blockHash to set.
+       * @return This builder for chaining.
        */
       public Builder setBlockHash(com.google.protobuf.ByteString value) {
         if (value == null) {
@@ -10479,6 +10808,7 @@ public final class NEAR {
       }
       /**
        * <code>bytes block_hash = 4;</code>
+       * @return This builder for chaining.
        */
       public Builder clearBlockHash() {
         
@@ -10730,12 +11060,16 @@ public final class NEAR {
       private com.google.protobuf.ByteString privateKey_ = com.google.protobuf.ByteString.EMPTY;
       /**
        * <code>bytes private_key = 6;</code>
+       * @return The privateKey.
        */
+      @java.lang.Override
       public com.google.protobuf.ByteString getPrivateKey() {
         return privateKey_;
       }
       /**
        * <code>bytes private_key = 6;</code>
+       * @param value The privateKey to set.
+       * @return This builder for chaining.
        */
       public Builder setPrivateKey(com.google.protobuf.ByteString value) {
         if (value == null) {
@@ -10748,6 +11082,7 @@ public final class NEAR {
       }
       /**
        * <code>bytes private_key = 6;</code>
+       * @return This builder for chaining.
        */
       public Builder clearPrivateKey() {
         
@@ -10818,6 +11153,7 @@ public final class NEAR {
      * </pre>
      *
      * <code>bytes signed_transaction = 1;</code>
+     * @return The signedTransaction.
      */
     com.google.protobuf.ByteString getSignedTransaction();
   }
@@ -10828,7 +11164,7 @@ public final class NEAR {
    *
    * Protobuf type {@code TW.NEAR.Proto.SigningOutput}
    */
-  public  static final class SigningOutput extends
+  public static final class SigningOutput extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:TW.NEAR.Proto.SigningOutput)
       SigningOutputOrBuilder {
@@ -10916,7 +11252,9 @@ public final class NEAR {
      * </pre>
      *
      * <code>bytes signed_transaction = 1;</code>
+     * @return The signedTransaction.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString getSignedTransaction() {
       return signedTransaction_;
     }
@@ -11234,7 +11572,9 @@ public final class NEAR {
        * </pre>
        *
        * <code>bytes signed_transaction = 1;</code>
+       * @return The signedTransaction.
        */
+      @java.lang.Override
       public com.google.protobuf.ByteString getSignedTransaction() {
         return signedTransaction_;
       }
@@ -11244,6 +11584,8 @@ public final class NEAR {
        * </pre>
        *
        * <code>bytes signed_transaction = 1;</code>
+       * @param value The signedTransaction to set.
+       * @return This builder for chaining.
        */
       public Builder setSignedTransaction(com.google.protobuf.ByteString value) {
         if (value == null) {
@@ -11260,6 +11602,7 @@ public final class NEAR {
        * </pre>
        *
        * <code>bytes signed_transaction = 1;</code>
+       * @return This builder for chaining.
        */
       public Builder clearSignedTransaction() {
         

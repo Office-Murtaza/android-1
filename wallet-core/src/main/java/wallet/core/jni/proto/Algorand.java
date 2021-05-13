@@ -20,38 +20,44 @@ public final class Algorand {
 
     /**
      * <code>string to_address = 1;</code>
+     * @return The toAddress.
      */
     java.lang.String getToAddress();
     /**
      * <code>string to_address = 1;</code>
+     * @return The bytes for toAddress.
      */
     com.google.protobuf.ByteString
         getToAddressBytes();
 
     /**
      * <code>uint64 fee = 2;</code>
+     * @return The fee.
      */
     long getFee();
 
     /**
      * <code>uint64 amount = 3;</code>
+     * @return The amount.
      */
     long getAmount();
 
     /**
      * <code>uint64 first_round = 4;</code>
+     * @return The firstRound.
      */
     long getFirstRound();
 
     /**
      * <code>uint64 last_round = 5;</code>
+     * @return The lastRound.
      */
     long getLastRound();
   }
   /**
    * Protobuf type {@code TW.Algorand.Proto.TransactionPay}
    */
-  public  static final class TransactionPay extends
+  public static final class TransactionPay extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:TW.Algorand.Proto.TransactionPay)
       TransactionPayOrBuilder {
@@ -156,7 +162,9 @@ public final class Algorand {
     private volatile java.lang.Object toAddress_;
     /**
      * <code>string to_address = 1;</code>
+     * @return The toAddress.
      */
+    @java.lang.Override
     public java.lang.String getToAddress() {
       java.lang.Object ref = toAddress_;
       if (ref instanceof java.lang.String) {
@@ -171,7 +179,9 @@ public final class Algorand {
     }
     /**
      * <code>string to_address = 1;</code>
+     * @return The bytes for toAddress.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString
         getToAddressBytes() {
       java.lang.Object ref = toAddress_;
@@ -190,7 +200,9 @@ public final class Algorand {
     private long fee_;
     /**
      * <code>uint64 fee = 2;</code>
+     * @return The fee.
      */
+    @java.lang.Override
     public long getFee() {
       return fee_;
     }
@@ -199,7 +211,9 @@ public final class Algorand {
     private long amount_;
     /**
      * <code>uint64 amount = 3;</code>
+     * @return The amount.
      */
+    @java.lang.Override
     public long getAmount() {
       return amount_;
     }
@@ -208,7 +222,9 @@ public final class Algorand {
     private long firstRound_;
     /**
      * <code>uint64 first_round = 4;</code>
+     * @return The firstRound.
      */
+    @java.lang.Override
     public long getFirstRound() {
       return firstRound_;
     }
@@ -217,7 +233,9 @@ public final class Algorand {
     private long lastRound_;
     /**
      * <code>uint64 last_round = 5;</code>
+     * @return The lastRound.
      */
+    @java.lang.Override
     public long getLastRound() {
       return lastRound_;
     }
@@ -599,6 +617,7 @@ public final class Algorand {
       private java.lang.Object toAddress_ = "";
       /**
        * <code>string to_address = 1;</code>
+       * @return The toAddress.
        */
       public java.lang.String getToAddress() {
         java.lang.Object ref = toAddress_;
@@ -614,6 +633,7 @@ public final class Algorand {
       }
       /**
        * <code>string to_address = 1;</code>
+       * @return The bytes for toAddress.
        */
       public com.google.protobuf.ByteString
           getToAddressBytes() {
@@ -630,6 +650,8 @@ public final class Algorand {
       }
       /**
        * <code>string to_address = 1;</code>
+       * @param value The toAddress to set.
+       * @return This builder for chaining.
        */
       public Builder setToAddress(
           java.lang.String value) {
@@ -643,6 +665,7 @@ public final class Algorand {
       }
       /**
        * <code>string to_address = 1;</code>
+       * @return This builder for chaining.
        */
       public Builder clearToAddress() {
         
@@ -652,6 +675,8 @@ public final class Algorand {
       }
       /**
        * <code>string to_address = 1;</code>
+       * @param value The bytes for toAddress to set.
+       * @return This builder for chaining.
        */
       public Builder setToAddressBytes(
           com.google.protobuf.ByteString value) {
@@ -668,12 +693,16 @@ public final class Algorand {
       private long fee_ ;
       /**
        * <code>uint64 fee = 2;</code>
+       * @return The fee.
        */
+      @java.lang.Override
       public long getFee() {
         return fee_;
       }
       /**
        * <code>uint64 fee = 2;</code>
+       * @param value The fee to set.
+       * @return This builder for chaining.
        */
       public Builder setFee(long value) {
         
@@ -683,6 +712,7 @@ public final class Algorand {
       }
       /**
        * <code>uint64 fee = 2;</code>
+       * @return This builder for chaining.
        */
       public Builder clearFee() {
         
@@ -694,12 +724,16 @@ public final class Algorand {
       private long amount_ ;
       /**
        * <code>uint64 amount = 3;</code>
+       * @return The amount.
        */
+      @java.lang.Override
       public long getAmount() {
         return amount_;
       }
       /**
        * <code>uint64 amount = 3;</code>
+       * @param value The amount to set.
+       * @return This builder for chaining.
        */
       public Builder setAmount(long value) {
         
@@ -709,6 +743,7 @@ public final class Algorand {
       }
       /**
        * <code>uint64 amount = 3;</code>
+       * @return This builder for chaining.
        */
       public Builder clearAmount() {
         
@@ -720,12 +755,16 @@ public final class Algorand {
       private long firstRound_ ;
       /**
        * <code>uint64 first_round = 4;</code>
+       * @return The firstRound.
        */
+      @java.lang.Override
       public long getFirstRound() {
         return firstRound_;
       }
       /**
        * <code>uint64 first_round = 4;</code>
+       * @param value The firstRound to set.
+       * @return This builder for chaining.
        */
       public Builder setFirstRound(long value) {
         
@@ -735,6 +774,7 @@ public final class Algorand {
       }
       /**
        * <code>uint64 first_round = 4;</code>
+       * @return This builder for chaining.
        */
       public Builder clearFirstRound() {
         
@@ -746,12 +786,16 @@ public final class Algorand {
       private long lastRound_ ;
       /**
        * <code>uint64 last_round = 5;</code>
+       * @return The lastRound.
        */
+      @java.lang.Override
       public long getLastRound() {
         return lastRound_;
       }
       /**
        * <code>uint64 last_round = 5;</code>
+       * @param value The lastRound to set.
+       * @return This builder for chaining.
        */
       public Builder setLastRound(long value) {
         
@@ -761,6 +805,7 @@ public final class Algorand {
       }
       /**
        * <code>uint64 last_round = 5;</code>
+       * @return This builder for chaining.
        */
       public Builder clearLastRound() {
         
@@ -831,6 +876,7 @@ public final class Algorand {
      * </pre>
      *
      * <code>string genesis_id = 1;</code>
+     * @return The genesisId.
      */
     java.lang.String getGenesisId();
     /**
@@ -839,6 +885,7 @@ public final class Algorand {
      * </pre>
      *
      * <code>string genesis_id = 1;</code>
+     * @return The bytes for genesisId.
      */
     com.google.protobuf.ByteString
         getGenesisIdBytes();
@@ -849,6 +896,7 @@ public final class Algorand {
      * </pre>
      *
      * <code>bytes genesis_hash = 2;</code>
+     * @return The genesisHash.
      */
     com.google.protobuf.ByteString getGenesisHash();
 
@@ -858,6 +906,7 @@ public final class Algorand {
      * </pre>
      *
      * <code>bytes note = 3;</code>
+     * @return The note.
      */
     com.google.protobuf.ByteString getNote();
 
@@ -867,15 +916,18 @@ public final class Algorand {
      * </pre>
      *
      * <code>bytes private_key = 4;</code>
+     * @return The privateKey.
      */
     com.google.protobuf.ByteString getPrivateKey();
 
     /**
      * <code>.TW.Algorand.Proto.TransactionPay transaction_pay = 10;</code>
+     * @return Whether the transactionPay field is set.
      */
     boolean hasTransactionPay();
     /**
      * <code>.TW.Algorand.Proto.TransactionPay transaction_pay = 10;</code>
+     * @return The transactionPay.
      */
     wallet.core.jni.proto.Algorand.TransactionPay getTransactionPay();
     /**
@@ -892,7 +944,7 @@ public final class Algorand {
    *
    * Protobuf type {@code TW.Algorand.Proto.SigningInput}
    */
-  public  static final class SigningInput extends
+  public static final class SigningInput extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:TW.Algorand.Proto.SigningInput)
       SigningInputOrBuilder {
@@ -1008,7 +1060,8 @@ public final class Algorand {
     private int messageOneofCase_ = 0;
     private java.lang.Object messageOneof_;
     public enum MessageOneofCase
-        implements com.google.protobuf.Internal.EnumLite {
+        implements com.google.protobuf.Internal.EnumLite,
+            com.google.protobuf.AbstractMessage.InternalOneOfEnum {
       TRANSACTION_PAY(10),
       MESSAGEONEOF_NOT_SET(0);
       private final int value;
@@ -1016,6 +1069,8 @@ public final class Algorand {
         this.value = value;
       }
       /**
+       * @param value The number of the enum to look for.
+       * @return The enum associated with the given number.
        * @deprecated Use {@link #forNumber(int)} instead.
        */
       @java.lang.Deprecated
@@ -1049,7 +1104,9 @@ public final class Algorand {
      * </pre>
      *
      * <code>string genesis_id = 1;</code>
+     * @return The genesisId.
      */
+    @java.lang.Override
     public java.lang.String getGenesisId() {
       java.lang.Object ref = genesisId_;
       if (ref instanceof java.lang.String) {
@@ -1068,7 +1125,9 @@ public final class Algorand {
      * </pre>
      *
      * <code>string genesis_id = 1;</code>
+     * @return The bytes for genesisId.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString
         getGenesisIdBytes() {
       java.lang.Object ref = genesisId_;
@@ -1091,7 +1150,9 @@ public final class Algorand {
      * </pre>
      *
      * <code>bytes genesis_hash = 2;</code>
+     * @return The genesisHash.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString getGenesisHash() {
       return genesisHash_;
     }
@@ -1104,7 +1165,9 @@ public final class Algorand {
      * </pre>
      *
      * <code>bytes note = 3;</code>
+     * @return The note.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString getNote() {
       return note_;
     }
@@ -1117,7 +1180,9 @@ public final class Algorand {
      * </pre>
      *
      * <code>bytes private_key = 4;</code>
+     * @return The privateKey.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString getPrivateKey() {
       return privateKey_;
     }
@@ -1125,13 +1190,17 @@ public final class Algorand {
     public static final int TRANSACTION_PAY_FIELD_NUMBER = 10;
     /**
      * <code>.TW.Algorand.Proto.TransactionPay transaction_pay = 10;</code>
+     * @return Whether the transactionPay field is set.
      */
+    @java.lang.Override
     public boolean hasTransactionPay() {
       return messageOneofCase_ == 10;
     }
     /**
      * <code>.TW.Algorand.Proto.TransactionPay transaction_pay = 10;</code>
+     * @return The transactionPay.
      */
+    @java.lang.Override
     public wallet.core.jni.proto.Algorand.TransactionPay getTransactionPay() {
       if (messageOneofCase_ == 10) {
          return (wallet.core.jni.proto.Algorand.TransactionPay) messageOneof_;
@@ -1141,6 +1210,7 @@ public final class Algorand {
     /**
      * <code>.TW.Algorand.Proto.TransactionPay transaction_pay = 10;</code>
      */
+    @java.lang.Override
     public wallet.core.jni.proto.Algorand.TransactionPayOrBuilder getTransactionPayOrBuilder() {
       if (messageOneofCase_ == 10) {
          return (wallet.core.jni.proto.Algorand.TransactionPay) messageOneof_;
@@ -1570,6 +1640,7 @@ public final class Algorand {
        * </pre>
        *
        * <code>string genesis_id = 1;</code>
+       * @return The genesisId.
        */
       public java.lang.String getGenesisId() {
         java.lang.Object ref = genesisId_;
@@ -1589,6 +1660,7 @@ public final class Algorand {
        * </pre>
        *
        * <code>string genesis_id = 1;</code>
+       * @return The bytes for genesisId.
        */
       public com.google.protobuf.ByteString
           getGenesisIdBytes() {
@@ -1609,6 +1681,8 @@ public final class Algorand {
        * </pre>
        *
        * <code>string genesis_id = 1;</code>
+       * @param value The genesisId to set.
+       * @return This builder for chaining.
        */
       public Builder setGenesisId(
           java.lang.String value) {
@@ -1626,6 +1700,7 @@ public final class Algorand {
        * </pre>
        *
        * <code>string genesis_id = 1;</code>
+       * @return This builder for chaining.
        */
       public Builder clearGenesisId() {
         
@@ -1639,6 +1714,8 @@ public final class Algorand {
        * </pre>
        *
        * <code>string genesis_id = 1;</code>
+       * @param value The bytes for genesisId to set.
+       * @return This builder for chaining.
        */
       public Builder setGenesisIdBytes(
           com.google.protobuf.ByteString value) {
@@ -1659,7 +1736,9 @@ public final class Algorand {
        * </pre>
        *
        * <code>bytes genesis_hash = 2;</code>
+       * @return The genesisHash.
        */
+      @java.lang.Override
       public com.google.protobuf.ByteString getGenesisHash() {
         return genesisHash_;
       }
@@ -1669,6 +1748,8 @@ public final class Algorand {
        * </pre>
        *
        * <code>bytes genesis_hash = 2;</code>
+       * @param value The genesisHash to set.
+       * @return This builder for chaining.
        */
       public Builder setGenesisHash(com.google.protobuf.ByteString value) {
         if (value == null) {
@@ -1685,6 +1766,7 @@ public final class Algorand {
        * </pre>
        *
        * <code>bytes genesis_hash = 2;</code>
+       * @return This builder for chaining.
        */
       public Builder clearGenesisHash() {
         
@@ -1700,7 +1782,9 @@ public final class Algorand {
        * </pre>
        *
        * <code>bytes note = 3;</code>
+       * @return The note.
        */
+      @java.lang.Override
       public com.google.protobuf.ByteString getNote() {
         return note_;
       }
@@ -1710,6 +1794,8 @@ public final class Algorand {
        * </pre>
        *
        * <code>bytes note = 3;</code>
+       * @param value The note to set.
+       * @return This builder for chaining.
        */
       public Builder setNote(com.google.protobuf.ByteString value) {
         if (value == null) {
@@ -1726,6 +1812,7 @@ public final class Algorand {
        * </pre>
        *
        * <code>bytes note = 3;</code>
+       * @return This builder for chaining.
        */
       public Builder clearNote() {
         
@@ -1741,7 +1828,9 @@ public final class Algorand {
        * </pre>
        *
        * <code>bytes private_key = 4;</code>
+       * @return The privateKey.
        */
+      @java.lang.Override
       public com.google.protobuf.ByteString getPrivateKey() {
         return privateKey_;
       }
@@ -1751,6 +1840,8 @@ public final class Algorand {
        * </pre>
        *
        * <code>bytes private_key = 4;</code>
+       * @param value The privateKey to set.
+       * @return This builder for chaining.
        */
       public Builder setPrivateKey(com.google.protobuf.ByteString value) {
         if (value == null) {
@@ -1767,6 +1858,7 @@ public final class Algorand {
        * </pre>
        *
        * <code>bytes private_key = 4;</code>
+       * @return This builder for chaining.
        */
       public Builder clearPrivateKey() {
         
@@ -1779,13 +1871,17 @@ public final class Algorand {
           wallet.core.jni.proto.Algorand.TransactionPay, wallet.core.jni.proto.Algorand.TransactionPay.Builder, wallet.core.jni.proto.Algorand.TransactionPayOrBuilder> transactionPayBuilder_;
       /**
        * <code>.TW.Algorand.Proto.TransactionPay transaction_pay = 10;</code>
+       * @return Whether the transactionPay field is set.
        */
+      @java.lang.Override
       public boolean hasTransactionPay() {
         return messageOneofCase_ == 10;
       }
       /**
        * <code>.TW.Algorand.Proto.TransactionPay transaction_pay = 10;</code>
+       * @return The transactionPay.
        */
+      @java.lang.Override
       public wallet.core.jni.proto.Algorand.TransactionPay getTransactionPay() {
         if (transactionPayBuilder_ == null) {
           if (messageOneofCase_ == 10) {
@@ -1879,6 +1975,7 @@ public final class Algorand {
       /**
        * <code>.TW.Algorand.Proto.TransactionPay transaction_pay = 10;</code>
        */
+      @java.lang.Override
       public wallet.core.jni.proto.Algorand.TransactionPayOrBuilder getTransactionPayOrBuilder() {
         if ((messageOneofCase_ == 10) && (transactionPayBuilder_ != null)) {
           return transactionPayBuilder_.getMessageOrBuilder();
@@ -1973,6 +2070,7 @@ public final class Algorand {
      * </pre>
      *
      * <code>bytes encoded = 1;</code>
+     * @return The encoded.
      */
     com.google.protobuf.ByteString getEncoded();
   }
@@ -1983,7 +2081,7 @@ public final class Algorand {
    *
    * Protobuf type {@code TW.Algorand.Proto.SigningOutput}
    */
-  public  static final class SigningOutput extends
+  public static final class SigningOutput extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:TW.Algorand.Proto.SigningOutput)
       SigningOutputOrBuilder {
@@ -2071,7 +2169,9 @@ public final class Algorand {
      * </pre>
      *
      * <code>bytes encoded = 1;</code>
+     * @return The encoded.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString getEncoded() {
       return encoded_;
     }
@@ -2389,7 +2489,9 @@ public final class Algorand {
        * </pre>
        *
        * <code>bytes encoded = 1;</code>
+       * @return The encoded.
        */
+      @java.lang.Override
       public com.google.protobuf.ByteString getEncoded() {
         return encoded_;
       }
@@ -2399,6 +2501,8 @@ public final class Algorand {
        * </pre>
        *
        * <code>bytes encoded = 1;</code>
+       * @param value The encoded to set.
+       * @return This builder for chaining.
        */
       public Builder setEncoded(com.google.protobuf.ByteString value) {
         if (value == null) {
@@ -2415,6 +2519,7 @@ public final class Algorand {
        * </pre>
        *
        * <code>bytes encoded = 1;</code>
+       * @return This builder for chaining.
        */
       public Builder clearEncoded() {
         

@@ -1,5 +1,6 @@
 package com.belco.server.entity;
 
+import com.belco.server.dto.VerificationDTO;
 import com.belco.server.model.VerificationStatus;
 import com.belco.server.model.VerificationTier;
 import lombok.AllArgsConstructor;
@@ -41,12 +42,24 @@ public class VerificationReview extends BaseEntity {
     private String message;
 
     @Transient
-    public VerificationTier getVerificationTier() {
-        return VerificationTier.valueOf(tier);
-    }
+    public VerificationDTO toDTO() {
+        VerificationDTO dto = new VerificationDTO();
+        dto.setId(getId());
+        dto.setStatus(VerificationStatus.valueOf(getStatus()));
+        dto.setTier(VerificationTier.valueOf(getTier()));
+        dto.setFirstName(getFirstName());
+        dto.setLastName(getLastName());
+        dto.setAddress(getAddress());
+        dto.setCountry(getCountry());
+        dto.setProvince(getProvince());
+        dto.setCity(getCity());
+        dto.setZipCode(getZipCode());
+        dto.setIdCardNumber(getIdCardNumber());
+        dto.setIdCardNumberFilename(getIdCardNumberFilename());
+        dto.setSsn(getSsn());
+        dto.setSsnFilename(getSsnFilename());
+        dto.setMessage(getMessage());
 
-    @Transient
-    public VerificationStatus getVerificationStatus() {
-        return VerificationStatus.valueOf(status);
+        return dto;
     }
 }

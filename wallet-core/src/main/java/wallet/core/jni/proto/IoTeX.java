@@ -20,33 +20,38 @@ public final class IoTeX {
 
     /**
      * <code>string amount = 1;</code>
+     * @return The amount.
      */
     java.lang.String getAmount();
     /**
      * <code>string amount = 1;</code>
+     * @return The bytes for amount.
      */
     com.google.protobuf.ByteString
         getAmountBytes();
 
     /**
      * <code>string recipient = 2;</code>
+     * @return The recipient.
      */
     java.lang.String getRecipient();
     /**
      * <code>string recipient = 2;</code>
+     * @return The bytes for recipient.
      */
     com.google.protobuf.ByteString
         getRecipientBytes();
 
     /**
      * <code>bytes payload = 3;</code>
+     * @return The payload.
      */
     com.google.protobuf.ByteString getPayload();
   }
   /**
    * Protobuf type {@code TW.IoTeX.Proto.Transfer}
    */
-  public  static final class Transfer extends
+  public static final class Transfer extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:TW.IoTeX.Proto.Transfer)
       TransferOrBuilder {
@@ -144,7 +149,9 @@ public final class IoTeX {
     private volatile java.lang.Object amount_;
     /**
      * <code>string amount = 1;</code>
+     * @return The amount.
      */
+    @java.lang.Override
     public java.lang.String getAmount() {
       java.lang.Object ref = amount_;
       if (ref instanceof java.lang.String) {
@@ -159,7 +166,9 @@ public final class IoTeX {
     }
     /**
      * <code>string amount = 1;</code>
+     * @return The bytes for amount.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString
         getAmountBytes() {
       java.lang.Object ref = amount_;
@@ -178,7 +187,9 @@ public final class IoTeX {
     private volatile java.lang.Object recipient_;
     /**
      * <code>string recipient = 2;</code>
+     * @return The recipient.
      */
+    @java.lang.Override
     public java.lang.String getRecipient() {
       java.lang.Object ref = recipient_;
       if (ref instanceof java.lang.String) {
@@ -193,7 +204,9 @@ public final class IoTeX {
     }
     /**
      * <code>string recipient = 2;</code>
+     * @return The bytes for recipient.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString
         getRecipientBytes() {
       java.lang.Object ref = recipient_;
@@ -212,7 +225,9 @@ public final class IoTeX {
     private com.google.protobuf.ByteString payload_;
     /**
      * <code>bytes payload = 3;</code>
+     * @return The payload.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString getPayload() {
       return payload_;
     }
@@ -556,6 +571,7 @@ public final class IoTeX {
       private java.lang.Object amount_ = "";
       /**
        * <code>string amount = 1;</code>
+       * @return The amount.
        */
       public java.lang.String getAmount() {
         java.lang.Object ref = amount_;
@@ -571,6 +587,7 @@ public final class IoTeX {
       }
       /**
        * <code>string amount = 1;</code>
+       * @return The bytes for amount.
        */
       public com.google.protobuf.ByteString
           getAmountBytes() {
@@ -587,6 +604,8 @@ public final class IoTeX {
       }
       /**
        * <code>string amount = 1;</code>
+       * @param value The amount to set.
+       * @return This builder for chaining.
        */
       public Builder setAmount(
           java.lang.String value) {
@@ -600,6 +619,7 @@ public final class IoTeX {
       }
       /**
        * <code>string amount = 1;</code>
+       * @return This builder for chaining.
        */
       public Builder clearAmount() {
         
@@ -609,6 +629,8 @@ public final class IoTeX {
       }
       /**
        * <code>string amount = 1;</code>
+       * @param value The bytes for amount to set.
+       * @return This builder for chaining.
        */
       public Builder setAmountBytes(
           com.google.protobuf.ByteString value) {
@@ -625,6 +647,7 @@ public final class IoTeX {
       private java.lang.Object recipient_ = "";
       /**
        * <code>string recipient = 2;</code>
+       * @return The recipient.
        */
       public java.lang.String getRecipient() {
         java.lang.Object ref = recipient_;
@@ -640,6 +663,7 @@ public final class IoTeX {
       }
       /**
        * <code>string recipient = 2;</code>
+       * @return The bytes for recipient.
        */
       public com.google.protobuf.ByteString
           getRecipientBytes() {
@@ -656,6 +680,8 @@ public final class IoTeX {
       }
       /**
        * <code>string recipient = 2;</code>
+       * @param value The recipient to set.
+       * @return This builder for chaining.
        */
       public Builder setRecipient(
           java.lang.String value) {
@@ -669,6 +695,7 @@ public final class IoTeX {
       }
       /**
        * <code>string recipient = 2;</code>
+       * @return This builder for chaining.
        */
       public Builder clearRecipient() {
         
@@ -678,6 +705,8 @@ public final class IoTeX {
       }
       /**
        * <code>string recipient = 2;</code>
+       * @param value The bytes for recipient to set.
+       * @return This builder for chaining.
        */
       public Builder setRecipientBytes(
           com.google.protobuf.ByteString value) {
@@ -694,12 +723,16 @@ public final class IoTeX {
       private com.google.protobuf.ByteString payload_ = com.google.protobuf.ByteString.EMPTY;
       /**
        * <code>bytes payload = 3;</code>
+       * @return The payload.
        */
+      @java.lang.Override
       public com.google.protobuf.ByteString getPayload() {
         return payload_;
       }
       /**
        * <code>bytes payload = 3;</code>
+       * @param value The payload to set.
+       * @return This builder for chaining.
        */
       public Builder setPayload(com.google.protobuf.ByteString value) {
         if (value == null) {
@@ -712,6 +745,7 @@ public final class IoTeX {
       }
       /**
        * <code>bytes payload = 3;</code>
+       * @return This builder for chaining.
        */
       public Builder clearPayload() {
         
@@ -778,10 +812,12 @@ public final class IoTeX {
 
     /**
      * <code>.TW.IoTeX.Proto.Staking.Create stakeCreate = 1;</code>
+     * @return Whether the stakeCreate field is set.
      */
     boolean hasStakeCreate();
     /**
      * <code>.TW.IoTeX.Proto.Staking.Create stakeCreate = 1;</code>
+     * @return The stakeCreate.
      */
     wallet.core.jni.proto.IoTeX.Staking.Create getStakeCreate();
     /**
@@ -791,10 +827,12 @@ public final class IoTeX {
 
     /**
      * <code>.TW.IoTeX.Proto.Staking.Reclaim stakeUnstake = 2;</code>
+     * @return Whether the stakeUnstake field is set.
      */
     boolean hasStakeUnstake();
     /**
      * <code>.TW.IoTeX.Proto.Staking.Reclaim stakeUnstake = 2;</code>
+     * @return The stakeUnstake.
      */
     wallet.core.jni.proto.IoTeX.Staking.Reclaim getStakeUnstake();
     /**
@@ -804,10 +842,12 @@ public final class IoTeX {
 
     /**
      * <code>.TW.IoTeX.Proto.Staking.Reclaim stakeWithdraw = 3;</code>
+     * @return Whether the stakeWithdraw field is set.
      */
     boolean hasStakeWithdraw();
     /**
      * <code>.TW.IoTeX.Proto.Staking.Reclaim stakeWithdraw = 3;</code>
+     * @return The stakeWithdraw.
      */
     wallet.core.jni.proto.IoTeX.Staking.Reclaim getStakeWithdraw();
     /**
@@ -817,10 +857,12 @@ public final class IoTeX {
 
     /**
      * <code>.TW.IoTeX.Proto.Staking.AddDeposit stakeAddDeposit = 4;</code>
+     * @return Whether the stakeAddDeposit field is set.
      */
     boolean hasStakeAddDeposit();
     /**
      * <code>.TW.IoTeX.Proto.Staking.AddDeposit stakeAddDeposit = 4;</code>
+     * @return The stakeAddDeposit.
      */
     wallet.core.jni.proto.IoTeX.Staking.AddDeposit getStakeAddDeposit();
     /**
@@ -830,10 +872,12 @@ public final class IoTeX {
 
     /**
      * <code>.TW.IoTeX.Proto.Staking.Restake stakeRestake = 5;</code>
+     * @return Whether the stakeRestake field is set.
      */
     boolean hasStakeRestake();
     /**
      * <code>.TW.IoTeX.Proto.Staking.Restake stakeRestake = 5;</code>
+     * @return The stakeRestake.
      */
     wallet.core.jni.proto.IoTeX.Staking.Restake getStakeRestake();
     /**
@@ -843,10 +887,12 @@ public final class IoTeX {
 
     /**
      * <code>.TW.IoTeX.Proto.Staking.ChangeCandidate stakeChangeCandidate = 6;</code>
+     * @return Whether the stakeChangeCandidate field is set.
      */
     boolean hasStakeChangeCandidate();
     /**
      * <code>.TW.IoTeX.Proto.Staking.ChangeCandidate stakeChangeCandidate = 6;</code>
+     * @return The stakeChangeCandidate.
      */
     wallet.core.jni.proto.IoTeX.Staking.ChangeCandidate getStakeChangeCandidate();
     /**
@@ -856,10 +902,12 @@ public final class IoTeX {
 
     /**
      * <code>.TW.IoTeX.Proto.Staking.TransferOwnership stakeTransferOwnership = 7;</code>
+     * @return Whether the stakeTransferOwnership field is set.
      */
     boolean hasStakeTransferOwnership();
     /**
      * <code>.TW.IoTeX.Proto.Staking.TransferOwnership stakeTransferOwnership = 7;</code>
+     * @return The stakeTransferOwnership.
      */
     wallet.core.jni.proto.IoTeX.Staking.TransferOwnership getStakeTransferOwnership();
     /**
@@ -869,10 +917,12 @@ public final class IoTeX {
 
     /**
      * <code>.TW.IoTeX.Proto.Staking.CandidateRegister candidateRegister = 8;</code>
+     * @return Whether the candidateRegister field is set.
      */
     boolean hasCandidateRegister();
     /**
      * <code>.TW.IoTeX.Proto.Staking.CandidateRegister candidateRegister = 8;</code>
+     * @return The candidateRegister.
      */
     wallet.core.jni.proto.IoTeX.Staking.CandidateRegister getCandidateRegister();
     /**
@@ -882,10 +932,12 @@ public final class IoTeX {
 
     /**
      * <code>.TW.IoTeX.Proto.Staking.CandidateBasicInfo candidateUpdate = 9;</code>
+     * @return Whether the candidateUpdate field is set.
      */
     boolean hasCandidateUpdate();
     /**
      * <code>.TW.IoTeX.Proto.Staking.CandidateBasicInfo candidateUpdate = 9;</code>
+     * @return The candidateUpdate.
      */
     wallet.core.jni.proto.IoTeX.Staking.CandidateBasicInfo getCandidateUpdate();
     /**
@@ -898,7 +950,7 @@ public final class IoTeX {
   /**
    * Protobuf type {@code TW.IoTeX.Proto.Staking}
    */
-  public  static final class Staking extends
+  public static final class Staking extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:TW.IoTeX.Proto.Staking)
       StakingOrBuilder {
@@ -1104,36 +1156,43 @@ public final class IoTeX {
 
       /**
        * <code>string candidateName = 1;</code>
+       * @return The candidateName.
        */
       java.lang.String getCandidateName();
       /**
        * <code>string candidateName = 1;</code>
+       * @return The bytes for candidateName.
        */
       com.google.protobuf.ByteString
           getCandidateNameBytes();
 
       /**
        * <code>string stakedAmount = 2;</code>
+       * @return The stakedAmount.
        */
       java.lang.String getStakedAmount();
       /**
        * <code>string stakedAmount = 2;</code>
+       * @return The bytes for stakedAmount.
        */
       com.google.protobuf.ByteString
           getStakedAmountBytes();
 
       /**
        * <code>uint32 stakedDuration = 3;</code>
+       * @return The stakedDuration.
        */
       int getStakedDuration();
 
       /**
        * <code>bool autoStake = 4;</code>
+       * @return The autoStake.
        */
       boolean getAutoStake();
 
       /**
        * <code>bytes payload = 5;</code>
+       * @return The payload.
        */
       com.google.protobuf.ByteString getPayload();
     }
@@ -1144,7 +1203,7 @@ public final class IoTeX {
      *
      * Protobuf type {@code TW.IoTeX.Proto.Staking.Create}
      */
-    public  static final class Create extends
+    public static final class Create extends
         com.google.protobuf.GeneratedMessageV3 implements
         // @@protoc_insertion_point(message_implements:TW.IoTeX.Proto.Staking.Create)
         CreateOrBuilder {
@@ -1252,7 +1311,9 @@ public final class IoTeX {
       private volatile java.lang.Object candidateName_;
       /**
        * <code>string candidateName = 1;</code>
+       * @return The candidateName.
        */
+      @java.lang.Override
       public java.lang.String getCandidateName() {
         java.lang.Object ref = candidateName_;
         if (ref instanceof java.lang.String) {
@@ -1267,7 +1328,9 @@ public final class IoTeX {
       }
       /**
        * <code>string candidateName = 1;</code>
+       * @return The bytes for candidateName.
        */
+      @java.lang.Override
       public com.google.protobuf.ByteString
           getCandidateNameBytes() {
         java.lang.Object ref = candidateName_;
@@ -1286,7 +1349,9 @@ public final class IoTeX {
       private volatile java.lang.Object stakedAmount_;
       /**
        * <code>string stakedAmount = 2;</code>
+       * @return The stakedAmount.
        */
+      @java.lang.Override
       public java.lang.String getStakedAmount() {
         java.lang.Object ref = stakedAmount_;
         if (ref instanceof java.lang.String) {
@@ -1301,7 +1366,9 @@ public final class IoTeX {
       }
       /**
        * <code>string stakedAmount = 2;</code>
+       * @return The bytes for stakedAmount.
        */
+      @java.lang.Override
       public com.google.protobuf.ByteString
           getStakedAmountBytes() {
         java.lang.Object ref = stakedAmount_;
@@ -1320,7 +1387,9 @@ public final class IoTeX {
       private int stakedDuration_;
       /**
        * <code>uint32 stakedDuration = 3;</code>
+       * @return The stakedDuration.
        */
+      @java.lang.Override
       public int getStakedDuration() {
         return stakedDuration_;
       }
@@ -1329,7 +1398,9 @@ public final class IoTeX {
       private boolean autoStake_;
       /**
        * <code>bool autoStake = 4;</code>
+       * @return The autoStake.
        */
+      @java.lang.Override
       public boolean getAutoStake() {
         return autoStake_;
       }
@@ -1338,7 +1409,9 @@ public final class IoTeX {
       private com.google.protobuf.ByteString payload_;
       /**
        * <code>bytes payload = 5;</code>
+       * @return The payload.
        */
+      @java.lang.Override
       public com.google.protobuf.ByteString getPayload() {
         return payload_;
       }
@@ -1721,6 +1794,7 @@ public final class IoTeX {
         private java.lang.Object candidateName_ = "";
         /**
          * <code>string candidateName = 1;</code>
+         * @return The candidateName.
          */
         public java.lang.String getCandidateName() {
           java.lang.Object ref = candidateName_;
@@ -1736,6 +1810,7 @@ public final class IoTeX {
         }
         /**
          * <code>string candidateName = 1;</code>
+         * @return The bytes for candidateName.
          */
         public com.google.protobuf.ByteString
             getCandidateNameBytes() {
@@ -1752,6 +1827,8 @@ public final class IoTeX {
         }
         /**
          * <code>string candidateName = 1;</code>
+         * @param value The candidateName to set.
+         * @return This builder for chaining.
          */
         public Builder setCandidateName(
             java.lang.String value) {
@@ -1765,6 +1842,7 @@ public final class IoTeX {
         }
         /**
          * <code>string candidateName = 1;</code>
+         * @return This builder for chaining.
          */
         public Builder clearCandidateName() {
           
@@ -1774,6 +1852,8 @@ public final class IoTeX {
         }
         /**
          * <code>string candidateName = 1;</code>
+         * @param value The bytes for candidateName to set.
+         * @return This builder for chaining.
          */
         public Builder setCandidateNameBytes(
             com.google.protobuf.ByteString value) {
@@ -1790,6 +1870,7 @@ public final class IoTeX {
         private java.lang.Object stakedAmount_ = "";
         /**
          * <code>string stakedAmount = 2;</code>
+         * @return The stakedAmount.
          */
         public java.lang.String getStakedAmount() {
           java.lang.Object ref = stakedAmount_;
@@ -1805,6 +1886,7 @@ public final class IoTeX {
         }
         /**
          * <code>string stakedAmount = 2;</code>
+         * @return The bytes for stakedAmount.
          */
         public com.google.protobuf.ByteString
             getStakedAmountBytes() {
@@ -1821,6 +1903,8 @@ public final class IoTeX {
         }
         /**
          * <code>string stakedAmount = 2;</code>
+         * @param value The stakedAmount to set.
+         * @return This builder for chaining.
          */
         public Builder setStakedAmount(
             java.lang.String value) {
@@ -1834,6 +1918,7 @@ public final class IoTeX {
         }
         /**
          * <code>string stakedAmount = 2;</code>
+         * @return This builder for chaining.
          */
         public Builder clearStakedAmount() {
           
@@ -1843,6 +1928,8 @@ public final class IoTeX {
         }
         /**
          * <code>string stakedAmount = 2;</code>
+         * @param value The bytes for stakedAmount to set.
+         * @return This builder for chaining.
          */
         public Builder setStakedAmountBytes(
             com.google.protobuf.ByteString value) {
@@ -1859,12 +1946,16 @@ public final class IoTeX {
         private int stakedDuration_ ;
         /**
          * <code>uint32 stakedDuration = 3;</code>
+         * @return The stakedDuration.
          */
+        @java.lang.Override
         public int getStakedDuration() {
           return stakedDuration_;
         }
         /**
          * <code>uint32 stakedDuration = 3;</code>
+         * @param value The stakedDuration to set.
+         * @return This builder for chaining.
          */
         public Builder setStakedDuration(int value) {
           
@@ -1874,6 +1965,7 @@ public final class IoTeX {
         }
         /**
          * <code>uint32 stakedDuration = 3;</code>
+         * @return This builder for chaining.
          */
         public Builder clearStakedDuration() {
           
@@ -1885,12 +1977,16 @@ public final class IoTeX {
         private boolean autoStake_ ;
         /**
          * <code>bool autoStake = 4;</code>
+         * @return The autoStake.
          */
+        @java.lang.Override
         public boolean getAutoStake() {
           return autoStake_;
         }
         /**
          * <code>bool autoStake = 4;</code>
+         * @param value The autoStake to set.
+         * @return This builder for chaining.
          */
         public Builder setAutoStake(boolean value) {
           
@@ -1900,6 +1996,7 @@ public final class IoTeX {
         }
         /**
          * <code>bool autoStake = 4;</code>
+         * @return This builder for chaining.
          */
         public Builder clearAutoStake() {
           
@@ -1911,12 +2008,16 @@ public final class IoTeX {
         private com.google.protobuf.ByteString payload_ = com.google.protobuf.ByteString.EMPTY;
         /**
          * <code>bytes payload = 5;</code>
+         * @return The payload.
          */
+        @java.lang.Override
         public com.google.protobuf.ByteString getPayload() {
           return payload_;
         }
         /**
          * <code>bytes payload = 5;</code>
+         * @param value The payload to set.
+         * @return This builder for chaining.
          */
         public Builder setPayload(com.google.protobuf.ByteString value) {
           if (value == null) {
@@ -1929,6 +2030,7 @@ public final class IoTeX {
         }
         /**
          * <code>bytes payload = 5;</code>
+         * @return This builder for chaining.
          */
         public Builder clearPayload() {
           
@@ -1995,11 +2097,13 @@ public final class IoTeX {
 
       /**
        * <code>uint64 bucketIndex = 1;</code>
+       * @return The bucketIndex.
        */
       long getBucketIndex();
 
       /**
        * <code>bytes payload = 2;</code>
+       * @return The payload.
        */
       com.google.protobuf.ByteString getPayload();
     }
@@ -2010,7 +2114,7 @@ public final class IoTeX {
      *
      * Protobuf type {@code TW.IoTeX.Proto.Staking.Reclaim}
      */
-    public  static final class Reclaim extends
+    public static final class Reclaim extends
         com.google.protobuf.GeneratedMessageV3 implements
         // @@protoc_insertion_point(message_implements:TW.IoTeX.Proto.Staking.Reclaim)
         ReclaimOrBuilder {
@@ -2099,7 +2203,9 @@ public final class IoTeX {
       private long bucketIndex_;
       /**
        * <code>uint64 bucketIndex = 1;</code>
+       * @return The bucketIndex.
        */
+      @java.lang.Override
       public long getBucketIndex() {
         return bucketIndex_;
       }
@@ -2108,7 +2214,9 @@ public final class IoTeX {
       private com.google.protobuf.ByteString payload_;
       /**
        * <code>bytes payload = 2;</code>
+       * @return The payload.
        */
+      @java.lang.Override
       public com.google.protobuf.ByteString getPayload() {
         return payload_;
       }
@@ -2440,12 +2548,16 @@ public final class IoTeX {
         private long bucketIndex_ ;
         /**
          * <code>uint64 bucketIndex = 1;</code>
+         * @return The bucketIndex.
          */
+        @java.lang.Override
         public long getBucketIndex() {
           return bucketIndex_;
         }
         /**
          * <code>uint64 bucketIndex = 1;</code>
+         * @param value The bucketIndex to set.
+         * @return This builder for chaining.
          */
         public Builder setBucketIndex(long value) {
           
@@ -2455,6 +2567,7 @@ public final class IoTeX {
         }
         /**
          * <code>uint64 bucketIndex = 1;</code>
+         * @return This builder for chaining.
          */
         public Builder clearBucketIndex() {
           
@@ -2466,12 +2579,16 @@ public final class IoTeX {
         private com.google.protobuf.ByteString payload_ = com.google.protobuf.ByteString.EMPTY;
         /**
          * <code>bytes payload = 2;</code>
+         * @return The payload.
          */
+        @java.lang.Override
         public com.google.protobuf.ByteString getPayload() {
           return payload_;
         }
         /**
          * <code>bytes payload = 2;</code>
+         * @param value The payload to set.
+         * @return This builder for chaining.
          */
         public Builder setPayload(com.google.protobuf.ByteString value) {
           if (value == null) {
@@ -2484,6 +2601,7 @@ public final class IoTeX {
         }
         /**
          * <code>bytes payload = 2;</code>
+         * @return This builder for chaining.
          */
         public Builder clearPayload() {
           
@@ -2550,21 +2668,25 @@ public final class IoTeX {
 
       /**
        * <code>uint64 bucketIndex = 1;</code>
+       * @return The bucketIndex.
        */
       long getBucketIndex();
 
       /**
        * <code>string amount = 2;</code>
+       * @return The amount.
        */
       java.lang.String getAmount();
       /**
        * <code>string amount = 2;</code>
+       * @return The bytes for amount.
        */
       com.google.protobuf.ByteString
           getAmountBytes();
 
       /**
        * <code>bytes payload = 3;</code>
+       * @return The payload.
        */
       com.google.protobuf.ByteString getPayload();
     }
@@ -2575,7 +2697,7 @@ public final class IoTeX {
      *
      * Protobuf type {@code TW.IoTeX.Proto.Staking.AddDeposit}
      */
-    public  static final class AddDeposit extends
+    public static final class AddDeposit extends
         com.google.protobuf.GeneratedMessageV3 implements
         // @@protoc_insertion_point(message_implements:TW.IoTeX.Proto.Staking.AddDeposit)
         AddDepositOrBuilder {
@@ -2671,7 +2793,9 @@ public final class IoTeX {
       private long bucketIndex_;
       /**
        * <code>uint64 bucketIndex = 1;</code>
+       * @return The bucketIndex.
        */
+      @java.lang.Override
       public long getBucketIndex() {
         return bucketIndex_;
       }
@@ -2680,7 +2804,9 @@ public final class IoTeX {
       private volatile java.lang.Object amount_;
       /**
        * <code>string amount = 2;</code>
+       * @return The amount.
        */
+      @java.lang.Override
       public java.lang.String getAmount() {
         java.lang.Object ref = amount_;
         if (ref instanceof java.lang.String) {
@@ -2695,7 +2821,9 @@ public final class IoTeX {
       }
       /**
        * <code>string amount = 2;</code>
+       * @return The bytes for amount.
        */
+      @java.lang.Override
       public com.google.protobuf.ByteString
           getAmountBytes() {
         java.lang.Object ref = amount_;
@@ -2714,7 +2842,9 @@ public final class IoTeX {
       private com.google.protobuf.ByteString payload_;
       /**
        * <code>bytes payload = 3;</code>
+       * @return The payload.
        */
+      @java.lang.Override
       public com.google.protobuf.ByteString getPayload() {
         return payload_;
       }
@@ -3063,12 +3193,16 @@ public final class IoTeX {
         private long bucketIndex_ ;
         /**
          * <code>uint64 bucketIndex = 1;</code>
+         * @return The bucketIndex.
          */
+        @java.lang.Override
         public long getBucketIndex() {
           return bucketIndex_;
         }
         /**
          * <code>uint64 bucketIndex = 1;</code>
+         * @param value The bucketIndex to set.
+         * @return This builder for chaining.
          */
         public Builder setBucketIndex(long value) {
           
@@ -3078,6 +3212,7 @@ public final class IoTeX {
         }
         /**
          * <code>uint64 bucketIndex = 1;</code>
+         * @return This builder for chaining.
          */
         public Builder clearBucketIndex() {
           
@@ -3089,6 +3224,7 @@ public final class IoTeX {
         private java.lang.Object amount_ = "";
         /**
          * <code>string amount = 2;</code>
+         * @return The amount.
          */
         public java.lang.String getAmount() {
           java.lang.Object ref = amount_;
@@ -3104,6 +3240,7 @@ public final class IoTeX {
         }
         /**
          * <code>string amount = 2;</code>
+         * @return The bytes for amount.
          */
         public com.google.protobuf.ByteString
             getAmountBytes() {
@@ -3120,6 +3257,8 @@ public final class IoTeX {
         }
         /**
          * <code>string amount = 2;</code>
+         * @param value The amount to set.
+         * @return This builder for chaining.
          */
         public Builder setAmount(
             java.lang.String value) {
@@ -3133,6 +3272,7 @@ public final class IoTeX {
         }
         /**
          * <code>string amount = 2;</code>
+         * @return This builder for chaining.
          */
         public Builder clearAmount() {
           
@@ -3142,6 +3282,8 @@ public final class IoTeX {
         }
         /**
          * <code>string amount = 2;</code>
+         * @param value The bytes for amount to set.
+         * @return This builder for chaining.
          */
         public Builder setAmountBytes(
             com.google.protobuf.ByteString value) {
@@ -3158,12 +3300,16 @@ public final class IoTeX {
         private com.google.protobuf.ByteString payload_ = com.google.protobuf.ByteString.EMPTY;
         /**
          * <code>bytes payload = 3;</code>
+         * @return The payload.
          */
+        @java.lang.Override
         public com.google.protobuf.ByteString getPayload() {
           return payload_;
         }
         /**
          * <code>bytes payload = 3;</code>
+         * @param value The payload to set.
+         * @return This builder for chaining.
          */
         public Builder setPayload(com.google.protobuf.ByteString value) {
           if (value == null) {
@@ -3176,6 +3322,7 @@ public final class IoTeX {
         }
         /**
          * <code>bytes payload = 3;</code>
+         * @return This builder for chaining.
          */
         public Builder clearPayload() {
           
@@ -3242,21 +3389,25 @@ public final class IoTeX {
 
       /**
        * <code>uint64 bucketIndex = 1;</code>
+       * @return The bucketIndex.
        */
       long getBucketIndex();
 
       /**
        * <code>uint32 stakedDuration = 2;</code>
+       * @return The stakedDuration.
        */
       int getStakedDuration();
 
       /**
        * <code>bool autoStake = 3;</code>
+       * @return The autoStake.
        */
       boolean getAutoStake();
 
       /**
        * <code>bytes payload = 4;</code>
+       * @return The payload.
        */
       com.google.protobuf.ByteString getPayload();
     }
@@ -3267,7 +3418,7 @@ public final class IoTeX {
      *
      * Protobuf type {@code TW.IoTeX.Proto.Staking.Restake}
      */
-    public  static final class Restake extends
+    public static final class Restake extends
         com.google.protobuf.GeneratedMessageV3 implements
         // @@protoc_insertion_point(message_implements:TW.IoTeX.Proto.Staking.Restake)
         RestakeOrBuilder {
@@ -3366,7 +3517,9 @@ public final class IoTeX {
       private long bucketIndex_;
       /**
        * <code>uint64 bucketIndex = 1;</code>
+       * @return The bucketIndex.
        */
+      @java.lang.Override
       public long getBucketIndex() {
         return bucketIndex_;
       }
@@ -3375,7 +3528,9 @@ public final class IoTeX {
       private int stakedDuration_;
       /**
        * <code>uint32 stakedDuration = 2;</code>
+       * @return The stakedDuration.
        */
+      @java.lang.Override
       public int getStakedDuration() {
         return stakedDuration_;
       }
@@ -3384,7 +3539,9 @@ public final class IoTeX {
       private boolean autoStake_;
       /**
        * <code>bool autoStake = 3;</code>
+       * @return The autoStake.
        */
+      @java.lang.Override
       public boolean getAutoStake() {
         return autoStake_;
       }
@@ -3393,7 +3550,9 @@ public final class IoTeX {
       private com.google.protobuf.ByteString payload_;
       /**
        * <code>bytes payload = 4;</code>
+       * @return The payload.
        */
+      @java.lang.Override
       public com.google.protobuf.ByteString getPayload() {
         return payload_;
       }
@@ -3760,12 +3919,16 @@ public final class IoTeX {
         private long bucketIndex_ ;
         /**
          * <code>uint64 bucketIndex = 1;</code>
+         * @return The bucketIndex.
          */
+        @java.lang.Override
         public long getBucketIndex() {
           return bucketIndex_;
         }
         /**
          * <code>uint64 bucketIndex = 1;</code>
+         * @param value The bucketIndex to set.
+         * @return This builder for chaining.
          */
         public Builder setBucketIndex(long value) {
           
@@ -3775,6 +3938,7 @@ public final class IoTeX {
         }
         /**
          * <code>uint64 bucketIndex = 1;</code>
+         * @return This builder for chaining.
          */
         public Builder clearBucketIndex() {
           
@@ -3786,12 +3950,16 @@ public final class IoTeX {
         private int stakedDuration_ ;
         /**
          * <code>uint32 stakedDuration = 2;</code>
+         * @return The stakedDuration.
          */
+        @java.lang.Override
         public int getStakedDuration() {
           return stakedDuration_;
         }
         /**
          * <code>uint32 stakedDuration = 2;</code>
+         * @param value The stakedDuration to set.
+         * @return This builder for chaining.
          */
         public Builder setStakedDuration(int value) {
           
@@ -3801,6 +3969,7 @@ public final class IoTeX {
         }
         /**
          * <code>uint32 stakedDuration = 2;</code>
+         * @return This builder for chaining.
          */
         public Builder clearStakedDuration() {
           
@@ -3812,12 +3981,16 @@ public final class IoTeX {
         private boolean autoStake_ ;
         /**
          * <code>bool autoStake = 3;</code>
+         * @return The autoStake.
          */
+        @java.lang.Override
         public boolean getAutoStake() {
           return autoStake_;
         }
         /**
          * <code>bool autoStake = 3;</code>
+         * @param value The autoStake to set.
+         * @return This builder for chaining.
          */
         public Builder setAutoStake(boolean value) {
           
@@ -3827,6 +4000,7 @@ public final class IoTeX {
         }
         /**
          * <code>bool autoStake = 3;</code>
+         * @return This builder for chaining.
          */
         public Builder clearAutoStake() {
           
@@ -3838,12 +4012,16 @@ public final class IoTeX {
         private com.google.protobuf.ByteString payload_ = com.google.protobuf.ByteString.EMPTY;
         /**
          * <code>bytes payload = 4;</code>
+         * @return The payload.
          */
+        @java.lang.Override
         public com.google.protobuf.ByteString getPayload() {
           return payload_;
         }
         /**
          * <code>bytes payload = 4;</code>
+         * @param value The payload to set.
+         * @return This builder for chaining.
          */
         public Builder setPayload(com.google.protobuf.ByteString value) {
           if (value == null) {
@@ -3856,6 +4034,7 @@ public final class IoTeX {
         }
         /**
          * <code>bytes payload = 4;</code>
+         * @return This builder for chaining.
          */
         public Builder clearPayload() {
           
@@ -3922,21 +4101,25 @@ public final class IoTeX {
 
       /**
        * <code>uint64 bucketIndex = 1;</code>
+       * @return The bucketIndex.
        */
       long getBucketIndex();
 
       /**
        * <code>string candidateName = 2;</code>
+       * @return The candidateName.
        */
       java.lang.String getCandidateName();
       /**
        * <code>string candidateName = 2;</code>
+       * @return The bytes for candidateName.
        */
       com.google.protobuf.ByteString
           getCandidateNameBytes();
 
       /**
        * <code>bytes payload = 3;</code>
+       * @return The payload.
        */
       com.google.protobuf.ByteString getPayload();
     }
@@ -3947,7 +4130,7 @@ public final class IoTeX {
      *
      * Protobuf type {@code TW.IoTeX.Proto.Staking.ChangeCandidate}
      */
-    public  static final class ChangeCandidate extends
+    public static final class ChangeCandidate extends
         com.google.protobuf.GeneratedMessageV3 implements
         // @@protoc_insertion_point(message_implements:TW.IoTeX.Proto.Staking.ChangeCandidate)
         ChangeCandidateOrBuilder {
@@ -4043,7 +4226,9 @@ public final class IoTeX {
       private long bucketIndex_;
       /**
        * <code>uint64 bucketIndex = 1;</code>
+       * @return The bucketIndex.
        */
+      @java.lang.Override
       public long getBucketIndex() {
         return bucketIndex_;
       }
@@ -4052,7 +4237,9 @@ public final class IoTeX {
       private volatile java.lang.Object candidateName_;
       /**
        * <code>string candidateName = 2;</code>
+       * @return The candidateName.
        */
+      @java.lang.Override
       public java.lang.String getCandidateName() {
         java.lang.Object ref = candidateName_;
         if (ref instanceof java.lang.String) {
@@ -4067,7 +4254,9 @@ public final class IoTeX {
       }
       /**
        * <code>string candidateName = 2;</code>
+       * @return The bytes for candidateName.
        */
+      @java.lang.Override
       public com.google.protobuf.ByteString
           getCandidateNameBytes() {
         java.lang.Object ref = candidateName_;
@@ -4086,7 +4275,9 @@ public final class IoTeX {
       private com.google.protobuf.ByteString payload_;
       /**
        * <code>bytes payload = 3;</code>
+       * @return The payload.
        */
+      @java.lang.Override
       public com.google.protobuf.ByteString getPayload() {
         return payload_;
       }
@@ -4435,12 +4626,16 @@ public final class IoTeX {
         private long bucketIndex_ ;
         /**
          * <code>uint64 bucketIndex = 1;</code>
+         * @return The bucketIndex.
          */
+        @java.lang.Override
         public long getBucketIndex() {
           return bucketIndex_;
         }
         /**
          * <code>uint64 bucketIndex = 1;</code>
+         * @param value The bucketIndex to set.
+         * @return This builder for chaining.
          */
         public Builder setBucketIndex(long value) {
           
@@ -4450,6 +4645,7 @@ public final class IoTeX {
         }
         /**
          * <code>uint64 bucketIndex = 1;</code>
+         * @return This builder for chaining.
          */
         public Builder clearBucketIndex() {
           
@@ -4461,6 +4657,7 @@ public final class IoTeX {
         private java.lang.Object candidateName_ = "";
         /**
          * <code>string candidateName = 2;</code>
+         * @return The candidateName.
          */
         public java.lang.String getCandidateName() {
           java.lang.Object ref = candidateName_;
@@ -4476,6 +4673,7 @@ public final class IoTeX {
         }
         /**
          * <code>string candidateName = 2;</code>
+         * @return The bytes for candidateName.
          */
         public com.google.protobuf.ByteString
             getCandidateNameBytes() {
@@ -4492,6 +4690,8 @@ public final class IoTeX {
         }
         /**
          * <code>string candidateName = 2;</code>
+         * @param value The candidateName to set.
+         * @return This builder for chaining.
          */
         public Builder setCandidateName(
             java.lang.String value) {
@@ -4505,6 +4705,7 @@ public final class IoTeX {
         }
         /**
          * <code>string candidateName = 2;</code>
+         * @return This builder for chaining.
          */
         public Builder clearCandidateName() {
           
@@ -4514,6 +4715,8 @@ public final class IoTeX {
         }
         /**
          * <code>string candidateName = 2;</code>
+         * @param value The bytes for candidateName to set.
+         * @return This builder for chaining.
          */
         public Builder setCandidateNameBytes(
             com.google.protobuf.ByteString value) {
@@ -4530,12 +4733,16 @@ public final class IoTeX {
         private com.google.protobuf.ByteString payload_ = com.google.protobuf.ByteString.EMPTY;
         /**
          * <code>bytes payload = 3;</code>
+         * @return The payload.
          */
+        @java.lang.Override
         public com.google.protobuf.ByteString getPayload() {
           return payload_;
         }
         /**
          * <code>bytes payload = 3;</code>
+         * @param value The payload to set.
+         * @return This builder for chaining.
          */
         public Builder setPayload(com.google.protobuf.ByteString value) {
           if (value == null) {
@@ -4548,6 +4755,7 @@ public final class IoTeX {
         }
         /**
          * <code>bytes payload = 3;</code>
+         * @return This builder for chaining.
          */
         public Builder clearPayload() {
           
@@ -4614,28 +4822,32 @@ public final class IoTeX {
 
       /**
        * <code>uint64 bucketIndex = 1;</code>
+       * @return The bucketIndex.
        */
       long getBucketIndex();
 
       /**
        * <code>string voterAddress = 2;</code>
+       * @return The voterAddress.
        */
       java.lang.String getVoterAddress();
       /**
        * <code>string voterAddress = 2;</code>
+       * @return The bytes for voterAddress.
        */
       com.google.protobuf.ByteString
           getVoterAddressBytes();
 
       /**
        * <code>bytes payload = 3;</code>
+       * @return The payload.
        */
       com.google.protobuf.ByteString getPayload();
     }
     /**
      * Protobuf type {@code TW.IoTeX.Proto.Staking.TransferOwnership}
      */
-    public  static final class TransferOwnership extends
+    public static final class TransferOwnership extends
         com.google.protobuf.GeneratedMessageV3 implements
         // @@protoc_insertion_point(message_implements:TW.IoTeX.Proto.Staking.TransferOwnership)
         TransferOwnershipOrBuilder {
@@ -4731,7 +4943,9 @@ public final class IoTeX {
       private long bucketIndex_;
       /**
        * <code>uint64 bucketIndex = 1;</code>
+       * @return The bucketIndex.
        */
+      @java.lang.Override
       public long getBucketIndex() {
         return bucketIndex_;
       }
@@ -4740,7 +4954,9 @@ public final class IoTeX {
       private volatile java.lang.Object voterAddress_;
       /**
        * <code>string voterAddress = 2;</code>
+       * @return The voterAddress.
        */
+      @java.lang.Override
       public java.lang.String getVoterAddress() {
         java.lang.Object ref = voterAddress_;
         if (ref instanceof java.lang.String) {
@@ -4755,7 +4971,9 @@ public final class IoTeX {
       }
       /**
        * <code>string voterAddress = 2;</code>
+       * @return The bytes for voterAddress.
        */
+      @java.lang.Override
       public com.google.protobuf.ByteString
           getVoterAddressBytes() {
         java.lang.Object ref = voterAddress_;
@@ -4774,7 +4992,9 @@ public final class IoTeX {
       private com.google.protobuf.ByteString payload_;
       /**
        * <code>bytes payload = 3;</code>
+       * @return The payload.
        */
+      @java.lang.Override
       public com.google.protobuf.ByteString getPayload() {
         return payload_;
       }
@@ -5119,12 +5339,16 @@ public final class IoTeX {
         private long bucketIndex_ ;
         /**
          * <code>uint64 bucketIndex = 1;</code>
+         * @return The bucketIndex.
          */
+        @java.lang.Override
         public long getBucketIndex() {
           return bucketIndex_;
         }
         /**
          * <code>uint64 bucketIndex = 1;</code>
+         * @param value The bucketIndex to set.
+         * @return This builder for chaining.
          */
         public Builder setBucketIndex(long value) {
           
@@ -5134,6 +5358,7 @@ public final class IoTeX {
         }
         /**
          * <code>uint64 bucketIndex = 1;</code>
+         * @return This builder for chaining.
          */
         public Builder clearBucketIndex() {
           
@@ -5145,6 +5370,7 @@ public final class IoTeX {
         private java.lang.Object voterAddress_ = "";
         /**
          * <code>string voterAddress = 2;</code>
+         * @return The voterAddress.
          */
         public java.lang.String getVoterAddress() {
           java.lang.Object ref = voterAddress_;
@@ -5160,6 +5386,7 @@ public final class IoTeX {
         }
         /**
          * <code>string voterAddress = 2;</code>
+         * @return The bytes for voterAddress.
          */
         public com.google.protobuf.ByteString
             getVoterAddressBytes() {
@@ -5176,6 +5403,8 @@ public final class IoTeX {
         }
         /**
          * <code>string voterAddress = 2;</code>
+         * @param value The voterAddress to set.
+         * @return This builder for chaining.
          */
         public Builder setVoterAddress(
             java.lang.String value) {
@@ -5189,6 +5418,7 @@ public final class IoTeX {
         }
         /**
          * <code>string voterAddress = 2;</code>
+         * @return This builder for chaining.
          */
         public Builder clearVoterAddress() {
           
@@ -5198,6 +5428,8 @@ public final class IoTeX {
         }
         /**
          * <code>string voterAddress = 2;</code>
+         * @param value The bytes for voterAddress to set.
+         * @return This builder for chaining.
          */
         public Builder setVoterAddressBytes(
             com.google.protobuf.ByteString value) {
@@ -5214,12 +5446,16 @@ public final class IoTeX {
         private com.google.protobuf.ByteString payload_ = com.google.protobuf.ByteString.EMPTY;
         /**
          * <code>bytes payload = 3;</code>
+         * @return The payload.
          */
+        @java.lang.Override
         public com.google.protobuf.ByteString getPayload() {
           return payload_;
         }
         /**
          * <code>bytes payload = 3;</code>
+         * @param value The payload to set.
+         * @return This builder for chaining.
          */
         public Builder setPayload(com.google.protobuf.ByteString value) {
           if (value == null) {
@@ -5232,6 +5468,7 @@ public final class IoTeX {
         }
         /**
          * <code>bytes payload = 3;</code>
+         * @return This builder for chaining.
          */
         public Builder clearPayload() {
           
@@ -5298,30 +5535,36 @@ public final class IoTeX {
 
       /**
        * <code>string name = 1;</code>
+       * @return The name.
        */
       java.lang.String getName();
       /**
        * <code>string name = 1;</code>
+       * @return The bytes for name.
        */
       com.google.protobuf.ByteString
           getNameBytes();
 
       /**
        * <code>string operatorAddress = 2;</code>
+       * @return The operatorAddress.
        */
       java.lang.String getOperatorAddress();
       /**
        * <code>string operatorAddress = 2;</code>
+       * @return The bytes for operatorAddress.
        */
       com.google.protobuf.ByteString
           getOperatorAddressBytes();
 
       /**
        * <code>string rewardAddress = 3;</code>
+       * @return The rewardAddress.
        */
       java.lang.String getRewardAddress();
       /**
        * <code>string rewardAddress = 3;</code>
+       * @return The bytes for rewardAddress.
        */
       com.google.protobuf.ByteString
           getRewardAddressBytes();
@@ -5329,7 +5572,7 @@ public final class IoTeX {
     /**
      * Protobuf type {@code TW.IoTeX.Proto.Staking.CandidateBasicInfo}
      */
-    public  static final class CandidateBasicInfo extends
+    public static final class CandidateBasicInfo extends
         com.google.protobuf.GeneratedMessageV3 implements
         // @@protoc_insertion_point(message_implements:TW.IoTeX.Proto.Staking.CandidateBasicInfo)
         CandidateBasicInfoOrBuilder {
@@ -5428,7 +5671,9 @@ public final class IoTeX {
       private volatile java.lang.Object name_;
       /**
        * <code>string name = 1;</code>
+       * @return The name.
        */
+      @java.lang.Override
       public java.lang.String getName() {
         java.lang.Object ref = name_;
         if (ref instanceof java.lang.String) {
@@ -5443,7 +5688,9 @@ public final class IoTeX {
       }
       /**
        * <code>string name = 1;</code>
+       * @return The bytes for name.
        */
+      @java.lang.Override
       public com.google.protobuf.ByteString
           getNameBytes() {
         java.lang.Object ref = name_;
@@ -5462,7 +5709,9 @@ public final class IoTeX {
       private volatile java.lang.Object operatorAddress_;
       /**
        * <code>string operatorAddress = 2;</code>
+       * @return The operatorAddress.
        */
+      @java.lang.Override
       public java.lang.String getOperatorAddress() {
         java.lang.Object ref = operatorAddress_;
         if (ref instanceof java.lang.String) {
@@ -5477,7 +5726,9 @@ public final class IoTeX {
       }
       /**
        * <code>string operatorAddress = 2;</code>
+       * @return The bytes for operatorAddress.
        */
+      @java.lang.Override
       public com.google.protobuf.ByteString
           getOperatorAddressBytes() {
         java.lang.Object ref = operatorAddress_;
@@ -5496,7 +5747,9 @@ public final class IoTeX {
       private volatile java.lang.Object rewardAddress_;
       /**
        * <code>string rewardAddress = 3;</code>
+       * @return The rewardAddress.
        */
+      @java.lang.Override
       public java.lang.String getRewardAddress() {
         java.lang.Object ref = rewardAddress_;
         if (ref instanceof java.lang.String) {
@@ -5511,7 +5764,9 @@ public final class IoTeX {
       }
       /**
        * <code>string rewardAddress = 3;</code>
+       * @return The bytes for rewardAddress.
        */
+      @java.lang.Override
       public com.google.protobuf.ByteString
           getRewardAddressBytes() {
         java.lang.Object ref = rewardAddress_;
@@ -5865,6 +6120,7 @@ public final class IoTeX {
         private java.lang.Object name_ = "";
         /**
          * <code>string name = 1;</code>
+         * @return The name.
          */
         public java.lang.String getName() {
           java.lang.Object ref = name_;
@@ -5880,6 +6136,7 @@ public final class IoTeX {
         }
         /**
          * <code>string name = 1;</code>
+         * @return The bytes for name.
          */
         public com.google.protobuf.ByteString
             getNameBytes() {
@@ -5896,6 +6153,8 @@ public final class IoTeX {
         }
         /**
          * <code>string name = 1;</code>
+         * @param value The name to set.
+         * @return This builder for chaining.
          */
         public Builder setName(
             java.lang.String value) {
@@ -5909,6 +6168,7 @@ public final class IoTeX {
         }
         /**
          * <code>string name = 1;</code>
+         * @return This builder for chaining.
          */
         public Builder clearName() {
           
@@ -5918,6 +6178,8 @@ public final class IoTeX {
         }
         /**
          * <code>string name = 1;</code>
+         * @param value The bytes for name to set.
+         * @return This builder for chaining.
          */
         public Builder setNameBytes(
             com.google.protobuf.ByteString value) {
@@ -5934,6 +6196,7 @@ public final class IoTeX {
         private java.lang.Object operatorAddress_ = "";
         /**
          * <code>string operatorAddress = 2;</code>
+         * @return The operatorAddress.
          */
         public java.lang.String getOperatorAddress() {
           java.lang.Object ref = operatorAddress_;
@@ -5949,6 +6212,7 @@ public final class IoTeX {
         }
         /**
          * <code>string operatorAddress = 2;</code>
+         * @return The bytes for operatorAddress.
          */
         public com.google.protobuf.ByteString
             getOperatorAddressBytes() {
@@ -5965,6 +6229,8 @@ public final class IoTeX {
         }
         /**
          * <code>string operatorAddress = 2;</code>
+         * @param value The operatorAddress to set.
+         * @return This builder for chaining.
          */
         public Builder setOperatorAddress(
             java.lang.String value) {
@@ -5978,6 +6244,7 @@ public final class IoTeX {
         }
         /**
          * <code>string operatorAddress = 2;</code>
+         * @return This builder for chaining.
          */
         public Builder clearOperatorAddress() {
           
@@ -5987,6 +6254,8 @@ public final class IoTeX {
         }
         /**
          * <code>string operatorAddress = 2;</code>
+         * @param value The bytes for operatorAddress to set.
+         * @return This builder for chaining.
          */
         public Builder setOperatorAddressBytes(
             com.google.protobuf.ByteString value) {
@@ -6003,6 +6272,7 @@ public final class IoTeX {
         private java.lang.Object rewardAddress_ = "";
         /**
          * <code>string rewardAddress = 3;</code>
+         * @return The rewardAddress.
          */
         public java.lang.String getRewardAddress() {
           java.lang.Object ref = rewardAddress_;
@@ -6018,6 +6288,7 @@ public final class IoTeX {
         }
         /**
          * <code>string rewardAddress = 3;</code>
+         * @return The bytes for rewardAddress.
          */
         public com.google.protobuf.ByteString
             getRewardAddressBytes() {
@@ -6034,6 +6305,8 @@ public final class IoTeX {
         }
         /**
          * <code>string rewardAddress = 3;</code>
+         * @param value The rewardAddress to set.
+         * @return This builder for chaining.
          */
         public Builder setRewardAddress(
             java.lang.String value) {
@@ -6047,6 +6320,7 @@ public final class IoTeX {
         }
         /**
          * <code>string rewardAddress = 3;</code>
+         * @return This builder for chaining.
          */
         public Builder clearRewardAddress() {
           
@@ -6056,6 +6330,8 @@ public final class IoTeX {
         }
         /**
          * <code>string rewardAddress = 3;</code>
+         * @param value The bytes for rewardAddress to set.
+         * @return This builder for chaining.
          */
         public Builder setRewardAddressBytes(
             com.google.protobuf.ByteString value) {
@@ -6127,10 +6403,12 @@ public final class IoTeX {
 
       /**
        * <code>.TW.IoTeX.Proto.Staking.CandidateBasicInfo candidate = 1;</code>
+       * @return Whether the candidate field is set.
        */
       boolean hasCandidate();
       /**
        * <code>.TW.IoTeX.Proto.Staking.CandidateBasicInfo candidate = 1;</code>
+       * @return The candidate.
        */
       wallet.core.jni.proto.IoTeX.Staking.CandidateBasicInfo getCandidate();
       /**
@@ -6140,21 +6418,25 @@ public final class IoTeX {
 
       /**
        * <code>string stakedAmount = 2;</code>
+       * @return The stakedAmount.
        */
       java.lang.String getStakedAmount();
       /**
        * <code>string stakedAmount = 2;</code>
+       * @return The bytes for stakedAmount.
        */
       com.google.protobuf.ByteString
           getStakedAmountBytes();
 
       /**
        * <code>uint32 stakedDuration = 3;</code>
+       * @return The stakedDuration.
        */
       int getStakedDuration();
 
       /**
        * <code>bool autoStake = 4;</code>
+       * @return The autoStake.
        */
       boolean getAutoStake();
 
@@ -6164,6 +6446,7 @@ public final class IoTeX {
        * </pre>
        *
        * <code>string ownerAddress = 5;</code>
+       * @return The ownerAddress.
        */
       java.lang.String getOwnerAddress();
       /**
@@ -6172,19 +6455,21 @@ public final class IoTeX {
        * </pre>
        *
        * <code>string ownerAddress = 5;</code>
+       * @return The bytes for ownerAddress.
        */
       com.google.protobuf.ByteString
           getOwnerAddressBytes();
 
       /**
        * <code>bytes payload = 6;</code>
+       * @return The payload.
        */
       com.google.protobuf.ByteString getPayload();
     }
     /**
      * Protobuf type {@code TW.IoTeX.Proto.Staking.CandidateRegister}
      */
-    public  static final class CandidateRegister extends
+    public static final class CandidateRegister extends
         com.google.protobuf.GeneratedMessageV3 implements
         // @@protoc_insertion_point(message_implements:TW.IoTeX.Proto.Staking.CandidateRegister)
         CandidateRegisterOrBuilder {
@@ -6305,19 +6590,24 @@ public final class IoTeX {
       private wallet.core.jni.proto.IoTeX.Staking.CandidateBasicInfo candidate_;
       /**
        * <code>.TW.IoTeX.Proto.Staking.CandidateBasicInfo candidate = 1;</code>
+       * @return Whether the candidate field is set.
        */
+      @java.lang.Override
       public boolean hasCandidate() {
         return candidate_ != null;
       }
       /**
        * <code>.TW.IoTeX.Proto.Staking.CandidateBasicInfo candidate = 1;</code>
+       * @return The candidate.
        */
+      @java.lang.Override
       public wallet.core.jni.proto.IoTeX.Staking.CandidateBasicInfo getCandidate() {
         return candidate_ == null ? wallet.core.jni.proto.IoTeX.Staking.CandidateBasicInfo.getDefaultInstance() : candidate_;
       }
       /**
        * <code>.TW.IoTeX.Proto.Staking.CandidateBasicInfo candidate = 1;</code>
        */
+      @java.lang.Override
       public wallet.core.jni.proto.IoTeX.Staking.CandidateBasicInfoOrBuilder getCandidateOrBuilder() {
         return getCandidate();
       }
@@ -6326,7 +6616,9 @@ public final class IoTeX {
       private volatile java.lang.Object stakedAmount_;
       /**
        * <code>string stakedAmount = 2;</code>
+       * @return The stakedAmount.
        */
+      @java.lang.Override
       public java.lang.String getStakedAmount() {
         java.lang.Object ref = stakedAmount_;
         if (ref instanceof java.lang.String) {
@@ -6341,7 +6633,9 @@ public final class IoTeX {
       }
       /**
        * <code>string stakedAmount = 2;</code>
+       * @return The bytes for stakedAmount.
        */
+      @java.lang.Override
       public com.google.protobuf.ByteString
           getStakedAmountBytes() {
         java.lang.Object ref = stakedAmount_;
@@ -6360,7 +6654,9 @@ public final class IoTeX {
       private int stakedDuration_;
       /**
        * <code>uint32 stakedDuration = 3;</code>
+       * @return The stakedDuration.
        */
+      @java.lang.Override
       public int getStakedDuration() {
         return stakedDuration_;
       }
@@ -6369,7 +6665,9 @@ public final class IoTeX {
       private boolean autoStake_;
       /**
        * <code>bool autoStake = 4;</code>
+       * @return The autoStake.
        */
+      @java.lang.Override
       public boolean getAutoStake() {
         return autoStake_;
       }
@@ -6382,7 +6680,9 @@ public final class IoTeX {
        * </pre>
        *
        * <code>string ownerAddress = 5;</code>
+       * @return The ownerAddress.
        */
+      @java.lang.Override
       public java.lang.String getOwnerAddress() {
         java.lang.Object ref = ownerAddress_;
         if (ref instanceof java.lang.String) {
@@ -6401,7 +6701,9 @@ public final class IoTeX {
        * </pre>
        *
        * <code>string ownerAddress = 5;</code>
+       * @return The bytes for ownerAddress.
        */
+      @java.lang.Override
       public com.google.protobuf.ByteString
           getOwnerAddressBytes() {
         java.lang.Object ref = ownerAddress_;
@@ -6420,7 +6722,9 @@ public final class IoTeX {
       private com.google.protobuf.ByteString payload_;
       /**
        * <code>bytes payload = 6;</code>
+       * @return The payload.
        */
+      @java.lang.Override
       public com.google.protobuf.ByteString getPayload() {
         return payload_;
       }
@@ -6831,12 +7135,14 @@ public final class IoTeX {
             wallet.core.jni.proto.IoTeX.Staking.CandidateBasicInfo, wallet.core.jni.proto.IoTeX.Staking.CandidateBasicInfo.Builder, wallet.core.jni.proto.IoTeX.Staking.CandidateBasicInfoOrBuilder> candidateBuilder_;
         /**
          * <code>.TW.IoTeX.Proto.Staking.CandidateBasicInfo candidate = 1;</code>
+         * @return Whether the candidate field is set.
          */
         public boolean hasCandidate() {
           return candidateBuilder_ != null || candidate_ != null;
         }
         /**
          * <code>.TW.IoTeX.Proto.Staking.CandidateBasicInfo candidate = 1;</code>
+         * @return The candidate.
          */
         public wallet.core.jni.proto.IoTeX.Staking.CandidateBasicInfo getCandidate() {
           if (candidateBuilder_ == null) {
@@ -6946,6 +7252,7 @@ public final class IoTeX {
         private java.lang.Object stakedAmount_ = "";
         /**
          * <code>string stakedAmount = 2;</code>
+         * @return The stakedAmount.
          */
         public java.lang.String getStakedAmount() {
           java.lang.Object ref = stakedAmount_;
@@ -6961,6 +7268,7 @@ public final class IoTeX {
         }
         /**
          * <code>string stakedAmount = 2;</code>
+         * @return The bytes for stakedAmount.
          */
         public com.google.protobuf.ByteString
             getStakedAmountBytes() {
@@ -6977,6 +7285,8 @@ public final class IoTeX {
         }
         /**
          * <code>string stakedAmount = 2;</code>
+         * @param value The stakedAmount to set.
+         * @return This builder for chaining.
          */
         public Builder setStakedAmount(
             java.lang.String value) {
@@ -6990,6 +7300,7 @@ public final class IoTeX {
         }
         /**
          * <code>string stakedAmount = 2;</code>
+         * @return This builder for chaining.
          */
         public Builder clearStakedAmount() {
           
@@ -6999,6 +7310,8 @@ public final class IoTeX {
         }
         /**
          * <code>string stakedAmount = 2;</code>
+         * @param value The bytes for stakedAmount to set.
+         * @return This builder for chaining.
          */
         public Builder setStakedAmountBytes(
             com.google.protobuf.ByteString value) {
@@ -7015,12 +7328,16 @@ public final class IoTeX {
         private int stakedDuration_ ;
         /**
          * <code>uint32 stakedDuration = 3;</code>
+         * @return The stakedDuration.
          */
+        @java.lang.Override
         public int getStakedDuration() {
           return stakedDuration_;
         }
         /**
          * <code>uint32 stakedDuration = 3;</code>
+         * @param value The stakedDuration to set.
+         * @return This builder for chaining.
          */
         public Builder setStakedDuration(int value) {
           
@@ -7030,6 +7347,7 @@ public final class IoTeX {
         }
         /**
          * <code>uint32 stakedDuration = 3;</code>
+         * @return This builder for chaining.
          */
         public Builder clearStakedDuration() {
           
@@ -7041,12 +7359,16 @@ public final class IoTeX {
         private boolean autoStake_ ;
         /**
          * <code>bool autoStake = 4;</code>
+         * @return The autoStake.
          */
+        @java.lang.Override
         public boolean getAutoStake() {
           return autoStake_;
         }
         /**
          * <code>bool autoStake = 4;</code>
+         * @param value The autoStake to set.
+         * @return This builder for chaining.
          */
         public Builder setAutoStake(boolean value) {
           
@@ -7056,6 +7378,7 @@ public final class IoTeX {
         }
         /**
          * <code>bool autoStake = 4;</code>
+         * @return This builder for chaining.
          */
         public Builder clearAutoStake() {
           
@@ -7071,6 +7394,7 @@ public final class IoTeX {
          * </pre>
          *
          * <code>string ownerAddress = 5;</code>
+         * @return The ownerAddress.
          */
         public java.lang.String getOwnerAddress() {
           java.lang.Object ref = ownerAddress_;
@@ -7090,6 +7414,7 @@ public final class IoTeX {
          * </pre>
          *
          * <code>string ownerAddress = 5;</code>
+         * @return The bytes for ownerAddress.
          */
         public com.google.protobuf.ByteString
             getOwnerAddressBytes() {
@@ -7110,6 +7435,8 @@ public final class IoTeX {
          * </pre>
          *
          * <code>string ownerAddress = 5;</code>
+         * @param value The ownerAddress to set.
+         * @return This builder for chaining.
          */
         public Builder setOwnerAddress(
             java.lang.String value) {
@@ -7127,6 +7454,7 @@ public final class IoTeX {
          * </pre>
          *
          * <code>string ownerAddress = 5;</code>
+         * @return This builder for chaining.
          */
         public Builder clearOwnerAddress() {
           
@@ -7140,6 +7468,8 @@ public final class IoTeX {
          * </pre>
          *
          * <code>string ownerAddress = 5;</code>
+         * @param value The bytes for ownerAddress to set.
+         * @return This builder for chaining.
          */
         public Builder setOwnerAddressBytes(
             com.google.protobuf.ByteString value) {
@@ -7156,12 +7486,16 @@ public final class IoTeX {
         private com.google.protobuf.ByteString payload_ = com.google.protobuf.ByteString.EMPTY;
         /**
          * <code>bytes payload = 6;</code>
+         * @return The payload.
          */
+        @java.lang.Override
         public com.google.protobuf.ByteString getPayload() {
           return payload_;
         }
         /**
          * <code>bytes payload = 6;</code>
+         * @param value The payload to set.
+         * @return This builder for chaining.
          */
         public Builder setPayload(com.google.protobuf.ByteString value) {
           if (value == null) {
@@ -7174,6 +7508,7 @@ public final class IoTeX {
         }
         /**
          * <code>bytes payload = 6;</code>
+         * @return This builder for chaining.
          */
         public Builder clearPayload() {
           
@@ -7237,7 +7572,8 @@ public final class IoTeX {
     private int messageCase_ = 0;
     private java.lang.Object message_;
     public enum MessageCase
-        implements com.google.protobuf.Internal.EnumLite {
+        implements com.google.protobuf.Internal.EnumLite,
+            com.google.protobuf.AbstractMessage.InternalOneOfEnum {
       STAKECREATE(1),
       STAKEUNSTAKE(2),
       STAKEWITHDRAW(3),
@@ -7253,6 +7589,8 @@ public final class IoTeX {
         this.value = value;
       }
       /**
+       * @param value The number of the enum to look for.
+       * @return The enum associated with the given number.
        * @deprecated Use {@link #forNumber(int)} instead.
        */
       @java.lang.Deprecated
@@ -7289,13 +7627,17 @@ public final class IoTeX {
     public static final int STAKECREATE_FIELD_NUMBER = 1;
     /**
      * <code>.TW.IoTeX.Proto.Staking.Create stakeCreate = 1;</code>
+     * @return Whether the stakeCreate field is set.
      */
+    @java.lang.Override
     public boolean hasStakeCreate() {
       return messageCase_ == 1;
     }
     /**
      * <code>.TW.IoTeX.Proto.Staking.Create stakeCreate = 1;</code>
+     * @return The stakeCreate.
      */
+    @java.lang.Override
     public wallet.core.jni.proto.IoTeX.Staking.Create getStakeCreate() {
       if (messageCase_ == 1) {
          return (wallet.core.jni.proto.IoTeX.Staking.Create) message_;
@@ -7305,6 +7647,7 @@ public final class IoTeX {
     /**
      * <code>.TW.IoTeX.Proto.Staking.Create stakeCreate = 1;</code>
      */
+    @java.lang.Override
     public wallet.core.jni.proto.IoTeX.Staking.CreateOrBuilder getStakeCreateOrBuilder() {
       if (messageCase_ == 1) {
          return (wallet.core.jni.proto.IoTeX.Staking.Create) message_;
@@ -7315,13 +7658,17 @@ public final class IoTeX {
     public static final int STAKEUNSTAKE_FIELD_NUMBER = 2;
     /**
      * <code>.TW.IoTeX.Proto.Staking.Reclaim stakeUnstake = 2;</code>
+     * @return Whether the stakeUnstake field is set.
      */
+    @java.lang.Override
     public boolean hasStakeUnstake() {
       return messageCase_ == 2;
     }
     /**
      * <code>.TW.IoTeX.Proto.Staking.Reclaim stakeUnstake = 2;</code>
+     * @return The stakeUnstake.
      */
+    @java.lang.Override
     public wallet.core.jni.proto.IoTeX.Staking.Reclaim getStakeUnstake() {
       if (messageCase_ == 2) {
          return (wallet.core.jni.proto.IoTeX.Staking.Reclaim) message_;
@@ -7331,6 +7678,7 @@ public final class IoTeX {
     /**
      * <code>.TW.IoTeX.Proto.Staking.Reclaim stakeUnstake = 2;</code>
      */
+    @java.lang.Override
     public wallet.core.jni.proto.IoTeX.Staking.ReclaimOrBuilder getStakeUnstakeOrBuilder() {
       if (messageCase_ == 2) {
          return (wallet.core.jni.proto.IoTeX.Staking.Reclaim) message_;
@@ -7341,13 +7689,17 @@ public final class IoTeX {
     public static final int STAKEWITHDRAW_FIELD_NUMBER = 3;
     /**
      * <code>.TW.IoTeX.Proto.Staking.Reclaim stakeWithdraw = 3;</code>
+     * @return Whether the stakeWithdraw field is set.
      */
+    @java.lang.Override
     public boolean hasStakeWithdraw() {
       return messageCase_ == 3;
     }
     /**
      * <code>.TW.IoTeX.Proto.Staking.Reclaim stakeWithdraw = 3;</code>
+     * @return The stakeWithdraw.
      */
+    @java.lang.Override
     public wallet.core.jni.proto.IoTeX.Staking.Reclaim getStakeWithdraw() {
       if (messageCase_ == 3) {
          return (wallet.core.jni.proto.IoTeX.Staking.Reclaim) message_;
@@ -7357,6 +7709,7 @@ public final class IoTeX {
     /**
      * <code>.TW.IoTeX.Proto.Staking.Reclaim stakeWithdraw = 3;</code>
      */
+    @java.lang.Override
     public wallet.core.jni.proto.IoTeX.Staking.ReclaimOrBuilder getStakeWithdrawOrBuilder() {
       if (messageCase_ == 3) {
          return (wallet.core.jni.proto.IoTeX.Staking.Reclaim) message_;
@@ -7367,13 +7720,17 @@ public final class IoTeX {
     public static final int STAKEADDDEPOSIT_FIELD_NUMBER = 4;
     /**
      * <code>.TW.IoTeX.Proto.Staking.AddDeposit stakeAddDeposit = 4;</code>
+     * @return Whether the stakeAddDeposit field is set.
      */
+    @java.lang.Override
     public boolean hasStakeAddDeposit() {
       return messageCase_ == 4;
     }
     /**
      * <code>.TW.IoTeX.Proto.Staking.AddDeposit stakeAddDeposit = 4;</code>
+     * @return The stakeAddDeposit.
      */
+    @java.lang.Override
     public wallet.core.jni.proto.IoTeX.Staking.AddDeposit getStakeAddDeposit() {
       if (messageCase_ == 4) {
          return (wallet.core.jni.proto.IoTeX.Staking.AddDeposit) message_;
@@ -7383,6 +7740,7 @@ public final class IoTeX {
     /**
      * <code>.TW.IoTeX.Proto.Staking.AddDeposit stakeAddDeposit = 4;</code>
      */
+    @java.lang.Override
     public wallet.core.jni.proto.IoTeX.Staking.AddDepositOrBuilder getStakeAddDepositOrBuilder() {
       if (messageCase_ == 4) {
          return (wallet.core.jni.proto.IoTeX.Staking.AddDeposit) message_;
@@ -7393,13 +7751,17 @@ public final class IoTeX {
     public static final int STAKERESTAKE_FIELD_NUMBER = 5;
     /**
      * <code>.TW.IoTeX.Proto.Staking.Restake stakeRestake = 5;</code>
+     * @return Whether the stakeRestake field is set.
      */
+    @java.lang.Override
     public boolean hasStakeRestake() {
       return messageCase_ == 5;
     }
     /**
      * <code>.TW.IoTeX.Proto.Staking.Restake stakeRestake = 5;</code>
+     * @return The stakeRestake.
      */
+    @java.lang.Override
     public wallet.core.jni.proto.IoTeX.Staking.Restake getStakeRestake() {
       if (messageCase_ == 5) {
          return (wallet.core.jni.proto.IoTeX.Staking.Restake) message_;
@@ -7409,6 +7771,7 @@ public final class IoTeX {
     /**
      * <code>.TW.IoTeX.Proto.Staking.Restake stakeRestake = 5;</code>
      */
+    @java.lang.Override
     public wallet.core.jni.proto.IoTeX.Staking.RestakeOrBuilder getStakeRestakeOrBuilder() {
       if (messageCase_ == 5) {
          return (wallet.core.jni.proto.IoTeX.Staking.Restake) message_;
@@ -7419,13 +7782,17 @@ public final class IoTeX {
     public static final int STAKECHANGECANDIDATE_FIELD_NUMBER = 6;
     /**
      * <code>.TW.IoTeX.Proto.Staking.ChangeCandidate stakeChangeCandidate = 6;</code>
+     * @return Whether the stakeChangeCandidate field is set.
      */
+    @java.lang.Override
     public boolean hasStakeChangeCandidate() {
       return messageCase_ == 6;
     }
     /**
      * <code>.TW.IoTeX.Proto.Staking.ChangeCandidate stakeChangeCandidate = 6;</code>
+     * @return The stakeChangeCandidate.
      */
+    @java.lang.Override
     public wallet.core.jni.proto.IoTeX.Staking.ChangeCandidate getStakeChangeCandidate() {
       if (messageCase_ == 6) {
          return (wallet.core.jni.proto.IoTeX.Staking.ChangeCandidate) message_;
@@ -7435,6 +7802,7 @@ public final class IoTeX {
     /**
      * <code>.TW.IoTeX.Proto.Staking.ChangeCandidate stakeChangeCandidate = 6;</code>
      */
+    @java.lang.Override
     public wallet.core.jni.proto.IoTeX.Staking.ChangeCandidateOrBuilder getStakeChangeCandidateOrBuilder() {
       if (messageCase_ == 6) {
          return (wallet.core.jni.proto.IoTeX.Staking.ChangeCandidate) message_;
@@ -7445,13 +7813,17 @@ public final class IoTeX {
     public static final int STAKETRANSFEROWNERSHIP_FIELD_NUMBER = 7;
     /**
      * <code>.TW.IoTeX.Proto.Staking.TransferOwnership stakeTransferOwnership = 7;</code>
+     * @return Whether the stakeTransferOwnership field is set.
      */
+    @java.lang.Override
     public boolean hasStakeTransferOwnership() {
       return messageCase_ == 7;
     }
     /**
      * <code>.TW.IoTeX.Proto.Staking.TransferOwnership stakeTransferOwnership = 7;</code>
+     * @return The stakeTransferOwnership.
      */
+    @java.lang.Override
     public wallet.core.jni.proto.IoTeX.Staking.TransferOwnership getStakeTransferOwnership() {
       if (messageCase_ == 7) {
          return (wallet.core.jni.proto.IoTeX.Staking.TransferOwnership) message_;
@@ -7461,6 +7833,7 @@ public final class IoTeX {
     /**
      * <code>.TW.IoTeX.Proto.Staking.TransferOwnership stakeTransferOwnership = 7;</code>
      */
+    @java.lang.Override
     public wallet.core.jni.proto.IoTeX.Staking.TransferOwnershipOrBuilder getStakeTransferOwnershipOrBuilder() {
       if (messageCase_ == 7) {
          return (wallet.core.jni.proto.IoTeX.Staking.TransferOwnership) message_;
@@ -7471,13 +7844,17 @@ public final class IoTeX {
     public static final int CANDIDATEREGISTER_FIELD_NUMBER = 8;
     /**
      * <code>.TW.IoTeX.Proto.Staking.CandidateRegister candidateRegister = 8;</code>
+     * @return Whether the candidateRegister field is set.
      */
+    @java.lang.Override
     public boolean hasCandidateRegister() {
       return messageCase_ == 8;
     }
     /**
      * <code>.TW.IoTeX.Proto.Staking.CandidateRegister candidateRegister = 8;</code>
+     * @return The candidateRegister.
      */
+    @java.lang.Override
     public wallet.core.jni.proto.IoTeX.Staking.CandidateRegister getCandidateRegister() {
       if (messageCase_ == 8) {
          return (wallet.core.jni.proto.IoTeX.Staking.CandidateRegister) message_;
@@ -7487,6 +7864,7 @@ public final class IoTeX {
     /**
      * <code>.TW.IoTeX.Proto.Staking.CandidateRegister candidateRegister = 8;</code>
      */
+    @java.lang.Override
     public wallet.core.jni.proto.IoTeX.Staking.CandidateRegisterOrBuilder getCandidateRegisterOrBuilder() {
       if (messageCase_ == 8) {
          return (wallet.core.jni.proto.IoTeX.Staking.CandidateRegister) message_;
@@ -7497,13 +7875,17 @@ public final class IoTeX {
     public static final int CANDIDATEUPDATE_FIELD_NUMBER = 9;
     /**
      * <code>.TW.IoTeX.Proto.Staking.CandidateBasicInfo candidateUpdate = 9;</code>
+     * @return Whether the candidateUpdate field is set.
      */
+    @java.lang.Override
     public boolean hasCandidateUpdate() {
       return messageCase_ == 9;
     }
     /**
      * <code>.TW.IoTeX.Proto.Staking.CandidateBasicInfo candidateUpdate = 9;</code>
+     * @return The candidateUpdate.
      */
+    @java.lang.Override
     public wallet.core.jni.proto.IoTeX.Staking.CandidateBasicInfo getCandidateUpdate() {
       if (messageCase_ == 9) {
          return (wallet.core.jni.proto.IoTeX.Staking.CandidateBasicInfo) message_;
@@ -7513,6 +7895,7 @@ public final class IoTeX {
     /**
      * <code>.TW.IoTeX.Proto.Staking.CandidateBasicInfo candidateUpdate = 9;</code>
      */
+    @java.lang.Override
     public wallet.core.jni.proto.IoTeX.Staking.CandidateBasicInfoOrBuilder getCandidateUpdateOrBuilder() {
       if (messageCase_ == 9) {
          return (wallet.core.jni.proto.IoTeX.Staking.CandidateBasicInfo) message_;
@@ -8075,13 +8458,17 @@ public final class IoTeX {
           wallet.core.jni.proto.IoTeX.Staking.Create, wallet.core.jni.proto.IoTeX.Staking.Create.Builder, wallet.core.jni.proto.IoTeX.Staking.CreateOrBuilder> stakeCreateBuilder_;
       /**
        * <code>.TW.IoTeX.Proto.Staking.Create stakeCreate = 1;</code>
+       * @return Whether the stakeCreate field is set.
        */
+      @java.lang.Override
       public boolean hasStakeCreate() {
         return messageCase_ == 1;
       }
       /**
        * <code>.TW.IoTeX.Proto.Staking.Create stakeCreate = 1;</code>
+       * @return The stakeCreate.
        */
+      @java.lang.Override
       public wallet.core.jni.proto.IoTeX.Staking.Create getStakeCreate() {
         if (stakeCreateBuilder_ == null) {
           if (messageCase_ == 1) {
@@ -8175,6 +8562,7 @@ public final class IoTeX {
       /**
        * <code>.TW.IoTeX.Proto.Staking.Create stakeCreate = 1;</code>
        */
+      @java.lang.Override
       public wallet.core.jni.proto.IoTeX.Staking.CreateOrBuilder getStakeCreateOrBuilder() {
         if ((messageCase_ == 1) && (stakeCreateBuilder_ != null)) {
           return stakeCreateBuilder_.getMessageOrBuilder();
@@ -8211,13 +8599,17 @@ public final class IoTeX {
           wallet.core.jni.proto.IoTeX.Staking.Reclaim, wallet.core.jni.proto.IoTeX.Staking.Reclaim.Builder, wallet.core.jni.proto.IoTeX.Staking.ReclaimOrBuilder> stakeUnstakeBuilder_;
       /**
        * <code>.TW.IoTeX.Proto.Staking.Reclaim stakeUnstake = 2;</code>
+       * @return Whether the stakeUnstake field is set.
        */
+      @java.lang.Override
       public boolean hasStakeUnstake() {
         return messageCase_ == 2;
       }
       /**
        * <code>.TW.IoTeX.Proto.Staking.Reclaim stakeUnstake = 2;</code>
+       * @return The stakeUnstake.
        */
+      @java.lang.Override
       public wallet.core.jni.proto.IoTeX.Staking.Reclaim getStakeUnstake() {
         if (stakeUnstakeBuilder_ == null) {
           if (messageCase_ == 2) {
@@ -8311,6 +8703,7 @@ public final class IoTeX {
       /**
        * <code>.TW.IoTeX.Proto.Staking.Reclaim stakeUnstake = 2;</code>
        */
+      @java.lang.Override
       public wallet.core.jni.proto.IoTeX.Staking.ReclaimOrBuilder getStakeUnstakeOrBuilder() {
         if ((messageCase_ == 2) && (stakeUnstakeBuilder_ != null)) {
           return stakeUnstakeBuilder_.getMessageOrBuilder();
@@ -8347,13 +8740,17 @@ public final class IoTeX {
           wallet.core.jni.proto.IoTeX.Staking.Reclaim, wallet.core.jni.proto.IoTeX.Staking.Reclaim.Builder, wallet.core.jni.proto.IoTeX.Staking.ReclaimOrBuilder> stakeWithdrawBuilder_;
       /**
        * <code>.TW.IoTeX.Proto.Staking.Reclaim stakeWithdraw = 3;</code>
+       * @return Whether the stakeWithdraw field is set.
        */
+      @java.lang.Override
       public boolean hasStakeWithdraw() {
         return messageCase_ == 3;
       }
       /**
        * <code>.TW.IoTeX.Proto.Staking.Reclaim stakeWithdraw = 3;</code>
+       * @return The stakeWithdraw.
        */
+      @java.lang.Override
       public wallet.core.jni.proto.IoTeX.Staking.Reclaim getStakeWithdraw() {
         if (stakeWithdrawBuilder_ == null) {
           if (messageCase_ == 3) {
@@ -8447,6 +8844,7 @@ public final class IoTeX {
       /**
        * <code>.TW.IoTeX.Proto.Staking.Reclaim stakeWithdraw = 3;</code>
        */
+      @java.lang.Override
       public wallet.core.jni.proto.IoTeX.Staking.ReclaimOrBuilder getStakeWithdrawOrBuilder() {
         if ((messageCase_ == 3) && (stakeWithdrawBuilder_ != null)) {
           return stakeWithdrawBuilder_.getMessageOrBuilder();
@@ -8483,13 +8881,17 @@ public final class IoTeX {
           wallet.core.jni.proto.IoTeX.Staking.AddDeposit, wallet.core.jni.proto.IoTeX.Staking.AddDeposit.Builder, wallet.core.jni.proto.IoTeX.Staking.AddDepositOrBuilder> stakeAddDepositBuilder_;
       /**
        * <code>.TW.IoTeX.Proto.Staking.AddDeposit stakeAddDeposit = 4;</code>
+       * @return Whether the stakeAddDeposit field is set.
        */
+      @java.lang.Override
       public boolean hasStakeAddDeposit() {
         return messageCase_ == 4;
       }
       /**
        * <code>.TW.IoTeX.Proto.Staking.AddDeposit stakeAddDeposit = 4;</code>
+       * @return The stakeAddDeposit.
        */
+      @java.lang.Override
       public wallet.core.jni.proto.IoTeX.Staking.AddDeposit getStakeAddDeposit() {
         if (stakeAddDepositBuilder_ == null) {
           if (messageCase_ == 4) {
@@ -8583,6 +8985,7 @@ public final class IoTeX {
       /**
        * <code>.TW.IoTeX.Proto.Staking.AddDeposit stakeAddDeposit = 4;</code>
        */
+      @java.lang.Override
       public wallet.core.jni.proto.IoTeX.Staking.AddDepositOrBuilder getStakeAddDepositOrBuilder() {
         if ((messageCase_ == 4) && (stakeAddDepositBuilder_ != null)) {
           return stakeAddDepositBuilder_.getMessageOrBuilder();
@@ -8619,13 +9022,17 @@ public final class IoTeX {
           wallet.core.jni.proto.IoTeX.Staking.Restake, wallet.core.jni.proto.IoTeX.Staking.Restake.Builder, wallet.core.jni.proto.IoTeX.Staking.RestakeOrBuilder> stakeRestakeBuilder_;
       /**
        * <code>.TW.IoTeX.Proto.Staking.Restake stakeRestake = 5;</code>
+       * @return Whether the stakeRestake field is set.
        */
+      @java.lang.Override
       public boolean hasStakeRestake() {
         return messageCase_ == 5;
       }
       /**
        * <code>.TW.IoTeX.Proto.Staking.Restake stakeRestake = 5;</code>
+       * @return The stakeRestake.
        */
+      @java.lang.Override
       public wallet.core.jni.proto.IoTeX.Staking.Restake getStakeRestake() {
         if (stakeRestakeBuilder_ == null) {
           if (messageCase_ == 5) {
@@ -8719,6 +9126,7 @@ public final class IoTeX {
       /**
        * <code>.TW.IoTeX.Proto.Staking.Restake stakeRestake = 5;</code>
        */
+      @java.lang.Override
       public wallet.core.jni.proto.IoTeX.Staking.RestakeOrBuilder getStakeRestakeOrBuilder() {
         if ((messageCase_ == 5) && (stakeRestakeBuilder_ != null)) {
           return stakeRestakeBuilder_.getMessageOrBuilder();
@@ -8755,13 +9163,17 @@ public final class IoTeX {
           wallet.core.jni.proto.IoTeX.Staking.ChangeCandidate, wallet.core.jni.proto.IoTeX.Staking.ChangeCandidate.Builder, wallet.core.jni.proto.IoTeX.Staking.ChangeCandidateOrBuilder> stakeChangeCandidateBuilder_;
       /**
        * <code>.TW.IoTeX.Proto.Staking.ChangeCandidate stakeChangeCandidate = 6;</code>
+       * @return Whether the stakeChangeCandidate field is set.
        */
+      @java.lang.Override
       public boolean hasStakeChangeCandidate() {
         return messageCase_ == 6;
       }
       /**
        * <code>.TW.IoTeX.Proto.Staking.ChangeCandidate stakeChangeCandidate = 6;</code>
+       * @return The stakeChangeCandidate.
        */
+      @java.lang.Override
       public wallet.core.jni.proto.IoTeX.Staking.ChangeCandidate getStakeChangeCandidate() {
         if (stakeChangeCandidateBuilder_ == null) {
           if (messageCase_ == 6) {
@@ -8855,6 +9267,7 @@ public final class IoTeX {
       /**
        * <code>.TW.IoTeX.Proto.Staking.ChangeCandidate stakeChangeCandidate = 6;</code>
        */
+      @java.lang.Override
       public wallet.core.jni.proto.IoTeX.Staking.ChangeCandidateOrBuilder getStakeChangeCandidateOrBuilder() {
         if ((messageCase_ == 6) && (stakeChangeCandidateBuilder_ != null)) {
           return stakeChangeCandidateBuilder_.getMessageOrBuilder();
@@ -8891,13 +9304,17 @@ public final class IoTeX {
           wallet.core.jni.proto.IoTeX.Staking.TransferOwnership, wallet.core.jni.proto.IoTeX.Staking.TransferOwnership.Builder, wallet.core.jni.proto.IoTeX.Staking.TransferOwnershipOrBuilder> stakeTransferOwnershipBuilder_;
       /**
        * <code>.TW.IoTeX.Proto.Staking.TransferOwnership stakeTransferOwnership = 7;</code>
+       * @return Whether the stakeTransferOwnership field is set.
        */
+      @java.lang.Override
       public boolean hasStakeTransferOwnership() {
         return messageCase_ == 7;
       }
       /**
        * <code>.TW.IoTeX.Proto.Staking.TransferOwnership stakeTransferOwnership = 7;</code>
+       * @return The stakeTransferOwnership.
        */
+      @java.lang.Override
       public wallet.core.jni.proto.IoTeX.Staking.TransferOwnership getStakeTransferOwnership() {
         if (stakeTransferOwnershipBuilder_ == null) {
           if (messageCase_ == 7) {
@@ -8991,6 +9408,7 @@ public final class IoTeX {
       /**
        * <code>.TW.IoTeX.Proto.Staking.TransferOwnership stakeTransferOwnership = 7;</code>
        */
+      @java.lang.Override
       public wallet.core.jni.proto.IoTeX.Staking.TransferOwnershipOrBuilder getStakeTransferOwnershipOrBuilder() {
         if ((messageCase_ == 7) && (stakeTransferOwnershipBuilder_ != null)) {
           return stakeTransferOwnershipBuilder_.getMessageOrBuilder();
@@ -9027,13 +9445,17 @@ public final class IoTeX {
           wallet.core.jni.proto.IoTeX.Staking.CandidateRegister, wallet.core.jni.proto.IoTeX.Staking.CandidateRegister.Builder, wallet.core.jni.proto.IoTeX.Staking.CandidateRegisterOrBuilder> candidateRegisterBuilder_;
       /**
        * <code>.TW.IoTeX.Proto.Staking.CandidateRegister candidateRegister = 8;</code>
+       * @return Whether the candidateRegister field is set.
        */
+      @java.lang.Override
       public boolean hasCandidateRegister() {
         return messageCase_ == 8;
       }
       /**
        * <code>.TW.IoTeX.Proto.Staking.CandidateRegister candidateRegister = 8;</code>
+       * @return The candidateRegister.
        */
+      @java.lang.Override
       public wallet.core.jni.proto.IoTeX.Staking.CandidateRegister getCandidateRegister() {
         if (candidateRegisterBuilder_ == null) {
           if (messageCase_ == 8) {
@@ -9127,6 +9549,7 @@ public final class IoTeX {
       /**
        * <code>.TW.IoTeX.Proto.Staking.CandidateRegister candidateRegister = 8;</code>
        */
+      @java.lang.Override
       public wallet.core.jni.proto.IoTeX.Staking.CandidateRegisterOrBuilder getCandidateRegisterOrBuilder() {
         if ((messageCase_ == 8) && (candidateRegisterBuilder_ != null)) {
           return candidateRegisterBuilder_.getMessageOrBuilder();
@@ -9163,13 +9586,17 @@ public final class IoTeX {
           wallet.core.jni.proto.IoTeX.Staking.CandidateBasicInfo, wallet.core.jni.proto.IoTeX.Staking.CandidateBasicInfo.Builder, wallet.core.jni.proto.IoTeX.Staking.CandidateBasicInfoOrBuilder> candidateUpdateBuilder_;
       /**
        * <code>.TW.IoTeX.Proto.Staking.CandidateBasicInfo candidateUpdate = 9;</code>
+       * @return Whether the candidateUpdate field is set.
        */
+      @java.lang.Override
       public boolean hasCandidateUpdate() {
         return messageCase_ == 9;
       }
       /**
        * <code>.TW.IoTeX.Proto.Staking.CandidateBasicInfo candidateUpdate = 9;</code>
+       * @return The candidateUpdate.
        */
+      @java.lang.Override
       public wallet.core.jni.proto.IoTeX.Staking.CandidateBasicInfo getCandidateUpdate() {
         if (candidateUpdateBuilder_ == null) {
           if (messageCase_ == 9) {
@@ -9263,6 +9690,7 @@ public final class IoTeX {
       /**
        * <code>.TW.IoTeX.Proto.Staking.CandidateBasicInfo candidateUpdate = 9;</code>
        */
+      @java.lang.Override
       public wallet.core.jni.proto.IoTeX.Staking.CandidateBasicInfoOrBuilder getCandidateUpdateOrBuilder() {
         if ((messageCase_ == 9) && (candidateUpdateBuilder_ != null)) {
           return candidateUpdateBuilder_.getMessageOrBuilder();
@@ -9353,33 +9781,38 @@ public final class IoTeX {
 
     /**
      * <code>string amount = 1;</code>
+     * @return The amount.
      */
     java.lang.String getAmount();
     /**
      * <code>string amount = 1;</code>
+     * @return The bytes for amount.
      */
     com.google.protobuf.ByteString
         getAmountBytes();
 
     /**
      * <code>string contract = 2;</code>
+     * @return The contract.
      */
     java.lang.String getContract();
     /**
      * <code>string contract = 2;</code>
+     * @return The bytes for contract.
      */
     com.google.protobuf.ByteString
         getContractBytes();
 
     /**
      * <code>bytes data = 3;</code>
+     * @return The data.
      */
     com.google.protobuf.ByteString getData();
   }
   /**
    * Protobuf type {@code TW.IoTeX.Proto.ContractCall}
    */
-  public  static final class ContractCall extends
+  public static final class ContractCall extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:TW.IoTeX.Proto.ContractCall)
       ContractCallOrBuilder {
@@ -9477,7 +9910,9 @@ public final class IoTeX {
     private volatile java.lang.Object amount_;
     /**
      * <code>string amount = 1;</code>
+     * @return The amount.
      */
+    @java.lang.Override
     public java.lang.String getAmount() {
       java.lang.Object ref = amount_;
       if (ref instanceof java.lang.String) {
@@ -9492,7 +9927,9 @@ public final class IoTeX {
     }
     /**
      * <code>string amount = 1;</code>
+     * @return The bytes for amount.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString
         getAmountBytes() {
       java.lang.Object ref = amount_;
@@ -9511,7 +9948,9 @@ public final class IoTeX {
     private volatile java.lang.Object contract_;
     /**
      * <code>string contract = 2;</code>
+     * @return The contract.
      */
+    @java.lang.Override
     public java.lang.String getContract() {
       java.lang.Object ref = contract_;
       if (ref instanceof java.lang.String) {
@@ -9526,7 +9965,9 @@ public final class IoTeX {
     }
     /**
      * <code>string contract = 2;</code>
+     * @return The bytes for contract.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString
         getContractBytes() {
       java.lang.Object ref = contract_;
@@ -9545,7 +9986,9 @@ public final class IoTeX {
     private com.google.protobuf.ByteString data_;
     /**
      * <code>bytes data = 3;</code>
+     * @return The data.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString getData() {
       return data_;
     }
@@ -9889,6 +10332,7 @@ public final class IoTeX {
       private java.lang.Object amount_ = "";
       /**
        * <code>string amount = 1;</code>
+       * @return The amount.
        */
       public java.lang.String getAmount() {
         java.lang.Object ref = amount_;
@@ -9904,6 +10348,7 @@ public final class IoTeX {
       }
       /**
        * <code>string amount = 1;</code>
+       * @return The bytes for amount.
        */
       public com.google.protobuf.ByteString
           getAmountBytes() {
@@ -9920,6 +10365,8 @@ public final class IoTeX {
       }
       /**
        * <code>string amount = 1;</code>
+       * @param value The amount to set.
+       * @return This builder for chaining.
        */
       public Builder setAmount(
           java.lang.String value) {
@@ -9933,6 +10380,7 @@ public final class IoTeX {
       }
       /**
        * <code>string amount = 1;</code>
+       * @return This builder for chaining.
        */
       public Builder clearAmount() {
         
@@ -9942,6 +10390,8 @@ public final class IoTeX {
       }
       /**
        * <code>string amount = 1;</code>
+       * @param value The bytes for amount to set.
+       * @return This builder for chaining.
        */
       public Builder setAmountBytes(
           com.google.protobuf.ByteString value) {
@@ -9958,6 +10408,7 @@ public final class IoTeX {
       private java.lang.Object contract_ = "";
       /**
        * <code>string contract = 2;</code>
+       * @return The contract.
        */
       public java.lang.String getContract() {
         java.lang.Object ref = contract_;
@@ -9973,6 +10424,7 @@ public final class IoTeX {
       }
       /**
        * <code>string contract = 2;</code>
+       * @return The bytes for contract.
        */
       public com.google.protobuf.ByteString
           getContractBytes() {
@@ -9989,6 +10441,8 @@ public final class IoTeX {
       }
       /**
        * <code>string contract = 2;</code>
+       * @param value The contract to set.
+       * @return This builder for chaining.
        */
       public Builder setContract(
           java.lang.String value) {
@@ -10002,6 +10456,7 @@ public final class IoTeX {
       }
       /**
        * <code>string contract = 2;</code>
+       * @return This builder for chaining.
        */
       public Builder clearContract() {
         
@@ -10011,6 +10466,8 @@ public final class IoTeX {
       }
       /**
        * <code>string contract = 2;</code>
+       * @param value The bytes for contract to set.
+       * @return This builder for chaining.
        */
       public Builder setContractBytes(
           com.google.protobuf.ByteString value) {
@@ -10027,12 +10484,16 @@ public final class IoTeX {
       private com.google.protobuf.ByteString data_ = com.google.protobuf.ByteString.EMPTY;
       /**
        * <code>bytes data = 3;</code>
+       * @return The data.
        */
+      @java.lang.Override
       public com.google.protobuf.ByteString getData() {
         return data_;
       }
       /**
        * <code>bytes data = 3;</code>
+       * @param value The data to set.
+       * @return This builder for chaining.
        */
       public Builder setData(com.google.protobuf.ByteString value) {
         if (value == null) {
@@ -10045,6 +10506,7 @@ public final class IoTeX {
       }
       /**
        * <code>bytes data = 3;</code>
+       * @return This builder for chaining.
        */
       public Builder clearData() {
         
@@ -10111,40 +10573,48 @@ public final class IoTeX {
 
     /**
      * <code>uint32 version = 1;</code>
+     * @return The version.
      */
     int getVersion();
 
     /**
      * <code>uint64 nonce = 2;</code>
+     * @return The nonce.
      */
     long getNonce();
 
     /**
      * <code>uint64 gasLimit = 3;</code>
+     * @return The gasLimit.
      */
     long getGasLimit();
 
     /**
      * <code>string gasPrice = 4;</code>
+     * @return The gasPrice.
      */
     java.lang.String getGasPrice();
     /**
      * <code>string gasPrice = 4;</code>
+     * @return The bytes for gasPrice.
      */
     com.google.protobuf.ByteString
         getGasPriceBytes();
 
     /**
      * <code>bytes privateKey = 5;</code>
+     * @return The privateKey.
      */
     com.google.protobuf.ByteString getPrivateKey();
 
     /**
      * <code>.TW.IoTeX.Proto.Transfer transfer = 10;</code>
+     * @return Whether the transfer field is set.
      */
     boolean hasTransfer();
     /**
      * <code>.TW.IoTeX.Proto.Transfer transfer = 10;</code>
+     * @return The transfer.
      */
     wallet.core.jni.proto.IoTeX.Transfer getTransfer();
     /**
@@ -10154,10 +10624,12 @@ public final class IoTeX {
 
     /**
      * <code>.TW.IoTeX.Proto.ContractCall call = 12;</code>
+     * @return Whether the call field is set.
      */
     boolean hasCall();
     /**
      * <code>.TW.IoTeX.Proto.ContractCall call = 12;</code>
+     * @return The call.
      */
     wallet.core.jni.proto.IoTeX.ContractCall getCall();
     /**
@@ -10171,6 +10643,7 @@ public final class IoTeX {
      * </pre>
      *
      * <code>.TW.IoTeX.Proto.Staking.Create stakeCreate = 40;</code>
+     * @return Whether the stakeCreate field is set.
      */
     boolean hasStakeCreate();
     /**
@@ -10179,6 +10652,7 @@ public final class IoTeX {
      * </pre>
      *
      * <code>.TW.IoTeX.Proto.Staking.Create stakeCreate = 40;</code>
+     * @return The stakeCreate.
      */
     wallet.core.jni.proto.IoTeX.Staking.Create getStakeCreate();
     /**
@@ -10192,10 +10666,12 @@ public final class IoTeX {
 
     /**
      * <code>.TW.IoTeX.Proto.Staking.Reclaim stakeUnstake = 41;</code>
+     * @return Whether the stakeUnstake field is set.
      */
     boolean hasStakeUnstake();
     /**
      * <code>.TW.IoTeX.Proto.Staking.Reclaim stakeUnstake = 41;</code>
+     * @return The stakeUnstake.
      */
     wallet.core.jni.proto.IoTeX.Staking.Reclaim getStakeUnstake();
     /**
@@ -10205,10 +10681,12 @@ public final class IoTeX {
 
     /**
      * <code>.TW.IoTeX.Proto.Staking.Reclaim stakeWithdraw = 42;</code>
+     * @return Whether the stakeWithdraw field is set.
      */
     boolean hasStakeWithdraw();
     /**
      * <code>.TW.IoTeX.Proto.Staking.Reclaim stakeWithdraw = 42;</code>
+     * @return The stakeWithdraw.
      */
     wallet.core.jni.proto.IoTeX.Staking.Reclaim getStakeWithdraw();
     /**
@@ -10218,10 +10696,12 @@ public final class IoTeX {
 
     /**
      * <code>.TW.IoTeX.Proto.Staking.AddDeposit stakeAddDeposit = 43;</code>
+     * @return Whether the stakeAddDeposit field is set.
      */
     boolean hasStakeAddDeposit();
     /**
      * <code>.TW.IoTeX.Proto.Staking.AddDeposit stakeAddDeposit = 43;</code>
+     * @return The stakeAddDeposit.
      */
     wallet.core.jni.proto.IoTeX.Staking.AddDeposit getStakeAddDeposit();
     /**
@@ -10231,10 +10711,12 @@ public final class IoTeX {
 
     /**
      * <code>.TW.IoTeX.Proto.Staking.Restake stakeRestake = 44;</code>
+     * @return Whether the stakeRestake field is set.
      */
     boolean hasStakeRestake();
     /**
      * <code>.TW.IoTeX.Proto.Staking.Restake stakeRestake = 44;</code>
+     * @return The stakeRestake.
      */
     wallet.core.jni.proto.IoTeX.Staking.Restake getStakeRestake();
     /**
@@ -10244,10 +10726,12 @@ public final class IoTeX {
 
     /**
      * <code>.TW.IoTeX.Proto.Staking.ChangeCandidate stakeChangeCandidate = 45;</code>
+     * @return Whether the stakeChangeCandidate field is set.
      */
     boolean hasStakeChangeCandidate();
     /**
      * <code>.TW.IoTeX.Proto.Staking.ChangeCandidate stakeChangeCandidate = 45;</code>
+     * @return The stakeChangeCandidate.
      */
     wallet.core.jni.proto.IoTeX.Staking.ChangeCandidate getStakeChangeCandidate();
     /**
@@ -10257,10 +10741,12 @@ public final class IoTeX {
 
     /**
      * <code>.TW.IoTeX.Proto.Staking.TransferOwnership stakeTransferOwnership = 46;</code>
+     * @return Whether the stakeTransferOwnership field is set.
      */
     boolean hasStakeTransferOwnership();
     /**
      * <code>.TW.IoTeX.Proto.Staking.TransferOwnership stakeTransferOwnership = 46;</code>
+     * @return The stakeTransferOwnership.
      */
     wallet.core.jni.proto.IoTeX.Staking.TransferOwnership getStakeTransferOwnership();
     /**
@@ -10270,10 +10756,12 @@ public final class IoTeX {
 
     /**
      * <code>.TW.IoTeX.Proto.Staking.CandidateRegister candidateRegister = 47;</code>
+     * @return Whether the candidateRegister field is set.
      */
     boolean hasCandidateRegister();
     /**
      * <code>.TW.IoTeX.Proto.Staking.CandidateRegister candidateRegister = 47;</code>
+     * @return The candidateRegister.
      */
     wallet.core.jni.proto.IoTeX.Staking.CandidateRegister getCandidateRegister();
     /**
@@ -10283,10 +10771,12 @@ public final class IoTeX {
 
     /**
      * <code>.TW.IoTeX.Proto.Staking.CandidateBasicInfo candidateUpdate = 48;</code>
+     * @return Whether the candidateUpdate field is set.
      */
     boolean hasCandidateUpdate();
     /**
      * <code>.TW.IoTeX.Proto.Staking.CandidateBasicInfo candidateUpdate = 48;</code>
+     * @return The candidateUpdate.
      */
     wallet.core.jni.proto.IoTeX.Staking.CandidateBasicInfo getCandidateUpdate();
     /**
@@ -10303,7 +10793,7 @@ public final class IoTeX {
    *
    * Protobuf type {@code TW.IoTeX.Proto.SigningInput}
    */
-  public  static final class SigningInput extends
+  public static final class SigningInput extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:TW.IoTeX.Proto.SigningInput)
       SigningInputOrBuilder {
@@ -10562,7 +11052,8 @@ public final class IoTeX {
     private int actionCase_ = 0;
     private java.lang.Object action_;
     public enum ActionCase
-        implements com.google.protobuf.Internal.EnumLite {
+        implements com.google.protobuf.Internal.EnumLite,
+            com.google.protobuf.AbstractMessage.InternalOneOfEnum {
       TRANSFER(10),
       CALL(12),
       STAKECREATE(40),
@@ -10580,6 +11071,8 @@ public final class IoTeX {
         this.value = value;
       }
       /**
+       * @param value The number of the enum to look for.
+       * @return The enum associated with the given number.
        * @deprecated Use {@link #forNumber(int)} instead.
        */
       @java.lang.Deprecated
@@ -10619,7 +11112,9 @@ public final class IoTeX {
     private int version_;
     /**
      * <code>uint32 version = 1;</code>
+     * @return The version.
      */
+    @java.lang.Override
     public int getVersion() {
       return version_;
     }
@@ -10628,7 +11123,9 @@ public final class IoTeX {
     private long nonce_;
     /**
      * <code>uint64 nonce = 2;</code>
+     * @return The nonce.
      */
+    @java.lang.Override
     public long getNonce() {
       return nonce_;
     }
@@ -10637,7 +11134,9 @@ public final class IoTeX {
     private long gasLimit_;
     /**
      * <code>uint64 gasLimit = 3;</code>
+     * @return The gasLimit.
      */
+    @java.lang.Override
     public long getGasLimit() {
       return gasLimit_;
     }
@@ -10646,7 +11145,9 @@ public final class IoTeX {
     private volatile java.lang.Object gasPrice_;
     /**
      * <code>string gasPrice = 4;</code>
+     * @return The gasPrice.
      */
+    @java.lang.Override
     public java.lang.String getGasPrice() {
       java.lang.Object ref = gasPrice_;
       if (ref instanceof java.lang.String) {
@@ -10661,7 +11162,9 @@ public final class IoTeX {
     }
     /**
      * <code>string gasPrice = 4;</code>
+     * @return The bytes for gasPrice.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString
         getGasPriceBytes() {
       java.lang.Object ref = gasPrice_;
@@ -10680,7 +11183,9 @@ public final class IoTeX {
     private com.google.protobuf.ByteString privateKey_;
     /**
      * <code>bytes privateKey = 5;</code>
+     * @return The privateKey.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString getPrivateKey() {
       return privateKey_;
     }
@@ -10688,13 +11193,17 @@ public final class IoTeX {
     public static final int TRANSFER_FIELD_NUMBER = 10;
     /**
      * <code>.TW.IoTeX.Proto.Transfer transfer = 10;</code>
+     * @return Whether the transfer field is set.
      */
+    @java.lang.Override
     public boolean hasTransfer() {
       return actionCase_ == 10;
     }
     /**
      * <code>.TW.IoTeX.Proto.Transfer transfer = 10;</code>
+     * @return The transfer.
      */
+    @java.lang.Override
     public wallet.core.jni.proto.IoTeX.Transfer getTransfer() {
       if (actionCase_ == 10) {
          return (wallet.core.jni.proto.IoTeX.Transfer) action_;
@@ -10704,6 +11213,7 @@ public final class IoTeX {
     /**
      * <code>.TW.IoTeX.Proto.Transfer transfer = 10;</code>
      */
+    @java.lang.Override
     public wallet.core.jni.proto.IoTeX.TransferOrBuilder getTransferOrBuilder() {
       if (actionCase_ == 10) {
          return (wallet.core.jni.proto.IoTeX.Transfer) action_;
@@ -10714,13 +11224,17 @@ public final class IoTeX {
     public static final int CALL_FIELD_NUMBER = 12;
     /**
      * <code>.TW.IoTeX.Proto.ContractCall call = 12;</code>
+     * @return Whether the call field is set.
      */
+    @java.lang.Override
     public boolean hasCall() {
       return actionCase_ == 12;
     }
     /**
      * <code>.TW.IoTeX.Proto.ContractCall call = 12;</code>
+     * @return The call.
      */
+    @java.lang.Override
     public wallet.core.jni.proto.IoTeX.ContractCall getCall() {
       if (actionCase_ == 12) {
          return (wallet.core.jni.proto.IoTeX.ContractCall) action_;
@@ -10730,6 +11244,7 @@ public final class IoTeX {
     /**
      * <code>.TW.IoTeX.Proto.ContractCall call = 12;</code>
      */
+    @java.lang.Override
     public wallet.core.jni.proto.IoTeX.ContractCallOrBuilder getCallOrBuilder() {
       if (actionCase_ == 12) {
          return (wallet.core.jni.proto.IoTeX.ContractCall) action_;
@@ -10744,7 +11259,9 @@ public final class IoTeX {
      * </pre>
      *
      * <code>.TW.IoTeX.Proto.Staking.Create stakeCreate = 40;</code>
+     * @return Whether the stakeCreate field is set.
      */
+    @java.lang.Override
     public boolean hasStakeCreate() {
       return actionCase_ == 40;
     }
@@ -10754,7 +11271,9 @@ public final class IoTeX {
      * </pre>
      *
      * <code>.TW.IoTeX.Proto.Staking.Create stakeCreate = 40;</code>
+     * @return The stakeCreate.
      */
+    @java.lang.Override
     public wallet.core.jni.proto.IoTeX.Staking.Create getStakeCreate() {
       if (actionCase_ == 40) {
          return (wallet.core.jni.proto.IoTeX.Staking.Create) action_;
@@ -10768,6 +11287,7 @@ public final class IoTeX {
      *
      * <code>.TW.IoTeX.Proto.Staking.Create stakeCreate = 40;</code>
      */
+    @java.lang.Override
     public wallet.core.jni.proto.IoTeX.Staking.CreateOrBuilder getStakeCreateOrBuilder() {
       if (actionCase_ == 40) {
          return (wallet.core.jni.proto.IoTeX.Staking.Create) action_;
@@ -10778,13 +11298,17 @@ public final class IoTeX {
     public static final int STAKEUNSTAKE_FIELD_NUMBER = 41;
     /**
      * <code>.TW.IoTeX.Proto.Staking.Reclaim stakeUnstake = 41;</code>
+     * @return Whether the stakeUnstake field is set.
      */
+    @java.lang.Override
     public boolean hasStakeUnstake() {
       return actionCase_ == 41;
     }
     /**
      * <code>.TW.IoTeX.Proto.Staking.Reclaim stakeUnstake = 41;</code>
+     * @return The stakeUnstake.
      */
+    @java.lang.Override
     public wallet.core.jni.proto.IoTeX.Staking.Reclaim getStakeUnstake() {
       if (actionCase_ == 41) {
          return (wallet.core.jni.proto.IoTeX.Staking.Reclaim) action_;
@@ -10794,6 +11318,7 @@ public final class IoTeX {
     /**
      * <code>.TW.IoTeX.Proto.Staking.Reclaim stakeUnstake = 41;</code>
      */
+    @java.lang.Override
     public wallet.core.jni.proto.IoTeX.Staking.ReclaimOrBuilder getStakeUnstakeOrBuilder() {
       if (actionCase_ == 41) {
          return (wallet.core.jni.proto.IoTeX.Staking.Reclaim) action_;
@@ -10804,13 +11329,17 @@ public final class IoTeX {
     public static final int STAKEWITHDRAW_FIELD_NUMBER = 42;
     /**
      * <code>.TW.IoTeX.Proto.Staking.Reclaim stakeWithdraw = 42;</code>
+     * @return Whether the stakeWithdraw field is set.
      */
+    @java.lang.Override
     public boolean hasStakeWithdraw() {
       return actionCase_ == 42;
     }
     /**
      * <code>.TW.IoTeX.Proto.Staking.Reclaim stakeWithdraw = 42;</code>
+     * @return The stakeWithdraw.
      */
+    @java.lang.Override
     public wallet.core.jni.proto.IoTeX.Staking.Reclaim getStakeWithdraw() {
       if (actionCase_ == 42) {
          return (wallet.core.jni.proto.IoTeX.Staking.Reclaim) action_;
@@ -10820,6 +11349,7 @@ public final class IoTeX {
     /**
      * <code>.TW.IoTeX.Proto.Staking.Reclaim stakeWithdraw = 42;</code>
      */
+    @java.lang.Override
     public wallet.core.jni.proto.IoTeX.Staking.ReclaimOrBuilder getStakeWithdrawOrBuilder() {
       if (actionCase_ == 42) {
          return (wallet.core.jni.proto.IoTeX.Staking.Reclaim) action_;
@@ -10830,13 +11360,17 @@ public final class IoTeX {
     public static final int STAKEADDDEPOSIT_FIELD_NUMBER = 43;
     /**
      * <code>.TW.IoTeX.Proto.Staking.AddDeposit stakeAddDeposit = 43;</code>
+     * @return Whether the stakeAddDeposit field is set.
      */
+    @java.lang.Override
     public boolean hasStakeAddDeposit() {
       return actionCase_ == 43;
     }
     /**
      * <code>.TW.IoTeX.Proto.Staking.AddDeposit stakeAddDeposit = 43;</code>
+     * @return The stakeAddDeposit.
      */
+    @java.lang.Override
     public wallet.core.jni.proto.IoTeX.Staking.AddDeposit getStakeAddDeposit() {
       if (actionCase_ == 43) {
          return (wallet.core.jni.proto.IoTeX.Staking.AddDeposit) action_;
@@ -10846,6 +11380,7 @@ public final class IoTeX {
     /**
      * <code>.TW.IoTeX.Proto.Staking.AddDeposit stakeAddDeposit = 43;</code>
      */
+    @java.lang.Override
     public wallet.core.jni.proto.IoTeX.Staking.AddDepositOrBuilder getStakeAddDepositOrBuilder() {
       if (actionCase_ == 43) {
          return (wallet.core.jni.proto.IoTeX.Staking.AddDeposit) action_;
@@ -10856,13 +11391,17 @@ public final class IoTeX {
     public static final int STAKERESTAKE_FIELD_NUMBER = 44;
     /**
      * <code>.TW.IoTeX.Proto.Staking.Restake stakeRestake = 44;</code>
+     * @return Whether the stakeRestake field is set.
      */
+    @java.lang.Override
     public boolean hasStakeRestake() {
       return actionCase_ == 44;
     }
     /**
      * <code>.TW.IoTeX.Proto.Staking.Restake stakeRestake = 44;</code>
+     * @return The stakeRestake.
      */
+    @java.lang.Override
     public wallet.core.jni.proto.IoTeX.Staking.Restake getStakeRestake() {
       if (actionCase_ == 44) {
          return (wallet.core.jni.proto.IoTeX.Staking.Restake) action_;
@@ -10872,6 +11411,7 @@ public final class IoTeX {
     /**
      * <code>.TW.IoTeX.Proto.Staking.Restake stakeRestake = 44;</code>
      */
+    @java.lang.Override
     public wallet.core.jni.proto.IoTeX.Staking.RestakeOrBuilder getStakeRestakeOrBuilder() {
       if (actionCase_ == 44) {
          return (wallet.core.jni.proto.IoTeX.Staking.Restake) action_;
@@ -10882,13 +11422,17 @@ public final class IoTeX {
     public static final int STAKECHANGECANDIDATE_FIELD_NUMBER = 45;
     /**
      * <code>.TW.IoTeX.Proto.Staking.ChangeCandidate stakeChangeCandidate = 45;</code>
+     * @return Whether the stakeChangeCandidate field is set.
      */
+    @java.lang.Override
     public boolean hasStakeChangeCandidate() {
       return actionCase_ == 45;
     }
     /**
      * <code>.TW.IoTeX.Proto.Staking.ChangeCandidate stakeChangeCandidate = 45;</code>
+     * @return The stakeChangeCandidate.
      */
+    @java.lang.Override
     public wallet.core.jni.proto.IoTeX.Staking.ChangeCandidate getStakeChangeCandidate() {
       if (actionCase_ == 45) {
          return (wallet.core.jni.proto.IoTeX.Staking.ChangeCandidate) action_;
@@ -10898,6 +11442,7 @@ public final class IoTeX {
     /**
      * <code>.TW.IoTeX.Proto.Staking.ChangeCandidate stakeChangeCandidate = 45;</code>
      */
+    @java.lang.Override
     public wallet.core.jni.proto.IoTeX.Staking.ChangeCandidateOrBuilder getStakeChangeCandidateOrBuilder() {
       if (actionCase_ == 45) {
          return (wallet.core.jni.proto.IoTeX.Staking.ChangeCandidate) action_;
@@ -10908,13 +11453,17 @@ public final class IoTeX {
     public static final int STAKETRANSFEROWNERSHIP_FIELD_NUMBER = 46;
     /**
      * <code>.TW.IoTeX.Proto.Staking.TransferOwnership stakeTransferOwnership = 46;</code>
+     * @return Whether the stakeTransferOwnership field is set.
      */
+    @java.lang.Override
     public boolean hasStakeTransferOwnership() {
       return actionCase_ == 46;
     }
     /**
      * <code>.TW.IoTeX.Proto.Staking.TransferOwnership stakeTransferOwnership = 46;</code>
+     * @return The stakeTransferOwnership.
      */
+    @java.lang.Override
     public wallet.core.jni.proto.IoTeX.Staking.TransferOwnership getStakeTransferOwnership() {
       if (actionCase_ == 46) {
          return (wallet.core.jni.proto.IoTeX.Staking.TransferOwnership) action_;
@@ -10924,6 +11473,7 @@ public final class IoTeX {
     /**
      * <code>.TW.IoTeX.Proto.Staking.TransferOwnership stakeTransferOwnership = 46;</code>
      */
+    @java.lang.Override
     public wallet.core.jni.proto.IoTeX.Staking.TransferOwnershipOrBuilder getStakeTransferOwnershipOrBuilder() {
       if (actionCase_ == 46) {
          return (wallet.core.jni.proto.IoTeX.Staking.TransferOwnership) action_;
@@ -10934,13 +11484,17 @@ public final class IoTeX {
     public static final int CANDIDATEREGISTER_FIELD_NUMBER = 47;
     /**
      * <code>.TW.IoTeX.Proto.Staking.CandidateRegister candidateRegister = 47;</code>
+     * @return Whether the candidateRegister field is set.
      */
+    @java.lang.Override
     public boolean hasCandidateRegister() {
       return actionCase_ == 47;
     }
     /**
      * <code>.TW.IoTeX.Proto.Staking.CandidateRegister candidateRegister = 47;</code>
+     * @return The candidateRegister.
      */
+    @java.lang.Override
     public wallet.core.jni.proto.IoTeX.Staking.CandidateRegister getCandidateRegister() {
       if (actionCase_ == 47) {
          return (wallet.core.jni.proto.IoTeX.Staking.CandidateRegister) action_;
@@ -10950,6 +11504,7 @@ public final class IoTeX {
     /**
      * <code>.TW.IoTeX.Proto.Staking.CandidateRegister candidateRegister = 47;</code>
      */
+    @java.lang.Override
     public wallet.core.jni.proto.IoTeX.Staking.CandidateRegisterOrBuilder getCandidateRegisterOrBuilder() {
       if (actionCase_ == 47) {
          return (wallet.core.jni.proto.IoTeX.Staking.CandidateRegister) action_;
@@ -10960,13 +11515,17 @@ public final class IoTeX {
     public static final int CANDIDATEUPDATE_FIELD_NUMBER = 48;
     /**
      * <code>.TW.IoTeX.Proto.Staking.CandidateBasicInfo candidateUpdate = 48;</code>
+     * @return Whether the candidateUpdate field is set.
      */
+    @java.lang.Override
     public boolean hasCandidateUpdate() {
       return actionCase_ == 48;
     }
     /**
      * <code>.TW.IoTeX.Proto.Staking.CandidateBasicInfo candidateUpdate = 48;</code>
+     * @return The candidateUpdate.
      */
+    @java.lang.Override
     public wallet.core.jni.proto.IoTeX.Staking.CandidateBasicInfo getCandidateUpdate() {
       if (actionCase_ == 48) {
          return (wallet.core.jni.proto.IoTeX.Staking.CandidateBasicInfo) action_;
@@ -10976,6 +11535,7 @@ public final class IoTeX {
     /**
      * <code>.TW.IoTeX.Proto.Staking.CandidateBasicInfo candidateUpdate = 48;</code>
      */
+    @java.lang.Override
     public wallet.core.jni.proto.IoTeX.Staking.CandidateBasicInfoOrBuilder getCandidateUpdateOrBuilder() {
       if (actionCase_ == 48) {
          return (wallet.core.jni.proto.IoTeX.Staking.CandidateBasicInfo) action_;
@@ -11680,12 +12240,16 @@ public final class IoTeX {
       private int version_ ;
       /**
        * <code>uint32 version = 1;</code>
+       * @return The version.
        */
+      @java.lang.Override
       public int getVersion() {
         return version_;
       }
       /**
        * <code>uint32 version = 1;</code>
+       * @param value The version to set.
+       * @return This builder for chaining.
        */
       public Builder setVersion(int value) {
         
@@ -11695,6 +12259,7 @@ public final class IoTeX {
       }
       /**
        * <code>uint32 version = 1;</code>
+       * @return This builder for chaining.
        */
       public Builder clearVersion() {
         
@@ -11706,12 +12271,16 @@ public final class IoTeX {
       private long nonce_ ;
       /**
        * <code>uint64 nonce = 2;</code>
+       * @return The nonce.
        */
+      @java.lang.Override
       public long getNonce() {
         return nonce_;
       }
       /**
        * <code>uint64 nonce = 2;</code>
+       * @param value The nonce to set.
+       * @return This builder for chaining.
        */
       public Builder setNonce(long value) {
         
@@ -11721,6 +12290,7 @@ public final class IoTeX {
       }
       /**
        * <code>uint64 nonce = 2;</code>
+       * @return This builder for chaining.
        */
       public Builder clearNonce() {
         
@@ -11732,12 +12302,16 @@ public final class IoTeX {
       private long gasLimit_ ;
       /**
        * <code>uint64 gasLimit = 3;</code>
+       * @return The gasLimit.
        */
+      @java.lang.Override
       public long getGasLimit() {
         return gasLimit_;
       }
       /**
        * <code>uint64 gasLimit = 3;</code>
+       * @param value The gasLimit to set.
+       * @return This builder for chaining.
        */
       public Builder setGasLimit(long value) {
         
@@ -11747,6 +12321,7 @@ public final class IoTeX {
       }
       /**
        * <code>uint64 gasLimit = 3;</code>
+       * @return This builder for chaining.
        */
       public Builder clearGasLimit() {
         
@@ -11758,6 +12333,7 @@ public final class IoTeX {
       private java.lang.Object gasPrice_ = "";
       /**
        * <code>string gasPrice = 4;</code>
+       * @return The gasPrice.
        */
       public java.lang.String getGasPrice() {
         java.lang.Object ref = gasPrice_;
@@ -11773,6 +12349,7 @@ public final class IoTeX {
       }
       /**
        * <code>string gasPrice = 4;</code>
+       * @return The bytes for gasPrice.
        */
       public com.google.protobuf.ByteString
           getGasPriceBytes() {
@@ -11789,6 +12366,8 @@ public final class IoTeX {
       }
       /**
        * <code>string gasPrice = 4;</code>
+       * @param value The gasPrice to set.
+       * @return This builder for chaining.
        */
       public Builder setGasPrice(
           java.lang.String value) {
@@ -11802,6 +12381,7 @@ public final class IoTeX {
       }
       /**
        * <code>string gasPrice = 4;</code>
+       * @return This builder for chaining.
        */
       public Builder clearGasPrice() {
         
@@ -11811,6 +12391,8 @@ public final class IoTeX {
       }
       /**
        * <code>string gasPrice = 4;</code>
+       * @param value The bytes for gasPrice to set.
+       * @return This builder for chaining.
        */
       public Builder setGasPriceBytes(
           com.google.protobuf.ByteString value) {
@@ -11827,12 +12409,16 @@ public final class IoTeX {
       private com.google.protobuf.ByteString privateKey_ = com.google.protobuf.ByteString.EMPTY;
       /**
        * <code>bytes privateKey = 5;</code>
+       * @return The privateKey.
        */
+      @java.lang.Override
       public com.google.protobuf.ByteString getPrivateKey() {
         return privateKey_;
       }
       /**
        * <code>bytes privateKey = 5;</code>
+       * @param value The privateKey to set.
+       * @return This builder for chaining.
        */
       public Builder setPrivateKey(com.google.protobuf.ByteString value) {
         if (value == null) {
@@ -11845,6 +12431,7 @@ public final class IoTeX {
       }
       /**
        * <code>bytes privateKey = 5;</code>
+       * @return This builder for chaining.
        */
       public Builder clearPrivateKey() {
         
@@ -11857,13 +12444,17 @@ public final class IoTeX {
           wallet.core.jni.proto.IoTeX.Transfer, wallet.core.jni.proto.IoTeX.Transfer.Builder, wallet.core.jni.proto.IoTeX.TransferOrBuilder> transferBuilder_;
       /**
        * <code>.TW.IoTeX.Proto.Transfer transfer = 10;</code>
+       * @return Whether the transfer field is set.
        */
+      @java.lang.Override
       public boolean hasTransfer() {
         return actionCase_ == 10;
       }
       /**
        * <code>.TW.IoTeX.Proto.Transfer transfer = 10;</code>
+       * @return The transfer.
        */
+      @java.lang.Override
       public wallet.core.jni.proto.IoTeX.Transfer getTransfer() {
         if (transferBuilder_ == null) {
           if (actionCase_ == 10) {
@@ -11957,6 +12548,7 @@ public final class IoTeX {
       /**
        * <code>.TW.IoTeX.Proto.Transfer transfer = 10;</code>
        */
+      @java.lang.Override
       public wallet.core.jni.proto.IoTeX.TransferOrBuilder getTransferOrBuilder() {
         if ((actionCase_ == 10) && (transferBuilder_ != null)) {
           return transferBuilder_.getMessageOrBuilder();
@@ -11993,13 +12585,17 @@ public final class IoTeX {
           wallet.core.jni.proto.IoTeX.ContractCall, wallet.core.jni.proto.IoTeX.ContractCall.Builder, wallet.core.jni.proto.IoTeX.ContractCallOrBuilder> callBuilder_;
       /**
        * <code>.TW.IoTeX.Proto.ContractCall call = 12;</code>
+       * @return Whether the call field is set.
        */
+      @java.lang.Override
       public boolean hasCall() {
         return actionCase_ == 12;
       }
       /**
        * <code>.TW.IoTeX.Proto.ContractCall call = 12;</code>
+       * @return The call.
        */
+      @java.lang.Override
       public wallet.core.jni.proto.IoTeX.ContractCall getCall() {
         if (callBuilder_ == null) {
           if (actionCase_ == 12) {
@@ -12093,6 +12689,7 @@ public final class IoTeX {
       /**
        * <code>.TW.IoTeX.Proto.ContractCall call = 12;</code>
        */
+      @java.lang.Override
       public wallet.core.jni.proto.IoTeX.ContractCallOrBuilder getCallOrBuilder() {
         if ((actionCase_ == 12) && (callBuilder_ != null)) {
           return callBuilder_.getMessageOrBuilder();
@@ -12133,7 +12730,9 @@ public final class IoTeX {
        * </pre>
        *
        * <code>.TW.IoTeX.Proto.Staking.Create stakeCreate = 40;</code>
+       * @return Whether the stakeCreate field is set.
        */
+      @java.lang.Override
       public boolean hasStakeCreate() {
         return actionCase_ == 40;
       }
@@ -12143,7 +12742,9 @@ public final class IoTeX {
        * </pre>
        *
        * <code>.TW.IoTeX.Proto.Staking.Create stakeCreate = 40;</code>
+       * @return The stakeCreate.
        */
+      @java.lang.Override
       public wallet.core.jni.proto.IoTeX.Staking.Create getStakeCreate() {
         if (stakeCreateBuilder_ == null) {
           if (actionCase_ == 40) {
@@ -12261,6 +12862,7 @@ public final class IoTeX {
        *
        * <code>.TW.IoTeX.Proto.Staking.Create stakeCreate = 40;</code>
        */
+      @java.lang.Override
       public wallet.core.jni.proto.IoTeX.Staking.CreateOrBuilder getStakeCreateOrBuilder() {
         if ((actionCase_ == 40) && (stakeCreateBuilder_ != null)) {
           return stakeCreateBuilder_.getMessageOrBuilder();
@@ -12301,13 +12903,17 @@ public final class IoTeX {
           wallet.core.jni.proto.IoTeX.Staking.Reclaim, wallet.core.jni.proto.IoTeX.Staking.Reclaim.Builder, wallet.core.jni.proto.IoTeX.Staking.ReclaimOrBuilder> stakeUnstakeBuilder_;
       /**
        * <code>.TW.IoTeX.Proto.Staking.Reclaim stakeUnstake = 41;</code>
+       * @return Whether the stakeUnstake field is set.
        */
+      @java.lang.Override
       public boolean hasStakeUnstake() {
         return actionCase_ == 41;
       }
       /**
        * <code>.TW.IoTeX.Proto.Staking.Reclaim stakeUnstake = 41;</code>
+       * @return The stakeUnstake.
        */
+      @java.lang.Override
       public wallet.core.jni.proto.IoTeX.Staking.Reclaim getStakeUnstake() {
         if (stakeUnstakeBuilder_ == null) {
           if (actionCase_ == 41) {
@@ -12401,6 +13007,7 @@ public final class IoTeX {
       /**
        * <code>.TW.IoTeX.Proto.Staking.Reclaim stakeUnstake = 41;</code>
        */
+      @java.lang.Override
       public wallet.core.jni.proto.IoTeX.Staking.ReclaimOrBuilder getStakeUnstakeOrBuilder() {
         if ((actionCase_ == 41) && (stakeUnstakeBuilder_ != null)) {
           return stakeUnstakeBuilder_.getMessageOrBuilder();
@@ -12437,13 +13044,17 @@ public final class IoTeX {
           wallet.core.jni.proto.IoTeX.Staking.Reclaim, wallet.core.jni.proto.IoTeX.Staking.Reclaim.Builder, wallet.core.jni.proto.IoTeX.Staking.ReclaimOrBuilder> stakeWithdrawBuilder_;
       /**
        * <code>.TW.IoTeX.Proto.Staking.Reclaim stakeWithdraw = 42;</code>
+       * @return Whether the stakeWithdraw field is set.
        */
+      @java.lang.Override
       public boolean hasStakeWithdraw() {
         return actionCase_ == 42;
       }
       /**
        * <code>.TW.IoTeX.Proto.Staking.Reclaim stakeWithdraw = 42;</code>
+       * @return The stakeWithdraw.
        */
+      @java.lang.Override
       public wallet.core.jni.proto.IoTeX.Staking.Reclaim getStakeWithdraw() {
         if (stakeWithdrawBuilder_ == null) {
           if (actionCase_ == 42) {
@@ -12537,6 +13148,7 @@ public final class IoTeX {
       /**
        * <code>.TW.IoTeX.Proto.Staking.Reclaim stakeWithdraw = 42;</code>
        */
+      @java.lang.Override
       public wallet.core.jni.proto.IoTeX.Staking.ReclaimOrBuilder getStakeWithdrawOrBuilder() {
         if ((actionCase_ == 42) && (stakeWithdrawBuilder_ != null)) {
           return stakeWithdrawBuilder_.getMessageOrBuilder();
@@ -12573,13 +13185,17 @@ public final class IoTeX {
           wallet.core.jni.proto.IoTeX.Staking.AddDeposit, wallet.core.jni.proto.IoTeX.Staking.AddDeposit.Builder, wallet.core.jni.proto.IoTeX.Staking.AddDepositOrBuilder> stakeAddDepositBuilder_;
       /**
        * <code>.TW.IoTeX.Proto.Staking.AddDeposit stakeAddDeposit = 43;</code>
+       * @return Whether the stakeAddDeposit field is set.
        */
+      @java.lang.Override
       public boolean hasStakeAddDeposit() {
         return actionCase_ == 43;
       }
       /**
        * <code>.TW.IoTeX.Proto.Staking.AddDeposit stakeAddDeposit = 43;</code>
+       * @return The stakeAddDeposit.
        */
+      @java.lang.Override
       public wallet.core.jni.proto.IoTeX.Staking.AddDeposit getStakeAddDeposit() {
         if (stakeAddDepositBuilder_ == null) {
           if (actionCase_ == 43) {
@@ -12673,6 +13289,7 @@ public final class IoTeX {
       /**
        * <code>.TW.IoTeX.Proto.Staking.AddDeposit stakeAddDeposit = 43;</code>
        */
+      @java.lang.Override
       public wallet.core.jni.proto.IoTeX.Staking.AddDepositOrBuilder getStakeAddDepositOrBuilder() {
         if ((actionCase_ == 43) && (stakeAddDepositBuilder_ != null)) {
           return stakeAddDepositBuilder_.getMessageOrBuilder();
@@ -12709,13 +13326,17 @@ public final class IoTeX {
           wallet.core.jni.proto.IoTeX.Staking.Restake, wallet.core.jni.proto.IoTeX.Staking.Restake.Builder, wallet.core.jni.proto.IoTeX.Staking.RestakeOrBuilder> stakeRestakeBuilder_;
       /**
        * <code>.TW.IoTeX.Proto.Staking.Restake stakeRestake = 44;</code>
+       * @return Whether the stakeRestake field is set.
        */
+      @java.lang.Override
       public boolean hasStakeRestake() {
         return actionCase_ == 44;
       }
       /**
        * <code>.TW.IoTeX.Proto.Staking.Restake stakeRestake = 44;</code>
+       * @return The stakeRestake.
        */
+      @java.lang.Override
       public wallet.core.jni.proto.IoTeX.Staking.Restake getStakeRestake() {
         if (stakeRestakeBuilder_ == null) {
           if (actionCase_ == 44) {
@@ -12809,6 +13430,7 @@ public final class IoTeX {
       /**
        * <code>.TW.IoTeX.Proto.Staking.Restake stakeRestake = 44;</code>
        */
+      @java.lang.Override
       public wallet.core.jni.proto.IoTeX.Staking.RestakeOrBuilder getStakeRestakeOrBuilder() {
         if ((actionCase_ == 44) && (stakeRestakeBuilder_ != null)) {
           return stakeRestakeBuilder_.getMessageOrBuilder();
@@ -12845,13 +13467,17 @@ public final class IoTeX {
           wallet.core.jni.proto.IoTeX.Staking.ChangeCandidate, wallet.core.jni.proto.IoTeX.Staking.ChangeCandidate.Builder, wallet.core.jni.proto.IoTeX.Staking.ChangeCandidateOrBuilder> stakeChangeCandidateBuilder_;
       /**
        * <code>.TW.IoTeX.Proto.Staking.ChangeCandidate stakeChangeCandidate = 45;</code>
+       * @return Whether the stakeChangeCandidate field is set.
        */
+      @java.lang.Override
       public boolean hasStakeChangeCandidate() {
         return actionCase_ == 45;
       }
       /**
        * <code>.TW.IoTeX.Proto.Staking.ChangeCandidate stakeChangeCandidate = 45;</code>
+       * @return The stakeChangeCandidate.
        */
+      @java.lang.Override
       public wallet.core.jni.proto.IoTeX.Staking.ChangeCandidate getStakeChangeCandidate() {
         if (stakeChangeCandidateBuilder_ == null) {
           if (actionCase_ == 45) {
@@ -12945,6 +13571,7 @@ public final class IoTeX {
       /**
        * <code>.TW.IoTeX.Proto.Staking.ChangeCandidate stakeChangeCandidate = 45;</code>
        */
+      @java.lang.Override
       public wallet.core.jni.proto.IoTeX.Staking.ChangeCandidateOrBuilder getStakeChangeCandidateOrBuilder() {
         if ((actionCase_ == 45) && (stakeChangeCandidateBuilder_ != null)) {
           return stakeChangeCandidateBuilder_.getMessageOrBuilder();
@@ -12981,13 +13608,17 @@ public final class IoTeX {
           wallet.core.jni.proto.IoTeX.Staking.TransferOwnership, wallet.core.jni.proto.IoTeX.Staking.TransferOwnership.Builder, wallet.core.jni.proto.IoTeX.Staking.TransferOwnershipOrBuilder> stakeTransferOwnershipBuilder_;
       /**
        * <code>.TW.IoTeX.Proto.Staking.TransferOwnership stakeTransferOwnership = 46;</code>
+       * @return Whether the stakeTransferOwnership field is set.
        */
+      @java.lang.Override
       public boolean hasStakeTransferOwnership() {
         return actionCase_ == 46;
       }
       /**
        * <code>.TW.IoTeX.Proto.Staking.TransferOwnership stakeTransferOwnership = 46;</code>
+       * @return The stakeTransferOwnership.
        */
+      @java.lang.Override
       public wallet.core.jni.proto.IoTeX.Staking.TransferOwnership getStakeTransferOwnership() {
         if (stakeTransferOwnershipBuilder_ == null) {
           if (actionCase_ == 46) {
@@ -13081,6 +13712,7 @@ public final class IoTeX {
       /**
        * <code>.TW.IoTeX.Proto.Staking.TransferOwnership stakeTransferOwnership = 46;</code>
        */
+      @java.lang.Override
       public wallet.core.jni.proto.IoTeX.Staking.TransferOwnershipOrBuilder getStakeTransferOwnershipOrBuilder() {
         if ((actionCase_ == 46) && (stakeTransferOwnershipBuilder_ != null)) {
           return stakeTransferOwnershipBuilder_.getMessageOrBuilder();
@@ -13117,13 +13749,17 @@ public final class IoTeX {
           wallet.core.jni.proto.IoTeX.Staking.CandidateRegister, wallet.core.jni.proto.IoTeX.Staking.CandidateRegister.Builder, wallet.core.jni.proto.IoTeX.Staking.CandidateRegisterOrBuilder> candidateRegisterBuilder_;
       /**
        * <code>.TW.IoTeX.Proto.Staking.CandidateRegister candidateRegister = 47;</code>
+       * @return Whether the candidateRegister field is set.
        */
+      @java.lang.Override
       public boolean hasCandidateRegister() {
         return actionCase_ == 47;
       }
       /**
        * <code>.TW.IoTeX.Proto.Staking.CandidateRegister candidateRegister = 47;</code>
+       * @return The candidateRegister.
        */
+      @java.lang.Override
       public wallet.core.jni.proto.IoTeX.Staking.CandidateRegister getCandidateRegister() {
         if (candidateRegisterBuilder_ == null) {
           if (actionCase_ == 47) {
@@ -13217,6 +13853,7 @@ public final class IoTeX {
       /**
        * <code>.TW.IoTeX.Proto.Staking.CandidateRegister candidateRegister = 47;</code>
        */
+      @java.lang.Override
       public wallet.core.jni.proto.IoTeX.Staking.CandidateRegisterOrBuilder getCandidateRegisterOrBuilder() {
         if ((actionCase_ == 47) && (candidateRegisterBuilder_ != null)) {
           return candidateRegisterBuilder_.getMessageOrBuilder();
@@ -13253,13 +13890,17 @@ public final class IoTeX {
           wallet.core.jni.proto.IoTeX.Staking.CandidateBasicInfo, wallet.core.jni.proto.IoTeX.Staking.CandidateBasicInfo.Builder, wallet.core.jni.proto.IoTeX.Staking.CandidateBasicInfoOrBuilder> candidateUpdateBuilder_;
       /**
        * <code>.TW.IoTeX.Proto.Staking.CandidateBasicInfo candidateUpdate = 48;</code>
+       * @return Whether the candidateUpdate field is set.
        */
+      @java.lang.Override
       public boolean hasCandidateUpdate() {
         return actionCase_ == 48;
       }
       /**
        * <code>.TW.IoTeX.Proto.Staking.CandidateBasicInfo candidateUpdate = 48;</code>
+       * @return The candidateUpdate.
        */
+      @java.lang.Override
       public wallet.core.jni.proto.IoTeX.Staking.CandidateBasicInfo getCandidateUpdate() {
         if (candidateUpdateBuilder_ == null) {
           if (actionCase_ == 48) {
@@ -13353,6 +13994,7 @@ public final class IoTeX {
       /**
        * <code>.TW.IoTeX.Proto.Staking.CandidateBasicInfo candidateUpdate = 48;</code>
        */
+      @java.lang.Override
       public wallet.core.jni.proto.IoTeX.Staking.CandidateBasicInfoOrBuilder getCandidateUpdateOrBuilder() {
         if ((actionCase_ == 48) && (candidateUpdateBuilder_ != null)) {
           return candidateUpdateBuilder_.getMessageOrBuilder();
@@ -13447,6 +14089,7 @@ public final class IoTeX {
      * </pre>
      *
      * <code>bytes encoded = 1;</code>
+     * @return The encoded.
      */
     com.google.protobuf.ByteString getEncoded();
 
@@ -13456,6 +14099,7 @@ public final class IoTeX {
      * </pre>
      *
      * <code>bytes hash = 2;</code>
+     * @return The hash.
      */
     com.google.protobuf.ByteString getHash();
   }
@@ -13466,7 +14110,7 @@ public final class IoTeX {
    *
    * Protobuf type {@code TW.IoTeX.Proto.SigningOutput}
    */
-  public  static final class SigningOutput extends
+  public static final class SigningOutput extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:TW.IoTeX.Proto.SigningOutput)
       SigningOutputOrBuilder {
@@ -13560,7 +14204,9 @@ public final class IoTeX {
      * </pre>
      *
      * <code>bytes encoded = 1;</code>
+     * @return The encoded.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString getEncoded() {
       return encoded_;
     }
@@ -13573,7 +14219,9 @@ public final class IoTeX {
      * </pre>
      *
      * <code>bytes hash = 2;</code>
+     * @return The hash.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString getHash() {
       return hash_;
     }
@@ -13908,7 +14556,9 @@ public final class IoTeX {
        * </pre>
        *
        * <code>bytes encoded = 1;</code>
+       * @return The encoded.
        */
+      @java.lang.Override
       public com.google.protobuf.ByteString getEncoded() {
         return encoded_;
       }
@@ -13918,6 +14568,8 @@ public final class IoTeX {
        * </pre>
        *
        * <code>bytes encoded = 1;</code>
+       * @param value The encoded to set.
+       * @return This builder for chaining.
        */
       public Builder setEncoded(com.google.protobuf.ByteString value) {
         if (value == null) {
@@ -13934,6 +14586,7 @@ public final class IoTeX {
        * </pre>
        *
        * <code>bytes encoded = 1;</code>
+       * @return This builder for chaining.
        */
       public Builder clearEncoded() {
         
@@ -13949,7 +14602,9 @@ public final class IoTeX {
        * </pre>
        *
        * <code>bytes hash = 2;</code>
+       * @return The hash.
        */
+      @java.lang.Override
       public com.google.protobuf.ByteString getHash() {
         return hash_;
       }
@@ -13959,6 +14614,8 @@ public final class IoTeX {
        * </pre>
        *
        * <code>bytes hash = 2;</code>
+       * @param value The hash to set.
+       * @return This builder for chaining.
        */
       public Builder setHash(com.google.protobuf.ByteString value) {
         if (value == null) {
@@ -13975,6 +14632,7 @@ public final class IoTeX {
        * </pre>
        *
        * <code>bytes hash = 2;</code>
+       * @return This builder for chaining.
        */
       public Builder clearHash() {
         
@@ -14041,35 +14699,42 @@ public final class IoTeX {
 
     /**
      * <code>uint32 version = 1;</code>
+     * @return The version.
      */
     int getVersion();
 
     /**
      * <code>uint64 nonce = 2;</code>
+     * @return The nonce.
      */
     long getNonce();
 
     /**
      * <code>uint64 gasLimit = 3;</code>
+     * @return The gasLimit.
      */
     long getGasLimit();
 
     /**
      * <code>string gasPrice = 4;</code>
+     * @return The gasPrice.
      */
     java.lang.String getGasPrice();
     /**
      * <code>string gasPrice = 4;</code>
+     * @return The bytes for gasPrice.
      */
     com.google.protobuf.ByteString
         getGasPriceBytes();
 
     /**
      * <code>.TW.IoTeX.Proto.Transfer transfer = 10;</code>
+     * @return Whether the transfer field is set.
      */
     boolean hasTransfer();
     /**
      * <code>.TW.IoTeX.Proto.Transfer transfer = 10;</code>
+     * @return The transfer.
      */
     wallet.core.jni.proto.IoTeX.Transfer getTransfer();
     /**
@@ -14079,10 +14744,12 @@ public final class IoTeX {
 
     /**
      * <code>.TW.IoTeX.Proto.ContractCall execution = 12;</code>
+     * @return Whether the execution field is set.
      */
     boolean hasExecution();
     /**
      * <code>.TW.IoTeX.Proto.ContractCall execution = 12;</code>
+     * @return The execution.
      */
     wallet.core.jni.proto.IoTeX.ContractCall getExecution();
     /**
@@ -14096,6 +14763,7 @@ public final class IoTeX {
      * </pre>
      *
      * <code>.TW.IoTeX.Proto.Staking.Create stakeCreate = 40;</code>
+     * @return Whether the stakeCreate field is set.
      */
     boolean hasStakeCreate();
     /**
@@ -14104,6 +14772,7 @@ public final class IoTeX {
      * </pre>
      *
      * <code>.TW.IoTeX.Proto.Staking.Create stakeCreate = 40;</code>
+     * @return The stakeCreate.
      */
     wallet.core.jni.proto.IoTeX.Staking.Create getStakeCreate();
     /**
@@ -14117,10 +14786,12 @@ public final class IoTeX {
 
     /**
      * <code>.TW.IoTeX.Proto.Staking.Reclaim stakeUnstake = 41;</code>
+     * @return Whether the stakeUnstake field is set.
      */
     boolean hasStakeUnstake();
     /**
      * <code>.TW.IoTeX.Proto.Staking.Reclaim stakeUnstake = 41;</code>
+     * @return The stakeUnstake.
      */
     wallet.core.jni.proto.IoTeX.Staking.Reclaim getStakeUnstake();
     /**
@@ -14130,10 +14801,12 @@ public final class IoTeX {
 
     /**
      * <code>.TW.IoTeX.Proto.Staking.Reclaim stakeWithdraw = 42;</code>
+     * @return Whether the stakeWithdraw field is set.
      */
     boolean hasStakeWithdraw();
     /**
      * <code>.TW.IoTeX.Proto.Staking.Reclaim stakeWithdraw = 42;</code>
+     * @return The stakeWithdraw.
      */
     wallet.core.jni.proto.IoTeX.Staking.Reclaim getStakeWithdraw();
     /**
@@ -14143,10 +14816,12 @@ public final class IoTeX {
 
     /**
      * <code>.TW.IoTeX.Proto.Staking.AddDeposit stakeAddDeposit = 43;</code>
+     * @return Whether the stakeAddDeposit field is set.
      */
     boolean hasStakeAddDeposit();
     /**
      * <code>.TW.IoTeX.Proto.Staking.AddDeposit stakeAddDeposit = 43;</code>
+     * @return The stakeAddDeposit.
      */
     wallet.core.jni.proto.IoTeX.Staking.AddDeposit getStakeAddDeposit();
     /**
@@ -14156,10 +14831,12 @@ public final class IoTeX {
 
     /**
      * <code>.TW.IoTeX.Proto.Staking.Restake stakeRestake = 44;</code>
+     * @return Whether the stakeRestake field is set.
      */
     boolean hasStakeRestake();
     /**
      * <code>.TW.IoTeX.Proto.Staking.Restake stakeRestake = 44;</code>
+     * @return The stakeRestake.
      */
     wallet.core.jni.proto.IoTeX.Staking.Restake getStakeRestake();
     /**
@@ -14169,10 +14846,12 @@ public final class IoTeX {
 
     /**
      * <code>.TW.IoTeX.Proto.Staking.ChangeCandidate stakeChangeCandidate = 45;</code>
+     * @return Whether the stakeChangeCandidate field is set.
      */
     boolean hasStakeChangeCandidate();
     /**
      * <code>.TW.IoTeX.Proto.Staking.ChangeCandidate stakeChangeCandidate = 45;</code>
+     * @return The stakeChangeCandidate.
      */
     wallet.core.jni.proto.IoTeX.Staking.ChangeCandidate getStakeChangeCandidate();
     /**
@@ -14182,10 +14861,12 @@ public final class IoTeX {
 
     /**
      * <code>.TW.IoTeX.Proto.Staking.TransferOwnership stakeTransferOwnership = 46;</code>
+     * @return Whether the stakeTransferOwnership field is set.
      */
     boolean hasStakeTransferOwnership();
     /**
      * <code>.TW.IoTeX.Proto.Staking.TransferOwnership stakeTransferOwnership = 46;</code>
+     * @return The stakeTransferOwnership.
      */
     wallet.core.jni.proto.IoTeX.Staking.TransferOwnership getStakeTransferOwnership();
     /**
@@ -14195,10 +14876,12 @@ public final class IoTeX {
 
     /**
      * <code>.TW.IoTeX.Proto.Staking.CandidateRegister candidateRegister = 47;</code>
+     * @return Whether the candidateRegister field is set.
      */
     boolean hasCandidateRegister();
     /**
      * <code>.TW.IoTeX.Proto.Staking.CandidateRegister candidateRegister = 47;</code>
+     * @return The candidateRegister.
      */
     wallet.core.jni.proto.IoTeX.Staking.CandidateRegister getCandidateRegister();
     /**
@@ -14208,10 +14891,12 @@ public final class IoTeX {
 
     /**
      * <code>.TW.IoTeX.Proto.Staking.CandidateBasicInfo candidateUpdate = 48;</code>
+     * @return Whether the candidateUpdate field is set.
      */
     boolean hasCandidateUpdate();
     /**
      * <code>.TW.IoTeX.Proto.Staking.CandidateBasicInfo candidateUpdate = 48;</code>
+     * @return The candidateUpdate.
      */
     wallet.core.jni.proto.IoTeX.Staking.CandidateBasicInfo getCandidateUpdate();
     /**
@@ -14224,7 +14909,7 @@ public final class IoTeX {
   /**
    * Protobuf type {@code TW.IoTeX.Proto.ActionCore}
    */
-  public  static final class ActionCore extends
+  public static final class ActionCore extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:TW.IoTeX.Proto.ActionCore)
       ActionCoreOrBuilder {
@@ -14477,7 +15162,8 @@ public final class IoTeX {
     private int actionCase_ = 0;
     private java.lang.Object action_;
     public enum ActionCase
-        implements com.google.protobuf.Internal.EnumLite {
+        implements com.google.protobuf.Internal.EnumLite,
+            com.google.protobuf.AbstractMessage.InternalOneOfEnum {
       TRANSFER(10),
       EXECUTION(12),
       STAKECREATE(40),
@@ -14495,6 +15181,8 @@ public final class IoTeX {
         this.value = value;
       }
       /**
+       * @param value The number of the enum to look for.
+       * @return The enum associated with the given number.
        * @deprecated Use {@link #forNumber(int)} instead.
        */
       @java.lang.Deprecated
@@ -14534,7 +15222,9 @@ public final class IoTeX {
     private int version_;
     /**
      * <code>uint32 version = 1;</code>
+     * @return The version.
      */
+    @java.lang.Override
     public int getVersion() {
       return version_;
     }
@@ -14543,7 +15233,9 @@ public final class IoTeX {
     private long nonce_;
     /**
      * <code>uint64 nonce = 2;</code>
+     * @return The nonce.
      */
+    @java.lang.Override
     public long getNonce() {
       return nonce_;
     }
@@ -14552,7 +15244,9 @@ public final class IoTeX {
     private long gasLimit_;
     /**
      * <code>uint64 gasLimit = 3;</code>
+     * @return The gasLimit.
      */
+    @java.lang.Override
     public long getGasLimit() {
       return gasLimit_;
     }
@@ -14561,7 +15255,9 @@ public final class IoTeX {
     private volatile java.lang.Object gasPrice_;
     /**
      * <code>string gasPrice = 4;</code>
+     * @return The gasPrice.
      */
+    @java.lang.Override
     public java.lang.String getGasPrice() {
       java.lang.Object ref = gasPrice_;
       if (ref instanceof java.lang.String) {
@@ -14576,7 +15272,9 @@ public final class IoTeX {
     }
     /**
      * <code>string gasPrice = 4;</code>
+     * @return The bytes for gasPrice.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString
         getGasPriceBytes() {
       java.lang.Object ref = gasPrice_;
@@ -14594,13 +15292,17 @@ public final class IoTeX {
     public static final int TRANSFER_FIELD_NUMBER = 10;
     /**
      * <code>.TW.IoTeX.Proto.Transfer transfer = 10;</code>
+     * @return Whether the transfer field is set.
      */
+    @java.lang.Override
     public boolean hasTransfer() {
       return actionCase_ == 10;
     }
     /**
      * <code>.TW.IoTeX.Proto.Transfer transfer = 10;</code>
+     * @return The transfer.
      */
+    @java.lang.Override
     public wallet.core.jni.proto.IoTeX.Transfer getTransfer() {
       if (actionCase_ == 10) {
          return (wallet.core.jni.proto.IoTeX.Transfer) action_;
@@ -14610,6 +15312,7 @@ public final class IoTeX {
     /**
      * <code>.TW.IoTeX.Proto.Transfer transfer = 10;</code>
      */
+    @java.lang.Override
     public wallet.core.jni.proto.IoTeX.TransferOrBuilder getTransferOrBuilder() {
       if (actionCase_ == 10) {
          return (wallet.core.jni.proto.IoTeX.Transfer) action_;
@@ -14620,13 +15323,17 @@ public final class IoTeX {
     public static final int EXECUTION_FIELD_NUMBER = 12;
     /**
      * <code>.TW.IoTeX.Proto.ContractCall execution = 12;</code>
+     * @return Whether the execution field is set.
      */
+    @java.lang.Override
     public boolean hasExecution() {
       return actionCase_ == 12;
     }
     /**
      * <code>.TW.IoTeX.Proto.ContractCall execution = 12;</code>
+     * @return The execution.
      */
+    @java.lang.Override
     public wallet.core.jni.proto.IoTeX.ContractCall getExecution() {
       if (actionCase_ == 12) {
          return (wallet.core.jni.proto.IoTeX.ContractCall) action_;
@@ -14636,6 +15343,7 @@ public final class IoTeX {
     /**
      * <code>.TW.IoTeX.Proto.ContractCall execution = 12;</code>
      */
+    @java.lang.Override
     public wallet.core.jni.proto.IoTeX.ContractCallOrBuilder getExecutionOrBuilder() {
       if (actionCase_ == 12) {
          return (wallet.core.jni.proto.IoTeX.ContractCall) action_;
@@ -14650,7 +15358,9 @@ public final class IoTeX {
      * </pre>
      *
      * <code>.TW.IoTeX.Proto.Staking.Create stakeCreate = 40;</code>
+     * @return Whether the stakeCreate field is set.
      */
+    @java.lang.Override
     public boolean hasStakeCreate() {
       return actionCase_ == 40;
     }
@@ -14660,7 +15370,9 @@ public final class IoTeX {
      * </pre>
      *
      * <code>.TW.IoTeX.Proto.Staking.Create stakeCreate = 40;</code>
+     * @return The stakeCreate.
      */
+    @java.lang.Override
     public wallet.core.jni.proto.IoTeX.Staking.Create getStakeCreate() {
       if (actionCase_ == 40) {
          return (wallet.core.jni.proto.IoTeX.Staking.Create) action_;
@@ -14674,6 +15386,7 @@ public final class IoTeX {
      *
      * <code>.TW.IoTeX.Proto.Staking.Create stakeCreate = 40;</code>
      */
+    @java.lang.Override
     public wallet.core.jni.proto.IoTeX.Staking.CreateOrBuilder getStakeCreateOrBuilder() {
       if (actionCase_ == 40) {
          return (wallet.core.jni.proto.IoTeX.Staking.Create) action_;
@@ -14684,13 +15397,17 @@ public final class IoTeX {
     public static final int STAKEUNSTAKE_FIELD_NUMBER = 41;
     /**
      * <code>.TW.IoTeX.Proto.Staking.Reclaim stakeUnstake = 41;</code>
+     * @return Whether the stakeUnstake field is set.
      */
+    @java.lang.Override
     public boolean hasStakeUnstake() {
       return actionCase_ == 41;
     }
     /**
      * <code>.TW.IoTeX.Proto.Staking.Reclaim stakeUnstake = 41;</code>
+     * @return The stakeUnstake.
      */
+    @java.lang.Override
     public wallet.core.jni.proto.IoTeX.Staking.Reclaim getStakeUnstake() {
       if (actionCase_ == 41) {
          return (wallet.core.jni.proto.IoTeX.Staking.Reclaim) action_;
@@ -14700,6 +15417,7 @@ public final class IoTeX {
     /**
      * <code>.TW.IoTeX.Proto.Staking.Reclaim stakeUnstake = 41;</code>
      */
+    @java.lang.Override
     public wallet.core.jni.proto.IoTeX.Staking.ReclaimOrBuilder getStakeUnstakeOrBuilder() {
       if (actionCase_ == 41) {
          return (wallet.core.jni.proto.IoTeX.Staking.Reclaim) action_;
@@ -14710,13 +15428,17 @@ public final class IoTeX {
     public static final int STAKEWITHDRAW_FIELD_NUMBER = 42;
     /**
      * <code>.TW.IoTeX.Proto.Staking.Reclaim stakeWithdraw = 42;</code>
+     * @return Whether the stakeWithdraw field is set.
      */
+    @java.lang.Override
     public boolean hasStakeWithdraw() {
       return actionCase_ == 42;
     }
     /**
      * <code>.TW.IoTeX.Proto.Staking.Reclaim stakeWithdraw = 42;</code>
+     * @return The stakeWithdraw.
      */
+    @java.lang.Override
     public wallet.core.jni.proto.IoTeX.Staking.Reclaim getStakeWithdraw() {
       if (actionCase_ == 42) {
          return (wallet.core.jni.proto.IoTeX.Staking.Reclaim) action_;
@@ -14726,6 +15448,7 @@ public final class IoTeX {
     /**
      * <code>.TW.IoTeX.Proto.Staking.Reclaim stakeWithdraw = 42;</code>
      */
+    @java.lang.Override
     public wallet.core.jni.proto.IoTeX.Staking.ReclaimOrBuilder getStakeWithdrawOrBuilder() {
       if (actionCase_ == 42) {
          return (wallet.core.jni.proto.IoTeX.Staking.Reclaim) action_;
@@ -14736,13 +15459,17 @@ public final class IoTeX {
     public static final int STAKEADDDEPOSIT_FIELD_NUMBER = 43;
     /**
      * <code>.TW.IoTeX.Proto.Staking.AddDeposit stakeAddDeposit = 43;</code>
+     * @return Whether the stakeAddDeposit field is set.
      */
+    @java.lang.Override
     public boolean hasStakeAddDeposit() {
       return actionCase_ == 43;
     }
     /**
      * <code>.TW.IoTeX.Proto.Staking.AddDeposit stakeAddDeposit = 43;</code>
+     * @return The stakeAddDeposit.
      */
+    @java.lang.Override
     public wallet.core.jni.proto.IoTeX.Staking.AddDeposit getStakeAddDeposit() {
       if (actionCase_ == 43) {
          return (wallet.core.jni.proto.IoTeX.Staking.AddDeposit) action_;
@@ -14752,6 +15479,7 @@ public final class IoTeX {
     /**
      * <code>.TW.IoTeX.Proto.Staking.AddDeposit stakeAddDeposit = 43;</code>
      */
+    @java.lang.Override
     public wallet.core.jni.proto.IoTeX.Staking.AddDepositOrBuilder getStakeAddDepositOrBuilder() {
       if (actionCase_ == 43) {
          return (wallet.core.jni.proto.IoTeX.Staking.AddDeposit) action_;
@@ -14762,13 +15490,17 @@ public final class IoTeX {
     public static final int STAKERESTAKE_FIELD_NUMBER = 44;
     /**
      * <code>.TW.IoTeX.Proto.Staking.Restake stakeRestake = 44;</code>
+     * @return Whether the stakeRestake field is set.
      */
+    @java.lang.Override
     public boolean hasStakeRestake() {
       return actionCase_ == 44;
     }
     /**
      * <code>.TW.IoTeX.Proto.Staking.Restake stakeRestake = 44;</code>
+     * @return The stakeRestake.
      */
+    @java.lang.Override
     public wallet.core.jni.proto.IoTeX.Staking.Restake getStakeRestake() {
       if (actionCase_ == 44) {
          return (wallet.core.jni.proto.IoTeX.Staking.Restake) action_;
@@ -14778,6 +15510,7 @@ public final class IoTeX {
     /**
      * <code>.TW.IoTeX.Proto.Staking.Restake stakeRestake = 44;</code>
      */
+    @java.lang.Override
     public wallet.core.jni.proto.IoTeX.Staking.RestakeOrBuilder getStakeRestakeOrBuilder() {
       if (actionCase_ == 44) {
          return (wallet.core.jni.proto.IoTeX.Staking.Restake) action_;
@@ -14788,13 +15521,17 @@ public final class IoTeX {
     public static final int STAKECHANGECANDIDATE_FIELD_NUMBER = 45;
     /**
      * <code>.TW.IoTeX.Proto.Staking.ChangeCandidate stakeChangeCandidate = 45;</code>
+     * @return Whether the stakeChangeCandidate field is set.
      */
+    @java.lang.Override
     public boolean hasStakeChangeCandidate() {
       return actionCase_ == 45;
     }
     /**
      * <code>.TW.IoTeX.Proto.Staking.ChangeCandidate stakeChangeCandidate = 45;</code>
+     * @return The stakeChangeCandidate.
      */
+    @java.lang.Override
     public wallet.core.jni.proto.IoTeX.Staking.ChangeCandidate getStakeChangeCandidate() {
       if (actionCase_ == 45) {
          return (wallet.core.jni.proto.IoTeX.Staking.ChangeCandidate) action_;
@@ -14804,6 +15541,7 @@ public final class IoTeX {
     /**
      * <code>.TW.IoTeX.Proto.Staking.ChangeCandidate stakeChangeCandidate = 45;</code>
      */
+    @java.lang.Override
     public wallet.core.jni.proto.IoTeX.Staking.ChangeCandidateOrBuilder getStakeChangeCandidateOrBuilder() {
       if (actionCase_ == 45) {
          return (wallet.core.jni.proto.IoTeX.Staking.ChangeCandidate) action_;
@@ -14814,13 +15552,17 @@ public final class IoTeX {
     public static final int STAKETRANSFEROWNERSHIP_FIELD_NUMBER = 46;
     /**
      * <code>.TW.IoTeX.Proto.Staking.TransferOwnership stakeTransferOwnership = 46;</code>
+     * @return Whether the stakeTransferOwnership field is set.
      */
+    @java.lang.Override
     public boolean hasStakeTransferOwnership() {
       return actionCase_ == 46;
     }
     /**
      * <code>.TW.IoTeX.Proto.Staking.TransferOwnership stakeTransferOwnership = 46;</code>
+     * @return The stakeTransferOwnership.
      */
+    @java.lang.Override
     public wallet.core.jni.proto.IoTeX.Staking.TransferOwnership getStakeTransferOwnership() {
       if (actionCase_ == 46) {
          return (wallet.core.jni.proto.IoTeX.Staking.TransferOwnership) action_;
@@ -14830,6 +15572,7 @@ public final class IoTeX {
     /**
      * <code>.TW.IoTeX.Proto.Staking.TransferOwnership stakeTransferOwnership = 46;</code>
      */
+    @java.lang.Override
     public wallet.core.jni.proto.IoTeX.Staking.TransferOwnershipOrBuilder getStakeTransferOwnershipOrBuilder() {
       if (actionCase_ == 46) {
          return (wallet.core.jni.proto.IoTeX.Staking.TransferOwnership) action_;
@@ -14840,13 +15583,17 @@ public final class IoTeX {
     public static final int CANDIDATEREGISTER_FIELD_NUMBER = 47;
     /**
      * <code>.TW.IoTeX.Proto.Staking.CandidateRegister candidateRegister = 47;</code>
+     * @return Whether the candidateRegister field is set.
      */
+    @java.lang.Override
     public boolean hasCandidateRegister() {
       return actionCase_ == 47;
     }
     /**
      * <code>.TW.IoTeX.Proto.Staking.CandidateRegister candidateRegister = 47;</code>
+     * @return The candidateRegister.
      */
+    @java.lang.Override
     public wallet.core.jni.proto.IoTeX.Staking.CandidateRegister getCandidateRegister() {
       if (actionCase_ == 47) {
          return (wallet.core.jni.proto.IoTeX.Staking.CandidateRegister) action_;
@@ -14856,6 +15603,7 @@ public final class IoTeX {
     /**
      * <code>.TW.IoTeX.Proto.Staking.CandidateRegister candidateRegister = 47;</code>
      */
+    @java.lang.Override
     public wallet.core.jni.proto.IoTeX.Staking.CandidateRegisterOrBuilder getCandidateRegisterOrBuilder() {
       if (actionCase_ == 47) {
          return (wallet.core.jni.proto.IoTeX.Staking.CandidateRegister) action_;
@@ -14866,13 +15614,17 @@ public final class IoTeX {
     public static final int CANDIDATEUPDATE_FIELD_NUMBER = 48;
     /**
      * <code>.TW.IoTeX.Proto.Staking.CandidateBasicInfo candidateUpdate = 48;</code>
+     * @return Whether the candidateUpdate field is set.
      */
+    @java.lang.Override
     public boolean hasCandidateUpdate() {
       return actionCase_ == 48;
     }
     /**
      * <code>.TW.IoTeX.Proto.Staking.CandidateBasicInfo candidateUpdate = 48;</code>
+     * @return The candidateUpdate.
      */
+    @java.lang.Override
     public wallet.core.jni.proto.IoTeX.Staking.CandidateBasicInfo getCandidateUpdate() {
       if (actionCase_ == 48) {
          return (wallet.core.jni.proto.IoTeX.Staking.CandidateBasicInfo) action_;
@@ -14882,6 +15634,7 @@ public final class IoTeX {
     /**
      * <code>.TW.IoTeX.Proto.Staking.CandidateBasicInfo candidateUpdate = 48;</code>
      */
+    @java.lang.Override
     public wallet.core.jni.proto.IoTeX.Staking.CandidateBasicInfoOrBuilder getCandidateUpdateOrBuilder() {
       if (actionCase_ == 48) {
          return (wallet.core.jni.proto.IoTeX.Staking.CandidateBasicInfo) action_;
@@ -15565,12 +16318,16 @@ public final class IoTeX {
       private int version_ ;
       /**
        * <code>uint32 version = 1;</code>
+       * @return The version.
        */
+      @java.lang.Override
       public int getVersion() {
         return version_;
       }
       /**
        * <code>uint32 version = 1;</code>
+       * @param value The version to set.
+       * @return This builder for chaining.
        */
       public Builder setVersion(int value) {
         
@@ -15580,6 +16337,7 @@ public final class IoTeX {
       }
       /**
        * <code>uint32 version = 1;</code>
+       * @return This builder for chaining.
        */
       public Builder clearVersion() {
         
@@ -15591,12 +16349,16 @@ public final class IoTeX {
       private long nonce_ ;
       /**
        * <code>uint64 nonce = 2;</code>
+       * @return The nonce.
        */
+      @java.lang.Override
       public long getNonce() {
         return nonce_;
       }
       /**
        * <code>uint64 nonce = 2;</code>
+       * @param value The nonce to set.
+       * @return This builder for chaining.
        */
       public Builder setNonce(long value) {
         
@@ -15606,6 +16368,7 @@ public final class IoTeX {
       }
       /**
        * <code>uint64 nonce = 2;</code>
+       * @return This builder for chaining.
        */
       public Builder clearNonce() {
         
@@ -15617,12 +16380,16 @@ public final class IoTeX {
       private long gasLimit_ ;
       /**
        * <code>uint64 gasLimit = 3;</code>
+       * @return The gasLimit.
        */
+      @java.lang.Override
       public long getGasLimit() {
         return gasLimit_;
       }
       /**
        * <code>uint64 gasLimit = 3;</code>
+       * @param value The gasLimit to set.
+       * @return This builder for chaining.
        */
       public Builder setGasLimit(long value) {
         
@@ -15632,6 +16399,7 @@ public final class IoTeX {
       }
       /**
        * <code>uint64 gasLimit = 3;</code>
+       * @return This builder for chaining.
        */
       public Builder clearGasLimit() {
         
@@ -15643,6 +16411,7 @@ public final class IoTeX {
       private java.lang.Object gasPrice_ = "";
       /**
        * <code>string gasPrice = 4;</code>
+       * @return The gasPrice.
        */
       public java.lang.String getGasPrice() {
         java.lang.Object ref = gasPrice_;
@@ -15658,6 +16427,7 @@ public final class IoTeX {
       }
       /**
        * <code>string gasPrice = 4;</code>
+       * @return The bytes for gasPrice.
        */
       public com.google.protobuf.ByteString
           getGasPriceBytes() {
@@ -15674,6 +16444,8 @@ public final class IoTeX {
       }
       /**
        * <code>string gasPrice = 4;</code>
+       * @param value The gasPrice to set.
+       * @return This builder for chaining.
        */
       public Builder setGasPrice(
           java.lang.String value) {
@@ -15687,6 +16459,7 @@ public final class IoTeX {
       }
       /**
        * <code>string gasPrice = 4;</code>
+       * @return This builder for chaining.
        */
       public Builder clearGasPrice() {
         
@@ -15696,6 +16469,8 @@ public final class IoTeX {
       }
       /**
        * <code>string gasPrice = 4;</code>
+       * @param value The bytes for gasPrice to set.
+       * @return This builder for chaining.
        */
       public Builder setGasPriceBytes(
           com.google.protobuf.ByteString value) {
@@ -15713,13 +16488,17 @@ public final class IoTeX {
           wallet.core.jni.proto.IoTeX.Transfer, wallet.core.jni.proto.IoTeX.Transfer.Builder, wallet.core.jni.proto.IoTeX.TransferOrBuilder> transferBuilder_;
       /**
        * <code>.TW.IoTeX.Proto.Transfer transfer = 10;</code>
+       * @return Whether the transfer field is set.
        */
+      @java.lang.Override
       public boolean hasTransfer() {
         return actionCase_ == 10;
       }
       /**
        * <code>.TW.IoTeX.Proto.Transfer transfer = 10;</code>
+       * @return The transfer.
        */
+      @java.lang.Override
       public wallet.core.jni.proto.IoTeX.Transfer getTransfer() {
         if (transferBuilder_ == null) {
           if (actionCase_ == 10) {
@@ -15813,6 +16592,7 @@ public final class IoTeX {
       /**
        * <code>.TW.IoTeX.Proto.Transfer transfer = 10;</code>
        */
+      @java.lang.Override
       public wallet.core.jni.proto.IoTeX.TransferOrBuilder getTransferOrBuilder() {
         if ((actionCase_ == 10) && (transferBuilder_ != null)) {
           return transferBuilder_.getMessageOrBuilder();
@@ -15849,13 +16629,17 @@ public final class IoTeX {
           wallet.core.jni.proto.IoTeX.ContractCall, wallet.core.jni.proto.IoTeX.ContractCall.Builder, wallet.core.jni.proto.IoTeX.ContractCallOrBuilder> executionBuilder_;
       /**
        * <code>.TW.IoTeX.Proto.ContractCall execution = 12;</code>
+       * @return Whether the execution field is set.
        */
+      @java.lang.Override
       public boolean hasExecution() {
         return actionCase_ == 12;
       }
       /**
        * <code>.TW.IoTeX.Proto.ContractCall execution = 12;</code>
+       * @return The execution.
        */
+      @java.lang.Override
       public wallet.core.jni.proto.IoTeX.ContractCall getExecution() {
         if (executionBuilder_ == null) {
           if (actionCase_ == 12) {
@@ -15949,6 +16733,7 @@ public final class IoTeX {
       /**
        * <code>.TW.IoTeX.Proto.ContractCall execution = 12;</code>
        */
+      @java.lang.Override
       public wallet.core.jni.proto.IoTeX.ContractCallOrBuilder getExecutionOrBuilder() {
         if ((actionCase_ == 12) && (executionBuilder_ != null)) {
           return executionBuilder_.getMessageOrBuilder();
@@ -15989,7 +16774,9 @@ public final class IoTeX {
        * </pre>
        *
        * <code>.TW.IoTeX.Proto.Staking.Create stakeCreate = 40;</code>
+       * @return Whether the stakeCreate field is set.
        */
+      @java.lang.Override
       public boolean hasStakeCreate() {
         return actionCase_ == 40;
       }
@@ -15999,7 +16786,9 @@ public final class IoTeX {
        * </pre>
        *
        * <code>.TW.IoTeX.Proto.Staking.Create stakeCreate = 40;</code>
+       * @return The stakeCreate.
        */
+      @java.lang.Override
       public wallet.core.jni.proto.IoTeX.Staking.Create getStakeCreate() {
         if (stakeCreateBuilder_ == null) {
           if (actionCase_ == 40) {
@@ -16117,6 +16906,7 @@ public final class IoTeX {
        *
        * <code>.TW.IoTeX.Proto.Staking.Create stakeCreate = 40;</code>
        */
+      @java.lang.Override
       public wallet.core.jni.proto.IoTeX.Staking.CreateOrBuilder getStakeCreateOrBuilder() {
         if ((actionCase_ == 40) && (stakeCreateBuilder_ != null)) {
           return stakeCreateBuilder_.getMessageOrBuilder();
@@ -16157,13 +16947,17 @@ public final class IoTeX {
           wallet.core.jni.proto.IoTeX.Staking.Reclaim, wallet.core.jni.proto.IoTeX.Staking.Reclaim.Builder, wallet.core.jni.proto.IoTeX.Staking.ReclaimOrBuilder> stakeUnstakeBuilder_;
       /**
        * <code>.TW.IoTeX.Proto.Staking.Reclaim stakeUnstake = 41;</code>
+       * @return Whether the stakeUnstake field is set.
        */
+      @java.lang.Override
       public boolean hasStakeUnstake() {
         return actionCase_ == 41;
       }
       /**
        * <code>.TW.IoTeX.Proto.Staking.Reclaim stakeUnstake = 41;</code>
+       * @return The stakeUnstake.
        */
+      @java.lang.Override
       public wallet.core.jni.proto.IoTeX.Staking.Reclaim getStakeUnstake() {
         if (stakeUnstakeBuilder_ == null) {
           if (actionCase_ == 41) {
@@ -16257,6 +17051,7 @@ public final class IoTeX {
       /**
        * <code>.TW.IoTeX.Proto.Staking.Reclaim stakeUnstake = 41;</code>
        */
+      @java.lang.Override
       public wallet.core.jni.proto.IoTeX.Staking.ReclaimOrBuilder getStakeUnstakeOrBuilder() {
         if ((actionCase_ == 41) && (stakeUnstakeBuilder_ != null)) {
           return stakeUnstakeBuilder_.getMessageOrBuilder();
@@ -16293,13 +17088,17 @@ public final class IoTeX {
           wallet.core.jni.proto.IoTeX.Staking.Reclaim, wallet.core.jni.proto.IoTeX.Staking.Reclaim.Builder, wallet.core.jni.proto.IoTeX.Staking.ReclaimOrBuilder> stakeWithdrawBuilder_;
       /**
        * <code>.TW.IoTeX.Proto.Staking.Reclaim stakeWithdraw = 42;</code>
+       * @return Whether the stakeWithdraw field is set.
        */
+      @java.lang.Override
       public boolean hasStakeWithdraw() {
         return actionCase_ == 42;
       }
       /**
        * <code>.TW.IoTeX.Proto.Staking.Reclaim stakeWithdraw = 42;</code>
+       * @return The stakeWithdraw.
        */
+      @java.lang.Override
       public wallet.core.jni.proto.IoTeX.Staking.Reclaim getStakeWithdraw() {
         if (stakeWithdrawBuilder_ == null) {
           if (actionCase_ == 42) {
@@ -16393,6 +17192,7 @@ public final class IoTeX {
       /**
        * <code>.TW.IoTeX.Proto.Staking.Reclaim stakeWithdraw = 42;</code>
        */
+      @java.lang.Override
       public wallet.core.jni.proto.IoTeX.Staking.ReclaimOrBuilder getStakeWithdrawOrBuilder() {
         if ((actionCase_ == 42) && (stakeWithdrawBuilder_ != null)) {
           return stakeWithdrawBuilder_.getMessageOrBuilder();
@@ -16429,13 +17229,17 @@ public final class IoTeX {
           wallet.core.jni.proto.IoTeX.Staking.AddDeposit, wallet.core.jni.proto.IoTeX.Staking.AddDeposit.Builder, wallet.core.jni.proto.IoTeX.Staking.AddDepositOrBuilder> stakeAddDepositBuilder_;
       /**
        * <code>.TW.IoTeX.Proto.Staking.AddDeposit stakeAddDeposit = 43;</code>
+       * @return Whether the stakeAddDeposit field is set.
        */
+      @java.lang.Override
       public boolean hasStakeAddDeposit() {
         return actionCase_ == 43;
       }
       /**
        * <code>.TW.IoTeX.Proto.Staking.AddDeposit stakeAddDeposit = 43;</code>
+       * @return The stakeAddDeposit.
        */
+      @java.lang.Override
       public wallet.core.jni.proto.IoTeX.Staking.AddDeposit getStakeAddDeposit() {
         if (stakeAddDepositBuilder_ == null) {
           if (actionCase_ == 43) {
@@ -16529,6 +17333,7 @@ public final class IoTeX {
       /**
        * <code>.TW.IoTeX.Proto.Staking.AddDeposit stakeAddDeposit = 43;</code>
        */
+      @java.lang.Override
       public wallet.core.jni.proto.IoTeX.Staking.AddDepositOrBuilder getStakeAddDepositOrBuilder() {
         if ((actionCase_ == 43) && (stakeAddDepositBuilder_ != null)) {
           return stakeAddDepositBuilder_.getMessageOrBuilder();
@@ -16565,13 +17370,17 @@ public final class IoTeX {
           wallet.core.jni.proto.IoTeX.Staking.Restake, wallet.core.jni.proto.IoTeX.Staking.Restake.Builder, wallet.core.jni.proto.IoTeX.Staking.RestakeOrBuilder> stakeRestakeBuilder_;
       /**
        * <code>.TW.IoTeX.Proto.Staking.Restake stakeRestake = 44;</code>
+       * @return Whether the stakeRestake field is set.
        */
+      @java.lang.Override
       public boolean hasStakeRestake() {
         return actionCase_ == 44;
       }
       /**
        * <code>.TW.IoTeX.Proto.Staking.Restake stakeRestake = 44;</code>
+       * @return The stakeRestake.
        */
+      @java.lang.Override
       public wallet.core.jni.proto.IoTeX.Staking.Restake getStakeRestake() {
         if (stakeRestakeBuilder_ == null) {
           if (actionCase_ == 44) {
@@ -16665,6 +17474,7 @@ public final class IoTeX {
       /**
        * <code>.TW.IoTeX.Proto.Staking.Restake stakeRestake = 44;</code>
        */
+      @java.lang.Override
       public wallet.core.jni.proto.IoTeX.Staking.RestakeOrBuilder getStakeRestakeOrBuilder() {
         if ((actionCase_ == 44) && (stakeRestakeBuilder_ != null)) {
           return stakeRestakeBuilder_.getMessageOrBuilder();
@@ -16701,13 +17511,17 @@ public final class IoTeX {
           wallet.core.jni.proto.IoTeX.Staking.ChangeCandidate, wallet.core.jni.proto.IoTeX.Staking.ChangeCandidate.Builder, wallet.core.jni.proto.IoTeX.Staking.ChangeCandidateOrBuilder> stakeChangeCandidateBuilder_;
       /**
        * <code>.TW.IoTeX.Proto.Staking.ChangeCandidate stakeChangeCandidate = 45;</code>
+       * @return Whether the stakeChangeCandidate field is set.
        */
+      @java.lang.Override
       public boolean hasStakeChangeCandidate() {
         return actionCase_ == 45;
       }
       /**
        * <code>.TW.IoTeX.Proto.Staking.ChangeCandidate stakeChangeCandidate = 45;</code>
+       * @return The stakeChangeCandidate.
        */
+      @java.lang.Override
       public wallet.core.jni.proto.IoTeX.Staking.ChangeCandidate getStakeChangeCandidate() {
         if (stakeChangeCandidateBuilder_ == null) {
           if (actionCase_ == 45) {
@@ -16801,6 +17615,7 @@ public final class IoTeX {
       /**
        * <code>.TW.IoTeX.Proto.Staking.ChangeCandidate stakeChangeCandidate = 45;</code>
        */
+      @java.lang.Override
       public wallet.core.jni.proto.IoTeX.Staking.ChangeCandidateOrBuilder getStakeChangeCandidateOrBuilder() {
         if ((actionCase_ == 45) && (stakeChangeCandidateBuilder_ != null)) {
           return stakeChangeCandidateBuilder_.getMessageOrBuilder();
@@ -16837,13 +17652,17 @@ public final class IoTeX {
           wallet.core.jni.proto.IoTeX.Staking.TransferOwnership, wallet.core.jni.proto.IoTeX.Staking.TransferOwnership.Builder, wallet.core.jni.proto.IoTeX.Staking.TransferOwnershipOrBuilder> stakeTransferOwnershipBuilder_;
       /**
        * <code>.TW.IoTeX.Proto.Staking.TransferOwnership stakeTransferOwnership = 46;</code>
+       * @return Whether the stakeTransferOwnership field is set.
        */
+      @java.lang.Override
       public boolean hasStakeTransferOwnership() {
         return actionCase_ == 46;
       }
       /**
        * <code>.TW.IoTeX.Proto.Staking.TransferOwnership stakeTransferOwnership = 46;</code>
+       * @return The stakeTransferOwnership.
        */
+      @java.lang.Override
       public wallet.core.jni.proto.IoTeX.Staking.TransferOwnership getStakeTransferOwnership() {
         if (stakeTransferOwnershipBuilder_ == null) {
           if (actionCase_ == 46) {
@@ -16937,6 +17756,7 @@ public final class IoTeX {
       /**
        * <code>.TW.IoTeX.Proto.Staking.TransferOwnership stakeTransferOwnership = 46;</code>
        */
+      @java.lang.Override
       public wallet.core.jni.proto.IoTeX.Staking.TransferOwnershipOrBuilder getStakeTransferOwnershipOrBuilder() {
         if ((actionCase_ == 46) && (stakeTransferOwnershipBuilder_ != null)) {
           return stakeTransferOwnershipBuilder_.getMessageOrBuilder();
@@ -16973,13 +17793,17 @@ public final class IoTeX {
           wallet.core.jni.proto.IoTeX.Staking.CandidateRegister, wallet.core.jni.proto.IoTeX.Staking.CandidateRegister.Builder, wallet.core.jni.proto.IoTeX.Staking.CandidateRegisterOrBuilder> candidateRegisterBuilder_;
       /**
        * <code>.TW.IoTeX.Proto.Staking.CandidateRegister candidateRegister = 47;</code>
+       * @return Whether the candidateRegister field is set.
        */
+      @java.lang.Override
       public boolean hasCandidateRegister() {
         return actionCase_ == 47;
       }
       /**
        * <code>.TW.IoTeX.Proto.Staking.CandidateRegister candidateRegister = 47;</code>
+       * @return The candidateRegister.
        */
+      @java.lang.Override
       public wallet.core.jni.proto.IoTeX.Staking.CandidateRegister getCandidateRegister() {
         if (candidateRegisterBuilder_ == null) {
           if (actionCase_ == 47) {
@@ -17073,6 +17897,7 @@ public final class IoTeX {
       /**
        * <code>.TW.IoTeX.Proto.Staking.CandidateRegister candidateRegister = 47;</code>
        */
+      @java.lang.Override
       public wallet.core.jni.proto.IoTeX.Staking.CandidateRegisterOrBuilder getCandidateRegisterOrBuilder() {
         if ((actionCase_ == 47) && (candidateRegisterBuilder_ != null)) {
           return candidateRegisterBuilder_.getMessageOrBuilder();
@@ -17109,13 +17934,17 @@ public final class IoTeX {
           wallet.core.jni.proto.IoTeX.Staking.CandidateBasicInfo, wallet.core.jni.proto.IoTeX.Staking.CandidateBasicInfo.Builder, wallet.core.jni.proto.IoTeX.Staking.CandidateBasicInfoOrBuilder> candidateUpdateBuilder_;
       /**
        * <code>.TW.IoTeX.Proto.Staking.CandidateBasicInfo candidateUpdate = 48;</code>
+       * @return Whether the candidateUpdate field is set.
        */
+      @java.lang.Override
       public boolean hasCandidateUpdate() {
         return actionCase_ == 48;
       }
       /**
        * <code>.TW.IoTeX.Proto.Staking.CandidateBasicInfo candidateUpdate = 48;</code>
+       * @return The candidateUpdate.
        */
+      @java.lang.Override
       public wallet.core.jni.proto.IoTeX.Staking.CandidateBasicInfo getCandidateUpdate() {
         if (candidateUpdateBuilder_ == null) {
           if (actionCase_ == 48) {
@@ -17209,6 +18038,7 @@ public final class IoTeX {
       /**
        * <code>.TW.IoTeX.Proto.Staking.CandidateBasicInfo candidateUpdate = 48;</code>
        */
+      @java.lang.Override
       public wallet.core.jni.proto.IoTeX.Staking.CandidateBasicInfoOrBuilder getCandidateUpdateOrBuilder() {
         if ((actionCase_ == 48) && (candidateUpdateBuilder_ != null)) {
           return candidateUpdateBuilder_.getMessageOrBuilder();
@@ -17299,10 +18129,12 @@ public final class IoTeX {
 
     /**
      * <code>.TW.IoTeX.Proto.ActionCore core = 1;</code>
+     * @return Whether the core field is set.
      */
     boolean hasCore();
     /**
      * <code>.TW.IoTeX.Proto.ActionCore core = 1;</code>
+     * @return The core.
      */
     wallet.core.jni.proto.IoTeX.ActionCore getCore();
     /**
@@ -17312,18 +18144,20 @@ public final class IoTeX {
 
     /**
      * <code>bytes senderPubKey = 2;</code>
+     * @return The senderPubKey.
      */
     com.google.protobuf.ByteString getSenderPubKey();
 
     /**
      * <code>bytes signature = 3;</code>
+     * @return The signature.
      */
     com.google.protobuf.ByteString getSignature();
   }
   /**
    * Protobuf type {@code TW.IoTeX.Proto.Action}
    */
-  public  static final class Action extends
+  public static final class Action extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:TW.IoTeX.Proto.Action)
       ActionOrBuilder {
@@ -17426,19 +18260,24 @@ public final class IoTeX {
     private wallet.core.jni.proto.IoTeX.ActionCore core_;
     /**
      * <code>.TW.IoTeX.Proto.ActionCore core = 1;</code>
+     * @return Whether the core field is set.
      */
+    @java.lang.Override
     public boolean hasCore() {
       return core_ != null;
     }
     /**
      * <code>.TW.IoTeX.Proto.ActionCore core = 1;</code>
+     * @return The core.
      */
+    @java.lang.Override
     public wallet.core.jni.proto.IoTeX.ActionCore getCore() {
       return core_ == null ? wallet.core.jni.proto.IoTeX.ActionCore.getDefaultInstance() : core_;
     }
     /**
      * <code>.TW.IoTeX.Proto.ActionCore core = 1;</code>
      */
+    @java.lang.Override
     public wallet.core.jni.proto.IoTeX.ActionCoreOrBuilder getCoreOrBuilder() {
       return getCore();
     }
@@ -17447,7 +18286,9 @@ public final class IoTeX {
     private com.google.protobuf.ByteString senderPubKey_;
     /**
      * <code>bytes senderPubKey = 2;</code>
+     * @return The senderPubKey.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString getSenderPubKey() {
       return senderPubKey_;
     }
@@ -17456,7 +18297,9 @@ public final class IoTeX {
     private com.google.protobuf.ByteString signature_;
     /**
      * <code>bytes signature = 3;</code>
+     * @return The signature.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString getSignature() {
       return signature_;
     }
@@ -17815,12 +18658,14 @@ public final class IoTeX {
           wallet.core.jni.proto.IoTeX.ActionCore, wallet.core.jni.proto.IoTeX.ActionCore.Builder, wallet.core.jni.proto.IoTeX.ActionCoreOrBuilder> coreBuilder_;
       /**
        * <code>.TW.IoTeX.Proto.ActionCore core = 1;</code>
+       * @return Whether the core field is set.
        */
       public boolean hasCore() {
         return coreBuilder_ != null || core_ != null;
       }
       /**
        * <code>.TW.IoTeX.Proto.ActionCore core = 1;</code>
+       * @return The core.
        */
       public wallet.core.jni.proto.IoTeX.ActionCore getCore() {
         if (coreBuilder_ == null) {
@@ -17930,12 +18775,16 @@ public final class IoTeX {
       private com.google.protobuf.ByteString senderPubKey_ = com.google.protobuf.ByteString.EMPTY;
       /**
        * <code>bytes senderPubKey = 2;</code>
+       * @return The senderPubKey.
        */
+      @java.lang.Override
       public com.google.protobuf.ByteString getSenderPubKey() {
         return senderPubKey_;
       }
       /**
        * <code>bytes senderPubKey = 2;</code>
+       * @param value The senderPubKey to set.
+       * @return This builder for chaining.
        */
       public Builder setSenderPubKey(com.google.protobuf.ByteString value) {
         if (value == null) {
@@ -17948,6 +18797,7 @@ public final class IoTeX {
       }
       /**
        * <code>bytes senderPubKey = 2;</code>
+       * @return This builder for chaining.
        */
       public Builder clearSenderPubKey() {
         
@@ -17959,12 +18809,16 @@ public final class IoTeX {
       private com.google.protobuf.ByteString signature_ = com.google.protobuf.ByteString.EMPTY;
       /**
        * <code>bytes signature = 3;</code>
+       * @return The signature.
        */
+      @java.lang.Override
       public com.google.protobuf.ByteString getSignature() {
         return signature_;
       }
       /**
        * <code>bytes signature = 3;</code>
+       * @param value The signature to set.
+       * @return This builder for chaining.
        */
       public Builder setSignature(com.google.protobuf.ByteString value) {
         if (value == null) {
@@ -17977,6 +18831,7 @@ public final class IoTeX {
       }
       /**
        * <code>bytes signature = 3;</code>
+       * @return This builder for chaining.
        */
       public Builder clearSignature() {
         

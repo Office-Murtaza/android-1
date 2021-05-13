@@ -83,7 +83,7 @@ public class UserController {
     }
 
     @PostMapping("/verify")
-    public Response verify(@RequestBody VerificationDTO dto) {
+    public Response verify(@RequestBody PhoneDTO dto) {
         try {
             Document d = mongo.getCollection(COLL_PHONE_VERIFY_TRACKER).find(new Document("phone", dto.getPhone())).first();
             long time = System.currentTimeMillis() - verifyDelay;

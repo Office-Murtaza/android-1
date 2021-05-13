@@ -81,6 +81,8 @@ public final class Cosmos {
     }
 
     /**
+     * @param value The numeric wire value of the corresponding enum entry.
+     * @return The enum associated with the given numeric wire value.
      * @deprecated Use {@link #forNumber(int)} instead.
      */
     @java.lang.Deprecated
@@ -88,6 +90,10 @@ public final class Cosmos {
       return forNumber(value);
     }
 
+    /**
+     * @param value The numeric wire value of the corresponding enum entry.
+     * @return The enum associated with the given numeric wire value.
+     */
     public static BroadcastMode forNumber(int value) {
       switch (value) {
         case 0: return BLOCK;
@@ -111,6 +117,10 @@ public final class Cosmos {
 
     public final com.google.protobuf.Descriptors.EnumValueDescriptor
         getValueDescriptor() {
+      if (this == UNRECOGNIZED) {
+        throw new java.lang.IllegalStateException(
+            "Can't get the descriptor of an unrecognized enum value.");
+      }
       return getDescriptor().getValues().get(ordinal());
     }
     public final com.google.protobuf.Descriptors.EnumDescriptor
@@ -151,23 +161,26 @@ public final class Cosmos {
 
     /**
      * <code>string denom = 1;</code>
+     * @return The denom.
      */
     java.lang.String getDenom();
     /**
      * <code>string denom = 1;</code>
+     * @return The bytes for denom.
      */
     com.google.protobuf.ByteString
         getDenomBytes();
 
     /**
      * <code>int64 amount = 2;</code>
+     * @return The amount.
      */
     long getAmount();
   }
   /**
    * Protobuf type {@code TW.Cosmos.Proto.Amount}
    */
-  public  static final class Amount extends
+  public static final class Amount extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:TW.Cosmos.Proto.Amount)
       AmountOrBuilder {
@@ -257,7 +270,9 @@ public final class Cosmos {
     private volatile java.lang.Object denom_;
     /**
      * <code>string denom = 1;</code>
+     * @return The denom.
      */
+    @java.lang.Override
     public java.lang.String getDenom() {
       java.lang.Object ref = denom_;
       if (ref instanceof java.lang.String) {
@@ -272,7 +287,9 @@ public final class Cosmos {
     }
     /**
      * <code>string denom = 1;</code>
+     * @return The bytes for denom.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString
         getDenomBytes() {
       java.lang.Object ref = denom_;
@@ -291,7 +308,9 @@ public final class Cosmos {
     private long amount_;
     /**
      * <code>int64 amount = 2;</code>
+     * @return The amount.
      */
+    @java.lang.Override
     public long getAmount() {
       return amount_;
     }
@@ -619,6 +638,7 @@ public final class Cosmos {
       private java.lang.Object denom_ = "";
       /**
        * <code>string denom = 1;</code>
+       * @return The denom.
        */
       public java.lang.String getDenom() {
         java.lang.Object ref = denom_;
@@ -634,6 +654,7 @@ public final class Cosmos {
       }
       /**
        * <code>string denom = 1;</code>
+       * @return The bytes for denom.
        */
       public com.google.protobuf.ByteString
           getDenomBytes() {
@@ -650,6 +671,8 @@ public final class Cosmos {
       }
       /**
        * <code>string denom = 1;</code>
+       * @param value The denom to set.
+       * @return This builder for chaining.
        */
       public Builder setDenom(
           java.lang.String value) {
@@ -663,6 +686,7 @@ public final class Cosmos {
       }
       /**
        * <code>string denom = 1;</code>
+       * @return This builder for chaining.
        */
       public Builder clearDenom() {
         
@@ -672,6 +696,8 @@ public final class Cosmos {
       }
       /**
        * <code>string denom = 1;</code>
+       * @param value The bytes for denom to set.
+       * @return This builder for chaining.
        */
       public Builder setDenomBytes(
           com.google.protobuf.ByteString value) {
@@ -688,12 +714,16 @@ public final class Cosmos {
       private long amount_ ;
       /**
        * <code>int64 amount = 2;</code>
+       * @return The amount.
        */
+      @java.lang.Override
       public long getAmount() {
         return amount_;
       }
       /**
        * <code>int64 amount = 2;</code>
+       * @param value The amount to set.
+       * @return This builder for chaining.
        */
       public Builder setAmount(long value) {
         
@@ -703,6 +733,7 @@ public final class Cosmos {
       }
       /**
        * <code>int64 amount = 2;</code>
+       * @return This builder for chaining.
        */
       public Builder clearAmount() {
         
@@ -793,13 +824,14 @@ public final class Cosmos {
 
     /**
      * <code>uint64 gas = 2;</code>
+     * @return The gas.
      */
     long getGas();
   }
   /**
    * Protobuf type {@code TW.Cosmos.Proto.Fee}
    */
-  public  static final class Fee extends
+  public static final class Fee extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:TW.Cosmos.Proto.Fee)
       FeeOrBuilder {
@@ -897,12 +929,14 @@ public final class Cosmos {
     /**
      * <code>repeated .TW.Cosmos.Proto.Amount amounts = 1;</code>
      */
+    @java.lang.Override
     public java.util.List<wallet.core.jni.proto.Cosmos.Amount> getAmountsList() {
       return amounts_;
     }
     /**
      * <code>repeated .TW.Cosmos.Proto.Amount amounts = 1;</code>
      */
+    @java.lang.Override
     public java.util.List<? extends wallet.core.jni.proto.Cosmos.AmountOrBuilder> 
         getAmountsOrBuilderList() {
       return amounts_;
@@ -910,18 +944,21 @@ public final class Cosmos {
     /**
      * <code>repeated .TW.Cosmos.Proto.Amount amounts = 1;</code>
      */
+    @java.lang.Override
     public int getAmountsCount() {
       return amounts_.size();
     }
     /**
      * <code>repeated .TW.Cosmos.Proto.Amount amounts = 1;</code>
      */
+    @java.lang.Override
     public wallet.core.jni.proto.Cosmos.Amount getAmounts(int index) {
       return amounts_.get(index);
     }
     /**
      * <code>repeated .TW.Cosmos.Proto.Amount amounts = 1;</code>
      */
+    @java.lang.Override
     public wallet.core.jni.proto.Cosmos.AmountOrBuilder getAmountsOrBuilder(
         int index) {
       return amounts_.get(index);
@@ -931,7 +968,9 @@ public final class Cosmos {
     private long gas_;
     /**
      * <code>uint64 gas = 2;</code>
+     * @return The gas.
      */
+    @java.lang.Override
     public long getGas() {
       return gas_;
     }
@@ -1539,12 +1578,16 @@ public final class Cosmos {
       private long gas_ ;
       /**
        * <code>uint64 gas = 2;</code>
+       * @return The gas.
        */
+      @java.lang.Override
       public long getGas() {
         return gas_;
       }
       /**
        * <code>uint64 gas = 2;</code>
+       * @param value The gas to set.
+       * @return This builder for chaining.
        */
       public Builder setGas(long value) {
         
@@ -1554,6 +1597,7 @@ public final class Cosmos {
       }
       /**
        * <code>uint64 gas = 2;</code>
+       * @return This builder for chaining.
        */
       public Builder clearGas() {
         
@@ -1620,10 +1664,12 @@ public final class Cosmos {
 
     /**
      * <code>.TW.Cosmos.Proto.Message.Send send_coins_message = 1;</code>
+     * @return Whether the sendCoinsMessage field is set.
      */
     boolean hasSendCoinsMessage();
     /**
      * <code>.TW.Cosmos.Proto.Message.Send send_coins_message = 1;</code>
+     * @return The sendCoinsMessage.
      */
     wallet.core.jni.proto.Cosmos.Message.Send getSendCoinsMessage();
     /**
@@ -1633,10 +1679,12 @@ public final class Cosmos {
 
     /**
      * <code>.TW.Cosmos.Proto.Message.Delegate stake_message = 2;</code>
+     * @return Whether the stakeMessage field is set.
      */
     boolean hasStakeMessage();
     /**
      * <code>.TW.Cosmos.Proto.Message.Delegate stake_message = 2;</code>
+     * @return The stakeMessage.
      */
     wallet.core.jni.proto.Cosmos.Message.Delegate getStakeMessage();
     /**
@@ -1646,10 +1694,12 @@ public final class Cosmos {
 
     /**
      * <code>.TW.Cosmos.Proto.Message.Undelegate unstake_message = 3;</code>
+     * @return Whether the unstakeMessage field is set.
      */
     boolean hasUnstakeMessage();
     /**
      * <code>.TW.Cosmos.Proto.Message.Undelegate unstake_message = 3;</code>
+     * @return The unstakeMessage.
      */
     wallet.core.jni.proto.Cosmos.Message.Undelegate getUnstakeMessage();
     /**
@@ -1659,10 +1709,12 @@ public final class Cosmos {
 
     /**
      * <code>.TW.Cosmos.Proto.Message.BeginRedelegate restake_message = 4;</code>
+     * @return Whether the restakeMessage field is set.
      */
     boolean hasRestakeMessage();
     /**
      * <code>.TW.Cosmos.Proto.Message.BeginRedelegate restake_message = 4;</code>
+     * @return The restakeMessage.
      */
     wallet.core.jni.proto.Cosmos.Message.BeginRedelegate getRestakeMessage();
     /**
@@ -1672,10 +1724,12 @@ public final class Cosmos {
 
     /**
      * <code>.TW.Cosmos.Proto.Message.WithdrawDelegationReward withdraw_stake_reward_message = 5;</code>
+     * @return Whether the withdrawStakeRewardMessage field is set.
      */
     boolean hasWithdrawStakeRewardMessage();
     /**
      * <code>.TW.Cosmos.Proto.Message.WithdrawDelegationReward withdraw_stake_reward_message = 5;</code>
+     * @return The withdrawStakeRewardMessage.
      */
     wallet.core.jni.proto.Cosmos.Message.WithdrawDelegationReward getWithdrawStakeRewardMessage();
     /**
@@ -1685,10 +1739,12 @@ public final class Cosmos {
 
     /**
      * <code>.TW.Cosmos.Proto.Message.RawJSON raw_json_message = 6;</code>
+     * @return Whether the rawJsonMessage field is set.
      */
     boolean hasRawJsonMessage();
     /**
      * <code>.TW.Cosmos.Proto.Message.RawJSON raw_json_message = 6;</code>
+     * @return The rawJsonMessage.
      */
     wallet.core.jni.proto.Cosmos.Message.RawJSON getRawJsonMessage();
     /**
@@ -1701,7 +1757,7 @@ public final class Cosmos {
   /**
    * Protobuf type {@code TW.Cosmos.Proto.Message}
    */
-  public  static final class Message extends
+  public static final class Message extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:TW.Cosmos.Proto.Message)
       MessageOrBuilder {
@@ -1865,20 +1921,24 @@ public final class Cosmos {
 
       /**
        * <code>string from_address = 1;</code>
+       * @return The fromAddress.
        */
       java.lang.String getFromAddress();
       /**
        * <code>string from_address = 1;</code>
+       * @return The bytes for fromAddress.
        */
       com.google.protobuf.ByteString
           getFromAddressBytes();
 
       /**
        * <code>string to_address = 2;</code>
+       * @return The toAddress.
        */
       java.lang.String getToAddress();
       /**
        * <code>string to_address = 2;</code>
+       * @return The bytes for toAddress.
        */
       com.google.protobuf.ByteString
           getToAddressBytes();
@@ -1909,10 +1969,12 @@ public final class Cosmos {
 
       /**
        * <code>string type_prefix = 4;</code>
+       * @return The typePrefix.
        */
       java.lang.String getTypePrefix();
       /**
        * <code>string type_prefix = 4;</code>
+       * @return The bytes for typePrefix.
        */
       com.google.protobuf.ByteString
           getTypePrefixBytes();
@@ -1924,7 +1986,7 @@ public final class Cosmos {
      *
      * Protobuf type {@code TW.Cosmos.Proto.Message.Send}
      */
-    public  static final class Send extends
+    public static final class Send extends
         com.google.protobuf.GeneratedMessageV3 implements
         // @@protoc_insertion_point(message_implements:TW.Cosmos.Proto.Message.Send)
         SendOrBuilder {
@@ -2037,7 +2099,9 @@ public final class Cosmos {
       private volatile java.lang.Object fromAddress_;
       /**
        * <code>string from_address = 1;</code>
+       * @return The fromAddress.
        */
+      @java.lang.Override
       public java.lang.String getFromAddress() {
         java.lang.Object ref = fromAddress_;
         if (ref instanceof java.lang.String) {
@@ -2052,7 +2116,9 @@ public final class Cosmos {
       }
       /**
        * <code>string from_address = 1;</code>
+       * @return The bytes for fromAddress.
        */
+      @java.lang.Override
       public com.google.protobuf.ByteString
           getFromAddressBytes() {
         java.lang.Object ref = fromAddress_;
@@ -2071,7 +2137,9 @@ public final class Cosmos {
       private volatile java.lang.Object toAddress_;
       /**
        * <code>string to_address = 2;</code>
+       * @return The toAddress.
        */
+      @java.lang.Override
       public java.lang.String getToAddress() {
         java.lang.Object ref = toAddress_;
         if (ref instanceof java.lang.String) {
@@ -2086,7 +2154,9 @@ public final class Cosmos {
       }
       /**
        * <code>string to_address = 2;</code>
+       * @return The bytes for toAddress.
        */
+      @java.lang.Override
       public com.google.protobuf.ByteString
           getToAddressBytes() {
         java.lang.Object ref = toAddress_;
@@ -2106,12 +2176,14 @@ public final class Cosmos {
       /**
        * <code>repeated .TW.Cosmos.Proto.Amount amounts = 3;</code>
        */
+      @java.lang.Override
       public java.util.List<wallet.core.jni.proto.Cosmos.Amount> getAmountsList() {
         return amounts_;
       }
       /**
        * <code>repeated .TW.Cosmos.Proto.Amount amounts = 3;</code>
        */
+      @java.lang.Override
       public java.util.List<? extends wallet.core.jni.proto.Cosmos.AmountOrBuilder> 
           getAmountsOrBuilderList() {
         return amounts_;
@@ -2119,18 +2191,21 @@ public final class Cosmos {
       /**
        * <code>repeated .TW.Cosmos.Proto.Amount amounts = 3;</code>
        */
+      @java.lang.Override
       public int getAmountsCount() {
         return amounts_.size();
       }
       /**
        * <code>repeated .TW.Cosmos.Proto.Amount amounts = 3;</code>
        */
+      @java.lang.Override
       public wallet.core.jni.proto.Cosmos.Amount getAmounts(int index) {
         return amounts_.get(index);
       }
       /**
        * <code>repeated .TW.Cosmos.Proto.Amount amounts = 3;</code>
        */
+      @java.lang.Override
       public wallet.core.jni.proto.Cosmos.AmountOrBuilder getAmountsOrBuilder(
           int index) {
         return amounts_.get(index);
@@ -2140,7 +2215,9 @@ public final class Cosmos {
       private volatile java.lang.Object typePrefix_;
       /**
        * <code>string type_prefix = 4;</code>
+       * @return The typePrefix.
        */
+      @java.lang.Override
       public java.lang.String getTypePrefix() {
         java.lang.Object ref = typePrefix_;
         if (ref instanceof java.lang.String) {
@@ -2155,7 +2232,9 @@ public final class Cosmos {
       }
       /**
        * <code>string type_prefix = 4;</code>
+       * @return The bytes for typePrefix.
        */
+      @java.lang.Override
       public com.google.protobuf.ByteString
           getTypePrefixBytes() {
         java.lang.Object ref = typePrefix_;
@@ -2570,6 +2649,7 @@ public final class Cosmos {
         private java.lang.Object fromAddress_ = "";
         /**
          * <code>string from_address = 1;</code>
+         * @return The fromAddress.
          */
         public java.lang.String getFromAddress() {
           java.lang.Object ref = fromAddress_;
@@ -2585,6 +2665,7 @@ public final class Cosmos {
         }
         /**
          * <code>string from_address = 1;</code>
+         * @return The bytes for fromAddress.
          */
         public com.google.protobuf.ByteString
             getFromAddressBytes() {
@@ -2601,6 +2682,8 @@ public final class Cosmos {
         }
         /**
          * <code>string from_address = 1;</code>
+         * @param value The fromAddress to set.
+         * @return This builder for chaining.
          */
         public Builder setFromAddress(
             java.lang.String value) {
@@ -2614,6 +2697,7 @@ public final class Cosmos {
         }
         /**
          * <code>string from_address = 1;</code>
+         * @return This builder for chaining.
          */
         public Builder clearFromAddress() {
           
@@ -2623,6 +2707,8 @@ public final class Cosmos {
         }
         /**
          * <code>string from_address = 1;</code>
+         * @param value The bytes for fromAddress to set.
+         * @return This builder for chaining.
          */
         public Builder setFromAddressBytes(
             com.google.protobuf.ByteString value) {
@@ -2639,6 +2725,7 @@ public final class Cosmos {
         private java.lang.Object toAddress_ = "";
         /**
          * <code>string to_address = 2;</code>
+         * @return The toAddress.
          */
         public java.lang.String getToAddress() {
           java.lang.Object ref = toAddress_;
@@ -2654,6 +2741,7 @@ public final class Cosmos {
         }
         /**
          * <code>string to_address = 2;</code>
+         * @return The bytes for toAddress.
          */
         public com.google.protobuf.ByteString
             getToAddressBytes() {
@@ -2670,6 +2758,8 @@ public final class Cosmos {
         }
         /**
          * <code>string to_address = 2;</code>
+         * @param value The toAddress to set.
+         * @return This builder for chaining.
          */
         public Builder setToAddress(
             java.lang.String value) {
@@ -2683,6 +2773,7 @@ public final class Cosmos {
         }
         /**
          * <code>string to_address = 2;</code>
+         * @return This builder for chaining.
          */
         public Builder clearToAddress() {
           
@@ -2692,6 +2783,8 @@ public final class Cosmos {
         }
         /**
          * <code>string to_address = 2;</code>
+         * @param value The bytes for toAddress to set.
+         * @return This builder for chaining.
          */
         public Builder setToAddressBytes(
             com.google.protobuf.ByteString value) {
@@ -2948,6 +3041,7 @@ public final class Cosmos {
         private java.lang.Object typePrefix_ = "";
         /**
          * <code>string type_prefix = 4;</code>
+         * @return The typePrefix.
          */
         public java.lang.String getTypePrefix() {
           java.lang.Object ref = typePrefix_;
@@ -2963,6 +3057,7 @@ public final class Cosmos {
         }
         /**
          * <code>string type_prefix = 4;</code>
+         * @return The bytes for typePrefix.
          */
         public com.google.protobuf.ByteString
             getTypePrefixBytes() {
@@ -2979,6 +3074,8 @@ public final class Cosmos {
         }
         /**
          * <code>string type_prefix = 4;</code>
+         * @param value The typePrefix to set.
+         * @return This builder for chaining.
          */
         public Builder setTypePrefix(
             java.lang.String value) {
@@ -2992,6 +3089,7 @@ public final class Cosmos {
         }
         /**
          * <code>string type_prefix = 4;</code>
+         * @return This builder for chaining.
          */
         public Builder clearTypePrefix() {
           
@@ -3001,6 +3099,8 @@ public final class Cosmos {
         }
         /**
          * <code>string type_prefix = 4;</code>
+         * @param value The bytes for typePrefix to set.
+         * @return This builder for chaining.
          */
         public Builder setTypePrefixBytes(
             com.google.protobuf.ByteString value) {
@@ -3072,30 +3172,36 @@ public final class Cosmos {
 
       /**
        * <code>string delegator_address = 1;</code>
+       * @return The delegatorAddress.
        */
       java.lang.String getDelegatorAddress();
       /**
        * <code>string delegator_address = 1;</code>
+       * @return The bytes for delegatorAddress.
        */
       com.google.protobuf.ByteString
           getDelegatorAddressBytes();
 
       /**
        * <code>string validator_address = 2;</code>
+       * @return The validatorAddress.
        */
       java.lang.String getValidatorAddress();
       /**
        * <code>string validator_address = 2;</code>
+       * @return The bytes for validatorAddress.
        */
       com.google.protobuf.ByteString
           getValidatorAddressBytes();
 
       /**
        * <code>.TW.Cosmos.Proto.Amount amount = 3;</code>
+       * @return Whether the amount field is set.
        */
       boolean hasAmount();
       /**
        * <code>.TW.Cosmos.Proto.Amount amount = 3;</code>
+       * @return The amount.
        */
       wallet.core.jni.proto.Cosmos.Amount getAmount();
       /**
@@ -3105,10 +3211,12 @@ public final class Cosmos {
 
       /**
        * <code>string type_prefix = 4;</code>
+       * @return The typePrefix.
        */
       java.lang.String getTypePrefix();
       /**
        * <code>string type_prefix = 4;</code>
+       * @return The bytes for typePrefix.
        */
       com.google.protobuf.ByteString
           getTypePrefixBytes();
@@ -3120,7 +3228,7 @@ public final class Cosmos {
      *
      * Protobuf type {@code TW.Cosmos.Proto.Message.Delegate}
      */
-    public  static final class Delegate extends
+    public static final class Delegate extends
         com.google.protobuf.GeneratedMessageV3 implements
         // @@protoc_insertion_point(message_implements:TW.Cosmos.Proto.Message.Delegate)
         DelegateOrBuilder {
@@ -3232,7 +3340,9 @@ public final class Cosmos {
       private volatile java.lang.Object delegatorAddress_;
       /**
        * <code>string delegator_address = 1;</code>
+       * @return The delegatorAddress.
        */
+      @java.lang.Override
       public java.lang.String getDelegatorAddress() {
         java.lang.Object ref = delegatorAddress_;
         if (ref instanceof java.lang.String) {
@@ -3247,7 +3357,9 @@ public final class Cosmos {
       }
       /**
        * <code>string delegator_address = 1;</code>
+       * @return The bytes for delegatorAddress.
        */
+      @java.lang.Override
       public com.google.protobuf.ByteString
           getDelegatorAddressBytes() {
         java.lang.Object ref = delegatorAddress_;
@@ -3266,7 +3378,9 @@ public final class Cosmos {
       private volatile java.lang.Object validatorAddress_;
       /**
        * <code>string validator_address = 2;</code>
+       * @return The validatorAddress.
        */
+      @java.lang.Override
       public java.lang.String getValidatorAddress() {
         java.lang.Object ref = validatorAddress_;
         if (ref instanceof java.lang.String) {
@@ -3281,7 +3395,9 @@ public final class Cosmos {
       }
       /**
        * <code>string validator_address = 2;</code>
+       * @return The bytes for validatorAddress.
        */
+      @java.lang.Override
       public com.google.protobuf.ByteString
           getValidatorAddressBytes() {
         java.lang.Object ref = validatorAddress_;
@@ -3300,19 +3416,24 @@ public final class Cosmos {
       private wallet.core.jni.proto.Cosmos.Amount amount_;
       /**
        * <code>.TW.Cosmos.Proto.Amount amount = 3;</code>
+       * @return Whether the amount field is set.
        */
+      @java.lang.Override
       public boolean hasAmount() {
         return amount_ != null;
       }
       /**
        * <code>.TW.Cosmos.Proto.Amount amount = 3;</code>
+       * @return The amount.
        */
+      @java.lang.Override
       public wallet.core.jni.proto.Cosmos.Amount getAmount() {
         return amount_ == null ? wallet.core.jni.proto.Cosmos.Amount.getDefaultInstance() : amount_;
       }
       /**
        * <code>.TW.Cosmos.Proto.Amount amount = 3;</code>
        */
+      @java.lang.Override
       public wallet.core.jni.proto.Cosmos.AmountOrBuilder getAmountOrBuilder() {
         return getAmount();
       }
@@ -3321,7 +3442,9 @@ public final class Cosmos {
       private volatile java.lang.Object typePrefix_;
       /**
        * <code>string type_prefix = 4;</code>
+       * @return The typePrefix.
        */
+      @java.lang.Override
       public java.lang.String getTypePrefix() {
         java.lang.Object ref = typePrefix_;
         if (ref instanceof java.lang.String) {
@@ -3336,7 +3459,9 @@ public final class Cosmos {
       }
       /**
        * <code>string type_prefix = 4;</code>
+       * @return The bytes for typePrefix.
        */
+      @java.lang.Override
       public com.google.protobuf.ByteString
           getTypePrefixBytes() {
         java.lang.Object ref = typePrefix_;
@@ -3724,6 +3849,7 @@ public final class Cosmos {
         private java.lang.Object delegatorAddress_ = "";
         /**
          * <code>string delegator_address = 1;</code>
+         * @return The delegatorAddress.
          */
         public java.lang.String getDelegatorAddress() {
           java.lang.Object ref = delegatorAddress_;
@@ -3739,6 +3865,7 @@ public final class Cosmos {
         }
         /**
          * <code>string delegator_address = 1;</code>
+         * @return The bytes for delegatorAddress.
          */
         public com.google.protobuf.ByteString
             getDelegatorAddressBytes() {
@@ -3755,6 +3882,8 @@ public final class Cosmos {
         }
         /**
          * <code>string delegator_address = 1;</code>
+         * @param value The delegatorAddress to set.
+         * @return This builder for chaining.
          */
         public Builder setDelegatorAddress(
             java.lang.String value) {
@@ -3768,6 +3897,7 @@ public final class Cosmos {
         }
         /**
          * <code>string delegator_address = 1;</code>
+         * @return This builder for chaining.
          */
         public Builder clearDelegatorAddress() {
           
@@ -3777,6 +3907,8 @@ public final class Cosmos {
         }
         /**
          * <code>string delegator_address = 1;</code>
+         * @param value The bytes for delegatorAddress to set.
+         * @return This builder for chaining.
          */
         public Builder setDelegatorAddressBytes(
             com.google.protobuf.ByteString value) {
@@ -3793,6 +3925,7 @@ public final class Cosmos {
         private java.lang.Object validatorAddress_ = "";
         /**
          * <code>string validator_address = 2;</code>
+         * @return The validatorAddress.
          */
         public java.lang.String getValidatorAddress() {
           java.lang.Object ref = validatorAddress_;
@@ -3808,6 +3941,7 @@ public final class Cosmos {
         }
         /**
          * <code>string validator_address = 2;</code>
+         * @return The bytes for validatorAddress.
          */
         public com.google.protobuf.ByteString
             getValidatorAddressBytes() {
@@ -3824,6 +3958,8 @@ public final class Cosmos {
         }
         /**
          * <code>string validator_address = 2;</code>
+         * @param value The validatorAddress to set.
+         * @return This builder for chaining.
          */
         public Builder setValidatorAddress(
             java.lang.String value) {
@@ -3837,6 +3973,7 @@ public final class Cosmos {
         }
         /**
          * <code>string validator_address = 2;</code>
+         * @return This builder for chaining.
          */
         public Builder clearValidatorAddress() {
           
@@ -3846,6 +3983,8 @@ public final class Cosmos {
         }
         /**
          * <code>string validator_address = 2;</code>
+         * @param value The bytes for validatorAddress to set.
+         * @return This builder for chaining.
          */
         public Builder setValidatorAddressBytes(
             com.google.protobuf.ByteString value) {
@@ -3864,12 +4003,14 @@ public final class Cosmos {
             wallet.core.jni.proto.Cosmos.Amount, wallet.core.jni.proto.Cosmos.Amount.Builder, wallet.core.jni.proto.Cosmos.AmountOrBuilder> amountBuilder_;
         /**
          * <code>.TW.Cosmos.Proto.Amount amount = 3;</code>
+         * @return Whether the amount field is set.
          */
         public boolean hasAmount() {
           return amountBuilder_ != null || amount_ != null;
         }
         /**
          * <code>.TW.Cosmos.Proto.Amount amount = 3;</code>
+         * @return The amount.
          */
         public wallet.core.jni.proto.Cosmos.Amount getAmount() {
           if (amountBuilder_ == null) {
@@ -3979,6 +4120,7 @@ public final class Cosmos {
         private java.lang.Object typePrefix_ = "";
         /**
          * <code>string type_prefix = 4;</code>
+         * @return The typePrefix.
          */
         public java.lang.String getTypePrefix() {
           java.lang.Object ref = typePrefix_;
@@ -3994,6 +4136,7 @@ public final class Cosmos {
         }
         /**
          * <code>string type_prefix = 4;</code>
+         * @return The bytes for typePrefix.
          */
         public com.google.protobuf.ByteString
             getTypePrefixBytes() {
@@ -4010,6 +4153,8 @@ public final class Cosmos {
         }
         /**
          * <code>string type_prefix = 4;</code>
+         * @param value The typePrefix to set.
+         * @return This builder for chaining.
          */
         public Builder setTypePrefix(
             java.lang.String value) {
@@ -4023,6 +4168,7 @@ public final class Cosmos {
         }
         /**
          * <code>string type_prefix = 4;</code>
+         * @return This builder for chaining.
          */
         public Builder clearTypePrefix() {
           
@@ -4032,6 +4178,8 @@ public final class Cosmos {
         }
         /**
          * <code>string type_prefix = 4;</code>
+         * @param value The bytes for typePrefix to set.
+         * @return This builder for chaining.
          */
         public Builder setTypePrefixBytes(
             com.google.protobuf.ByteString value) {
@@ -4103,30 +4251,36 @@ public final class Cosmos {
 
       /**
        * <code>string delegator_address = 1;</code>
+       * @return The delegatorAddress.
        */
       java.lang.String getDelegatorAddress();
       /**
        * <code>string delegator_address = 1;</code>
+       * @return The bytes for delegatorAddress.
        */
       com.google.protobuf.ByteString
           getDelegatorAddressBytes();
 
       /**
        * <code>string validator_address = 2;</code>
+       * @return The validatorAddress.
        */
       java.lang.String getValidatorAddress();
       /**
        * <code>string validator_address = 2;</code>
+       * @return The bytes for validatorAddress.
        */
       com.google.protobuf.ByteString
           getValidatorAddressBytes();
 
       /**
        * <code>.TW.Cosmos.Proto.Amount amount = 3;</code>
+       * @return Whether the amount field is set.
        */
       boolean hasAmount();
       /**
        * <code>.TW.Cosmos.Proto.Amount amount = 3;</code>
+       * @return The amount.
        */
       wallet.core.jni.proto.Cosmos.Amount getAmount();
       /**
@@ -4136,10 +4290,12 @@ public final class Cosmos {
 
       /**
        * <code>string type_prefix = 4;</code>
+       * @return The typePrefix.
        */
       java.lang.String getTypePrefix();
       /**
        * <code>string type_prefix = 4;</code>
+       * @return The bytes for typePrefix.
        */
       com.google.protobuf.ByteString
           getTypePrefixBytes();
@@ -4151,7 +4307,7 @@ public final class Cosmos {
      *
      * Protobuf type {@code TW.Cosmos.Proto.Message.Undelegate}
      */
-    public  static final class Undelegate extends
+    public static final class Undelegate extends
         com.google.protobuf.GeneratedMessageV3 implements
         // @@protoc_insertion_point(message_implements:TW.Cosmos.Proto.Message.Undelegate)
         UndelegateOrBuilder {
@@ -4263,7 +4419,9 @@ public final class Cosmos {
       private volatile java.lang.Object delegatorAddress_;
       /**
        * <code>string delegator_address = 1;</code>
+       * @return The delegatorAddress.
        */
+      @java.lang.Override
       public java.lang.String getDelegatorAddress() {
         java.lang.Object ref = delegatorAddress_;
         if (ref instanceof java.lang.String) {
@@ -4278,7 +4436,9 @@ public final class Cosmos {
       }
       /**
        * <code>string delegator_address = 1;</code>
+       * @return The bytes for delegatorAddress.
        */
+      @java.lang.Override
       public com.google.protobuf.ByteString
           getDelegatorAddressBytes() {
         java.lang.Object ref = delegatorAddress_;
@@ -4297,7 +4457,9 @@ public final class Cosmos {
       private volatile java.lang.Object validatorAddress_;
       /**
        * <code>string validator_address = 2;</code>
+       * @return The validatorAddress.
        */
+      @java.lang.Override
       public java.lang.String getValidatorAddress() {
         java.lang.Object ref = validatorAddress_;
         if (ref instanceof java.lang.String) {
@@ -4312,7 +4474,9 @@ public final class Cosmos {
       }
       /**
        * <code>string validator_address = 2;</code>
+       * @return The bytes for validatorAddress.
        */
+      @java.lang.Override
       public com.google.protobuf.ByteString
           getValidatorAddressBytes() {
         java.lang.Object ref = validatorAddress_;
@@ -4331,19 +4495,24 @@ public final class Cosmos {
       private wallet.core.jni.proto.Cosmos.Amount amount_;
       /**
        * <code>.TW.Cosmos.Proto.Amount amount = 3;</code>
+       * @return Whether the amount field is set.
        */
+      @java.lang.Override
       public boolean hasAmount() {
         return amount_ != null;
       }
       /**
        * <code>.TW.Cosmos.Proto.Amount amount = 3;</code>
+       * @return The amount.
        */
+      @java.lang.Override
       public wallet.core.jni.proto.Cosmos.Amount getAmount() {
         return amount_ == null ? wallet.core.jni.proto.Cosmos.Amount.getDefaultInstance() : amount_;
       }
       /**
        * <code>.TW.Cosmos.Proto.Amount amount = 3;</code>
        */
+      @java.lang.Override
       public wallet.core.jni.proto.Cosmos.AmountOrBuilder getAmountOrBuilder() {
         return getAmount();
       }
@@ -4352,7 +4521,9 @@ public final class Cosmos {
       private volatile java.lang.Object typePrefix_;
       /**
        * <code>string type_prefix = 4;</code>
+       * @return The typePrefix.
        */
+      @java.lang.Override
       public java.lang.String getTypePrefix() {
         java.lang.Object ref = typePrefix_;
         if (ref instanceof java.lang.String) {
@@ -4367,7 +4538,9 @@ public final class Cosmos {
       }
       /**
        * <code>string type_prefix = 4;</code>
+       * @return The bytes for typePrefix.
        */
+      @java.lang.Override
       public com.google.protobuf.ByteString
           getTypePrefixBytes() {
         java.lang.Object ref = typePrefix_;
@@ -4755,6 +4928,7 @@ public final class Cosmos {
         private java.lang.Object delegatorAddress_ = "";
         /**
          * <code>string delegator_address = 1;</code>
+         * @return The delegatorAddress.
          */
         public java.lang.String getDelegatorAddress() {
           java.lang.Object ref = delegatorAddress_;
@@ -4770,6 +4944,7 @@ public final class Cosmos {
         }
         /**
          * <code>string delegator_address = 1;</code>
+         * @return The bytes for delegatorAddress.
          */
         public com.google.protobuf.ByteString
             getDelegatorAddressBytes() {
@@ -4786,6 +4961,8 @@ public final class Cosmos {
         }
         /**
          * <code>string delegator_address = 1;</code>
+         * @param value The delegatorAddress to set.
+         * @return This builder for chaining.
          */
         public Builder setDelegatorAddress(
             java.lang.String value) {
@@ -4799,6 +4976,7 @@ public final class Cosmos {
         }
         /**
          * <code>string delegator_address = 1;</code>
+         * @return This builder for chaining.
          */
         public Builder clearDelegatorAddress() {
           
@@ -4808,6 +4986,8 @@ public final class Cosmos {
         }
         /**
          * <code>string delegator_address = 1;</code>
+         * @param value The bytes for delegatorAddress to set.
+         * @return This builder for chaining.
          */
         public Builder setDelegatorAddressBytes(
             com.google.protobuf.ByteString value) {
@@ -4824,6 +5004,7 @@ public final class Cosmos {
         private java.lang.Object validatorAddress_ = "";
         /**
          * <code>string validator_address = 2;</code>
+         * @return The validatorAddress.
          */
         public java.lang.String getValidatorAddress() {
           java.lang.Object ref = validatorAddress_;
@@ -4839,6 +5020,7 @@ public final class Cosmos {
         }
         /**
          * <code>string validator_address = 2;</code>
+         * @return The bytes for validatorAddress.
          */
         public com.google.protobuf.ByteString
             getValidatorAddressBytes() {
@@ -4855,6 +5037,8 @@ public final class Cosmos {
         }
         /**
          * <code>string validator_address = 2;</code>
+         * @param value The validatorAddress to set.
+         * @return This builder for chaining.
          */
         public Builder setValidatorAddress(
             java.lang.String value) {
@@ -4868,6 +5052,7 @@ public final class Cosmos {
         }
         /**
          * <code>string validator_address = 2;</code>
+         * @return This builder for chaining.
          */
         public Builder clearValidatorAddress() {
           
@@ -4877,6 +5062,8 @@ public final class Cosmos {
         }
         /**
          * <code>string validator_address = 2;</code>
+         * @param value The bytes for validatorAddress to set.
+         * @return This builder for chaining.
          */
         public Builder setValidatorAddressBytes(
             com.google.protobuf.ByteString value) {
@@ -4895,12 +5082,14 @@ public final class Cosmos {
             wallet.core.jni.proto.Cosmos.Amount, wallet.core.jni.proto.Cosmos.Amount.Builder, wallet.core.jni.proto.Cosmos.AmountOrBuilder> amountBuilder_;
         /**
          * <code>.TW.Cosmos.Proto.Amount amount = 3;</code>
+         * @return Whether the amount field is set.
          */
         public boolean hasAmount() {
           return amountBuilder_ != null || amount_ != null;
         }
         /**
          * <code>.TW.Cosmos.Proto.Amount amount = 3;</code>
+         * @return The amount.
          */
         public wallet.core.jni.proto.Cosmos.Amount getAmount() {
           if (amountBuilder_ == null) {
@@ -5010,6 +5199,7 @@ public final class Cosmos {
         private java.lang.Object typePrefix_ = "";
         /**
          * <code>string type_prefix = 4;</code>
+         * @return The typePrefix.
          */
         public java.lang.String getTypePrefix() {
           java.lang.Object ref = typePrefix_;
@@ -5025,6 +5215,7 @@ public final class Cosmos {
         }
         /**
          * <code>string type_prefix = 4;</code>
+         * @return The bytes for typePrefix.
          */
         public com.google.protobuf.ByteString
             getTypePrefixBytes() {
@@ -5041,6 +5232,8 @@ public final class Cosmos {
         }
         /**
          * <code>string type_prefix = 4;</code>
+         * @param value The typePrefix to set.
+         * @return This builder for chaining.
          */
         public Builder setTypePrefix(
             java.lang.String value) {
@@ -5054,6 +5247,7 @@ public final class Cosmos {
         }
         /**
          * <code>string type_prefix = 4;</code>
+         * @return This builder for chaining.
          */
         public Builder clearTypePrefix() {
           
@@ -5063,6 +5257,8 @@ public final class Cosmos {
         }
         /**
          * <code>string type_prefix = 4;</code>
+         * @param value The bytes for typePrefix to set.
+         * @return This builder for chaining.
          */
         public Builder setTypePrefixBytes(
             com.google.protobuf.ByteString value) {
@@ -5134,40 +5330,48 @@ public final class Cosmos {
 
       /**
        * <code>string delegator_address = 1;</code>
+       * @return The delegatorAddress.
        */
       java.lang.String getDelegatorAddress();
       /**
        * <code>string delegator_address = 1;</code>
+       * @return The bytes for delegatorAddress.
        */
       com.google.protobuf.ByteString
           getDelegatorAddressBytes();
 
       /**
        * <code>string validator_src_address = 2;</code>
+       * @return The validatorSrcAddress.
        */
       java.lang.String getValidatorSrcAddress();
       /**
        * <code>string validator_src_address = 2;</code>
+       * @return The bytes for validatorSrcAddress.
        */
       com.google.protobuf.ByteString
           getValidatorSrcAddressBytes();
 
       /**
        * <code>string validator_dst_address = 3;</code>
+       * @return The validatorDstAddress.
        */
       java.lang.String getValidatorDstAddress();
       /**
        * <code>string validator_dst_address = 3;</code>
+       * @return The bytes for validatorDstAddress.
        */
       com.google.protobuf.ByteString
           getValidatorDstAddressBytes();
 
       /**
        * <code>.TW.Cosmos.Proto.Amount amount = 4;</code>
+       * @return Whether the amount field is set.
        */
       boolean hasAmount();
       /**
        * <code>.TW.Cosmos.Proto.Amount amount = 4;</code>
+       * @return The amount.
        */
       wallet.core.jni.proto.Cosmos.Amount getAmount();
       /**
@@ -5177,10 +5381,12 @@ public final class Cosmos {
 
       /**
        * <code>string type_prefix = 5;</code>
+       * @return The typePrefix.
        */
       java.lang.String getTypePrefix();
       /**
        * <code>string type_prefix = 5;</code>
+       * @return The bytes for typePrefix.
        */
       com.google.protobuf.ByteString
           getTypePrefixBytes();
@@ -5192,7 +5398,7 @@ public final class Cosmos {
      *
      * Protobuf type {@code TW.Cosmos.Proto.Message.BeginRedelegate}
      */
-    public  static final class BeginRedelegate extends
+    public static final class BeginRedelegate extends
         com.google.protobuf.GeneratedMessageV3 implements
         // @@protoc_insertion_point(message_implements:TW.Cosmos.Proto.Message.BeginRedelegate)
         BeginRedelegateOrBuilder {
@@ -5311,7 +5517,9 @@ public final class Cosmos {
       private volatile java.lang.Object delegatorAddress_;
       /**
        * <code>string delegator_address = 1;</code>
+       * @return The delegatorAddress.
        */
+      @java.lang.Override
       public java.lang.String getDelegatorAddress() {
         java.lang.Object ref = delegatorAddress_;
         if (ref instanceof java.lang.String) {
@@ -5326,7 +5534,9 @@ public final class Cosmos {
       }
       /**
        * <code>string delegator_address = 1;</code>
+       * @return The bytes for delegatorAddress.
        */
+      @java.lang.Override
       public com.google.protobuf.ByteString
           getDelegatorAddressBytes() {
         java.lang.Object ref = delegatorAddress_;
@@ -5345,7 +5555,9 @@ public final class Cosmos {
       private volatile java.lang.Object validatorSrcAddress_;
       /**
        * <code>string validator_src_address = 2;</code>
+       * @return The validatorSrcAddress.
        */
+      @java.lang.Override
       public java.lang.String getValidatorSrcAddress() {
         java.lang.Object ref = validatorSrcAddress_;
         if (ref instanceof java.lang.String) {
@@ -5360,7 +5572,9 @@ public final class Cosmos {
       }
       /**
        * <code>string validator_src_address = 2;</code>
+       * @return The bytes for validatorSrcAddress.
        */
+      @java.lang.Override
       public com.google.protobuf.ByteString
           getValidatorSrcAddressBytes() {
         java.lang.Object ref = validatorSrcAddress_;
@@ -5379,7 +5593,9 @@ public final class Cosmos {
       private volatile java.lang.Object validatorDstAddress_;
       /**
        * <code>string validator_dst_address = 3;</code>
+       * @return The validatorDstAddress.
        */
+      @java.lang.Override
       public java.lang.String getValidatorDstAddress() {
         java.lang.Object ref = validatorDstAddress_;
         if (ref instanceof java.lang.String) {
@@ -5394,7 +5610,9 @@ public final class Cosmos {
       }
       /**
        * <code>string validator_dst_address = 3;</code>
+       * @return The bytes for validatorDstAddress.
        */
+      @java.lang.Override
       public com.google.protobuf.ByteString
           getValidatorDstAddressBytes() {
         java.lang.Object ref = validatorDstAddress_;
@@ -5413,19 +5631,24 @@ public final class Cosmos {
       private wallet.core.jni.proto.Cosmos.Amount amount_;
       /**
        * <code>.TW.Cosmos.Proto.Amount amount = 4;</code>
+       * @return Whether the amount field is set.
        */
+      @java.lang.Override
       public boolean hasAmount() {
         return amount_ != null;
       }
       /**
        * <code>.TW.Cosmos.Proto.Amount amount = 4;</code>
+       * @return The amount.
        */
+      @java.lang.Override
       public wallet.core.jni.proto.Cosmos.Amount getAmount() {
         return amount_ == null ? wallet.core.jni.proto.Cosmos.Amount.getDefaultInstance() : amount_;
       }
       /**
        * <code>.TW.Cosmos.Proto.Amount amount = 4;</code>
        */
+      @java.lang.Override
       public wallet.core.jni.proto.Cosmos.AmountOrBuilder getAmountOrBuilder() {
         return getAmount();
       }
@@ -5434,7 +5657,9 @@ public final class Cosmos {
       private volatile java.lang.Object typePrefix_;
       /**
        * <code>string type_prefix = 5;</code>
+       * @return The typePrefix.
        */
+      @java.lang.Override
       public java.lang.String getTypePrefix() {
         java.lang.Object ref = typePrefix_;
         if (ref instanceof java.lang.String) {
@@ -5449,7 +5674,9 @@ public final class Cosmos {
       }
       /**
        * <code>string type_prefix = 5;</code>
+       * @return The bytes for typePrefix.
        */
+      @java.lang.Override
       public com.google.protobuf.ByteString
           getTypePrefixBytes() {
         java.lang.Object ref = typePrefix_;
@@ -5854,6 +6081,7 @@ public final class Cosmos {
         private java.lang.Object delegatorAddress_ = "";
         /**
          * <code>string delegator_address = 1;</code>
+         * @return The delegatorAddress.
          */
         public java.lang.String getDelegatorAddress() {
           java.lang.Object ref = delegatorAddress_;
@@ -5869,6 +6097,7 @@ public final class Cosmos {
         }
         /**
          * <code>string delegator_address = 1;</code>
+         * @return The bytes for delegatorAddress.
          */
         public com.google.protobuf.ByteString
             getDelegatorAddressBytes() {
@@ -5885,6 +6114,8 @@ public final class Cosmos {
         }
         /**
          * <code>string delegator_address = 1;</code>
+         * @param value The delegatorAddress to set.
+         * @return This builder for chaining.
          */
         public Builder setDelegatorAddress(
             java.lang.String value) {
@@ -5898,6 +6129,7 @@ public final class Cosmos {
         }
         /**
          * <code>string delegator_address = 1;</code>
+         * @return This builder for chaining.
          */
         public Builder clearDelegatorAddress() {
           
@@ -5907,6 +6139,8 @@ public final class Cosmos {
         }
         /**
          * <code>string delegator_address = 1;</code>
+         * @param value The bytes for delegatorAddress to set.
+         * @return This builder for chaining.
          */
         public Builder setDelegatorAddressBytes(
             com.google.protobuf.ByteString value) {
@@ -5923,6 +6157,7 @@ public final class Cosmos {
         private java.lang.Object validatorSrcAddress_ = "";
         /**
          * <code>string validator_src_address = 2;</code>
+         * @return The validatorSrcAddress.
          */
         public java.lang.String getValidatorSrcAddress() {
           java.lang.Object ref = validatorSrcAddress_;
@@ -5938,6 +6173,7 @@ public final class Cosmos {
         }
         /**
          * <code>string validator_src_address = 2;</code>
+         * @return The bytes for validatorSrcAddress.
          */
         public com.google.protobuf.ByteString
             getValidatorSrcAddressBytes() {
@@ -5954,6 +6190,8 @@ public final class Cosmos {
         }
         /**
          * <code>string validator_src_address = 2;</code>
+         * @param value The validatorSrcAddress to set.
+         * @return This builder for chaining.
          */
         public Builder setValidatorSrcAddress(
             java.lang.String value) {
@@ -5967,6 +6205,7 @@ public final class Cosmos {
         }
         /**
          * <code>string validator_src_address = 2;</code>
+         * @return This builder for chaining.
          */
         public Builder clearValidatorSrcAddress() {
           
@@ -5976,6 +6215,8 @@ public final class Cosmos {
         }
         /**
          * <code>string validator_src_address = 2;</code>
+         * @param value The bytes for validatorSrcAddress to set.
+         * @return This builder for chaining.
          */
         public Builder setValidatorSrcAddressBytes(
             com.google.protobuf.ByteString value) {
@@ -5992,6 +6233,7 @@ public final class Cosmos {
         private java.lang.Object validatorDstAddress_ = "";
         /**
          * <code>string validator_dst_address = 3;</code>
+         * @return The validatorDstAddress.
          */
         public java.lang.String getValidatorDstAddress() {
           java.lang.Object ref = validatorDstAddress_;
@@ -6007,6 +6249,7 @@ public final class Cosmos {
         }
         /**
          * <code>string validator_dst_address = 3;</code>
+         * @return The bytes for validatorDstAddress.
          */
         public com.google.protobuf.ByteString
             getValidatorDstAddressBytes() {
@@ -6023,6 +6266,8 @@ public final class Cosmos {
         }
         /**
          * <code>string validator_dst_address = 3;</code>
+         * @param value The validatorDstAddress to set.
+         * @return This builder for chaining.
          */
         public Builder setValidatorDstAddress(
             java.lang.String value) {
@@ -6036,6 +6281,7 @@ public final class Cosmos {
         }
         /**
          * <code>string validator_dst_address = 3;</code>
+         * @return This builder for chaining.
          */
         public Builder clearValidatorDstAddress() {
           
@@ -6045,6 +6291,8 @@ public final class Cosmos {
         }
         /**
          * <code>string validator_dst_address = 3;</code>
+         * @param value The bytes for validatorDstAddress to set.
+         * @return This builder for chaining.
          */
         public Builder setValidatorDstAddressBytes(
             com.google.protobuf.ByteString value) {
@@ -6063,12 +6311,14 @@ public final class Cosmos {
             wallet.core.jni.proto.Cosmos.Amount, wallet.core.jni.proto.Cosmos.Amount.Builder, wallet.core.jni.proto.Cosmos.AmountOrBuilder> amountBuilder_;
         /**
          * <code>.TW.Cosmos.Proto.Amount amount = 4;</code>
+         * @return Whether the amount field is set.
          */
         public boolean hasAmount() {
           return amountBuilder_ != null || amount_ != null;
         }
         /**
          * <code>.TW.Cosmos.Proto.Amount amount = 4;</code>
+         * @return The amount.
          */
         public wallet.core.jni.proto.Cosmos.Amount getAmount() {
           if (amountBuilder_ == null) {
@@ -6178,6 +6428,7 @@ public final class Cosmos {
         private java.lang.Object typePrefix_ = "";
         /**
          * <code>string type_prefix = 5;</code>
+         * @return The typePrefix.
          */
         public java.lang.String getTypePrefix() {
           java.lang.Object ref = typePrefix_;
@@ -6193,6 +6444,7 @@ public final class Cosmos {
         }
         /**
          * <code>string type_prefix = 5;</code>
+         * @return The bytes for typePrefix.
          */
         public com.google.protobuf.ByteString
             getTypePrefixBytes() {
@@ -6209,6 +6461,8 @@ public final class Cosmos {
         }
         /**
          * <code>string type_prefix = 5;</code>
+         * @param value The typePrefix to set.
+         * @return This builder for chaining.
          */
         public Builder setTypePrefix(
             java.lang.String value) {
@@ -6222,6 +6476,7 @@ public final class Cosmos {
         }
         /**
          * <code>string type_prefix = 5;</code>
+         * @return This builder for chaining.
          */
         public Builder clearTypePrefix() {
           
@@ -6231,6 +6486,8 @@ public final class Cosmos {
         }
         /**
          * <code>string type_prefix = 5;</code>
+         * @param value The bytes for typePrefix to set.
+         * @return This builder for chaining.
          */
         public Builder setTypePrefixBytes(
             com.google.protobuf.ByteString value) {
@@ -6302,30 +6559,36 @@ public final class Cosmos {
 
       /**
        * <code>string delegator_address = 1;</code>
+       * @return The delegatorAddress.
        */
       java.lang.String getDelegatorAddress();
       /**
        * <code>string delegator_address = 1;</code>
+       * @return The bytes for delegatorAddress.
        */
       com.google.protobuf.ByteString
           getDelegatorAddressBytes();
 
       /**
        * <code>string validator_address = 2;</code>
+       * @return The validatorAddress.
        */
       java.lang.String getValidatorAddress();
       /**
        * <code>string validator_address = 2;</code>
+       * @return The bytes for validatorAddress.
        */
       com.google.protobuf.ByteString
           getValidatorAddressBytes();
 
       /**
        * <code>string type_prefix = 3;</code>
+       * @return The typePrefix.
        */
       java.lang.String getTypePrefix();
       /**
        * <code>string type_prefix = 3;</code>
+       * @return The bytes for typePrefix.
        */
       com.google.protobuf.ByteString
           getTypePrefixBytes();
@@ -6337,7 +6600,7 @@ public final class Cosmos {
      *
      * Protobuf type {@code TW.Cosmos.Proto.Message.WithdrawDelegationReward}
      */
-    public  static final class WithdrawDelegationReward extends
+    public static final class WithdrawDelegationReward extends
         com.google.protobuf.GeneratedMessageV3 implements
         // @@protoc_insertion_point(message_implements:TW.Cosmos.Proto.Message.WithdrawDelegationReward)
         WithdrawDelegationRewardOrBuilder {
@@ -6436,7 +6699,9 @@ public final class Cosmos {
       private volatile java.lang.Object delegatorAddress_;
       /**
        * <code>string delegator_address = 1;</code>
+       * @return The delegatorAddress.
        */
+      @java.lang.Override
       public java.lang.String getDelegatorAddress() {
         java.lang.Object ref = delegatorAddress_;
         if (ref instanceof java.lang.String) {
@@ -6451,7 +6716,9 @@ public final class Cosmos {
       }
       /**
        * <code>string delegator_address = 1;</code>
+       * @return The bytes for delegatorAddress.
        */
+      @java.lang.Override
       public com.google.protobuf.ByteString
           getDelegatorAddressBytes() {
         java.lang.Object ref = delegatorAddress_;
@@ -6470,7 +6737,9 @@ public final class Cosmos {
       private volatile java.lang.Object validatorAddress_;
       /**
        * <code>string validator_address = 2;</code>
+       * @return The validatorAddress.
        */
+      @java.lang.Override
       public java.lang.String getValidatorAddress() {
         java.lang.Object ref = validatorAddress_;
         if (ref instanceof java.lang.String) {
@@ -6485,7 +6754,9 @@ public final class Cosmos {
       }
       /**
        * <code>string validator_address = 2;</code>
+       * @return The bytes for validatorAddress.
        */
+      @java.lang.Override
       public com.google.protobuf.ByteString
           getValidatorAddressBytes() {
         java.lang.Object ref = validatorAddress_;
@@ -6504,7 +6775,9 @@ public final class Cosmos {
       private volatile java.lang.Object typePrefix_;
       /**
        * <code>string type_prefix = 3;</code>
+       * @return The typePrefix.
        */
+      @java.lang.Override
       public java.lang.String getTypePrefix() {
         java.lang.Object ref = typePrefix_;
         if (ref instanceof java.lang.String) {
@@ -6519,7 +6792,9 @@ public final class Cosmos {
       }
       /**
        * <code>string type_prefix = 3;</code>
+       * @return The bytes for typePrefix.
        */
+      @java.lang.Override
       public com.google.protobuf.ByteString
           getTypePrefixBytes() {
         java.lang.Object ref = typePrefix_;
@@ -6877,6 +7152,7 @@ public final class Cosmos {
         private java.lang.Object delegatorAddress_ = "";
         /**
          * <code>string delegator_address = 1;</code>
+         * @return The delegatorAddress.
          */
         public java.lang.String getDelegatorAddress() {
           java.lang.Object ref = delegatorAddress_;
@@ -6892,6 +7168,7 @@ public final class Cosmos {
         }
         /**
          * <code>string delegator_address = 1;</code>
+         * @return The bytes for delegatorAddress.
          */
         public com.google.protobuf.ByteString
             getDelegatorAddressBytes() {
@@ -6908,6 +7185,8 @@ public final class Cosmos {
         }
         /**
          * <code>string delegator_address = 1;</code>
+         * @param value The delegatorAddress to set.
+         * @return This builder for chaining.
          */
         public Builder setDelegatorAddress(
             java.lang.String value) {
@@ -6921,6 +7200,7 @@ public final class Cosmos {
         }
         /**
          * <code>string delegator_address = 1;</code>
+         * @return This builder for chaining.
          */
         public Builder clearDelegatorAddress() {
           
@@ -6930,6 +7210,8 @@ public final class Cosmos {
         }
         /**
          * <code>string delegator_address = 1;</code>
+         * @param value The bytes for delegatorAddress to set.
+         * @return This builder for chaining.
          */
         public Builder setDelegatorAddressBytes(
             com.google.protobuf.ByteString value) {
@@ -6946,6 +7228,7 @@ public final class Cosmos {
         private java.lang.Object validatorAddress_ = "";
         /**
          * <code>string validator_address = 2;</code>
+         * @return The validatorAddress.
          */
         public java.lang.String getValidatorAddress() {
           java.lang.Object ref = validatorAddress_;
@@ -6961,6 +7244,7 @@ public final class Cosmos {
         }
         /**
          * <code>string validator_address = 2;</code>
+         * @return The bytes for validatorAddress.
          */
         public com.google.protobuf.ByteString
             getValidatorAddressBytes() {
@@ -6977,6 +7261,8 @@ public final class Cosmos {
         }
         /**
          * <code>string validator_address = 2;</code>
+         * @param value The validatorAddress to set.
+         * @return This builder for chaining.
          */
         public Builder setValidatorAddress(
             java.lang.String value) {
@@ -6990,6 +7276,7 @@ public final class Cosmos {
         }
         /**
          * <code>string validator_address = 2;</code>
+         * @return This builder for chaining.
          */
         public Builder clearValidatorAddress() {
           
@@ -6999,6 +7286,8 @@ public final class Cosmos {
         }
         /**
          * <code>string validator_address = 2;</code>
+         * @param value The bytes for validatorAddress to set.
+         * @return This builder for chaining.
          */
         public Builder setValidatorAddressBytes(
             com.google.protobuf.ByteString value) {
@@ -7015,6 +7304,7 @@ public final class Cosmos {
         private java.lang.Object typePrefix_ = "";
         /**
          * <code>string type_prefix = 3;</code>
+         * @return The typePrefix.
          */
         public java.lang.String getTypePrefix() {
           java.lang.Object ref = typePrefix_;
@@ -7030,6 +7320,7 @@ public final class Cosmos {
         }
         /**
          * <code>string type_prefix = 3;</code>
+         * @return The bytes for typePrefix.
          */
         public com.google.protobuf.ByteString
             getTypePrefixBytes() {
@@ -7046,6 +7337,8 @@ public final class Cosmos {
         }
         /**
          * <code>string type_prefix = 3;</code>
+         * @param value The typePrefix to set.
+         * @return This builder for chaining.
          */
         public Builder setTypePrefix(
             java.lang.String value) {
@@ -7059,6 +7352,7 @@ public final class Cosmos {
         }
         /**
          * <code>string type_prefix = 3;</code>
+         * @return This builder for chaining.
          */
         public Builder clearTypePrefix() {
           
@@ -7068,6 +7362,8 @@ public final class Cosmos {
         }
         /**
          * <code>string type_prefix = 3;</code>
+         * @param value The bytes for typePrefix to set.
+         * @return This builder for chaining.
          */
         public Builder setTypePrefixBytes(
             com.google.protobuf.ByteString value) {
@@ -7139,20 +7435,24 @@ public final class Cosmos {
 
       /**
        * <code>string type = 1;</code>
+       * @return The type.
        */
       java.lang.String getType();
       /**
        * <code>string type = 1;</code>
+       * @return The bytes for type.
        */
       com.google.protobuf.ByteString
           getTypeBytes();
 
       /**
        * <code>string value = 2;</code>
+       * @return The value.
        */
       java.lang.String getValue();
       /**
        * <code>string value = 2;</code>
+       * @return The bytes for value.
        */
       com.google.protobuf.ByteString
           getValueBytes();
@@ -7160,7 +7460,7 @@ public final class Cosmos {
     /**
      * Protobuf type {@code TW.Cosmos.Proto.Message.RawJSON}
      */
-    public  static final class RawJSON extends
+    public static final class RawJSON extends
         com.google.protobuf.GeneratedMessageV3 implements
         // @@protoc_insertion_point(message_implements:TW.Cosmos.Proto.Message.RawJSON)
         RawJSONOrBuilder {
@@ -7252,7 +7552,9 @@ public final class Cosmos {
       private volatile java.lang.Object type_;
       /**
        * <code>string type = 1;</code>
+       * @return The type.
        */
+      @java.lang.Override
       public java.lang.String getType() {
         java.lang.Object ref = type_;
         if (ref instanceof java.lang.String) {
@@ -7267,7 +7569,9 @@ public final class Cosmos {
       }
       /**
        * <code>string type = 1;</code>
+       * @return The bytes for type.
        */
+      @java.lang.Override
       public com.google.protobuf.ByteString
           getTypeBytes() {
         java.lang.Object ref = type_;
@@ -7286,7 +7590,9 @@ public final class Cosmos {
       private volatile java.lang.Object value_;
       /**
        * <code>string value = 2;</code>
+       * @return The value.
        */
+      @java.lang.Override
       public java.lang.String getValue() {
         java.lang.Object ref = value_;
         if (ref instanceof java.lang.String) {
@@ -7301,7 +7607,9 @@ public final class Cosmos {
       }
       /**
        * <code>string value = 2;</code>
+       * @return The bytes for value.
        */
+      @java.lang.Override
       public com.google.protobuf.ByteString
           getValueBytes() {
         java.lang.Object ref = value_;
@@ -7638,6 +7946,7 @@ public final class Cosmos {
         private java.lang.Object type_ = "";
         /**
          * <code>string type = 1;</code>
+         * @return The type.
          */
         public java.lang.String getType() {
           java.lang.Object ref = type_;
@@ -7653,6 +7962,7 @@ public final class Cosmos {
         }
         /**
          * <code>string type = 1;</code>
+         * @return The bytes for type.
          */
         public com.google.protobuf.ByteString
             getTypeBytes() {
@@ -7669,6 +7979,8 @@ public final class Cosmos {
         }
         /**
          * <code>string type = 1;</code>
+         * @param value The type to set.
+         * @return This builder for chaining.
          */
         public Builder setType(
             java.lang.String value) {
@@ -7682,6 +7994,7 @@ public final class Cosmos {
         }
         /**
          * <code>string type = 1;</code>
+         * @return This builder for chaining.
          */
         public Builder clearType() {
           
@@ -7691,6 +8004,8 @@ public final class Cosmos {
         }
         /**
          * <code>string type = 1;</code>
+         * @param value The bytes for type to set.
+         * @return This builder for chaining.
          */
         public Builder setTypeBytes(
             com.google.protobuf.ByteString value) {
@@ -7707,6 +8022,7 @@ public final class Cosmos {
         private java.lang.Object value_ = "";
         /**
          * <code>string value = 2;</code>
+         * @return The value.
          */
         public java.lang.String getValue() {
           java.lang.Object ref = value_;
@@ -7722,6 +8038,7 @@ public final class Cosmos {
         }
         /**
          * <code>string value = 2;</code>
+         * @return The bytes for value.
          */
         public com.google.protobuf.ByteString
             getValueBytes() {
@@ -7738,6 +8055,8 @@ public final class Cosmos {
         }
         /**
          * <code>string value = 2;</code>
+         * @param value The value to set.
+         * @return This builder for chaining.
          */
         public Builder setValue(
             java.lang.String value) {
@@ -7751,6 +8070,7 @@ public final class Cosmos {
         }
         /**
          * <code>string value = 2;</code>
+         * @return This builder for chaining.
          */
         public Builder clearValue() {
           
@@ -7760,6 +8080,8 @@ public final class Cosmos {
         }
         /**
          * <code>string value = 2;</code>
+         * @param value The bytes for value to set.
+         * @return This builder for chaining.
          */
         public Builder setValueBytes(
             com.google.protobuf.ByteString value) {
@@ -7828,7 +8150,8 @@ public final class Cosmos {
     private int messageOneofCase_ = 0;
     private java.lang.Object messageOneof_;
     public enum MessageOneofCase
-        implements com.google.protobuf.Internal.EnumLite {
+        implements com.google.protobuf.Internal.EnumLite,
+            com.google.protobuf.AbstractMessage.InternalOneOfEnum {
       SEND_COINS_MESSAGE(1),
       STAKE_MESSAGE(2),
       UNSTAKE_MESSAGE(3),
@@ -7841,6 +8164,8 @@ public final class Cosmos {
         this.value = value;
       }
       /**
+       * @param value The number of the enum to look for.
+       * @return The enum associated with the given number.
        * @deprecated Use {@link #forNumber(int)} instead.
        */
       @java.lang.Deprecated
@@ -7874,13 +8199,17 @@ public final class Cosmos {
     public static final int SEND_COINS_MESSAGE_FIELD_NUMBER = 1;
     /**
      * <code>.TW.Cosmos.Proto.Message.Send send_coins_message = 1;</code>
+     * @return Whether the sendCoinsMessage field is set.
      */
+    @java.lang.Override
     public boolean hasSendCoinsMessage() {
       return messageOneofCase_ == 1;
     }
     /**
      * <code>.TW.Cosmos.Proto.Message.Send send_coins_message = 1;</code>
+     * @return The sendCoinsMessage.
      */
+    @java.lang.Override
     public wallet.core.jni.proto.Cosmos.Message.Send getSendCoinsMessage() {
       if (messageOneofCase_ == 1) {
          return (wallet.core.jni.proto.Cosmos.Message.Send) messageOneof_;
@@ -7890,6 +8219,7 @@ public final class Cosmos {
     /**
      * <code>.TW.Cosmos.Proto.Message.Send send_coins_message = 1;</code>
      */
+    @java.lang.Override
     public wallet.core.jni.proto.Cosmos.Message.SendOrBuilder getSendCoinsMessageOrBuilder() {
       if (messageOneofCase_ == 1) {
          return (wallet.core.jni.proto.Cosmos.Message.Send) messageOneof_;
@@ -7900,13 +8230,17 @@ public final class Cosmos {
     public static final int STAKE_MESSAGE_FIELD_NUMBER = 2;
     /**
      * <code>.TW.Cosmos.Proto.Message.Delegate stake_message = 2;</code>
+     * @return Whether the stakeMessage field is set.
      */
+    @java.lang.Override
     public boolean hasStakeMessage() {
       return messageOneofCase_ == 2;
     }
     /**
      * <code>.TW.Cosmos.Proto.Message.Delegate stake_message = 2;</code>
+     * @return The stakeMessage.
      */
+    @java.lang.Override
     public wallet.core.jni.proto.Cosmos.Message.Delegate getStakeMessage() {
       if (messageOneofCase_ == 2) {
          return (wallet.core.jni.proto.Cosmos.Message.Delegate) messageOneof_;
@@ -7916,6 +8250,7 @@ public final class Cosmos {
     /**
      * <code>.TW.Cosmos.Proto.Message.Delegate stake_message = 2;</code>
      */
+    @java.lang.Override
     public wallet.core.jni.proto.Cosmos.Message.DelegateOrBuilder getStakeMessageOrBuilder() {
       if (messageOneofCase_ == 2) {
          return (wallet.core.jni.proto.Cosmos.Message.Delegate) messageOneof_;
@@ -7926,13 +8261,17 @@ public final class Cosmos {
     public static final int UNSTAKE_MESSAGE_FIELD_NUMBER = 3;
     /**
      * <code>.TW.Cosmos.Proto.Message.Undelegate unstake_message = 3;</code>
+     * @return Whether the unstakeMessage field is set.
      */
+    @java.lang.Override
     public boolean hasUnstakeMessage() {
       return messageOneofCase_ == 3;
     }
     /**
      * <code>.TW.Cosmos.Proto.Message.Undelegate unstake_message = 3;</code>
+     * @return The unstakeMessage.
      */
+    @java.lang.Override
     public wallet.core.jni.proto.Cosmos.Message.Undelegate getUnstakeMessage() {
       if (messageOneofCase_ == 3) {
          return (wallet.core.jni.proto.Cosmos.Message.Undelegate) messageOneof_;
@@ -7942,6 +8281,7 @@ public final class Cosmos {
     /**
      * <code>.TW.Cosmos.Proto.Message.Undelegate unstake_message = 3;</code>
      */
+    @java.lang.Override
     public wallet.core.jni.proto.Cosmos.Message.UndelegateOrBuilder getUnstakeMessageOrBuilder() {
       if (messageOneofCase_ == 3) {
          return (wallet.core.jni.proto.Cosmos.Message.Undelegate) messageOneof_;
@@ -7952,13 +8292,17 @@ public final class Cosmos {
     public static final int RESTAKE_MESSAGE_FIELD_NUMBER = 4;
     /**
      * <code>.TW.Cosmos.Proto.Message.BeginRedelegate restake_message = 4;</code>
+     * @return Whether the restakeMessage field is set.
      */
+    @java.lang.Override
     public boolean hasRestakeMessage() {
       return messageOneofCase_ == 4;
     }
     /**
      * <code>.TW.Cosmos.Proto.Message.BeginRedelegate restake_message = 4;</code>
+     * @return The restakeMessage.
      */
+    @java.lang.Override
     public wallet.core.jni.proto.Cosmos.Message.BeginRedelegate getRestakeMessage() {
       if (messageOneofCase_ == 4) {
          return (wallet.core.jni.proto.Cosmos.Message.BeginRedelegate) messageOneof_;
@@ -7968,6 +8312,7 @@ public final class Cosmos {
     /**
      * <code>.TW.Cosmos.Proto.Message.BeginRedelegate restake_message = 4;</code>
      */
+    @java.lang.Override
     public wallet.core.jni.proto.Cosmos.Message.BeginRedelegateOrBuilder getRestakeMessageOrBuilder() {
       if (messageOneofCase_ == 4) {
          return (wallet.core.jni.proto.Cosmos.Message.BeginRedelegate) messageOneof_;
@@ -7978,13 +8323,17 @@ public final class Cosmos {
     public static final int WITHDRAW_STAKE_REWARD_MESSAGE_FIELD_NUMBER = 5;
     /**
      * <code>.TW.Cosmos.Proto.Message.WithdrawDelegationReward withdraw_stake_reward_message = 5;</code>
+     * @return Whether the withdrawStakeRewardMessage field is set.
      */
+    @java.lang.Override
     public boolean hasWithdrawStakeRewardMessage() {
       return messageOneofCase_ == 5;
     }
     /**
      * <code>.TW.Cosmos.Proto.Message.WithdrawDelegationReward withdraw_stake_reward_message = 5;</code>
+     * @return The withdrawStakeRewardMessage.
      */
+    @java.lang.Override
     public wallet.core.jni.proto.Cosmos.Message.WithdrawDelegationReward getWithdrawStakeRewardMessage() {
       if (messageOneofCase_ == 5) {
          return (wallet.core.jni.proto.Cosmos.Message.WithdrawDelegationReward) messageOneof_;
@@ -7994,6 +8343,7 @@ public final class Cosmos {
     /**
      * <code>.TW.Cosmos.Proto.Message.WithdrawDelegationReward withdraw_stake_reward_message = 5;</code>
      */
+    @java.lang.Override
     public wallet.core.jni.proto.Cosmos.Message.WithdrawDelegationRewardOrBuilder getWithdrawStakeRewardMessageOrBuilder() {
       if (messageOneofCase_ == 5) {
          return (wallet.core.jni.proto.Cosmos.Message.WithdrawDelegationReward) messageOneof_;
@@ -8004,13 +8354,17 @@ public final class Cosmos {
     public static final int RAW_JSON_MESSAGE_FIELD_NUMBER = 6;
     /**
      * <code>.TW.Cosmos.Proto.Message.RawJSON raw_json_message = 6;</code>
+     * @return Whether the rawJsonMessage field is set.
      */
+    @java.lang.Override
     public boolean hasRawJsonMessage() {
       return messageOneofCase_ == 6;
     }
     /**
      * <code>.TW.Cosmos.Proto.Message.RawJSON raw_json_message = 6;</code>
+     * @return The rawJsonMessage.
      */
+    @java.lang.Override
     public wallet.core.jni.proto.Cosmos.Message.RawJSON getRawJsonMessage() {
       if (messageOneofCase_ == 6) {
          return (wallet.core.jni.proto.Cosmos.Message.RawJSON) messageOneof_;
@@ -8020,6 +8374,7 @@ public final class Cosmos {
     /**
      * <code>.TW.Cosmos.Proto.Message.RawJSON raw_json_message = 6;</code>
      */
+    @java.lang.Override
     public wallet.core.jni.proto.Cosmos.Message.RawJSONOrBuilder getRawJsonMessageOrBuilder() {
       if (messageOneofCase_ == 6) {
          return (wallet.core.jni.proto.Cosmos.Message.RawJSON) messageOneof_;
@@ -8504,13 +8859,17 @@ public final class Cosmos {
           wallet.core.jni.proto.Cosmos.Message.Send, wallet.core.jni.proto.Cosmos.Message.Send.Builder, wallet.core.jni.proto.Cosmos.Message.SendOrBuilder> sendCoinsMessageBuilder_;
       /**
        * <code>.TW.Cosmos.Proto.Message.Send send_coins_message = 1;</code>
+       * @return Whether the sendCoinsMessage field is set.
        */
+      @java.lang.Override
       public boolean hasSendCoinsMessage() {
         return messageOneofCase_ == 1;
       }
       /**
        * <code>.TW.Cosmos.Proto.Message.Send send_coins_message = 1;</code>
+       * @return The sendCoinsMessage.
        */
+      @java.lang.Override
       public wallet.core.jni.proto.Cosmos.Message.Send getSendCoinsMessage() {
         if (sendCoinsMessageBuilder_ == null) {
           if (messageOneofCase_ == 1) {
@@ -8604,6 +8963,7 @@ public final class Cosmos {
       /**
        * <code>.TW.Cosmos.Proto.Message.Send send_coins_message = 1;</code>
        */
+      @java.lang.Override
       public wallet.core.jni.proto.Cosmos.Message.SendOrBuilder getSendCoinsMessageOrBuilder() {
         if ((messageOneofCase_ == 1) && (sendCoinsMessageBuilder_ != null)) {
           return sendCoinsMessageBuilder_.getMessageOrBuilder();
@@ -8640,13 +9000,17 @@ public final class Cosmos {
           wallet.core.jni.proto.Cosmos.Message.Delegate, wallet.core.jni.proto.Cosmos.Message.Delegate.Builder, wallet.core.jni.proto.Cosmos.Message.DelegateOrBuilder> stakeMessageBuilder_;
       /**
        * <code>.TW.Cosmos.Proto.Message.Delegate stake_message = 2;</code>
+       * @return Whether the stakeMessage field is set.
        */
+      @java.lang.Override
       public boolean hasStakeMessage() {
         return messageOneofCase_ == 2;
       }
       /**
        * <code>.TW.Cosmos.Proto.Message.Delegate stake_message = 2;</code>
+       * @return The stakeMessage.
        */
+      @java.lang.Override
       public wallet.core.jni.proto.Cosmos.Message.Delegate getStakeMessage() {
         if (stakeMessageBuilder_ == null) {
           if (messageOneofCase_ == 2) {
@@ -8740,6 +9104,7 @@ public final class Cosmos {
       /**
        * <code>.TW.Cosmos.Proto.Message.Delegate stake_message = 2;</code>
        */
+      @java.lang.Override
       public wallet.core.jni.proto.Cosmos.Message.DelegateOrBuilder getStakeMessageOrBuilder() {
         if ((messageOneofCase_ == 2) && (stakeMessageBuilder_ != null)) {
           return stakeMessageBuilder_.getMessageOrBuilder();
@@ -8776,13 +9141,17 @@ public final class Cosmos {
           wallet.core.jni.proto.Cosmos.Message.Undelegate, wallet.core.jni.proto.Cosmos.Message.Undelegate.Builder, wallet.core.jni.proto.Cosmos.Message.UndelegateOrBuilder> unstakeMessageBuilder_;
       /**
        * <code>.TW.Cosmos.Proto.Message.Undelegate unstake_message = 3;</code>
+       * @return Whether the unstakeMessage field is set.
        */
+      @java.lang.Override
       public boolean hasUnstakeMessage() {
         return messageOneofCase_ == 3;
       }
       /**
        * <code>.TW.Cosmos.Proto.Message.Undelegate unstake_message = 3;</code>
+       * @return The unstakeMessage.
        */
+      @java.lang.Override
       public wallet.core.jni.proto.Cosmos.Message.Undelegate getUnstakeMessage() {
         if (unstakeMessageBuilder_ == null) {
           if (messageOneofCase_ == 3) {
@@ -8876,6 +9245,7 @@ public final class Cosmos {
       /**
        * <code>.TW.Cosmos.Proto.Message.Undelegate unstake_message = 3;</code>
        */
+      @java.lang.Override
       public wallet.core.jni.proto.Cosmos.Message.UndelegateOrBuilder getUnstakeMessageOrBuilder() {
         if ((messageOneofCase_ == 3) && (unstakeMessageBuilder_ != null)) {
           return unstakeMessageBuilder_.getMessageOrBuilder();
@@ -8912,13 +9282,17 @@ public final class Cosmos {
           wallet.core.jni.proto.Cosmos.Message.BeginRedelegate, wallet.core.jni.proto.Cosmos.Message.BeginRedelegate.Builder, wallet.core.jni.proto.Cosmos.Message.BeginRedelegateOrBuilder> restakeMessageBuilder_;
       /**
        * <code>.TW.Cosmos.Proto.Message.BeginRedelegate restake_message = 4;</code>
+       * @return Whether the restakeMessage field is set.
        */
+      @java.lang.Override
       public boolean hasRestakeMessage() {
         return messageOneofCase_ == 4;
       }
       /**
        * <code>.TW.Cosmos.Proto.Message.BeginRedelegate restake_message = 4;</code>
+       * @return The restakeMessage.
        */
+      @java.lang.Override
       public wallet.core.jni.proto.Cosmos.Message.BeginRedelegate getRestakeMessage() {
         if (restakeMessageBuilder_ == null) {
           if (messageOneofCase_ == 4) {
@@ -9012,6 +9386,7 @@ public final class Cosmos {
       /**
        * <code>.TW.Cosmos.Proto.Message.BeginRedelegate restake_message = 4;</code>
        */
+      @java.lang.Override
       public wallet.core.jni.proto.Cosmos.Message.BeginRedelegateOrBuilder getRestakeMessageOrBuilder() {
         if ((messageOneofCase_ == 4) && (restakeMessageBuilder_ != null)) {
           return restakeMessageBuilder_.getMessageOrBuilder();
@@ -9048,13 +9423,17 @@ public final class Cosmos {
           wallet.core.jni.proto.Cosmos.Message.WithdrawDelegationReward, wallet.core.jni.proto.Cosmos.Message.WithdrawDelegationReward.Builder, wallet.core.jni.proto.Cosmos.Message.WithdrawDelegationRewardOrBuilder> withdrawStakeRewardMessageBuilder_;
       /**
        * <code>.TW.Cosmos.Proto.Message.WithdrawDelegationReward withdraw_stake_reward_message = 5;</code>
+       * @return Whether the withdrawStakeRewardMessage field is set.
        */
+      @java.lang.Override
       public boolean hasWithdrawStakeRewardMessage() {
         return messageOneofCase_ == 5;
       }
       /**
        * <code>.TW.Cosmos.Proto.Message.WithdrawDelegationReward withdraw_stake_reward_message = 5;</code>
+       * @return The withdrawStakeRewardMessage.
        */
+      @java.lang.Override
       public wallet.core.jni.proto.Cosmos.Message.WithdrawDelegationReward getWithdrawStakeRewardMessage() {
         if (withdrawStakeRewardMessageBuilder_ == null) {
           if (messageOneofCase_ == 5) {
@@ -9148,6 +9527,7 @@ public final class Cosmos {
       /**
        * <code>.TW.Cosmos.Proto.Message.WithdrawDelegationReward withdraw_stake_reward_message = 5;</code>
        */
+      @java.lang.Override
       public wallet.core.jni.proto.Cosmos.Message.WithdrawDelegationRewardOrBuilder getWithdrawStakeRewardMessageOrBuilder() {
         if ((messageOneofCase_ == 5) && (withdrawStakeRewardMessageBuilder_ != null)) {
           return withdrawStakeRewardMessageBuilder_.getMessageOrBuilder();
@@ -9184,13 +9564,17 @@ public final class Cosmos {
           wallet.core.jni.proto.Cosmos.Message.RawJSON, wallet.core.jni.proto.Cosmos.Message.RawJSON.Builder, wallet.core.jni.proto.Cosmos.Message.RawJSONOrBuilder> rawJsonMessageBuilder_;
       /**
        * <code>.TW.Cosmos.Proto.Message.RawJSON raw_json_message = 6;</code>
+       * @return Whether the rawJsonMessage field is set.
        */
+      @java.lang.Override
       public boolean hasRawJsonMessage() {
         return messageOneofCase_ == 6;
       }
       /**
        * <code>.TW.Cosmos.Proto.Message.RawJSON raw_json_message = 6;</code>
+       * @return The rawJsonMessage.
        */
+      @java.lang.Override
       public wallet.core.jni.proto.Cosmos.Message.RawJSON getRawJsonMessage() {
         if (rawJsonMessageBuilder_ == null) {
           if (messageOneofCase_ == 6) {
@@ -9284,6 +9668,7 @@ public final class Cosmos {
       /**
        * <code>.TW.Cosmos.Proto.Message.RawJSON raw_json_message = 6;</code>
        */
+      @java.lang.Override
       public wallet.core.jni.proto.Cosmos.Message.RawJSONOrBuilder getRawJsonMessageOrBuilder() {
         if ((messageOneofCase_ == 6) && (rawJsonMessageBuilder_ != null)) {
           return rawJsonMessageBuilder_.getMessageOrBuilder();
@@ -9374,25 +9759,30 @@ public final class Cosmos {
 
     /**
      * <code>uint64 account_number = 1;</code>
+     * @return The accountNumber.
      */
     long getAccountNumber();
 
     /**
      * <code>string chain_id = 2;</code>
+     * @return The chainId.
      */
     java.lang.String getChainId();
     /**
      * <code>string chain_id = 2;</code>
+     * @return The bytes for chainId.
      */
     com.google.protobuf.ByteString
         getChainIdBytes();
 
     /**
      * <code>.TW.Cosmos.Proto.Fee fee = 3;</code>
+     * @return Whether the fee field is set.
      */
     boolean hasFee();
     /**
      * <code>.TW.Cosmos.Proto.Fee fee = 3;</code>
+     * @return The fee.
      */
     wallet.core.jni.proto.Cosmos.Fee getFee();
     /**
@@ -9402,21 +9792,25 @@ public final class Cosmos {
 
     /**
      * <code>string memo = 4;</code>
+     * @return The memo.
      */
     java.lang.String getMemo();
     /**
      * <code>string memo = 4;</code>
+     * @return The bytes for memo.
      */
     com.google.protobuf.ByteString
         getMemoBytes();
 
     /**
      * <code>uint64 sequence = 5;</code>
+     * @return The sequence.
      */
     long getSequence();
 
     /**
      * <code>bytes private_key = 6;</code>
+     * @return The privateKey.
      */
     com.google.protobuf.ByteString getPrivateKey();
 
@@ -9446,10 +9840,12 @@ public final class Cosmos {
 
     /**
      * <code>.TW.Cosmos.Proto.BroadcastMode mode = 8;</code>
+     * @return The enum numeric value on the wire for mode.
      */
     int getModeValue();
     /**
      * <code>.TW.Cosmos.Proto.BroadcastMode mode = 8;</code>
+     * @return The mode.
      */
     wallet.core.jni.proto.Cosmos.BroadcastMode getMode();
   }
@@ -9460,7 +9856,7 @@ public final class Cosmos {
    *
    * Protobuf type {@code TW.Cosmos.Proto.SigningInput}
    */
-  public  static final class SigningInput extends
+  public static final class SigningInput extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:TW.Cosmos.Proto.SigningInput)
       SigningInputOrBuilder {
@@ -9602,7 +9998,9 @@ public final class Cosmos {
     private long accountNumber_;
     /**
      * <code>uint64 account_number = 1;</code>
+     * @return The accountNumber.
      */
+    @java.lang.Override
     public long getAccountNumber() {
       return accountNumber_;
     }
@@ -9611,7 +10009,9 @@ public final class Cosmos {
     private volatile java.lang.Object chainId_;
     /**
      * <code>string chain_id = 2;</code>
+     * @return The chainId.
      */
+    @java.lang.Override
     public java.lang.String getChainId() {
       java.lang.Object ref = chainId_;
       if (ref instanceof java.lang.String) {
@@ -9626,7 +10026,9 @@ public final class Cosmos {
     }
     /**
      * <code>string chain_id = 2;</code>
+     * @return The bytes for chainId.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString
         getChainIdBytes() {
       java.lang.Object ref = chainId_;
@@ -9645,19 +10047,24 @@ public final class Cosmos {
     private wallet.core.jni.proto.Cosmos.Fee fee_;
     /**
      * <code>.TW.Cosmos.Proto.Fee fee = 3;</code>
+     * @return Whether the fee field is set.
      */
+    @java.lang.Override
     public boolean hasFee() {
       return fee_ != null;
     }
     /**
      * <code>.TW.Cosmos.Proto.Fee fee = 3;</code>
+     * @return The fee.
      */
+    @java.lang.Override
     public wallet.core.jni.proto.Cosmos.Fee getFee() {
       return fee_ == null ? wallet.core.jni.proto.Cosmos.Fee.getDefaultInstance() : fee_;
     }
     /**
      * <code>.TW.Cosmos.Proto.Fee fee = 3;</code>
      */
+    @java.lang.Override
     public wallet.core.jni.proto.Cosmos.FeeOrBuilder getFeeOrBuilder() {
       return getFee();
     }
@@ -9666,7 +10073,9 @@ public final class Cosmos {
     private volatile java.lang.Object memo_;
     /**
      * <code>string memo = 4;</code>
+     * @return The memo.
      */
+    @java.lang.Override
     public java.lang.String getMemo() {
       java.lang.Object ref = memo_;
       if (ref instanceof java.lang.String) {
@@ -9681,7 +10090,9 @@ public final class Cosmos {
     }
     /**
      * <code>string memo = 4;</code>
+     * @return The bytes for memo.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString
         getMemoBytes() {
       java.lang.Object ref = memo_;
@@ -9700,7 +10111,9 @@ public final class Cosmos {
     private long sequence_;
     /**
      * <code>uint64 sequence = 5;</code>
+     * @return The sequence.
      */
+    @java.lang.Override
     public long getSequence() {
       return sequence_;
     }
@@ -9709,7 +10122,9 @@ public final class Cosmos {
     private com.google.protobuf.ByteString privateKey_;
     /**
      * <code>bytes private_key = 6;</code>
+     * @return The privateKey.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString getPrivateKey() {
       return privateKey_;
     }
@@ -9719,12 +10134,14 @@ public final class Cosmos {
     /**
      * <code>repeated .TW.Cosmos.Proto.Message messages = 7;</code>
      */
+    @java.lang.Override
     public java.util.List<wallet.core.jni.proto.Cosmos.Message> getMessagesList() {
       return messages_;
     }
     /**
      * <code>repeated .TW.Cosmos.Proto.Message messages = 7;</code>
      */
+    @java.lang.Override
     public java.util.List<? extends wallet.core.jni.proto.Cosmos.MessageOrBuilder> 
         getMessagesOrBuilderList() {
       return messages_;
@@ -9732,18 +10149,21 @@ public final class Cosmos {
     /**
      * <code>repeated .TW.Cosmos.Proto.Message messages = 7;</code>
      */
+    @java.lang.Override
     public int getMessagesCount() {
       return messages_.size();
     }
     /**
      * <code>repeated .TW.Cosmos.Proto.Message messages = 7;</code>
      */
+    @java.lang.Override
     public wallet.core.jni.proto.Cosmos.Message getMessages(int index) {
       return messages_.get(index);
     }
     /**
      * <code>repeated .TW.Cosmos.Proto.Message messages = 7;</code>
      */
+    @java.lang.Override
     public wallet.core.jni.proto.Cosmos.MessageOrBuilder getMessagesOrBuilder(
         int index) {
       return messages_.get(index);
@@ -9753,14 +10173,16 @@ public final class Cosmos {
     private int mode_;
     /**
      * <code>.TW.Cosmos.Proto.BroadcastMode mode = 8;</code>
+     * @return The enum numeric value on the wire for mode.
      */
-    public int getModeValue() {
+    @java.lang.Override public int getModeValue() {
       return mode_;
     }
     /**
      * <code>.TW.Cosmos.Proto.BroadcastMode mode = 8;</code>
+     * @return The mode.
      */
-    public wallet.core.jni.proto.Cosmos.BroadcastMode getMode() {
+    @java.lang.Override public wallet.core.jni.proto.Cosmos.BroadcastMode getMode() {
       @SuppressWarnings("deprecation")
       wallet.core.jni.proto.Cosmos.BroadcastMode result = wallet.core.jni.proto.Cosmos.BroadcastMode.valueOf(mode_);
       return result == null ? wallet.core.jni.proto.Cosmos.BroadcastMode.UNRECOGNIZED : result;
@@ -10248,12 +10670,16 @@ public final class Cosmos {
       private long accountNumber_ ;
       /**
        * <code>uint64 account_number = 1;</code>
+       * @return The accountNumber.
        */
+      @java.lang.Override
       public long getAccountNumber() {
         return accountNumber_;
       }
       /**
        * <code>uint64 account_number = 1;</code>
+       * @param value The accountNumber to set.
+       * @return This builder for chaining.
        */
       public Builder setAccountNumber(long value) {
         
@@ -10263,6 +10689,7 @@ public final class Cosmos {
       }
       /**
        * <code>uint64 account_number = 1;</code>
+       * @return This builder for chaining.
        */
       public Builder clearAccountNumber() {
         
@@ -10274,6 +10701,7 @@ public final class Cosmos {
       private java.lang.Object chainId_ = "";
       /**
        * <code>string chain_id = 2;</code>
+       * @return The chainId.
        */
       public java.lang.String getChainId() {
         java.lang.Object ref = chainId_;
@@ -10289,6 +10717,7 @@ public final class Cosmos {
       }
       /**
        * <code>string chain_id = 2;</code>
+       * @return The bytes for chainId.
        */
       public com.google.protobuf.ByteString
           getChainIdBytes() {
@@ -10305,6 +10734,8 @@ public final class Cosmos {
       }
       /**
        * <code>string chain_id = 2;</code>
+       * @param value The chainId to set.
+       * @return This builder for chaining.
        */
       public Builder setChainId(
           java.lang.String value) {
@@ -10318,6 +10749,7 @@ public final class Cosmos {
       }
       /**
        * <code>string chain_id = 2;</code>
+       * @return This builder for chaining.
        */
       public Builder clearChainId() {
         
@@ -10327,6 +10759,8 @@ public final class Cosmos {
       }
       /**
        * <code>string chain_id = 2;</code>
+       * @param value The bytes for chainId to set.
+       * @return This builder for chaining.
        */
       public Builder setChainIdBytes(
           com.google.protobuf.ByteString value) {
@@ -10345,12 +10779,14 @@ public final class Cosmos {
           wallet.core.jni.proto.Cosmos.Fee, wallet.core.jni.proto.Cosmos.Fee.Builder, wallet.core.jni.proto.Cosmos.FeeOrBuilder> feeBuilder_;
       /**
        * <code>.TW.Cosmos.Proto.Fee fee = 3;</code>
+       * @return Whether the fee field is set.
        */
       public boolean hasFee() {
         return feeBuilder_ != null || fee_ != null;
       }
       /**
        * <code>.TW.Cosmos.Proto.Fee fee = 3;</code>
+       * @return The fee.
        */
       public wallet.core.jni.proto.Cosmos.Fee getFee() {
         if (feeBuilder_ == null) {
@@ -10460,6 +10896,7 @@ public final class Cosmos {
       private java.lang.Object memo_ = "";
       /**
        * <code>string memo = 4;</code>
+       * @return The memo.
        */
       public java.lang.String getMemo() {
         java.lang.Object ref = memo_;
@@ -10475,6 +10912,7 @@ public final class Cosmos {
       }
       /**
        * <code>string memo = 4;</code>
+       * @return The bytes for memo.
        */
       public com.google.protobuf.ByteString
           getMemoBytes() {
@@ -10491,6 +10929,8 @@ public final class Cosmos {
       }
       /**
        * <code>string memo = 4;</code>
+       * @param value The memo to set.
+       * @return This builder for chaining.
        */
       public Builder setMemo(
           java.lang.String value) {
@@ -10504,6 +10944,7 @@ public final class Cosmos {
       }
       /**
        * <code>string memo = 4;</code>
+       * @return This builder for chaining.
        */
       public Builder clearMemo() {
         
@@ -10513,6 +10954,8 @@ public final class Cosmos {
       }
       /**
        * <code>string memo = 4;</code>
+       * @param value The bytes for memo to set.
+       * @return This builder for chaining.
        */
       public Builder setMemoBytes(
           com.google.protobuf.ByteString value) {
@@ -10529,12 +10972,16 @@ public final class Cosmos {
       private long sequence_ ;
       /**
        * <code>uint64 sequence = 5;</code>
+       * @return The sequence.
        */
+      @java.lang.Override
       public long getSequence() {
         return sequence_;
       }
       /**
        * <code>uint64 sequence = 5;</code>
+       * @param value The sequence to set.
+       * @return This builder for chaining.
        */
       public Builder setSequence(long value) {
         
@@ -10544,6 +10991,7 @@ public final class Cosmos {
       }
       /**
        * <code>uint64 sequence = 5;</code>
+       * @return This builder for chaining.
        */
       public Builder clearSequence() {
         
@@ -10555,12 +11003,16 @@ public final class Cosmos {
       private com.google.protobuf.ByteString privateKey_ = com.google.protobuf.ByteString.EMPTY;
       /**
        * <code>bytes private_key = 6;</code>
+       * @return The privateKey.
        */
+      @java.lang.Override
       public com.google.protobuf.ByteString getPrivateKey() {
         return privateKey_;
       }
       /**
        * <code>bytes private_key = 6;</code>
+       * @param value The privateKey to set.
+       * @return This builder for chaining.
        */
       public Builder setPrivateKey(com.google.protobuf.ByteString value) {
         if (value == null) {
@@ -10573,6 +11025,7 @@ public final class Cosmos {
       }
       /**
        * <code>bytes private_key = 6;</code>
+       * @return This builder for chaining.
        */
       public Builder clearPrivateKey() {
         
@@ -10824,21 +11277,27 @@ public final class Cosmos {
       private int mode_ = 0;
       /**
        * <code>.TW.Cosmos.Proto.BroadcastMode mode = 8;</code>
+       * @return The enum numeric value on the wire for mode.
        */
-      public int getModeValue() {
+      @java.lang.Override public int getModeValue() {
         return mode_;
       }
       /**
        * <code>.TW.Cosmos.Proto.BroadcastMode mode = 8;</code>
+       * @param value The enum numeric value on the wire for mode to set.
+       * @return This builder for chaining.
        */
       public Builder setModeValue(int value) {
+        
         mode_ = value;
         onChanged();
         return this;
       }
       /**
        * <code>.TW.Cosmos.Proto.BroadcastMode mode = 8;</code>
+       * @return The mode.
        */
+      @java.lang.Override
       public wallet.core.jni.proto.Cosmos.BroadcastMode getMode() {
         @SuppressWarnings("deprecation")
         wallet.core.jni.proto.Cosmos.BroadcastMode result = wallet.core.jni.proto.Cosmos.BroadcastMode.valueOf(mode_);
@@ -10846,6 +11305,8 @@ public final class Cosmos {
       }
       /**
        * <code>.TW.Cosmos.Proto.BroadcastMode mode = 8;</code>
+       * @param value The mode to set.
+       * @return This builder for chaining.
        */
       public Builder setMode(wallet.core.jni.proto.Cosmos.BroadcastMode value) {
         if (value == null) {
@@ -10858,6 +11319,7 @@ public final class Cosmos {
       }
       /**
        * <code>.TW.Cosmos.Proto.BroadcastMode mode = 8;</code>
+       * @return This builder for chaining.
        */
       public Builder clearMode() {
         
@@ -10928,6 +11390,7 @@ public final class Cosmos {
      * </pre>
      *
      * <code>bytes signature = 1;</code>
+     * @return The signature.
      */
     com.google.protobuf.ByteString getSignature();
 
@@ -10937,6 +11400,7 @@ public final class Cosmos {
      * </pre>
      *
      * <code>string json = 2;</code>
+     * @return The json.
      */
     java.lang.String getJson();
     /**
@@ -10945,6 +11409,7 @@ public final class Cosmos {
      * </pre>
      *
      * <code>string json = 2;</code>
+     * @return The bytes for json.
      */
     com.google.protobuf.ByteString
         getJsonBytes();
@@ -10956,7 +11421,7 @@ public final class Cosmos {
    *
    * Protobuf type {@code TW.Cosmos.Proto.SigningOutput}
    */
-  public  static final class SigningOutput extends
+  public static final class SigningOutput extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:TW.Cosmos.Proto.SigningOutput)
       SigningOutputOrBuilder {
@@ -11051,7 +11516,9 @@ public final class Cosmos {
      * </pre>
      *
      * <code>bytes signature = 1;</code>
+     * @return The signature.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString getSignature() {
       return signature_;
     }
@@ -11064,7 +11531,9 @@ public final class Cosmos {
      * </pre>
      *
      * <code>string json = 2;</code>
+     * @return The json.
      */
+    @java.lang.Override
     public java.lang.String getJson() {
       java.lang.Object ref = json_;
       if (ref instanceof java.lang.String) {
@@ -11083,7 +11552,9 @@ public final class Cosmos {
      * </pre>
      *
      * <code>string json = 2;</code>
+     * @return The bytes for json.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString
         getJsonBytes() {
       java.lang.Object ref = json_;
@@ -11428,7 +11899,9 @@ public final class Cosmos {
        * </pre>
        *
        * <code>bytes signature = 1;</code>
+       * @return The signature.
        */
+      @java.lang.Override
       public com.google.protobuf.ByteString getSignature() {
         return signature_;
       }
@@ -11438,6 +11911,8 @@ public final class Cosmos {
        * </pre>
        *
        * <code>bytes signature = 1;</code>
+       * @param value The signature to set.
+       * @return This builder for chaining.
        */
       public Builder setSignature(com.google.protobuf.ByteString value) {
         if (value == null) {
@@ -11454,6 +11929,7 @@ public final class Cosmos {
        * </pre>
        *
        * <code>bytes signature = 1;</code>
+       * @return This builder for chaining.
        */
       public Builder clearSignature() {
         
@@ -11469,6 +11945,7 @@ public final class Cosmos {
        * </pre>
        *
        * <code>string json = 2;</code>
+       * @return The json.
        */
       public java.lang.String getJson() {
         java.lang.Object ref = json_;
@@ -11488,6 +11965,7 @@ public final class Cosmos {
        * </pre>
        *
        * <code>string json = 2;</code>
+       * @return The bytes for json.
        */
       public com.google.protobuf.ByteString
           getJsonBytes() {
@@ -11508,6 +11986,8 @@ public final class Cosmos {
        * </pre>
        *
        * <code>string json = 2;</code>
+       * @param value The json to set.
+       * @return This builder for chaining.
        */
       public Builder setJson(
           java.lang.String value) {
@@ -11525,6 +12005,7 @@ public final class Cosmos {
        * </pre>
        *
        * <code>string json = 2;</code>
+       * @return This builder for chaining.
        */
       public Builder clearJson() {
         
@@ -11538,6 +12019,8 @@ public final class Cosmos {
        * </pre>
        *
        * <code>string json = 2;</code>
+       * @param value The bytes for json to set.
+       * @return This builder for chaining.
        */
       public Builder setJsonBytes(
           com.google.protobuf.ByteString value) {

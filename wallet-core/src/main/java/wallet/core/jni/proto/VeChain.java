@@ -24,6 +24,7 @@ public final class VeChain {
      * </pre>
      *
      * <code>string to = 1;</code>
+     * @return The to.
      */
     java.lang.String getTo();
     /**
@@ -32,6 +33,7 @@ public final class VeChain {
      * </pre>
      *
      * <code>string to = 1;</code>
+     * @return The bytes for to.
      */
     com.google.protobuf.ByteString
         getToBytes();
@@ -42,6 +44,7 @@ public final class VeChain {
      * </pre>
      *
      * <code>bytes value = 2;</code>
+     * @return The value.
      */
     com.google.protobuf.ByteString getValue();
 
@@ -51,13 +54,14 @@ public final class VeChain {
      * </pre>
      *
      * <code>bytes data = 3;</code>
+     * @return The data.
      */
     com.google.protobuf.ByteString getData();
   }
   /**
    * Protobuf type {@code TW.VeChain.Proto.Clause}
    */
-  public  static final class Clause extends
+  public static final class Clause extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:TW.VeChain.Proto.Clause)
       ClauseOrBuilder {
@@ -158,7 +162,9 @@ public final class VeChain {
      * </pre>
      *
      * <code>string to = 1;</code>
+     * @return The to.
      */
+    @java.lang.Override
     public java.lang.String getTo() {
       java.lang.Object ref = to_;
       if (ref instanceof java.lang.String) {
@@ -177,7 +183,9 @@ public final class VeChain {
      * </pre>
      *
      * <code>string to = 1;</code>
+     * @return The bytes for to.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString
         getToBytes() {
       java.lang.Object ref = to_;
@@ -200,7 +208,9 @@ public final class VeChain {
      * </pre>
      *
      * <code>bytes value = 2;</code>
+     * @return The value.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString getValue() {
       return value_;
     }
@@ -213,7 +223,9 @@ public final class VeChain {
      * </pre>
      *
      * <code>bytes data = 3;</code>
+     * @return The data.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString getData() {
       return data_;
     }
@@ -561,6 +573,7 @@ public final class VeChain {
        * </pre>
        *
        * <code>string to = 1;</code>
+       * @return The to.
        */
       public java.lang.String getTo() {
         java.lang.Object ref = to_;
@@ -580,6 +593,7 @@ public final class VeChain {
        * </pre>
        *
        * <code>string to = 1;</code>
+       * @return The bytes for to.
        */
       public com.google.protobuf.ByteString
           getToBytes() {
@@ -600,6 +614,8 @@ public final class VeChain {
        * </pre>
        *
        * <code>string to = 1;</code>
+       * @param value The to to set.
+       * @return This builder for chaining.
        */
       public Builder setTo(
           java.lang.String value) {
@@ -617,6 +633,7 @@ public final class VeChain {
        * </pre>
        *
        * <code>string to = 1;</code>
+       * @return This builder for chaining.
        */
       public Builder clearTo() {
         
@@ -630,6 +647,8 @@ public final class VeChain {
        * </pre>
        *
        * <code>string to = 1;</code>
+       * @param value The bytes for to to set.
+       * @return This builder for chaining.
        */
       public Builder setToBytes(
           com.google.protobuf.ByteString value) {
@@ -650,7 +669,9 @@ public final class VeChain {
        * </pre>
        *
        * <code>bytes value = 2;</code>
+       * @return The value.
        */
+      @java.lang.Override
       public com.google.protobuf.ByteString getValue() {
         return value_;
       }
@@ -660,6 +681,8 @@ public final class VeChain {
        * </pre>
        *
        * <code>bytes value = 2;</code>
+       * @param value The value to set.
+       * @return This builder for chaining.
        */
       public Builder setValue(com.google.protobuf.ByteString value) {
         if (value == null) {
@@ -676,6 +699,7 @@ public final class VeChain {
        * </pre>
        *
        * <code>bytes value = 2;</code>
+       * @return This builder for chaining.
        */
       public Builder clearValue() {
         
@@ -691,7 +715,9 @@ public final class VeChain {
        * </pre>
        *
        * <code>bytes data = 3;</code>
+       * @return The data.
        */
+      @java.lang.Override
       public com.google.protobuf.ByteString getData() {
         return data_;
       }
@@ -701,6 +727,8 @@ public final class VeChain {
        * </pre>
        *
        * <code>bytes data = 3;</code>
+       * @param value The data to set.
+       * @return This builder for chaining.
        */
       public Builder setData(com.google.protobuf.ByteString value) {
         if (value == null) {
@@ -717,6 +745,7 @@ public final class VeChain {
        * </pre>
        *
        * <code>bytes data = 3;</code>
+       * @return This builder for chaining.
        */
       public Builder clearData() {
         
@@ -787,6 +816,7 @@ public final class VeChain {
      * </pre>
      *
      * <code>uint32 chain_tag = 1;</code>
+     * @return The chainTag.
      */
     int getChainTag();
 
@@ -796,6 +826,7 @@ public final class VeChain {
      * </pre>
      *
      * <code>uint64 block_ref = 2;</code>
+     * @return The blockRef.
      */
     long getBlockRef();
 
@@ -805,6 +836,7 @@ public final class VeChain {
      * </pre>
      *
      * <code>uint32 expiration = 3;</code>
+     * @return The expiration.
      */
     int getExpiration();
 
@@ -873,6 +905,7 @@ public final class VeChain {
      * </pre>
      *
      * <code>uint32 gas_price_coef = 5;</code>
+     * @return The gasPriceCoef.
      */
     int getGasPriceCoef();
 
@@ -882,6 +915,7 @@ public final class VeChain {
      * </pre>
      *
      * <code>uint64 gas = 6;</code>
+     * @return The gas.
      */
     long getGas();
 
@@ -891,6 +925,7 @@ public final class VeChain {
      * </pre>
      *
      * <code>bytes depends_on = 7;</code>
+     * @return The dependsOn.
      */
     com.google.protobuf.ByteString getDependsOn();
 
@@ -900,6 +935,7 @@ public final class VeChain {
      * </pre>
      *
      * <code>uint64 nonce = 8;</code>
+     * @return The nonce.
      */
     long getNonce();
 
@@ -909,6 +945,7 @@ public final class VeChain {
      * </pre>
      *
      * <code>bytes private_key = 9;</code>
+     * @return The privateKey.
      */
     com.google.protobuf.ByteString getPrivateKey();
   }
@@ -919,7 +956,7 @@ public final class VeChain {
    *
    * Protobuf type {@code TW.VeChain.Proto.SigningInput}
    */
-  public  static final class SigningInput extends
+  public static final class SigningInput extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:TW.VeChain.Proto.SigningInput)
       SigningInputOrBuilder {
@@ -1057,7 +1094,9 @@ public final class VeChain {
      * </pre>
      *
      * <code>uint32 chain_tag = 1;</code>
+     * @return The chainTag.
      */
+    @java.lang.Override
     public int getChainTag() {
       return chainTag_;
     }
@@ -1070,7 +1109,9 @@ public final class VeChain {
      * </pre>
      *
      * <code>uint64 block_ref = 2;</code>
+     * @return The blockRef.
      */
+    @java.lang.Override
     public long getBlockRef() {
       return blockRef_;
     }
@@ -1083,7 +1124,9 @@ public final class VeChain {
      * </pre>
      *
      * <code>uint32 expiration = 3;</code>
+     * @return The expiration.
      */
+    @java.lang.Override
     public int getExpiration() {
       return expiration_;
     }
@@ -1100,6 +1143,7 @@ public final class VeChain {
      *
      * <code>repeated .TW.VeChain.Proto.Clause clauses = 4;</code>
      */
+    @java.lang.Override
     public java.util.List<wallet.core.jni.proto.VeChain.Clause> getClausesList() {
       return clauses_;
     }
@@ -1113,6 +1157,7 @@ public final class VeChain {
      *
      * <code>repeated .TW.VeChain.Proto.Clause clauses = 4;</code>
      */
+    @java.lang.Override
     public java.util.List<? extends wallet.core.jni.proto.VeChain.ClauseOrBuilder> 
         getClausesOrBuilderList() {
       return clauses_;
@@ -1127,6 +1172,7 @@ public final class VeChain {
      *
      * <code>repeated .TW.VeChain.Proto.Clause clauses = 4;</code>
      */
+    @java.lang.Override
     public int getClausesCount() {
       return clauses_.size();
     }
@@ -1140,6 +1186,7 @@ public final class VeChain {
      *
      * <code>repeated .TW.VeChain.Proto.Clause clauses = 4;</code>
      */
+    @java.lang.Override
     public wallet.core.jni.proto.VeChain.Clause getClauses(int index) {
       return clauses_.get(index);
     }
@@ -1153,6 +1200,7 @@ public final class VeChain {
      *
      * <code>repeated .TW.VeChain.Proto.Clause clauses = 4;</code>
      */
+    @java.lang.Override
     public wallet.core.jni.proto.VeChain.ClauseOrBuilder getClausesOrBuilder(
         int index) {
       return clauses_.get(index);
@@ -1166,7 +1214,9 @@ public final class VeChain {
      * </pre>
      *
      * <code>uint32 gas_price_coef = 5;</code>
+     * @return The gasPriceCoef.
      */
+    @java.lang.Override
     public int getGasPriceCoef() {
       return gasPriceCoef_;
     }
@@ -1179,7 +1229,9 @@ public final class VeChain {
      * </pre>
      *
      * <code>uint64 gas = 6;</code>
+     * @return The gas.
      */
+    @java.lang.Override
     public long getGas() {
       return gas_;
     }
@@ -1192,7 +1244,9 @@ public final class VeChain {
      * </pre>
      *
      * <code>bytes depends_on = 7;</code>
+     * @return The dependsOn.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString getDependsOn() {
       return dependsOn_;
     }
@@ -1205,7 +1259,9 @@ public final class VeChain {
      * </pre>
      *
      * <code>uint64 nonce = 8;</code>
+     * @return The nonce.
      */
+    @java.lang.Override
     public long getNonce() {
       return nonce_;
     }
@@ -1218,7 +1274,9 @@ public final class VeChain {
      * </pre>
      *
      * <code>bytes private_key = 9;</code>
+     * @return The privateKey.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString getPrivateKey() {
       return privateKey_;
     }
@@ -1715,7 +1773,9 @@ public final class VeChain {
        * </pre>
        *
        * <code>uint32 chain_tag = 1;</code>
+       * @return The chainTag.
        */
+      @java.lang.Override
       public int getChainTag() {
         return chainTag_;
       }
@@ -1725,6 +1785,8 @@ public final class VeChain {
        * </pre>
        *
        * <code>uint32 chain_tag = 1;</code>
+       * @param value The chainTag to set.
+       * @return This builder for chaining.
        */
       public Builder setChainTag(int value) {
         
@@ -1738,6 +1800,7 @@ public final class VeChain {
        * </pre>
        *
        * <code>uint32 chain_tag = 1;</code>
+       * @return This builder for chaining.
        */
       public Builder clearChainTag() {
         
@@ -1753,7 +1816,9 @@ public final class VeChain {
        * </pre>
        *
        * <code>uint64 block_ref = 2;</code>
+       * @return The blockRef.
        */
+      @java.lang.Override
       public long getBlockRef() {
         return blockRef_;
       }
@@ -1763,6 +1828,8 @@ public final class VeChain {
        * </pre>
        *
        * <code>uint64 block_ref = 2;</code>
+       * @param value The blockRef to set.
+       * @return This builder for chaining.
        */
       public Builder setBlockRef(long value) {
         
@@ -1776,6 +1843,7 @@ public final class VeChain {
        * </pre>
        *
        * <code>uint64 block_ref = 2;</code>
+       * @return This builder for chaining.
        */
       public Builder clearBlockRef() {
         
@@ -1791,7 +1859,9 @@ public final class VeChain {
        * </pre>
        *
        * <code>uint32 expiration = 3;</code>
+       * @return The expiration.
        */
+      @java.lang.Override
       public int getExpiration() {
         return expiration_;
       }
@@ -1801,6 +1871,8 @@ public final class VeChain {
        * </pre>
        *
        * <code>uint32 expiration = 3;</code>
+       * @param value The expiration to set.
+       * @return This builder for chaining.
        */
       public Builder setExpiration(int value) {
         
@@ -1814,6 +1886,7 @@ public final class VeChain {
        * </pre>
        *
        * <code>uint32 expiration = 3;</code>
+       * @return This builder for chaining.
        */
       public Builder clearExpiration() {
         
@@ -2195,7 +2268,9 @@ public final class VeChain {
        * </pre>
        *
        * <code>uint32 gas_price_coef = 5;</code>
+       * @return The gasPriceCoef.
        */
+      @java.lang.Override
       public int getGasPriceCoef() {
         return gasPriceCoef_;
       }
@@ -2205,6 +2280,8 @@ public final class VeChain {
        * </pre>
        *
        * <code>uint32 gas_price_coef = 5;</code>
+       * @param value The gasPriceCoef to set.
+       * @return This builder for chaining.
        */
       public Builder setGasPriceCoef(int value) {
         
@@ -2218,6 +2295,7 @@ public final class VeChain {
        * </pre>
        *
        * <code>uint32 gas_price_coef = 5;</code>
+       * @return This builder for chaining.
        */
       public Builder clearGasPriceCoef() {
         
@@ -2233,7 +2311,9 @@ public final class VeChain {
        * </pre>
        *
        * <code>uint64 gas = 6;</code>
+       * @return The gas.
        */
+      @java.lang.Override
       public long getGas() {
         return gas_;
       }
@@ -2243,6 +2323,8 @@ public final class VeChain {
        * </pre>
        *
        * <code>uint64 gas = 6;</code>
+       * @param value The gas to set.
+       * @return This builder for chaining.
        */
       public Builder setGas(long value) {
         
@@ -2256,6 +2338,7 @@ public final class VeChain {
        * </pre>
        *
        * <code>uint64 gas = 6;</code>
+       * @return This builder for chaining.
        */
       public Builder clearGas() {
         
@@ -2271,7 +2354,9 @@ public final class VeChain {
        * </pre>
        *
        * <code>bytes depends_on = 7;</code>
+       * @return The dependsOn.
        */
+      @java.lang.Override
       public com.google.protobuf.ByteString getDependsOn() {
         return dependsOn_;
       }
@@ -2281,6 +2366,8 @@ public final class VeChain {
        * </pre>
        *
        * <code>bytes depends_on = 7;</code>
+       * @param value The dependsOn to set.
+       * @return This builder for chaining.
        */
       public Builder setDependsOn(com.google.protobuf.ByteString value) {
         if (value == null) {
@@ -2297,6 +2384,7 @@ public final class VeChain {
        * </pre>
        *
        * <code>bytes depends_on = 7;</code>
+       * @return This builder for chaining.
        */
       public Builder clearDependsOn() {
         
@@ -2312,7 +2400,9 @@ public final class VeChain {
        * </pre>
        *
        * <code>uint64 nonce = 8;</code>
+       * @return The nonce.
        */
+      @java.lang.Override
       public long getNonce() {
         return nonce_;
       }
@@ -2322,6 +2412,8 @@ public final class VeChain {
        * </pre>
        *
        * <code>uint64 nonce = 8;</code>
+       * @param value The nonce to set.
+       * @return This builder for chaining.
        */
       public Builder setNonce(long value) {
         
@@ -2335,6 +2427,7 @@ public final class VeChain {
        * </pre>
        *
        * <code>uint64 nonce = 8;</code>
+       * @return This builder for chaining.
        */
       public Builder clearNonce() {
         
@@ -2350,7 +2443,9 @@ public final class VeChain {
        * </pre>
        *
        * <code>bytes private_key = 9;</code>
+       * @return The privateKey.
        */
+      @java.lang.Override
       public com.google.protobuf.ByteString getPrivateKey() {
         return privateKey_;
       }
@@ -2360,6 +2455,8 @@ public final class VeChain {
        * </pre>
        *
        * <code>bytes private_key = 9;</code>
+       * @param value The privateKey to set.
+       * @return This builder for chaining.
        */
       public Builder setPrivateKey(com.google.protobuf.ByteString value) {
         if (value == null) {
@@ -2376,6 +2473,7 @@ public final class VeChain {
        * </pre>
        *
        * <code>bytes private_key = 9;</code>
+       * @return This builder for chaining.
        */
       public Builder clearPrivateKey() {
         
@@ -2446,6 +2544,7 @@ public final class VeChain {
      * </pre>
      *
      * <code>bytes encoded = 1;</code>
+     * @return The encoded.
      */
     com.google.protobuf.ByteString getEncoded();
 
@@ -2455,6 +2554,7 @@ public final class VeChain {
      * </pre>
      *
      * <code>bytes signature = 2;</code>
+     * @return The signature.
      */
     com.google.protobuf.ByteString getSignature();
   }
@@ -2465,7 +2565,7 @@ public final class VeChain {
    *
    * Protobuf type {@code TW.VeChain.Proto.SigningOutput}
    */
-  public  static final class SigningOutput extends
+  public static final class SigningOutput extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:TW.VeChain.Proto.SigningOutput)
       SigningOutputOrBuilder {
@@ -2559,7 +2659,9 @@ public final class VeChain {
      * </pre>
      *
      * <code>bytes encoded = 1;</code>
+     * @return The encoded.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString getEncoded() {
       return encoded_;
     }
@@ -2572,7 +2674,9 @@ public final class VeChain {
      * </pre>
      *
      * <code>bytes signature = 2;</code>
+     * @return The signature.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString getSignature() {
       return signature_;
     }
@@ -2907,7 +3011,9 @@ public final class VeChain {
        * </pre>
        *
        * <code>bytes encoded = 1;</code>
+       * @return The encoded.
        */
+      @java.lang.Override
       public com.google.protobuf.ByteString getEncoded() {
         return encoded_;
       }
@@ -2917,6 +3023,8 @@ public final class VeChain {
        * </pre>
        *
        * <code>bytes encoded = 1;</code>
+       * @param value The encoded to set.
+       * @return This builder for chaining.
        */
       public Builder setEncoded(com.google.protobuf.ByteString value) {
         if (value == null) {
@@ -2933,6 +3041,7 @@ public final class VeChain {
        * </pre>
        *
        * <code>bytes encoded = 1;</code>
+       * @return This builder for chaining.
        */
       public Builder clearEncoded() {
         
@@ -2948,7 +3057,9 @@ public final class VeChain {
        * </pre>
        *
        * <code>bytes signature = 2;</code>
+       * @return The signature.
        */
+      @java.lang.Override
       public com.google.protobuf.ByteString getSignature() {
         return signature_;
       }
@@ -2958,6 +3069,8 @@ public final class VeChain {
        * </pre>
        *
        * <code>bytes signature = 2;</code>
+       * @param value The signature to set.
+       * @return This builder for chaining.
        */
       public Builder setSignature(com.google.protobuf.ByteString value) {
         if (value == null) {
@@ -2974,6 +3087,7 @@ public final class VeChain {
        * </pre>
        *
        * <code>bytes signature = 2;</code>
+       * @return This builder for chaining.
        */
       public Builder clearSignature() {
         

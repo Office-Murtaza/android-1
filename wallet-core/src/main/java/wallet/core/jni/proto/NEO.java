@@ -20,11 +20,13 @@ public final class NEO {
 
     /**
      * <code>bytes prev_hash = 1;</code>
+     * @return The prevHash.
      */
     com.google.protobuf.ByteString getPrevHash();
 
     /**
      * <code>fixed32 prev_index = 2;</code>
+     * @return The prevIndex.
      */
     int getPrevIndex();
 
@@ -34,15 +36,18 @@ public final class NEO {
      * </pre>
      *
      * <code>int64 value = 3;</code>
+     * @return The value.
      */
     long getValue();
 
     /**
      * <code>string asset_id = 4;</code>
+     * @return The assetId.
      */
     java.lang.String getAssetId();
     /**
      * <code>string asset_id = 4;</code>
+     * @return The bytes for assetId.
      */
     com.google.protobuf.ByteString
         getAssetIdBytes();
@@ -50,7 +55,7 @@ public final class NEO {
   /**
    * Protobuf type {@code TW.NEO.Proto.TransactionInput}
    */
-  public  static final class TransactionInput extends
+  public static final class TransactionInput extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:TW.NEO.Proto.TransactionInput)
       TransactionInputOrBuilder {
@@ -151,7 +156,9 @@ public final class NEO {
     private com.google.protobuf.ByteString prevHash_;
     /**
      * <code>bytes prev_hash = 1;</code>
+     * @return The prevHash.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString getPrevHash() {
       return prevHash_;
     }
@@ -160,7 +167,9 @@ public final class NEO {
     private int prevIndex_;
     /**
      * <code>fixed32 prev_index = 2;</code>
+     * @return The prevIndex.
      */
+    @java.lang.Override
     public int getPrevIndex() {
       return prevIndex_;
     }
@@ -173,7 +182,9 @@ public final class NEO {
      * </pre>
      *
      * <code>int64 value = 3;</code>
+     * @return The value.
      */
+    @java.lang.Override
     public long getValue() {
       return value_;
     }
@@ -182,7 +193,9 @@ public final class NEO {
     private volatile java.lang.Object assetId_;
     /**
      * <code>string asset_id = 4;</code>
+     * @return The assetId.
      */
+    @java.lang.Override
     public java.lang.String getAssetId() {
       java.lang.Object ref = assetId_;
       if (ref instanceof java.lang.String) {
@@ -197,7 +210,9 @@ public final class NEO {
     }
     /**
      * <code>string asset_id = 4;</code>
+     * @return The bytes for assetId.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString
         getAssetIdBytes() {
       java.lang.Object ref = assetId_;
@@ -569,12 +584,16 @@ public final class NEO {
       private com.google.protobuf.ByteString prevHash_ = com.google.protobuf.ByteString.EMPTY;
       /**
        * <code>bytes prev_hash = 1;</code>
+       * @return The prevHash.
        */
+      @java.lang.Override
       public com.google.protobuf.ByteString getPrevHash() {
         return prevHash_;
       }
       /**
        * <code>bytes prev_hash = 1;</code>
+       * @param value The prevHash to set.
+       * @return This builder for chaining.
        */
       public Builder setPrevHash(com.google.protobuf.ByteString value) {
         if (value == null) {
@@ -587,6 +606,7 @@ public final class NEO {
       }
       /**
        * <code>bytes prev_hash = 1;</code>
+       * @return This builder for chaining.
        */
       public Builder clearPrevHash() {
         
@@ -598,12 +618,16 @@ public final class NEO {
       private int prevIndex_ ;
       /**
        * <code>fixed32 prev_index = 2;</code>
+       * @return The prevIndex.
        */
+      @java.lang.Override
       public int getPrevIndex() {
         return prevIndex_;
       }
       /**
        * <code>fixed32 prev_index = 2;</code>
+       * @param value The prevIndex to set.
+       * @return This builder for chaining.
        */
       public Builder setPrevIndex(int value) {
         
@@ -613,6 +637,7 @@ public final class NEO {
       }
       /**
        * <code>fixed32 prev_index = 2;</code>
+       * @return This builder for chaining.
        */
       public Builder clearPrevIndex() {
         
@@ -628,7 +653,9 @@ public final class NEO {
        * </pre>
        *
        * <code>int64 value = 3;</code>
+       * @return The value.
        */
+      @java.lang.Override
       public long getValue() {
         return value_;
       }
@@ -638,6 +665,8 @@ public final class NEO {
        * </pre>
        *
        * <code>int64 value = 3;</code>
+       * @param value The value to set.
+       * @return This builder for chaining.
        */
       public Builder setValue(long value) {
         
@@ -651,6 +680,7 @@ public final class NEO {
        * </pre>
        *
        * <code>int64 value = 3;</code>
+       * @return This builder for chaining.
        */
       public Builder clearValue() {
         
@@ -662,6 +692,7 @@ public final class NEO {
       private java.lang.Object assetId_ = "";
       /**
        * <code>string asset_id = 4;</code>
+       * @return The assetId.
        */
       public java.lang.String getAssetId() {
         java.lang.Object ref = assetId_;
@@ -677,6 +708,7 @@ public final class NEO {
       }
       /**
        * <code>string asset_id = 4;</code>
+       * @return The bytes for assetId.
        */
       public com.google.protobuf.ByteString
           getAssetIdBytes() {
@@ -693,6 +725,8 @@ public final class NEO {
       }
       /**
        * <code>string asset_id = 4;</code>
+       * @param value The assetId to set.
+       * @return This builder for chaining.
        */
       public Builder setAssetId(
           java.lang.String value) {
@@ -706,6 +740,7 @@ public final class NEO {
       }
       /**
        * <code>string asset_id = 4;</code>
+       * @return This builder for chaining.
        */
       public Builder clearAssetId() {
         
@@ -715,6 +750,8 @@ public final class NEO {
       }
       /**
        * <code>string asset_id = 4;</code>
+       * @param value The bytes for assetId to set.
+       * @return This builder for chaining.
        */
       public Builder setAssetIdBytes(
           com.google.protobuf.ByteString value) {
@@ -786,35 +823,42 @@ public final class NEO {
 
     /**
      * <code>string asset_id = 1;</code>
+     * @return The assetId.
      */
     java.lang.String getAssetId();
     /**
      * <code>string asset_id = 1;</code>
+     * @return The bytes for assetId.
      */
     com.google.protobuf.ByteString
         getAssetIdBytes();
 
     /**
      * <code>sint64 amount = 2;</code>
+     * @return The amount.
      */
     long getAmount();
 
     /**
      * <code>string to_address = 3;</code>
+     * @return The toAddress.
      */
     java.lang.String getToAddress();
     /**
      * <code>string to_address = 3;</code>
+     * @return The bytes for toAddress.
      */
     com.google.protobuf.ByteString
         getToAddressBytes();
 
     /**
      * <code>string change_address = 4;</code>
+     * @return The changeAddress.
      */
     java.lang.String getChangeAddress();
     /**
      * <code>string change_address = 4;</code>
+     * @return The bytes for changeAddress.
      */
     com.google.protobuf.ByteString
         getChangeAddressBytes();
@@ -822,7 +866,7 @@ public final class NEO {
   /**
    * Protobuf type {@code TW.NEO.Proto.TransactionOutput}
    */
-  public  static final class TransactionOutput extends
+  public static final class TransactionOutput extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:TW.NEO.Proto.TransactionOutput)
       TransactionOutputOrBuilder {
@@ -926,7 +970,9 @@ public final class NEO {
     private volatile java.lang.Object assetId_;
     /**
      * <code>string asset_id = 1;</code>
+     * @return The assetId.
      */
+    @java.lang.Override
     public java.lang.String getAssetId() {
       java.lang.Object ref = assetId_;
       if (ref instanceof java.lang.String) {
@@ -941,7 +987,9 @@ public final class NEO {
     }
     /**
      * <code>string asset_id = 1;</code>
+     * @return The bytes for assetId.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString
         getAssetIdBytes() {
       java.lang.Object ref = assetId_;
@@ -960,7 +1008,9 @@ public final class NEO {
     private long amount_;
     /**
      * <code>sint64 amount = 2;</code>
+     * @return The amount.
      */
+    @java.lang.Override
     public long getAmount() {
       return amount_;
     }
@@ -969,7 +1019,9 @@ public final class NEO {
     private volatile java.lang.Object toAddress_;
     /**
      * <code>string to_address = 3;</code>
+     * @return The toAddress.
      */
+    @java.lang.Override
     public java.lang.String getToAddress() {
       java.lang.Object ref = toAddress_;
       if (ref instanceof java.lang.String) {
@@ -984,7 +1036,9 @@ public final class NEO {
     }
     /**
      * <code>string to_address = 3;</code>
+     * @return The bytes for toAddress.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString
         getToAddressBytes() {
       java.lang.Object ref = toAddress_;
@@ -1003,7 +1057,9 @@ public final class NEO {
     private volatile java.lang.Object changeAddress_;
     /**
      * <code>string change_address = 4;</code>
+     * @return The changeAddress.
      */
+    @java.lang.Override
     public java.lang.String getChangeAddress() {
       java.lang.Object ref = changeAddress_;
       if (ref instanceof java.lang.String) {
@@ -1018,7 +1074,9 @@ public final class NEO {
     }
     /**
      * <code>string change_address = 4;</code>
+     * @return The bytes for changeAddress.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString
         getChangeAddressBytes() {
       java.lang.Object ref = changeAddress_;
@@ -1390,6 +1448,7 @@ public final class NEO {
       private java.lang.Object assetId_ = "";
       /**
        * <code>string asset_id = 1;</code>
+       * @return The assetId.
        */
       public java.lang.String getAssetId() {
         java.lang.Object ref = assetId_;
@@ -1405,6 +1464,7 @@ public final class NEO {
       }
       /**
        * <code>string asset_id = 1;</code>
+       * @return The bytes for assetId.
        */
       public com.google.protobuf.ByteString
           getAssetIdBytes() {
@@ -1421,6 +1481,8 @@ public final class NEO {
       }
       /**
        * <code>string asset_id = 1;</code>
+       * @param value The assetId to set.
+       * @return This builder for chaining.
        */
       public Builder setAssetId(
           java.lang.String value) {
@@ -1434,6 +1496,7 @@ public final class NEO {
       }
       /**
        * <code>string asset_id = 1;</code>
+       * @return This builder for chaining.
        */
       public Builder clearAssetId() {
         
@@ -1443,6 +1506,8 @@ public final class NEO {
       }
       /**
        * <code>string asset_id = 1;</code>
+       * @param value The bytes for assetId to set.
+       * @return This builder for chaining.
        */
       public Builder setAssetIdBytes(
           com.google.protobuf.ByteString value) {
@@ -1459,12 +1524,16 @@ public final class NEO {
       private long amount_ ;
       /**
        * <code>sint64 amount = 2;</code>
+       * @return The amount.
        */
+      @java.lang.Override
       public long getAmount() {
         return amount_;
       }
       /**
        * <code>sint64 amount = 2;</code>
+       * @param value The amount to set.
+       * @return This builder for chaining.
        */
       public Builder setAmount(long value) {
         
@@ -1474,6 +1543,7 @@ public final class NEO {
       }
       /**
        * <code>sint64 amount = 2;</code>
+       * @return This builder for chaining.
        */
       public Builder clearAmount() {
         
@@ -1485,6 +1555,7 @@ public final class NEO {
       private java.lang.Object toAddress_ = "";
       /**
        * <code>string to_address = 3;</code>
+       * @return The toAddress.
        */
       public java.lang.String getToAddress() {
         java.lang.Object ref = toAddress_;
@@ -1500,6 +1571,7 @@ public final class NEO {
       }
       /**
        * <code>string to_address = 3;</code>
+       * @return The bytes for toAddress.
        */
       public com.google.protobuf.ByteString
           getToAddressBytes() {
@@ -1516,6 +1588,8 @@ public final class NEO {
       }
       /**
        * <code>string to_address = 3;</code>
+       * @param value The toAddress to set.
+       * @return This builder for chaining.
        */
       public Builder setToAddress(
           java.lang.String value) {
@@ -1529,6 +1603,7 @@ public final class NEO {
       }
       /**
        * <code>string to_address = 3;</code>
+       * @return This builder for chaining.
        */
       public Builder clearToAddress() {
         
@@ -1538,6 +1613,8 @@ public final class NEO {
       }
       /**
        * <code>string to_address = 3;</code>
+       * @param value The bytes for toAddress to set.
+       * @return This builder for chaining.
        */
       public Builder setToAddressBytes(
           com.google.protobuf.ByteString value) {
@@ -1554,6 +1631,7 @@ public final class NEO {
       private java.lang.Object changeAddress_ = "";
       /**
        * <code>string change_address = 4;</code>
+       * @return The changeAddress.
        */
       public java.lang.String getChangeAddress() {
         java.lang.Object ref = changeAddress_;
@@ -1569,6 +1647,7 @@ public final class NEO {
       }
       /**
        * <code>string change_address = 4;</code>
+       * @return The bytes for changeAddress.
        */
       public com.google.protobuf.ByteString
           getChangeAddressBytes() {
@@ -1585,6 +1664,8 @@ public final class NEO {
       }
       /**
        * <code>string change_address = 4;</code>
+       * @param value The changeAddress to set.
+       * @return This builder for chaining.
        */
       public Builder setChangeAddress(
           java.lang.String value) {
@@ -1598,6 +1679,7 @@ public final class NEO {
       }
       /**
        * <code>string change_address = 4;</code>
+       * @return This builder for chaining.
        */
       public Builder clearChangeAddress() {
         
@@ -1607,6 +1689,8 @@ public final class NEO {
       }
       /**
        * <code>string change_address = 4;</code>
+       * @param value The bytes for changeAddress to set.
+       * @return This builder for chaining.
        */
       public Builder setChangeAddressBytes(
           com.google.protobuf.ByteString value) {
@@ -1726,40 +1810,48 @@ public final class NEO {
 
     /**
      * <code>bytes private_key = 3;</code>
+     * @return The privateKey.
      */
     com.google.protobuf.ByteString getPrivateKey();
 
     /**
      * <code>int64 fee = 4;</code>
+     * @return The fee.
      */
     long getFee();
 
     /**
      * <code>string gas_asset_id = 5;</code>
+     * @return The gasAssetId.
      */
     java.lang.String getGasAssetId();
     /**
      * <code>string gas_asset_id = 5;</code>
+     * @return The bytes for gasAssetId.
      */
     com.google.protobuf.ByteString
         getGasAssetIdBytes();
 
     /**
      * <code>string gas_change_address = 6;</code>
+     * @return The gasChangeAddress.
      */
     java.lang.String getGasChangeAddress();
     /**
      * <code>string gas_change_address = 6;</code>
+     * @return The bytes for gasChangeAddress.
      */
     com.google.protobuf.ByteString
         getGasChangeAddressBytes();
 
     /**
      * <code>.TW.NEO.Proto.TransactionPlan plan = 7;</code>
+     * @return Whether the plan field is set.
      */
     boolean hasPlan();
     /**
      * <code>.TW.NEO.Proto.TransactionPlan plan = 7;</code>
+     * @return The plan.
      */
     wallet.core.jni.proto.NEO.TransactionPlan getPlan();
     /**
@@ -1774,7 +1866,7 @@ public final class NEO {
    *
    * Protobuf type {@code TW.NEO.Proto.SigningInput}
    */
-  public  static final class SigningInput extends
+  public static final class SigningInput extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:TW.NEO.Proto.SigningInput)
       SigningInputOrBuilder {
@@ -1918,12 +2010,14 @@ public final class NEO {
     /**
      * <code>repeated .TW.NEO.Proto.TransactionInput inputs = 1;</code>
      */
+    @java.lang.Override
     public java.util.List<wallet.core.jni.proto.NEO.TransactionInput> getInputsList() {
       return inputs_;
     }
     /**
      * <code>repeated .TW.NEO.Proto.TransactionInput inputs = 1;</code>
      */
+    @java.lang.Override
     public java.util.List<? extends wallet.core.jni.proto.NEO.TransactionInputOrBuilder> 
         getInputsOrBuilderList() {
       return inputs_;
@@ -1931,18 +2025,21 @@ public final class NEO {
     /**
      * <code>repeated .TW.NEO.Proto.TransactionInput inputs = 1;</code>
      */
+    @java.lang.Override
     public int getInputsCount() {
       return inputs_.size();
     }
     /**
      * <code>repeated .TW.NEO.Proto.TransactionInput inputs = 1;</code>
      */
+    @java.lang.Override
     public wallet.core.jni.proto.NEO.TransactionInput getInputs(int index) {
       return inputs_.get(index);
     }
     /**
      * <code>repeated .TW.NEO.Proto.TransactionInput inputs = 1;</code>
      */
+    @java.lang.Override
     public wallet.core.jni.proto.NEO.TransactionInputOrBuilder getInputsOrBuilder(
         int index) {
       return inputs_.get(index);
@@ -1953,12 +2050,14 @@ public final class NEO {
     /**
      * <code>repeated .TW.NEO.Proto.TransactionOutput outputs = 2;</code>
      */
+    @java.lang.Override
     public java.util.List<wallet.core.jni.proto.NEO.TransactionOutput> getOutputsList() {
       return outputs_;
     }
     /**
      * <code>repeated .TW.NEO.Proto.TransactionOutput outputs = 2;</code>
      */
+    @java.lang.Override
     public java.util.List<? extends wallet.core.jni.proto.NEO.TransactionOutputOrBuilder> 
         getOutputsOrBuilderList() {
       return outputs_;
@@ -1966,18 +2065,21 @@ public final class NEO {
     /**
      * <code>repeated .TW.NEO.Proto.TransactionOutput outputs = 2;</code>
      */
+    @java.lang.Override
     public int getOutputsCount() {
       return outputs_.size();
     }
     /**
      * <code>repeated .TW.NEO.Proto.TransactionOutput outputs = 2;</code>
      */
+    @java.lang.Override
     public wallet.core.jni.proto.NEO.TransactionOutput getOutputs(int index) {
       return outputs_.get(index);
     }
     /**
      * <code>repeated .TW.NEO.Proto.TransactionOutput outputs = 2;</code>
      */
+    @java.lang.Override
     public wallet.core.jni.proto.NEO.TransactionOutputOrBuilder getOutputsOrBuilder(
         int index) {
       return outputs_.get(index);
@@ -1987,7 +2089,9 @@ public final class NEO {
     private com.google.protobuf.ByteString privateKey_;
     /**
      * <code>bytes private_key = 3;</code>
+     * @return The privateKey.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString getPrivateKey() {
       return privateKey_;
     }
@@ -1996,7 +2100,9 @@ public final class NEO {
     private long fee_;
     /**
      * <code>int64 fee = 4;</code>
+     * @return The fee.
      */
+    @java.lang.Override
     public long getFee() {
       return fee_;
     }
@@ -2005,7 +2111,9 @@ public final class NEO {
     private volatile java.lang.Object gasAssetId_;
     /**
      * <code>string gas_asset_id = 5;</code>
+     * @return The gasAssetId.
      */
+    @java.lang.Override
     public java.lang.String getGasAssetId() {
       java.lang.Object ref = gasAssetId_;
       if (ref instanceof java.lang.String) {
@@ -2020,7 +2128,9 @@ public final class NEO {
     }
     /**
      * <code>string gas_asset_id = 5;</code>
+     * @return The bytes for gasAssetId.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString
         getGasAssetIdBytes() {
       java.lang.Object ref = gasAssetId_;
@@ -2039,7 +2149,9 @@ public final class NEO {
     private volatile java.lang.Object gasChangeAddress_;
     /**
      * <code>string gas_change_address = 6;</code>
+     * @return The gasChangeAddress.
      */
+    @java.lang.Override
     public java.lang.String getGasChangeAddress() {
       java.lang.Object ref = gasChangeAddress_;
       if (ref instanceof java.lang.String) {
@@ -2054,7 +2166,9 @@ public final class NEO {
     }
     /**
      * <code>string gas_change_address = 6;</code>
+     * @return The bytes for gasChangeAddress.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString
         getGasChangeAddressBytes() {
       java.lang.Object ref = gasChangeAddress_;
@@ -2073,19 +2187,24 @@ public final class NEO {
     private wallet.core.jni.proto.NEO.TransactionPlan plan_;
     /**
      * <code>.TW.NEO.Proto.TransactionPlan plan = 7;</code>
+     * @return Whether the plan field is set.
      */
+    @java.lang.Override
     public boolean hasPlan() {
       return plan_ != null;
     }
     /**
      * <code>.TW.NEO.Proto.TransactionPlan plan = 7;</code>
+     * @return The plan.
      */
+    @java.lang.Override
     public wallet.core.jni.proto.NEO.TransactionPlan getPlan() {
       return plan_ == null ? wallet.core.jni.proto.NEO.TransactionPlan.getDefaultInstance() : plan_;
     }
     /**
      * <code>.TW.NEO.Proto.TransactionPlan plan = 7;</code>
      */
+    @java.lang.Override
     public wallet.core.jni.proto.NEO.TransactionPlanOrBuilder getPlanOrBuilder() {
       return getPlan();
     }
@@ -3073,12 +3192,16 @@ public final class NEO {
       private com.google.protobuf.ByteString privateKey_ = com.google.protobuf.ByteString.EMPTY;
       /**
        * <code>bytes private_key = 3;</code>
+       * @return The privateKey.
        */
+      @java.lang.Override
       public com.google.protobuf.ByteString getPrivateKey() {
         return privateKey_;
       }
       /**
        * <code>bytes private_key = 3;</code>
+       * @param value The privateKey to set.
+       * @return This builder for chaining.
        */
       public Builder setPrivateKey(com.google.protobuf.ByteString value) {
         if (value == null) {
@@ -3091,6 +3214,7 @@ public final class NEO {
       }
       /**
        * <code>bytes private_key = 3;</code>
+       * @return This builder for chaining.
        */
       public Builder clearPrivateKey() {
         
@@ -3102,12 +3226,16 @@ public final class NEO {
       private long fee_ ;
       /**
        * <code>int64 fee = 4;</code>
+       * @return The fee.
        */
+      @java.lang.Override
       public long getFee() {
         return fee_;
       }
       /**
        * <code>int64 fee = 4;</code>
+       * @param value The fee to set.
+       * @return This builder for chaining.
        */
       public Builder setFee(long value) {
         
@@ -3117,6 +3245,7 @@ public final class NEO {
       }
       /**
        * <code>int64 fee = 4;</code>
+       * @return This builder for chaining.
        */
       public Builder clearFee() {
         
@@ -3128,6 +3257,7 @@ public final class NEO {
       private java.lang.Object gasAssetId_ = "";
       /**
        * <code>string gas_asset_id = 5;</code>
+       * @return The gasAssetId.
        */
       public java.lang.String getGasAssetId() {
         java.lang.Object ref = gasAssetId_;
@@ -3143,6 +3273,7 @@ public final class NEO {
       }
       /**
        * <code>string gas_asset_id = 5;</code>
+       * @return The bytes for gasAssetId.
        */
       public com.google.protobuf.ByteString
           getGasAssetIdBytes() {
@@ -3159,6 +3290,8 @@ public final class NEO {
       }
       /**
        * <code>string gas_asset_id = 5;</code>
+       * @param value The gasAssetId to set.
+       * @return This builder for chaining.
        */
       public Builder setGasAssetId(
           java.lang.String value) {
@@ -3172,6 +3305,7 @@ public final class NEO {
       }
       /**
        * <code>string gas_asset_id = 5;</code>
+       * @return This builder for chaining.
        */
       public Builder clearGasAssetId() {
         
@@ -3181,6 +3315,8 @@ public final class NEO {
       }
       /**
        * <code>string gas_asset_id = 5;</code>
+       * @param value The bytes for gasAssetId to set.
+       * @return This builder for chaining.
        */
       public Builder setGasAssetIdBytes(
           com.google.protobuf.ByteString value) {
@@ -3197,6 +3333,7 @@ public final class NEO {
       private java.lang.Object gasChangeAddress_ = "";
       /**
        * <code>string gas_change_address = 6;</code>
+       * @return The gasChangeAddress.
        */
       public java.lang.String getGasChangeAddress() {
         java.lang.Object ref = gasChangeAddress_;
@@ -3212,6 +3349,7 @@ public final class NEO {
       }
       /**
        * <code>string gas_change_address = 6;</code>
+       * @return The bytes for gasChangeAddress.
        */
       public com.google.protobuf.ByteString
           getGasChangeAddressBytes() {
@@ -3228,6 +3366,8 @@ public final class NEO {
       }
       /**
        * <code>string gas_change_address = 6;</code>
+       * @param value The gasChangeAddress to set.
+       * @return This builder for chaining.
        */
       public Builder setGasChangeAddress(
           java.lang.String value) {
@@ -3241,6 +3381,7 @@ public final class NEO {
       }
       /**
        * <code>string gas_change_address = 6;</code>
+       * @return This builder for chaining.
        */
       public Builder clearGasChangeAddress() {
         
@@ -3250,6 +3391,8 @@ public final class NEO {
       }
       /**
        * <code>string gas_change_address = 6;</code>
+       * @param value The bytes for gasChangeAddress to set.
+       * @return This builder for chaining.
        */
       public Builder setGasChangeAddressBytes(
           com.google.protobuf.ByteString value) {
@@ -3268,12 +3411,14 @@ public final class NEO {
           wallet.core.jni.proto.NEO.TransactionPlan, wallet.core.jni.proto.NEO.TransactionPlan.Builder, wallet.core.jni.proto.NEO.TransactionPlanOrBuilder> planBuilder_;
       /**
        * <code>.TW.NEO.Proto.TransactionPlan plan = 7;</code>
+       * @return Whether the plan field is set.
        */
       public boolean hasPlan() {
         return planBuilder_ != null || plan_ != null;
       }
       /**
        * <code>.TW.NEO.Proto.TransactionPlan plan = 7;</code>
+       * @return The plan.
        */
       public wallet.core.jni.proto.NEO.TransactionPlan getPlan() {
         if (planBuilder_ == null) {
@@ -3442,26 +3587,28 @@ public final class NEO {
      * </pre>
      *
      * <code>bytes encoded = 1;</code>
+     * @return The encoded.
      */
     com.google.protobuf.ByteString getEncoded();
 
     /**
      * <pre>
-     * Error message in case of error
+     * Optional error
      * </pre>
      *
-     * <code>string error = 2;</code>
+     * <code>.TW.Common.Proto.SigningError error = 2;</code>
+     * @return The enum numeric value on the wire for error.
      */
-    java.lang.String getError();
+    int getErrorValue();
     /**
      * <pre>
-     * Error message in case of error
+     * Optional error
      * </pre>
      *
-     * <code>string error = 2;</code>
+     * <code>.TW.Common.Proto.SigningError error = 2;</code>
+     * @return The error.
      */
-    com.google.protobuf.ByteString
-        getErrorBytes();
+    wallet.core.jni.proto.Common.SigningError getError();
   }
   /**
    * <pre>
@@ -3470,7 +3617,7 @@ public final class NEO {
    *
    * Protobuf type {@code TW.NEO.Proto.SigningOutput}
    */
-  public  static final class SigningOutput extends
+  public static final class SigningOutput extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:TW.NEO.Proto.SigningOutput)
       SigningOutputOrBuilder {
@@ -3481,7 +3628,7 @@ public final class NEO {
     }
     private SigningOutput() {
       encoded_ = com.google.protobuf.ByteString.EMPTY;
-      error_ = "";
+      error_ = 0;
     }
 
     @java.lang.Override
@@ -3519,10 +3666,10 @@ public final class NEO {
               encoded_ = input.readBytes();
               break;
             }
-            case 18: {
-              java.lang.String s = input.readStringRequireUtf8();
+            case 16: {
+              int rawValue = input.readEnum();
 
-              error_ = s;
+              error_ = rawValue;
               break;
             }
             default: {
@@ -3565,51 +3712,38 @@ public final class NEO {
      * </pre>
      *
      * <code>bytes encoded = 1;</code>
+     * @return The encoded.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString getEncoded() {
       return encoded_;
     }
 
     public static final int ERROR_FIELD_NUMBER = 2;
-    private volatile java.lang.Object error_;
+    private int error_;
     /**
      * <pre>
-     * Error message in case of error
+     * Optional error
      * </pre>
      *
-     * <code>string error = 2;</code>
+     * <code>.TW.Common.Proto.SigningError error = 2;</code>
+     * @return The enum numeric value on the wire for error.
      */
-    public java.lang.String getError() {
-      java.lang.Object ref = error_;
-      if (ref instanceof java.lang.String) {
-        return (java.lang.String) ref;
-      } else {
-        com.google.protobuf.ByteString bs = 
-            (com.google.protobuf.ByteString) ref;
-        java.lang.String s = bs.toStringUtf8();
-        error_ = s;
-        return s;
-      }
+    @java.lang.Override public int getErrorValue() {
+      return error_;
     }
     /**
      * <pre>
-     * Error message in case of error
+     * Optional error
      * </pre>
      *
-     * <code>string error = 2;</code>
+     * <code>.TW.Common.Proto.SigningError error = 2;</code>
+     * @return The error.
      */
-    public com.google.protobuf.ByteString
-        getErrorBytes() {
-      java.lang.Object ref = error_;
-      if (ref instanceof java.lang.String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
-        error_ = b;
-        return b;
-      } else {
-        return (com.google.protobuf.ByteString) ref;
-      }
+    @java.lang.Override public wallet.core.jni.proto.Common.SigningError getError() {
+      @SuppressWarnings("deprecation")
+      wallet.core.jni.proto.Common.SigningError result = wallet.core.jni.proto.Common.SigningError.valueOf(error_);
+      return result == null ? wallet.core.jni.proto.Common.SigningError.UNRECOGNIZED : result;
     }
 
     private byte memoizedIsInitialized = -1;
@@ -3629,8 +3763,8 @@ public final class NEO {
       if (!encoded_.isEmpty()) {
         output.writeBytes(1, encoded_);
       }
-      if (!getErrorBytes().isEmpty()) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 2, error_);
+      if (error_ != wallet.core.jni.proto.Common.SigningError.OK.getNumber()) {
+        output.writeEnum(2, error_);
       }
       unknownFields.writeTo(output);
     }
@@ -3645,8 +3779,9 @@ public final class NEO {
         size += com.google.protobuf.CodedOutputStream
           .computeBytesSize(1, encoded_);
       }
-      if (!getErrorBytes().isEmpty()) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, error_);
+      if (error_ != wallet.core.jni.proto.Common.SigningError.OK.getNumber()) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeEnumSize(2, error_);
       }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
@@ -3665,8 +3800,7 @@ public final class NEO {
 
       if (!getEncoded()
           .equals(other.getEncoded())) return false;
-      if (!getError()
-          .equals(other.getError())) return false;
+      if (error_ != other.error_) return false;
       if (!unknownFields.equals(other.unknownFields)) return false;
       return true;
     }
@@ -3681,7 +3815,7 @@ public final class NEO {
       hash = (37 * hash) + ENCODED_FIELD_NUMBER;
       hash = (53 * hash) + getEncoded().hashCode();
       hash = (37 * hash) + ERROR_FIELD_NUMBER;
-      hash = (53 * hash) + getError().hashCode();
+      hash = (53 * hash) + error_;
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
       return hash;
@@ -3821,7 +3955,7 @@ public final class NEO {
         super.clear();
         encoded_ = com.google.protobuf.ByteString.EMPTY;
 
-        error_ = "";
+        error_ = 0;
 
         return this;
       }
@@ -3902,9 +4036,8 @@ public final class NEO {
         if (other.getEncoded() != com.google.protobuf.ByteString.EMPTY) {
           setEncoded(other.getEncoded());
         }
-        if (!other.getError().isEmpty()) {
-          error_ = other.error_;
-          onChanged();
+        if (other.error_ != 0) {
+          setErrorValue(other.getErrorValue());
         }
         this.mergeUnknownFields(other.unknownFields);
         onChanged();
@@ -3942,7 +4075,9 @@ public final class NEO {
        * </pre>
        *
        * <code>bytes encoded = 1;</code>
+       * @return The encoded.
        */
+      @java.lang.Override
       public com.google.protobuf.ByteString getEncoded() {
         return encoded_;
       }
@@ -3952,6 +4087,8 @@ public final class NEO {
        * </pre>
        *
        * <code>bytes encoded = 1;</code>
+       * @param value The encoded to set.
+       * @return This builder for chaining.
        */
       public Builder setEncoded(com.google.protobuf.ByteString value) {
         if (value == null) {
@@ -3968,6 +4105,7 @@ public final class NEO {
        * </pre>
        *
        * <code>bytes encoded = 1;</code>
+       * @return This builder for chaining.
        */
       public Builder clearEncoded() {
         
@@ -3976,91 +4114,76 @@ public final class NEO {
         return this;
       }
 
-      private java.lang.Object error_ = "";
+      private int error_ = 0;
       /**
        * <pre>
-       * Error message in case of error
+       * Optional error
        * </pre>
        *
-       * <code>string error = 2;</code>
+       * <code>.TW.Common.Proto.SigningError error = 2;</code>
+       * @return The enum numeric value on the wire for error.
        */
-      public java.lang.String getError() {
-        java.lang.Object ref = error_;
-        if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          error_ = s;
-          return s;
-        } else {
-          return (java.lang.String) ref;
-        }
+      @java.lang.Override public int getErrorValue() {
+        return error_;
       }
       /**
        * <pre>
-       * Error message in case of error
+       * Optional error
        * </pre>
        *
-       * <code>string error = 2;</code>
+       * <code>.TW.Common.Proto.SigningError error = 2;</code>
+       * @param value The enum numeric value on the wire for error to set.
+       * @return This builder for chaining.
        */
-      public com.google.protobuf.ByteString
-          getErrorBytes() {
-        java.lang.Object ref = error_;
-        if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
-              com.google.protobuf.ByteString.copyFromUtf8(
-                  (java.lang.String) ref);
-          error_ = b;
-          return b;
-        } else {
-          return (com.google.protobuf.ByteString) ref;
-        }
-      }
-      /**
-       * <pre>
-       * Error message in case of error
-       * </pre>
-       *
-       * <code>string error = 2;</code>
-       */
-      public Builder setError(
-          java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  
+      public Builder setErrorValue(int value) {
+        
         error_ = value;
         onChanged();
         return this;
       }
       /**
        * <pre>
-       * Error message in case of error
+       * Optional error
        * </pre>
        *
-       * <code>string error = 2;</code>
+       * <code>.TW.Common.Proto.SigningError error = 2;</code>
+       * @return The error.
+       */
+      @java.lang.Override
+      public wallet.core.jni.proto.Common.SigningError getError() {
+        @SuppressWarnings("deprecation")
+        wallet.core.jni.proto.Common.SigningError result = wallet.core.jni.proto.Common.SigningError.valueOf(error_);
+        return result == null ? wallet.core.jni.proto.Common.SigningError.UNRECOGNIZED : result;
+      }
+      /**
+       * <pre>
+       * Optional error
+       * </pre>
+       *
+       * <code>.TW.Common.Proto.SigningError error = 2;</code>
+       * @param value The error to set.
+       * @return This builder for chaining.
+       */
+      public Builder setError(wallet.core.jni.proto.Common.SigningError value) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        
+        error_ = value.getNumber();
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * Optional error
+       * </pre>
+       *
+       * <code>.TW.Common.Proto.SigningError error = 2;</code>
+       * @return This builder for chaining.
        */
       public Builder clearError() {
         
-        error_ = getDefaultInstance().getError();
-        onChanged();
-        return this;
-      }
-      /**
-       * <pre>
-       * Error message in case of error
-       * </pre>
-       *
-       * <code>string error = 2;</code>
-       */
-      public Builder setErrorBytes(
-          com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  checkByteStringIsUtf8(value);
-        
-        error_ = value;
+        error_ = 0;
         onChanged();
         return this;
       }
@@ -4127,6 +4250,7 @@ public final class NEO {
      * </pre>
      *
      * <code>int64 amount = 1;</code>
+     * @return The amount.
      */
     long getAmount();
 
@@ -4136,40 +4260,48 @@ public final class NEO {
      * </pre>
      *
      * <code>int64 available_amount = 2;</code>
+     * @return The availableAmount.
      */
     long getAvailableAmount();
 
     /**
      * <code>int64 change = 3;</code>
+     * @return The change.
      */
     long getChange();
 
     /**
      * <code>string asset_id = 4;</code>
+     * @return The assetId.
      */
     java.lang.String getAssetId();
     /**
      * <code>string asset_id = 4;</code>
+     * @return The bytes for assetId.
      */
     com.google.protobuf.ByteString
         getAssetIdBytes();
 
     /**
      * <code>string to_address = 5;</code>
+     * @return The toAddress.
      */
     java.lang.String getToAddress();
     /**
      * <code>string to_address = 5;</code>
+     * @return The bytes for toAddress.
      */
     com.google.protobuf.ByteString
         getToAddressBytes();
 
     /**
      * <code>string change_address = 6;</code>
+     * @return The changeAddress.
      */
     java.lang.String getChangeAddress();
     /**
      * <code>string change_address = 6;</code>
+     * @return The bytes for changeAddress.
      */
     com.google.protobuf.ByteString
         getChangeAddressBytes();
@@ -4181,7 +4313,7 @@ public final class NEO {
    *
    * Protobuf type {@code TW.NEO.Proto.TransactionOutputPlan}
    */
-  public  static final class TransactionOutputPlan extends
+  public static final class TransactionOutputPlan extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:TW.NEO.Proto.TransactionOutputPlan)
       TransactionOutputPlanOrBuilder {
@@ -4299,7 +4431,9 @@ public final class NEO {
      * </pre>
      *
      * <code>int64 amount = 1;</code>
+     * @return The amount.
      */
+    @java.lang.Override
     public long getAmount() {
       return amount_;
     }
@@ -4312,7 +4446,9 @@ public final class NEO {
      * </pre>
      *
      * <code>int64 available_amount = 2;</code>
+     * @return The availableAmount.
      */
+    @java.lang.Override
     public long getAvailableAmount() {
       return availableAmount_;
     }
@@ -4321,7 +4457,9 @@ public final class NEO {
     private long change_;
     /**
      * <code>int64 change = 3;</code>
+     * @return The change.
      */
+    @java.lang.Override
     public long getChange() {
       return change_;
     }
@@ -4330,7 +4468,9 @@ public final class NEO {
     private volatile java.lang.Object assetId_;
     /**
      * <code>string asset_id = 4;</code>
+     * @return The assetId.
      */
+    @java.lang.Override
     public java.lang.String getAssetId() {
       java.lang.Object ref = assetId_;
       if (ref instanceof java.lang.String) {
@@ -4345,7 +4485,9 @@ public final class NEO {
     }
     /**
      * <code>string asset_id = 4;</code>
+     * @return The bytes for assetId.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString
         getAssetIdBytes() {
       java.lang.Object ref = assetId_;
@@ -4364,7 +4506,9 @@ public final class NEO {
     private volatile java.lang.Object toAddress_;
     /**
      * <code>string to_address = 5;</code>
+     * @return The toAddress.
      */
+    @java.lang.Override
     public java.lang.String getToAddress() {
       java.lang.Object ref = toAddress_;
       if (ref instanceof java.lang.String) {
@@ -4379,7 +4523,9 @@ public final class NEO {
     }
     /**
      * <code>string to_address = 5;</code>
+     * @return The bytes for toAddress.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString
         getToAddressBytes() {
       java.lang.Object ref = toAddress_;
@@ -4398,7 +4544,9 @@ public final class NEO {
     private volatile java.lang.Object changeAddress_;
     /**
      * <code>string change_address = 6;</code>
+     * @return The changeAddress.
      */
+    @java.lang.Override
     public java.lang.String getChangeAddress() {
       java.lang.Object ref = changeAddress_;
       if (ref instanceof java.lang.String) {
@@ -4413,7 +4561,9 @@ public final class NEO {
     }
     /**
      * <code>string change_address = 6;</code>
+     * @return The bytes for changeAddress.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString
         getChangeAddressBytes() {
       java.lang.Object ref = changeAddress_;
@@ -4829,7 +4979,9 @@ public final class NEO {
        * </pre>
        *
        * <code>int64 amount = 1;</code>
+       * @return The amount.
        */
+      @java.lang.Override
       public long getAmount() {
         return amount_;
       }
@@ -4839,6 +4991,8 @@ public final class NEO {
        * </pre>
        *
        * <code>int64 amount = 1;</code>
+       * @param value The amount to set.
+       * @return This builder for chaining.
        */
       public Builder setAmount(long value) {
         
@@ -4852,6 +5006,7 @@ public final class NEO {
        * </pre>
        *
        * <code>int64 amount = 1;</code>
+       * @return This builder for chaining.
        */
       public Builder clearAmount() {
         
@@ -4867,7 +5022,9 @@ public final class NEO {
        * </pre>
        *
        * <code>int64 available_amount = 2;</code>
+       * @return The availableAmount.
        */
+      @java.lang.Override
       public long getAvailableAmount() {
         return availableAmount_;
       }
@@ -4877,6 +5034,8 @@ public final class NEO {
        * </pre>
        *
        * <code>int64 available_amount = 2;</code>
+       * @param value The availableAmount to set.
+       * @return This builder for chaining.
        */
       public Builder setAvailableAmount(long value) {
         
@@ -4890,6 +5049,7 @@ public final class NEO {
        * </pre>
        *
        * <code>int64 available_amount = 2;</code>
+       * @return This builder for chaining.
        */
       public Builder clearAvailableAmount() {
         
@@ -4901,12 +5061,16 @@ public final class NEO {
       private long change_ ;
       /**
        * <code>int64 change = 3;</code>
+       * @return The change.
        */
+      @java.lang.Override
       public long getChange() {
         return change_;
       }
       /**
        * <code>int64 change = 3;</code>
+       * @param value The change to set.
+       * @return This builder for chaining.
        */
       public Builder setChange(long value) {
         
@@ -4916,6 +5080,7 @@ public final class NEO {
       }
       /**
        * <code>int64 change = 3;</code>
+       * @return This builder for chaining.
        */
       public Builder clearChange() {
         
@@ -4927,6 +5092,7 @@ public final class NEO {
       private java.lang.Object assetId_ = "";
       /**
        * <code>string asset_id = 4;</code>
+       * @return The assetId.
        */
       public java.lang.String getAssetId() {
         java.lang.Object ref = assetId_;
@@ -4942,6 +5108,7 @@ public final class NEO {
       }
       /**
        * <code>string asset_id = 4;</code>
+       * @return The bytes for assetId.
        */
       public com.google.protobuf.ByteString
           getAssetIdBytes() {
@@ -4958,6 +5125,8 @@ public final class NEO {
       }
       /**
        * <code>string asset_id = 4;</code>
+       * @param value The assetId to set.
+       * @return This builder for chaining.
        */
       public Builder setAssetId(
           java.lang.String value) {
@@ -4971,6 +5140,7 @@ public final class NEO {
       }
       /**
        * <code>string asset_id = 4;</code>
+       * @return This builder for chaining.
        */
       public Builder clearAssetId() {
         
@@ -4980,6 +5150,8 @@ public final class NEO {
       }
       /**
        * <code>string asset_id = 4;</code>
+       * @param value The bytes for assetId to set.
+       * @return This builder for chaining.
        */
       public Builder setAssetIdBytes(
           com.google.protobuf.ByteString value) {
@@ -4996,6 +5168,7 @@ public final class NEO {
       private java.lang.Object toAddress_ = "";
       /**
        * <code>string to_address = 5;</code>
+       * @return The toAddress.
        */
       public java.lang.String getToAddress() {
         java.lang.Object ref = toAddress_;
@@ -5011,6 +5184,7 @@ public final class NEO {
       }
       /**
        * <code>string to_address = 5;</code>
+       * @return The bytes for toAddress.
        */
       public com.google.protobuf.ByteString
           getToAddressBytes() {
@@ -5027,6 +5201,8 @@ public final class NEO {
       }
       /**
        * <code>string to_address = 5;</code>
+       * @param value The toAddress to set.
+       * @return This builder for chaining.
        */
       public Builder setToAddress(
           java.lang.String value) {
@@ -5040,6 +5216,7 @@ public final class NEO {
       }
       /**
        * <code>string to_address = 5;</code>
+       * @return This builder for chaining.
        */
       public Builder clearToAddress() {
         
@@ -5049,6 +5226,8 @@ public final class NEO {
       }
       /**
        * <code>string to_address = 5;</code>
+       * @param value The bytes for toAddress to set.
+       * @return This builder for chaining.
        */
       public Builder setToAddressBytes(
           com.google.protobuf.ByteString value) {
@@ -5065,6 +5244,7 @@ public final class NEO {
       private java.lang.Object changeAddress_ = "";
       /**
        * <code>string change_address = 6;</code>
+       * @return The changeAddress.
        */
       public java.lang.String getChangeAddress() {
         java.lang.Object ref = changeAddress_;
@@ -5080,6 +5260,7 @@ public final class NEO {
       }
       /**
        * <code>string change_address = 6;</code>
+       * @return The bytes for changeAddress.
        */
       public com.google.protobuf.ByteString
           getChangeAddressBytes() {
@@ -5096,6 +5277,8 @@ public final class NEO {
       }
       /**
        * <code>string change_address = 6;</code>
+       * @param value The changeAddress to set.
+       * @return This builder for chaining.
        */
       public Builder setChangeAddress(
           java.lang.String value) {
@@ -5109,6 +5292,7 @@ public final class NEO {
       }
       /**
        * <code>string change_address = 6;</code>
+       * @return This builder for chaining.
        */
       public Builder clearChangeAddress() {
         
@@ -5118,6 +5302,8 @@ public final class NEO {
       }
       /**
        * <code>string change_address = 6;</code>
+       * @param value The bytes for changeAddress to set.
+       * @return This builder for chaining.
        */
       public Builder setChangeAddressBytes(
           com.google.protobuf.ByteString value) {
@@ -5281,26 +5467,28 @@ public final class NEO {
      * </pre>
      *
      * <code>int64 fee = 3;</code>
+     * @return The fee.
      */
     long getFee();
 
     /**
      * <pre>
-     * Error message in case of error
+     * Optional error
      * </pre>
      *
-     * <code>string error = 4;</code>
+     * <code>.TW.Common.Proto.SigningError error = 4;</code>
+     * @return The enum numeric value on the wire for error.
      */
-    java.lang.String getError();
+    int getErrorValue();
     /**
      * <pre>
-     * Error message in case of error
+     * Optional error
      * </pre>
      *
-     * <code>string error = 4;</code>
+     * <code>.TW.Common.Proto.SigningError error = 4;</code>
+     * @return The error.
      */
-    com.google.protobuf.ByteString
-        getErrorBytes();
+    wallet.core.jni.proto.Common.SigningError getError();
   }
   /**
    * <pre>
@@ -5309,7 +5497,7 @@ public final class NEO {
    *
    * Protobuf type {@code TW.NEO.Proto.TransactionPlan}
    */
-  public  static final class TransactionPlan extends
+  public static final class TransactionPlan extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:TW.NEO.Proto.TransactionPlan)
       TransactionPlanOrBuilder {
@@ -5321,7 +5509,7 @@ public final class NEO {
     private TransactionPlan() {
       outputs_ = java.util.Collections.emptyList();
       inputs_ = java.util.Collections.emptyList();
-      error_ = "";
+      error_ = 0;
     }
 
     @java.lang.Override
@@ -5378,10 +5566,10 @@ public final class NEO {
               fee_ = input.readInt64();
               break;
             }
-            case 34: {
-              java.lang.String s = input.readStringRequireUtf8();
+            case 32: {
+              int rawValue = input.readEnum();
 
-              error_ = s;
+              error_ = rawValue;
               break;
             }
             default: {
@@ -5431,6 +5619,7 @@ public final class NEO {
      *
      * <code>repeated .TW.NEO.Proto.TransactionOutputPlan outputs = 1;</code>
      */
+    @java.lang.Override
     public java.util.List<wallet.core.jni.proto.NEO.TransactionOutputPlan> getOutputsList() {
       return outputs_;
     }
@@ -5441,6 +5630,7 @@ public final class NEO {
      *
      * <code>repeated .TW.NEO.Proto.TransactionOutputPlan outputs = 1;</code>
      */
+    @java.lang.Override
     public java.util.List<? extends wallet.core.jni.proto.NEO.TransactionOutputPlanOrBuilder> 
         getOutputsOrBuilderList() {
       return outputs_;
@@ -5452,6 +5642,7 @@ public final class NEO {
      *
      * <code>repeated .TW.NEO.Proto.TransactionOutputPlan outputs = 1;</code>
      */
+    @java.lang.Override
     public int getOutputsCount() {
       return outputs_.size();
     }
@@ -5462,6 +5653,7 @@ public final class NEO {
      *
      * <code>repeated .TW.NEO.Proto.TransactionOutputPlan outputs = 1;</code>
      */
+    @java.lang.Override
     public wallet.core.jni.proto.NEO.TransactionOutputPlan getOutputs(int index) {
       return outputs_.get(index);
     }
@@ -5472,6 +5664,7 @@ public final class NEO {
      *
      * <code>repeated .TW.NEO.Proto.TransactionOutputPlan outputs = 1;</code>
      */
+    @java.lang.Override
     public wallet.core.jni.proto.NEO.TransactionOutputPlanOrBuilder getOutputsOrBuilder(
         int index) {
       return outputs_.get(index);
@@ -5486,6 +5679,7 @@ public final class NEO {
      *
      * <code>repeated .TW.NEO.Proto.TransactionInput inputs = 2;</code>
      */
+    @java.lang.Override
     public java.util.List<wallet.core.jni.proto.NEO.TransactionInput> getInputsList() {
       return inputs_;
     }
@@ -5496,6 +5690,7 @@ public final class NEO {
      *
      * <code>repeated .TW.NEO.Proto.TransactionInput inputs = 2;</code>
      */
+    @java.lang.Override
     public java.util.List<? extends wallet.core.jni.proto.NEO.TransactionInputOrBuilder> 
         getInputsOrBuilderList() {
       return inputs_;
@@ -5507,6 +5702,7 @@ public final class NEO {
      *
      * <code>repeated .TW.NEO.Proto.TransactionInput inputs = 2;</code>
      */
+    @java.lang.Override
     public int getInputsCount() {
       return inputs_.size();
     }
@@ -5517,6 +5713,7 @@ public final class NEO {
      *
      * <code>repeated .TW.NEO.Proto.TransactionInput inputs = 2;</code>
      */
+    @java.lang.Override
     public wallet.core.jni.proto.NEO.TransactionInput getInputs(int index) {
       return inputs_.get(index);
     }
@@ -5527,6 +5724,7 @@ public final class NEO {
      *
      * <code>repeated .TW.NEO.Proto.TransactionInput inputs = 2;</code>
      */
+    @java.lang.Override
     public wallet.core.jni.proto.NEO.TransactionInputOrBuilder getInputsOrBuilder(
         int index) {
       return inputs_.get(index);
@@ -5540,51 +5738,38 @@ public final class NEO {
      * </pre>
      *
      * <code>int64 fee = 3;</code>
+     * @return The fee.
      */
+    @java.lang.Override
     public long getFee() {
       return fee_;
     }
 
     public static final int ERROR_FIELD_NUMBER = 4;
-    private volatile java.lang.Object error_;
+    private int error_;
     /**
      * <pre>
-     * Error message in case of error
+     * Optional error
      * </pre>
      *
-     * <code>string error = 4;</code>
+     * <code>.TW.Common.Proto.SigningError error = 4;</code>
+     * @return The enum numeric value on the wire for error.
      */
-    public java.lang.String getError() {
-      java.lang.Object ref = error_;
-      if (ref instanceof java.lang.String) {
-        return (java.lang.String) ref;
-      } else {
-        com.google.protobuf.ByteString bs = 
-            (com.google.protobuf.ByteString) ref;
-        java.lang.String s = bs.toStringUtf8();
-        error_ = s;
-        return s;
-      }
+    @java.lang.Override public int getErrorValue() {
+      return error_;
     }
     /**
      * <pre>
-     * Error message in case of error
+     * Optional error
      * </pre>
      *
-     * <code>string error = 4;</code>
+     * <code>.TW.Common.Proto.SigningError error = 4;</code>
+     * @return The error.
      */
-    public com.google.protobuf.ByteString
-        getErrorBytes() {
-      java.lang.Object ref = error_;
-      if (ref instanceof java.lang.String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
-        error_ = b;
-        return b;
-      } else {
-        return (com.google.protobuf.ByteString) ref;
-      }
+    @java.lang.Override public wallet.core.jni.proto.Common.SigningError getError() {
+      @SuppressWarnings("deprecation")
+      wallet.core.jni.proto.Common.SigningError result = wallet.core.jni.proto.Common.SigningError.valueOf(error_);
+      return result == null ? wallet.core.jni.proto.Common.SigningError.UNRECOGNIZED : result;
     }
 
     private byte memoizedIsInitialized = -1;
@@ -5610,8 +5795,8 @@ public final class NEO {
       if (fee_ != 0L) {
         output.writeInt64(3, fee_);
       }
-      if (!getErrorBytes().isEmpty()) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 4, error_);
+      if (error_ != wallet.core.jni.proto.Common.SigningError.OK.getNumber()) {
+        output.writeEnum(4, error_);
       }
       unknownFields.writeTo(output);
     }
@@ -5634,8 +5819,9 @@ public final class NEO {
         size += com.google.protobuf.CodedOutputStream
           .computeInt64Size(3, fee_);
       }
-      if (!getErrorBytes().isEmpty()) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(4, error_);
+      if (error_ != wallet.core.jni.proto.Common.SigningError.OK.getNumber()) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeEnumSize(4, error_);
       }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
@@ -5658,8 +5844,7 @@ public final class NEO {
           .equals(other.getInputsList())) return false;
       if (getFee()
           != other.getFee()) return false;
-      if (!getError()
-          .equals(other.getError())) return false;
+      if (error_ != other.error_) return false;
       if (!unknownFields.equals(other.unknownFields)) return false;
       return true;
     }
@@ -5683,7 +5868,7 @@ public final class NEO {
       hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
           getFee());
       hash = (37 * hash) + ERROR_FIELD_NUMBER;
-      hash = (53 * hash) + getError().hashCode();
+      hash = (53 * hash) + error_;
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
       return hash;
@@ -5837,7 +6022,7 @@ public final class NEO {
         }
         fee_ = 0L;
 
-        error_ = "";
+        error_ = 0;
 
         return this;
       }
@@ -5989,9 +6174,8 @@ public final class NEO {
         if (other.getFee() != 0L) {
           setFee(other.getFee());
         }
-        if (!other.getError().isEmpty()) {
-          error_ = other.error_;
-          onChanged();
+        if (other.error_ != 0) {
+          setErrorValue(other.getErrorValue());
         }
         this.mergeUnknownFields(other.unknownFields);
         onChanged();
@@ -6654,7 +6838,9 @@ public final class NEO {
        * </pre>
        *
        * <code>int64 fee = 3;</code>
+       * @return The fee.
        */
+      @java.lang.Override
       public long getFee() {
         return fee_;
       }
@@ -6664,6 +6850,8 @@ public final class NEO {
        * </pre>
        *
        * <code>int64 fee = 3;</code>
+       * @param value The fee to set.
+       * @return This builder for chaining.
        */
       public Builder setFee(long value) {
         
@@ -6677,6 +6865,7 @@ public final class NEO {
        * </pre>
        *
        * <code>int64 fee = 3;</code>
+       * @return This builder for chaining.
        */
       public Builder clearFee() {
         
@@ -6685,91 +6874,76 @@ public final class NEO {
         return this;
       }
 
-      private java.lang.Object error_ = "";
+      private int error_ = 0;
       /**
        * <pre>
-       * Error message in case of error
+       * Optional error
        * </pre>
        *
-       * <code>string error = 4;</code>
+       * <code>.TW.Common.Proto.SigningError error = 4;</code>
+       * @return The enum numeric value on the wire for error.
        */
-      public java.lang.String getError() {
-        java.lang.Object ref = error_;
-        if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          error_ = s;
-          return s;
-        } else {
-          return (java.lang.String) ref;
-        }
+      @java.lang.Override public int getErrorValue() {
+        return error_;
       }
       /**
        * <pre>
-       * Error message in case of error
+       * Optional error
        * </pre>
        *
-       * <code>string error = 4;</code>
+       * <code>.TW.Common.Proto.SigningError error = 4;</code>
+       * @param value The enum numeric value on the wire for error to set.
+       * @return This builder for chaining.
        */
-      public com.google.protobuf.ByteString
-          getErrorBytes() {
-        java.lang.Object ref = error_;
-        if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
-              com.google.protobuf.ByteString.copyFromUtf8(
-                  (java.lang.String) ref);
-          error_ = b;
-          return b;
-        } else {
-          return (com.google.protobuf.ByteString) ref;
-        }
-      }
-      /**
-       * <pre>
-       * Error message in case of error
-       * </pre>
-       *
-       * <code>string error = 4;</code>
-       */
-      public Builder setError(
-          java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  
+      public Builder setErrorValue(int value) {
+        
         error_ = value;
         onChanged();
         return this;
       }
       /**
        * <pre>
-       * Error message in case of error
+       * Optional error
        * </pre>
        *
-       * <code>string error = 4;</code>
+       * <code>.TW.Common.Proto.SigningError error = 4;</code>
+       * @return The error.
+       */
+      @java.lang.Override
+      public wallet.core.jni.proto.Common.SigningError getError() {
+        @SuppressWarnings("deprecation")
+        wallet.core.jni.proto.Common.SigningError result = wallet.core.jni.proto.Common.SigningError.valueOf(error_);
+        return result == null ? wallet.core.jni.proto.Common.SigningError.UNRECOGNIZED : result;
+      }
+      /**
+       * <pre>
+       * Optional error
+       * </pre>
+       *
+       * <code>.TW.Common.Proto.SigningError error = 4;</code>
+       * @param value The error to set.
+       * @return This builder for chaining.
+       */
+      public Builder setError(wallet.core.jni.proto.Common.SigningError value) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        
+        error_ = value.getNumber();
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * Optional error
+       * </pre>
+       *
+       * <code>.TW.Common.Proto.SigningError error = 4;</code>
+       * @return This builder for chaining.
        */
       public Builder clearError() {
         
-        error_ = getDefaultInstance().getError();
-        onChanged();
-        return this;
-      }
-      /**
-       * <pre>
-       * Error message in case of error
-       * </pre>
-       *
-       * <code>string error = 4;</code>
-       */
-      public Builder setErrorBytes(
-          com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  checkByteStringIsUtf8(value);
-        
-        error_ = value;
+        error_ = 0;
         onChanged();
         return this;
       }
@@ -6865,31 +7039,34 @@ public final class NEO {
       descriptor;
   static {
     java.lang.String[] descriptorData = {
-      "\n\tNEO.proto\022\014TW.NEO.Proto\"Z\n\020Transaction" +
-      "Input\022\021\n\tprev_hash\030\001 \001(\014\022\022\n\nprev_index\030\002" +
-      " \001(\007\022\r\n\005value\030\003 \001(\003\022\020\n\010asset_id\030\004 \001(\t\"a\n" +
-      "\021TransactionOutput\022\020\n\010asset_id\030\001 \001(\t\022\016\n\006" +
-      "amount\030\002 \001(\022\022\022\n\nto_address\030\003 \001(\t\022\026\n\016chan" +
-      "ge_address\030\004 \001(\t\"\361\001\n\014SigningInput\022.\n\006inp" +
-      "uts\030\001 \003(\0132\036.TW.NEO.Proto.TransactionInpu" +
-      "t\0220\n\007outputs\030\002 \003(\0132\037.TW.NEO.Proto.Transa" +
-      "ctionOutput\022\023\n\013private_key\030\003 \001(\014\022\013\n\003fee\030" +
-      "\004 \001(\003\022\024\n\014gas_asset_id\030\005 \001(\t\022\032\n\022gas_chang" +
-      "e_address\030\006 \001(\t\022+\n\004plan\030\007 \001(\0132\035.TW.NEO.P" +
-      "roto.TransactionPlan\"/\n\rSigningOutput\022\017\n" +
-      "\007encoded\030\001 \001(\014\022\r\n\005error\030\002 \001(\t\"\217\001\n\025Transa" +
-      "ctionOutputPlan\022\016\n\006amount\030\001 \001(\003\022\030\n\020avail" +
-      "able_amount\030\002 \001(\003\022\016\n\006change\030\003 \001(\003\022\020\n\010ass" +
-      "et_id\030\004 \001(\t\022\022\n\nto_address\030\005 \001(\t\022\026\n\016chang" +
-      "e_address\030\006 \001(\t\"\223\001\n\017TransactionPlan\0224\n\007o" +
-      "utputs\030\001 \003(\0132#.TW.NEO.Proto.TransactionO" +
-      "utputPlan\022.\n\006inputs\030\002 \003(\0132\036.TW.NEO.Proto" +
-      ".TransactionInput\022\013\n\003fee\030\003 \001(\003\022\r\n\005error\030" +
-      "\004 \001(\tB\027\n\025wallet.core.jni.protob\006proto3"
+      "\n\tNEO.proto\022\014TW.NEO.Proto\032\014Common.proto\"" +
+      "Z\n\020TransactionInput\022\021\n\tprev_hash\030\001 \001(\014\022\022" +
+      "\n\nprev_index\030\002 \001(\007\022\r\n\005value\030\003 \001(\003\022\020\n\010ass" +
+      "et_id\030\004 \001(\t\"a\n\021TransactionOutput\022\020\n\010asse" +
+      "t_id\030\001 \001(\t\022\016\n\006amount\030\002 \001(\022\022\022\n\nto_address" +
+      "\030\003 \001(\t\022\026\n\016change_address\030\004 \001(\t\"\361\001\n\014Signi" +
+      "ngInput\022.\n\006inputs\030\001 \003(\0132\036.TW.NEO.Proto.T" +
+      "ransactionInput\0220\n\007outputs\030\002 \003(\0132\037.TW.NE" +
+      "O.Proto.TransactionOutput\022\023\n\013private_key" +
+      "\030\003 \001(\014\022\013\n\003fee\030\004 \001(\003\022\024\n\014gas_asset_id\030\005 \001(" +
+      "\t\022\032\n\022gas_change_address\030\006 \001(\t\022+\n\004plan\030\007 " +
+      "\001(\0132\035.TW.NEO.Proto.TransactionPlan\"N\n\rSi" +
+      "gningOutput\022\017\n\007encoded\030\001 \001(\014\022,\n\005error\030\002 " +
+      "\001(\0162\035.TW.Common.Proto.SigningError\"\217\001\n\025T" +
+      "ransactionOutputPlan\022\016\n\006amount\030\001 \001(\003\022\030\n\020" +
+      "available_amount\030\002 \001(\003\022\016\n\006change\030\003 \001(\003\022\020" +
+      "\n\010asset_id\030\004 \001(\t\022\022\n\nto_address\030\005 \001(\t\022\026\n\016" +
+      "change_address\030\006 \001(\t\"\262\001\n\017TransactionPlan" +
+      "\0224\n\007outputs\030\001 \003(\0132#.TW.NEO.Proto.Transac" +
+      "tionOutputPlan\022.\n\006inputs\030\002 \003(\0132\036.TW.NEO." +
+      "Proto.TransactionInput\022\013\n\003fee\030\003 \001(\003\022,\n\005e" +
+      "rror\030\004 \001(\0162\035.TW.Common.Proto.SigningErro" +
+      "rB\027\n\025wallet.core.jni.protob\006proto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
         new com.google.protobuf.Descriptors.FileDescriptor[] {
+          wallet.core.jni.proto.Common.getDescriptor(),
         });
     internal_static_TW_NEO_Proto_TransactionInput_descriptor =
       getDescriptor().getMessageTypes().get(0);
@@ -6927,6 +7104,7 @@ public final class NEO {
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_TW_NEO_Proto_TransactionPlan_descriptor,
         new java.lang.String[] { "Outputs", "Inputs", "Fee", "Error", });
+    wallet.core.jni.proto.Common.getDescriptor();
   }
 
   // @@protoc_insertion_point(outer_class_scope)

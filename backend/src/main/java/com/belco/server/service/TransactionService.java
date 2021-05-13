@@ -163,6 +163,8 @@ public class TransactionService {
             }
         }
 
+        dto.setCoin(coinCode.name());
+
         return dto;
     }
 

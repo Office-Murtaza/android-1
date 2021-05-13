@@ -14,6 +14,3089 @@ public final class Stellar {
     registerAllExtensions(
         (com.google.protobuf.ExtensionRegistryLite) registry);
   }
+  public interface AssetOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:TW.Stellar.Proto.Asset)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <pre>
+     * Optional in case of non-native asset; the asset issuer address
+     * </pre>
+     *
+     * <code>string issuer = 1;</code>
+     * @return The issuer.
+     */
+    java.lang.String getIssuer();
+    /**
+     * <pre>
+     * Optional in case of non-native asset; the asset issuer address
+     * </pre>
+     *
+     * <code>string issuer = 1;</code>
+     * @return The bytes for issuer.
+     */
+    com.google.protobuf.ByteString
+        getIssuerBytes();
+
+    /**
+     * <pre>
+     * Optional in case of non-native asset; the asset alphanum4 code.
+     * </pre>
+     *
+     * <code>string alphanum4 = 2;</code>
+     * @return The alphanum4.
+     */
+    java.lang.String getAlphanum4();
+    /**
+     * <pre>
+     * Optional in case of non-native asset; the asset alphanum4 code.
+     * </pre>
+     *
+     * <code>string alphanum4 = 2;</code>
+     * @return The bytes for alphanum4.
+     */
+    com.google.protobuf.ByteString
+        getAlphanum4Bytes();
+  }
+  /**
+   * Protobuf type {@code TW.Stellar.Proto.Asset}
+   */
+  public static final class Asset extends
+      com.google.protobuf.GeneratedMessageV3 implements
+      // @@protoc_insertion_point(message_implements:TW.Stellar.Proto.Asset)
+      AssetOrBuilder {
+  private static final long serialVersionUID = 0L;
+    // Use Asset.newBuilder() to construct.
+    private Asset(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+      super(builder);
+    }
+    private Asset() {
+      issuer_ = "";
+      alphanum4_ = "";
+    }
+
+    @java.lang.Override
+    @SuppressWarnings({"unused"})
+    protected java.lang.Object newInstance(
+        UnusedPrivateParameter unused) {
+      return new Asset();
+    }
+
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+    getUnknownFields() {
+      return this.unknownFields;
+    }
+    private Asset(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      this();
+      if (extensionRegistry == null) {
+        throw new java.lang.NullPointerException();
+      }
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            case 10: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              issuer_ = s;
+              break;
+            }
+            case 18: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              alphanum4_ = s;
+              break;
+            }
+            default: {
+              if (!parseUnknownField(
+                  input, unknownFields, extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e).setUnfinishedMessage(this);
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return wallet.core.jni.proto.Stellar.internal_static_TW_Stellar_Proto_Asset_descriptor;
+    }
+
+    @java.lang.Override
+    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return wallet.core.jni.proto.Stellar.internal_static_TW_Stellar_Proto_Asset_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              wallet.core.jni.proto.Stellar.Asset.class, wallet.core.jni.proto.Stellar.Asset.Builder.class);
+    }
+
+    public static final int ISSUER_FIELD_NUMBER = 1;
+    private volatile java.lang.Object issuer_;
+    /**
+     * <pre>
+     * Optional in case of non-native asset; the asset issuer address
+     * </pre>
+     *
+     * <code>string issuer = 1;</code>
+     * @return The issuer.
+     */
+    @java.lang.Override
+    public java.lang.String getIssuer() {
+      java.lang.Object ref = issuer_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        issuer_ = s;
+        return s;
+      }
+    }
+    /**
+     * <pre>
+     * Optional in case of non-native asset; the asset issuer address
+     * </pre>
+     *
+     * <code>string issuer = 1;</code>
+     * @return The bytes for issuer.
+     */
+    @java.lang.Override
+    public com.google.protobuf.ByteString
+        getIssuerBytes() {
+      java.lang.Object ref = issuer_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        issuer_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int ALPHANUM4_FIELD_NUMBER = 2;
+    private volatile java.lang.Object alphanum4_;
+    /**
+     * <pre>
+     * Optional in case of non-native asset; the asset alphanum4 code.
+     * </pre>
+     *
+     * <code>string alphanum4 = 2;</code>
+     * @return The alphanum4.
+     */
+    @java.lang.Override
+    public java.lang.String getAlphanum4() {
+      java.lang.Object ref = alphanum4_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        alphanum4_ = s;
+        return s;
+      }
+    }
+    /**
+     * <pre>
+     * Optional in case of non-native asset; the asset alphanum4 code.
+     * </pre>
+     *
+     * <code>string alphanum4 = 2;</code>
+     * @return The bytes for alphanum4.
+     */
+    @java.lang.Override
+    public com.google.protobuf.ByteString
+        getAlphanum4Bytes() {
+      java.lang.Object ref = alphanum4_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        alphanum4_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    private byte memoizedIsInitialized = -1;
+    @java.lang.Override
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    @java.lang.Override
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      if (!getIssuerBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 1, issuer_);
+      }
+      if (!getAlphanum4Bytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 2, alphanum4_);
+      }
+      unknownFields.writeTo(output);
+    }
+
+    @java.lang.Override
+    public int getSerializedSize() {
+      int size = memoizedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (!getIssuerBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, issuer_);
+      }
+      if (!getAlphanum4Bytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, alphanum4_);
+      }
+      size += unknownFields.getSerializedSize();
+      memoizedSize = size;
+      return size;
+    }
+
+    @java.lang.Override
+    public boolean equals(final java.lang.Object obj) {
+      if (obj == this) {
+       return true;
+      }
+      if (!(obj instanceof wallet.core.jni.proto.Stellar.Asset)) {
+        return super.equals(obj);
+      }
+      wallet.core.jni.proto.Stellar.Asset other = (wallet.core.jni.proto.Stellar.Asset) obj;
+
+      if (!getIssuer()
+          .equals(other.getIssuer())) return false;
+      if (!getAlphanum4()
+          .equals(other.getAlphanum4())) return false;
+      if (!unknownFields.equals(other.unknownFields)) return false;
+      return true;
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+      if (memoizedHashCode != 0) {
+        return memoizedHashCode;
+      }
+      int hash = 41;
+      hash = (19 * hash) + getDescriptor().hashCode();
+      hash = (37 * hash) + ISSUER_FIELD_NUMBER;
+      hash = (53 * hash) + getIssuer().hashCode();
+      hash = (37 * hash) + ALPHANUM4_FIELD_NUMBER;
+      hash = (53 * hash) + getAlphanum4().hashCode();
+      hash = (29 * hash) + unknownFields.hashCode();
+      memoizedHashCode = hash;
+      return hash;
+    }
+
+    public static wallet.core.jni.proto.Stellar.Asset parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static wallet.core.jni.proto.Stellar.Asset parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static wallet.core.jni.proto.Stellar.Asset parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static wallet.core.jni.proto.Stellar.Asset parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static wallet.core.jni.proto.Stellar.Asset parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static wallet.core.jni.proto.Stellar.Asset parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static wallet.core.jni.proto.Stellar.Asset parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static wallet.core.jni.proto.Stellar.Asset parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static wallet.core.jni.proto.Stellar.Asset parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input);
+    }
+    public static wallet.core.jni.proto.Stellar.Asset parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static wallet.core.jni.proto.Stellar.Asset parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static wallet.core.jni.proto.Stellar.Asset parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    @java.lang.Override
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder() {
+      return DEFAULT_INSTANCE.toBuilder();
+    }
+    public static Builder newBuilder(wallet.core.jni.proto.Stellar.Asset prototype) {
+      return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
+    }
+    @java.lang.Override
+    public Builder toBuilder() {
+      return this == DEFAULT_INSTANCE
+          ? new Builder() : new Builder().mergeFrom(this);
+    }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code TW.Stellar.Proto.Asset}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:TW.Stellar.Proto.Asset)
+        wallet.core.jni.proto.Stellar.AssetOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return wallet.core.jni.proto.Stellar.internal_static_TW_Stellar_Proto_Asset_descriptor;
+      }
+
+      @java.lang.Override
+      protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return wallet.core.jni.proto.Stellar.internal_static_TW_Stellar_Proto_Asset_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                wallet.core.jni.proto.Stellar.Asset.class, wallet.core.jni.proto.Stellar.Asset.Builder.class);
+      }
+
+      // Construct using wallet.core.jni.proto.Stellar.Asset.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessageV3
+                .alwaysUseFieldBuilders) {
+        }
+      }
+      @java.lang.Override
+      public Builder clear() {
+        super.clear();
+        issuer_ = "";
+
+        alphanum4_ = "";
+
+        return this;
+      }
+
+      @java.lang.Override
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return wallet.core.jni.proto.Stellar.internal_static_TW_Stellar_Proto_Asset_descriptor;
+      }
+
+      @java.lang.Override
+      public wallet.core.jni.proto.Stellar.Asset getDefaultInstanceForType() {
+        return wallet.core.jni.proto.Stellar.Asset.getDefaultInstance();
+      }
+
+      @java.lang.Override
+      public wallet.core.jni.proto.Stellar.Asset build() {
+        wallet.core.jni.proto.Stellar.Asset result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      @java.lang.Override
+      public wallet.core.jni.proto.Stellar.Asset buildPartial() {
+        wallet.core.jni.proto.Stellar.Asset result = new wallet.core.jni.proto.Stellar.Asset(this);
+        result.issuer_ = issuer_;
+        result.alphanum4_ = alphanum4_;
+        onBuilt();
+        return result;
+      }
+
+      @java.lang.Override
+      public Builder clone() {
+        return super.clone();
+      }
+      @java.lang.Override
+      public Builder setField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return super.setField(field, value);
+      }
+      @java.lang.Override
+      public Builder clearField(
+          com.google.protobuf.Descriptors.FieldDescriptor field) {
+        return super.clearField(field);
+      }
+      @java.lang.Override
+      public Builder clearOneof(
+          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
+        return super.clearOneof(oneof);
+      }
+      @java.lang.Override
+      public Builder setRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          int index, java.lang.Object value) {
+        return super.setRepeatedField(field, index, value);
+      }
+      @java.lang.Override
+      public Builder addRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return super.addRepeatedField(field, value);
+      }
+      @java.lang.Override
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof wallet.core.jni.proto.Stellar.Asset) {
+          return mergeFrom((wallet.core.jni.proto.Stellar.Asset)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(wallet.core.jni.proto.Stellar.Asset other) {
+        if (other == wallet.core.jni.proto.Stellar.Asset.getDefaultInstance()) return this;
+        if (!other.getIssuer().isEmpty()) {
+          issuer_ = other.issuer_;
+          onChanged();
+        }
+        if (!other.getAlphanum4().isEmpty()) {
+          alphanum4_ = other.alphanum4_;
+          onChanged();
+        }
+        this.mergeUnknownFields(other.unknownFields);
+        onChanged();
+        return this;
+      }
+
+      @java.lang.Override
+      public final boolean isInitialized() {
+        return true;
+      }
+
+      @java.lang.Override
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        wallet.core.jni.proto.Stellar.Asset parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (wallet.core.jni.proto.Stellar.Asset) e.getUnfinishedMessage();
+          throw e.unwrapIOException();
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+
+      private java.lang.Object issuer_ = "";
+      /**
+       * <pre>
+       * Optional in case of non-native asset; the asset issuer address
+       * </pre>
+       *
+       * <code>string issuer = 1;</code>
+       * @return The issuer.
+       */
+      public java.lang.String getIssuer() {
+        java.lang.Object ref = issuer_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          issuer_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <pre>
+       * Optional in case of non-native asset; the asset issuer address
+       * </pre>
+       *
+       * <code>string issuer = 1;</code>
+       * @return The bytes for issuer.
+       */
+      public com.google.protobuf.ByteString
+          getIssuerBytes() {
+        java.lang.Object ref = issuer_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          issuer_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <pre>
+       * Optional in case of non-native asset; the asset issuer address
+       * </pre>
+       *
+       * <code>string issuer = 1;</code>
+       * @param value The issuer to set.
+       * @return This builder for chaining.
+       */
+      public Builder setIssuer(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        issuer_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * Optional in case of non-native asset; the asset issuer address
+       * </pre>
+       *
+       * <code>string issuer = 1;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearIssuer() {
+        
+        issuer_ = getDefaultInstance().getIssuer();
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * Optional in case of non-native asset; the asset issuer address
+       * </pre>
+       *
+       * <code>string issuer = 1;</code>
+       * @param value The bytes for issuer to set.
+       * @return This builder for chaining.
+       */
+      public Builder setIssuerBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        issuer_ = value;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object alphanum4_ = "";
+      /**
+       * <pre>
+       * Optional in case of non-native asset; the asset alphanum4 code.
+       * </pre>
+       *
+       * <code>string alphanum4 = 2;</code>
+       * @return The alphanum4.
+       */
+      public java.lang.String getAlphanum4() {
+        java.lang.Object ref = alphanum4_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          alphanum4_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <pre>
+       * Optional in case of non-native asset; the asset alphanum4 code.
+       * </pre>
+       *
+       * <code>string alphanum4 = 2;</code>
+       * @return The bytes for alphanum4.
+       */
+      public com.google.protobuf.ByteString
+          getAlphanum4Bytes() {
+        java.lang.Object ref = alphanum4_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          alphanum4_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <pre>
+       * Optional in case of non-native asset; the asset alphanum4 code.
+       * </pre>
+       *
+       * <code>string alphanum4 = 2;</code>
+       * @param value The alphanum4 to set.
+       * @return This builder for chaining.
+       */
+      public Builder setAlphanum4(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        alphanum4_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * Optional in case of non-native asset; the asset alphanum4 code.
+       * </pre>
+       *
+       * <code>string alphanum4 = 2;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearAlphanum4() {
+        
+        alphanum4_ = getDefaultInstance().getAlphanum4();
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * Optional in case of non-native asset; the asset alphanum4 code.
+       * </pre>
+       *
+       * <code>string alphanum4 = 2;</code>
+       * @param value The bytes for alphanum4 to set.
+       * @return This builder for chaining.
+       */
+      public Builder setAlphanum4Bytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        alphanum4_ = value;
+        onChanged();
+        return this;
+      }
+      @java.lang.Override
+      public final Builder setUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.setUnknownFields(unknownFields);
+      }
+
+      @java.lang.Override
+      public final Builder mergeUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.mergeUnknownFields(unknownFields);
+      }
+
+
+      // @@protoc_insertion_point(builder_scope:TW.Stellar.Proto.Asset)
+    }
+
+    // @@protoc_insertion_point(class_scope:TW.Stellar.Proto.Asset)
+    private static final wallet.core.jni.proto.Stellar.Asset DEFAULT_INSTANCE;
+    static {
+      DEFAULT_INSTANCE = new wallet.core.jni.proto.Stellar.Asset();
+    }
+
+    public static wallet.core.jni.proto.Stellar.Asset getDefaultInstance() {
+      return DEFAULT_INSTANCE;
+    }
+
+    private static final com.google.protobuf.Parser<Asset>
+        PARSER = new com.google.protobuf.AbstractParser<Asset>() {
+      @java.lang.Override
+      public Asset parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new Asset(input, extensionRegistry);
+      }
+    };
+
+    public static com.google.protobuf.Parser<Asset> parser() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<Asset> getParserForType() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public wallet.core.jni.proto.Stellar.Asset getDefaultInstanceForType() {
+      return DEFAULT_INSTANCE;
+    }
+
+  }
+
+  public interface OperationCreateAccountOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:TW.Stellar.Proto.OperationCreateAccount)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>string destination = 1;</code>
+     * @return The destination.
+     */
+    java.lang.String getDestination();
+    /**
+     * <code>string destination = 1;</code>
+     * @return The bytes for destination.
+     */
+    com.google.protobuf.ByteString
+        getDestinationBytes();
+
+    /**
+     * <pre>
+     * Amount (*10^7)
+     * </pre>
+     *
+     * <code>int64 amount = 2;</code>
+     * @return The amount.
+     */
+    long getAmount();
+  }
+  /**
+   * Protobuf type {@code TW.Stellar.Proto.OperationCreateAccount}
+   */
+  public static final class OperationCreateAccount extends
+      com.google.protobuf.GeneratedMessageV3 implements
+      // @@protoc_insertion_point(message_implements:TW.Stellar.Proto.OperationCreateAccount)
+      OperationCreateAccountOrBuilder {
+  private static final long serialVersionUID = 0L;
+    // Use OperationCreateAccount.newBuilder() to construct.
+    private OperationCreateAccount(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+      super(builder);
+    }
+    private OperationCreateAccount() {
+      destination_ = "";
+    }
+
+    @java.lang.Override
+    @SuppressWarnings({"unused"})
+    protected java.lang.Object newInstance(
+        UnusedPrivateParameter unused) {
+      return new OperationCreateAccount();
+    }
+
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+    getUnknownFields() {
+      return this.unknownFields;
+    }
+    private OperationCreateAccount(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      this();
+      if (extensionRegistry == null) {
+        throw new java.lang.NullPointerException();
+      }
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            case 10: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              destination_ = s;
+              break;
+            }
+            case 16: {
+
+              amount_ = input.readInt64();
+              break;
+            }
+            default: {
+              if (!parseUnknownField(
+                  input, unknownFields, extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e).setUnfinishedMessage(this);
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return wallet.core.jni.proto.Stellar.internal_static_TW_Stellar_Proto_OperationCreateAccount_descriptor;
+    }
+
+    @java.lang.Override
+    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return wallet.core.jni.proto.Stellar.internal_static_TW_Stellar_Proto_OperationCreateAccount_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              wallet.core.jni.proto.Stellar.OperationCreateAccount.class, wallet.core.jni.proto.Stellar.OperationCreateAccount.Builder.class);
+    }
+
+    public static final int DESTINATION_FIELD_NUMBER = 1;
+    private volatile java.lang.Object destination_;
+    /**
+     * <code>string destination = 1;</code>
+     * @return The destination.
+     */
+    @java.lang.Override
+    public java.lang.String getDestination() {
+      java.lang.Object ref = destination_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        destination_ = s;
+        return s;
+      }
+    }
+    /**
+     * <code>string destination = 1;</code>
+     * @return The bytes for destination.
+     */
+    @java.lang.Override
+    public com.google.protobuf.ByteString
+        getDestinationBytes() {
+      java.lang.Object ref = destination_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        destination_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int AMOUNT_FIELD_NUMBER = 2;
+    private long amount_;
+    /**
+     * <pre>
+     * Amount (*10^7)
+     * </pre>
+     *
+     * <code>int64 amount = 2;</code>
+     * @return The amount.
+     */
+    @java.lang.Override
+    public long getAmount() {
+      return amount_;
+    }
+
+    private byte memoizedIsInitialized = -1;
+    @java.lang.Override
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    @java.lang.Override
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      if (!getDestinationBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 1, destination_);
+      }
+      if (amount_ != 0L) {
+        output.writeInt64(2, amount_);
+      }
+      unknownFields.writeTo(output);
+    }
+
+    @java.lang.Override
+    public int getSerializedSize() {
+      int size = memoizedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (!getDestinationBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, destination_);
+      }
+      if (amount_ != 0L) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt64Size(2, amount_);
+      }
+      size += unknownFields.getSerializedSize();
+      memoizedSize = size;
+      return size;
+    }
+
+    @java.lang.Override
+    public boolean equals(final java.lang.Object obj) {
+      if (obj == this) {
+       return true;
+      }
+      if (!(obj instanceof wallet.core.jni.proto.Stellar.OperationCreateAccount)) {
+        return super.equals(obj);
+      }
+      wallet.core.jni.proto.Stellar.OperationCreateAccount other = (wallet.core.jni.proto.Stellar.OperationCreateAccount) obj;
+
+      if (!getDestination()
+          .equals(other.getDestination())) return false;
+      if (getAmount()
+          != other.getAmount()) return false;
+      if (!unknownFields.equals(other.unknownFields)) return false;
+      return true;
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+      if (memoizedHashCode != 0) {
+        return memoizedHashCode;
+      }
+      int hash = 41;
+      hash = (19 * hash) + getDescriptor().hashCode();
+      hash = (37 * hash) + DESTINATION_FIELD_NUMBER;
+      hash = (53 * hash) + getDestination().hashCode();
+      hash = (37 * hash) + AMOUNT_FIELD_NUMBER;
+      hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
+          getAmount());
+      hash = (29 * hash) + unknownFields.hashCode();
+      memoizedHashCode = hash;
+      return hash;
+    }
+
+    public static wallet.core.jni.proto.Stellar.OperationCreateAccount parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static wallet.core.jni.proto.Stellar.OperationCreateAccount parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static wallet.core.jni.proto.Stellar.OperationCreateAccount parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static wallet.core.jni.proto.Stellar.OperationCreateAccount parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static wallet.core.jni.proto.Stellar.OperationCreateAccount parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static wallet.core.jni.proto.Stellar.OperationCreateAccount parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static wallet.core.jni.proto.Stellar.OperationCreateAccount parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static wallet.core.jni.proto.Stellar.OperationCreateAccount parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static wallet.core.jni.proto.Stellar.OperationCreateAccount parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input);
+    }
+    public static wallet.core.jni.proto.Stellar.OperationCreateAccount parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static wallet.core.jni.proto.Stellar.OperationCreateAccount parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static wallet.core.jni.proto.Stellar.OperationCreateAccount parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    @java.lang.Override
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder() {
+      return DEFAULT_INSTANCE.toBuilder();
+    }
+    public static Builder newBuilder(wallet.core.jni.proto.Stellar.OperationCreateAccount prototype) {
+      return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
+    }
+    @java.lang.Override
+    public Builder toBuilder() {
+      return this == DEFAULT_INSTANCE
+          ? new Builder() : new Builder().mergeFrom(this);
+    }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code TW.Stellar.Proto.OperationCreateAccount}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:TW.Stellar.Proto.OperationCreateAccount)
+        wallet.core.jni.proto.Stellar.OperationCreateAccountOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return wallet.core.jni.proto.Stellar.internal_static_TW_Stellar_Proto_OperationCreateAccount_descriptor;
+      }
+
+      @java.lang.Override
+      protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return wallet.core.jni.proto.Stellar.internal_static_TW_Stellar_Proto_OperationCreateAccount_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                wallet.core.jni.proto.Stellar.OperationCreateAccount.class, wallet.core.jni.proto.Stellar.OperationCreateAccount.Builder.class);
+      }
+
+      // Construct using wallet.core.jni.proto.Stellar.OperationCreateAccount.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessageV3
+                .alwaysUseFieldBuilders) {
+        }
+      }
+      @java.lang.Override
+      public Builder clear() {
+        super.clear();
+        destination_ = "";
+
+        amount_ = 0L;
+
+        return this;
+      }
+
+      @java.lang.Override
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return wallet.core.jni.proto.Stellar.internal_static_TW_Stellar_Proto_OperationCreateAccount_descriptor;
+      }
+
+      @java.lang.Override
+      public wallet.core.jni.proto.Stellar.OperationCreateAccount getDefaultInstanceForType() {
+        return wallet.core.jni.proto.Stellar.OperationCreateAccount.getDefaultInstance();
+      }
+
+      @java.lang.Override
+      public wallet.core.jni.proto.Stellar.OperationCreateAccount build() {
+        wallet.core.jni.proto.Stellar.OperationCreateAccount result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      @java.lang.Override
+      public wallet.core.jni.proto.Stellar.OperationCreateAccount buildPartial() {
+        wallet.core.jni.proto.Stellar.OperationCreateAccount result = new wallet.core.jni.proto.Stellar.OperationCreateAccount(this);
+        result.destination_ = destination_;
+        result.amount_ = amount_;
+        onBuilt();
+        return result;
+      }
+
+      @java.lang.Override
+      public Builder clone() {
+        return super.clone();
+      }
+      @java.lang.Override
+      public Builder setField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return super.setField(field, value);
+      }
+      @java.lang.Override
+      public Builder clearField(
+          com.google.protobuf.Descriptors.FieldDescriptor field) {
+        return super.clearField(field);
+      }
+      @java.lang.Override
+      public Builder clearOneof(
+          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
+        return super.clearOneof(oneof);
+      }
+      @java.lang.Override
+      public Builder setRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          int index, java.lang.Object value) {
+        return super.setRepeatedField(field, index, value);
+      }
+      @java.lang.Override
+      public Builder addRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return super.addRepeatedField(field, value);
+      }
+      @java.lang.Override
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof wallet.core.jni.proto.Stellar.OperationCreateAccount) {
+          return mergeFrom((wallet.core.jni.proto.Stellar.OperationCreateAccount)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(wallet.core.jni.proto.Stellar.OperationCreateAccount other) {
+        if (other == wallet.core.jni.proto.Stellar.OperationCreateAccount.getDefaultInstance()) return this;
+        if (!other.getDestination().isEmpty()) {
+          destination_ = other.destination_;
+          onChanged();
+        }
+        if (other.getAmount() != 0L) {
+          setAmount(other.getAmount());
+        }
+        this.mergeUnknownFields(other.unknownFields);
+        onChanged();
+        return this;
+      }
+
+      @java.lang.Override
+      public final boolean isInitialized() {
+        return true;
+      }
+
+      @java.lang.Override
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        wallet.core.jni.proto.Stellar.OperationCreateAccount parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (wallet.core.jni.proto.Stellar.OperationCreateAccount) e.getUnfinishedMessage();
+          throw e.unwrapIOException();
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+
+      private java.lang.Object destination_ = "";
+      /**
+       * <code>string destination = 1;</code>
+       * @return The destination.
+       */
+      public java.lang.String getDestination() {
+        java.lang.Object ref = destination_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          destination_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>string destination = 1;</code>
+       * @return The bytes for destination.
+       */
+      public com.google.protobuf.ByteString
+          getDestinationBytes() {
+        java.lang.Object ref = destination_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          destination_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>string destination = 1;</code>
+       * @param value The destination to set.
+       * @return This builder for chaining.
+       */
+      public Builder setDestination(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        destination_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string destination = 1;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearDestination() {
+        
+        destination_ = getDefaultInstance().getDestination();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string destination = 1;</code>
+       * @param value The bytes for destination to set.
+       * @return This builder for chaining.
+       */
+      public Builder setDestinationBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        destination_ = value;
+        onChanged();
+        return this;
+      }
+
+      private long amount_ ;
+      /**
+       * <pre>
+       * Amount (*10^7)
+       * </pre>
+       *
+       * <code>int64 amount = 2;</code>
+       * @return The amount.
+       */
+      @java.lang.Override
+      public long getAmount() {
+        return amount_;
+      }
+      /**
+       * <pre>
+       * Amount (*10^7)
+       * </pre>
+       *
+       * <code>int64 amount = 2;</code>
+       * @param value The amount to set.
+       * @return This builder for chaining.
+       */
+      public Builder setAmount(long value) {
+        
+        amount_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * Amount (*10^7)
+       * </pre>
+       *
+       * <code>int64 amount = 2;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearAmount() {
+        
+        amount_ = 0L;
+        onChanged();
+        return this;
+      }
+      @java.lang.Override
+      public final Builder setUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.setUnknownFields(unknownFields);
+      }
+
+      @java.lang.Override
+      public final Builder mergeUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.mergeUnknownFields(unknownFields);
+      }
+
+
+      // @@protoc_insertion_point(builder_scope:TW.Stellar.Proto.OperationCreateAccount)
+    }
+
+    // @@protoc_insertion_point(class_scope:TW.Stellar.Proto.OperationCreateAccount)
+    private static final wallet.core.jni.proto.Stellar.OperationCreateAccount DEFAULT_INSTANCE;
+    static {
+      DEFAULT_INSTANCE = new wallet.core.jni.proto.Stellar.OperationCreateAccount();
+    }
+
+    public static wallet.core.jni.proto.Stellar.OperationCreateAccount getDefaultInstance() {
+      return DEFAULT_INSTANCE;
+    }
+
+    private static final com.google.protobuf.Parser<OperationCreateAccount>
+        PARSER = new com.google.protobuf.AbstractParser<OperationCreateAccount>() {
+      @java.lang.Override
+      public OperationCreateAccount parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new OperationCreateAccount(input, extensionRegistry);
+      }
+    };
+
+    public static com.google.protobuf.Parser<OperationCreateAccount> parser() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<OperationCreateAccount> getParserForType() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public wallet.core.jni.proto.Stellar.OperationCreateAccount getDefaultInstanceForType() {
+      return DEFAULT_INSTANCE;
+    }
+
+  }
+
+  public interface OperationPaymentOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:TW.Stellar.Proto.OperationPayment)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>string destination = 1;</code>
+     * @return The destination.
+     */
+    java.lang.String getDestination();
+    /**
+     * <code>string destination = 1;</code>
+     * @return The bytes for destination.
+     */
+    com.google.protobuf.ByteString
+        getDestinationBytes();
+
+    /**
+     * <pre>
+     * Optional, can be left empty for native asset
+     * </pre>
+     *
+     * <code>.TW.Stellar.Proto.Asset asset = 2;</code>
+     * @return Whether the asset field is set.
+     */
+    boolean hasAsset();
+    /**
+     * <pre>
+     * Optional, can be left empty for native asset
+     * </pre>
+     *
+     * <code>.TW.Stellar.Proto.Asset asset = 2;</code>
+     * @return The asset.
+     */
+    wallet.core.jni.proto.Stellar.Asset getAsset();
+    /**
+     * <pre>
+     * Optional, can be left empty for native asset
+     * </pre>
+     *
+     * <code>.TW.Stellar.Proto.Asset asset = 2;</code>
+     */
+    wallet.core.jni.proto.Stellar.AssetOrBuilder getAssetOrBuilder();
+
+    /**
+     * <pre>
+     * Amount (*10^7)
+     * </pre>
+     *
+     * <code>int64 amount = 3;</code>
+     * @return The amount.
+     */
+    long getAmount();
+  }
+  /**
+   * Protobuf type {@code TW.Stellar.Proto.OperationPayment}
+   */
+  public static final class OperationPayment extends
+      com.google.protobuf.GeneratedMessageV3 implements
+      // @@protoc_insertion_point(message_implements:TW.Stellar.Proto.OperationPayment)
+      OperationPaymentOrBuilder {
+  private static final long serialVersionUID = 0L;
+    // Use OperationPayment.newBuilder() to construct.
+    private OperationPayment(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+      super(builder);
+    }
+    private OperationPayment() {
+      destination_ = "";
+    }
+
+    @java.lang.Override
+    @SuppressWarnings({"unused"})
+    protected java.lang.Object newInstance(
+        UnusedPrivateParameter unused) {
+      return new OperationPayment();
+    }
+
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+    getUnknownFields() {
+      return this.unknownFields;
+    }
+    private OperationPayment(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      this();
+      if (extensionRegistry == null) {
+        throw new java.lang.NullPointerException();
+      }
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            case 10: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              destination_ = s;
+              break;
+            }
+            case 18: {
+              wallet.core.jni.proto.Stellar.Asset.Builder subBuilder = null;
+              if (asset_ != null) {
+                subBuilder = asset_.toBuilder();
+              }
+              asset_ = input.readMessage(wallet.core.jni.proto.Stellar.Asset.parser(), extensionRegistry);
+              if (subBuilder != null) {
+                subBuilder.mergeFrom(asset_);
+                asset_ = subBuilder.buildPartial();
+              }
+
+              break;
+            }
+            case 24: {
+
+              amount_ = input.readInt64();
+              break;
+            }
+            default: {
+              if (!parseUnknownField(
+                  input, unknownFields, extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e).setUnfinishedMessage(this);
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return wallet.core.jni.proto.Stellar.internal_static_TW_Stellar_Proto_OperationPayment_descriptor;
+    }
+
+    @java.lang.Override
+    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return wallet.core.jni.proto.Stellar.internal_static_TW_Stellar_Proto_OperationPayment_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              wallet.core.jni.proto.Stellar.OperationPayment.class, wallet.core.jni.proto.Stellar.OperationPayment.Builder.class);
+    }
+
+    public static final int DESTINATION_FIELD_NUMBER = 1;
+    private volatile java.lang.Object destination_;
+    /**
+     * <code>string destination = 1;</code>
+     * @return The destination.
+     */
+    @java.lang.Override
+    public java.lang.String getDestination() {
+      java.lang.Object ref = destination_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        destination_ = s;
+        return s;
+      }
+    }
+    /**
+     * <code>string destination = 1;</code>
+     * @return The bytes for destination.
+     */
+    @java.lang.Override
+    public com.google.protobuf.ByteString
+        getDestinationBytes() {
+      java.lang.Object ref = destination_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        destination_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int ASSET_FIELD_NUMBER = 2;
+    private wallet.core.jni.proto.Stellar.Asset asset_;
+    /**
+     * <pre>
+     * Optional, can be left empty for native asset
+     * </pre>
+     *
+     * <code>.TW.Stellar.Proto.Asset asset = 2;</code>
+     * @return Whether the asset field is set.
+     */
+    @java.lang.Override
+    public boolean hasAsset() {
+      return asset_ != null;
+    }
+    /**
+     * <pre>
+     * Optional, can be left empty for native asset
+     * </pre>
+     *
+     * <code>.TW.Stellar.Proto.Asset asset = 2;</code>
+     * @return The asset.
+     */
+    @java.lang.Override
+    public wallet.core.jni.proto.Stellar.Asset getAsset() {
+      return asset_ == null ? wallet.core.jni.proto.Stellar.Asset.getDefaultInstance() : asset_;
+    }
+    /**
+     * <pre>
+     * Optional, can be left empty for native asset
+     * </pre>
+     *
+     * <code>.TW.Stellar.Proto.Asset asset = 2;</code>
+     */
+    @java.lang.Override
+    public wallet.core.jni.proto.Stellar.AssetOrBuilder getAssetOrBuilder() {
+      return getAsset();
+    }
+
+    public static final int AMOUNT_FIELD_NUMBER = 3;
+    private long amount_;
+    /**
+     * <pre>
+     * Amount (*10^7)
+     * </pre>
+     *
+     * <code>int64 amount = 3;</code>
+     * @return The amount.
+     */
+    @java.lang.Override
+    public long getAmount() {
+      return amount_;
+    }
+
+    private byte memoizedIsInitialized = -1;
+    @java.lang.Override
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    @java.lang.Override
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      if (!getDestinationBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 1, destination_);
+      }
+      if (asset_ != null) {
+        output.writeMessage(2, getAsset());
+      }
+      if (amount_ != 0L) {
+        output.writeInt64(3, amount_);
+      }
+      unknownFields.writeTo(output);
+    }
+
+    @java.lang.Override
+    public int getSerializedSize() {
+      int size = memoizedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (!getDestinationBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, destination_);
+      }
+      if (asset_ != null) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(2, getAsset());
+      }
+      if (amount_ != 0L) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt64Size(3, amount_);
+      }
+      size += unknownFields.getSerializedSize();
+      memoizedSize = size;
+      return size;
+    }
+
+    @java.lang.Override
+    public boolean equals(final java.lang.Object obj) {
+      if (obj == this) {
+       return true;
+      }
+      if (!(obj instanceof wallet.core.jni.proto.Stellar.OperationPayment)) {
+        return super.equals(obj);
+      }
+      wallet.core.jni.proto.Stellar.OperationPayment other = (wallet.core.jni.proto.Stellar.OperationPayment) obj;
+
+      if (!getDestination()
+          .equals(other.getDestination())) return false;
+      if (hasAsset() != other.hasAsset()) return false;
+      if (hasAsset()) {
+        if (!getAsset()
+            .equals(other.getAsset())) return false;
+      }
+      if (getAmount()
+          != other.getAmount()) return false;
+      if (!unknownFields.equals(other.unknownFields)) return false;
+      return true;
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+      if (memoizedHashCode != 0) {
+        return memoizedHashCode;
+      }
+      int hash = 41;
+      hash = (19 * hash) + getDescriptor().hashCode();
+      hash = (37 * hash) + DESTINATION_FIELD_NUMBER;
+      hash = (53 * hash) + getDestination().hashCode();
+      if (hasAsset()) {
+        hash = (37 * hash) + ASSET_FIELD_NUMBER;
+        hash = (53 * hash) + getAsset().hashCode();
+      }
+      hash = (37 * hash) + AMOUNT_FIELD_NUMBER;
+      hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
+          getAmount());
+      hash = (29 * hash) + unknownFields.hashCode();
+      memoizedHashCode = hash;
+      return hash;
+    }
+
+    public static wallet.core.jni.proto.Stellar.OperationPayment parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static wallet.core.jni.proto.Stellar.OperationPayment parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static wallet.core.jni.proto.Stellar.OperationPayment parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static wallet.core.jni.proto.Stellar.OperationPayment parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static wallet.core.jni.proto.Stellar.OperationPayment parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static wallet.core.jni.proto.Stellar.OperationPayment parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static wallet.core.jni.proto.Stellar.OperationPayment parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static wallet.core.jni.proto.Stellar.OperationPayment parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static wallet.core.jni.proto.Stellar.OperationPayment parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input);
+    }
+    public static wallet.core.jni.proto.Stellar.OperationPayment parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static wallet.core.jni.proto.Stellar.OperationPayment parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static wallet.core.jni.proto.Stellar.OperationPayment parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    @java.lang.Override
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder() {
+      return DEFAULT_INSTANCE.toBuilder();
+    }
+    public static Builder newBuilder(wallet.core.jni.proto.Stellar.OperationPayment prototype) {
+      return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
+    }
+    @java.lang.Override
+    public Builder toBuilder() {
+      return this == DEFAULT_INSTANCE
+          ? new Builder() : new Builder().mergeFrom(this);
+    }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code TW.Stellar.Proto.OperationPayment}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:TW.Stellar.Proto.OperationPayment)
+        wallet.core.jni.proto.Stellar.OperationPaymentOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return wallet.core.jni.proto.Stellar.internal_static_TW_Stellar_Proto_OperationPayment_descriptor;
+      }
+
+      @java.lang.Override
+      protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return wallet.core.jni.proto.Stellar.internal_static_TW_Stellar_Proto_OperationPayment_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                wallet.core.jni.proto.Stellar.OperationPayment.class, wallet.core.jni.proto.Stellar.OperationPayment.Builder.class);
+      }
+
+      // Construct using wallet.core.jni.proto.Stellar.OperationPayment.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessageV3
+                .alwaysUseFieldBuilders) {
+        }
+      }
+      @java.lang.Override
+      public Builder clear() {
+        super.clear();
+        destination_ = "";
+
+        if (assetBuilder_ == null) {
+          asset_ = null;
+        } else {
+          asset_ = null;
+          assetBuilder_ = null;
+        }
+        amount_ = 0L;
+
+        return this;
+      }
+
+      @java.lang.Override
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return wallet.core.jni.proto.Stellar.internal_static_TW_Stellar_Proto_OperationPayment_descriptor;
+      }
+
+      @java.lang.Override
+      public wallet.core.jni.proto.Stellar.OperationPayment getDefaultInstanceForType() {
+        return wallet.core.jni.proto.Stellar.OperationPayment.getDefaultInstance();
+      }
+
+      @java.lang.Override
+      public wallet.core.jni.proto.Stellar.OperationPayment build() {
+        wallet.core.jni.proto.Stellar.OperationPayment result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      @java.lang.Override
+      public wallet.core.jni.proto.Stellar.OperationPayment buildPartial() {
+        wallet.core.jni.proto.Stellar.OperationPayment result = new wallet.core.jni.proto.Stellar.OperationPayment(this);
+        result.destination_ = destination_;
+        if (assetBuilder_ == null) {
+          result.asset_ = asset_;
+        } else {
+          result.asset_ = assetBuilder_.build();
+        }
+        result.amount_ = amount_;
+        onBuilt();
+        return result;
+      }
+
+      @java.lang.Override
+      public Builder clone() {
+        return super.clone();
+      }
+      @java.lang.Override
+      public Builder setField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return super.setField(field, value);
+      }
+      @java.lang.Override
+      public Builder clearField(
+          com.google.protobuf.Descriptors.FieldDescriptor field) {
+        return super.clearField(field);
+      }
+      @java.lang.Override
+      public Builder clearOneof(
+          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
+        return super.clearOneof(oneof);
+      }
+      @java.lang.Override
+      public Builder setRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          int index, java.lang.Object value) {
+        return super.setRepeatedField(field, index, value);
+      }
+      @java.lang.Override
+      public Builder addRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return super.addRepeatedField(field, value);
+      }
+      @java.lang.Override
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof wallet.core.jni.proto.Stellar.OperationPayment) {
+          return mergeFrom((wallet.core.jni.proto.Stellar.OperationPayment)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(wallet.core.jni.proto.Stellar.OperationPayment other) {
+        if (other == wallet.core.jni.proto.Stellar.OperationPayment.getDefaultInstance()) return this;
+        if (!other.getDestination().isEmpty()) {
+          destination_ = other.destination_;
+          onChanged();
+        }
+        if (other.hasAsset()) {
+          mergeAsset(other.getAsset());
+        }
+        if (other.getAmount() != 0L) {
+          setAmount(other.getAmount());
+        }
+        this.mergeUnknownFields(other.unknownFields);
+        onChanged();
+        return this;
+      }
+
+      @java.lang.Override
+      public final boolean isInitialized() {
+        return true;
+      }
+
+      @java.lang.Override
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        wallet.core.jni.proto.Stellar.OperationPayment parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (wallet.core.jni.proto.Stellar.OperationPayment) e.getUnfinishedMessage();
+          throw e.unwrapIOException();
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+
+      private java.lang.Object destination_ = "";
+      /**
+       * <code>string destination = 1;</code>
+       * @return The destination.
+       */
+      public java.lang.String getDestination() {
+        java.lang.Object ref = destination_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          destination_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>string destination = 1;</code>
+       * @return The bytes for destination.
+       */
+      public com.google.protobuf.ByteString
+          getDestinationBytes() {
+        java.lang.Object ref = destination_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          destination_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>string destination = 1;</code>
+       * @param value The destination to set.
+       * @return This builder for chaining.
+       */
+      public Builder setDestination(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        destination_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string destination = 1;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearDestination() {
+        
+        destination_ = getDefaultInstance().getDestination();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string destination = 1;</code>
+       * @param value The bytes for destination to set.
+       * @return This builder for chaining.
+       */
+      public Builder setDestinationBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        destination_ = value;
+        onChanged();
+        return this;
+      }
+
+      private wallet.core.jni.proto.Stellar.Asset asset_;
+      private com.google.protobuf.SingleFieldBuilderV3<
+          wallet.core.jni.proto.Stellar.Asset, wallet.core.jni.proto.Stellar.Asset.Builder, wallet.core.jni.proto.Stellar.AssetOrBuilder> assetBuilder_;
+      /**
+       * <pre>
+       * Optional, can be left empty for native asset
+       * </pre>
+       *
+       * <code>.TW.Stellar.Proto.Asset asset = 2;</code>
+       * @return Whether the asset field is set.
+       */
+      public boolean hasAsset() {
+        return assetBuilder_ != null || asset_ != null;
+      }
+      /**
+       * <pre>
+       * Optional, can be left empty for native asset
+       * </pre>
+       *
+       * <code>.TW.Stellar.Proto.Asset asset = 2;</code>
+       * @return The asset.
+       */
+      public wallet.core.jni.proto.Stellar.Asset getAsset() {
+        if (assetBuilder_ == null) {
+          return asset_ == null ? wallet.core.jni.proto.Stellar.Asset.getDefaultInstance() : asset_;
+        } else {
+          return assetBuilder_.getMessage();
+        }
+      }
+      /**
+       * <pre>
+       * Optional, can be left empty for native asset
+       * </pre>
+       *
+       * <code>.TW.Stellar.Proto.Asset asset = 2;</code>
+       */
+      public Builder setAsset(wallet.core.jni.proto.Stellar.Asset value) {
+        if (assetBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          asset_ = value;
+          onChanged();
+        } else {
+          assetBuilder_.setMessage(value);
+        }
+
+        return this;
+      }
+      /**
+       * <pre>
+       * Optional, can be left empty for native asset
+       * </pre>
+       *
+       * <code>.TW.Stellar.Proto.Asset asset = 2;</code>
+       */
+      public Builder setAsset(
+          wallet.core.jni.proto.Stellar.Asset.Builder builderForValue) {
+        if (assetBuilder_ == null) {
+          asset_ = builderForValue.build();
+          onChanged();
+        } else {
+          assetBuilder_.setMessage(builderForValue.build());
+        }
+
+        return this;
+      }
+      /**
+       * <pre>
+       * Optional, can be left empty for native asset
+       * </pre>
+       *
+       * <code>.TW.Stellar.Proto.Asset asset = 2;</code>
+       */
+      public Builder mergeAsset(wallet.core.jni.proto.Stellar.Asset value) {
+        if (assetBuilder_ == null) {
+          if (asset_ != null) {
+            asset_ =
+              wallet.core.jni.proto.Stellar.Asset.newBuilder(asset_).mergeFrom(value).buildPartial();
+          } else {
+            asset_ = value;
+          }
+          onChanged();
+        } else {
+          assetBuilder_.mergeFrom(value);
+        }
+
+        return this;
+      }
+      /**
+       * <pre>
+       * Optional, can be left empty for native asset
+       * </pre>
+       *
+       * <code>.TW.Stellar.Proto.Asset asset = 2;</code>
+       */
+      public Builder clearAsset() {
+        if (assetBuilder_ == null) {
+          asset_ = null;
+          onChanged();
+        } else {
+          asset_ = null;
+          assetBuilder_ = null;
+        }
+
+        return this;
+      }
+      /**
+       * <pre>
+       * Optional, can be left empty for native asset
+       * </pre>
+       *
+       * <code>.TW.Stellar.Proto.Asset asset = 2;</code>
+       */
+      public wallet.core.jni.proto.Stellar.Asset.Builder getAssetBuilder() {
+        
+        onChanged();
+        return getAssetFieldBuilder().getBuilder();
+      }
+      /**
+       * <pre>
+       * Optional, can be left empty for native asset
+       * </pre>
+       *
+       * <code>.TW.Stellar.Proto.Asset asset = 2;</code>
+       */
+      public wallet.core.jni.proto.Stellar.AssetOrBuilder getAssetOrBuilder() {
+        if (assetBuilder_ != null) {
+          return assetBuilder_.getMessageOrBuilder();
+        } else {
+          return asset_ == null ?
+              wallet.core.jni.proto.Stellar.Asset.getDefaultInstance() : asset_;
+        }
+      }
+      /**
+       * <pre>
+       * Optional, can be left empty for native asset
+       * </pre>
+       *
+       * <code>.TW.Stellar.Proto.Asset asset = 2;</code>
+       */
+      private com.google.protobuf.SingleFieldBuilderV3<
+          wallet.core.jni.proto.Stellar.Asset, wallet.core.jni.proto.Stellar.Asset.Builder, wallet.core.jni.proto.Stellar.AssetOrBuilder> 
+          getAssetFieldBuilder() {
+        if (assetBuilder_ == null) {
+          assetBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+              wallet.core.jni.proto.Stellar.Asset, wallet.core.jni.proto.Stellar.Asset.Builder, wallet.core.jni.proto.Stellar.AssetOrBuilder>(
+                  getAsset(),
+                  getParentForChildren(),
+                  isClean());
+          asset_ = null;
+        }
+        return assetBuilder_;
+      }
+
+      private long amount_ ;
+      /**
+       * <pre>
+       * Amount (*10^7)
+       * </pre>
+       *
+       * <code>int64 amount = 3;</code>
+       * @return The amount.
+       */
+      @java.lang.Override
+      public long getAmount() {
+        return amount_;
+      }
+      /**
+       * <pre>
+       * Amount (*10^7)
+       * </pre>
+       *
+       * <code>int64 amount = 3;</code>
+       * @param value The amount to set.
+       * @return This builder for chaining.
+       */
+      public Builder setAmount(long value) {
+        
+        amount_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * Amount (*10^7)
+       * </pre>
+       *
+       * <code>int64 amount = 3;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearAmount() {
+        
+        amount_ = 0L;
+        onChanged();
+        return this;
+      }
+      @java.lang.Override
+      public final Builder setUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.setUnknownFields(unknownFields);
+      }
+
+      @java.lang.Override
+      public final Builder mergeUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.mergeUnknownFields(unknownFields);
+      }
+
+
+      // @@protoc_insertion_point(builder_scope:TW.Stellar.Proto.OperationPayment)
+    }
+
+    // @@protoc_insertion_point(class_scope:TW.Stellar.Proto.OperationPayment)
+    private static final wallet.core.jni.proto.Stellar.OperationPayment DEFAULT_INSTANCE;
+    static {
+      DEFAULT_INSTANCE = new wallet.core.jni.proto.Stellar.OperationPayment();
+    }
+
+    public static wallet.core.jni.proto.Stellar.OperationPayment getDefaultInstance() {
+      return DEFAULT_INSTANCE;
+    }
+
+    private static final com.google.protobuf.Parser<OperationPayment>
+        PARSER = new com.google.protobuf.AbstractParser<OperationPayment>() {
+      @java.lang.Override
+      public OperationPayment parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new OperationPayment(input, extensionRegistry);
+      }
+    };
+
+    public static com.google.protobuf.Parser<OperationPayment> parser() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<OperationPayment> getParserForType() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public wallet.core.jni.proto.Stellar.OperationPayment getDefaultInstanceForType() {
+      return DEFAULT_INSTANCE;
+    }
+
+  }
+
+  public interface OperationChangeTrustOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:TW.Stellar.Proto.OperationChangeTrust)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>.TW.Stellar.Proto.Asset asset = 1;</code>
+     * @return Whether the asset field is set.
+     */
+    boolean hasAsset();
+    /**
+     * <code>.TW.Stellar.Proto.Asset asset = 1;</code>
+     * @return The asset.
+     */
+    wallet.core.jni.proto.Stellar.Asset getAsset();
+    /**
+     * <code>.TW.Stellar.Proto.Asset asset = 1;</code>
+     */
+    wallet.core.jni.proto.Stellar.AssetOrBuilder getAssetOrBuilder();
+
+    /**
+     * <pre>
+     * Validity (time bound to), unix time.  Set to (now() + 2 * 365 * 86400) for 2 years; set to 0 for missing.
+     * </pre>
+     *
+     * <code>int64 valid_before = 2;</code>
+     * @return The validBefore.
+     */
+    long getValidBefore();
+  }
+  /**
+   * Protobuf type {@code TW.Stellar.Proto.OperationChangeTrust}
+   */
+  public static final class OperationChangeTrust extends
+      com.google.protobuf.GeneratedMessageV3 implements
+      // @@protoc_insertion_point(message_implements:TW.Stellar.Proto.OperationChangeTrust)
+      OperationChangeTrustOrBuilder {
+  private static final long serialVersionUID = 0L;
+    // Use OperationChangeTrust.newBuilder() to construct.
+    private OperationChangeTrust(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+      super(builder);
+    }
+    private OperationChangeTrust() {
+    }
+
+    @java.lang.Override
+    @SuppressWarnings({"unused"})
+    protected java.lang.Object newInstance(
+        UnusedPrivateParameter unused) {
+      return new OperationChangeTrust();
+    }
+
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+    getUnknownFields() {
+      return this.unknownFields;
+    }
+    private OperationChangeTrust(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      this();
+      if (extensionRegistry == null) {
+        throw new java.lang.NullPointerException();
+      }
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            case 10: {
+              wallet.core.jni.proto.Stellar.Asset.Builder subBuilder = null;
+              if (asset_ != null) {
+                subBuilder = asset_.toBuilder();
+              }
+              asset_ = input.readMessage(wallet.core.jni.proto.Stellar.Asset.parser(), extensionRegistry);
+              if (subBuilder != null) {
+                subBuilder.mergeFrom(asset_);
+                asset_ = subBuilder.buildPartial();
+              }
+
+              break;
+            }
+            case 16: {
+
+              validBefore_ = input.readInt64();
+              break;
+            }
+            default: {
+              if (!parseUnknownField(
+                  input, unknownFields, extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e).setUnfinishedMessage(this);
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return wallet.core.jni.proto.Stellar.internal_static_TW_Stellar_Proto_OperationChangeTrust_descriptor;
+    }
+
+    @java.lang.Override
+    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return wallet.core.jni.proto.Stellar.internal_static_TW_Stellar_Proto_OperationChangeTrust_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              wallet.core.jni.proto.Stellar.OperationChangeTrust.class, wallet.core.jni.proto.Stellar.OperationChangeTrust.Builder.class);
+    }
+
+    public static final int ASSET_FIELD_NUMBER = 1;
+    private wallet.core.jni.proto.Stellar.Asset asset_;
+    /**
+     * <code>.TW.Stellar.Proto.Asset asset = 1;</code>
+     * @return Whether the asset field is set.
+     */
+    @java.lang.Override
+    public boolean hasAsset() {
+      return asset_ != null;
+    }
+    /**
+     * <code>.TW.Stellar.Proto.Asset asset = 1;</code>
+     * @return The asset.
+     */
+    @java.lang.Override
+    public wallet.core.jni.proto.Stellar.Asset getAsset() {
+      return asset_ == null ? wallet.core.jni.proto.Stellar.Asset.getDefaultInstance() : asset_;
+    }
+    /**
+     * <code>.TW.Stellar.Proto.Asset asset = 1;</code>
+     */
+    @java.lang.Override
+    public wallet.core.jni.proto.Stellar.AssetOrBuilder getAssetOrBuilder() {
+      return getAsset();
+    }
+
+    public static final int VALID_BEFORE_FIELD_NUMBER = 2;
+    private long validBefore_;
+    /**
+     * <pre>
+     * Validity (time bound to), unix time.  Set to (now() + 2 * 365 * 86400) for 2 years; set to 0 for missing.
+     * </pre>
+     *
+     * <code>int64 valid_before = 2;</code>
+     * @return The validBefore.
+     */
+    @java.lang.Override
+    public long getValidBefore() {
+      return validBefore_;
+    }
+
+    private byte memoizedIsInitialized = -1;
+    @java.lang.Override
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    @java.lang.Override
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      if (asset_ != null) {
+        output.writeMessage(1, getAsset());
+      }
+      if (validBefore_ != 0L) {
+        output.writeInt64(2, validBefore_);
+      }
+      unknownFields.writeTo(output);
+    }
+
+    @java.lang.Override
+    public int getSerializedSize() {
+      int size = memoizedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (asset_ != null) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(1, getAsset());
+      }
+      if (validBefore_ != 0L) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt64Size(2, validBefore_);
+      }
+      size += unknownFields.getSerializedSize();
+      memoizedSize = size;
+      return size;
+    }
+
+    @java.lang.Override
+    public boolean equals(final java.lang.Object obj) {
+      if (obj == this) {
+       return true;
+      }
+      if (!(obj instanceof wallet.core.jni.proto.Stellar.OperationChangeTrust)) {
+        return super.equals(obj);
+      }
+      wallet.core.jni.proto.Stellar.OperationChangeTrust other = (wallet.core.jni.proto.Stellar.OperationChangeTrust) obj;
+
+      if (hasAsset() != other.hasAsset()) return false;
+      if (hasAsset()) {
+        if (!getAsset()
+            .equals(other.getAsset())) return false;
+      }
+      if (getValidBefore()
+          != other.getValidBefore()) return false;
+      if (!unknownFields.equals(other.unknownFields)) return false;
+      return true;
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+      if (memoizedHashCode != 0) {
+        return memoizedHashCode;
+      }
+      int hash = 41;
+      hash = (19 * hash) + getDescriptor().hashCode();
+      if (hasAsset()) {
+        hash = (37 * hash) + ASSET_FIELD_NUMBER;
+        hash = (53 * hash) + getAsset().hashCode();
+      }
+      hash = (37 * hash) + VALID_BEFORE_FIELD_NUMBER;
+      hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
+          getValidBefore());
+      hash = (29 * hash) + unknownFields.hashCode();
+      memoizedHashCode = hash;
+      return hash;
+    }
+
+    public static wallet.core.jni.proto.Stellar.OperationChangeTrust parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static wallet.core.jni.proto.Stellar.OperationChangeTrust parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static wallet.core.jni.proto.Stellar.OperationChangeTrust parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static wallet.core.jni.proto.Stellar.OperationChangeTrust parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static wallet.core.jni.proto.Stellar.OperationChangeTrust parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static wallet.core.jni.proto.Stellar.OperationChangeTrust parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static wallet.core.jni.proto.Stellar.OperationChangeTrust parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static wallet.core.jni.proto.Stellar.OperationChangeTrust parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static wallet.core.jni.proto.Stellar.OperationChangeTrust parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input);
+    }
+    public static wallet.core.jni.proto.Stellar.OperationChangeTrust parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static wallet.core.jni.proto.Stellar.OperationChangeTrust parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static wallet.core.jni.proto.Stellar.OperationChangeTrust parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    @java.lang.Override
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder() {
+      return DEFAULT_INSTANCE.toBuilder();
+    }
+    public static Builder newBuilder(wallet.core.jni.proto.Stellar.OperationChangeTrust prototype) {
+      return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
+    }
+    @java.lang.Override
+    public Builder toBuilder() {
+      return this == DEFAULT_INSTANCE
+          ? new Builder() : new Builder().mergeFrom(this);
+    }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code TW.Stellar.Proto.OperationChangeTrust}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:TW.Stellar.Proto.OperationChangeTrust)
+        wallet.core.jni.proto.Stellar.OperationChangeTrustOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return wallet.core.jni.proto.Stellar.internal_static_TW_Stellar_Proto_OperationChangeTrust_descriptor;
+      }
+
+      @java.lang.Override
+      protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return wallet.core.jni.proto.Stellar.internal_static_TW_Stellar_Proto_OperationChangeTrust_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                wallet.core.jni.proto.Stellar.OperationChangeTrust.class, wallet.core.jni.proto.Stellar.OperationChangeTrust.Builder.class);
+      }
+
+      // Construct using wallet.core.jni.proto.Stellar.OperationChangeTrust.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessageV3
+                .alwaysUseFieldBuilders) {
+        }
+      }
+      @java.lang.Override
+      public Builder clear() {
+        super.clear();
+        if (assetBuilder_ == null) {
+          asset_ = null;
+        } else {
+          asset_ = null;
+          assetBuilder_ = null;
+        }
+        validBefore_ = 0L;
+
+        return this;
+      }
+
+      @java.lang.Override
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return wallet.core.jni.proto.Stellar.internal_static_TW_Stellar_Proto_OperationChangeTrust_descriptor;
+      }
+
+      @java.lang.Override
+      public wallet.core.jni.proto.Stellar.OperationChangeTrust getDefaultInstanceForType() {
+        return wallet.core.jni.proto.Stellar.OperationChangeTrust.getDefaultInstance();
+      }
+
+      @java.lang.Override
+      public wallet.core.jni.proto.Stellar.OperationChangeTrust build() {
+        wallet.core.jni.proto.Stellar.OperationChangeTrust result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      @java.lang.Override
+      public wallet.core.jni.proto.Stellar.OperationChangeTrust buildPartial() {
+        wallet.core.jni.proto.Stellar.OperationChangeTrust result = new wallet.core.jni.proto.Stellar.OperationChangeTrust(this);
+        if (assetBuilder_ == null) {
+          result.asset_ = asset_;
+        } else {
+          result.asset_ = assetBuilder_.build();
+        }
+        result.validBefore_ = validBefore_;
+        onBuilt();
+        return result;
+      }
+
+      @java.lang.Override
+      public Builder clone() {
+        return super.clone();
+      }
+      @java.lang.Override
+      public Builder setField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return super.setField(field, value);
+      }
+      @java.lang.Override
+      public Builder clearField(
+          com.google.protobuf.Descriptors.FieldDescriptor field) {
+        return super.clearField(field);
+      }
+      @java.lang.Override
+      public Builder clearOneof(
+          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
+        return super.clearOneof(oneof);
+      }
+      @java.lang.Override
+      public Builder setRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          int index, java.lang.Object value) {
+        return super.setRepeatedField(field, index, value);
+      }
+      @java.lang.Override
+      public Builder addRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return super.addRepeatedField(field, value);
+      }
+      @java.lang.Override
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof wallet.core.jni.proto.Stellar.OperationChangeTrust) {
+          return mergeFrom((wallet.core.jni.proto.Stellar.OperationChangeTrust)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(wallet.core.jni.proto.Stellar.OperationChangeTrust other) {
+        if (other == wallet.core.jni.proto.Stellar.OperationChangeTrust.getDefaultInstance()) return this;
+        if (other.hasAsset()) {
+          mergeAsset(other.getAsset());
+        }
+        if (other.getValidBefore() != 0L) {
+          setValidBefore(other.getValidBefore());
+        }
+        this.mergeUnknownFields(other.unknownFields);
+        onChanged();
+        return this;
+      }
+
+      @java.lang.Override
+      public final boolean isInitialized() {
+        return true;
+      }
+
+      @java.lang.Override
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        wallet.core.jni.proto.Stellar.OperationChangeTrust parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (wallet.core.jni.proto.Stellar.OperationChangeTrust) e.getUnfinishedMessage();
+          throw e.unwrapIOException();
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+
+      private wallet.core.jni.proto.Stellar.Asset asset_;
+      private com.google.protobuf.SingleFieldBuilderV3<
+          wallet.core.jni.proto.Stellar.Asset, wallet.core.jni.proto.Stellar.Asset.Builder, wallet.core.jni.proto.Stellar.AssetOrBuilder> assetBuilder_;
+      /**
+       * <code>.TW.Stellar.Proto.Asset asset = 1;</code>
+       * @return Whether the asset field is set.
+       */
+      public boolean hasAsset() {
+        return assetBuilder_ != null || asset_ != null;
+      }
+      /**
+       * <code>.TW.Stellar.Proto.Asset asset = 1;</code>
+       * @return The asset.
+       */
+      public wallet.core.jni.proto.Stellar.Asset getAsset() {
+        if (assetBuilder_ == null) {
+          return asset_ == null ? wallet.core.jni.proto.Stellar.Asset.getDefaultInstance() : asset_;
+        } else {
+          return assetBuilder_.getMessage();
+        }
+      }
+      /**
+       * <code>.TW.Stellar.Proto.Asset asset = 1;</code>
+       */
+      public Builder setAsset(wallet.core.jni.proto.Stellar.Asset value) {
+        if (assetBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          asset_ = value;
+          onChanged();
+        } else {
+          assetBuilder_.setMessage(value);
+        }
+
+        return this;
+      }
+      /**
+       * <code>.TW.Stellar.Proto.Asset asset = 1;</code>
+       */
+      public Builder setAsset(
+          wallet.core.jni.proto.Stellar.Asset.Builder builderForValue) {
+        if (assetBuilder_ == null) {
+          asset_ = builderForValue.build();
+          onChanged();
+        } else {
+          assetBuilder_.setMessage(builderForValue.build());
+        }
+
+        return this;
+      }
+      /**
+       * <code>.TW.Stellar.Proto.Asset asset = 1;</code>
+       */
+      public Builder mergeAsset(wallet.core.jni.proto.Stellar.Asset value) {
+        if (assetBuilder_ == null) {
+          if (asset_ != null) {
+            asset_ =
+              wallet.core.jni.proto.Stellar.Asset.newBuilder(asset_).mergeFrom(value).buildPartial();
+          } else {
+            asset_ = value;
+          }
+          onChanged();
+        } else {
+          assetBuilder_.mergeFrom(value);
+        }
+
+        return this;
+      }
+      /**
+       * <code>.TW.Stellar.Proto.Asset asset = 1;</code>
+       */
+      public Builder clearAsset() {
+        if (assetBuilder_ == null) {
+          asset_ = null;
+          onChanged();
+        } else {
+          asset_ = null;
+          assetBuilder_ = null;
+        }
+
+        return this;
+      }
+      /**
+       * <code>.TW.Stellar.Proto.Asset asset = 1;</code>
+       */
+      public wallet.core.jni.proto.Stellar.Asset.Builder getAssetBuilder() {
+        
+        onChanged();
+        return getAssetFieldBuilder().getBuilder();
+      }
+      /**
+       * <code>.TW.Stellar.Proto.Asset asset = 1;</code>
+       */
+      public wallet.core.jni.proto.Stellar.AssetOrBuilder getAssetOrBuilder() {
+        if (assetBuilder_ != null) {
+          return assetBuilder_.getMessageOrBuilder();
+        } else {
+          return asset_ == null ?
+              wallet.core.jni.proto.Stellar.Asset.getDefaultInstance() : asset_;
+        }
+      }
+      /**
+       * <code>.TW.Stellar.Proto.Asset asset = 1;</code>
+       */
+      private com.google.protobuf.SingleFieldBuilderV3<
+          wallet.core.jni.proto.Stellar.Asset, wallet.core.jni.proto.Stellar.Asset.Builder, wallet.core.jni.proto.Stellar.AssetOrBuilder> 
+          getAssetFieldBuilder() {
+        if (assetBuilder_ == null) {
+          assetBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+              wallet.core.jni.proto.Stellar.Asset, wallet.core.jni.proto.Stellar.Asset.Builder, wallet.core.jni.proto.Stellar.AssetOrBuilder>(
+                  getAsset(),
+                  getParentForChildren(),
+                  isClean());
+          asset_ = null;
+        }
+        return assetBuilder_;
+      }
+
+      private long validBefore_ ;
+      /**
+       * <pre>
+       * Validity (time bound to), unix time.  Set to (now() + 2 * 365 * 86400) for 2 years; set to 0 for missing.
+       * </pre>
+       *
+       * <code>int64 valid_before = 2;</code>
+       * @return The validBefore.
+       */
+      @java.lang.Override
+      public long getValidBefore() {
+        return validBefore_;
+      }
+      /**
+       * <pre>
+       * Validity (time bound to), unix time.  Set to (now() + 2 * 365 * 86400) for 2 years; set to 0 for missing.
+       * </pre>
+       *
+       * <code>int64 valid_before = 2;</code>
+       * @param value The validBefore to set.
+       * @return This builder for chaining.
+       */
+      public Builder setValidBefore(long value) {
+        
+        validBefore_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * Validity (time bound to), unix time.  Set to (now() + 2 * 365 * 86400) for 2 years; set to 0 for missing.
+       * </pre>
+       *
+       * <code>int64 valid_before = 2;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearValidBefore() {
+        
+        validBefore_ = 0L;
+        onChanged();
+        return this;
+      }
+      @java.lang.Override
+      public final Builder setUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.setUnknownFields(unknownFields);
+      }
+
+      @java.lang.Override
+      public final Builder mergeUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.mergeUnknownFields(unknownFields);
+      }
+
+
+      // @@protoc_insertion_point(builder_scope:TW.Stellar.Proto.OperationChangeTrust)
+    }
+
+    // @@protoc_insertion_point(class_scope:TW.Stellar.Proto.OperationChangeTrust)
+    private static final wallet.core.jni.proto.Stellar.OperationChangeTrust DEFAULT_INSTANCE;
+    static {
+      DEFAULT_INSTANCE = new wallet.core.jni.proto.Stellar.OperationChangeTrust();
+    }
+
+    public static wallet.core.jni.proto.Stellar.OperationChangeTrust getDefaultInstance() {
+      return DEFAULT_INSTANCE;
+    }
+
+    private static final com.google.protobuf.Parser<OperationChangeTrust>
+        PARSER = new com.google.protobuf.AbstractParser<OperationChangeTrust>() {
+      @java.lang.Override
+      public OperationChangeTrust parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new OperationChangeTrust(input, extensionRegistry);
+      }
+    };
+
+    public static com.google.protobuf.Parser<OperationChangeTrust> parser() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<OperationChangeTrust> getParserForType() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public wallet.core.jni.proto.Stellar.OperationChangeTrust getDefaultInstanceForType() {
+      return DEFAULT_INSTANCE;
+    }
+
+  }
+
   public interface MemoVoidOrBuilder extends
       // @@protoc_insertion_point(interface_extends:TW.Stellar.Proto.MemoVoid)
       com.google.protobuf.MessageOrBuilder {
@@ -21,7 +3104,7 @@ public final class Stellar {
   /**
    * Protobuf type {@code TW.Stellar.Proto.MemoVoid}
    */
-  public  static final class MemoVoid extends
+  public static final class MemoVoid extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:TW.Stellar.Proto.MemoVoid)
       MemoVoidOrBuilder {
@@ -438,10 +3521,12 @@ public final class Stellar {
 
     /**
      * <code>string text = 1;</code>
+     * @return The text.
      */
     java.lang.String getText();
     /**
      * <code>string text = 1;</code>
+     * @return The bytes for text.
      */
     com.google.protobuf.ByteString
         getTextBytes();
@@ -449,7 +3534,7 @@ public final class Stellar {
   /**
    * Protobuf type {@code TW.Stellar.Proto.MemoText}
    */
-  public  static final class MemoText extends
+  public static final class MemoText extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:TW.Stellar.Proto.MemoText)
       MemoTextOrBuilder {
@@ -534,7 +3619,9 @@ public final class Stellar {
     private volatile java.lang.Object text_;
     /**
      * <code>string text = 1;</code>
+     * @return The text.
      */
+    @java.lang.Override
     public java.lang.String getText() {
       java.lang.Object ref = text_;
       if (ref instanceof java.lang.String) {
@@ -549,7 +3636,9 @@ public final class Stellar {
     }
     /**
      * <code>string text = 1;</code>
+     * @return The bytes for text.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString
         getTextBytes() {
       java.lang.Object ref = text_;
@@ -869,6 +3958,7 @@ public final class Stellar {
       private java.lang.Object text_ = "";
       /**
        * <code>string text = 1;</code>
+       * @return The text.
        */
       public java.lang.String getText() {
         java.lang.Object ref = text_;
@@ -884,6 +3974,7 @@ public final class Stellar {
       }
       /**
        * <code>string text = 1;</code>
+       * @return The bytes for text.
        */
       public com.google.protobuf.ByteString
           getTextBytes() {
@@ -900,6 +3991,8 @@ public final class Stellar {
       }
       /**
        * <code>string text = 1;</code>
+       * @param value The text to set.
+       * @return This builder for chaining.
        */
       public Builder setText(
           java.lang.String value) {
@@ -913,6 +4006,7 @@ public final class Stellar {
       }
       /**
        * <code>string text = 1;</code>
+       * @return This builder for chaining.
        */
       public Builder clearText() {
         
@@ -922,6 +4016,8 @@ public final class Stellar {
       }
       /**
        * <code>string text = 1;</code>
+       * @param value The bytes for text to set.
+       * @return This builder for chaining.
        */
       public Builder setTextBytes(
           com.google.protobuf.ByteString value) {
@@ -993,13 +4089,14 @@ public final class Stellar {
 
     /**
      * <code>int64 id = 1;</code>
+     * @return The id.
      */
     long getId();
   }
   /**
    * Protobuf type {@code TW.Stellar.Proto.MemoId}
    */
-  public  static final class MemoId extends
+  public static final class MemoId extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:TW.Stellar.Proto.MemoId)
       MemoIdOrBuilder {
@@ -1082,7 +4179,9 @@ public final class Stellar {
     private long id_;
     /**
      * <code>int64 id = 1;</code>
+     * @return The id.
      */
+    @java.lang.Override
     public long getId() {
       return id_;
     }
@@ -1393,12 +4492,16 @@ public final class Stellar {
       private long id_ ;
       /**
        * <code>int64 id = 1;</code>
+       * @return The id.
        */
+      @java.lang.Override
       public long getId() {
         return id_;
       }
       /**
        * <code>int64 id = 1;</code>
+       * @param value The id to set.
+       * @return This builder for chaining.
        */
       public Builder setId(long value) {
         
@@ -1408,6 +4511,7 @@ public final class Stellar {
       }
       /**
        * <code>int64 id = 1;</code>
+       * @return This builder for chaining.
        */
       public Builder clearId() {
         
@@ -1474,13 +4578,14 @@ public final class Stellar {
 
     /**
      * <code>bytes hash = 1;</code>
+     * @return The hash.
      */
     com.google.protobuf.ByteString getHash();
   }
   /**
    * Protobuf type {@code TW.Stellar.Proto.MemoHash}
    */
-  public  static final class MemoHash extends
+  public static final class MemoHash extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:TW.Stellar.Proto.MemoHash)
       MemoHashOrBuilder {
@@ -1564,7 +4669,9 @@ public final class Stellar {
     private com.google.protobuf.ByteString hash_;
     /**
      * <code>bytes hash = 1;</code>
+     * @return The hash.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString getHash() {
       return hash_;
     }
@@ -1874,12 +4981,16 @@ public final class Stellar {
       private com.google.protobuf.ByteString hash_ = com.google.protobuf.ByteString.EMPTY;
       /**
        * <code>bytes hash = 1;</code>
+       * @return The hash.
        */
+      @java.lang.Override
       public com.google.protobuf.ByteString getHash() {
         return hash_;
       }
       /**
        * <code>bytes hash = 1;</code>
+       * @param value The hash to set.
+       * @return This builder for chaining.
        */
       public Builder setHash(com.google.protobuf.ByteString value) {
         if (value == null) {
@@ -1892,6 +5003,7 @@ public final class Stellar {
       }
       /**
        * <code>bytes hash = 1;</code>
+       * @return This builder for chaining.
        */
       public Builder clearHash() {
         
@@ -1957,132 +5069,172 @@ public final class Stellar {
       com.google.protobuf.MessageOrBuilder {
 
     /**
-     * <code>int64 amount = 1;</code>
-     */
-    long getAmount();
-
-    /**
-     * <code>int32 fee = 2;</code>
+     * <code>int32 fee = 1;</code>
+     * @return The fee.
      */
     int getFee();
 
     /**
-     * <code>int64 sequence = 3;</code>
+     * <code>int64 sequence = 2;</code>
+     * @return The sequence.
      */
     long getSequence();
 
     /**
-     * <code>string account = 4;</code>
+     * <code>string account = 3;</code>
+     * @return The account.
      */
     java.lang.String getAccount();
     /**
-     * <code>string account = 4;</code>
+     * <code>string account = 3;</code>
+     * @return The bytes for account.
      */
     com.google.protobuf.ByteString
         getAccountBytes();
-
-    /**
-     * <code>string destination = 5;</code>
-     */
-    java.lang.String getDestination();
-    /**
-     * <code>string destination = 5;</code>
-     */
-    com.google.protobuf.ByteString
-        getDestinationBytes();
 
     /**
      * <pre>
      * Private key.
      * </pre>
      *
-     * <code>bytes private_key = 6;</code>
+     * <code>bytes private_key = 4;</code>
+     * @return The privateKey.
      */
     com.google.protobuf.ByteString getPrivateKey();
 
     /**
-     * <code>.TW.Stellar.Proto.MemoVoid memo_void = 7;</code>
+     * <code>string passphrase = 5;</code>
+     * @return The passphrase.
+     */
+    java.lang.String getPassphrase();
+    /**
+     * <code>string passphrase = 5;</code>
+     * @return The bytes for passphrase.
+     */
+    com.google.protobuf.ByteString
+        getPassphraseBytes();
+
+    /**
+     * <code>.TW.Stellar.Proto.OperationCreateAccount op_create_account = 6;</code>
+     * @return Whether the opCreateAccount field is set.
+     */
+    boolean hasOpCreateAccount();
+    /**
+     * <code>.TW.Stellar.Proto.OperationCreateAccount op_create_account = 6;</code>
+     * @return The opCreateAccount.
+     */
+    wallet.core.jni.proto.Stellar.OperationCreateAccount getOpCreateAccount();
+    /**
+     * <code>.TW.Stellar.Proto.OperationCreateAccount op_create_account = 6;</code>
+     */
+    wallet.core.jni.proto.Stellar.OperationCreateAccountOrBuilder getOpCreateAccountOrBuilder();
+
+    /**
+     * <code>.TW.Stellar.Proto.OperationPayment op_payment = 7;</code>
+     * @return Whether the opPayment field is set.
+     */
+    boolean hasOpPayment();
+    /**
+     * <code>.TW.Stellar.Proto.OperationPayment op_payment = 7;</code>
+     * @return The opPayment.
+     */
+    wallet.core.jni.proto.Stellar.OperationPayment getOpPayment();
+    /**
+     * <code>.TW.Stellar.Proto.OperationPayment op_payment = 7;</code>
+     */
+    wallet.core.jni.proto.Stellar.OperationPaymentOrBuilder getOpPaymentOrBuilder();
+
+    /**
+     * <code>.TW.Stellar.Proto.OperationChangeTrust op_change_trust = 8;</code>
+     * @return Whether the opChangeTrust field is set.
+     */
+    boolean hasOpChangeTrust();
+    /**
+     * <code>.TW.Stellar.Proto.OperationChangeTrust op_change_trust = 8;</code>
+     * @return The opChangeTrust.
+     */
+    wallet.core.jni.proto.Stellar.OperationChangeTrust getOpChangeTrust();
+    /**
+     * <code>.TW.Stellar.Proto.OperationChangeTrust op_change_trust = 8;</code>
+     */
+    wallet.core.jni.proto.Stellar.OperationChangeTrustOrBuilder getOpChangeTrustOrBuilder();
+
+    /**
+     * <code>.TW.Stellar.Proto.MemoVoid memo_void = 9;</code>
+     * @return Whether the memoVoid field is set.
      */
     boolean hasMemoVoid();
     /**
-     * <code>.TW.Stellar.Proto.MemoVoid memo_void = 7;</code>
+     * <code>.TW.Stellar.Proto.MemoVoid memo_void = 9;</code>
+     * @return The memoVoid.
      */
     wallet.core.jni.proto.Stellar.MemoVoid getMemoVoid();
     /**
-     * <code>.TW.Stellar.Proto.MemoVoid memo_void = 7;</code>
+     * <code>.TW.Stellar.Proto.MemoVoid memo_void = 9;</code>
      */
     wallet.core.jni.proto.Stellar.MemoVoidOrBuilder getMemoVoidOrBuilder();
 
     /**
-     * <code>.TW.Stellar.Proto.MemoText memo_text = 8;</code>
+     * <code>.TW.Stellar.Proto.MemoText memo_text = 10;</code>
+     * @return Whether the memoText field is set.
      */
     boolean hasMemoText();
     /**
-     * <code>.TW.Stellar.Proto.MemoText memo_text = 8;</code>
+     * <code>.TW.Stellar.Proto.MemoText memo_text = 10;</code>
+     * @return The memoText.
      */
     wallet.core.jni.proto.Stellar.MemoText getMemoText();
     /**
-     * <code>.TW.Stellar.Proto.MemoText memo_text = 8;</code>
+     * <code>.TW.Stellar.Proto.MemoText memo_text = 10;</code>
      */
     wallet.core.jni.proto.Stellar.MemoTextOrBuilder getMemoTextOrBuilder();
 
     /**
-     * <code>.TW.Stellar.Proto.MemoId memo_id = 9;</code>
+     * <code>.TW.Stellar.Proto.MemoId memo_id = 11;</code>
+     * @return Whether the memoId field is set.
      */
     boolean hasMemoId();
     /**
-     * <code>.TW.Stellar.Proto.MemoId memo_id = 9;</code>
+     * <code>.TW.Stellar.Proto.MemoId memo_id = 11;</code>
+     * @return The memoId.
      */
     wallet.core.jni.proto.Stellar.MemoId getMemoId();
     /**
-     * <code>.TW.Stellar.Proto.MemoId memo_id = 9;</code>
+     * <code>.TW.Stellar.Proto.MemoId memo_id = 11;</code>
      */
     wallet.core.jni.proto.Stellar.MemoIdOrBuilder getMemoIdOrBuilder();
 
     /**
-     * <code>.TW.Stellar.Proto.MemoHash memo_hash = 10;</code>
+     * <code>.TW.Stellar.Proto.MemoHash memo_hash = 12;</code>
+     * @return Whether the memoHash field is set.
      */
     boolean hasMemoHash();
     /**
-     * <code>.TW.Stellar.Proto.MemoHash memo_hash = 10;</code>
+     * <code>.TW.Stellar.Proto.MemoHash memo_hash = 12;</code>
+     * @return The memoHash.
      */
     wallet.core.jni.proto.Stellar.MemoHash getMemoHash();
     /**
-     * <code>.TW.Stellar.Proto.MemoHash memo_hash = 10;</code>
+     * <code>.TW.Stellar.Proto.MemoHash memo_hash = 12;</code>
      */
     wallet.core.jni.proto.Stellar.MemoHashOrBuilder getMemoHashOrBuilder();
 
     /**
-     * <code>.TW.Stellar.Proto.MemoHash memo_return_hash = 11;</code>
+     * <code>.TW.Stellar.Proto.MemoHash memo_return_hash = 13;</code>
+     * @return Whether the memoReturnHash field is set.
      */
     boolean hasMemoReturnHash();
     /**
-     * <code>.TW.Stellar.Proto.MemoHash memo_return_hash = 11;</code>
+     * <code>.TW.Stellar.Proto.MemoHash memo_return_hash = 13;</code>
+     * @return The memoReturnHash.
      */
     wallet.core.jni.proto.Stellar.MemoHash getMemoReturnHash();
     /**
-     * <code>.TW.Stellar.Proto.MemoHash memo_return_hash = 11;</code>
+     * <code>.TW.Stellar.Proto.MemoHash memo_return_hash = 13;</code>
      */
     wallet.core.jni.proto.Stellar.MemoHashOrBuilder getMemoReturnHashOrBuilder();
 
-    /**
-     * <code>.TW.Stellar.Proto.SigningInput.OperationType operation_type = 12;</code>
-     */
-    int getOperationTypeValue();
-    /**
-     * <code>.TW.Stellar.Proto.SigningInput.OperationType operation_type = 12;</code>
-     */
-    wallet.core.jni.proto.Stellar.SigningInput.OperationType getOperationType();
-
-    /**
-     * <code>string passphrase = 13;</code>
-     */
-    java.lang.String getPassphrase();
-    /**
-     * <code>string passphrase = 13;</code>
-     */
-    com.google.protobuf.ByteString
-        getPassphraseBytes();
+    public wallet.core.jni.proto.Stellar.SigningInput.OperationOneofCase getOperationOneofCase();
 
     public wallet.core.jni.proto.Stellar.SigningInput.MemoTypeOneofCase getMemoTypeOneofCase();
   }
@@ -2093,7 +5245,7 @@ public final class Stellar {
    *
    * Protobuf type {@code TW.Stellar.Proto.SigningInput}
    */
-  public  static final class SigningInput extends
+  public static final class SigningInput extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:TW.Stellar.Proto.SigningInput)
       SigningInputOrBuilder {
@@ -2104,9 +5256,7 @@ public final class Stellar {
     }
     private SigningInput() {
       account_ = "";
-      destination_ = "";
       privateKey_ = com.google.protobuf.ByteString.EMPTY;
-      operationType_ = 0;
       passphrase_ = "";
     }
 
@@ -2142,39 +5292,76 @@ public final class Stellar {
               break;
             case 8: {
 
-              amount_ = input.readInt64();
+              fee_ = input.readInt32();
               break;
             }
             case 16: {
 
-              fee_ = input.readInt32();
-              break;
-            }
-            case 24: {
-
               sequence_ = input.readInt64();
               break;
             }
-            case 34: {
+            case 26: {
               java.lang.String s = input.readStringRequireUtf8();
 
               account_ = s;
               break;
             }
-            case 42: {
-              java.lang.String s = input.readStringRequireUtf8();
-
-              destination_ = s;
-              break;
-            }
-            case 50: {
+            case 34: {
 
               privateKey_ = input.readBytes();
               break;
             }
+            case 42: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              passphrase_ = s;
+              break;
+            }
+            case 50: {
+              wallet.core.jni.proto.Stellar.OperationCreateAccount.Builder subBuilder = null;
+              if (operationOneofCase_ == 6) {
+                subBuilder = ((wallet.core.jni.proto.Stellar.OperationCreateAccount) operationOneof_).toBuilder();
+              }
+              operationOneof_ =
+                  input.readMessage(wallet.core.jni.proto.Stellar.OperationCreateAccount.parser(), extensionRegistry);
+              if (subBuilder != null) {
+                subBuilder.mergeFrom((wallet.core.jni.proto.Stellar.OperationCreateAccount) operationOneof_);
+                operationOneof_ = subBuilder.buildPartial();
+              }
+              operationOneofCase_ = 6;
+              break;
+            }
             case 58: {
+              wallet.core.jni.proto.Stellar.OperationPayment.Builder subBuilder = null;
+              if (operationOneofCase_ == 7) {
+                subBuilder = ((wallet.core.jni.proto.Stellar.OperationPayment) operationOneof_).toBuilder();
+              }
+              operationOneof_ =
+                  input.readMessage(wallet.core.jni.proto.Stellar.OperationPayment.parser(), extensionRegistry);
+              if (subBuilder != null) {
+                subBuilder.mergeFrom((wallet.core.jni.proto.Stellar.OperationPayment) operationOneof_);
+                operationOneof_ = subBuilder.buildPartial();
+              }
+              operationOneofCase_ = 7;
+              break;
+            }
+            case 66: {
+              wallet.core.jni.proto.Stellar.OperationChangeTrust.Builder subBuilder = null;
+              if (operationOneofCase_ == 8) {
+                subBuilder = ((wallet.core.jni.proto.Stellar.OperationChangeTrust) operationOneof_).toBuilder();
+              }
+              operationOneof_ =
+                  input.readMessage(wallet.core.jni.proto.Stellar.OperationChangeTrust.parser(), extensionRegistry);
+              if (subBuilder != null) {
+                subBuilder.mergeFrom((wallet.core.jni.proto.Stellar.OperationChangeTrust) operationOneof_);
+                operationOneof_ = subBuilder.buildPartial();
+              }
+              operationOneofCase_ = 8;
+              break;
+            }
+            case 74: {
               wallet.core.jni.proto.Stellar.MemoVoid.Builder subBuilder = null;
-              if (memoTypeOneofCase_ == 7) {
+              if (memoTypeOneofCase_ == 9) {
                 subBuilder = ((wallet.core.jni.proto.Stellar.MemoVoid) memoTypeOneof_).toBuilder();
               }
               memoTypeOneof_ =
@@ -2183,12 +5370,12 @@ public final class Stellar {
                 subBuilder.mergeFrom((wallet.core.jni.proto.Stellar.MemoVoid) memoTypeOneof_);
                 memoTypeOneof_ = subBuilder.buildPartial();
               }
-              memoTypeOneofCase_ = 7;
+              memoTypeOneofCase_ = 9;
               break;
             }
-            case 66: {
+            case 82: {
               wallet.core.jni.proto.Stellar.MemoText.Builder subBuilder = null;
-              if (memoTypeOneofCase_ == 8) {
+              if (memoTypeOneofCase_ == 10) {
                 subBuilder = ((wallet.core.jni.proto.Stellar.MemoText) memoTypeOneof_).toBuilder();
               }
               memoTypeOneof_ =
@@ -2197,12 +5384,12 @@ public final class Stellar {
                 subBuilder.mergeFrom((wallet.core.jni.proto.Stellar.MemoText) memoTypeOneof_);
                 memoTypeOneof_ = subBuilder.buildPartial();
               }
-              memoTypeOneofCase_ = 8;
+              memoTypeOneofCase_ = 10;
               break;
             }
-            case 74: {
+            case 90: {
               wallet.core.jni.proto.Stellar.MemoId.Builder subBuilder = null;
-              if (memoTypeOneofCase_ == 9) {
+              if (memoTypeOneofCase_ == 11) {
                 subBuilder = ((wallet.core.jni.proto.Stellar.MemoId) memoTypeOneof_).toBuilder();
               }
               memoTypeOneof_ =
@@ -2211,47 +5398,35 @@ public final class Stellar {
                 subBuilder.mergeFrom((wallet.core.jni.proto.Stellar.MemoId) memoTypeOneof_);
                 memoTypeOneof_ = subBuilder.buildPartial();
               }
-              memoTypeOneofCase_ = 9;
-              break;
-            }
-            case 82: {
-              wallet.core.jni.proto.Stellar.MemoHash.Builder subBuilder = null;
-              if (memoTypeOneofCase_ == 10) {
-                subBuilder = ((wallet.core.jni.proto.Stellar.MemoHash) memoTypeOneof_).toBuilder();
-              }
-              memoTypeOneof_ =
-                  input.readMessage(wallet.core.jni.proto.Stellar.MemoHash.parser(), extensionRegistry);
-              if (subBuilder != null) {
-                subBuilder.mergeFrom((wallet.core.jni.proto.Stellar.MemoHash) memoTypeOneof_);
-                memoTypeOneof_ = subBuilder.buildPartial();
-              }
-              memoTypeOneofCase_ = 10;
-              break;
-            }
-            case 90: {
-              wallet.core.jni.proto.Stellar.MemoHash.Builder subBuilder = null;
-              if (memoTypeOneofCase_ == 11) {
-                subBuilder = ((wallet.core.jni.proto.Stellar.MemoHash) memoTypeOneof_).toBuilder();
-              }
-              memoTypeOneof_ =
-                  input.readMessage(wallet.core.jni.proto.Stellar.MemoHash.parser(), extensionRegistry);
-              if (subBuilder != null) {
-                subBuilder.mergeFrom((wallet.core.jni.proto.Stellar.MemoHash) memoTypeOneof_);
-                memoTypeOneof_ = subBuilder.buildPartial();
-              }
               memoTypeOneofCase_ = 11;
               break;
             }
-            case 96: {
-              int rawValue = input.readEnum();
-
-              operationType_ = rawValue;
+            case 98: {
+              wallet.core.jni.proto.Stellar.MemoHash.Builder subBuilder = null;
+              if (memoTypeOneofCase_ == 12) {
+                subBuilder = ((wallet.core.jni.proto.Stellar.MemoHash) memoTypeOneof_).toBuilder();
+              }
+              memoTypeOneof_ =
+                  input.readMessage(wallet.core.jni.proto.Stellar.MemoHash.parser(), extensionRegistry);
+              if (subBuilder != null) {
+                subBuilder.mergeFrom((wallet.core.jni.proto.Stellar.MemoHash) memoTypeOneof_);
+                memoTypeOneof_ = subBuilder.buildPartial();
+              }
+              memoTypeOneofCase_ = 12;
               break;
             }
             case 106: {
-              java.lang.String s = input.readStringRequireUtf8();
-
-              passphrase_ = s;
+              wallet.core.jni.proto.Stellar.MemoHash.Builder subBuilder = null;
+              if (memoTypeOneofCase_ == 13) {
+                subBuilder = ((wallet.core.jni.proto.Stellar.MemoHash) memoTypeOneof_).toBuilder();
+              }
+              memoTypeOneof_ =
+                  input.readMessage(wallet.core.jni.proto.Stellar.MemoHash.parser(), extensionRegistry);
+              if (subBuilder != null) {
+                subBuilder.mergeFrom((wallet.core.jni.proto.Stellar.MemoHash) memoTypeOneof_);
+                memoTypeOneof_ = subBuilder.buildPartial();
+              }
+              memoTypeOneofCase_ = 13;
               break;
             }
             default: {
@@ -2286,119 +5461,67 @@ public final class Stellar {
               wallet.core.jni.proto.Stellar.SigningInput.class, wallet.core.jni.proto.Stellar.SigningInput.Builder.class);
     }
 
-    /**
-     * Protobuf enum {@code TW.Stellar.Proto.SigningInput.OperationType}
-     */
-    public enum OperationType
-        implements com.google.protobuf.ProtocolMessageEnum {
-      /**
-       * <code>CREATE_ACCOUNT = 0;</code>
-       */
-      CREATE_ACCOUNT(0),
-      /**
-       * <code>PAYMENT = 1;</code>
-       */
-      PAYMENT(1),
-      UNRECOGNIZED(-1),
-      ;
-
-      /**
-       * <code>CREATE_ACCOUNT = 0;</code>
-       */
-      public static final int CREATE_ACCOUNT_VALUE = 0;
-      /**
-       * <code>PAYMENT = 1;</code>
-       */
-      public static final int PAYMENT_VALUE = 1;
-
-
-      public final int getNumber() {
-        if (this == UNRECOGNIZED) {
-          throw new java.lang.IllegalArgumentException(
-              "Can't get the number of an unknown enum value.");
-        }
-        return value;
+    private int operationOneofCase_ = 0;
+    private java.lang.Object operationOneof_;
+    public enum OperationOneofCase
+        implements com.google.protobuf.Internal.EnumLite,
+            com.google.protobuf.AbstractMessage.InternalOneOfEnum {
+      OP_CREATE_ACCOUNT(6),
+      OP_PAYMENT(7),
+      OP_CHANGE_TRUST(8),
+      OPERATIONONEOF_NOT_SET(0);
+      private final int value;
+      private OperationOneofCase(int value) {
+        this.value = value;
       }
-
       /**
+       * @param value The number of the enum to look for.
+       * @return The enum associated with the given number.
        * @deprecated Use {@link #forNumber(int)} instead.
        */
       @java.lang.Deprecated
-      public static OperationType valueOf(int value) {
+      public static OperationOneofCase valueOf(int value) {
         return forNumber(value);
       }
 
-      public static OperationType forNumber(int value) {
+      public static OperationOneofCase forNumber(int value) {
         switch (value) {
-          case 0: return CREATE_ACCOUNT;
-          case 1: return PAYMENT;
+          case 6: return OP_CREATE_ACCOUNT;
+          case 7: return OP_PAYMENT;
+          case 8: return OP_CHANGE_TRUST;
+          case 0: return OPERATIONONEOF_NOT_SET;
           default: return null;
         }
       }
-
-      public static com.google.protobuf.Internal.EnumLiteMap<OperationType>
-          internalGetValueMap() {
-        return internalValueMap;
+      public int getNumber() {
+        return this.value;
       }
-      private static final com.google.protobuf.Internal.EnumLiteMap<
-          OperationType> internalValueMap =
-            new com.google.protobuf.Internal.EnumLiteMap<OperationType>() {
-              public OperationType findValueByNumber(int number) {
-                return OperationType.forNumber(number);
-              }
-            };
+    };
 
-      public final com.google.protobuf.Descriptors.EnumValueDescriptor
-          getValueDescriptor() {
-        return getDescriptor().getValues().get(ordinal());
-      }
-      public final com.google.protobuf.Descriptors.EnumDescriptor
-          getDescriptorForType() {
-        return getDescriptor();
-      }
-      public static final com.google.protobuf.Descriptors.EnumDescriptor
-          getDescriptor() {
-        return wallet.core.jni.proto.Stellar.SigningInput.getDescriptor().getEnumTypes().get(0);
-      }
-
-      private static final OperationType[] VALUES = values();
-
-      public static OperationType valueOf(
-          com.google.protobuf.Descriptors.EnumValueDescriptor desc) {
-        if (desc.getType() != getDescriptor()) {
-          throw new java.lang.IllegalArgumentException(
-            "EnumValueDescriptor is not for this type.");
-        }
-        if (desc.getIndex() == -1) {
-          return UNRECOGNIZED;
-        }
-        return VALUES[desc.getIndex()];
-      }
-
-      private final int value;
-
-      private OperationType(int value) {
-        this.value = value;
-      }
-
-      // @@protoc_insertion_point(enum_scope:TW.Stellar.Proto.SigningInput.OperationType)
+    public OperationOneofCase
+    getOperationOneofCase() {
+      return OperationOneofCase.forNumber(
+          operationOneofCase_);
     }
 
     private int memoTypeOneofCase_ = 0;
     private java.lang.Object memoTypeOneof_;
     public enum MemoTypeOneofCase
-        implements com.google.protobuf.Internal.EnumLite {
-      MEMO_VOID(7),
-      MEMO_TEXT(8),
-      MEMO_ID(9),
-      MEMO_HASH(10),
-      MEMO_RETURN_HASH(11),
+        implements com.google.protobuf.Internal.EnumLite,
+            com.google.protobuf.AbstractMessage.InternalOneOfEnum {
+      MEMO_VOID(9),
+      MEMO_TEXT(10),
+      MEMO_ID(11),
+      MEMO_HASH(12),
+      MEMO_RETURN_HASH(13),
       MEMOTYPEONEOF_NOT_SET(0);
       private final int value;
       private MemoTypeOneofCase(int value) {
         this.value = value;
       }
       /**
+       * @param value The number of the enum to look for.
+       * @return The enum associated with the given number.
        * @deprecated Use {@link #forNumber(int)} instead.
        */
       @java.lang.Deprecated
@@ -2408,11 +5531,11 @@ public final class Stellar {
 
       public static MemoTypeOneofCase forNumber(int value) {
         switch (value) {
-          case 7: return MEMO_VOID;
-          case 8: return MEMO_TEXT;
-          case 9: return MEMO_ID;
-          case 10: return MEMO_HASH;
-          case 11: return MEMO_RETURN_HASH;
+          case 9: return MEMO_VOID;
+          case 10: return MEMO_TEXT;
+          case 11: return MEMO_ID;
+          case 12: return MEMO_HASH;
+          case 13: return MEMO_RETURN_HASH;
           case 0: return MEMOTYPEONEOF_NOT_SET;
           default: return null;
         }
@@ -2428,38 +5551,35 @@ public final class Stellar {
           memoTypeOneofCase_);
     }
 
-    public static final int AMOUNT_FIELD_NUMBER = 1;
-    private long amount_;
-    /**
-     * <code>int64 amount = 1;</code>
-     */
-    public long getAmount() {
-      return amount_;
-    }
-
-    public static final int FEE_FIELD_NUMBER = 2;
+    public static final int FEE_FIELD_NUMBER = 1;
     private int fee_;
     /**
-     * <code>int32 fee = 2;</code>
+     * <code>int32 fee = 1;</code>
+     * @return The fee.
      */
+    @java.lang.Override
     public int getFee() {
       return fee_;
     }
 
-    public static final int SEQUENCE_FIELD_NUMBER = 3;
+    public static final int SEQUENCE_FIELD_NUMBER = 2;
     private long sequence_;
     /**
-     * <code>int64 sequence = 3;</code>
+     * <code>int64 sequence = 2;</code>
+     * @return The sequence.
      */
+    @java.lang.Override
     public long getSequence() {
       return sequence_;
     }
 
-    public static final int ACCOUNT_FIELD_NUMBER = 4;
+    public static final int ACCOUNT_FIELD_NUMBER = 3;
     private volatile java.lang.Object account_;
     /**
-     * <code>string account = 4;</code>
+     * <code>string account = 3;</code>
+     * @return The account.
      */
+    @java.lang.Override
     public java.lang.String getAccount() {
       java.lang.Object ref = account_;
       if (ref instanceof java.lang.String) {
@@ -2473,8 +5593,10 @@ public final class Stellar {
       }
     }
     /**
-     * <code>string account = 4;</code>
+     * <code>string account = 3;</code>
+     * @return The bytes for account.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString
         getAccountBytes() {
       java.lang.Object ref = account_;
@@ -2489,205 +5611,28 @@ public final class Stellar {
       }
     }
 
-    public static final int DESTINATION_FIELD_NUMBER = 5;
-    private volatile java.lang.Object destination_;
-    /**
-     * <code>string destination = 5;</code>
-     */
-    public java.lang.String getDestination() {
-      java.lang.Object ref = destination_;
-      if (ref instanceof java.lang.String) {
-        return (java.lang.String) ref;
-      } else {
-        com.google.protobuf.ByteString bs = 
-            (com.google.protobuf.ByteString) ref;
-        java.lang.String s = bs.toStringUtf8();
-        destination_ = s;
-        return s;
-      }
-    }
-    /**
-     * <code>string destination = 5;</code>
-     */
-    public com.google.protobuf.ByteString
-        getDestinationBytes() {
-      java.lang.Object ref = destination_;
-      if (ref instanceof java.lang.String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
-        destination_ = b;
-        return b;
-      } else {
-        return (com.google.protobuf.ByteString) ref;
-      }
-    }
-
-    public static final int PRIVATE_KEY_FIELD_NUMBER = 6;
+    public static final int PRIVATE_KEY_FIELD_NUMBER = 4;
     private com.google.protobuf.ByteString privateKey_;
     /**
      * <pre>
      * Private key.
      * </pre>
      *
-     * <code>bytes private_key = 6;</code>
+     * <code>bytes private_key = 4;</code>
+     * @return The privateKey.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString getPrivateKey() {
       return privateKey_;
     }
 
-    public static final int MEMO_VOID_FIELD_NUMBER = 7;
-    /**
-     * <code>.TW.Stellar.Proto.MemoVoid memo_void = 7;</code>
-     */
-    public boolean hasMemoVoid() {
-      return memoTypeOneofCase_ == 7;
-    }
-    /**
-     * <code>.TW.Stellar.Proto.MemoVoid memo_void = 7;</code>
-     */
-    public wallet.core.jni.proto.Stellar.MemoVoid getMemoVoid() {
-      if (memoTypeOneofCase_ == 7) {
-         return (wallet.core.jni.proto.Stellar.MemoVoid) memoTypeOneof_;
-      }
-      return wallet.core.jni.proto.Stellar.MemoVoid.getDefaultInstance();
-    }
-    /**
-     * <code>.TW.Stellar.Proto.MemoVoid memo_void = 7;</code>
-     */
-    public wallet.core.jni.proto.Stellar.MemoVoidOrBuilder getMemoVoidOrBuilder() {
-      if (memoTypeOneofCase_ == 7) {
-         return (wallet.core.jni.proto.Stellar.MemoVoid) memoTypeOneof_;
-      }
-      return wallet.core.jni.proto.Stellar.MemoVoid.getDefaultInstance();
-    }
-
-    public static final int MEMO_TEXT_FIELD_NUMBER = 8;
-    /**
-     * <code>.TW.Stellar.Proto.MemoText memo_text = 8;</code>
-     */
-    public boolean hasMemoText() {
-      return memoTypeOneofCase_ == 8;
-    }
-    /**
-     * <code>.TW.Stellar.Proto.MemoText memo_text = 8;</code>
-     */
-    public wallet.core.jni.proto.Stellar.MemoText getMemoText() {
-      if (memoTypeOneofCase_ == 8) {
-         return (wallet.core.jni.proto.Stellar.MemoText) memoTypeOneof_;
-      }
-      return wallet.core.jni.proto.Stellar.MemoText.getDefaultInstance();
-    }
-    /**
-     * <code>.TW.Stellar.Proto.MemoText memo_text = 8;</code>
-     */
-    public wallet.core.jni.proto.Stellar.MemoTextOrBuilder getMemoTextOrBuilder() {
-      if (memoTypeOneofCase_ == 8) {
-         return (wallet.core.jni.proto.Stellar.MemoText) memoTypeOneof_;
-      }
-      return wallet.core.jni.proto.Stellar.MemoText.getDefaultInstance();
-    }
-
-    public static final int MEMO_ID_FIELD_NUMBER = 9;
-    /**
-     * <code>.TW.Stellar.Proto.MemoId memo_id = 9;</code>
-     */
-    public boolean hasMemoId() {
-      return memoTypeOneofCase_ == 9;
-    }
-    /**
-     * <code>.TW.Stellar.Proto.MemoId memo_id = 9;</code>
-     */
-    public wallet.core.jni.proto.Stellar.MemoId getMemoId() {
-      if (memoTypeOneofCase_ == 9) {
-         return (wallet.core.jni.proto.Stellar.MemoId) memoTypeOneof_;
-      }
-      return wallet.core.jni.proto.Stellar.MemoId.getDefaultInstance();
-    }
-    /**
-     * <code>.TW.Stellar.Proto.MemoId memo_id = 9;</code>
-     */
-    public wallet.core.jni.proto.Stellar.MemoIdOrBuilder getMemoIdOrBuilder() {
-      if (memoTypeOneofCase_ == 9) {
-         return (wallet.core.jni.proto.Stellar.MemoId) memoTypeOneof_;
-      }
-      return wallet.core.jni.proto.Stellar.MemoId.getDefaultInstance();
-    }
-
-    public static final int MEMO_HASH_FIELD_NUMBER = 10;
-    /**
-     * <code>.TW.Stellar.Proto.MemoHash memo_hash = 10;</code>
-     */
-    public boolean hasMemoHash() {
-      return memoTypeOneofCase_ == 10;
-    }
-    /**
-     * <code>.TW.Stellar.Proto.MemoHash memo_hash = 10;</code>
-     */
-    public wallet.core.jni.proto.Stellar.MemoHash getMemoHash() {
-      if (memoTypeOneofCase_ == 10) {
-         return (wallet.core.jni.proto.Stellar.MemoHash) memoTypeOneof_;
-      }
-      return wallet.core.jni.proto.Stellar.MemoHash.getDefaultInstance();
-    }
-    /**
-     * <code>.TW.Stellar.Proto.MemoHash memo_hash = 10;</code>
-     */
-    public wallet.core.jni.proto.Stellar.MemoHashOrBuilder getMemoHashOrBuilder() {
-      if (memoTypeOneofCase_ == 10) {
-         return (wallet.core.jni.proto.Stellar.MemoHash) memoTypeOneof_;
-      }
-      return wallet.core.jni.proto.Stellar.MemoHash.getDefaultInstance();
-    }
-
-    public static final int MEMO_RETURN_HASH_FIELD_NUMBER = 11;
-    /**
-     * <code>.TW.Stellar.Proto.MemoHash memo_return_hash = 11;</code>
-     */
-    public boolean hasMemoReturnHash() {
-      return memoTypeOneofCase_ == 11;
-    }
-    /**
-     * <code>.TW.Stellar.Proto.MemoHash memo_return_hash = 11;</code>
-     */
-    public wallet.core.jni.proto.Stellar.MemoHash getMemoReturnHash() {
-      if (memoTypeOneofCase_ == 11) {
-         return (wallet.core.jni.proto.Stellar.MemoHash) memoTypeOneof_;
-      }
-      return wallet.core.jni.proto.Stellar.MemoHash.getDefaultInstance();
-    }
-    /**
-     * <code>.TW.Stellar.Proto.MemoHash memo_return_hash = 11;</code>
-     */
-    public wallet.core.jni.proto.Stellar.MemoHashOrBuilder getMemoReturnHashOrBuilder() {
-      if (memoTypeOneofCase_ == 11) {
-         return (wallet.core.jni.proto.Stellar.MemoHash) memoTypeOneof_;
-      }
-      return wallet.core.jni.proto.Stellar.MemoHash.getDefaultInstance();
-    }
-
-    public static final int OPERATION_TYPE_FIELD_NUMBER = 12;
-    private int operationType_;
-    /**
-     * <code>.TW.Stellar.Proto.SigningInput.OperationType operation_type = 12;</code>
-     */
-    public int getOperationTypeValue() {
-      return operationType_;
-    }
-    /**
-     * <code>.TW.Stellar.Proto.SigningInput.OperationType operation_type = 12;</code>
-     */
-    public wallet.core.jni.proto.Stellar.SigningInput.OperationType getOperationType() {
-      @SuppressWarnings("deprecation")
-      wallet.core.jni.proto.Stellar.SigningInput.OperationType result = wallet.core.jni.proto.Stellar.SigningInput.OperationType.valueOf(operationType_);
-      return result == null ? wallet.core.jni.proto.Stellar.SigningInput.OperationType.UNRECOGNIZED : result;
-    }
-
-    public static final int PASSPHRASE_FIELD_NUMBER = 13;
+    public static final int PASSPHRASE_FIELD_NUMBER = 5;
     private volatile java.lang.Object passphrase_;
     /**
-     * <code>string passphrase = 13;</code>
+     * <code>string passphrase = 5;</code>
+     * @return The passphrase.
      */
+    @java.lang.Override
     public java.lang.String getPassphrase() {
       java.lang.Object ref = passphrase_;
       if (ref instanceof java.lang.String) {
@@ -2701,8 +5646,10 @@ public final class Stellar {
       }
     }
     /**
-     * <code>string passphrase = 13;</code>
+     * <code>string passphrase = 5;</code>
+     * @return The bytes for passphrase.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString
         getPassphraseBytes() {
       java.lang.Object ref = passphrase_;
@@ -2715,6 +5662,254 @@ public final class Stellar {
       } else {
         return (com.google.protobuf.ByteString) ref;
       }
+    }
+
+    public static final int OP_CREATE_ACCOUNT_FIELD_NUMBER = 6;
+    /**
+     * <code>.TW.Stellar.Proto.OperationCreateAccount op_create_account = 6;</code>
+     * @return Whether the opCreateAccount field is set.
+     */
+    @java.lang.Override
+    public boolean hasOpCreateAccount() {
+      return operationOneofCase_ == 6;
+    }
+    /**
+     * <code>.TW.Stellar.Proto.OperationCreateAccount op_create_account = 6;</code>
+     * @return The opCreateAccount.
+     */
+    @java.lang.Override
+    public wallet.core.jni.proto.Stellar.OperationCreateAccount getOpCreateAccount() {
+      if (operationOneofCase_ == 6) {
+         return (wallet.core.jni.proto.Stellar.OperationCreateAccount) operationOneof_;
+      }
+      return wallet.core.jni.proto.Stellar.OperationCreateAccount.getDefaultInstance();
+    }
+    /**
+     * <code>.TW.Stellar.Proto.OperationCreateAccount op_create_account = 6;</code>
+     */
+    @java.lang.Override
+    public wallet.core.jni.proto.Stellar.OperationCreateAccountOrBuilder getOpCreateAccountOrBuilder() {
+      if (operationOneofCase_ == 6) {
+         return (wallet.core.jni.proto.Stellar.OperationCreateAccount) operationOneof_;
+      }
+      return wallet.core.jni.proto.Stellar.OperationCreateAccount.getDefaultInstance();
+    }
+
+    public static final int OP_PAYMENT_FIELD_NUMBER = 7;
+    /**
+     * <code>.TW.Stellar.Proto.OperationPayment op_payment = 7;</code>
+     * @return Whether the opPayment field is set.
+     */
+    @java.lang.Override
+    public boolean hasOpPayment() {
+      return operationOneofCase_ == 7;
+    }
+    /**
+     * <code>.TW.Stellar.Proto.OperationPayment op_payment = 7;</code>
+     * @return The opPayment.
+     */
+    @java.lang.Override
+    public wallet.core.jni.proto.Stellar.OperationPayment getOpPayment() {
+      if (operationOneofCase_ == 7) {
+         return (wallet.core.jni.proto.Stellar.OperationPayment) operationOneof_;
+      }
+      return wallet.core.jni.proto.Stellar.OperationPayment.getDefaultInstance();
+    }
+    /**
+     * <code>.TW.Stellar.Proto.OperationPayment op_payment = 7;</code>
+     */
+    @java.lang.Override
+    public wallet.core.jni.proto.Stellar.OperationPaymentOrBuilder getOpPaymentOrBuilder() {
+      if (operationOneofCase_ == 7) {
+         return (wallet.core.jni.proto.Stellar.OperationPayment) operationOneof_;
+      }
+      return wallet.core.jni.proto.Stellar.OperationPayment.getDefaultInstance();
+    }
+
+    public static final int OP_CHANGE_TRUST_FIELD_NUMBER = 8;
+    /**
+     * <code>.TW.Stellar.Proto.OperationChangeTrust op_change_trust = 8;</code>
+     * @return Whether the opChangeTrust field is set.
+     */
+    @java.lang.Override
+    public boolean hasOpChangeTrust() {
+      return operationOneofCase_ == 8;
+    }
+    /**
+     * <code>.TW.Stellar.Proto.OperationChangeTrust op_change_trust = 8;</code>
+     * @return The opChangeTrust.
+     */
+    @java.lang.Override
+    public wallet.core.jni.proto.Stellar.OperationChangeTrust getOpChangeTrust() {
+      if (operationOneofCase_ == 8) {
+         return (wallet.core.jni.proto.Stellar.OperationChangeTrust) operationOneof_;
+      }
+      return wallet.core.jni.proto.Stellar.OperationChangeTrust.getDefaultInstance();
+    }
+    /**
+     * <code>.TW.Stellar.Proto.OperationChangeTrust op_change_trust = 8;</code>
+     */
+    @java.lang.Override
+    public wallet.core.jni.proto.Stellar.OperationChangeTrustOrBuilder getOpChangeTrustOrBuilder() {
+      if (operationOneofCase_ == 8) {
+         return (wallet.core.jni.proto.Stellar.OperationChangeTrust) operationOneof_;
+      }
+      return wallet.core.jni.proto.Stellar.OperationChangeTrust.getDefaultInstance();
+    }
+
+    public static final int MEMO_VOID_FIELD_NUMBER = 9;
+    /**
+     * <code>.TW.Stellar.Proto.MemoVoid memo_void = 9;</code>
+     * @return Whether the memoVoid field is set.
+     */
+    @java.lang.Override
+    public boolean hasMemoVoid() {
+      return memoTypeOneofCase_ == 9;
+    }
+    /**
+     * <code>.TW.Stellar.Proto.MemoVoid memo_void = 9;</code>
+     * @return The memoVoid.
+     */
+    @java.lang.Override
+    public wallet.core.jni.proto.Stellar.MemoVoid getMemoVoid() {
+      if (memoTypeOneofCase_ == 9) {
+         return (wallet.core.jni.proto.Stellar.MemoVoid) memoTypeOneof_;
+      }
+      return wallet.core.jni.proto.Stellar.MemoVoid.getDefaultInstance();
+    }
+    /**
+     * <code>.TW.Stellar.Proto.MemoVoid memo_void = 9;</code>
+     */
+    @java.lang.Override
+    public wallet.core.jni.proto.Stellar.MemoVoidOrBuilder getMemoVoidOrBuilder() {
+      if (memoTypeOneofCase_ == 9) {
+         return (wallet.core.jni.proto.Stellar.MemoVoid) memoTypeOneof_;
+      }
+      return wallet.core.jni.proto.Stellar.MemoVoid.getDefaultInstance();
+    }
+
+    public static final int MEMO_TEXT_FIELD_NUMBER = 10;
+    /**
+     * <code>.TW.Stellar.Proto.MemoText memo_text = 10;</code>
+     * @return Whether the memoText field is set.
+     */
+    @java.lang.Override
+    public boolean hasMemoText() {
+      return memoTypeOneofCase_ == 10;
+    }
+    /**
+     * <code>.TW.Stellar.Proto.MemoText memo_text = 10;</code>
+     * @return The memoText.
+     */
+    @java.lang.Override
+    public wallet.core.jni.proto.Stellar.MemoText getMemoText() {
+      if (memoTypeOneofCase_ == 10) {
+         return (wallet.core.jni.proto.Stellar.MemoText) memoTypeOneof_;
+      }
+      return wallet.core.jni.proto.Stellar.MemoText.getDefaultInstance();
+    }
+    /**
+     * <code>.TW.Stellar.Proto.MemoText memo_text = 10;</code>
+     */
+    @java.lang.Override
+    public wallet.core.jni.proto.Stellar.MemoTextOrBuilder getMemoTextOrBuilder() {
+      if (memoTypeOneofCase_ == 10) {
+         return (wallet.core.jni.proto.Stellar.MemoText) memoTypeOneof_;
+      }
+      return wallet.core.jni.proto.Stellar.MemoText.getDefaultInstance();
+    }
+
+    public static final int MEMO_ID_FIELD_NUMBER = 11;
+    /**
+     * <code>.TW.Stellar.Proto.MemoId memo_id = 11;</code>
+     * @return Whether the memoId field is set.
+     */
+    @java.lang.Override
+    public boolean hasMemoId() {
+      return memoTypeOneofCase_ == 11;
+    }
+    /**
+     * <code>.TW.Stellar.Proto.MemoId memo_id = 11;</code>
+     * @return The memoId.
+     */
+    @java.lang.Override
+    public wallet.core.jni.proto.Stellar.MemoId getMemoId() {
+      if (memoTypeOneofCase_ == 11) {
+         return (wallet.core.jni.proto.Stellar.MemoId) memoTypeOneof_;
+      }
+      return wallet.core.jni.proto.Stellar.MemoId.getDefaultInstance();
+    }
+    /**
+     * <code>.TW.Stellar.Proto.MemoId memo_id = 11;</code>
+     */
+    @java.lang.Override
+    public wallet.core.jni.proto.Stellar.MemoIdOrBuilder getMemoIdOrBuilder() {
+      if (memoTypeOneofCase_ == 11) {
+         return (wallet.core.jni.proto.Stellar.MemoId) memoTypeOneof_;
+      }
+      return wallet.core.jni.proto.Stellar.MemoId.getDefaultInstance();
+    }
+
+    public static final int MEMO_HASH_FIELD_NUMBER = 12;
+    /**
+     * <code>.TW.Stellar.Proto.MemoHash memo_hash = 12;</code>
+     * @return Whether the memoHash field is set.
+     */
+    @java.lang.Override
+    public boolean hasMemoHash() {
+      return memoTypeOneofCase_ == 12;
+    }
+    /**
+     * <code>.TW.Stellar.Proto.MemoHash memo_hash = 12;</code>
+     * @return The memoHash.
+     */
+    @java.lang.Override
+    public wallet.core.jni.proto.Stellar.MemoHash getMemoHash() {
+      if (memoTypeOneofCase_ == 12) {
+         return (wallet.core.jni.proto.Stellar.MemoHash) memoTypeOneof_;
+      }
+      return wallet.core.jni.proto.Stellar.MemoHash.getDefaultInstance();
+    }
+    /**
+     * <code>.TW.Stellar.Proto.MemoHash memo_hash = 12;</code>
+     */
+    @java.lang.Override
+    public wallet.core.jni.proto.Stellar.MemoHashOrBuilder getMemoHashOrBuilder() {
+      if (memoTypeOneofCase_ == 12) {
+         return (wallet.core.jni.proto.Stellar.MemoHash) memoTypeOneof_;
+      }
+      return wallet.core.jni.proto.Stellar.MemoHash.getDefaultInstance();
+    }
+
+    public static final int MEMO_RETURN_HASH_FIELD_NUMBER = 13;
+    /**
+     * <code>.TW.Stellar.Proto.MemoHash memo_return_hash = 13;</code>
+     * @return Whether the memoReturnHash field is set.
+     */
+    @java.lang.Override
+    public boolean hasMemoReturnHash() {
+      return memoTypeOneofCase_ == 13;
+    }
+    /**
+     * <code>.TW.Stellar.Proto.MemoHash memo_return_hash = 13;</code>
+     * @return The memoReturnHash.
+     */
+    @java.lang.Override
+    public wallet.core.jni.proto.Stellar.MemoHash getMemoReturnHash() {
+      if (memoTypeOneofCase_ == 13) {
+         return (wallet.core.jni.proto.Stellar.MemoHash) memoTypeOneof_;
+      }
+      return wallet.core.jni.proto.Stellar.MemoHash.getDefaultInstance();
+    }
+    /**
+     * <code>.TW.Stellar.Proto.MemoHash memo_return_hash = 13;</code>
+     */
+    @java.lang.Override
+    public wallet.core.jni.proto.Stellar.MemoHashOrBuilder getMemoReturnHashOrBuilder() {
+      if (memoTypeOneofCase_ == 13) {
+         return (wallet.core.jni.proto.Stellar.MemoHash) memoTypeOneof_;
+      }
+      return wallet.core.jni.proto.Stellar.MemoHash.getDefaultInstance();
     }
 
     private byte memoizedIsInitialized = -1;
@@ -2731,44 +5926,44 @@ public final class Stellar {
     @java.lang.Override
     public void writeTo(com.google.protobuf.CodedOutputStream output)
                         throws java.io.IOException {
-      if (amount_ != 0L) {
-        output.writeInt64(1, amount_);
-      }
       if (fee_ != 0) {
-        output.writeInt32(2, fee_);
+        output.writeInt32(1, fee_);
       }
       if (sequence_ != 0L) {
-        output.writeInt64(3, sequence_);
+        output.writeInt64(2, sequence_);
       }
       if (!getAccountBytes().isEmpty()) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 4, account_);
-      }
-      if (!getDestinationBytes().isEmpty()) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 5, destination_);
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 3, account_);
       }
       if (!privateKey_.isEmpty()) {
-        output.writeBytes(6, privateKey_);
-      }
-      if (memoTypeOneofCase_ == 7) {
-        output.writeMessage(7, (wallet.core.jni.proto.Stellar.MemoVoid) memoTypeOneof_);
-      }
-      if (memoTypeOneofCase_ == 8) {
-        output.writeMessage(8, (wallet.core.jni.proto.Stellar.MemoText) memoTypeOneof_);
-      }
-      if (memoTypeOneofCase_ == 9) {
-        output.writeMessage(9, (wallet.core.jni.proto.Stellar.MemoId) memoTypeOneof_);
-      }
-      if (memoTypeOneofCase_ == 10) {
-        output.writeMessage(10, (wallet.core.jni.proto.Stellar.MemoHash) memoTypeOneof_);
-      }
-      if (memoTypeOneofCase_ == 11) {
-        output.writeMessage(11, (wallet.core.jni.proto.Stellar.MemoHash) memoTypeOneof_);
-      }
-      if (operationType_ != wallet.core.jni.proto.Stellar.SigningInput.OperationType.CREATE_ACCOUNT.getNumber()) {
-        output.writeEnum(12, operationType_);
+        output.writeBytes(4, privateKey_);
       }
       if (!getPassphraseBytes().isEmpty()) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 13, passphrase_);
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 5, passphrase_);
+      }
+      if (operationOneofCase_ == 6) {
+        output.writeMessage(6, (wallet.core.jni.proto.Stellar.OperationCreateAccount) operationOneof_);
+      }
+      if (operationOneofCase_ == 7) {
+        output.writeMessage(7, (wallet.core.jni.proto.Stellar.OperationPayment) operationOneof_);
+      }
+      if (operationOneofCase_ == 8) {
+        output.writeMessage(8, (wallet.core.jni.proto.Stellar.OperationChangeTrust) operationOneof_);
+      }
+      if (memoTypeOneofCase_ == 9) {
+        output.writeMessage(9, (wallet.core.jni.proto.Stellar.MemoVoid) memoTypeOneof_);
+      }
+      if (memoTypeOneofCase_ == 10) {
+        output.writeMessage(10, (wallet.core.jni.proto.Stellar.MemoText) memoTypeOneof_);
+      }
+      if (memoTypeOneofCase_ == 11) {
+        output.writeMessage(11, (wallet.core.jni.proto.Stellar.MemoId) memoTypeOneof_);
+      }
+      if (memoTypeOneofCase_ == 12) {
+        output.writeMessage(12, (wallet.core.jni.proto.Stellar.MemoHash) memoTypeOneof_);
+      }
+      if (memoTypeOneofCase_ == 13) {
+        output.writeMessage(13, (wallet.core.jni.proto.Stellar.MemoHash) memoTypeOneof_);
       }
       unknownFields.writeTo(output);
     }
@@ -2779,54 +5974,55 @@ public final class Stellar {
       if (size != -1) return size;
 
       size = 0;
-      if (amount_ != 0L) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeInt64Size(1, amount_);
-      }
       if (fee_ != 0) {
         size += com.google.protobuf.CodedOutputStream
-          .computeInt32Size(2, fee_);
+          .computeInt32Size(1, fee_);
       }
       if (sequence_ != 0L) {
         size += com.google.protobuf.CodedOutputStream
-          .computeInt64Size(3, sequence_);
+          .computeInt64Size(2, sequence_);
       }
       if (!getAccountBytes().isEmpty()) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(4, account_);
-      }
-      if (!getDestinationBytes().isEmpty()) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(5, destination_);
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(3, account_);
       }
       if (!privateKey_.isEmpty()) {
         size += com.google.protobuf.CodedOutputStream
-          .computeBytesSize(6, privateKey_);
+          .computeBytesSize(4, privateKey_);
       }
-      if (memoTypeOneofCase_ == 7) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(7, (wallet.core.jni.proto.Stellar.MemoVoid) memoTypeOneof_);
+      if (!getPassphraseBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(5, passphrase_);
       }
-      if (memoTypeOneofCase_ == 8) {
+      if (operationOneofCase_ == 6) {
         size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(8, (wallet.core.jni.proto.Stellar.MemoText) memoTypeOneof_);
+          .computeMessageSize(6, (wallet.core.jni.proto.Stellar.OperationCreateAccount) operationOneof_);
+      }
+      if (operationOneofCase_ == 7) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(7, (wallet.core.jni.proto.Stellar.OperationPayment) operationOneof_);
+      }
+      if (operationOneofCase_ == 8) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(8, (wallet.core.jni.proto.Stellar.OperationChangeTrust) operationOneof_);
       }
       if (memoTypeOneofCase_ == 9) {
         size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(9, (wallet.core.jni.proto.Stellar.MemoId) memoTypeOneof_);
+          .computeMessageSize(9, (wallet.core.jni.proto.Stellar.MemoVoid) memoTypeOneof_);
       }
       if (memoTypeOneofCase_ == 10) {
         size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(10, (wallet.core.jni.proto.Stellar.MemoHash) memoTypeOneof_);
+          .computeMessageSize(10, (wallet.core.jni.proto.Stellar.MemoText) memoTypeOneof_);
       }
       if (memoTypeOneofCase_ == 11) {
         size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(11, (wallet.core.jni.proto.Stellar.MemoHash) memoTypeOneof_);
+          .computeMessageSize(11, (wallet.core.jni.proto.Stellar.MemoId) memoTypeOneof_);
       }
-      if (operationType_ != wallet.core.jni.proto.Stellar.SigningInput.OperationType.CREATE_ACCOUNT.getNumber()) {
+      if (memoTypeOneofCase_ == 12) {
         size += com.google.protobuf.CodedOutputStream
-          .computeEnumSize(12, operationType_);
+          .computeMessageSize(12, (wallet.core.jni.proto.Stellar.MemoHash) memoTypeOneof_);
       }
-      if (!getPassphraseBytes().isEmpty()) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(13, passphrase_);
+      if (memoTypeOneofCase_ == 13) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(13, (wallet.core.jni.proto.Stellar.MemoHash) memoTypeOneof_);
       }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
@@ -2843,40 +6039,52 @@ public final class Stellar {
       }
       wallet.core.jni.proto.Stellar.SigningInput other = (wallet.core.jni.proto.Stellar.SigningInput) obj;
 
-      if (getAmount()
-          != other.getAmount()) return false;
       if (getFee()
           != other.getFee()) return false;
       if (getSequence()
           != other.getSequence()) return false;
       if (!getAccount()
           .equals(other.getAccount())) return false;
-      if (!getDestination()
-          .equals(other.getDestination())) return false;
       if (!getPrivateKey()
           .equals(other.getPrivateKey())) return false;
-      if (operationType_ != other.operationType_) return false;
       if (!getPassphrase()
           .equals(other.getPassphrase())) return false;
+      if (!getOperationOneofCase().equals(other.getOperationOneofCase())) return false;
+      switch (operationOneofCase_) {
+        case 6:
+          if (!getOpCreateAccount()
+              .equals(other.getOpCreateAccount())) return false;
+          break;
+        case 7:
+          if (!getOpPayment()
+              .equals(other.getOpPayment())) return false;
+          break;
+        case 8:
+          if (!getOpChangeTrust()
+              .equals(other.getOpChangeTrust())) return false;
+          break;
+        case 0:
+        default:
+      }
       if (!getMemoTypeOneofCase().equals(other.getMemoTypeOneofCase())) return false;
       switch (memoTypeOneofCase_) {
-        case 7:
+        case 9:
           if (!getMemoVoid()
               .equals(other.getMemoVoid())) return false;
           break;
-        case 8:
+        case 10:
           if (!getMemoText()
               .equals(other.getMemoText())) return false;
           break;
-        case 9:
+        case 11:
           if (!getMemoId()
               .equals(other.getMemoId())) return false;
           break;
-        case 10:
+        case 12:
           if (!getMemoHash()
               .equals(other.getMemoHash())) return false;
           break;
-        case 11:
+        case 13:
           if (!getMemoReturnHash()
               .equals(other.getMemoReturnHash())) return false;
           break;
@@ -2894,9 +6102,6 @@ public final class Stellar {
       }
       int hash = 41;
       hash = (19 * hash) + getDescriptor().hashCode();
-      hash = (37 * hash) + AMOUNT_FIELD_NUMBER;
-      hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
-          getAmount());
       hash = (37 * hash) + FEE_FIELD_NUMBER;
       hash = (53 * hash) + getFee();
       hash = (37 * hash) + SEQUENCE_FIELD_NUMBER;
@@ -2904,32 +6109,44 @@ public final class Stellar {
           getSequence());
       hash = (37 * hash) + ACCOUNT_FIELD_NUMBER;
       hash = (53 * hash) + getAccount().hashCode();
-      hash = (37 * hash) + DESTINATION_FIELD_NUMBER;
-      hash = (53 * hash) + getDestination().hashCode();
       hash = (37 * hash) + PRIVATE_KEY_FIELD_NUMBER;
       hash = (53 * hash) + getPrivateKey().hashCode();
-      hash = (37 * hash) + OPERATION_TYPE_FIELD_NUMBER;
-      hash = (53 * hash) + operationType_;
       hash = (37 * hash) + PASSPHRASE_FIELD_NUMBER;
       hash = (53 * hash) + getPassphrase().hashCode();
-      switch (memoTypeOneofCase_) {
+      switch (operationOneofCase_) {
+        case 6:
+          hash = (37 * hash) + OP_CREATE_ACCOUNT_FIELD_NUMBER;
+          hash = (53 * hash) + getOpCreateAccount().hashCode();
+          break;
         case 7:
+          hash = (37 * hash) + OP_PAYMENT_FIELD_NUMBER;
+          hash = (53 * hash) + getOpPayment().hashCode();
+          break;
+        case 8:
+          hash = (37 * hash) + OP_CHANGE_TRUST_FIELD_NUMBER;
+          hash = (53 * hash) + getOpChangeTrust().hashCode();
+          break;
+        case 0:
+        default:
+      }
+      switch (memoTypeOneofCase_) {
+        case 9:
           hash = (37 * hash) + MEMO_VOID_FIELD_NUMBER;
           hash = (53 * hash) + getMemoVoid().hashCode();
           break;
-        case 8:
+        case 10:
           hash = (37 * hash) + MEMO_TEXT_FIELD_NUMBER;
           hash = (53 * hash) + getMemoText().hashCode();
           break;
-        case 9:
+        case 11:
           hash = (37 * hash) + MEMO_ID_FIELD_NUMBER;
           hash = (53 * hash) + getMemoId().hashCode();
           break;
-        case 10:
+        case 12:
           hash = (37 * hash) + MEMO_HASH_FIELD_NUMBER;
           hash = (53 * hash) + getMemoHash().hashCode();
           break;
-        case 11:
+        case 13:
           hash = (37 * hash) + MEMO_RETURN_HASH_FIELD_NUMBER;
           hash = (53 * hash) + getMemoReturnHash().hashCode();
           break;
@@ -3073,22 +6290,18 @@ public final class Stellar {
       @java.lang.Override
       public Builder clear() {
         super.clear();
-        amount_ = 0L;
-
         fee_ = 0;
 
         sequence_ = 0L;
 
         account_ = "";
 
-        destination_ = "";
-
         privateKey_ = com.google.protobuf.ByteString.EMPTY;
-
-        operationType_ = 0;
 
         passphrase_ = "";
 
+        operationOneofCase_ = 0;
+        operationOneof_ = null;
         memoTypeOneofCase_ = 0;
         memoTypeOneof_ = null;
         return this;
@@ -3117,49 +6330,68 @@ public final class Stellar {
       @java.lang.Override
       public wallet.core.jni.proto.Stellar.SigningInput buildPartial() {
         wallet.core.jni.proto.Stellar.SigningInput result = new wallet.core.jni.proto.Stellar.SigningInput(this);
-        result.amount_ = amount_;
         result.fee_ = fee_;
         result.sequence_ = sequence_;
         result.account_ = account_;
-        result.destination_ = destination_;
         result.privateKey_ = privateKey_;
-        if (memoTypeOneofCase_ == 7) {
+        result.passphrase_ = passphrase_;
+        if (operationOneofCase_ == 6) {
+          if (opCreateAccountBuilder_ == null) {
+            result.operationOneof_ = operationOneof_;
+          } else {
+            result.operationOneof_ = opCreateAccountBuilder_.build();
+          }
+        }
+        if (operationOneofCase_ == 7) {
+          if (opPaymentBuilder_ == null) {
+            result.operationOneof_ = operationOneof_;
+          } else {
+            result.operationOneof_ = opPaymentBuilder_.build();
+          }
+        }
+        if (operationOneofCase_ == 8) {
+          if (opChangeTrustBuilder_ == null) {
+            result.operationOneof_ = operationOneof_;
+          } else {
+            result.operationOneof_ = opChangeTrustBuilder_.build();
+          }
+        }
+        if (memoTypeOneofCase_ == 9) {
           if (memoVoidBuilder_ == null) {
             result.memoTypeOneof_ = memoTypeOneof_;
           } else {
             result.memoTypeOneof_ = memoVoidBuilder_.build();
           }
         }
-        if (memoTypeOneofCase_ == 8) {
+        if (memoTypeOneofCase_ == 10) {
           if (memoTextBuilder_ == null) {
             result.memoTypeOneof_ = memoTypeOneof_;
           } else {
             result.memoTypeOneof_ = memoTextBuilder_.build();
           }
         }
-        if (memoTypeOneofCase_ == 9) {
+        if (memoTypeOneofCase_ == 11) {
           if (memoIdBuilder_ == null) {
             result.memoTypeOneof_ = memoTypeOneof_;
           } else {
             result.memoTypeOneof_ = memoIdBuilder_.build();
           }
         }
-        if (memoTypeOneofCase_ == 10) {
+        if (memoTypeOneofCase_ == 12) {
           if (memoHashBuilder_ == null) {
             result.memoTypeOneof_ = memoTypeOneof_;
           } else {
             result.memoTypeOneof_ = memoHashBuilder_.build();
           }
         }
-        if (memoTypeOneofCase_ == 11) {
+        if (memoTypeOneofCase_ == 13) {
           if (memoReturnHashBuilder_ == null) {
             result.memoTypeOneof_ = memoTypeOneof_;
           } else {
             result.memoTypeOneof_ = memoReturnHashBuilder_.build();
           }
         }
-        result.operationType_ = operationType_;
-        result.passphrase_ = passphrase_;
+        result.operationOneofCase_ = operationOneofCase_;
         result.memoTypeOneofCase_ = memoTypeOneofCase_;
         onBuilt();
         return result;
@@ -3209,9 +6441,6 @@ public final class Stellar {
 
       public Builder mergeFrom(wallet.core.jni.proto.Stellar.SigningInput other) {
         if (other == wallet.core.jni.proto.Stellar.SigningInput.getDefaultInstance()) return this;
-        if (other.getAmount() != 0L) {
-          setAmount(other.getAmount());
-        }
         if (other.getFee() != 0) {
           setFee(other.getFee());
         }
@@ -3222,19 +6451,29 @@ public final class Stellar {
           account_ = other.account_;
           onChanged();
         }
-        if (!other.getDestination().isEmpty()) {
-          destination_ = other.destination_;
-          onChanged();
-        }
         if (other.getPrivateKey() != com.google.protobuf.ByteString.EMPTY) {
           setPrivateKey(other.getPrivateKey());
-        }
-        if (other.operationType_ != 0) {
-          setOperationTypeValue(other.getOperationTypeValue());
         }
         if (!other.getPassphrase().isEmpty()) {
           passphrase_ = other.passphrase_;
           onChanged();
+        }
+        switch (other.getOperationOneofCase()) {
+          case OP_CREATE_ACCOUNT: {
+            mergeOpCreateAccount(other.getOpCreateAccount());
+            break;
+          }
+          case OP_PAYMENT: {
+            mergeOpPayment(other.getOpPayment());
+            break;
+          }
+          case OP_CHANGE_TRUST: {
+            mergeOpChangeTrust(other.getOpChangeTrust());
+            break;
+          }
+          case OPERATIONONEOF_NOT_SET: {
+            break;
+          }
         }
         switch (other.getMemoTypeOneofCase()) {
           case MEMO_VOID: {
@@ -3289,6 +6528,21 @@ public final class Stellar {
         }
         return this;
       }
+      private int operationOneofCase_ = 0;
+      private java.lang.Object operationOneof_;
+      public OperationOneofCase
+          getOperationOneofCase() {
+        return OperationOneofCase.forNumber(
+            operationOneofCase_);
+      }
+
+      public Builder clearOperationOneof() {
+        operationOneofCase_ = 0;
+        operationOneof_ = null;
+        onChanged();
+        return this;
+      }
+
       private int memoTypeOneofCase_ = 0;
       private java.lang.Object memoTypeOneof_;
       public MemoTypeOneofCase
@@ -3305,41 +6559,19 @@ public final class Stellar {
       }
 
 
-      private long amount_ ;
-      /**
-       * <code>int64 amount = 1;</code>
-       */
-      public long getAmount() {
-        return amount_;
-      }
-      /**
-       * <code>int64 amount = 1;</code>
-       */
-      public Builder setAmount(long value) {
-        
-        amount_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>int64 amount = 1;</code>
-       */
-      public Builder clearAmount() {
-        
-        amount_ = 0L;
-        onChanged();
-        return this;
-      }
-
       private int fee_ ;
       /**
-       * <code>int32 fee = 2;</code>
+       * <code>int32 fee = 1;</code>
+       * @return The fee.
        */
+      @java.lang.Override
       public int getFee() {
         return fee_;
       }
       /**
-       * <code>int32 fee = 2;</code>
+       * <code>int32 fee = 1;</code>
+       * @param value The fee to set.
+       * @return This builder for chaining.
        */
       public Builder setFee(int value) {
         
@@ -3348,7 +6580,8 @@ public final class Stellar {
         return this;
       }
       /**
-       * <code>int32 fee = 2;</code>
+       * <code>int32 fee = 1;</code>
+       * @return This builder for chaining.
        */
       public Builder clearFee() {
         
@@ -3359,13 +6592,17 @@ public final class Stellar {
 
       private long sequence_ ;
       /**
-       * <code>int64 sequence = 3;</code>
+       * <code>int64 sequence = 2;</code>
+       * @return The sequence.
        */
+      @java.lang.Override
       public long getSequence() {
         return sequence_;
       }
       /**
-       * <code>int64 sequence = 3;</code>
+       * <code>int64 sequence = 2;</code>
+       * @param value The sequence to set.
+       * @return This builder for chaining.
        */
       public Builder setSequence(long value) {
         
@@ -3374,7 +6611,8 @@ public final class Stellar {
         return this;
       }
       /**
-       * <code>int64 sequence = 3;</code>
+       * <code>int64 sequence = 2;</code>
+       * @return This builder for chaining.
        */
       public Builder clearSequence() {
         
@@ -3385,7 +6623,8 @@ public final class Stellar {
 
       private java.lang.Object account_ = "";
       /**
-       * <code>string account = 4;</code>
+       * <code>string account = 3;</code>
+       * @return The account.
        */
       public java.lang.String getAccount() {
         java.lang.Object ref = account_;
@@ -3400,7 +6639,8 @@ public final class Stellar {
         }
       }
       /**
-       * <code>string account = 4;</code>
+       * <code>string account = 3;</code>
+       * @return The bytes for account.
        */
       public com.google.protobuf.ByteString
           getAccountBytes() {
@@ -3416,7 +6656,9 @@ public final class Stellar {
         }
       }
       /**
-       * <code>string account = 4;</code>
+       * <code>string account = 3;</code>
+       * @param value The account to set.
+       * @return This builder for chaining.
        */
       public Builder setAccount(
           java.lang.String value) {
@@ -3429,7 +6671,8 @@ public final class Stellar {
         return this;
       }
       /**
-       * <code>string account = 4;</code>
+       * <code>string account = 3;</code>
+       * @return This builder for chaining.
        */
       public Builder clearAccount() {
         
@@ -3438,7 +6681,9 @@ public final class Stellar {
         return this;
       }
       /**
-       * <code>string account = 4;</code>
+       * <code>string account = 3;</code>
+       * @param value The bytes for account to set.
+       * @return This builder for chaining.
        */
       public Builder setAccountBytes(
           com.google.protobuf.ByteString value) {
@@ -3452,83 +6697,16 @@ public final class Stellar {
         return this;
       }
 
-      private java.lang.Object destination_ = "";
-      /**
-       * <code>string destination = 5;</code>
-       */
-      public java.lang.String getDestination() {
-        java.lang.Object ref = destination_;
-        if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          destination_ = s;
-          return s;
-        } else {
-          return (java.lang.String) ref;
-        }
-      }
-      /**
-       * <code>string destination = 5;</code>
-       */
-      public com.google.protobuf.ByteString
-          getDestinationBytes() {
-        java.lang.Object ref = destination_;
-        if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
-              com.google.protobuf.ByteString.copyFromUtf8(
-                  (java.lang.String) ref);
-          destination_ = b;
-          return b;
-        } else {
-          return (com.google.protobuf.ByteString) ref;
-        }
-      }
-      /**
-       * <code>string destination = 5;</code>
-       */
-      public Builder setDestination(
-          java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  
-        destination_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>string destination = 5;</code>
-       */
-      public Builder clearDestination() {
-        
-        destination_ = getDefaultInstance().getDestination();
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>string destination = 5;</code>
-       */
-      public Builder setDestinationBytes(
-          com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  checkByteStringIsUtf8(value);
-        
-        destination_ = value;
-        onChanged();
-        return this;
-      }
-
       private com.google.protobuf.ByteString privateKey_ = com.google.protobuf.ByteString.EMPTY;
       /**
        * <pre>
        * Private key.
        * </pre>
        *
-       * <code>bytes private_key = 6;</code>
+       * <code>bytes private_key = 4;</code>
+       * @return The privateKey.
        */
+      @java.lang.Override
       public com.google.protobuf.ByteString getPrivateKey() {
         return privateKey_;
       }
@@ -3537,7 +6715,9 @@ public final class Stellar {
        * Private key.
        * </pre>
        *
-       * <code>bytes private_key = 6;</code>
+       * <code>bytes private_key = 4;</code>
+       * @param value The privateKey to set.
+       * @return This builder for chaining.
        */
       public Builder setPrivateKey(com.google.protobuf.ByteString value) {
         if (value == null) {
@@ -3553,7 +6733,8 @@ public final class Stellar {
        * Private key.
        * </pre>
        *
-       * <code>bytes private_key = 6;</code>
+       * <code>bytes private_key = 4;</code>
+       * @return This builder for chaining.
        */
       public Builder clearPrivateKey() {
         
@@ -3562,734 +6743,10 @@ public final class Stellar {
         return this;
       }
 
-      private com.google.protobuf.SingleFieldBuilderV3<
-          wallet.core.jni.proto.Stellar.MemoVoid, wallet.core.jni.proto.Stellar.MemoVoid.Builder, wallet.core.jni.proto.Stellar.MemoVoidOrBuilder> memoVoidBuilder_;
-      /**
-       * <code>.TW.Stellar.Proto.MemoVoid memo_void = 7;</code>
-       */
-      public boolean hasMemoVoid() {
-        return memoTypeOneofCase_ == 7;
-      }
-      /**
-       * <code>.TW.Stellar.Proto.MemoVoid memo_void = 7;</code>
-       */
-      public wallet.core.jni.proto.Stellar.MemoVoid getMemoVoid() {
-        if (memoVoidBuilder_ == null) {
-          if (memoTypeOneofCase_ == 7) {
-            return (wallet.core.jni.proto.Stellar.MemoVoid) memoTypeOneof_;
-          }
-          return wallet.core.jni.proto.Stellar.MemoVoid.getDefaultInstance();
-        } else {
-          if (memoTypeOneofCase_ == 7) {
-            return memoVoidBuilder_.getMessage();
-          }
-          return wallet.core.jni.proto.Stellar.MemoVoid.getDefaultInstance();
-        }
-      }
-      /**
-       * <code>.TW.Stellar.Proto.MemoVoid memo_void = 7;</code>
-       */
-      public Builder setMemoVoid(wallet.core.jni.proto.Stellar.MemoVoid value) {
-        if (memoVoidBuilder_ == null) {
-          if (value == null) {
-            throw new NullPointerException();
-          }
-          memoTypeOneof_ = value;
-          onChanged();
-        } else {
-          memoVoidBuilder_.setMessage(value);
-        }
-        memoTypeOneofCase_ = 7;
-        return this;
-      }
-      /**
-       * <code>.TW.Stellar.Proto.MemoVoid memo_void = 7;</code>
-       */
-      public Builder setMemoVoid(
-          wallet.core.jni.proto.Stellar.MemoVoid.Builder builderForValue) {
-        if (memoVoidBuilder_ == null) {
-          memoTypeOneof_ = builderForValue.build();
-          onChanged();
-        } else {
-          memoVoidBuilder_.setMessage(builderForValue.build());
-        }
-        memoTypeOneofCase_ = 7;
-        return this;
-      }
-      /**
-       * <code>.TW.Stellar.Proto.MemoVoid memo_void = 7;</code>
-       */
-      public Builder mergeMemoVoid(wallet.core.jni.proto.Stellar.MemoVoid value) {
-        if (memoVoidBuilder_ == null) {
-          if (memoTypeOneofCase_ == 7 &&
-              memoTypeOneof_ != wallet.core.jni.proto.Stellar.MemoVoid.getDefaultInstance()) {
-            memoTypeOneof_ = wallet.core.jni.proto.Stellar.MemoVoid.newBuilder((wallet.core.jni.proto.Stellar.MemoVoid) memoTypeOneof_)
-                .mergeFrom(value).buildPartial();
-          } else {
-            memoTypeOneof_ = value;
-          }
-          onChanged();
-        } else {
-          if (memoTypeOneofCase_ == 7) {
-            memoVoidBuilder_.mergeFrom(value);
-          }
-          memoVoidBuilder_.setMessage(value);
-        }
-        memoTypeOneofCase_ = 7;
-        return this;
-      }
-      /**
-       * <code>.TW.Stellar.Proto.MemoVoid memo_void = 7;</code>
-       */
-      public Builder clearMemoVoid() {
-        if (memoVoidBuilder_ == null) {
-          if (memoTypeOneofCase_ == 7) {
-            memoTypeOneofCase_ = 0;
-            memoTypeOneof_ = null;
-            onChanged();
-          }
-        } else {
-          if (memoTypeOneofCase_ == 7) {
-            memoTypeOneofCase_ = 0;
-            memoTypeOneof_ = null;
-          }
-          memoVoidBuilder_.clear();
-        }
-        return this;
-      }
-      /**
-       * <code>.TW.Stellar.Proto.MemoVoid memo_void = 7;</code>
-       */
-      public wallet.core.jni.proto.Stellar.MemoVoid.Builder getMemoVoidBuilder() {
-        return getMemoVoidFieldBuilder().getBuilder();
-      }
-      /**
-       * <code>.TW.Stellar.Proto.MemoVoid memo_void = 7;</code>
-       */
-      public wallet.core.jni.proto.Stellar.MemoVoidOrBuilder getMemoVoidOrBuilder() {
-        if ((memoTypeOneofCase_ == 7) && (memoVoidBuilder_ != null)) {
-          return memoVoidBuilder_.getMessageOrBuilder();
-        } else {
-          if (memoTypeOneofCase_ == 7) {
-            return (wallet.core.jni.proto.Stellar.MemoVoid) memoTypeOneof_;
-          }
-          return wallet.core.jni.proto.Stellar.MemoVoid.getDefaultInstance();
-        }
-      }
-      /**
-       * <code>.TW.Stellar.Proto.MemoVoid memo_void = 7;</code>
-       */
-      private com.google.protobuf.SingleFieldBuilderV3<
-          wallet.core.jni.proto.Stellar.MemoVoid, wallet.core.jni.proto.Stellar.MemoVoid.Builder, wallet.core.jni.proto.Stellar.MemoVoidOrBuilder> 
-          getMemoVoidFieldBuilder() {
-        if (memoVoidBuilder_ == null) {
-          if (!(memoTypeOneofCase_ == 7)) {
-            memoTypeOneof_ = wallet.core.jni.proto.Stellar.MemoVoid.getDefaultInstance();
-          }
-          memoVoidBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
-              wallet.core.jni.proto.Stellar.MemoVoid, wallet.core.jni.proto.Stellar.MemoVoid.Builder, wallet.core.jni.proto.Stellar.MemoVoidOrBuilder>(
-                  (wallet.core.jni.proto.Stellar.MemoVoid) memoTypeOneof_,
-                  getParentForChildren(),
-                  isClean());
-          memoTypeOneof_ = null;
-        }
-        memoTypeOneofCase_ = 7;
-        onChanged();;
-        return memoVoidBuilder_;
-      }
-
-      private com.google.protobuf.SingleFieldBuilderV3<
-          wallet.core.jni.proto.Stellar.MemoText, wallet.core.jni.proto.Stellar.MemoText.Builder, wallet.core.jni.proto.Stellar.MemoTextOrBuilder> memoTextBuilder_;
-      /**
-       * <code>.TW.Stellar.Proto.MemoText memo_text = 8;</code>
-       */
-      public boolean hasMemoText() {
-        return memoTypeOneofCase_ == 8;
-      }
-      /**
-       * <code>.TW.Stellar.Proto.MemoText memo_text = 8;</code>
-       */
-      public wallet.core.jni.proto.Stellar.MemoText getMemoText() {
-        if (memoTextBuilder_ == null) {
-          if (memoTypeOneofCase_ == 8) {
-            return (wallet.core.jni.proto.Stellar.MemoText) memoTypeOneof_;
-          }
-          return wallet.core.jni.proto.Stellar.MemoText.getDefaultInstance();
-        } else {
-          if (memoTypeOneofCase_ == 8) {
-            return memoTextBuilder_.getMessage();
-          }
-          return wallet.core.jni.proto.Stellar.MemoText.getDefaultInstance();
-        }
-      }
-      /**
-       * <code>.TW.Stellar.Proto.MemoText memo_text = 8;</code>
-       */
-      public Builder setMemoText(wallet.core.jni.proto.Stellar.MemoText value) {
-        if (memoTextBuilder_ == null) {
-          if (value == null) {
-            throw new NullPointerException();
-          }
-          memoTypeOneof_ = value;
-          onChanged();
-        } else {
-          memoTextBuilder_.setMessage(value);
-        }
-        memoTypeOneofCase_ = 8;
-        return this;
-      }
-      /**
-       * <code>.TW.Stellar.Proto.MemoText memo_text = 8;</code>
-       */
-      public Builder setMemoText(
-          wallet.core.jni.proto.Stellar.MemoText.Builder builderForValue) {
-        if (memoTextBuilder_ == null) {
-          memoTypeOneof_ = builderForValue.build();
-          onChanged();
-        } else {
-          memoTextBuilder_.setMessage(builderForValue.build());
-        }
-        memoTypeOneofCase_ = 8;
-        return this;
-      }
-      /**
-       * <code>.TW.Stellar.Proto.MemoText memo_text = 8;</code>
-       */
-      public Builder mergeMemoText(wallet.core.jni.proto.Stellar.MemoText value) {
-        if (memoTextBuilder_ == null) {
-          if (memoTypeOneofCase_ == 8 &&
-              memoTypeOneof_ != wallet.core.jni.proto.Stellar.MemoText.getDefaultInstance()) {
-            memoTypeOneof_ = wallet.core.jni.proto.Stellar.MemoText.newBuilder((wallet.core.jni.proto.Stellar.MemoText) memoTypeOneof_)
-                .mergeFrom(value).buildPartial();
-          } else {
-            memoTypeOneof_ = value;
-          }
-          onChanged();
-        } else {
-          if (memoTypeOneofCase_ == 8) {
-            memoTextBuilder_.mergeFrom(value);
-          }
-          memoTextBuilder_.setMessage(value);
-        }
-        memoTypeOneofCase_ = 8;
-        return this;
-      }
-      /**
-       * <code>.TW.Stellar.Proto.MemoText memo_text = 8;</code>
-       */
-      public Builder clearMemoText() {
-        if (memoTextBuilder_ == null) {
-          if (memoTypeOneofCase_ == 8) {
-            memoTypeOneofCase_ = 0;
-            memoTypeOneof_ = null;
-            onChanged();
-          }
-        } else {
-          if (memoTypeOneofCase_ == 8) {
-            memoTypeOneofCase_ = 0;
-            memoTypeOneof_ = null;
-          }
-          memoTextBuilder_.clear();
-        }
-        return this;
-      }
-      /**
-       * <code>.TW.Stellar.Proto.MemoText memo_text = 8;</code>
-       */
-      public wallet.core.jni.proto.Stellar.MemoText.Builder getMemoTextBuilder() {
-        return getMemoTextFieldBuilder().getBuilder();
-      }
-      /**
-       * <code>.TW.Stellar.Proto.MemoText memo_text = 8;</code>
-       */
-      public wallet.core.jni.proto.Stellar.MemoTextOrBuilder getMemoTextOrBuilder() {
-        if ((memoTypeOneofCase_ == 8) && (memoTextBuilder_ != null)) {
-          return memoTextBuilder_.getMessageOrBuilder();
-        } else {
-          if (memoTypeOneofCase_ == 8) {
-            return (wallet.core.jni.proto.Stellar.MemoText) memoTypeOneof_;
-          }
-          return wallet.core.jni.proto.Stellar.MemoText.getDefaultInstance();
-        }
-      }
-      /**
-       * <code>.TW.Stellar.Proto.MemoText memo_text = 8;</code>
-       */
-      private com.google.protobuf.SingleFieldBuilderV3<
-          wallet.core.jni.proto.Stellar.MemoText, wallet.core.jni.proto.Stellar.MemoText.Builder, wallet.core.jni.proto.Stellar.MemoTextOrBuilder> 
-          getMemoTextFieldBuilder() {
-        if (memoTextBuilder_ == null) {
-          if (!(memoTypeOneofCase_ == 8)) {
-            memoTypeOneof_ = wallet.core.jni.proto.Stellar.MemoText.getDefaultInstance();
-          }
-          memoTextBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
-              wallet.core.jni.proto.Stellar.MemoText, wallet.core.jni.proto.Stellar.MemoText.Builder, wallet.core.jni.proto.Stellar.MemoTextOrBuilder>(
-                  (wallet.core.jni.proto.Stellar.MemoText) memoTypeOneof_,
-                  getParentForChildren(),
-                  isClean());
-          memoTypeOneof_ = null;
-        }
-        memoTypeOneofCase_ = 8;
-        onChanged();;
-        return memoTextBuilder_;
-      }
-
-      private com.google.protobuf.SingleFieldBuilderV3<
-          wallet.core.jni.proto.Stellar.MemoId, wallet.core.jni.proto.Stellar.MemoId.Builder, wallet.core.jni.proto.Stellar.MemoIdOrBuilder> memoIdBuilder_;
-      /**
-       * <code>.TW.Stellar.Proto.MemoId memo_id = 9;</code>
-       */
-      public boolean hasMemoId() {
-        return memoTypeOneofCase_ == 9;
-      }
-      /**
-       * <code>.TW.Stellar.Proto.MemoId memo_id = 9;</code>
-       */
-      public wallet.core.jni.proto.Stellar.MemoId getMemoId() {
-        if (memoIdBuilder_ == null) {
-          if (memoTypeOneofCase_ == 9) {
-            return (wallet.core.jni.proto.Stellar.MemoId) memoTypeOneof_;
-          }
-          return wallet.core.jni.proto.Stellar.MemoId.getDefaultInstance();
-        } else {
-          if (memoTypeOneofCase_ == 9) {
-            return memoIdBuilder_.getMessage();
-          }
-          return wallet.core.jni.proto.Stellar.MemoId.getDefaultInstance();
-        }
-      }
-      /**
-       * <code>.TW.Stellar.Proto.MemoId memo_id = 9;</code>
-       */
-      public Builder setMemoId(wallet.core.jni.proto.Stellar.MemoId value) {
-        if (memoIdBuilder_ == null) {
-          if (value == null) {
-            throw new NullPointerException();
-          }
-          memoTypeOneof_ = value;
-          onChanged();
-        } else {
-          memoIdBuilder_.setMessage(value);
-        }
-        memoTypeOneofCase_ = 9;
-        return this;
-      }
-      /**
-       * <code>.TW.Stellar.Proto.MemoId memo_id = 9;</code>
-       */
-      public Builder setMemoId(
-          wallet.core.jni.proto.Stellar.MemoId.Builder builderForValue) {
-        if (memoIdBuilder_ == null) {
-          memoTypeOneof_ = builderForValue.build();
-          onChanged();
-        } else {
-          memoIdBuilder_.setMessage(builderForValue.build());
-        }
-        memoTypeOneofCase_ = 9;
-        return this;
-      }
-      /**
-       * <code>.TW.Stellar.Proto.MemoId memo_id = 9;</code>
-       */
-      public Builder mergeMemoId(wallet.core.jni.proto.Stellar.MemoId value) {
-        if (memoIdBuilder_ == null) {
-          if (memoTypeOneofCase_ == 9 &&
-              memoTypeOneof_ != wallet.core.jni.proto.Stellar.MemoId.getDefaultInstance()) {
-            memoTypeOneof_ = wallet.core.jni.proto.Stellar.MemoId.newBuilder((wallet.core.jni.proto.Stellar.MemoId) memoTypeOneof_)
-                .mergeFrom(value).buildPartial();
-          } else {
-            memoTypeOneof_ = value;
-          }
-          onChanged();
-        } else {
-          if (memoTypeOneofCase_ == 9) {
-            memoIdBuilder_.mergeFrom(value);
-          }
-          memoIdBuilder_.setMessage(value);
-        }
-        memoTypeOneofCase_ = 9;
-        return this;
-      }
-      /**
-       * <code>.TW.Stellar.Proto.MemoId memo_id = 9;</code>
-       */
-      public Builder clearMemoId() {
-        if (memoIdBuilder_ == null) {
-          if (memoTypeOneofCase_ == 9) {
-            memoTypeOneofCase_ = 0;
-            memoTypeOneof_ = null;
-            onChanged();
-          }
-        } else {
-          if (memoTypeOneofCase_ == 9) {
-            memoTypeOneofCase_ = 0;
-            memoTypeOneof_ = null;
-          }
-          memoIdBuilder_.clear();
-        }
-        return this;
-      }
-      /**
-       * <code>.TW.Stellar.Proto.MemoId memo_id = 9;</code>
-       */
-      public wallet.core.jni.proto.Stellar.MemoId.Builder getMemoIdBuilder() {
-        return getMemoIdFieldBuilder().getBuilder();
-      }
-      /**
-       * <code>.TW.Stellar.Proto.MemoId memo_id = 9;</code>
-       */
-      public wallet.core.jni.proto.Stellar.MemoIdOrBuilder getMemoIdOrBuilder() {
-        if ((memoTypeOneofCase_ == 9) && (memoIdBuilder_ != null)) {
-          return memoIdBuilder_.getMessageOrBuilder();
-        } else {
-          if (memoTypeOneofCase_ == 9) {
-            return (wallet.core.jni.proto.Stellar.MemoId) memoTypeOneof_;
-          }
-          return wallet.core.jni.proto.Stellar.MemoId.getDefaultInstance();
-        }
-      }
-      /**
-       * <code>.TW.Stellar.Proto.MemoId memo_id = 9;</code>
-       */
-      private com.google.protobuf.SingleFieldBuilderV3<
-          wallet.core.jni.proto.Stellar.MemoId, wallet.core.jni.proto.Stellar.MemoId.Builder, wallet.core.jni.proto.Stellar.MemoIdOrBuilder> 
-          getMemoIdFieldBuilder() {
-        if (memoIdBuilder_ == null) {
-          if (!(memoTypeOneofCase_ == 9)) {
-            memoTypeOneof_ = wallet.core.jni.proto.Stellar.MemoId.getDefaultInstance();
-          }
-          memoIdBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
-              wallet.core.jni.proto.Stellar.MemoId, wallet.core.jni.proto.Stellar.MemoId.Builder, wallet.core.jni.proto.Stellar.MemoIdOrBuilder>(
-                  (wallet.core.jni.proto.Stellar.MemoId) memoTypeOneof_,
-                  getParentForChildren(),
-                  isClean());
-          memoTypeOneof_ = null;
-        }
-        memoTypeOneofCase_ = 9;
-        onChanged();;
-        return memoIdBuilder_;
-      }
-
-      private com.google.protobuf.SingleFieldBuilderV3<
-          wallet.core.jni.proto.Stellar.MemoHash, wallet.core.jni.proto.Stellar.MemoHash.Builder, wallet.core.jni.proto.Stellar.MemoHashOrBuilder> memoHashBuilder_;
-      /**
-       * <code>.TW.Stellar.Proto.MemoHash memo_hash = 10;</code>
-       */
-      public boolean hasMemoHash() {
-        return memoTypeOneofCase_ == 10;
-      }
-      /**
-       * <code>.TW.Stellar.Proto.MemoHash memo_hash = 10;</code>
-       */
-      public wallet.core.jni.proto.Stellar.MemoHash getMemoHash() {
-        if (memoHashBuilder_ == null) {
-          if (memoTypeOneofCase_ == 10) {
-            return (wallet.core.jni.proto.Stellar.MemoHash) memoTypeOneof_;
-          }
-          return wallet.core.jni.proto.Stellar.MemoHash.getDefaultInstance();
-        } else {
-          if (memoTypeOneofCase_ == 10) {
-            return memoHashBuilder_.getMessage();
-          }
-          return wallet.core.jni.proto.Stellar.MemoHash.getDefaultInstance();
-        }
-      }
-      /**
-       * <code>.TW.Stellar.Proto.MemoHash memo_hash = 10;</code>
-       */
-      public Builder setMemoHash(wallet.core.jni.proto.Stellar.MemoHash value) {
-        if (memoHashBuilder_ == null) {
-          if (value == null) {
-            throw new NullPointerException();
-          }
-          memoTypeOneof_ = value;
-          onChanged();
-        } else {
-          memoHashBuilder_.setMessage(value);
-        }
-        memoTypeOneofCase_ = 10;
-        return this;
-      }
-      /**
-       * <code>.TW.Stellar.Proto.MemoHash memo_hash = 10;</code>
-       */
-      public Builder setMemoHash(
-          wallet.core.jni.proto.Stellar.MemoHash.Builder builderForValue) {
-        if (memoHashBuilder_ == null) {
-          memoTypeOneof_ = builderForValue.build();
-          onChanged();
-        } else {
-          memoHashBuilder_.setMessage(builderForValue.build());
-        }
-        memoTypeOneofCase_ = 10;
-        return this;
-      }
-      /**
-       * <code>.TW.Stellar.Proto.MemoHash memo_hash = 10;</code>
-       */
-      public Builder mergeMemoHash(wallet.core.jni.proto.Stellar.MemoHash value) {
-        if (memoHashBuilder_ == null) {
-          if (memoTypeOneofCase_ == 10 &&
-              memoTypeOneof_ != wallet.core.jni.proto.Stellar.MemoHash.getDefaultInstance()) {
-            memoTypeOneof_ = wallet.core.jni.proto.Stellar.MemoHash.newBuilder((wallet.core.jni.proto.Stellar.MemoHash) memoTypeOneof_)
-                .mergeFrom(value).buildPartial();
-          } else {
-            memoTypeOneof_ = value;
-          }
-          onChanged();
-        } else {
-          if (memoTypeOneofCase_ == 10) {
-            memoHashBuilder_.mergeFrom(value);
-          }
-          memoHashBuilder_.setMessage(value);
-        }
-        memoTypeOneofCase_ = 10;
-        return this;
-      }
-      /**
-       * <code>.TW.Stellar.Proto.MemoHash memo_hash = 10;</code>
-       */
-      public Builder clearMemoHash() {
-        if (memoHashBuilder_ == null) {
-          if (memoTypeOneofCase_ == 10) {
-            memoTypeOneofCase_ = 0;
-            memoTypeOneof_ = null;
-            onChanged();
-          }
-        } else {
-          if (memoTypeOneofCase_ == 10) {
-            memoTypeOneofCase_ = 0;
-            memoTypeOneof_ = null;
-          }
-          memoHashBuilder_.clear();
-        }
-        return this;
-      }
-      /**
-       * <code>.TW.Stellar.Proto.MemoHash memo_hash = 10;</code>
-       */
-      public wallet.core.jni.proto.Stellar.MemoHash.Builder getMemoHashBuilder() {
-        return getMemoHashFieldBuilder().getBuilder();
-      }
-      /**
-       * <code>.TW.Stellar.Proto.MemoHash memo_hash = 10;</code>
-       */
-      public wallet.core.jni.proto.Stellar.MemoHashOrBuilder getMemoHashOrBuilder() {
-        if ((memoTypeOneofCase_ == 10) && (memoHashBuilder_ != null)) {
-          return memoHashBuilder_.getMessageOrBuilder();
-        } else {
-          if (memoTypeOneofCase_ == 10) {
-            return (wallet.core.jni.proto.Stellar.MemoHash) memoTypeOneof_;
-          }
-          return wallet.core.jni.proto.Stellar.MemoHash.getDefaultInstance();
-        }
-      }
-      /**
-       * <code>.TW.Stellar.Proto.MemoHash memo_hash = 10;</code>
-       */
-      private com.google.protobuf.SingleFieldBuilderV3<
-          wallet.core.jni.proto.Stellar.MemoHash, wallet.core.jni.proto.Stellar.MemoHash.Builder, wallet.core.jni.proto.Stellar.MemoHashOrBuilder> 
-          getMemoHashFieldBuilder() {
-        if (memoHashBuilder_ == null) {
-          if (!(memoTypeOneofCase_ == 10)) {
-            memoTypeOneof_ = wallet.core.jni.proto.Stellar.MemoHash.getDefaultInstance();
-          }
-          memoHashBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
-              wallet.core.jni.proto.Stellar.MemoHash, wallet.core.jni.proto.Stellar.MemoHash.Builder, wallet.core.jni.proto.Stellar.MemoHashOrBuilder>(
-                  (wallet.core.jni.proto.Stellar.MemoHash) memoTypeOneof_,
-                  getParentForChildren(),
-                  isClean());
-          memoTypeOneof_ = null;
-        }
-        memoTypeOneofCase_ = 10;
-        onChanged();;
-        return memoHashBuilder_;
-      }
-
-      private com.google.protobuf.SingleFieldBuilderV3<
-          wallet.core.jni.proto.Stellar.MemoHash, wallet.core.jni.proto.Stellar.MemoHash.Builder, wallet.core.jni.proto.Stellar.MemoHashOrBuilder> memoReturnHashBuilder_;
-      /**
-       * <code>.TW.Stellar.Proto.MemoHash memo_return_hash = 11;</code>
-       */
-      public boolean hasMemoReturnHash() {
-        return memoTypeOneofCase_ == 11;
-      }
-      /**
-       * <code>.TW.Stellar.Proto.MemoHash memo_return_hash = 11;</code>
-       */
-      public wallet.core.jni.proto.Stellar.MemoHash getMemoReturnHash() {
-        if (memoReturnHashBuilder_ == null) {
-          if (memoTypeOneofCase_ == 11) {
-            return (wallet.core.jni.proto.Stellar.MemoHash) memoTypeOneof_;
-          }
-          return wallet.core.jni.proto.Stellar.MemoHash.getDefaultInstance();
-        } else {
-          if (memoTypeOneofCase_ == 11) {
-            return memoReturnHashBuilder_.getMessage();
-          }
-          return wallet.core.jni.proto.Stellar.MemoHash.getDefaultInstance();
-        }
-      }
-      /**
-       * <code>.TW.Stellar.Proto.MemoHash memo_return_hash = 11;</code>
-       */
-      public Builder setMemoReturnHash(wallet.core.jni.proto.Stellar.MemoHash value) {
-        if (memoReturnHashBuilder_ == null) {
-          if (value == null) {
-            throw new NullPointerException();
-          }
-          memoTypeOneof_ = value;
-          onChanged();
-        } else {
-          memoReturnHashBuilder_.setMessage(value);
-        }
-        memoTypeOneofCase_ = 11;
-        return this;
-      }
-      /**
-       * <code>.TW.Stellar.Proto.MemoHash memo_return_hash = 11;</code>
-       */
-      public Builder setMemoReturnHash(
-          wallet.core.jni.proto.Stellar.MemoHash.Builder builderForValue) {
-        if (memoReturnHashBuilder_ == null) {
-          memoTypeOneof_ = builderForValue.build();
-          onChanged();
-        } else {
-          memoReturnHashBuilder_.setMessage(builderForValue.build());
-        }
-        memoTypeOneofCase_ = 11;
-        return this;
-      }
-      /**
-       * <code>.TW.Stellar.Proto.MemoHash memo_return_hash = 11;</code>
-       */
-      public Builder mergeMemoReturnHash(wallet.core.jni.proto.Stellar.MemoHash value) {
-        if (memoReturnHashBuilder_ == null) {
-          if (memoTypeOneofCase_ == 11 &&
-              memoTypeOneof_ != wallet.core.jni.proto.Stellar.MemoHash.getDefaultInstance()) {
-            memoTypeOneof_ = wallet.core.jni.proto.Stellar.MemoHash.newBuilder((wallet.core.jni.proto.Stellar.MemoHash) memoTypeOneof_)
-                .mergeFrom(value).buildPartial();
-          } else {
-            memoTypeOneof_ = value;
-          }
-          onChanged();
-        } else {
-          if (memoTypeOneofCase_ == 11) {
-            memoReturnHashBuilder_.mergeFrom(value);
-          }
-          memoReturnHashBuilder_.setMessage(value);
-        }
-        memoTypeOneofCase_ = 11;
-        return this;
-      }
-      /**
-       * <code>.TW.Stellar.Proto.MemoHash memo_return_hash = 11;</code>
-       */
-      public Builder clearMemoReturnHash() {
-        if (memoReturnHashBuilder_ == null) {
-          if (memoTypeOneofCase_ == 11) {
-            memoTypeOneofCase_ = 0;
-            memoTypeOneof_ = null;
-            onChanged();
-          }
-        } else {
-          if (memoTypeOneofCase_ == 11) {
-            memoTypeOneofCase_ = 0;
-            memoTypeOneof_ = null;
-          }
-          memoReturnHashBuilder_.clear();
-        }
-        return this;
-      }
-      /**
-       * <code>.TW.Stellar.Proto.MemoHash memo_return_hash = 11;</code>
-       */
-      public wallet.core.jni.proto.Stellar.MemoHash.Builder getMemoReturnHashBuilder() {
-        return getMemoReturnHashFieldBuilder().getBuilder();
-      }
-      /**
-       * <code>.TW.Stellar.Proto.MemoHash memo_return_hash = 11;</code>
-       */
-      public wallet.core.jni.proto.Stellar.MemoHashOrBuilder getMemoReturnHashOrBuilder() {
-        if ((memoTypeOneofCase_ == 11) && (memoReturnHashBuilder_ != null)) {
-          return memoReturnHashBuilder_.getMessageOrBuilder();
-        } else {
-          if (memoTypeOneofCase_ == 11) {
-            return (wallet.core.jni.proto.Stellar.MemoHash) memoTypeOneof_;
-          }
-          return wallet.core.jni.proto.Stellar.MemoHash.getDefaultInstance();
-        }
-      }
-      /**
-       * <code>.TW.Stellar.Proto.MemoHash memo_return_hash = 11;</code>
-       */
-      private com.google.protobuf.SingleFieldBuilderV3<
-          wallet.core.jni.proto.Stellar.MemoHash, wallet.core.jni.proto.Stellar.MemoHash.Builder, wallet.core.jni.proto.Stellar.MemoHashOrBuilder> 
-          getMemoReturnHashFieldBuilder() {
-        if (memoReturnHashBuilder_ == null) {
-          if (!(memoTypeOneofCase_ == 11)) {
-            memoTypeOneof_ = wallet.core.jni.proto.Stellar.MemoHash.getDefaultInstance();
-          }
-          memoReturnHashBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
-              wallet.core.jni.proto.Stellar.MemoHash, wallet.core.jni.proto.Stellar.MemoHash.Builder, wallet.core.jni.proto.Stellar.MemoHashOrBuilder>(
-                  (wallet.core.jni.proto.Stellar.MemoHash) memoTypeOneof_,
-                  getParentForChildren(),
-                  isClean());
-          memoTypeOneof_ = null;
-        }
-        memoTypeOneofCase_ = 11;
-        onChanged();;
-        return memoReturnHashBuilder_;
-      }
-
-      private int operationType_ = 0;
-      /**
-       * <code>.TW.Stellar.Proto.SigningInput.OperationType operation_type = 12;</code>
-       */
-      public int getOperationTypeValue() {
-        return operationType_;
-      }
-      /**
-       * <code>.TW.Stellar.Proto.SigningInput.OperationType operation_type = 12;</code>
-       */
-      public Builder setOperationTypeValue(int value) {
-        operationType_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>.TW.Stellar.Proto.SigningInput.OperationType operation_type = 12;</code>
-       */
-      public wallet.core.jni.proto.Stellar.SigningInput.OperationType getOperationType() {
-        @SuppressWarnings("deprecation")
-        wallet.core.jni.proto.Stellar.SigningInput.OperationType result = wallet.core.jni.proto.Stellar.SigningInput.OperationType.valueOf(operationType_);
-        return result == null ? wallet.core.jni.proto.Stellar.SigningInput.OperationType.UNRECOGNIZED : result;
-      }
-      /**
-       * <code>.TW.Stellar.Proto.SigningInput.OperationType operation_type = 12;</code>
-       */
-      public Builder setOperationType(wallet.core.jni.proto.Stellar.SigningInput.OperationType value) {
-        if (value == null) {
-          throw new NullPointerException();
-        }
-        
-        operationType_ = value.getNumber();
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>.TW.Stellar.Proto.SigningInput.OperationType operation_type = 12;</code>
-       */
-      public Builder clearOperationType() {
-        
-        operationType_ = 0;
-        onChanged();
-        return this;
-      }
-
       private java.lang.Object passphrase_ = "";
       /**
-       * <code>string passphrase = 13;</code>
+       * <code>string passphrase = 5;</code>
+       * @return The passphrase.
        */
       public java.lang.String getPassphrase() {
         java.lang.Object ref = passphrase_;
@@ -4304,7 +6761,8 @@ public final class Stellar {
         }
       }
       /**
-       * <code>string passphrase = 13;</code>
+       * <code>string passphrase = 5;</code>
+       * @return The bytes for passphrase.
        */
       public com.google.protobuf.ByteString
           getPassphraseBytes() {
@@ -4320,7 +6778,9 @@ public final class Stellar {
         }
       }
       /**
-       * <code>string passphrase = 13;</code>
+       * <code>string passphrase = 5;</code>
+       * @param value The passphrase to set.
+       * @return This builder for chaining.
        */
       public Builder setPassphrase(
           java.lang.String value) {
@@ -4333,7 +6793,8 @@ public final class Stellar {
         return this;
       }
       /**
-       * <code>string passphrase = 13;</code>
+       * <code>string passphrase = 5;</code>
+       * @return This builder for chaining.
        */
       public Builder clearPassphrase() {
         
@@ -4342,7 +6803,9 @@ public final class Stellar {
         return this;
       }
       /**
-       * <code>string passphrase = 13;</code>
+       * <code>string passphrase = 5;</code>
+       * @param value The bytes for passphrase to set.
+       * @return This builder for chaining.
        */
       public Builder setPassphraseBytes(
           com.google.protobuf.ByteString value) {
@@ -4354,6 +6817,1134 @@ public final class Stellar {
         passphrase_ = value;
         onChanged();
         return this;
+      }
+
+      private com.google.protobuf.SingleFieldBuilderV3<
+          wallet.core.jni.proto.Stellar.OperationCreateAccount, wallet.core.jni.proto.Stellar.OperationCreateAccount.Builder, wallet.core.jni.proto.Stellar.OperationCreateAccountOrBuilder> opCreateAccountBuilder_;
+      /**
+       * <code>.TW.Stellar.Proto.OperationCreateAccount op_create_account = 6;</code>
+       * @return Whether the opCreateAccount field is set.
+       */
+      @java.lang.Override
+      public boolean hasOpCreateAccount() {
+        return operationOneofCase_ == 6;
+      }
+      /**
+       * <code>.TW.Stellar.Proto.OperationCreateAccount op_create_account = 6;</code>
+       * @return The opCreateAccount.
+       */
+      @java.lang.Override
+      public wallet.core.jni.proto.Stellar.OperationCreateAccount getOpCreateAccount() {
+        if (opCreateAccountBuilder_ == null) {
+          if (operationOneofCase_ == 6) {
+            return (wallet.core.jni.proto.Stellar.OperationCreateAccount) operationOneof_;
+          }
+          return wallet.core.jni.proto.Stellar.OperationCreateAccount.getDefaultInstance();
+        } else {
+          if (operationOneofCase_ == 6) {
+            return opCreateAccountBuilder_.getMessage();
+          }
+          return wallet.core.jni.proto.Stellar.OperationCreateAccount.getDefaultInstance();
+        }
+      }
+      /**
+       * <code>.TW.Stellar.Proto.OperationCreateAccount op_create_account = 6;</code>
+       */
+      public Builder setOpCreateAccount(wallet.core.jni.proto.Stellar.OperationCreateAccount value) {
+        if (opCreateAccountBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          operationOneof_ = value;
+          onChanged();
+        } else {
+          opCreateAccountBuilder_.setMessage(value);
+        }
+        operationOneofCase_ = 6;
+        return this;
+      }
+      /**
+       * <code>.TW.Stellar.Proto.OperationCreateAccount op_create_account = 6;</code>
+       */
+      public Builder setOpCreateAccount(
+          wallet.core.jni.proto.Stellar.OperationCreateAccount.Builder builderForValue) {
+        if (opCreateAccountBuilder_ == null) {
+          operationOneof_ = builderForValue.build();
+          onChanged();
+        } else {
+          opCreateAccountBuilder_.setMessage(builderForValue.build());
+        }
+        operationOneofCase_ = 6;
+        return this;
+      }
+      /**
+       * <code>.TW.Stellar.Proto.OperationCreateAccount op_create_account = 6;</code>
+       */
+      public Builder mergeOpCreateAccount(wallet.core.jni.proto.Stellar.OperationCreateAccount value) {
+        if (opCreateAccountBuilder_ == null) {
+          if (operationOneofCase_ == 6 &&
+              operationOneof_ != wallet.core.jni.proto.Stellar.OperationCreateAccount.getDefaultInstance()) {
+            operationOneof_ = wallet.core.jni.proto.Stellar.OperationCreateAccount.newBuilder((wallet.core.jni.proto.Stellar.OperationCreateAccount) operationOneof_)
+                .mergeFrom(value).buildPartial();
+          } else {
+            operationOneof_ = value;
+          }
+          onChanged();
+        } else {
+          if (operationOneofCase_ == 6) {
+            opCreateAccountBuilder_.mergeFrom(value);
+          }
+          opCreateAccountBuilder_.setMessage(value);
+        }
+        operationOneofCase_ = 6;
+        return this;
+      }
+      /**
+       * <code>.TW.Stellar.Proto.OperationCreateAccount op_create_account = 6;</code>
+       */
+      public Builder clearOpCreateAccount() {
+        if (opCreateAccountBuilder_ == null) {
+          if (operationOneofCase_ == 6) {
+            operationOneofCase_ = 0;
+            operationOneof_ = null;
+            onChanged();
+          }
+        } else {
+          if (operationOneofCase_ == 6) {
+            operationOneofCase_ = 0;
+            operationOneof_ = null;
+          }
+          opCreateAccountBuilder_.clear();
+        }
+        return this;
+      }
+      /**
+       * <code>.TW.Stellar.Proto.OperationCreateAccount op_create_account = 6;</code>
+       */
+      public wallet.core.jni.proto.Stellar.OperationCreateAccount.Builder getOpCreateAccountBuilder() {
+        return getOpCreateAccountFieldBuilder().getBuilder();
+      }
+      /**
+       * <code>.TW.Stellar.Proto.OperationCreateAccount op_create_account = 6;</code>
+       */
+      @java.lang.Override
+      public wallet.core.jni.proto.Stellar.OperationCreateAccountOrBuilder getOpCreateAccountOrBuilder() {
+        if ((operationOneofCase_ == 6) && (opCreateAccountBuilder_ != null)) {
+          return opCreateAccountBuilder_.getMessageOrBuilder();
+        } else {
+          if (operationOneofCase_ == 6) {
+            return (wallet.core.jni.proto.Stellar.OperationCreateAccount) operationOneof_;
+          }
+          return wallet.core.jni.proto.Stellar.OperationCreateAccount.getDefaultInstance();
+        }
+      }
+      /**
+       * <code>.TW.Stellar.Proto.OperationCreateAccount op_create_account = 6;</code>
+       */
+      private com.google.protobuf.SingleFieldBuilderV3<
+          wallet.core.jni.proto.Stellar.OperationCreateAccount, wallet.core.jni.proto.Stellar.OperationCreateAccount.Builder, wallet.core.jni.proto.Stellar.OperationCreateAccountOrBuilder> 
+          getOpCreateAccountFieldBuilder() {
+        if (opCreateAccountBuilder_ == null) {
+          if (!(operationOneofCase_ == 6)) {
+            operationOneof_ = wallet.core.jni.proto.Stellar.OperationCreateAccount.getDefaultInstance();
+          }
+          opCreateAccountBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+              wallet.core.jni.proto.Stellar.OperationCreateAccount, wallet.core.jni.proto.Stellar.OperationCreateAccount.Builder, wallet.core.jni.proto.Stellar.OperationCreateAccountOrBuilder>(
+                  (wallet.core.jni.proto.Stellar.OperationCreateAccount) operationOneof_,
+                  getParentForChildren(),
+                  isClean());
+          operationOneof_ = null;
+        }
+        operationOneofCase_ = 6;
+        onChanged();;
+        return opCreateAccountBuilder_;
+      }
+
+      private com.google.protobuf.SingleFieldBuilderV3<
+          wallet.core.jni.proto.Stellar.OperationPayment, wallet.core.jni.proto.Stellar.OperationPayment.Builder, wallet.core.jni.proto.Stellar.OperationPaymentOrBuilder> opPaymentBuilder_;
+      /**
+       * <code>.TW.Stellar.Proto.OperationPayment op_payment = 7;</code>
+       * @return Whether the opPayment field is set.
+       */
+      @java.lang.Override
+      public boolean hasOpPayment() {
+        return operationOneofCase_ == 7;
+      }
+      /**
+       * <code>.TW.Stellar.Proto.OperationPayment op_payment = 7;</code>
+       * @return The opPayment.
+       */
+      @java.lang.Override
+      public wallet.core.jni.proto.Stellar.OperationPayment getOpPayment() {
+        if (opPaymentBuilder_ == null) {
+          if (operationOneofCase_ == 7) {
+            return (wallet.core.jni.proto.Stellar.OperationPayment) operationOneof_;
+          }
+          return wallet.core.jni.proto.Stellar.OperationPayment.getDefaultInstance();
+        } else {
+          if (operationOneofCase_ == 7) {
+            return opPaymentBuilder_.getMessage();
+          }
+          return wallet.core.jni.proto.Stellar.OperationPayment.getDefaultInstance();
+        }
+      }
+      /**
+       * <code>.TW.Stellar.Proto.OperationPayment op_payment = 7;</code>
+       */
+      public Builder setOpPayment(wallet.core.jni.proto.Stellar.OperationPayment value) {
+        if (opPaymentBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          operationOneof_ = value;
+          onChanged();
+        } else {
+          opPaymentBuilder_.setMessage(value);
+        }
+        operationOneofCase_ = 7;
+        return this;
+      }
+      /**
+       * <code>.TW.Stellar.Proto.OperationPayment op_payment = 7;</code>
+       */
+      public Builder setOpPayment(
+          wallet.core.jni.proto.Stellar.OperationPayment.Builder builderForValue) {
+        if (opPaymentBuilder_ == null) {
+          operationOneof_ = builderForValue.build();
+          onChanged();
+        } else {
+          opPaymentBuilder_.setMessage(builderForValue.build());
+        }
+        operationOneofCase_ = 7;
+        return this;
+      }
+      /**
+       * <code>.TW.Stellar.Proto.OperationPayment op_payment = 7;</code>
+       */
+      public Builder mergeOpPayment(wallet.core.jni.proto.Stellar.OperationPayment value) {
+        if (opPaymentBuilder_ == null) {
+          if (operationOneofCase_ == 7 &&
+              operationOneof_ != wallet.core.jni.proto.Stellar.OperationPayment.getDefaultInstance()) {
+            operationOneof_ = wallet.core.jni.proto.Stellar.OperationPayment.newBuilder((wallet.core.jni.proto.Stellar.OperationPayment) operationOneof_)
+                .mergeFrom(value).buildPartial();
+          } else {
+            operationOneof_ = value;
+          }
+          onChanged();
+        } else {
+          if (operationOneofCase_ == 7) {
+            opPaymentBuilder_.mergeFrom(value);
+          }
+          opPaymentBuilder_.setMessage(value);
+        }
+        operationOneofCase_ = 7;
+        return this;
+      }
+      /**
+       * <code>.TW.Stellar.Proto.OperationPayment op_payment = 7;</code>
+       */
+      public Builder clearOpPayment() {
+        if (opPaymentBuilder_ == null) {
+          if (operationOneofCase_ == 7) {
+            operationOneofCase_ = 0;
+            operationOneof_ = null;
+            onChanged();
+          }
+        } else {
+          if (operationOneofCase_ == 7) {
+            operationOneofCase_ = 0;
+            operationOneof_ = null;
+          }
+          opPaymentBuilder_.clear();
+        }
+        return this;
+      }
+      /**
+       * <code>.TW.Stellar.Proto.OperationPayment op_payment = 7;</code>
+       */
+      public wallet.core.jni.proto.Stellar.OperationPayment.Builder getOpPaymentBuilder() {
+        return getOpPaymentFieldBuilder().getBuilder();
+      }
+      /**
+       * <code>.TW.Stellar.Proto.OperationPayment op_payment = 7;</code>
+       */
+      @java.lang.Override
+      public wallet.core.jni.proto.Stellar.OperationPaymentOrBuilder getOpPaymentOrBuilder() {
+        if ((operationOneofCase_ == 7) && (opPaymentBuilder_ != null)) {
+          return opPaymentBuilder_.getMessageOrBuilder();
+        } else {
+          if (operationOneofCase_ == 7) {
+            return (wallet.core.jni.proto.Stellar.OperationPayment) operationOneof_;
+          }
+          return wallet.core.jni.proto.Stellar.OperationPayment.getDefaultInstance();
+        }
+      }
+      /**
+       * <code>.TW.Stellar.Proto.OperationPayment op_payment = 7;</code>
+       */
+      private com.google.protobuf.SingleFieldBuilderV3<
+          wallet.core.jni.proto.Stellar.OperationPayment, wallet.core.jni.proto.Stellar.OperationPayment.Builder, wallet.core.jni.proto.Stellar.OperationPaymentOrBuilder> 
+          getOpPaymentFieldBuilder() {
+        if (opPaymentBuilder_ == null) {
+          if (!(operationOneofCase_ == 7)) {
+            operationOneof_ = wallet.core.jni.proto.Stellar.OperationPayment.getDefaultInstance();
+          }
+          opPaymentBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+              wallet.core.jni.proto.Stellar.OperationPayment, wallet.core.jni.proto.Stellar.OperationPayment.Builder, wallet.core.jni.proto.Stellar.OperationPaymentOrBuilder>(
+                  (wallet.core.jni.proto.Stellar.OperationPayment) operationOneof_,
+                  getParentForChildren(),
+                  isClean());
+          operationOneof_ = null;
+        }
+        operationOneofCase_ = 7;
+        onChanged();;
+        return opPaymentBuilder_;
+      }
+
+      private com.google.protobuf.SingleFieldBuilderV3<
+          wallet.core.jni.proto.Stellar.OperationChangeTrust, wallet.core.jni.proto.Stellar.OperationChangeTrust.Builder, wallet.core.jni.proto.Stellar.OperationChangeTrustOrBuilder> opChangeTrustBuilder_;
+      /**
+       * <code>.TW.Stellar.Proto.OperationChangeTrust op_change_trust = 8;</code>
+       * @return Whether the opChangeTrust field is set.
+       */
+      @java.lang.Override
+      public boolean hasOpChangeTrust() {
+        return operationOneofCase_ == 8;
+      }
+      /**
+       * <code>.TW.Stellar.Proto.OperationChangeTrust op_change_trust = 8;</code>
+       * @return The opChangeTrust.
+       */
+      @java.lang.Override
+      public wallet.core.jni.proto.Stellar.OperationChangeTrust getOpChangeTrust() {
+        if (opChangeTrustBuilder_ == null) {
+          if (operationOneofCase_ == 8) {
+            return (wallet.core.jni.proto.Stellar.OperationChangeTrust) operationOneof_;
+          }
+          return wallet.core.jni.proto.Stellar.OperationChangeTrust.getDefaultInstance();
+        } else {
+          if (operationOneofCase_ == 8) {
+            return opChangeTrustBuilder_.getMessage();
+          }
+          return wallet.core.jni.proto.Stellar.OperationChangeTrust.getDefaultInstance();
+        }
+      }
+      /**
+       * <code>.TW.Stellar.Proto.OperationChangeTrust op_change_trust = 8;</code>
+       */
+      public Builder setOpChangeTrust(wallet.core.jni.proto.Stellar.OperationChangeTrust value) {
+        if (opChangeTrustBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          operationOneof_ = value;
+          onChanged();
+        } else {
+          opChangeTrustBuilder_.setMessage(value);
+        }
+        operationOneofCase_ = 8;
+        return this;
+      }
+      /**
+       * <code>.TW.Stellar.Proto.OperationChangeTrust op_change_trust = 8;</code>
+       */
+      public Builder setOpChangeTrust(
+          wallet.core.jni.proto.Stellar.OperationChangeTrust.Builder builderForValue) {
+        if (opChangeTrustBuilder_ == null) {
+          operationOneof_ = builderForValue.build();
+          onChanged();
+        } else {
+          opChangeTrustBuilder_.setMessage(builderForValue.build());
+        }
+        operationOneofCase_ = 8;
+        return this;
+      }
+      /**
+       * <code>.TW.Stellar.Proto.OperationChangeTrust op_change_trust = 8;</code>
+       */
+      public Builder mergeOpChangeTrust(wallet.core.jni.proto.Stellar.OperationChangeTrust value) {
+        if (opChangeTrustBuilder_ == null) {
+          if (operationOneofCase_ == 8 &&
+              operationOneof_ != wallet.core.jni.proto.Stellar.OperationChangeTrust.getDefaultInstance()) {
+            operationOneof_ = wallet.core.jni.proto.Stellar.OperationChangeTrust.newBuilder((wallet.core.jni.proto.Stellar.OperationChangeTrust) operationOneof_)
+                .mergeFrom(value).buildPartial();
+          } else {
+            operationOneof_ = value;
+          }
+          onChanged();
+        } else {
+          if (operationOneofCase_ == 8) {
+            opChangeTrustBuilder_.mergeFrom(value);
+          }
+          opChangeTrustBuilder_.setMessage(value);
+        }
+        operationOneofCase_ = 8;
+        return this;
+      }
+      /**
+       * <code>.TW.Stellar.Proto.OperationChangeTrust op_change_trust = 8;</code>
+       */
+      public Builder clearOpChangeTrust() {
+        if (opChangeTrustBuilder_ == null) {
+          if (operationOneofCase_ == 8) {
+            operationOneofCase_ = 0;
+            operationOneof_ = null;
+            onChanged();
+          }
+        } else {
+          if (operationOneofCase_ == 8) {
+            operationOneofCase_ = 0;
+            operationOneof_ = null;
+          }
+          opChangeTrustBuilder_.clear();
+        }
+        return this;
+      }
+      /**
+       * <code>.TW.Stellar.Proto.OperationChangeTrust op_change_trust = 8;</code>
+       */
+      public wallet.core.jni.proto.Stellar.OperationChangeTrust.Builder getOpChangeTrustBuilder() {
+        return getOpChangeTrustFieldBuilder().getBuilder();
+      }
+      /**
+       * <code>.TW.Stellar.Proto.OperationChangeTrust op_change_trust = 8;</code>
+       */
+      @java.lang.Override
+      public wallet.core.jni.proto.Stellar.OperationChangeTrustOrBuilder getOpChangeTrustOrBuilder() {
+        if ((operationOneofCase_ == 8) && (opChangeTrustBuilder_ != null)) {
+          return opChangeTrustBuilder_.getMessageOrBuilder();
+        } else {
+          if (operationOneofCase_ == 8) {
+            return (wallet.core.jni.proto.Stellar.OperationChangeTrust) operationOneof_;
+          }
+          return wallet.core.jni.proto.Stellar.OperationChangeTrust.getDefaultInstance();
+        }
+      }
+      /**
+       * <code>.TW.Stellar.Proto.OperationChangeTrust op_change_trust = 8;</code>
+       */
+      private com.google.protobuf.SingleFieldBuilderV3<
+          wallet.core.jni.proto.Stellar.OperationChangeTrust, wallet.core.jni.proto.Stellar.OperationChangeTrust.Builder, wallet.core.jni.proto.Stellar.OperationChangeTrustOrBuilder> 
+          getOpChangeTrustFieldBuilder() {
+        if (opChangeTrustBuilder_ == null) {
+          if (!(operationOneofCase_ == 8)) {
+            operationOneof_ = wallet.core.jni.proto.Stellar.OperationChangeTrust.getDefaultInstance();
+          }
+          opChangeTrustBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+              wallet.core.jni.proto.Stellar.OperationChangeTrust, wallet.core.jni.proto.Stellar.OperationChangeTrust.Builder, wallet.core.jni.proto.Stellar.OperationChangeTrustOrBuilder>(
+                  (wallet.core.jni.proto.Stellar.OperationChangeTrust) operationOneof_,
+                  getParentForChildren(),
+                  isClean());
+          operationOneof_ = null;
+        }
+        operationOneofCase_ = 8;
+        onChanged();;
+        return opChangeTrustBuilder_;
+      }
+
+      private com.google.protobuf.SingleFieldBuilderV3<
+          wallet.core.jni.proto.Stellar.MemoVoid, wallet.core.jni.proto.Stellar.MemoVoid.Builder, wallet.core.jni.proto.Stellar.MemoVoidOrBuilder> memoVoidBuilder_;
+      /**
+       * <code>.TW.Stellar.Proto.MemoVoid memo_void = 9;</code>
+       * @return Whether the memoVoid field is set.
+       */
+      @java.lang.Override
+      public boolean hasMemoVoid() {
+        return memoTypeOneofCase_ == 9;
+      }
+      /**
+       * <code>.TW.Stellar.Proto.MemoVoid memo_void = 9;</code>
+       * @return The memoVoid.
+       */
+      @java.lang.Override
+      public wallet.core.jni.proto.Stellar.MemoVoid getMemoVoid() {
+        if (memoVoidBuilder_ == null) {
+          if (memoTypeOneofCase_ == 9) {
+            return (wallet.core.jni.proto.Stellar.MemoVoid) memoTypeOneof_;
+          }
+          return wallet.core.jni.proto.Stellar.MemoVoid.getDefaultInstance();
+        } else {
+          if (memoTypeOneofCase_ == 9) {
+            return memoVoidBuilder_.getMessage();
+          }
+          return wallet.core.jni.proto.Stellar.MemoVoid.getDefaultInstance();
+        }
+      }
+      /**
+       * <code>.TW.Stellar.Proto.MemoVoid memo_void = 9;</code>
+       */
+      public Builder setMemoVoid(wallet.core.jni.proto.Stellar.MemoVoid value) {
+        if (memoVoidBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          memoTypeOneof_ = value;
+          onChanged();
+        } else {
+          memoVoidBuilder_.setMessage(value);
+        }
+        memoTypeOneofCase_ = 9;
+        return this;
+      }
+      /**
+       * <code>.TW.Stellar.Proto.MemoVoid memo_void = 9;</code>
+       */
+      public Builder setMemoVoid(
+          wallet.core.jni.proto.Stellar.MemoVoid.Builder builderForValue) {
+        if (memoVoidBuilder_ == null) {
+          memoTypeOneof_ = builderForValue.build();
+          onChanged();
+        } else {
+          memoVoidBuilder_.setMessage(builderForValue.build());
+        }
+        memoTypeOneofCase_ = 9;
+        return this;
+      }
+      /**
+       * <code>.TW.Stellar.Proto.MemoVoid memo_void = 9;</code>
+       */
+      public Builder mergeMemoVoid(wallet.core.jni.proto.Stellar.MemoVoid value) {
+        if (memoVoidBuilder_ == null) {
+          if (memoTypeOneofCase_ == 9 &&
+              memoTypeOneof_ != wallet.core.jni.proto.Stellar.MemoVoid.getDefaultInstance()) {
+            memoTypeOneof_ = wallet.core.jni.proto.Stellar.MemoVoid.newBuilder((wallet.core.jni.proto.Stellar.MemoVoid) memoTypeOneof_)
+                .mergeFrom(value).buildPartial();
+          } else {
+            memoTypeOneof_ = value;
+          }
+          onChanged();
+        } else {
+          if (memoTypeOneofCase_ == 9) {
+            memoVoidBuilder_.mergeFrom(value);
+          }
+          memoVoidBuilder_.setMessage(value);
+        }
+        memoTypeOneofCase_ = 9;
+        return this;
+      }
+      /**
+       * <code>.TW.Stellar.Proto.MemoVoid memo_void = 9;</code>
+       */
+      public Builder clearMemoVoid() {
+        if (memoVoidBuilder_ == null) {
+          if (memoTypeOneofCase_ == 9) {
+            memoTypeOneofCase_ = 0;
+            memoTypeOneof_ = null;
+            onChanged();
+          }
+        } else {
+          if (memoTypeOneofCase_ == 9) {
+            memoTypeOneofCase_ = 0;
+            memoTypeOneof_ = null;
+          }
+          memoVoidBuilder_.clear();
+        }
+        return this;
+      }
+      /**
+       * <code>.TW.Stellar.Proto.MemoVoid memo_void = 9;</code>
+       */
+      public wallet.core.jni.proto.Stellar.MemoVoid.Builder getMemoVoidBuilder() {
+        return getMemoVoidFieldBuilder().getBuilder();
+      }
+      /**
+       * <code>.TW.Stellar.Proto.MemoVoid memo_void = 9;</code>
+       */
+      @java.lang.Override
+      public wallet.core.jni.proto.Stellar.MemoVoidOrBuilder getMemoVoidOrBuilder() {
+        if ((memoTypeOneofCase_ == 9) && (memoVoidBuilder_ != null)) {
+          return memoVoidBuilder_.getMessageOrBuilder();
+        } else {
+          if (memoTypeOneofCase_ == 9) {
+            return (wallet.core.jni.proto.Stellar.MemoVoid) memoTypeOneof_;
+          }
+          return wallet.core.jni.proto.Stellar.MemoVoid.getDefaultInstance();
+        }
+      }
+      /**
+       * <code>.TW.Stellar.Proto.MemoVoid memo_void = 9;</code>
+       */
+      private com.google.protobuf.SingleFieldBuilderV3<
+          wallet.core.jni.proto.Stellar.MemoVoid, wallet.core.jni.proto.Stellar.MemoVoid.Builder, wallet.core.jni.proto.Stellar.MemoVoidOrBuilder> 
+          getMemoVoidFieldBuilder() {
+        if (memoVoidBuilder_ == null) {
+          if (!(memoTypeOneofCase_ == 9)) {
+            memoTypeOneof_ = wallet.core.jni.proto.Stellar.MemoVoid.getDefaultInstance();
+          }
+          memoVoidBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+              wallet.core.jni.proto.Stellar.MemoVoid, wallet.core.jni.proto.Stellar.MemoVoid.Builder, wallet.core.jni.proto.Stellar.MemoVoidOrBuilder>(
+                  (wallet.core.jni.proto.Stellar.MemoVoid) memoTypeOneof_,
+                  getParentForChildren(),
+                  isClean());
+          memoTypeOneof_ = null;
+        }
+        memoTypeOneofCase_ = 9;
+        onChanged();;
+        return memoVoidBuilder_;
+      }
+
+      private com.google.protobuf.SingleFieldBuilderV3<
+          wallet.core.jni.proto.Stellar.MemoText, wallet.core.jni.proto.Stellar.MemoText.Builder, wallet.core.jni.proto.Stellar.MemoTextOrBuilder> memoTextBuilder_;
+      /**
+       * <code>.TW.Stellar.Proto.MemoText memo_text = 10;</code>
+       * @return Whether the memoText field is set.
+       */
+      @java.lang.Override
+      public boolean hasMemoText() {
+        return memoTypeOneofCase_ == 10;
+      }
+      /**
+       * <code>.TW.Stellar.Proto.MemoText memo_text = 10;</code>
+       * @return The memoText.
+       */
+      @java.lang.Override
+      public wallet.core.jni.proto.Stellar.MemoText getMemoText() {
+        if (memoTextBuilder_ == null) {
+          if (memoTypeOneofCase_ == 10) {
+            return (wallet.core.jni.proto.Stellar.MemoText) memoTypeOneof_;
+          }
+          return wallet.core.jni.proto.Stellar.MemoText.getDefaultInstance();
+        } else {
+          if (memoTypeOneofCase_ == 10) {
+            return memoTextBuilder_.getMessage();
+          }
+          return wallet.core.jni.proto.Stellar.MemoText.getDefaultInstance();
+        }
+      }
+      /**
+       * <code>.TW.Stellar.Proto.MemoText memo_text = 10;</code>
+       */
+      public Builder setMemoText(wallet.core.jni.proto.Stellar.MemoText value) {
+        if (memoTextBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          memoTypeOneof_ = value;
+          onChanged();
+        } else {
+          memoTextBuilder_.setMessage(value);
+        }
+        memoTypeOneofCase_ = 10;
+        return this;
+      }
+      /**
+       * <code>.TW.Stellar.Proto.MemoText memo_text = 10;</code>
+       */
+      public Builder setMemoText(
+          wallet.core.jni.proto.Stellar.MemoText.Builder builderForValue) {
+        if (memoTextBuilder_ == null) {
+          memoTypeOneof_ = builderForValue.build();
+          onChanged();
+        } else {
+          memoTextBuilder_.setMessage(builderForValue.build());
+        }
+        memoTypeOneofCase_ = 10;
+        return this;
+      }
+      /**
+       * <code>.TW.Stellar.Proto.MemoText memo_text = 10;</code>
+       */
+      public Builder mergeMemoText(wallet.core.jni.proto.Stellar.MemoText value) {
+        if (memoTextBuilder_ == null) {
+          if (memoTypeOneofCase_ == 10 &&
+              memoTypeOneof_ != wallet.core.jni.proto.Stellar.MemoText.getDefaultInstance()) {
+            memoTypeOneof_ = wallet.core.jni.proto.Stellar.MemoText.newBuilder((wallet.core.jni.proto.Stellar.MemoText) memoTypeOneof_)
+                .mergeFrom(value).buildPartial();
+          } else {
+            memoTypeOneof_ = value;
+          }
+          onChanged();
+        } else {
+          if (memoTypeOneofCase_ == 10) {
+            memoTextBuilder_.mergeFrom(value);
+          }
+          memoTextBuilder_.setMessage(value);
+        }
+        memoTypeOneofCase_ = 10;
+        return this;
+      }
+      /**
+       * <code>.TW.Stellar.Proto.MemoText memo_text = 10;</code>
+       */
+      public Builder clearMemoText() {
+        if (memoTextBuilder_ == null) {
+          if (memoTypeOneofCase_ == 10) {
+            memoTypeOneofCase_ = 0;
+            memoTypeOneof_ = null;
+            onChanged();
+          }
+        } else {
+          if (memoTypeOneofCase_ == 10) {
+            memoTypeOneofCase_ = 0;
+            memoTypeOneof_ = null;
+          }
+          memoTextBuilder_.clear();
+        }
+        return this;
+      }
+      /**
+       * <code>.TW.Stellar.Proto.MemoText memo_text = 10;</code>
+       */
+      public wallet.core.jni.proto.Stellar.MemoText.Builder getMemoTextBuilder() {
+        return getMemoTextFieldBuilder().getBuilder();
+      }
+      /**
+       * <code>.TW.Stellar.Proto.MemoText memo_text = 10;</code>
+       */
+      @java.lang.Override
+      public wallet.core.jni.proto.Stellar.MemoTextOrBuilder getMemoTextOrBuilder() {
+        if ((memoTypeOneofCase_ == 10) && (memoTextBuilder_ != null)) {
+          return memoTextBuilder_.getMessageOrBuilder();
+        } else {
+          if (memoTypeOneofCase_ == 10) {
+            return (wallet.core.jni.proto.Stellar.MemoText) memoTypeOneof_;
+          }
+          return wallet.core.jni.proto.Stellar.MemoText.getDefaultInstance();
+        }
+      }
+      /**
+       * <code>.TW.Stellar.Proto.MemoText memo_text = 10;</code>
+       */
+      private com.google.protobuf.SingleFieldBuilderV3<
+          wallet.core.jni.proto.Stellar.MemoText, wallet.core.jni.proto.Stellar.MemoText.Builder, wallet.core.jni.proto.Stellar.MemoTextOrBuilder> 
+          getMemoTextFieldBuilder() {
+        if (memoTextBuilder_ == null) {
+          if (!(memoTypeOneofCase_ == 10)) {
+            memoTypeOneof_ = wallet.core.jni.proto.Stellar.MemoText.getDefaultInstance();
+          }
+          memoTextBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+              wallet.core.jni.proto.Stellar.MemoText, wallet.core.jni.proto.Stellar.MemoText.Builder, wallet.core.jni.proto.Stellar.MemoTextOrBuilder>(
+                  (wallet.core.jni.proto.Stellar.MemoText) memoTypeOneof_,
+                  getParentForChildren(),
+                  isClean());
+          memoTypeOneof_ = null;
+        }
+        memoTypeOneofCase_ = 10;
+        onChanged();;
+        return memoTextBuilder_;
+      }
+
+      private com.google.protobuf.SingleFieldBuilderV3<
+          wallet.core.jni.proto.Stellar.MemoId, wallet.core.jni.proto.Stellar.MemoId.Builder, wallet.core.jni.proto.Stellar.MemoIdOrBuilder> memoIdBuilder_;
+      /**
+       * <code>.TW.Stellar.Proto.MemoId memo_id = 11;</code>
+       * @return Whether the memoId field is set.
+       */
+      @java.lang.Override
+      public boolean hasMemoId() {
+        return memoTypeOneofCase_ == 11;
+      }
+      /**
+       * <code>.TW.Stellar.Proto.MemoId memo_id = 11;</code>
+       * @return The memoId.
+       */
+      @java.lang.Override
+      public wallet.core.jni.proto.Stellar.MemoId getMemoId() {
+        if (memoIdBuilder_ == null) {
+          if (memoTypeOneofCase_ == 11) {
+            return (wallet.core.jni.proto.Stellar.MemoId) memoTypeOneof_;
+          }
+          return wallet.core.jni.proto.Stellar.MemoId.getDefaultInstance();
+        } else {
+          if (memoTypeOneofCase_ == 11) {
+            return memoIdBuilder_.getMessage();
+          }
+          return wallet.core.jni.proto.Stellar.MemoId.getDefaultInstance();
+        }
+      }
+      /**
+       * <code>.TW.Stellar.Proto.MemoId memo_id = 11;</code>
+       */
+      public Builder setMemoId(wallet.core.jni.proto.Stellar.MemoId value) {
+        if (memoIdBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          memoTypeOneof_ = value;
+          onChanged();
+        } else {
+          memoIdBuilder_.setMessage(value);
+        }
+        memoTypeOneofCase_ = 11;
+        return this;
+      }
+      /**
+       * <code>.TW.Stellar.Proto.MemoId memo_id = 11;</code>
+       */
+      public Builder setMemoId(
+          wallet.core.jni.proto.Stellar.MemoId.Builder builderForValue) {
+        if (memoIdBuilder_ == null) {
+          memoTypeOneof_ = builderForValue.build();
+          onChanged();
+        } else {
+          memoIdBuilder_.setMessage(builderForValue.build());
+        }
+        memoTypeOneofCase_ = 11;
+        return this;
+      }
+      /**
+       * <code>.TW.Stellar.Proto.MemoId memo_id = 11;</code>
+       */
+      public Builder mergeMemoId(wallet.core.jni.proto.Stellar.MemoId value) {
+        if (memoIdBuilder_ == null) {
+          if (memoTypeOneofCase_ == 11 &&
+              memoTypeOneof_ != wallet.core.jni.proto.Stellar.MemoId.getDefaultInstance()) {
+            memoTypeOneof_ = wallet.core.jni.proto.Stellar.MemoId.newBuilder((wallet.core.jni.proto.Stellar.MemoId) memoTypeOneof_)
+                .mergeFrom(value).buildPartial();
+          } else {
+            memoTypeOneof_ = value;
+          }
+          onChanged();
+        } else {
+          if (memoTypeOneofCase_ == 11) {
+            memoIdBuilder_.mergeFrom(value);
+          }
+          memoIdBuilder_.setMessage(value);
+        }
+        memoTypeOneofCase_ = 11;
+        return this;
+      }
+      /**
+       * <code>.TW.Stellar.Proto.MemoId memo_id = 11;</code>
+       */
+      public Builder clearMemoId() {
+        if (memoIdBuilder_ == null) {
+          if (memoTypeOneofCase_ == 11) {
+            memoTypeOneofCase_ = 0;
+            memoTypeOneof_ = null;
+            onChanged();
+          }
+        } else {
+          if (memoTypeOneofCase_ == 11) {
+            memoTypeOneofCase_ = 0;
+            memoTypeOneof_ = null;
+          }
+          memoIdBuilder_.clear();
+        }
+        return this;
+      }
+      /**
+       * <code>.TW.Stellar.Proto.MemoId memo_id = 11;</code>
+       */
+      public wallet.core.jni.proto.Stellar.MemoId.Builder getMemoIdBuilder() {
+        return getMemoIdFieldBuilder().getBuilder();
+      }
+      /**
+       * <code>.TW.Stellar.Proto.MemoId memo_id = 11;</code>
+       */
+      @java.lang.Override
+      public wallet.core.jni.proto.Stellar.MemoIdOrBuilder getMemoIdOrBuilder() {
+        if ((memoTypeOneofCase_ == 11) && (memoIdBuilder_ != null)) {
+          return memoIdBuilder_.getMessageOrBuilder();
+        } else {
+          if (memoTypeOneofCase_ == 11) {
+            return (wallet.core.jni.proto.Stellar.MemoId) memoTypeOneof_;
+          }
+          return wallet.core.jni.proto.Stellar.MemoId.getDefaultInstance();
+        }
+      }
+      /**
+       * <code>.TW.Stellar.Proto.MemoId memo_id = 11;</code>
+       */
+      private com.google.protobuf.SingleFieldBuilderV3<
+          wallet.core.jni.proto.Stellar.MemoId, wallet.core.jni.proto.Stellar.MemoId.Builder, wallet.core.jni.proto.Stellar.MemoIdOrBuilder> 
+          getMemoIdFieldBuilder() {
+        if (memoIdBuilder_ == null) {
+          if (!(memoTypeOneofCase_ == 11)) {
+            memoTypeOneof_ = wallet.core.jni.proto.Stellar.MemoId.getDefaultInstance();
+          }
+          memoIdBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+              wallet.core.jni.proto.Stellar.MemoId, wallet.core.jni.proto.Stellar.MemoId.Builder, wallet.core.jni.proto.Stellar.MemoIdOrBuilder>(
+                  (wallet.core.jni.proto.Stellar.MemoId) memoTypeOneof_,
+                  getParentForChildren(),
+                  isClean());
+          memoTypeOneof_ = null;
+        }
+        memoTypeOneofCase_ = 11;
+        onChanged();;
+        return memoIdBuilder_;
+      }
+
+      private com.google.protobuf.SingleFieldBuilderV3<
+          wallet.core.jni.proto.Stellar.MemoHash, wallet.core.jni.proto.Stellar.MemoHash.Builder, wallet.core.jni.proto.Stellar.MemoHashOrBuilder> memoHashBuilder_;
+      /**
+       * <code>.TW.Stellar.Proto.MemoHash memo_hash = 12;</code>
+       * @return Whether the memoHash field is set.
+       */
+      @java.lang.Override
+      public boolean hasMemoHash() {
+        return memoTypeOneofCase_ == 12;
+      }
+      /**
+       * <code>.TW.Stellar.Proto.MemoHash memo_hash = 12;</code>
+       * @return The memoHash.
+       */
+      @java.lang.Override
+      public wallet.core.jni.proto.Stellar.MemoHash getMemoHash() {
+        if (memoHashBuilder_ == null) {
+          if (memoTypeOneofCase_ == 12) {
+            return (wallet.core.jni.proto.Stellar.MemoHash) memoTypeOneof_;
+          }
+          return wallet.core.jni.proto.Stellar.MemoHash.getDefaultInstance();
+        } else {
+          if (memoTypeOneofCase_ == 12) {
+            return memoHashBuilder_.getMessage();
+          }
+          return wallet.core.jni.proto.Stellar.MemoHash.getDefaultInstance();
+        }
+      }
+      /**
+       * <code>.TW.Stellar.Proto.MemoHash memo_hash = 12;</code>
+       */
+      public Builder setMemoHash(wallet.core.jni.proto.Stellar.MemoHash value) {
+        if (memoHashBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          memoTypeOneof_ = value;
+          onChanged();
+        } else {
+          memoHashBuilder_.setMessage(value);
+        }
+        memoTypeOneofCase_ = 12;
+        return this;
+      }
+      /**
+       * <code>.TW.Stellar.Proto.MemoHash memo_hash = 12;</code>
+       */
+      public Builder setMemoHash(
+          wallet.core.jni.proto.Stellar.MemoHash.Builder builderForValue) {
+        if (memoHashBuilder_ == null) {
+          memoTypeOneof_ = builderForValue.build();
+          onChanged();
+        } else {
+          memoHashBuilder_.setMessage(builderForValue.build());
+        }
+        memoTypeOneofCase_ = 12;
+        return this;
+      }
+      /**
+       * <code>.TW.Stellar.Proto.MemoHash memo_hash = 12;</code>
+       */
+      public Builder mergeMemoHash(wallet.core.jni.proto.Stellar.MemoHash value) {
+        if (memoHashBuilder_ == null) {
+          if (memoTypeOneofCase_ == 12 &&
+              memoTypeOneof_ != wallet.core.jni.proto.Stellar.MemoHash.getDefaultInstance()) {
+            memoTypeOneof_ = wallet.core.jni.proto.Stellar.MemoHash.newBuilder((wallet.core.jni.proto.Stellar.MemoHash) memoTypeOneof_)
+                .mergeFrom(value).buildPartial();
+          } else {
+            memoTypeOneof_ = value;
+          }
+          onChanged();
+        } else {
+          if (memoTypeOneofCase_ == 12) {
+            memoHashBuilder_.mergeFrom(value);
+          }
+          memoHashBuilder_.setMessage(value);
+        }
+        memoTypeOneofCase_ = 12;
+        return this;
+      }
+      /**
+       * <code>.TW.Stellar.Proto.MemoHash memo_hash = 12;</code>
+       */
+      public Builder clearMemoHash() {
+        if (memoHashBuilder_ == null) {
+          if (memoTypeOneofCase_ == 12) {
+            memoTypeOneofCase_ = 0;
+            memoTypeOneof_ = null;
+            onChanged();
+          }
+        } else {
+          if (memoTypeOneofCase_ == 12) {
+            memoTypeOneofCase_ = 0;
+            memoTypeOneof_ = null;
+          }
+          memoHashBuilder_.clear();
+        }
+        return this;
+      }
+      /**
+       * <code>.TW.Stellar.Proto.MemoHash memo_hash = 12;</code>
+       */
+      public wallet.core.jni.proto.Stellar.MemoHash.Builder getMemoHashBuilder() {
+        return getMemoHashFieldBuilder().getBuilder();
+      }
+      /**
+       * <code>.TW.Stellar.Proto.MemoHash memo_hash = 12;</code>
+       */
+      @java.lang.Override
+      public wallet.core.jni.proto.Stellar.MemoHashOrBuilder getMemoHashOrBuilder() {
+        if ((memoTypeOneofCase_ == 12) && (memoHashBuilder_ != null)) {
+          return memoHashBuilder_.getMessageOrBuilder();
+        } else {
+          if (memoTypeOneofCase_ == 12) {
+            return (wallet.core.jni.proto.Stellar.MemoHash) memoTypeOneof_;
+          }
+          return wallet.core.jni.proto.Stellar.MemoHash.getDefaultInstance();
+        }
+      }
+      /**
+       * <code>.TW.Stellar.Proto.MemoHash memo_hash = 12;</code>
+       */
+      private com.google.protobuf.SingleFieldBuilderV3<
+          wallet.core.jni.proto.Stellar.MemoHash, wallet.core.jni.proto.Stellar.MemoHash.Builder, wallet.core.jni.proto.Stellar.MemoHashOrBuilder> 
+          getMemoHashFieldBuilder() {
+        if (memoHashBuilder_ == null) {
+          if (!(memoTypeOneofCase_ == 12)) {
+            memoTypeOneof_ = wallet.core.jni.proto.Stellar.MemoHash.getDefaultInstance();
+          }
+          memoHashBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+              wallet.core.jni.proto.Stellar.MemoHash, wallet.core.jni.proto.Stellar.MemoHash.Builder, wallet.core.jni.proto.Stellar.MemoHashOrBuilder>(
+                  (wallet.core.jni.proto.Stellar.MemoHash) memoTypeOneof_,
+                  getParentForChildren(),
+                  isClean());
+          memoTypeOneof_ = null;
+        }
+        memoTypeOneofCase_ = 12;
+        onChanged();;
+        return memoHashBuilder_;
+      }
+
+      private com.google.protobuf.SingleFieldBuilderV3<
+          wallet.core.jni.proto.Stellar.MemoHash, wallet.core.jni.proto.Stellar.MemoHash.Builder, wallet.core.jni.proto.Stellar.MemoHashOrBuilder> memoReturnHashBuilder_;
+      /**
+       * <code>.TW.Stellar.Proto.MemoHash memo_return_hash = 13;</code>
+       * @return Whether the memoReturnHash field is set.
+       */
+      @java.lang.Override
+      public boolean hasMemoReturnHash() {
+        return memoTypeOneofCase_ == 13;
+      }
+      /**
+       * <code>.TW.Stellar.Proto.MemoHash memo_return_hash = 13;</code>
+       * @return The memoReturnHash.
+       */
+      @java.lang.Override
+      public wallet.core.jni.proto.Stellar.MemoHash getMemoReturnHash() {
+        if (memoReturnHashBuilder_ == null) {
+          if (memoTypeOneofCase_ == 13) {
+            return (wallet.core.jni.proto.Stellar.MemoHash) memoTypeOneof_;
+          }
+          return wallet.core.jni.proto.Stellar.MemoHash.getDefaultInstance();
+        } else {
+          if (memoTypeOneofCase_ == 13) {
+            return memoReturnHashBuilder_.getMessage();
+          }
+          return wallet.core.jni.proto.Stellar.MemoHash.getDefaultInstance();
+        }
+      }
+      /**
+       * <code>.TW.Stellar.Proto.MemoHash memo_return_hash = 13;</code>
+       */
+      public Builder setMemoReturnHash(wallet.core.jni.proto.Stellar.MemoHash value) {
+        if (memoReturnHashBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          memoTypeOneof_ = value;
+          onChanged();
+        } else {
+          memoReturnHashBuilder_.setMessage(value);
+        }
+        memoTypeOneofCase_ = 13;
+        return this;
+      }
+      /**
+       * <code>.TW.Stellar.Proto.MemoHash memo_return_hash = 13;</code>
+       */
+      public Builder setMemoReturnHash(
+          wallet.core.jni.proto.Stellar.MemoHash.Builder builderForValue) {
+        if (memoReturnHashBuilder_ == null) {
+          memoTypeOneof_ = builderForValue.build();
+          onChanged();
+        } else {
+          memoReturnHashBuilder_.setMessage(builderForValue.build());
+        }
+        memoTypeOneofCase_ = 13;
+        return this;
+      }
+      /**
+       * <code>.TW.Stellar.Proto.MemoHash memo_return_hash = 13;</code>
+       */
+      public Builder mergeMemoReturnHash(wallet.core.jni.proto.Stellar.MemoHash value) {
+        if (memoReturnHashBuilder_ == null) {
+          if (memoTypeOneofCase_ == 13 &&
+              memoTypeOneof_ != wallet.core.jni.proto.Stellar.MemoHash.getDefaultInstance()) {
+            memoTypeOneof_ = wallet.core.jni.proto.Stellar.MemoHash.newBuilder((wallet.core.jni.proto.Stellar.MemoHash) memoTypeOneof_)
+                .mergeFrom(value).buildPartial();
+          } else {
+            memoTypeOneof_ = value;
+          }
+          onChanged();
+        } else {
+          if (memoTypeOneofCase_ == 13) {
+            memoReturnHashBuilder_.mergeFrom(value);
+          }
+          memoReturnHashBuilder_.setMessage(value);
+        }
+        memoTypeOneofCase_ = 13;
+        return this;
+      }
+      /**
+       * <code>.TW.Stellar.Proto.MemoHash memo_return_hash = 13;</code>
+       */
+      public Builder clearMemoReturnHash() {
+        if (memoReturnHashBuilder_ == null) {
+          if (memoTypeOneofCase_ == 13) {
+            memoTypeOneofCase_ = 0;
+            memoTypeOneof_ = null;
+            onChanged();
+          }
+        } else {
+          if (memoTypeOneofCase_ == 13) {
+            memoTypeOneofCase_ = 0;
+            memoTypeOneof_ = null;
+          }
+          memoReturnHashBuilder_.clear();
+        }
+        return this;
+      }
+      /**
+       * <code>.TW.Stellar.Proto.MemoHash memo_return_hash = 13;</code>
+       */
+      public wallet.core.jni.proto.Stellar.MemoHash.Builder getMemoReturnHashBuilder() {
+        return getMemoReturnHashFieldBuilder().getBuilder();
+      }
+      /**
+       * <code>.TW.Stellar.Proto.MemoHash memo_return_hash = 13;</code>
+       */
+      @java.lang.Override
+      public wallet.core.jni.proto.Stellar.MemoHashOrBuilder getMemoReturnHashOrBuilder() {
+        if ((memoTypeOneofCase_ == 13) && (memoReturnHashBuilder_ != null)) {
+          return memoReturnHashBuilder_.getMessageOrBuilder();
+        } else {
+          if (memoTypeOneofCase_ == 13) {
+            return (wallet.core.jni.proto.Stellar.MemoHash) memoTypeOneof_;
+          }
+          return wallet.core.jni.proto.Stellar.MemoHash.getDefaultInstance();
+        }
+      }
+      /**
+       * <code>.TW.Stellar.Proto.MemoHash memo_return_hash = 13;</code>
+       */
+      private com.google.protobuf.SingleFieldBuilderV3<
+          wallet.core.jni.proto.Stellar.MemoHash, wallet.core.jni.proto.Stellar.MemoHash.Builder, wallet.core.jni.proto.Stellar.MemoHashOrBuilder> 
+          getMemoReturnHashFieldBuilder() {
+        if (memoReturnHashBuilder_ == null) {
+          if (!(memoTypeOneofCase_ == 13)) {
+            memoTypeOneof_ = wallet.core.jni.proto.Stellar.MemoHash.getDefaultInstance();
+          }
+          memoReturnHashBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+              wallet.core.jni.proto.Stellar.MemoHash, wallet.core.jni.proto.Stellar.MemoHash.Builder, wallet.core.jni.proto.Stellar.MemoHashOrBuilder>(
+                  (wallet.core.jni.proto.Stellar.MemoHash) memoTypeOneof_,
+                  getParentForChildren(),
+                  isClean());
+          memoTypeOneof_ = null;
+        }
+        memoTypeOneofCase_ = 13;
+        onChanged();;
+        return memoReturnHashBuilder_;
       }
       @java.lang.Override
       public final Builder setUnknownFields(
@@ -4418,6 +8009,7 @@ public final class Stellar {
      * </pre>
      *
      * <code>string signature = 1;</code>
+     * @return The signature.
      */
     java.lang.String getSignature();
     /**
@@ -4426,6 +8018,7 @@ public final class Stellar {
      * </pre>
      *
      * <code>string signature = 1;</code>
+     * @return The bytes for signature.
      */
     com.google.protobuf.ByteString
         getSignatureBytes();
@@ -4437,7 +8030,7 @@ public final class Stellar {
    *
    * Protobuf type {@code TW.Stellar.Proto.SigningOutput}
    */
-  public  static final class SigningOutput extends
+  public static final class SigningOutput extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:TW.Stellar.Proto.SigningOutput)
       SigningOutputOrBuilder {
@@ -4526,7 +8119,9 @@ public final class Stellar {
      * </pre>
      *
      * <code>string signature = 1;</code>
+     * @return The signature.
      */
+    @java.lang.Override
     public java.lang.String getSignature() {
       java.lang.Object ref = signature_;
       if (ref instanceof java.lang.String) {
@@ -4545,7 +8140,9 @@ public final class Stellar {
      * </pre>
      *
      * <code>string signature = 1;</code>
+     * @return The bytes for signature.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString
         getSignatureBytes() {
       java.lang.Object ref = signature_;
@@ -4873,6 +8470,7 @@ public final class Stellar {
        * </pre>
        *
        * <code>string signature = 1;</code>
+       * @return The signature.
        */
       public java.lang.String getSignature() {
         java.lang.Object ref = signature_;
@@ -4892,6 +8490,7 @@ public final class Stellar {
        * </pre>
        *
        * <code>string signature = 1;</code>
+       * @return The bytes for signature.
        */
       public com.google.protobuf.ByteString
           getSignatureBytes() {
@@ -4912,6 +8511,8 @@ public final class Stellar {
        * </pre>
        *
        * <code>string signature = 1;</code>
+       * @param value The signature to set.
+       * @return This builder for chaining.
        */
       public Builder setSignature(
           java.lang.String value) {
@@ -4929,6 +8530,7 @@ public final class Stellar {
        * </pre>
        *
        * <code>string signature = 1;</code>
+       * @return This builder for chaining.
        */
       public Builder clearSignature() {
         
@@ -4942,6 +8544,8 @@ public final class Stellar {
        * </pre>
        *
        * <code>string signature = 1;</code>
+       * @param value The bytes for signature to set.
+       * @return This builder for chaining.
        */
       public Builder setSignatureBytes(
           com.google.protobuf.ByteString value) {
@@ -5008,6 +8612,26 @@ public final class Stellar {
   }
 
   private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_TW_Stellar_Proto_Asset_descriptor;
+  private static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_TW_Stellar_Proto_Asset_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_TW_Stellar_Proto_OperationCreateAccount_descriptor;
+  private static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_TW_Stellar_Proto_OperationCreateAccount_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_TW_Stellar_Proto_OperationPayment_descriptor;
+  private static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_TW_Stellar_Proto_OperationPayment_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_TW_Stellar_Proto_OperationChangeTrust_descriptor;
+  private static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_TW_Stellar_Proto_OperationChangeTrust_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_TW_Stellar_Proto_MemoVoid_descriptor;
   private static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
@@ -5046,61 +8670,94 @@ public final class Stellar {
       descriptor;
   static {
     java.lang.String[] descriptorData = {
-      "\n\rStellar.proto\022\020TW.Stellar.Proto\"\n\n\010Mem" +
-      "oVoid\"\030\n\010MemoText\022\014\n\004text\030\001 \001(\t\"\024\n\006MemoI" +
-      "d\022\n\n\002id\030\001 \001(\003\"\030\n\010MemoHash\022\014\n\004hash\030\001 \001(\014\"" +
-      "\217\004\n\014SigningInput\022\016\n\006amount\030\001 \001(\003\022\013\n\003fee\030" +
-      "\002 \001(\005\022\020\n\010sequence\030\003 \001(\003\022\017\n\007account\030\004 \001(\t" +
-      "\022\023\n\013destination\030\005 \001(\t\022\023\n\013private_key\030\006 \001" +
-      "(\014\022/\n\tmemo_void\030\007 \001(\0132\032.TW.Stellar.Proto" +
-      ".MemoVoidH\000\022/\n\tmemo_text\030\010 \001(\0132\032.TW.Stel" +
-      "lar.Proto.MemoTextH\000\022+\n\007memo_id\030\t \001(\0132\030." +
-      "TW.Stellar.Proto.MemoIdH\000\022/\n\tmemo_hash\030\n" +
-      " \001(\0132\032.TW.Stellar.Proto.MemoHashH\000\0226\n\020me" +
-      "mo_return_hash\030\013 \001(\0132\032.TW.Stellar.Proto." +
-      "MemoHashH\000\022D\n\016operation_type\030\014 \001(\0162,.TW." +
-      "Stellar.Proto.SigningInput.OperationType" +
-      "\022\022\n\npassphrase\030\r \001(\t\"0\n\rOperationType\022\022\n" +
-      "\016CREATE_ACCOUNT\020\000\022\013\n\007PAYMENT\020\001B\021\n\017memo_t" +
-      "ype_oneof\"\"\n\rSigningOutput\022\021\n\tsignature\030" +
-      "\001 \001(\tB\027\n\025wallet.core.jni.protob\006proto3"
+      "\n\rStellar.proto\022\020TW.Stellar.Proto\"*\n\005Ass" +
+      "et\022\016\n\006issuer\030\001 \001(\t\022\021\n\talphanum4\030\002 \001(\t\"=\n" +
+      "\026OperationCreateAccount\022\023\n\013destination\030\001" +
+      " \001(\t\022\016\n\006amount\030\002 \001(\003\"_\n\020OperationPayment" +
+      "\022\023\n\013destination\030\001 \001(\t\022&\n\005asset\030\002 \001(\0132\027.T" +
+      "W.Stellar.Proto.Asset\022\016\n\006amount\030\003 \001(\003\"T\n" +
+      "\024OperationChangeTrust\022&\n\005asset\030\001 \001(\0132\027.T" +
+      "W.Stellar.Proto.Asset\022\024\n\014valid_before\030\002 " +
+      "\001(\003\"\n\n\010MemoVoid\"\030\n\010MemoText\022\014\n\004text\030\001 \001(" +
+      "\t\"\024\n\006MemoId\022\n\n\002id\030\001 \001(\003\"\030\n\010MemoHash\022\014\n\004h" +
+      "ash\030\001 \001(\014\"\311\004\n\014SigningInput\022\013\n\003fee\030\001 \001(\005\022" +
+      "\020\n\010sequence\030\002 \001(\003\022\017\n\007account\030\003 \001(\t\022\023\n\013pr" +
+      "ivate_key\030\004 \001(\014\022\022\n\npassphrase\030\005 \001(\t\022E\n\021o" +
+      "p_create_account\030\006 \001(\0132(.TW.Stellar.Prot" +
+      "o.OperationCreateAccountH\000\0228\n\nop_payment" +
+      "\030\007 \001(\0132\".TW.Stellar.Proto.OperationPayme" +
+      "ntH\000\022A\n\017op_change_trust\030\010 \001(\0132&.TW.Stell" +
+      "ar.Proto.OperationChangeTrustH\000\022/\n\tmemo_" +
+      "void\030\t \001(\0132\032.TW.Stellar.Proto.MemoVoidH\001" +
+      "\022/\n\tmemo_text\030\n \001(\0132\032.TW.Stellar.Proto.M" +
+      "emoTextH\001\022+\n\007memo_id\030\013 \001(\0132\030.TW.Stellar." +
+      "Proto.MemoIdH\001\022/\n\tmemo_hash\030\014 \001(\0132\032.TW.S" +
+      "tellar.Proto.MemoHashH\001\0226\n\020memo_return_h" +
+      "ash\030\r \001(\0132\032.TW.Stellar.Proto.MemoHashH\001B" +
+      "\021\n\017operation_oneofB\021\n\017memo_type_oneof\"\"\n" +
+      "\rSigningOutput\022\021\n\tsignature\030\001 \001(\tB\027\n\025wal" +
+      "let.core.jni.protob\006proto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
         new com.google.protobuf.Descriptors.FileDescriptor[] {
         });
-    internal_static_TW_Stellar_Proto_MemoVoid_descriptor =
+    internal_static_TW_Stellar_Proto_Asset_descriptor =
       getDescriptor().getMessageTypes().get(0);
+    internal_static_TW_Stellar_Proto_Asset_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_TW_Stellar_Proto_Asset_descriptor,
+        new java.lang.String[] { "Issuer", "Alphanum4", });
+    internal_static_TW_Stellar_Proto_OperationCreateAccount_descriptor =
+      getDescriptor().getMessageTypes().get(1);
+    internal_static_TW_Stellar_Proto_OperationCreateAccount_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_TW_Stellar_Proto_OperationCreateAccount_descriptor,
+        new java.lang.String[] { "Destination", "Amount", });
+    internal_static_TW_Stellar_Proto_OperationPayment_descriptor =
+      getDescriptor().getMessageTypes().get(2);
+    internal_static_TW_Stellar_Proto_OperationPayment_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_TW_Stellar_Proto_OperationPayment_descriptor,
+        new java.lang.String[] { "Destination", "Asset", "Amount", });
+    internal_static_TW_Stellar_Proto_OperationChangeTrust_descriptor =
+      getDescriptor().getMessageTypes().get(3);
+    internal_static_TW_Stellar_Proto_OperationChangeTrust_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_TW_Stellar_Proto_OperationChangeTrust_descriptor,
+        new java.lang.String[] { "Asset", "ValidBefore", });
+    internal_static_TW_Stellar_Proto_MemoVoid_descriptor =
+      getDescriptor().getMessageTypes().get(4);
     internal_static_TW_Stellar_Proto_MemoVoid_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_TW_Stellar_Proto_MemoVoid_descriptor,
         new java.lang.String[] { });
     internal_static_TW_Stellar_Proto_MemoText_descriptor =
-      getDescriptor().getMessageTypes().get(1);
+      getDescriptor().getMessageTypes().get(5);
     internal_static_TW_Stellar_Proto_MemoText_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_TW_Stellar_Proto_MemoText_descriptor,
         new java.lang.String[] { "Text", });
     internal_static_TW_Stellar_Proto_MemoId_descriptor =
-      getDescriptor().getMessageTypes().get(2);
+      getDescriptor().getMessageTypes().get(6);
     internal_static_TW_Stellar_Proto_MemoId_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_TW_Stellar_Proto_MemoId_descriptor,
         new java.lang.String[] { "Id", });
     internal_static_TW_Stellar_Proto_MemoHash_descriptor =
-      getDescriptor().getMessageTypes().get(3);
+      getDescriptor().getMessageTypes().get(7);
     internal_static_TW_Stellar_Proto_MemoHash_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_TW_Stellar_Proto_MemoHash_descriptor,
         new java.lang.String[] { "Hash", });
     internal_static_TW_Stellar_Proto_SigningInput_descriptor =
-      getDescriptor().getMessageTypes().get(4);
+      getDescriptor().getMessageTypes().get(8);
     internal_static_TW_Stellar_Proto_SigningInput_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_TW_Stellar_Proto_SigningInput_descriptor,
-        new java.lang.String[] { "Amount", "Fee", "Sequence", "Account", "Destination", "PrivateKey", "MemoVoid", "MemoText", "MemoId", "MemoHash", "MemoReturnHash", "OperationType", "Passphrase", "MemoTypeOneof", });
+        new java.lang.String[] { "Fee", "Sequence", "Account", "PrivateKey", "Passphrase", "OpCreateAccount", "OpPayment", "OpChangeTrust", "MemoVoid", "MemoText", "MemoId", "MemoHash", "MemoReturnHash", "OperationOneof", "MemoTypeOneof", });
     internal_static_TW_Stellar_Proto_SigningOutput_descriptor =
-      getDescriptor().getMessageTypes().get(5);
+      getDescriptor().getMessageTypes().get(9);
     internal_static_TW_Stellar_Proto_SigningOutput_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_TW_Stellar_Proto_SigningOutput_descriptor,

@@ -24,6 +24,7 @@ public final class Harmony {
      * </pre>
      *
      * <code>bytes chain_id = 1;</code>
+     * @return The chainId.
      */
     com.google.protobuf.ByteString getChainId();
 
@@ -33,15 +34,18 @@ public final class Harmony {
      * </pre>
      *
      * <code>bytes private_key = 2;</code>
+     * @return The privateKey.
      */
     com.google.protobuf.ByteString getPrivateKey();
 
     /**
      * <code>.TW.Harmony.Proto.TransactionMessage transaction_message = 3;</code>
+     * @return Whether the transactionMessage field is set.
      */
     boolean hasTransactionMessage();
     /**
      * <code>.TW.Harmony.Proto.TransactionMessage transaction_message = 3;</code>
+     * @return The transactionMessage.
      */
     wallet.core.jni.proto.Harmony.TransactionMessage getTransactionMessage();
     /**
@@ -51,10 +55,12 @@ public final class Harmony {
 
     /**
      * <code>.TW.Harmony.Proto.StakingMessage staking_message = 4;</code>
+     * @return Whether the stakingMessage field is set.
      */
     boolean hasStakingMessage();
     /**
      * <code>.TW.Harmony.Proto.StakingMessage staking_message = 4;</code>
+     * @return The stakingMessage.
      */
     wallet.core.jni.proto.Harmony.StakingMessage getStakingMessage();
     /**
@@ -71,7 +77,7 @@ public final class Harmony {
    *
    * Protobuf type {@code TW.Harmony.Proto.SigningInput}
    */
-  public  static final class SigningInput extends
+  public static final class SigningInput extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:TW.Harmony.Proto.SigningInput)
       SigningInputOrBuilder {
@@ -188,7 +194,8 @@ public final class Harmony {
     private int messageOneofCase_ = 0;
     private java.lang.Object messageOneof_;
     public enum MessageOneofCase
-        implements com.google.protobuf.Internal.EnumLite {
+        implements com.google.protobuf.Internal.EnumLite,
+            com.google.protobuf.AbstractMessage.InternalOneOfEnum {
       TRANSACTION_MESSAGE(3),
       STAKING_MESSAGE(4),
       MESSAGEONEOF_NOT_SET(0);
@@ -197,6 +204,8 @@ public final class Harmony {
         this.value = value;
       }
       /**
+       * @param value The number of the enum to look for.
+       * @return The enum associated with the given number.
        * @deprecated Use {@link #forNumber(int)} instead.
        */
       @java.lang.Deprecated
@@ -231,7 +240,9 @@ public final class Harmony {
      * </pre>
      *
      * <code>bytes chain_id = 1;</code>
+     * @return The chainId.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString getChainId() {
       return chainId_;
     }
@@ -244,7 +255,9 @@ public final class Harmony {
      * </pre>
      *
      * <code>bytes private_key = 2;</code>
+     * @return The privateKey.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString getPrivateKey() {
       return privateKey_;
     }
@@ -252,13 +265,17 @@ public final class Harmony {
     public static final int TRANSACTION_MESSAGE_FIELD_NUMBER = 3;
     /**
      * <code>.TW.Harmony.Proto.TransactionMessage transaction_message = 3;</code>
+     * @return Whether the transactionMessage field is set.
      */
+    @java.lang.Override
     public boolean hasTransactionMessage() {
       return messageOneofCase_ == 3;
     }
     /**
      * <code>.TW.Harmony.Proto.TransactionMessage transaction_message = 3;</code>
+     * @return The transactionMessage.
      */
+    @java.lang.Override
     public wallet.core.jni.proto.Harmony.TransactionMessage getTransactionMessage() {
       if (messageOneofCase_ == 3) {
          return (wallet.core.jni.proto.Harmony.TransactionMessage) messageOneof_;
@@ -268,6 +285,7 @@ public final class Harmony {
     /**
      * <code>.TW.Harmony.Proto.TransactionMessage transaction_message = 3;</code>
      */
+    @java.lang.Override
     public wallet.core.jni.proto.Harmony.TransactionMessageOrBuilder getTransactionMessageOrBuilder() {
       if (messageOneofCase_ == 3) {
          return (wallet.core.jni.proto.Harmony.TransactionMessage) messageOneof_;
@@ -278,13 +296,17 @@ public final class Harmony {
     public static final int STAKING_MESSAGE_FIELD_NUMBER = 4;
     /**
      * <code>.TW.Harmony.Proto.StakingMessage staking_message = 4;</code>
+     * @return Whether the stakingMessage field is set.
      */
+    @java.lang.Override
     public boolean hasStakingMessage() {
       return messageOneofCase_ == 4;
     }
     /**
      * <code>.TW.Harmony.Proto.StakingMessage staking_message = 4;</code>
+     * @return The stakingMessage.
      */
+    @java.lang.Override
     public wallet.core.jni.proto.Harmony.StakingMessage getStakingMessage() {
       if (messageOneofCase_ == 4) {
          return (wallet.core.jni.proto.Harmony.StakingMessage) messageOneof_;
@@ -294,6 +316,7 @@ public final class Harmony {
     /**
      * <code>.TW.Harmony.Proto.StakingMessage staking_message = 4;</code>
      */
+    @java.lang.Override
     public wallet.core.jni.proto.Harmony.StakingMessageOrBuilder getStakingMessageOrBuilder() {
       if (messageOneofCase_ == 4) {
          return (wallet.core.jni.proto.Harmony.StakingMessage) messageOneof_;
@@ -715,7 +738,9 @@ public final class Harmony {
        * </pre>
        *
        * <code>bytes chain_id = 1;</code>
+       * @return The chainId.
        */
+      @java.lang.Override
       public com.google.protobuf.ByteString getChainId() {
         return chainId_;
       }
@@ -725,6 +750,8 @@ public final class Harmony {
        * </pre>
        *
        * <code>bytes chain_id = 1;</code>
+       * @param value The chainId to set.
+       * @return This builder for chaining.
        */
       public Builder setChainId(com.google.protobuf.ByteString value) {
         if (value == null) {
@@ -741,6 +768,7 @@ public final class Harmony {
        * </pre>
        *
        * <code>bytes chain_id = 1;</code>
+       * @return This builder for chaining.
        */
       public Builder clearChainId() {
         
@@ -756,7 +784,9 @@ public final class Harmony {
        * </pre>
        *
        * <code>bytes private_key = 2;</code>
+       * @return The privateKey.
        */
+      @java.lang.Override
       public com.google.protobuf.ByteString getPrivateKey() {
         return privateKey_;
       }
@@ -766,6 +796,8 @@ public final class Harmony {
        * </pre>
        *
        * <code>bytes private_key = 2;</code>
+       * @param value The privateKey to set.
+       * @return This builder for chaining.
        */
       public Builder setPrivateKey(com.google.protobuf.ByteString value) {
         if (value == null) {
@@ -782,6 +814,7 @@ public final class Harmony {
        * </pre>
        *
        * <code>bytes private_key = 2;</code>
+       * @return This builder for chaining.
        */
       public Builder clearPrivateKey() {
         
@@ -794,13 +827,17 @@ public final class Harmony {
           wallet.core.jni.proto.Harmony.TransactionMessage, wallet.core.jni.proto.Harmony.TransactionMessage.Builder, wallet.core.jni.proto.Harmony.TransactionMessageOrBuilder> transactionMessageBuilder_;
       /**
        * <code>.TW.Harmony.Proto.TransactionMessage transaction_message = 3;</code>
+       * @return Whether the transactionMessage field is set.
        */
+      @java.lang.Override
       public boolean hasTransactionMessage() {
         return messageOneofCase_ == 3;
       }
       /**
        * <code>.TW.Harmony.Proto.TransactionMessage transaction_message = 3;</code>
+       * @return The transactionMessage.
        */
+      @java.lang.Override
       public wallet.core.jni.proto.Harmony.TransactionMessage getTransactionMessage() {
         if (transactionMessageBuilder_ == null) {
           if (messageOneofCase_ == 3) {
@@ -894,6 +931,7 @@ public final class Harmony {
       /**
        * <code>.TW.Harmony.Proto.TransactionMessage transaction_message = 3;</code>
        */
+      @java.lang.Override
       public wallet.core.jni.proto.Harmony.TransactionMessageOrBuilder getTransactionMessageOrBuilder() {
         if ((messageOneofCase_ == 3) && (transactionMessageBuilder_ != null)) {
           return transactionMessageBuilder_.getMessageOrBuilder();
@@ -930,13 +968,17 @@ public final class Harmony {
           wallet.core.jni.proto.Harmony.StakingMessage, wallet.core.jni.proto.Harmony.StakingMessage.Builder, wallet.core.jni.proto.Harmony.StakingMessageOrBuilder> stakingMessageBuilder_;
       /**
        * <code>.TW.Harmony.Proto.StakingMessage staking_message = 4;</code>
+       * @return Whether the stakingMessage field is set.
        */
+      @java.lang.Override
       public boolean hasStakingMessage() {
         return messageOneofCase_ == 4;
       }
       /**
        * <code>.TW.Harmony.Proto.StakingMessage staking_message = 4;</code>
+       * @return The stakingMessage.
        */
+      @java.lang.Override
       public wallet.core.jni.proto.Harmony.StakingMessage getStakingMessage() {
         if (stakingMessageBuilder_ == null) {
           if (messageOneofCase_ == 4) {
@@ -1030,6 +1072,7 @@ public final class Harmony {
       /**
        * <code>.TW.Harmony.Proto.StakingMessage staking_message = 4;</code>
        */
+      @java.lang.Override
       public wallet.core.jni.proto.Harmony.StakingMessageOrBuilder getStakingMessageOrBuilder() {
         if ((messageOneofCase_ == 4) && (stakingMessageBuilder_ != null)) {
           return stakingMessageBuilder_.getMessageOrBuilder();
@@ -1124,21 +1167,25 @@ public final class Harmony {
      * </pre>
      *
      * <code>bytes encoded = 1;</code>
+     * @return The encoded.
      */
     com.google.protobuf.ByteString getEncoded();
 
     /**
      * <code>bytes v = 2;</code>
+     * @return The v.
      */
     com.google.protobuf.ByteString getV();
 
     /**
      * <code>bytes r = 3;</code>
+     * @return The r.
      */
     com.google.protobuf.ByteString getR();
 
     /**
      * <code>bytes s = 4;</code>
+     * @return The s.
      */
     com.google.protobuf.ByteString getS();
   }
@@ -1149,7 +1196,7 @@ public final class Harmony {
    *
    * Protobuf type {@code TW.Harmony.Proto.SigningOutput}
    */
-  public  static final class SigningOutput extends
+  public static final class SigningOutput extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:TW.Harmony.Proto.SigningOutput)
       SigningOutputOrBuilder {
@@ -1255,7 +1302,9 @@ public final class Harmony {
      * </pre>
      *
      * <code>bytes encoded = 1;</code>
+     * @return The encoded.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString getEncoded() {
       return encoded_;
     }
@@ -1264,7 +1313,9 @@ public final class Harmony {
     private com.google.protobuf.ByteString v_;
     /**
      * <code>bytes v = 2;</code>
+     * @return The v.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString getV() {
       return v_;
     }
@@ -1273,7 +1324,9 @@ public final class Harmony {
     private com.google.protobuf.ByteString r_;
     /**
      * <code>bytes r = 3;</code>
+     * @return The r.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString getR() {
       return r_;
     }
@@ -1282,7 +1335,9 @@ public final class Harmony {
     private com.google.protobuf.ByteString s_;
     /**
      * <code>bytes s = 4;</code>
+     * @return The s.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString getS() {
       return s_;
     }
@@ -1651,7 +1706,9 @@ public final class Harmony {
        * </pre>
        *
        * <code>bytes encoded = 1;</code>
+       * @return The encoded.
        */
+      @java.lang.Override
       public com.google.protobuf.ByteString getEncoded() {
         return encoded_;
       }
@@ -1661,6 +1718,8 @@ public final class Harmony {
        * </pre>
        *
        * <code>bytes encoded = 1;</code>
+       * @param value The encoded to set.
+       * @return This builder for chaining.
        */
       public Builder setEncoded(com.google.protobuf.ByteString value) {
         if (value == null) {
@@ -1677,6 +1736,7 @@ public final class Harmony {
        * </pre>
        *
        * <code>bytes encoded = 1;</code>
+       * @return This builder for chaining.
        */
       public Builder clearEncoded() {
         
@@ -1688,12 +1748,16 @@ public final class Harmony {
       private com.google.protobuf.ByteString v_ = com.google.protobuf.ByteString.EMPTY;
       /**
        * <code>bytes v = 2;</code>
+       * @return The v.
        */
+      @java.lang.Override
       public com.google.protobuf.ByteString getV() {
         return v_;
       }
       /**
        * <code>bytes v = 2;</code>
+       * @param value The v to set.
+       * @return This builder for chaining.
        */
       public Builder setV(com.google.protobuf.ByteString value) {
         if (value == null) {
@@ -1706,6 +1770,7 @@ public final class Harmony {
       }
       /**
        * <code>bytes v = 2;</code>
+       * @return This builder for chaining.
        */
       public Builder clearV() {
         
@@ -1717,12 +1782,16 @@ public final class Harmony {
       private com.google.protobuf.ByteString r_ = com.google.protobuf.ByteString.EMPTY;
       /**
        * <code>bytes r = 3;</code>
+       * @return The r.
        */
+      @java.lang.Override
       public com.google.protobuf.ByteString getR() {
         return r_;
       }
       /**
        * <code>bytes r = 3;</code>
+       * @param value The r to set.
+       * @return This builder for chaining.
        */
       public Builder setR(com.google.protobuf.ByteString value) {
         if (value == null) {
@@ -1735,6 +1804,7 @@ public final class Harmony {
       }
       /**
        * <code>bytes r = 3;</code>
+       * @return This builder for chaining.
        */
       public Builder clearR() {
         
@@ -1746,12 +1816,16 @@ public final class Harmony {
       private com.google.protobuf.ByteString s_ = com.google.protobuf.ByteString.EMPTY;
       /**
        * <code>bytes s = 4;</code>
+       * @return The s.
        */
+      @java.lang.Override
       public com.google.protobuf.ByteString getS() {
         return s_;
       }
       /**
        * <code>bytes s = 4;</code>
+       * @param value The s to set.
+       * @return This builder for chaining.
        */
       public Builder setS(com.google.protobuf.ByteString value) {
         if (value == null) {
@@ -1764,6 +1838,7 @@ public final class Harmony {
       }
       /**
        * <code>bytes s = 4;</code>
+       * @return This builder for chaining.
        */
       public Builder clearS() {
         
@@ -1834,6 +1909,7 @@ public final class Harmony {
      * </pre>
      *
      * <code>bytes nonce = 1;</code>
+     * @return The nonce.
      */
     com.google.protobuf.ByteString getNonce();
 
@@ -1843,6 +1919,7 @@ public final class Harmony {
      * </pre>
      *
      * <code>bytes gas_price = 2;</code>
+     * @return The gasPrice.
      */
     com.google.protobuf.ByteString getGasPrice();
 
@@ -1852,6 +1929,7 @@ public final class Harmony {
      * </pre>
      *
      * <code>bytes gas_limit = 3;</code>
+     * @return The gasLimit.
      */
     com.google.protobuf.ByteString getGasLimit();
 
@@ -1861,6 +1939,7 @@ public final class Harmony {
      * </pre>
      *
      * <code>string to_address = 4;</code>
+     * @return The toAddress.
      */
     java.lang.String getToAddress();
     /**
@@ -1869,6 +1948,7 @@ public final class Harmony {
      * </pre>
      *
      * <code>string to_address = 4;</code>
+     * @return The bytes for toAddress.
      */
     com.google.protobuf.ByteString
         getToAddressBytes();
@@ -1879,6 +1959,7 @@ public final class Harmony {
      * </pre>
      *
      * <code>bytes amount = 5;</code>
+     * @return The amount.
      */
     com.google.protobuf.ByteString getAmount();
 
@@ -1888,6 +1969,7 @@ public final class Harmony {
      * </pre>
      *
      * <code>bytes payload = 6;</code>
+     * @return The payload.
      */
     com.google.protobuf.ByteString getPayload();
 
@@ -1897,6 +1979,7 @@ public final class Harmony {
      * </pre>
      *
      * <code>bytes from_shard_id = 7;</code>
+     * @return The fromShardId.
      */
     com.google.protobuf.ByteString getFromShardId();
 
@@ -1906,13 +1989,14 @@ public final class Harmony {
      * </pre>
      *
      * <code>bytes to_shard_id = 8;</code>
+     * @return The toShardId.
      */
     com.google.protobuf.ByteString getToShardId();
   }
   /**
    * Protobuf type {@code TW.Harmony.Proto.TransactionMessage}
    */
-  public  static final class TransactionMessage extends
+  public static final class TransactionMessage extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:TW.Harmony.Proto.TransactionMessage)
       TransactionMessageOrBuilder {
@@ -2043,7 +2127,9 @@ public final class Harmony {
      * </pre>
      *
      * <code>bytes nonce = 1;</code>
+     * @return The nonce.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString getNonce() {
       return nonce_;
     }
@@ -2056,7 +2142,9 @@ public final class Harmony {
      * </pre>
      *
      * <code>bytes gas_price = 2;</code>
+     * @return The gasPrice.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString getGasPrice() {
       return gasPrice_;
     }
@@ -2069,7 +2157,9 @@ public final class Harmony {
      * </pre>
      *
      * <code>bytes gas_limit = 3;</code>
+     * @return The gasLimit.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString getGasLimit() {
       return gasLimit_;
     }
@@ -2082,7 +2172,9 @@ public final class Harmony {
      * </pre>
      *
      * <code>string to_address = 4;</code>
+     * @return The toAddress.
      */
+    @java.lang.Override
     public java.lang.String getToAddress() {
       java.lang.Object ref = toAddress_;
       if (ref instanceof java.lang.String) {
@@ -2101,7 +2193,9 @@ public final class Harmony {
      * </pre>
      *
      * <code>string to_address = 4;</code>
+     * @return The bytes for toAddress.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString
         getToAddressBytes() {
       java.lang.Object ref = toAddress_;
@@ -2124,7 +2218,9 @@ public final class Harmony {
      * </pre>
      *
      * <code>bytes amount = 5;</code>
+     * @return The amount.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString getAmount() {
       return amount_;
     }
@@ -2137,7 +2233,9 @@ public final class Harmony {
      * </pre>
      *
      * <code>bytes payload = 6;</code>
+     * @return The payload.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString getPayload() {
       return payload_;
     }
@@ -2150,7 +2248,9 @@ public final class Harmony {
      * </pre>
      *
      * <code>bytes from_shard_id = 7;</code>
+     * @return The fromShardId.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString getFromShardId() {
       return fromShardId_;
     }
@@ -2163,7 +2263,9 @@ public final class Harmony {
      * </pre>
      *
      * <code>bytes to_shard_id = 8;</code>
+     * @return The toShardId.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString getToShardId() {
       return toShardId_;
     }
@@ -2596,7 +2698,9 @@ public final class Harmony {
        * </pre>
        *
        * <code>bytes nonce = 1;</code>
+       * @return The nonce.
        */
+      @java.lang.Override
       public com.google.protobuf.ByteString getNonce() {
         return nonce_;
       }
@@ -2606,6 +2710,8 @@ public final class Harmony {
        * </pre>
        *
        * <code>bytes nonce = 1;</code>
+       * @param value The nonce to set.
+       * @return This builder for chaining.
        */
       public Builder setNonce(com.google.protobuf.ByteString value) {
         if (value == null) {
@@ -2622,6 +2728,7 @@ public final class Harmony {
        * </pre>
        *
        * <code>bytes nonce = 1;</code>
+       * @return This builder for chaining.
        */
       public Builder clearNonce() {
         
@@ -2637,7 +2744,9 @@ public final class Harmony {
        * </pre>
        *
        * <code>bytes gas_price = 2;</code>
+       * @return The gasPrice.
        */
+      @java.lang.Override
       public com.google.protobuf.ByteString getGasPrice() {
         return gasPrice_;
       }
@@ -2647,6 +2756,8 @@ public final class Harmony {
        * </pre>
        *
        * <code>bytes gas_price = 2;</code>
+       * @param value The gasPrice to set.
+       * @return This builder for chaining.
        */
       public Builder setGasPrice(com.google.protobuf.ByteString value) {
         if (value == null) {
@@ -2663,6 +2774,7 @@ public final class Harmony {
        * </pre>
        *
        * <code>bytes gas_price = 2;</code>
+       * @return This builder for chaining.
        */
       public Builder clearGasPrice() {
         
@@ -2678,7 +2790,9 @@ public final class Harmony {
        * </pre>
        *
        * <code>bytes gas_limit = 3;</code>
+       * @return The gasLimit.
        */
+      @java.lang.Override
       public com.google.protobuf.ByteString getGasLimit() {
         return gasLimit_;
       }
@@ -2688,6 +2802,8 @@ public final class Harmony {
        * </pre>
        *
        * <code>bytes gas_limit = 3;</code>
+       * @param value The gasLimit to set.
+       * @return This builder for chaining.
        */
       public Builder setGasLimit(com.google.protobuf.ByteString value) {
         if (value == null) {
@@ -2704,6 +2820,7 @@ public final class Harmony {
        * </pre>
        *
        * <code>bytes gas_limit = 3;</code>
+       * @return This builder for chaining.
        */
       public Builder clearGasLimit() {
         
@@ -2719,6 +2836,7 @@ public final class Harmony {
        * </pre>
        *
        * <code>string to_address = 4;</code>
+       * @return The toAddress.
        */
       public java.lang.String getToAddress() {
         java.lang.Object ref = toAddress_;
@@ -2738,6 +2856,7 @@ public final class Harmony {
        * </pre>
        *
        * <code>string to_address = 4;</code>
+       * @return The bytes for toAddress.
        */
       public com.google.protobuf.ByteString
           getToAddressBytes() {
@@ -2758,6 +2877,8 @@ public final class Harmony {
        * </pre>
        *
        * <code>string to_address = 4;</code>
+       * @param value The toAddress to set.
+       * @return This builder for chaining.
        */
       public Builder setToAddress(
           java.lang.String value) {
@@ -2775,6 +2896,7 @@ public final class Harmony {
        * </pre>
        *
        * <code>string to_address = 4;</code>
+       * @return This builder for chaining.
        */
       public Builder clearToAddress() {
         
@@ -2788,6 +2910,8 @@ public final class Harmony {
        * </pre>
        *
        * <code>string to_address = 4;</code>
+       * @param value The bytes for toAddress to set.
+       * @return This builder for chaining.
        */
       public Builder setToAddressBytes(
           com.google.protobuf.ByteString value) {
@@ -2808,7 +2932,9 @@ public final class Harmony {
        * </pre>
        *
        * <code>bytes amount = 5;</code>
+       * @return The amount.
        */
+      @java.lang.Override
       public com.google.protobuf.ByteString getAmount() {
         return amount_;
       }
@@ -2818,6 +2944,8 @@ public final class Harmony {
        * </pre>
        *
        * <code>bytes amount = 5;</code>
+       * @param value The amount to set.
+       * @return This builder for chaining.
        */
       public Builder setAmount(com.google.protobuf.ByteString value) {
         if (value == null) {
@@ -2834,6 +2962,7 @@ public final class Harmony {
        * </pre>
        *
        * <code>bytes amount = 5;</code>
+       * @return This builder for chaining.
        */
       public Builder clearAmount() {
         
@@ -2849,7 +2978,9 @@ public final class Harmony {
        * </pre>
        *
        * <code>bytes payload = 6;</code>
+       * @return The payload.
        */
+      @java.lang.Override
       public com.google.protobuf.ByteString getPayload() {
         return payload_;
       }
@@ -2859,6 +2990,8 @@ public final class Harmony {
        * </pre>
        *
        * <code>bytes payload = 6;</code>
+       * @param value The payload to set.
+       * @return This builder for chaining.
        */
       public Builder setPayload(com.google.protobuf.ByteString value) {
         if (value == null) {
@@ -2875,6 +3008,7 @@ public final class Harmony {
        * </pre>
        *
        * <code>bytes payload = 6;</code>
+       * @return This builder for chaining.
        */
       public Builder clearPayload() {
         
@@ -2890,7 +3024,9 @@ public final class Harmony {
        * </pre>
        *
        * <code>bytes from_shard_id = 7;</code>
+       * @return The fromShardId.
        */
+      @java.lang.Override
       public com.google.protobuf.ByteString getFromShardId() {
         return fromShardId_;
       }
@@ -2900,6 +3036,8 @@ public final class Harmony {
        * </pre>
        *
        * <code>bytes from_shard_id = 7;</code>
+       * @param value The fromShardId to set.
+       * @return This builder for chaining.
        */
       public Builder setFromShardId(com.google.protobuf.ByteString value) {
         if (value == null) {
@@ -2916,6 +3054,7 @@ public final class Harmony {
        * </pre>
        *
        * <code>bytes from_shard_id = 7;</code>
+       * @return This builder for chaining.
        */
       public Builder clearFromShardId() {
         
@@ -2931,7 +3070,9 @@ public final class Harmony {
        * </pre>
        *
        * <code>bytes to_shard_id = 8;</code>
+       * @return The toShardId.
        */
+      @java.lang.Override
       public com.google.protobuf.ByteString getToShardId() {
         return toShardId_;
       }
@@ -2941,6 +3082,8 @@ public final class Harmony {
        * </pre>
        *
        * <code>bytes to_shard_id = 8;</code>
+       * @param value The toShardId to set.
+       * @return This builder for chaining.
        */
       public Builder setToShardId(com.google.protobuf.ByteString value) {
         if (value == null) {
@@ -2957,6 +3100,7 @@ public final class Harmony {
        * </pre>
        *
        * <code>bytes to_shard_id = 8;</code>
+       * @return This builder for chaining.
        */
       public Builder clearToShardId() {
         
@@ -3023,10 +3167,12 @@ public final class Harmony {
 
     /**
      * <code>.TW.Harmony.Proto.DirectiveCreateValidator create_validator_message = 1;</code>
+     * @return Whether the createValidatorMessage field is set.
      */
     boolean hasCreateValidatorMessage();
     /**
      * <code>.TW.Harmony.Proto.DirectiveCreateValidator create_validator_message = 1;</code>
+     * @return The createValidatorMessage.
      */
     wallet.core.jni.proto.Harmony.DirectiveCreateValidator getCreateValidatorMessage();
     /**
@@ -3036,10 +3182,12 @@ public final class Harmony {
 
     /**
      * <code>.TW.Harmony.Proto.DirectiveEditValidator edit_validator_message = 2;</code>
+     * @return Whether the editValidatorMessage field is set.
      */
     boolean hasEditValidatorMessage();
     /**
      * <code>.TW.Harmony.Proto.DirectiveEditValidator edit_validator_message = 2;</code>
+     * @return The editValidatorMessage.
      */
     wallet.core.jni.proto.Harmony.DirectiveEditValidator getEditValidatorMessage();
     /**
@@ -3049,10 +3197,12 @@ public final class Harmony {
 
     /**
      * <code>.TW.Harmony.Proto.DirectiveDelegate delegate_message = 3;</code>
+     * @return Whether the delegateMessage field is set.
      */
     boolean hasDelegateMessage();
     /**
      * <code>.TW.Harmony.Proto.DirectiveDelegate delegate_message = 3;</code>
+     * @return The delegateMessage.
      */
     wallet.core.jni.proto.Harmony.DirectiveDelegate getDelegateMessage();
     /**
@@ -3062,10 +3212,12 @@ public final class Harmony {
 
     /**
      * <code>.TW.Harmony.Proto.DirectiveUndelegate undelegate_message = 4;</code>
+     * @return Whether the undelegateMessage field is set.
      */
     boolean hasUndelegateMessage();
     /**
      * <code>.TW.Harmony.Proto.DirectiveUndelegate undelegate_message = 4;</code>
+     * @return The undelegateMessage.
      */
     wallet.core.jni.proto.Harmony.DirectiveUndelegate getUndelegateMessage();
     /**
@@ -3075,10 +3227,12 @@ public final class Harmony {
 
     /**
      * <code>.TW.Harmony.Proto.DirectiveCollectRewards collect_rewards = 5;</code>
+     * @return Whether the collectRewards field is set.
      */
     boolean hasCollectRewards();
     /**
      * <code>.TW.Harmony.Proto.DirectiveCollectRewards collect_rewards = 5;</code>
+     * @return The collectRewards.
      */
     wallet.core.jni.proto.Harmony.DirectiveCollectRewards getCollectRewards();
     /**
@@ -3092,6 +3246,7 @@ public final class Harmony {
      * </pre>
      *
      * <code>bytes nonce = 6;</code>
+     * @return The nonce.
      */
     com.google.protobuf.ByteString getNonce();
 
@@ -3101,6 +3256,7 @@ public final class Harmony {
      * </pre>
      *
      * <code>bytes gas_price = 7;</code>
+     * @return The gasPrice.
      */
     com.google.protobuf.ByteString getGasPrice();
 
@@ -3110,6 +3266,7 @@ public final class Harmony {
      * </pre>
      *
      * <code>bytes gas_limit = 8;</code>
+     * @return The gasLimit.
      */
     com.google.protobuf.ByteString getGasLimit();
 
@@ -3118,7 +3275,7 @@ public final class Harmony {
   /**
    * Protobuf type {@code TW.Harmony.Proto.StakingMessage}
    */
-  public  static final class StakingMessage extends
+  public static final class StakingMessage extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:TW.Harmony.Proto.StakingMessage)
       StakingMessageOrBuilder {
@@ -3283,7 +3440,8 @@ public final class Harmony {
     private int stakeMsgCase_ = 0;
     private java.lang.Object stakeMsg_;
     public enum StakeMsgCase
-        implements com.google.protobuf.Internal.EnumLite {
+        implements com.google.protobuf.Internal.EnumLite,
+            com.google.protobuf.AbstractMessage.InternalOneOfEnum {
       CREATE_VALIDATOR_MESSAGE(1),
       EDIT_VALIDATOR_MESSAGE(2),
       DELEGATE_MESSAGE(3),
@@ -3295,6 +3453,8 @@ public final class Harmony {
         this.value = value;
       }
       /**
+       * @param value The number of the enum to look for.
+       * @return The enum associated with the given number.
        * @deprecated Use {@link #forNumber(int)} instead.
        */
       @java.lang.Deprecated
@@ -3327,13 +3487,17 @@ public final class Harmony {
     public static final int CREATE_VALIDATOR_MESSAGE_FIELD_NUMBER = 1;
     /**
      * <code>.TW.Harmony.Proto.DirectiveCreateValidator create_validator_message = 1;</code>
+     * @return Whether the createValidatorMessage field is set.
      */
+    @java.lang.Override
     public boolean hasCreateValidatorMessage() {
       return stakeMsgCase_ == 1;
     }
     /**
      * <code>.TW.Harmony.Proto.DirectiveCreateValidator create_validator_message = 1;</code>
+     * @return The createValidatorMessage.
      */
+    @java.lang.Override
     public wallet.core.jni.proto.Harmony.DirectiveCreateValidator getCreateValidatorMessage() {
       if (stakeMsgCase_ == 1) {
          return (wallet.core.jni.proto.Harmony.DirectiveCreateValidator) stakeMsg_;
@@ -3343,6 +3507,7 @@ public final class Harmony {
     /**
      * <code>.TW.Harmony.Proto.DirectiveCreateValidator create_validator_message = 1;</code>
      */
+    @java.lang.Override
     public wallet.core.jni.proto.Harmony.DirectiveCreateValidatorOrBuilder getCreateValidatorMessageOrBuilder() {
       if (stakeMsgCase_ == 1) {
          return (wallet.core.jni.proto.Harmony.DirectiveCreateValidator) stakeMsg_;
@@ -3353,13 +3518,17 @@ public final class Harmony {
     public static final int EDIT_VALIDATOR_MESSAGE_FIELD_NUMBER = 2;
     /**
      * <code>.TW.Harmony.Proto.DirectiveEditValidator edit_validator_message = 2;</code>
+     * @return Whether the editValidatorMessage field is set.
      */
+    @java.lang.Override
     public boolean hasEditValidatorMessage() {
       return stakeMsgCase_ == 2;
     }
     /**
      * <code>.TW.Harmony.Proto.DirectiveEditValidator edit_validator_message = 2;</code>
+     * @return The editValidatorMessage.
      */
+    @java.lang.Override
     public wallet.core.jni.proto.Harmony.DirectiveEditValidator getEditValidatorMessage() {
       if (stakeMsgCase_ == 2) {
          return (wallet.core.jni.proto.Harmony.DirectiveEditValidator) stakeMsg_;
@@ -3369,6 +3538,7 @@ public final class Harmony {
     /**
      * <code>.TW.Harmony.Proto.DirectiveEditValidator edit_validator_message = 2;</code>
      */
+    @java.lang.Override
     public wallet.core.jni.proto.Harmony.DirectiveEditValidatorOrBuilder getEditValidatorMessageOrBuilder() {
       if (stakeMsgCase_ == 2) {
          return (wallet.core.jni.proto.Harmony.DirectiveEditValidator) stakeMsg_;
@@ -3379,13 +3549,17 @@ public final class Harmony {
     public static final int DELEGATE_MESSAGE_FIELD_NUMBER = 3;
     /**
      * <code>.TW.Harmony.Proto.DirectiveDelegate delegate_message = 3;</code>
+     * @return Whether the delegateMessage field is set.
      */
+    @java.lang.Override
     public boolean hasDelegateMessage() {
       return stakeMsgCase_ == 3;
     }
     /**
      * <code>.TW.Harmony.Proto.DirectiveDelegate delegate_message = 3;</code>
+     * @return The delegateMessage.
      */
+    @java.lang.Override
     public wallet.core.jni.proto.Harmony.DirectiveDelegate getDelegateMessage() {
       if (stakeMsgCase_ == 3) {
          return (wallet.core.jni.proto.Harmony.DirectiveDelegate) stakeMsg_;
@@ -3395,6 +3569,7 @@ public final class Harmony {
     /**
      * <code>.TW.Harmony.Proto.DirectiveDelegate delegate_message = 3;</code>
      */
+    @java.lang.Override
     public wallet.core.jni.proto.Harmony.DirectiveDelegateOrBuilder getDelegateMessageOrBuilder() {
       if (stakeMsgCase_ == 3) {
          return (wallet.core.jni.proto.Harmony.DirectiveDelegate) stakeMsg_;
@@ -3405,13 +3580,17 @@ public final class Harmony {
     public static final int UNDELEGATE_MESSAGE_FIELD_NUMBER = 4;
     /**
      * <code>.TW.Harmony.Proto.DirectiveUndelegate undelegate_message = 4;</code>
+     * @return Whether the undelegateMessage field is set.
      */
+    @java.lang.Override
     public boolean hasUndelegateMessage() {
       return stakeMsgCase_ == 4;
     }
     /**
      * <code>.TW.Harmony.Proto.DirectiveUndelegate undelegate_message = 4;</code>
+     * @return The undelegateMessage.
      */
+    @java.lang.Override
     public wallet.core.jni.proto.Harmony.DirectiveUndelegate getUndelegateMessage() {
       if (stakeMsgCase_ == 4) {
          return (wallet.core.jni.proto.Harmony.DirectiveUndelegate) stakeMsg_;
@@ -3421,6 +3600,7 @@ public final class Harmony {
     /**
      * <code>.TW.Harmony.Proto.DirectiveUndelegate undelegate_message = 4;</code>
      */
+    @java.lang.Override
     public wallet.core.jni.proto.Harmony.DirectiveUndelegateOrBuilder getUndelegateMessageOrBuilder() {
       if (stakeMsgCase_ == 4) {
          return (wallet.core.jni.proto.Harmony.DirectiveUndelegate) stakeMsg_;
@@ -3431,13 +3611,17 @@ public final class Harmony {
     public static final int COLLECT_REWARDS_FIELD_NUMBER = 5;
     /**
      * <code>.TW.Harmony.Proto.DirectiveCollectRewards collect_rewards = 5;</code>
+     * @return Whether the collectRewards field is set.
      */
+    @java.lang.Override
     public boolean hasCollectRewards() {
       return stakeMsgCase_ == 5;
     }
     /**
      * <code>.TW.Harmony.Proto.DirectiveCollectRewards collect_rewards = 5;</code>
+     * @return The collectRewards.
      */
+    @java.lang.Override
     public wallet.core.jni.proto.Harmony.DirectiveCollectRewards getCollectRewards() {
       if (stakeMsgCase_ == 5) {
          return (wallet.core.jni.proto.Harmony.DirectiveCollectRewards) stakeMsg_;
@@ -3447,6 +3631,7 @@ public final class Harmony {
     /**
      * <code>.TW.Harmony.Proto.DirectiveCollectRewards collect_rewards = 5;</code>
      */
+    @java.lang.Override
     public wallet.core.jni.proto.Harmony.DirectiveCollectRewardsOrBuilder getCollectRewardsOrBuilder() {
       if (stakeMsgCase_ == 5) {
          return (wallet.core.jni.proto.Harmony.DirectiveCollectRewards) stakeMsg_;
@@ -3462,7 +3647,9 @@ public final class Harmony {
      * </pre>
      *
      * <code>bytes nonce = 6;</code>
+     * @return The nonce.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString getNonce() {
       return nonce_;
     }
@@ -3475,7 +3662,9 @@ public final class Harmony {
      * </pre>
      *
      * <code>bytes gas_price = 7;</code>
+     * @return The gasPrice.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString getGasPrice() {
       return gasPrice_;
     }
@@ -3488,7 +3677,9 @@ public final class Harmony {
      * </pre>
      *
      * <code>bytes gas_limit = 8;</code>
+     * @return The gasLimit.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString getGasLimit() {
       return gasLimit_;
     }
@@ -3995,13 +4186,17 @@ public final class Harmony {
           wallet.core.jni.proto.Harmony.DirectiveCreateValidator, wallet.core.jni.proto.Harmony.DirectiveCreateValidator.Builder, wallet.core.jni.proto.Harmony.DirectiveCreateValidatorOrBuilder> createValidatorMessageBuilder_;
       /**
        * <code>.TW.Harmony.Proto.DirectiveCreateValidator create_validator_message = 1;</code>
+       * @return Whether the createValidatorMessage field is set.
        */
+      @java.lang.Override
       public boolean hasCreateValidatorMessage() {
         return stakeMsgCase_ == 1;
       }
       /**
        * <code>.TW.Harmony.Proto.DirectiveCreateValidator create_validator_message = 1;</code>
+       * @return The createValidatorMessage.
        */
+      @java.lang.Override
       public wallet.core.jni.proto.Harmony.DirectiveCreateValidator getCreateValidatorMessage() {
         if (createValidatorMessageBuilder_ == null) {
           if (stakeMsgCase_ == 1) {
@@ -4095,6 +4290,7 @@ public final class Harmony {
       /**
        * <code>.TW.Harmony.Proto.DirectiveCreateValidator create_validator_message = 1;</code>
        */
+      @java.lang.Override
       public wallet.core.jni.proto.Harmony.DirectiveCreateValidatorOrBuilder getCreateValidatorMessageOrBuilder() {
         if ((stakeMsgCase_ == 1) && (createValidatorMessageBuilder_ != null)) {
           return createValidatorMessageBuilder_.getMessageOrBuilder();
@@ -4131,13 +4327,17 @@ public final class Harmony {
           wallet.core.jni.proto.Harmony.DirectiveEditValidator, wallet.core.jni.proto.Harmony.DirectiveEditValidator.Builder, wallet.core.jni.proto.Harmony.DirectiveEditValidatorOrBuilder> editValidatorMessageBuilder_;
       /**
        * <code>.TW.Harmony.Proto.DirectiveEditValidator edit_validator_message = 2;</code>
+       * @return Whether the editValidatorMessage field is set.
        */
+      @java.lang.Override
       public boolean hasEditValidatorMessage() {
         return stakeMsgCase_ == 2;
       }
       /**
        * <code>.TW.Harmony.Proto.DirectiveEditValidator edit_validator_message = 2;</code>
+       * @return The editValidatorMessage.
        */
+      @java.lang.Override
       public wallet.core.jni.proto.Harmony.DirectiveEditValidator getEditValidatorMessage() {
         if (editValidatorMessageBuilder_ == null) {
           if (stakeMsgCase_ == 2) {
@@ -4231,6 +4431,7 @@ public final class Harmony {
       /**
        * <code>.TW.Harmony.Proto.DirectiveEditValidator edit_validator_message = 2;</code>
        */
+      @java.lang.Override
       public wallet.core.jni.proto.Harmony.DirectiveEditValidatorOrBuilder getEditValidatorMessageOrBuilder() {
         if ((stakeMsgCase_ == 2) && (editValidatorMessageBuilder_ != null)) {
           return editValidatorMessageBuilder_.getMessageOrBuilder();
@@ -4267,13 +4468,17 @@ public final class Harmony {
           wallet.core.jni.proto.Harmony.DirectiveDelegate, wallet.core.jni.proto.Harmony.DirectiveDelegate.Builder, wallet.core.jni.proto.Harmony.DirectiveDelegateOrBuilder> delegateMessageBuilder_;
       /**
        * <code>.TW.Harmony.Proto.DirectiveDelegate delegate_message = 3;</code>
+       * @return Whether the delegateMessage field is set.
        */
+      @java.lang.Override
       public boolean hasDelegateMessage() {
         return stakeMsgCase_ == 3;
       }
       /**
        * <code>.TW.Harmony.Proto.DirectiveDelegate delegate_message = 3;</code>
+       * @return The delegateMessage.
        */
+      @java.lang.Override
       public wallet.core.jni.proto.Harmony.DirectiveDelegate getDelegateMessage() {
         if (delegateMessageBuilder_ == null) {
           if (stakeMsgCase_ == 3) {
@@ -4367,6 +4572,7 @@ public final class Harmony {
       /**
        * <code>.TW.Harmony.Proto.DirectiveDelegate delegate_message = 3;</code>
        */
+      @java.lang.Override
       public wallet.core.jni.proto.Harmony.DirectiveDelegateOrBuilder getDelegateMessageOrBuilder() {
         if ((stakeMsgCase_ == 3) && (delegateMessageBuilder_ != null)) {
           return delegateMessageBuilder_.getMessageOrBuilder();
@@ -4403,13 +4609,17 @@ public final class Harmony {
           wallet.core.jni.proto.Harmony.DirectiveUndelegate, wallet.core.jni.proto.Harmony.DirectiveUndelegate.Builder, wallet.core.jni.proto.Harmony.DirectiveUndelegateOrBuilder> undelegateMessageBuilder_;
       /**
        * <code>.TW.Harmony.Proto.DirectiveUndelegate undelegate_message = 4;</code>
+       * @return Whether the undelegateMessage field is set.
        */
+      @java.lang.Override
       public boolean hasUndelegateMessage() {
         return stakeMsgCase_ == 4;
       }
       /**
        * <code>.TW.Harmony.Proto.DirectiveUndelegate undelegate_message = 4;</code>
+       * @return The undelegateMessage.
        */
+      @java.lang.Override
       public wallet.core.jni.proto.Harmony.DirectiveUndelegate getUndelegateMessage() {
         if (undelegateMessageBuilder_ == null) {
           if (stakeMsgCase_ == 4) {
@@ -4503,6 +4713,7 @@ public final class Harmony {
       /**
        * <code>.TW.Harmony.Proto.DirectiveUndelegate undelegate_message = 4;</code>
        */
+      @java.lang.Override
       public wallet.core.jni.proto.Harmony.DirectiveUndelegateOrBuilder getUndelegateMessageOrBuilder() {
         if ((stakeMsgCase_ == 4) && (undelegateMessageBuilder_ != null)) {
           return undelegateMessageBuilder_.getMessageOrBuilder();
@@ -4539,13 +4750,17 @@ public final class Harmony {
           wallet.core.jni.proto.Harmony.DirectiveCollectRewards, wallet.core.jni.proto.Harmony.DirectiveCollectRewards.Builder, wallet.core.jni.proto.Harmony.DirectiveCollectRewardsOrBuilder> collectRewardsBuilder_;
       /**
        * <code>.TW.Harmony.Proto.DirectiveCollectRewards collect_rewards = 5;</code>
+       * @return Whether the collectRewards field is set.
        */
+      @java.lang.Override
       public boolean hasCollectRewards() {
         return stakeMsgCase_ == 5;
       }
       /**
        * <code>.TW.Harmony.Proto.DirectiveCollectRewards collect_rewards = 5;</code>
+       * @return The collectRewards.
        */
+      @java.lang.Override
       public wallet.core.jni.proto.Harmony.DirectiveCollectRewards getCollectRewards() {
         if (collectRewardsBuilder_ == null) {
           if (stakeMsgCase_ == 5) {
@@ -4639,6 +4854,7 @@ public final class Harmony {
       /**
        * <code>.TW.Harmony.Proto.DirectiveCollectRewards collect_rewards = 5;</code>
        */
+      @java.lang.Override
       public wallet.core.jni.proto.Harmony.DirectiveCollectRewardsOrBuilder getCollectRewardsOrBuilder() {
         if ((stakeMsgCase_ == 5) && (collectRewardsBuilder_ != null)) {
           return collectRewardsBuilder_.getMessageOrBuilder();
@@ -4678,7 +4894,9 @@ public final class Harmony {
        * </pre>
        *
        * <code>bytes nonce = 6;</code>
+       * @return The nonce.
        */
+      @java.lang.Override
       public com.google.protobuf.ByteString getNonce() {
         return nonce_;
       }
@@ -4688,6 +4906,8 @@ public final class Harmony {
        * </pre>
        *
        * <code>bytes nonce = 6;</code>
+       * @param value The nonce to set.
+       * @return This builder for chaining.
        */
       public Builder setNonce(com.google.protobuf.ByteString value) {
         if (value == null) {
@@ -4704,6 +4924,7 @@ public final class Harmony {
        * </pre>
        *
        * <code>bytes nonce = 6;</code>
+       * @return This builder for chaining.
        */
       public Builder clearNonce() {
         
@@ -4719,7 +4940,9 @@ public final class Harmony {
        * </pre>
        *
        * <code>bytes gas_price = 7;</code>
+       * @return The gasPrice.
        */
+      @java.lang.Override
       public com.google.protobuf.ByteString getGasPrice() {
         return gasPrice_;
       }
@@ -4729,6 +4952,8 @@ public final class Harmony {
        * </pre>
        *
        * <code>bytes gas_price = 7;</code>
+       * @param value The gasPrice to set.
+       * @return This builder for chaining.
        */
       public Builder setGasPrice(com.google.protobuf.ByteString value) {
         if (value == null) {
@@ -4745,6 +4970,7 @@ public final class Harmony {
        * </pre>
        *
        * <code>bytes gas_price = 7;</code>
+       * @return This builder for chaining.
        */
       public Builder clearGasPrice() {
         
@@ -4760,7 +4986,9 @@ public final class Harmony {
        * </pre>
        *
        * <code>bytes gas_limit = 8;</code>
+       * @return The gasLimit.
        */
+      @java.lang.Override
       public com.google.protobuf.ByteString getGasLimit() {
         return gasLimit_;
       }
@@ -4770,6 +4998,8 @@ public final class Harmony {
        * </pre>
        *
        * <code>bytes gas_limit = 8;</code>
+       * @param value The gasLimit to set.
+       * @return This builder for chaining.
        */
       public Builder setGasLimit(com.google.protobuf.ByteString value) {
         if (value == null) {
@@ -4786,6 +5016,7 @@ public final class Harmony {
        * </pre>
        *
        * <code>bytes gas_limit = 8;</code>
+       * @return This builder for chaining.
        */
       public Builder clearGasLimit() {
         
@@ -4852,50 +5083,60 @@ public final class Harmony {
 
     /**
      * <code>string name = 1;</code>
+     * @return The name.
      */
     java.lang.String getName();
     /**
      * <code>string name = 1;</code>
+     * @return The bytes for name.
      */
     com.google.protobuf.ByteString
         getNameBytes();
 
     /**
      * <code>string identity = 2;</code>
+     * @return The identity.
      */
     java.lang.String getIdentity();
     /**
      * <code>string identity = 2;</code>
+     * @return The bytes for identity.
      */
     com.google.protobuf.ByteString
         getIdentityBytes();
 
     /**
      * <code>string website = 3;</code>
+     * @return The website.
      */
     java.lang.String getWebsite();
     /**
      * <code>string website = 3;</code>
+     * @return The bytes for website.
      */
     com.google.protobuf.ByteString
         getWebsiteBytes();
 
     /**
      * <code>string security_contact = 4;</code>
+     * @return The securityContact.
      */
     java.lang.String getSecurityContact();
     /**
      * <code>string security_contact = 4;</code>
+     * @return The bytes for securityContact.
      */
     com.google.protobuf.ByteString
         getSecurityContactBytes();
 
     /**
      * <code>string details = 5;</code>
+     * @return The details.
      */
     java.lang.String getDetails();
     /**
      * <code>string details = 5;</code>
+     * @return The bytes for details.
      */
     com.google.protobuf.ByteString
         getDetailsBytes();
@@ -4903,7 +5144,7 @@ public final class Harmony {
   /**
    * Protobuf type {@code TW.Harmony.Proto.Description}
    */
-  public  static final class Description extends
+  public static final class Description extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:TW.Harmony.Proto.Description)
       DescriptionOrBuilder {
@@ -5016,7 +5257,9 @@ public final class Harmony {
     private volatile java.lang.Object name_;
     /**
      * <code>string name = 1;</code>
+     * @return The name.
      */
+    @java.lang.Override
     public java.lang.String getName() {
       java.lang.Object ref = name_;
       if (ref instanceof java.lang.String) {
@@ -5031,7 +5274,9 @@ public final class Harmony {
     }
     /**
      * <code>string name = 1;</code>
+     * @return The bytes for name.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString
         getNameBytes() {
       java.lang.Object ref = name_;
@@ -5050,7 +5295,9 @@ public final class Harmony {
     private volatile java.lang.Object identity_;
     /**
      * <code>string identity = 2;</code>
+     * @return The identity.
      */
+    @java.lang.Override
     public java.lang.String getIdentity() {
       java.lang.Object ref = identity_;
       if (ref instanceof java.lang.String) {
@@ -5065,7 +5312,9 @@ public final class Harmony {
     }
     /**
      * <code>string identity = 2;</code>
+     * @return The bytes for identity.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString
         getIdentityBytes() {
       java.lang.Object ref = identity_;
@@ -5084,7 +5333,9 @@ public final class Harmony {
     private volatile java.lang.Object website_;
     /**
      * <code>string website = 3;</code>
+     * @return The website.
      */
+    @java.lang.Override
     public java.lang.String getWebsite() {
       java.lang.Object ref = website_;
       if (ref instanceof java.lang.String) {
@@ -5099,7 +5350,9 @@ public final class Harmony {
     }
     /**
      * <code>string website = 3;</code>
+     * @return The bytes for website.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString
         getWebsiteBytes() {
       java.lang.Object ref = website_;
@@ -5118,7 +5371,9 @@ public final class Harmony {
     private volatile java.lang.Object securityContact_;
     /**
      * <code>string security_contact = 4;</code>
+     * @return The securityContact.
      */
+    @java.lang.Override
     public java.lang.String getSecurityContact() {
       java.lang.Object ref = securityContact_;
       if (ref instanceof java.lang.String) {
@@ -5133,7 +5388,9 @@ public final class Harmony {
     }
     /**
      * <code>string security_contact = 4;</code>
+     * @return The bytes for securityContact.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString
         getSecurityContactBytes() {
       java.lang.Object ref = securityContact_;
@@ -5152,7 +5409,9 @@ public final class Harmony {
     private volatile java.lang.Object details_;
     /**
      * <code>string details = 5;</code>
+     * @return The details.
      */
+    @java.lang.Override
     public java.lang.String getDetails() {
       java.lang.Object ref = details_;
       if (ref instanceof java.lang.String) {
@@ -5167,7 +5426,9 @@ public final class Harmony {
     }
     /**
      * <code>string details = 5;</code>
+     * @return The bytes for details.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString
         getDetailsBytes() {
       java.lang.Object ref = details_;
@@ -5555,6 +5816,7 @@ public final class Harmony {
       private java.lang.Object name_ = "";
       /**
        * <code>string name = 1;</code>
+       * @return The name.
        */
       public java.lang.String getName() {
         java.lang.Object ref = name_;
@@ -5570,6 +5832,7 @@ public final class Harmony {
       }
       /**
        * <code>string name = 1;</code>
+       * @return The bytes for name.
        */
       public com.google.protobuf.ByteString
           getNameBytes() {
@@ -5586,6 +5849,8 @@ public final class Harmony {
       }
       /**
        * <code>string name = 1;</code>
+       * @param value The name to set.
+       * @return This builder for chaining.
        */
       public Builder setName(
           java.lang.String value) {
@@ -5599,6 +5864,7 @@ public final class Harmony {
       }
       /**
        * <code>string name = 1;</code>
+       * @return This builder for chaining.
        */
       public Builder clearName() {
         
@@ -5608,6 +5874,8 @@ public final class Harmony {
       }
       /**
        * <code>string name = 1;</code>
+       * @param value The bytes for name to set.
+       * @return This builder for chaining.
        */
       public Builder setNameBytes(
           com.google.protobuf.ByteString value) {
@@ -5624,6 +5892,7 @@ public final class Harmony {
       private java.lang.Object identity_ = "";
       /**
        * <code>string identity = 2;</code>
+       * @return The identity.
        */
       public java.lang.String getIdentity() {
         java.lang.Object ref = identity_;
@@ -5639,6 +5908,7 @@ public final class Harmony {
       }
       /**
        * <code>string identity = 2;</code>
+       * @return The bytes for identity.
        */
       public com.google.protobuf.ByteString
           getIdentityBytes() {
@@ -5655,6 +5925,8 @@ public final class Harmony {
       }
       /**
        * <code>string identity = 2;</code>
+       * @param value The identity to set.
+       * @return This builder for chaining.
        */
       public Builder setIdentity(
           java.lang.String value) {
@@ -5668,6 +5940,7 @@ public final class Harmony {
       }
       /**
        * <code>string identity = 2;</code>
+       * @return This builder for chaining.
        */
       public Builder clearIdentity() {
         
@@ -5677,6 +5950,8 @@ public final class Harmony {
       }
       /**
        * <code>string identity = 2;</code>
+       * @param value The bytes for identity to set.
+       * @return This builder for chaining.
        */
       public Builder setIdentityBytes(
           com.google.protobuf.ByteString value) {
@@ -5693,6 +5968,7 @@ public final class Harmony {
       private java.lang.Object website_ = "";
       /**
        * <code>string website = 3;</code>
+       * @return The website.
        */
       public java.lang.String getWebsite() {
         java.lang.Object ref = website_;
@@ -5708,6 +5984,7 @@ public final class Harmony {
       }
       /**
        * <code>string website = 3;</code>
+       * @return The bytes for website.
        */
       public com.google.protobuf.ByteString
           getWebsiteBytes() {
@@ -5724,6 +6001,8 @@ public final class Harmony {
       }
       /**
        * <code>string website = 3;</code>
+       * @param value The website to set.
+       * @return This builder for chaining.
        */
       public Builder setWebsite(
           java.lang.String value) {
@@ -5737,6 +6016,7 @@ public final class Harmony {
       }
       /**
        * <code>string website = 3;</code>
+       * @return This builder for chaining.
        */
       public Builder clearWebsite() {
         
@@ -5746,6 +6026,8 @@ public final class Harmony {
       }
       /**
        * <code>string website = 3;</code>
+       * @param value The bytes for website to set.
+       * @return This builder for chaining.
        */
       public Builder setWebsiteBytes(
           com.google.protobuf.ByteString value) {
@@ -5762,6 +6044,7 @@ public final class Harmony {
       private java.lang.Object securityContact_ = "";
       /**
        * <code>string security_contact = 4;</code>
+       * @return The securityContact.
        */
       public java.lang.String getSecurityContact() {
         java.lang.Object ref = securityContact_;
@@ -5777,6 +6060,7 @@ public final class Harmony {
       }
       /**
        * <code>string security_contact = 4;</code>
+       * @return The bytes for securityContact.
        */
       public com.google.protobuf.ByteString
           getSecurityContactBytes() {
@@ -5793,6 +6077,8 @@ public final class Harmony {
       }
       /**
        * <code>string security_contact = 4;</code>
+       * @param value The securityContact to set.
+       * @return This builder for chaining.
        */
       public Builder setSecurityContact(
           java.lang.String value) {
@@ -5806,6 +6092,7 @@ public final class Harmony {
       }
       /**
        * <code>string security_contact = 4;</code>
+       * @return This builder for chaining.
        */
       public Builder clearSecurityContact() {
         
@@ -5815,6 +6102,8 @@ public final class Harmony {
       }
       /**
        * <code>string security_contact = 4;</code>
+       * @param value The bytes for securityContact to set.
+       * @return This builder for chaining.
        */
       public Builder setSecurityContactBytes(
           com.google.protobuf.ByteString value) {
@@ -5831,6 +6120,7 @@ public final class Harmony {
       private java.lang.Object details_ = "";
       /**
        * <code>string details = 5;</code>
+       * @return The details.
        */
       public java.lang.String getDetails() {
         java.lang.Object ref = details_;
@@ -5846,6 +6136,7 @@ public final class Harmony {
       }
       /**
        * <code>string details = 5;</code>
+       * @return The bytes for details.
        */
       public com.google.protobuf.ByteString
           getDetailsBytes() {
@@ -5862,6 +6153,8 @@ public final class Harmony {
       }
       /**
        * <code>string details = 5;</code>
+       * @param value The details to set.
+       * @return This builder for chaining.
        */
       public Builder setDetails(
           java.lang.String value) {
@@ -5875,6 +6168,7 @@ public final class Harmony {
       }
       /**
        * <code>string details = 5;</code>
+       * @return This builder for chaining.
        */
       public Builder clearDetails() {
         
@@ -5884,6 +6178,8 @@ public final class Harmony {
       }
       /**
        * <code>string details = 5;</code>
+       * @param value The bytes for details to set.
+       * @return This builder for chaining.
        */
       public Builder setDetailsBytes(
           com.google.protobuf.ByteString value) {
@@ -5955,18 +6251,20 @@ public final class Harmony {
 
     /**
      * <code>bytes value = 1;</code>
+     * @return The value.
      */
     com.google.protobuf.ByteString getValue();
 
     /**
      * <code>bytes precision = 2;</code>
+     * @return The precision.
      */
     com.google.protobuf.ByteString getPrecision();
   }
   /**
    * Protobuf type {@code TW.Harmony.Proto.Decimal}
    */
-  public  static final class Decimal extends
+  public static final class Decimal extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:TW.Harmony.Proto.Decimal)
       DecimalOrBuilder {
@@ -6056,7 +6354,9 @@ public final class Harmony {
     private com.google.protobuf.ByteString value_;
     /**
      * <code>bytes value = 1;</code>
+     * @return The value.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString getValue() {
       return value_;
     }
@@ -6065,7 +6365,9 @@ public final class Harmony {
     private com.google.protobuf.ByteString precision_;
     /**
      * <code>bytes precision = 2;</code>
+     * @return The precision.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString getPrecision() {
       return precision_;
     }
@@ -6392,12 +6694,16 @@ public final class Harmony {
       private com.google.protobuf.ByteString value_ = com.google.protobuf.ByteString.EMPTY;
       /**
        * <code>bytes value = 1;</code>
+       * @return The value.
        */
+      @java.lang.Override
       public com.google.protobuf.ByteString getValue() {
         return value_;
       }
       /**
        * <code>bytes value = 1;</code>
+       * @param value The value to set.
+       * @return This builder for chaining.
        */
       public Builder setValue(com.google.protobuf.ByteString value) {
         if (value == null) {
@@ -6410,6 +6716,7 @@ public final class Harmony {
       }
       /**
        * <code>bytes value = 1;</code>
+       * @return This builder for chaining.
        */
       public Builder clearValue() {
         
@@ -6421,12 +6728,16 @@ public final class Harmony {
       private com.google.protobuf.ByteString precision_ = com.google.protobuf.ByteString.EMPTY;
       /**
        * <code>bytes precision = 2;</code>
+       * @return The precision.
        */
+      @java.lang.Override
       public com.google.protobuf.ByteString getPrecision() {
         return precision_;
       }
       /**
        * <code>bytes precision = 2;</code>
+       * @param value The precision to set.
+       * @return This builder for chaining.
        */
       public Builder setPrecision(com.google.protobuf.ByteString value) {
         if (value == null) {
@@ -6439,6 +6750,7 @@ public final class Harmony {
       }
       /**
        * <code>bytes precision = 2;</code>
+       * @return This builder for chaining.
        */
       public Builder clearPrecision() {
         
@@ -6505,10 +6817,12 @@ public final class Harmony {
 
     /**
      * <code>.TW.Harmony.Proto.Decimal rate = 1;</code>
+     * @return Whether the rate field is set.
      */
     boolean hasRate();
     /**
      * <code>.TW.Harmony.Proto.Decimal rate = 1;</code>
+     * @return The rate.
      */
     wallet.core.jni.proto.Harmony.Decimal getRate();
     /**
@@ -6518,10 +6832,12 @@ public final class Harmony {
 
     /**
      * <code>.TW.Harmony.Proto.Decimal max_rate = 2;</code>
+     * @return Whether the maxRate field is set.
      */
     boolean hasMaxRate();
     /**
      * <code>.TW.Harmony.Proto.Decimal max_rate = 2;</code>
+     * @return The maxRate.
      */
     wallet.core.jni.proto.Harmony.Decimal getMaxRate();
     /**
@@ -6531,10 +6847,12 @@ public final class Harmony {
 
     /**
      * <code>.TW.Harmony.Proto.Decimal max_change_rate = 3;</code>
+     * @return Whether the maxChangeRate field is set.
      */
     boolean hasMaxChangeRate();
     /**
      * <code>.TW.Harmony.Proto.Decimal max_change_rate = 3;</code>
+     * @return The maxChangeRate.
      */
     wallet.core.jni.proto.Harmony.Decimal getMaxChangeRate();
     /**
@@ -6545,7 +6863,7 @@ public final class Harmony {
   /**
    * Protobuf type {@code TW.Harmony.Proto.CommissionRate}
    */
-  public  static final class CommissionRate extends
+  public static final class CommissionRate extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:TW.Harmony.Proto.CommissionRate)
       CommissionRateOrBuilder {
@@ -6662,19 +6980,24 @@ public final class Harmony {
     private wallet.core.jni.proto.Harmony.Decimal rate_;
     /**
      * <code>.TW.Harmony.Proto.Decimal rate = 1;</code>
+     * @return Whether the rate field is set.
      */
+    @java.lang.Override
     public boolean hasRate() {
       return rate_ != null;
     }
     /**
      * <code>.TW.Harmony.Proto.Decimal rate = 1;</code>
+     * @return The rate.
      */
+    @java.lang.Override
     public wallet.core.jni.proto.Harmony.Decimal getRate() {
       return rate_ == null ? wallet.core.jni.proto.Harmony.Decimal.getDefaultInstance() : rate_;
     }
     /**
      * <code>.TW.Harmony.Proto.Decimal rate = 1;</code>
      */
+    @java.lang.Override
     public wallet.core.jni.proto.Harmony.DecimalOrBuilder getRateOrBuilder() {
       return getRate();
     }
@@ -6683,19 +7006,24 @@ public final class Harmony {
     private wallet.core.jni.proto.Harmony.Decimal maxRate_;
     /**
      * <code>.TW.Harmony.Proto.Decimal max_rate = 2;</code>
+     * @return Whether the maxRate field is set.
      */
+    @java.lang.Override
     public boolean hasMaxRate() {
       return maxRate_ != null;
     }
     /**
      * <code>.TW.Harmony.Proto.Decimal max_rate = 2;</code>
+     * @return The maxRate.
      */
+    @java.lang.Override
     public wallet.core.jni.proto.Harmony.Decimal getMaxRate() {
       return maxRate_ == null ? wallet.core.jni.proto.Harmony.Decimal.getDefaultInstance() : maxRate_;
     }
     /**
      * <code>.TW.Harmony.Proto.Decimal max_rate = 2;</code>
      */
+    @java.lang.Override
     public wallet.core.jni.proto.Harmony.DecimalOrBuilder getMaxRateOrBuilder() {
       return getMaxRate();
     }
@@ -6704,19 +7032,24 @@ public final class Harmony {
     private wallet.core.jni.proto.Harmony.Decimal maxChangeRate_;
     /**
      * <code>.TW.Harmony.Proto.Decimal max_change_rate = 3;</code>
+     * @return Whether the maxChangeRate field is set.
      */
+    @java.lang.Override
     public boolean hasMaxChangeRate() {
       return maxChangeRate_ != null;
     }
     /**
      * <code>.TW.Harmony.Proto.Decimal max_change_rate = 3;</code>
+     * @return The maxChangeRate.
      */
+    @java.lang.Override
     public wallet.core.jni.proto.Harmony.Decimal getMaxChangeRate() {
       return maxChangeRate_ == null ? wallet.core.jni.proto.Harmony.Decimal.getDefaultInstance() : maxChangeRate_;
     }
     /**
      * <code>.TW.Harmony.Proto.Decimal max_change_rate = 3;</code>
      */
+    @java.lang.Override
     public wallet.core.jni.proto.Harmony.DecimalOrBuilder getMaxChangeRateOrBuilder() {
       return getMaxChangeRate();
     }
@@ -7101,12 +7434,14 @@ public final class Harmony {
           wallet.core.jni.proto.Harmony.Decimal, wallet.core.jni.proto.Harmony.Decimal.Builder, wallet.core.jni.proto.Harmony.DecimalOrBuilder> rateBuilder_;
       /**
        * <code>.TW.Harmony.Proto.Decimal rate = 1;</code>
+       * @return Whether the rate field is set.
        */
       public boolean hasRate() {
         return rateBuilder_ != null || rate_ != null;
       }
       /**
        * <code>.TW.Harmony.Proto.Decimal rate = 1;</code>
+       * @return The rate.
        */
       public wallet.core.jni.proto.Harmony.Decimal getRate() {
         if (rateBuilder_ == null) {
@@ -7218,12 +7553,14 @@ public final class Harmony {
           wallet.core.jni.proto.Harmony.Decimal, wallet.core.jni.proto.Harmony.Decimal.Builder, wallet.core.jni.proto.Harmony.DecimalOrBuilder> maxRateBuilder_;
       /**
        * <code>.TW.Harmony.Proto.Decimal max_rate = 2;</code>
+       * @return Whether the maxRate field is set.
        */
       public boolean hasMaxRate() {
         return maxRateBuilder_ != null || maxRate_ != null;
       }
       /**
        * <code>.TW.Harmony.Proto.Decimal max_rate = 2;</code>
+       * @return The maxRate.
        */
       public wallet.core.jni.proto.Harmony.Decimal getMaxRate() {
         if (maxRateBuilder_ == null) {
@@ -7335,12 +7672,14 @@ public final class Harmony {
           wallet.core.jni.proto.Harmony.Decimal, wallet.core.jni.proto.Harmony.Decimal.Builder, wallet.core.jni.proto.Harmony.DecimalOrBuilder> maxChangeRateBuilder_;
       /**
        * <code>.TW.Harmony.Proto.Decimal max_change_rate = 3;</code>
+       * @return Whether the maxChangeRate field is set.
        */
       public boolean hasMaxChangeRate() {
         return maxChangeRateBuilder_ != null || maxChangeRate_ != null;
       }
       /**
        * <code>.TW.Harmony.Proto.Decimal max_change_rate = 3;</code>
+       * @return The maxChangeRate.
        */
       public wallet.core.jni.proto.Harmony.Decimal getMaxChangeRate() {
         if (maxChangeRateBuilder_ == null) {
@@ -7505,20 +7844,24 @@ public final class Harmony {
 
     /**
      * <code>string validator_address = 1;</code>
+     * @return The validatorAddress.
      */
     java.lang.String getValidatorAddress();
     /**
      * <code>string validator_address = 1;</code>
+     * @return The bytes for validatorAddress.
      */
     com.google.protobuf.ByteString
         getValidatorAddressBytes();
 
     /**
      * <code>.TW.Harmony.Proto.Description description = 2;</code>
+     * @return Whether the description field is set.
      */
     boolean hasDescription();
     /**
      * <code>.TW.Harmony.Proto.Description description = 2;</code>
+     * @return The description.
      */
     wallet.core.jni.proto.Harmony.Description getDescription();
     /**
@@ -7528,10 +7871,12 @@ public final class Harmony {
 
     /**
      * <code>.TW.Harmony.Proto.CommissionRate commission_rates = 3;</code>
+     * @return Whether the commissionRates field is set.
      */
     boolean hasCommissionRates();
     /**
      * <code>.TW.Harmony.Proto.CommissionRate commission_rates = 3;</code>
+     * @return The commissionRates.
      */
     wallet.core.jni.proto.Harmony.CommissionRate getCommissionRates();
     /**
@@ -7541,49 +7886,60 @@ public final class Harmony {
 
     /**
      * <code>bytes min_self_delegation = 4;</code>
+     * @return The minSelfDelegation.
      */
     com.google.protobuf.ByteString getMinSelfDelegation();
 
     /**
      * <code>bytes max_total_delegation = 5;</code>
+     * @return The maxTotalDelegation.
      */
     com.google.protobuf.ByteString getMaxTotalDelegation();
 
     /**
      * <code>repeated bytes slot_pub_keys = 6;</code>
+     * @return A list containing the slotPubKeys.
      */
     java.util.List<com.google.protobuf.ByteString> getSlotPubKeysList();
     /**
      * <code>repeated bytes slot_pub_keys = 6;</code>
+     * @return The count of slotPubKeys.
      */
     int getSlotPubKeysCount();
     /**
      * <code>repeated bytes slot_pub_keys = 6;</code>
+     * @param index The index of the element to return.
+     * @return The slotPubKeys at the given index.
      */
     com.google.protobuf.ByteString getSlotPubKeys(int index);
 
     /**
      * <code>repeated bytes slot_key_sigs = 7;</code>
+     * @return A list containing the slotKeySigs.
      */
     java.util.List<com.google.protobuf.ByteString> getSlotKeySigsList();
     /**
      * <code>repeated bytes slot_key_sigs = 7;</code>
+     * @return The count of slotKeySigs.
      */
     int getSlotKeySigsCount();
     /**
      * <code>repeated bytes slot_key_sigs = 7;</code>
+     * @param index The index of the element to return.
+     * @return The slotKeySigs at the given index.
      */
     com.google.protobuf.ByteString getSlotKeySigs(int index);
 
     /**
      * <code>bytes amount = 8;</code>
+     * @return The amount.
      */
     com.google.protobuf.ByteString getAmount();
   }
   /**
    * Protobuf type {@code TW.Harmony.Proto.DirectiveCreateValidator}
    */
-  public  static final class DirectiveCreateValidator extends
+  public static final class DirectiveCreateValidator extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:TW.Harmony.Proto.DirectiveCreateValidator)
       DirectiveCreateValidatorOrBuilder {
@@ -7737,7 +8093,9 @@ public final class Harmony {
     private volatile java.lang.Object validatorAddress_;
     /**
      * <code>string validator_address = 1;</code>
+     * @return The validatorAddress.
      */
+    @java.lang.Override
     public java.lang.String getValidatorAddress() {
       java.lang.Object ref = validatorAddress_;
       if (ref instanceof java.lang.String) {
@@ -7752,7 +8110,9 @@ public final class Harmony {
     }
     /**
      * <code>string validator_address = 1;</code>
+     * @return The bytes for validatorAddress.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString
         getValidatorAddressBytes() {
       java.lang.Object ref = validatorAddress_;
@@ -7771,19 +8131,24 @@ public final class Harmony {
     private wallet.core.jni.proto.Harmony.Description description_;
     /**
      * <code>.TW.Harmony.Proto.Description description = 2;</code>
+     * @return Whether the description field is set.
      */
+    @java.lang.Override
     public boolean hasDescription() {
       return description_ != null;
     }
     /**
      * <code>.TW.Harmony.Proto.Description description = 2;</code>
+     * @return The description.
      */
+    @java.lang.Override
     public wallet.core.jni.proto.Harmony.Description getDescription() {
       return description_ == null ? wallet.core.jni.proto.Harmony.Description.getDefaultInstance() : description_;
     }
     /**
      * <code>.TW.Harmony.Proto.Description description = 2;</code>
      */
+    @java.lang.Override
     public wallet.core.jni.proto.Harmony.DescriptionOrBuilder getDescriptionOrBuilder() {
       return getDescription();
     }
@@ -7792,19 +8157,24 @@ public final class Harmony {
     private wallet.core.jni.proto.Harmony.CommissionRate commissionRates_;
     /**
      * <code>.TW.Harmony.Proto.CommissionRate commission_rates = 3;</code>
+     * @return Whether the commissionRates field is set.
      */
+    @java.lang.Override
     public boolean hasCommissionRates() {
       return commissionRates_ != null;
     }
     /**
      * <code>.TW.Harmony.Proto.CommissionRate commission_rates = 3;</code>
+     * @return The commissionRates.
      */
+    @java.lang.Override
     public wallet.core.jni.proto.Harmony.CommissionRate getCommissionRates() {
       return commissionRates_ == null ? wallet.core.jni.proto.Harmony.CommissionRate.getDefaultInstance() : commissionRates_;
     }
     /**
      * <code>.TW.Harmony.Proto.CommissionRate commission_rates = 3;</code>
      */
+    @java.lang.Override
     public wallet.core.jni.proto.Harmony.CommissionRateOrBuilder getCommissionRatesOrBuilder() {
       return getCommissionRates();
     }
@@ -7813,7 +8183,9 @@ public final class Harmony {
     private com.google.protobuf.ByteString minSelfDelegation_;
     /**
      * <code>bytes min_self_delegation = 4;</code>
+     * @return The minSelfDelegation.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString getMinSelfDelegation() {
       return minSelfDelegation_;
     }
@@ -7822,7 +8194,9 @@ public final class Harmony {
     private com.google.protobuf.ByteString maxTotalDelegation_;
     /**
      * <code>bytes max_total_delegation = 5;</code>
+     * @return The maxTotalDelegation.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString getMaxTotalDelegation() {
       return maxTotalDelegation_;
     }
@@ -7831,19 +8205,24 @@ public final class Harmony {
     private java.util.List<com.google.protobuf.ByteString> slotPubKeys_;
     /**
      * <code>repeated bytes slot_pub_keys = 6;</code>
+     * @return A list containing the slotPubKeys.
      */
+    @java.lang.Override
     public java.util.List<com.google.protobuf.ByteString>
         getSlotPubKeysList() {
       return slotPubKeys_;
     }
     /**
      * <code>repeated bytes slot_pub_keys = 6;</code>
+     * @return The count of slotPubKeys.
      */
     public int getSlotPubKeysCount() {
       return slotPubKeys_.size();
     }
     /**
      * <code>repeated bytes slot_pub_keys = 6;</code>
+     * @param index The index of the element to return.
+     * @return The slotPubKeys at the given index.
      */
     public com.google.protobuf.ByteString getSlotPubKeys(int index) {
       return slotPubKeys_.get(index);
@@ -7853,19 +8232,24 @@ public final class Harmony {
     private java.util.List<com.google.protobuf.ByteString> slotKeySigs_;
     /**
      * <code>repeated bytes slot_key_sigs = 7;</code>
+     * @return A list containing the slotKeySigs.
      */
+    @java.lang.Override
     public java.util.List<com.google.protobuf.ByteString>
         getSlotKeySigsList() {
       return slotKeySigs_;
     }
     /**
      * <code>repeated bytes slot_key_sigs = 7;</code>
+     * @return The count of slotKeySigs.
      */
     public int getSlotKeySigsCount() {
       return slotKeySigs_.size();
     }
     /**
      * <code>repeated bytes slot_key_sigs = 7;</code>
+     * @param index The index of the element to return.
+     * @return The slotKeySigs at the given index.
      */
     public com.google.protobuf.ByteString getSlotKeySigs(int index) {
       return slotKeySigs_.get(index);
@@ -7875,7 +8259,9 @@ public final class Harmony {
     private com.google.protobuf.ByteString amount_;
     /**
      * <code>bytes amount = 8;</code>
+     * @return The amount.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString getAmount() {
       return amount_;
     }
@@ -8368,6 +8754,7 @@ public final class Harmony {
       private java.lang.Object validatorAddress_ = "";
       /**
        * <code>string validator_address = 1;</code>
+       * @return The validatorAddress.
        */
       public java.lang.String getValidatorAddress() {
         java.lang.Object ref = validatorAddress_;
@@ -8383,6 +8770,7 @@ public final class Harmony {
       }
       /**
        * <code>string validator_address = 1;</code>
+       * @return The bytes for validatorAddress.
        */
       public com.google.protobuf.ByteString
           getValidatorAddressBytes() {
@@ -8399,6 +8787,8 @@ public final class Harmony {
       }
       /**
        * <code>string validator_address = 1;</code>
+       * @param value The validatorAddress to set.
+       * @return This builder for chaining.
        */
       public Builder setValidatorAddress(
           java.lang.String value) {
@@ -8412,6 +8802,7 @@ public final class Harmony {
       }
       /**
        * <code>string validator_address = 1;</code>
+       * @return This builder for chaining.
        */
       public Builder clearValidatorAddress() {
         
@@ -8421,6 +8812,8 @@ public final class Harmony {
       }
       /**
        * <code>string validator_address = 1;</code>
+       * @param value The bytes for validatorAddress to set.
+       * @return This builder for chaining.
        */
       public Builder setValidatorAddressBytes(
           com.google.protobuf.ByteString value) {
@@ -8439,12 +8832,14 @@ public final class Harmony {
           wallet.core.jni.proto.Harmony.Description, wallet.core.jni.proto.Harmony.Description.Builder, wallet.core.jni.proto.Harmony.DescriptionOrBuilder> descriptionBuilder_;
       /**
        * <code>.TW.Harmony.Proto.Description description = 2;</code>
+       * @return Whether the description field is set.
        */
       public boolean hasDescription() {
         return descriptionBuilder_ != null || description_ != null;
       }
       /**
        * <code>.TW.Harmony.Proto.Description description = 2;</code>
+       * @return The description.
        */
       public wallet.core.jni.proto.Harmony.Description getDescription() {
         if (descriptionBuilder_ == null) {
@@ -8556,12 +8951,14 @@ public final class Harmony {
           wallet.core.jni.proto.Harmony.CommissionRate, wallet.core.jni.proto.Harmony.CommissionRate.Builder, wallet.core.jni.proto.Harmony.CommissionRateOrBuilder> commissionRatesBuilder_;
       /**
        * <code>.TW.Harmony.Proto.CommissionRate commission_rates = 3;</code>
+       * @return Whether the commissionRates field is set.
        */
       public boolean hasCommissionRates() {
         return commissionRatesBuilder_ != null || commissionRates_ != null;
       }
       /**
        * <code>.TW.Harmony.Proto.CommissionRate commission_rates = 3;</code>
+       * @return The commissionRates.
        */
       public wallet.core.jni.proto.Harmony.CommissionRate getCommissionRates() {
         if (commissionRatesBuilder_ == null) {
@@ -8671,12 +9068,16 @@ public final class Harmony {
       private com.google.protobuf.ByteString minSelfDelegation_ = com.google.protobuf.ByteString.EMPTY;
       /**
        * <code>bytes min_self_delegation = 4;</code>
+       * @return The minSelfDelegation.
        */
+      @java.lang.Override
       public com.google.protobuf.ByteString getMinSelfDelegation() {
         return minSelfDelegation_;
       }
       /**
        * <code>bytes min_self_delegation = 4;</code>
+       * @param value The minSelfDelegation to set.
+       * @return This builder for chaining.
        */
       public Builder setMinSelfDelegation(com.google.protobuf.ByteString value) {
         if (value == null) {
@@ -8689,6 +9090,7 @@ public final class Harmony {
       }
       /**
        * <code>bytes min_self_delegation = 4;</code>
+       * @return This builder for chaining.
        */
       public Builder clearMinSelfDelegation() {
         
@@ -8700,12 +9102,16 @@ public final class Harmony {
       private com.google.protobuf.ByteString maxTotalDelegation_ = com.google.protobuf.ByteString.EMPTY;
       /**
        * <code>bytes max_total_delegation = 5;</code>
+       * @return The maxTotalDelegation.
        */
+      @java.lang.Override
       public com.google.protobuf.ByteString getMaxTotalDelegation() {
         return maxTotalDelegation_;
       }
       /**
        * <code>bytes max_total_delegation = 5;</code>
+       * @param value The maxTotalDelegation to set.
+       * @return This builder for chaining.
        */
       public Builder setMaxTotalDelegation(com.google.protobuf.ByteString value) {
         if (value == null) {
@@ -8718,6 +9124,7 @@ public final class Harmony {
       }
       /**
        * <code>bytes max_total_delegation = 5;</code>
+       * @return This builder for chaining.
        */
       public Builder clearMaxTotalDelegation() {
         
@@ -8735,6 +9142,7 @@ public final class Harmony {
       }
       /**
        * <code>repeated bytes slot_pub_keys = 6;</code>
+       * @return A list containing the slotPubKeys.
        */
       public java.util.List<com.google.protobuf.ByteString>
           getSlotPubKeysList() {
@@ -8743,18 +9151,24 @@ public final class Harmony {
       }
       /**
        * <code>repeated bytes slot_pub_keys = 6;</code>
+       * @return The count of slotPubKeys.
        */
       public int getSlotPubKeysCount() {
         return slotPubKeys_.size();
       }
       /**
        * <code>repeated bytes slot_pub_keys = 6;</code>
+       * @param index The index of the element to return.
+       * @return The slotPubKeys at the given index.
        */
       public com.google.protobuf.ByteString getSlotPubKeys(int index) {
         return slotPubKeys_.get(index);
       }
       /**
        * <code>repeated bytes slot_pub_keys = 6;</code>
+       * @param index The index to set the value at.
+       * @param value The slotPubKeys to set.
+       * @return This builder for chaining.
        */
       public Builder setSlotPubKeys(
           int index, com.google.protobuf.ByteString value) {
@@ -8768,6 +9182,8 @@ public final class Harmony {
       }
       /**
        * <code>repeated bytes slot_pub_keys = 6;</code>
+       * @param value The slotPubKeys to add.
+       * @return This builder for chaining.
        */
       public Builder addSlotPubKeys(com.google.protobuf.ByteString value) {
         if (value == null) {
@@ -8780,6 +9196,8 @@ public final class Harmony {
       }
       /**
        * <code>repeated bytes slot_pub_keys = 6;</code>
+       * @param values The slotPubKeys to add.
+       * @return This builder for chaining.
        */
       public Builder addAllSlotPubKeys(
           java.lang.Iterable<? extends com.google.protobuf.ByteString> values) {
@@ -8791,6 +9209,7 @@ public final class Harmony {
       }
       /**
        * <code>repeated bytes slot_pub_keys = 6;</code>
+       * @return This builder for chaining.
        */
       public Builder clearSlotPubKeys() {
         slotPubKeys_ = java.util.Collections.emptyList();
@@ -8808,6 +9227,7 @@ public final class Harmony {
       }
       /**
        * <code>repeated bytes slot_key_sigs = 7;</code>
+       * @return A list containing the slotKeySigs.
        */
       public java.util.List<com.google.protobuf.ByteString>
           getSlotKeySigsList() {
@@ -8816,18 +9236,24 @@ public final class Harmony {
       }
       /**
        * <code>repeated bytes slot_key_sigs = 7;</code>
+       * @return The count of slotKeySigs.
        */
       public int getSlotKeySigsCount() {
         return slotKeySigs_.size();
       }
       /**
        * <code>repeated bytes slot_key_sigs = 7;</code>
+       * @param index The index of the element to return.
+       * @return The slotKeySigs at the given index.
        */
       public com.google.protobuf.ByteString getSlotKeySigs(int index) {
         return slotKeySigs_.get(index);
       }
       /**
        * <code>repeated bytes slot_key_sigs = 7;</code>
+       * @param index The index to set the value at.
+       * @param value The slotKeySigs to set.
+       * @return This builder for chaining.
        */
       public Builder setSlotKeySigs(
           int index, com.google.protobuf.ByteString value) {
@@ -8841,6 +9267,8 @@ public final class Harmony {
       }
       /**
        * <code>repeated bytes slot_key_sigs = 7;</code>
+       * @param value The slotKeySigs to add.
+       * @return This builder for chaining.
        */
       public Builder addSlotKeySigs(com.google.protobuf.ByteString value) {
         if (value == null) {
@@ -8853,6 +9281,8 @@ public final class Harmony {
       }
       /**
        * <code>repeated bytes slot_key_sigs = 7;</code>
+       * @param values The slotKeySigs to add.
+       * @return This builder for chaining.
        */
       public Builder addAllSlotKeySigs(
           java.lang.Iterable<? extends com.google.protobuf.ByteString> values) {
@@ -8864,6 +9294,7 @@ public final class Harmony {
       }
       /**
        * <code>repeated bytes slot_key_sigs = 7;</code>
+       * @return This builder for chaining.
        */
       public Builder clearSlotKeySigs() {
         slotKeySigs_ = java.util.Collections.emptyList();
@@ -8875,12 +9306,16 @@ public final class Harmony {
       private com.google.protobuf.ByteString amount_ = com.google.protobuf.ByteString.EMPTY;
       /**
        * <code>bytes amount = 8;</code>
+       * @return The amount.
        */
+      @java.lang.Override
       public com.google.protobuf.ByteString getAmount() {
         return amount_;
       }
       /**
        * <code>bytes amount = 8;</code>
+       * @param value The amount to set.
+       * @return This builder for chaining.
        */
       public Builder setAmount(com.google.protobuf.ByteString value) {
         if (value == null) {
@@ -8893,6 +9328,7 @@ public final class Harmony {
       }
       /**
        * <code>bytes amount = 8;</code>
+       * @return This builder for chaining.
        */
       public Builder clearAmount() {
         
@@ -8959,20 +9395,24 @@ public final class Harmony {
 
     /**
      * <code>string validator_address = 1;</code>
+     * @return The validatorAddress.
      */
     java.lang.String getValidatorAddress();
     /**
      * <code>string validator_address = 1;</code>
+     * @return The bytes for validatorAddress.
      */
     com.google.protobuf.ByteString
         getValidatorAddressBytes();
 
     /**
      * <code>.TW.Harmony.Proto.Description description = 2;</code>
+     * @return Whether the description field is set.
      */
     boolean hasDescription();
     /**
      * <code>.TW.Harmony.Proto.Description description = 2;</code>
+     * @return The description.
      */
     wallet.core.jni.proto.Harmony.Description getDescription();
     /**
@@ -8982,10 +9422,12 @@ public final class Harmony {
 
     /**
      * <code>.TW.Harmony.Proto.Decimal commission_rate = 3;</code>
+     * @return Whether the commissionRate field is set.
      */
     boolean hasCommissionRate();
     /**
      * <code>.TW.Harmony.Proto.Decimal commission_rate = 3;</code>
+     * @return The commissionRate.
      */
     wallet.core.jni.proto.Harmony.Decimal getCommissionRate();
     /**
@@ -8995,38 +9437,44 @@ public final class Harmony {
 
     /**
      * <code>bytes min_self_delegation = 4;</code>
+     * @return The minSelfDelegation.
      */
     com.google.protobuf.ByteString getMinSelfDelegation();
 
     /**
      * <code>bytes max_total_delegation = 5;</code>
+     * @return The maxTotalDelegation.
      */
     com.google.protobuf.ByteString getMaxTotalDelegation();
 
     /**
      * <code>bytes slot_key_to_remove = 6;</code>
+     * @return The slotKeyToRemove.
      */
     com.google.protobuf.ByteString getSlotKeyToRemove();
 
     /**
      * <code>bytes slot_key_to_add = 7;</code>
+     * @return The slotKeyToAdd.
      */
     com.google.protobuf.ByteString getSlotKeyToAdd();
 
     /**
      * <code>bytes slot_key_to_add_sig = 8;</code>
+     * @return The slotKeyToAddSig.
      */
     com.google.protobuf.ByteString getSlotKeyToAddSig();
 
     /**
      * <code>bytes active = 9;</code>
+     * @return The active.
      */
     com.google.protobuf.ByteString getActive();
   }
   /**
    * Protobuf type {@code TW.Harmony.Proto.DirectiveEditValidator}
    */
-  public  static final class DirectiveEditValidator extends
+  public static final class DirectiveEditValidator extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:TW.Harmony.Proto.DirectiveEditValidator)
       DirectiveEditValidatorOrBuilder {
@@ -9173,7 +9621,9 @@ public final class Harmony {
     private volatile java.lang.Object validatorAddress_;
     /**
      * <code>string validator_address = 1;</code>
+     * @return The validatorAddress.
      */
+    @java.lang.Override
     public java.lang.String getValidatorAddress() {
       java.lang.Object ref = validatorAddress_;
       if (ref instanceof java.lang.String) {
@@ -9188,7 +9638,9 @@ public final class Harmony {
     }
     /**
      * <code>string validator_address = 1;</code>
+     * @return The bytes for validatorAddress.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString
         getValidatorAddressBytes() {
       java.lang.Object ref = validatorAddress_;
@@ -9207,19 +9659,24 @@ public final class Harmony {
     private wallet.core.jni.proto.Harmony.Description description_;
     /**
      * <code>.TW.Harmony.Proto.Description description = 2;</code>
+     * @return Whether the description field is set.
      */
+    @java.lang.Override
     public boolean hasDescription() {
       return description_ != null;
     }
     /**
      * <code>.TW.Harmony.Proto.Description description = 2;</code>
+     * @return The description.
      */
+    @java.lang.Override
     public wallet.core.jni.proto.Harmony.Description getDescription() {
       return description_ == null ? wallet.core.jni.proto.Harmony.Description.getDefaultInstance() : description_;
     }
     /**
      * <code>.TW.Harmony.Proto.Description description = 2;</code>
      */
+    @java.lang.Override
     public wallet.core.jni.proto.Harmony.DescriptionOrBuilder getDescriptionOrBuilder() {
       return getDescription();
     }
@@ -9228,19 +9685,24 @@ public final class Harmony {
     private wallet.core.jni.proto.Harmony.Decimal commissionRate_;
     /**
      * <code>.TW.Harmony.Proto.Decimal commission_rate = 3;</code>
+     * @return Whether the commissionRate field is set.
      */
+    @java.lang.Override
     public boolean hasCommissionRate() {
       return commissionRate_ != null;
     }
     /**
      * <code>.TW.Harmony.Proto.Decimal commission_rate = 3;</code>
+     * @return The commissionRate.
      */
+    @java.lang.Override
     public wallet.core.jni.proto.Harmony.Decimal getCommissionRate() {
       return commissionRate_ == null ? wallet.core.jni.proto.Harmony.Decimal.getDefaultInstance() : commissionRate_;
     }
     /**
      * <code>.TW.Harmony.Proto.Decimal commission_rate = 3;</code>
      */
+    @java.lang.Override
     public wallet.core.jni.proto.Harmony.DecimalOrBuilder getCommissionRateOrBuilder() {
       return getCommissionRate();
     }
@@ -9249,7 +9711,9 @@ public final class Harmony {
     private com.google.protobuf.ByteString minSelfDelegation_;
     /**
      * <code>bytes min_self_delegation = 4;</code>
+     * @return The minSelfDelegation.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString getMinSelfDelegation() {
       return minSelfDelegation_;
     }
@@ -9258,7 +9722,9 @@ public final class Harmony {
     private com.google.protobuf.ByteString maxTotalDelegation_;
     /**
      * <code>bytes max_total_delegation = 5;</code>
+     * @return The maxTotalDelegation.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString getMaxTotalDelegation() {
       return maxTotalDelegation_;
     }
@@ -9267,7 +9733,9 @@ public final class Harmony {
     private com.google.protobuf.ByteString slotKeyToRemove_;
     /**
      * <code>bytes slot_key_to_remove = 6;</code>
+     * @return The slotKeyToRemove.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString getSlotKeyToRemove() {
       return slotKeyToRemove_;
     }
@@ -9276,7 +9744,9 @@ public final class Harmony {
     private com.google.protobuf.ByteString slotKeyToAdd_;
     /**
      * <code>bytes slot_key_to_add = 7;</code>
+     * @return The slotKeyToAdd.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString getSlotKeyToAdd() {
       return slotKeyToAdd_;
     }
@@ -9285,7 +9755,9 @@ public final class Harmony {
     private com.google.protobuf.ByteString slotKeyToAddSig_;
     /**
      * <code>bytes slot_key_to_add_sig = 8;</code>
+     * @return The slotKeyToAddSig.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString getSlotKeyToAddSig() {
       return slotKeyToAddSig_;
     }
@@ -9294,7 +9766,9 @@ public final class Harmony {
     private com.google.protobuf.ByteString active_;
     /**
      * <code>bytes active = 9;</code>
+     * @return The active.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString getActive() {
       return active_;
     }
@@ -9766,6 +10240,7 @@ public final class Harmony {
       private java.lang.Object validatorAddress_ = "";
       /**
        * <code>string validator_address = 1;</code>
+       * @return The validatorAddress.
        */
       public java.lang.String getValidatorAddress() {
         java.lang.Object ref = validatorAddress_;
@@ -9781,6 +10256,7 @@ public final class Harmony {
       }
       /**
        * <code>string validator_address = 1;</code>
+       * @return The bytes for validatorAddress.
        */
       public com.google.protobuf.ByteString
           getValidatorAddressBytes() {
@@ -9797,6 +10273,8 @@ public final class Harmony {
       }
       /**
        * <code>string validator_address = 1;</code>
+       * @param value The validatorAddress to set.
+       * @return This builder for chaining.
        */
       public Builder setValidatorAddress(
           java.lang.String value) {
@@ -9810,6 +10288,7 @@ public final class Harmony {
       }
       /**
        * <code>string validator_address = 1;</code>
+       * @return This builder for chaining.
        */
       public Builder clearValidatorAddress() {
         
@@ -9819,6 +10298,8 @@ public final class Harmony {
       }
       /**
        * <code>string validator_address = 1;</code>
+       * @param value The bytes for validatorAddress to set.
+       * @return This builder for chaining.
        */
       public Builder setValidatorAddressBytes(
           com.google.protobuf.ByteString value) {
@@ -9837,12 +10318,14 @@ public final class Harmony {
           wallet.core.jni.proto.Harmony.Description, wallet.core.jni.proto.Harmony.Description.Builder, wallet.core.jni.proto.Harmony.DescriptionOrBuilder> descriptionBuilder_;
       /**
        * <code>.TW.Harmony.Proto.Description description = 2;</code>
+       * @return Whether the description field is set.
        */
       public boolean hasDescription() {
         return descriptionBuilder_ != null || description_ != null;
       }
       /**
        * <code>.TW.Harmony.Proto.Description description = 2;</code>
+       * @return The description.
        */
       public wallet.core.jni.proto.Harmony.Description getDescription() {
         if (descriptionBuilder_ == null) {
@@ -9954,12 +10437,14 @@ public final class Harmony {
           wallet.core.jni.proto.Harmony.Decimal, wallet.core.jni.proto.Harmony.Decimal.Builder, wallet.core.jni.proto.Harmony.DecimalOrBuilder> commissionRateBuilder_;
       /**
        * <code>.TW.Harmony.Proto.Decimal commission_rate = 3;</code>
+       * @return Whether the commissionRate field is set.
        */
       public boolean hasCommissionRate() {
         return commissionRateBuilder_ != null || commissionRate_ != null;
       }
       /**
        * <code>.TW.Harmony.Proto.Decimal commission_rate = 3;</code>
+       * @return The commissionRate.
        */
       public wallet.core.jni.proto.Harmony.Decimal getCommissionRate() {
         if (commissionRateBuilder_ == null) {
@@ -10069,12 +10554,16 @@ public final class Harmony {
       private com.google.protobuf.ByteString minSelfDelegation_ = com.google.protobuf.ByteString.EMPTY;
       /**
        * <code>bytes min_self_delegation = 4;</code>
+       * @return The minSelfDelegation.
        */
+      @java.lang.Override
       public com.google.protobuf.ByteString getMinSelfDelegation() {
         return minSelfDelegation_;
       }
       /**
        * <code>bytes min_self_delegation = 4;</code>
+       * @param value The minSelfDelegation to set.
+       * @return This builder for chaining.
        */
       public Builder setMinSelfDelegation(com.google.protobuf.ByteString value) {
         if (value == null) {
@@ -10087,6 +10576,7 @@ public final class Harmony {
       }
       /**
        * <code>bytes min_self_delegation = 4;</code>
+       * @return This builder for chaining.
        */
       public Builder clearMinSelfDelegation() {
         
@@ -10098,12 +10588,16 @@ public final class Harmony {
       private com.google.protobuf.ByteString maxTotalDelegation_ = com.google.protobuf.ByteString.EMPTY;
       /**
        * <code>bytes max_total_delegation = 5;</code>
+       * @return The maxTotalDelegation.
        */
+      @java.lang.Override
       public com.google.protobuf.ByteString getMaxTotalDelegation() {
         return maxTotalDelegation_;
       }
       /**
        * <code>bytes max_total_delegation = 5;</code>
+       * @param value The maxTotalDelegation to set.
+       * @return This builder for chaining.
        */
       public Builder setMaxTotalDelegation(com.google.protobuf.ByteString value) {
         if (value == null) {
@@ -10116,6 +10610,7 @@ public final class Harmony {
       }
       /**
        * <code>bytes max_total_delegation = 5;</code>
+       * @return This builder for chaining.
        */
       public Builder clearMaxTotalDelegation() {
         
@@ -10127,12 +10622,16 @@ public final class Harmony {
       private com.google.protobuf.ByteString slotKeyToRemove_ = com.google.protobuf.ByteString.EMPTY;
       /**
        * <code>bytes slot_key_to_remove = 6;</code>
+       * @return The slotKeyToRemove.
        */
+      @java.lang.Override
       public com.google.protobuf.ByteString getSlotKeyToRemove() {
         return slotKeyToRemove_;
       }
       /**
        * <code>bytes slot_key_to_remove = 6;</code>
+       * @param value The slotKeyToRemove to set.
+       * @return This builder for chaining.
        */
       public Builder setSlotKeyToRemove(com.google.protobuf.ByteString value) {
         if (value == null) {
@@ -10145,6 +10644,7 @@ public final class Harmony {
       }
       /**
        * <code>bytes slot_key_to_remove = 6;</code>
+       * @return This builder for chaining.
        */
       public Builder clearSlotKeyToRemove() {
         
@@ -10156,12 +10656,16 @@ public final class Harmony {
       private com.google.protobuf.ByteString slotKeyToAdd_ = com.google.protobuf.ByteString.EMPTY;
       /**
        * <code>bytes slot_key_to_add = 7;</code>
+       * @return The slotKeyToAdd.
        */
+      @java.lang.Override
       public com.google.protobuf.ByteString getSlotKeyToAdd() {
         return slotKeyToAdd_;
       }
       /**
        * <code>bytes slot_key_to_add = 7;</code>
+       * @param value The slotKeyToAdd to set.
+       * @return This builder for chaining.
        */
       public Builder setSlotKeyToAdd(com.google.protobuf.ByteString value) {
         if (value == null) {
@@ -10174,6 +10678,7 @@ public final class Harmony {
       }
       /**
        * <code>bytes slot_key_to_add = 7;</code>
+       * @return This builder for chaining.
        */
       public Builder clearSlotKeyToAdd() {
         
@@ -10185,12 +10690,16 @@ public final class Harmony {
       private com.google.protobuf.ByteString slotKeyToAddSig_ = com.google.protobuf.ByteString.EMPTY;
       /**
        * <code>bytes slot_key_to_add_sig = 8;</code>
+       * @return The slotKeyToAddSig.
        */
+      @java.lang.Override
       public com.google.protobuf.ByteString getSlotKeyToAddSig() {
         return slotKeyToAddSig_;
       }
       /**
        * <code>bytes slot_key_to_add_sig = 8;</code>
+       * @param value The slotKeyToAddSig to set.
+       * @return This builder for chaining.
        */
       public Builder setSlotKeyToAddSig(com.google.protobuf.ByteString value) {
         if (value == null) {
@@ -10203,6 +10712,7 @@ public final class Harmony {
       }
       /**
        * <code>bytes slot_key_to_add_sig = 8;</code>
+       * @return This builder for chaining.
        */
       public Builder clearSlotKeyToAddSig() {
         
@@ -10214,12 +10724,16 @@ public final class Harmony {
       private com.google.protobuf.ByteString active_ = com.google.protobuf.ByteString.EMPTY;
       /**
        * <code>bytes active = 9;</code>
+       * @return The active.
        */
+      @java.lang.Override
       public com.google.protobuf.ByteString getActive() {
         return active_;
       }
       /**
        * <code>bytes active = 9;</code>
+       * @param value The active to set.
+       * @return This builder for chaining.
        */
       public Builder setActive(com.google.protobuf.ByteString value) {
         if (value == null) {
@@ -10232,6 +10746,7 @@ public final class Harmony {
       }
       /**
        * <code>bytes active = 9;</code>
+       * @return This builder for chaining.
        */
       public Builder clearActive() {
         
@@ -10298,33 +10813,38 @@ public final class Harmony {
 
     /**
      * <code>string delegator_address = 1;</code>
+     * @return The delegatorAddress.
      */
     java.lang.String getDelegatorAddress();
     /**
      * <code>string delegator_address = 1;</code>
+     * @return The bytes for delegatorAddress.
      */
     com.google.protobuf.ByteString
         getDelegatorAddressBytes();
 
     /**
      * <code>string validator_address = 2;</code>
+     * @return The validatorAddress.
      */
     java.lang.String getValidatorAddress();
     /**
      * <code>string validator_address = 2;</code>
+     * @return The bytes for validatorAddress.
      */
     com.google.protobuf.ByteString
         getValidatorAddressBytes();
 
     /**
      * <code>bytes amount = 3;</code>
+     * @return The amount.
      */
     com.google.protobuf.ByteString getAmount();
   }
   /**
    * Protobuf type {@code TW.Harmony.Proto.DirectiveDelegate}
    */
-  public  static final class DirectiveDelegate extends
+  public static final class DirectiveDelegate extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:TW.Harmony.Proto.DirectiveDelegate)
       DirectiveDelegateOrBuilder {
@@ -10422,7 +10942,9 @@ public final class Harmony {
     private volatile java.lang.Object delegatorAddress_;
     /**
      * <code>string delegator_address = 1;</code>
+     * @return The delegatorAddress.
      */
+    @java.lang.Override
     public java.lang.String getDelegatorAddress() {
       java.lang.Object ref = delegatorAddress_;
       if (ref instanceof java.lang.String) {
@@ -10437,7 +10959,9 @@ public final class Harmony {
     }
     /**
      * <code>string delegator_address = 1;</code>
+     * @return The bytes for delegatorAddress.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString
         getDelegatorAddressBytes() {
       java.lang.Object ref = delegatorAddress_;
@@ -10456,7 +10980,9 @@ public final class Harmony {
     private volatile java.lang.Object validatorAddress_;
     /**
      * <code>string validator_address = 2;</code>
+     * @return The validatorAddress.
      */
+    @java.lang.Override
     public java.lang.String getValidatorAddress() {
       java.lang.Object ref = validatorAddress_;
       if (ref instanceof java.lang.String) {
@@ -10471,7 +10997,9 @@ public final class Harmony {
     }
     /**
      * <code>string validator_address = 2;</code>
+     * @return The bytes for validatorAddress.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString
         getValidatorAddressBytes() {
       java.lang.Object ref = validatorAddress_;
@@ -10490,7 +11018,9 @@ public final class Harmony {
     private com.google.protobuf.ByteString amount_;
     /**
      * <code>bytes amount = 3;</code>
+     * @return The amount.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString getAmount() {
       return amount_;
     }
@@ -10834,6 +11364,7 @@ public final class Harmony {
       private java.lang.Object delegatorAddress_ = "";
       /**
        * <code>string delegator_address = 1;</code>
+       * @return The delegatorAddress.
        */
       public java.lang.String getDelegatorAddress() {
         java.lang.Object ref = delegatorAddress_;
@@ -10849,6 +11380,7 @@ public final class Harmony {
       }
       /**
        * <code>string delegator_address = 1;</code>
+       * @return The bytes for delegatorAddress.
        */
       public com.google.protobuf.ByteString
           getDelegatorAddressBytes() {
@@ -10865,6 +11397,8 @@ public final class Harmony {
       }
       /**
        * <code>string delegator_address = 1;</code>
+       * @param value The delegatorAddress to set.
+       * @return This builder for chaining.
        */
       public Builder setDelegatorAddress(
           java.lang.String value) {
@@ -10878,6 +11412,7 @@ public final class Harmony {
       }
       /**
        * <code>string delegator_address = 1;</code>
+       * @return This builder for chaining.
        */
       public Builder clearDelegatorAddress() {
         
@@ -10887,6 +11422,8 @@ public final class Harmony {
       }
       /**
        * <code>string delegator_address = 1;</code>
+       * @param value The bytes for delegatorAddress to set.
+       * @return This builder for chaining.
        */
       public Builder setDelegatorAddressBytes(
           com.google.protobuf.ByteString value) {
@@ -10903,6 +11440,7 @@ public final class Harmony {
       private java.lang.Object validatorAddress_ = "";
       /**
        * <code>string validator_address = 2;</code>
+       * @return The validatorAddress.
        */
       public java.lang.String getValidatorAddress() {
         java.lang.Object ref = validatorAddress_;
@@ -10918,6 +11456,7 @@ public final class Harmony {
       }
       /**
        * <code>string validator_address = 2;</code>
+       * @return The bytes for validatorAddress.
        */
       public com.google.protobuf.ByteString
           getValidatorAddressBytes() {
@@ -10934,6 +11473,8 @@ public final class Harmony {
       }
       /**
        * <code>string validator_address = 2;</code>
+       * @param value The validatorAddress to set.
+       * @return This builder for chaining.
        */
       public Builder setValidatorAddress(
           java.lang.String value) {
@@ -10947,6 +11488,7 @@ public final class Harmony {
       }
       /**
        * <code>string validator_address = 2;</code>
+       * @return This builder for chaining.
        */
       public Builder clearValidatorAddress() {
         
@@ -10956,6 +11498,8 @@ public final class Harmony {
       }
       /**
        * <code>string validator_address = 2;</code>
+       * @param value The bytes for validatorAddress to set.
+       * @return This builder for chaining.
        */
       public Builder setValidatorAddressBytes(
           com.google.protobuf.ByteString value) {
@@ -10972,12 +11516,16 @@ public final class Harmony {
       private com.google.protobuf.ByteString amount_ = com.google.protobuf.ByteString.EMPTY;
       /**
        * <code>bytes amount = 3;</code>
+       * @return The amount.
        */
+      @java.lang.Override
       public com.google.protobuf.ByteString getAmount() {
         return amount_;
       }
       /**
        * <code>bytes amount = 3;</code>
+       * @param value The amount to set.
+       * @return This builder for chaining.
        */
       public Builder setAmount(com.google.protobuf.ByteString value) {
         if (value == null) {
@@ -10990,6 +11538,7 @@ public final class Harmony {
       }
       /**
        * <code>bytes amount = 3;</code>
+       * @return This builder for chaining.
        */
       public Builder clearAmount() {
         
@@ -11056,33 +11605,38 @@ public final class Harmony {
 
     /**
      * <code>string delegator_address = 1;</code>
+     * @return The delegatorAddress.
      */
     java.lang.String getDelegatorAddress();
     /**
      * <code>string delegator_address = 1;</code>
+     * @return The bytes for delegatorAddress.
      */
     com.google.protobuf.ByteString
         getDelegatorAddressBytes();
 
     /**
      * <code>string validator_address = 2;</code>
+     * @return The validatorAddress.
      */
     java.lang.String getValidatorAddress();
     /**
      * <code>string validator_address = 2;</code>
+     * @return The bytes for validatorAddress.
      */
     com.google.protobuf.ByteString
         getValidatorAddressBytes();
 
     /**
      * <code>bytes amount = 3;</code>
+     * @return The amount.
      */
     com.google.protobuf.ByteString getAmount();
   }
   /**
    * Protobuf type {@code TW.Harmony.Proto.DirectiveUndelegate}
    */
-  public  static final class DirectiveUndelegate extends
+  public static final class DirectiveUndelegate extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:TW.Harmony.Proto.DirectiveUndelegate)
       DirectiveUndelegateOrBuilder {
@@ -11180,7 +11734,9 @@ public final class Harmony {
     private volatile java.lang.Object delegatorAddress_;
     /**
      * <code>string delegator_address = 1;</code>
+     * @return The delegatorAddress.
      */
+    @java.lang.Override
     public java.lang.String getDelegatorAddress() {
       java.lang.Object ref = delegatorAddress_;
       if (ref instanceof java.lang.String) {
@@ -11195,7 +11751,9 @@ public final class Harmony {
     }
     /**
      * <code>string delegator_address = 1;</code>
+     * @return The bytes for delegatorAddress.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString
         getDelegatorAddressBytes() {
       java.lang.Object ref = delegatorAddress_;
@@ -11214,7 +11772,9 @@ public final class Harmony {
     private volatile java.lang.Object validatorAddress_;
     /**
      * <code>string validator_address = 2;</code>
+     * @return The validatorAddress.
      */
+    @java.lang.Override
     public java.lang.String getValidatorAddress() {
       java.lang.Object ref = validatorAddress_;
       if (ref instanceof java.lang.String) {
@@ -11229,7 +11789,9 @@ public final class Harmony {
     }
     /**
      * <code>string validator_address = 2;</code>
+     * @return The bytes for validatorAddress.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString
         getValidatorAddressBytes() {
       java.lang.Object ref = validatorAddress_;
@@ -11248,7 +11810,9 @@ public final class Harmony {
     private com.google.protobuf.ByteString amount_;
     /**
      * <code>bytes amount = 3;</code>
+     * @return The amount.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString getAmount() {
       return amount_;
     }
@@ -11592,6 +12156,7 @@ public final class Harmony {
       private java.lang.Object delegatorAddress_ = "";
       /**
        * <code>string delegator_address = 1;</code>
+       * @return The delegatorAddress.
        */
       public java.lang.String getDelegatorAddress() {
         java.lang.Object ref = delegatorAddress_;
@@ -11607,6 +12172,7 @@ public final class Harmony {
       }
       /**
        * <code>string delegator_address = 1;</code>
+       * @return The bytes for delegatorAddress.
        */
       public com.google.protobuf.ByteString
           getDelegatorAddressBytes() {
@@ -11623,6 +12189,8 @@ public final class Harmony {
       }
       /**
        * <code>string delegator_address = 1;</code>
+       * @param value The delegatorAddress to set.
+       * @return This builder for chaining.
        */
       public Builder setDelegatorAddress(
           java.lang.String value) {
@@ -11636,6 +12204,7 @@ public final class Harmony {
       }
       /**
        * <code>string delegator_address = 1;</code>
+       * @return This builder for chaining.
        */
       public Builder clearDelegatorAddress() {
         
@@ -11645,6 +12214,8 @@ public final class Harmony {
       }
       /**
        * <code>string delegator_address = 1;</code>
+       * @param value The bytes for delegatorAddress to set.
+       * @return This builder for chaining.
        */
       public Builder setDelegatorAddressBytes(
           com.google.protobuf.ByteString value) {
@@ -11661,6 +12232,7 @@ public final class Harmony {
       private java.lang.Object validatorAddress_ = "";
       /**
        * <code>string validator_address = 2;</code>
+       * @return The validatorAddress.
        */
       public java.lang.String getValidatorAddress() {
         java.lang.Object ref = validatorAddress_;
@@ -11676,6 +12248,7 @@ public final class Harmony {
       }
       /**
        * <code>string validator_address = 2;</code>
+       * @return The bytes for validatorAddress.
        */
       public com.google.protobuf.ByteString
           getValidatorAddressBytes() {
@@ -11692,6 +12265,8 @@ public final class Harmony {
       }
       /**
        * <code>string validator_address = 2;</code>
+       * @param value The validatorAddress to set.
+       * @return This builder for chaining.
        */
       public Builder setValidatorAddress(
           java.lang.String value) {
@@ -11705,6 +12280,7 @@ public final class Harmony {
       }
       /**
        * <code>string validator_address = 2;</code>
+       * @return This builder for chaining.
        */
       public Builder clearValidatorAddress() {
         
@@ -11714,6 +12290,8 @@ public final class Harmony {
       }
       /**
        * <code>string validator_address = 2;</code>
+       * @param value The bytes for validatorAddress to set.
+       * @return This builder for chaining.
        */
       public Builder setValidatorAddressBytes(
           com.google.protobuf.ByteString value) {
@@ -11730,12 +12308,16 @@ public final class Harmony {
       private com.google.protobuf.ByteString amount_ = com.google.protobuf.ByteString.EMPTY;
       /**
        * <code>bytes amount = 3;</code>
+       * @return The amount.
        */
+      @java.lang.Override
       public com.google.protobuf.ByteString getAmount() {
         return amount_;
       }
       /**
        * <code>bytes amount = 3;</code>
+       * @param value The amount to set.
+       * @return This builder for chaining.
        */
       public Builder setAmount(com.google.protobuf.ByteString value) {
         if (value == null) {
@@ -11748,6 +12330,7 @@ public final class Harmony {
       }
       /**
        * <code>bytes amount = 3;</code>
+       * @return This builder for chaining.
        */
       public Builder clearAmount() {
         
@@ -11814,10 +12397,12 @@ public final class Harmony {
 
     /**
      * <code>string delegator_address = 1;</code>
+     * @return The delegatorAddress.
      */
     java.lang.String getDelegatorAddress();
     /**
      * <code>string delegator_address = 1;</code>
+     * @return The bytes for delegatorAddress.
      */
     com.google.protobuf.ByteString
         getDelegatorAddressBytes();
@@ -11825,7 +12410,7 @@ public final class Harmony {
   /**
    * Protobuf type {@code TW.Harmony.Proto.DirectiveCollectRewards}
    */
-  public  static final class DirectiveCollectRewards extends
+  public static final class DirectiveCollectRewards extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:TW.Harmony.Proto.DirectiveCollectRewards)
       DirectiveCollectRewardsOrBuilder {
@@ -11910,7 +12495,9 @@ public final class Harmony {
     private volatile java.lang.Object delegatorAddress_;
     /**
      * <code>string delegator_address = 1;</code>
+     * @return The delegatorAddress.
      */
+    @java.lang.Override
     public java.lang.String getDelegatorAddress() {
       java.lang.Object ref = delegatorAddress_;
       if (ref instanceof java.lang.String) {
@@ -11925,7 +12512,9 @@ public final class Harmony {
     }
     /**
      * <code>string delegator_address = 1;</code>
+     * @return The bytes for delegatorAddress.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString
         getDelegatorAddressBytes() {
       java.lang.Object ref = delegatorAddress_;
@@ -12245,6 +12834,7 @@ public final class Harmony {
       private java.lang.Object delegatorAddress_ = "";
       /**
        * <code>string delegator_address = 1;</code>
+       * @return The delegatorAddress.
        */
       public java.lang.String getDelegatorAddress() {
         java.lang.Object ref = delegatorAddress_;
@@ -12260,6 +12850,7 @@ public final class Harmony {
       }
       /**
        * <code>string delegator_address = 1;</code>
+       * @return The bytes for delegatorAddress.
        */
       public com.google.protobuf.ByteString
           getDelegatorAddressBytes() {
@@ -12276,6 +12867,8 @@ public final class Harmony {
       }
       /**
        * <code>string delegator_address = 1;</code>
+       * @param value The delegatorAddress to set.
+       * @return This builder for chaining.
        */
       public Builder setDelegatorAddress(
           java.lang.String value) {
@@ -12289,6 +12882,7 @@ public final class Harmony {
       }
       /**
        * <code>string delegator_address = 1;</code>
+       * @return This builder for chaining.
        */
       public Builder clearDelegatorAddress() {
         
@@ -12298,6 +12892,8 @@ public final class Harmony {
       }
       /**
        * <code>string delegator_address = 1;</code>
+       * @param value The bytes for delegatorAddress to set.
+       * @return This builder for chaining.
        */
       public Builder setDelegatorAddressBytes(
           com.google.protobuf.ByteString value) {

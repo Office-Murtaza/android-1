@@ -71,7 +71,10 @@ public enum CoinType {
     FILECOIN (461),
     ELROND (508),
     BANDCHAIN (494),
-    BINANCESMARTCHAIN (10000714);
+    SMARTCHAINLEGACY (10000714),
+    SMARTCHAIN (20000714),
+    OASIS (474),
+    POLYGON (966);
 
     private final int value;
     CoinType(int value) {
@@ -141,7 +144,10 @@ public enum CoinType {
             case 461: return CoinType.FILECOIN;
             case 508: return CoinType.ELROND;
             case 494: return CoinType.BANDCHAIN;
-            case 10000714: return CoinType.BINANCESMARTCHAIN;
+            case 10000714: return CoinType.SMARTCHAINLEGACY;
+            case 20000714: return CoinType.SMARTCHAIN;
+            case 474: return CoinType.OASIS;
+            case 966: return CoinType.POLYGON;
             default: return null;
         }
     }

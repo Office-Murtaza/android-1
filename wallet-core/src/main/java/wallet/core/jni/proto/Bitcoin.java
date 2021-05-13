@@ -24,6 +24,7 @@ public final class Bitcoin {
      * </pre>
      *
      * <code>sint32 version = 1;</code>
+     * @return The version.
      */
     int getVersion();
 
@@ -33,6 +34,7 @@ public final class Bitcoin {
      * </pre>
      *
      * <code>uint32 lockTime = 2;</code>
+     * @return The lockTime.
      */
     int getLockTime();
 
@@ -127,7 +129,7 @@ public final class Bitcoin {
   /**
    * Protobuf type {@code TW.Bitcoin.Proto.Transaction}
    */
-  public  static final class Transaction extends
+  public static final class Transaction extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:TW.Bitcoin.Proto.Transaction)
       TransactionOrBuilder {
@@ -246,7 +248,9 @@ public final class Bitcoin {
      * </pre>
      *
      * <code>sint32 version = 1;</code>
+     * @return The version.
      */
+    @java.lang.Override
     public int getVersion() {
       return version_;
     }
@@ -259,7 +263,9 @@ public final class Bitcoin {
      * </pre>
      *
      * <code>uint32 lockTime = 2;</code>
+     * @return The lockTime.
      */
+    @java.lang.Override
     public int getLockTime() {
       return lockTime_;
     }
@@ -273,6 +279,7 @@ public final class Bitcoin {
      *
      * <code>repeated .TW.Bitcoin.Proto.TransactionInput inputs = 3;</code>
      */
+    @java.lang.Override
     public java.util.List<wallet.core.jni.proto.Bitcoin.TransactionInput> getInputsList() {
       return inputs_;
     }
@@ -283,6 +290,7 @@ public final class Bitcoin {
      *
      * <code>repeated .TW.Bitcoin.Proto.TransactionInput inputs = 3;</code>
      */
+    @java.lang.Override
     public java.util.List<? extends wallet.core.jni.proto.Bitcoin.TransactionInputOrBuilder> 
         getInputsOrBuilderList() {
       return inputs_;
@@ -294,6 +302,7 @@ public final class Bitcoin {
      *
      * <code>repeated .TW.Bitcoin.Proto.TransactionInput inputs = 3;</code>
      */
+    @java.lang.Override
     public int getInputsCount() {
       return inputs_.size();
     }
@@ -304,6 +313,7 @@ public final class Bitcoin {
      *
      * <code>repeated .TW.Bitcoin.Proto.TransactionInput inputs = 3;</code>
      */
+    @java.lang.Override
     public wallet.core.jni.proto.Bitcoin.TransactionInput getInputs(int index) {
       return inputs_.get(index);
     }
@@ -314,6 +324,7 @@ public final class Bitcoin {
      *
      * <code>repeated .TW.Bitcoin.Proto.TransactionInput inputs = 3;</code>
      */
+    @java.lang.Override
     public wallet.core.jni.proto.Bitcoin.TransactionInputOrBuilder getInputsOrBuilder(
         int index) {
       return inputs_.get(index);
@@ -328,6 +339,7 @@ public final class Bitcoin {
      *
      * <code>repeated .TW.Bitcoin.Proto.TransactionOutput outputs = 4;</code>
      */
+    @java.lang.Override
     public java.util.List<wallet.core.jni.proto.Bitcoin.TransactionOutput> getOutputsList() {
       return outputs_;
     }
@@ -338,6 +350,7 @@ public final class Bitcoin {
      *
      * <code>repeated .TW.Bitcoin.Proto.TransactionOutput outputs = 4;</code>
      */
+    @java.lang.Override
     public java.util.List<? extends wallet.core.jni.proto.Bitcoin.TransactionOutputOrBuilder> 
         getOutputsOrBuilderList() {
       return outputs_;
@@ -349,6 +362,7 @@ public final class Bitcoin {
      *
      * <code>repeated .TW.Bitcoin.Proto.TransactionOutput outputs = 4;</code>
      */
+    @java.lang.Override
     public int getOutputsCount() {
       return outputs_.size();
     }
@@ -359,6 +373,7 @@ public final class Bitcoin {
      *
      * <code>repeated .TW.Bitcoin.Proto.TransactionOutput outputs = 4;</code>
      */
+    @java.lang.Override
     public wallet.core.jni.proto.Bitcoin.TransactionOutput getOutputs(int index) {
       return outputs_.get(index);
     }
@@ -369,6 +384,7 @@ public final class Bitcoin {
      *
      * <code>repeated .TW.Bitcoin.Proto.TransactionOutput outputs = 4;</code>
      */
+    @java.lang.Override
     public wallet.core.jni.proto.Bitcoin.TransactionOutputOrBuilder getOutputsOrBuilder(
         int index) {
       return outputs_.get(index);
@@ -812,7 +828,9 @@ public final class Bitcoin {
        * </pre>
        *
        * <code>sint32 version = 1;</code>
+       * @return The version.
        */
+      @java.lang.Override
       public int getVersion() {
         return version_;
       }
@@ -822,6 +840,8 @@ public final class Bitcoin {
        * </pre>
        *
        * <code>sint32 version = 1;</code>
+       * @param value The version to set.
+       * @return This builder for chaining.
        */
       public Builder setVersion(int value) {
         
@@ -835,6 +855,7 @@ public final class Bitcoin {
        * </pre>
        *
        * <code>sint32 version = 1;</code>
+       * @return This builder for chaining.
        */
       public Builder clearVersion() {
         
@@ -850,7 +871,9 @@ public final class Bitcoin {
        * </pre>
        *
        * <code>uint32 lockTime = 2;</code>
+       * @return The lockTime.
        */
+      @java.lang.Override
       public int getLockTime() {
         return lockTime_;
       }
@@ -860,6 +883,8 @@ public final class Bitcoin {
        * </pre>
        *
        * <code>uint32 lockTime = 2;</code>
+       * @param value The lockTime to set.
+       * @return This builder for chaining.
        */
       public Builder setLockTime(int value) {
         
@@ -873,6 +898,7 @@ public final class Bitcoin {
        * </pre>
        *
        * <code>uint32 lockTime = 2;</code>
+       * @return This builder for chaining.
        */
       public Builder clearLockTime() {
         
@@ -1567,6 +1593,7 @@ public final class Bitcoin {
      * </pre>
      *
      * <code>.TW.Bitcoin.Proto.OutPoint previousOutput = 1;</code>
+     * @return Whether the previousOutput field is set.
      */
     boolean hasPreviousOutput();
     /**
@@ -1575,6 +1602,7 @@ public final class Bitcoin {
      * </pre>
      *
      * <code>.TW.Bitcoin.Proto.OutPoint previousOutput = 1;</code>
+     * @return The previousOutput.
      */
     wallet.core.jni.proto.Bitcoin.OutPoint getPreviousOutput();
     /**
@@ -1592,6 +1620,7 @@ public final class Bitcoin {
      * </pre>
      *
      * <code>uint32 sequence = 2;</code>
+     * @return The sequence.
      */
     int getSequence();
 
@@ -1601,6 +1630,7 @@ public final class Bitcoin {
      * </pre>
      *
      * <code>bytes script = 3;</code>
+     * @return The script.
      */
     com.google.protobuf.ByteString getScript();
   }
@@ -1611,7 +1641,7 @@ public final class Bitcoin {
    *
    * Protobuf type {@code TW.Bitcoin.Proto.TransactionInput}
    */
-  public  static final class TransactionInput extends
+  public static final class TransactionInput extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:TW.Bitcoin.Proto.TransactionInput)
       TransactionInputOrBuilder {
@@ -1717,7 +1747,9 @@ public final class Bitcoin {
      * </pre>
      *
      * <code>.TW.Bitcoin.Proto.OutPoint previousOutput = 1;</code>
+     * @return Whether the previousOutput field is set.
      */
+    @java.lang.Override
     public boolean hasPreviousOutput() {
       return previousOutput_ != null;
     }
@@ -1727,7 +1759,9 @@ public final class Bitcoin {
      * </pre>
      *
      * <code>.TW.Bitcoin.Proto.OutPoint previousOutput = 1;</code>
+     * @return The previousOutput.
      */
+    @java.lang.Override
     public wallet.core.jni.proto.Bitcoin.OutPoint getPreviousOutput() {
       return previousOutput_ == null ? wallet.core.jni.proto.Bitcoin.OutPoint.getDefaultInstance() : previousOutput_;
     }
@@ -1738,6 +1772,7 @@ public final class Bitcoin {
      *
      * <code>.TW.Bitcoin.Proto.OutPoint previousOutput = 1;</code>
      */
+    @java.lang.Override
     public wallet.core.jni.proto.Bitcoin.OutPointOrBuilder getPreviousOutputOrBuilder() {
       return getPreviousOutput();
     }
@@ -1750,7 +1785,9 @@ public final class Bitcoin {
      * </pre>
      *
      * <code>uint32 sequence = 2;</code>
+     * @return The sequence.
      */
+    @java.lang.Override
     public int getSequence() {
       return sequence_;
     }
@@ -1763,7 +1800,9 @@ public final class Bitcoin {
      * </pre>
      *
      * <code>bytes script = 3;</code>
+     * @return The script.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString getScript() {
       return script_;
     }
@@ -2130,6 +2169,7 @@ public final class Bitcoin {
        * </pre>
        *
        * <code>.TW.Bitcoin.Proto.OutPoint previousOutput = 1;</code>
+       * @return Whether the previousOutput field is set.
        */
       public boolean hasPreviousOutput() {
         return previousOutputBuilder_ != null || previousOutput_ != null;
@@ -2140,6 +2180,7 @@ public final class Bitcoin {
        * </pre>
        *
        * <code>.TW.Bitcoin.Proto.OutPoint previousOutput = 1;</code>
+       * @return The previousOutput.
        */
       public wallet.core.jni.proto.Bitcoin.OutPoint getPreviousOutput() {
         if (previousOutputBuilder_ == null) {
@@ -2281,7 +2322,9 @@ public final class Bitcoin {
        * </pre>
        *
        * <code>uint32 sequence = 2;</code>
+       * @return The sequence.
        */
+      @java.lang.Override
       public int getSequence() {
         return sequence_;
       }
@@ -2291,6 +2334,8 @@ public final class Bitcoin {
        * </pre>
        *
        * <code>uint32 sequence = 2;</code>
+       * @param value The sequence to set.
+       * @return This builder for chaining.
        */
       public Builder setSequence(int value) {
         
@@ -2304,6 +2349,7 @@ public final class Bitcoin {
        * </pre>
        *
        * <code>uint32 sequence = 2;</code>
+       * @return This builder for chaining.
        */
       public Builder clearSequence() {
         
@@ -2319,7 +2365,9 @@ public final class Bitcoin {
        * </pre>
        *
        * <code>bytes script = 3;</code>
+       * @return The script.
        */
+      @java.lang.Override
       public com.google.protobuf.ByteString getScript() {
         return script_;
       }
@@ -2329,6 +2377,8 @@ public final class Bitcoin {
        * </pre>
        *
        * <code>bytes script = 3;</code>
+       * @param value The script to set.
+       * @return This builder for chaining.
        */
       public Builder setScript(com.google.protobuf.ByteString value) {
         if (value == null) {
@@ -2345,6 +2395,7 @@ public final class Bitcoin {
        * </pre>
        *
        * <code>bytes script = 3;</code>
+       * @return This builder for chaining.
        */
       public Builder clearScript() {
         
@@ -2415,6 +2466,7 @@ public final class Bitcoin {
      * </pre>
      *
      * <code>bytes hash = 1;</code>
+     * @return The hash.
      */
     com.google.protobuf.ByteString getHash();
 
@@ -2424,6 +2476,7 @@ public final class Bitcoin {
      * </pre>
      *
      * <code>uint32 index = 2;</code>
+     * @return The index.
      */
     int getIndex();
 
@@ -2433,6 +2486,7 @@ public final class Bitcoin {
      * </pre>
      *
      * <code>uint32 sequence = 3;</code>
+     * @return The sequence.
      */
     int getSequence();
   }
@@ -2443,7 +2497,7 @@ public final class Bitcoin {
    *
    * Protobuf type {@code TW.Bitcoin.Proto.OutPoint}
    */
-  public  static final class OutPoint extends
+  public static final class OutPoint extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:TW.Bitcoin.Proto.OutPoint)
       OutPointOrBuilder {
@@ -2541,7 +2595,9 @@ public final class Bitcoin {
      * </pre>
      *
      * <code>bytes hash = 1;</code>
+     * @return The hash.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString getHash() {
       return hash_;
     }
@@ -2554,7 +2610,9 @@ public final class Bitcoin {
      * </pre>
      *
      * <code>uint32 index = 2;</code>
+     * @return The index.
      */
+    @java.lang.Override
     public int getIndex() {
       return index_;
     }
@@ -2567,7 +2625,9 @@ public final class Bitcoin {
      * </pre>
      *
      * <code>uint32 sequence = 3;</code>
+     * @return The sequence.
      */
+    @java.lang.Override
     public int getSequence() {
       return sequence_;
     }
@@ -2919,7 +2979,9 @@ public final class Bitcoin {
        * </pre>
        *
        * <code>bytes hash = 1;</code>
+       * @return The hash.
        */
+      @java.lang.Override
       public com.google.protobuf.ByteString getHash() {
         return hash_;
       }
@@ -2929,6 +2991,8 @@ public final class Bitcoin {
        * </pre>
        *
        * <code>bytes hash = 1;</code>
+       * @param value The hash to set.
+       * @return This builder for chaining.
        */
       public Builder setHash(com.google.protobuf.ByteString value) {
         if (value == null) {
@@ -2945,6 +3009,7 @@ public final class Bitcoin {
        * </pre>
        *
        * <code>bytes hash = 1;</code>
+       * @return This builder for chaining.
        */
       public Builder clearHash() {
         
@@ -2960,7 +3025,9 @@ public final class Bitcoin {
        * </pre>
        *
        * <code>uint32 index = 2;</code>
+       * @return The index.
        */
+      @java.lang.Override
       public int getIndex() {
         return index_;
       }
@@ -2970,6 +3037,8 @@ public final class Bitcoin {
        * </pre>
        *
        * <code>uint32 index = 2;</code>
+       * @param value The index to set.
+       * @return This builder for chaining.
        */
       public Builder setIndex(int value) {
         
@@ -2983,6 +3052,7 @@ public final class Bitcoin {
        * </pre>
        *
        * <code>uint32 index = 2;</code>
+       * @return This builder for chaining.
        */
       public Builder clearIndex() {
         
@@ -2998,7 +3068,9 @@ public final class Bitcoin {
        * </pre>
        *
        * <code>uint32 sequence = 3;</code>
+       * @return The sequence.
        */
+      @java.lang.Override
       public int getSequence() {
         return sequence_;
       }
@@ -3008,6 +3080,8 @@ public final class Bitcoin {
        * </pre>
        *
        * <code>uint32 sequence = 3;</code>
+       * @param value The sequence to set.
+       * @return This builder for chaining.
        */
       public Builder setSequence(int value) {
         
@@ -3021,6 +3095,7 @@ public final class Bitcoin {
        * </pre>
        *
        * <code>uint32 sequence = 3;</code>
+       * @return This builder for chaining.
        */
       public Builder clearSequence() {
         
@@ -3091,6 +3166,7 @@ public final class Bitcoin {
      * </pre>
      *
      * <code>int64 value = 1;</code>
+     * @return The value.
      */
     long getValue();
 
@@ -3100,6 +3176,7 @@ public final class Bitcoin {
      * </pre>
      *
      * <code>bytes script = 2;</code>
+     * @return The script.
      */
     com.google.protobuf.ByteString getScript();
   }
@@ -3110,7 +3187,7 @@ public final class Bitcoin {
    *
    * Protobuf type {@code TW.Bitcoin.Proto.TransactionOutput}
    */
-  public  static final class TransactionOutput extends
+  public static final class TransactionOutput extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:TW.Bitcoin.Proto.TransactionOutput)
       TransactionOutputOrBuilder {
@@ -3203,7 +3280,9 @@ public final class Bitcoin {
      * </pre>
      *
      * <code>int64 value = 1;</code>
+     * @return The value.
      */
+    @java.lang.Override
     public long getValue() {
       return value_;
     }
@@ -3216,7 +3295,9 @@ public final class Bitcoin {
      * </pre>
      *
      * <code>bytes script = 2;</code>
+     * @return The script.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString getScript() {
       return script_;
     }
@@ -3552,7 +3633,9 @@ public final class Bitcoin {
        * </pre>
        *
        * <code>int64 value = 1;</code>
+       * @return The value.
        */
+      @java.lang.Override
       public long getValue() {
         return value_;
       }
@@ -3562,6 +3645,8 @@ public final class Bitcoin {
        * </pre>
        *
        * <code>int64 value = 1;</code>
+       * @param value The value to set.
+       * @return This builder for chaining.
        */
       public Builder setValue(long value) {
         
@@ -3575,6 +3660,7 @@ public final class Bitcoin {
        * </pre>
        *
        * <code>int64 value = 1;</code>
+       * @return This builder for chaining.
        */
       public Builder clearValue() {
         
@@ -3590,7 +3676,9 @@ public final class Bitcoin {
        * </pre>
        *
        * <code>bytes script = 2;</code>
+       * @return The script.
        */
+      @java.lang.Override
       public com.google.protobuf.ByteString getScript() {
         return script_;
       }
@@ -3600,6 +3688,8 @@ public final class Bitcoin {
        * </pre>
        *
        * <code>bytes script = 2;</code>
+       * @param value The script to set.
+       * @return This builder for chaining.
        */
       public Builder setScript(com.google.protobuf.ByteString value) {
         if (value == null) {
@@ -3616,6 +3706,7 @@ public final class Bitcoin {
        * </pre>
        *
        * <code>bytes script = 2;</code>
+       * @return This builder for chaining.
        */
       public Builder clearScript() {
         
@@ -3681,32 +3772,60 @@ public final class Bitcoin {
       com.google.protobuf.MessageOrBuilder {
 
     /**
+     * <pre>
+     * The unspent output
+     * </pre>
+     *
      * <code>.TW.Bitcoin.Proto.OutPoint out_point = 1;</code>
+     * @return Whether the outPoint field is set.
      */
     boolean hasOutPoint();
     /**
+     * <pre>
+     * The unspent output
+     * </pre>
+     *
      * <code>.TW.Bitcoin.Proto.OutPoint out_point = 1;</code>
+     * @return The outPoint.
      */
     wallet.core.jni.proto.Bitcoin.OutPoint getOutPoint();
     /**
+     * <pre>
+     * The unspent output
+     * </pre>
+     *
      * <code>.TW.Bitcoin.Proto.OutPoint out_point = 1;</code>
      */
     wallet.core.jni.proto.Bitcoin.OutPointOrBuilder getOutPointOrBuilder();
 
     /**
+     * <pre>
+     * Script for claiming this UTXO
+     * </pre>
+     *
      * <code>bytes script = 2;</code>
+     * @return The script.
      */
     com.google.protobuf.ByteString getScript();
 
     /**
+     * <pre>
+     * Amount of the UTXO
+     * </pre>
+     *
      * <code>int64 amount = 3;</code>
+     * @return The amount.
      */
     long getAmount();
   }
   /**
+   * <pre>
+   * An unspent transaction output, that can serve as input to a transaction
+   * </pre>
+   *
    * Protobuf type {@code TW.Bitcoin.Proto.UnspentTransaction}
    */
-  public  static final class UnspentTransaction extends
+  public static final class UnspentTransaction extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:TW.Bitcoin.Proto.UnspentTransaction)
       UnspentTransactionOrBuilder {
@@ -3807,20 +3926,37 @@ public final class Bitcoin {
     public static final int OUT_POINT_FIELD_NUMBER = 1;
     private wallet.core.jni.proto.Bitcoin.OutPoint outPoint_;
     /**
+     * <pre>
+     * The unspent output
+     * </pre>
+     *
      * <code>.TW.Bitcoin.Proto.OutPoint out_point = 1;</code>
+     * @return Whether the outPoint field is set.
      */
+    @java.lang.Override
     public boolean hasOutPoint() {
       return outPoint_ != null;
     }
     /**
+     * <pre>
+     * The unspent output
+     * </pre>
+     *
      * <code>.TW.Bitcoin.Proto.OutPoint out_point = 1;</code>
+     * @return The outPoint.
      */
+    @java.lang.Override
     public wallet.core.jni.proto.Bitcoin.OutPoint getOutPoint() {
       return outPoint_ == null ? wallet.core.jni.proto.Bitcoin.OutPoint.getDefaultInstance() : outPoint_;
     }
     /**
+     * <pre>
+     * The unspent output
+     * </pre>
+     *
      * <code>.TW.Bitcoin.Proto.OutPoint out_point = 1;</code>
      */
+    @java.lang.Override
     public wallet.core.jni.proto.Bitcoin.OutPointOrBuilder getOutPointOrBuilder() {
       return getOutPoint();
     }
@@ -3828,8 +3964,14 @@ public final class Bitcoin {
     public static final int SCRIPT_FIELD_NUMBER = 2;
     private com.google.protobuf.ByteString script_;
     /**
+     * <pre>
+     * Script for claiming this UTXO
+     * </pre>
+     *
      * <code>bytes script = 2;</code>
+     * @return The script.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString getScript() {
       return script_;
     }
@@ -3837,8 +3979,14 @@ public final class Bitcoin {
     public static final int AMOUNT_FIELD_NUMBER = 3;
     private long amount_;
     /**
+     * <pre>
+     * Amount of the UTXO
+     * </pre>
+     *
      * <code>int64 amount = 3;</code>
+     * @return The amount.
      */
+    @java.lang.Override
     public long getAmount() {
       return amount_;
     }
@@ -4027,6 +4175,10 @@ public final class Bitcoin {
       return builder;
     }
     /**
+     * <pre>
+     * An unspent transaction output, that can serve as input to a transaction
+     * </pre>
+     *
      * Protobuf type {@code TW.Bitcoin.Proto.UnspentTransaction}
      */
     public static final class Builder extends
@@ -4197,13 +4349,23 @@ public final class Bitcoin {
       private com.google.protobuf.SingleFieldBuilderV3<
           wallet.core.jni.proto.Bitcoin.OutPoint, wallet.core.jni.proto.Bitcoin.OutPoint.Builder, wallet.core.jni.proto.Bitcoin.OutPointOrBuilder> outPointBuilder_;
       /**
+       * <pre>
+       * The unspent output
+       * </pre>
+       *
        * <code>.TW.Bitcoin.Proto.OutPoint out_point = 1;</code>
+       * @return Whether the outPoint field is set.
        */
       public boolean hasOutPoint() {
         return outPointBuilder_ != null || outPoint_ != null;
       }
       /**
+       * <pre>
+       * The unspent output
+       * </pre>
+       *
        * <code>.TW.Bitcoin.Proto.OutPoint out_point = 1;</code>
+       * @return The outPoint.
        */
       public wallet.core.jni.proto.Bitcoin.OutPoint getOutPoint() {
         if (outPointBuilder_ == null) {
@@ -4213,6 +4375,10 @@ public final class Bitcoin {
         }
       }
       /**
+       * <pre>
+       * The unspent output
+       * </pre>
+       *
        * <code>.TW.Bitcoin.Proto.OutPoint out_point = 1;</code>
        */
       public Builder setOutPoint(wallet.core.jni.proto.Bitcoin.OutPoint value) {
@@ -4229,6 +4395,10 @@ public final class Bitcoin {
         return this;
       }
       /**
+       * <pre>
+       * The unspent output
+       * </pre>
+       *
        * <code>.TW.Bitcoin.Proto.OutPoint out_point = 1;</code>
        */
       public Builder setOutPoint(
@@ -4243,6 +4413,10 @@ public final class Bitcoin {
         return this;
       }
       /**
+       * <pre>
+       * The unspent output
+       * </pre>
+       *
        * <code>.TW.Bitcoin.Proto.OutPoint out_point = 1;</code>
        */
       public Builder mergeOutPoint(wallet.core.jni.proto.Bitcoin.OutPoint value) {
@@ -4261,6 +4435,10 @@ public final class Bitcoin {
         return this;
       }
       /**
+       * <pre>
+       * The unspent output
+       * </pre>
+       *
        * <code>.TW.Bitcoin.Proto.OutPoint out_point = 1;</code>
        */
       public Builder clearOutPoint() {
@@ -4275,6 +4453,10 @@ public final class Bitcoin {
         return this;
       }
       /**
+       * <pre>
+       * The unspent output
+       * </pre>
+       *
        * <code>.TW.Bitcoin.Proto.OutPoint out_point = 1;</code>
        */
       public wallet.core.jni.proto.Bitcoin.OutPoint.Builder getOutPointBuilder() {
@@ -4283,6 +4465,10 @@ public final class Bitcoin {
         return getOutPointFieldBuilder().getBuilder();
       }
       /**
+       * <pre>
+       * The unspent output
+       * </pre>
+       *
        * <code>.TW.Bitcoin.Proto.OutPoint out_point = 1;</code>
        */
       public wallet.core.jni.proto.Bitcoin.OutPointOrBuilder getOutPointOrBuilder() {
@@ -4294,6 +4480,10 @@ public final class Bitcoin {
         }
       }
       /**
+       * <pre>
+       * The unspent output
+       * </pre>
+       *
        * <code>.TW.Bitcoin.Proto.OutPoint out_point = 1;</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
@@ -4312,13 +4502,25 @@ public final class Bitcoin {
 
       private com.google.protobuf.ByteString script_ = com.google.protobuf.ByteString.EMPTY;
       /**
+       * <pre>
+       * Script for claiming this UTXO
+       * </pre>
+       *
        * <code>bytes script = 2;</code>
+       * @return The script.
        */
+      @java.lang.Override
       public com.google.protobuf.ByteString getScript() {
         return script_;
       }
       /**
+       * <pre>
+       * Script for claiming this UTXO
+       * </pre>
+       *
        * <code>bytes script = 2;</code>
+       * @param value The script to set.
+       * @return This builder for chaining.
        */
       public Builder setScript(com.google.protobuf.ByteString value) {
         if (value == null) {
@@ -4330,7 +4532,12 @@ public final class Bitcoin {
         return this;
       }
       /**
+       * <pre>
+       * Script for claiming this UTXO
+       * </pre>
+       *
        * <code>bytes script = 2;</code>
+       * @return This builder for chaining.
        */
       public Builder clearScript() {
         
@@ -4341,13 +4548,25 @@ public final class Bitcoin {
 
       private long amount_ ;
       /**
+       * <pre>
+       * Amount of the UTXO
+       * </pre>
+       *
        * <code>int64 amount = 3;</code>
+       * @return The amount.
        */
+      @java.lang.Override
       public long getAmount() {
         return amount_;
       }
       /**
+       * <pre>
+       * Amount of the UTXO
+       * </pre>
+       *
        * <code>int64 amount = 3;</code>
+       * @param value The amount to set.
+       * @return This builder for chaining.
        */
       public Builder setAmount(long value) {
         
@@ -4356,7 +4575,12 @@ public final class Bitcoin {
         return this;
       }
       /**
+       * <pre>
+       * Amount of the UTXO
+       * </pre>
+       *
        * <code>int64 amount = 3;</code>
+       * @return This builder for chaining.
        */
       public Builder clearAmount() {
         
@@ -4427,15 +4651,19 @@ public final class Bitcoin {
      * </pre>
      *
      * <code>uint32 hash_type = 1;</code>
+     * @return The hashType.
      */
     int getHashType();
 
     /**
      * <pre>
-     * Amount to send.
+     * Amount to send.  Transaction created will have this amount in its output, 
+     * except when use_max_amount is set, in that case this amount is not relevant, maximum possible amount will be used (max avail less fee).
+     * If amount is equal or more than the available amount, also max amount will be used.
      * </pre>
      *
      * <code>int64 amount = 2;</code>
+     * @return The amount.
      */
     long getAmount();
 
@@ -4445,6 +4673,7 @@ public final class Bitcoin {
      * </pre>
      *
      * <code>int64 byte_fee = 3;</code>
+     * @return The byteFee.
      */
     long getByteFee();
 
@@ -4454,6 +4683,7 @@ public final class Bitcoin {
      * </pre>
      *
      * <code>string to_address = 4;</code>
+     * @return The toAddress.
      */
     java.lang.String getToAddress();
     /**
@@ -4462,6 +4692,7 @@ public final class Bitcoin {
      * </pre>
      *
      * <code>string to_address = 4;</code>
+     * @return The bytes for toAddress.
      */
     com.google.protobuf.ByteString
         getToAddressBytes();
@@ -4472,6 +4703,7 @@ public final class Bitcoin {
      * </pre>
      *
      * <code>string change_address = 5;</code>
+     * @return The changeAddress.
      */
     java.lang.String getChangeAddress();
     /**
@@ -4480,6 +4712,7 @@ public final class Bitcoin {
      * </pre>
      *
      * <code>string change_address = 5;</code>
+     * @return The bytes for changeAddress.
      */
     com.google.protobuf.ByteString
         getChangeAddressBytes();
@@ -4489,7 +4722,8 @@ public final class Bitcoin {
      * Available private keys.
      * </pre>
      *
-     * <code>repeated bytes private_key = 10;</code>
+     * <code>repeated bytes private_key = 6;</code>
+     * @return A list containing the privateKey.
      */
     java.util.List<com.google.protobuf.ByteString> getPrivateKeyList();
     /**
@@ -4497,7 +4731,8 @@ public final class Bitcoin {
      * Available private keys.
      * </pre>
      *
-     * <code>repeated bytes private_key = 10;</code>
+     * <code>repeated bytes private_key = 6;</code>
+     * @return The count of privateKey.
      */
     int getPrivateKeyCount();
     /**
@@ -4505,7 +4740,9 @@ public final class Bitcoin {
      * Available private keys.
      * </pre>
      *
-     * <code>repeated bytes private_key = 10;</code>
+     * <code>repeated bytes private_key = 6;</code>
+     * @param index The index of the element to return.
+     * @return The privateKey at the given index.
      */
     com.google.protobuf.ByteString getPrivateKey(int index);
 
@@ -4514,7 +4751,7 @@ public final class Bitcoin {
      * Available redeem scripts indexed by script hash.
      * </pre>
      *
-     * <code>map&lt;string, bytes&gt; scripts = 11;</code>
+     * <code>map&lt;string, bytes&gt; scripts = 7;</code>
      */
     int getScriptsCount();
     /**
@@ -4522,7 +4759,7 @@ public final class Bitcoin {
      * Available redeem scripts indexed by script hash.
      * </pre>
      *
-     * <code>map&lt;string, bytes&gt; scripts = 11;</code>
+     * <code>map&lt;string, bytes&gt; scripts = 7;</code>
      */
     boolean containsScripts(
         java.lang.String key);
@@ -4537,7 +4774,7 @@ public final class Bitcoin {
      * Available redeem scripts indexed by script hash.
      * </pre>
      *
-     * <code>map&lt;string, bytes&gt; scripts = 11;</code>
+     * <code>map&lt;string, bytes&gt; scripts = 7;</code>
      */
     java.util.Map<java.lang.String, com.google.protobuf.ByteString>
     getScriptsMap();
@@ -4546,7 +4783,7 @@ public final class Bitcoin {
      * Available redeem scripts indexed by script hash.
      * </pre>
      *
-     * <code>map&lt;string, bytes&gt; scripts = 11;</code>
+     * <code>map&lt;string, bytes&gt; scripts = 7;</code>
      */
 
     com.google.protobuf.ByteString getScriptsOrDefault(
@@ -4557,7 +4794,7 @@ public final class Bitcoin {
      * Available redeem scripts indexed by script hash.
      * </pre>
      *
-     * <code>map&lt;string, bytes&gt; scripts = 11;</code>
+     * <code>map&lt;string, bytes&gt; scripts = 7;</code>
      */
 
     com.google.protobuf.ByteString getScriptsOrThrow(
@@ -4568,7 +4805,7 @@ public final class Bitcoin {
      * Available unspent transaction outputs.
      * </pre>
      *
-     * <code>repeated .TW.Bitcoin.Proto.UnspentTransaction utxo = 12;</code>
+     * <code>repeated .TW.Bitcoin.Proto.UnspentTransaction utxo = 8;</code>
      */
     java.util.List<wallet.core.jni.proto.Bitcoin.UnspentTransaction> 
         getUtxoList();
@@ -4577,7 +4814,7 @@ public final class Bitcoin {
      * Available unspent transaction outputs.
      * </pre>
      *
-     * <code>repeated .TW.Bitcoin.Proto.UnspentTransaction utxo = 12;</code>
+     * <code>repeated .TW.Bitcoin.Proto.UnspentTransaction utxo = 8;</code>
      */
     wallet.core.jni.proto.Bitcoin.UnspentTransaction getUtxo(int index);
     /**
@@ -4585,7 +4822,7 @@ public final class Bitcoin {
      * Available unspent transaction outputs.
      * </pre>
      *
-     * <code>repeated .TW.Bitcoin.Proto.UnspentTransaction utxo = 12;</code>
+     * <code>repeated .TW.Bitcoin.Proto.UnspentTransaction utxo = 8;</code>
      */
     int getUtxoCount();
     /**
@@ -4593,7 +4830,7 @@ public final class Bitcoin {
      * Available unspent transaction outputs.
      * </pre>
      *
-     * <code>repeated .TW.Bitcoin.Proto.UnspentTransaction utxo = 12;</code>
+     * <code>repeated .TW.Bitcoin.Proto.UnspentTransaction utxo = 8;</code>
      */
     java.util.List<? extends wallet.core.jni.proto.Bitcoin.UnspentTransactionOrBuilder> 
         getUtxoOrBuilderList();
@@ -4602,7 +4839,7 @@ public final class Bitcoin {
      * Available unspent transaction outputs.
      * </pre>
      *
-     * <code>repeated .TW.Bitcoin.Proto.UnspentTransaction utxo = 12;</code>
+     * <code>repeated .TW.Bitcoin.Proto.UnspentTransaction utxo = 8;</code>
      */
     wallet.core.jni.proto.Bitcoin.UnspentTransactionOrBuilder getUtxoOrBuilder(
         int index);
@@ -4612,7 +4849,8 @@ public final class Bitcoin {
      * If sending max amount.
      * </pre>
      *
-     * <code>bool use_max_amount = 13;</code>
+     * <code>bool use_max_amount = 9;</code>
+     * @return The useMaxAmount.
      */
     boolean getUseMaxAmount();
 
@@ -4621,7 +4859,8 @@ public final class Bitcoin {
      * Coin type (forks).
      * </pre>
      *
-     * <code>uint32 coin_type = 14;</code>
+     * <code>uint32 coin_type = 10;</code>
+     * @return The coinType.
      */
     int getCoinType();
 
@@ -4630,7 +4869,8 @@ public final class Bitcoin {
      * Optional transaction plan
      * </pre>
      *
-     * <code>.TW.Bitcoin.Proto.TransactionPlan plan = 15;</code>
+     * <code>.TW.Bitcoin.Proto.TransactionPlan plan = 11;</code>
+     * @return Whether the plan field is set.
      */
     boolean hasPlan();
     /**
@@ -4638,7 +4878,8 @@ public final class Bitcoin {
      * Optional transaction plan
      * </pre>
      *
-     * <code>.TW.Bitcoin.Proto.TransactionPlan plan = 15;</code>
+     * <code>.TW.Bitcoin.Proto.TransactionPlan plan = 11;</code>
+     * @return The plan.
      */
     wallet.core.jni.proto.Bitcoin.TransactionPlan getPlan();
     /**
@@ -4646,7 +4887,7 @@ public final class Bitcoin {
      * Optional transaction plan
      * </pre>
      *
-     * <code>.TW.Bitcoin.Proto.TransactionPlan plan = 15;</code>
+     * <code>.TW.Bitcoin.Proto.TransactionPlan plan = 11;</code>
      */
     wallet.core.jni.proto.Bitcoin.TransactionPlanOrBuilder getPlanOrBuilder();
   }
@@ -4657,7 +4898,7 @@ public final class Bitcoin {
    *
    * Protobuf type {@code TW.Bitcoin.Proto.SigningInput}
    */
-  public  static final class SigningInput extends
+  public static final class SigningInput extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:TW.Bitcoin.Proto.SigningInput)
       SigningInputOrBuilder {
@@ -4731,7 +4972,7 @@ public final class Bitcoin {
               changeAddress_ = s;
               break;
             }
-            case 82: {
+            case 50: {
               if (!((mutable_bitField0_ & 0x00000001) != 0)) {
                 privateKey_ = new java.util.ArrayList<com.google.protobuf.ByteString>();
                 mutable_bitField0_ |= 0x00000001;
@@ -4739,7 +4980,7 @@ public final class Bitcoin {
               privateKey_.add(input.readBytes());
               break;
             }
-            case 90: {
+            case 58: {
               if (!((mutable_bitField0_ & 0x00000002) != 0)) {
                 scripts_ = com.google.protobuf.MapField.newMapField(
                     ScriptsDefaultEntryHolder.defaultEntry);
@@ -4752,7 +4993,7 @@ public final class Bitcoin {
                   scripts__.getKey(), scripts__.getValue());
               break;
             }
-            case 98: {
+            case 66: {
               if (!((mutable_bitField0_ & 0x00000004) != 0)) {
                 utxo_ = new java.util.ArrayList<wallet.core.jni.proto.Bitcoin.UnspentTransaction>();
                 mutable_bitField0_ |= 0x00000004;
@@ -4761,17 +5002,17 @@ public final class Bitcoin {
                   input.readMessage(wallet.core.jni.proto.Bitcoin.UnspentTransaction.parser(), extensionRegistry));
               break;
             }
-            case 104: {
+            case 72: {
 
               useMaxAmount_ = input.readBool();
               break;
             }
-            case 112: {
+            case 80: {
 
               coinType_ = input.readUInt32();
               break;
             }
-            case 122: {
+            case 90: {
               wallet.core.jni.proto.Bitcoin.TransactionPlan.Builder subBuilder = null;
               if (plan_ != null) {
                 subBuilder = plan_.toBuilder();
@@ -4819,7 +5060,7 @@ public final class Bitcoin {
     protected com.google.protobuf.MapField internalGetMapField(
         int number) {
       switch (number) {
-        case 11:
+        case 7:
           return internalGetScripts();
         default:
           throw new RuntimeException(
@@ -4842,7 +5083,9 @@ public final class Bitcoin {
      * </pre>
      *
      * <code>uint32 hash_type = 1;</code>
+     * @return The hashType.
      */
+    @java.lang.Override
     public int getHashType() {
       return hashType_;
     }
@@ -4851,11 +5094,15 @@ public final class Bitcoin {
     private long amount_;
     /**
      * <pre>
-     * Amount to send.
+     * Amount to send.  Transaction created will have this amount in its output, 
+     * except when use_max_amount is set, in that case this amount is not relevant, maximum possible amount will be used (max avail less fee).
+     * If amount is equal or more than the available amount, also max amount will be used.
      * </pre>
      *
      * <code>int64 amount = 2;</code>
+     * @return The amount.
      */
+    @java.lang.Override
     public long getAmount() {
       return amount_;
     }
@@ -4868,7 +5115,9 @@ public final class Bitcoin {
      * </pre>
      *
      * <code>int64 byte_fee = 3;</code>
+     * @return The byteFee.
      */
+    @java.lang.Override
     public long getByteFee() {
       return byteFee_;
     }
@@ -4881,7 +5130,9 @@ public final class Bitcoin {
      * </pre>
      *
      * <code>string to_address = 4;</code>
+     * @return The toAddress.
      */
+    @java.lang.Override
     public java.lang.String getToAddress() {
       java.lang.Object ref = toAddress_;
       if (ref instanceof java.lang.String) {
@@ -4900,7 +5151,9 @@ public final class Bitcoin {
      * </pre>
      *
      * <code>string to_address = 4;</code>
+     * @return The bytes for toAddress.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString
         getToAddressBytes() {
       java.lang.Object ref = toAddress_;
@@ -4923,7 +5176,9 @@ public final class Bitcoin {
      * </pre>
      *
      * <code>string change_address = 5;</code>
+     * @return The changeAddress.
      */
+    @java.lang.Override
     public java.lang.String getChangeAddress() {
       java.lang.Object ref = changeAddress_;
       if (ref instanceof java.lang.String) {
@@ -4942,7 +5197,9 @@ public final class Bitcoin {
      * </pre>
      *
      * <code>string change_address = 5;</code>
+     * @return The bytes for changeAddress.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString
         getChangeAddressBytes() {
       java.lang.Object ref = changeAddress_;
@@ -4957,15 +5214,17 @@ public final class Bitcoin {
       }
     }
 
-    public static final int PRIVATE_KEY_FIELD_NUMBER = 10;
+    public static final int PRIVATE_KEY_FIELD_NUMBER = 6;
     private java.util.List<com.google.protobuf.ByteString> privateKey_;
     /**
      * <pre>
      * Available private keys.
      * </pre>
      *
-     * <code>repeated bytes private_key = 10;</code>
+     * <code>repeated bytes private_key = 6;</code>
+     * @return A list containing the privateKey.
      */
+    @java.lang.Override
     public java.util.List<com.google.protobuf.ByteString>
         getPrivateKeyList() {
       return privateKey_;
@@ -4975,7 +5234,8 @@ public final class Bitcoin {
      * Available private keys.
      * </pre>
      *
-     * <code>repeated bytes private_key = 10;</code>
+     * <code>repeated bytes private_key = 6;</code>
+     * @return The count of privateKey.
      */
     public int getPrivateKeyCount() {
       return privateKey_.size();
@@ -4985,13 +5245,15 @@ public final class Bitcoin {
      * Available private keys.
      * </pre>
      *
-     * <code>repeated bytes private_key = 10;</code>
+     * <code>repeated bytes private_key = 6;</code>
+     * @param index The index of the element to return.
+     * @return The privateKey at the given index.
      */
     public com.google.protobuf.ByteString getPrivateKey(int index) {
       return privateKey_.get(index);
     }
 
-    public static final int SCRIPTS_FIELD_NUMBER = 11;
+    public static final int SCRIPTS_FIELD_NUMBER = 7;
     private static final class ScriptsDefaultEntryHolder {
       static final com.google.protobuf.MapEntry<
           java.lang.String, com.google.protobuf.ByteString> defaultEntry =
@@ -5022,9 +5284,10 @@ public final class Bitcoin {
      * Available redeem scripts indexed by script hash.
      * </pre>
      *
-     * <code>map&lt;string, bytes&gt; scripts = 11;</code>
+     * <code>map&lt;string, bytes&gt; scripts = 7;</code>
      */
 
+    @java.lang.Override
     public boolean containsScripts(
         java.lang.String key) {
       if (key == null) { throw new java.lang.NullPointerException(); }
@@ -5033,6 +5296,7 @@ public final class Bitcoin {
     /**
      * Use {@link #getScriptsMap()} instead.
      */
+    @java.lang.Override
     @java.lang.Deprecated
     public java.util.Map<java.lang.String, com.google.protobuf.ByteString> getScripts() {
       return getScriptsMap();
@@ -5042,8 +5306,9 @@ public final class Bitcoin {
      * Available redeem scripts indexed by script hash.
      * </pre>
      *
-     * <code>map&lt;string, bytes&gt; scripts = 11;</code>
+     * <code>map&lt;string, bytes&gt; scripts = 7;</code>
      */
+    @java.lang.Override
 
     public java.util.Map<java.lang.String, com.google.protobuf.ByteString> getScriptsMap() {
       return internalGetScripts().getMap();
@@ -5053,8 +5318,9 @@ public final class Bitcoin {
      * Available redeem scripts indexed by script hash.
      * </pre>
      *
-     * <code>map&lt;string, bytes&gt; scripts = 11;</code>
+     * <code>map&lt;string, bytes&gt; scripts = 7;</code>
      */
+    @java.lang.Override
 
     public com.google.protobuf.ByteString getScriptsOrDefault(
         java.lang.String key,
@@ -5069,8 +5335,9 @@ public final class Bitcoin {
      * Available redeem scripts indexed by script hash.
      * </pre>
      *
-     * <code>map&lt;string, bytes&gt; scripts = 11;</code>
+     * <code>map&lt;string, bytes&gt; scripts = 7;</code>
      */
+    @java.lang.Override
 
     public com.google.protobuf.ByteString getScriptsOrThrow(
         java.lang.String key) {
@@ -5083,15 +5350,16 @@ public final class Bitcoin {
       return map.get(key);
     }
 
-    public static final int UTXO_FIELD_NUMBER = 12;
+    public static final int UTXO_FIELD_NUMBER = 8;
     private java.util.List<wallet.core.jni.proto.Bitcoin.UnspentTransaction> utxo_;
     /**
      * <pre>
      * Available unspent transaction outputs.
      * </pre>
      *
-     * <code>repeated .TW.Bitcoin.Proto.UnspentTransaction utxo = 12;</code>
+     * <code>repeated .TW.Bitcoin.Proto.UnspentTransaction utxo = 8;</code>
      */
+    @java.lang.Override
     public java.util.List<wallet.core.jni.proto.Bitcoin.UnspentTransaction> getUtxoList() {
       return utxo_;
     }
@@ -5100,8 +5368,9 @@ public final class Bitcoin {
      * Available unspent transaction outputs.
      * </pre>
      *
-     * <code>repeated .TW.Bitcoin.Proto.UnspentTransaction utxo = 12;</code>
+     * <code>repeated .TW.Bitcoin.Proto.UnspentTransaction utxo = 8;</code>
      */
+    @java.lang.Override
     public java.util.List<? extends wallet.core.jni.proto.Bitcoin.UnspentTransactionOrBuilder> 
         getUtxoOrBuilderList() {
       return utxo_;
@@ -5111,8 +5380,9 @@ public final class Bitcoin {
      * Available unspent transaction outputs.
      * </pre>
      *
-     * <code>repeated .TW.Bitcoin.Proto.UnspentTransaction utxo = 12;</code>
+     * <code>repeated .TW.Bitcoin.Proto.UnspentTransaction utxo = 8;</code>
      */
+    @java.lang.Override
     public int getUtxoCount() {
       return utxo_.size();
     }
@@ -5121,8 +5391,9 @@ public final class Bitcoin {
      * Available unspent transaction outputs.
      * </pre>
      *
-     * <code>repeated .TW.Bitcoin.Proto.UnspentTransaction utxo = 12;</code>
+     * <code>repeated .TW.Bitcoin.Proto.UnspentTransaction utxo = 8;</code>
      */
+    @java.lang.Override
     public wallet.core.jni.proto.Bitcoin.UnspentTransaction getUtxo(int index) {
       return utxo_.get(index);
     }
@@ -5131,48 +5402,55 @@ public final class Bitcoin {
      * Available unspent transaction outputs.
      * </pre>
      *
-     * <code>repeated .TW.Bitcoin.Proto.UnspentTransaction utxo = 12;</code>
+     * <code>repeated .TW.Bitcoin.Proto.UnspentTransaction utxo = 8;</code>
      */
+    @java.lang.Override
     public wallet.core.jni.proto.Bitcoin.UnspentTransactionOrBuilder getUtxoOrBuilder(
         int index) {
       return utxo_.get(index);
     }
 
-    public static final int USE_MAX_AMOUNT_FIELD_NUMBER = 13;
+    public static final int USE_MAX_AMOUNT_FIELD_NUMBER = 9;
     private boolean useMaxAmount_;
     /**
      * <pre>
      * If sending max amount.
      * </pre>
      *
-     * <code>bool use_max_amount = 13;</code>
+     * <code>bool use_max_amount = 9;</code>
+     * @return The useMaxAmount.
      */
+    @java.lang.Override
     public boolean getUseMaxAmount() {
       return useMaxAmount_;
     }
 
-    public static final int COIN_TYPE_FIELD_NUMBER = 14;
+    public static final int COIN_TYPE_FIELD_NUMBER = 10;
     private int coinType_;
     /**
      * <pre>
      * Coin type (forks).
      * </pre>
      *
-     * <code>uint32 coin_type = 14;</code>
+     * <code>uint32 coin_type = 10;</code>
+     * @return The coinType.
      */
+    @java.lang.Override
     public int getCoinType() {
       return coinType_;
     }
 
-    public static final int PLAN_FIELD_NUMBER = 15;
+    public static final int PLAN_FIELD_NUMBER = 11;
     private wallet.core.jni.proto.Bitcoin.TransactionPlan plan_;
     /**
      * <pre>
      * Optional transaction plan
      * </pre>
      *
-     * <code>.TW.Bitcoin.Proto.TransactionPlan plan = 15;</code>
+     * <code>.TW.Bitcoin.Proto.TransactionPlan plan = 11;</code>
+     * @return Whether the plan field is set.
      */
+    @java.lang.Override
     public boolean hasPlan() {
       return plan_ != null;
     }
@@ -5181,8 +5459,10 @@ public final class Bitcoin {
      * Optional transaction plan
      * </pre>
      *
-     * <code>.TW.Bitcoin.Proto.TransactionPlan plan = 15;</code>
+     * <code>.TW.Bitcoin.Proto.TransactionPlan plan = 11;</code>
+     * @return The plan.
      */
+    @java.lang.Override
     public wallet.core.jni.proto.Bitcoin.TransactionPlan getPlan() {
       return plan_ == null ? wallet.core.jni.proto.Bitcoin.TransactionPlan.getDefaultInstance() : plan_;
     }
@@ -5191,8 +5471,9 @@ public final class Bitcoin {
      * Optional transaction plan
      * </pre>
      *
-     * <code>.TW.Bitcoin.Proto.TransactionPlan plan = 15;</code>
+     * <code>.TW.Bitcoin.Proto.TransactionPlan plan = 11;</code>
      */
+    @java.lang.Override
     public wallet.core.jni.proto.Bitcoin.TransactionPlanOrBuilder getPlanOrBuilder() {
       return getPlan();
     }
@@ -5227,25 +5508,25 @@ public final class Bitcoin {
         com.google.protobuf.GeneratedMessageV3.writeString(output, 5, changeAddress_);
       }
       for (int i = 0; i < privateKey_.size(); i++) {
-        output.writeBytes(10, privateKey_.get(i));
+        output.writeBytes(6, privateKey_.get(i));
       }
       com.google.protobuf.GeneratedMessageV3
         .serializeStringMapTo(
           output,
           internalGetScripts(),
           ScriptsDefaultEntryHolder.defaultEntry,
-          11);
+          7);
       for (int i = 0; i < utxo_.size(); i++) {
-        output.writeMessage(12, utxo_.get(i));
+        output.writeMessage(8, utxo_.get(i));
       }
       if (useMaxAmount_ != false) {
-        output.writeBool(13, useMaxAmount_);
+        output.writeBool(9, useMaxAmount_);
       }
       if (coinType_ != 0) {
-        output.writeUInt32(14, coinType_);
+        output.writeUInt32(10, coinType_);
       }
       if (plan_ != null) {
-        output.writeMessage(15, getPlan());
+        output.writeMessage(11, getPlan());
       }
       unknownFields.writeTo(output);
     }
@@ -5291,23 +5572,23 @@ public final class Bitcoin {
             .setValue(entry.getValue())
             .build();
         size += com.google.protobuf.CodedOutputStream
-            .computeMessageSize(11, scripts__);
+            .computeMessageSize(7, scripts__);
       }
       for (int i = 0; i < utxo_.size(); i++) {
         size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(12, utxo_.get(i));
+          .computeMessageSize(8, utxo_.get(i));
       }
       if (useMaxAmount_ != false) {
         size += com.google.protobuf.CodedOutputStream
-          .computeBoolSize(13, useMaxAmount_);
+          .computeBoolSize(9, useMaxAmount_);
       }
       if (coinType_ != 0) {
         size += com.google.protobuf.CodedOutputStream
-          .computeUInt32Size(14, coinType_);
+          .computeUInt32Size(10, coinType_);
       }
       if (plan_ != null) {
         size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(15, getPlan());
+          .computeMessageSize(11, getPlan());
       }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
@@ -5508,7 +5789,7 @@ public final class Bitcoin {
       protected com.google.protobuf.MapField internalGetMapField(
           int number) {
         switch (number) {
-          case 11:
+          case 7:
             return internalGetScripts();
           default:
             throw new RuntimeException(
@@ -5519,7 +5800,7 @@ public final class Bitcoin {
       protected com.google.protobuf.MapField internalGetMutableMapField(
           int number) {
         switch (number) {
-          case 11:
+          case 7:
             return internalGetMutableScripts();
           default:
             throw new RuntimeException(
@@ -5786,7 +6067,9 @@ public final class Bitcoin {
        * </pre>
        *
        * <code>uint32 hash_type = 1;</code>
+       * @return The hashType.
        */
+      @java.lang.Override
       public int getHashType() {
         return hashType_;
       }
@@ -5796,6 +6079,8 @@ public final class Bitcoin {
        * </pre>
        *
        * <code>uint32 hash_type = 1;</code>
+       * @param value The hashType to set.
+       * @return This builder for chaining.
        */
       public Builder setHashType(int value) {
         
@@ -5809,6 +6094,7 @@ public final class Bitcoin {
        * </pre>
        *
        * <code>uint32 hash_type = 1;</code>
+       * @return This builder for chaining.
        */
       public Builder clearHashType() {
         
@@ -5820,20 +6106,28 @@ public final class Bitcoin {
       private long amount_ ;
       /**
        * <pre>
-       * Amount to send.
+       * Amount to send.  Transaction created will have this amount in its output, 
+       * except when use_max_amount is set, in that case this amount is not relevant, maximum possible amount will be used (max avail less fee).
+       * If amount is equal or more than the available amount, also max amount will be used.
        * </pre>
        *
        * <code>int64 amount = 2;</code>
+       * @return The amount.
        */
+      @java.lang.Override
       public long getAmount() {
         return amount_;
       }
       /**
        * <pre>
-       * Amount to send.
+       * Amount to send.  Transaction created will have this amount in its output, 
+       * except when use_max_amount is set, in that case this amount is not relevant, maximum possible amount will be used (max avail less fee).
+       * If amount is equal or more than the available amount, also max amount will be used.
        * </pre>
        *
        * <code>int64 amount = 2;</code>
+       * @param value The amount to set.
+       * @return This builder for chaining.
        */
       public Builder setAmount(long value) {
         
@@ -5843,10 +6137,13 @@ public final class Bitcoin {
       }
       /**
        * <pre>
-       * Amount to send.
+       * Amount to send.  Transaction created will have this amount in its output, 
+       * except when use_max_amount is set, in that case this amount is not relevant, maximum possible amount will be used (max avail less fee).
+       * If amount is equal or more than the available amount, also max amount will be used.
        * </pre>
        *
        * <code>int64 amount = 2;</code>
+       * @return This builder for chaining.
        */
       public Builder clearAmount() {
         
@@ -5862,7 +6159,9 @@ public final class Bitcoin {
        * </pre>
        *
        * <code>int64 byte_fee = 3;</code>
+       * @return The byteFee.
        */
+      @java.lang.Override
       public long getByteFee() {
         return byteFee_;
       }
@@ -5872,6 +6171,8 @@ public final class Bitcoin {
        * </pre>
        *
        * <code>int64 byte_fee = 3;</code>
+       * @param value The byteFee to set.
+       * @return This builder for chaining.
        */
       public Builder setByteFee(long value) {
         
@@ -5885,6 +6186,7 @@ public final class Bitcoin {
        * </pre>
        *
        * <code>int64 byte_fee = 3;</code>
+       * @return This builder for chaining.
        */
       public Builder clearByteFee() {
         
@@ -5900,6 +6202,7 @@ public final class Bitcoin {
        * </pre>
        *
        * <code>string to_address = 4;</code>
+       * @return The toAddress.
        */
       public java.lang.String getToAddress() {
         java.lang.Object ref = toAddress_;
@@ -5919,6 +6222,7 @@ public final class Bitcoin {
        * </pre>
        *
        * <code>string to_address = 4;</code>
+       * @return The bytes for toAddress.
        */
       public com.google.protobuf.ByteString
           getToAddressBytes() {
@@ -5939,6 +6243,8 @@ public final class Bitcoin {
        * </pre>
        *
        * <code>string to_address = 4;</code>
+       * @param value The toAddress to set.
+       * @return This builder for chaining.
        */
       public Builder setToAddress(
           java.lang.String value) {
@@ -5956,6 +6262,7 @@ public final class Bitcoin {
        * </pre>
        *
        * <code>string to_address = 4;</code>
+       * @return This builder for chaining.
        */
       public Builder clearToAddress() {
         
@@ -5969,6 +6276,8 @@ public final class Bitcoin {
        * </pre>
        *
        * <code>string to_address = 4;</code>
+       * @param value The bytes for toAddress to set.
+       * @return This builder for chaining.
        */
       public Builder setToAddressBytes(
           com.google.protobuf.ByteString value) {
@@ -5989,6 +6298,7 @@ public final class Bitcoin {
        * </pre>
        *
        * <code>string change_address = 5;</code>
+       * @return The changeAddress.
        */
       public java.lang.String getChangeAddress() {
         java.lang.Object ref = changeAddress_;
@@ -6008,6 +6318,7 @@ public final class Bitcoin {
        * </pre>
        *
        * <code>string change_address = 5;</code>
+       * @return The bytes for changeAddress.
        */
       public com.google.protobuf.ByteString
           getChangeAddressBytes() {
@@ -6028,6 +6339,8 @@ public final class Bitcoin {
        * </pre>
        *
        * <code>string change_address = 5;</code>
+       * @param value The changeAddress to set.
+       * @return This builder for chaining.
        */
       public Builder setChangeAddress(
           java.lang.String value) {
@@ -6045,6 +6358,7 @@ public final class Bitcoin {
        * </pre>
        *
        * <code>string change_address = 5;</code>
+       * @return This builder for chaining.
        */
       public Builder clearChangeAddress() {
         
@@ -6058,6 +6372,8 @@ public final class Bitcoin {
        * </pre>
        *
        * <code>string change_address = 5;</code>
+       * @param value The bytes for changeAddress to set.
+       * @return This builder for chaining.
        */
       public Builder setChangeAddressBytes(
           com.google.protobuf.ByteString value) {
@@ -6083,7 +6399,8 @@ public final class Bitcoin {
        * Available private keys.
        * </pre>
        *
-       * <code>repeated bytes private_key = 10;</code>
+       * <code>repeated bytes private_key = 6;</code>
+       * @return A list containing the privateKey.
        */
       public java.util.List<com.google.protobuf.ByteString>
           getPrivateKeyList() {
@@ -6095,7 +6412,8 @@ public final class Bitcoin {
        * Available private keys.
        * </pre>
        *
-       * <code>repeated bytes private_key = 10;</code>
+       * <code>repeated bytes private_key = 6;</code>
+       * @return The count of privateKey.
        */
       public int getPrivateKeyCount() {
         return privateKey_.size();
@@ -6105,7 +6423,9 @@ public final class Bitcoin {
        * Available private keys.
        * </pre>
        *
-       * <code>repeated bytes private_key = 10;</code>
+       * <code>repeated bytes private_key = 6;</code>
+       * @param index The index of the element to return.
+       * @return The privateKey at the given index.
        */
       public com.google.protobuf.ByteString getPrivateKey(int index) {
         return privateKey_.get(index);
@@ -6115,7 +6435,10 @@ public final class Bitcoin {
        * Available private keys.
        * </pre>
        *
-       * <code>repeated bytes private_key = 10;</code>
+       * <code>repeated bytes private_key = 6;</code>
+       * @param index The index to set the value at.
+       * @param value The privateKey to set.
+       * @return This builder for chaining.
        */
       public Builder setPrivateKey(
           int index, com.google.protobuf.ByteString value) {
@@ -6132,7 +6455,9 @@ public final class Bitcoin {
        * Available private keys.
        * </pre>
        *
-       * <code>repeated bytes private_key = 10;</code>
+       * <code>repeated bytes private_key = 6;</code>
+       * @param value The privateKey to add.
+       * @return This builder for chaining.
        */
       public Builder addPrivateKey(com.google.protobuf.ByteString value) {
         if (value == null) {
@@ -6148,7 +6473,9 @@ public final class Bitcoin {
        * Available private keys.
        * </pre>
        *
-       * <code>repeated bytes private_key = 10;</code>
+       * <code>repeated bytes private_key = 6;</code>
+       * @param values The privateKey to add.
+       * @return This builder for chaining.
        */
       public Builder addAllPrivateKey(
           java.lang.Iterable<? extends com.google.protobuf.ByteString> values) {
@@ -6163,7 +6490,8 @@ public final class Bitcoin {
        * Available private keys.
        * </pre>
        *
-       * <code>repeated bytes private_key = 10;</code>
+       * <code>repeated bytes private_key = 6;</code>
+       * @return This builder for chaining.
        */
       public Builder clearPrivateKey() {
         privateKey_ = java.util.Collections.emptyList();
@@ -6203,9 +6531,10 @@ public final class Bitcoin {
        * Available redeem scripts indexed by script hash.
        * </pre>
        *
-       * <code>map&lt;string, bytes&gt; scripts = 11;</code>
+       * <code>map&lt;string, bytes&gt; scripts = 7;</code>
        */
 
+      @java.lang.Override
       public boolean containsScripts(
           java.lang.String key) {
         if (key == null) { throw new java.lang.NullPointerException(); }
@@ -6214,6 +6543,7 @@ public final class Bitcoin {
       /**
        * Use {@link #getScriptsMap()} instead.
        */
+      @java.lang.Override
       @java.lang.Deprecated
       public java.util.Map<java.lang.String, com.google.protobuf.ByteString> getScripts() {
         return getScriptsMap();
@@ -6223,8 +6553,9 @@ public final class Bitcoin {
        * Available redeem scripts indexed by script hash.
        * </pre>
        *
-       * <code>map&lt;string, bytes&gt; scripts = 11;</code>
+       * <code>map&lt;string, bytes&gt; scripts = 7;</code>
        */
+      @java.lang.Override
 
       public java.util.Map<java.lang.String, com.google.protobuf.ByteString> getScriptsMap() {
         return internalGetScripts().getMap();
@@ -6234,8 +6565,9 @@ public final class Bitcoin {
        * Available redeem scripts indexed by script hash.
        * </pre>
        *
-       * <code>map&lt;string, bytes&gt; scripts = 11;</code>
+       * <code>map&lt;string, bytes&gt; scripts = 7;</code>
        */
+      @java.lang.Override
 
       public com.google.protobuf.ByteString getScriptsOrDefault(
           java.lang.String key,
@@ -6250,8 +6582,9 @@ public final class Bitcoin {
        * Available redeem scripts indexed by script hash.
        * </pre>
        *
-       * <code>map&lt;string, bytes&gt; scripts = 11;</code>
+       * <code>map&lt;string, bytes&gt; scripts = 7;</code>
        */
+      @java.lang.Override
 
       public com.google.protobuf.ByteString getScriptsOrThrow(
           java.lang.String key) {
@@ -6274,7 +6607,7 @@ public final class Bitcoin {
        * Available redeem scripts indexed by script hash.
        * </pre>
        *
-       * <code>map&lt;string, bytes&gt; scripts = 11;</code>
+       * <code>map&lt;string, bytes&gt; scripts = 7;</code>
        */
 
       public Builder removeScripts(
@@ -6297,7 +6630,7 @@ public final class Bitcoin {
        * Available redeem scripts indexed by script hash.
        * </pre>
        *
-       * <code>map&lt;string, bytes&gt; scripts = 11;</code>
+       * <code>map&lt;string, bytes&gt; scripts = 7;</code>
        */
       public Builder putScripts(
           java.lang.String key,
@@ -6313,7 +6646,7 @@ public final class Bitcoin {
        * Available redeem scripts indexed by script hash.
        * </pre>
        *
-       * <code>map&lt;string, bytes&gt; scripts = 11;</code>
+       * <code>map&lt;string, bytes&gt; scripts = 7;</code>
        */
 
       public Builder putAllScripts(
@@ -6340,7 +6673,7 @@ public final class Bitcoin {
        * Available unspent transaction outputs.
        * </pre>
        *
-       * <code>repeated .TW.Bitcoin.Proto.UnspentTransaction utxo = 12;</code>
+       * <code>repeated .TW.Bitcoin.Proto.UnspentTransaction utxo = 8;</code>
        */
       public java.util.List<wallet.core.jni.proto.Bitcoin.UnspentTransaction> getUtxoList() {
         if (utxoBuilder_ == null) {
@@ -6354,7 +6687,7 @@ public final class Bitcoin {
        * Available unspent transaction outputs.
        * </pre>
        *
-       * <code>repeated .TW.Bitcoin.Proto.UnspentTransaction utxo = 12;</code>
+       * <code>repeated .TW.Bitcoin.Proto.UnspentTransaction utxo = 8;</code>
        */
       public int getUtxoCount() {
         if (utxoBuilder_ == null) {
@@ -6368,7 +6701,7 @@ public final class Bitcoin {
        * Available unspent transaction outputs.
        * </pre>
        *
-       * <code>repeated .TW.Bitcoin.Proto.UnspentTransaction utxo = 12;</code>
+       * <code>repeated .TW.Bitcoin.Proto.UnspentTransaction utxo = 8;</code>
        */
       public wallet.core.jni.proto.Bitcoin.UnspentTransaction getUtxo(int index) {
         if (utxoBuilder_ == null) {
@@ -6382,7 +6715,7 @@ public final class Bitcoin {
        * Available unspent transaction outputs.
        * </pre>
        *
-       * <code>repeated .TW.Bitcoin.Proto.UnspentTransaction utxo = 12;</code>
+       * <code>repeated .TW.Bitcoin.Proto.UnspentTransaction utxo = 8;</code>
        */
       public Builder setUtxo(
           int index, wallet.core.jni.proto.Bitcoin.UnspentTransaction value) {
@@ -6403,7 +6736,7 @@ public final class Bitcoin {
        * Available unspent transaction outputs.
        * </pre>
        *
-       * <code>repeated .TW.Bitcoin.Proto.UnspentTransaction utxo = 12;</code>
+       * <code>repeated .TW.Bitcoin.Proto.UnspentTransaction utxo = 8;</code>
        */
       public Builder setUtxo(
           int index, wallet.core.jni.proto.Bitcoin.UnspentTransaction.Builder builderForValue) {
@@ -6421,7 +6754,7 @@ public final class Bitcoin {
        * Available unspent transaction outputs.
        * </pre>
        *
-       * <code>repeated .TW.Bitcoin.Proto.UnspentTransaction utxo = 12;</code>
+       * <code>repeated .TW.Bitcoin.Proto.UnspentTransaction utxo = 8;</code>
        */
       public Builder addUtxo(wallet.core.jni.proto.Bitcoin.UnspentTransaction value) {
         if (utxoBuilder_ == null) {
@@ -6441,7 +6774,7 @@ public final class Bitcoin {
        * Available unspent transaction outputs.
        * </pre>
        *
-       * <code>repeated .TW.Bitcoin.Proto.UnspentTransaction utxo = 12;</code>
+       * <code>repeated .TW.Bitcoin.Proto.UnspentTransaction utxo = 8;</code>
        */
       public Builder addUtxo(
           int index, wallet.core.jni.proto.Bitcoin.UnspentTransaction value) {
@@ -6462,7 +6795,7 @@ public final class Bitcoin {
        * Available unspent transaction outputs.
        * </pre>
        *
-       * <code>repeated .TW.Bitcoin.Proto.UnspentTransaction utxo = 12;</code>
+       * <code>repeated .TW.Bitcoin.Proto.UnspentTransaction utxo = 8;</code>
        */
       public Builder addUtxo(
           wallet.core.jni.proto.Bitcoin.UnspentTransaction.Builder builderForValue) {
@@ -6480,7 +6813,7 @@ public final class Bitcoin {
        * Available unspent transaction outputs.
        * </pre>
        *
-       * <code>repeated .TW.Bitcoin.Proto.UnspentTransaction utxo = 12;</code>
+       * <code>repeated .TW.Bitcoin.Proto.UnspentTransaction utxo = 8;</code>
        */
       public Builder addUtxo(
           int index, wallet.core.jni.proto.Bitcoin.UnspentTransaction.Builder builderForValue) {
@@ -6498,7 +6831,7 @@ public final class Bitcoin {
        * Available unspent transaction outputs.
        * </pre>
        *
-       * <code>repeated .TW.Bitcoin.Proto.UnspentTransaction utxo = 12;</code>
+       * <code>repeated .TW.Bitcoin.Proto.UnspentTransaction utxo = 8;</code>
        */
       public Builder addAllUtxo(
           java.lang.Iterable<? extends wallet.core.jni.proto.Bitcoin.UnspentTransaction> values) {
@@ -6517,7 +6850,7 @@ public final class Bitcoin {
        * Available unspent transaction outputs.
        * </pre>
        *
-       * <code>repeated .TW.Bitcoin.Proto.UnspentTransaction utxo = 12;</code>
+       * <code>repeated .TW.Bitcoin.Proto.UnspentTransaction utxo = 8;</code>
        */
       public Builder clearUtxo() {
         if (utxoBuilder_ == null) {
@@ -6534,7 +6867,7 @@ public final class Bitcoin {
        * Available unspent transaction outputs.
        * </pre>
        *
-       * <code>repeated .TW.Bitcoin.Proto.UnspentTransaction utxo = 12;</code>
+       * <code>repeated .TW.Bitcoin.Proto.UnspentTransaction utxo = 8;</code>
        */
       public Builder removeUtxo(int index) {
         if (utxoBuilder_ == null) {
@@ -6551,7 +6884,7 @@ public final class Bitcoin {
        * Available unspent transaction outputs.
        * </pre>
        *
-       * <code>repeated .TW.Bitcoin.Proto.UnspentTransaction utxo = 12;</code>
+       * <code>repeated .TW.Bitcoin.Proto.UnspentTransaction utxo = 8;</code>
        */
       public wallet.core.jni.proto.Bitcoin.UnspentTransaction.Builder getUtxoBuilder(
           int index) {
@@ -6562,7 +6895,7 @@ public final class Bitcoin {
        * Available unspent transaction outputs.
        * </pre>
        *
-       * <code>repeated .TW.Bitcoin.Proto.UnspentTransaction utxo = 12;</code>
+       * <code>repeated .TW.Bitcoin.Proto.UnspentTransaction utxo = 8;</code>
        */
       public wallet.core.jni.proto.Bitcoin.UnspentTransactionOrBuilder getUtxoOrBuilder(
           int index) {
@@ -6576,7 +6909,7 @@ public final class Bitcoin {
        * Available unspent transaction outputs.
        * </pre>
        *
-       * <code>repeated .TW.Bitcoin.Proto.UnspentTransaction utxo = 12;</code>
+       * <code>repeated .TW.Bitcoin.Proto.UnspentTransaction utxo = 8;</code>
        */
       public java.util.List<? extends wallet.core.jni.proto.Bitcoin.UnspentTransactionOrBuilder> 
            getUtxoOrBuilderList() {
@@ -6591,7 +6924,7 @@ public final class Bitcoin {
        * Available unspent transaction outputs.
        * </pre>
        *
-       * <code>repeated .TW.Bitcoin.Proto.UnspentTransaction utxo = 12;</code>
+       * <code>repeated .TW.Bitcoin.Proto.UnspentTransaction utxo = 8;</code>
        */
       public wallet.core.jni.proto.Bitcoin.UnspentTransaction.Builder addUtxoBuilder() {
         return getUtxoFieldBuilder().addBuilder(
@@ -6602,7 +6935,7 @@ public final class Bitcoin {
        * Available unspent transaction outputs.
        * </pre>
        *
-       * <code>repeated .TW.Bitcoin.Proto.UnspentTransaction utxo = 12;</code>
+       * <code>repeated .TW.Bitcoin.Proto.UnspentTransaction utxo = 8;</code>
        */
       public wallet.core.jni.proto.Bitcoin.UnspentTransaction.Builder addUtxoBuilder(
           int index) {
@@ -6614,7 +6947,7 @@ public final class Bitcoin {
        * Available unspent transaction outputs.
        * </pre>
        *
-       * <code>repeated .TW.Bitcoin.Proto.UnspentTransaction utxo = 12;</code>
+       * <code>repeated .TW.Bitcoin.Proto.UnspentTransaction utxo = 8;</code>
        */
       public java.util.List<wallet.core.jni.proto.Bitcoin.UnspentTransaction.Builder> 
            getUtxoBuilderList() {
@@ -6641,8 +6974,10 @@ public final class Bitcoin {
        * If sending max amount.
        * </pre>
        *
-       * <code>bool use_max_amount = 13;</code>
+       * <code>bool use_max_amount = 9;</code>
+       * @return The useMaxAmount.
        */
+      @java.lang.Override
       public boolean getUseMaxAmount() {
         return useMaxAmount_;
       }
@@ -6651,7 +6986,9 @@ public final class Bitcoin {
        * If sending max amount.
        * </pre>
        *
-       * <code>bool use_max_amount = 13;</code>
+       * <code>bool use_max_amount = 9;</code>
+       * @param value The useMaxAmount to set.
+       * @return This builder for chaining.
        */
       public Builder setUseMaxAmount(boolean value) {
         
@@ -6664,7 +7001,8 @@ public final class Bitcoin {
        * If sending max amount.
        * </pre>
        *
-       * <code>bool use_max_amount = 13;</code>
+       * <code>bool use_max_amount = 9;</code>
+       * @return This builder for chaining.
        */
       public Builder clearUseMaxAmount() {
         
@@ -6679,8 +7017,10 @@ public final class Bitcoin {
        * Coin type (forks).
        * </pre>
        *
-       * <code>uint32 coin_type = 14;</code>
+       * <code>uint32 coin_type = 10;</code>
+       * @return The coinType.
        */
+      @java.lang.Override
       public int getCoinType() {
         return coinType_;
       }
@@ -6689,7 +7029,9 @@ public final class Bitcoin {
        * Coin type (forks).
        * </pre>
        *
-       * <code>uint32 coin_type = 14;</code>
+       * <code>uint32 coin_type = 10;</code>
+       * @param value The coinType to set.
+       * @return This builder for chaining.
        */
       public Builder setCoinType(int value) {
         
@@ -6702,7 +7044,8 @@ public final class Bitcoin {
        * Coin type (forks).
        * </pre>
        *
-       * <code>uint32 coin_type = 14;</code>
+       * <code>uint32 coin_type = 10;</code>
+       * @return This builder for chaining.
        */
       public Builder clearCoinType() {
         
@@ -6719,7 +7062,8 @@ public final class Bitcoin {
        * Optional transaction plan
        * </pre>
        *
-       * <code>.TW.Bitcoin.Proto.TransactionPlan plan = 15;</code>
+       * <code>.TW.Bitcoin.Proto.TransactionPlan plan = 11;</code>
+       * @return Whether the plan field is set.
        */
       public boolean hasPlan() {
         return planBuilder_ != null || plan_ != null;
@@ -6729,7 +7073,8 @@ public final class Bitcoin {
        * Optional transaction plan
        * </pre>
        *
-       * <code>.TW.Bitcoin.Proto.TransactionPlan plan = 15;</code>
+       * <code>.TW.Bitcoin.Proto.TransactionPlan plan = 11;</code>
+       * @return The plan.
        */
       public wallet.core.jni.proto.Bitcoin.TransactionPlan getPlan() {
         if (planBuilder_ == null) {
@@ -6743,7 +7088,7 @@ public final class Bitcoin {
        * Optional transaction plan
        * </pre>
        *
-       * <code>.TW.Bitcoin.Proto.TransactionPlan plan = 15;</code>
+       * <code>.TW.Bitcoin.Proto.TransactionPlan plan = 11;</code>
        */
       public Builder setPlan(wallet.core.jni.proto.Bitcoin.TransactionPlan value) {
         if (planBuilder_ == null) {
@@ -6763,7 +7108,7 @@ public final class Bitcoin {
        * Optional transaction plan
        * </pre>
        *
-       * <code>.TW.Bitcoin.Proto.TransactionPlan plan = 15;</code>
+       * <code>.TW.Bitcoin.Proto.TransactionPlan plan = 11;</code>
        */
       public Builder setPlan(
           wallet.core.jni.proto.Bitcoin.TransactionPlan.Builder builderForValue) {
@@ -6781,7 +7126,7 @@ public final class Bitcoin {
        * Optional transaction plan
        * </pre>
        *
-       * <code>.TW.Bitcoin.Proto.TransactionPlan plan = 15;</code>
+       * <code>.TW.Bitcoin.Proto.TransactionPlan plan = 11;</code>
        */
       public Builder mergePlan(wallet.core.jni.proto.Bitcoin.TransactionPlan value) {
         if (planBuilder_ == null) {
@@ -6803,7 +7148,7 @@ public final class Bitcoin {
        * Optional transaction plan
        * </pre>
        *
-       * <code>.TW.Bitcoin.Proto.TransactionPlan plan = 15;</code>
+       * <code>.TW.Bitcoin.Proto.TransactionPlan plan = 11;</code>
        */
       public Builder clearPlan() {
         if (planBuilder_ == null) {
@@ -6821,7 +7166,7 @@ public final class Bitcoin {
        * Optional transaction plan
        * </pre>
        *
-       * <code>.TW.Bitcoin.Proto.TransactionPlan plan = 15;</code>
+       * <code>.TW.Bitcoin.Proto.TransactionPlan plan = 11;</code>
        */
       public wallet.core.jni.proto.Bitcoin.TransactionPlan.Builder getPlanBuilder() {
         
@@ -6833,7 +7178,7 @@ public final class Bitcoin {
        * Optional transaction plan
        * </pre>
        *
-       * <code>.TW.Bitcoin.Proto.TransactionPlan plan = 15;</code>
+       * <code>.TW.Bitcoin.Proto.TransactionPlan plan = 11;</code>
        */
       public wallet.core.jni.proto.Bitcoin.TransactionPlanOrBuilder getPlanOrBuilder() {
         if (planBuilder_ != null) {
@@ -6848,7 +7193,7 @@ public final class Bitcoin {
        * Optional transaction plan
        * </pre>
        *
-       * <code>.TW.Bitcoin.Proto.TransactionPlan plan = 15;</code>
+       * <code>.TW.Bitcoin.Proto.TransactionPlan plan = 11;</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
           wallet.core.jni.proto.Bitcoin.TransactionPlan, wallet.core.jni.proto.Bitcoin.TransactionPlan.Builder, wallet.core.jni.proto.Bitcoin.TransactionPlanOrBuilder> 
@@ -6926,6 +7271,7 @@ public final class Bitcoin {
      * </pre>
      *
      * <code>int64 amount = 1;</code>
+     * @return The amount.
      */
     long getAmount();
 
@@ -6935,6 +7281,7 @@ public final class Bitcoin {
      * </pre>
      *
      * <code>int64 available_amount = 2;</code>
+     * @return The availableAmount.
      */
     long getAvailableAmount();
 
@@ -6944,6 +7291,7 @@ public final class Bitcoin {
      * </pre>
      *
      * <code>int64 fee = 3;</code>
+     * @return The fee.
      */
     long getFee();
 
@@ -6953,6 +7301,7 @@ public final class Bitcoin {
      * </pre>
      *
      * <code>int64 change = 4;</code>
+     * @return The change.
      */
     long getChange();
 
@@ -7006,8 +7355,28 @@ public final class Bitcoin {
      * </pre>
      *
      * <code>bytes branch_id = 6;</code>
+     * @return The branchId.
      */
     com.google.protobuf.ByteString getBranchId();
+
+    /**
+     * <pre>
+     * Optional error
+     * </pre>
+     *
+     * <code>.TW.Common.Proto.SigningError error = 7;</code>
+     * @return The enum numeric value on the wire for error.
+     */
+    int getErrorValue();
+    /**
+     * <pre>
+     * Optional error
+     * </pre>
+     *
+     * <code>.TW.Common.Proto.SigningError error = 7;</code>
+     * @return The error.
+     */
+    wallet.core.jni.proto.Common.SigningError getError();
   }
   /**
    * <pre>
@@ -7016,7 +7385,7 @@ public final class Bitcoin {
    *
    * Protobuf type {@code TW.Bitcoin.Proto.TransactionPlan}
    */
-  public  static final class TransactionPlan extends
+  public static final class TransactionPlan extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:TW.Bitcoin.Proto.TransactionPlan)
       TransactionPlanOrBuilder {
@@ -7028,6 +7397,7 @@ public final class Bitcoin {
     private TransactionPlan() {
       utxos_ = java.util.Collections.emptyList();
       branchId_ = com.google.protobuf.ByteString.EMPTY;
+      error_ = 0;
     }
 
     @java.lang.Override
@@ -7095,6 +7465,12 @@ public final class Bitcoin {
               branchId_ = input.readBytes();
               break;
             }
+            case 56: {
+              int rawValue = input.readEnum();
+
+              error_ = rawValue;
+              break;
+            }
             default: {
               if (!parseUnknownField(
                   input, unknownFields, extensionRegistry, tag)) {
@@ -7138,7 +7514,9 @@ public final class Bitcoin {
      * </pre>
      *
      * <code>int64 amount = 1;</code>
+     * @return The amount.
      */
+    @java.lang.Override
     public long getAmount() {
       return amount_;
     }
@@ -7151,7 +7529,9 @@ public final class Bitcoin {
      * </pre>
      *
      * <code>int64 available_amount = 2;</code>
+     * @return The availableAmount.
      */
+    @java.lang.Override
     public long getAvailableAmount() {
       return availableAmount_;
     }
@@ -7164,7 +7544,9 @@ public final class Bitcoin {
      * </pre>
      *
      * <code>int64 fee = 3;</code>
+     * @return The fee.
      */
+    @java.lang.Override
     public long getFee() {
       return fee_;
     }
@@ -7177,7 +7559,9 @@ public final class Bitcoin {
      * </pre>
      *
      * <code>int64 change = 4;</code>
+     * @return The change.
      */
+    @java.lang.Override
     public long getChange() {
       return change_;
     }
@@ -7191,6 +7575,7 @@ public final class Bitcoin {
      *
      * <code>repeated .TW.Bitcoin.Proto.UnspentTransaction utxos = 5;</code>
      */
+    @java.lang.Override
     public java.util.List<wallet.core.jni.proto.Bitcoin.UnspentTransaction> getUtxosList() {
       return utxos_;
     }
@@ -7201,6 +7586,7 @@ public final class Bitcoin {
      *
      * <code>repeated .TW.Bitcoin.Proto.UnspentTransaction utxos = 5;</code>
      */
+    @java.lang.Override
     public java.util.List<? extends wallet.core.jni.proto.Bitcoin.UnspentTransactionOrBuilder> 
         getUtxosOrBuilderList() {
       return utxos_;
@@ -7212,6 +7598,7 @@ public final class Bitcoin {
      *
      * <code>repeated .TW.Bitcoin.Proto.UnspentTransaction utxos = 5;</code>
      */
+    @java.lang.Override
     public int getUtxosCount() {
       return utxos_.size();
     }
@@ -7222,6 +7609,7 @@ public final class Bitcoin {
      *
      * <code>repeated .TW.Bitcoin.Proto.UnspentTransaction utxos = 5;</code>
      */
+    @java.lang.Override
     public wallet.core.jni.proto.Bitcoin.UnspentTransaction getUtxos(int index) {
       return utxos_.get(index);
     }
@@ -7232,6 +7620,7 @@ public final class Bitcoin {
      *
      * <code>repeated .TW.Bitcoin.Proto.UnspentTransaction utxos = 5;</code>
      */
+    @java.lang.Override
     public wallet.core.jni.proto.Bitcoin.UnspentTransactionOrBuilder getUtxosOrBuilder(
         int index) {
       return utxos_.get(index);
@@ -7245,9 +7634,38 @@ public final class Bitcoin {
      * </pre>
      *
      * <code>bytes branch_id = 6;</code>
+     * @return The branchId.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString getBranchId() {
       return branchId_;
+    }
+
+    public static final int ERROR_FIELD_NUMBER = 7;
+    private int error_;
+    /**
+     * <pre>
+     * Optional error
+     * </pre>
+     *
+     * <code>.TW.Common.Proto.SigningError error = 7;</code>
+     * @return The enum numeric value on the wire for error.
+     */
+    @java.lang.Override public int getErrorValue() {
+      return error_;
+    }
+    /**
+     * <pre>
+     * Optional error
+     * </pre>
+     *
+     * <code>.TW.Common.Proto.SigningError error = 7;</code>
+     * @return The error.
+     */
+    @java.lang.Override public wallet.core.jni.proto.Common.SigningError getError() {
+      @SuppressWarnings("deprecation")
+      wallet.core.jni.proto.Common.SigningError result = wallet.core.jni.proto.Common.SigningError.valueOf(error_);
+      return result == null ? wallet.core.jni.proto.Common.SigningError.UNRECOGNIZED : result;
     }
 
     private byte memoizedIsInitialized = -1;
@@ -7282,6 +7700,9 @@ public final class Bitcoin {
       if (!branchId_.isEmpty()) {
         output.writeBytes(6, branchId_);
       }
+      if (error_ != wallet.core.jni.proto.Common.SigningError.OK.getNumber()) {
+        output.writeEnum(7, error_);
+      }
       unknownFields.writeTo(output);
     }
 
@@ -7315,6 +7736,10 @@ public final class Bitcoin {
         size += com.google.protobuf.CodedOutputStream
           .computeBytesSize(6, branchId_);
       }
+      if (error_ != wallet.core.jni.proto.Common.SigningError.OK.getNumber()) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeEnumSize(7, error_);
+      }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
       return size;
@@ -7342,6 +7767,7 @@ public final class Bitcoin {
           .equals(other.getUtxosList())) return false;
       if (!getBranchId()
           .equals(other.getBranchId())) return false;
+      if (error_ != other.error_) return false;
       if (!unknownFields.equals(other.unknownFields)) return false;
       return true;
     }
@@ -7371,6 +7797,8 @@ public final class Bitcoin {
       }
       hash = (37 * hash) + BRANCH_ID_FIELD_NUMBER;
       hash = (53 * hash) + getBranchId().hashCode();
+      hash = (37 * hash) + ERROR_FIELD_NUMBER;
+      hash = (53 * hash) + error_;
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
       return hash;
@@ -7525,6 +7953,8 @@ public final class Bitcoin {
         }
         branchId_ = com.google.protobuf.ByteString.EMPTY;
 
+        error_ = 0;
+
         return this;
       }
 
@@ -7566,6 +7996,7 @@ public final class Bitcoin {
           result.utxos_ = utxosBuilder_.build();
         }
         result.branchId_ = branchId_;
+        result.error_ = error_;
         onBuilt();
         return result;
       }
@@ -7655,6 +8086,9 @@ public final class Bitcoin {
         if (other.getBranchId() != com.google.protobuf.ByteString.EMPTY) {
           setBranchId(other.getBranchId());
         }
+        if (other.error_ != 0) {
+          setErrorValue(other.getErrorValue());
+        }
         this.mergeUnknownFields(other.unknownFields);
         onChanged();
         return this;
@@ -7692,7 +8126,9 @@ public final class Bitcoin {
        * </pre>
        *
        * <code>int64 amount = 1;</code>
+       * @return The amount.
        */
+      @java.lang.Override
       public long getAmount() {
         return amount_;
       }
@@ -7702,6 +8138,8 @@ public final class Bitcoin {
        * </pre>
        *
        * <code>int64 amount = 1;</code>
+       * @param value The amount to set.
+       * @return This builder for chaining.
        */
       public Builder setAmount(long value) {
         
@@ -7715,6 +8153,7 @@ public final class Bitcoin {
        * </pre>
        *
        * <code>int64 amount = 1;</code>
+       * @return This builder for chaining.
        */
       public Builder clearAmount() {
         
@@ -7730,7 +8169,9 @@ public final class Bitcoin {
        * </pre>
        *
        * <code>int64 available_amount = 2;</code>
+       * @return The availableAmount.
        */
+      @java.lang.Override
       public long getAvailableAmount() {
         return availableAmount_;
       }
@@ -7740,6 +8181,8 @@ public final class Bitcoin {
        * </pre>
        *
        * <code>int64 available_amount = 2;</code>
+       * @param value The availableAmount to set.
+       * @return This builder for chaining.
        */
       public Builder setAvailableAmount(long value) {
         
@@ -7753,6 +8196,7 @@ public final class Bitcoin {
        * </pre>
        *
        * <code>int64 available_amount = 2;</code>
+       * @return This builder for chaining.
        */
       public Builder clearAvailableAmount() {
         
@@ -7768,7 +8212,9 @@ public final class Bitcoin {
        * </pre>
        *
        * <code>int64 fee = 3;</code>
+       * @return The fee.
        */
+      @java.lang.Override
       public long getFee() {
         return fee_;
       }
@@ -7778,6 +8224,8 @@ public final class Bitcoin {
        * </pre>
        *
        * <code>int64 fee = 3;</code>
+       * @param value The fee to set.
+       * @return This builder for chaining.
        */
       public Builder setFee(long value) {
         
@@ -7791,6 +8239,7 @@ public final class Bitcoin {
        * </pre>
        *
        * <code>int64 fee = 3;</code>
+       * @return This builder for chaining.
        */
       public Builder clearFee() {
         
@@ -7806,7 +8255,9 @@ public final class Bitcoin {
        * </pre>
        *
        * <code>int64 change = 4;</code>
+       * @return The change.
        */
+      @java.lang.Override
       public long getChange() {
         return change_;
       }
@@ -7816,6 +8267,8 @@ public final class Bitcoin {
        * </pre>
        *
        * <code>int64 change = 4;</code>
+       * @param value The change to set.
+       * @return This builder for chaining.
        */
       public Builder setChange(long value) {
         
@@ -7829,6 +8282,7 @@ public final class Bitcoin {
        * </pre>
        *
        * <code>int64 change = 4;</code>
+       * @return This builder for chaining.
        */
       public Builder clearChange() {
         
@@ -8156,7 +8610,9 @@ public final class Bitcoin {
        * </pre>
        *
        * <code>bytes branch_id = 6;</code>
+       * @return The branchId.
        */
+      @java.lang.Override
       public com.google.protobuf.ByteString getBranchId() {
         return branchId_;
       }
@@ -8166,6 +8622,8 @@ public final class Bitcoin {
        * </pre>
        *
        * <code>bytes branch_id = 6;</code>
+       * @param value The branchId to set.
+       * @return This builder for chaining.
        */
       public Builder setBranchId(com.google.protobuf.ByteString value) {
         if (value == null) {
@@ -8182,10 +8640,85 @@ public final class Bitcoin {
        * </pre>
        *
        * <code>bytes branch_id = 6;</code>
+       * @return This builder for chaining.
        */
       public Builder clearBranchId() {
         
         branchId_ = getDefaultInstance().getBranchId();
+        onChanged();
+        return this;
+      }
+
+      private int error_ = 0;
+      /**
+       * <pre>
+       * Optional error
+       * </pre>
+       *
+       * <code>.TW.Common.Proto.SigningError error = 7;</code>
+       * @return The enum numeric value on the wire for error.
+       */
+      @java.lang.Override public int getErrorValue() {
+        return error_;
+      }
+      /**
+       * <pre>
+       * Optional error
+       * </pre>
+       *
+       * <code>.TW.Common.Proto.SigningError error = 7;</code>
+       * @param value The enum numeric value on the wire for error to set.
+       * @return This builder for chaining.
+       */
+      public Builder setErrorValue(int value) {
+        
+        error_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * Optional error
+       * </pre>
+       *
+       * <code>.TW.Common.Proto.SigningError error = 7;</code>
+       * @return The error.
+       */
+      @java.lang.Override
+      public wallet.core.jni.proto.Common.SigningError getError() {
+        @SuppressWarnings("deprecation")
+        wallet.core.jni.proto.Common.SigningError result = wallet.core.jni.proto.Common.SigningError.valueOf(error_);
+        return result == null ? wallet.core.jni.proto.Common.SigningError.UNRECOGNIZED : result;
+      }
+      /**
+       * <pre>
+       * Optional error
+       * </pre>
+       *
+       * <code>.TW.Common.Proto.SigningError error = 7;</code>
+       * @param value The error to set.
+       * @return This builder for chaining.
+       */
+      public Builder setError(wallet.core.jni.proto.Common.SigningError value) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        
+        error_ = value.getNumber();
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * Optional error
+       * </pre>
+       *
+       * <code>.TW.Common.Proto.SigningError error = 7;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearError() {
+        
+        error_ = 0;
         onChanged();
         return this;
       }
@@ -8252,6 +8785,7 @@ public final class Bitcoin {
      * </pre>
      *
      * <code>.TW.Bitcoin.Proto.Transaction transaction = 1;</code>
+     * @return Whether the transaction field is set.
      */
     boolean hasTransaction();
     /**
@@ -8260,6 +8794,7 @@ public final class Bitcoin {
      * </pre>
      *
      * <code>.TW.Bitcoin.Proto.Transaction transaction = 1;</code>
+     * @return The transaction.
      */
     wallet.core.jni.proto.Bitcoin.Transaction getTransaction();
     /**
@@ -8277,6 +8812,7 @@ public final class Bitcoin {
      * </pre>
      *
      * <code>bytes encoded = 2;</code>
+     * @return The encoded.
      */
     com.google.protobuf.ByteString getEncoded();
 
@@ -8286,6 +8822,7 @@ public final class Bitcoin {
      * </pre>
      *
      * <code>string transaction_id = 3;</code>
+     * @return The transactionId.
      */
     java.lang.String getTransactionId();
     /**
@@ -8294,27 +8831,29 @@ public final class Bitcoin {
      * </pre>
      *
      * <code>string transaction_id = 3;</code>
+     * @return The bytes for transactionId.
      */
     com.google.protobuf.ByteString
         getTransactionIdBytes();
 
     /**
      * <pre>
-     * Optional error message
+     * Optional error
      * </pre>
      *
-     * <code>string error = 4;</code>
+     * <code>.TW.Common.Proto.SigningError error = 4;</code>
+     * @return The enum numeric value on the wire for error.
      */
-    java.lang.String getError();
+    int getErrorValue();
     /**
      * <pre>
-     * Optional error message
+     * Optional error
      * </pre>
      *
-     * <code>string error = 4;</code>
+     * <code>.TW.Common.Proto.SigningError error = 4;</code>
+     * @return The error.
      */
-    com.google.protobuf.ByteString
-        getErrorBytes();
+    wallet.core.jni.proto.Common.SigningError getError();
   }
   /**
    * <pre>
@@ -8323,7 +8862,7 @@ public final class Bitcoin {
    *
    * Protobuf type {@code TW.Bitcoin.Proto.SigningOutput}
    */
-  public  static final class SigningOutput extends
+  public static final class SigningOutput extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:TW.Bitcoin.Proto.SigningOutput)
       SigningOutputOrBuilder {
@@ -8335,7 +8874,7 @@ public final class Bitcoin {
     private SigningOutput() {
       encoded_ = com.google.protobuf.ByteString.EMPTY;
       transactionId_ = "";
-      error_ = "";
+      error_ = 0;
     }
 
     @java.lang.Override
@@ -8392,10 +8931,10 @@ public final class Bitcoin {
               transactionId_ = s;
               break;
             }
-            case 34: {
-              java.lang.String s = input.readStringRequireUtf8();
+            case 32: {
+              int rawValue = input.readEnum();
 
-              error_ = s;
+              error_ = rawValue;
               break;
             }
             default: {
@@ -8438,7 +8977,9 @@ public final class Bitcoin {
      * </pre>
      *
      * <code>.TW.Bitcoin.Proto.Transaction transaction = 1;</code>
+     * @return Whether the transaction field is set.
      */
+    @java.lang.Override
     public boolean hasTransaction() {
       return transaction_ != null;
     }
@@ -8448,7 +8989,9 @@ public final class Bitcoin {
      * </pre>
      *
      * <code>.TW.Bitcoin.Proto.Transaction transaction = 1;</code>
+     * @return The transaction.
      */
+    @java.lang.Override
     public wallet.core.jni.proto.Bitcoin.Transaction getTransaction() {
       return transaction_ == null ? wallet.core.jni.proto.Bitcoin.Transaction.getDefaultInstance() : transaction_;
     }
@@ -8459,6 +9002,7 @@ public final class Bitcoin {
      *
      * <code>.TW.Bitcoin.Proto.Transaction transaction = 1;</code>
      */
+    @java.lang.Override
     public wallet.core.jni.proto.Bitcoin.TransactionOrBuilder getTransactionOrBuilder() {
       return getTransaction();
     }
@@ -8471,7 +9015,9 @@ public final class Bitcoin {
      * </pre>
      *
      * <code>bytes encoded = 2;</code>
+     * @return The encoded.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString getEncoded() {
       return encoded_;
     }
@@ -8484,7 +9030,9 @@ public final class Bitcoin {
      * </pre>
      *
      * <code>string transaction_id = 3;</code>
+     * @return The transactionId.
      */
+    @java.lang.Override
     public java.lang.String getTransactionId() {
       java.lang.Object ref = transactionId_;
       if (ref instanceof java.lang.String) {
@@ -8503,7 +9051,9 @@ public final class Bitcoin {
      * </pre>
      *
      * <code>string transaction_id = 3;</code>
+     * @return The bytes for transactionId.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString
         getTransactionIdBytes() {
       java.lang.Object ref = transactionId_;
@@ -8519,45 +9069,30 @@ public final class Bitcoin {
     }
 
     public static final int ERROR_FIELD_NUMBER = 4;
-    private volatile java.lang.Object error_;
+    private int error_;
     /**
      * <pre>
-     * Optional error message
+     * Optional error
      * </pre>
      *
-     * <code>string error = 4;</code>
+     * <code>.TW.Common.Proto.SigningError error = 4;</code>
+     * @return The enum numeric value on the wire for error.
      */
-    public java.lang.String getError() {
-      java.lang.Object ref = error_;
-      if (ref instanceof java.lang.String) {
-        return (java.lang.String) ref;
-      } else {
-        com.google.protobuf.ByteString bs = 
-            (com.google.protobuf.ByteString) ref;
-        java.lang.String s = bs.toStringUtf8();
-        error_ = s;
-        return s;
-      }
+    @java.lang.Override public int getErrorValue() {
+      return error_;
     }
     /**
      * <pre>
-     * Optional error message
+     * Optional error
      * </pre>
      *
-     * <code>string error = 4;</code>
+     * <code>.TW.Common.Proto.SigningError error = 4;</code>
+     * @return The error.
      */
-    public com.google.protobuf.ByteString
-        getErrorBytes() {
-      java.lang.Object ref = error_;
-      if (ref instanceof java.lang.String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
-        error_ = b;
-        return b;
-      } else {
-        return (com.google.protobuf.ByteString) ref;
-      }
+    @java.lang.Override public wallet.core.jni.proto.Common.SigningError getError() {
+      @SuppressWarnings("deprecation")
+      wallet.core.jni.proto.Common.SigningError result = wallet.core.jni.proto.Common.SigningError.valueOf(error_);
+      return result == null ? wallet.core.jni.proto.Common.SigningError.UNRECOGNIZED : result;
     }
 
     private byte memoizedIsInitialized = -1;
@@ -8583,8 +9118,8 @@ public final class Bitcoin {
       if (!getTransactionIdBytes().isEmpty()) {
         com.google.protobuf.GeneratedMessageV3.writeString(output, 3, transactionId_);
       }
-      if (!getErrorBytes().isEmpty()) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 4, error_);
+      if (error_ != wallet.core.jni.proto.Common.SigningError.OK.getNumber()) {
+        output.writeEnum(4, error_);
       }
       unknownFields.writeTo(output);
     }
@@ -8606,8 +9141,9 @@ public final class Bitcoin {
       if (!getTransactionIdBytes().isEmpty()) {
         size += com.google.protobuf.GeneratedMessageV3.computeStringSize(3, transactionId_);
       }
-      if (!getErrorBytes().isEmpty()) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(4, error_);
+      if (error_ != wallet.core.jni.proto.Common.SigningError.OK.getNumber()) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeEnumSize(4, error_);
       }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
@@ -8633,8 +9169,7 @@ public final class Bitcoin {
           .equals(other.getEncoded())) return false;
       if (!getTransactionId()
           .equals(other.getTransactionId())) return false;
-      if (!getError()
-          .equals(other.getError())) return false;
+      if (error_ != other.error_) return false;
       if (!unknownFields.equals(other.unknownFields)) return false;
       return true;
     }
@@ -8655,7 +9190,7 @@ public final class Bitcoin {
       hash = (37 * hash) + TRANSACTION_ID_FIELD_NUMBER;
       hash = (53 * hash) + getTransactionId().hashCode();
       hash = (37 * hash) + ERROR_FIELD_NUMBER;
-      hash = (53 * hash) + getError().hashCode();
+      hash = (53 * hash) + error_;
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
       return hash;
@@ -8803,7 +9338,7 @@ public final class Bitcoin {
 
         transactionId_ = "";
 
-        error_ = "";
+        error_ = 0;
 
         return this;
       }
@@ -8897,9 +9432,8 @@ public final class Bitcoin {
           transactionId_ = other.transactionId_;
           onChanged();
         }
-        if (!other.getError().isEmpty()) {
-          error_ = other.error_;
-          onChanged();
+        if (other.error_ != 0) {
+          setErrorValue(other.getErrorValue());
         }
         this.mergeUnknownFields(other.unknownFields);
         onChanged();
@@ -8939,6 +9473,7 @@ public final class Bitcoin {
        * </pre>
        *
        * <code>.TW.Bitcoin.Proto.Transaction transaction = 1;</code>
+       * @return Whether the transaction field is set.
        */
       public boolean hasTransaction() {
         return transactionBuilder_ != null || transaction_ != null;
@@ -8949,6 +9484,7 @@ public final class Bitcoin {
        * </pre>
        *
        * <code>.TW.Bitcoin.Proto.Transaction transaction = 1;</code>
+       * @return The transaction.
        */
       public wallet.core.jni.proto.Bitcoin.Transaction getTransaction() {
         if (transactionBuilder_ == null) {
@@ -9090,7 +9626,9 @@ public final class Bitcoin {
        * </pre>
        *
        * <code>bytes encoded = 2;</code>
+       * @return The encoded.
        */
+      @java.lang.Override
       public com.google.protobuf.ByteString getEncoded() {
         return encoded_;
       }
@@ -9100,6 +9638,8 @@ public final class Bitcoin {
        * </pre>
        *
        * <code>bytes encoded = 2;</code>
+       * @param value The encoded to set.
+       * @return This builder for chaining.
        */
       public Builder setEncoded(com.google.protobuf.ByteString value) {
         if (value == null) {
@@ -9116,6 +9656,7 @@ public final class Bitcoin {
        * </pre>
        *
        * <code>bytes encoded = 2;</code>
+       * @return This builder for chaining.
        */
       public Builder clearEncoded() {
         
@@ -9131,6 +9672,7 @@ public final class Bitcoin {
        * </pre>
        *
        * <code>string transaction_id = 3;</code>
+       * @return The transactionId.
        */
       public java.lang.String getTransactionId() {
         java.lang.Object ref = transactionId_;
@@ -9150,6 +9692,7 @@ public final class Bitcoin {
        * </pre>
        *
        * <code>string transaction_id = 3;</code>
+       * @return The bytes for transactionId.
        */
       public com.google.protobuf.ByteString
           getTransactionIdBytes() {
@@ -9170,6 +9713,8 @@ public final class Bitcoin {
        * </pre>
        *
        * <code>string transaction_id = 3;</code>
+       * @param value The transactionId to set.
+       * @return This builder for chaining.
        */
       public Builder setTransactionId(
           java.lang.String value) {
@@ -9187,6 +9732,7 @@ public final class Bitcoin {
        * </pre>
        *
        * <code>string transaction_id = 3;</code>
+       * @return This builder for chaining.
        */
       public Builder clearTransactionId() {
         
@@ -9200,6 +9746,8 @@ public final class Bitcoin {
        * </pre>
        *
        * <code>string transaction_id = 3;</code>
+       * @param value The bytes for transactionId to set.
+       * @return This builder for chaining.
        */
       public Builder setTransactionIdBytes(
           com.google.protobuf.ByteString value) {
@@ -9213,91 +9761,76 @@ public final class Bitcoin {
         return this;
       }
 
-      private java.lang.Object error_ = "";
+      private int error_ = 0;
       /**
        * <pre>
-       * Optional error message
+       * Optional error
        * </pre>
        *
-       * <code>string error = 4;</code>
+       * <code>.TW.Common.Proto.SigningError error = 4;</code>
+       * @return The enum numeric value on the wire for error.
        */
-      public java.lang.String getError() {
-        java.lang.Object ref = error_;
-        if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          error_ = s;
-          return s;
-        } else {
-          return (java.lang.String) ref;
-        }
+      @java.lang.Override public int getErrorValue() {
+        return error_;
       }
       /**
        * <pre>
-       * Optional error message
+       * Optional error
        * </pre>
        *
-       * <code>string error = 4;</code>
+       * <code>.TW.Common.Proto.SigningError error = 4;</code>
+       * @param value The enum numeric value on the wire for error to set.
+       * @return This builder for chaining.
        */
-      public com.google.protobuf.ByteString
-          getErrorBytes() {
-        java.lang.Object ref = error_;
-        if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
-              com.google.protobuf.ByteString.copyFromUtf8(
-                  (java.lang.String) ref);
-          error_ = b;
-          return b;
-        } else {
-          return (com.google.protobuf.ByteString) ref;
-        }
-      }
-      /**
-       * <pre>
-       * Optional error message
-       * </pre>
-       *
-       * <code>string error = 4;</code>
-       */
-      public Builder setError(
-          java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  
+      public Builder setErrorValue(int value) {
+        
         error_ = value;
         onChanged();
         return this;
       }
       /**
        * <pre>
-       * Optional error message
+       * Optional error
        * </pre>
        *
-       * <code>string error = 4;</code>
+       * <code>.TW.Common.Proto.SigningError error = 4;</code>
+       * @return The error.
+       */
+      @java.lang.Override
+      public wallet.core.jni.proto.Common.SigningError getError() {
+        @SuppressWarnings("deprecation")
+        wallet.core.jni.proto.Common.SigningError result = wallet.core.jni.proto.Common.SigningError.valueOf(error_);
+        return result == null ? wallet.core.jni.proto.Common.SigningError.UNRECOGNIZED : result;
+      }
+      /**
+       * <pre>
+       * Optional error
+       * </pre>
+       *
+       * <code>.TW.Common.Proto.SigningError error = 4;</code>
+       * @param value The error to set.
+       * @return This builder for chaining.
+       */
+      public Builder setError(wallet.core.jni.proto.Common.SigningError value) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        
+        error_ = value.getNumber();
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * Optional error
+       * </pre>
+       *
+       * <code>.TW.Common.Proto.SigningError error = 4;</code>
+       * @return This builder for chaining.
        */
       public Builder clearError() {
         
-        error_ = getDefaultInstance().getError();
-        onChanged();
-        return this;
-      }
-      /**
-       * <pre>
-       * Optional error message
-       * </pre>
-       *
-       * <code>string error = 4;</code>
-       */
-      public Builder setErrorBytes(
-          com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  checkByteStringIsUtf8(value);
-        
-        error_ = value;
+        error_ = 0;
         onChanged();
         return this;
       }
@@ -9408,41 +9941,44 @@ public final class Bitcoin {
       descriptor;
   static {
     java.lang.String[] descriptorData = {
-      "\n\rBitcoin.proto\022\020TW.Bitcoin.Proto\"\232\001\n\013Tr" +
-      "ansaction\022\017\n\007version\030\001 \001(\021\022\020\n\010lockTime\030\002" +
-      " \001(\r\0222\n\006inputs\030\003 \003(\0132\".TW.Bitcoin.Proto." +
-      "TransactionInput\0224\n\007outputs\030\004 \003(\0132#.TW.B" +
-      "itcoin.Proto.TransactionOutput\"h\n\020Transa" +
-      "ctionInput\0222\n\016previousOutput\030\001 \001(\0132\032.TW." +
-      "Bitcoin.Proto.OutPoint\022\020\n\010sequence\030\002 \001(\r" +
-      "\022\016\n\006script\030\003 \001(\014\"9\n\010OutPoint\022\014\n\004hash\030\001 \001" +
-      "(\014\022\r\n\005index\030\002 \001(\r\022\020\n\010sequence\030\003 \001(\r\"2\n\021T" +
-      "ransactionOutput\022\r\n\005value\030\001 \001(\003\022\016\n\006scrip" +
-      "t\030\002 \001(\014\"c\n\022UnspentTransaction\022-\n\tout_poi" +
-      "nt\030\001 \001(\0132\032.TW.Bitcoin.Proto.OutPoint\022\016\n\006" +
-      "script\030\002 \001(\014\022\016\n\006amount\030\003 \001(\003\"\202\003\n\014Signing" +
-      "Input\022\021\n\thash_type\030\001 \001(\r\022\016\n\006amount\030\002 \001(\003" +
-      "\022\020\n\010byte_fee\030\003 \001(\003\022\022\n\nto_address\030\004 \001(\t\022\026" +
-      "\n\016change_address\030\005 \001(\t\022\023\n\013private_key\030\n " +
-      "\003(\014\022<\n\007scripts\030\013 \003(\0132+.TW.Bitcoin.Proto." +
-      "SigningInput.ScriptsEntry\0222\n\004utxo\030\014 \003(\0132" +
-      "$.TW.Bitcoin.Proto.UnspentTransaction\022\026\n" +
-      "\016use_max_amount\030\r \001(\010\022\021\n\tcoin_type\030\016 \001(\r" +
-      "\022/\n\004plan\030\017 \001(\0132!.TW.Bitcoin.Proto.Transa" +
-      "ctionPlan\032.\n\014ScriptsEntry\022\013\n\003key\030\001 \001(\t\022\r" +
-      "\n\005value\030\002 \001(\014:\0028\001\"\240\001\n\017TransactionPlan\022\016\n" +
-      "\006amount\030\001 \001(\003\022\030\n\020available_amount\030\002 \001(\003\022" +
-      "\013\n\003fee\030\003 \001(\003\022\016\n\006change\030\004 \001(\003\0223\n\005utxos\030\005 " +
-      "\003(\0132$.TW.Bitcoin.Proto.UnspentTransactio" +
-      "n\022\021\n\tbranch_id\030\006 \001(\014\"{\n\rSigningOutput\0222\n" +
-      "\013transaction\030\001 \001(\0132\035.TW.Bitcoin.Proto.Tr" +
-      "ansaction\022\017\n\007encoded\030\002 \001(\014\022\026\n\016transactio" +
-      "n_id\030\003 \001(\t\022\r\n\005error\030\004 \001(\tB\027\n\025wallet.core" +
-      ".jni.protob\006proto3"
+      "\n\rBitcoin.proto\022\020TW.Bitcoin.Proto\032\014Commo" +
+      "n.proto\"\232\001\n\013Transaction\022\017\n\007version\030\001 \001(\021" +
+      "\022\020\n\010lockTime\030\002 \001(\r\0222\n\006inputs\030\003 \003(\0132\".TW." +
+      "Bitcoin.Proto.TransactionInput\0224\n\007output" +
+      "s\030\004 \003(\0132#.TW.Bitcoin.Proto.TransactionOu" +
+      "tput\"h\n\020TransactionInput\0222\n\016previousOutp" +
+      "ut\030\001 \001(\0132\032.TW.Bitcoin.Proto.OutPoint\022\020\n\010" +
+      "sequence\030\002 \001(\r\022\016\n\006script\030\003 \001(\014\"9\n\010OutPoi" +
+      "nt\022\014\n\004hash\030\001 \001(\014\022\r\n\005index\030\002 \001(\r\022\020\n\010seque" +
+      "nce\030\003 \001(\r\"2\n\021TransactionOutput\022\r\n\005value\030" +
+      "\001 \001(\003\022\016\n\006script\030\002 \001(\014\"c\n\022UnspentTransact" +
+      "ion\022-\n\tout_point\030\001 \001(\0132\032.TW.Bitcoin.Prot" +
+      "o.OutPoint\022\016\n\006script\030\002 \001(\014\022\016\n\006amount\030\003 \001" +
+      "(\003\"\202\003\n\014SigningInput\022\021\n\thash_type\030\001 \001(\r\022\016" +
+      "\n\006amount\030\002 \001(\003\022\020\n\010byte_fee\030\003 \001(\003\022\022\n\nto_a" +
+      "ddress\030\004 \001(\t\022\026\n\016change_address\030\005 \001(\t\022\023\n\013" +
+      "private_key\030\006 \003(\014\022<\n\007scripts\030\007 \003(\0132+.TW." +
+      "Bitcoin.Proto.SigningInput.ScriptsEntry\022" +
+      "2\n\004utxo\030\010 \003(\0132$.TW.Bitcoin.Proto.Unspent" +
+      "Transaction\022\026\n\016use_max_amount\030\t \001(\010\022\021\n\tc" +
+      "oin_type\030\n \001(\r\022/\n\004plan\030\013 \001(\0132!.TW.Bitcoi" +
+      "n.Proto.TransactionPlan\032.\n\014ScriptsEntry\022" +
+      "\013\n\003key\030\001 \001(\t\022\r\n\005value\030\002 \001(\014:\0028\001\"\316\001\n\017Tran" +
+      "sactionPlan\022\016\n\006amount\030\001 \001(\003\022\030\n\020available" +
+      "_amount\030\002 \001(\003\022\013\n\003fee\030\003 \001(\003\022\016\n\006change\030\004 \001" +
+      "(\003\0223\n\005utxos\030\005 \003(\0132$.TW.Bitcoin.Proto.Uns" +
+      "pentTransaction\022\021\n\tbranch_id\030\006 \001(\014\022,\n\005er" +
+      "ror\030\007 \001(\0162\035.TW.Common.Proto.SigningError" +
+      "\"\232\001\n\rSigningOutput\0222\n\013transaction\030\001 \001(\0132" +
+      "\035.TW.Bitcoin.Proto.Transaction\022\017\n\007encode" +
+      "d\030\002 \001(\014\022\026\n\016transaction_id\030\003 \001(\t\022,\n\005error" +
+      "\030\004 \001(\0162\035.TW.Common.Proto.SigningErrorB\027\n" +
+      "\025wallet.core.jni.protob\006proto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
         new com.google.protobuf.Descriptors.FileDescriptor[] {
+          wallet.core.jni.proto.Common.getDescriptor(),
         });
     internal_static_TW_Bitcoin_Proto_Transaction_descriptor =
       getDescriptor().getMessageTypes().get(0);
@@ -9491,13 +10027,14 @@ public final class Bitcoin {
     internal_static_TW_Bitcoin_Proto_TransactionPlan_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_TW_Bitcoin_Proto_TransactionPlan_descriptor,
-        new java.lang.String[] { "Amount", "AvailableAmount", "Fee", "Change", "Utxos", "BranchId", });
+        new java.lang.String[] { "Amount", "AvailableAmount", "Fee", "Change", "Utxos", "BranchId", "Error", });
     internal_static_TW_Bitcoin_Proto_SigningOutput_descriptor =
       getDescriptor().getMessageTypes().get(7);
     internal_static_TW_Bitcoin_Proto_SigningOutput_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_TW_Bitcoin_Proto_SigningOutput_descriptor,
         new java.lang.String[] { "Transaction", "Encoded", "TransactionId", "Error", });
+    wallet.core.jni.proto.Common.getDescriptor();
   }
 
   // @@protoc_insertion_point(outer_class_scope)

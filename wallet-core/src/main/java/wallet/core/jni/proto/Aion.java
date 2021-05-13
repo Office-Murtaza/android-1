@@ -24,6 +24,7 @@ public final class Aion {
      * </pre>
      *
      * <code>bytes nonce = 1;</code>
+     * @return The nonce.
      */
     com.google.protobuf.ByteString getNonce();
 
@@ -33,6 +34,7 @@ public final class Aion {
      * </pre>
      *
      * <code>bytes gas_price = 2;</code>
+     * @return The gasPrice.
      */
     com.google.protobuf.ByteString getGasPrice();
 
@@ -42,6 +44,7 @@ public final class Aion {
      * </pre>
      *
      * <code>bytes gas_limit = 3;</code>
+     * @return The gasLimit.
      */
     com.google.protobuf.ByteString getGasLimit();
 
@@ -51,6 +54,7 @@ public final class Aion {
      * </pre>
      *
      * <code>string to_address = 4;</code>
+     * @return The toAddress.
      */
     java.lang.String getToAddress();
     /**
@@ -59,6 +63,7 @@ public final class Aion {
      * </pre>
      *
      * <code>string to_address = 4;</code>
+     * @return The bytes for toAddress.
      */
     com.google.protobuf.ByteString
         getToAddressBytes();
@@ -69,6 +74,7 @@ public final class Aion {
      * </pre>
      *
      * <code>bytes amount = 5;</code>
+     * @return The amount.
      */
     com.google.protobuf.ByteString getAmount();
 
@@ -78,6 +84,7 @@ public final class Aion {
      * </pre>
      *
      * <code>bytes payload = 6;</code>
+     * @return The payload.
      */
     com.google.protobuf.ByteString getPayload();
 
@@ -87,6 +94,7 @@ public final class Aion {
      * </pre>
      *
      * <code>bytes private_key = 7;</code>
+     * @return The privateKey.
      */
     com.google.protobuf.ByteString getPrivateKey();
 
@@ -96,6 +104,7 @@ public final class Aion {
      * </pre>
      *
      * <code>uint64 timestamp = 8;</code>
+     * @return The timestamp.
      */
     long getTimestamp();
   }
@@ -106,7 +115,7 @@ public final class Aion {
    *
    * Protobuf type {@code TW.Aion.Proto.SigningInput}
    */
-  public  static final class SigningInput extends
+  public static final class SigningInput extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:TW.Aion.Proto.SigningInput)
       SigningInputOrBuilder {
@@ -236,7 +245,9 @@ public final class Aion {
      * </pre>
      *
      * <code>bytes nonce = 1;</code>
+     * @return The nonce.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString getNonce() {
       return nonce_;
     }
@@ -249,7 +260,9 @@ public final class Aion {
      * </pre>
      *
      * <code>bytes gas_price = 2;</code>
+     * @return The gasPrice.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString getGasPrice() {
       return gasPrice_;
     }
@@ -262,7 +275,9 @@ public final class Aion {
      * </pre>
      *
      * <code>bytes gas_limit = 3;</code>
+     * @return The gasLimit.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString getGasLimit() {
       return gasLimit_;
     }
@@ -275,7 +290,9 @@ public final class Aion {
      * </pre>
      *
      * <code>string to_address = 4;</code>
+     * @return The toAddress.
      */
+    @java.lang.Override
     public java.lang.String getToAddress() {
       java.lang.Object ref = toAddress_;
       if (ref instanceof java.lang.String) {
@@ -294,7 +311,9 @@ public final class Aion {
      * </pre>
      *
      * <code>string to_address = 4;</code>
+     * @return The bytes for toAddress.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString
         getToAddressBytes() {
       java.lang.Object ref = toAddress_;
@@ -317,7 +336,9 @@ public final class Aion {
      * </pre>
      *
      * <code>bytes amount = 5;</code>
+     * @return The amount.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString getAmount() {
       return amount_;
     }
@@ -330,7 +351,9 @@ public final class Aion {
      * </pre>
      *
      * <code>bytes payload = 6;</code>
+     * @return The payload.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString getPayload() {
       return payload_;
     }
@@ -343,7 +366,9 @@ public final class Aion {
      * </pre>
      *
      * <code>bytes private_key = 7;</code>
+     * @return The privateKey.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString getPrivateKey() {
       return privateKey_;
     }
@@ -356,7 +381,9 @@ public final class Aion {
      * </pre>
      *
      * <code>uint64 timestamp = 8;</code>
+     * @return The timestamp.
      */
+    @java.lang.Override
     public long getTimestamp() {
       return timestamp_;
     }
@@ -794,7 +821,9 @@ public final class Aion {
        * </pre>
        *
        * <code>bytes nonce = 1;</code>
+       * @return The nonce.
        */
+      @java.lang.Override
       public com.google.protobuf.ByteString getNonce() {
         return nonce_;
       }
@@ -804,6 +833,8 @@ public final class Aion {
        * </pre>
        *
        * <code>bytes nonce = 1;</code>
+       * @param value The nonce to set.
+       * @return This builder for chaining.
        */
       public Builder setNonce(com.google.protobuf.ByteString value) {
         if (value == null) {
@@ -820,6 +851,7 @@ public final class Aion {
        * </pre>
        *
        * <code>bytes nonce = 1;</code>
+       * @return This builder for chaining.
        */
       public Builder clearNonce() {
         
@@ -835,7 +867,9 @@ public final class Aion {
        * </pre>
        *
        * <code>bytes gas_price = 2;</code>
+       * @return The gasPrice.
        */
+      @java.lang.Override
       public com.google.protobuf.ByteString getGasPrice() {
         return gasPrice_;
       }
@@ -845,6 +879,8 @@ public final class Aion {
        * </pre>
        *
        * <code>bytes gas_price = 2;</code>
+       * @param value The gasPrice to set.
+       * @return This builder for chaining.
        */
       public Builder setGasPrice(com.google.protobuf.ByteString value) {
         if (value == null) {
@@ -861,6 +897,7 @@ public final class Aion {
        * </pre>
        *
        * <code>bytes gas_price = 2;</code>
+       * @return This builder for chaining.
        */
       public Builder clearGasPrice() {
         
@@ -876,7 +913,9 @@ public final class Aion {
        * </pre>
        *
        * <code>bytes gas_limit = 3;</code>
+       * @return The gasLimit.
        */
+      @java.lang.Override
       public com.google.protobuf.ByteString getGasLimit() {
         return gasLimit_;
       }
@@ -886,6 +925,8 @@ public final class Aion {
        * </pre>
        *
        * <code>bytes gas_limit = 3;</code>
+       * @param value The gasLimit to set.
+       * @return This builder for chaining.
        */
       public Builder setGasLimit(com.google.protobuf.ByteString value) {
         if (value == null) {
@@ -902,6 +943,7 @@ public final class Aion {
        * </pre>
        *
        * <code>bytes gas_limit = 3;</code>
+       * @return This builder for chaining.
        */
       public Builder clearGasLimit() {
         
@@ -917,6 +959,7 @@ public final class Aion {
        * </pre>
        *
        * <code>string to_address = 4;</code>
+       * @return The toAddress.
        */
       public java.lang.String getToAddress() {
         java.lang.Object ref = toAddress_;
@@ -936,6 +979,7 @@ public final class Aion {
        * </pre>
        *
        * <code>string to_address = 4;</code>
+       * @return The bytes for toAddress.
        */
       public com.google.protobuf.ByteString
           getToAddressBytes() {
@@ -956,6 +1000,8 @@ public final class Aion {
        * </pre>
        *
        * <code>string to_address = 4;</code>
+       * @param value The toAddress to set.
+       * @return This builder for chaining.
        */
       public Builder setToAddress(
           java.lang.String value) {
@@ -973,6 +1019,7 @@ public final class Aion {
        * </pre>
        *
        * <code>string to_address = 4;</code>
+       * @return This builder for chaining.
        */
       public Builder clearToAddress() {
         
@@ -986,6 +1033,8 @@ public final class Aion {
        * </pre>
        *
        * <code>string to_address = 4;</code>
+       * @param value The bytes for toAddress to set.
+       * @return This builder for chaining.
        */
       public Builder setToAddressBytes(
           com.google.protobuf.ByteString value) {
@@ -1006,7 +1055,9 @@ public final class Aion {
        * </pre>
        *
        * <code>bytes amount = 5;</code>
+       * @return The amount.
        */
+      @java.lang.Override
       public com.google.protobuf.ByteString getAmount() {
         return amount_;
       }
@@ -1016,6 +1067,8 @@ public final class Aion {
        * </pre>
        *
        * <code>bytes amount = 5;</code>
+       * @param value The amount to set.
+       * @return This builder for chaining.
        */
       public Builder setAmount(com.google.protobuf.ByteString value) {
         if (value == null) {
@@ -1032,6 +1085,7 @@ public final class Aion {
        * </pre>
        *
        * <code>bytes amount = 5;</code>
+       * @return This builder for chaining.
        */
       public Builder clearAmount() {
         
@@ -1047,7 +1101,9 @@ public final class Aion {
        * </pre>
        *
        * <code>bytes payload = 6;</code>
+       * @return The payload.
        */
+      @java.lang.Override
       public com.google.protobuf.ByteString getPayload() {
         return payload_;
       }
@@ -1057,6 +1113,8 @@ public final class Aion {
        * </pre>
        *
        * <code>bytes payload = 6;</code>
+       * @param value The payload to set.
+       * @return This builder for chaining.
        */
       public Builder setPayload(com.google.protobuf.ByteString value) {
         if (value == null) {
@@ -1073,6 +1131,7 @@ public final class Aion {
        * </pre>
        *
        * <code>bytes payload = 6;</code>
+       * @return This builder for chaining.
        */
       public Builder clearPayload() {
         
@@ -1088,7 +1147,9 @@ public final class Aion {
        * </pre>
        *
        * <code>bytes private_key = 7;</code>
+       * @return The privateKey.
        */
+      @java.lang.Override
       public com.google.protobuf.ByteString getPrivateKey() {
         return privateKey_;
       }
@@ -1098,6 +1159,8 @@ public final class Aion {
        * </pre>
        *
        * <code>bytes private_key = 7;</code>
+       * @param value The privateKey to set.
+       * @return This builder for chaining.
        */
       public Builder setPrivateKey(com.google.protobuf.ByteString value) {
         if (value == null) {
@@ -1114,6 +1177,7 @@ public final class Aion {
        * </pre>
        *
        * <code>bytes private_key = 7;</code>
+       * @return This builder for chaining.
        */
       public Builder clearPrivateKey() {
         
@@ -1129,7 +1193,9 @@ public final class Aion {
        * </pre>
        *
        * <code>uint64 timestamp = 8;</code>
+       * @return The timestamp.
        */
+      @java.lang.Override
       public long getTimestamp() {
         return timestamp_;
       }
@@ -1139,6 +1205,8 @@ public final class Aion {
        * </pre>
        *
        * <code>uint64 timestamp = 8;</code>
+       * @param value The timestamp to set.
+       * @return This builder for chaining.
        */
       public Builder setTimestamp(long value) {
         
@@ -1152,6 +1220,7 @@ public final class Aion {
        * </pre>
        *
        * <code>uint64 timestamp = 8;</code>
+       * @return This builder for chaining.
        */
       public Builder clearTimestamp() {
         
@@ -1222,6 +1291,7 @@ public final class Aion {
      * </pre>
      *
      * <code>bytes encoded = 1;</code>
+     * @return The encoded.
      */
     com.google.protobuf.ByteString getEncoded();
 
@@ -1231,6 +1301,7 @@ public final class Aion {
      * </pre>
      *
      * <code>bytes signature = 2;</code>
+     * @return The signature.
      */
     com.google.protobuf.ByteString getSignature();
   }
@@ -1241,7 +1312,7 @@ public final class Aion {
    *
    * Protobuf type {@code TW.Aion.Proto.SigningOutput}
    */
-  public  static final class SigningOutput extends
+  public static final class SigningOutput extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:TW.Aion.Proto.SigningOutput)
       SigningOutputOrBuilder {
@@ -1335,7 +1406,9 @@ public final class Aion {
      * </pre>
      *
      * <code>bytes encoded = 1;</code>
+     * @return The encoded.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString getEncoded() {
       return encoded_;
     }
@@ -1348,7 +1421,9 @@ public final class Aion {
      * </pre>
      *
      * <code>bytes signature = 2;</code>
+     * @return The signature.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString getSignature() {
       return signature_;
     }
@@ -1683,7 +1758,9 @@ public final class Aion {
        * </pre>
        *
        * <code>bytes encoded = 1;</code>
+       * @return The encoded.
        */
+      @java.lang.Override
       public com.google.protobuf.ByteString getEncoded() {
         return encoded_;
       }
@@ -1693,6 +1770,8 @@ public final class Aion {
        * </pre>
        *
        * <code>bytes encoded = 1;</code>
+       * @param value The encoded to set.
+       * @return This builder for chaining.
        */
       public Builder setEncoded(com.google.protobuf.ByteString value) {
         if (value == null) {
@@ -1709,6 +1788,7 @@ public final class Aion {
        * </pre>
        *
        * <code>bytes encoded = 1;</code>
+       * @return This builder for chaining.
        */
       public Builder clearEncoded() {
         
@@ -1724,7 +1804,9 @@ public final class Aion {
        * </pre>
        *
        * <code>bytes signature = 2;</code>
+       * @return The signature.
        */
+      @java.lang.Override
       public com.google.protobuf.ByteString getSignature() {
         return signature_;
       }
@@ -1734,6 +1816,8 @@ public final class Aion {
        * </pre>
        *
        * <code>bytes signature = 2;</code>
+       * @param value The signature to set.
+       * @return This builder for chaining.
        */
       public Builder setSignature(com.google.protobuf.ByteString value) {
         if (value == null) {
@@ -1750,6 +1834,7 @@ public final class Aion {
        * </pre>
        *
        * <code>bytes signature = 2;</code>
+       * @return This builder for chaining.
        */
       public Builder clearSignature() {
         

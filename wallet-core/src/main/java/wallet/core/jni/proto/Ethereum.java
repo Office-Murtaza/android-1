@@ -14,6 +14,6253 @@ public final class Ethereum {
     registerAllExtensions(
         (com.google.protobuf.ExtensionRegistryLite) registry);
   }
+  public interface TransactionOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:TW.Ethereum.Proto.Transaction)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>.TW.Ethereum.Proto.Transaction.Transfer transfer = 1;</code>
+     * @return Whether the transfer field is set.
+     */
+    boolean hasTransfer();
+    /**
+     * <code>.TW.Ethereum.Proto.Transaction.Transfer transfer = 1;</code>
+     * @return The transfer.
+     */
+    wallet.core.jni.proto.Ethereum.Transaction.Transfer getTransfer();
+    /**
+     * <code>.TW.Ethereum.Proto.Transaction.Transfer transfer = 1;</code>
+     */
+    wallet.core.jni.proto.Ethereum.Transaction.TransferOrBuilder getTransferOrBuilder();
+
+    /**
+     * <code>.TW.Ethereum.Proto.Transaction.ERC20Transfer erc20_transfer = 2;</code>
+     * @return Whether the erc20Transfer field is set.
+     */
+    boolean hasErc20Transfer();
+    /**
+     * <code>.TW.Ethereum.Proto.Transaction.ERC20Transfer erc20_transfer = 2;</code>
+     * @return The erc20Transfer.
+     */
+    wallet.core.jni.proto.Ethereum.Transaction.ERC20Transfer getErc20Transfer();
+    /**
+     * <code>.TW.Ethereum.Proto.Transaction.ERC20Transfer erc20_transfer = 2;</code>
+     */
+    wallet.core.jni.proto.Ethereum.Transaction.ERC20TransferOrBuilder getErc20TransferOrBuilder();
+
+    /**
+     * <code>.TW.Ethereum.Proto.Transaction.ERC20Approve erc20_approve = 3;</code>
+     * @return Whether the erc20Approve field is set.
+     */
+    boolean hasErc20Approve();
+    /**
+     * <code>.TW.Ethereum.Proto.Transaction.ERC20Approve erc20_approve = 3;</code>
+     * @return The erc20Approve.
+     */
+    wallet.core.jni.proto.Ethereum.Transaction.ERC20Approve getErc20Approve();
+    /**
+     * <code>.TW.Ethereum.Proto.Transaction.ERC20Approve erc20_approve = 3;</code>
+     */
+    wallet.core.jni.proto.Ethereum.Transaction.ERC20ApproveOrBuilder getErc20ApproveOrBuilder();
+
+    /**
+     * <code>.TW.Ethereum.Proto.Transaction.ERC721Transfer erc721_transfer = 4;</code>
+     * @return Whether the erc721Transfer field is set.
+     */
+    boolean hasErc721Transfer();
+    /**
+     * <code>.TW.Ethereum.Proto.Transaction.ERC721Transfer erc721_transfer = 4;</code>
+     * @return The erc721Transfer.
+     */
+    wallet.core.jni.proto.Ethereum.Transaction.ERC721Transfer getErc721Transfer();
+    /**
+     * <code>.TW.Ethereum.Proto.Transaction.ERC721Transfer erc721_transfer = 4;</code>
+     */
+    wallet.core.jni.proto.Ethereum.Transaction.ERC721TransferOrBuilder getErc721TransferOrBuilder();
+
+    /**
+     * <code>.TW.Ethereum.Proto.Transaction.ERC1155Transfer erc1155_transfer = 5;</code>
+     * @return Whether the erc1155Transfer field is set.
+     */
+    boolean hasErc1155Transfer();
+    /**
+     * <code>.TW.Ethereum.Proto.Transaction.ERC1155Transfer erc1155_transfer = 5;</code>
+     * @return The erc1155Transfer.
+     */
+    wallet.core.jni.proto.Ethereum.Transaction.ERC1155Transfer getErc1155Transfer();
+    /**
+     * <code>.TW.Ethereum.Proto.Transaction.ERC1155Transfer erc1155_transfer = 5;</code>
+     */
+    wallet.core.jni.proto.Ethereum.Transaction.ERC1155TransferOrBuilder getErc1155TransferOrBuilder();
+
+    /**
+     * <code>.TW.Ethereum.Proto.Transaction.ContractGeneric contract_generic = 6;</code>
+     * @return Whether the contractGeneric field is set.
+     */
+    boolean hasContractGeneric();
+    /**
+     * <code>.TW.Ethereum.Proto.Transaction.ContractGeneric contract_generic = 6;</code>
+     * @return The contractGeneric.
+     */
+    wallet.core.jni.proto.Ethereum.Transaction.ContractGeneric getContractGeneric();
+    /**
+     * <code>.TW.Ethereum.Proto.Transaction.ContractGeneric contract_generic = 6;</code>
+     */
+    wallet.core.jni.proto.Ethereum.Transaction.ContractGenericOrBuilder getContractGenericOrBuilder();
+
+    public wallet.core.jni.proto.Ethereum.Transaction.TransactionOneofCase getTransactionOneofCase();
+  }
+  /**
+   * <pre>
+   * Transaction (transfer, smart contract call, ...)
+   * </pre>
+   *
+   * Protobuf type {@code TW.Ethereum.Proto.Transaction}
+   */
+  public static final class Transaction extends
+      com.google.protobuf.GeneratedMessageV3 implements
+      // @@protoc_insertion_point(message_implements:TW.Ethereum.Proto.Transaction)
+      TransactionOrBuilder {
+  private static final long serialVersionUID = 0L;
+    // Use Transaction.newBuilder() to construct.
+    private Transaction(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+      super(builder);
+    }
+    private Transaction() {
+    }
+
+    @java.lang.Override
+    @SuppressWarnings({"unused"})
+    protected java.lang.Object newInstance(
+        UnusedPrivateParameter unused) {
+      return new Transaction();
+    }
+
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+    getUnknownFields() {
+      return this.unknownFields;
+    }
+    private Transaction(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      this();
+      if (extensionRegistry == null) {
+        throw new java.lang.NullPointerException();
+      }
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            case 10: {
+              wallet.core.jni.proto.Ethereum.Transaction.Transfer.Builder subBuilder = null;
+              if (transactionOneofCase_ == 1) {
+                subBuilder = ((wallet.core.jni.proto.Ethereum.Transaction.Transfer) transactionOneof_).toBuilder();
+              }
+              transactionOneof_ =
+                  input.readMessage(wallet.core.jni.proto.Ethereum.Transaction.Transfer.parser(), extensionRegistry);
+              if (subBuilder != null) {
+                subBuilder.mergeFrom((wallet.core.jni.proto.Ethereum.Transaction.Transfer) transactionOneof_);
+                transactionOneof_ = subBuilder.buildPartial();
+              }
+              transactionOneofCase_ = 1;
+              break;
+            }
+            case 18: {
+              wallet.core.jni.proto.Ethereum.Transaction.ERC20Transfer.Builder subBuilder = null;
+              if (transactionOneofCase_ == 2) {
+                subBuilder = ((wallet.core.jni.proto.Ethereum.Transaction.ERC20Transfer) transactionOneof_).toBuilder();
+              }
+              transactionOneof_ =
+                  input.readMessage(wallet.core.jni.proto.Ethereum.Transaction.ERC20Transfer.parser(), extensionRegistry);
+              if (subBuilder != null) {
+                subBuilder.mergeFrom((wallet.core.jni.proto.Ethereum.Transaction.ERC20Transfer) transactionOneof_);
+                transactionOneof_ = subBuilder.buildPartial();
+              }
+              transactionOneofCase_ = 2;
+              break;
+            }
+            case 26: {
+              wallet.core.jni.proto.Ethereum.Transaction.ERC20Approve.Builder subBuilder = null;
+              if (transactionOneofCase_ == 3) {
+                subBuilder = ((wallet.core.jni.proto.Ethereum.Transaction.ERC20Approve) transactionOneof_).toBuilder();
+              }
+              transactionOneof_ =
+                  input.readMessage(wallet.core.jni.proto.Ethereum.Transaction.ERC20Approve.parser(), extensionRegistry);
+              if (subBuilder != null) {
+                subBuilder.mergeFrom((wallet.core.jni.proto.Ethereum.Transaction.ERC20Approve) transactionOneof_);
+                transactionOneof_ = subBuilder.buildPartial();
+              }
+              transactionOneofCase_ = 3;
+              break;
+            }
+            case 34: {
+              wallet.core.jni.proto.Ethereum.Transaction.ERC721Transfer.Builder subBuilder = null;
+              if (transactionOneofCase_ == 4) {
+                subBuilder = ((wallet.core.jni.proto.Ethereum.Transaction.ERC721Transfer) transactionOneof_).toBuilder();
+              }
+              transactionOneof_ =
+                  input.readMessage(wallet.core.jni.proto.Ethereum.Transaction.ERC721Transfer.parser(), extensionRegistry);
+              if (subBuilder != null) {
+                subBuilder.mergeFrom((wallet.core.jni.proto.Ethereum.Transaction.ERC721Transfer) transactionOneof_);
+                transactionOneof_ = subBuilder.buildPartial();
+              }
+              transactionOneofCase_ = 4;
+              break;
+            }
+            case 42: {
+              wallet.core.jni.proto.Ethereum.Transaction.ERC1155Transfer.Builder subBuilder = null;
+              if (transactionOneofCase_ == 5) {
+                subBuilder = ((wallet.core.jni.proto.Ethereum.Transaction.ERC1155Transfer) transactionOneof_).toBuilder();
+              }
+              transactionOneof_ =
+                  input.readMessage(wallet.core.jni.proto.Ethereum.Transaction.ERC1155Transfer.parser(), extensionRegistry);
+              if (subBuilder != null) {
+                subBuilder.mergeFrom((wallet.core.jni.proto.Ethereum.Transaction.ERC1155Transfer) transactionOneof_);
+                transactionOneof_ = subBuilder.buildPartial();
+              }
+              transactionOneofCase_ = 5;
+              break;
+            }
+            case 50: {
+              wallet.core.jni.proto.Ethereum.Transaction.ContractGeneric.Builder subBuilder = null;
+              if (transactionOneofCase_ == 6) {
+                subBuilder = ((wallet.core.jni.proto.Ethereum.Transaction.ContractGeneric) transactionOneof_).toBuilder();
+              }
+              transactionOneof_ =
+                  input.readMessage(wallet.core.jni.proto.Ethereum.Transaction.ContractGeneric.parser(), extensionRegistry);
+              if (subBuilder != null) {
+                subBuilder.mergeFrom((wallet.core.jni.proto.Ethereum.Transaction.ContractGeneric) transactionOneof_);
+                transactionOneof_ = subBuilder.buildPartial();
+              }
+              transactionOneofCase_ = 6;
+              break;
+            }
+            default: {
+              if (!parseUnknownField(
+                  input, unknownFields, extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e).setUnfinishedMessage(this);
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return wallet.core.jni.proto.Ethereum.internal_static_TW_Ethereum_Proto_Transaction_descriptor;
+    }
+
+    @java.lang.Override
+    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return wallet.core.jni.proto.Ethereum.internal_static_TW_Ethereum_Proto_Transaction_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              wallet.core.jni.proto.Ethereum.Transaction.class, wallet.core.jni.proto.Ethereum.Transaction.Builder.class);
+    }
+
+    public interface TransferOrBuilder extends
+        // @@protoc_insertion_point(interface_extends:TW.Ethereum.Proto.Transaction.Transfer)
+        com.google.protobuf.MessageOrBuilder {
+
+      /**
+       * <pre>
+       * Amount to send in wei (256-bit number)
+       * </pre>
+       *
+       * <code>bytes amount = 1;</code>
+       * @return The amount.
+       */
+      com.google.protobuf.ByteString getAmount();
+
+      /**
+       * <pre>
+       * Optional payload data
+       * </pre>
+       *
+       * <code>bytes data = 2;</code>
+       * @return The data.
+       */
+      com.google.protobuf.ByteString getData();
+    }
+    /**
+     * <pre>
+     * Native coin transfer transaction
+     * </pre>
+     *
+     * Protobuf type {@code TW.Ethereum.Proto.Transaction.Transfer}
+     */
+    public static final class Transfer extends
+        com.google.protobuf.GeneratedMessageV3 implements
+        // @@protoc_insertion_point(message_implements:TW.Ethereum.Proto.Transaction.Transfer)
+        TransferOrBuilder {
+    private static final long serialVersionUID = 0L;
+      // Use Transfer.newBuilder() to construct.
+      private Transfer(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+        super(builder);
+      }
+      private Transfer() {
+        amount_ = com.google.protobuf.ByteString.EMPTY;
+        data_ = com.google.protobuf.ByteString.EMPTY;
+      }
+
+      @java.lang.Override
+      @SuppressWarnings({"unused"})
+      protected java.lang.Object newInstance(
+          UnusedPrivateParameter unused) {
+        return new Transfer();
+      }
+
+      @java.lang.Override
+      public final com.google.protobuf.UnknownFieldSet
+      getUnknownFields() {
+        return this.unknownFields;
+      }
+      private Transfer(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        this();
+        if (extensionRegistry == null) {
+          throw new java.lang.NullPointerException();
+        }
+        com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+            com.google.protobuf.UnknownFieldSet.newBuilder();
+        try {
+          boolean done = false;
+          while (!done) {
+            int tag = input.readTag();
+            switch (tag) {
+              case 0:
+                done = true;
+                break;
+              case 10: {
+
+                amount_ = input.readBytes();
+                break;
+              }
+              case 18: {
+
+                data_ = input.readBytes();
+                break;
+              }
+              default: {
+                if (!parseUnknownField(
+                    input, unknownFields, extensionRegistry, tag)) {
+                  done = true;
+                }
+                break;
+              }
+            }
+          }
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          throw e.setUnfinishedMessage(this);
+        } catch (java.io.IOException e) {
+          throw new com.google.protobuf.InvalidProtocolBufferException(
+              e).setUnfinishedMessage(this);
+        } finally {
+          this.unknownFields = unknownFields.build();
+          makeExtensionsImmutable();
+        }
+      }
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return wallet.core.jni.proto.Ethereum.internal_static_TW_Ethereum_Proto_Transaction_Transfer_descriptor;
+      }
+
+      @java.lang.Override
+      protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return wallet.core.jni.proto.Ethereum.internal_static_TW_Ethereum_Proto_Transaction_Transfer_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                wallet.core.jni.proto.Ethereum.Transaction.Transfer.class, wallet.core.jni.proto.Ethereum.Transaction.Transfer.Builder.class);
+      }
+
+      public static final int AMOUNT_FIELD_NUMBER = 1;
+      private com.google.protobuf.ByteString amount_;
+      /**
+       * <pre>
+       * Amount to send in wei (256-bit number)
+       * </pre>
+       *
+       * <code>bytes amount = 1;</code>
+       * @return The amount.
+       */
+      @java.lang.Override
+      public com.google.protobuf.ByteString getAmount() {
+        return amount_;
+      }
+
+      public static final int DATA_FIELD_NUMBER = 2;
+      private com.google.protobuf.ByteString data_;
+      /**
+       * <pre>
+       * Optional payload data
+       * </pre>
+       *
+       * <code>bytes data = 2;</code>
+       * @return The data.
+       */
+      @java.lang.Override
+      public com.google.protobuf.ByteString getData() {
+        return data_;
+      }
+
+      private byte memoizedIsInitialized = -1;
+      @java.lang.Override
+      public final boolean isInitialized() {
+        byte isInitialized = memoizedIsInitialized;
+        if (isInitialized == 1) return true;
+        if (isInitialized == 0) return false;
+
+        memoizedIsInitialized = 1;
+        return true;
+      }
+
+      @java.lang.Override
+      public void writeTo(com.google.protobuf.CodedOutputStream output)
+                          throws java.io.IOException {
+        if (!amount_.isEmpty()) {
+          output.writeBytes(1, amount_);
+        }
+        if (!data_.isEmpty()) {
+          output.writeBytes(2, data_);
+        }
+        unknownFields.writeTo(output);
+      }
+
+      @java.lang.Override
+      public int getSerializedSize() {
+        int size = memoizedSize;
+        if (size != -1) return size;
+
+        size = 0;
+        if (!amount_.isEmpty()) {
+          size += com.google.protobuf.CodedOutputStream
+            .computeBytesSize(1, amount_);
+        }
+        if (!data_.isEmpty()) {
+          size += com.google.protobuf.CodedOutputStream
+            .computeBytesSize(2, data_);
+        }
+        size += unknownFields.getSerializedSize();
+        memoizedSize = size;
+        return size;
+      }
+
+      @java.lang.Override
+      public boolean equals(final java.lang.Object obj) {
+        if (obj == this) {
+         return true;
+        }
+        if (!(obj instanceof wallet.core.jni.proto.Ethereum.Transaction.Transfer)) {
+          return super.equals(obj);
+        }
+        wallet.core.jni.proto.Ethereum.Transaction.Transfer other = (wallet.core.jni.proto.Ethereum.Transaction.Transfer) obj;
+
+        if (!getAmount()
+            .equals(other.getAmount())) return false;
+        if (!getData()
+            .equals(other.getData())) return false;
+        if (!unknownFields.equals(other.unknownFields)) return false;
+        return true;
+      }
+
+      @java.lang.Override
+      public int hashCode() {
+        if (memoizedHashCode != 0) {
+          return memoizedHashCode;
+        }
+        int hash = 41;
+        hash = (19 * hash) + getDescriptor().hashCode();
+        hash = (37 * hash) + AMOUNT_FIELD_NUMBER;
+        hash = (53 * hash) + getAmount().hashCode();
+        hash = (37 * hash) + DATA_FIELD_NUMBER;
+        hash = (53 * hash) + getData().hashCode();
+        hash = (29 * hash) + unknownFields.hashCode();
+        memoizedHashCode = hash;
+        return hash;
+      }
+
+      public static wallet.core.jni.proto.Ethereum.Transaction.Transfer parseFrom(
+          java.nio.ByteBuffer data)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data);
+      }
+      public static wallet.core.jni.proto.Ethereum.Transaction.Transfer parseFrom(
+          java.nio.ByteBuffer data,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data, extensionRegistry);
+      }
+      public static wallet.core.jni.proto.Ethereum.Transaction.Transfer parseFrom(
+          com.google.protobuf.ByteString data)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data);
+      }
+      public static wallet.core.jni.proto.Ethereum.Transaction.Transfer parseFrom(
+          com.google.protobuf.ByteString data,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data, extensionRegistry);
+      }
+      public static wallet.core.jni.proto.Ethereum.Transaction.Transfer parseFrom(byte[] data)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data);
+      }
+      public static wallet.core.jni.proto.Ethereum.Transaction.Transfer parseFrom(
+          byte[] data,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data, extensionRegistry);
+      }
+      public static wallet.core.jni.proto.Ethereum.Transaction.Transfer parseFrom(java.io.InputStream input)
+          throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessageV3
+            .parseWithIOException(PARSER, input);
+      }
+      public static wallet.core.jni.proto.Ethereum.Transaction.Transfer parseFrom(
+          java.io.InputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessageV3
+            .parseWithIOException(PARSER, input, extensionRegistry);
+      }
+      public static wallet.core.jni.proto.Ethereum.Transaction.Transfer parseDelimitedFrom(java.io.InputStream input)
+          throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessageV3
+            .parseDelimitedWithIOException(PARSER, input);
+      }
+      public static wallet.core.jni.proto.Ethereum.Transaction.Transfer parseDelimitedFrom(
+          java.io.InputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessageV3
+            .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
+      }
+      public static wallet.core.jni.proto.Ethereum.Transaction.Transfer parseFrom(
+          com.google.protobuf.CodedInputStream input)
+          throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessageV3
+            .parseWithIOException(PARSER, input);
+      }
+      public static wallet.core.jni.proto.Ethereum.Transaction.Transfer parseFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessageV3
+            .parseWithIOException(PARSER, input, extensionRegistry);
+      }
+
+      @java.lang.Override
+      public Builder newBuilderForType() { return newBuilder(); }
+      public static Builder newBuilder() {
+        return DEFAULT_INSTANCE.toBuilder();
+      }
+      public static Builder newBuilder(wallet.core.jni.proto.Ethereum.Transaction.Transfer prototype) {
+        return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
+      }
+      @java.lang.Override
+      public Builder toBuilder() {
+        return this == DEFAULT_INSTANCE
+            ? new Builder() : new Builder().mergeFrom(this);
+      }
+
+      @java.lang.Override
+      protected Builder newBuilderForType(
+          com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+        Builder builder = new Builder(parent);
+        return builder;
+      }
+      /**
+       * <pre>
+       * Native coin transfer transaction
+       * </pre>
+       *
+       * Protobuf type {@code TW.Ethereum.Proto.Transaction.Transfer}
+       */
+      public static final class Builder extends
+          com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
+          // @@protoc_insertion_point(builder_implements:TW.Ethereum.Proto.Transaction.Transfer)
+          wallet.core.jni.proto.Ethereum.Transaction.TransferOrBuilder {
+        public static final com.google.protobuf.Descriptors.Descriptor
+            getDescriptor() {
+          return wallet.core.jni.proto.Ethereum.internal_static_TW_Ethereum_Proto_Transaction_Transfer_descriptor;
+        }
+
+        @java.lang.Override
+        protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+            internalGetFieldAccessorTable() {
+          return wallet.core.jni.proto.Ethereum.internal_static_TW_Ethereum_Proto_Transaction_Transfer_fieldAccessorTable
+              .ensureFieldAccessorsInitialized(
+                  wallet.core.jni.proto.Ethereum.Transaction.Transfer.class, wallet.core.jni.proto.Ethereum.Transaction.Transfer.Builder.class);
+        }
+
+        // Construct using wallet.core.jni.proto.Ethereum.Transaction.Transfer.newBuilder()
+        private Builder() {
+          maybeForceBuilderInitialization();
+        }
+
+        private Builder(
+            com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+          super(parent);
+          maybeForceBuilderInitialization();
+        }
+        private void maybeForceBuilderInitialization() {
+          if (com.google.protobuf.GeneratedMessageV3
+                  .alwaysUseFieldBuilders) {
+          }
+        }
+        @java.lang.Override
+        public Builder clear() {
+          super.clear();
+          amount_ = com.google.protobuf.ByteString.EMPTY;
+
+          data_ = com.google.protobuf.ByteString.EMPTY;
+
+          return this;
+        }
+
+        @java.lang.Override
+        public com.google.protobuf.Descriptors.Descriptor
+            getDescriptorForType() {
+          return wallet.core.jni.proto.Ethereum.internal_static_TW_Ethereum_Proto_Transaction_Transfer_descriptor;
+        }
+
+        @java.lang.Override
+        public wallet.core.jni.proto.Ethereum.Transaction.Transfer getDefaultInstanceForType() {
+          return wallet.core.jni.proto.Ethereum.Transaction.Transfer.getDefaultInstance();
+        }
+
+        @java.lang.Override
+        public wallet.core.jni.proto.Ethereum.Transaction.Transfer build() {
+          wallet.core.jni.proto.Ethereum.Transaction.Transfer result = buildPartial();
+          if (!result.isInitialized()) {
+            throw newUninitializedMessageException(result);
+          }
+          return result;
+        }
+
+        @java.lang.Override
+        public wallet.core.jni.proto.Ethereum.Transaction.Transfer buildPartial() {
+          wallet.core.jni.proto.Ethereum.Transaction.Transfer result = new wallet.core.jni.proto.Ethereum.Transaction.Transfer(this);
+          result.amount_ = amount_;
+          result.data_ = data_;
+          onBuilt();
+          return result;
+        }
+
+        @java.lang.Override
+        public Builder clone() {
+          return super.clone();
+        }
+        @java.lang.Override
+        public Builder setField(
+            com.google.protobuf.Descriptors.FieldDescriptor field,
+            java.lang.Object value) {
+          return super.setField(field, value);
+        }
+        @java.lang.Override
+        public Builder clearField(
+            com.google.protobuf.Descriptors.FieldDescriptor field) {
+          return super.clearField(field);
+        }
+        @java.lang.Override
+        public Builder clearOneof(
+            com.google.protobuf.Descriptors.OneofDescriptor oneof) {
+          return super.clearOneof(oneof);
+        }
+        @java.lang.Override
+        public Builder setRepeatedField(
+            com.google.protobuf.Descriptors.FieldDescriptor field,
+            int index, java.lang.Object value) {
+          return super.setRepeatedField(field, index, value);
+        }
+        @java.lang.Override
+        public Builder addRepeatedField(
+            com.google.protobuf.Descriptors.FieldDescriptor field,
+            java.lang.Object value) {
+          return super.addRepeatedField(field, value);
+        }
+        @java.lang.Override
+        public Builder mergeFrom(com.google.protobuf.Message other) {
+          if (other instanceof wallet.core.jni.proto.Ethereum.Transaction.Transfer) {
+            return mergeFrom((wallet.core.jni.proto.Ethereum.Transaction.Transfer)other);
+          } else {
+            super.mergeFrom(other);
+            return this;
+          }
+        }
+
+        public Builder mergeFrom(wallet.core.jni.proto.Ethereum.Transaction.Transfer other) {
+          if (other == wallet.core.jni.proto.Ethereum.Transaction.Transfer.getDefaultInstance()) return this;
+          if (other.getAmount() != com.google.protobuf.ByteString.EMPTY) {
+            setAmount(other.getAmount());
+          }
+          if (other.getData() != com.google.protobuf.ByteString.EMPTY) {
+            setData(other.getData());
+          }
+          this.mergeUnknownFields(other.unknownFields);
+          onChanged();
+          return this;
+        }
+
+        @java.lang.Override
+        public final boolean isInitialized() {
+          return true;
+        }
+
+        @java.lang.Override
+        public Builder mergeFrom(
+            com.google.protobuf.CodedInputStream input,
+            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+            throws java.io.IOException {
+          wallet.core.jni.proto.Ethereum.Transaction.Transfer parsedMessage = null;
+          try {
+            parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+          } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+            parsedMessage = (wallet.core.jni.proto.Ethereum.Transaction.Transfer) e.getUnfinishedMessage();
+            throw e.unwrapIOException();
+          } finally {
+            if (parsedMessage != null) {
+              mergeFrom(parsedMessage);
+            }
+          }
+          return this;
+        }
+
+        private com.google.protobuf.ByteString amount_ = com.google.protobuf.ByteString.EMPTY;
+        /**
+         * <pre>
+         * Amount to send in wei (256-bit number)
+         * </pre>
+         *
+         * <code>bytes amount = 1;</code>
+         * @return The amount.
+         */
+        @java.lang.Override
+        public com.google.protobuf.ByteString getAmount() {
+          return amount_;
+        }
+        /**
+         * <pre>
+         * Amount to send in wei (256-bit number)
+         * </pre>
+         *
+         * <code>bytes amount = 1;</code>
+         * @param value The amount to set.
+         * @return This builder for chaining.
+         */
+        public Builder setAmount(com.google.protobuf.ByteString value) {
+          if (value == null) {
+    throw new NullPointerException();
+  }
+  
+          amount_ = value;
+          onChanged();
+          return this;
+        }
+        /**
+         * <pre>
+         * Amount to send in wei (256-bit number)
+         * </pre>
+         *
+         * <code>bytes amount = 1;</code>
+         * @return This builder for chaining.
+         */
+        public Builder clearAmount() {
+          
+          amount_ = getDefaultInstance().getAmount();
+          onChanged();
+          return this;
+        }
+
+        private com.google.protobuf.ByteString data_ = com.google.protobuf.ByteString.EMPTY;
+        /**
+         * <pre>
+         * Optional payload data
+         * </pre>
+         *
+         * <code>bytes data = 2;</code>
+         * @return The data.
+         */
+        @java.lang.Override
+        public com.google.protobuf.ByteString getData() {
+          return data_;
+        }
+        /**
+         * <pre>
+         * Optional payload data
+         * </pre>
+         *
+         * <code>bytes data = 2;</code>
+         * @param value The data to set.
+         * @return This builder for chaining.
+         */
+        public Builder setData(com.google.protobuf.ByteString value) {
+          if (value == null) {
+    throw new NullPointerException();
+  }
+  
+          data_ = value;
+          onChanged();
+          return this;
+        }
+        /**
+         * <pre>
+         * Optional payload data
+         * </pre>
+         *
+         * <code>bytes data = 2;</code>
+         * @return This builder for chaining.
+         */
+        public Builder clearData() {
+          
+          data_ = getDefaultInstance().getData();
+          onChanged();
+          return this;
+        }
+        @java.lang.Override
+        public final Builder setUnknownFields(
+            final com.google.protobuf.UnknownFieldSet unknownFields) {
+          return super.setUnknownFields(unknownFields);
+        }
+
+        @java.lang.Override
+        public final Builder mergeUnknownFields(
+            final com.google.protobuf.UnknownFieldSet unknownFields) {
+          return super.mergeUnknownFields(unknownFields);
+        }
+
+
+        // @@protoc_insertion_point(builder_scope:TW.Ethereum.Proto.Transaction.Transfer)
+      }
+
+      // @@protoc_insertion_point(class_scope:TW.Ethereum.Proto.Transaction.Transfer)
+      private static final wallet.core.jni.proto.Ethereum.Transaction.Transfer DEFAULT_INSTANCE;
+      static {
+        DEFAULT_INSTANCE = new wallet.core.jni.proto.Ethereum.Transaction.Transfer();
+      }
+
+      public static wallet.core.jni.proto.Ethereum.Transaction.Transfer getDefaultInstance() {
+        return DEFAULT_INSTANCE;
+      }
+
+      private static final com.google.protobuf.Parser<Transfer>
+          PARSER = new com.google.protobuf.AbstractParser<Transfer>() {
+        @java.lang.Override
+        public Transfer parsePartialFrom(
+            com.google.protobuf.CodedInputStream input,
+            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+            throws com.google.protobuf.InvalidProtocolBufferException {
+          return new Transfer(input, extensionRegistry);
+        }
+      };
+
+      public static com.google.protobuf.Parser<Transfer> parser() {
+        return PARSER;
+      }
+
+      @java.lang.Override
+      public com.google.protobuf.Parser<Transfer> getParserForType() {
+        return PARSER;
+      }
+
+      @java.lang.Override
+      public wallet.core.jni.proto.Ethereum.Transaction.Transfer getDefaultInstanceForType() {
+        return DEFAULT_INSTANCE;
+      }
+
+    }
+
+    public interface ERC20TransferOrBuilder extends
+        // @@protoc_insertion_point(interface_extends:TW.Ethereum.Proto.Transaction.ERC20Transfer)
+        com.google.protobuf.MessageOrBuilder {
+
+      /**
+       * <code>string to = 1;</code>
+       * @return The to.
+       */
+      java.lang.String getTo();
+      /**
+       * <code>string to = 1;</code>
+       * @return The bytes for to.
+       */
+      com.google.protobuf.ByteString
+          getToBytes();
+
+      /**
+       * <pre>
+       * Amount to send (256-bit number)
+       * </pre>
+       *
+       * <code>bytes amount = 2;</code>
+       * @return The amount.
+       */
+      com.google.protobuf.ByteString getAmount();
+    }
+    /**
+     * <pre>
+     * ERC20 token transfer transaction
+     * </pre>
+     *
+     * Protobuf type {@code TW.Ethereum.Proto.Transaction.ERC20Transfer}
+     */
+    public static final class ERC20Transfer extends
+        com.google.protobuf.GeneratedMessageV3 implements
+        // @@protoc_insertion_point(message_implements:TW.Ethereum.Proto.Transaction.ERC20Transfer)
+        ERC20TransferOrBuilder {
+    private static final long serialVersionUID = 0L;
+      // Use ERC20Transfer.newBuilder() to construct.
+      private ERC20Transfer(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+        super(builder);
+      }
+      private ERC20Transfer() {
+        to_ = "";
+        amount_ = com.google.protobuf.ByteString.EMPTY;
+      }
+
+      @java.lang.Override
+      @SuppressWarnings({"unused"})
+      protected java.lang.Object newInstance(
+          UnusedPrivateParameter unused) {
+        return new ERC20Transfer();
+      }
+
+      @java.lang.Override
+      public final com.google.protobuf.UnknownFieldSet
+      getUnknownFields() {
+        return this.unknownFields;
+      }
+      private ERC20Transfer(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        this();
+        if (extensionRegistry == null) {
+          throw new java.lang.NullPointerException();
+        }
+        com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+            com.google.protobuf.UnknownFieldSet.newBuilder();
+        try {
+          boolean done = false;
+          while (!done) {
+            int tag = input.readTag();
+            switch (tag) {
+              case 0:
+                done = true;
+                break;
+              case 10: {
+                java.lang.String s = input.readStringRequireUtf8();
+
+                to_ = s;
+                break;
+              }
+              case 18: {
+
+                amount_ = input.readBytes();
+                break;
+              }
+              default: {
+                if (!parseUnknownField(
+                    input, unknownFields, extensionRegistry, tag)) {
+                  done = true;
+                }
+                break;
+              }
+            }
+          }
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          throw e.setUnfinishedMessage(this);
+        } catch (java.io.IOException e) {
+          throw new com.google.protobuf.InvalidProtocolBufferException(
+              e).setUnfinishedMessage(this);
+        } finally {
+          this.unknownFields = unknownFields.build();
+          makeExtensionsImmutable();
+        }
+      }
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return wallet.core.jni.proto.Ethereum.internal_static_TW_Ethereum_Proto_Transaction_ERC20Transfer_descriptor;
+      }
+
+      @java.lang.Override
+      protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return wallet.core.jni.proto.Ethereum.internal_static_TW_Ethereum_Proto_Transaction_ERC20Transfer_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                wallet.core.jni.proto.Ethereum.Transaction.ERC20Transfer.class, wallet.core.jni.proto.Ethereum.Transaction.ERC20Transfer.Builder.class);
+      }
+
+      public static final int TO_FIELD_NUMBER = 1;
+      private volatile java.lang.Object to_;
+      /**
+       * <code>string to = 1;</code>
+       * @return The to.
+       */
+      @java.lang.Override
+      public java.lang.String getTo() {
+        java.lang.Object ref = to_;
+        if (ref instanceof java.lang.String) {
+          return (java.lang.String) ref;
+        } else {
+          com.google.protobuf.ByteString bs = 
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          to_ = s;
+          return s;
+        }
+      }
+      /**
+       * <code>string to = 1;</code>
+       * @return The bytes for to.
+       */
+      @java.lang.Override
+      public com.google.protobuf.ByteString
+          getToBytes() {
+        java.lang.Object ref = to_;
+        if (ref instanceof java.lang.String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          to_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+
+      public static final int AMOUNT_FIELD_NUMBER = 2;
+      private com.google.protobuf.ByteString amount_;
+      /**
+       * <pre>
+       * Amount to send (256-bit number)
+       * </pre>
+       *
+       * <code>bytes amount = 2;</code>
+       * @return The amount.
+       */
+      @java.lang.Override
+      public com.google.protobuf.ByteString getAmount() {
+        return amount_;
+      }
+
+      private byte memoizedIsInitialized = -1;
+      @java.lang.Override
+      public final boolean isInitialized() {
+        byte isInitialized = memoizedIsInitialized;
+        if (isInitialized == 1) return true;
+        if (isInitialized == 0) return false;
+
+        memoizedIsInitialized = 1;
+        return true;
+      }
+
+      @java.lang.Override
+      public void writeTo(com.google.protobuf.CodedOutputStream output)
+                          throws java.io.IOException {
+        if (!getToBytes().isEmpty()) {
+          com.google.protobuf.GeneratedMessageV3.writeString(output, 1, to_);
+        }
+        if (!amount_.isEmpty()) {
+          output.writeBytes(2, amount_);
+        }
+        unknownFields.writeTo(output);
+      }
+
+      @java.lang.Override
+      public int getSerializedSize() {
+        int size = memoizedSize;
+        if (size != -1) return size;
+
+        size = 0;
+        if (!getToBytes().isEmpty()) {
+          size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, to_);
+        }
+        if (!amount_.isEmpty()) {
+          size += com.google.protobuf.CodedOutputStream
+            .computeBytesSize(2, amount_);
+        }
+        size += unknownFields.getSerializedSize();
+        memoizedSize = size;
+        return size;
+      }
+
+      @java.lang.Override
+      public boolean equals(final java.lang.Object obj) {
+        if (obj == this) {
+         return true;
+        }
+        if (!(obj instanceof wallet.core.jni.proto.Ethereum.Transaction.ERC20Transfer)) {
+          return super.equals(obj);
+        }
+        wallet.core.jni.proto.Ethereum.Transaction.ERC20Transfer other = (wallet.core.jni.proto.Ethereum.Transaction.ERC20Transfer) obj;
+
+        if (!getTo()
+            .equals(other.getTo())) return false;
+        if (!getAmount()
+            .equals(other.getAmount())) return false;
+        if (!unknownFields.equals(other.unknownFields)) return false;
+        return true;
+      }
+
+      @java.lang.Override
+      public int hashCode() {
+        if (memoizedHashCode != 0) {
+          return memoizedHashCode;
+        }
+        int hash = 41;
+        hash = (19 * hash) + getDescriptor().hashCode();
+        hash = (37 * hash) + TO_FIELD_NUMBER;
+        hash = (53 * hash) + getTo().hashCode();
+        hash = (37 * hash) + AMOUNT_FIELD_NUMBER;
+        hash = (53 * hash) + getAmount().hashCode();
+        hash = (29 * hash) + unknownFields.hashCode();
+        memoizedHashCode = hash;
+        return hash;
+      }
+
+      public static wallet.core.jni.proto.Ethereum.Transaction.ERC20Transfer parseFrom(
+          java.nio.ByteBuffer data)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data);
+      }
+      public static wallet.core.jni.proto.Ethereum.Transaction.ERC20Transfer parseFrom(
+          java.nio.ByteBuffer data,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data, extensionRegistry);
+      }
+      public static wallet.core.jni.proto.Ethereum.Transaction.ERC20Transfer parseFrom(
+          com.google.protobuf.ByteString data)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data);
+      }
+      public static wallet.core.jni.proto.Ethereum.Transaction.ERC20Transfer parseFrom(
+          com.google.protobuf.ByteString data,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data, extensionRegistry);
+      }
+      public static wallet.core.jni.proto.Ethereum.Transaction.ERC20Transfer parseFrom(byte[] data)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data);
+      }
+      public static wallet.core.jni.proto.Ethereum.Transaction.ERC20Transfer parseFrom(
+          byte[] data,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data, extensionRegistry);
+      }
+      public static wallet.core.jni.proto.Ethereum.Transaction.ERC20Transfer parseFrom(java.io.InputStream input)
+          throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessageV3
+            .parseWithIOException(PARSER, input);
+      }
+      public static wallet.core.jni.proto.Ethereum.Transaction.ERC20Transfer parseFrom(
+          java.io.InputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessageV3
+            .parseWithIOException(PARSER, input, extensionRegistry);
+      }
+      public static wallet.core.jni.proto.Ethereum.Transaction.ERC20Transfer parseDelimitedFrom(java.io.InputStream input)
+          throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessageV3
+            .parseDelimitedWithIOException(PARSER, input);
+      }
+      public static wallet.core.jni.proto.Ethereum.Transaction.ERC20Transfer parseDelimitedFrom(
+          java.io.InputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessageV3
+            .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
+      }
+      public static wallet.core.jni.proto.Ethereum.Transaction.ERC20Transfer parseFrom(
+          com.google.protobuf.CodedInputStream input)
+          throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessageV3
+            .parseWithIOException(PARSER, input);
+      }
+      public static wallet.core.jni.proto.Ethereum.Transaction.ERC20Transfer parseFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessageV3
+            .parseWithIOException(PARSER, input, extensionRegistry);
+      }
+
+      @java.lang.Override
+      public Builder newBuilderForType() { return newBuilder(); }
+      public static Builder newBuilder() {
+        return DEFAULT_INSTANCE.toBuilder();
+      }
+      public static Builder newBuilder(wallet.core.jni.proto.Ethereum.Transaction.ERC20Transfer prototype) {
+        return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
+      }
+      @java.lang.Override
+      public Builder toBuilder() {
+        return this == DEFAULT_INSTANCE
+            ? new Builder() : new Builder().mergeFrom(this);
+      }
+
+      @java.lang.Override
+      protected Builder newBuilderForType(
+          com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+        Builder builder = new Builder(parent);
+        return builder;
+      }
+      /**
+       * <pre>
+       * ERC20 token transfer transaction
+       * </pre>
+       *
+       * Protobuf type {@code TW.Ethereum.Proto.Transaction.ERC20Transfer}
+       */
+      public static final class Builder extends
+          com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
+          // @@protoc_insertion_point(builder_implements:TW.Ethereum.Proto.Transaction.ERC20Transfer)
+          wallet.core.jni.proto.Ethereum.Transaction.ERC20TransferOrBuilder {
+        public static final com.google.protobuf.Descriptors.Descriptor
+            getDescriptor() {
+          return wallet.core.jni.proto.Ethereum.internal_static_TW_Ethereum_Proto_Transaction_ERC20Transfer_descriptor;
+        }
+
+        @java.lang.Override
+        protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+            internalGetFieldAccessorTable() {
+          return wallet.core.jni.proto.Ethereum.internal_static_TW_Ethereum_Proto_Transaction_ERC20Transfer_fieldAccessorTable
+              .ensureFieldAccessorsInitialized(
+                  wallet.core.jni.proto.Ethereum.Transaction.ERC20Transfer.class, wallet.core.jni.proto.Ethereum.Transaction.ERC20Transfer.Builder.class);
+        }
+
+        // Construct using wallet.core.jni.proto.Ethereum.Transaction.ERC20Transfer.newBuilder()
+        private Builder() {
+          maybeForceBuilderInitialization();
+        }
+
+        private Builder(
+            com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+          super(parent);
+          maybeForceBuilderInitialization();
+        }
+        private void maybeForceBuilderInitialization() {
+          if (com.google.protobuf.GeneratedMessageV3
+                  .alwaysUseFieldBuilders) {
+          }
+        }
+        @java.lang.Override
+        public Builder clear() {
+          super.clear();
+          to_ = "";
+
+          amount_ = com.google.protobuf.ByteString.EMPTY;
+
+          return this;
+        }
+
+        @java.lang.Override
+        public com.google.protobuf.Descriptors.Descriptor
+            getDescriptorForType() {
+          return wallet.core.jni.proto.Ethereum.internal_static_TW_Ethereum_Proto_Transaction_ERC20Transfer_descriptor;
+        }
+
+        @java.lang.Override
+        public wallet.core.jni.proto.Ethereum.Transaction.ERC20Transfer getDefaultInstanceForType() {
+          return wallet.core.jni.proto.Ethereum.Transaction.ERC20Transfer.getDefaultInstance();
+        }
+
+        @java.lang.Override
+        public wallet.core.jni.proto.Ethereum.Transaction.ERC20Transfer build() {
+          wallet.core.jni.proto.Ethereum.Transaction.ERC20Transfer result = buildPartial();
+          if (!result.isInitialized()) {
+            throw newUninitializedMessageException(result);
+          }
+          return result;
+        }
+
+        @java.lang.Override
+        public wallet.core.jni.proto.Ethereum.Transaction.ERC20Transfer buildPartial() {
+          wallet.core.jni.proto.Ethereum.Transaction.ERC20Transfer result = new wallet.core.jni.proto.Ethereum.Transaction.ERC20Transfer(this);
+          result.to_ = to_;
+          result.amount_ = amount_;
+          onBuilt();
+          return result;
+        }
+
+        @java.lang.Override
+        public Builder clone() {
+          return super.clone();
+        }
+        @java.lang.Override
+        public Builder setField(
+            com.google.protobuf.Descriptors.FieldDescriptor field,
+            java.lang.Object value) {
+          return super.setField(field, value);
+        }
+        @java.lang.Override
+        public Builder clearField(
+            com.google.protobuf.Descriptors.FieldDescriptor field) {
+          return super.clearField(field);
+        }
+        @java.lang.Override
+        public Builder clearOneof(
+            com.google.protobuf.Descriptors.OneofDescriptor oneof) {
+          return super.clearOneof(oneof);
+        }
+        @java.lang.Override
+        public Builder setRepeatedField(
+            com.google.protobuf.Descriptors.FieldDescriptor field,
+            int index, java.lang.Object value) {
+          return super.setRepeatedField(field, index, value);
+        }
+        @java.lang.Override
+        public Builder addRepeatedField(
+            com.google.protobuf.Descriptors.FieldDescriptor field,
+            java.lang.Object value) {
+          return super.addRepeatedField(field, value);
+        }
+        @java.lang.Override
+        public Builder mergeFrom(com.google.protobuf.Message other) {
+          if (other instanceof wallet.core.jni.proto.Ethereum.Transaction.ERC20Transfer) {
+            return mergeFrom((wallet.core.jni.proto.Ethereum.Transaction.ERC20Transfer)other);
+          } else {
+            super.mergeFrom(other);
+            return this;
+          }
+        }
+
+        public Builder mergeFrom(wallet.core.jni.proto.Ethereum.Transaction.ERC20Transfer other) {
+          if (other == wallet.core.jni.proto.Ethereum.Transaction.ERC20Transfer.getDefaultInstance()) return this;
+          if (!other.getTo().isEmpty()) {
+            to_ = other.to_;
+            onChanged();
+          }
+          if (other.getAmount() != com.google.protobuf.ByteString.EMPTY) {
+            setAmount(other.getAmount());
+          }
+          this.mergeUnknownFields(other.unknownFields);
+          onChanged();
+          return this;
+        }
+
+        @java.lang.Override
+        public final boolean isInitialized() {
+          return true;
+        }
+
+        @java.lang.Override
+        public Builder mergeFrom(
+            com.google.protobuf.CodedInputStream input,
+            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+            throws java.io.IOException {
+          wallet.core.jni.proto.Ethereum.Transaction.ERC20Transfer parsedMessage = null;
+          try {
+            parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+          } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+            parsedMessage = (wallet.core.jni.proto.Ethereum.Transaction.ERC20Transfer) e.getUnfinishedMessage();
+            throw e.unwrapIOException();
+          } finally {
+            if (parsedMessage != null) {
+              mergeFrom(parsedMessage);
+            }
+          }
+          return this;
+        }
+
+        private java.lang.Object to_ = "";
+        /**
+         * <code>string to = 1;</code>
+         * @return The to.
+         */
+        public java.lang.String getTo() {
+          java.lang.Object ref = to_;
+          if (!(ref instanceof java.lang.String)) {
+            com.google.protobuf.ByteString bs =
+                (com.google.protobuf.ByteString) ref;
+            java.lang.String s = bs.toStringUtf8();
+            to_ = s;
+            return s;
+          } else {
+            return (java.lang.String) ref;
+          }
+        }
+        /**
+         * <code>string to = 1;</code>
+         * @return The bytes for to.
+         */
+        public com.google.protobuf.ByteString
+            getToBytes() {
+          java.lang.Object ref = to_;
+          if (ref instanceof String) {
+            com.google.protobuf.ByteString b = 
+                com.google.protobuf.ByteString.copyFromUtf8(
+                    (java.lang.String) ref);
+            to_ = b;
+            return b;
+          } else {
+            return (com.google.protobuf.ByteString) ref;
+          }
+        }
+        /**
+         * <code>string to = 1;</code>
+         * @param value The to to set.
+         * @return This builder for chaining.
+         */
+        public Builder setTo(
+            java.lang.String value) {
+          if (value == null) {
+    throw new NullPointerException();
+  }
+  
+          to_ = value;
+          onChanged();
+          return this;
+        }
+        /**
+         * <code>string to = 1;</code>
+         * @return This builder for chaining.
+         */
+        public Builder clearTo() {
+          
+          to_ = getDefaultInstance().getTo();
+          onChanged();
+          return this;
+        }
+        /**
+         * <code>string to = 1;</code>
+         * @param value The bytes for to to set.
+         * @return This builder for chaining.
+         */
+        public Builder setToBytes(
+            com.google.protobuf.ByteString value) {
+          if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+          
+          to_ = value;
+          onChanged();
+          return this;
+        }
+
+        private com.google.protobuf.ByteString amount_ = com.google.protobuf.ByteString.EMPTY;
+        /**
+         * <pre>
+         * Amount to send (256-bit number)
+         * </pre>
+         *
+         * <code>bytes amount = 2;</code>
+         * @return The amount.
+         */
+        @java.lang.Override
+        public com.google.protobuf.ByteString getAmount() {
+          return amount_;
+        }
+        /**
+         * <pre>
+         * Amount to send (256-bit number)
+         * </pre>
+         *
+         * <code>bytes amount = 2;</code>
+         * @param value The amount to set.
+         * @return This builder for chaining.
+         */
+        public Builder setAmount(com.google.protobuf.ByteString value) {
+          if (value == null) {
+    throw new NullPointerException();
+  }
+  
+          amount_ = value;
+          onChanged();
+          return this;
+        }
+        /**
+         * <pre>
+         * Amount to send (256-bit number)
+         * </pre>
+         *
+         * <code>bytes amount = 2;</code>
+         * @return This builder for chaining.
+         */
+        public Builder clearAmount() {
+          
+          amount_ = getDefaultInstance().getAmount();
+          onChanged();
+          return this;
+        }
+        @java.lang.Override
+        public final Builder setUnknownFields(
+            final com.google.protobuf.UnknownFieldSet unknownFields) {
+          return super.setUnknownFields(unknownFields);
+        }
+
+        @java.lang.Override
+        public final Builder mergeUnknownFields(
+            final com.google.protobuf.UnknownFieldSet unknownFields) {
+          return super.mergeUnknownFields(unknownFields);
+        }
+
+
+        // @@protoc_insertion_point(builder_scope:TW.Ethereum.Proto.Transaction.ERC20Transfer)
+      }
+
+      // @@protoc_insertion_point(class_scope:TW.Ethereum.Proto.Transaction.ERC20Transfer)
+      private static final wallet.core.jni.proto.Ethereum.Transaction.ERC20Transfer DEFAULT_INSTANCE;
+      static {
+        DEFAULT_INSTANCE = new wallet.core.jni.proto.Ethereum.Transaction.ERC20Transfer();
+      }
+
+      public static wallet.core.jni.proto.Ethereum.Transaction.ERC20Transfer getDefaultInstance() {
+        return DEFAULT_INSTANCE;
+      }
+
+      private static final com.google.protobuf.Parser<ERC20Transfer>
+          PARSER = new com.google.protobuf.AbstractParser<ERC20Transfer>() {
+        @java.lang.Override
+        public ERC20Transfer parsePartialFrom(
+            com.google.protobuf.CodedInputStream input,
+            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+            throws com.google.protobuf.InvalidProtocolBufferException {
+          return new ERC20Transfer(input, extensionRegistry);
+        }
+      };
+
+      public static com.google.protobuf.Parser<ERC20Transfer> parser() {
+        return PARSER;
+      }
+
+      @java.lang.Override
+      public com.google.protobuf.Parser<ERC20Transfer> getParserForType() {
+        return PARSER;
+      }
+
+      @java.lang.Override
+      public wallet.core.jni.proto.Ethereum.Transaction.ERC20Transfer getDefaultInstanceForType() {
+        return DEFAULT_INSTANCE;
+      }
+
+    }
+
+    public interface ERC20ApproveOrBuilder extends
+        // @@protoc_insertion_point(interface_extends:TW.Ethereum.Proto.Transaction.ERC20Approve)
+        com.google.protobuf.MessageOrBuilder {
+
+      /**
+       * <code>string spender = 1;</code>
+       * @return The spender.
+       */
+      java.lang.String getSpender();
+      /**
+       * <code>string spender = 1;</code>
+       * @return The bytes for spender.
+       */
+      com.google.protobuf.ByteString
+          getSpenderBytes();
+
+      /**
+       * <pre>
+       * Amount to send (256-bit number)
+       * </pre>
+       *
+       * <code>bytes amount = 2;</code>
+       * @return The amount.
+       */
+      com.google.protobuf.ByteString getAmount();
+    }
+    /**
+     * <pre>
+     * ERC20 approve transaction
+     * </pre>
+     *
+     * Protobuf type {@code TW.Ethereum.Proto.Transaction.ERC20Approve}
+     */
+    public static final class ERC20Approve extends
+        com.google.protobuf.GeneratedMessageV3 implements
+        // @@protoc_insertion_point(message_implements:TW.Ethereum.Proto.Transaction.ERC20Approve)
+        ERC20ApproveOrBuilder {
+    private static final long serialVersionUID = 0L;
+      // Use ERC20Approve.newBuilder() to construct.
+      private ERC20Approve(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+        super(builder);
+      }
+      private ERC20Approve() {
+        spender_ = "";
+        amount_ = com.google.protobuf.ByteString.EMPTY;
+      }
+
+      @java.lang.Override
+      @SuppressWarnings({"unused"})
+      protected java.lang.Object newInstance(
+          UnusedPrivateParameter unused) {
+        return new ERC20Approve();
+      }
+
+      @java.lang.Override
+      public final com.google.protobuf.UnknownFieldSet
+      getUnknownFields() {
+        return this.unknownFields;
+      }
+      private ERC20Approve(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        this();
+        if (extensionRegistry == null) {
+          throw new java.lang.NullPointerException();
+        }
+        com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+            com.google.protobuf.UnknownFieldSet.newBuilder();
+        try {
+          boolean done = false;
+          while (!done) {
+            int tag = input.readTag();
+            switch (tag) {
+              case 0:
+                done = true;
+                break;
+              case 10: {
+                java.lang.String s = input.readStringRequireUtf8();
+
+                spender_ = s;
+                break;
+              }
+              case 18: {
+
+                amount_ = input.readBytes();
+                break;
+              }
+              default: {
+                if (!parseUnknownField(
+                    input, unknownFields, extensionRegistry, tag)) {
+                  done = true;
+                }
+                break;
+              }
+            }
+          }
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          throw e.setUnfinishedMessage(this);
+        } catch (java.io.IOException e) {
+          throw new com.google.protobuf.InvalidProtocolBufferException(
+              e).setUnfinishedMessage(this);
+        } finally {
+          this.unknownFields = unknownFields.build();
+          makeExtensionsImmutable();
+        }
+      }
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return wallet.core.jni.proto.Ethereum.internal_static_TW_Ethereum_Proto_Transaction_ERC20Approve_descriptor;
+      }
+
+      @java.lang.Override
+      protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return wallet.core.jni.proto.Ethereum.internal_static_TW_Ethereum_Proto_Transaction_ERC20Approve_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                wallet.core.jni.proto.Ethereum.Transaction.ERC20Approve.class, wallet.core.jni.proto.Ethereum.Transaction.ERC20Approve.Builder.class);
+      }
+
+      public static final int SPENDER_FIELD_NUMBER = 1;
+      private volatile java.lang.Object spender_;
+      /**
+       * <code>string spender = 1;</code>
+       * @return The spender.
+       */
+      @java.lang.Override
+      public java.lang.String getSpender() {
+        java.lang.Object ref = spender_;
+        if (ref instanceof java.lang.String) {
+          return (java.lang.String) ref;
+        } else {
+          com.google.protobuf.ByteString bs = 
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          spender_ = s;
+          return s;
+        }
+      }
+      /**
+       * <code>string spender = 1;</code>
+       * @return The bytes for spender.
+       */
+      @java.lang.Override
+      public com.google.protobuf.ByteString
+          getSpenderBytes() {
+        java.lang.Object ref = spender_;
+        if (ref instanceof java.lang.String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          spender_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+
+      public static final int AMOUNT_FIELD_NUMBER = 2;
+      private com.google.protobuf.ByteString amount_;
+      /**
+       * <pre>
+       * Amount to send (256-bit number)
+       * </pre>
+       *
+       * <code>bytes amount = 2;</code>
+       * @return The amount.
+       */
+      @java.lang.Override
+      public com.google.protobuf.ByteString getAmount() {
+        return amount_;
+      }
+
+      private byte memoizedIsInitialized = -1;
+      @java.lang.Override
+      public final boolean isInitialized() {
+        byte isInitialized = memoizedIsInitialized;
+        if (isInitialized == 1) return true;
+        if (isInitialized == 0) return false;
+
+        memoizedIsInitialized = 1;
+        return true;
+      }
+
+      @java.lang.Override
+      public void writeTo(com.google.protobuf.CodedOutputStream output)
+                          throws java.io.IOException {
+        if (!getSpenderBytes().isEmpty()) {
+          com.google.protobuf.GeneratedMessageV3.writeString(output, 1, spender_);
+        }
+        if (!amount_.isEmpty()) {
+          output.writeBytes(2, amount_);
+        }
+        unknownFields.writeTo(output);
+      }
+
+      @java.lang.Override
+      public int getSerializedSize() {
+        int size = memoizedSize;
+        if (size != -1) return size;
+
+        size = 0;
+        if (!getSpenderBytes().isEmpty()) {
+          size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, spender_);
+        }
+        if (!amount_.isEmpty()) {
+          size += com.google.protobuf.CodedOutputStream
+            .computeBytesSize(2, amount_);
+        }
+        size += unknownFields.getSerializedSize();
+        memoizedSize = size;
+        return size;
+      }
+
+      @java.lang.Override
+      public boolean equals(final java.lang.Object obj) {
+        if (obj == this) {
+         return true;
+        }
+        if (!(obj instanceof wallet.core.jni.proto.Ethereum.Transaction.ERC20Approve)) {
+          return super.equals(obj);
+        }
+        wallet.core.jni.proto.Ethereum.Transaction.ERC20Approve other = (wallet.core.jni.proto.Ethereum.Transaction.ERC20Approve) obj;
+
+        if (!getSpender()
+            .equals(other.getSpender())) return false;
+        if (!getAmount()
+            .equals(other.getAmount())) return false;
+        if (!unknownFields.equals(other.unknownFields)) return false;
+        return true;
+      }
+
+      @java.lang.Override
+      public int hashCode() {
+        if (memoizedHashCode != 0) {
+          return memoizedHashCode;
+        }
+        int hash = 41;
+        hash = (19 * hash) + getDescriptor().hashCode();
+        hash = (37 * hash) + SPENDER_FIELD_NUMBER;
+        hash = (53 * hash) + getSpender().hashCode();
+        hash = (37 * hash) + AMOUNT_FIELD_NUMBER;
+        hash = (53 * hash) + getAmount().hashCode();
+        hash = (29 * hash) + unknownFields.hashCode();
+        memoizedHashCode = hash;
+        return hash;
+      }
+
+      public static wallet.core.jni.proto.Ethereum.Transaction.ERC20Approve parseFrom(
+          java.nio.ByteBuffer data)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data);
+      }
+      public static wallet.core.jni.proto.Ethereum.Transaction.ERC20Approve parseFrom(
+          java.nio.ByteBuffer data,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data, extensionRegistry);
+      }
+      public static wallet.core.jni.proto.Ethereum.Transaction.ERC20Approve parseFrom(
+          com.google.protobuf.ByteString data)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data);
+      }
+      public static wallet.core.jni.proto.Ethereum.Transaction.ERC20Approve parseFrom(
+          com.google.protobuf.ByteString data,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data, extensionRegistry);
+      }
+      public static wallet.core.jni.proto.Ethereum.Transaction.ERC20Approve parseFrom(byte[] data)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data);
+      }
+      public static wallet.core.jni.proto.Ethereum.Transaction.ERC20Approve parseFrom(
+          byte[] data,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data, extensionRegistry);
+      }
+      public static wallet.core.jni.proto.Ethereum.Transaction.ERC20Approve parseFrom(java.io.InputStream input)
+          throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessageV3
+            .parseWithIOException(PARSER, input);
+      }
+      public static wallet.core.jni.proto.Ethereum.Transaction.ERC20Approve parseFrom(
+          java.io.InputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessageV3
+            .parseWithIOException(PARSER, input, extensionRegistry);
+      }
+      public static wallet.core.jni.proto.Ethereum.Transaction.ERC20Approve parseDelimitedFrom(java.io.InputStream input)
+          throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessageV3
+            .parseDelimitedWithIOException(PARSER, input);
+      }
+      public static wallet.core.jni.proto.Ethereum.Transaction.ERC20Approve parseDelimitedFrom(
+          java.io.InputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessageV3
+            .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
+      }
+      public static wallet.core.jni.proto.Ethereum.Transaction.ERC20Approve parseFrom(
+          com.google.protobuf.CodedInputStream input)
+          throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessageV3
+            .parseWithIOException(PARSER, input);
+      }
+      public static wallet.core.jni.proto.Ethereum.Transaction.ERC20Approve parseFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessageV3
+            .parseWithIOException(PARSER, input, extensionRegistry);
+      }
+
+      @java.lang.Override
+      public Builder newBuilderForType() { return newBuilder(); }
+      public static Builder newBuilder() {
+        return DEFAULT_INSTANCE.toBuilder();
+      }
+      public static Builder newBuilder(wallet.core.jni.proto.Ethereum.Transaction.ERC20Approve prototype) {
+        return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
+      }
+      @java.lang.Override
+      public Builder toBuilder() {
+        return this == DEFAULT_INSTANCE
+            ? new Builder() : new Builder().mergeFrom(this);
+      }
+
+      @java.lang.Override
+      protected Builder newBuilderForType(
+          com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+        Builder builder = new Builder(parent);
+        return builder;
+      }
+      /**
+       * <pre>
+       * ERC20 approve transaction
+       * </pre>
+       *
+       * Protobuf type {@code TW.Ethereum.Proto.Transaction.ERC20Approve}
+       */
+      public static final class Builder extends
+          com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
+          // @@protoc_insertion_point(builder_implements:TW.Ethereum.Proto.Transaction.ERC20Approve)
+          wallet.core.jni.proto.Ethereum.Transaction.ERC20ApproveOrBuilder {
+        public static final com.google.protobuf.Descriptors.Descriptor
+            getDescriptor() {
+          return wallet.core.jni.proto.Ethereum.internal_static_TW_Ethereum_Proto_Transaction_ERC20Approve_descriptor;
+        }
+
+        @java.lang.Override
+        protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+            internalGetFieldAccessorTable() {
+          return wallet.core.jni.proto.Ethereum.internal_static_TW_Ethereum_Proto_Transaction_ERC20Approve_fieldAccessorTable
+              .ensureFieldAccessorsInitialized(
+                  wallet.core.jni.proto.Ethereum.Transaction.ERC20Approve.class, wallet.core.jni.proto.Ethereum.Transaction.ERC20Approve.Builder.class);
+        }
+
+        // Construct using wallet.core.jni.proto.Ethereum.Transaction.ERC20Approve.newBuilder()
+        private Builder() {
+          maybeForceBuilderInitialization();
+        }
+
+        private Builder(
+            com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+          super(parent);
+          maybeForceBuilderInitialization();
+        }
+        private void maybeForceBuilderInitialization() {
+          if (com.google.protobuf.GeneratedMessageV3
+                  .alwaysUseFieldBuilders) {
+          }
+        }
+        @java.lang.Override
+        public Builder clear() {
+          super.clear();
+          spender_ = "";
+
+          amount_ = com.google.protobuf.ByteString.EMPTY;
+
+          return this;
+        }
+
+        @java.lang.Override
+        public com.google.protobuf.Descriptors.Descriptor
+            getDescriptorForType() {
+          return wallet.core.jni.proto.Ethereum.internal_static_TW_Ethereum_Proto_Transaction_ERC20Approve_descriptor;
+        }
+
+        @java.lang.Override
+        public wallet.core.jni.proto.Ethereum.Transaction.ERC20Approve getDefaultInstanceForType() {
+          return wallet.core.jni.proto.Ethereum.Transaction.ERC20Approve.getDefaultInstance();
+        }
+
+        @java.lang.Override
+        public wallet.core.jni.proto.Ethereum.Transaction.ERC20Approve build() {
+          wallet.core.jni.proto.Ethereum.Transaction.ERC20Approve result = buildPartial();
+          if (!result.isInitialized()) {
+            throw newUninitializedMessageException(result);
+          }
+          return result;
+        }
+
+        @java.lang.Override
+        public wallet.core.jni.proto.Ethereum.Transaction.ERC20Approve buildPartial() {
+          wallet.core.jni.proto.Ethereum.Transaction.ERC20Approve result = new wallet.core.jni.proto.Ethereum.Transaction.ERC20Approve(this);
+          result.spender_ = spender_;
+          result.amount_ = amount_;
+          onBuilt();
+          return result;
+        }
+
+        @java.lang.Override
+        public Builder clone() {
+          return super.clone();
+        }
+        @java.lang.Override
+        public Builder setField(
+            com.google.protobuf.Descriptors.FieldDescriptor field,
+            java.lang.Object value) {
+          return super.setField(field, value);
+        }
+        @java.lang.Override
+        public Builder clearField(
+            com.google.protobuf.Descriptors.FieldDescriptor field) {
+          return super.clearField(field);
+        }
+        @java.lang.Override
+        public Builder clearOneof(
+            com.google.protobuf.Descriptors.OneofDescriptor oneof) {
+          return super.clearOneof(oneof);
+        }
+        @java.lang.Override
+        public Builder setRepeatedField(
+            com.google.protobuf.Descriptors.FieldDescriptor field,
+            int index, java.lang.Object value) {
+          return super.setRepeatedField(field, index, value);
+        }
+        @java.lang.Override
+        public Builder addRepeatedField(
+            com.google.protobuf.Descriptors.FieldDescriptor field,
+            java.lang.Object value) {
+          return super.addRepeatedField(field, value);
+        }
+        @java.lang.Override
+        public Builder mergeFrom(com.google.protobuf.Message other) {
+          if (other instanceof wallet.core.jni.proto.Ethereum.Transaction.ERC20Approve) {
+            return mergeFrom((wallet.core.jni.proto.Ethereum.Transaction.ERC20Approve)other);
+          } else {
+            super.mergeFrom(other);
+            return this;
+          }
+        }
+
+        public Builder mergeFrom(wallet.core.jni.proto.Ethereum.Transaction.ERC20Approve other) {
+          if (other == wallet.core.jni.proto.Ethereum.Transaction.ERC20Approve.getDefaultInstance()) return this;
+          if (!other.getSpender().isEmpty()) {
+            spender_ = other.spender_;
+            onChanged();
+          }
+          if (other.getAmount() != com.google.protobuf.ByteString.EMPTY) {
+            setAmount(other.getAmount());
+          }
+          this.mergeUnknownFields(other.unknownFields);
+          onChanged();
+          return this;
+        }
+
+        @java.lang.Override
+        public final boolean isInitialized() {
+          return true;
+        }
+
+        @java.lang.Override
+        public Builder mergeFrom(
+            com.google.protobuf.CodedInputStream input,
+            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+            throws java.io.IOException {
+          wallet.core.jni.proto.Ethereum.Transaction.ERC20Approve parsedMessage = null;
+          try {
+            parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+          } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+            parsedMessage = (wallet.core.jni.proto.Ethereum.Transaction.ERC20Approve) e.getUnfinishedMessage();
+            throw e.unwrapIOException();
+          } finally {
+            if (parsedMessage != null) {
+              mergeFrom(parsedMessage);
+            }
+          }
+          return this;
+        }
+
+        private java.lang.Object spender_ = "";
+        /**
+         * <code>string spender = 1;</code>
+         * @return The spender.
+         */
+        public java.lang.String getSpender() {
+          java.lang.Object ref = spender_;
+          if (!(ref instanceof java.lang.String)) {
+            com.google.protobuf.ByteString bs =
+                (com.google.protobuf.ByteString) ref;
+            java.lang.String s = bs.toStringUtf8();
+            spender_ = s;
+            return s;
+          } else {
+            return (java.lang.String) ref;
+          }
+        }
+        /**
+         * <code>string spender = 1;</code>
+         * @return The bytes for spender.
+         */
+        public com.google.protobuf.ByteString
+            getSpenderBytes() {
+          java.lang.Object ref = spender_;
+          if (ref instanceof String) {
+            com.google.protobuf.ByteString b = 
+                com.google.protobuf.ByteString.copyFromUtf8(
+                    (java.lang.String) ref);
+            spender_ = b;
+            return b;
+          } else {
+            return (com.google.protobuf.ByteString) ref;
+          }
+        }
+        /**
+         * <code>string spender = 1;</code>
+         * @param value The spender to set.
+         * @return This builder for chaining.
+         */
+        public Builder setSpender(
+            java.lang.String value) {
+          if (value == null) {
+    throw new NullPointerException();
+  }
+  
+          spender_ = value;
+          onChanged();
+          return this;
+        }
+        /**
+         * <code>string spender = 1;</code>
+         * @return This builder for chaining.
+         */
+        public Builder clearSpender() {
+          
+          spender_ = getDefaultInstance().getSpender();
+          onChanged();
+          return this;
+        }
+        /**
+         * <code>string spender = 1;</code>
+         * @param value The bytes for spender to set.
+         * @return This builder for chaining.
+         */
+        public Builder setSpenderBytes(
+            com.google.protobuf.ByteString value) {
+          if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+          
+          spender_ = value;
+          onChanged();
+          return this;
+        }
+
+        private com.google.protobuf.ByteString amount_ = com.google.protobuf.ByteString.EMPTY;
+        /**
+         * <pre>
+         * Amount to send (256-bit number)
+         * </pre>
+         *
+         * <code>bytes amount = 2;</code>
+         * @return The amount.
+         */
+        @java.lang.Override
+        public com.google.protobuf.ByteString getAmount() {
+          return amount_;
+        }
+        /**
+         * <pre>
+         * Amount to send (256-bit number)
+         * </pre>
+         *
+         * <code>bytes amount = 2;</code>
+         * @param value The amount to set.
+         * @return This builder for chaining.
+         */
+        public Builder setAmount(com.google.protobuf.ByteString value) {
+          if (value == null) {
+    throw new NullPointerException();
+  }
+  
+          amount_ = value;
+          onChanged();
+          return this;
+        }
+        /**
+         * <pre>
+         * Amount to send (256-bit number)
+         * </pre>
+         *
+         * <code>bytes amount = 2;</code>
+         * @return This builder for chaining.
+         */
+        public Builder clearAmount() {
+          
+          amount_ = getDefaultInstance().getAmount();
+          onChanged();
+          return this;
+        }
+        @java.lang.Override
+        public final Builder setUnknownFields(
+            final com.google.protobuf.UnknownFieldSet unknownFields) {
+          return super.setUnknownFields(unknownFields);
+        }
+
+        @java.lang.Override
+        public final Builder mergeUnknownFields(
+            final com.google.protobuf.UnknownFieldSet unknownFields) {
+          return super.mergeUnknownFields(unknownFields);
+        }
+
+
+        // @@protoc_insertion_point(builder_scope:TW.Ethereum.Proto.Transaction.ERC20Approve)
+      }
+
+      // @@protoc_insertion_point(class_scope:TW.Ethereum.Proto.Transaction.ERC20Approve)
+      private static final wallet.core.jni.proto.Ethereum.Transaction.ERC20Approve DEFAULT_INSTANCE;
+      static {
+        DEFAULT_INSTANCE = new wallet.core.jni.proto.Ethereum.Transaction.ERC20Approve();
+      }
+
+      public static wallet.core.jni.proto.Ethereum.Transaction.ERC20Approve getDefaultInstance() {
+        return DEFAULT_INSTANCE;
+      }
+
+      private static final com.google.protobuf.Parser<ERC20Approve>
+          PARSER = new com.google.protobuf.AbstractParser<ERC20Approve>() {
+        @java.lang.Override
+        public ERC20Approve parsePartialFrom(
+            com.google.protobuf.CodedInputStream input,
+            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+            throws com.google.protobuf.InvalidProtocolBufferException {
+          return new ERC20Approve(input, extensionRegistry);
+        }
+      };
+
+      public static com.google.protobuf.Parser<ERC20Approve> parser() {
+        return PARSER;
+      }
+
+      @java.lang.Override
+      public com.google.protobuf.Parser<ERC20Approve> getParserForType() {
+        return PARSER;
+      }
+
+      @java.lang.Override
+      public wallet.core.jni.proto.Ethereum.Transaction.ERC20Approve getDefaultInstanceForType() {
+        return DEFAULT_INSTANCE;
+      }
+
+    }
+
+    public interface ERC721TransferOrBuilder extends
+        // @@protoc_insertion_point(interface_extends:TW.Ethereum.Proto.Transaction.ERC721Transfer)
+        com.google.protobuf.MessageOrBuilder {
+
+      /**
+       * <code>string from = 1;</code>
+       * @return The from.
+       */
+      java.lang.String getFrom();
+      /**
+       * <code>string from = 1;</code>
+       * @return The bytes for from.
+       */
+      com.google.protobuf.ByteString
+          getFromBytes();
+
+      /**
+       * <code>string to = 2;</code>
+       * @return The to.
+       */
+      java.lang.String getTo();
+      /**
+       * <code>string to = 2;</code>
+       * @return The bytes for to.
+       */
+      com.google.protobuf.ByteString
+          getToBytes();
+
+      /**
+       * <pre>
+       * ID of the token (256-bit number)
+       * </pre>
+       *
+       * <code>bytes token_id = 3;</code>
+       * @return The tokenId.
+       */
+      com.google.protobuf.ByteString getTokenId();
+    }
+    /**
+     * <pre>
+     * ERC721 NFT transfer transaction
+     * </pre>
+     *
+     * Protobuf type {@code TW.Ethereum.Proto.Transaction.ERC721Transfer}
+     */
+    public static final class ERC721Transfer extends
+        com.google.protobuf.GeneratedMessageV3 implements
+        // @@protoc_insertion_point(message_implements:TW.Ethereum.Proto.Transaction.ERC721Transfer)
+        ERC721TransferOrBuilder {
+    private static final long serialVersionUID = 0L;
+      // Use ERC721Transfer.newBuilder() to construct.
+      private ERC721Transfer(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+        super(builder);
+      }
+      private ERC721Transfer() {
+        from_ = "";
+        to_ = "";
+        tokenId_ = com.google.protobuf.ByteString.EMPTY;
+      }
+
+      @java.lang.Override
+      @SuppressWarnings({"unused"})
+      protected java.lang.Object newInstance(
+          UnusedPrivateParameter unused) {
+        return new ERC721Transfer();
+      }
+
+      @java.lang.Override
+      public final com.google.protobuf.UnknownFieldSet
+      getUnknownFields() {
+        return this.unknownFields;
+      }
+      private ERC721Transfer(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        this();
+        if (extensionRegistry == null) {
+          throw new java.lang.NullPointerException();
+        }
+        com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+            com.google.protobuf.UnknownFieldSet.newBuilder();
+        try {
+          boolean done = false;
+          while (!done) {
+            int tag = input.readTag();
+            switch (tag) {
+              case 0:
+                done = true;
+                break;
+              case 10: {
+                java.lang.String s = input.readStringRequireUtf8();
+
+                from_ = s;
+                break;
+              }
+              case 18: {
+                java.lang.String s = input.readStringRequireUtf8();
+
+                to_ = s;
+                break;
+              }
+              case 26: {
+
+                tokenId_ = input.readBytes();
+                break;
+              }
+              default: {
+                if (!parseUnknownField(
+                    input, unknownFields, extensionRegistry, tag)) {
+                  done = true;
+                }
+                break;
+              }
+            }
+          }
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          throw e.setUnfinishedMessage(this);
+        } catch (java.io.IOException e) {
+          throw new com.google.protobuf.InvalidProtocolBufferException(
+              e).setUnfinishedMessage(this);
+        } finally {
+          this.unknownFields = unknownFields.build();
+          makeExtensionsImmutable();
+        }
+      }
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return wallet.core.jni.proto.Ethereum.internal_static_TW_Ethereum_Proto_Transaction_ERC721Transfer_descriptor;
+      }
+
+      @java.lang.Override
+      protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return wallet.core.jni.proto.Ethereum.internal_static_TW_Ethereum_Proto_Transaction_ERC721Transfer_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                wallet.core.jni.proto.Ethereum.Transaction.ERC721Transfer.class, wallet.core.jni.proto.Ethereum.Transaction.ERC721Transfer.Builder.class);
+      }
+
+      public static final int FROM_FIELD_NUMBER = 1;
+      private volatile java.lang.Object from_;
+      /**
+       * <code>string from = 1;</code>
+       * @return The from.
+       */
+      @java.lang.Override
+      public java.lang.String getFrom() {
+        java.lang.Object ref = from_;
+        if (ref instanceof java.lang.String) {
+          return (java.lang.String) ref;
+        } else {
+          com.google.protobuf.ByteString bs = 
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          from_ = s;
+          return s;
+        }
+      }
+      /**
+       * <code>string from = 1;</code>
+       * @return The bytes for from.
+       */
+      @java.lang.Override
+      public com.google.protobuf.ByteString
+          getFromBytes() {
+        java.lang.Object ref = from_;
+        if (ref instanceof java.lang.String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          from_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+
+      public static final int TO_FIELD_NUMBER = 2;
+      private volatile java.lang.Object to_;
+      /**
+       * <code>string to = 2;</code>
+       * @return The to.
+       */
+      @java.lang.Override
+      public java.lang.String getTo() {
+        java.lang.Object ref = to_;
+        if (ref instanceof java.lang.String) {
+          return (java.lang.String) ref;
+        } else {
+          com.google.protobuf.ByteString bs = 
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          to_ = s;
+          return s;
+        }
+      }
+      /**
+       * <code>string to = 2;</code>
+       * @return The bytes for to.
+       */
+      @java.lang.Override
+      public com.google.protobuf.ByteString
+          getToBytes() {
+        java.lang.Object ref = to_;
+        if (ref instanceof java.lang.String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          to_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+
+      public static final int TOKEN_ID_FIELD_NUMBER = 3;
+      private com.google.protobuf.ByteString tokenId_;
+      /**
+       * <pre>
+       * ID of the token (256-bit number)
+       * </pre>
+       *
+       * <code>bytes token_id = 3;</code>
+       * @return The tokenId.
+       */
+      @java.lang.Override
+      public com.google.protobuf.ByteString getTokenId() {
+        return tokenId_;
+      }
+
+      private byte memoizedIsInitialized = -1;
+      @java.lang.Override
+      public final boolean isInitialized() {
+        byte isInitialized = memoizedIsInitialized;
+        if (isInitialized == 1) return true;
+        if (isInitialized == 0) return false;
+
+        memoizedIsInitialized = 1;
+        return true;
+      }
+
+      @java.lang.Override
+      public void writeTo(com.google.protobuf.CodedOutputStream output)
+                          throws java.io.IOException {
+        if (!getFromBytes().isEmpty()) {
+          com.google.protobuf.GeneratedMessageV3.writeString(output, 1, from_);
+        }
+        if (!getToBytes().isEmpty()) {
+          com.google.protobuf.GeneratedMessageV3.writeString(output, 2, to_);
+        }
+        if (!tokenId_.isEmpty()) {
+          output.writeBytes(3, tokenId_);
+        }
+        unknownFields.writeTo(output);
+      }
+
+      @java.lang.Override
+      public int getSerializedSize() {
+        int size = memoizedSize;
+        if (size != -1) return size;
+
+        size = 0;
+        if (!getFromBytes().isEmpty()) {
+          size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, from_);
+        }
+        if (!getToBytes().isEmpty()) {
+          size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, to_);
+        }
+        if (!tokenId_.isEmpty()) {
+          size += com.google.protobuf.CodedOutputStream
+            .computeBytesSize(3, tokenId_);
+        }
+        size += unknownFields.getSerializedSize();
+        memoizedSize = size;
+        return size;
+      }
+
+      @java.lang.Override
+      public boolean equals(final java.lang.Object obj) {
+        if (obj == this) {
+         return true;
+        }
+        if (!(obj instanceof wallet.core.jni.proto.Ethereum.Transaction.ERC721Transfer)) {
+          return super.equals(obj);
+        }
+        wallet.core.jni.proto.Ethereum.Transaction.ERC721Transfer other = (wallet.core.jni.proto.Ethereum.Transaction.ERC721Transfer) obj;
+
+        if (!getFrom()
+            .equals(other.getFrom())) return false;
+        if (!getTo()
+            .equals(other.getTo())) return false;
+        if (!getTokenId()
+            .equals(other.getTokenId())) return false;
+        if (!unknownFields.equals(other.unknownFields)) return false;
+        return true;
+      }
+
+      @java.lang.Override
+      public int hashCode() {
+        if (memoizedHashCode != 0) {
+          return memoizedHashCode;
+        }
+        int hash = 41;
+        hash = (19 * hash) + getDescriptor().hashCode();
+        hash = (37 * hash) + FROM_FIELD_NUMBER;
+        hash = (53 * hash) + getFrom().hashCode();
+        hash = (37 * hash) + TO_FIELD_NUMBER;
+        hash = (53 * hash) + getTo().hashCode();
+        hash = (37 * hash) + TOKEN_ID_FIELD_NUMBER;
+        hash = (53 * hash) + getTokenId().hashCode();
+        hash = (29 * hash) + unknownFields.hashCode();
+        memoizedHashCode = hash;
+        return hash;
+      }
+
+      public static wallet.core.jni.proto.Ethereum.Transaction.ERC721Transfer parseFrom(
+          java.nio.ByteBuffer data)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data);
+      }
+      public static wallet.core.jni.proto.Ethereum.Transaction.ERC721Transfer parseFrom(
+          java.nio.ByteBuffer data,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data, extensionRegistry);
+      }
+      public static wallet.core.jni.proto.Ethereum.Transaction.ERC721Transfer parseFrom(
+          com.google.protobuf.ByteString data)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data);
+      }
+      public static wallet.core.jni.proto.Ethereum.Transaction.ERC721Transfer parseFrom(
+          com.google.protobuf.ByteString data,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data, extensionRegistry);
+      }
+      public static wallet.core.jni.proto.Ethereum.Transaction.ERC721Transfer parseFrom(byte[] data)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data);
+      }
+      public static wallet.core.jni.proto.Ethereum.Transaction.ERC721Transfer parseFrom(
+          byte[] data,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data, extensionRegistry);
+      }
+      public static wallet.core.jni.proto.Ethereum.Transaction.ERC721Transfer parseFrom(java.io.InputStream input)
+          throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessageV3
+            .parseWithIOException(PARSER, input);
+      }
+      public static wallet.core.jni.proto.Ethereum.Transaction.ERC721Transfer parseFrom(
+          java.io.InputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessageV3
+            .parseWithIOException(PARSER, input, extensionRegistry);
+      }
+      public static wallet.core.jni.proto.Ethereum.Transaction.ERC721Transfer parseDelimitedFrom(java.io.InputStream input)
+          throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessageV3
+            .parseDelimitedWithIOException(PARSER, input);
+      }
+      public static wallet.core.jni.proto.Ethereum.Transaction.ERC721Transfer parseDelimitedFrom(
+          java.io.InputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessageV3
+            .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
+      }
+      public static wallet.core.jni.proto.Ethereum.Transaction.ERC721Transfer parseFrom(
+          com.google.protobuf.CodedInputStream input)
+          throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessageV3
+            .parseWithIOException(PARSER, input);
+      }
+      public static wallet.core.jni.proto.Ethereum.Transaction.ERC721Transfer parseFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessageV3
+            .parseWithIOException(PARSER, input, extensionRegistry);
+      }
+
+      @java.lang.Override
+      public Builder newBuilderForType() { return newBuilder(); }
+      public static Builder newBuilder() {
+        return DEFAULT_INSTANCE.toBuilder();
+      }
+      public static Builder newBuilder(wallet.core.jni.proto.Ethereum.Transaction.ERC721Transfer prototype) {
+        return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
+      }
+      @java.lang.Override
+      public Builder toBuilder() {
+        return this == DEFAULT_INSTANCE
+            ? new Builder() : new Builder().mergeFrom(this);
+      }
+
+      @java.lang.Override
+      protected Builder newBuilderForType(
+          com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+        Builder builder = new Builder(parent);
+        return builder;
+      }
+      /**
+       * <pre>
+       * ERC721 NFT transfer transaction
+       * </pre>
+       *
+       * Protobuf type {@code TW.Ethereum.Proto.Transaction.ERC721Transfer}
+       */
+      public static final class Builder extends
+          com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
+          // @@protoc_insertion_point(builder_implements:TW.Ethereum.Proto.Transaction.ERC721Transfer)
+          wallet.core.jni.proto.Ethereum.Transaction.ERC721TransferOrBuilder {
+        public static final com.google.protobuf.Descriptors.Descriptor
+            getDescriptor() {
+          return wallet.core.jni.proto.Ethereum.internal_static_TW_Ethereum_Proto_Transaction_ERC721Transfer_descriptor;
+        }
+
+        @java.lang.Override
+        protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+            internalGetFieldAccessorTable() {
+          return wallet.core.jni.proto.Ethereum.internal_static_TW_Ethereum_Proto_Transaction_ERC721Transfer_fieldAccessorTable
+              .ensureFieldAccessorsInitialized(
+                  wallet.core.jni.proto.Ethereum.Transaction.ERC721Transfer.class, wallet.core.jni.proto.Ethereum.Transaction.ERC721Transfer.Builder.class);
+        }
+
+        // Construct using wallet.core.jni.proto.Ethereum.Transaction.ERC721Transfer.newBuilder()
+        private Builder() {
+          maybeForceBuilderInitialization();
+        }
+
+        private Builder(
+            com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+          super(parent);
+          maybeForceBuilderInitialization();
+        }
+        private void maybeForceBuilderInitialization() {
+          if (com.google.protobuf.GeneratedMessageV3
+                  .alwaysUseFieldBuilders) {
+          }
+        }
+        @java.lang.Override
+        public Builder clear() {
+          super.clear();
+          from_ = "";
+
+          to_ = "";
+
+          tokenId_ = com.google.protobuf.ByteString.EMPTY;
+
+          return this;
+        }
+
+        @java.lang.Override
+        public com.google.protobuf.Descriptors.Descriptor
+            getDescriptorForType() {
+          return wallet.core.jni.proto.Ethereum.internal_static_TW_Ethereum_Proto_Transaction_ERC721Transfer_descriptor;
+        }
+
+        @java.lang.Override
+        public wallet.core.jni.proto.Ethereum.Transaction.ERC721Transfer getDefaultInstanceForType() {
+          return wallet.core.jni.proto.Ethereum.Transaction.ERC721Transfer.getDefaultInstance();
+        }
+
+        @java.lang.Override
+        public wallet.core.jni.proto.Ethereum.Transaction.ERC721Transfer build() {
+          wallet.core.jni.proto.Ethereum.Transaction.ERC721Transfer result = buildPartial();
+          if (!result.isInitialized()) {
+            throw newUninitializedMessageException(result);
+          }
+          return result;
+        }
+
+        @java.lang.Override
+        public wallet.core.jni.proto.Ethereum.Transaction.ERC721Transfer buildPartial() {
+          wallet.core.jni.proto.Ethereum.Transaction.ERC721Transfer result = new wallet.core.jni.proto.Ethereum.Transaction.ERC721Transfer(this);
+          result.from_ = from_;
+          result.to_ = to_;
+          result.tokenId_ = tokenId_;
+          onBuilt();
+          return result;
+        }
+
+        @java.lang.Override
+        public Builder clone() {
+          return super.clone();
+        }
+        @java.lang.Override
+        public Builder setField(
+            com.google.protobuf.Descriptors.FieldDescriptor field,
+            java.lang.Object value) {
+          return super.setField(field, value);
+        }
+        @java.lang.Override
+        public Builder clearField(
+            com.google.protobuf.Descriptors.FieldDescriptor field) {
+          return super.clearField(field);
+        }
+        @java.lang.Override
+        public Builder clearOneof(
+            com.google.protobuf.Descriptors.OneofDescriptor oneof) {
+          return super.clearOneof(oneof);
+        }
+        @java.lang.Override
+        public Builder setRepeatedField(
+            com.google.protobuf.Descriptors.FieldDescriptor field,
+            int index, java.lang.Object value) {
+          return super.setRepeatedField(field, index, value);
+        }
+        @java.lang.Override
+        public Builder addRepeatedField(
+            com.google.protobuf.Descriptors.FieldDescriptor field,
+            java.lang.Object value) {
+          return super.addRepeatedField(field, value);
+        }
+        @java.lang.Override
+        public Builder mergeFrom(com.google.protobuf.Message other) {
+          if (other instanceof wallet.core.jni.proto.Ethereum.Transaction.ERC721Transfer) {
+            return mergeFrom((wallet.core.jni.proto.Ethereum.Transaction.ERC721Transfer)other);
+          } else {
+            super.mergeFrom(other);
+            return this;
+          }
+        }
+
+        public Builder mergeFrom(wallet.core.jni.proto.Ethereum.Transaction.ERC721Transfer other) {
+          if (other == wallet.core.jni.proto.Ethereum.Transaction.ERC721Transfer.getDefaultInstance()) return this;
+          if (!other.getFrom().isEmpty()) {
+            from_ = other.from_;
+            onChanged();
+          }
+          if (!other.getTo().isEmpty()) {
+            to_ = other.to_;
+            onChanged();
+          }
+          if (other.getTokenId() != com.google.protobuf.ByteString.EMPTY) {
+            setTokenId(other.getTokenId());
+          }
+          this.mergeUnknownFields(other.unknownFields);
+          onChanged();
+          return this;
+        }
+
+        @java.lang.Override
+        public final boolean isInitialized() {
+          return true;
+        }
+
+        @java.lang.Override
+        public Builder mergeFrom(
+            com.google.protobuf.CodedInputStream input,
+            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+            throws java.io.IOException {
+          wallet.core.jni.proto.Ethereum.Transaction.ERC721Transfer parsedMessage = null;
+          try {
+            parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+          } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+            parsedMessage = (wallet.core.jni.proto.Ethereum.Transaction.ERC721Transfer) e.getUnfinishedMessage();
+            throw e.unwrapIOException();
+          } finally {
+            if (parsedMessage != null) {
+              mergeFrom(parsedMessage);
+            }
+          }
+          return this;
+        }
+
+        private java.lang.Object from_ = "";
+        /**
+         * <code>string from = 1;</code>
+         * @return The from.
+         */
+        public java.lang.String getFrom() {
+          java.lang.Object ref = from_;
+          if (!(ref instanceof java.lang.String)) {
+            com.google.protobuf.ByteString bs =
+                (com.google.protobuf.ByteString) ref;
+            java.lang.String s = bs.toStringUtf8();
+            from_ = s;
+            return s;
+          } else {
+            return (java.lang.String) ref;
+          }
+        }
+        /**
+         * <code>string from = 1;</code>
+         * @return The bytes for from.
+         */
+        public com.google.protobuf.ByteString
+            getFromBytes() {
+          java.lang.Object ref = from_;
+          if (ref instanceof String) {
+            com.google.protobuf.ByteString b = 
+                com.google.protobuf.ByteString.copyFromUtf8(
+                    (java.lang.String) ref);
+            from_ = b;
+            return b;
+          } else {
+            return (com.google.protobuf.ByteString) ref;
+          }
+        }
+        /**
+         * <code>string from = 1;</code>
+         * @param value The from to set.
+         * @return This builder for chaining.
+         */
+        public Builder setFrom(
+            java.lang.String value) {
+          if (value == null) {
+    throw new NullPointerException();
+  }
+  
+          from_ = value;
+          onChanged();
+          return this;
+        }
+        /**
+         * <code>string from = 1;</code>
+         * @return This builder for chaining.
+         */
+        public Builder clearFrom() {
+          
+          from_ = getDefaultInstance().getFrom();
+          onChanged();
+          return this;
+        }
+        /**
+         * <code>string from = 1;</code>
+         * @param value The bytes for from to set.
+         * @return This builder for chaining.
+         */
+        public Builder setFromBytes(
+            com.google.protobuf.ByteString value) {
+          if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+          
+          from_ = value;
+          onChanged();
+          return this;
+        }
+
+        private java.lang.Object to_ = "";
+        /**
+         * <code>string to = 2;</code>
+         * @return The to.
+         */
+        public java.lang.String getTo() {
+          java.lang.Object ref = to_;
+          if (!(ref instanceof java.lang.String)) {
+            com.google.protobuf.ByteString bs =
+                (com.google.protobuf.ByteString) ref;
+            java.lang.String s = bs.toStringUtf8();
+            to_ = s;
+            return s;
+          } else {
+            return (java.lang.String) ref;
+          }
+        }
+        /**
+         * <code>string to = 2;</code>
+         * @return The bytes for to.
+         */
+        public com.google.protobuf.ByteString
+            getToBytes() {
+          java.lang.Object ref = to_;
+          if (ref instanceof String) {
+            com.google.protobuf.ByteString b = 
+                com.google.protobuf.ByteString.copyFromUtf8(
+                    (java.lang.String) ref);
+            to_ = b;
+            return b;
+          } else {
+            return (com.google.protobuf.ByteString) ref;
+          }
+        }
+        /**
+         * <code>string to = 2;</code>
+         * @param value The to to set.
+         * @return This builder for chaining.
+         */
+        public Builder setTo(
+            java.lang.String value) {
+          if (value == null) {
+    throw new NullPointerException();
+  }
+  
+          to_ = value;
+          onChanged();
+          return this;
+        }
+        /**
+         * <code>string to = 2;</code>
+         * @return This builder for chaining.
+         */
+        public Builder clearTo() {
+          
+          to_ = getDefaultInstance().getTo();
+          onChanged();
+          return this;
+        }
+        /**
+         * <code>string to = 2;</code>
+         * @param value The bytes for to to set.
+         * @return This builder for chaining.
+         */
+        public Builder setToBytes(
+            com.google.protobuf.ByteString value) {
+          if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+          
+          to_ = value;
+          onChanged();
+          return this;
+        }
+
+        private com.google.protobuf.ByteString tokenId_ = com.google.protobuf.ByteString.EMPTY;
+        /**
+         * <pre>
+         * ID of the token (256-bit number)
+         * </pre>
+         *
+         * <code>bytes token_id = 3;</code>
+         * @return The tokenId.
+         */
+        @java.lang.Override
+        public com.google.protobuf.ByteString getTokenId() {
+          return tokenId_;
+        }
+        /**
+         * <pre>
+         * ID of the token (256-bit number)
+         * </pre>
+         *
+         * <code>bytes token_id = 3;</code>
+         * @param value The tokenId to set.
+         * @return This builder for chaining.
+         */
+        public Builder setTokenId(com.google.protobuf.ByteString value) {
+          if (value == null) {
+    throw new NullPointerException();
+  }
+  
+          tokenId_ = value;
+          onChanged();
+          return this;
+        }
+        /**
+         * <pre>
+         * ID of the token (256-bit number)
+         * </pre>
+         *
+         * <code>bytes token_id = 3;</code>
+         * @return This builder for chaining.
+         */
+        public Builder clearTokenId() {
+          
+          tokenId_ = getDefaultInstance().getTokenId();
+          onChanged();
+          return this;
+        }
+        @java.lang.Override
+        public final Builder setUnknownFields(
+            final com.google.protobuf.UnknownFieldSet unknownFields) {
+          return super.setUnknownFields(unknownFields);
+        }
+
+        @java.lang.Override
+        public final Builder mergeUnknownFields(
+            final com.google.protobuf.UnknownFieldSet unknownFields) {
+          return super.mergeUnknownFields(unknownFields);
+        }
+
+
+        // @@protoc_insertion_point(builder_scope:TW.Ethereum.Proto.Transaction.ERC721Transfer)
+      }
+
+      // @@protoc_insertion_point(class_scope:TW.Ethereum.Proto.Transaction.ERC721Transfer)
+      private static final wallet.core.jni.proto.Ethereum.Transaction.ERC721Transfer DEFAULT_INSTANCE;
+      static {
+        DEFAULT_INSTANCE = new wallet.core.jni.proto.Ethereum.Transaction.ERC721Transfer();
+      }
+
+      public static wallet.core.jni.proto.Ethereum.Transaction.ERC721Transfer getDefaultInstance() {
+        return DEFAULT_INSTANCE;
+      }
+
+      private static final com.google.protobuf.Parser<ERC721Transfer>
+          PARSER = new com.google.protobuf.AbstractParser<ERC721Transfer>() {
+        @java.lang.Override
+        public ERC721Transfer parsePartialFrom(
+            com.google.protobuf.CodedInputStream input,
+            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+            throws com.google.protobuf.InvalidProtocolBufferException {
+          return new ERC721Transfer(input, extensionRegistry);
+        }
+      };
+
+      public static com.google.protobuf.Parser<ERC721Transfer> parser() {
+        return PARSER;
+      }
+
+      @java.lang.Override
+      public com.google.protobuf.Parser<ERC721Transfer> getParserForType() {
+        return PARSER;
+      }
+
+      @java.lang.Override
+      public wallet.core.jni.proto.Ethereum.Transaction.ERC721Transfer getDefaultInstanceForType() {
+        return DEFAULT_INSTANCE;
+      }
+
+    }
+
+    public interface ERC1155TransferOrBuilder extends
+        // @@protoc_insertion_point(interface_extends:TW.Ethereum.Proto.Transaction.ERC1155Transfer)
+        com.google.protobuf.MessageOrBuilder {
+
+      /**
+       * <code>string from = 1;</code>
+       * @return The from.
+       */
+      java.lang.String getFrom();
+      /**
+       * <code>string from = 1;</code>
+       * @return The bytes for from.
+       */
+      com.google.protobuf.ByteString
+          getFromBytes();
+
+      /**
+       * <code>string to = 2;</code>
+       * @return The to.
+       */
+      java.lang.String getTo();
+      /**
+       * <code>string to = 2;</code>
+       * @return The bytes for to.
+       */
+      com.google.protobuf.ByteString
+          getToBytes();
+
+      /**
+       * <pre>
+       * ID of the token (256-bit number)
+       * </pre>
+       *
+       * <code>bytes token_id = 3;</code>
+       * @return The tokenId.
+       */
+      com.google.protobuf.ByteString getTokenId();
+
+      /**
+       * <pre>
+       * The amount of tokens being transferred
+       * </pre>
+       *
+       * <code>bytes value = 4;</code>
+       * @return The value.
+       */
+      com.google.protobuf.ByteString getValue();
+
+      /**
+       * <code>bytes data = 5;</code>
+       * @return The data.
+       */
+      com.google.protobuf.ByteString getData();
+    }
+    /**
+     * <pre>
+     * ERC1155 NFT transfer transaction
+     * </pre>
+     *
+     * Protobuf type {@code TW.Ethereum.Proto.Transaction.ERC1155Transfer}
+     */
+    public static final class ERC1155Transfer extends
+        com.google.protobuf.GeneratedMessageV3 implements
+        // @@protoc_insertion_point(message_implements:TW.Ethereum.Proto.Transaction.ERC1155Transfer)
+        ERC1155TransferOrBuilder {
+    private static final long serialVersionUID = 0L;
+      // Use ERC1155Transfer.newBuilder() to construct.
+      private ERC1155Transfer(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+        super(builder);
+      }
+      private ERC1155Transfer() {
+        from_ = "";
+        to_ = "";
+        tokenId_ = com.google.protobuf.ByteString.EMPTY;
+        value_ = com.google.protobuf.ByteString.EMPTY;
+        data_ = com.google.protobuf.ByteString.EMPTY;
+      }
+
+      @java.lang.Override
+      @SuppressWarnings({"unused"})
+      protected java.lang.Object newInstance(
+          UnusedPrivateParameter unused) {
+        return new ERC1155Transfer();
+      }
+
+      @java.lang.Override
+      public final com.google.protobuf.UnknownFieldSet
+      getUnknownFields() {
+        return this.unknownFields;
+      }
+      private ERC1155Transfer(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        this();
+        if (extensionRegistry == null) {
+          throw new java.lang.NullPointerException();
+        }
+        com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+            com.google.protobuf.UnknownFieldSet.newBuilder();
+        try {
+          boolean done = false;
+          while (!done) {
+            int tag = input.readTag();
+            switch (tag) {
+              case 0:
+                done = true;
+                break;
+              case 10: {
+                java.lang.String s = input.readStringRequireUtf8();
+
+                from_ = s;
+                break;
+              }
+              case 18: {
+                java.lang.String s = input.readStringRequireUtf8();
+
+                to_ = s;
+                break;
+              }
+              case 26: {
+
+                tokenId_ = input.readBytes();
+                break;
+              }
+              case 34: {
+
+                value_ = input.readBytes();
+                break;
+              }
+              case 42: {
+
+                data_ = input.readBytes();
+                break;
+              }
+              default: {
+                if (!parseUnknownField(
+                    input, unknownFields, extensionRegistry, tag)) {
+                  done = true;
+                }
+                break;
+              }
+            }
+          }
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          throw e.setUnfinishedMessage(this);
+        } catch (java.io.IOException e) {
+          throw new com.google.protobuf.InvalidProtocolBufferException(
+              e).setUnfinishedMessage(this);
+        } finally {
+          this.unknownFields = unknownFields.build();
+          makeExtensionsImmutable();
+        }
+      }
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return wallet.core.jni.proto.Ethereum.internal_static_TW_Ethereum_Proto_Transaction_ERC1155Transfer_descriptor;
+      }
+
+      @java.lang.Override
+      protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return wallet.core.jni.proto.Ethereum.internal_static_TW_Ethereum_Proto_Transaction_ERC1155Transfer_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                wallet.core.jni.proto.Ethereum.Transaction.ERC1155Transfer.class, wallet.core.jni.proto.Ethereum.Transaction.ERC1155Transfer.Builder.class);
+      }
+
+      public static final int FROM_FIELD_NUMBER = 1;
+      private volatile java.lang.Object from_;
+      /**
+       * <code>string from = 1;</code>
+       * @return The from.
+       */
+      @java.lang.Override
+      public java.lang.String getFrom() {
+        java.lang.Object ref = from_;
+        if (ref instanceof java.lang.String) {
+          return (java.lang.String) ref;
+        } else {
+          com.google.protobuf.ByteString bs = 
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          from_ = s;
+          return s;
+        }
+      }
+      /**
+       * <code>string from = 1;</code>
+       * @return The bytes for from.
+       */
+      @java.lang.Override
+      public com.google.protobuf.ByteString
+          getFromBytes() {
+        java.lang.Object ref = from_;
+        if (ref instanceof java.lang.String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          from_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+
+      public static final int TO_FIELD_NUMBER = 2;
+      private volatile java.lang.Object to_;
+      /**
+       * <code>string to = 2;</code>
+       * @return The to.
+       */
+      @java.lang.Override
+      public java.lang.String getTo() {
+        java.lang.Object ref = to_;
+        if (ref instanceof java.lang.String) {
+          return (java.lang.String) ref;
+        } else {
+          com.google.protobuf.ByteString bs = 
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          to_ = s;
+          return s;
+        }
+      }
+      /**
+       * <code>string to = 2;</code>
+       * @return The bytes for to.
+       */
+      @java.lang.Override
+      public com.google.protobuf.ByteString
+          getToBytes() {
+        java.lang.Object ref = to_;
+        if (ref instanceof java.lang.String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          to_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+
+      public static final int TOKEN_ID_FIELD_NUMBER = 3;
+      private com.google.protobuf.ByteString tokenId_;
+      /**
+       * <pre>
+       * ID of the token (256-bit number)
+       * </pre>
+       *
+       * <code>bytes token_id = 3;</code>
+       * @return The tokenId.
+       */
+      @java.lang.Override
+      public com.google.protobuf.ByteString getTokenId() {
+        return tokenId_;
+      }
+
+      public static final int VALUE_FIELD_NUMBER = 4;
+      private com.google.protobuf.ByteString value_;
+      /**
+       * <pre>
+       * The amount of tokens being transferred
+       * </pre>
+       *
+       * <code>bytes value = 4;</code>
+       * @return The value.
+       */
+      @java.lang.Override
+      public com.google.protobuf.ByteString getValue() {
+        return value_;
+      }
+
+      public static final int DATA_FIELD_NUMBER = 5;
+      private com.google.protobuf.ByteString data_;
+      /**
+       * <code>bytes data = 5;</code>
+       * @return The data.
+       */
+      @java.lang.Override
+      public com.google.protobuf.ByteString getData() {
+        return data_;
+      }
+
+      private byte memoizedIsInitialized = -1;
+      @java.lang.Override
+      public final boolean isInitialized() {
+        byte isInitialized = memoizedIsInitialized;
+        if (isInitialized == 1) return true;
+        if (isInitialized == 0) return false;
+
+        memoizedIsInitialized = 1;
+        return true;
+      }
+
+      @java.lang.Override
+      public void writeTo(com.google.protobuf.CodedOutputStream output)
+                          throws java.io.IOException {
+        if (!getFromBytes().isEmpty()) {
+          com.google.protobuf.GeneratedMessageV3.writeString(output, 1, from_);
+        }
+        if (!getToBytes().isEmpty()) {
+          com.google.protobuf.GeneratedMessageV3.writeString(output, 2, to_);
+        }
+        if (!tokenId_.isEmpty()) {
+          output.writeBytes(3, tokenId_);
+        }
+        if (!value_.isEmpty()) {
+          output.writeBytes(4, value_);
+        }
+        if (!data_.isEmpty()) {
+          output.writeBytes(5, data_);
+        }
+        unknownFields.writeTo(output);
+      }
+
+      @java.lang.Override
+      public int getSerializedSize() {
+        int size = memoizedSize;
+        if (size != -1) return size;
+
+        size = 0;
+        if (!getFromBytes().isEmpty()) {
+          size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, from_);
+        }
+        if (!getToBytes().isEmpty()) {
+          size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, to_);
+        }
+        if (!tokenId_.isEmpty()) {
+          size += com.google.protobuf.CodedOutputStream
+            .computeBytesSize(3, tokenId_);
+        }
+        if (!value_.isEmpty()) {
+          size += com.google.protobuf.CodedOutputStream
+            .computeBytesSize(4, value_);
+        }
+        if (!data_.isEmpty()) {
+          size += com.google.protobuf.CodedOutputStream
+            .computeBytesSize(5, data_);
+        }
+        size += unknownFields.getSerializedSize();
+        memoizedSize = size;
+        return size;
+      }
+
+      @java.lang.Override
+      public boolean equals(final java.lang.Object obj) {
+        if (obj == this) {
+         return true;
+        }
+        if (!(obj instanceof wallet.core.jni.proto.Ethereum.Transaction.ERC1155Transfer)) {
+          return super.equals(obj);
+        }
+        wallet.core.jni.proto.Ethereum.Transaction.ERC1155Transfer other = (wallet.core.jni.proto.Ethereum.Transaction.ERC1155Transfer) obj;
+
+        if (!getFrom()
+            .equals(other.getFrom())) return false;
+        if (!getTo()
+            .equals(other.getTo())) return false;
+        if (!getTokenId()
+            .equals(other.getTokenId())) return false;
+        if (!getValue()
+            .equals(other.getValue())) return false;
+        if (!getData()
+            .equals(other.getData())) return false;
+        if (!unknownFields.equals(other.unknownFields)) return false;
+        return true;
+      }
+
+      @java.lang.Override
+      public int hashCode() {
+        if (memoizedHashCode != 0) {
+          return memoizedHashCode;
+        }
+        int hash = 41;
+        hash = (19 * hash) + getDescriptor().hashCode();
+        hash = (37 * hash) + FROM_FIELD_NUMBER;
+        hash = (53 * hash) + getFrom().hashCode();
+        hash = (37 * hash) + TO_FIELD_NUMBER;
+        hash = (53 * hash) + getTo().hashCode();
+        hash = (37 * hash) + TOKEN_ID_FIELD_NUMBER;
+        hash = (53 * hash) + getTokenId().hashCode();
+        hash = (37 * hash) + VALUE_FIELD_NUMBER;
+        hash = (53 * hash) + getValue().hashCode();
+        hash = (37 * hash) + DATA_FIELD_NUMBER;
+        hash = (53 * hash) + getData().hashCode();
+        hash = (29 * hash) + unknownFields.hashCode();
+        memoizedHashCode = hash;
+        return hash;
+      }
+
+      public static wallet.core.jni.proto.Ethereum.Transaction.ERC1155Transfer parseFrom(
+          java.nio.ByteBuffer data)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data);
+      }
+      public static wallet.core.jni.proto.Ethereum.Transaction.ERC1155Transfer parseFrom(
+          java.nio.ByteBuffer data,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data, extensionRegistry);
+      }
+      public static wallet.core.jni.proto.Ethereum.Transaction.ERC1155Transfer parseFrom(
+          com.google.protobuf.ByteString data)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data);
+      }
+      public static wallet.core.jni.proto.Ethereum.Transaction.ERC1155Transfer parseFrom(
+          com.google.protobuf.ByteString data,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data, extensionRegistry);
+      }
+      public static wallet.core.jni.proto.Ethereum.Transaction.ERC1155Transfer parseFrom(byte[] data)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data);
+      }
+      public static wallet.core.jni.proto.Ethereum.Transaction.ERC1155Transfer parseFrom(
+          byte[] data,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data, extensionRegistry);
+      }
+      public static wallet.core.jni.proto.Ethereum.Transaction.ERC1155Transfer parseFrom(java.io.InputStream input)
+          throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessageV3
+            .parseWithIOException(PARSER, input);
+      }
+      public static wallet.core.jni.proto.Ethereum.Transaction.ERC1155Transfer parseFrom(
+          java.io.InputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessageV3
+            .parseWithIOException(PARSER, input, extensionRegistry);
+      }
+      public static wallet.core.jni.proto.Ethereum.Transaction.ERC1155Transfer parseDelimitedFrom(java.io.InputStream input)
+          throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessageV3
+            .parseDelimitedWithIOException(PARSER, input);
+      }
+      public static wallet.core.jni.proto.Ethereum.Transaction.ERC1155Transfer parseDelimitedFrom(
+          java.io.InputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessageV3
+            .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
+      }
+      public static wallet.core.jni.proto.Ethereum.Transaction.ERC1155Transfer parseFrom(
+          com.google.protobuf.CodedInputStream input)
+          throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessageV3
+            .parseWithIOException(PARSER, input);
+      }
+      public static wallet.core.jni.proto.Ethereum.Transaction.ERC1155Transfer parseFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessageV3
+            .parseWithIOException(PARSER, input, extensionRegistry);
+      }
+
+      @java.lang.Override
+      public Builder newBuilderForType() { return newBuilder(); }
+      public static Builder newBuilder() {
+        return DEFAULT_INSTANCE.toBuilder();
+      }
+      public static Builder newBuilder(wallet.core.jni.proto.Ethereum.Transaction.ERC1155Transfer prototype) {
+        return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
+      }
+      @java.lang.Override
+      public Builder toBuilder() {
+        return this == DEFAULT_INSTANCE
+            ? new Builder() : new Builder().mergeFrom(this);
+      }
+
+      @java.lang.Override
+      protected Builder newBuilderForType(
+          com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+        Builder builder = new Builder(parent);
+        return builder;
+      }
+      /**
+       * <pre>
+       * ERC1155 NFT transfer transaction
+       * </pre>
+       *
+       * Protobuf type {@code TW.Ethereum.Proto.Transaction.ERC1155Transfer}
+       */
+      public static final class Builder extends
+          com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
+          // @@protoc_insertion_point(builder_implements:TW.Ethereum.Proto.Transaction.ERC1155Transfer)
+          wallet.core.jni.proto.Ethereum.Transaction.ERC1155TransferOrBuilder {
+        public static final com.google.protobuf.Descriptors.Descriptor
+            getDescriptor() {
+          return wallet.core.jni.proto.Ethereum.internal_static_TW_Ethereum_Proto_Transaction_ERC1155Transfer_descriptor;
+        }
+
+        @java.lang.Override
+        protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+            internalGetFieldAccessorTable() {
+          return wallet.core.jni.proto.Ethereum.internal_static_TW_Ethereum_Proto_Transaction_ERC1155Transfer_fieldAccessorTable
+              .ensureFieldAccessorsInitialized(
+                  wallet.core.jni.proto.Ethereum.Transaction.ERC1155Transfer.class, wallet.core.jni.proto.Ethereum.Transaction.ERC1155Transfer.Builder.class);
+        }
+
+        // Construct using wallet.core.jni.proto.Ethereum.Transaction.ERC1155Transfer.newBuilder()
+        private Builder() {
+          maybeForceBuilderInitialization();
+        }
+
+        private Builder(
+            com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+          super(parent);
+          maybeForceBuilderInitialization();
+        }
+        private void maybeForceBuilderInitialization() {
+          if (com.google.protobuf.GeneratedMessageV3
+                  .alwaysUseFieldBuilders) {
+          }
+        }
+        @java.lang.Override
+        public Builder clear() {
+          super.clear();
+          from_ = "";
+
+          to_ = "";
+
+          tokenId_ = com.google.protobuf.ByteString.EMPTY;
+
+          value_ = com.google.protobuf.ByteString.EMPTY;
+
+          data_ = com.google.protobuf.ByteString.EMPTY;
+
+          return this;
+        }
+
+        @java.lang.Override
+        public com.google.protobuf.Descriptors.Descriptor
+            getDescriptorForType() {
+          return wallet.core.jni.proto.Ethereum.internal_static_TW_Ethereum_Proto_Transaction_ERC1155Transfer_descriptor;
+        }
+
+        @java.lang.Override
+        public wallet.core.jni.proto.Ethereum.Transaction.ERC1155Transfer getDefaultInstanceForType() {
+          return wallet.core.jni.proto.Ethereum.Transaction.ERC1155Transfer.getDefaultInstance();
+        }
+
+        @java.lang.Override
+        public wallet.core.jni.proto.Ethereum.Transaction.ERC1155Transfer build() {
+          wallet.core.jni.proto.Ethereum.Transaction.ERC1155Transfer result = buildPartial();
+          if (!result.isInitialized()) {
+            throw newUninitializedMessageException(result);
+          }
+          return result;
+        }
+
+        @java.lang.Override
+        public wallet.core.jni.proto.Ethereum.Transaction.ERC1155Transfer buildPartial() {
+          wallet.core.jni.proto.Ethereum.Transaction.ERC1155Transfer result = new wallet.core.jni.proto.Ethereum.Transaction.ERC1155Transfer(this);
+          result.from_ = from_;
+          result.to_ = to_;
+          result.tokenId_ = tokenId_;
+          result.value_ = value_;
+          result.data_ = data_;
+          onBuilt();
+          return result;
+        }
+
+        @java.lang.Override
+        public Builder clone() {
+          return super.clone();
+        }
+        @java.lang.Override
+        public Builder setField(
+            com.google.protobuf.Descriptors.FieldDescriptor field,
+            java.lang.Object value) {
+          return super.setField(field, value);
+        }
+        @java.lang.Override
+        public Builder clearField(
+            com.google.protobuf.Descriptors.FieldDescriptor field) {
+          return super.clearField(field);
+        }
+        @java.lang.Override
+        public Builder clearOneof(
+            com.google.protobuf.Descriptors.OneofDescriptor oneof) {
+          return super.clearOneof(oneof);
+        }
+        @java.lang.Override
+        public Builder setRepeatedField(
+            com.google.protobuf.Descriptors.FieldDescriptor field,
+            int index, java.lang.Object value) {
+          return super.setRepeatedField(field, index, value);
+        }
+        @java.lang.Override
+        public Builder addRepeatedField(
+            com.google.protobuf.Descriptors.FieldDescriptor field,
+            java.lang.Object value) {
+          return super.addRepeatedField(field, value);
+        }
+        @java.lang.Override
+        public Builder mergeFrom(com.google.protobuf.Message other) {
+          if (other instanceof wallet.core.jni.proto.Ethereum.Transaction.ERC1155Transfer) {
+            return mergeFrom((wallet.core.jni.proto.Ethereum.Transaction.ERC1155Transfer)other);
+          } else {
+            super.mergeFrom(other);
+            return this;
+          }
+        }
+
+        public Builder mergeFrom(wallet.core.jni.proto.Ethereum.Transaction.ERC1155Transfer other) {
+          if (other == wallet.core.jni.proto.Ethereum.Transaction.ERC1155Transfer.getDefaultInstance()) return this;
+          if (!other.getFrom().isEmpty()) {
+            from_ = other.from_;
+            onChanged();
+          }
+          if (!other.getTo().isEmpty()) {
+            to_ = other.to_;
+            onChanged();
+          }
+          if (other.getTokenId() != com.google.protobuf.ByteString.EMPTY) {
+            setTokenId(other.getTokenId());
+          }
+          if (other.getValue() != com.google.protobuf.ByteString.EMPTY) {
+            setValue(other.getValue());
+          }
+          if (other.getData() != com.google.protobuf.ByteString.EMPTY) {
+            setData(other.getData());
+          }
+          this.mergeUnknownFields(other.unknownFields);
+          onChanged();
+          return this;
+        }
+
+        @java.lang.Override
+        public final boolean isInitialized() {
+          return true;
+        }
+
+        @java.lang.Override
+        public Builder mergeFrom(
+            com.google.protobuf.CodedInputStream input,
+            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+            throws java.io.IOException {
+          wallet.core.jni.proto.Ethereum.Transaction.ERC1155Transfer parsedMessage = null;
+          try {
+            parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+          } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+            parsedMessage = (wallet.core.jni.proto.Ethereum.Transaction.ERC1155Transfer) e.getUnfinishedMessage();
+            throw e.unwrapIOException();
+          } finally {
+            if (parsedMessage != null) {
+              mergeFrom(parsedMessage);
+            }
+          }
+          return this;
+        }
+
+        private java.lang.Object from_ = "";
+        /**
+         * <code>string from = 1;</code>
+         * @return The from.
+         */
+        public java.lang.String getFrom() {
+          java.lang.Object ref = from_;
+          if (!(ref instanceof java.lang.String)) {
+            com.google.protobuf.ByteString bs =
+                (com.google.protobuf.ByteString) ref;
+            java.lang.String s = bs.toStringUtf8();
+            from_ = s;
+            return s;
+          } else {
+            return (java.lang.String) ref;
+          }
+        }
+        /**
+         * <code>string from = 1;</code>
+         * @return The bytes for from.
+         */
+        public com.google.protobuf.ByteString
+            getFromBytes() {
+          java.lang.Object ref = from_;
+          if (ref instanceof String) {
+            com.google.protobuf.ByteString b = 
+                com.google.protobuf.ByteString.copyFromUtf8(
+                    (java.lang.String) ref);
+            from_ = b;
+            return b;
+          } else {
+            return (com.google.protobuf.ByteString) ref;
+          }
+        }
+        /**
+         * <code>string from = 1;</code>
+         * @param value The from to set.
+         * @return This builder for chaining.
+         */
+        public Builder setFrom(
+            java.lang.String value) {
+          if (value == null) {
+    throw new NullPointerException();
+  }
+  
+          from_ = value;
+          onChanged();
+          return this;
+        }
+        /**
+         * <code>string from = 1;</code>
+         * @return This builder for chaining.
+         */
+        public Builder clearFrom() {
+          
+          from_ = getDefaultInstance().getFrom();
+          onChanged();
+          return this;
+        }
+        /**
+         * <code>string from = 1;</code>
+         * @param value The bytes for from to set.
+         * @return This builder for chaining.
+         */
+        public Builder setFromBytes(
+            com.google.protobuf.ByteString value) {
+          if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+          
+          from_ = value;
+          onChanged();
+          return this;
+        }
+
+        private java.lang.Object to_ = "";
+        /**
+         * <code>string to = 2;</code>
+         * @return The to.
+         */
+        public java.lang.String getTo() {
+          java.lang.Object ref = to_;
+          if (!(ref instanceof java.lang.String)) {
+            com.google.protobuf.ByteString bs =
+                (com.google.protobuf.ByteString) ref;
+            java.lang.String s = bs.toStringUtf8();
+            to_ = s;
+            return s;
+          } else {
+            return (java.lang.String) ref;
+          }
+        }
+        /**
+         * <code>string to = 2;</code>
+         * @return The bytes for to.
+         */
+        public com.google.protobuf.ByteString
+            getToBytes() {
+          java.lang.Object ref = to_;
+          if (ref instanceof String) {
+            com.google.protobuf.ByteString b = 
+                com.google.protobuf.ByteString.copyFromUtf8(
+                    (java.lang.String) ref);
+            to_ = b;
+            return b;
+          } else {
+            return (com.google.protobuf.ByteString) ref;
+          }
+        }
+        /**
+         * <code>string to = 2;</code>
+         * @param value The to to set.
+         * @return This builder for chaining.
+         */
+        public Builder setTo(
+            java.lang.String value) {
+          if (value == null) {
+    throw new NullPointerException();
+  }
+  
+          to_ = value;
+          onChanged();
+          return this;
+        }
+        /**
+         * <code>string to = 2;</code>
+         * @return This builder for chaining.
+         */
+        public Builder clearTo() {
+          
+          to_ = getDefaultInstance().getTo();
+          onChanged();
+          return this;
+        }
+        /**
+         * <code>string to = 2;</code>
+         * @param value The bytes for to to set.
+         * @return This builder for chaining.
+         */
+        public Builder setToBytes(
+            com.google.protobuf.ByteString value) {
+          if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+          
+          to_ = value;
+          onChanged();
+          return this;
+        }
+
+        private com.google.protobuf.ByteString tokenId_ = com.google.protobuf.ByteString.EMPTY;
+        /**
+         * <pre>
+         * ID of the token (256-bit number)
+         * </pre>
+         *
+         * <code>bytes token_id = 3;</code>
+         * @return The tokenId.
+         */
+        @java.lang.Override
+        public com.google.protobuf.ByteString getTokenId() {
+          return tokenId_;
+        }
+        /**
+         * <pre>
+         * ID of the token (256-bit number)
+         * </pre>
+         *
+         * <code>bytes token_id = 3;</code>
+         * @param value The tokenId to set.
+         * @return This builder for chaining.
+         */
+        public Builder setTokenId(com.google.protobuf.ByteString value) {
+          if (value == null) {
+    throw new NullPointerException();
+  }
+  
+          tokenId_ = value;
+          onChanged();
+          return this;
+        }
+        /**
+         * <pre>
+         * ID of the token (256-bit number)
+         * </pre>
+         *
+         * <code>bytes token_id = 3;</code>
+         * @return This builder for chaining.
+         */
+        public Builder clearTokenId() {
+          
+          tokenId_ = getDefaultInstance().getTokenId();
+          onChanged();
+          return this;
+        }
+
+        private com.google.protobuf.ByteString value_ = com.google.protobuf.ByteString.EMPTY;
+        /**
+         * <pre>
+         * The amount of tokens being transferred
+         * </pre>
+         *
+         * <code>bytes value = 4;</code>
+         * @return The value.
+         */
+        @java.lang.Override
+        public com.google.protobuf.ByteString getValue() {
+          return value_;
+        }
+        /**
+         * <pre>
+         * The amount of tokens being transferred
+         * </pre>
+         *
+         * <code>bytes value = 4;</code>
+         * @param value The value to set.
+         * @return This builder for chaining.
+         */
+        public Builder setValue(com.google.protobuf.ByteString value) {
+          if (value == null) {
+    throw new NullPointerException();
+  }
+  
+          value_ = value;
+          onChanged();
+          return this;
+        }
+        /**
+         * <pre>
+         * The amount of tokens being transferred
+         * </pre>
+         *
+         * <code>bytes value = 4;</code>
+         * @return This builder for chaining.
+         */
+        public Builder clearValue() {
+          
+          value_ = getDefaultInstance().getValue();
+          onChanged();
+          return this;
+        }
+
+        private com.google.protobuf.ByteString data_ = com.google.protobuf.ByteString.EMPTY;
+        /**
+         * <code>bytes data = 5;</code>
+         * @return The data.
+         */
+        @java.lang.Override
+        public com.google.protobuf.ByteString getData() {
+          return data_;
+        }
+        /**
+         * <code>bytes data = 5;</code>
+         * @param value The data to set.
+         * @return This builder for chaining.
+         */
+        public Builder setData(com.google.protobuf.ByteString value) {
+          if (value == null) {
+    throw new NullPointerException();
+  }
+  
+          data_ = value;
+          onChanged();
+          return this;
+        }
+        /**
+         * <code>bytes data = 5;</code>
+         * @return This builder for chaining.
+         */
+        public Builder clearData() {
+          
+          data_ = getDefaultInstance().getData();
+          onChanged();
+          return this;
+        }
+        @java.lang.Override
+        public final Builder setUnknownFields(
+            final com.google.protobuf.UnknownFieldSet unknownFields) {
+          return super.setUnknownFields(unknownFields);
+        }
+
+        @java.lang.Override
+        public final Builder mergeUnknownFields(
+            final com.google.protobuf.UnknownFieldSet unknownFields) {
+          return super.mergeUnknownFields(unknownFields);
+        }
+
+
+        // @@protoc_insertion_point(builder_scope:TW.Ethereum.Proto.Transaction.ERC1155Transfer)
+      }
+
+      // @@protoc_insertion_point(class_scope:TW.Ethereum.Proto.Transaction.ERC1155Transfer)
+      private static final wallet.core.jni.proto.Ethereum.Transaction.ERC1155Transfer DEFAULT_INSTANCE;
+      static {
+        DEFAULT_INSTANCE = new wallet.core.jni.proto.Ethereum.Transaction.ERC1155Transfer();
+      }
+
+      public static wallet.core.jni.proto.Ethereum.Transaction.ERC1155Transfer getDefaultInstance() {
+        return DEFAULT_INSTANCE;
+      }
+
+      private static final com.google.protobuf.Parser<ERC1155Transfer>
+          PARSER = new com.google.protobuf.AbstractParser<ERC1155Transfer>() {
+        @java.lang.Override
+        public ERC1155Transfer parsePartialFrom(
+            com.google.protobuf.CodedInputStream input,
+            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+            throws com.google.protobuf.InvalidProtocolBufferException {
+          return new ERC1155Transfer(input, extensionRegistry);
+        }
+      };
+
+      public static com.google.protobuf.Parser<ERC1155Transfer> parser() {
+        return PARSER;
+      }
+
+      @java.lang.Override
+      public com.google.protobuf.Parser<ERC1155Transfer> getParserForType() {
+        return PARSER;
+      }
+
+      @java.lang.Override
+      public wallet.core.jni.proto.Ethereum.Transaction.ERC1155Transfer getDefaultInstanceForType() {
+        return DEFAULT_INSTANCE;
+      }
+
+    }
+
+    public interface ContractGenericOrBuilder extends
+        // @@protoc_insertion_point(interface_extends:TW.Ethereum.Proto.Transaction.ContractGeneric)
+        com.google.protobuf.MessageOrBuilder {
+
+      /**
+       * <pre>
+       * Amount to send in wei (256-bit number)
+       * </pre>
+       *
+       * <code>bytes amount = 1;</code>
+       * @return The amount.
+       */
+      com.google.protobuf.ByteString getAmount();
+
+      /**
+       * <pre>
+       * Contract call payload data
+       * </pre>
+       *
+       * <code>bytes data = 2;</code>
+       * @return The data.
+       */
+      com.google.protobuf.ByteString getData();
+    }
+    /**
+     * <pre>
+     * Generic smart contract transaction
+     * </pre>
+     *
+     * Protobuf type {@code TW.Ethereum.Proto.Transaction.ContractGeneric}
+     */
+    public static final class ContractGeneric extends
+        com.google.protobuf.GeneratedMessageV3 implements
+        // @@protoc_insertion_point(message_implements:TW.Ethereum.Proto.Transaction.ContractGeneric)
+        ContractGenericOrBuilder {
+    private static final long serialVersionUID = 0L;
+      // Use ContractGeneric.newBuilder() to construct.
+      private ContractGeneric(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+        super(builder);
+      }
+      private ContractGeneric() {
+        amount_ = com.google.protobuf.ByteString.EMPTY;
+        data_ = com.google.protobuf.ByteString.EMPTY;
+      }
+
+      @java.lang.Override
+      @SuppressWarnings({"unused"})
+      protected java.lang.Object newInstance(
+          UnusedPrivateParameter unused) {
+        return new ContractGeneric();
+      }
+
+      @java.lang.Override
+      public final com.google.protobuf.UnknownFieldSet
+      getUnknownFields() {
+        return this.unknownFields;
+      }
+      private ContractGeneric(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        this();
+        if (extensionRegistry == null) {
+          throw new java.lang.NullPointerException();
+        }
+        com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+            com.google.protobuf.UnknownFieldSet.newBuilder();
+        try {
+          boolean done = false;
+          while (!done) {
+            int tag = input.readTag();
+            switch (tag) {
+              case 0:
+                done = true;
+                break;
+              case 10: {
+
+                amount_ = input.readBytes();
+                break;
+              }
+              case 18: {
+
+                data_ = input.readBytes();
+                break;
+              }
+              default: {
+                if (!parseUnknownField(
+                    input, unknownFields, extensionRegistry, tag)) {
+                  done = true;
+                }
+                break;
+              }
+            }
+          }
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          throw e.setUnfinishedMessage(this);
+        } catch (java.io.IOException e) {
+          throw new com.google.protobuf.InvalidProtocolBufferException(
+              e).setUnfinishedMessage(this);
+        } finally {
+          this.unknownFields = unknownFields.build();
+          makeExtensionsImmutable();
+        }
+      }
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return wallet.core.jni.proto.Ethereum.internal_static_TW_Ethereum_Proto_Transaction_ContractGeneric_descriptor;
+      }
+
+      @java.lang.Override
+      protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return wallet.core.jni.proto.Ethereum.internal_static_TW_Ethereum_Proto_Transaction_ContractGeneric_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                wallet.core.jni.proto.Ethereum.Transaction.ContractGeneric.class, wallet.core.jni.proto.Ethereum.Transaction.ContractGeneric.Builder.class);
+      }
+
+      public static final int AMOUNT_FIELD_NUMBER = 1;
+      private com.google.protobuf.ByteString amount_;
+      /**
+       * <pre>
+       * Amount to send in wei (256-bit number)
+       * </pre>
+       *
+       * <code>bytes amount = 1;</code>
+       * @return The amount.
+       */
+      @java.lang.Override
+      public com.google.protobuf.ByteString getAmount() {
+        return amount_;
+      }
+
+      public static final int DATA_FIELD_NUMBER = 2;
+      private com.google.protobuf.ByteString data_;
+      /**
+       * <pre>
+       * Contract call payload data
+       * </pre>
+       *
+       * <code>bytes data = 2;</code>
+       * @return The data.
+       */
+      @java.lang.Override
+      public com.google.protobuf.ByteString getData() {
+        return data_;
+      }
+
+      private byte memoizedIsInitialized = -1;
+      @java.lang.Override
+      public final boolean isInitialized() {
+        byte isInitialized = memoizedIsInitialized;
+        if (isInitialized == 1) return true;
+        if (isInitialized == 0) return false;
+
+        memoizedIsInitialized = 1;
+        return true;
+      }
+
+      @java.lang.Override
+      public void writeTo(com.google.protobuf.CodedOutputStream output)
+                          throws java.io.IOException {
+        if (!amount_.isEmpty()) {
+          output.writeBytes(1, amount_);
+        }
+        if (!data_.isEmpty()) {
+          output.writeBytes(2, data_);
+        }
+        unknownFields.writeTo(output);
+      }
+
+      @java.lang.Override
+      public int getSerializedSize() {
+        int size = memoizedSize;
+        if (size != -1) return size;
+
+        size = 0;
+        if (!amount_.isEmpty()) {
+          size += com.google.protobuf.CodedOutputStream
+            .computeBytesSize(1, amount_);
+        }
+        if (!data_.isEmpty()) {
+          size += com.google.protobuf.CodedOutputStream
+            .computeBytesSize(2, data_);
+        }
+        size += unknownFields.getSerializedSize();
+        memoizedSize = size;
+        return size;
+      }
+
+      @java.lang.Override
+      public boolean equals(final java.lang.Object obj) {
+        if (obj == this) {
+         return true;
+        }
+        if (!(obj instanceof wallet.core.jni.proto.Ethereum.Transaction.ContractGeneric)) {
+          return super.equals(obj);
+        }
+        wallet.core.jni.proto.Ethereum.Transaction.ContractGeneric other = (wallet.core.jni.proto.Ethereum.Transaction.ContractGeneric) obj;
+
+        if (!getAmount()
+            .equals(other.getAmount())) return false;
+        if (!getData()
+            .equals(other.getData())) return false;
+        if (!unknownFields.equals(other.unknownFields)) return false;
+        return true;
+      }
+
+      @java.lang.Override
+      public int hashCode() {
+        if (memoizedHashCode != 0) {
+          return memoizedHashCode;
+        }
+        int hash = 41;
+        hash = (19 * hash) + getDescriptor().hashCode();
+        hash = (37 * hash) + AMOUNT_FIELD_NUMBER;
+        hash = (53 * hash) + getAmount().hashCode();
+        hash = (37 * hash) + DATA_FIELD_NUMBER;
+        hash = (53 * hash) + getData().hashCode();
+        hash = (29 * hash) + unknownFields.hashCode();
+        memoizedHashCode = hash;
+        return hash;
+      }
+
+      public static wallet.core.jni.proto.Ethereum.Transaction.ContractGeneric parseFrom(
+          java.nio.ByteBuffer data)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data);
+      }
+      public static wallet.core.jni.proto.Ethereum.Transaction.ContractGeneric parseFrom(
+          java.nio.ByteBuffer data,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data, extensionRegistry);
+      }
+      public static wallet.core.jni.proto.Ethereum.Transaction.ContractGeneric parseFrom(
+          com.google.protobuf.ByteString data)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data);
+      }
+      public static wallet.core.jni.proto.Ethereum.Transaction.ContractGeneric parseFrom(
+          com.google.protobuf.ByteString data,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data, extensionRegistry);
+      }
+      public static wallet.core.jni.proto.Ethereum.Transaction.ContractGeneric parseFrom(byte[] data)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data);
+      }
+      public static wallet.core.jni.proto.Ethereum.Transaction.ContractGeneric parseFrom(
+          byte[] data,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data, extensionRegistry);
+      }
+      public static wallet.core.jni.proto.Ethereum.Transaction.ContractGeneric parseFrom(java.io.InputStream input)
+          throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessageV3
+            .parseWithIOException(PARSER, input);
+      }
+      public static wallet.core.jni.proto.Ethereum.Transaction.ContractGeneric parseFrom(
+          java.io.InputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessageV3
+            .parseWithIOException(PARSER, input, extensionRegistry);
+      }
+      public static wallet.core.jni.proto.Ethereum.Transaction.ContractGeneric parseDelimitedFrom(java.io.InputStream input)
+          throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessageV3
+            .parseDelimitedWithIOException(PARSER, input);
+      }
+      public static wallet.core.jni.proto.Ethereum.Transaction.ContractGeneric parseDelimitedFrom(
+          java.io.InputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessageV3
+            .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
+      }
+      public static wallet.core.jni.proto.Ethereum.Transaction.ContractGeneric parseFrom(
+          com.google.protobuf.CodedInputStream input)
+          throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessageV3
+            .parseWithIOException(PARSER, input);
+      }
+      public static wallet.core.jni.proto.Ethereum.Transaction.ContractGeneric parseFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessageV3
+            .parseWithIOException(PARSER, input, extensionRegistry);
+      }
+
+      @java.lang.Override
+      public Builder newBuilderForType() { return newBuilder(); }
+      public static Builder newBuilder() {
+        return DEFAULT_INSTANCE.toBuilder();
+      }
+      public static Builder newBuilder(wallet.core.jni.proto.Ethereum.Transaction.ContractGeneric prototype) {
+        return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
+      }
+      @java.lang.Override
+      public Builder toBuilder() {
+        return this == DEFAULT_INSTANCE
+            ? new Builder() : new Builder().mergeFrom(this);
+      }
+
+      @java.lang.Override
+      protected Builder newBuilderForType(
+          com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+        Builder builder = new Builder(parent);
+        return builder;
+      }
+      /**
+       * <pre>
+       * Generic smart contract transaction
+       * </pre>
+       *
+       * Protobuf type {@code TW.Ethereum.Proto.Transaction.ContractGeneric}
+       */
+      public static final class Builder extends
+          com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
+          // @@protoc_insertion_point(builder_implements:TW.Ethereum.Proto.Transaction.ContractGeneric)
+          wallet.core.jni.proto.Ethereum.Transaction.ContractGenericOrBuilder {
+        public static final com.google.protobuf.Descriptors.Descriptor
+            getDescriptor() {
+          return wallet.core.jni.proto.Ethereum.internal_static_TW_Ethereum_Proto_Transaction_ContractGeneric_descriptor;
+        }
+
+        @java.lang.Override
+        protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+            internalGetFieldAccessorTable() {
+          return wallet.core.jni.proto.Ethereum.internal_static_TW_Ethereum_Proto_Transaction_ContractGeneric_fieldAccessorTable
+              .ensureFieldAccessorsInitialized(
+                  wallet.core.jni.proto.Ethereum.Transaction.ContractGeneric.class, wallet.core.jni.proto.Ethereum.Transaction.ContractGeneric.Builder.class);
+        }
+
+        // Construct using wallet.core.jni.proto.Ethereum.Transaction.ContractGeneric.newBuilder()
+        private Builder() {
+          maybeForceBuilderInitialization();
+        }
+
+        private Builder(
+            com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+          super(parent);
+          maybeForceBuilderInitialization();
+        }
+        private void maybeForceBuilderInitialization() {
+          if (com.google.protobuf.GeneratedMessageV3
+                  .alwaysUseFieldBuilders) {
+          }
+        }
+        @java.lang.Override
+        public Builder clear() {
+          super.clear();
+          amount_ = com.google.protobuf.ByteString.EMPTY;
+
+          data_ = com.google.protobuf.ByteString.EMPTY;
+
+          return this;
+        }
+
+        @java.lang.Override
+        public com.google.protobuf.Descriptors.Descriptor
+            getDescriptorForType() {
+          return wallet.core.jni.proto.Ethereum.internal_static_TW_Ethereum_Proto_Transaction_ContractGeneric_descriptor;
+        }
+
+        @java.lang.Override
+        public wallet.core.jni.proto.Ethereum.Transaction.ContractGeneric getDefaultInstanceForType() {
+          return wallet.core.jni.proto.Ethereum.Transaction.ContractGeneric.getDefaultInstance();
+        }
+
+        @java.lang.Override
+        public wallet.core.jni.proto.Ethereum.Transaction.ContractGeneric build() {
+          wallet.core.jni.proto.Ethereum.Transaction.ContractGeneric result = buildPartial();
+          if (!result.isInitialized()) {
+            throw newUninitializedMessageException(result);
+          }
+          return result;
+        }
+
+        @java.lang.Override
+        public wallet.core.jni.proto.Ethereum.Transaction.ContractGeneric buildPartial() {
+          wallet.core.jni.proto.Ethereum.Transaction.ContractGeneric result = new wallet.core.jni.proto.Ethereum.Transaction.ContractGeneric(this);
+          result.amount_ = amount_;
+          result.data_ = data_;
+          onBuilt();
+          return result;
+        }
+
+        @java.lang.Override
+        public Builder clone() {
+          return super.clone();
+        }
+        @java.lang.Override
+        public Builder setField(
+            com.google.protobuf.Descriptors.FieldDescriptor field,
+            java.lang.Object value) {
+          return super.setField(field, value);
+        }
+        @java.lang.Override
+        public Builder clearField(
+            com.google.protobuf.Descriptors.FieldDescriptor field) {
+          return super.clearField(field);
+        }
+        @java.lang.Override
+        public Builder clearOneof(
+            com.google.protobuf.Descriptors.OneofDescriptor oneof) {
+          return super.clearOneof(oneof);
+        }
+        @java.lang.Override
+        public Builder setRepeatedField(
+            com.google.protobuf.Descriptors.FieldDescriptor field,
+            int index, java.lang.Object value) {
+          return super.setRepeatedField(field, index, value);
+        }
+        @java.lang.Override
+        public Builder addRepeatedField(
+            com.google.protobuf.Descriptors.FieldDescriptor field,
+            java.lang.Object value) {
+          return super.addRepeatedField(field, value);
+        }
+        @java.lang.Override
+        public Builder mergeFrom(com.google.protobuf.Message other) {
+          if (other instanceof wallet.core.jni.proto.Ethereum.Transaction.ContractGeneric) {
+            return mergeFrom((wallet.core.jni.proto.Ethereum.Transaction.ContractGeneric)other);
+          } else {
+            super.mergeFrom(other);
+            return this;
+          }
+        }
+
+        public Builder mergeFrom(wallet.core.jni.proto.Ethereum.Transaction.ContractGeneric other) {
+          if (other == wallet.core.jni.proto.Ethereum.Transaction.ContractGeneric.getDefaultInstance()) return this;
+          if (other.getAmount() != com.google.protobuf.ByteString.EMPTY) {
+            setAmount(other.getAmount());
+          }
+          if (other.getData() != com.google.protobuf.ByteString.EMPTY) {
+            setData(other.getData());
+          }
+          this.mergeUnknownFields(other.unknownFields);
+          onChanged();
+          return this;
+        }
+
+        @java.lang.Override
+        public final boolean isInitialized() {
+          return true;
+        }
+
+        @java.lang.Override
+        public Builder mergeFrom(
+            com.google.protobuf.CodedInputStream input,
+            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+            throws java.io.IOException {
+          wallet.core.jni.proto.Ethereum.Transaction.ContractGeneric parsedMessage = null;
+          try {
+            parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+          } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+            parsedMessage = (wallet.core.jni.proto.Ethereum.Transaction.ContractGeneric) e.getUnfinishedMessage();
+            throw e.unwrapIOException();
+          } finally {
+            if (parsedMessage != null) {
+              mergeFrom(parsedMessage);
+            }
+          }
+          return this;
+        }
+
+        private com.google.protobuf.ByteString amount_ = com.google.protobuf.ByteString.EMPTY;
+        /**
+         * <pre>
+         * Amount to send in wei (256-bit number)
+         * </pre>
+         *
+         * <code>bytes amount = 1;</code>
+         * @return The amount.
+         */
+        @java.lang.Override
+        public com.google.protobuf.ByteString getAmount() {
+          return amount_;
+        }
+        /**
+         * <pre>
+         * Amount to send in wei (256-bit number)
+         * </pre>
+         *
+         * <code>bytes amount = 1;</code>
+         * @param value The amount to set.
+         * @return This builder for chaining.
+         */
+        public Builder setAmount(com.google.protobuf.ByteString value) {
+          if (value == null) {
+    throw new NullPointerException();
+  }
+  
+          amount_ = value;
+          onChanged();
+          return this;
+        }
+        /**
+         * <pre>
+         * Amount to send in wei (256-bit number)
+         * </pre>
+         *
+         * <code>bytes amount = 1;</code>
+         * @return This builder for chaining.
+         */
+        public Builder clearAmount() {
+          
+          amount_ = getDefaultInstance().getAmount();
+          onChanged();
+          return this;
+        }
+
+        private com.google.protobuf.ByteString data_ = com.google.protobuf.ByteString.EMPTY;
+        /**
+         * <pre>
+         * Contract call payload data
+         * </pre>
+         *
+         * <code>bytes data = 2;</code>
+         * @return The data.
+         */
+        @java.lang.Override
+        public com.google.protobuf.ByteString getData() {
+          return data_;
+        }
+        /**
+         * <pre>
+         * Contract call payload data
+         * </pre>
+         *
+         * <code>bytes data = 2;</code>
+         * @param value The data to set.
+         * @return This builder for chaining.
+         */
+        public Builder setData(com.google.protobuf.ByteString value) {
+          if (value == null) {
+    throw new NullPointerException();
+  }
+  
+          data_ = value;
+          onChanged();
+          return this;
+        }
+        /**
+         * <pre>
+         * Contract call payload data
+         * </pre>
+         *
+         * <code>bytes data = 2;</code>
+         * @return This builder for chaining.
+         */
+        public Builder clearData() {
+          
+          data_ = getDefaultInstance().getData();
+          onChanged();
+          return this;
+        }
+        @java.lang.Override
+        public final Builder setUnknownFields(
+            final com.google.protobuf.UnknownFieldSet unknownFields) {
+          return super.setUnknownFields(unknownFields);
+        }
+
+        @java.lang.Override
+        public final Builder mergeUnknownFields(
+            final com.google.protobuf.UnknownFieldSet unknownFields) {
+          return super.mergeUnknownFields(unknownFields);
+        }
+
+
+        // @@protoc_insertion_point(builder_scope:TW.Ethereum.Proto.Transaction.ContractGeneric)
+      }
+
+      // @@protoc_insertion_point(class_scope:TW.Ethereum.Proto.Transaction.ContractGeneric)
+      private static final wallet.core.jni.proto.Ethereum.Transaction.ContractGeneric DEFAULT_INSTANCE;
+      static {
+        DEFAULT_INSTANCE = new wallet.core.jni.proto.Ethereum.Transaction.ContractGeneric();
+      }
+
+      public static wallet.core.jni.proto.Ethereum.Transaction.ContractGeneric getDefaultInstance() {
+        return DEFAULT_INSTANCE;
+      }
+
+      private static final com.google.protobuf.Parser<ContractGeneric>
+          PARSER = new com.google.protobuf.AbstractParser<ContractGeneric>() {
+        @java.lang.Override
+        public ContractGeneric parsePartialFrom(
+            com.google.protobuf.CodedInputStream input,
+            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+            throws com.google.protobuf.InvalidProtocolBufferException {
+          return new ContractGeneric(input, extensionRegistry);
+        }
+      };
+
+      public static com.google.protobuf.Parser<ContractGeneric> parser() {
+        return PARSER;
+      }
+
+      @java.lang.Override
+      public com.google.protobuf.Parser<ContractGeneric> getParserForType() {
+        return PARSER;
+      }
+
+      @java.lang.Override
+      public wallet.core.jni.proto.Ethereum.Transaction.ContractGeneric getDefaultInstanceForType() {
+        return DEFAULT_INSTANCE;
+      }
+
+    }
+
+    private int transactionOneofCase_ = 0;
+    private java.lang.Object transactionOneof_;
+    public enum TransactionOneofCase
+        implements com.google.protobuf.Internal.EnumLite,
+            com.google.protobuf.AbstractMessage.InternalOneOfEnum {
+      TRANSFER(1),
+      ERC20_TRANSFER(2),
+      ERC20_APPROVE(3),
+      ERC721_TRANSFER(4),
+      ERC1155_TRANSFER(5),
+      CONTRACT_GENERIC(6),
+      TRANSACTIONONEOF_NOT_SET(0);
+      private final int value;
+      private TransactionOneofCase(int value) {
+        this.value = value;
+      }
+      /**
+       * @param value The number of the enum to look for.
+       * @return The enum associated with the given number.
+       * @deprecated Use {@link #forNumber(int)} instead.
+       */
+      @java.lang.Deprecated
+      public static TransactionOneofCase valueOf(int value) {
+        return forNumber(value);
+      }
+
+      public static TransactionOneofCase forNumber(int value) {
+        switch (value) {
+          case 1: return TRANSFER;
+          case 2: return ERC20_TRANSFER;
+          case 3: return ERC20_APPROVE;
+          case 4: return ERC721_TRANSFER;
+          case 5: return ERC1155_TRANSFER;
+          case 6: return CONTRACT_GENERIC;
+          case 0: return TRANSACTIONONEOF_NOT_SET;
+          default: return null;
+        }
+      }
+      public int getNumber() {
+        return this.value;
+      }
+    };
+
+    public TransactionOneofCase
+    getTransactionOneofCase() {
+      return TransactionOneofCase.forNumber(
+          transactionOneofCase_);
+    }
+
+    public static final int TRANSFER_FIELD_NUMBER = 1;
+    /**
+     * <code>.TW.Ethereum.Proto.Transaction.Transfer transfer = 1;</code>
+     * @return Whether the transfer field is set.
+     */
+    @java.lang.Override
+    public boolean hasTransfer() {
+      return transactionOneofCase_ == 1;
+    }
+    /**
+     * <code>.TW.Ethereum.Proto.Transaction.Transfer transfer = 1;</code>
+     * @return The transfer.
+     */
+    @java.lang.Override
+    public wallet.core.jni.proto.Ethereum.Transaction.Transfer getTransfer() {
+      if (transactionOneofCase_ == 1) {
+         return (wallet.core.jni.proto.Ethereum.Transaction.Transfer) transactionOneof_;
+      }
+      return wallet.core.jni.proto.Ethereum.Transaction.Transfer.getDefaultInstance();
+    }
+    /**
+     * <code>.TW.Ethereum.Proto.Transaction.Transfer transfer = 1;</code>
+     */
+    @java.lang.Override
+    public wallet.core.jni.proto.Ethereum.Transaction.TransferOrBuilder getTransferOrBuilder() {
+      if (transactionOneofCase_ == 1) {
+         return (wallet.core.jni.proto.Ethereum.Transaction.Transfer) transactionOneof_;
+      }
+      return wallet.core.jni.proto.Ethereum.Transaction.Transfer.getDefaultInstance();
+    }
+
+    public static final int ERC20_TRANSFER_FIELD_NUMBER = 2;
+    /**
+     * <code>.TW.Ethereum.Proto.Transaction.ERC20Transfer erc20_transfer = 2;</code>
+     * @return Whether the erc20Transfer field is set.
+     */
+    @java.lang.Override
+    public boolean hasErc20Transfer() {
+      return transactionOneofCase_ == 2;
+    }
+    /**
+     * <code>.TW.Ethereum.Proto.Transaction.ERC20Transfer erc20_transfer = 2;</code>
+     * @return The erc20Transfer.
+     */
+    @java.lang.Override
+    public wallet.core.jni.proto.Ethereum.Transaction.ERC20Transfer getErc20Transfer() {
+      if (transactionOneofCase_ == 2) {
+         return (wallet.core.jni.proto.Ethereum.Transaction.ERC20Transfer) transactionOneof_;
+      }
+      return wallet.core.jni.proto.Ethereum.Transaction.ERC20Transfer.getDefaultInstance();
+    }
+    /**
+     * <code>.TW.Ethereum.Proto.Transaction.ERC20Transfer erc20_transfer = 2;</code>
+     */
+    @java.lang.Override
+    public wallet.core.jni.proto.Ethereum.Transaction.ERC20TransferOrBuilder getErc20TransferOrBuilder() {
+      if (transactionOneofCase_ == 2) {
+         return (wallet.core.jni.proto.Ethereum.Transaction.ERC20Transfer) transactionOneof_;
+      }
+      return wallet.core.jni.proto.Ethereum.Transaction.ERC20Transfer.getDefaultInstance();
+    }
+
+    public static final int ERC20_APPROVE_FIELD_NUMBER = 3;
+    /**
+     * <code>.TW.Ethereum.Proto.Transaction.ERC20Approve erc20_approve = 3;</code>
+     * @return Whether the erc20Approve field is set.
+     */
+    @java.lang.Override
+    public boolean hasErc20Approve() {
+      return transactionOneofCase_ == 3;
+    }
+    /**
+     * <code>.TW.Ethereum.Proto.Transaction.ERC20Approve erc20_approve = 3;</code>
+     * @return The erc20Approve.
+     */
+    @java.lang.Override
+    public wallet.core.jni.proto.Ethereum.Transaction.ERC20Approve getErc20Approve() {
+      if (transactionOneofCase_ == 3) {
+         return (wallet.core.jni.proto.Ethereum.Transaction.ERC20Approve) transactionOneof_;
+      }
+      return wallet.core.jni.proto.Ethereum.Transaction.ERC20Approve.getDefaultInstance();
+    }
+    /**
+     * <code>.TW.Ethereum.Proto.Transaction.ERC20Approve erc20_approve = 3;</code>
+     */
+    @java.lang.Override
+    public wallet.core.jni.proto.Ethereum.Transaction.ERC20ApproveOrBuilder getErc20ApproveOrBuilder() {
+      if (transactionOneofCase_ == 3) {
+         return (wallet.core.jni.proto.Ethereum.Transaction.ERC20Approve) transactionOneof_;
+      }
+      return wallet.core.jni.proto.Ethereum.Transaction.ERC20Approve.getDefaultInstance();
+    }
+
+    public static final int ERC721_TRANSFER_FIELD_NUMBER = 4;
+    /**
+     * <code>.TW.Ethereum.Proto.Transaction.ERC721Transfer erc721_transfer = 4;</code>
+     * @return Whether the erc721Transfer field is set.
+     */
+    @java.lang.Override
+    public boolean hasErc721Transfer() {
+      return transactionOneofCase_ == 4;
+    }
+    /**
+     * <code>.TW.Ethereum.Proto.Transaction.ERC721Transfer erc721_transfer = 4;</code>
+     * @return The erc721Transfer.
+     */
+    @java.lang.Override
+    public wallet.core.jni.proto.Ethereum.Transaction.ERC721Transfer getErc721Transfer() {
+      if (transactionOneofCase_ == 4) {
+         return (wallet.core.jni.proto.Ethereum.Transaction.ERC721Transfer) transactionOneof_;
+      }
+      return wallet.core.jni.proto.Ethereum.Transaction.ERC721Transfer.getDefaultInstance();
+    }
+    /**
+     * <code>.TW.Ethereum.Proto.Transaction.ERC721Transfer erc721_transfer = 4;</code>
+     */
+    @java.lang.Override
+    public wallet.core.jni.proto.Ethereum.Transaction.ERC721TransferOrBuilder getErc721TransferOrBuilder() {
+      if (transactionOneofCase_ == 4) {
+         return (wallet.core.jni.proto.Ethereum.Transaction.ERC721Transfer) transactionOneof_;
+      }
+      return wallet.core.jni.proto.Ethereum.Transaction.ERC721Transfer.getDefaultInstance();
+    }
+
+    public static final int ERC1155_TRANSFER_FIELD_NUMBER = 5;
+    /**
+     * <code>.TW.Ethereum.Proto.Transaction.ERC1155Transfer erc1155_transfer = 5;</code>
+     * @return Whether the erc1155Transfer field is set.
+     */
+    @java.lang.Override
+    public boolean hasErc1155Transfer() {
+      return transactionOneofCase_ == 5;
+    }
+    /**
+     * <code>.TW.Ethereum.Proto.Transaction.ERC1155Transfer erc1155_transfer = 5;</code>
+     * @return The erc1155Transfer.
+     */
+    @java.lang.Override
+    public wallet.core.jni.proto.Ethereum.Transaction.ERC1155Transfer getErc1155Transfer() {
+      if (transactionOneofCase_ == 5) {
+         return (wallet.core.jni.proto.Ethereum.Transaction.ERC1155Transfer) transactionOneof_;
+      }
+      return wallet.core.jni.proto.Ethereum.Transaction.ERC1155Transfer.getDefaultInstance();
+    }
+    /**
+     * <code>.TW.Ethereum.Proto.Transaction.ERC1155Transfer erc1155_transfer = 5;</code>
+     */
+    @java.lang.Override
+    public wallet.core.jni.proto.Ethereum.Transaction.ERC1155TransferOrBuilder getErc1155TransferOrBuilder() {
+      if (transactionOneofCase_ == 5) {
+         return (wallet.core.jni.proto.Ethereum.Transaction.ERC1155Transfer) transactionOneof_;
+      }
+      return wallet.core.jni.proto.Ethereum.Transaction.ERC1155Transfer.getDefaultInstance();
+    }
+
+    public static final int CONTRACT_GENERIC_FIELD_NUMBER = 6;
+    /**
+     * <code>.TW.Ethereum.Proto.Transaction.ContractGeneric contract_generic = 6;</code>
+     * @return Whether the contractGeneric field is set.
+     */
+    @java.lang.Override
+    public boolean hasContractGeneric() {
+      return transactionOneofCase_ == 6;
+    }
+    /**
+     * <code>.TW.Ethereum.Proto.Transaction.ContractGeneric contract_generic = 6;</code>
+     * @return The contractGeneric.
+     */
+    @java.lang.Override
+    public wallet.core.jni.proto.Ethereum.Transaction.ContractGeneric getContractGeneric() {
+      if (transactionOneofCase_ == 6) {
+         return (wallet.core.jni.proto.Ethereum.Transaction.ContractGeneric) transactionOneof_;
+      }
+      return wallet.core.jni.proto.Ethereum.Transaction.ContractGeneric.getDefaultInstance();
+    }
+    /**
+     * <code>.TW.Ethereum.Proto.Transaction.ContractGeneric contract_generic = 6;</code>
+     */
+    @java.lang.Override
+    public wallet.core.jni.proto.Ethereum.Transaction.ContractGenericOrBuilder getContractGenericOrBuilder() {
+      if (transactionOneofCase_ == 6) {
+         return (wallet.core.jni.proto.Ethereum.Transaction.ContractGeneric) transactionOneof_;
+      }
+      return wallet.core.jni.proto.Ethereum.Transaction.ContractGeneric.getDefaultInstance();
+    }
+
+    private byte memoizedIsInitialized = -1;
+    @java.lang.Override
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    @java.lang.Override
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      if (transactionOneofCase_ == 1) {
+        output.writeMessage(1, (wallet.core.jni.proto.Ethereum.Transaction.Transfer) transactionOneof_);
+      }
+      if (transactionOneofCase_ == 2) {
+        output.writeMessage(2, (wallet.core.jni.proto.Ethereum.Transaction.ERC20Transfer) transactionOneof_);
+      }
+      if (transactionOneofCase_ == 3) {
+        output.writeMessage(3, (wallet.core.jni.proto.Ethereum.Transaction.ERC20Approve) transactionOneof_);
+      }
+      if (transactionOneofCase_ == 4) {
+        output.writeMessage(4, (wallet.core.jni.proto.Ethereum.Transaction.ERC721Transfer) transactionOneof_);
+      }
+      if (transactionOneofCase_ == 5) {
+        output.writeMessage(5, (wallet.core.jni.proto.Ethereum.Transaction.ERC1155Transfer) transactionOneof_);
+      }
+      if (transactionOneofCase_ == 6) {
+        output.writeMessage(6, (wallet.core.jni.proto.Ethereum.Transaction.ContractGeneric) transactionOneof_);
+      }
+      unknownFields.writeTo(output);
+    }
+
+    @java.lang.Override
+    public int getSerializedSize() {
+      int size = memoizedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (transactionOneofCase_ == 1) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(1, (wallet.core.jni.proto.Ethereum.Transaction.Transfer) transactionOneof_);
+      }
+      if (transactionOneofCase_ == 2) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(2, (wallet.core.jni.proto.Ethereum.Transaction.ERC20Transfer) transactionOneof_);
+      }
+      if (transactionOneofCase_ == 3) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(3, (wallet.core.jni.proto.Ethereum.Transaction.ERC20Approve) transactionOneof_);
+      }
+      if (transactionOneofCase_ == 4) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(4, (wallet.core.jni.proto.Ethereum.Transaction.ERC721Transfer) transactionOneof_);
+      }
+      if (transactionOneofCase_ == 5) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(5, (wallet.core.jni.proto.Ethereum.Transaction.ERC1155Transfer) transactionOneof_);
+      }
+      if (transactionOneofCase_ == 6) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(6, (wallet.core.jni.proto.Ethereum.Transaction.ContractGeneric) transactionOneof_);
+      }
+      size += unknownFields.getSerializedSize();
+      memoizedSize = size;
+      return size;
+    }
+
+    @java.lang.Override
+    public boolean equals(final java.lang.Object obj) {
+      if (obj == this) {
+       return true;
+      }
+      if (!(obj instanceof wallet.core.jni.proto.Ethereum.Transaction)) {
+        return super.equals(obj);
+      }
+      wallet.core.jni.proto.Ethereum.Transaction other = (wallet.core.jni.proto.Ethereum.Transaction) obj;
+
+      if (!getTransactionOneofCase().equals(other.getTransactionOneofCase())) return false;
+      switch (transactionOneofCase_) {
+        case 1:
+          if (!getTransfer()
+              .equals(other.getTransfer())) return false;
+          break;
+        case 2:
+          if (!getErc20Transfer()
+              .equals(other.getErc20Transfer())) return false;
+          break;
+        case 3:
+          if (!getErc20Approve()
+              .equals(other.getErc20Approve())) return false;
+          break;
+        case 4:
+          if (!getErc721Transfer()
+              .equals(other.getErc721Transfer())) return false;
+          break;
+        case 5:
+          if (!getErc1155Transfer()
+              .equals(other.getErc1155Transfer())) return false;
+          break;
+        case 6:
+          if (!getContractGeneric()
+              .equals(other.getContractGeneric())) return false;
+          break;
+        case 0:
+        default:
+      }
+      if (!unknownFields.equals(other.unknownFields)) return false;
+      return true;
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+      if (memoizedHashCode != 0) {
+        return memoizedHashCode;
+      }
+      int hash = 41;
+      hash = (19 * hash) + getDescriptor().hashCode();
+      switch (transactionOneofCase_) {
+        case 1:
+          hash = (37 * hash) + TRANSFER_FIELD_NUMBER;
+          hash = (53 * hash) + getTransfer().hashCode();
+          break;
+        case 2:
+          hash = (37 * hash) + ERC20_TRANSFER_FIELD_NUMBER;
+          hash = (53 * hash) + getErc20Transfer().hashCode();
+          break;
+        case 3:
+          hash = (37 * hash) + ERC20_APPROVE_FIELD_NUMBER;
+          hash = (53 * hash) + getErc20Approve().hashCode();
+          break;
+        case 4:
+          hash = (37 * hash) + ERC721_TRANSFER_FIELD_NUMBER;
+          hash = (53 * hash) + getErc721Transfer().hashCode();
+          break;
+        case 5:
+          hash = (37 * hash) + ERC1155_TRANSFER_FIELD_NUMBER;
+          hash = (53 * hash) + getErc1155Transfer().hashCode();
+          break;
+        case 6:
+          hash = (37 * hash) + CONTRACT_GENERIC_FIELD_NUMBER;
+          hash = (53 * hash) + getContractGeneric().hashCode();
+          break;
+        case 0:
+        default:
+      }
+      hash = (29 * hash) + unknownFields.hashCode();
+      memoizedHashCode = hash;
+      return hash;
+    }
+
+    public static wallet.core.jni.proto.Ethereum.Transaction parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static wallet.core.jni.proto.Ethereum.Transaction parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static wallet.core.jni.proto.Ethereum.Transaction parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static wallet.core.jni.proto.Ethereum.Transaction parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static wallet.core.jni.proto.Ethereum.Transaction parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static wallet.core.jni.proto.Ethereum.Transaction parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static wallet.core.jni.proto.Ethereum.Transaction parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static wallet.core.jni.proto.Ethereum.Transaction parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static wallet.core.jni.proto.Ethereum.Transaction parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input);
+    }
+    public static wallet.core.jni.proto.Ethereum.Transaction parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static wallet.core.jni.proto.Ethereum.Transaction parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static wallet.core.jni.proto.Ethereum.Transaction parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    @java.lang.Override
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder() {
+      return DEFAULT_INSTANCE.toBuilder();
+    }
+    public static Builder newBuilder(wallet.core.jni.proto.Ethereum.Transaction prototype) {
+      return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
+    }
+    @java.lang.Override
+    public Builder toBuilder() {
+      return this == DEFAULT_INSTANCE
+          ? new Builder() : new Builder().mergeFrom(this);
+    }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * <pre>
+     * Transaction (transfer, smart contract call, ...)
+     * </pre>
+     *
+     * Protobuf type {@code TW.Ethereum.Proto.Transaction}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:TW.Ethereum.Proto.Transaction)
+        wallet.core.jni.proto.Ethereum.TransactionOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return wallet.core.jni.proto.Ethereum.internal_static_TW_Ethereum_Proto_Transaction_descriptor;
+      }
+
+      @java.lang.Override
+      protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return wallet.core.jni.proto.Ethereum.internal_static_TW_Ethereum_Proto_Transaction_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                wallet.core.jni.proto.Ethereum.Transaction.class, wallet.core.jni.proto.Ethereum.Transaction.Builder.class);
+      }
+
+      // Construct using wallet.core.jni.proto.Ethereum.Transaction.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessageV3
+                .alwaysUseFieldBuilders) {
+        }
+      }
+      @java.lang.Override
+      public Builder clear() {
+        super.clear();
+        transactionOneofCase_ = 0;
+        transactionOneof_ = null;
+        return this;
+      }
+
+      @java.lang.Override
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return wallet.core.jni.proto.Ethereum.internal_static_TW_Ethereum_Proto_Transaction_descriptor;
+      }
+
+      @java.lang.Override
+      public wallet.core.jni.proto.Ethereum.Transaction getDefaultInstanceForType() {
+        return wallet.core.jni.proto.Ethereum.Transaction.getDefaultInstance();
+      }
+
+      @java.lang.Override
+      public wallet.core.jni.proto.Ethereum.Transaction build() {
+        wallet.core.jni.proto.Ethereum.Transaction result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      @java.lang.Override
+      public wallet.core.jni.proto.Ethereum.Transaction buildPartial() {
+        wallet.core.jni.proto.Ethereum.Transaction result = new wallet.core.jni.proto.Ethereum.Transaction(this);
+        if (transactionOneofCase_ == 1) {
+          if (transferBuilder_ == null) {
+            result.transactionOneof_ = transactionOneof_;
+          } else {
+            result.transactionOneof_ = transferBuilder_.build();
+          }
+        }
+        if (transactionOneofCase_ == 2) {
+          if (erc20TransferBuilder_ == null) {
+            result.transactionOneof_ = transactionOneof_;
+          } else {
+            result.transactionOneof_ = erc20TransferBuilder_.build();
+          }
+        }
+        if (transactionOneofCase_ == 3) {
+          if (erc20ApproveBuilder_ == null) {
+            result.transactionOneof_ = transactionOneof_;
+          } else {
+            result.transactionOneof_ = erc20ApproveBuilder_.build();
+          }
+        }
+        if (transactionOneofCase_ == 4) {
+          if (erc721TransferBuilder_ == null) {
+            result.transactionOneof_ = transactionOneof_;
+          } else {
+            result.transactionOneof_ = erc721TransferBuilder_.build();
+          }
+        }
+        if (transactionOneofCase_ == 5) {
+          if (erc1155TransferBuilder_ == null) {
+            result.transactionOneof_ = transactionOneof_;
+          } else {
+            result.transactionOneof_ = erc1155TransferBuilder_.build();
+          }
+        }
+        if (transactionOneofCase_ == 6) {
+          if (contractGenericBuilder_ == null) {
+            result.transactionOneof_ = transactionOneof_;
+          } else {
+            result.transactionOneof_ = contractGenericBuilder_.build();
+          }
+        }
+        result.transactionOneofCase_ = transactionOneofCase_;
+        onBuilt();
+        return result;
+      }
+
+      @java.lang.Override
+      public Builder clone() {
+        return super.clone();
+      }
+      @java.lang.Override
+      public Builder setField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return super.setField(field, value);
+      }
+      @java.lang.Override
+      public Builder clearField(
+          com.google.protobuf.Descriptors.FieldDescriptor field) {
+        return super.clearField(field);
+      }
+      @java.lang.Override
+      public Builder clearOneof(
+          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
+        return super.clearOneof(oneof);
+      }
+      @java.lang.Override
+      public Builder setRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          int index, java.lang.Object value) {
+        return super.setRepeatedField(field, index, value);
+      }
+      @java.lang.Override
+      public Builder addRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return super.addRepeatedField(field, value);
+      }
+      @java.lang.Override
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof wallet.core.jni.proto.Ethereum.Transaction) {
+          return mergeFrom((wallet.core.jni.proto.Ethereum.Transaction)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(wallet.core.jni.proto.Ethereum.Transaction other) {
+        if (other == wallet.core.jni.proto.Ethereum.Transaction.getDefaultInstance()) return this;
+        switch (other.getTransactionOneofCase()) {
+          case TRANSFER: {
+            mergeTransfer(other.getTransfer());
+            break;
+          }
+          case ERC20_TRANSFER: {
+            mergeErc20Transfer(other.getErc20Transfer());
+            break;
+          }
+          case ERC20_APPROVE: {
+            mergeErc20Approve(other.getErc20Approve());
+            break;
+          }
+          case ERC721_TRANSFER: {
+            mergeErc721Transfer(other.getErc721Transfer());
+            break;
+          }
+          case ERC1155_TRANSFER: {
+            mergeErc1155Transfer(other.getErc1155Transfer());
+            break;
+          }
+          case CONTRACT_GENERIC: {
+            mergeContractGeneric(other.getContractGeneric());
+            break;
+          }
+          case TRANSACTIONONEOF_NOT_SET: {
+            break;
+          }
+        }
+        this.mergeUnknownFields(other.unknownFields);
+        onChanged();
+        return this;
+      }
+
+      @java.lang.Override
+      public final boolean isInitialized() {
+        return true;
+      }
+
+      @java.lang.Override
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        wallet.core.jni.proto.Ethereum.Transaction parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (wallet.core.jni.proto.Ethereum.Transaction) e.getUnfinishedMessage();
+          throw e.unwrapIOException();
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+      private int transactionOneofCase_ = 0;
+      private java.lang.Object transactionOneof_;
+      public TransactionOneofCase
+          getTransactionOneofCase() {
+        return TransactionOneofCase.forNumber(
+            transactionOneofCase_);
+      }
+
+      public Builder clearTransactionOneof() {
+        transactionOneofCase_ = 0;
+        transactionOneof_ = null;
+        onChanged();
+        return this;
+      }
+
+
+      private com.google.protobuf.SingleFieldBuilderV3<
+          wallet.core.jni.proto.Ethereum.Transaction.Transfer, wallet.core.jni.proto.Ethereum.Transaction.Transfer.Builder, wallet.core.jni.proto.Ethereum.Transaction.TransferOrBuilder> transferBuilder_;
+      /**
+       * <code>.TW.Ethereum.Proto.Transaction.Transfer transfer = 1;</code>
+       * @return Whether the transfer field is set.
+       */
+      @java.lang.Override
+      public boolean hasTransfer() {
+        return transactionOneofCase_ == 1;
+      }
+      /**
+       * <code>.TW.Ethereum.Proto.Transaction.Transfer transfer = 1;</code>
+       * @return The transfer.
+       */
+      @java.lang.Override
+      public wallet.core.jni.proto.Ethereum.Transaction.Transfer getTransfer() {
+        if (transferBuilder_ == null) {
+          if (transactionOneofCase_ == 1) {
+            return (wallet.core.jni.proto.Ethereum.Transaction.Transfer) transactionOneof_;
+          }
+          return wallet.core.jni.proto.Ethereum.Transaction.Transfer.getDefaultInstance();
+        } else {
+          if (transactionOneofCase_ == 1) {
+            return transferBuilder_.getMessage();
+          }
+          return wallet.core.jni.proto.Ethereum.Transaction.Transfer.getDefaultInstance();
+        }
+      }
+      /**
+       * <code>.TW.Ethereum.Proto.Transaction.Transfer transfer = 1;</code>
+       */
+      public Builder setTransfer(wallet.core.jni.proto.Ethereum.Transaction.Transfer value) {
+        if (transferBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          transactionOneof_ = value;
+          onChanged();
+        } else {
+          transferBuilder_.setMessage(value);
+        }
+        transactionOneofCase_ = 1;
+        return this;
+      }
+      /**
+       * <code>.TW.Ethereum.Proto.Transaction.Transfer transfer = 1;</code>
+       */
+      public Builder setTransfer(
+          wallet.core.jni.proto.Ethereum.Transaction.Transfer.Builder builderForValue) {
+        if (transferBuilder_ == null) {
+          transactionOneof_ = builderForValue.build();
+          onChanged();
+        } else {
+          transferBuilder_.setMessage(builderForValue.build());
+        }
+        transactionOneofCase_ = 1;
+        return this;
+      }
+      /**
+       * <code>.TW.Ethereum.Proto.Transaction.Transfer transfer = 1;</code>
+       */
+      public Builder mergeTransfer(wallet.core.jni.proto.Ethereum.Transaction.Transfer value) {
+        if (transferBuilder_ == null) {
+          if (transactionOneofCase_ == 1 &&
+              transactionOneof_ != wallet.core.jni.proto.Ethereum.Transaction.Transfer.getDefaultInstance()) {
+            transactionOneof_ = wallet.core.jni.proto.Ethereum.Transaction.Transfer.newBuilder((wallet.core.jni.proto.Ethereum.Transaction.Transfer) transactionOneof_)
+                .mergeFrom(value).buildPartial();
+          } else {
+            transactionOneof_ = value;
+          }
+          onChanged();
+        } else {
+          if (transactionOneofCase_ == 1) {
+            transferBuilder_.mergeFrom(value);
+          }
+          transferBuilder_.setMessage(value);
+        }
+        transactionOneofCase_ = 1;
+        return this;
+      }
+      /**
+       * <code>.TW.Ethereum.Proto.Transaction.Transfer transfer = 1;</code>
+       */
+      public Builder clearTransfer() {
+        if (transferBuilder_ == null) {
+          if (transactionOneofCase_ == 1) {
+            transactionOneofCase_ = 0;
+            transactionOneof_ = null;
+            onChanged();
+          }
+        } else {
+          if (transactionOneofCase_ == 1) {
+            transactionOneofCase_ = 0;
+            transactionOneof_ = null;
+          }
+          transferBuilder_.clear();
+        }
+        return this;
+      }
+      /**
+       * <code>.TW.Ethereum.Proto.Transaction.Transfer transfer = 1;</code>
+       */
+      public wallet.core.jni.proto.Ethereum.Transaction.Transfer.Builder getTransferBuilder() {
+        return getTransferFieldBuilder().getBuilder();
+      }
+      /**
+       * <code>.TW.Ethereum.Proto.Transaction.Transfer transfer = 1;</code>
+       */
+      @java.lang.Override
+      public wallet.core.jni.proto.Ethereum.Transaction.TransferOrBuilder getTransferOrBuilder() {
+        if ((transactionOneofCase_ == 1) && (transferBuilder_ != null)) {
+          return transferBuilder_.getMessageOrBuilder();
+        } else {
+          if (transactionOneofCase_ == 1) {
+            return (wallet.core.jni.proto.Ethereum.Transaction.Transfer) transactionOneof_;
+          }
+          return wallet.core.jni.proto.Ethereum.Transaction.Transfer.getDefaultInstance();
+        }
+      }
+      /**
+       * <code>.TW.Ethereum.Proto.Transaction.Transfer transfer = 1;</code>
+       */
+      private com.google.protobuf.SingleFieldBuilderV3<
+          wallet.core.jni.proto.Ethereum.Transaction.Transfer, wallet.core.jni.proto.Ethereum.Transaction.Transfer.Builder, wallet.core.jni.proto.Ethereum.Transaction.TransferOrBuilder> 
+          getTransferFieldBuilder() {
+        if (transferBuilder_ == null) {
+          if (!(transactionOneofCase_ == 1)) {
+            transactionOneof_ = wallet.core.jni.proto.Ethereum.Transaction.Transfer.getDefaultInstance();
+          }
+          transferBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+              wallet.core.jni.proto.Ethereum.Transaction.Transfer, wallet.core.jni.proto.Ethereum.Transaction.Transfer.Builder, wallet.core.jni.proto.Ethereum.Transaction.TransferOrBuilder>(
+                  (wallet.core.jni.proto.Ethereum.Transaction.Transfer) transactionOneof_,
+                  getParentForChildren(),
+                  isClean());
+          transactionOneof_ = null;
+        }
+        transactionOneofCase_ = 1;
+        onChanged();;
+        return transferBuilder_;
+      }
+
+      private com.google.protobuf.SingleFieldBuilderV3<
+          wallet.core.jni.proto.Ethereum.Transaction.ERC20Transfer, wallet.core.jni.proto.Ethereum.Transaction.ERC20Transfer.Builder, wallet.core.jni.proto.Ethereum.Transaction.ERC20TransferOrBuilder> erc20TransferBuilder_;
+      /**
+       * <code>.TW.Ethereum.Proto.Transaction.ERC20Transfer erc20_transfer = 2;</code>
+       * @return Whether the erc20Transfer field is set.
+       */
+      @java.lang.Override
+      public boolean hasErc20Transfer() {
+        return transactionOneofCase_ == 2;
+      }
+      /**
+       * <code>.TW.Ethereum.Proto.Transaction.ERC20Transfer erc20_transfer = 2;</code>
+       * @return The erc20Transfer.
+       */
+      @java.lang.Override
+      public wallet.core.jni.proto.Ethereum.Transaction.ERC20Transfer getErc20Transfer() {
+        if (erc20TransferBuilder_ == null) {
+          if (transactionOneofCase_ == 2) {
+            return (wallet.core.jni.proto.Ethereum.Transaction.ERC20Transfer) transactionOneof_;
+          }
+          return wallet.core.jni.proto.Ethereum.Transaction.ERC20Transfer.getDefaultInstance();
+        } else {
+          if (transactionOneofCase_ == 2) {
+            return erc20TransferBuilder_.getMessage();
+          }
+          return wallet.core.jni.proto.Ethereum.Transaction.ERC20Transfer.getDefaultInstance();
+        }
+      }
+      /**
+       * <code>.TW.Ethereum.Proto.Transaction.ERC20Transfer erc20_transfer = 2;</code>
+       */
+      public Builder setErc20Transfer(wallet.core.jni.proto.Ethereum.Transaction.ERC20Transfer value) {
+        if (erc20TransferBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          transactionOneof_ = value;
+          onChanged();
+        } else {
+          erc20TransferBuilder_.setMessage(value);
+        }
+        transactionOneofCase_ = 2;
+        return this;
+      }
+      /**
+       * <code>.TW.Ethereum.Proto.Transaction.ERC20Transfer erc20_transfer = 2;</code>
+       */
+      public Builder setErc20Transfer(
+          wallet.core.jni.proto.Ethereum.Transaction.ERC20Transfer.Builder builderForValue) {
+        if (erc20TransferBuilder_ == null) {
+          transactionOneof_ = builderForValue.build();
+          onChanged();
+        } else {
+          erc20TransferBuilder_.setMessage(builderForValue.build());
+        }
+        transactionOneofCase_ = 2;
+        return this;
+      }
+      /**
+       * <code>.TW.Ethereum.Proto.Transaction.ERC20Transfer erc20_transfer = 2;</code>
+       */
+      public Builder mergeErc20Transfer(wallet.core.jni.proto.Ethereum.Transaction.ERC20Transfer value) {
+        if (erc20TransferBuilder_ == null) {
+          if (transactionOneofCase_ == 2 &&
+              transactionOneof_ != wallet.core.jni.proto.Ethereum.Transaction.ERC20Transfer.getDefaultInstance()) {
+            transactionOneof_ = wallet.core.jni.proto.Ethereum.Transaction.ERC20Transfer.newBuilder((wallet.core.jni.proto.Ethereum.Transaction.ERC20Transfer) transactionOneof_)
+                .mergeFrom(value).buildPartial();
+          } else {
+            transactionOneof_ = value;
+          }
+          onChanged();
+        } else {
+          if (transactionOneofCase_ == 2) {
+            erc20TransferBuilder_.mergeFrom(value);
+          }
+          erc20TransferBuilder_.setMessage(value);
+        }
+        transactionOneofCase_ = 2;
+        return this;
+      }
+      /**
+       * <code>.TW.Ethereum.Proto.Transaction.ERC20Transfer erc20_transfer = 2;</code>
+       */
+      public Builder clearErc20Transfer() {
+        if (erc20TransferBuilder_ == null) {
+          if (transactionOneofCase_ == 2) {
+            transactionOneofCase_ = 0;
+            transactionOneof_ = null;
+            onChanged();
+          }
+        } else {
+          if (transactionOneofCase_ == 2) {
+            transactionOneofCase_ = 0;
+            transactionOneof_ = null;
+          }
+          erc20TransferBuilder_.clear();
+        }
+        return this;
+      }
+      /**
+       * <code>.TW.Ethereum.Proto.Transaction.ERC20Transfer erc20_transfer = 2;</code>
+       */
+      public wallet.core.jni.proto.Ethereum.Transaction.ERC20Transfer.Builder getErc20TransferBuilder() {
+        return getErc20TransferFieldBuilder().getBuilder();
+      }
+      /**
+       * <code>.TW.Ethereum.Proto.Transaction.ERC20Transfer erc20_transfer = 2;</code>
+       */
+      @java.lang.Override
+      public wallet.core.jni.proto.Ethereum.Transaction.ERC20TransferOrBuilder getErc20TransferOrBuilder() {
+        if ((transactionOneofCase_ == 2) && (erc20TransferBuilder_ != null)) {
+          return erc20TransferBuilder_.getMessageOrBuilder();
+        } else {
+          if (transactionOneofCase_ == 2) {
+            return (wallet.core.jni.proto.Ethereum.Transaction.ERC20Transfer) transactionOneof_;
+          }
+          return wallet.core.jni.proto.Ethereum.Transaction.ERC20Transfer.getDefaultInstance();
+        }
+      }
+      /**
+       * <code>.TW.Ethereum.Proto.Transaction.ERC20Transfer erc20_transfer = 2;</code>
+       */
+      private com.google.protobuf.SingleFieldBuilderV3<
+          wallet.core.jni.proto.Ethereum.Transaction.ERC20Transfer, wallet.core.jni.proto.Ethereum.Transaction.ERC20Transfer.Builder, wallet.core.jni.proto.Ethereum.Transaction.ERC20TransferOrBuilder> 
+          getErc20TransferFieldBuilder() {
+        if (erc20TransferBuilder_ == null) {
+          if (!(transactionOneofCase_ == 2)) {
+            transactionOneof_ = wallet.core.jni.proto.Ethereum.Transaction.ERC20Transfer.getDefaultInstance();
+          }
+          erc20TransferBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+              wallet.core.jni.proto.Ethereum.Transaction.ERC20Transfer, wallet.core.jni.proto.Ethereum.Transaction.ERC20Transfer.Builder, wallet.core.jni.proto.Ethereum.Transaction.ERC20TransferOrBuilder>(
+                  (wallet.core.jni.proto.Ethereum.Transaction.ERC20Transfer) transactionOneof_,
+                  getParentForChildren(),
+                  isClean());
+          transactionOneof_ = null;
+        }
+        transactionOneofCase_ = 2;
+        onChanged();;
+        return erc20TransferBuilder_;
+      }
+
+      private com.google.protobuf.SingleFieldBuilderV3<
+          wallet.core.jni.proto.Ethereum.Transaction.ERC20Approve, wallet.core.jni.proto.Ethereum.Transaction.ERC20Approve.Builder, wallet.core.jni.proto.Ethereum.Transaction.ERC20ApproveOrBuilder> erc20ApproveBuilder_;
+      /**
+       * <code>.TW.Ethereum.Proto.Transaction.ERC20Approve erc20_approve = 3;</code>
+       * @return Whether the erc20Approve field is set.
+       */
+      @java.lang.Override
+      public boolean hasErc20Approve() {
+        return transactionOneofCase_ == 3;
+      }
+      /**
+       * <code>.TW.Ethereum.Proto.Transaction.ERC20Approve erc20_approve = 3;</code>
+       * @return The erc20Approve.
+       */
+      @java.lang.Override
+      public wallet.core.jni.proto.Ethereum.Transaction.ERC20Approve getErc20Approve() {
+        if (erc20ApproveBuilder_ == null) {
+          if (transactionOneofCase_ == 3) {
+            return (wallet.core.jni.proto.Ethereum.Transaction.ERC20Approve) transactionOneof_;
+          }
+          return wallet.core.jni.proto.Ethereum.Transaction.ERC20Approve.getDefaultInstance();
+        } else {
+          if (transactionOneofCase_ == 3) {
+            return erc20ApproveBuilder_.getMessage();
+          }
+          return wallet.core.jni.proto.Ethereum.Transaction.ERC20Approve.getDefaultInstance();
+        }
+      }
+      /**
+       * <code>.TW.Ethereum.Proto.Transaction.ERC20Approve erc20_approve = 3;</code>
+       */
+      public Builder setErc20Approve(wallet.core.jni.proto.Ethereum.Transaction.ERC20Approve value) {
+        if (erc20ApproveBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          transactionOneof_ = value;
+          onChanged();
+        } else {
+          erc20ApproveBuilder_.setMessage(value);
+        }
+        transactionOneofCase_ = 3;
+        return this;
+      }
+      /**
+       * <code>.TW.Ethereum.Proto.Transaction.ERC20Approve erc20_approve = 3;</code>
+       */
+      public Builder setErc20Approve(
+          wallet.core.jni.proto.Ethereum.Transaction.ERC20Approve.Builder builderForValue) {
+        if (erc20ApproveBuilder_ == null) {
+          transactionOneof_ = builderForValue.build();
+          onChanged();
+        } else {
+          erc20ApproveBuilder_.setMessage(builderForValue.build());
+        }
+        transactionOneofCase_ = 3;
+        return this;
+      }
+      /**
+       * <code>.TW.Ethereum.Proto.Transaction.ERC20Approve erc20_approve = 3;</code>
+       */
+      public Builder mergeErc20Approve(wallet.core.jni.proto.Ethereum.Transaction.ERC20Approve value) {
+        if (erc20ApproveBuilder_ == null) {
+          if (transactionOneofCase_ == 3 &&
+              transactionOneof_ != wallet.core.jni.proto.Ethereum.Transaction.ERC20Approve.getDefaultInstance()) {
+            transactionOneof_ = wallet.core.jni.proto.Ethereum.Transaction.ERC20Approve.newBuilder((wallet.core.jni.proto.Ethereum.Transaction.ERC20Approve) transactionOneof_)
+                .mergeFrom(value).buildPartial();
+          } else {
+            transactionOneof_ = value;
+          }
+          onChanged();
+        } else {
+          if (transactionOneofCase_ == 3) {
+            erc20ApproveBuilder_.mergeFrom(value);
+          }
+          erc20ApproveBuilder_.setMessage(value);
+        }
+        transactionOneofCase_ = 3;
+        return this;
+      }
+      /**
+       * <code>.TW.Ethereum.Proto.Transaction.ERC20Approve erc20_approve = 3;</code>
+       */
+      public Builder clearErc20Approve() {
+        if (erc20ApproveBuilder_ == null) {
+          if (transactionOneofCase_ == 3) {
+            transactionOneofCase_ = 0;
+            transactionOneof_ = null;
+            onChanged();
+          }
+        } else {
+          if (transactionOneofCase_ == 3) {
+            transactionOneofCase_ = 0;
+            transactionOneof_ = null;
+          }
+          erc20ApproveBuilder_.clear();
+        }
+        return this;
+      }
+      /**
+       * <code>.TW.Ethereum.Proto.Transaction.ERC20Approve erc20_approve = 3;</code>
+       */
+      public wallet.core.jni.proto.Ethereum.Transaction.ERC20Approve.Builder getErc20ApproveBuilder() {
+        return getErc20ApproveFieldBuilder().getBuilder();
+      }
+      /**
+       * <code>.TW.Ethereum.Proto.Transaction.ERC20Approve erc20_approve = 3;</code>
+       */
+      @java.lang.Override
+      public wallet.core.jni.proto.Ethereum.Transaction.ERC20ApproveOrBuilder getErc20ApproveOrBuilder() {
+        if ((transactionOneofCase_ == 3) && (erc20ApproveBuilder_ != null)) {
+          return erc20ApproveBuilder_.getMessageOrBuilder();
+        } else {
+          if (transactionOneofCase_ == 3) {
+            return (wallet.core.jni.proto.Ethereum.Transaction.ERC20Approve) transactionOneof_;
+          }
+          return wallet.core.jni.proto.Ethereum.Transaction.ERC20Approve.getDefaultInstance();
+        }
+      }
+      /**
+       * <code>.TW.Ethereum.Proto.Transaction.ERC20Approve erc20_approve = 3;</code>
+       */
+      private com.google.protobuf.SingleFieldBuilderV3<
+          wallet.core.jni.proto.Ethereum.Transaction.ERC20Approve, wallet.core.jni.proto.Ethereum.Transaction.ERC20Approve.Builder, wallet.core.jni.proto.Ethereum.Transaction.ERC20ApproveOrBuilder> 
+          getErc20ApproveFieldBuilder() {
+        if (erc20ApproveBuilder_ == null) {
+          if (!(transactionOneofCase_ == 3)) {
+            transactionOneof_ = wallet.core.jni.proto.Ethereum.Transaction.ERC20Approve.getDefaultInstance();
+          }
+          erc20ApproveBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+              wallet.core.jni.proto.Ethereum.Transaction.ERC20Approve, wallet.core.jni.proto.Ethereum.Transaction.ERC20Approve.Builder, wallet.core.jni.proto.Ethereum.Transaction.ERC20ApproveOrBuilder>(
+                  (wallet.core.jni.proto.Ethereum.Transaction.ERC20Approve) transactionOneof_,
+                  getParentForChildren(),
+                  isClean());
+          transactionOneof_ = null;
+        }
+        transactionOneofCase_ = 3;
+        onChanged();;
+        return erc20ApproveBuilder_;
+      }
+
+      private com.google.protobuf.SingleFieldBuilderV3<
+          wallet.core.jni.proto.Ethereum.Transaction.ERC721Transfer, wallet.core.jni.proto.Ethereum.Transaction.ERC721Transfer.Builder, wallet.core.jni.proto.Ethereum.Transaction.ERC721TransferOrBuilder> erc721TransferBuilder_;
+      /**
+       * <code>.TW.Ethereum.Proto.Transaction.ERC721Transfer erc721_transfer = 4;</code>
+       * @return Whether the erc721Transfer field is set.
+       */
+      @java.lang.Override
+      public boolean hasErc721Transfer() {
+        return transactionOneofCase_ == 4;
+      }
+      /**
+       * <code>.TW.Ethereum.Proto.Transaction.ERC721Transfer erc721_transfer = 4;</code>
+       * @return The erc721Transfer.
+       */
+      @java.lang.Override
+      public wallet.core.jni.proto.Ethereum.Transaction.ERC721Transfer getErc721Transfer() {
+        if (erc721TransferBuilder_ == null) {
+          if (transactionOneofCase_ == 4) {
+            return (wallet.core.jni.proto.Ethereum.Transaction.ERC721Transfer) transactionOneof_;
+          }
+          return wallet.core.jni.proto.Ethereum.Transaction.ERC721Transfer.getDefaultInstance();
+        } else {
+          if (transactionOneofCase_ == 4) {
+            return erc721TransferBuilder_.getMessage();
+          }
+          return wallet.core.jni.proto.Ethereum.Transaction.ERC721Transfer.getDefaultInstance();
+        }
+      }
+      /**
+       * <code>.TW.Ethereum.Proto.Transaction.ERC721Transfer erc721_transfer = 4;</code>
+       */
+      public Builder setErc721Transfer(wallet.core.jni.proto.Ethereum.Transaction.ERC721Transfer value) {
+        if (erc721TransferBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          transactionOneof_ = value;
+          onChanged();
+        } else {
+          erc721TransferBuilder_.setMessage(value);
+        }
+        transactionOneofCase_ = 4;
+        return this;
+      }
+      /**
+       * <code>.TW.Ethereum.Proto.Transaction.ERC721Transfer erc721_transfer = 4;</code>
+       */
+      public Builder setErc721Transfer(
+          wallet.core.jni.proto.Ethereum.Transaction.ERC721Transfer.Builder builderForValue) {
+        if (erc721TransferBuilder_ == null) {
+          transactionOneof_ = builderForValue.build();
+          onChanged();
+        } else {
+          erc721TransferBuilder_.setMessage(builderForValue.build());
+        }
+        transactionOneofCase_ = 4;
+        return this;
+      }
+      /**
+       * <code>.TW.Ethereum.Proto.Transaction.ERC721Transfer erc721_transfer = 4;</code>
+       */
+      public Builder mergeErc721Transfer(wallet.core.jni.proto.Ethereum.Transaction.ERC721Transfer value) {
+        if (erc721TransferBuilder_ == null) {
+          if (transactionOneofCase_ == 4 &&
+              transactionOneof_ != wallet.core.jni.proto.Ethereum.Transaction.ERC721Transfer.getDefaultInstance()) {
+            transactionOneof_ = wallet.core.jni.proto.Ethereum.Transaction.ERC721Transfer.newBuilder((wallet.core.jni.proto.Ethereum.Transaction.ERC721Transfer) transactionOneof_)
+                .mergeFrom(value).buildPartial();
+          } else {
+            transactionOneof_ = value;
+          }
+          onChanged();
+        } else {
+          if (transactionOneofCase_ == 4) {
+            erc721TransferBuilder_.mergeFrom(value);
+          }
+          erc721TransferBuilder_.setMessage(value);
+        }
+        transactionOneofCase_ = 4;
+        return this;
+      }
+      /**
+       * <code>.TW.Ethereum.Proto.Transaction.ERC721Transfer erc721_transfer = 4;</code>
+       */
+      public Builder clearErc721Transfer() {
+        if (erc721TransferBuilder_ == null) {
+          if (transactionOneofCase_ == 4) {
+            transactionOneofCase_ = 0;
+            transactionOneof_ = null;
+            onChanged();
+          }
+        } else {
+          if (transactionOneofCase_ == 4) {
+            transactionOneofCase_ = 0;
+            transactionOneof_ = null;
+          }
+          erc721TransferBuilder_.clear();
+        }
+        return this;
+      }
+      /**
+       * <code>.TW.Ethereum.Proto.Transaction.ERC721Transfer erc721_transfer = 4;</code>
+       */
+      public wallet.core.jni.proto.Ethereum.Transaction.ERC721Transfer.Builder getErc721TransferBuilder() {
+        return getErc721TransferFieldBuilder().getBuilder();
+      }
+      /**
+       * <code>.TW.Ethereum.Proto.Transaction.ERC721Transfer erc721_transfer = 4;</code>
+       */
+      @java.lang.Override
+      public wallet.core.jni.proto.Ethereum.Transaction.ERC721TransferOrBuilder getErc721TransferOrBuilder() {
+        if ((transactionOneofCase_ == 4) && (erc721TransferBuilder_ != null)) {
+          return erc721TransferBuilder_.getMessageOrBuilder();
+        } else {
+          if (transactionOneofCase_ == 4) {
+            return (wallet.core.jni.proto.Ethereum.Transaction.ERC721Transfer) transactionOneof_;
+          }
+          return wallet.core.jni.proto.Ethereum.Transaction.ERC721Transfer.getDefaultInstance();
+        }
+      }
+      /**
+       * <code>.TW.Ethereum.Proto.Transaction.ERC721Transfer erc721_transfer = 4;</code>
+       */
+      private com.google.protobuf.SingleFieldBuilderV3<
+          wallet.core.jni.proto.Ethereum.Transaction.ERC721Transfer, wallet.core.jni.proto.Ethereum.Transaction.ERC721Transfer.Builder, wallet.core.jni.proto.Ethereum.Transaction.ERC721TransferOrBuilder> 
+          getErc721TransferFieldBuilder() {
+        if (erc721TransferBuilder_ == null) {
+          if (!(transactionOneofCase_ == 4)) {
+            transactionOneof_ = wallet.core.jni.proto.Ethereum.Transaction.ERC721Transfer.getDefaultInstance();
+          }
+          erc721TransferBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+              wallet.core.jni.proto.Ethereum.Transaction.ERC721Transfer, wallet.core.jni.proto.Ethereum.Transaction.ERC721Transfer.Builder, wallet.core.jni.proto.Ethereum.Transaction.ERC721TransferOrBuilder>(
+                  (wallet.core.jni.proto.Ethereum.Transaction.ERC721Transfer) transactionOneof_,
+                  getParentForChildren(),
+                  isClean());
+          transactionOneof_ = null;
+        }
+        transactionOneofCase_ = 4;
+        onChanged();;
+        return erc721TransferBuilder_;
+      }
+
+      private com.google.protobuf.SingleFieldBuilderV3<
+          wallet.core.jni.proto.Ethereum.Transaction.ERC1155Transfer, wallet.core.jni.proto.Ethereum.Transaction.ERC1155Transfer.Builder, wallet.core.jni.proto.Ethereum.Transaction.ERC1155TransferOrBuilder> erc1155TransferBuilder_;
+      /**
+       * <code>.TW.Ethereum.Proto.Transaction.ERC1155Transfer erc1155_transfer = 5;</code>
+       * @return Whether the erc1155Transfer field is set.
+       */
+      @java.lang.Override
+      public boolean hasErc1155Transfer() {
+        return transactionOneofCase_ == 5;
+      }
+      /**
+       * <code>.TW.Ethereum.Proto.Transaction.ERC1155Transfer erc1155_transfer = 5;</code>
+       * @return The erc1155Transfer.
+       */
+      @java.lang.Override
+      public wallet.core.jni.proto.Ethereum.Transaction.ERC1155Transfer getErc1155Transfer() {
+        if (erc1155TransferBuilder_ == null) {
+          if (transactionOneofCase_ == 5) {
+            return (wallet.core.jni.proto.Ethereum.Transaction.ERC1155Transfer) transactionOneof_;
+          }
+          return wallet.core.jni.proto.Ethereum.Transaction.ERC1155Transfer.getDefaultInstance();
+        } else {
+          if (transactionOneofCase_ == 5) {
+            return erc1155TransferBuilder_.getMessage();
+          }
+          return wallet.core.jni.proto.Ethereum.Transaction.ERC1155Transfer.getDefaultInstance();
+        }
+      }
+      /**
+       * <code>.TW.Ethereum.Proto.Transaction.ERC1155Transfer erc1155_transfer = 5;</code>
+       */
+      public Builder setErc1155Transfer(wallet.core.jni.proto.Ethereum.Transaction.ERC1155Transfer value) {
+        if (erc1155TransferBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          transactionOneof_ = value;
+          onChanged();
+        } else {
+          erc1155TransferBuilder_.setMessage(value);
+        }
+        transactionOneofCase_ = 5;
+        return this;
+      }
+      /**
+       * <code>.TW.Ethereum.Proto.Transaction.ERC1155Transfer erc1155_transfer = 5;</code>
+       */
+      public Builder setErc1155Transfer(
+          wallet.core.jni.proto.Ethereum.Transaction.ERC1155Transfer.Builder builderForValue) {
+        if (erc1155TransferBuilder_ == null) {
+          transactionOneof_ = builderForValue.build();
+          onChanged();
+        } else {
+          erc1155TransferBuilder_.setMessage(builderForValue.build());
+        }
+        transactionOneofCase_ = 5;
+        return this;
+      }
+      /**
+       * <code>.TW.Ethereum.Proto.Transaction.ERC1155Transfer erc1155_transfer = 5;</code>
+       */
+      public Builder mergeErc1155Transfer(wallet.core.jni.proto.Ethereum.Transaction.ERC1155Transfer value) {
+        if (erc1155TransferBuilder_ == null) {
+          if (transactionOneofCase_ == 5 &&
+              transactionOneof_ != wallet.core.jni.proto.Ethereum.Transaction.ERC1155Transfer.getDefaultInstance()) {
+            transactionOneof_ = wallet.core.jni.proto.Ethereum.Transaction.ERC1155Transfer.newBuilder((wallet.core.jni.proto.Ethereum.Transaction.ERC1155Transfer) transactionOneof_)
+                .mergeFrom(value).buildPartial();
+          } else {
+            transactionOneof_ = value;
+          }
+          onChanged();
+        } else {
+          if (transactionOneofCase_ == 5) {
+            erc1155TransferBuilder_.mergeFrom(value);
+          }
+          erc1155TransferBuilder_.setMessage(value);
+        }
+        transactionOneofCase_ = 5;
+        return this;
+      }
+      /**
+       * <code>.TW.Ethereum.Proto.Transaction.ERC1155Transfer erc1155_transfer = 5;</code>
+       */
+      public Builder clearErc1155Transfer() {
+        if (erc1155TransferBuilder_ == null) {
+          if (transactionOneofCase_ == 5) {
+            transactionOneofCase_ = 0;
+            transactionOneof_ = null;
+            onChanged();
+          }
+        } else {
+          if (transactionOneofCase_ == 5) {
+            transactionOneofCase_ = 0;
+            transactionOneof_ = null;
+          }
+          erc1155TransferBuilder_.clear();
+        }
+        return this;
+      }
+      /**
+       * <code>.TW.Ethereum.Proto.Transaction.ERC1155Transfer erc1155_transfer = 5;</code>
+       */
+      public wallet.core.jni.proto.Ethereum.Transaction.ERC1155Transfer.Builder getErc1155TransferBuilder() {
+        return getErc1155TransferFieldBuilder().getBuilder();
+      }
+      /**
+       * <code>.TW.Ethereum.Proto.Transaction.ERC1155Transfer erc1155_transfer = 5;</code>
+       */
+      @java.lang.Override
+      public wallet.core.jni.proto.Ethereum.Transaction.ERC1155TransferOrBuilder getErc1155TransferOrBuilder() {
+        if ((transactionOneofCase_ == 5) && (erc1155TransferBuilder_ != null)) {
+          return erc1155TransferBuilder_.getMessageOrBuilder();
+        } else {
+          if (transactionOneofCase_ == 5) {
+            return (wallet.core.jni.proto.Ethereum.Transaction.ERC1155Transfer) transactionOneof_;
+          }
+          return wallet.core.jni.proto.Ethereum.Transaction.ERC1155Transfer.getDefaultInstance();
+        }
+      }
+      /**
+       * <code>.TW.Ethereum.Proto.Transaction.ERC1155Transfer erc1155_transfer = 5;</code>
+       */
+      private com.google.protobuf.SingleFieldBuilderV3<
+          wallet.core.jni.proto.Ethereum.Transaction.ERC1155Transfer, wallet.core.jni.proto.Ethereum.Transaction.ERC1155Transfer.Builder, wallet.core.jni.proto.Ethereum.Transaction.ERC1155TransferOrBuilder> 
+          getErc1155TransferFieldBuilder() {
+        if (erc1155TransferBuilder_ == null) {
+          if (!(transactionOneofCase_ == 5)) {
+            transactionOneof_ = wallet.core.jni.proto.Ethereum.Transaction.ERC1155Transfer.getDefaultInstance();
+          }
+          erc1155TransferBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+              wallet.core.jni.proto.Ethereum.Transaction.ERC1155Transfer, wallet.core.jni.proto.Ethereum.Transaction.ERC1155Transfer.Builder, wallet.core.jni.proto.Ethereum.Transaction.ERC1155TransferOrBuilder>(
+                  (wallet.core.jni.proto.Ethereum.Transaction.ERC1155Transfer) transactionOneof_,
+                  getParentForChildren(),
+                  isClean());
+          transactionOneof_ = null;
+        }
+        transactionOneofCase_ = 5;
+        onChanged();;
+        return erc1155TransferBuilder_;
+      }
+
+      private com.google.protobuf.SingleFieldBuilderV3<
+          wallet.core.jni.proto.Ethereum.Transaction.ContractGeneric, wallet.core.jni.proto.Ethereum.Transaction.ContractGeneric.Builder, wallet.core.jni.proto.Ethereum.Transaction.ContractGenericOrBuilder> contractGenericBuilder_;
+      /**
+       * <code>.TW.Ethereum.Proto.Transaction.ContractGeneric contract_generic = 6;</code>
+       * @return Whether the contractGeneric field is set.
+       */
+      @java.lang.Override
+      public boolean hasContractGeneric() {
+        return transactionOneofCase_ == 6;
+      }
+      /**
+       * <code>.TW.Ethereum.Proto.Transaction.ContractGeneric contract_generic = 6;</code>
+       * @return The contractGeneric.
+       */
+      @java.lang.Override
+      public wallet.core.jni.proto.Ethereum.Transaction.ContractGeneric getContractGeneric() {
+        if (contractGenericBuilder_ == null) {
+          if (transactionOneofCase_ == 6) {
+            return (wallet.core.jni.proto.Ethereum.Transaction.ContractGeneric) transactionOneof_;
+          }
+          return wallet.core.jni.proto.Ethereum.Transaction.ContractGeneric.getDefaultInstance();
+        } else {
+          if (transactionOneofCase_ == 6) {
+            return contractGenericBuilder_.getMessage();
+          }
+          return wallet.core.jni.proto.Ethereum.Transaction.ContractGeneric.getDefaultInstance();
+        }
+      }
+      /**
+       * <code>.TW.Ethereum.Proto.Transaction.ContractGeneric contract_generic = 6;</code>
+       */
+      public Builder setContractGeneric(wallet.core.jni.proto.Ethereum.Transaction.ContractGeneric value) {
+        if (contractGenericBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          transactionOneof_ = value;
+          onChanged();
+        } else {
+          contractGenericBuilder_.setMessage(value);
+        }
+        transactionOneofCase_ = 6;
+        return this;
+      }
+      /**
+       * <code>.TW.Ethereum.Proto.Transaction.ContractGeneric contract_generic = 6;</code>
+       */
+      public Builder setContractGeneric(
+          wallet.core.jni.proto.Ethereum.Transaction.ContractGeneric.Builder builderForValue) {
+        if (contractGenericBuilder_ == null) {
+          transactionOneof_ = builderForValue.build();
+          onChanged();
+        } else {
+          contractGenericBuilder_.setMessage(builderForValue.build());
+        }
+        transactionOneofCase_ = 6;
+        return this;
+      }
+      /**
+       * <code>.TW.Ethereum.Proto.Transaction.ContractGeneric contract_generic = 6;</code>
+       */
+      public Builder mergeContractGeneric(wallet.core.jni.proto.Ethereum.Transaction.ContractGeneric value) {
+        if (contractGenericBuilder_ == null) {
+          if (transactionOneofCase_ == 6 &&
+              transactionOneof_ != wallet.core.jni.proto.Ethereum.Transaction.ContractGeneric.getDefaultInstance()) {
+            transactionOneof_ = wallet.core.jni.proto.Ethereum.Transaction.ContractGeneric.newBuilder((wallet.core.jni.proto.Ethereum.Transaction.ContractGeneric) transactionOneof_)
+                .mergeFrom(value).buildPartial();
+          } else {
+            transactionOneof_ = value;
+          }
+          onChanged();
+        } else {
+          if (transactionOneofCase_ == 6) {
+            contractGenericBuilder_.mergeFrom(value);
+          }
+          contractGenericBuilder_.setMessage(value);
+        }
+        transactionOneofCase_ = 6;
+        return this;
+      }
+      /**
+       * <code>.TW.Ethereum.Proto.Transaction.ContractGeneric contract_generic = 6;</code>
+       */
+      public Builder clearContractGeneric() {
+        if (contractGenericBuilder_ == null) {
+          if (transactionOneofCase_ == 6) {
+            transactionOneofCase_ = 0;
+            transactionOneof_ = null;
+            onChanged();
+          }
+        } else {
+          if (transactionOneofCase_ == 6) {
+            transactionOneofCase_ = 0;
+            transactionOneof_ = null;
+          }
+          contractGenericBuilder_.clear();
+        }
+        return this;
+      }
+      /**
+       * <code>.TW.Ethereum.Proto.Transaction.ContractGeneric contract_generic = 6;</code>
+       */
+      public wallet.core.jni.proto.Ethereum.Transaction.ContractGeneric.Builder getContractGenericBuilder() {
+        return getContractGenericFieldBuilder().getBuilder();
+      }
+      /**
+       * <code>.TW.Ethereum.Proto.Transaction.ContractGeneric contract_generic = 6;</code>
+       */
+      @java.lang.Override
+      public wallet.core.jni.proto.Ethereum.Transaction.ContractGenericOrBuilder getContractGenericOrBuilder() {
+        if ((transactionOneofCase_ == 6) && (contractGenericBuilder_ != null)) {
+          return contractGenericBuilder_.getMessageOrBuilder();
+        } else {
+          if (transactionOneofCase_ == 6) {
+            return (wallet.core.jni.proto.Ethereum.Transaction.ContractGeneric) transactionOneof_;
+          }
+          return wallet.core.jni.proto.Ethereum.Transaction.ContractGeneric.getDefaultInstance();
+        }
+      }
+      /**
+       * <code>.TW.Ethereum.Proto.Transaction.ContractGeneric contract_generic = 6;</code>
+       */
+      private com.google.protobuf.SingleFieldBuilderV3<
+          wallet.core.jni.proto.Ethereum.Transaction.ContractGeneric, wallet.core.jni.proto.Ethereum.Transaction.ContractGeneric.Builder, wallet.core.jni.proto.Ethereum.Transaction.ContractGenericOrBuilder> 
+          getContractGenericFieldBuilder() {
+        if (contractGenericBuilder_ == null) {
+          if (!(transactionOneofCase_ == 6)) {
+            transactionOneof_ = wallet.core.jni.proto.Ethereum.Transaction.ContractGeneric.getDefaultInstance();
+          }
+          contractGenericBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+              wallet.core.jni.proto.Ethereum.Transaction.ContractGeneric, wallet.core.jni.proto.Ethereum.Transaction.ContractGeneric.Builder, wallet.core.jni.proto.Ethereum.Transaction.ContractGenericOrBuilder>(
+                  (wallet.core.jni.proto.Ethereum.Transaction.ContractGeneric) transactionOneof_,
+                  getParentForChildren(),
+                  isClean());
+          transactionOneof_ = null;
+        }
+        transactionOneofCase_ = 6;
+        onChanged();;
+        return contractGenericBuilder_;
+      }
+      @java.lang.Override
+      public final Builder setUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.setUnknownFields(unknownFields);
+      }
+
+      @java.lang.Override
+      public final Builder mergeUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.mergeUnknownFields(unknownFields);
+      }
+
+
+      // @@protoc_insertion_point(builder_scope:TW.Ethereum.Proto.Transaction)
+    }
+
+    // @@protoc_insertion_point(class_scope:TW.Ethereum.Proto.Transaction)
+    private static final wallet.core.jni.proto.Ethereum.Transaction DEFAULT_INSTANCE;
+    static {
+      DEFAULT_INSTANCE = new wallet.core.jni.proto.Ethereum.Transaction();
+    }
+
+    public static wallet.core.jni.proto.Ethereum.Transaction getDefaultInstance() {
+      return DEFAULT_INSTANCE;
+    }
+
+    private static final com.google.protobuf.Parser<Transaction>
+        PARSER = new com.google.protobuf.AbstractParser<Transaction>() {
+      @java.lang.Override
+      public Transaction parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new Transaction(input, extensionRegistry);
+      }
+    };
+
+    public static com.google.protobuf.Parser<Transaction> parser() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<Transaction> getParserForType() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public wallet.core.jni.proto.Ethereum.Transaction getDefaultInstanceForType() {
+      return DEFAULT_INSTANCE;
+    }
+
+  }
+
   public interface SigningInputOrBuilder extends
       // @@protoc_insertion_point(interface_extends:TW.Ethereum.Proto.SigningInput)
       com.google.protobuf.MessageOrBuilder {
@@ -24,6 +6271,7 @@ public final class Ethereum {
      * </pre>
      *
      * <code>bytes chain_id = 1;</code>
+     * @return The chainId.
      */
     com.google.protobuf.ByteString getChainId();
 
@@ -33,6 +6281,7 @@ public final class Ethereum {
      * </pre>
      *
      * <code>bytes nonce = 2;</code>
+     * @return The nonce.
      */
     com.google.protobuf.ByteString getNonce();
 
@@ -42,6 +6291,7 @@ public final class Ethereum {
      * </pre>
      *
      * <code>bytes gas_price = 3;</code>
+     * @return The gasPrice.
      */
     com.google.protobuf.ByteString getGasPrice();
 
@@ -51,6 +6301,7 @@ public final class Ethereum {
      * </pre>
      *
      * <code>bytes gas_limit = 4;</code>
+     * @return The gasLimit.
      */
     com.google.protobuf.ByteString getGasLimit();
 
@@ -60,6 +6311,7 @@ public final class Ethereum {
      * </pre>
      *
      * <code>string to_address = 5;</code>
+     * @return The toAddress.
      */
     java.lang.String getToAddress();
     /**
@@ -68,36 +6320,35 @@ public final class Ethereum {
      * </pre>
      *
      * <code>string to_address = 5;</code>
+     * @return The bytes for toAddress.
      */
     com.google.protobuf.ByteString
         getToAddressBytes();
 
     /**
      * <pre>
-     * Amount to send in wei (256-bit number)
-     * </pre>
-     *
-     * <code>bytes amount = 6;</code>
-     */
-    com.google.protobuf.ByteString getAmount();
-
-    /**
-     * <pre>
-     * Optional payload
-     * </pre>
-     *
-     * <code>bytes payload = 7;</code>
-     */
-    com.google.protobuf.ByteString getPayload();
-
-    /**
-     * <pre>
      * Private key.
      * </pre>
      *
-     * <code>bytes private_key = 8;</code>
+     * <code>bytes private_key = 6;</code>
+     * @return The privateKey.
      */
     com.google.protobuf.ByteString getPrivateKey();
+
+    /**
+     * <code>.TW.Ethereum.Proto.Transaction transaction = 7;</code>
+     * @return Whether the transaction field is set.
+     */
+    boolean hasTransaction();
+    /**
+     * <code>.TW.Ethereum.Proto.Transaction transaction = 7;</code>
+     * @return The transaction.
+     */
+    wallet.core.jni.proto.Ethereum.Transaction getTransaction();
+    /**
+     * <code>.TW.Ethereum.Proto.Transaction transaction = 7;</code>
+     */
+    wallet.core.jni.proto.Ethereum.TransactionOrBuilder getTransactionOrBuilder();
   }
   /**
    * <pre>
@@ -106,7 +6357,7 @@ public final class Ethereum {
    *
    * Protobuf type {@code TW.Ethereum.Proto.SigningInput}
    */
-  public  static final class SigningInput extends
+  public static final class SigningInput extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:TW.Ethereum.Proto.SigningInput)
       SigningInputOrBuilder {
@@ -121,8 +6372,6 @@ public final class Ethereum {
       gasPrice_ = com.google.protobuf.ByteString.EMPTY;
       gasLimit_ = com.google.protobuf.ByteString.EMPTY;
       toAddress_ = "";
-      amount_ = com.google.protobuf.ByteString.EMPTY;
-      payload_ = com.google.protobuf.ByteString.EMPTY;
       privateKey_ = com.google.protobuf.ByteString.EMPTY;
     }
 
@@ -184,17 +6433,20 @@ public final class Ethereum {
             }
             case 50: {
 
-              amount_ = input.readBytes();
+              privateKey_ = input.readBytes();
               break;
             }
             case 58: {
+              wallet.core.jni.proto.Ethereum.Transaction.Builder subBuilder = null;
+              if (transaction_ != null) {
+                subBuilder = transaction_.toBuilder();
+              }
+              transaction_ = input.readMessage(wallet.core.jni.proto.Ethereum.Transaction.parser(), extensionRegistry);
+              if (subBuilder != null) {
+                subBuilder.mergeFrom(transaction_);
+                transaction_ = subBuilder.buildPartial();
+              }
 
-              payload_ = input.readBytes();
-              break;
-            }
-            case 66: {
-
-              privateKey_ = input.readBytes();
               break;
             }
             default: {
@@ -237,7 +6489,9 @@ public final class Ethereum {
      * </pre>
      *
      * <code>bytes chain_id = 1;</code>
+     * @return The chainId.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString getChainId() {
       return chainId_;
     }
@@ -250,7 +6504,9 @@ public final class Ethereum {
      * </pre>
      *
      * <code>bytes nonce = 2;</code>
+     * @return The nonce.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString getNonce() {
       return nonce_;
     }
@@ -263,7 +6519,9 @@ public final class Ethereum {
      * </pre>
      *
      * <code>bytes gas_price = 3;</code>
+     * @return The gasPrice.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString getGasPrice() {
       return gasPrice_;
     }
@@ -276,7 +6534,9 @@ public final class Ethereum {
      * </pre>
      *
      * <code>bytes gas_limit = 4;</code>
+     * @return The gasLimit.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString getGasLimit() {
       return gasLimit_;
     }
@@ -289,7 +6549,9 @@ public final class Ethereum {
      * </pre>
      *
      * <code>string to_address = 5;</code>
+     * @return The toAddress.
      */
+    @java.lang.Override
     public java.lang.String getToAddress() {
       java.lang.Object ref = toAddress_;
       if (ref instanceof java.lang.String) {
@@ -308,7 +6570,9 @@ public final class Ethereum {
      * </pre>
      *
      * <code>string to_address = 5;</code>
+     * @return The bytes for toAddress.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString
         getToAddressBytes() {
       java.lang.Object ref = toAddress_;
@@ -323,43 +6587,45 @@ public final class Ethereum {
       }
     }
 
-    public static final int AMOUNT_FIELD_NUMBER = 6;
-    private com.google.protobuf.ByteString amount_;
-    /**
-     * <pre>
-     * Amount to send in wei (256-bit number)
-     * </pre>
-     *
-     * <code>bytes amount = 6;</code>
-     */
-    public com.google.protobuf.ByteString getAmount() {
-      return amount_;
-    }
-
-    public static final int PAYLOAD_FIELD_NUMBER = 7;
-    private com.google.protobuf.ByteString payload_;
-    /**
-     * <pre>
-     * Optional payload
-     * </pre>
-     *
-     * <code>bytes payload = 7;</code>
-     */
-    public com.google.protobuf.ByteString getPayload() {
-      return payload_;
-    }
-
-    public static final int PRIVATE_KEY_FIELD_NUMBER = 8;
+    public static final int PRIVATE_KEY_FIELD_NUMBER = 6;
     private com.google.protobuf.ByteString privateKey_;
     /**
      * <pre>
      * Private key.
      * </pre>
      *
-     * <code>bytes private_key = 8;</code>
+     * <code>bytes private_key = 6;</code>
+     * @return The privateKey.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString getPrivateKey() {
       return privateKey_;
+    }
+
+    public static final int TRANSACTION_FIELD_NUMBER = 7;
+    private wallet.core.jni.proto.Ethereum.Transaction transaction_;
+    /**
+     * <code>.TW.Ethereum.Proto.Transaction transaction = 7;</code>
+     * @return Whether the transaction field is set.
+     */
+    @java.lang.Override
+    public boolean hasTransaction() {
+      return transaction_ != null;
+    }
+    /**
+     * <code>.TW.Ethereum.Proto.Transaction transaction = 7;</code>
+     * @return The transaction.
+     */
+    @java.lang.Override
+    public wallet.core.jni.proto.Ethereum.Transaction getTransaction() {
+      return transaction_ == null ? wallet.core.jni.proto.Ethereum.Transaction.getDefaultInstance() : transaction_;
+    }
+    /**
+     * <code>.TW.Ethereum.Proto.Transaction transaction = 7;</code>
+     */
+    @java.lang.Override
+    public wallet.core.jni.proto.Ethereum.TransactionOrBuilder getTransactionOrBuilder() {
+      return getTransaction();
     }
 
     private byte memoizedIsInitialized = -1;
@@ -391,14 +6657,11 @@ public final class Ethereum {
       if (!getToAddressBytes().isEmpty()) {
         com.google.protobuf.GeneratedMessageV3.writeString(output, 5, toAddress_);
       }
-      if (!amount_.isEmpty()) {
-        output.writeBytes(6, amount_);
-      }
-      if (!payload_.isEmpty()) {
-        output.writeBytes(7, payload_);
-      }
       if (!privateKey_.isEmpty()) {
-        output.writeBytes(8, privateKey_);
+        output.writeBytes(6, privateKey_);
+      }
+      if (transaction_ != null) {
+        output.writeMessage(7, getTransaction());
       }
       unknownFields.writeTo(output);
     }
@@ -428,17 +6691,13 @@ public final class Ethereum {
       if (!getToAddressBytes().isEmpty()) {
         size += com.google.protobuf.GeneratedMessageV3.computeStringSize(5, toAddress_);
       }
-      if (!amount_.isEmpty()) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeBytesSize(6, amount_);
-      }
-      if (!payload_.isEmpty()) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeBytesSize(7, payload_);
-      }
       if (!privateKey_.isEmpty()) {
         size += com.google.protobuf.CodedOutputStream
-          .computeBytesSize(8, privateKey_);
+          .computeBytesSize(6, privateKey_);
+      }
+      if (transaction_ != null) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(7, getTransaction());
       }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
@@ -465,12 +6724,13 @@ public final class Ethereum {
           .equals(other.getGasLimit())) return false;
       if (!getToAddress()
           .equals(other.getToAddress())) return false;
-      if (!getAmount()
-          .equals(other.getAmount())) return false;
-      if (!getPayload()
-          .equals(other.getPayload())) return false;
       if (!getPrivateKey()
           .equals(other.getPrivateKey())) return false;
+      if (hasTransaction() != other.hasTransaction()) return false;
+      if (hasTransaction()) {
+        if (!getTransaction()
+            .equals(other.getTransaction())) return false;
+      }
       if (!unknownFields.equals(other.unknownFields)) return false;
       return true;
     }
@@ -492,12 +6752,12 @@ public final class Ethereum {
       hash = (53 * hash) + getGasLimit().hashCode();
       hash = (37 * hash) + TO_ADDRESS_FIELD_NUMBER;
       hash = (53 * hash) + getToAddress().hashCode();
-      hash = (37 * hash) + AMOUNT_FIELD_NUMBER;
-      hash = (53 * hash) + getAmount().hashCode();
-      hash = (37 * hash) + PAYLOAD_FIELD_NUMBER;
-      hash = (53 * hash) + getPayload().hashCode();
       hash = (37 * hash) + PRIVATE_KEY_FIELD_NUMBER;
       hash = (53 * hash) + getPrivateKey().hashCode();
+      if (hasTransaction()) {
+        hash = (37 * hash) + TRANSACTION_FIELD_NUMBER;
+        hash = (53 * hash) + getTransaction().hashCode();
+      }
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
       return hash;
@@ -645,12 +6905,14 @@ public final class Ethereum {
 
         toAddress_ = "";
 
-        amount_ = com.google.protobuf.ByteString.EMPTY;
-
-        payload_ = com.google.protobuf.ByteString.EMPTY;
-
         privateKey_ = com.google.protobuf.ByteString.EMPTY;
 
+        if (transactionBuilder_ == null) {
+          transaction_ = null;
+        } else {
+          transaction_ = null;
+          transactionBuilder_ = null;
+        }
         return this;
       }
 
@@ -682,9 +6944,12 @@ public final class Ethereum {
         result.gasPrice_ = gasPrice_;
         result.gasLimit_ = gasLimit_;
         result.toAddress_ = toAddress_;
-        result.amount_ = amount_;
-        result.payload_ = payload_;
         result.privateKey_ = privateKey_;
+        if (transactionBuilder_ == null) {
+          result.transaction_ = transaction_;
+        } else {
+          result.transaction_ = transactionBuilder_.build();
+        }
         onBuilt();
         return result;
       }
@@ -749,14 +7014,11 @@ public final class Ethereum {
           toAddress_ = other.toAddress_;
           onChanged();
         }
-        if (other.getAmount() != com.google.protobuf.ByteString.EMPTY) {
-          setAmount(other.getAmount());
-        }
-        if (other.getPayload() != com.google.protobuf.ByteString.EMPTY) {
-          setPayload(other.getPayload());
-        }
         if (other.getPrivateKey() != com.google.protobuf.ByteString.EMPTY) {
           setPrivateKey(other.getPrivateKey());
+        }
+        if (other.hasTransaction()) {
+          mergeTransaction(other.getTransaction());
         }
         this.mergeUnknownFields(other.unknownFields);
         onChanged();
@@ -794,7 +7056,9 @@ public final class Ethereum {
        * </pre>
        *
        * <code>bytes chain_id = 1;</code>
+       * @return The chainId.
        */
+      @java.lang.Override
       public com.google.protobuf.ByteString getChainId() {
         return chainId_;
       }
@@ -804,6 +7068,8 @@ public final class Ethereum {
        * </pre>
        *
        * <code>bytes chain_id = 1;</code>
+       * @param value The chainId to set.
+       * @return This builder for chaining.
        */
       public Builder setChainId(com.google.protobuf.ByteString value) {
         if (value == null) {
@@ -820,6 +7086,7 @@ public final class Ethereum {
        * </pre>
        *
        * <code>bytes chain_id = 1;</code>
+       * @return This builder for chaining.
        */
       public Builder clearChainId() {
         
@@ -835,7 +7102,9 @@ public final class Ethereum {
        * </pre>
        *
        * <code>bytes nonce = 2;</code>
+       * @return The nonce.
        */
+      @java.lang.Override
       public com.google.protobuf.ByteString getNonce() {
         return nonce_;
       }
@@ -845,6 +7114,8 @@ public final class Ethereum {
        * </pre>
        *
        * <code>bytes nonce = 2;</code>
+       * @param value The nonce to set.
+       * @return This builder for chaining.
        */
       public Builder setNonce(com.google.protobuf.ByteString value) {
         if (value == null) {
@@ -861,6 +7132,7 @@ public final class Ethereum {
        * </pre>
        *
        * <code>bytes nonce = 2;</code>
+       * @return This builder for chaining.
        */
       public Builder clearNonce() {
         
@@ -876,7 +7148,9 @@ public final class Ethereum {
        * </pre>
        *
        * <code>bytes gas_price = 3;</code>
+       * @return The gasPrice.
        */
+      @java.lang.Override
       public com.google.protobuf.ByteString getGasPrice() {
         return gasPrice_;
       }
@@ -886,6 +7160,8 @@ public final class Ethereum {
        * </pre>
        *
        * <code>bytes gas_price = 3;</code>
+       * @param value The gasPrice to set.
+       * @return This builder for chaining.
        */
       public Builder setGasPrice(com.google.protobuf.ByteString value) {
         if (value == null) {
@@ -902,6 +7178,7 @@ public final class Ethereum {
        * </pre>
        *
        * <code>bytes gas_price = 3;</code>
+       * @return This builder for chaining.
        */
       public Builder clearGasPrice() {
         
@@ -917,7 +7194,9 @@ public final class Ethereum {
        * </pre>
        *
        * <code>bytes gas_limit = 4;</code>
+       * @return The gasLimit.
        */
+      @java.lang.Override
       public com.google.protobuf.ByteString getGasLimit() {
         return gasLimit_;
       }
@@ -927,6 +7206,8 @@ public final class Ethereum {
        * </pre>
        *
        * <code>bytes gas_limit = 4;</code>
+       * @param value The gasLimit to set.
+       * @return This builder for chaining.
        */
       public Builder setGasLimit(com.google.protobuf.ByteString value) {
         if (value == null) {
@@ -943,6 +7224,7 @@ public final class Ethereum {
        * </pre>
        *
        * <code>bytes gas_limit = 4;</code>
+       * @return This builder for chaining.
        */
       public Builder clearGasLimit() {
         
@@ -958,6 +7240,7 @@ public final class Ethereum {
        * </pre>
        *
        * <code>string to_address = 5;</code>
+       * @return The toAddress.
        */
       public java.lang.String getToAddress() {
         java.lang.Object ref = toAddress_;
@@ -977,6 +7260,7 @@ public final class Ethereum {
        * </pre>
        *
        * <code>string to_address = 5;</code>
+       * @return The bytes for toAddress.
        */
       public com.google.protobuf.ByteString
           getToAddressBytes() {
@@ -997,6 +7281,8 @@ public final class Ethereum {
        * </pre>
        *
        * <code>string to_address = 5;</code>
+       * @param value The toAddress to set.
+       * @return This builder for chaining.
        */
       public Builder setToAddress(
           java.lang.String value) {
@@ -1014,6 +7300,7 @@ public final class Ethereum {
        * </pre>
        *
        * <code>string to_address = 5;</code>
+       * @return This builder for chaining.
        */
       public Builder clearToAddress() {
         
@@ -1027,6 +7314,8 @@ public final class Ethereum {
        * </pre>
        *
        * <code>string to_address = 5;</code>
+       * @param value The bytes for toAddress to set.
+       * @return This builder for chaining.
        */
       public Builder setToAddressBytes(
           com.google.protobuf.ByteString value) {
@@ -1040,96 +7329,16 @@ public final class Ethereum {
         return this;
       }
 
-      private com.google.protobuf.ByteString amount_ = com.google.protobuf.ByteString.EMPTY;
-      /**
-       * <pre>
-       * Amount to send in wei (256-bit number)
-       * </pre>
-       *
-       * <code>bytes amount = 6;</code>
-       */
-      public com.google.protobuf.ByteString getAmount() {
-        return amount_;
-      }
-      /**
-       * <pre>
-       * Amount to send in wei (256-bit number)
-       * </pre>
-       *
-       * <code>bytes amount = 6;</code>
-       */
-      public Builder setAmount(com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  
-        amount_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <pre>
-       * Amount to send in wei (256-bit number)
-       * </pre>
-       *
-       * <code>bytes amount = 6;</code>
-       */
-      public Builder clearAmount() {
-        
-        amount_ = getDefaultInstance().getAmount();
-        onChanged();
-        return this;
-      }
-
-      private com.google.protobuf.ByteString payload_ = com.google.protobuf.ByteString.EMPTY;
-      /**
-       * <pre>
-       * Optional payload
-       * </pre>
-       *
-       * <code>bytes payload = 7;</code>
-       */
-      public com.google.protobuf.ByteString getPayload() {
-        return payload_;
-      }
-      /**
-       * <pre>
-       * Optional payload
-       * </pre>
-       *
-       * <code>bytes payload = 7;</code>
-       */
-      public Builder setPayload(com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  
-        payload_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <pre>
-       * Optional payload
-       * </pre>
-       *
-       * <code>bytes payload = 7;</code>
-       */
-      public Builder clearPayload() {
-        
-        payload_ = getDefaultInstance().getPayload();
-        onChanged();
-        return this;
-      }
-
       private com.google.protobuf.ByteString privateKey_ = com.google.protobuf.ByteString.EMPTY;
       /**
        * <pre>
        * Private key.
        * </pre>
        *
-       * <code>bytes private_key = 8;</code>
+       * <code>bytes private_key = 6;</code>
+       * @return The privateKey.
        */
+      @java.lang.Override
       public com.google.protobuf.ByteString getPrivateKey() {
         return privateKey_;
       }
@@ -1138,7 +7347,9 @@ public final class Ethereum {
        * Private key.
        * </pre>
        *
-       * <code>bytes private_key = 8;</code>
+       * <code>bytes private_key = 6;</code>
+       * @param value The privateKey to set.
+       * @return This builder for chaining.
        */
       public Builder setPrivateKey(com.google.protobuf.ByteString value) {
         if (value == null) {
@@ -1154,13 +7365,133 @@ public final class Ethereum {
        * Private key.
        * </pre>
        *
-       * <code>bytes private_key = 8;</code>
+       * <code>bytes private_key = 6;</code>
+       * @return This builder for chaining.
        */
       public Builder clearPrivateKey() {
         
         privateKey_ = getDefaultInstance().getPrivateKey();
         onChanged();
         return this;
+      }
+
+      private wallet.core.jni.proto.Ethereum.Transaction transaction_;
+      private com.google.protobuf.SingleFieldBuilderV3<
+          wallet.core.jni.proto.Ethereum.Transaction, wallet.core.jni.proto.Ethereum.Transaction.Builder, wallet.core.jni.proto.Ethereum.TransactionOrBuilder> transactionBuilder_;
+      /**
+       * <code>.TW.Ethereum.Proto.Transaction transaction = 7;</code>
+       * @return Whether the transaction field is set.
+       */
+      public boolean hasTransaction() {
+        return transactionBuilder_ != null || transaction_ != null;
+      }
+      /**
+       * <code>.TW.Ethereum.Proto.Transaction transaction = 7;</code>
+       * @return The transaction.
+       */
+      public wallet.core.jni.proto.Ethereum.Transaction getTransaction() {
+        if (transactionBuilder_ == null) {
+          return transaction_ == null ? wallet.core.jni.proto.Ethereum.Transaction.getDefaultInstance() : transaction_;
+        } else {
+          return transactionBuilder_.getMessage();
+        }
+      }
+      /**
+       * <code>.TW.Ethereum.Proto.Transaction transaction = 7;</code>
+       */
+      public Builder setTransaction(wallet.core.jni.proto.Ethereum.Transaction value) {
+        if (transactionBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          transaction_ = value;
+          onChanged();
+        } else {
+          transactionBuilder_.setMessage(value);
+        }
+
+        return this;
+      }
+      /**
+       * <code>.TW.Ethereum.Proto.Transaction transaction = 7;</code>
+       */
+      public Builder setTransaction(
+          wallet.core.jni.proto.Ethereum.Transaction.Builder builderForValue) {
+        if (transactionBuilder_ == null) {
+          transaction_ = builderForValue.build();
+          onChanged();
+        } else {
+          transactionBuilder_.setMessage(builderForValue.build());
+        }
+
+        return this;
+      }
+      /**
+       * <code>.TW.Ethereum.Proto.Transaction transaction = 7;</code>
+       */
+      public Builder mergeTransaction(wallet.core.jni.proto.Ethereum.Transaction value) {
+        if (transactionBuilder_ == null) {
+          if (transaction_ != null) {
+            transaction_ =
+              wallet.core.jni.proto.Ethereum.Transaction.newBuilder(transaction_).mergeFrom(value).buildPartial();
+          } else {
+            transaction_ = value;
+          }
+          onChanged();
+        } else {
+          transactionBuilder_.mergeFrom(value);
+        }
+
+        return this;
+      }
+      /**
+       * <code>.TW.Ethereum.Proto.Transaction transaction = 7;</code>
+       */
+      public Builder clearTransaction() {
+        if (transactionBuilder_ == null) {
+          transaction_ = null;
+          onChanged();
+        } else {
+          transaction_ = null;
+          transactionBuilder_ = null;
+        }
+
+        return this;
+      }
+      /**
+       * <code>.TW.Ethereum.Proto.Transaction transaction = 7;</code>
+       */
+      public wallet.core.jni.proto.Ethereum.Transaction.Builder getTransactionBuilder() {
+        
+        onChanged();
+        return getTransactionFieldBuilder().getBuilder();
+      }
+      /**
+       * <code>.TW.Ethereum.Proto.Transaction transaction = 7;</code>
+       */
+      public wallet.core.jni.proto.Ethereum.TransactionOrBuilder getTransactionOrBuilder() {
+        if (transactionBuilder_ != null) {
+          return transactionBuilder_.getMessageOrBuilder();
+        } else {
+          return transaction_ == null ?
+              wallet.core.jni.proto.Ethereum.Transaction.getDefaultInstance() : transaction_;
+        }
+      }
+      /**
+       * <code>.TW.Ethereum.Proto.Transaction transaction = 7;</code>
+       */
+      private com.google.protobuf.SingleFieldBuilderV3<
+          wallet.core.jni.proto.Ethereum.Transaction, wallet.core.jni.proto.Ethereum.Transaction.Builder, wallet.core.jni.proto.Ethereum.TransactionOrBuilder> 
+          getTransactionFieldBuilder() {
+        if (transactionBuilder_ == null) {
+          transactionBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+              wallet.core.jni.proto.Ethereum.Transaction, wallet.core.jni.proto.Ethereum.Transaction.Builder, wallet.core.jni.proto.Ethereum.TransactionOrBuilder>(
+                  getTransaction(),
+                  getParentForChildren(),
+                  isClean());
+          transaction_ = null;
+        }
+        return transactionBuilder_;
       }
       @java.lang.Override
       public final Builder setUnknownFields(
@@ -1225,23 +7556,37 @@ public final class Ethereum {
      * </pre>
      *
      * <code>bytes encoded = 1;</code>
+     * @return The encoded.
      */
     com.google.protobuf.ByteString getEncoded();
 
     /**
      * <code>bytes v = 2;</code>
+     * @return The v.
      */
     com.google.protobuf.ByteString getV();
 
     /**
      * <code>bytes r = 3;</code>
+     * @return The r.
      */
     com.google.protobuf.ByteString getR();
 
     /**
      * <code>bytes s = 4;</code>
+     * @return The s.
      */
     com.google.protobuf.ByteString getS();
+
+    /**
+     * <pre>
+     * The payload part, supplied in the input or assembled from input parameters
+     * </pre>
+     *
+     * <code>bytes data = 5;</code>
+     * @return The data.
+     */
+    com.google.protobuf.ByteString getData();
   }
   /**
    * <pre>
@@ -1250,7 +7595,7 @@ public final class Ethereum {
    *
    * Protobuf type {@code TW.Ethereum.Proto.SigningOutput}
    */
-  public  static final class SigningOutput extends
+  public static final class SigningOutput extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:TW.Ethereum.Proto.SigningOutput)
       SigningOutputOrBuilder {
@@ -1264,6 +7609,7 @@ public final class Ethereum {
       v_ = com.google.protobuf.ByteString.EMPTY;
       r_ = com.google.protobuf.ByteString.EMPTY;
       s_ = com.google.protobuf.ByteString.EMPTY;
+      data_ = com.google.protobuf.ByteString.EMPTY;
     }
 
     @java.lang.Override
@@ -1316,6 +7662,11 @@ public final class Ethereum {
               s_ = input.readBytes();
               break;
             }
+            case 42: {
+
+              data_ = input.readBytes();
+              break;
+            }
             default: {
               if (!parseUnknownField(
                   input, unknownFields, extensionRegistry, tag)) {
@@ -1356,7 +7707,9 @@ public final class Ethereum {
      * </pre>
      *
      * <code>bytes encoded = 1;</code>
+     * @return The encoded.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString getEncoded() {
       return encoded_;
     }
@@ -1365,7 +7718,9 @@ public final class Ethereum {
     private com.google.protobuf.ByteString v_;
     /**
      * <code>bytes v = 2;</code>
+     * @return The v.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString getV() {
       return v_;
     }
@@ -1374,7 +7729,9 @@ public final class Ethereum {
     private com.google.protobuf.ByteString r_;
     /**
      * <code>bytes r = 3;</code>
+     * @return The r.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString getR() {
       return r_;
     }
@@ -1383,9 +7740,26 @@ public final class Ethereum {
     private com.google.protobuf.ByteString s_;
     /**
      * <code>bytes s = 4;</code>
+     * @return The s.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString getS() {
       return s_;
+    }
+
+    public static final int DATA_FIELD_NUMBER = 5;
+    private com.google.protobuf.ByteString data_;
+    /**
+     * <pre>
+     * The payload part, supplied in the input or assembled from input parameters
+     * </pre>
+     *
+     * <code>bytes data = 5;</code>
+     * @return The data.
+     */
+    @java.lang.Override
+    public com.google.protobuf.ByteString getData() {
+      return data_;
     }
 
     private byte memoizedIsInitialized = -1;
@@ -1414,6 +7788,9 @@ public final class Ethereum {
       if (!s_.isEmpty()) {
         output.writeBytes(4, s_);
       }
+      if (!data_.isEmpty()) {
+        output.writeBytes(5, data_);
+      }
       unknownFields.writeTo(output);
     }
 
@@ -1439,6 +7816,10 @@ public final class Ethereum {
         size += com.google.protobuf.CodedOutputStream
           .computeBytesSize(4, s_);
       }
+      if (!data_.isEmpty()) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(5, data_);
+      }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
       return size;
@@ -1462,6 +7843,8 @@ public final class Ethereum {
           .equals(other.getR())) return false;
       if (!getS()
           .equals(other.getS())) return false;
+      if (!getData()
+          .equals(other.getData())) return false;
       if (!unknownFields.equals(other.unknownFields)) return false;
       return true;
     }
@@ -1481,6 +7864,8 @@ public final class Ethereum {
       hash = (53 * hash) + getR().hashCode();
       hash = (37 * hash) + S_FIELD_NUMBER;
       hash = (53 * hash) + getS().hashCode();
+      hash = (37 * hash) + DATA_FIELD_NUMBER;
+      hash = (53 * hash) + getData().hashCode();
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
       return hash;
@@ -1626,6 +8011,8 @@ public final class Ethereum {
 
         s_ = com.google.protobuf.ByteString.EMPTY;
 
+        data_ = com.google.protobuf.ByteString.EMPTY;
+
         return this;
       }
 
@@ -1656,6 +8043,7 @@ public final class Ethereum {
         result.v_ = v_;
         result.r_ = r_;
         result.s_ = s_;
+        result.data_ = data_;
         onBuilt();
         return result;
       }
@@ -1716,6 +8104,9 @@ public final class Ethereum {
         if (other.getS() != com.google.protobuf.ByteString.EMPTY) {
           setS(other.getS());
         }
+        if (other.getData() != com.google.protobuf.ByteString.EMPTY) {
+          setData(other.getData());
+        }
         this.mergeUnknownFields(other.unknownFields);
         onChanged();
         return this;
@@ -1752,7 +8143,9 @@ public final class Ethereum {
        * </pre>
        *
        * <code>bytes encoded = 1;</code>
+       * @return The encoded.
        */
+      @java.lang.Override
       public com.google.protobuf.ByteString getEncoded() {
         return encoded_;
       }
@@ -1762,6 +8155,8 @@ public final class Ethereum {
        * </pre>
        *
        * <code>bytes encoded = 1;</code>
+       * @param value The encoded to set.
+       * @return This builder for chaining.
        */
       public Builder setEncoded(com.google.protobuf.ByteString value) {
         if (value == null) {
@@ -1778,6 +8173,7 @@ public final class Ethereum {
        * </pre>
        *
        * <code>bytes encoded = 1;</code>
+       * @return This builder for chaining.
        */
       public Builder clearEncoded() {
         
@@ -1789,12 +8185,16 @@ public final class Ethereum {
       private com.google.protobuf.ByteString v_ = com.google.protobuf.ByteString.EMPTY;
       /**
        * <code>bytes v = 2;</code>
+       * @return The v.
        */
+      @java.lang.Override
       public com.google.protobuf.ByteString getV() {
         return v_;
       }
       /**
        * <code>bytes v = 2;</code>
+       * @param value The v to set.
+       * @return This builder for chaining.
        */
       public Builder setV(com.google.protobuf.ByteString value) {
         if (value == null) {
@@ -1807,6 +8207,7 @@ public final class Ethereum {
       }
       /**
        * <code>bytes v = 2;</code>
+       * @return This builder for chaining.
        */
       public Builder clearV() {
         
@@ -1818,12 +8219,16 @@ public final class Ethereum {
       private com.google.protobuf.ByteString r_ = com.google.protobuf.ByteString.EMPTY;
       /**
        * <code>bytes r = 3;</code>
+       * @return The r.
        */
+      @java.lang.Override
       public com.google.protobuf.ByteString getR() {
         return r_;
       }
       /**
        * <code>bytes r = 3;</code>
+       * @param value The r to set.
+       * @return This builder for chaining.
        */
       public Builder setR(com.google.protobuf.ByteString value) {
         if (value == null) {
@@ -1836,6 +8241,7 @@ public final class Ethereum {
       }
       /**
        * <code>bytes r = 3;</code>
+       * @return This builder for chaining.
        */
       public Builder clearR() {
         
@@ -1847,12 +8253,16 @@ public final class Ethereum {
       private com.google.protobuf.ByteString s_ = com.google.protobuf.ByteString.EMPTY;
       /**
        * <code>bytes s = 4;</code>
+       * @return The s.
        */
+      @java.lang.Override
       public com.google.protobuf.ByteString getS() {
         return s_;
       }
       /**
        * <code>bytes s = 4;</code>
+       * @param value The s to set.
+       * @return This builder for chaining.
        */
       public Builder setS(com.google.protobuf.ByteString value) {
         if (value == null) {
@@ -1865,10 +8275,57 @@ public final class Ethereum {
       }
       /**
        * <code>bytes s = 4;</code>
+       * @return This builder for chaining.
        */
       public Builder clearS() {
         
         s_ = getDefaultInstance().getS();
+        onChanged();
+        return this;
+      }
+
+      private com.google.protobuf.ByteString data_ = com.google.protobuf.ByteString.EMPTY;
+      /**
+       * <pre>
+       * The payload part, supplied in the input or assembled from input parameters
+       * </pre>
+       *
+       * <code>bytes data = 5;</code>
+       * @return The data.
+       */
+      @java.lang.Override
+      public com.google.protobuf.ByteString getData() {
+        return data_;
+      }
+      /**
+       * <pre>
+       * The payload part, supplied in the input or assembled from input parameters
+       * </pre>
+       *
+       * <code>bytes data = 5;</code>
+       * @param value The data to set.
+       * @return This builder for chaining.
+       */
+      public Builder setData(com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        data_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * The payload part, supplied in the input or assembled from input parameters
+       * </pre>
+       *
+       * <code>bytes data = 5;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearData() {
+        
+        data_ = getDefaultInstance().getData();
         onChanged();
         return this;
       }
@@ -1926,6 +8383,41 @@ public final class Ethereum {
   }
 
   private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_TW_Ethereum_Proto_Transaction_descriptor;
+  private static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_TW_Ethereum_Proto_Transaction_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_TW_Ethereum_Proto_Transaction_Transfer_descriptor;
+  private static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_TW_Ethereum_Proto_Transaction_Transfer_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_TW_Ethereum_Proto_Transaction_ERC20Transfer_descriptor;
+  private static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_TW_Ethereum_Proto_Transaction_ERC20Transfer_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_TW_Ethereum_Proto_Transaction_ERC20Approve_descriptor;
+  private static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_TW_Ethereum_Proto_Transaction_ERC20Approve_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_TW_Ethereum_Proto_Transaction_ERC721Transfer_descriptor;
+  private static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_TW_Ethereum_Proto_Transaction_ERC721Transfer_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_TW_Ethereum_Proto_Transaction_ERC1155Transfer_descriptor;
+  private static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_TW_Ethereum_Proto_Transaction_ERC1155Transfer_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_TW_Ethereum_Proto_Transaction_ContractGeneric_descriptor;
+  private static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_TW_Ethereum_Proto_Transaction_ContractGeneric_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_TW_Ethereum_Proto_SigningInput_descriptor;
   private static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
@@ -1944,31 +8436,94 @@ public final class Ethereum {
       descriptor;
   static {
     java.lang.String[] descriptorData = {
-      "\n\016Ethereum.proto\022\021TW.Ethereum.Proto\"\237\001\n\014" +
-      "SigningInput\022\020\n\010chain_id\030\001 \001(\014\022\r\n\005nonce\030" +
-      "\002 \001(\014\022\021\n\tgas_price\030\003 \001(\014\022\021\n\tgas_limit\030\004 " +
-      "\001(\014\022\022\n\nto_address\030\005 \001(\t\022\016\n\006amount\030\006 \001(\014\022" +
-      "\017\n\007payload\030\007 \001(\014\022\023\n\013private_key\030\010 \001(\014\"A\n" +
-      "\rSigningOutput\022\017\n\007encoded\030\001 \001(\014\022\t\n\001v\030\002 \001" +
-      "(\014\022\t\n\001r\030\003 \001(\014\022\t\n\001s\030\004 \001(\014B\027\n\025wallet.core." +
-      "jni.protob\006proto3"
+      "\n\016Ethereum.proto\022\021TW.Ethereum.Proto\"\242\006\n\013" +
+      "Transaction\022;\n\010transfer\030\001 \001(\0132\'.TW.Ether" +
+      "eum.Proto.Transaction.TransferH\000\022F\n\016erc2" +
+      "0_transfer\030\002 \001(\0132,.TW.Ethereum.Proto.Tra" +
+      "nsaction.ERC20TransferH\000\022D\n\rerc20_approv" +
+      "e\030\003 \001(\0132+.TW.Ethereum.Proto.Transaction." +
+      "ERC20ApproveH\000\022H\n\017erc721_transfer\030\004 \001(\0132" +
+      "-.TW.Ethereum.Proto.Transaction.ERC721Tr" +
+      "ansferH\000\022J\n\020erc1155_transfer\030\005 \001(\0132..TW." +
+      "Ethereum.Proto.Transaction.ERC1155Transf" +
+      "erH\000\022J\n\020contract_generic\030\006 \001(\0132..TW.Ethe" +
+      "reum.Proto.Transaction.ContractGenericH\000" +
+      "\032(\n\010Transfer\022\016\n\006amount\030\001 \001(\014\022\014\n\004data\030\002 \001" +
+      "(\014\032+\n\rERC20Transfer\022\n\n\002to\030\001 \001(\t\022\016\n\006amoun" +
+      "t\030\002 \001(\014\032/\n\014ERC20Approve\022\017\n\007spender\030\001 \001(\t" +
+      "\022\016\n\006amount\030\002 \001(\014\032<\n\016ERC721Transfer\022\014\n\004fr" +
+      "om\030\001 \001(\t\022\n\n\002to\030\002 \001(\t\022\020\n\010token_id\030\003 \001(\014\032Z" +
+      "\n\017ERC1155Transfer\022\014\n\004from\030\001 \001(\t\022\n\n\002to\030\002 " +
+      "\001(\t\022\020\n\010token_id\030\003 \001(\014\022\r\n\005value\030\004 \001(\014\022\014\n\004" +
+      "data\030\005 \001(\014\032/\n\017ContractGeneric\022\016\n\006amount\030" +
+      "\001 \001(\014\022\014\n\004data\030\002 \001(\014B\023\n\021transaction_oneof" +
+      "\"\263\001\n\014SigningInput\022\020\n\010chain_id\030\001 \001(\014\022\r\n\005n" +
+      "once\030\002 \001(\014\022\021\n\tgas_price\030\003 \001(\014\022\021\n\tgas_lim" +
+      "it\030\004 \001(\014\022\022\n\nto_address\030\005 \001(\t\022\023\n\013private_" +
+      "key\030\006 \001(\014\0223\n\013transaction\030\007 \001(\0132\036.TW.Ethe" +
+      "reum.Proto.Transaction\"O\n\rSigningOutput\022" +
+      "\017\n\007encoded\030\001 \001(\014\022\t\n\001v\030\002 \001(\014\022\t\n\001r\030\003 \001(\014\022\t" +
+      "\n\001s\030\004 \001(\014\022\014\n\004data\030\005 \001(\014B\027\n\025wallet.core.j" +
+      "ni.protob\006proto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
         new com.google.protobuf.Descriptors.FileDescriptor[] {
         });
-    internal_static_TW_Ethereum_Proto_SigningInput_descriptor =
+    internal_static_TW_Ethereum_Proto_Transaction_descriptor =
       getDescriptor().getMessageTypes().get(0);
+    internal_static_TW_Ethereum_Proto_Transaction_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_TW_Ethereum_Proto_Transaction_descriptor,
+        new java.lang.String[] { "Transfer", "Erc20Transfer", "Erc20Approve", "Erc721Transfer", "Erc1155Transfer", "ContractGeneric", "TransactionOneof", });
+    internal_static_TW_Ethereum_Proto_Transaction_Transfer_descriptor =
+      internal_static_TW_Ethereum_Proto_Transaction_descriptor.getNestedTypes().get(0);
+    internal_static_TW_Ethereum_Proto_Transaction_Transfer_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_TW_Ethereum_Proto_Transaction_Transfer_descriptor,
+        new java.lang.String[] { "Amount", "Data", });
+    internal_static_TW_Ethereum_Proto_Transaction_ERC20Transfer_descriptor =
+      internal_static_TW_Ethereum_Proto_Transaction_descriptor.getNestedTypes().get(1);
+    internal_static_TW_Ethereum_Proto_Transaction_ERC20Transfer_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_TW_Ethereum_Proto_Transaction_ERC20Transfer_descriptor,
+        new java.lang.String[] { "To", "Amount", });
+    internal_static_TW_Ethereum_Proto_Transaction_ERC20Approve_descriptor =
+      internal_static_TW_Ethereum_Proto_Transaction_descriptor.getNestedTypes().get(2);
+    internal_static_TW_Ethereum_Proto_Transaction_ERC20Approve_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_TW_Ethereum_Proto_Transaction_ERC20Approve_descriptor,
+        new java.lang.String[] { "Spender", "Amount", });
+    internal_static_TW_Ethereum_Proto_Transaction_ERC721Transfer_descriptor =
+      internal_static_TW_Ethereum_Proto_Transaction_descriptor.getNestedTypes().get(3);
+    internal_static_TW_Ethereum_Proto_Transaction_ERC721Transfer_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_TW_Ethereum_Proto_Transaction_ERC721Transfer_descriptor,
+        new java.lang.String[] { "From", "To", "TokenId", });
+    internal_static_TW_Ethereum_Proto_Transaction_ERC1155Transfer_descriptor =
+      internal_static_TW_Ethereum_Proto_Transaction_descriptor.getNestedTypes().get(4);
+    internal_static_TW_Ethereum_Proto_Transaction_ERC1155Transfer_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_TW_Ethereum_Proto_Transaction_ERC1155Transfer_descriptor,
+        new java.lang.String[] { "From", "To", "TokenId", "Value", "Data", });
+    internal_static_TW_Ethereum_Proto_Transaction_ContractGeneric_descriptor =
+      internal_static_TW_Ethereum_Proto_Transaction_descriptor.getNestedTypes().get(5);
+    internal_static_TW_Ethereum_Proto_Transaction_ContractGeneric_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_TW_Ethereum_Proto_Transaction_ContractGeneric_descriptor,
+        new java.lang.String[] { "Amount", "Data", });
+    internal_static_TW_Ethereum_Proto_SigningInput_descriptor =
+      getDescriptor().getMessageTypes().get(1);
     internal_static_TW_Ethereum_Proto_SigningInput_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_TW_Ethereum_Proto_SigningInput_descriptor,
-        new java.lang.String[] { "ChainId", "Nonce", "GasPrice", "GasLimit", "ToAddress", "Amount", "Payload", "PrivateKey", });
+        new java.lang.String[] { "ChainId", "Nonce", "GasPrice", "GasLimit", "ToAddress", "PrivateKey", "Transaction", });
     internal_static_TW_Ethereum_Proto_SigningOutput_descriptor =
-      getDescriptor().getMessageTypes().get(1);
+      getDescriptor().getMessageTypes().get(2);
     internal_static_TW_Ethereum_Proto_SigningOutput_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_TW_Ethereum_Proto_SigningOutput_descriptor,
-        new java.lang.String[] { "Encoded", "V", "R", "S", });
+        new java.lang.String[] { "Encoded", "V", "R", "S", "Data", });
   }
 
   // @@protoc_insertion_point(outer_class_scope)

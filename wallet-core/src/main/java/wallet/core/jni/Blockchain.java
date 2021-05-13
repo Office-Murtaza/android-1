@@ -13,7 +13,6 @@ package wallet.core.jni;
 public enum Blockchain {
     BITCOIN (0),
     ETHEREUM (1),
-    WANCHAIN (2),
     VECHAIN (3),
     TRON (4),
     ICON (5),
@@ -44,7 +43,8 @@ public enum Blockchain {
     CARDANO (30),
     NEO (31),
     FILECOIN (32),
-    ELRONDNETWORK (33);
+    ELRONDNETWORK (33),
+    OASISNETWORK (34);
 
     private final int value;
     Blockchain(int value) {
@@ -56,7 +56,6 @@ public enum Blockchain {
         switch (value) {
             case 0: return Blockchain.BITCOIN;
             case 1: return Blockchain.ETHEREUM;
-            case 2: return Blockchain.WANCHAIN;
             case 3: return Blockchain.VECHAIN;
             case 4: return Blockchain.TRON;
             case 5: return Blockchain.ICON;
@@ -88,6 +87,7 @@ public enum Blockchain {
             case 31: return Blockchain.NEO;
             case 32: return Blockchain.FILECOIN;
             case 33: return Blockchain.ELRONDNETWORK;
+            case 34: return Blockchain.OASISNETWORK;
             default: return null;
         }
     }

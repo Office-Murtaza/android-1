@@ -20,26 +20,31 @@ public final class Ontology {
 
     /**
      * <code>string contract = 1;</code>
+     * @return The contract.
      */
     java.lang.String getContract();
     /**
      * <code>string contract = 1;</code>
+     * @return The bytes for contract.
      */
     com.google.protobuf.ByteString
         getContractBytes();
 
     /**
      * <code>string method = 2;</code>
+     * @return The method.
      */
     java.lang.String getMethod();
     /**
      * <code>string method = 2;</code>
+     * @return The bytes for method.
      */
     com.google.protobuf.ByteString
         getMethodBytes();
 
     /**
      * <code>bytes owner_private_key = 3;</code>
+     * @return The ownerPrivateKey.
      */
     com.google.protobuf.ByteString getOwnerPrivateKey();
 
@@ -49,6 +54,7 @@ public final class Ontology {
      * </pre>
      *
      * <code>string to_address = 4;</code>
+     * @return The toAddress.
      */
     java.lang.String getToAddress();
     /**
@@ -57,27 +63,32 @@ public final class Ontology {
      * </pre>
      *
      * <code>string to_address = 4;</code>
+     * @return The bytes for toAddress.
      */
     com.google.protobuf.ByteString
         getToAddressBytes();
 
     /**
      * <code>uint64 amount = 5;</code>
+     * @return The amount.
      */
     long getAmount();
 
     /**
      * <code>bytes payer_private_key = 6;</code>
+     * @return The payerPrivateKey.
      */
     com.google.protobuf.ByteString getPayerPrivateKey();
 
     /**
      * <code>uint64 gas_price = 7;</code>
+     * @return The gasPrice.
      */
     long getGasPrice();
 
     /**
      * <code>uint64 gas_limit = 8;</code>
+     * @return The gasLimit.
      */
     long getGasLimit();
 
@@ -87,6 +98,7 @@ public final class Ontology {
      * </pre>
      *
      * <code>string query_address = 9;</code>
+     * @return The queryAddress.
      */
     java.lang.String getQueryAddress();
     /**
@@ -95,12 +107,14 @@ public final class Ontology {
      * </pre>
      *
      * <code>string query_address = 9;</code>
+     * @return The bytes for queryAddress.
      */
     com.google.protobuf.ByteString
         getQueryAddressBytes();
 
     /**
      * <code>uint32 nonce = 10;</code>
+     * @return The nonce.
      */
     int getNonce();
   }
@@ -111,7 +125,7 @@ public final class Ontology {
    *
    * Protobuf type {@code TW.Ontology.Proto.SigningInput}
    */
-  public  static final class SigningInput extends
+  public static final class SigningInput extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:TW.Ontology.Proto.SigningInput)
       SigningInputOrBuilder {
@@ -249,7 +263,9 @@ public final class Ontology {
     private volatile java.lang.Object contract_;
     /**
      * <code>string contract = 1;</code>
+     * @return The contract.
      */
+    @java.lang.Override
     public java.lang.String getContract() {
       java.lang.Object ref = contract_;
       if (ref instanceof java.lang.String) {
@@ -264,7 +280,9 @@ public final class Ontology {
     }
     /**
      * <code>string contract = 1;</code>
+     * @return The bytes for contract.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString
         getContractBytes() {
       java.lang.Object ref = contract_;
@@ -283,7 +301,9 @@ public final class Ontology {
     private volatile java.lang.Object method_;
     /**
      * <code>string method = 2;</code>
+     * @return The method.
      */
+    @java.lang.Override
     public java.lang.String getMethod() {
       java.lang.Object ref = method_;
       if (ref instanceof java.lang.String) {
@@ -298,7 +318,9 @@ public final class Ontology {
     }
     /**
      * <code>string method = 2;</code>
+     * @return The bytes for method.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString
         getMethodBytes() {
       java.lang.Object ref = method_;
@@ -317,7 +339,9 @@ public final class Ontology {
     private com.google.protobuf.ByteString ownerPrivateKey_;
     /**
      * <code>bytes owner_private_key = 3;</code>
+     * @return The ownerPrivateKey.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString getOwnerPrivateKey() {
       return ownerPrivateKey_;
     }
@@ -330,7 +354,9 @@ public final class Ontology {
      * </pre>
      *
      * <code>string to_address = 4;</code>
+     * @return The toAddress.
      */
+    @java.lang.Override
     public java.lang.String getToAddress() {
       java.lang.Object ref = toAddress_;
       if (ref instanceof java.lang.String) {
@@ -349,7 +375,9 @@ public final class Ontology {
      * </pre>
      *
      * <code>string to_address = 4;</code>
+     * @return The bytes for toAddress.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString
         getToAddressBytes() {
       java.lang.Object ref = toAddress_;
@@ -368,7 +396,9 @@ public final class Ontology {
     private long amount_;
     /**
      * <code>uint64 amount = 5;</code>
+     * @return The amount.
      */
+    @java.lang.Override
     public long getAmount() {
       return amount_;
     }
@@ -377,7 +407,9 @@ public final class Ontology {
     private com.google.protobuf.ByteString payerPrivateKey_;
     /**
      * <code>bytes payer_private_key = 6;</code>
+     * @return The payerPrivateKey.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString getPayerPrivateKey() {
       return payerPrivateKey_;
     }
@@ -386,7 +418,9 @@ public final class Ontology {
     private long gasPrice_;
     /**
      * <code>uint64 gas_price = 7;</code>
+     * @return The gasPrice.
      */
+    @java.lang.Override
     public long getGasPrice() {
       return gasPrice_;
     }
@@ -395,7 +429,9 @@ public final class Ontology {
     private long gasLimit_;
     /**
      * <code>uint64 gas_limit = 8;</code>
+     * @return The gasLimit.
      */
+    @java.lang.Override
     public long getGasLimit() {
       return gasLimit_;
     }
@@ -408,7 +444,9 @@ public final class Ontology {
      * </pre>
      *
      * <code>string query_address = 9;</code>
+     * @return The queryAddress.
      */
+    @java.lang.Override
     public java.lang.String getQueryAddress() {
       java.lang.Object ref = queryAddress_;
       if (ref instanceof java.lang.String) {
@@ -427,7 +465,9 @@ public final class Ontology {
      * </pre>
      *
      * <code>string query_address = 9;</code>
+     * @return The bytes for queryAddress.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString
         getQueryAddressBytes() {
       java.lang.Object ref = queryAddress_;
@@ -446,7 +486,9 @@ public final class Ontology {
     private int nonce_;
     /**
      * <code>uint32 nonce = 10;</code>
+     * @return The nonce.
      */
+    @java.lang.Override
     public int getNonce() {
       return nonce_;
     }
@@ -916,6 +958,7 @@ public final class Ontology {
       private java.lang.Object contract_ = "";
       /**
        * <code>string contract = 1;</code>
+       * @return The contract.
        */
       public java.lang.String getContract() {
         java.lang.Object ref = contract_;
@@ -931,6 +974,7 @@ public final class Ontology {
       }
       /**
        * <code>string contract = 1;</code>
+       * @return The bytes for contract.
        */
       public com.google.protobuf.ByteString
           getContractBytes() {
@@ -947,6 +991,8 @@ public final class Ontology {
       }
       /**
        * <code>string contract = 1;</code>
+       * @param value The contract to set.
+       * @return This builder for chaining.
        */
       public Builder setContract(
           java.lang.String value) {
@@ -960,6 +1006,7 @@ public final class Ontology {
       }
       /**
        * <code>string contract = 1;</code>
+       * @return This builder for chaining.
        */
       public Builder clearContract() {
         
@@ -969,6 +1016,8 @@ public final class Ontology {
       }
       /**
        * <code>string contract = 1;</code>
+       * @param value The bytes for contract to set.
+       * @return This builder for chaining.
        */
       public Builder setContractBytes(
           com.google.protobuf.ByteString value) {
@@ -985,6 +1034,7 @@ public final class Ontology {
       private java.lang.Object method_ = "";
       /**
        * <code>string method = 2;</code>
+       * @return The method.
        */
       public java.lang.String getMethod() {
         java.lang.Object ref = method_;
@@ -1000,6 +1050,7 @@ public final class Ontology {
       }
       /**
        * <code>string method = 2;</code>
+       * @return The bytes for method.
        */
       public com.google.protobuf.ByteString
           getMethodBytes() {
@@ -1016,6 +1067,8 @@ public final class Ontology {
       }
       /**
        * <code>string method = 2;</code>
+       * @param value The method to set.
+       * @return This builder for chaining.
        */
       public Builder setMethod(
           java.lang.String value) {
@@ -1029,6 +1082,7 @@ public final class Ontology {
       }
       /**
        * <code>string method = 2;</code>
+       * @return This builder for chaining.
        */
       public Builder clearMethod() {
         
@@ -1038,6 +1092,8 @@ public final class Ontology {
       }
       /**
        * <code>string method = 2;</code>
+       * @param value The bytes for method to set.
+       * @return This builder for chaining.
        */
       public Builder setMethodBytes(
           com.google.protobuf.ByteString value) {
@@ -1054,12 +1110,16 @@ public final class Ontology {
       private com.google.protobuf.ByteString ownerPrivateKey_ = com.google.protobuf.ByteString.EMPTY;
       /**
        * <code>bytes owner_private_key = 3;</code>
+       * @return The ownerPrivateKey.
        */
+      @java.lang.Override
       public com.google.protobuf.ByteString getOwnerPrivateKey() {
         return ownerPrivateKey_;
       }
       /**
        * <code>bytes owner_private_key = 3;</code>
+       * @param value The ownerPrivateKey to set.
+       * @return This builder for chaining.
        */
       public Builder setOwnerPrivateKey(com.google.protobuf.ByteString value) {
         if (value == null) {
@@ -1072,6 +1132,7 @@ public final class Ontology {
       }
       /**
        * <code>bytes owner_private_key = 3;</code>
+       * @return This builder for chaining.
        */
       public Builder clearOwnerPrivateKey() {
         
@@ -1087,6 +1148,7 @@ public final class Ontology {
        * </pre>
        *
        * <code>string to_address = 4;</code>
+       * @return The toAddress.
        */
       public java.lang.String getToAddress() {
         java.lang.Object ref = toAddress_;
@@ -1106,6 +1168,7 @@ public final class Ontology {
        * </pre>
        *
        * <code>string to_address = 4;</code>
+       * @return The bytes for toAddress.
        */
       public com.google.protobuf.ByteString
           getToAddressBytes() {
@@ -1126,6 +1189,8 @@ public final class Ontology {
        * </pre>
        *
        * <code>string to_address = 4;</code>
+       * @param value The toAddress to set.
+       * @return This builder for chaining.
        */
       public Builder setToAddress(
           java.lang.String value) {
@@ -1143,6 +1208,7 @@ public final class Ontology {
        * </pre>
        *
        * <code>string to_address = 4;</code>
+       * @return This builder for chaining.
        */
       public Builder clearToAddress() {
         
@@ -1156,6 +1222,8 @@ public final class Ontology {
        * </pre>
        *
        * <code>string to_address = 4;</code>
+       * @param value The bytes for toAddress to set.
+       * @return This builder for chaining.
        */
       public Builder setToAddressBytes(
           com.google.protobuf.ByteString value) {
@@ -1172,12 +1240,16 @@ public final class Ontology {
       private long amount_ ;
       /**
        * <code>uint64 amount = 5;</code>
+       * @return The amount.
        */
+      @java.lang.Override
       public long getAmount() {
         return amount_;
       }
       /**
        * <code>uint64 amount = 5;</code>
+       * @param value The amount to set.
+       * @return This builder for chaining.
        */
       public Builder setAmount(long value) {
         
@@ -1187,6 +1259,7 @@ public final class Ontology {
       }
       /**
        * <code>uint64 amount = 5;</code>
+       * @return This builder for chaining.
        */
       public Builder clearAmount() {
         
@@ -1198,12 +1271,16 @@ public final class Ontology {
       private com.google.protobuf.ByteString payerPrivateKey_ = com.google.protobuf.ByteString.EMPTY;
       /**
        * <code>bytes payer_private_key = 6;</code>
+       * @return The payerPrivateKey.
        */
+      @java.lang.Override
       public com.google.protobuf.ByteString getPayerPrivateKey() {
         return payerPrivateKey_;
       }
       /**
        * <code>bytes payer_private_key = 6;</code>
+       * @param value The payerPrivateKey to set.
+       * @return This builder for chaining.
        */
       public Builder setPayerPrivateKey(com.google.protobuf.ByteString value) {
         if (value == null) {
@@ -1216,6 +1293,7 @@ public final class Ontology {
       }
       /**
        * <code>bytes payer_private_key = 6;</code>
+       * @return This builder for chaining.
        */
       public Builder clearPayerPrivateKey() {
         
@@ -1227,12 +1305,16 @@ public final class Ontology {
       private long gasPrice_ ;
       /**
        * <code>uint64 gas_price = 7;</code>
+       * @return The gasPrice.
        */
+      @java.lang.Override
       public long getGasPrice() {
         return gasPrice_;
       }
       /**
        * <code>uint64 gas_price = 7;</code>
+       * @param value The gasPrice to set.
+       * @return This builder for chaining.
        */
       public Builder setGasPrice(long value) {
         
@@ -1242,6 +1324,7 @@ public final class Ontology {
       }
       /**
        * <code>uint64 gas_price = 7;</code>
+       * @return This builder for chaining.
        */
       public Builder clearGasPrice() {
         
@@ -1253,12 +1336,16 @@ public final class Ontology {
       private long gasLimit_ ;
       /**
        * <code>uint64 gas_limit = 8;</code>
+       * @return The gasLimit.
        */
+      @java.lang.Override
       public long getGasLimit() {
         return gasLimit_;
       }
       /**
        * <code>uint64 gas_limit = 8;</code>
+       * @param value The gasLimit to set.
+       * @return This builder for chaining.
        */
       public Builder setGasLimit(long value) {
         
@@ -1268,6 +1355,7 @@ public final class Ontology {
       }
       /**
        * <code>uint64 gas_limit = 8;</code>
+       * @return This builder for chaining.
        */
       public Builder clearGasLimit() {
         
@@ -1283,6 +1371,7 @@ public final class Ontology {
        * </pre>
        *
        * <code>string query_address = 9;</code>
+       * @return The queryAddress.
        */
       public java.lang.String getQueryAddress() {
         java.lang.Object ref = queryAddress_;
@@ -1302,6 +1391,7 @@ public final class Ontology {
        * </pre>
        *
        * <code>string query_address = 9;</code>
+       * @return The bytes for queryAddress.
        */
       public com.google.protobuf.ByteString
           getQueryAddressBytes() {
@@ -1322,6 +1412,8 @@ public final class Ontology {
        * </pre>
        *
        * <code>string query_address = 9;</code>
+       * @param value The queryAddress to set.
+       * @return This builder for chaining.
        */
       public Builder setQueryAddress(
           java.lang.String value) {
@@ -1339,6 +1431,7 @@ public final class Ontology {
        * </pre>
        *
        * <code>string query_address = 9;</code>
+       * @return This builder for chaining.
        */
       public Builder clearQueryAddress() {
         
@@ -1352,6 +1445,8 @@ public final class Ontology {
        * </pre>
        *
        * <code>string query_address = 9;</code>
+       * @param value The bytes for queryAddress to set.
+       * @return This builder for chaining.
        */
       public Builder setQueryAddressBytes(
           com.google.protobuf.ByteString value) {
@@ -1368,12 +1463,16 @@ public final class Ontology {
       private int nonce_ ;
       /**
        * <code>uint32 nonce = 10;</code>
+       * @return The nonce.
        */
+      @java.lang.Override
       public int getNonce() {
         return nonce_;
       }
       /**
        * <code>uint32 nonce = 10;</code>
+       * @param value The nonce to set.
+       * @return This builder for chaining.
        */
       public Builder setNonce(int value) {
         
@@ -1383,6 +1482,7 @@ public final class Ontology {
       }
       /**
        * <code>uint32 nonce = 10;</code>
+       * @return This builder for chaining.
        */
       public Builder clearNonce() {
         
@@ -1453,6 +1553,7 @@ public final class Ontology {
      * </pre>
      *
      * <code>bytes encoded = 1;</code>
+     * @return The encoded.
      */
     com.google.protobuf.ByteString getEncoded();
   }
@@ -1463,7 +1564,7 @@ public final class Ontology {
    *
    * Protobuf type {@code TW.Ontology.Proto.SigningOutput}
    */
-  public  static final class SigningOutput extends
+  public static final class SigningOutput extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:TW.Ontology.Proto.SigningOutput)
       SigningOutputOrBuilder {
@@ -1551,7 +1652,9 @@ public final class Ontology {
      * </pre>
      *
      * <code>bytes encoded = 1;</code>
+     * @return The encoded.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString getEncoded() {
       return encoded_;
     }
@@ -1869,7 +1972,9 @@ public final class Ontology {
        * </pre>
        *
        * <code>bytes encoded = 1;</code>
+       * @return The encoded.
        */
+      @java.lang.Override
       public com.google.protobuf.ByteString getEncoded() {
         return encoded_;
       }
@@ -1879,6 +1984,8 @@ public final class Ontology {
        * </pre>
        *
        * <code>bytes encoded = 1;</code>
+       * @param value The encoded to set.
+       * @return This builder for chaining.
        */
       public Builder setEncoded(com.google.protobuf.ByteString value) {
         if (value == null) {
@@ -1895,6 +2002,7 @@ public final class Ontology {
        * </pre>
        *
        * <code>bytes encoded = 1;</code>
+       * @return This builder for chaining.
        */
       public Builder clearEncoded() {
         

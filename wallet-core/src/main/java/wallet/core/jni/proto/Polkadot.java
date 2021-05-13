@@ -49,6 +49,8 @@ public final class Polkadot {
     }
 
     /**
+     * @param value The numeric wire value of the corresponding enum entry.
+     * @return The enum associated with the given numeric wire value.
      * @deprecated Use {@link #forNumber(int)} instead.
      */
     @java.lang.Deprecated
@@ -56,6 +58,10 @@ public final class Polkadot {
       return forNumber(value);
     }
 
+    /**
+     * @param value The numeric wire value of the corresponding enum entry.
+     * @return The enum associated with the given numeric wire value.
+     */
     public static Network forNumber(int value) {
       switch (value) {
         case 0: return POLKADOT;
@@ -78,6 +84,10 @@ public final class Polkadot {
 
     public final com.google.protobuf.Descriptors.EnumValueDescriptor
         getValueDescriptor() {
+      if (this == UNRECOGNIZED) {
+        throw new java.lang.IllegalStateException(
+            "Can't get the descriptor of an unrecognized enum value.");
+      }
       return getDescriptor().getValues().get(ordinal());
     }
     public final com.google.protobuf.Descriptors.EnumDescriptor
@@ -155,6 +165,8 @@ public final class Polkadot {
     }
 
     /**
+     * @param value The numeric wire value of the corresponding enum entry.
+     * @return The enum associated with the given numeric wire value.
      * @deprecated Use {@link #forNumber(int)} instead.
      */
     @java.lang.Deprecated
@@ -162,6 +174,10 @@ public final class Polkadot {
       return forNumber(value);
     }
 
+    /**
+     * @param value The numeric wire value of the corresponding enum entry.
+     * @return The enum associated with the given numeric wire value.
+     */
     public static RewardDestination forNumber(int value) {
       switch (value) {
         case 0: return STAKED;
@@ -185,6 +201,10 @@ public final class Polkadot {
 
     public final com.google.protobuf.Descriptors.EnumValueDescriptor
         getValueDescriptor() {
+      if (this == UNRECOGNIZED) {
+        throw new java.lang.IllegalStateException(
+            "Can't get the descriptor of an unrecognized enum value.");
+      }
       return getDescriptor().getValues().get(ordinal());
     }
     public final com.google.protobuf.Descriptors.EnumDescriptor
@@ -225,22 +245,28 @@ public final class Polkadot {
 
     /**
      * <pre>
-     * calculated from block number
+     * recent block number (called phase in polkadot code), should match block hash
      * </pre>
      *
-     * <code>uint64 period = 1;</code>
+     * <code>uint64 block_number = 1;</code>
+     * @return The blockNumber.
      */
-    long getPeriod();
+    long getBlockNumber();
 
     /**
-     * <code>uint64 phase = 2;</code>
+     * <pre>
+     * length of period, calculated from block number, e.g. 64
+     * </pre>
+     *
+     * <code>uint64 period = 2;</code>
+     * @return The period.
      */
-    long getPhase();
+    long getPeriod();
   }
   /**
    * Protobuf type {@code TW.Polkadot.Proto.Era}
    */
-  public  static final class Era extends
+  public static final class Era extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:TW.Polkadot.Proto.Era)
       EraOrBuilder {
@@ -284,12 +310,12 @@ public final class Polkadot {
               break;
             case 8: {
 
-              period_ = input.readUInt64();
+              blockNumber_ = input.readUInt64();
               break;
             }
             case 16: {
 
-              phase_ = input.readUInt64();
+              period_ = input.readUInt64();
               break;
             }
             default: {
@@ -324,26 +350,34 @@ public final class Polkadot {
               wallet.core.jni.proto.Polkadot.Era.class, wallet.core.jni.proto.Polkadot.Era.Builder.class);
     }
 
-    public static final int PERIOD_FIELD_NUMBER = 1;
+    public static final int BLOCK_NUMBER_FIELD_NUMBER = 1;
+    private long blockNumber_;
+    /**
+     * <pre>
+     * recent block number (called phase in polkadot code), should match block hash
+     * </pre>
+     *
+     * <code>uint64 block_number = 1;</code>
+     * @return The blockNumber.
+     */
+    @java.lang.Override
+    public long getBlockNumber() {
+      return blockNumber_;
+    }
+
+    public static final int PERIOD_FIELD_NUMBER = 2;
     private long period_;
     /**
      * <pre>
-     * calculated from block number
+     * length of period, calculated from block number, e.g. 64
      * </pre>
      *
-     * <code>uint64 period = 1;</code>
+     * <code>uint64 period = 2;</code>
+     * @return The period.
      */
+    @java.lang.Override
     public long getPeriod() {
       return period_;
-    }
-
-    public static final int PHASE_FIELD_NUMBER = 2;
-    private long phase_;
-    /**
-     * <code>uint64 phase = 2;</code>
-     */
-    public long getPhase() {
-      return phase_;
     }
 
     private byte memoizedIsInitialized = -1;
@@ -360,11 +394,11 @@ public final class Polkadot {
     @java.lang.Override
     public void writeTo(com.google.protobuf.CodedOutputStream output)
                         throws java.io.IOException {
-      if (period_ != 0L) {
-        output.writeUInt64(1, period_);
+      if (blockNumber_ != 0L) {
+        output.writeUInt64(1, blockNumber_);
       }
-      if (phase_ != 0L) {
-        output.writeUInt64(2, phase_);
+      if (period_ != 0L) {
+        output.writeUInt64(2, period_);
       }
       unknownFields.writeTo(output);
     }
@@ -375,13 +409,13 @@ public final class Polkadot {
       if (size != -1) return size;
 
       size = 0;
+      if (blockNumber_ != 0L) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt64Size(1, blockNumber_);
+      }
       if (period_ != 0L) {
         size += com.google.protobuf.CodedOutputStream
-          .computeUInt64Size(1, period_);
-      }
-      if (phase_ != 0L) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeUInt64Size(2, phase_);
+          .computeUInt64Size(2, period_);
       }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
@@ -398,10 +432,10 @@ public final class Polkadot {
       }
       wallet.core.jni.proto.Polkadot.Era other = (wallet.core.jni.proto.Polkadot.Era) obj;
 
+      if (getBlockNumber()
+          != other.getBlockNumber()) return false;
       if (getPeriod()
           != other.getPeriod()) return false;
-      if (getPhase()
-          != other.getPhase()) return false;
       if (!unknownFields.equals(other.unknownFields)) return false;
       return true;
     }
@@ -413,12 +447,12 @@ public final class Polkadot {
       }
       int hash = 41;
       hash = (19 * hash) + getDescriptor().hashCode();
+      hash = (37 * hash) + BLOCK_NUMBER_FIELD_NUMBER;
+      hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
+          getBlockNumber());
       hash = (37 * hash) + PERIOD_FIELD_NUMBER;
       hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
           getPeriod());
-      hash = (37 * hash) + PHASE_FIELD_NUMBER;
-      hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
-          getPhase());
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
       return hash;
@@ -552,9 +586,9 @@ public final class Polkadot {
       @java.lang.Override
       public Builder clear() {
         super.clear();
-        period_ = 0L;
+        blockNumber_ = 0L;
 
-        phase_ = 0L;
+        period_ = 0L;
 
         return this;
       }
@@ -582,8 +616,8 @@ public final class Polkadot {
       @java.lang.Override
       public wallet.core.jni.proto.Polkadot.Era buildPartial() {
         wallet.core.jni.proto.Polkadot.Era result = new wallet.core.jni.proto.Polkadot.Era(this);
+        result.blockNumber_ = blockNumber_;
         result.period_ = period_;
-        result.phase_ = phase_;
         onBuilt();
         return result;
       }
@@ -632,11 +666,11 @@ public final class Polkadot {
 
       public Builder mergeFrom(wallet.core.jni.proto.Polkadot.Era other) {
         if (other == wallet.core.jni.proto.Polkadot.Era.getDefaultInstance()) return this;
+        if (other.getBlockNumber() != 0L) {
+          setBlockNumber(other.getBlockNumber());
+        }
         if (other.getPeriod() != 0L) {
           setPeriod(other.getPeriod());
-        }
-        if (other.getPhase() != 0L) {
-          setPhase(other.getPhase());
         }
         this.mergeUnknownFields(other.unknownFields);
         onChanged();
@@ -667,23 +701,70 @@ public final class Polkadot {
         return this;
       }
 
+      private long blockNumber_ ;
+      /**
+       * <pre>
+       * recent block number (called phase in polkadot code), should match block hash
+       * </pre>
+       *
+       * <code>uint64 block_number = 1;</code>
+       * @return The blockNumber.
+       */
+      @java.lang.Override
+      public long getBlockNumber() {
+        return blockNumber_;
+      }
+      /**
+       * <pre>
+       * recent block number (called phase in polkadot code), should match block hash
+       * </pre>
+       *
+       * <code>uint64 block_number = 1;</code>
+       * @param value The blockNumber to set.
+       * @return This builder for chaining.
+       */
+      public Builder setBlockNumber(long value) {
+        
+        blockNumber_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * recent block number (called phase in polkadot code), should match block hash
+       * </pre>
+       *
+       * <code>uint64 block_number = 1;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearBlockNumber() {
+        
+        blockNumber_ = 0L;
+        onChanged();
+        return this;
+      }
+
       private long period_ ;
       /**
        * <pre>
-       * calculated from block number
+       * length of period, calculated from block number, e.g. 64
        * </pre>
        *
-       * <code>uint64 period = 1;</code>
+       * <code>uint64 period = 2;</code>
+       * @return The period.
        */
+      @java.lang.Override
       public long getPeriod() {
         return period_;
       }
       /**
        * <pre>
-       * calculated from block number
+       * length of period, calculated from block number, e.g. 64
        * </pre>
        *
-       * <code>uint64 period = 1;</code>
+       * <code>uint64 period = 2;</code>
+       * @param value The period to set.
+       * @return This builder for chaining.
        */
       public Builder setPeriod(long value) {
         
@@ -693,40 +774,15 @@ public final class Polkadot {
       }
       /**
        * <pre>
-       * calculated from block number
+       * length of period, calculated from block number, e.g. 64
        * </pre>
        *
-       * <code>uint64 period = 1;</code>
+       * <code>uint64 period = 2;</code>
+       * @return This builder for chaining.
        */
       public Builder clearPeriod() {
         
         period_ = 0L;
-        onChanged();
-        return this;
-      }
-
-      private long phase_ ;
-      /**
-       * <code>uint64 phase = 2;</code>
-       */
-      public long getPhase() {
-        return phase_;
-      }
-      /**
-       * <code>uint64 phase = 2;</code>
-       */
-      public Builder setPhase(long value) {
-        
-        phase_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>uint64 phase = 2;</code>
-       */
-      public Builder clearPhase() {
-        
-        phase_ = 0L;
         onChanged();
         return this;
       }
@@ -789,10 +845,12 @@ public final class Polkadot {
 
     /**
      * <code>.TW.Polkadot.Proto.Balance.Transfer transfer = 1;</code>
+     * @return Whether the transfer field is set.
      */
     boolean hasTransfer();
     /**
      * <code>.TW.Polkadot.Proto.Balance.Transfer transfer = 1;</code>
+     * @return The transfer.
      */
     wallet.core.jni.proto.Polkadot.Balance.Transfer getTransfer();
     /**
@@ -805,7 +863,7 @@ public final class Polkadot {
   /**
    * Protobuf type {@code TW.Polkadot.Proto.Balance}
    */
-  public  static final class Balance extends
+  public static final class Balance extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:TW.Polkadot.Proto.Balance)
       BalanceOrBuilder {
@@ -899,10 +957,12 @@ public final class Polkadot {
 
       /**
        * <code>string to_address = 1;</code>
+       * @return The toAddress.
        */
       java.lang.String getToAddress();
       /**
        * <code>string to_address = 1;</code>
+       * @return The bytes for toAddress.
        */
       com.google.protobuf.ByteString
           getToAddressBytes();
@@ -913,13 +973,14 @@ public final class Polkadot {
        * </pre>
        *
        * <code>bytes value = 2;</code>
+       * @return The value.
        */
       com.google.protobuf.ByteString getValue();
     }
     /**
      * Protobuf type {@code TW.Polkadot.Proto.Balance.Transfer}
      */
-    public  static final class Transfer extends
+    public static final class Transfer extends
         com.google.protobuf.GeneratedMessageV3 implements
         // @@protoc_insertion_point(message_implements:TW.Polkadot.Proto.Balance.Transfer)
         TransferOrBuilder {
@@ -1010,7 +1071,9 @@ public final class Polkadot {
       private volatile java.lang.Object toAddress_;
       /**
        * <code>string to_address = 1;</code>
+       * @return The toAddress.
        */
+      @java.lang.Override
       public java.lang.String getToAddress() {
         java.lang.Object ref = toAddress_;
         if (ref instanceof java.lang.String) {
@@ -1025,7 +1088,9 @@ public final class Polkadot {
       }
       /**
        * <code>string to_address = 1;</code>
+       * @return The bytes for toAddress.
        */
+      @java.lang.Override
       public com.google.protobuf.ByteString
           getToAddressBytes() {
         java.lang.Object ref = toAddress_;
@@ -1048,7 +1113,9 @@ public final class Polkadot {
        * </pre>
        *
        * <code>bytes value = 2;</code>
+       * @return The value.
        */
+      @java.lang.Override
       public com.google.protobuf.ByteString getValue() {
         return value_;
       }
@@ -1375,6 +1442,7 @@ public final class Polkadot {
         private java.lang.Object toAddress_ = "";
         /**
          * <code>string to_address = 1;</code>
+         * @return The toAddress.
          */
         public java.lang.String getToAddress() {
           java.lang.Object ref = toAddress_;
@@ -1390,6 +1458,7 @@ public final class Polkadot {
         }
         /**
          * <code>string to_address = 1;</code>
+         * @return The bytes for toAddress.
          */
         public com.google.protobuf.ByteString
             getToAddressBytes() {
@@ -1406,6 +1475,8 @@ public final class Polkadot {
         }
         /**
          * <code>string to_address = 1;</code>
+         * @param value The toAddress to set.
+         * @return This builder for chaining.
          */
         public Builder setToAddress(
             java.lang.String value) {
@@ -1419,6 +1490,7 @@ public final class Polkadot {
         }
         /**
          * <code>string to_address = 1;</code>
+         * @return This builder for chaining.
          */
         public Builder clearToAddress() {
           
@@ -1428,6 +1500,8 @@ public final class Polkadot {
         }
         /**
          * <code>string to_address = 1;</code>
+         * @param value The bytes for toAddress to set.
+         * @return This builder for chaining.
          */
         public Builder setToAddressBytes(
             com.google.protobuf.ByteString value) {
@@ -1448,7 +1522,9 @@ public final class Polkadot {
          * </pre>
          *
          * <code>bytes value = 2;</code>
+         * @return The value.
          */
+        @java.lang.Override
         public com.google.protobuf.ByteString getValue() {
           return value_;
         }
@@ -1458,6 +1534,8 @@ public final class Polkadot {
          * </pre>
          *
          * <code>bytes value = 2;</code>
+         * @param value The value to set.
+         * @return This builder for chaining.
          */
         public Builder setValue(com.google.protobuf.ByteString value) {
           if (value == null) {
@@ -1474,6 +1552,7 @@ public final class Polkadot {
          * </pre>
          *
          * <code>bytes value = 2;</code>
+         * @return This builder for chaining.
          */
         public Builder clearValue() {
           
@@ -1537,7 +1616,8 @@ public final class Polkadot {
     private int messageOneofCase_ = 0;
     private java.lang.Object messageOneof_;
     public enum MessageOneofCase
-        implements com.google.protobuf.Internal.EnumLite {
+        implements com.google.protobuf.Internal.EnumLite,
+            com.google.protobuf.AbstractMessage.InternalOneOfEnum {
       TRANSFER(1),
       MESSAGEONEOF_NOT_SET(0);
       private final int value;
@@ -1545,6 +1625,8 @@ public final class Polkadot {
         this.value = value;
       }
       /**
+       * @param value The number of the enum to look for.
+       * @return The enum associated with the given number.
        * @deprecated Use {@link #forNumber(int)} instead.
        */
       @java.lang.Deprecated
@@ -1573,13 +1655,17 @@ public final class Polkadot {
     public static final int TRANSFER_FIELD_NUMBER = 1;
     /**
      * <code>.TW.Polkadot.Proto.Balance.Transfer transfer = 1;</code>
+     * @return Whether the transfer field is set.
      */
+    @java.lang.Override
     public boolean hasTransfer() {
       return messageOneofCase_ == 1;
     }
     /**
      * <code>.TW.Polkadot.Proto.Balance.Transfer transfer = 1;</code>
+     * @return The transfer.
      */
+    @java.lang.Override
     public wallet.core.jni.proto.Polkadot.Balance.Transfer getTransfer() {
       if (messageOneofCase_ == 1) {
          return (wallet.core.jni.proto.Polkadot.Balance.Transfer) messageOneof_;
@@ -1589,6 +1675,7 @@ public final class Polkadot {
     /**
      * <code>.TW.Polkadot.Proto.Balance.Transfer transfer = 1;</code>
      */
+    @java.lang.Override
     public wallet.core.jni.proto.Polkadot.Balance.TransferOrBuilder getTransferOrBuilder() {
       if (messageOneofCase_ == 1) {
          return (wallet.core.jni.proto.Polkadot.Balance.Transfer) messageOneof_;
@@ -1943,13 +2030,17 @@ public final class Polkadot {
           wallet.core.jni.proto.Polkadot.Balance.Transfer, wallet.core.jni.proto.Polkadot.Balance.Transfer.Builder, wallet.core.jni.proto.Polkadot.Balance.TransferOrBuilder> transferBuilder_;
       /**
        * <code>.TW.Polkadot.Proto.Balance.Transfer transfer = 1;</code>
+       * @return Whether the transfer field is set.
        */
+      @java.lang.Override
       public boolean hasTransfer() {
         return messageOneofCase_ == 1;
       }
       /**
        * <code>.TW.Polkadot.Proto.Balance.Transfer transfer = 1;</code>
+       * @return The transfer.
        */
+      @java.lang.Override
       public wallet.core.jni.proto.Polkadot.Balance.Transfer getTransfer() {
         if (transferBuilder_ == null) {
           if (messageOneofCase_ == 1) {
@@ -2043,6 +2134,7 @@ public final class Polkadot {
       /**
        * <code>.TW.Polkadot.Proto.Balance.Transfer transfer = 1;</code>
        */
+      @java.lang.Override
       public wallet.core.jni.proto.Polkadot.Balance.TransferOrBuilder getTransferOrBuilder() {
         if ((messageOneofCase_ == 1) && (transferBuilder_ != null)) {
           return transferBuilder_.getMessageOrBuilder();
@@ -2133,10 +2225,12 @@ public final class Polkadot {
 
     /**
      * <code>.TW.Polkadot.Proto.Staking.Bond bond = 1;</code>
+     * @return Whether the bond field is set.
      */
     boolean hasBond();
     /**
      * <code>.TW.Polkadot.Proto.Staking.Bond bond = 1;</code>
+     * @return The bond.
      */
     wallet.core.jni.proto.Polkadot.Staking.Bond getBond();
     /**
@@ -2145,67 +2239,92 @@ public final class Polkadot {
     wallet.core.jni.proto.Polkadot.Staking.BondOrBuilder getBondOrBuilder();
 
     /**
-     * <code>.TW.Polkadot.Proto.Staking.BondExtra bond_extra = 2;</code>
+     * <code>.TW.Polkadot.Proto.Staking.BondAndNominate bond_and_nominate = 2;</code>
+     * @return Whether the bondAndNominate field is set.
+     */
+    boolean hasBondAndNominate();
+    /**
+     * <code>.TW.Polkadot.Proto.Staking.BondAndNominate bond_and_nominate = 2;</code>
+     * @return The bondAndNominate.
+     */
+    wallet.core.jni.proto.Polkadot.Staking.BondAndNominate getBondAndNominate();
+    /**
+     * <code>.TW.Polkadot.Proto.Staking.BondAndNominate bond_and_nominate = 2;</code>
+     */
+    wallet.core.jni.proto.Polkadot.Staking.BondAndNominateOrBuilder getBondAndNominateOrBuilder();
+
+    /**
+     * <code>.TW.Polkadot.Proto.Staking.BondExtra bond_extra = 3;</code>
+     * @return Whether the bondExtra field is set.
      */
     boolean hasBondExtra();
     /**
-     * <code>.TW.Polkadot.Proto.Staking.BondExtra bond_extra = 2;</code>
+     * <code>.TW.Polkadot.Proto.Staking.BondExtra bond_extra = 3;</code>
+     * @return The bondExtra.
      */
     wallet.core.jni.proto.Polkadot.Staking.BondExtra getBondExtra();
     /**
-     * <code>.TW.Polkadot.Proto.Staking.BondExtra bond_extra = 2;</code>
+     * <code>.TW.Polkadot.Proto.Staking.BondExtra bond_extra = 3;</code>
      */
     wallet.core.jni.proto.Polkadot.Staking.BondExtraOrBuilder getBondExtraOrBuilder();
 
     /**
-     * <code>.TW.Polkadot.Proto.Staking.Unbond unbond = 3;</code>
+     * <code>.TW.Polkadot.Proto.Staking.Unbond unbond = 4;</code>
+     * @return Whether the unbond field is set.
      */
     boolean hasUnbond();
     /**
-     * <code>.TW.Polkadot.Proto.Staking.Unbond unbond = 3;</code>
+     * <code>.TW.Polkadot.Proto.Staking.Unbond unbond = 4;</code>
+     * @return The unbond.
      */
     wallet.core.jni.proto.Polkadot.Staking.Unbond getUnbond();
     /**
-     * <code>.TW.Polkadot.Proto.Staking.Unbond unbond = 3;</code>
+     * <code>.TW.Polkadot.Proto.Staking.Unbond unbond = 4;</code>
      */
     wallet.core.jni.proto.Polkadot.Staking.UnbondOrBuilder getUnbondOrBuilder();
 
     /**
-     * <code>.TW.Polkadot.Proto.Staking.WithdrawUnbonded withdraw_unbonded = 4;</code>
+     * <code>.TW.Polkadot.Proto.Staking.WithdrawUnbonded withdraw_unbonded = 5;</code>
+     * @return Whether the withdrawUnbonded field is set.
      */
     boolean hasWithdrawUnbonded();
     /**
-     * <code>.TW.Polkadot.Proto.Staking.WithdrawUnbonded withdraw_unbonded = 4;</code>
+     * <code>.TW.Polkadot.Proto.Staking.WithdrawUnbonded withdraw_unbonded = 5;</code>
+     * @return The withdrawUnbonded.
      */
     wallet.core.jni.proto.Polkadot.Staking.WithdrawUnbonded getWithdrawUnbonded();
     /**
-     * <code>.TW.Polkadot.Proto.Staking.WithdrawUnbonded withdraw_unbonded = 4;</code>
+     * <code>.TW.Polkadot.Proto.Staking.WithdrawUnbonded withdraw_unbonded = 5;</code>
      */
     wallet.core.jni.proto.Polkadot.Staking.WithdrawUnbondedOrBuilder getWithdrawUnbondedOrBuilder();
 
     /**
-     * <code>.TW.Polkadot.Proto.Staking.Nominate nominate = 5;</code>
+     * <code>.TW.Polkadot.Proto.Staking.Nominate nominate = 6;</code>
+     * @return Whether the nominate field is set.
      */
     boolean hasNominate();
     /**
-     * <code>.TW.Polkadot.Proto.Staking.Nominate nominate = 5;</code>
+     * <code>.TW.Polkadot.Proto.Staking.Nominate nominate = 6;</code>
+     * @return The nominate.
      */
     wallet.core.jni.proto.Polkadot.Staking.Nominate getNominate();
     /**
-     * <code>.TW.Polkadot.Proto.Staking.Nominate nominate = 5;</code>
+     * <code>.TW.Polkadot.Proto.Staking.Nominate nominate = 6;</code>
      */
     wallet.core.jni.proto.Polkadot.Staking.NominateOrBuilder getNominateOrBuilder();
 
     /**
-     * <code>.TW.Polkadot.Proto.Staking.Chill chill = 6;</code>
+     * <code>.TW.Polkadot.Proto.Staking.Chill chill = 7;</code>
+     * @return Whether the chill field is set.
      */
     boolean hasChill();
     /**
-     * <code>.TW.Polkadot.Proto.Staking.Chill chill = 6;</code>
+     * <code>.TW.Polkadot.Proto.Staking.Chill chill = 7;</code>
+     * @return The chill.
      */
     wallet.core.jni.proto.Polkadot.Staking.Chill getChill();
     /**
-     * <code>.TW.Polkadot.Proto.Staking.Chill chill = 6;</code>
+     * <code>.TW.Polkadot.Proto.Staking.Chill chill = 7;</code>
      */
     wallet.core.jni.proto.Polkadot.Staking.ChillOrBuilder getChillOrBuilder();
 
@@ -2214,7 +2333,7 @@ public final class Polkadot {
   /**
    * Protobuf type {@code TW.Polkadot.Proto.Staking}
    */
-  public  static final class Staking extends
+  public static final class Staking extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:TW.Polkadot.Proto.Staking)
       StakingOrBuilder {
@@ -2271,8 +2390,22 @@ public final class Polkadot {
               break;
             }
             case 18: {
-              wallet.core.jni.proto.Polkadot.Staking.BondExtra.Builder subBuilder = null;
+              wallet.core.jni.proto.Polkadot.Staking.BondAndNominate.Builder subBuilder = null;
               if (messageOneofCase_ == 2) {
+                subBuilder = ((wallet.core.jni.proto.Polkadot.Staking.BondAndNominate) messageOneof_).toBuilder();
+              }
+              messageOneof_ =
+                  input.readMessage(wallet.core.jni.proto.Polkadot.Staking.BondAndNominate.parser(), extensionRegistry);
+              if (subBuilder != null) {
+                subBuilder.mergeFrom((wallet.core.jni.proto.Polkadot.Staking.BondAndNominate) messageOneof_);
+                messageOneof_ = subBuilder.buildPartial();
+              }
+              messageOneofCase_ = 2;
+              break;
+            }
+            case 26: {
+              wallet.core.jni.proto.Polkadot.Staking.BondExtra.Builder subBuilder = null;
+              if (messageOneofCase_ == 3) {
                 subBuilder = ((wallet.core.jni.proto.Polkadot.Staking.BondExtra) messageOneof_).toBuilder();
               }
               messageOneof_ =
@@ -2281,12 +2414,12 @@ public final class Polkadot {
                 subBuilder.mergeFrom((wallet.core.jni.proto.Polkadot.Staking.BondExtra) messageOneof_);
                 messageOneof_ = subBuilder.buildPartial();
               }
-              messageOneofCase_ = 2;
+              messageOneofCase_ = 3;
               break;
             }
-            case 26: {
+            case 34: {
               wallet.core.jni.proto.Polkadot.Staking.Unbond.Builder subBuilder = null;
-              if (messageOneofCase_ == 3) {
+              if (messageOneofCase_ == 4) {
                 subBuilder = ((wallet.core.jni.proto.Polkadot.Staking.Unbond) messageOneof_).toBuilder();
               }
               messageOneof_ =
@@ -2295,12 +2428,12 @@ public final class Polkadot {
                 subBuilder.mergeFrom((wallet.core.jni.proto.Polkadot.Staking.Unbond) messageOneof_);
                 messageOneof_ = subBuilder.buildPartial();
               }
-              messageOneofCase_ = 3;
+              messageOneofCase_ = 4;
               break;
             }
-            case 34: {
+            case 42: {
               wallet.core.jni.proto.Polkadot.Staking.WithdrawUnbonded.Builder subBuilder = null;
-              if (messageOneofCase_ == 4) {
+              if (messageOneofCase_ == 5) {
                 subBuilder = ((wallet.core.jni.proto.Polkadot.Staking.WithdrawUnbonded) messageOneof_).toBuilder();
               }
               messageOneof_ =
@@ -2309,12 +2442,12 @@ public final class Polkadot {
                 subBuilder.mergeFrom((wallet.core.jni.proto.Polkadot.Staking.WithdrawUnbonded) messageOneof_);
                 messageOneof_ = subBuilder.buildPartial();
               }
-              messageOneofCase_ = 4;
+              messageOneofCase_ = 5;
               break;
             }
-            case 42: {
+            case 50: {
               wallet.core.jni.proto.Polkadot.Staking.Nominate.Builder subBuilder = null;
-              if (messageOneofCase_ == 5) {
+              if (messageOneofCase_ == 6) {
                 subBuilder = ((wallet.core.jni.proto.Polkadot.Staking.Nominate) messageOneof_).toBuilder();
               }
               messageOneof_ =
@@ -2323,12 +2456,12 @@ public final class Polkadot {
                 subBuilder.mergeFrom((wallet.core.jni.proto.Polkadot.Staking.Nominate) messageOneof_);
                 messageOneof_ = subBuilder.buildPartial();
               }
-              messageOneofCase_ = 5;
+              messageOneofCase_ = 6;
               break;
             }
-            case 50: {
+            case 58: {
               wallet.core.jni.proto.Polkadot.Staking.Chill.Builder subBuilder = null;
-              if (messageOneofCase_ == 6) {
+              if (messageOneofCase_ == 7) {
                 subBuilder = ((wallet.core.jni.proto.Polkadot.Staking.Chill) messageOneof_).toBuilder();
               }
               messageOneof_ =
@@ -2337,7 +2470,7 @@ public final class Polkadot {
                 subBuilder.mergeFrom((wallet.core.jni.proto.Polkadot.Staking.Chill) messageOneof_);
                 messageOneof_ = subBuilder.buildPartial();
               }
-              messageOneofCase_ = 6;
+              messageOneofCase_ = 7;
               break;
             }
             default: {
@@ -2378,32 +2511,37 @@ public final class Polkadot {
 
       /**
        * <code>string controller = 1;</code>
+       * @return The controller.
        */
       java.lang.String getController();
       /**
        * <code>string controller = 1;</code>
+       * @return The bytes for controller.
        */
       com.google.protobuf.ByteString
           getControllerBytes();
 
       /**
        * <code>bytes value = 2;</code>
+       * @return The value.
        */
       com.google.protobuf.ByteString getValue();
 
       /**
        * <code>.TW.Polkadot.Proto.RewardDestination reward_destination = 3;</code>
+       * @return The enum numeric value on the wire for rewardDestination.
        */
       int getRewardDestinationValue();
       /**
        * <code>.TW.Polkadot.Proto.RewardDestination reward_destination = 3;</code>
+       * @return The rewardDestination.
        */
       wallet.core.jni.proto.Polkadot.RewardDestination getRewardDestination();
     }
     /**
      * Protobuf type {@code TW.Polkadot.Proto.Staking.Bond}
      */
-    public  static final class Bond extends
+    public static final class Bond extends
         com.google.protobuf.GeneratedMessageV3 implements
         // @@protoc_insertion_point(message_implements:TW.Polkadot.Proto.Staking.Bond)
         BondOrBuilder {
@@ -2501,7 +2639,9 @@ public final class Polkadot {
       private volatile java.lang.Object controller_;
       /**
        * <code>string controller = 1;</code>
+       * @return The controller.
        */
+      @java.lang.Override
       public java.lang.String getController() {
         java.lang.Object ref = controller_;
         if (ref instanceof java.lang.String) {
@@ -2516,7 +2656,9 @@ public final class Polkadot {
       }
       /**
        * <code>string controller = 1;</code>
+       * @return The bytes for controller.
        */
+      @java.lang.Override
       public com.google.protobuf.ByteString
           getControllerBytes() {
         java.lang.Object ref = controller_;
@@ -2535,7 +2677,9 @@ public final class Polkadot {
       private com.google.protobuf.ByteString value_;
       /**
        * <code>bytes value = 2;</code>
+       * @return The value.
        */
+      @java.lang.Override
       public com.google.protobuf.ByteString getValue() {
         return value_;
       }
@@ -2544,14 +2688,16 @@ public final class Polkadot {
       private int rewardDestination_;
       /**
        * <code>.TW.Polkadot.Proto.RewardDestination reward_destination = 3;</code>
+       * @return The enum numeric value on the wire for rewardDestination.
        */
-      public int getRewardDestinationValue() {
+      @java.lang.Override public int getRewardDestinationValue() {
         return rewardDestination_;
       }
       /**
        * <code>.TW.Polkadot.Proto.RewardDestination reward_destination = 3;</code>
+       * @return The rewardDestination.
        */
-      public wallet.core.jni.proto.Polkadot.RewardDestination getRewardDestination() {
+      @java.lang.Override public wallet.core.jni.proto.Polkadot.RewardDestination getRewardDestination() {
         @SuppressWarnings("deprecation")
         wallet.core.jni.proto.Polkadot.RewardDestination result = wallet.core.jni.proto.Polkadot.RewardDestination.valueOf(rewardDestination_);
         return result == null ? wallet.core.jni.proto.Polkadot.RewardDestination.UNRECOGNIZED : result;
@@ -2895,6 +3041,7 @@ public final class Polkadot {
         private java.lang.Object controller_ = "";
         /**
          * <code>string controller = 1;</code>
+         * @return The controller.
          */
         public java.lang.String getController() {
           java.lang.Object ref = controller_;
@@ -2910,6 +3057,7 @@ public final class Polkadot {
         }
         /**
          * <code>string controller = 1;</code>
+         * @return The bytes for controller.
          */
         public com.google.protobuf.ByteString
             getControllerBytes() {
@@ -2926,6 +3074,8 @@ public final class Polkadot {
         }
         /**
          * <code>string controller = 1;</code>
+         * @param value The controller to set.
+         * @return This builder for chaining.
          */
         public Builder setController(
             java.lang.String value) {
@@ -2939,6 +3089,7 @@ public final class Polkadot {
         }
         /**
          * <code>string controller = 1;</code>
+         * @return This builder for chaining.
          */
         public Builder clearController() {
           
@@ -2948,6 +3099,8 @@ public final class Polkadot {
         }
         /**
          * <code>string controller = 1;</code>
+         * @param value The bytes for controller to set.
+         * @return This builder for chaining.
          */
         public Builder setControllerBytes(
             com.google.protobuf.ByteString value) {
@@ -2964,12 +3117,16 @@ public final class Polkadot {
         private com.google.protobuf.ByteString value_ = com.google.protobuf.ByteString.EMPTY;
         /**
          * <code>bytes value = 2;</code>
+         * @return The value.
          */
+        @java.lang.Override
         public com.google.protobuf.ByteString getValue() {
           return value_;
         }
         /**
          * <code>bytes value = 2;</code>
+         * @param value The value to set.
+         * @return This builder for chaining.
          */
         public Builder setValue(com.google.protobuf.ByteString value) {
           if (value == null) {
@@ -2982,6 +3139,7 @@ public final class Polkadot {
         }
         /**
          * <code>bytes value = 2;</code>
+         * @return This builder for chaining.
          */
         public Builder clearValue() {
           
@@ -2993,21 +3151,27 @@ public final class Polkadot {
         private int rewardDestination_ = 0;
         /**
          * <code>.TW.Polkadot.Proto.RewardDestination reward_destination = 3;</code>
+         * @return The enum numeric value on the wire for rewardDestination.
          */
-        public int getRewardDestinationValue() {
+        @java.lang.Override public int getRewardDestinationValue() {
           return rewardDestination_;
         }
         /**
          * <code>.TW.Polkadot.Proto.RewardDestination reward_destination = 3;</code>
+         * @param value The enum numeric value on the wire for rewardDestination to set.
+         * @return This builder for chaining.
          */
         public Builder setRewardDestinationValue(int value) {
+          
           rewardDestination_ = value;
           onChanged();
           return this;
         }
         /**
          * <code>.TW.Polkadot.Proto.RewardDestination reward_destination = 3;</code>
+         * @return The rewardDestination.
          */
+        @java.lang.Override
         public wallet.core.jni.proto.Polkadot.RewardDestination getRewardDestination() {
           @SuppressWarnings("deprecation")
           wallet.core.jni.proto.Polkadot.RewardDestination result = wallet.core.jni.proto.Polkadot.RewardDestination.valueOf(rewardDestination_);
@@ -3015,6 +3179,8 @@ public final class Polkadot {
         }
         /**
          * <code>.TW.Polkadot.Proto.RewardDestination reward_destination = 3;</code>
+         * @param value The rewardDestination to set.
+         * @return This builder for chaining.
          */
         public Builder setRewardDestination(wallet.core.jni.proto.Polkadot.RewardDestination value) {
           if (value == null) {
@@ -3027,6 +3193,7 @@ public final class Polkadot {
         }
         /**
          * <code>.TW.Polkadot.Proto.RewardDestination reward_destination = 3;</code>
+         * @return This builder for chaining.
          */
         public Builder clearRewardDestination() {
           
@@ -3087,19 +3254,989 @@ public final class Polkadot {
 
     }
 
+    public interface BondAndNominateOrBuilder extends
+        // @@protoc_insertion_point(interface_extends:TW.Polkadot.Proto.Staking.BondAndNominate)
+        com.google.protobuf.MessageOrBuilder {
+
+      /**
+       * <code>string controller = 1;</code>
+       * @return The controller.
+       */
+      java.lang.String getController();
+      /**
+       * <code>string controller = 1;</code>
+       * @return The bytes for controller.
+       */
+      com.google.protobuf.ByteString
+          getControllerBytes();
+
+      /**
+       * <code>bytes value = 2;</code>
+       * @return The value.
+       */
+      com.google.protobuf.ByteString getValue();
+
+      /**
+       * <code>.TW.Polkadot.Proto.RewardDestination reward_destination = 3;</code>
+       * @return The enum numeric value on the wire for rewardDestination.
+       */
+      int getRewardDestinationValue();
+      /**
+       * <code>.TW.Polkadot.Proto.RewardDestination reward_destination = 3;</code>
+       * @return The rewardDestination.
+       */
+      wallet.core.jni.proto.Polkadot.RewardDestination getRewardDestination();
+
+      /**
+       * <code>repeated string nominators = 4;</code>
+       * @return A list containing the nominators.
+       */
+      java.util.List<java.lang.String>
+          getNominatorsList();
+      /**
+       * <code>repeated string nominators = 4;</code>
+       * @return The count of nominators.
+       */
+      int getNominatorsCount();
+      /**
+       * <code>repeated string nominators = 4;</code>
+       * @param index The index of the element to return.
+       * @return The nominators at the given index.
+       */
+      java.lang.String getNominators(int index);
+      /**
+       * <code>repeated string nominators = 4;</code>
+       * @param index The index of the value to return.
+       * @return The bytes of the nominators at the given index.
+       */
+      com.google.protobuf.ByteString
+          getNominatorsBytes(int index);
+    }
+    /**
+     * Protobuf type {@code TW.Polkadot.Proto.Staking.BondAndNominate}
+     */
+    public static final class BondAndNominate extends
+        com.google.protobuf.GeneratedMessageV3 implements
+        // @@protoc_insertion_point(message_implements:TW.Polkadot.Proto.Staking.BondAndNominate)
+        BondAndNominateOrBuilder {
+    private static final long serialVersionUID = 0L;
+      // Use BondAndNominate.newBuilder() to construct.
+      private BondAndNominate(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+        super(builder);
+      }
+      private BondAndNominate() {
+        controller_ = "";
+        value_ = com.google.protobuf.ByteString.EMPTY;
+        rewardDestination_ = 0;
+        nominators_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+      }
+
+      @java.lang.Override
+      @SuppressWarnings({"unused"})
+      protected java.lang.Object newInstance(
+          UnusedPrivateParameter unused) {
+        return new BondAndNominate();
+      }
+
+      @java.lang.Override
+      public final com.google.protobuf.UnknownFieldSet
+      getUnknownFields() {
+        return this.unknownFields;
+      }
+      private BondAndNominate(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        this();
+        if (extensionRegistry == null) {
+          throw new java.lang.NullPointerException();
+        }
+        int mutable_bitField0_ = 0;
+        com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+            com.google.protobuf.UnknownFieldSet.newBuilder();
+        try {
+          boolean done = false;
+          while (!done) {
+            int tag = input.readTag();
+            switch (tag) {
+              case 0:
+                done = true;
+                break;
+              case 10: {
+                java.lang.String s = input.readStringRequireUtf8();
+
+                controller_ = s;
+                break;
+              }
+              case 18: {
+
+                value_ = input.readBytes();
+                break;
+              }
+              case 24: {
+                int rawValue = input.readEnum();
+
+                rewardDestination_ = rawValue;
+                break;
+              }
+              case 34: {
+                java.lang.String s = input.readStringRequireUtf8();
+                if (!((mutable_bitField0_ & 0x00000001) != 0)) {
+                  nominators_ = new com.google.protobuf.LazyStringArrayList();
+                  mutable_bitField0_ |= 0x00000001;
+                }
+                nominators_.add(s);
+                break;
+              }
+              default: {
+                if (!parseUnknownField(
+                    input, unknownFields, extensionRegistry, tag)) {
+                  done = true;
+                }
+                break;
+              }
+            }
+          }
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          throw e.setUnfinishedMessage(this);
+        } catch (java.io.IOException e) {
+          throw new com.google.protobuf.InvalidProtocolBufferException(
+              e).setUnfinishedMessage(this);
+        } finally {
+          if (((mutable_bitField0_ & 0x00000001) != 0)) {
+            nominators_ = nominators_.getUnmodifiableView();
+          }
+          this.unknownFields = unknownFields.build();
+          makeExtensionsImmutable();
+        }
+      }
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return wallet.core.jni.proto.Polkadot.internal_static_TW_Polkadot_Proto_Staking_BondAndNominate_descriptor;
+      }
+
+      @java.lang.Override
+      protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return wallet.core.jni.proto.Polkadot.internal_static_TW_Polkadot_Proto_Staking_BondAndNominate_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                wallet.core.jni.proto.Polkadot.Staking.BondAndNominate.class, wallet.core.jni.proto.Polkadot.Staking.BondAndNominate.Builder.class);
+      }
+
+      public static final int CONTROLLER_FIELD_NUMBER = 1;
+      private volatile java.lang.Object controller_;
+      /**
+       * <code>string controller = 1;</code>
+       * @return The controller.
+       */
+      @java.lang.Override
+      public java.lang.String getController() {
+        java.lang.Object ref = controller_;
+        if (ref instanceof java.lang.String) {
+          return (java.lang.String) ref;
+        } else {
+          com.google.protobuf.ByteString bs = 
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          controller_ = s;
+          return s;
+        }
+      }
+      /**
+       * <code>string controller = 1;</code>
+       * @return The bytes for controller.
+       */
+      @java.lang.Override
+      public com.google.protobuf.ByteString
+          getControllerBytes() {
+        java.lang.Object ref = controller_;
+        if (ref instanceof java.lang.String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          controller_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+
+      public static final int VALUE_FIELD_NUMBER = 2;
+      private com.google.protobuf.ByteString value_;
+      /**
+       * <code>bytes value = 2;</code>
+       * @return The value.
+       */
+      @java.lang.Override
+      public com.google.protobuf.ByteString getValue() {
+        return value_;
+      }
+
+      public static final int REWARD_DESTINATION_FIELD_NUMBER = 3;
+      private int rewardDestination_;
+      /**
+       * <code>.TW.Polkadot.Proto.RewardDestination reward_destination = 3;</code>
+       * @return The enum numeric value on the wire for rewardDestination.
+       */
+      @java.lang.Override public int getRewardDestinationValue() {
+        return rewardDestination_;
+      }
+      /**
+       * <code>.TW.Polkadot.Proto.RewardDestination reward_destination = 3;</code>
+       * @return The rewardDestination.
+       */
+      @java.lang.Override public wallet.core.jni.proto.Polkadot.RewardDestination getRewardDestination() {
+        @SuppressWarnings("deprecation")
+        wallet.core.jni.proto.Polkadot.RewardDestination result = wallet.core.jni.proto.Polkadot.RewardDestination.valueOf(rewardDestination_);
+        return result == null ? wallet.core.jni.proto.Polkadot.RewardDestination.UNRECOGNIZED : result;
+      }
+
+      public static final int NOMINATORS_FIELD_NUMBER = 4;
+      private com.google.protobuf.LazyStringList nominators_;
+      /**
+       * <code>repeated string nominators = 4;</code>
+       * @return A list containing the nominators.
+       */
+      public com.google.protobuf.ProtocolStringList
+          getNominatorsList() {
+        return nominators_;
+      }
+      /**
+       * <code>repeated string nominators = 4;</code>
+       * @return The count of nominators.
+       */
+      public int getNominatorsCount() {
+        return nominators_.size();
+      }
+      /**
+       * <code>repeated string nominators = 4;</code>
+       * @param index The index of the element to return.
+       * @return The nominators at the given index.
+       */
+      public java.lang.String getNominators(int index) {
+        return nominators_.get(index);
+      }
+      /**
+       * <code>repeated string nominators = 4;</code>
+       * @param index The index of the value to return.
+       * @return The bytes of the nominators at the given index.
+       */
+      public com.google.protobuf.ByteString
+          getNominatorsBytes(int index) {
+        return nominators_.getByteString(index);
+      }
+
+      private byte memoizedIsInitialized = -1;
+      @java.lang.Override
+      public final boolean isInitialized() {
+        byte isInitialized = memoizedIsInitialized;
+        if (isInitialized == 1) return true;
+        if (isInitialized == 0) return false;
+
+        memoizedIsInitialized = 1;
+        return true;
+      }
+
+      @java.lang.Override
+      public void writeTo(com.google.protobuf.CodedOutputStream output)
+                          throws java.io.IOException {
+        if (!getControllerBytes().isEmpty()) {
+          com.google.protobuf.GeneratedMessageV3.writeString(output, 1, controller_);
+        }
+        if (!value_.isEmpty()) {
+          output.writeBytes(2, value_);
+        }
+        if (rewardDestination_ != wallet.core.jni.proto.Polkadot.RewardDestination.STAKED.getNumber()) {
+          output.writeEnum(3, rewardDestination_);
+        }
+        for (int i = 0; i < nominators_.size(); i++) {
+          com.google.protobuf.GeneratedMessageV3.writeString(output, 4, nominators_.getRaw(i));
+        }
+        unknownFields.writeTo(output);
+      }
+
+      @java.lang.Override
+      public int getSerializedSize() {
+        int size = memoizedSize;
+        if (size != -1) return size;
+
+        size = 0;
+        if (!getControllerBytes().isEmpty()) {
+          size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, controller_);
+        }
+        if (!value_.isEmpty()) {
+          size += com.google.protobuf.CodedOutputStream
+            .computeBytesSize(2, value_);
+        }
+        if (rewardDestination_ != wallet.core.jni.proto.Polkadot.RewardDestination.STAKED.getNumber()) {
+          size += com.google.protobuf.CodedOutputStream
+            .computeEnumSize(3, rewardDestination_);
+        }
+        {
+          int dataSize = 0;
+          for (int i = 0; i < nominators_.size(); i++) {
+            dataSize += computeStringSizeNoTag(nominators_.getRaw(i));
+          }
+          size += dataSize;
+          size += 1 * getNominatorsList().size();
+        }
+        size += unknownFields.getSerializedSize();
+        memoizedSize = size;
+        return size;
+      }
+
+      @java.lang.Override
+      public boolean equals(final java.lang.Object obj) {
+        if (obj == this) {
+         return true;
+        }
+        if (!(obj instanceof wallet.core.jni.proto.Polkadot.Staking.BondAndNominate)) {
+          return super.equals(obj);
+        }
+        wallet.core.jni.proto.Polkadot.Staking.BondAndNominate other = (wallet.core.jni.proto.Polkadot.Staking.BondAndNominate) obj;
+
+        if (!getController()
+            .equals(other.getController())) return false;
+        if (!getValue()
+            .equals(other.getValue())) return false;
+        if (rewardDestination_ != other.rewardDestination_) return false;
+        if (!getNominatorsList()
+            .equals(other.getNominatorsList())) return false;
+        if (!unknownFields.equals(other.unknownFields)) return false;
+        return true;
+      }
+
+      @java.lang.Override
+      public int hashCode() {
+        if (memoizedHashCode != 0) {
+          return memoizedHashCode;
+        }
+        int hash = 41;
+        hash = (19 * hash) + getDescriptor().hashCode();
+        hash = (37 * hash) + CONTROLLER_FIELD_NUMBER;
+        hash = (53 * hash) + getController().hashCode();
+        hash = (37 * hash) + VALUE_FIELD_NUMBER;
+        hash = (53 * hash) + getValue().hashCode();
+        hash = (37 * hash) + REWARD_DESTINATION_FIELD_NUMBER;
+        hash = (53 * hash) + rewardDestination_;
+        if (getNominatorsCount() > 0) {
+          hash = (37 * hash) + NOMINATORS_FIELD_NUMBER;
+          hash = (53 * hash) + getNominatorsList().hashCode();
+        }
+        hash = (29 * hash) + unknownFields.hashCode();
+        memoizedHashCode = hash;
+        return hash;
+      }
+
+      public static wallet.core.jni.proto.Polkadot.Staking.BondAndNominate parseFrom(
+          java.nio.ByteBuffer data)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data);
+      }
+      public static wallet.core.jni.proto.Polkadot.Staking.BondAndNominate parseFrom(
+          java.nio.ByteBuffer data,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data, extensionRegistry);
+      }
+      public static wallet.core.jni.proto.Polkadot.Staking.BondAndNominate parseFrom(
+          com.google.protobuf.ByteString data)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data);
+      }
+      public static wallet.core.jni.proto.Polkadot.Staking.BondAndNominate parseFrom(
+          com.google.protobuf.ByteString data,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data, extensionRegistry);
+      }
+      public static wallet.core.jni.proto.Polkadot.Staking.BondAndNominate parseFrom(byte[] data)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data);
+      }
+      public static wallet.core.jni.proto.Polkadot.Staking.BondAndNominate parseFrom(
+          byte[] data,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data, extensionRegistry);
+      }
+      public static wallet.core.jni.proto.Polkadot.Staking.BondAndNominate parseFrom(java.io.InputStream input)
+          throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessageV3
+            .parseWithIOException(PARSER, input);
+      }
+      public static wallet.core.jni.proto.Polkadot.Staking.BondAndNominate parseFrom(
+          java.io.InputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessageV3
+            .parseWithIOException(PARSER, input, extensionRegistry);
+      }
+      public static wallet.core.jni.proto.Polkadot.Staking.BondAndNominate parseDelimitedFrom(java.io.InputStream input)
+          throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessageV3
+            .parseDelimitedWithIOException(PARSER, input);
+      }
+      public static wallet.core.jni.proto.Polkadot.Staking.BondAndNominate parseDelimitedFrom(
+          java.io.InputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessageV3
+            .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
+      }
+      public static wallet.core.jni.proto.Polkadot.Staking.BondAndNominate parseFrom(
+          com.google.protobuf.CodedInputStream input)
+          throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessageV3
+            .parseWithIOException(PARSER, input);
+      }
+      public static wallet.core.jni.proto.Polkadot.Staking.BondAndNominate parseFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessageV3
+            .parseWithIOException(PARSER, input, extensionRegistry);
+      }
+
+      @java.lang.Override
+      public Builder newBuilderForType() { return newBuilder(); }
+      public static Builder newBuilder() {
+        return DEFAULT_INSTANCE.toBuilder();
+      }
+      public static Builder newBuilder(wallet.core.jni.proto.Polkadot.Staking.BondAndNominate prototype) {
+        return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
+      }
+      @java.lang.Override
+      public Builder toBuilder() {
+        return this == DEFAULT_INSTANCE
+            ? new Builder() : new Builder().mergeFrom(this);
+      }
+
+      @java.lang.Override
+      protected Builder newBuilderForType(
+          com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+        Builder builder = new Builder(parent);
+        return builder;
+      }
+      /**
+       * Protobuf type {@code TW.Polkadot.Proto.Staking.BondAndNominate}
+       */
+      public static final class Builder extends
+          com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
+          // @@protoc_insertion_point(builder_implements:TW.Polkadot.Proto.Staking.BondAndNominate)
+          wallet.core.jni.proto.Polkadot.Staking.BondAndNominateOrBuilder {
+        public static final com.google.protobuf.Descriptors.Descriptor
+            getDescriptor() {
+          return wallet.core.jni.proto.Polkadot.internal_static_TW_Polkadot_Proto_Staking_BondAndNominate_descriptor;
+        }
+
+        @java.lang.Override
+        protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+            internalGetFieldAccessorTable() {
+          return wallet.core.jni.proto.Polkadot.internal_static_TW_Polkadot_Proto_Staking_BondAndNominate_fieldAccessorTable
+              .ensureFieldAccessorsInitialized(
+                  wallet.core.jni.proto.Polkadot.Staking.BondAndNominate.class, wallet.core.jni.proto.Polkadot.Staking.BondAndNominate.Builder.class);
+        }
+
+        // Construct using wallet.core.jni.proto.Polkadot.Staking.BondAndNominate.newBuilder()
+        private Builder() {
+          maybeForceBuilderInitialization();
+        }
+
+        private Builder(
+            com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+          super(parent);
+          maybeForceBuilderInitialization();
+        }
+        private void maybeForceBuilderInitialization() {
+          if (com.google.protobuf.GeneratedMessageV3
+                  .alwaysUseFieldBuilders) {
+          }
+        }
+        @java.lang.Override
+        public Builder clear() {
+          super.clear();
+          controller_ = "";
+
+          value_ = com.google.protobuf.ByteString.EMPTY;
+
+          rewardDestination_ = 0;
+
+          nominators_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+          bitField0_ = (bitField0_ & ~0x00000001);
+          return this;
+        }
+
+        @java.lang.Override
+        public com.google.protobuf.Descriptors.Descriptor
+            getDescriptorForType() {
+          return wallet.core.jni.proto.Polkadot.internal_static_TW_Polkadot_Proto_Staking_BondAndNominate_descriptor;
+        }
+
+        @java.lang.Override
+        public wallet.core.jni.proto.Polkadot.Staking.BondAndNominate getDefaultInstanceForType() {
+          return wallet.core.jni.proto.Polkadot.Staking.BondAndNominate.getDefaultInstance();
+        }
+
+        @java.lang.Override
+        public wallet.core.jni.proto.Polkadot.Staking.BondAndNominate build() {
+          wallet.core.jni.proto.Polkadot.Staking.BondAndNominate result = buildPartial();
+          if (!result.isInitialized()) {
+            throw newUninitializedMessageException(result);
+          }
+          return result;
+        }
+
+        @java.lang.Override
+        public wallet.core.jni.proto.Polkadot.Staking.BondAndNominate buildPartial() {
+          wallet.core.jni.proto.Polkadot.Staking.BondAndNominate result = new wallet.core.jni.proto.Polkadot.Staking.BondAndNominate(this);
+          int from_bitField0_ = bitField0_;
+          result.controller_ = controller_;
+          result.value_ = value_;
+          result.rewardDestination_ = rewardDestination_;
+          if (((bitField0_ & 0x00000001) != 0)) {
+            nominators_ = nominators_.getUnmodifiableView();
+            bitField0_ = (bitField0_ & ~0x00000001);
+          }
+          result.nominators_ = nominators_;
+          onBuilt();
+          return result;
+        }
+
+        @java.lang.Override
+        public Builder clone() {
+          return super.clone();
+        }
+        @java.lang.Override
+        public Builder setField(
+            com.google.protobuf.Descriptors.FieldDescriptor field,
+            java.lang.Object value) {
+          return super.setField(field, value);
+        }
+        @java.lang.Override
+        public Builder clearField(
+            com.google.protobuf.Descriptors.FieldDescriptor field) {
+          return super.clearField(field);
+        }
+        @java.lang.Override
+        public Builder clearOneof(
+            com.google.protobuf.Descriptors.OneofDescriptor oneof) {
+          return super.clearOneof(oneof);
+        }
+        @java.lang.Override
+        public Builder setRepeatedField(
+            com.google.protobuf.Descriptors.FieldDescriptor field,
+            int index, java.lang.Object value) {
+          return super.setRepeatedField(field, index, value);
+        }
+        @java.lang.Override
+        public Builder addRepeatedField(
+            com.google.protobuf.Descriptors.FieldDescriptor field,
+            java.lang.Object value) {
+          return super.addRepeatedField(field, value);
+        }
+        @java.lang.Override
+        public Builder mergeFrom(com.google.protobuf.Message other) {
+          if (other instanceof wallet.core.jni.proto.Polkadot.Staking.BondAndNominate) {
+            return mergeFrom((wallet.core.jni.proto.Polkadot.Staking.BondAndNominate)other);
+          } else {
+            super.mergeFrom(other);
+            return this;
+          }
+        }
+
+        public Builder mergeFrom(wallet.core.jni.proto.Polkadot.Staking.BondAndNominate other) {
+          if (other == wallet.core.jni.proto.Polkadot.Staking.BondAndNominate.getDefaultInstance()) return this;
+          if (!other.getController().isEmpty()) {
+            controller_ = other.controller_;
+            onChanged();
+          }
+          if (other.getValue() != com.google.protobuf.ByteString.EMPTY) {
+            setValue(other.getValue());
+          }
+          if (other.rewardDestination_ != 0) {
+            setRewardDestinationValue(other.getRewardDestinationValue());
+          }
+          if (!other.nominators_.isEmpty()) {
+            if (nominators_.isEmpty()) {
+              nominators_ = other.nominators_;
+              bitField0_ = (bitField0_ & ~0x00000001);
+            } else {
+              ensureNominatorsIsMutable();
+              nominators_.addAll(other.nominators_);
+            }
+            onChanged();
+          }
+          this.mergeUnknownFields(other.unknownFields);
+          onChanged();
+          return this;
+        }
+
+        @java.lang.Override
+        public final boolean isInitialized() {
+          return true;
+        }
+
+        @java.lang.Override
+        public Builder mergeFrom(
+            com.google.protobuf.CodedInputStream input,
+            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+            throws java.io.IOException {
+          wallet.core.jni.proto.Polkadot.Staking.BondAndNominate parsedMessage = null;
+          try {
+            parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+          } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+            parsedMessage = (wallet.core.jni.proto.Polkadot.Staking.BondAndNominate) e.getUnfinishedMessage();
+            throw e.unwrapIOException();
+          } finally {
+            if (parsedMessage != null) {
+              mergeFrom(parsedMessage);
+            }
+          }
+          return this;
+        }
+        private int bitField0_;
+
+        private java.lang.Object controller_ = "";
+        /**
+         * <code>string controller = 1;</code>
+         * @return The controller.
+         */
+        public java.lang.String getController() {
+          java.lang.Object ref = controller_;
+          if (!(ref instanceof java.lang.String)) {
+            com.google.protobuf.ByteString bs =
+                (com.google.protobuf.ByteString) ref;
+            java.lang.String s = bs.toStringUtf8();
+            controller_ = s;
+            return s;
+          } else {
+            return (java.lang.String) ref;
+          }
+        }
+        /**
+         * <code>string controller = 1;</code>
+         * @return The bytes for controller.
+         */
+        public com.google.protobuf.ByteString
+            getControllerBytes() {
+          java.lang.Object ref = controller_;
+          if (ref instanceof String) {
+            com.google.protobuf.ByteString b = 
+                com.google.protobuf.ByteString.copyFromUtf8(
+                    (java.lang.String) ref);
+            controller_ = b;
+            return b;
+          } else {
+            return (com.google.protobuf.ByteString) ref;
+          }
+        }
+        /**
+         * <code>string controller = 1;</code>
+         * @param value The controller to set.
+         * @return This builder for chaining.
+         */
+        public Builder setController(
+            java.lang.String value) {
+          if (value == null) {
+    throw new NullPointerException();
+  }
+  
+          controller_ = value;
+          onChanged();
+          return this;
+        }
+        /**
+         * <code>string controller = 1;</code>
+         * @return This builder for chaining.
+         */
+        public Builder clearController() {
+          
+          controller_ = getDefaultInstance().getController();
+          onChanged();
+          return this;
+        }
+        /**
+         * <code>string controller = 1;</code>
+         * @param value The bytes for controller to set.
+         * @return This builder for chaining.
+         */
+        public Builder setControllerBytes(
+            com.google.protobuf.ByteString value) {
+          if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+          
+          controller_ = value;
+          onChanged();
+          return this;
+        }
+
+        private com.google.protobuf.ByteString value_ = com.google.protobuf.ByteString.EMPTY;
+        /**
+         * <code>bytes value = 2;</code>
+         * @return The value.
+         */
+        @java.lang.Override
+        public com.google.protobuf.ByteString getValue() {
+          return value_;
+        }
+        /**
+         * <code>bytes value = 2;</code>
+         * @param value The value to set.
+         * @return This builder for chaining.
+         */
+        public Builder setValue(com.google.protobuf.ByteString value) {
+          if (value == null) {
+    throw new NullPointerException();
+  }
+  
+          value_ = value;
+          onChanged();
+          return this;
+        }
+        /**
+         * <code>bytes value = 2;</code>
+         * @return This builder for chaining.
+         */
+        public Builder clearValue() {
+          
+          value_ = getDefaultInstance().getValue();
+          onChanged();
+          return this;
+        }
+
+        private int rewardDestination_ = 0;
+        /**
+         * <code>.TW.Polkadot.Proto.RewardDestination reward_destination = 3;</code>
+         * @return The enum numeric value on the wire for rewardDestination.
+         */
+        @java.lang.Override public int getRewardDestinationValue() {
+          return rewardDestination_;
+        }
+        /**
+         * <code>.TW.Polkadot.Proto.RewardDestination reward_destination = 3;</code>
+         * @param value The enum numeric value on the wire for rewardDestination to set.
+         * @return This builder for chaining.
+         */
+        public Builder setRewardDestinationValue(int value) {
+          
+          rewardDestination_ = value;
+          onChanged();
+          return this;
+        }
+        /**
+         * <code>.TW.Polkadot.Proto.RewardDestination reward_destination = 3;</code>
+         * @return The rewardDestination.
+         */
+        @java.lang.Override
+        public wallet.core.jni.proto.Polkadot.RewardDestination getRewardDestination() {
+          @SuppressWarnings("deprecation")
+          wallet.core.jni.proto.Polkadot.RewardDestination result = wallet.core.jni.proto.Polkadot.RewardDestination.valueOf(rewardDestination_);
+          return result == null ? wallet.core.jni.proto.Polkadot.RewardDestination.UNRECOGNIZED : result;
+        }
+        /**
+         * <code>.TW.Polkadot.Proto.RewardDestination reward_destination = 3;</code>
+         * @param value The rewardDestination to set.
+         * @return This builder for chaining.
+         */
+        public Builder setRewardDestination(wallet.core.jni.proto.Polkadot.RewardDestination value) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          
+          rewardDestination_ = value.getNumber();
+          onChanged();
+          return this;
+        }
+        /**
+         * <code>.TW.Polkadot.Proto.RewardDestination reward_destination = 3;</code>
+         * @return This builder for chaining.
+         */
+        public Builder clearRewardDestination() {
+          
+          rewardDestination_ = 0;
+          onChanged();
+          return this;
+        }
+
+        private com.google.protobuf.LazyStringList nominators_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+        private void ensureNominatorsIsMutable() {
+          if (!((bitField0_ & 0x00000001) != 0)) {
+            nominators_ = new com.google.protobuf.LazyStringArrayList(nominators_);
+            bitField0_ |= 0x00000001;
+           }
+        }
+        /**
+         * <code>repeated string nominators = 4;</code>
+         * @return A list containing the nominators.
+         */
+        public com.google.protobuf.ProtocolStringList
+            getNominatorsList() {
+          return nominators_.getUnmodifiableView();
+        }
+        /**
+         * <code>repeated string nominators = 4;</code>
+         * @return The count of nominators.
+         */
+        public int getNominatorsCount() {
+          return nominators_.size();
+        }
+        /**
+         * <code>repeated string nominators = 4;</code>
+         * @param index The index of the element to return.
+         * @return The nominators at the given index.
+         */
+        public java.lang.String getNominators(int index) {
+          return nominators_.get(index);
+        }
+        /**
+         * <code>repeated string nominators = 4;</code>
+         * @param index The index of the value to return.
+         * @return The bytes of the nominators at the given index.
+         */
+        public com.google.protobuf.ByteString
+            getNominatorsBytes(int index) {
+          return nominators_.getByteString(index);
+        }
+        /**
+         * <code>repeated string nominators = 4;</code>
+         * @param index The index to set the value at.
+         * @param value The nominators to set.
+         * @return This builder for chaining.
+         */
+        public Builder setNominators(
+            int index, java.lang.String value) {
+          if (value == null) {
+    throw new NullPointerException();
+  }
+  ensureNominatorsIsMutable();
+          nominators_.set(index, value);
+          onChanged();
+          return this;
+        }
+        /**
+         * <code>repeated string nominators = 4;</code>
+         * @param value The nominators to add.
+         * @return This builder for chaining.
+         */
+        public Builder addNominators(
+            java.lang.String value) {
+          if (value == null) {
+    throw new NullPointerException();
+  }
+  ensureNominatorsIsMutable();
+          nominators_.add(value);
+          onChanged();
+          return this;
+        }
+        /**
+         * <code>repeated string nominators = 4;</code>
+         * @param values The nominators to add.
+         * @return This builder for chaining.
+         */
+        public Builder addAllNominators(
+            java.lang.Iterable<java.lang.String> values) {
+          ensureNominatorsIsMutable();
+          com.google.protobuf.AbstractMessageLite.Builder.addAll(
+              values, nominators_);
+          onChanged();
+          return this;
+        }
+        /**
+         * <code>repeated string nominators = 4;</code>
+         * @return This builder for chaining.
+         */
+        public Builder clearNominators() {
+          nominators_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+          bitField0_ = (bitField0_ & ~0x00000001);
+          onChanged();
+          return this;
+        }
+        /**
+         * <code>repeated string nominators = 4;</code>
+         * @param value The bytes of the nominators to add.
+         * @return This builder for chaining.
+         */
+        public Builder addNominatorsBytes(
+            com.google.protobuf.ByteString value) {
+          if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+          ensureNominatorsIsMutable();
+          nominators_.add(value);
+          onChanged();
+          return this;
+        }
+        @java.lang.Override
+        public final Builder setUnknownFields(
+            final com.google.protobuf.UnknownFieldSet unknownFields) {
+          return super.setUnknownFields(unknownFields);
+        }
+
+        @java.lang.Override
+        public final Builder mergeUnknownFields(
+            final com.google.protobuf.UnknownFieldSet unknownFields) {
+          return super.mergeUnknownFields(unknownFields);
+        }
+
+
+        // @@protoc_insertion_point(builder_scope:TW.Polkadot.Proto.Staking.BondAndNominate)
+      }
+
+      // @@protoc_insertion_point(class_scope:TW.Polkadot.Proto.Staking.BondAndNominate)
+      private static final wallet.core.jni.proto.Polkadot.Staking.BondAndNominate DEFAULT_INSTANCE;
+      static {
+        DEFAULT_INSTANCE = new wallet.core.jni.proto.Polkadot.Staking.BondAndNominate();
+      }
+
+      public static wallet.core.jni.proto.Polkadot.Staking.BondAndNominate getDefaultInstance() {
+        return DEFAULT_INSTANCE;
+      }
+
+      private static final com.google.protobuf.Parser<BondAndNominate>
+          PARSER = new com.google.protobuf.AbstractParser<BondAndNominate>() {
+        @java.lang.Override
+        public BondAndNominate parsePartialFrom(
+            com.google.protobuf.CodedInputStream input,
+            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+            throws com.google.protobuf.InvalidProtocolBufferException {
+          return new BondAndNominate(input, extensionRegistry);
+        }
+      };
+
+      public static com.google.protobuf.Parser<BondAndNominate> parser() {
+        return PARSER;
+      }
+
+      @java.lang.Override
+      public com.google.protobuf.Parser<BondAndNominate> getParserForType() {
+        return PARSER;
+      }
+
+      @java.lang.Override
+      public wallet.core.jni.proto.Polkadot.Staking.BondAndNominate getDefaultInstanceForType() {
+        return DEFAULT_INSTANCE;
+      }
+
+    }
+
     public interface BondExtraOrBuilder extends
         // @@protoc_insertion_point(interface_extends:TW.Polkadot.Proto.Staking.BondExtra)
         com.google.protobuf.MessageOrBuilder {
 
       /**
        * <code>bytes value = 1;</code>
+       * @return The value.
        */
       com.google.protobuf.ByteString getValue();
     }
     /**
      * Protobuf type {@code TW.Polkadot.Proto.Staking.BondExtra}
      */
-    public  static final class BondExtra extends
+    public static final class BondExtra extends
         com.google.protobuf.GeneratedMessageV3 implements
         // @@protoc_insertion_point(message_implements:TW.Polkadot.Proto.Staking.BondExtra)
         BondExtraOrBuilder {
@@ -3183,7 +4320,9 @@ public final class Polkadot {
       private com.google.protobuf.ByteString value_;
       /**
        * <code>bytes value = 1;</code>
+       * @return The value.
        */
+      @java.lang.Override
       public com.google.protobuf.ByteString getValue() {
         return value_;
       }
@@ -3493,12 +4632,16 @@ public final class Polkadot {
         private com.google.protobuf.ByteString value_ = com.google.protobuf.ByteString.EMPTY;
         /**
          * <code>bytes value = 1;</code>
+         * @return The value.
          */
+        @java.lang.Override
         public com.google.protobuf.ByteString getValue() {
           return value_;
         }
         /**
          * <code>bytes value = 1;</code>
+         * @param value The value to set.
+         * @return This builder for chaining.
          */
         public Builder setValue(com.google.protobuf.ByteString value) {
           if (value == null) {
@@ -3511,6 +4654,7 @@ public final class Polkadot {
         }
         /**
          * <code>bytes value = 1;</code>
+         * @return This builder for chaining.
          */
         public Builder clearValue() {
           
@@ -3577,13 +4721,14 @@ public final class Polkadot {
 
       /**
        * <code>bytes value = 1;</code>
+       * @return The value.
        */
       com.google.protobuf.ByteString getValue();
     }
     /**
      * Protobuf type {@code TW.Polkadot.Proto.Staking.Unbond}
      */
-    public  static final class Unbond extends
+    public static final class Unbond extends
         com.google.protobuf.GeneratedMessageV3 implements
         // @@protoc_insertion_point(message_implements:TW.Polkadot.Proto.Staking.Unbond)
         UnbondOrBuilder {
@@ -3667,7 +4812,9 @@ public final class Polkadot {
       private com.google.protobuf.ByteString value_;
       /**
        * <code>bytes value = 1;</code>
+       * @return The value.
        */
+      @java.lang.Override
       public com.google.protobuf.ByteString getValue() {
         return value_;
       }
@@ -3977,12 +5124,16 @@ public final class Polkadot {
         private com.google.protobuf.ByteString value_ = com.google.protobuf.ByteString.EMPTY;
         /**
          * <code>bytes value = 1;</code>
+         * @return The value.
          */
+        @java.lang.Override
         public com.google.protobuf.ByteString getValue() {
           return value_;
         }
         /**
          * <code>bytes value = 1;</code>
+         * @param value The value to set.
+         * @return This builder for chaining.
          */
         public Builder setValue(com.google.protobuf.ByteString value) {
           if (value == null) {
@@ -3995,6 +5146,7 @@ public final class Polkadot {
         }
         /**
          * <code>bytes value = 1;</code>
+         * @return This builder for chaining.
          */
         public Builder clearValue() {
           
@@ -4061,13 +5213,14 @@ public final class Polkadot {
 
       /**
        * <code>int32 slashing_spans = 1;</code>
+       * @return The slashingSpans.
        */
       int getSlashingSpans();
     }
     /**
      * Protobuf type {@code TW.Polkadot.Proto.Staking.WithdrawUnbonded}
      */
-    public  static final class WithdrawUnbonded extends
+    public static final class WithdrawUnbonded extends
         com.google.protobuf.GeneratedMessageV3 implements
         // @@protoc_insertion_point(message_implements:TW.Polkadot.Proto.Staking.WithdrawUnbonded)
         WithdrawUnbondedOrBuilder {
@@ -4150,7 +5303,9 @@ public final class Polkadot {
       private int slashingSpans_;
       /**
        * <code>int32 slashing_spans = 1;</code>
+       * @return The slashingSpans.
        */
+      @java.lang.Override
       public int getSlashingSpans() {
         return slashingSpans_;
       }
@@ -4460,12 +5615,16 @@ public final class Polkadot {
         private int slashingSpans_ ;
         /**
          * <code>int32 slashing_spans = 1;</code>
+         * @return The slashingSpans.
          */
+        @java.lang.Override
         public int getSlashingSpans() {
           return slashingSpans_;
         }
         /**
          * <code>int32 slashing_spans = 1;</code>
+         * @param value The slashingSpans to set.
+         * @return This builder for chaining.
          */
         public Builder setSlashingSpans(int value) {
           
@@ -4475,6 +5634,7 @@ public final class Polkadot {
         }
         /**
          * <code>int32 slashing_spans = 1;</code>
+         * @return This builder for chaining.
          */
         public Builder clearSlashingSpans() {
           
@@ -4541,19 +5701,25 @@ public final class Polkadot {
 
       /**
        * <code>repeated string nominators = 1;</code>
+       * @return A list containing the nominators.
        */
       java.util.List<java.lang.String>
           getNominatorsList();
       /**
        * <code>repeated string nominators = 1;</code>
+       * @return The count of nominators.
        */
       int getNominatorsCount();
       /**
        * <code>repeated string nominators = 1;</code>
+       * @param index The index of the element to return.
+       * @return The nominators at the given index.
        */
       java.lang.String getNominators(int index);
       /**
        * <code>repeated string nominators = 1;</code>
+       * @param index The index of the value to return.
+       * @return The bytes of the nominators at the given index.
        */
       com.google.protobuf.ByteString
           getNominatorsBytes(int index);
@@ -4561,7 +5727,7 @@ public final class Polkadot {
     /**
      * Protobuf type {@code TW.Polkadot.Proto.Staking.Nominate}
      */
-    public  static final class Nominate extends
+    public static final class Nominate extends
         com.google.protobuf.GeneratedMessageV3 implements
         // @@protoc_insertion_point(message_implements:TW.Polkadot.Proto.Staking.Nominate)
         NominateOrBuilder {
@@ -4653,6 +5819,7 @@ public final class Polkadot {
       private com.google.protobuf.LazyStringList nominators_;
       /**
        * <code>repeated string nominators = 1;</code>
+       * @return A list containing the nominators.
        */
       public com.google.protobuf.ProtocolStringList
           getNominatorsList() {
@@ -4660,18 +5827,23 @@ public final class Polkadot {
       }
       /**
        * <code>repeated string nominators = 1;</code>
+       * @return The count of nominators.
        */
       public int getNominatorsCount() {
         return nominators_.size();
       }
       /**
        * <code>repeated string nominators = 1;</code>
+       * @param index The index of the element to return.
+       * @return The nominators at the given index.
        */
       public java.lang.String getNominators(int index) {
         return nominators_.get(index);
       }
       /**
        * <code>repeated string nominators = 1;</code>
+       * @param index The index of the value to return.
+       * @return The bytes of the nominators at the given index.
        */
       public com.google.protobuf.ByteString
           getNominatorsBytes(int index) {
@@ -5008,6 +6180,7 @@ public final class Polkadot {
         }
         /**
          * <code>repeated string nominators = 1;</code>
+         * @return A list containing the nominators.
          */
         public com.google.protobuf.ProtocolStringList
             getNominatorsList() {
@@ -5015,18 +6188,23 @@ public final class Polkadot {
         }
         /**
          * <code>repeated string nominators = 1;</code>
+         * @return The count of nominators.
          */
         public int getNominatorsCount() {
           return nominators_.size();
         }
         /**
          * <code>repeated string nominators = 1;</code>
+         * @param index The index of the element to return.
+         * @return The nominators at the given index.
          */
         public java.lang.String getNominators(int index) {
           return nominators_.get(index);
         }
         /**
          * <code>repeated string nominators = 1;</code>
+         * @param index The index of the value to return.
+         * @return The bytes of the nominators at the given index.
          */
         public com.google.protobuf.ByteString
             getNominatorsBytes(int index) {
@@ -5034,6 +6212,9 @@ public final class Polkadot {
         }
         /**
          * <code>repeated string nominators = 1;</code>
+         * @param index The index to set the value at.
+         * @param value The nominators to set.
+         * @return This builder for chaining.
          */
         public Builder setNominators(
             int index, java.lang.String value) {
@@ -5047,6 +6228,8 @@ public final class Polkadot {
         }
         /**
          * <code>repeated string nominators = 1;</code>
+         * @param value The nominators to add.
+         * @return This builder for chaining.
          */
         public Builder addNominators(
             java.lang.String value) {
@@ -5060,6 +6243,8 @@ public final class Polkadot {
         }
         /**
          * <code>repeated string nominators = 1;</code>
+         * @param values The nominators to add.
+         * @return This builder for chaining.
          */
         public Builder addAllNominators(
             java.lang.Iterable<java.lang.String> values) {
@@ -5071,6 +6256,7 @@ public final class Polkadot {
         }
         /**
          * <code>repeated string nominators = 1;</code>
+         * @return This builder for chaining.
          */
         public Builder clearNominators() {
           nominators_ = com.google.protobuf.LazyStringArrayList.EMPTY;
@@ -5080,6 +6266,8 @@ public final class Polkadot {
         }
         /**
          * <code>repeated string nominators = 1;</code>
+         * @param value The bytes of the nominators to add.
+         * @return This builder for chaining.
          */
         public Builder addNominatorsBytes(
             com.google.protobuf.ByteString value) {
@@ -5152,7 +6340,7 @@ public final class Polkadot {
     /**
      * Protobuf type {@code TW.Polkadot.Proto.Staking.Chill}
      */
-    public  static final class Chill extends
+    public static final class Chill extends
         com.google.protobuf.GeneratedMessageV3 implements
         // @@protoc_insertion_point(message_implements:TW.Polkadot.Proto.Staking.Chill)
         ChillOrBuilder {
@@ -5566,19 +6754,23 @@ public final class Polkadot {
     private int messageOneofCase_ = 0;
     private java.lang.Object messageOneof_;
     public enum MessageOneofCase
-        implements com.google.protobuf.Internal.EnumLite {
+        implements com.google.protobuf.Internal.EnumLite,
+            com.google.protobuf.AbstractMessage.InternalOneOfEnum {
       BOND(1),
-      BOND_EXTRA(2),
-      UNBOND(3),
-      WITHDRAW_UNBONDED(4),
-      NOMINATE(5),
-      CHILL(6),
+      BOND_AND_NOMINATE(2),
+      BOND_EXTRA(3),
+      UNBOND(4),
+      WITHDRAW_UNBONDED(5),
+      NOMINATE(6),
+      CHILL(7),
       MESSAGEONEOF_NOT_SET(0);
       private final int value;
       private MessageOneofCase(int value) {
         this.value = value;
       }
       /**
+       * @param value The number of the enum to look for.
+       * @return The enum associated with the given number.
        * @deprecated Use {@link #forNumber(int)} instead.
        */
       @java.lang.Deprecated
@@ -5589,11 +6781,12 @@ public final class Polkadot {
       public static MessageOneofCase forNumber(int value) {
         switch (value) {
           case 1: return BOND;
-          case 2: return BOND_EXTRA;
-          case 3: return UNBOND;
-          case 4: return WITHDRAW_UNBONDED;
-          case 5: return NOMINATE;
-          case 6: return CHILL;
+          case 2: return BOND_AND_NOMINATE;
+          case 3: return BOND_EXTRA;
+          case 4: return UNBOND;
+          case 5: return WITHDRAW_UNBONDED;
+          case 6: return NOMINATE;
+          case 7: return CHILL;
           case 0: return MESSAGEONEOF_NOT_SET;
           default: return null;
         }
@@ -5612,13 +6805,17 @@ public final class Polkadot {
     public static final int BOND_FIELD_NUMBER = 1;
     /**
      * <code>.TW.Polkadot.Proto.Staking.Bond bond = 1;</code>
+     * @return Whether the bond field is set.
      */
+    @java.lang.Override
     public boolean hasBond() {
       return messageOneofCase_ == 1;
     }
     /**
      * <code>.TW.Polkadot.Proto.Staking.Bond bond = 1;</code>
+     * @return The bond.
      */
+    @java.lang.Override
     public wallet.core.jni.proto.Polkadot.Staking.Bond getBond() {
       if (messageOneofCase_ == 1) {
          return (wallet.core.jni.proto.Polkadot.Staking.Bond) messageOneof_;
@@ -5628,6 +6825,7 @@ public final class Polkadot {
     /**
      * <code>.TW.Polkadot.Proto.Staking.Bond bond = 1;</code>
      */
+    @java.lang.Override
     public wallet.core.jni.proto.Polkadot.Staking.BondOrBuilder getBondOrBuilder() {
       if (messageOneofCase_ == 1) {
          return (wallet.core.jni.proto.Polkadot.Staking.Bond) messageOneof_;
@@ -5635,131 +6833,187 @@ public final class Polkadot {
       return wallet.core.jni.proto.Polkadot.Staking.Bond.getDefaultInstance();
     }
 
-    public static final int BOND_EXTRA_FIELD_NUMBER = 2;
+    public static final int BOND_AND_NOMINATE_FIELD_NUMBER = 2;
     /**
-     * <code>.TW.Polkadot.Proto.Staking.BondExtra bond_extra = 2;</code>
+     * <code>.TW.Polkadot.Proto.Staking.BondAndNominate bond_and_nominate = 2;</code>
+     * @return Whether the bondAndNominate field is set.
      */
-    public boolean hasBondExtra() {
+    @java.lang.Override
+    public boolean hasBondAndNominate() {
       return messageOneofCase_ == 2;
     }
     /**
-     * <code>.TW.Polkadot.Proto.Staking.BondExtra bond_extra = 2;</code>
+     * <code>.TW.Polkadot.Proto.Staking.BondAndNominate bond_and_nominate = 2;</code>
+     * @return The bondAndNominate.
      */
-    public wallet.core.jni.proto.Polkadot.Staking.BondExtra getBondExtra() {
+    @java.lang.Override
+    public wallet.core.jni.proto.Polkadot.Staking.BondAndNominate getBondAndNominate() {
       if (messageOneofCase_ == 2) {
-         return (wallet.core.jni.proto.Polkadot.Staking.BondExtra) messageOneof_;
+         return (wallet.core.jni.proto.Polkadot.Staking.BondAndNominate) messageOneof_;
       }
-      return wallet.core.jni.proto.Polkadot.Staking.BondExtra.getDefaultInstance();
+      return wallet.core.jni.proto.Polkadot.Staking.BondAndNominate.getDefaultInstance();
     }
     /**
-     * <code>.TW.Polkadot.Proto.Staking.BondExtra bond_extra = 2;</code>
+     * <code>.TW.Polkadot.Proto.Staking.BondAndNominate bond_and_nominate = 2;</code>
      */
-    public wallet.core.jni.proto.Polkadot.Staking.BondExtraOrBuilder getBondExtraOrBuilder() {
+    @java.lang.Override
+    public wallet.core.jni.proto.Polkadot.Staking.BondAndNominateOrBuilder getBondAndNominateOrBuilder() {
       if (messageOneofCase_ == 2) {
-         return (wallet.core.jni.proto.Polkadot.Staking.BondExtra) messageOneof_;
+         return (wallet.core.jni.proto.Polkadot.Staking.BondAndNominate) messageOneof_;
       }
-      return wallet.core.jni.proto.Polkadot.Staking.BondExtra.getDefaultInstance();
+      return wallet.core.jni.proto.Polkadot.Staking.BondAndNominate.getDefaultInstance();
     }
 
-    public static final int UNBOND_FIELD_NUMBER = 3;
+    public static final int BOND_EXTRA_FIELD_NUMBER = 3;
     /**
-     * <code>.TW.Polkadot.Proto.Staking.Unbond unbond = 3;</code>
+     * <code>.TW.Polkadot.Proto.Staking.BondExtra bond_extra = 3;</code>
+     * @return Whether the bondExtra field is set.
      */
-    public boolean hasUnbond() {
+    @java.lang.Override
+    public boolean hasBondExtra() {
       return messageOneofCase_ == 3;
     }
     /**
-     * <code>.TW.Polkadot.Proto.Staking.Unbond unbond = 3;</code>
+     * <code>.TW.Polkadot.Proto.Staking.BondExtra bond_extra = 3;</code>
+     * @return The bondExtra.
      */
-    public wallet.core.jni.proto.Polkadot.Staking.Unbond getUnbond() {
+    @java.lang.Override
+    public wallet.core.jni.proto.Polkadot.Staking.BondExtra getBondExtra() {
       if (messageOneofCase_ == 3) {
-         return (wallet.core.jni.proto.Polkadot.Staking.Unbond) messageOneof_;
+         return (wallet.core.jni.proto.Polkadot.Staking.BondExtra) messageOneof_;
       }
-      return wallet.core.jni.proto.Polkadot.Staking.Unbond.getDefaultInstance();
+      return wallet.core.jni.proto.Polkadot.Staking.BondExtra.getDefaultInstance();
     }
     /**
-     * <code>.TW.Polkadot.Proto.Staking.Unbond unbond = 3;</code>
+     * <code>.TW.Polkadot.Proto.Staking.BondExtra bond_extra = 3;</code>
      */
-    public wallet.core.jni.proto.Polkadot.Staking.UnbondOrBuilder getUnbondOrBuilder() {
+    @java.lang.Override
+    public wallet.core.jni.proto.Polkadot.Staking.BondExtraOrBuilder getBondExtraOrBuilder() {
       if (messageOneofCase_ == 3) {
-         return (wallet.core.jni.proto.Polkadot.Staking.Unbond) messageOneof_;
+         return (wallet.core.jni.proto.Polkadot.Staking.BondExtra) messageOneof_;
       }
-      return wallet.core.jni.proto.Polkadot.Staking.Unbond.getDefaultInstance();
+      return wallet.core.jni.proto.Polkadot.Staking.BondExtra.getDefaultInstance();
     }
 
-    public static final int WITHDRAW_UNBONDED_FIELD_NUMBER = 4;
+    public static final int UNBOND_FIELD_NUMBER = 4;
     /**
-     * <code>.TW.Polkadot.Proto.Staking.WithdrawUnbonded withdraw_unbonded = 4;</code>
+     * <code>.TW.Polkadot.Proto.Staking.Unbond unbond = 4;</code>
+     * @return Whether the unbond field is set.
      */
-    public boolean hasWithdrawUnbonded() {
+    @java.lang.Override
+    public boolean hasUnbond() {
       return messageOneofCase_ == 4;
     }
     /**
-     * <code>.TW.Polkadot.Proto.Staking.WithdrawUnbonded withdraw_unbonded = 4;</code>
+     * <code>.TW.Polkadot.Proto.Staking.Unbond unbond = 4;</code>
+     * @return The unbond.
      */
-    public wallet.core.jni.proto.Polkadot.Staking.WithdrawUnbonded getWithdrawUnbonded() {
+    @java.lang.Override
+    public wallet.core.jni.proto.Polkadot.Staking.Unbond getUnbond() {
       if (messageOneofCase_ == 4) {
-         return (wallet.core.jni.proto.Polkadot.Staking.WithdrawUnbonded) messageOneof_;
+         return (wallet.core.jni.proto.Polkadot.Staking.Unbond) messageOneof_;
       }
-      return wallet.core.jni.proto.Polkadot.Staking.WithdrawUnbonded.getDefaultInstance();
+      return wallet.core.jni.proto.Polkadot.Staking.Unbond.getDefaultInstance();
     }
     /**
-     * <code>.TW.Polkadot.Proto.Staking.WithdrawUnbonded withdraw_unbonded = 4;</code>
+     * <code>.TW.Polkadot.Proto.Staking.Unbond unbond = 4;</code>
      */
-    public wallet.core.jni.proto.Polkadot.Staking.WithdrawUnbondedOrBuilder getWithdrawUnbondedOrBuilder() {
+    @java.lang.Override
+    public wallet.core.jni.proto.Polkadot.Staking.UnbondOrBuilder getUnbondOrBuilder() {
       if (messageOneofCase_ == 4) {
-         return (wallet.core.jni.proto.Polkadot.Staking.WithdrawUnbonded) messageOneof_;
+         return (wallet.core.jni.proto.Polkadot.Staking.Unbond) messageOneof_;
       }
-      return wallet.core.jni.proto.Polkadot.Staking.WithdrawUnbonded.getDefaultInstance();
+      return wallet.core.jni.proto.Polkadot.Staking.Unbond.getDefaultInstance();
     }
 
-    public static final int NOMINATE_FIELD_NUMBER = 5;
+    public static final int WITHDRAW_UNBONDED_FIELD_NUMBER = 5;
     /**
-     * <code>.TW.Polkadot.Proto.Staking.Nominate nominate = 5;</code>
+     * <code>.TW.Polkadot.Proto.Staking.WithdrawUnbonded withdraw_unbonded = 5;</code>
+     * @return Whether the withdrawUnbonded field is set.
      */
-    public boolean hasNominate() {
+    @java.lang.Override
+    public boolean hasWithdrawUnbonded() {
       return messageOneofCase_ == 5;
     }
     /**
-     * <code>.TW.Polkadot.Proto.Staking.Nominate nominate = 5;</code>
+     * <code>.TW.Polkadot.Proto.Staking.WithdrawUnbonded withdraw_unbonded = 5;</code>
+     * @return The withdrawUnbonded.
      */
-    public wallet.core.jni.proto.Polkadot.Staking.Nominate getNominate() {
+    @java.lang.Override
+    public wallet.core.jni.proto.Polkadot.Staking.WithdrawUnbonded getWithdrawUnbonded() {
       if (messageOneofCase_ == 5) {
+         return (wallet.core.jni.proto.Polkadot.Staking.WithdrawUnbonded) messageOneof_;
+      }
+      return wallet.core.jni.proto.Polkadot.Staking.WithdrawUnbonded.getDefaultInstance();
+    }
+    /**
+     * <code>.TW.Polkadot.Proto.Staking.WithdrawUnbonded withdraw_unbonded = 5;</code>
+     */
+    @java.lang.Override
+    public wallet.core.jni.proto.Polkadot.Staking.WithdrawUnbondedOrBuilder getWithdrawUnbondedOrBuilder() {
+      if (messageOneofCase_ == 5) {
+         return (wallet.core.jni.proto.Polkadot.Staking.WithdrawUnbonded) messageOneof_;
+      }
+      return wallet.core.jni.proto.Polkadot.Staking.WithdrawUnbonded.getDefaultInstance();
+    }
+
+    public static final int NOMINATE_FIELD_NUMBER = 6;
+    /**
+     * <code>.TW.Polkadot.Proto.Staking.Nominate nominate = 6;</code>
+     * @return Whether the nominate field is set.
+     */
+    @java.lang.Override
+    public boolean hasNominate() {
+      return messageOneofCase_ == 6;
+    }
+    /**
+     * <code>.TW.Polkadot.Proto.Staking.Nominate nominate = 6;</code>
+     * @return The nominate.
+     */
+    @java.lang.Override
+    public wallet.core.jni.proto.Polkadot.Staking.Nominate getNominate() {
+      if (messageOneofCase_ == 6) {
          return (wallet.core.jni.proto.Polkadot.Staking.Nominate) messageOneof_;
       }
       return wallet.core.jni.proto.Polkadot.Staking.Nominate.getDefaultInstance();
     }
     /**
-     * <code>.TW.Polkadot.Proto.Staking.Nominate nominate = 5;</code>
+     * <code>.TW.Polkadot.Proto.Staking.Nominate nominate = 6;</code>
      */
+    @java.lang.Override
     public wallet.core.jni.proto.Polkadot.Staking.NominateOrBuilder getNominateOrBuilder() {
-      if (messageOneofCase_ == 5) {
+      if (messageOneofCase_ == 6) {
          return (wallet.core.jni.proto.Polkadot.Staking.Nominate) messageOneof_;
       }
       return wallet.core.jni.proto.Polkadot.Staking.Nominate.getDefaultInstance();
     }
 
-    public static final int CHILL_FIELD_NUMBER = 6;
+    public static final int CHILL_FIELD_NUMBER = 7;
     /**
-     * <code>.TW.Polkadot.Proto.Staking.Chill chill = 6;</code>
+     * <code>.TW.Polkadot.Proto.Staking.Chill chill = 7;</code>
+     * @return Whether the chill field is set.
      */
+    @java.lang.Override
     public boolean hasChill() {
-      return messageOneofCase_ == 6;
+      return messageOneofCase_ == 7;
     }
     /**
-     * <code>.TW.Polkadot.Proto.Staking.Chill chill = 6;</code>
+     * <code>.TW.Polkadot.Proto.Staking.Chill chill = 7;</code>
+     * @return The chill.
      */
+    @java.lang.Override
     public wallet.core.jni.proto.Polkadot.Staking.Chill getChill() {
-      if (messageOneofCase_ == 6) {
+      if (messageOneofCase_ == 7) {
          return (wallet.core.jni.proto.Polkadot.Staking.Chill) messageOneof_;
       }
       return wallet.core.jni.proto.Polkadot.Staking.Chill.getDefaultInstance();
     }
     /**
-     * <code>.TW.Polkadot.Proto.Staking.Chill chill = 6;</code>
+     * <code>.TW.Polkadot.Proto.Staking.Chill chill = 7;</code>
      */
+    @java.lang.Override
     public wallet.core.jni.proto.Polkadot.Staking.ChillOrBuilder getChillOrBuilder() {
-      if (messageOneofCase_ == 6) {
+      if (messageOneofCase_ == 7) {
          return (wallet.core.jni.proto.Polkadot.Staking.Chill) messageOneof_;
       }
       return wallet.core.jni.proto.Polkadot.Staking.Chill.getDefaultInstance();
@@ -5783,19 +7037,22 @@ public final class Polkadot {
         output.writeMessage(1, (wallet.core.jni.proto.Polkadot.Staking.Bond) messageOneof_);
       }
       if (messageOneofCase_ == 2) {
-        output.writeMessage(2, (wallet.core.jni.proto.Polkadot.Staking.BondExtra) messageOneof_);
+        output.writeMessage(2, (wallet.core.jni.proto.Polkadot.Staking.BondAndNominate) messageOneof_);
       }
       if (messageOneofCase_ == 3) {
-        output.writeMessage(3, (wallet.core.jni.proto.Polkadot.Staking.Unbond) messageOneof_);
+        output.writeMessage(3, (wallet.core.jni.proto.Polkadot.Staking.BondExtra) messageOneof_);
       }
       if (messageOneofCase_ == 4) {
-        output.writeMessage(4, (wallet.core.jni.proto.Polkadot.Staking.WithdrawUnbonded) messageOneof_);
+        output.writeMessage(4, (wallet.core.jni.proto.Polkadot.Staking.Unbond) messageOneof_);
       }
       if (messageOneofCase_ == 5) {
-        output.writeMessage(5, (wallet.core.jni.proto.Polkadot.Staking.Nominate) messageOneof_);
+        output.writeMessage(5, (wallet.core.jni.proto.Polkadot.Staking.WithdrawUnbonded) messageOneof_);
       }
       if (messageOneofCase_ == 6) {
-        output.writeMessage(6, (wallet.core.jni.proto.Polkadot.Staking.Chill) messageOneof_);
+        output.writeMessage(6, (wallet.core.jni.proto.Polkadot.Staking.Nominate) messageOneof_);
+      }
+      if (messageOneofCase_ == 7) {
+        output.writeMessage(7, (wallet.core.jni.proto.Polkadot.Staking.Chill) messageOneof_);
       }
       unknownFields.writeTo(output);
     }
@@ -5812,23 +7069,27 @@ public final class Polkadot {
       }
       if (messageOneofCase_ == 2) {
         size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(2, (wallet.core.jni.proto.Polkadot.Staking.BondExtra) messageOneof_);
+          .computeMessageSize(2, (wallet.core.jni.proto.Polkadot.Staking.BondAndNominate) messageOneof_);
       }
       if (messageOneofCase_ == 3) {
         size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(3, (wallet.core.jni.proto.Polkadot.Staking.Unbond) messageOneof_);
+          .computeMessageSize(3, (wallet.core.jni.proto.Polkadot.Staking.BondExtra) messageOneof_);
       }
       if (messageOneofCase_ == 4) {
         size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(4, (wallet.core.jni.proto.Polkadot.Staking.WithdrawUnbonded) messageOneof_);
+          .computeMessageSize(4, (wallet.core.jni.proto.Polkadot.Staking.Unbond) messageOneof_);
       }
       if (messageOneofCase_ == 5) {
         size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(5, (wallet.core.jni.proto.Polkadot.Staking.Nominate) messageOneof_);
+          .computeMessageSize(5, (wallet.core.jni.proto.Polkadot.Staking.WithdrawUnbonded) messageOneof_);
       }
       if (messageOneofCase_ == 6) {
         size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(6, (wallet.core.jni.proto.Polkadot.Staking.Chill) messageOneof_);
+          .computeMessageSize(6, (wallet.core.jni.proto.Polkadot.Staking.Nominate) messageOneof_);
+      }
+      if (messageOneofCase_ == 7) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(7, (wallet.core.jni.proto.Polkadot.Staking.Chill) messageOneof_);
       }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
@@ -5852,22 +7113,26 @@ public final class Polkadot {
               .equals(other.getBond())) return false;
           break;
         case 2:
+          if (!getBondAndNominate()
+              .equals(other.getBondAndNominate())) return false;
+          break;
+        case 3:
           if (!getBondExtra()
               .equals(other.getBondExtra())) return false;
           break;
-        case 3:
+        case 4:
           if (!getUnbond()
               .equals(other.getUnbond())) return false;
           break;
-        case 4:
+        case 5:
           if (!getWithdrawUnbonded()
               .equals(other.getWithdrawUnbonded())) return false;
           break;
-        case 5:
+        case 6:
           if (!getNominate()
               .equals(other.getNominate())) return false;
           break;
-        case 6:
+        case 7:
           if (!getChill()
               .equals(other.getChill())) return false;
           break;
@@ -5891,22 +7156,26 @@ public final class Polkadot {
           hash = (53 * hash) + getBond().hashCode();
           break;
         case 2:
+          hash = (37 * hash) + BOND_AND_NOMINATE_FIELD_NUMBER;
+          hash = (53 * hash) + getBondAndNominate().hashCode();
+          break;
+        case 3:
           hash = (37 * hash) + BOND_EXTRA_FIELD_NUMBER;
           hash = (53 * hash) + getBondExtra().hashCode();
           break;
-        case 3:
+        case 4:
           hash = (37 * hash) + UNBOND_FIELD_NUMBER;
           hash = (53 * hash) + getUnbond().hashCode();
           break;
-        case 4:
+        case 5:
           hash = (37 * hash) + WITHDRAW_UNBONDED_FIELD_NUMBER;
           hash = (53 * hash) + getWithdrawUnbonded().hashCode();
           break;
-        case 5:
+        case 6:
           hash = (37 * hash) + NOMINATE_FIELD_NUMBER;
           hash = (53 * hash) + getNominate().hashCode();
           break;
-        case 6:
+        case 7:
           hash = (37 * hash) + CHILL_FIELD_NUMBER;
           hash = (53 * hash) + getChill().hashCode();
           break;
@@ -6082,34 +7351,41 @@ public final class Polkadot {
           }
         }
         if (messageOneofCase_ == 2) {
+          if (bondAndNominateBuilder_ == null) {
+            result.messageOneof_ = messageOneof_;
+          } else {
+            result.messageOneof_ = bondAndNominateBuilder_.build();
+          }
+        }
+        if (messageOneofCase_ == 3) {
           if (bondExtraBuilder_ == null) {
             result.messageOneof_ = messageOneof_;
           } else {
             result.messageOneof_ = bondExtraBuilder_.build();
           }
         }
-        if (messageOneofCase_ == 3) {
+        if (messageOneofCase_ == 4) {
           if (unbondBuilder_ == null) {
             result.messageOneof_ = messageOneof_;
           } else {
             result.messageOneof_ = unbondBuilder_.build();
           }
         }
-        if (messageOneofCase_ == 4) {
+        if (messageOneofCase_ == 5) {
           if (withdrawUnbondedBuilder_ == null) {
             result.messageOneof_ = messageOneof_;
           } else {
             result.messageOneof_ = withdrawUnbondedBuilder_.build();
           }
         }
-        if (messageOneofCase_ == 5) {
+        if (messageOneofCase_ == 6) {
           if (nominateBuilder_ == null) {
             result.messageOneof_ = messageOneof_;
           } else {
             result.messageOneof_ = nominateBuilder_.build();
           }
         }
-        if (messageOneofCase_ == 6) {
+        if (messageOneofCase_ == 7) {
           if (chillBuilder_ == null) {
             result.messageOneof_ = messageOneof_;
           } else {
@@ -6168,6 +7444,10 @@ public final class Polkadot {
         switch (other.getMessageOneofCase()) {
           case BOND: {
             mergeBond(other.getBond());
+            break;
+          }
+          case BOND_AND_NOMINATE: {
+            mergeBondAndNominate(other.getBondAndNominate());
             break;
           }
           case BOND_EXTRA: {
@@ -6242,13 +7522,17 @@ public final class Polkadot {
           wallet.core.jni.proto.Polkadot.Staking.Bond, wallet.core.jni.proto.Polkadot.Staking.Bond.Builder, wallet.core.jni.proto.Polkadot.Staking.BondOrBuilder> bondBuilder_;
       /**
        * <code>.TW.Polkadot.Proto.Staking.Bond bond = 1;</code>
+       * @return Whether the bond field is set.
        */
+      @java.lang.Override
       public boolean hasBond() {
         return messageOneofCase_ == 1;
       }
       /**
        * <code>.TW.Polkadot.Proto.Staking.Bond bond = 1;</code>
+       * @return The bond.
        */
+      @java.lang.Override
       public wallet.core.jni.proto.Polkadot.Staking.Bond getBond() {
         if (bondBuilder_ == null) {
           if (messageOneofCase_ == 1) {
@@ -6342,6 +7626,7 @@ public final class Polkadot {
       /**
        * <code>.TW.Polkadot.Proto.Staking.Bond bond = 1;</code>
        */
+      @java.lang.Override
       public wallet.core.jni.proto.Polkadot.Staking.BondOrBuilder getBondOrBuilder() {
         if ((messageOneofCase_ == 1) && (bondBuilder_ != null)) {
           return bondBuilder_.getMessageOrBuilder();
@@ -6375,31 +7660,176 @@ public final class Polkadot {
       }
 
       private com.google.protobuf.SingleFieldBuilderV3<
-          wallet.core.jni.proto.Polkadot.Staking.BondExtra, wallet.core.jni.proto.Polkadot.Staking.BondExtra.Builder, wallet.core.jni.proto.Polkadot.Staking.BondExtraOrBuilder> bondExtraBuilder_;
+          wallet.core.jni.proto.Polkadot.Staking.BondAndNominate, wallet.core.jni.proto.Polkadot.Staking.BondAndNominate.Builder, wallet.core.jni.proto.Polkadot.Staking.BondAndNominateOrBuilder> bondAndNominateBuilder_;
       /**
-       * <code>.TW.Polkadot.Proto.Staking.BondExtra bond_extra = 2;</code>
+       * <code>.TW.Polkadot.Proto.Staking.BondAndNominate bond_and_nominate = 2;</code>
+       * @return Whether the bondAndNominate field is set.
        */
-      public boolean hasBondExtra() {
+      @java.lang.Override
+      public boolean hasBondAndNominate() {
         return messageOneofCase_ == 2;
       }
       /**
-       * <code>.TW.Polkadot.Proto.Staking.BondExtra bond_extra = 2;</code>
+       * <code>.TW.Polkadot.Proto.Staking.BondAndNominate bond_and_nominate = 2;</code>
+       * @return The bondAndNominate.
        */
+      @java.lang.Override
+      public wallet.core.jni.proto.Polkadot.Staking.BondAndNominate getBondAndNominate() {
+        if (bondAndNominateBuilder_ == null) {
+          if (messageOneofCase_ == 2) {
+            return (wallet.core.jni.proto.Polkadot.Staking.BondAndNominate) messageOneof_;
+          }
+          return wallet.core.jni.proto.Polkadot.Staking.BondAndNominate.getDefaultInstance();
+        } else {
+          if (messageOneofCase_ == 2) {
+            return bondAndNominateBuilder_.getMessage();
+          }
+          return wallet.core.jni.proto.Polkadot.Staking.BondAndNominate.getDefaultInstance();
+        }
+      }
+      /**
+       * <code>.TW.Polkadot.Proto.Staking.BondAndNominate bond_and_nominate = 2;</code>
+       */
+      public Builder setBondAndNominate(wallet.core.jni.proto.Polkadot.Staking.BondAndNominate value) {
+        if (bondAndNominateBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          messageOneof_ = value;
+          onChanged();
+        } else {
+          bondAndNominateBuilder_.setMessage(value);
+        }
+        messageOneofCase_ = 2;
+        return this;
+      }
+      /**
+       * <code>.TW.Polkadot.Proto.Staking.BondAndNominate bond_and_nominate = 2;</code>
+       */
+      public Builder setBondAndNominate(
+          wallet.core.jni.proto.Polkadot.Staking.BondAndNominate.Builder builderForValue) {
+        if (bondAndNominateBuilder_ == null) {
+          messageOneof_ = builderForValue.build();
+          onChanged();
+        } else {
+          bondAndNominateBuilder_.setMessage(builderForValue.build());
+        }
+        messageOneofCase_ = 2;
+        return this;
+      }
+      /**
+       * <code>.TW.Polkadot.Proto.Staking.BondAndNominate bond_and_nominate = 2;</code>
+       */
+      public Builder mergeBondAndNominate(wallet.core.jni.proto.Polkadot.Staking.BondAndNominate value) {
+        if (bondAndNominateBuilder_ == null) {
+          if (messageOneofCase_ == 2 &&
+              messageOneof_ != wallet.core.jni.proto.Polkadot.Staking.BondAndNominate.getDefaultInstance()) {
+            messageOneof_ = wallet.core.jni.proto.Polkadot.Staking.BondAndNominate.newBuilder((wallet.core.jni.proto.Polkadot.Staking.BondAndNominate) messageOneof_)
+                .mergeFrom(value).buildPartial();
+          } else {
+            messageOneof_ = value;
+          }
+          onChanged();
+        } else {
+          if (messageOneofCase_ == 2) {
+            bondAndNominateBuilder_.mergeFrom(value);
+          }
+          bondAndNominateBuilder_.setMessage(value);
+        }
+        messageOneofCase_ = 2;
+        return this;
+      }
+      /**
+       * <code>.TW.Polkadot.Proto.Staking.BondAndNominate bond_and_nominate = 2;</code>
+       */
+      public Builder clearBondAndNominate() {
+        if (bondAndNominateBuilder_ == null) {
+          if (messageOneofCase_ == 2) {
+            messageOneofCase_ = 0;
+            messageOneof_ = null;
+            onChanged();
+          }
+        } else {
+          if (messageOneofCase_ == 2) {
+            messageOneofCase_ = 0;
+            messageOneof_ = null;
+          }
+          bondAndNominateBuilder_.clear();
+        }
+        return this;
+      }
+      /**
+       * <code>.TW.Polkadot.Proto.Staking.BondAndNominate bond_and_nominate = 2;</code>
+       */
+      public wallet.core.jni.proto.Polkadot.Staking.BondAndNominate.Builder getBondAndNominateBuilder() {
+        return getBondAndNominateFieldBuilder().getBuilder();
+      }
+      /**
+       * <code>.TW.Polkadot.Proto.Staking.BondAndNominate bond_and_nominate = 2;</code>
+       */
+      @java.lang.Override
+      public wallet.core.jni.proto.Polkadot.Staking.BondAndNominateOrBuilder getBondAndNominateOrBuilder() {
+        if ((messageOneofCase_ == 2) && (bondAndNominateBuilder_ != null)) {
+          return bondAndNominateBuilder_.getMessageOrBuilder();
+        } else {
+          if (messageOneofCase_ == 2) {
+            return (wallet.core.jni.proto.Polkadot.Staking.BondAndNominate) messageOneof_;
+          }
+          return wallet.core.jni.proto.Polkadot.Staking.BondAndNominate.getDefaultInstance();
+        }
+      }
+      /**
+       * <code>.TW.Polkadot.Proto.Staking.BondAndNominate bond_and_nominate = 2;</code>
+       */
+      private com.google.protobuf.SingleFieldBuilderV3<
+          wallet.core.jni.proto.Polkadot.Staking.BondAndNominate, wallet.core.jni.proto.Polkadot.Staking.BondAndNominate.Builder, wallet.core.jni.proto.Polkadot.Staking.BondAndNominateOrBuilder> 
+          getBondAndNominateFieldBuilder() {
+        if (bondAndNominateBuilder_ == null) {
+          if (!(messageOneofCase_ == 2)) {
+            messageOneof_ = wallet.core.jni.proto.Polkadot.Staking.BondAndNominate.getDefaultInstance();
+          }
+          bondAndNominateBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+              wallet.core.jni.proto.Polkadot.Staking.BondAndNominate, wallet.core.jni.proto.Polkadot.Staking.BondAndNominate.Builder, wallet.core.jni.proto.Polkadot.Staking.BondAndNominateOrBuilder>(
+                  (wallet.core.jni.proto.Polkadot.Staking.BondAndNominate) messageOneof_,
+                  getParentForChildren(),
+                  isClean());
+          messageOneof_ = null;
+        }
+        messageOneofCase_ = 2;
+        onChanged();;
+        return bondAndNominateBuilder_;
+      }
+
+      private com.google.protobuf.SingleFieldBuilderV3<
+          wallet.core.jni.proto.Polkadot.Staking.BondExtra, wallet.core.jni.proto.Polkadot.Staking.BondExtra.Builder, wallet.core.jni.proto.Polkadot.Staking.BondExtraOrBuilder> bondExtraBuilder_;
+      /**
+       * <code>.TW.Polkadot.Proto.Staking.BondExtra bond_extra = 3;</code>
+       * @return Whether the bondExtra field is set.
+       */
+      @java.lang.Override
+      public boolean hasBondExtra() {
+        return messageOneofCase_ == 3;
+      }
+      /**
+       * <code>.TW.Polkadot.Proto.Staking.BondExtra bond_extra = 3;</code>
+       * @return The bondExtra.
+       */
+      @java.lang.Override
       public wallet.core.jni.proto.Polkadot.Staking.BondExtra getBondExtra() {
         if (bondExtraBuilder_ == null) {
-          if (messageOneofCase_ == 2) {
+          if (messageOneofCase_ == 3) {
             return (wallet.core.jni.proto.Polkadot.Staking.BondExtra) messageOneof_;
           }
           return wallet.core.jni.proto.Polkadot.Staking.BondExtra.getDefaultInstance();
         } else {
-          if (messageOneofCase_ == 2) {
+          if (messageOneofCase_ == 3) {
             return bondExtraBuilder_.getMessage();
           }
           return wallet.core.jni.proto.Polkadot.Staking.BondExtra.getDefaultInstance();
         }
       }
       /**
-       * <code>.TW.Polkadot.Proto.Staking.BondExtra bond_extra = 2;</code>
+       * <code>.TW.Polkadot.Proto.Staking.BondExtra bond_extra = 3;</code>
        */
       public Builder setBondExtra(wallet.core.jni.proto.Polkadot.Staking.BondExtra value) {
         if (bondExtraBuilder_ == null) {
@@ -6411,11 +7841,11 @@ public final class Polkadot {
         } else {
           bondExtraBuilder_.setMessage(value);
         }
-        messageOneofCase_ = 2;
+        messageOneofCase_ = 3;
         return this;
       }
       /**
-       * <code>.TW.Polkadot.Proto.Staking.BondExtra bond_extra = 2;</code>
+       * <code>.TW.Polkadot.Proto.Staking.BondExtra bond_extra = 3;</code>
        */
       public Builder setBondExtra(
           wallet.core.jni.proto.Polkadot.Staking.BondExtra.Builder builderForValue) {
@@ -6425,15 +7855,15 @@ public final class Polkadot {
         } else {
           bondExtraBuilder_.setMessage(builderForValue.build());
         }
-        messageOneofCase_ = 2;
+        messageOneofCase_ = 3;
         return this;
       }
       /**
-       * <code>.TW.Polkadot.Proto.Staking.BondExtra bond_extra = 2;</code>
+       * <code>.TW.Polkadot.Proto.Staking.BondExtra bond_extra = 3;</code>
        */
       public Builder mergeBondExtra(wallet.core.jni.proto.Polkadot.Staking.BondExtra value) {
         if (bondExtraBuilder_ == null) {
-          if (messageOneofCase_ == 2 &&
+          if (messageOneofCase_ == 3 &&
               messageOneof_ != wallet.core.jni.proto.Polkadot.Staking.BondExtra.getDefaultInstance()) {
             messageOneof_ = wallet.core.jni.proto.Polkadot.Staking.BondExtra.newBuilder((wallet.core.jni.proto.Polkadot.Staking.BondExtra) messageOneof_)
                 .mergeFrom(value).buildPartial();
@@ -6442,26 +7872,26 @@ public final class Polkadot {
           }
           onChanged();
         } else {
-          if (messageOneofCase_ == 2) {
+          if (messageOneofCase_ == 3) {
             bondExtraBuilder_.mergeFrom(value);
           }
           bondExtraBuilder_.setMessage(value);
         }
-        messageOneofCase_ = 2;
+        messageOneofCase_ = 3;
         return this;
       }
       /**
-       * <code>.TW.Polkadot.Proto.Staking.BondExtra bond_extra = 2;</code>
+       * <code>.TW.Polkadot.Proto.Staking.BondExtra bond_extra = 3;</code>
        */
       public Builder clearBondExtra() {
         if (bondExtraBuilder_ == null) {
-          if (messageOneofCase_ == 2) {
+          if (messageOneofCase_ == 3) {
             messageOneofCase_ = 0;
             messageOneof_ = null;
             onChanged();
           }
         } else {
-          if (messageOneofCase_ == 2) {
+          if (messageOneofCase_ == 3) {
             messageOneofCase_ = 0;
             messageOneof_ = null;
           }
@@ -6470,32 +7900,33 @@ public final class Polkadot {
         return this;
       }
       /**
-       * <code>.TW.Polkadot.Proto.Staking.BondExtra bond_extra = 2;</code>
+       * <code>.TW.Polkadot.Proto.Staking.BondExtra bond_extra = 3;</code>
        */
       public wallet.core.jni.proto.Polkadot.Staking.BondExtra.Builder getBondExtraBuilder() {
         return getBondExtraFieldBuilder().getBuilder();
       }
       /**
-       * <code>.TW.Polkadot.Proto.Staking.BondExtra bond_extra = 2;</code>
+       * <code>.TW.Polkadot.Proto.Staking.BondExtra bond_extra = 3;</code>
        */
+      @java.lang.Override
       public wallet.core.jni.proto.Polkadot.Staking.BondExtraOrBuilder getBondExtraOrBuilder() {
-        if ((messageOneofCase_ == 2) && (bondExtraBuilder_ != null)) {
+        if ((messageOneofCase_ == 3) && (bondExtraBuilder_ != null)) {
           return bondExtraBuilder_.getMessageOrBuilder();
         } else {
-          if (messageOneofCase_ == 2) {
+          if (messageOneofCase_ == 3) {
             return (wallet.core.jni.proto.Polkadot.Staking.BondExtra) messageOneof_;
           }
           return wallet.core.jni.proto.Polkadot.Staking.BondExtra.getDefaultInstance();
         }
       }
       /**
-       * <code>.TW.Polkadot.Proto.Staking.BondExtra bond_extra = 2;</code>
+       * <code>.TW.Polkadot.Proto.Staking.BondExtra bond_extra = 3;</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
           wallet.core.jni.proto.Polkadot.Staking.BondExtra, wallet.core.jni.proto.Polkadot.Staking.BondExtra.Builder, wallet.core.jni.proto.Polkadot.Staking.BondExtraOrBuilder> 
           getBondExtraFieldBuilder() {
         if (bondExtraBuilder_ == null) {
-          if (!(messageOneofCase_ == 2)) {
+          if (!(messageOneofCase_ == 3)) {
             messageOneof_ = wallet.core.jni.proto.Polkadot.Staking.BondExtra.getDefaultInstance();
           }
           bondExtraBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
@@ -6505,7 +7936,7 @@ public final class Polkadot {
                   isClean());
           messageOneof_ = null;
         }
-        messageOneofCase_ = 2;
+        messageOneofCase_ = 3;
         onChanged();;
         return bondExtraBuilder_;
       }
@@ -6513,29 +7944,33 @@ public final class Polkadot {
       private com.google.protobuf.SingleFieldBuilderV3<
           wallet.core.jni.proto.Polkadot.Staking.Unbond, wallet.core.jni.proto.Polkadot.Staking.Unbond.Builder, wallet.core.jni.proto.Polkadot.Staking.UnbondOrBuilder> unbondBuilder_;
       /**
-       * <code>.TW.Polkadot.Proto.Staking.Unbond unbond = 3;</code>
+       * <code>.TW.Polkadot.Proto.Staking.Unbond unbond = 4;</code>
+       * @return Whether the unbond field is set.
        */
+      @java.lang.Override
       public boolean hasUnbond() {
-        return messageOneofCase_ == 3;
+        return messageOneofCase_ == 4;
       }
       /**
-       * <code>.TW.Polkadot.Proto.Staking.Unbond unbond = 3;</code>
+       * <code>.TW.Polkadot.Proto.Staking.Unbond unbond = 4;</code>
+       * @return The unbond.
        */
+      @java.lang.Override
       public wallet.core.jni.proto.Polkadot.Staking.Unbond getUnbond() {
         if (unbondBuilder_ == null) {
-          if (messageOneofCase_ == 3) {
+          if (messageOneofCase_ == 4) {
             return (wallet.core.jni.proto.Polkadot.Staking.Unbond) messageOneof_;
           }
           return wallet.core.jni.proto.Polkadot.Staking.Unbond.getDefaultInstance();
         } else {
-          if (messageOneofCase_ == 3) {
+          if (messageOneofCase_ == 4) {
             return unbondBuilder_.getMessage();
           }
           return wallet.core.jni.proto.Polkadot.Staking.Unbond.getDefaultInstance();
         }
       }
       /**
-       * <code>.TW.Polkadot.Proto.Staking.Unbond unbond = 3;</code>
+       * <code>.TW.Polkadot.Proto.Staking.Unbond unbond = 4;</code>
        */
       public Builder setUnbond(wallet.core.jni.proto.Polkadot.Staking.Unbond value) {
         if (unbondBuilder_ == null) {
@@ -6547,11 +7982,11 @@ public final class Polkadot {
         } else {
           unbondBuilder_.setMessage(value);
         }
-        messageOneofCase_ = 3;
+        messageOneofCase_ = 4;
         return this;
       }
       /**
-       * <code>.TW.Polkadot.Proto.Staking.Unbond unbond = 3;</code>
+       * <code>.TW.Polkadot.Proto.Staking.Unbond unbond = 4;</code>
        */
       public Builder setUnbond(
           wallet.core.jni.proto.Polkadot.Staking.Unbond.Builder builderForValue) {
@@ -6561,15 +7996,15 @@ public final class Polkadot {
         } else {
           unbondBuilder_.setMessage(builderForValue.build());
         }
-        messageOneofCase_ = 3;
+        messageOneofCase_ = 4;
         return this;
       }
       /**
-       * <code>.TW.Polkadot.Proto.Staking.Unbond unbond = 3;</code>
+       * <code>.TW.Polkadot.Proto.Staking.Unbond unbond = 4;</code>
        */
       public Builder mergeUnbond(wallet.core.jni.proto.Polkadot.Staking.Unbond value) {
         if (unbondBuilder_ == null) {
-          if (messageOneofCase_ == 3 &&
+          if (messageOneofCase_ == 4 &&
               messageOneof_ != wallet.core.jni.proto.Polkadot.Staking.Unbond.getDefaultInstance()) {
             messageOneof_ = wallet.core.jni.proto.Polkadot.Staking.Unbond.newBuilder((wallet.core.jni.proto.Polkadot.Staking.Unbond) messageOneof_)
                 .mergeFrom(value).buildPartial();
@@ -6578,26 +8013,26 @@ public final class Polkadot {
           }
           onChanged();
         } else {
-          if (messageOneofCase_ == 3) {
+          if (messageOneofCase_ == 4) {
             unbondBuilder_.mergeFrom(value);
           }
           unbondBuilder_.setMessage(value);
         }
-        messageOneofCase_ = 3;
+        messageOneofCase_ = 4;
         return this;
       }
       /**
-       * <code>.TW.Polkadot.Proto.Staking.Unbond unbond = 3;</code>
+       * <code>.TW.Polkadot.Proto.Staking.Unbond unbond = 4;</code>
        */
       public Builder clearUnbond() {
         if (unbondBuilder_ == null) {
-          if (messageOneofCase_ == 3) {
+          if (messageOneofCase_ == 4) {
             messageOneofCase_ = 0;
             messageOneof_ = null;
             onChanged();
           }
         } else {
-          if (messageOneofCase_ == 3) {
+          if (messageOneofCase_ == 4) {
             messageOneofCase_ = 0;
             messageOneof_ = null;
           }
@@ -6606,32 +8041,33 @@ public final class Polkadot {
         return this;
       }
       /**
-       * <code>.TW.Polkadot.Proto.Staking.Unbond unbond = 3;</code>
+       * <code>.TW.Polkadot.Proto.Staking.Unbond unbond = 4;</code>
        */
       public wallet.core.jni.proto.Polkadot.Staking.Unbond.Builder getUnbondBuilder() {
         return getUnbondFieldBuilder().getBuilder();
       }
       /**
-       * <code>.TW.Polkadot.Proto.Staking.Unbond unbond = 3;</code>
+       * <code>.TW.Polkadot.Proto.Staking.Unbond unbond = 4;</code>
        */
+      @java.lang.Override
       public wallet.core.jni.proto.Polkadot.Staking.UnbondOrBuilder getUnbondOrBuilder() {
-        if ((messageOneofCase_ == 3) && (unbondBuilder_ != null)) {
+        if ((messageOneofCase_ == 4) && (unbondBuilder_ != null)) {
           return unbondBuilder_.getMessageOrBuilder();
         } else {
-          if (messageOneofCase_ == 3) {
+          if (messageOneofCase_ == 4) {
             return (wallet.core.jni.proto.Polkadot.Staking.Unbond) messageOneof_;
           }
           return wallet.core.jni.proto.Polkadot.Staking.Unbond.getDefaultInstance();
         }
       }
       /**
-       * <code>.TW.Polkadot.Proto.Staking.Unbond unbond = 3;</code>
+       * <code>.TW.Polkadot.Proto.Staking.Unbond unbond = 4;</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
           wallet.core.jni.proto.Polkadot.Staking.Unbond, wallet.core.jni.proto.Polkadot.Staking.Unbond.Builder, wallet.core.jni.proto.Polkadot.Staking.UnbondOrBuilder> 
           getUnbondFieldBuilder() {
         if (unbondBuilder_ == null) {
-          if (!(messageOneofCase_ == 3)) {
+          if (!(messageOneofCase_ == 4)) {
             messageOneof_ = wallet.core.jni.proto.Polkadot.Staking.Unbond.getDefaultInstance();
           }
           unbondBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
@@ -6641,7 +8077,7 @@ public final class Polkadot {
                   isClean());
           messageOneof_ = null;
         }
-        messageOneofCase_ = 3;
+        messageOneofCase_ = 4;
         onChanged();;
         return unbondBuilder_;
       }
@@ -6649,29 +8085,33 @@ public final class Polkadot {
       private com.google.protobuf.SingleFieldBuilderV3<
           wallet.core.jni.proto.Polkadot.Staking.WithdrawUnbonded, wallet.core.jni.proto.Polkadot.Staking.WithdrawUnbonded.Builder, wallet.core.jni.proto.Polkadot.Staking.WithdrawUnbondedOrBuilder> withdrawUnbondedBuilder_;
       /**
-       * <code>.TW.Polkadot.Proto.Staking.WithdrawUnbonded withdraw_unbonded = 4;</code>
+       * <code>.TW.Polkadot.Proto.Staking.WithdrawUnbonded withdraw_unbonded = 5;</code>
+       * @return Whether the withdrawUnbonded field is set.
        */
+      @java.lang.Override
       public boolean hasWithdrawUnbonded() {
-        return messageOneofCase_ == 4;
+        return messageOneofCase_ == 5;
       }
       /**
-       * <code>.TW.Polkadot.Proto.Staking.WithdrawUnbonded withdraw_unbonded = 4;</code>
+       * <code>.TW.Polkadot.Proto.Staking.WithdrawUnbonded withdraw_unbonded = 5;</code>
+       * @return The withdrawUnbonded.
        */
+      @java.lang.Override
       public wallet.core.jni.proto.Polkadot.Staking.WithdrawUnbonded getWithdrawUnbonded() {
         if (withdrawUnbondedBuilder_ == null) {
-          if (messageOneofCase_ == 4) {
+          if (messageOneofCase_ == 5) {
             return (wallet.core.jni.proto.Polkadot.Staking.WithdrawUnbonded) messageOneof_;
           }
           return wallet.core.jni.proto.Polkadot.Staking.WithdrawUnbonded.getDefaultInstance();
         } else {
-          if (messageOneofCase_ == 4) {
+          if (messageOneofCase_ == 5) {
             return withdrawUnbondedBuilder_.getMessage();
           }
           return wallet.core.jni.proto.Polkadot.Staking.WithdrawUnbonded.getDefaultInstance();
         }
       }
       /**
-       * <code>.TW.Polkadot.Proto.Staking.WithdrawUnbonded withdraw_unbonded = 4;</code>
+       * <code>.TW.Polkadot.Proto.Staking.WithdrawUnbonded withdraw_unbonded = 5;</code>
        */
       public Builder setWithdrawUnbonded(wallet.core.jni.proto.Polkadot.Staking.WithdrawUnbonded value) {
         if (withdrawUnbondedBuilder_ == null) {
@@ -6683,11 +8123,11 @@ public final class Polkadot {
         } else {
           withdrawUnbondedBuilder_.setMessage(value);
         }
-        messageOneofCase_ = 4;
+        messageOneofCase_ = 5;
         return this;
       }
       /**
-       * <code>.TW.Polkadot.Proto.Staking.WithdrawUnbonded withdraw_unbonded = 4;</code>
+       * <code>.TW.Polkadot.Proto.Staking.WithdrawUnbonded withdraw_unbonded = 5;</code>
        */
       public Builder setWithdrawUnbonded(
           wallet.core.jni.proto.Polkadot.Staking.WithdrawUnbonded.Builder builderForValue) {
@@ -6697,15 +8137,15 @@ public final class Polkadot {
         } else {
           withdrawUnbondedBuilder_.setMessage(builderForValue.build());
         }
-        messageOneofCase_ = 4;
+        messageOneofCase_ = 5;
         return this;
       }
       /**
-       * <code>.TW.Polkadot.Proto.Staking.WithdrawUnbonded withdraw_unbonded = 4;</code>
+       * <code>.TW.Polkadot.Proto.Staking.WithdrawUnbonded withdraw_unbonded = 5;</code>
        */
       public Builder mergeWithdrawUnbonded(wallet.core.jni.proto.Polkadot.Staking.WithdrawUnbonded value) {
         if (withdrawUnbondedBuilder_ == null) {
-          if (messageOneofCase_ == 4 &&
+          if (messageOneofCase_ == 5 &&
               messageOneof_ != wallet.core.jni.proto.Polkadot.Staking.WithdrawUnbonded.getDefaultInstance()) {
             messageOneof_ = wallet.core.jni.proto.Polkadot.Staking.WithdrawUnbonded.newBuilder((wallet.core.jni.proto.Polkadot.Staking.WithdrawUnbonded) messageOneof_)
                 .mergeFrom(value).buildPartial();
@@ -6714,26 +8154,26 @@ public final class Polkadot {
           }
           onChanged();
         } else {
-          if (messageOneofCase_ == 4) {
+          if (messageOneofCase_ == 5) {
             withdrawUnbondedBuilder_.mergeFrom(value);
           }
           withdrawUnbondedBuilder_.setMessage(value);
         }
-        messageOneofCase_ = 4;
+        messageOneofCase_ = 5;
         return this;
       }
       /**
-       * <code>.TW.Polkadot.Proto.Staking.WithdrawUnbonded withdraw_unbonded = 4;</code>
+       * <code>.TW.Polkadot.Proto.Staking.WithdrawUnbonded withdraw_unbonded = 5;</code>
        */
       public Builder clearWithdrawUnbonded() {
         if (withdrawUnbondedBuilder_ == null) {
-          if (messageOneofCase_ == 4) {
+          if (messageOneofCase_ == 5) {
             messageOneofCase_ = 0;
             messageOneof_ = null;
             onChanged();
           }
         } else {
-          if (messageOneofCase_ == 4) {
+          if (messageOneofCase_ == 5) {
             messageOneofCase_ = 0;
             messageOneof_ = null;
           }
@@ -6742,32 +8182,33 @@ public final class Polkadot {
         return this;
       }
       /**
-       * <code>.TW.Polkadot.Proto.Staking.WithdrawUnbonded withdraw_unbonded = 4;</code>
+       * <code>.TW.Polkadot.Proto.Staking.WithdrawUnbonded withdraw_unbonded = 5;</code>
        */
       public wallet.core.jni.proto.Polkadot.Staking.WithdrawUnbonded.Builder getWithdrawUnbondedBuilder() {
         return getWithdrawUnbondedFieldBuilder().getBuilder();
       }
       /**
-       * <code>.TW.Polkadot.Proto.Staking.WithdrawUnbonded withdraw_unbonded = 4;</code>
+       * <code>.TW.Polkadot.Proto.Staking.WithdrawUnbonded withdraw_unbonded = 5;</code>
        */
+      @java.lang.Override
       public wallet.core.jni.proto.Polkadot.Staking.WithdrawUnbondedOrBuilder getWithdrawUnbondedOrBuilder() {
-        if ((messageOneofCase_ == 4) && (withdrawUnbondedBuilder_ != null)) {
+        if ((messageOneofCase_ == 5) && (withdrawUnbondedBuilder_ != null)) {
           return withdrawUnbondedBuilder_.getMessageOrBuilder();
         } else {
-          if (messageOneofCase_ == 4) {
+          if (messageOneofCase_ == 5) {
             return (wallet.core.jni.proto.Polkadot.Staking.WithdrawUnbonded) messageOneof_;
           }
           return wallet.core.jni.proto.Polkadot.Staking.WithdrawUnbonded.getDefaultInstance();
         }
       }
       /**
-       * <code>.TW.Polkadot.Proto.Staking.WithdrawUnbonded withdraw_unbonded = 4;</code>
+       * <code>.TW.Polkadot.Proto.Staking.WithdrawUnbonded withdraw_unbonded = 5;</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
           wallet.core.jni.proto.Polkadot.Staking.WithdrawUnbonded, wallet.core.jni.proto.Polkadot.Staking.WithdrawUnbonded.Builder, wallet.core.jni.proto.Polkadot.Staking.WithdrawUnbondedOrBuilder> 
           getWithdrawUnbondedFieldBuilder() {
         if (withdrawUnbondedBuilder_ == null) {
-          if (!(messageOneofCase_ == 4)) {
+          if (!(messageOneofCase_ == 5)) {
             messageOneof_ = wallet.core.jni.proto.Polkadot.Staking.WithdrawUnbonded.getDefaultInstance();
           }
           withdrawUnbondedBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
@@ -6777,7 +8218,7 @@ public final class Polkadot {
                   isClean());
           messageOneof_ = null;
         }
-        messageOneofCase_ = 4;
+        messageOneofCase_ = 5;
         onChanged();;
         return withdrawUnbondedBuilder_;
       }
@@ -6785,29 +8226,33 @@ public final class Polkadot {
       private com.google.protobuf.SingleFieldBuilderV3<
           wallet.core.jni.proto.Polkadot.Staking.Nominate, wallet.core.jni.proto.Polkadot.Staking.Nominate.Builder, wallet.core.jni.proto.Polkadot.Staking.NominateOrBuilder> nominateBuilder_;
       /**
-       * <code>.TW.Polkadot.Proto.Staking.Nominate nominate = 5;</code>
+       * <code>.TW.Polkadot.Proto.Staking.Nominate nominate = 6;</code>
+       * @return Whether the nominate field is set.
        */
+      @java.lang.Override
       public boolean hasNominate() {
-        return messageOneofCase_ == 5;
+        return messageOneofCase_ == 6;
       }
       /**
-       * <code>.TW.Polkadot.Proto.Staking.Nominate nominate = 5;</code>
+       * <code>.TW.Polkadot.Proto.Staking.Nominate nominate = 6;</code>
+       * @return The nominate.
        */
+      @java.lang.Override
       public wallet.core.jni.proto.Polkadot.Staking.Nominate getNominate() {
         if (nominateBuilder_ == null) {
-          if (messageOneofCase_ == 5) {
+          if (messageOneofCase_ == 6) {
             return (wallet.core.jni.proto.Polkadot.Staking.Nominate) messageOneof_;
           }
           return wallet.core.jni.proto.Polkadot.Staking.Nominate.getDefaultInstance();
         } else {
-          if (messageOneofCase_ == 5) {
+          if (messageOneofCase_ == 6) {
             return nominateBuilder_.getMessage();
           }
           return wallet.core.jni.proto.Polkadot.Staking.Nominate.getDefaultInstance();
         }
       }
       /**
-       * <code>.TW.Polkadot.Proto.Staking.Nominate nominate = 5;</code>
+       * <code>.TW.Polkadot.Proto.Staking.Nominate nominate = 6;</code>
        */
       public Builder setNominate(wallet.core.jni.proto.Polkadot.Staking.Nominate value) {
         if (nominateBuilder_ == null) {
@@ -6819,11 +8264,11 @@ public final class Polkadot {
         } else {
           nominateBuilder_.setMessage(value);
         }
-        messageOneofCase_ = 5;
+        messageOneofCase_ = 6;
         return this;
       }
       /**
-       * <code>.TW.Polkadot.Proto.Staking.Nominate nominate = 5;</code>
+       * <code>.TW.Polkadot.Proto.Staking.Nominate nominate = 6;</code>
        */
       public Builder setNominate(
           wallet.core.jni.proto.Polkadot.Staking.Nominate.Builder builderForValue) {
@@ -6833,15 +8278,15 @@ public final class Polkadot {
         } else {
           nominateBuilder_.setMessage(builderForValue.build());
         }
-        messageOneofCase_ = 5;
+        messageOneofCase_ = 6;
         return this;
       }
       /**
-       * <code>.TW.Polkadot.Proto.Staking.Nominate nominate = 5;</code>
+       * <code>.TW.Polkadot.Proto.Staking.Nominate nominate = 6;</code>
        */
       public Builder mergeNominate(wallet.core.jni.proto.Polkadot.Staking.Nominate value) {
         if (nominateBuilder_ == null) {
-          if (messageOneofCase_ == 5 &&
+          if (messageOneofCase_ == 6 &&
               messageOneof_ != wallet.core.jni.proto.Polkadot.Staking.Nominate.getDefaultInstance()) {
             messageOneof_ = wallet.core.jni.proto.Polkadot.Staking.Nominate.newBuilder((wallet.core.jni.proto.Polkadot.Staking.Nominate) messageOneof_)
                 .mergeFrom(value).buildPartial();
@@ -6850,26 +8295,26 @@ public final class Polkadot {
           }
           onChanged();
         } else {
-          if (messageOneofCase_ == 5) {
+          if (messageOneofCase_ == 6) {
             nominateBuilder_.mergeFrom(value);
           }
           nominateBuilder_.setMessage(value);
         }
-        messageOneofCase_ = 5;
+        messageOneofCase_ = 6;
         return this;
       }
       /**
-       * <code>.TW.Polkadot.Proto.Staking.Nominate nominate = 5;</code>
+       * <code>.TW.Polkadot.Proto.Staking.Nominate nominate = 6;</code>
        */
       public Builder clearNominate() {
         if (nominateBuilder_ == null) {
-          if (messageOneofCase_ == 5) {
+          if (messageOneofCase_ == 6) {
             messageOneofCase_ = 0;
             messageOneof_ = null;
             onChanged();
           }
         } else {
-          if (messageOneofCase_ == 5) {
+          if (messageOneofCase_ == 6) {
             messageOneofCase_ = 0;
             messageOneof_ = null;
           }
@@ -6878,32 +8323,33 @@ public final class Polkadot {
         return this;
       }
       /**
-       * <code>.TW.Polkadot.Proto.Staking.Nominate nominate = 5;</code>
+       * <code>.TW.Polkadot.Proto.Staking.Nominate nominate = 6;</code>
        */
       public wallet.core.jni.proto.Polkadot.Staking.Nominate.Builder getNominateBuilder() {
         return getNominateFieldBuilder().getBuilder();
       }
       /**
-       * <code>.TW.Polkadot.Proto.Staking.Nominate nominate = 5;</code>
+       * <code>.TW.Polkadot.Proto.Staking.Nominate nominate = 6;</code>
        */
+      @java.lang.Override
       public wallet.core.jni.proto.Polkadot.Staking.NominateOrBuilder getNominateOrBuilder() {
-        if ((messageOneofCase_ == 5) && (nominateBuilder_ != null)) {
+        if ((messageOneofCase_ == 6) && (nominateBuilder_ != null)) {
           return nominateBuilder_.getMessageOrBuilder();
         } else {
-          if (messageOneofCase_ == 5) {
+          if (messageOneofCase_ == 6) {
             return (wallet.core.jni.proto.Polkadot.Staking.Nominate) messageOneof_;
           }
           return wallet.core.jni.proto.Polkadot.Staking.Nominate.getDefaultInstance();
         }
       }
       /**
-       * <code>.TW.Polkadot.Proto.Staking.Nominate nominate = 5;</code>
+       * <code>.TW.Polkadot.Proto.Staking.Nominate nominate = 6;</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
           wallet.core.jni.proto.Polkadot.Staking.Nominate, wallet.core.jni.proto.Polkadot.Staking.Nominate.Builder, wallet.core.jni.proto.Polkadot.Staking.NominateOrBuilder> 
           getNominateFieldBuilder() {
         if (nominateBuilder_ == null) {
-          if (!(messageOneofCase_ == 5)) {
+          if (!(messageOneofCase_ == 6)) {
             messageOneof_ = wallet.core.jni.proto.Polkadot.Staking.Nominate.getDefaultInstance();
           }
           nominateBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
@@ -6913,7 +8359,7 @@ public final class Polkadot {
                   isClean());
           messageOneof_ = null;
         }
-        messageOneofCase_ = 5;
+        messageOneofCase_ = 6;
         onChanged();;
         return nominateBuilder_;
       }
@@ -6921,29 +8367,33 @@ public final class Polkadot {
       private com.google.protobuf.SingleFieldBuilderV3<
           wallet.core.jni.proto.Polkadot.Staking.Chill, wallet.core.jni.proto.Polkadot.Staking.Chill.Builder, wallet.core.jni.proto.Polkadot.Staking.ChillOrBuilder> chillBuilder_;
       /**
-       * <code>.TW.Polkadot.Proto.Staking.Chill chill = 6;</code>
+       * <code>.TW.Polkadot.Proto.Staking.Chill chill = 7;</code>
+       * @return Whether the chill field is set.
        */
+      @java.lang.Override
       public boolean hasChill() {
-        return messageOneofCase_ == 6;
+        return messageOneofCase_ == 7;
       }
       /**
-       * <code>.TW.Polkadot.Proto.Staking.Chill chill = 6;</code>
+       * <code>.TW.Polkadot.Proto.Staking.Chill chill = 7;</code>
+       * @return The chill.
        */
+      @java.lang.Override
       public wallet.core.jni.proto.Polkadot.Staking.Chill getChill() {
         if (chillBuilder_ == null) {
-          if (messageOneofCase_ == 6) {
+          if (messageOneofCase_ == 7) {
             return (wallet.core.jni.proto.Polkadot.Staking.Chill) messageOneof_;
           }
           return wallet.core.jni.proto.Polkadot.Staking.Chill.getDefaultInstance();
         } else {
-          if (messageOneofCase_ == 6) {
+          if (messageOneofCase_ == 7) {
             return chillBuilder_.getMessage();
           }
           return wallet.core.jni.proto.Polkadot.Staking.Chill.getDefaultInstance();
         }
       }
       /**
-       * <code>.TW.Polkadot.Proto.Staking.Chill chill = 6;</code>
+       * <code>.TW.Polkadot.Proto.Staking.Chill chill = 7;</code>
        */
       public Builder setChill(wallet.core.jni.proto.Polkadot.Staking.Chill value) {
         if (chillBuilder_ == null) {
@@ -6955,11 +8405,11 @@ public final class Polkadot {
         } else {
           chillBuilder_.setMessage(value);
         }
-        messageOneofCase_ = 6;
+        messageOneofCase_ = 7;
         return this;
       }
       /**
-       * <code>.TW.Polkadot.Proto.Staking.Chill chill = 6;</code>
+       * <code>.TW.Polkadot.Proto.Staking.Chill chill = 7;</code>
        */
       public Builder setChill(
           wallet.core.jni.proto.Polkadot.Staking.Chill.Builder builderForValue) {
@@ -6969,15 +8419,15 @@ public final class Polkadot {
         } else {
           chillBuilder_.setMessage(builderForValue.build());
         }
-        messageOneofCase_ = 6;
+        messageOneofCase_ = 7;
         return this;
       }
       /**
-       * <code>.TW.Polkadot.Proto.Staking.Chill chill = 6;</code>
+       * <code>.TW.Polkadot.Proto.Staking.Chill chill = 7;</code>
        */
       public Builder mergeChill(wallet.core.jni.proto.Polkadot.Staking.Chill value) {
         if (chillBuilder_ == null) {
-          if (messageOneofCase_ == 6 &&
+          if (messageOneofCase_ == 7 &&
               messageOneof_ != wallet.core.jni.proto.Polkadot.Staking.Chill.getDefaultInstance()) {
             messageOneof_ = wallet.core.jni.proto.Polkadot.Staking.Chill.newBuilder((wallet.core.jni.proto.Polkadot.Staking.Chill) messageOneof_)
                 .mergeFrom(value).buildPartial();
@@ -6986,26 +8436,26 @@ public final class Polkadot {
           }
           onChanged();
         } else {
-          if (messageOneofCase_ == 6) {
+          if (messageOneofCase_ == 7) {
             chillBuilder_.mergeFrom(value);
           }
           chillBuilder_.setMessage(value);
         }
-        messageOneofCase_ = 6;
+        messageOneofCase_ = 7;
         return this;
       }
       /**
-       * <code>.TW.Polkadot.Proto.Staking.Chill chill = 6;</code>
+       * <code>.TW.Polkadot.Proto.Staking.Chill chill = 7;</code>
        */
       public Builder clearChill() {
         if (chillBuilder_ == null) {
-          if (messageOneofCase_ == 6) {
+          if (messageOneofCase_ == 7) {
             messageOneofCase_ = 0;
             messageOneof_ = null;
             onChanged();
           }
         } else {
-          if (messageOneofCase_ == 6) {
+          if (messageOneofCase_ == 7) {
             messageOneofCase_ = 0;
             messageOneof_ = null;
           }
@@ -7014,32 +8464,33 @@ public final class Polkadot {
         return this;
       }
       /**
-       * <code>.TW.Polkadot.Proto.Staking.Chill chill = 6;</code>
+       * <code>.TW.Polkadot.Proto.Staking.Chill chill = 7;</code>
        */
       public wallet.core.jni.proto.Polkadot.Staking.Chill.Builder getChillBuilder() {
         return getChillFieldBuilder().getBuilder();
       }
       /**
-       * <code>.TW.Polkadot.Proto.Staking.Chill chill = 6;</code>
+       * <code>.TW.Polkadot.Proto.Staking.Chill chill = 7;</code>
        */
+      @java.lang.Override
       public wallet.core.jni.proto.Polkadot.Staking.ChillOrBuilder getChillOrBuilder() {
-        if ((messageOneofCase_ == 6) && (chillBuilder_ != null)) {
+        if ((messageOneofCase_ == 7) && (chillBuilder_ != null)) {
           return chillBuilder_.getMessageOrBuilder();
         } else {
-          if (messageOneofCase_ == 6) {
+          if (messageOneofCase_ == 7) {
             return (wallet.core.jni.proto.Polkadot.Staking.Chill) messageOneof_;
           }
           return wallet.core.jni.proto.Polkadot.Staking.Chill.getDefaultInstance();
         }
       }
       /**
-       * <code>.TW.Polkadot.Proto.Staking.Chill chill = 6;</code>
+       * <code>.TW.Polkadot.Proto.Staking.Chill chill = 7;</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
           wallet.core.jni.proto.Polkadot.Staking.Chill, wallet.core.jni.proto.Polkadot.Staking.Chill.Builder, wallet.core.jni.proto.Polkadot.Staking.ChillOrBuilder> 
           getChillFieldBuilder() {
         if (chillBuilder_ == null) {
-          if (!(messageOneofCase_ == 6)) {
+          if (!(messageOneofCase_ == 7)) {
             messageOneof_ = wallet.core.jni.proto.Polkadot.Staking.Chill.getDefaultInstance();
           }
           chillBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
@@ -7049,7 +8500,7 @@ public final class Polkadot {
                   isClean());
           messageOneof_ = null;
         }
-        messageOneofCase_ = 6;
+        messageOneofCase_ = 7;
         onChanged();;
         return chillBuilder_;
       }
@@ -7111,27 +8562,40 @@ public final class Polkadot {
       com.google.protobuf.MessageOrBuilder {
 
     /**
+     * <pre>
+     * Recent block hash, or genesis hash if era is not set
+     * </pre>
+     *
      * <code>bytes block_hash = 1;</code>
+     * @return The blockHash.
      */
     com.google.protobuf.ByteString getBlockHash();
 
     /**
      * <code>bytes genesis_hash = 2;</code>
+     * @return The genesisHash.
      */
     com.google.protobuf.ByteString getGenesisHash();
 
     /**
+     * <pre>
+     * Current account nonce
+     * </pre>
+     *
      * <code>uint64 nonce = 3;</code>
+     * @return The nonce.
      */
     long getNonce();
 
     /**
      * <code>uint32 spec_version = 4;</code>
+     * @return The specVersion.
      */
     int getSpecVersion();
 
     /**
      * <code>uint32 transaction_version = 5;</code>
+     * @return The transactionVersion.
      */
     int getTransactionVersion();
 
@@ -7141,28 +8605,31 @@ public final class Polkadot {
      * </pre>
      *
      * <code>bytes tip = 6;</code>
+     * @return The tip.
      */
     com.google.protobuf.ByteString getTip();
 
     /**
      * <pre>
-     * empty means Immortal
+     * Optional time validity limit, recommended, for replay-protection.  Empty means Immortal.
      * </pre>
      *
      * <code>.TW.Polkadot.Proto.Era era = 7;</code>
+     * @return Whether the era field is set.
      */
     boolean hasEra();
     /**
      * <pre>
-     * empty means Immortal
+     * Optional time validity limit, recommended, for replay-protection.  Empty means Immortal.
      * </pre>
      *
      * <code>.TW.Polkadot.Proto.Era era = 7;</code>
+     * @return The era.
      */
     wallet.core.jni.proto.Polkadot.Era getEra();
     /**
      * <pre>
-     * empty means Immortal
+     * Optional time validity limit, recommended, for replay-protection.  Empty means Immortal.
      * </pre>
      *
      * <code>.TW.Polkadot.Proto.Era era = 7;</code>
@@ -7171,24 +8638,29 @@ public final class Polkadot {
 
     /**
      * <code>bytes private_key = 8;</code>
+     * @return The privateKey.
      */
     com.google.protobuf.ByteString getPrivateKey();
 
     /**
      * <code>.TW.Polkadot.Proto.Network network = 9;</code>
+     * @return The enum numeric value on the wire for network.
      */
     int getNetworkValue();
     /**
      * <code>.TW.Polkadot.Proto.Network network = 9;</code>
+     * @return The network.
      */
     wallet.core.jni.proto.Polkadot.Network getNetwork();
 
     /**
      * <code>.TW.Polkadot.Proto.Balance balance_call = 10;</code>
+     * @return Whether the balanceCall field is set.
      */
     boolean hasBalanceCall();
     /**
      * <code>.TW.Polkadot.Proto.Balance balance_call = 10;</code>
+     * @return The balanceCall.
      */
     wallet.core.jni.proto.Polkadot.Balance getBalanceCall();
     /**
@@ -7198,10 +8670,12 @@ public final class Polkadot {
 
     /**
      * <code>.TW.Polkadot.Proto.Staking staking_call = 11;</code>
+     * @return Whether the stakingCall field is set.
      */
     boolean hasStakingCall();
     /**
      * <code>.TW.Polkadot.Proto.Staking staking_call = 11;</code>
+     * @return The stakingCall.
      */
     wallet.core.jni.proto.Polkadot.Staking getStakingCall();
     /**
@@ -7218,7 +8692,7 @@ public final class Polkadot {
    *
    * Protobuf type {@code TW.Polkadot.Proto.SigningInput}
    */
-  public  static final class SigningInput extends
+  public static final class SigningInput extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:TW.Polkadot.Proto.SigningInput)
       SigningInputOrBuilder {
@@ -7382,7 +8856,8 @@ public final class Polkadot {
     private int messageOneofCase_ = 0;
     private java.lang.Object messageOneof_;
     public enum MessageOneofCase
-        implements com.google.protobuf.Internal.EnumLite {
+        implements com.google.protobuf.Internal.EnumLite,
+            com.google.protobuf.AbstractMessage.InternalOneOfEnum {
       BALANCE_CALL(10),
       STAKING_CALL(11),
       MESSAGEONEOF_NOT_SET(0);
@@ -7391,6 +8866,8 @@ public final class Polkadot {
         this.value = value;
       }
       /**
+       * @param value The number of the enum to look for.
+       * @return The enum associated with the given number.
        * @deprecated Use {@link #forNumber(int)} instead.
        */
       @java.lang.Deprecated
@@ -7420,8 +8897,14 @@ public final class Polkadot {
     public static final int BLOCK_HASH_FIELD_NUMBER = 1;
     private com.google.protobuf.ByteString blockHash_;
     /**
+     * <pre>
+     * Recent block hash, or genesis hash if era is not set
+     * </pre>
+     *
      * <code>bytes block_hash = 1;</code>
+     * @return The blockHash.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString getBlockHash() {
       return blockHash_;
     }
@@ -7430,7 +8913,9 @@ public final class Polkadot {
     private com.google.protobuf.ByteString genesisHash_;
     /**
      * <code>bytes genesis_hash = 2;</code>
+     * @return The genesisHash.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString getGenesisHash() {
       return genesisHash_;
     }
@@ -7438,8 +8923,14 @@ public final class Polkadot {
     public static final int NONCE_FIELD_NUMBER = 3;
     private long nonce_;
     /**
+     * <pre>
+     * Current account nonce
+     * </pre>
+     *
      * <code>uint64 nonce = 3;</code>
+     * @return The nonce.
      */
+    @java.lang.Override
     public long getNonce() {
       return nonce_;
     }
@@ -7448,7 +8939,9 @@ public final class Polkadot {
     private int specVersion_;
     /**
      * <code>uint32 spec_version = 4;</code>
+     * @return The specVersion.
      */
+    @java.lang.Override
     public int getSpecVersion() {
       return specVersion_;
     }
@@ -7457,7 +8950,9 @@ public final class Polkadot {
     private int transactionVersion_;
     /**
      * <code>uint32 transaction_version = 5;</code>
+     * @return The transactionVersion.
      */
+    @java.lang.Override
     public int getTransactionVersion() {
       return transactionVersion_;
     }
@@ -7470,7 +8965,9 @@ public final class Polkadot {
      * </pre>
      *
      * <code>bytes tip = 6;</code>
+     * @return The tip.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString getTip() {
       return tip_;
     }
@@ -7479,31 +8976,36 @@ public final class Polkadot {
     private wallet.core.jni.proto.Polkadot.Era era_;
     /**
      * <pre>
-     * empty means Immortal
+     * Optional time validity limit, recommended, for replay-protection.  Empty means Immortal.
      * </pre>
      *
      * <code>.TW.Polkadot.Proto.Era era = 7;</code>
+     * @return Whether the era field is set.
      */
+    @java.lang.Override
     public boolean hasEra() {
       return era_ != null;
     }
     /**
      * <pre>
-     * empty means Immortal
+     * Optional time validity limit, recommended, for replay-protection.  Empty means Immortal.
      * </pre>
      *
      * <code>.TW.Polkadot.Proto.Era era = 7;</code>
+     * @return The era.
      */
+    @java.lang.Override
     public wallet.core.jni.proto.Polkadot.Era getEra() {
       return era_ == null ? wallet.core.jni.proto.Polkadot.Era.getDefaultInstance() : era_;
     }
     /**
      * <pre>
-     * empty means Immortal
+     * Optional time validity limit, recommended, for replay-protection.  Empty means Immortal.
      * </pre>
      *
      * <code>.TW.Polkadot.Proto.Era era = 7;</code>
      */
+    @java.lang.Override
     public wallet.core.jni.proto.Polkadot.EraOrBuilder getEraOrBuilder() {
       return getEra();
     }
@@ -7512,7 +9014,9 @@ public final class Polkadot {
     private com.google.protobuf.ByteString privateKey_;
     /**
      * <code>bytes private_key = 8;</code>
+     * @return The privateKey.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString getPrivateKey() {
       return privateKey_;
     }
@@ -7521,14 +9025,16 @@ public final class Polkadot {
     private int network_;
     /**
      * <code>.TW.Polkadot.Proto.Network network = 9;</code>
+     * @return The enum numeric value on the wire for network.
      */
-    public int getNetworkValue() {
+    @java.lang.Override public int getNetworkValue() {
       return network_;
     }
     /**
      * <code>.TW.Polkadot.Proto.Network network = 9;</code>
+     * @return The network.
      */
-    public wallet.core.jni.proto.Polkadot.Network getNetwork() {
+    @java.lang.Override public wallet.core.jni.proto.Polkadot.Network getNetwork() {
       @SuppressWarnings("deprecation")
       wallet.core.jni.proto.Polkadot.Network result = wallet.core.jni.proto.Polkadot.Network.valueOf(network_);
       return result == null ? wallet.core.jni.proto.Polkadot.Network.UNRECOGNIZED : result;
@@ -7537,13 +9043,17 @@ public final class Polkadot {
     public static final int BALANCE_CALL_FIELD_NUMBER = 10;
     /**
      * <code>.TW.Polkadot.Proto.Balance balance_call = 10;</code>
+     * @return Whether the balanceCall field is set.
      */
+    @java.lang.Override
     public boolean hasBalanceCall() {
       return messageOneofCase_ == 10;
     }
     /**
      * <code>.TW.Polkadot.Proto.Balance balance_call = 10;</code>
+     * @return The balanceCall.
      */
+    @java.lang.Override
     public wallet.core.jni.proto.Polkadot.Balance getBalanceCall() {
       if (messageOneofCase_ == 10) {
          return (wallet.core.jni.proto.Polkadot.Balance) messageOneof_;
@@ -7553,6 +9063,7 @@ public final class Polkadot {
     /**
      * <code>.TW.Polkadot.Proto.Balance balance_call = 10;</code>
      */
+    @java.lang.Override
     public wallet.core.jni.proto.Polkadot.BalanceOrBuilder getBalanceCallOrBuilder() {
       if (messageOneofCase_ == 10) {
          return (wallet.core.jni.proto.Polkadot.Balance) messageOneof_;
@@ -7563,13 +9074,17 @@ public final class Polkadot {
     public static final int STAKING_CALL_FIELD_NUMBER = 11;
     /**
      * <code>.TW.Polkadot.Proto.Staking staking_call = 11;</code>
+     * @return Whether the stakingCall field is set.
      */
+    @java.lang.Override
     public boolean hasStakingCall() {
       return messageOneofCase_ == 11;
     }
     /**
      * <code>.TW.Polkadot.Proto.Staking staking_call = 11;</code>
+     * @return The stakingCall.
      */
+    @java.lang.Override
     public wallet.core.jni.proto.Polkadot.Staking getStakingCall() {
       if (messageOneofCase_ == 11) {
          return (wallet.core.jni.proto.Polkadot.Staking) messageOneof_;
@@ -7579,6 +9094,7 @@ public final class Polkadot {
     /**
      * <code>.TW.Polkadot.Proto.Staking staking_call = 11;</code>
      */
+    @java.lang.Override
     public wallet.core.jni.proto.Polkadot.StakingOrBuilder getStakingCallOrBuilder() {
       if (messageOneofCase_ == 11) {
          return (wallet.core.jni.proto.Polkadot.Staking) messageOneof_;
@@ -8127,13 +9643,25 @@ public final class Polkadot {
 
       private com.google.protobuf.ByteString blockHash_ = com.google.protobuf.ByteString.EMPTY;
       /**
+       * <pre>
+       * Recent block hash, or genesis hash if era is not set
+       * </pre>
+       *
        * <code>bytes block_hash = 1;</code>
+       * @return The blockHash.
        */
+      @java.lang.Override
       public com.google.protobuf.ByteString getBlockHash() {
         return blockHash_;
       }
       /**
+       * <pre>
+       * Recent block hash, or genesis hash if era is not set
+       * </pre>
+       *
        * <code>bytes block_hash = 1;</code>
+       * @param value The blockHash to set.
+       * @return This builder for chaining.
        */
       public Builder setBlockHash(com.google.protobuf.ByteString value) {
         if (value == null) {
@@ -8145,7 +9673,12 @@ public final class Polkadot {
         return this;
       }
       /**
+       * <pre>
+       * Recent block hash, or genesis hash if era is not set
+       * </pre>
+       *
        * <code>bytes block_hash = 1;</code>
+       * @return This builder for chaining.
        */
       public Builder clearBlockHash() {
         
@@ -8157,12 +9690,16 @@ public final class Polkadot {
       private com.google.protobuf.ByteString genesisHash_ = com.google.protobuf.ByteString.EMPTY;
       /**
        * <code>bytes genesis_hash = 2;</code>
+       * @return The genesisHash.
        */
+      @java.lang.Override
       public com.google.protobuf.ByteString getGenesisHash() {
         return genesisHash_;
       }
       /**
        * <code>bytes genesis_hash = 2;</code>
+       * @param value The genesisHash to set.
+       * @return This builder for chaining.
        */
       public Builder setGenesisHash(com.google.protobuf.ByteString value) {
         if (value == null) {
@@ -8175,6 +9712,7 @@ public final class Polkadot {
       }
       /**
        * <code>bytes genesis_hash = 2;</code>
+       * @return This builder for chaining.
        */
       public Builder clearGenesisHash() {
         
@@ -8185,13 +9723,25 @@ public final class Polkadot {
 
       private long nonce_ ;
       /**
+       * <pre>
+       * Current account nonce
+       * </pre>
+       *
        * <code>uint64 nonce = 3;</code>
+       * @return The nonce.
        */
+      @java.lang.Override
       public long getNonce() {
         return nonce_;
       }
       /**
+       * <pre>
+       * Current account nonce
+       * </pre>
+       *
        * <code>uint64 nonce = 3;</code>
+       * @param value The nonce to set.
+       * @return This builder for chaining.
        */
       public Builder setNonce(long value) {
         
@@ -8200,7 +9750,12 @@ public final class Polkadot {
         return this;
       }
       /**
+       * <pre>
+       * Current account nonce
+       * </pre>
+       *
        * <code>uint64 nonce = 3;</code>
+       * @return This builder for chaining.
        */
       public Builder clearNonce() {
         
@@ -8212,12 +9767,16 @@ public final class Polkadot {
       private int specVersion_ ;
       /**
        * <code>uint32 spec_version = 4;</code>
+       * @return The specVersion.
        */
+      @java.lang.Override
       public int getSpecVersion() {
         return specVersion_;
       }
       /**
        * <code>uint32 spec_version = 4;</code>
+       * @param value The specVersion to set.
+       * @return This builder for chaining.
        */
       public Builder setSpecVersion(int value) {
         
@@ -8227,6 +9786,7 @@ public final class Polkadot {
       }
       /**
        * <code>uint32 spec_version = 4;</code>
+       * @return This builder for chaining.
        */
       public Builder clearSpecVersion() {
         
@@ -8238,12 +9798,16 @@ public final class Polkadot {
       private int transactionVersion_ ;
       /**
        * <code>uint32 transaction_version = 5;</code>
+       * @return The transactionVersion.
        */
+      @java.lang.Override
       public int getTransactionVersion() {
         return transactionVersion_;
       }
       /**
        * <code>uint32 transaction_version = 5;</code>
+       * @param value The transactionVersion to set.
+       * @return This builder for chaining.
        */
       public Builder setTransactionVersion(int value) {
         
@@ -8253,6 +9817,7 @@ public final class Polkadot {
       }
       /**
        * <code>uint32 transaction_version = 5;</code>
+       * @return This builder for chaining.
        */
       public Builder clearTransactionVersion() {
         
@@ -8268,7 +9833,9 @@ public final class Polkadot {
        * </pre>
        *
        * <code>bytes tip = 6;</code>
+       * @return The tip.
        */
+      @java.lang.Override
       public com.google.protobuf.ByteString getTip() {
         return tip_;
       }
@@ -8278,6 +9845,8 @@ public final class Polkadot {
        * </pre>
        *
        * <code>bytes tip = 6;</code>
+       * @param value The tip to set.
+       * @return This builder for chaining.
        */
       public Builder setTip(com.google.protobuf.ByteString value) {
         if (value == null) {
@@ -8294,6 +9863,7 @@ public final class Polkadot {
        * </pre>
        *
        * <code>bytes tip = 6;</code>
+       * @return This builder for chaining.
        */
       public Builder clearTip() {
         
@@ -8307,20 +9877,22 @@ public final class Polkadot {
           wallet.core.jni.proto.Polkadot.Era, wallet.core.jni.proto.Polkadot.Era.Builder, wallet.core.jni.proto.Polkadot.EraOrBuilder> eraBuilder_;
       /**
        * <pre>
-       * empty means Immortal
+       * Optional time validity limit, recommended, for replay-protection.  Empty means Immortal.
        * </pre>
        *
        * <code>.TW.Polkadot.Proto.Era era = 7;</code>
+       * @return Whether the era field is set.
        */
       public boolean hasEra() {
         return eraBuilder_ != null || era_ != null;
       }
       /**
        * <pre>
-       * empty means Immortal
+       * Optional time validity limit, recommended, for replay-protection.  Empty means Immortal.
        * </pre>
        *
        * <code>.TW.Polkadot.Proto.Era era = 7;</code>
+       * @return The era.
        */
       public wallet.core.jni.proto.Polkadot.Era getEra() {
         if (eraBuilder_ == null) {
@@ -8331,7 +9903,7 @@ public final class Polkadot {
       }
       /**
        * <pre>
-       * empty means Immortal
+       * Optional time validity limit, recommended, for replay-protection.  Empty means Immortal.
        * </pre>
        *
        * <code>.TW.Polkadot.Proto.Era era = 7;</code>
@@ -8351,7 +9923,7 @@ public final class Polkadot {
       }
       /**
        * <pre>
-       * empty means Immortal
+       * Optional time validity limit, recommended, for replay-protection.  Empty means Immortal.
        * </pre>
        *
        * <code>.TW.Polkadot.Proto.Era era = 7;</code>
@@ -8369,7 +9941,7 @@ public final class Polkadot {
       }
       /**
        * <pre>
-       * empty means Immortal
+       * Optional time validity limit, recommended, for replay-protection.  Empty means Immortal.
        * </pre>
        *
        * <code>.TW.Polkadot.Proto.Era era = 7;</code>
@@ -8391,7 +9963,7 @@ public final class Polkadot {
       }
       /**
        * <pre>
-       * empty means Immortal
+       * Optional time validity limit, recommended, for replay-protection.  Empty means Immortal.
        * </pre>
        *
        * <code>.TW.Polkadot.Proto.Era era = 7;</code>
@@ -8409,7 +9981,7 @@ public final class Polkadot {
       }
       /**
        * <pre>
-       * empty means Immortal
+       * Optional time validity limit, recommended, for replay-protection.  Empty means Immortal.
        * </pre>
        *
        * <code>.TW.Polkadot.Proto.Era era = 7;</code>
@@ -8421,7 +9993,7 @@ public final class Polkadot {
       }
       /**
        * <pre>
-       * empty means Immortal
+       * Optional time validity limit, recommended, for replay-protection.  Empty means Immortal.
        * </pre>
        *
        * <code>.TW.Polkadot.Proto.Era era = 7;</code>
@@ -8436,7 +10008,7 @@ public final class Polkadot {
       }
       /**
        * <pre>
-       * empty means Immortal
+       * Optional time validity limit, recommended, for replay-protection.  Empty means Immortal.
        * </pre>
        *
        * <code>.TW.Polkadot.Proto.Era era = 7;</code>
@@ -8458,12 +10030,16 @@ public final class Polkadot {
       private com.google.protobuf.ByteString privateKey_ = com.google.protobuf.ByteString.EMPTY;
       /**
        * <code>bytes private_key = 8;</code>
+       * @return The privateKey.
        */
+      @java.lang.Override
       public com.google.protobuf.ByteString getPrivateKey() {
         return privateKey_;
       }
       /**
        * <code>bytes private_key = 8;</code>
+       * @param value The privateKey to set.
+       * @return This builder for chaining.
        */
       public Builder setPrivateKey(com.google.protobuf.ByteString value) {
         if (value == null) {
@@ -8476,6 +10052,7 @@ public final class Polkadot {
       }
       /**
        * <code>bytes private_key = 8;</code>
+       * @return This builder for chaining.
        */
       public Builder clearPrivateKey() {
         
@@ -8487,21 +10064,27 @@ public final class Polkadot {
       private int network_ = 0;
       /**
        * <code>.TW.Polkadot.Proto.Network network = 9;</code>
+       * @return The enum numeric value on the wire for network.
        */
-      public int getNetworkValue() {
+      @java.lang.Override public int getNetworkValue() {
         return network_;
       }
       /**
        * <code>.TW.Polkadot.Proto.Network network = 9;</code>
+       * @param value The enum numeric value on the wire for network to set.
+       * @return This builder for chaining.
        */
       public Builder setNetworkValue(int value) {
+        
         network_ = value;
         onChanged();
         return this;
       }
       /**
        * <code>.TW.Polkadot.Proto.Network network = 9;</code>
+       * @return The network.
        */
+      @java.lang.Override
       public wallet.core.jni.proto.Polkadot.Network getNetwork() {
         @SuppressWarnings("deprecation")
         wallet.core.jni.proto.Polkadot.Network result = wallet.core.jni.proto.Polkadot.Network.valueOf(network_);
@@ -8509,6 +10092,8 @@ public final class Polkadot {
       }
       /**
        * <code>.TW.Polkadot.Proto.Network network = 9;</code>
+       * @param value The network to set.
+       * @return This builder for chaining.
        */
       public Builder setNetwork(wallet.core.jni.proto.Polkadot.Network value) {
         if (value == null) {
@@ -8521,6 +10106,7 @@ public final class Polkadot {
       }
       /**
        * <code>.TW.Polkadot.Proto.Network network = 9;</code>
+       * @return This builder for chaining.
        */
       public Builder clearNetwork() {
         
@@ -8533,13 +10119,17 @@ public final class Polkadot {
           wallet.core.jni.proto.Polkadot.Balance, wallet.core.jni.proto.Polkadot.Balance.Builder, wallet.core.jni.proto.Polkadot.BalanceOrBuilder> balanceCallBuilder_;
       /**
        * <code>.TW.Polkadot.Proto.Balance balance_call = 10;</code>
+       * @return Whether the balanceCall field is set.
        */
+      @java.lang.Override
       public boolean hasBalanceCall() {
         return messageOneofCase_ == 10;
       }
       /**
        * <code>.TW.Polkadot.Proto.Balance balance_call = 10;</code>
+       * @return The balanceCall.
        */
+      @java.lang.Override
       public wallet.core.jni.proto.Polkadot.Balance getBalanceCall() {
         if (balanceCallBuilder_ == null) {
           if (messageOneofCase_ == 10) {
@@ -8633,6 +10223,7 @@ public final class Polkadot {
       /**
        * <code>.TW.Polkadot.Proto.Balance balance_call = 10;</code>
        */
+      @java.lang.Override
       public wallet.core.jni.proto.Polkadot.BalanceOrBuilder getBalanceCallOrBuilder() {
         if ((messageOneofCase_ == 10) && (balanceCallBuilder_ != null)) {
           return balanceCallBuilder_.getMessageOrBuilder();
@@ -8669,13 +10260,17 @@ public final class Polkadot {
           wallet.core.jni.proto.Polkadot.Staking, wallet.core.jni.proto.Polkadot.Staking.Builder, wallet.core.jni.proto.Polkadot.StakingOrBuilder> stakingCallBuilder_;
       /**
        * <code>.TW.Polkadot.Proto.Staking staking_call = 11;</code>
+       * @return Whether the stakingCall field is set.
        */
+      @java.lang.Override
       public boolean hasStakingCall() {
         return messageOneofCase_ == 11;
       }
       /**
        * <code>.TW.Polkadot.Proto.Staking staking_call = 11;</code>
+       * @return The stakingCall.
        */
+      @java.lang.Override
       public wallet.core.jni.proto.Polkadot.Staking getStakingCall() {
         if (stakingCallBuilder_ == null) {
           if (messageOneofCase_ == 11) {
@@ -8769,6 +10364,7 @@ public final class Polkadot {
       /**
        * <code>.TW.Polkadot.Proto.Staking staking_call = 11;</code>
        */
+      @java.lang.Override
       public wallet.core.jni.proto.Polkadot.StakingOrBuilder getStakingCallOrBuilder() {
         if ((messageOneofCase_ == 11) && (stakingCallBuilder_ != null)) {
           return stakingCallBuilder_.getMessageOrBuilder();
@@ -8863,6 +10459,7 @@ public final class Polkadot {
      * </pre>
      *
      * <code>bytes encoded = 1;</code>
+     * @return The encoded.
      */
     com.google.protobuf.ByteString getEncoded();
   }
@@ -8873,7 +10470,7 @@ public final class Polkadot {
    *
    * Protobuf type {@code TW.Polkadot.Proto.SigningOutput}
    */
-  public  static final class SigningOutput extends
+  public static final class SigningOutput extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:TW.Polkadot.Proto.SigningOutput)
       SigningOutputOrBuilder {
@@ -8961,7 +10558,9 @@ public final class Polkadot {
      * </pre>
      *
      * <code>bytes encoded = 1;</code>
+     * @return The encoded.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString getEncoded() {
       return encoded_;
     }
@@ -9279,7 +10878,9 @@ public final class Polkadot {
        * </pre>
        *
        * <code>bytes encoded = 1;</code>
+       * @return The encoded.
        */
+      @java.lang.Override
       public com.google.protobuf.ByteString getEncoded() {
         return encoded_;
       }
@@ -9289,6 +10890,8 @@ public final class Polkadot {
        * </pre>
        *
        * <code>bytes encoded = 1;</code>
+       * @param value The encoded to set.
+       * @return This builder for chaining.
        */
       public Builder setEncoded(com.google.protobuf.ByteString value) {
         if (value == null) {
@@ -9305,6 +10908,7 @@ public final class Polkadot {
        * </pre>
        *
        * <code>bytes encoded = 1;</code>
+       * @return This builder for chaining.
        */
       public Builder clearEncoded() {
         
@@ -9391,6 +10995,11 @@ public final class Polkadot {
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internal_static_TW_Polkadot_Proto_Staking_Bond_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_TW_Polkadot_Proto_Staking_BondAndNominate_descriptor;
+  private static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_TW_Polkadot_Proto_Staking_BondAndNominate_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_TW_Polkadot_Proto_Staking_BondExtra_descriptor;
   private static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
@@ -9434,40 +11043,46 @@ public final class Polkadot {
       descriptor;
   static {
     java.lang.String[] descriptorData = {
-      "\n\016Polkadot.proto\022\021TW.Polkadot.Proto\"$\n\003E" +
-      "ra\022\016\n\006period\030\001 \001(\004\022\r\n\005phase\030\002 \001(\004\"\202\001\n\007Ba" +
-      "lance\0227\n\010transfer\030\001 \001(\0132#.TW.Polkadot.Pr" +
-      "oto.Balance.TransferH\000\032-\n\010Transfer\022\022\n\nto" +
-      "_address\030\001 \001(\t\022\r\n\005value\030\002 \001(\014B\017\n\rmessage" +
-      "_oneof\"\351\004\n\007Staking\022/\n\004bond\030\001 \001(\0132\037.TW.Po" +
-      "lkadot.Proto.Staking.BondH\000\022:\n\nbond_extr" +
-      "a\030\002 \001(\0132$.TW.Polkadot.Proto.Staking.Bond" +
-      "ExtraH\000\0223\n\006unbond\030\003 \001(\0132!.TW.Polkadot.Pr" +
+      "\n\016Polkadot.proto\022\021TW.Polkadot.Proto\"+\n\003E" +
+      "ra\022\024\n\014block_number\030\001 \001(\004\022\016\n\006period\030\002 \001(\004" +
+      "\"\202\001\n\007Balance\0227\n\010transfer\030\001 \001(\0132#.TW.Polk" +
+      "adot.Proto.Balance.TransferH\000\032-\n\010Transfe" +
+      "r\022\022\n\nto_address\030\001 \001(\t\022\r\n\005value\030\002 \001(\014B\017\n\r" +
+      "message_oneof\"\277\006\n\007Staking\022/\n\004bond\030\001 \001(\0132" +
+      "\037.TW.Polkadot.Proto.Staking.BondH\000\022G\n\021bo" +
+      "nd_and_nominate\030\002 \001(\0132*.TW.Polkadot.Prot" +
+      "o.Staking.BondAndNominateH\000\022:\n\nbond_extr" +
+      "a\030\003 \001(\0132$.TW.Polkadot.Proto.Staking.Bond" +
+      "ExtraH\000\0223\n\006unbond\030\004 \001(\0132!.TW.Polkadot.Pr" +
       "oto.Staking.UnbondH\000\022H\n\021withdraw_unbonde" +
-      "d\030\004 \001(\0132+.TW.Polkadot.Proto.Staking.With" +
-      "drawUnbondedH\000\0227\n\010nominate\030\005 \001(\0132#.TW.Po" +
+      "d\030\005 \001(\0132+.TW.Polkadot.Proto.Staking.With" +
+      "drawUnbondedH\000\0227\n\010nominate\030\006 \001(\0132#.TW.Po" +
       "lkadot.Proto.Staking.NominateH\000\0221\n\005chill" +
-      "\030\006 \001(\0132 .TW.Polkadot.Proto.Staking.Chill" +
+      "\030\007 \001(\0132 .TW.Polkadot.Proto.Staking.Chill" +
       "H\000\032k\n\004Bond\022\022\n\ncontroller\030\001 \001(\t\022\r\n\005value\030" +
       "\002 \001(\014\022@\n\022reward_destination\030\003 \001(\0162$.TW.P" +
-      "olkadot.Proto.RewardDestination\032\032\n\tBondE" +
-      "xtra\022\r\n\005value\030\001 \001(\014\032\027\n\006Unbond\022\r\n\005value\030\001" +
-      " \001(\014\032*\n\020WithdrawUnbonded\022\026\n\016slashing_spa" +
-      "ns\030\001 \001(\005\032\036\n\010Nominate\022\022\n\nnominators\030\001 \003(\t" +
-      "\032\007\n\005ChillB\017\n\rmessage_oneof\"\347\002\n\014SigningIn" +
-      "put\022\022\n\nblock_hash\030\001 \001(\014\022\024\n\014genesis_hash\030" +
-      "\002 \001(\014\022\r\n\005nonce\030\003 \001(\004\022\024\n\014spec_version\030\004 \001" +
-      "(\r\022\033\n\023transaction_version\030\005 \001(\r\022\013\n\003tip\030\006" +
-      " \001(\014\022#\n\003era\030\007 \001(\0132\026.TW.Polkadot.Proto.Er" +
-      "a\022\023\n\013private_key\030\010 \001(\014\022+\n\007network\030\t \001(\0162" +
-      "\032.TW.Polkadot.Proto.Network\0222\n\014balance_c" +
-      "all\030\n \001(\0132\032.TW.Polkadot.Proto.BalanceH\000\022" +
-      "2\n\014staking_call\030\013 \001(\0132\032.TW.Polkadot.Prot" +
-      "o.StakingH\000B\017\n\rmessage_oneof\" \n\rSigningO" +
-      "utput\022\017\n\007encoded\030\001 \001(\014*#\n\007Network\022\014\n\010POL" +
-      "KADOT\020\000\022\n\n\006KUSAMA\020\002*:\n\021RewardDestination" +
-      "\022\n\n\006STAKED\020\000\022\t\n\005STASH\020\001\022\016\n\nCONTROLLER\020\002B" +
-      "\027\n\025wallet.core.jni.protob\006proto3"
+      "olkadot.Proto.RewardDestination\032\212\001\n\017Bond" +
+      "AndNominate\022\022\n\ncontroller\030\001 \001(\t\022\r\n\005value" +
+      "\030\002 \001(\014\022@\n\022reward_destination\030\003 \001(\0162$.TW." +
+      "Polkadot.Proto.RewardDestination\022\022\n\nnomi" +
+      "nators\030\004 \003(\t\032\032\n\tBondExtra\022\r\n\005value\030\001 \001(\014" +
+      "\032\027\n\006Unbond\022\r\n\005value\030\001 \001(\014\032*\n\020WithdrawUnb" +
+      "onded\022\026\n\016slashing_spans\030\001 \001(\005\032\036\n\010Nominat" +
+      "e\022\022\n\nnominators\030\001 \003(\t\032\007\n\005ChillB\017\n\rmessag" +
+      "e_oneof\"\347\002\n\014SigningInput\022\022\n\nblock_hash\030\001" +
+      " \001(\014\022\024\n\014genesis_hash\030\002 \001(\014\022\r\n\005nonce\030\003 \001(" +
+      "\004\022\024\n\014spec_version\030\004 \001(\r\022\033\n\023transaction_v" +
+      "ersion\030\005 \001(\r\022\013\n\003tip\030\006 \001(\014\022#\n\003era\030\007 \001(\0132\026" +
+      ".TW.Polkadot.Proto.Era\022\023\n\013private_key\030\010 " +
+      "\001(\014\022+\n\007network\030\t \001(\0162\032.TW.Polkadot.Proto" +
+      ".Network\0222\n\014balance_call\030\n \001(\0132\032.TW.Polk" +
+      "adot.Proto.BalanceH\000\0222\n\014staking_call\030\013 \001" +
+      "(\0132\032.TW.Polkadot.Proto.StakingH\000B\017\n\rmess" +
+      "age_oneof\" \n\rSigningOutput\022\017\n\007encoded\030\001 " +
+      "\001(\014*#\n\007Network\022\014\n\010POLKADOT\020\000\022\n\n\006KUSAMA\020\002" +
+      "*:\n\021RewardDestination\022\n\n\006STAKED\020\000\022\t\n\005STA" +
+      "SH\020\001\022\016\n\nCONTROLLER\020\002B\027\n\025wallet.core.jni." +
+      "protob\006proto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
@@ -9478,7 +11093,7 @@ public final class Polkadot {
     internal_static_TW_Polkadot_Proto_Era_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_TW_Polkadot_Proto_Era_descriptor,
-        new java.lang.String[] { "Period", "Phase", });
+        new java.lang.String[] { "BlockNumber", "Period", });
     internal_static_TW_Polkadot_Proto_Balance_descriptor =
       getDescriptor().getMessageTypes().get(1);
     internal_static_TW_Polkadot_Proto_Balance_fieldAccessorTable = new
@@ -9496,39 +11111,45 @@ public final class Polkadot {
     internal_static_TW_Polkadot_Proto_Staking_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_TW_Polkadot_Proto_Staking_descriptor,
-        new java.lang.String[] { "Bond", "BondExtra", "Unbond", "WithdrawUnbonded", "Nominate", "Chill", "MessageOneof", });
+        new java.lang.String[] { "Bond", "BondAndNominate", "BondExtra", "Unbond", "WithdrawUnbonded", "Nominate", "Chill", "MessageOneof", });
     internal_static_TW_Polkadot_Proto_Staking_Bond_descriptor =
       internal_static_TW_Polkadot_Proto_Staking_descriptor.getNestedTypes().get(0);
     internal_static_TW_Polkadot_Proto_Staking_Bond_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_TW_Polkadot_Proto_Staking_Bond_descriptor,
         new java.lang.String[] { "Controller", "Value", "RewardDestination", });
-    internal_static_TW_Polkadot_Proto_Staking_BondExtra_descriptor =
+    internal_static_TW_Polkadot_Proto_Staking_BondAndNominate_descriptor =
       internal_static_TW_Polkadot_Proto_Staking_descriptor.getNestedTypes().get(1);
+    internal_static_TW_Polkadot_Proto_Staking_BondAndNominate_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_TW_Polkadot_Proto_Staking_BondAndNominate_descriptor,
+        new java.lang.String[] { "Controller", "Value", "RewardDestination", "Nominators", });
+    internal_static_TW_Polkadot_Proto_Staking_BondExtra_descriptor =
+      internal_static_TW_Polkadot_Proto_Staking_descriptor.getNestedTypes().get(2);
     internal_static_TW_Polkadot_Proto_Staking_BondExtra_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_TW_Polkadot_Proto_Staking_BondExtra_descriptor,
         new java.lang.String[] { "Value", });
     internal_static_TW_Polkadot_Proto_Staking_Unbond_descriptor =
-      internal_static_TW_Polkadot_Proto_Staking_descriptor.getNestedTypes().get(2);
+      internal_static_TW_Polkadot_Proto_Staking_descriptor.getNestedTypes().get(3);
     internal_static_TW_Polkadot_Proto_Staking_Unbond_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_TW_Polkadot_Proto_Staking_Unbond_descriptor,
         new java.lang.String[] { "Value", });
     internal_static_TW_Polkadot_Proto_Staking_WithdrawUnbonded_descriptor =
-      internal_static_TW_Polkadot_Proto_Staking_descriptor.getNestedTypes().get(3);
+      internal_static_TW_Polkadot_Proto_Staking_descriptor.getNestedTypes().get(4);
     internal_static_TW_Polkadot_Proto_Staking_WithdrawUnbonded_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_TW_Polkadot_Proto_Staking_WithdrawUnbonded_descriptor,
         new java.lang.String[] { "SlashingSpans", });
     internal_static_TW_Polkadot_Proto_Staking_Nominate_descriptor =
-      internal_static_TW_Polkadot_Proto_Staking_descriptor.getNestedTypes().get(4);
+      internal_static_TW_Polkadot_Proto_Staking_descriptor.getNestedTypes().get(5);
     internal_static_TW_Polkadot_Proto_Staking_Nominate_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_TW_Polkadot_Proto_Staking_Nominate_descriptor,
         new java.lang.String[] { "Nominators", });
     internal_static_TW_Polkadot_Proto_Staking_Chill_descriptor =
-      internal_static_TW_Polkadot_Proto_Staking_descriptor.getNestedTypes().get(5);
+      internal_static_TW_Polkadot_Proto_Staking_descriptor.getNestedTypes().get(6);
     internal_static_TW_Polkadot_Proto_Staking_Chill_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_TW_Polkadot_Proto_Staking_Chill_descriptor,

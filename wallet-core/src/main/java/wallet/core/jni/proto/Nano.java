@@ -24,6 +24,7 @@ public final class Nano {
      * </pre>
      *
      * <code>bytes private_key = 1;</code>
+     * @return The privateKey.
      */
     com.google.protobuf.ByteString getPrivateKey();
 
@@ -33,6 +34,7 @@ public final class Nano {
      * </pre>
      *
      * <code>bytes parent_block = 2;</code>
+     * @return The parentBlock.
      */
     com.google.protobuf.ByteString getParentBlock();
 
@@ -42,6 +44,7 @@ public final class Nano {
      * </pre>
      *
      * <code>bytes link_block = 3;</code>
+     * @return The linkBlock.
      */
     com.google.protobuf.ByteString getLinkBlock();
 
@@ -51,6 +54,7 @@ public final class Nano {
      * </pre>
      *
      * <code>string link_recipient = 4;</code>
+     * @return The linkRecipient.
      */
     java.lang.String getLinkRecipient();
     /**
@@ -59,6 +63,7 @@ public final class Nano {
      * </pre>
      *
      * <code>string link_recipient = 4;</code>
+     * @return The bytes for linkRecipient.
      */
     com.google.protobuf.ByteString
         getLinkRecipientBytes();
@@ -69,6 +74,7 @@ public final class Nano {
      * </pre>
      *
      * <code>string representative = 5;</code>
+     * @return The representative.
      */
     java.lang.String getRepresentative();
     /**
@@ -77,6 +83,7 @@ public final class Nano {
      * </pre>
      *
      * <code>string representative = 5;</code>
+     * @return The bytes for representative.
      */
     com.google.protobuf.ByteString
         getRepresentativeBytes();
@@ -87,6 +94,7 @@ public final class Nano {
      * </pre>
      *
      * <code>string balance = 6;</code>
+     * @return The balance.
      */
     java.lang.String getBalance();
     /**
@@ -95,6 +103,7 @@ public final class Nano {
      * </pre>
      *
      * <code>string balance = 6;</code>
+     * @return The bytes for balance.
      */
     com.google.protobuf.ByteString
         getBalanceBytes();
@@ -105,6 +114,7 @@ public final class Nano {
      * </pre>
      *
      * <code>string work = 7;</code>
+     * @return The work.
      */
     java.lang.String getWork();
     /**
@@ -113,6 +123,7 @@ public final class Nano {
      * </pre>
      *
      * <code>string work = 7;</code>
+     * @return The bytes for work.
      */
     com.google.protobuf.ByteString
         getWorkBytes();
@@ -126,7 +137,7 @@ public final class Nano {
    *
    * Protobuf type {@code TW.Nano.Proto.SigningInput}
    */
-  public  static final class SigningInput extends
+  public static final class SigningInput extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:TW.Nano.Proto.SigningInput)
       SigningInputOrBuilder {
@@ -247,7 +258,8 @@ public final class Nano {
     private int linkOneofCase_ = 0;
     private java.lang.Object linkOneof_;
     public enum LinkOneofCase
-        implements com.google.protobuf.Internal.EnumLite {
+        implements com.google.protobuf.Internal.EnumLite,
+            com.google.protobuf.AbstractMessage.InternalOneOfEnum {
       LINK_BLOCK(3),
       LINK_RECIPIENT(4),
       LINKONEOF_NOT_SET(0);
@@ -256,6 +268,8 @@ public final class Nano {
         this.value = value;
       }
       /**
+       * @param value The number of the enum to look for.
+       * @return The enum associated with the given number.
        * @deprecated Use {@link #forNumber(int)} instead.
        */
       @java.lang.Deprecated
@@ -290,7 +304,9 @@ public final class Nano {
      * </pre>
      *
      * <code>bytes private_key = 1;</code>
+     * @return The privateKey.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString getPrivateKey() {
       return privateKey_;
     }
@@ -303,7 +319,9 @@ public final class Nano {
      * </pre>
      *
      * <code>bytes parent_block = 2;</code>
+     * @return The parentBlock.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString getParentBlock() {
       return parentBlock_;
     }
@@ -315,7 +333,9 @@ public final class Nano {
      * </pre>
      *
      * <code>bytes link_block = 3;</code>
+     * @return The linkBlock.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString getLinkBlock() {
       if (linkOneofCase_ == 3) {
         return (com.google.protobuf.ByteString) linkOneof_;
@@ -330,6 +350,7 @@ public final class Nano {
      * </pre>
      *
      * <code>string link_recipient = 4;</code>
+     * @return The linkRecipient.
      */
     public java.lang.String getLinkRecipient() {
       java.lang.Object ref = "";
@@ -354,6 +375,7 @@ public final class Nano {
      * </pre>
      *
      * <code>string link_recipient = 4;</code>
+     * @return The bytes for linkRecipient.
      */
     public com.google.protobuf.ByteString
         getLinkRecipientBytes() {
@@ -382,7 +404,9 @@ public final class Nano {
      * </pre>
      *
      * <code>string representative = 5;</code>
+     * @return The representative.
      */
+    @java.lang.Override
     public java.lang.String getRepresentative() {
       java.lang.Object ref = representative_;
       if (ref instanceof java.lang.String) {
@@ -401,7 +425,9 @@ public final class Nano {
      * </pre>
      *
      * <code>string representative = 5;</code>
+     * @return The bytes for representative.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString
         getRepresentativeBytes() {
       java.lang.Object ref = representative_;
@@ -424,7 +450,9 @@ public final class Nano {
      * </pre>
      *
      * <code>string balance = 6;</code>
+     * @return The balance.
      */
+    @java.lang.Override
     public java.lang.String getBalance() {
       java.lang.Object ref = balance_;
       if (ref instanceof java.lang.String) {
@@ -443,7 +471,9 @@ public final class Nano {
      * </pre>
      *
      * <code>string balance = 6;</code>
+     * @return The bytes for balance.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString
         getBalanceBytes() {
       java.lang.Object ref = balance_;
@@ -466,7 +496,9 @@ public final class Nano {
      * </pre>
      *
      * <code>string work = 7;</code>
+     * @return The work.
      */
+    @java.lang.Override
     public java.lang.String getWork() {
       java.lang.Object ref = work_;
       if (ref instanceof java.lang.String) {
@@ -485,7 +517,9 @@ public final class Nano {
      * </pre>
      *
      * <code>string work = 7;</code>
+     * @return The bytes for work.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString
         getWorkBytes() {
       java.lang.Object ref = work_;
@@ -960,7 +994,9 @@ public final class Nano {
        * </pre>
        *
        * <code>bytes private_key = 1;</code>
+       * @return The privateKey.
        */
+      @java.lang.Override
       public com.google.protobuf.ByteString getPrivateKey() {
         return privateKey_;
       }
@@ -970,6 +1006,8 @@ public final class Nano {
        * </pre>
        *
        * <code>bytes private_key = 1;</code>
+       * @param value The privateKey to set.
+       * @return This builder for chaining.
        */
       public Builder setPrivateKey(com.google.protobuf.ByteString value) {
         if (value == null) {
@@ -986,6 +1024,7 @@ public final class Nano {
        * </pre>
        *
        * <code>bytes private_key = 1;</code>
+       * @return This builder for chaining.
        */
       public Builder clearPrivateKey() {
         
@@ -1001,7 +1040,9 @@ public final class Nano {
        * </pre>
        *
        * <code>bytes parent_block = 2;</code>
+       * @return The parentBlock.
        */
+      @java.lang.Override
       public com.google.protobuf.ByteString getParentBlock() {
         return parentBlock_;
       }
@@ -1011,6 +1052,8 @@ public final class Nano {
        * </pre>
        *
        * <code>bytes parent_block = 2;</code>
+       * @param value The parentBlock to set.
+       * @return This builder for chaining.
        */
       public Builder setParentBlock(com.google.protobuf.ByteString value) {
         if (value == null) {
@@ -1027,6 +1070,7 @@ public final class Nano {
        * </pre>
        *
        * <code>bytes parent_block = 2;</code>
+       * @return This builder for chaining.
        */
       public Builder clearParentBlock() {
         
@@ -1041,6 +1085,7 @@ public final class Nano {
        * </pre>
        *
        * <code>bytes link_block = 3;</code>
+       * @return The linkBlock.
        */
       public com.google.protobuf.ByteString getLinkBlock() {
         if (linkOneofCase_ == 3) {
@@ -1054,6 +1099,8 @@ public final class Nano {
        * </pre>
        *
        * <code>bytes link_block = 3;</code>
+       * @param value The linkBlock to set.
+       * @return This builder for chaining.
        */
       public Builder setLinkBlock(com.google.protobuf.ByteString value) {
         if (value == null) {
@@ -1070,6 +1117,7 @@ public final class Nano {
        * </pre>
        *
        * <code>bytes link_block = 3;</code>
+       * @return This builder for chaining.
        */
       public Builder clearLinkBlock() {
         if (linkOneofCase_ == 3) {
@@ -1086,7 +1134,9 @@ public final class Nano {
        * </pre>
        *
        * <code>string link_recipient = 4;</code>
+       * @return The linkRecipient.
        */
+      @java.lang.Override
       public java.lang.String getLinkRecipient() {
         java.lang.Object ref = "";
         if (linkOneofCase_ == 4) {
@@ -1110,7 +1160,9 @@ public final class Nano {
        * </pre>
        *
        * <code>string link_recipient = 4;</code>
+       * @return The bytes for linkRecipient.
        */
+      @java.lang.Override
       public com.google.protobuf.ByteString
           getLinkRecipientBytes() {
         java.lang.Object ref = "";
@@ -1135,6 +1187,8 @@ public final class Nano {
        * </pre>
        *
        * <code>string link_recipient = 4;</code>
+       * @param value The linkRecipient to set.
+       * @return This builder for chaining.
        */
       public Builder setLinkRecipient(
           java.lang.String value) {
@@ -1152,6 +1206,7 @@ public final class Nano {
        * </pre>
        *
        * <code>string link_recipient = 4;</code>
+       * @return This builder for chaining.
        */
       public Builder clearLinkRecipient() {
         if (linkOneofCase_ == 4) {
@@ -1167,6 +1222,8 @@ public final class Nano {
        * </pre>
        *
        * <code>string link_recipient = 4;</code>
+       * @param value The bytes for linkRecipient to set.
+       * @return This builder for chaining.
        */
       public Builder setLinkRecipientBytes(
           com.google.protobuf.ByteString value) {
@@ -1187,6 +1244,7 @@ public final class Nano {
        * </pre>
        *
        * <code>string representative = 5;</code>
+       * @return The representative.
        */
       public java.lang.String getRepresentative() {
         java.lang.Object ref = representative_;
@@ -1206,6 +1264,7 @@ public final class Nano {
        * </pre>
        *
        * <code>string representative = 5;</code>
+       * @return The bytes for representative.
        */
       public com.google.protobuf.ByteString
           getRepresentativeBytes() {
@@ -1226,6 +1285,8 @@ public final class Nano {
        * </pre>
        *
        * <code>string representative = 5;</code>
+       * @param value The representative to set.
+       * @return This builder for chaining.
        */
       public Builder setRepresentative(
           java.lang.String value) {
@@ -1243,6 +1304,7 @@ public final class Nano {
        * </pre>
        *
        * <code>string representative = 5;</code>
+       * @return This builder for chaining.
        */
       public Builder clearRepresentative() {
         
@@ -1256,6 +1318,8 @@ public final class Nano {
        * </pre>
        *
        * <code>string representative = 5;</code>
+       * @param value The bytes for representative to set.
+       * @return This builder for chaining.
        */
       public Builder setRepresentativeBytes(
           com.google.protobuf.ByteString value) {
@@ -1276,6 +1340,7 @@ public final class Nano {
        * </pre>
        *
        * <code>string balance = 6;</code>
+       * @return The balance.
        */
       public java.lang.String getBalance() {
         java.lang.Object ref = balance_;
@@ -1295,6 +1360,7 @@ public final class Nano {
        * </pre>
        *
        * <code>string balance = 6;</code>
+       * @return The bytes for balance.
        */
       public com.google.protobuf.ByteString
           getBalanceBytes() {
@@ -1315,6 +1381,8 @@ public final class Nano {
        * </pre>
        *
        * <code>string balance = 6;</code>
+       * @param value The balance to set.
+       * @return This builder for chaining.
        */
       public Builder setBalance(
           java.lang.String value) {
@@ -1332,6 +1400,7 @@ public final class Nano {
        * </pre>
        *
        * <code>string balance = 6;</code>
+       * @return This builder for chaining.
        */
       public Builder clearBalance() {
         
@@ -1345,6 +1414,8 @@ public final class Nano {
        * </pre>
        *
        * <code>string balance = 6;</code>
+       * @param value The bytes for balance to set.
+       * @return This builder for chaining.
        */
       public Builder setBalanceBytes(
           com.google.protobuf.ByteString value) {
@@ -1365,6 +1436,7 @@ public final class Nano {
        * </pre>
        *
        * <code>string work = 7;</code>
+       * @return The work.
        */
       public java.lang.String getWork() {
         java.lang.Object ref = work_;
@@ -1384,6 +1456,7 @@ public final class Nano {
        * </pre>
        *
        * <code>string work = 7;</code>
+       * @return The bytes for work.
        */
       public com.google.protobuf.ByteString
           getWorkBytes() {
@@ -1404,6 +1477,8 @@ public final class Nano {
        * </pre>
        *
        * <code>string work = 7;</code>
+       * @param value The work to set.
+       * @return This builder for chaining.
        */
       public Builder setWork(
           java.lang.String value) {
@@ -1421,6 +1496,7 @@ public final class Nano {
        * </pre>
        *
        * <code>string work = 7;</code>
+       * @return This builder for chaining.
        */
       public Builder clearWork() {
         
@@ -1434,6 +1510,8 @@ public final class Nano {
        * </pre>
        *
        * <code>string work = 7;</code>
+       * @param value The bytes for work to set.
+       * @return This builder for chaining.
        */
       public Builder setWorkBytes(
           com.google.protobuf.ByteString value) {
@@ -1509,6 +1587,7 @@ public final class Nano {
      * </pre>
      *
      * <code>bytes signature = 1;</code>
+     * @return The signature.
      */
     com.google.protobuf.ByteString getSignature();
 
@@ -1518,6 +1597,7 @@ public final class Nano {
      * </pre>
      *
      * <code>bytes block_hash = 2;</code>
+     * @return The blockHash.
      */
     com.google.protobuf.ByteString getBlockHash();
 
@@ -1527,6 +1607,7 @@ public final class Nano {
      * </pre>
      *
      * <code>string json = 3;</code>
+     * @return The json.
      */
     java.lang.String getJson();
     /**
@@ -1535,6 +1616,7 @@ public final class Nano {
      * </pre>
      *
      * <code>string json = 3;</code>
+     * @return The bytes for json.
      */
     com.google.protobuf.ByteString
         getJsonBytes();
@@ -1546,7 +1628,7 @@ public final class Nano {
    *
    * Protobuf type {@code TW.Nano.Proto.SigningOutput}
    */
-  public  static final class SigningOutput extends
+  public static final class SigningOutput extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:TW.Nano.Proto.SigningOutput)
       SigningOutputOrBuilder {
@@ -1647,7 +1729,9 @@ public final class Nano {
      * </pre>
      *
      * <code>bytes signature = 1;</code>
+     * @return The signature.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString getSignature() {
       return signature_;
     }
@@ -1660,7 +1744,9 @@ public final class Nano {
      * </pre>
      *
      * <code>bytes block_hash = 2;</code>
+     * @return The blockHash.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString getBlockHash() {
       return blockHash_;
     }
@@ -1673,7 +1759,9 @@ public final class Nano {
      * </pre>
      *
      * <code>string json = 3;</code>
+     * @return The json.
      */
+    @java.lang.Override
     public java.lang.String getJson() {
       java.lang.Object ref = json_;
       if (ref instanceof java.lang.String) {
@@ -1692,7 +1780,9 @@ public final class Nano {
      * </pre>
      *
      * <code>string json = 3;</code>
+     * @return The bytes for json.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString
         getJsonBytes() {
       java.lang.Object ref = json_;
@@ -2054,7 +2144,9 @@ public final class Nano {
        * </pre>
        *
        * <code>bytes signature = 1;</code>
+       * @return The signature.
        */
+      @java.lang.Override
       public com.google.protobuf.ByteString getSignature() {
         return signature_;
       }
@@ -2064,6 +2156,8 @@ public final class Nano {
        * </pre>
        *
        * <code>bytes signature = 1;</code>
+       * @param value The signature to set.
+       * @return This builder for chaining.
        */
       public Builder setSignature(com.google.protobuf.ByteString value) {
         if (value == null) {
@@ -2080,6 +2174,7 @@ public final class Nano {
        * </pre>
        *
        * <code>bytes signature = 1;</code>
+       * @return This builder for chaining.
        */
       public Builder clearSignature() {
         
@@ -2095,7 +2190,9 @@ public final class Nano {
        * </pre>
        *
        * <code>bytes block_hash = 2;</code>
+       * @return The blockHash.
        */
+      @java.lang.Override
       public com.google.protobuf.ByteString getBlockHash() {
         return blockHash_;
       }
@@ -2105,6 +2202,8 @@ public final class Nano {
        * </pre>
        *
        * <code>bytes block_hash = 2;</code>
+       * @param value The blockHash to set.
+       * @return This builder for chaining.
        */
       public Builder setBlockHash(com.google.protobuf.ByteString value) {
         if (value == null) {
@@ -2121,6 +2220,7 @@ public final class Nano {
        * </pre>
        *
        * <code>bytes block_hash = 2;</code>
+       * @return This builder for chaining.
        */
       public Builder clearBlockHash() {
         
@@ -2136,6 +2236,7 @@ public final class Nano {
        * </pre>
        *
        * <code>string json = 3;</code>
+       * @return The json.
        */
       public java.lang.String getJson() {
         java.lang.Object ref = json_;
@@ -2155,6 +2256,7 @@ public final class Nano {
        * </pre>
        *
        * <code>string json = 3;</code>
+       * @return The bytes for json.
        */
       public com.google.protobuf.ByteString
           getJsonBytes() {
@@ -2175,6 +2277,8 @@ public final class Nano {
        * </pre>
        *
        * <code>string json = 3;</code>
+       * @param value The json to set.
+       * @return This builder for chaining.
        */
       public Builder setJson(
           java.lang.String value) {
@@ -2192,6 +2296,7 @@ public final class Nano {
        * </pre>
        *
        * <code>string json = 3;</code>
+       * @return This builder for chaining.
        */
       public Builder clearJson() {
         
@@ -2205,6 +2310,8 @@ public final class Nano {
        * </pre>
        *
        * <code>string json = 3;</code>
+       * @param value The bytes for json to set.
+       * @return This builder for chaining.
        */
       public Builder setJsonBytes(
           com.google.protobuf.ByteString value) {

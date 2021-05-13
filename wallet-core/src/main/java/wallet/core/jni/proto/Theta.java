@@ -24,6 +24,7 @@ public final class Theta {
      * </pre>
      *
      * <code>string chain_id = 1;</code>
+     * @return The chainId.
      */
     java.lang.String getChainId();
     /**
@@ -32,6 +33,7 @@ public final class Theta {
      * </pre>
      *
      * <code>string chain_id = 1;</code>
+     * @return The bytes for chainId.
      */
     com.google.protobuf.ByteString
         getChainIdBytes();
@@ -42,6 +44,7 @@ public final class Theta {
      * </pre>
      *
      * <code>string to_address = 2;</code>
+     * @return The toAddress.
      */
     java.lang.String getToAddress();
     /**
@@ -50,6 +53,7 @@ public final class Theta {
      * </pre>
      *
      * <code>string to_address = 2;</code>
+     * @return The bytes for toAddress.
      */
     com.google.protobuf.ByteString
         getToAddressBytes();
@@ -60,6 +64,7 @@ public final class Theta {
      * </pre>
      *
      * <code>bytes theta_amount = 3;</code>
+     * @return The thetaAmount.
      */
     com.google.protobuf.ByteString getThetaAmount();
 
@@ -69,6 +74,7 @@ public final class Theta {
      * </pre>
      *
      * <code>bytes tfuel_amount = 4;</code>
+     * @return The tfuelAmount.
      */
     com.google.protobuf.ByteString getTfuelAmount();
 
@@ -78,6 +84,7 @@ public final class Theta {
      * </pre>
      *
      * <code>uint64 sequence = 5;</code>
+     * @return The sequence.
      */
     long getSequence();
 
@@ -87,6 +94,7 @@ public final class Theta {
      * </pre>
      *
      * <code>bytes fee = 6;</code>
+     * @return The fee.
      */
     com.google.protobuf.ByteString getFee();
 
@@ -96,6 +104,7 @@ public final class Theta {
      * </pre>
      *
      * <code>bytes private_key = 7;</code>
+     * @return The privateKey.
      */
     com.google.protobuf.ByteString getPrivateKey();
   }
@@ -106,7 +115,7 @@ public final class Theta {
    *
    * Protobuf type {@code TW.Theta.Proto.SigningInput}
    */
-  public  static final class SigningInput extends
+  public static final class SigningInput extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:TW.Theta.Proto.SigningInput)
       SigningInputOrBuilder {
@@ -231,7 +240,9 @@ public final class Theta {
      * </pre>
      *
      * <code>string chain_id = 1;</code>
+     * @return The chainId.
      */
+    @java.lang.Override
     public java.lang.String getChainId() {
       java.lang.Object ref = chainId_;
       if (ref instanceof java.lang.String) {
@@ -250,7 +261,9 @@ public final class Theta {
      * </pre>
      *
      * <code>string chain_id = 1;</code>
+     * @return The bytes for chainId.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString
         getChainIdBytes() {
       java.lang.Object ref = chainId_;
@@ -273,7 +286,9 @@ public final class Theta {
      * </pre>
      *
      * <code>string to_address = 2;</code>
+     * @return The toAddress.
      */
+    @java.lang.Override
     public java.lang.String getToAddress() {
       java.lang.Object ref = toAddress_;
       if (ref instanceof java.lang.String) {
@@ -292,7 +307,9 @@ public final class Theta {
      * </pre>
      *
      * <code>string to_address = 2;</code>
+     * @return The bytes for toAddress.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString
         getToAddressBytes() {
       java.lang.Object ref = toAddress_;
@@ -315,7 +332,9 @@ public final class Theta {
      * </pre>
      *
      * <code>bytes theta_amount = 3;</code>
+     * @return The thetaAmount.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString getThetaAmount() {
       return thetaAmount_;
     }
@@ -328,7 +347,9 @@ public final class Theta {
      * </pre>
      *
      * <code>bytes tfuel_amount = 4;</code>
+     * @return The tfuelAmount.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString getTfuelAmount() {
       return tfuelAmount_;
     }
@@ -341,7 +362,9 @@ public final class Theta {
      * </pre>
      *
      * <code>uint64 sequence = 5;</code>
+     * @return The sequence.
      */
+    @java.lang.Override
     public long getSequence() {
       return sequence_;
     }
@@ -354,7 +377,9 @@ public final class Theta {
      * </pre>
      *
      * <code>bytes fee = 6;</code>
+     * @return The fee.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString getFee() {
       return fee_;
     }
@@ -367,7 +392,9 @@ public final class Theta {
      * </pre>
      *
      * <code>bytes private_key = 7;</code>
+     * @return The privateKey.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString getPrivateKey() {
       return privateKey_;
     }
@@ -788,6 +815,7 @@ public final class Theta {
        * </pre>
        *
        * <code>string chain_id = 1;</code>
+       * @return The chainId.
        */
       public java.lang.String getChainId() {
         java.lang.Object ref = chainId_;
@@ -807,6 +835,7 @@ public final class Theta {
        * </pre>
        *
        * <code>string chain_id = 1;</code>
+       * @return The bytes for chainId.
        */
       public com.google.protobuf.ByteString
           getChainIdBytes() {
@@ -827,6 +856,8 @@ public final class Theta {
        * </pre>
        *
        * <code>string chain_id = 1;</code>
+       * @param value The chainId to set.
+       * @return This builder for chaining.
        */
       public Builder setChainId(
           java.lang.String value) {
@@ -844,6 +875,7 @@ public final class Theta {
        * </pre>
        *
        * <code>string chain_id = 1;</code>
+       * @return This builder for chaining.
        */
       public Builder clearChainId() {
         
@@ -857,6 +889,8 @@ public final class Theta {
        * </pre>
        *
        * <code>string chain_id = 1;</code>
+       * @param value The bytes for chainId to set.
+       * @return This builder for chaining.
        */
       public Builder setChainIdBytes(
           com.google.protobuf.ByteString value) {
@@ -877,6 +911,7 @@ public final class Theta {
        * </pre>
        *
        * <code>string to_address = 2;</code>
+       * @return The toAddress.
        */
       public java.lang.String getToAddress() {
         java.lang.Object ref = toAddress_;
@@ -896,6 +931,7 @@ public final class Theta {
        * </pre>
        *
        * <code>string to_address = 2;</code>
+       * @return The bytes for toAddress.
        */
       public com.google.protobuf.ByteString
           getToAddressBytes() {
@@ -916,6 +952,8 @@ public final class Theta {
        * </pre>
        *
        * <code>string to_address = 2;</code>
+       * @param value The toAddress to set.
+       * @return This builder for chaining.
        */
       public Builder setToAddress(
           java.lang.String value) {
@@ -933,6 +971,7 @@ public final class Theta {
        * </pre>
        *
        * <code>string to_address = 2;</code>
+       * @return This builder for chaining.
        */
       public Builder clearToAddress() {
         
@@ -946,6 +985,8 @@ public final class Theta {
        * </pre>
        *
        * <code>string to_address = 2;</code>
+       * @param value The bytes for toAddress to set.
+       * @return This builder for chaining.
        */
       public Builder setToAddressBytes(
           com.google.protobuf.ByteString value) {
@@ -966,7 +1007,9 @@ public final class Theta {
        * </pre>
        *
        * <code>bytes theta_amount = 3;</code>
+       * @return The thetaAmount.
        */
+      @java.lang.Override
       public com.google.protobuf.ByteString getThetaAmount() {
         return thetaAmount_;
       }
@@ -976,6 +1019,8 @@ public final class Theta {
        * </pre>
        *
        * <code>bytes theta_amount = 3;</code>
+       * @param value The thetaAmount to set.
+       * @return This builder for chaining.
        */
       public Builder setThetaAmount(com.google.protobuf.ByteString value) {
         if (value == null) {
@@ -992,6 +1037,7 @@ public final class Theta {
        * </pre>
        *
        * <code>bytes theta_amount = 3;</code>
+       * @return This builder for chaining.
        */
       public Builder clearThetaAmount() {
         
@@ -1007,7 +1053,9 @@ public final class Theta {
        * </pre>
        *
        * <code>bytes tfuel_amount = 4;</code>
+       * @return The tfuelAmount.
        */
+      @java.lang.Override
       public com.google.protobuf.ByteString getTfuelAmount() {
         return tfuelAmount_;
       }
@@ -1017,6 +1065,8 @@ public final class Theta {
        * </pre>
        *
        * <code>bytes tfuel_amount = 4;</code>
+       * @param value The tfuelAmount to set.
+       * @return This builder for chaining.
        */
       public Builder setTfuelAmount(com.google.protobuf.ByteString value) {
         if (value == null) {
@@ -1033,6 +1083,7 @@ public final class Theta {
        * </pre>
        *
        * <code>bytes tfuel_amount = 4;</code>
+       * @return This builder for chaining.
        */
       public Builder clearTfuelAmount() {
         
@@ -1048,7 +1099,9 @@ public final class Theta {
        * </pre>
        *
        * <code>uint64 sequence = 5;</code>
+       * @return The sequence.
        */
+      @java.lang.Override
       public long getSequence() {
         return sequence_;
       }
@@ -1058,6 +1111,8 @@ public final class Theta {
        * </pre>
        *
        * <code>uint64 sequence = 5;</code>
+       * @param value The sequence to set.
+       * @return This builder for chaining.
        */
       public Builder setSequence(long value) {
         
@@ -1071,6 +1126,7 @@ public final class Theta {
        * </pre>
        *
        * <code>uint64 sequence = 5;</code>
+       * @return This builder for chaining.
        */
       public Builder clearSequence() {
         
@@ -1086,7 +1142,9 @@ public final class Theta {
        * </pre>
        *
        * <code>bytes fee = 6;</code>
+       * @return The fee.
        */
+      @java.lang.Override
       public com.google.protobuf.ByteString getFee() {
         return fee_;
       }
@@ -1096,6 +1154,8 @@ public final class Theta {
        * </pre>
        *
        * <code>bytes fee = 6;</code>
+       * @param value The fee to set.
+       * @return This builder for chaining.
        */
       public Builder setFee(com.google.protobuf.ByteString value) {
         if (value == null) {
@@ -1112,6 +1172,7 @@ public final class Theta {
        * </pre>
        *
        * <code>bytes fee = 6;</code>
+       * @return This builder for chaining.
        */
       public Builder clearFee() {
         
@@ -1127,7 +1188,9 @@ public final class Theta {
        * </pre>
        *
        * <code>bytes private_key = 7;</code>
+       * @return The privateKey.
        */
+      @java.lang.Override
       public com.google.protobuf.ByteString getPrivateKey() {
         return privateKey_;
       }
@@ -1137,6 +1200,8 @@ public final class Theta {
        * </pre>
        *
        * <code>bytes private_key = 7;</code>
+       * @param value The privateKey to set.
+       * @return This builder for chaining.
        */
       public Builder setPrivateKey(com.google.protobuf.ByteString value) {
         if (value == null) {
@@ -1153,6 +1218,7 @@ public final class Theta {
        * </pre>
        *
        * <code>bytes private_key = 7;</code>
+       * @return This builder for chaining.
        */
       public Builder clearPrivateKey() {
         
@@ -1223,6 +1289,7 @@ public final class Theta {
      * </pre>
      *
      * <code>bytes encoded = 1;</code>
+     * @return The encoded.
      */
     com.google.protobuf.ByteString getEncoded();
 
@@ -1232,6 +1299,7 @@ public final class Theta {
      * </pre>
      *
      * <code>bytes signature = 2;</code>
+     * @return The signature.
      */
     com.google.protobuf.ByteString getSignature();
   }
@@ -1242,7 +1310,7 @@ public final class Theta {
    *
    * Protobuf type {@code TW.Theta.Proto.SigningOutput}
    */
-  public  static final class SigningOutput extends
+  public static final class SigningOutput extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:TW.Theta.Proto.SigningOutput)
       SigningOutputOrBuilder {
@@ -1336,7 +1404,9 @@ public final class Theta {
      * </pre>
      *
      * <code>bytes encoded = 1;</code>
+     * @return The encoded.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString getEncoded() {
       return encoded_;
     }
@@ -1349,7 +1419,9 @@ public final class Theta {
      * </pre>
      *
      * <code>bytes signature = 2;</code>
+     * @return The signature.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString getSignature() {
       return signature_;
     }
@@ -1684,7 +1756,9 @@ public final class Theta {
        * </pre>
        *
        * <code>bytes encoded = 1;</code>
+       * @return The encoded.
        */
+      @java.lang.Override
       public com.google.protobuf.ByteString getEncoded() {
         return encoded_;
       }
@@ -1694,6 +1768,8 @@ public final class Theta {
        * </pre>
        *
        * <code>bytes encoded = 1;</code>
+       * @param value The encoded to set.
+       * @return This builder for chaining.
        */
       public Builder setEncoded(com.google.protobuf.ByteString value) {
         if (value == null) {
@@ -1710,6 +1786,7 @@ public final class Theta {
        * </pre>
        *
        * <code>bytes encoded = 1;</code>
+       * @return This builder for chaining.
        */
       public Builder clearEncoded() {
         
@@ -1725,7 +1802,9 @@ public final class Theta {
        * </pre>
        *
        * <code>bytes signature = 2;</code>
+       * @return The signature.
        */
+      @java.lang.Override
       public com.google.protobuf.ByteString getSignature() {
         return signature_;
       }
@@ -1735,6 +1814,8 @@ public final class Theta {
        * </pre>
        *
        * <code>bytes signature = 2;</code>
+       * @param value The signature to set.
+       * @return This builder for chaining.
        */
       public Builder setSignature(com.google.protobuf.ByteString value) {
         if (value == null) {
@@ -1751,6 +1832,7 @@ public final class Theta {
        * </pre>
        *
        * <code>bytes signature = 2;</code>
+       * @return This builder for chaining.
        */
       public Builder clearSignature() {
         

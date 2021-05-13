@@ -24,6 +24,7 @@ public final class FIO {
      * </pre>
      *
      * <code>string coin_symbol = 1;</code>
+     * @return The coinSymbol.
      */
     java.lang.String getCoinSymbol();
     /**
@@ -32,6 +33,7 @@ public final class FIO {
      * </pre>
      *
      * <code>string coin_symbol = 1;</code>
+     * @return The bytes for coinSymbol.
      */
     com.google.protobuf.ByteString
         getCoinSymbolBytes();
@@ -42,6 +44,7 @@ public final class FIO {
      * </pre>
      *
      * <code>string address = 2;</code>
+     * @return The address.
      */
     java.lang.String getAddress();
     /**
@@ -50,6 +53,7 @@ public final class FIO {
      * </pre>
      *
      * <code>string address = 2;</code>
+     * @return The bytes for address.
      */
     com.google.protobuf.ByteString
         getAddressBytes();
@@ -61,7 +65,7 @@ public final class FIO {
    *
    * Protobuf type {@code TW.FIO.Proto.PublicAddress}
    */
-  public  static final class PublicAddress extends
+  public static final class PublicAddress extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:TW.FIO.Proto.PublicAddress)
       PublicAddressOrBuilder {
@@ -157,7 +161,9 @@ public final class FIO {
      * </pre>
      *
      * <code>string coin_symbol = 1;</code>
+     * @return The coinSymbol.
      */
+    @java.lang.Override
     public java.lang.String getCoinSymbol() {
       java.lang.Object ref = coinSymbol_;
       if (ref instanceof java.lang.String) {
@@ -176,7 +182,9 @@ public final class FIO {
      * </pre>
      *
      * <code>string coin_symbol = 1;</code>
+     * @return The bytes for coinSymbol.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString
         getCoinSymbolBytes() {
       java.lang.Object ref = coinSymbol_;
@@ -199,7 +207,9 @@ public final class FIO {
      * </pre>
      *
      * <code>string address = 2;</code>
+     * @return The address.
      */
+    @java.lang.Override
     public java.lang.String getAddress() {
       java.lang.Object ref = address_;
       if (ref instanceof java.lang.String) {
@@ -218,7 +228,9 @@ public final class FIO {
      * </pre>
      *
      * <code>string address = 2;</code>
+     * @return The bytes for address.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString
         getAddressBytes() {
       java.lang.Object ref = address_;
@@ -563,6 +575,7 @@ public final class FIO {
        * </pre>
        *
        * <code>string coin_symbol = 1;</code>
+       * @return The coinSymbol.
        */
       public java.lang.String getCoinSymbol() {
         java.lang.Object ref = coinSymbol_;
@@ -582,6 +595,7 @@ public final class FIO {
        * </pre>
        *
        * <code>string coin_symbol = 1;</code>
+       * @return The bytes for coinSymbol.
        */
       public com.google.protobuf.ByteString
           getCoinSymbolBytes() {
@@ -602,6 +616,8 @@ public final class FIO {
        * </pre>
        *
        * <code>string coin_symbol = 1;</code>
+       * @param value The coinSymbol to set.
+       * @return This builder for chaining.
        */
       public Builder setCoinSymbol(
           java.lang.String value) {
@@ -619,6 +635,7 @@ public final class FIO {
        * </pre>
        *
        * <code>string coin_symbol = 1;</code>
+       * @return This builder for chaining.
        */
       public Builder clearCoinSymbol() {
         
@@ -632,6 +649,8 @@ public final class FIO {
        * </pre>
        *
        * <code>string coin_symbol = 1;</code>
+       * @param value The bytes for coinSymbol to set.
+       * @return This builder for chaining.
        */
       public Builder setCoinSymbolBytes(
           com.google.protobuf.ByteString value) {
@@ -652,6 +671,7 @@ public final class FIO {
        * </pre>
        *
        * <code>string address = 2;</code>
+       * @return The address.
        */
       public java.lang.String getAddress() {
         java.lang.Object ref = address_;
@@ -671,6 +691,7 @@ public final class FIO {
        * </pre>
        *
        * <code>string address = 2;</code>
+       * @return The bytes for address.
        */
       public com.google.protobuf.ByteString
           getAddressBytes() {
@@ -691,6 +712,8 @@ public final class FIO {
        * </pre>
        *
        * <code>string address = 2;</code>
+       * @param value The address to set.
+       * @return This builder for chaining.
        */
       public Builder setAddress(
           java.lang.String value) {
@@ -708,6 +731,7 @@ public final class FIO {
        * </pre>
        *
        * <code>string address = 2;</code>
+       * @return This builder for chaining.
        */
       public Builder clearAddress() {
         
@@ -721,6 +745,8 @@ public final class FIO {
        * </pre>
        *
        * <code>string address = 2;</code>
+       * @param value The bytes for address to set.
+       * @return This builder for chaining.
        */
       public Builder setAddressBytes(
           com.google.protobuf.ByteString value) {
@@ -796,6 +822,7 @@ public final class FIO {
      * </pre>
      *
      * <code>string payee_public_address = 1;</code>
+     * @return The payeePublicAddress.
      */
     java.lang.String getPayeePublicAddress();
     /**
@@ -804,6 +831,7 @@ public final class FIO {
      * </pre>
      *
      * <code>string payee_public_address = 1;</code>
+     * @return The bytes for payeePublicAddress.
      */
     com.google.protobuf.ByteString
         getPayeePublicAddressBytes();
@@ -814,6 +842,7 @@ public final class FIO {
      * </pre>
      *
      * <code>string amount = 2;</code>
+     * @return The amount.
      */
     java.lang.String getAmount();
     /**
@@ -822,6 +851,7 @@ public final class FIO {
      * </pre>
      *
      * <code>string amount = 2;</code>
+     * @return The bytes for amount.
      */
     com.google.protobuf.ByteString
         getAmountBytes();
@@ -832,6 +862,7 @@ public final class FIO {
      * </pre>
      *
      * <code>string coin_symbol = 3;</code>
+     * @return The coinSymbol.
      */
     java.lang.String getCoinSymbol();
     /**
@@ -840,6 +871,7 @@ public final class FIO {
      * </pre>
      *
      * <code>string coin_symbol = 3;</code>
+     * @return The bytes for coinSymbol.
      */
     com.google.protobuf.ByteString
         getCoinSymbolBytes();
@@ -850,6 +882,7 @@ public final class FIO {
      * </pre>
      *
      * <code>string memo = 4;</code>
+     * @return The memo.
      */
     java.lang.String getMemo();
     /**
@@ -858,6 +891,7 @@ public final class FIO {
      * </pre>
      *
      * <code>string memo = 4;</code>
+     * @return The bytes for memo.
      */
     com.google.protobuf.ByteString
         getMemoBytes();
@@ -868,6 +902,7 @@ public final class FIO {
      * </pre>
      *
      * <code>string hash = 5;</code>
+     * @return The hash.
      */
     java.lang.String getHash();
     /**
@@ -876,6 +911,7 @@ public final class FIO {
      * </pre>
      *
      * <code>string hash = 5;</code>
+     * @return The bytes for hash.
      */
     com.google.protobuf.ByteString
         getHashBytes();
@@ -886,6 +922,7 @@ public final class FIO {
      * </pre>
      *
      * <code>string offline_url = 6;</code>
+     * @return The offlineUrl.
      */
     java.lang.String getOfflineUrl();
     /**
@@ -894,6 +931,7 @@ public final class FIO {
      * </pre>
      *
      * <code>string offline_url = 6;</code>
+     * @return The bytes for offlineUrl.
      */
     com.google.protobuf.ByteString
         getOfflineUrlBytes();
@@ -905,7 +943,7 @@ public final class FIO {
    *
    * Protobuf type {@code TW.FIO.Proto.NewFundsContent}
    */
-  public  static final class NewFundsContent extends
+  public static final class NewFundsContent extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:TW.FIO.Proto.NewFundsContent)
       NewFundsContentOrBuilder {
@@ -1029,7 +1067,9 @@ public final class FIO {
      * </pre>
      *
      * <code>string payee_public_address = 1;</code>
+     * @return The payeePublicAddress.
      */
+    @java.lang.Override
     public java.lang.String getPayeePublicAddress() {
       java.lang.Object ref = payeePublicAddress_;
       if (ref instanceof java.lang.String) {
@@ -1048,7 +1088,9 @@ public final class FIO {
      * </pre>
      *
      * <code>string payee_public_address = 1;</code>
+     * @return The bytes for payeePublicAddress.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString
         getPayeePublicAddressBytes() {
       java.lang.Object ref = payeePublicAddress_;
@@ -1071,7 +1113,9 @@ public final class FIO {
      * </pre>
      *
      * <code>string amount = 2;</code>
+     * @return The amount.
      */
+    @java.lang.Override
     public java.lang.String getAmount() {
       java.lang.Object ref = amount_;
       if (ref instanceof java.lang.String) {
@@ -1090,7 +1134,9 @@ public final class FIO {
      * </pre>
      *
      * <code>string amount = 2;</code>
+     * @return The bytes for amount.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString
         getAmountBytes() {
       java.lang.Object ref = amount_;
@@ -1113,7 +1159,9 @@ public final class FIO {
      * </pre>
      *
      * <code>string coin_symbol = 3;</code>
+     * @return The coinSymbol.
      */
+    @java.lang.Override
     public java.lang.String getCoinSymbol() {
       java.lang.Object ref = coinSymbol_;
       if (ref instanceof java.lang.String) {
@@ -1132,7 +1180,9 @@ public final class FIO {
      * </pre>
      *
      * <code>string coin_symbol = 3;</code>
+     * @return The bytes for coinSymbol.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString
         getCoinSymbolBytes() {
       java.lang.Object ref = coinSymbol_;
@@ -1155,7 +1205,9 @@ public final class FIO {
      * </pre>
      *
      * <code>string memo = 4;</code>
+     * @return The memo.
      */
+    @java.lang.Override
     public java.lang.String getMemo() {
       java.lang.Object ref = memo_;
       if (ref instanceof java.lang.String) {
@@ -1174,7 +1226,9 @@ public final class FIO {
      * </pre>
      *
      * <code>string memo = 4;</code>
+     * @return The bytes for memo.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString
         getMemoBytes() {
       java.lang.Object ref = memo_;
@@ -1197,7 +1251,9 @@ public final class FIO {
      * </pre>
      *
      * <code>string hash = 5;</code>
+     * @return The hash.
      */
+    @java.lang.Override
     public java.lang.String getHash() {
       java.lang.Object ref = hash_;
       if (ref instanceof java.lang.String) {
@@ -1216,7 +1272,9 @@ public final class FIO {
      * </pre>
      *
      * <code>string hash = 5;</code>
+     * @return The bytes for hash.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString
         getHashBytes() {
       java.lang.Object ref = hash_;
@@ -1239,7 +1297,9 @@ public final class FIO {
      * </pre>
      *
      * <code>string offline_url = 6;</code>
+     * @return The offlineUrl.
      */
+    @java.lang.Override
     public java.lang.String getOfflineUrl() {
       java.lang.Object ref = offlineUrl_;
       if (ref instanceof java.lang.String) {
@@ -1258,7 +1318,9 @@ public final class FIO {
      * </pre>
      *
      * <code>string offline_url = 6;</code>
+     * @return The bytes for offlineUrl.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString
         getOfflineUrlBytes() {
       java.lang.Object ref = offlineUrl_;
@@ -1671,6 +1733,7 @@ public final class FIO {
        * </pre>
        *
        * <code>string payee_public_address = 1;</code>
+       * @return The payeePublicAddress.
        */
       public java.lang.String getPayeePublicAddress() {
         java.lang.Object ref = payeePublicAddress_;
@@ -1690,6 +1753,7 @@ public final class FIO {
        * </pre>
        *
        * <code>string payee_public_address = 1;</code>
+       * @return The bytes for payeePublicAddress.
        */
       public com.google.protobuf.ByteString
           getPayeePublicAddressBytes() {
@@ -1710,6 +1774,8 @@ public final class FIO {
        * </pre>
        *
        * <code>string payee_public_address = 1;</code>
+       * @param value The payeePublicAddress to set.
+       * @return This builder for chaining.
        */
       public Builder setPayeePublicAddress(
           java.lang.String value) {
@@ -1727,6 +1793,7 @@ public final class FIO {
        * </pre>
        *
        * <code>string payee_public_address = 1;</code>
+       * @return This builder for chaining.
        */
       public Builder clearPayeePublicAddress() {
         
@@ -1740,6 +1807,8 @@ public final class FIO {
        * </pre>
        *
        * <code>string payee_public_address = 1;</code>
+       * @param value The bytes for payeePublicAddress to set.
+       * @return This builder for chaining.
        */
       public Builder setPayeePublicAddressBytes(
           com.google.protobuf.ByteString value) {
@@ -1760,6 +1829,7 @@ public final class FIO {
        * </pre>
        *
        * <code>string amount = 2;</code>
+       * @return The amount.
        */
       public java.lang.String getAmount() {
         java.lang.Object ref = amount_;
@@ -1779,6 +1849,7 @@ public final class FIO {
        * </pre>
        *
        * <code>string amount = 2;</code>
+       * @return The bytes for amount.
        */
       public com.google.protobuf.ByteString
           getAmountBytes() {
@@ -1799,6 +1870,8 @@ public final class FIO {
        * </pre>
        *
        * <code>string amount = 2;</code>
+       * @param value The amount to set.
+       * @return This builder for chaining.
        */
       public Builder setAmount(
           java.lang.String value) {
@@ -1816,6 +1889,7 @@ public final class FIO {
        * </pre>
        *
        * <code>string amount = 2;</code>
+       * @return This builder for chaining.
        */
       public Builder clearAmount() {
         
@@ -1829,6 +1903,8 @@ public final class FIO {
        * </pre>
        *
        * <code>string amount = 2;</code>
+       * @param value The bytes for amount to set.
+       * @return This builder for chaining.
        */
       public Builder setAmountBytes(
           com.google.protobuf.ByteString value) {
@@ -1849,6 +1925,7 @@ public final class FIO {
        * </pre>
        *
        * <code>string coin_symbol = 3;</code>
+       * @return The coinSymbol.
        */
       public java.lang.String getCoinSymbol() {
         java.lang.Object ref = coinSymbol_;
@@ -1868,6 +1945,7 @@ public final class FIO {
        * </pre>
        *
        * <code>string coin_symbol = 3;</code>
+       * @return The bytes for coinSymbol.
        */
       public com.google.protobuf.ByteString
           getCoinSymbolBytes() {
@@ -1888,6 +1966,8 @@ public final class FIO {
        * </pre>
        *
        * <code>string coin_symbol = 3;</code>
+       * @param value The coinSymbol to set.
+       * @return This builder for chaining.
        */
       public Builder setCoinSymbol(
           java.lang.String value) {
@@ -1905,6 +1985,7 @@ public final class FIO {
        * </pre>
        *
        * <code>string coin_symbol = 3;</code>
+       * @return This builder for chaining.
        */
       public Builder clearCoinSymbol() {
         
@@ -1918,6 +1999,8 @@ public final class FIO {
        * </pre>
        *
        * <code>string coin_symbol = 3;</code>
+       * @param value The bytes for coinSymbol to set.
+       * @return This builder for chaining.
        */
       public Builder setCoinSymbolBytes(
           com.google.protobuf.ByteString value) {
@@ -1938,6 +2021,7 @@ public final class FIO {
        * </pre>
        *
        * <code>string memo = 4;</code>
+       * @return The memo.
        */
       public java.lang.String getMemo() {
         java.lang.Object ref = memo_;
@@ -1957,6 +2041,7 @@ public final class FIO {
        * </pre>
        *
        * <code>string memo = 4;</code>
+       * @return The bytes for memo.
        */
       public com.google.protobuf.ByteString
           getMemoBytes() {
@@ -1977,6 +2062,8 @@ public final class FIO {
        * </pre>
        *
        * <code>string memo = 4;</code>
+       * @param value The memo to set.
+       * @return This builder for chaining.
        */
       public Builder setMemo(
           java.lang.String value) {
@@ -1994,6 +2081,7 @@ public final class FIO {
        * </pre>
        *
        * <code>string memo = 4;</code>
+       * @return This builder for chaining.
        */
       public Builder clearMemo() {
         
@@ -2007,6 +2095,8 @@ public final class FIO {
        * </pre>
        *
        * <code>string memo = 4;</code>
+       * @param value The bytes for memo to set.
+       * @return This builder for chaining.
        */
       public Builder setMemoBytes(
           com.google.protobuf.ByteString value) {
@@ -2027,6 +2117,7 @@ public final class FIO {
        * </pre>
        *
        * <code>string hash = 5;</code>
+       * @return The hash.
        */
       public java.lang.String getHash() {
         java.lang.Object ref = hash_;
@@ -2046,6 +2137,7 @@ public final class FIO {
        * </pre>
        *
        * <code>string hash = 5;</code>
+       * @return The bytes for hash.
        */
       public com.google.protobuf.ByteString
           getHashBytes() {
@@ -2066,6 +2158,8 @@ public final class FIO {
        * </pre>
        *
        * <code>string hash = 5;</code>
+       * @param value The hash to set.
+       * @return This builder for chaining.
        */
       public Builder setHash(
           java.lang.String value) {
@@ -2083,6 +2177,7 @@ public final class FIO {
        * </pre>
        *
        * <code>string hash = 5;</code>
+       * @return This builder for chaining.
        */
       public Builder clearHash() {
         
@@ -2096,6 +2191,8 @@ public final class FIO {
        * </pre>
        *
        * <code>string hash = 5;</code>
+       * @param value The bytes for hash to set.
+       * @return This builder for chaining.
        */
       public Builder setHashBytes(
           com.google.protobuf.ByteString value) {
@@ -2116,6 +2213,7 @@ public final class FIO {
        * </pre>
        *
        * <code>string offline_url = 6;</code>
+       * @return The offlineUrl.
        */
       public java.lang.String getOfflineUrl() {
         java.lang.Object ref = offlineUrl_;
@@ -2135,6 +2233,7 @@ public final class FIO {
        * </pre>
        *
        * <code>string offline_url = 6;</code>
+       * @return The bytes for offlineUrl.
        */
       public com.google.protobuf.ByteString
           getOfflineUrlBytes() {
@@ -2155,6 +2254,8 @@ public final class FIO {
        * </pre>
        *
        * <code>string offline_url = 6;</code>
+       * @param value The offlineUrl to set.
+       * @return This builder for chaining.
        */
       public Builder setOfflineUrl(
           java.lang.String value) {
@@ -2172,6 +2273,7 @@ public final class FIO {
        * </pre>
        *
        * <code>string offline_url = 6;</code>
+       * @return This builder for chaining.
        */
       public Builder clearOfflineUrl() {
         
@@ -2185,6 +2287,8 @@ public final class FIO {
        * </pre>
        *
        * <code>string offline_url = 6;</code>
+       * @param value The bytes for offlineUrl to set.
+       * @return This builder for chaining.
        */
       public Builder setOfflineUrlBytes(
           com.google.protobuf.ByteString value) {
@@ -2256,10 +2360,12 @@ public final class FIO {
 
     /**
      * <code>.TW.FIO.Proto.Action.RegisterFioAddress register_fio_address_message = 1;</code>
+     * @return Whether the registerFioAddressMessage field is set.
      */
     boolean hasRegisterFioAddressMessage();
     /**
      * <code>.TW.FIO.Proto.Action.RegisterFioAddress register_fio_address_message = 1;</code>
+     * @return The registerFioAddressMessage.
      */
     wallet.core.jni.proto.FIO.Action.RegisterFioAddress getRegisterFioAddressMessage();
     /**
@@ -2269,10 +2375,12 @@ public final class FIO {
 
     /**
      * <code>.TW.FIO.Proto.Action.AddPubAddress add_pub_address_message = 2;</code>
+     * @return Whether the addPubAddressMessage field is set.
      */
     boolean hasAddPubAddressMessage();
     /**
      * <code>.TW.FIO.Proto.Action.AddPubAddress add_pub_address_message = 2;</code>
+     * @return The addPubAddressMessage.
      */
     wallet.core.jni.proto.FIO.Action.AddPubAddress getAddPubAddressMessage();
     /**
@@ -2282,10 +2390,12 @@ public final class FIO {
 
     /**
      * <code>.TW.FIO.Proto.Action.Transfer transfer_message = 3;</code>
+     * @return Whether the transferMessage field is set.
      */
     boolean hasTransferMessage();
     /**
      * <code>.TW.FIO.Proto.Action.Transfer transfer_message = 3;</code>
+     * @return The transferMessage.
      */
     wallet.core.jni.proto.FIO.Action.Transfer getTransferMessage();
     /**
@@ -2295,10 +2405,12 @@ public final class FIO {
 
     /**
      * <code>.TW.FIO.Proto.Action.RenewFioAddress renew_fio_address_message = 4;</code>
+     * @return Whether the renewFioAddressMessage field is set.
      */
     boolean hasRenewFioAddressMessage();
     /**
      * <code>.TW.FIO.Proto.Action.RenewFioAddress renew_fio_address_message = 4;</code>
+     * @return The renewFioAddressMessage.
      */
     wallet.core.jni.proto.FIO.Action.RenewFioAddress getRenewFioAddressMessage();
     /**
@@ -2308,10 +2420,12 @@ public final class FIO {
 
     /**
      * <code>.TW.FIO.Proto.Action.NewFundsRequest new_funds_request_message = 5;</code>
+     * @return Whether the newFundsRequestMessage field is set.
      */
     boolean hasNewFundsRequestMessage();
     /**
      * <code>.TW.FIO.Proto.Action.NewFundsRequest new_funds_request_message = 5;</code>
+     * @return The newFundsRequestMessage.
      */
     wallet.core.jni.proto.FIO.Action.NewFundsRequest getNewFundsRequestMessage();
     /**
@@ -2328,7 +2442,7 @@ public final class FIO {
    *
    * Protobuf type {@code TW.FIO.Proto.Action}
    */
-  public  static final class Action extends
+  public static final class Action extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:TW.FIO.Proto.Action)
       ActionOrBuilder {
@@ -2482,6 +2596,7 @@ public final class FIO {
        * </pre>
        *
        * <code>string fio_address = 1;</code>
+       * @return The fioAddress.
        */
       java.lang.String getFioAddress();
       /**
@@ -2490,6 +2605,7 @@ public final class FIO {
        * </pre>
        *
        * <code>string fio_address = 1;</code>
+       * @return The bytes for fioAddress.
        */
       com.google.protobuf.ByteString
           getFioAddressBytes();
@@ -2500,6 +2616,7 @@ public final class FIO {
        * </pre>
        *
        * <code>string owner_fio_public_key = 2;</code>
+       * @return The ownerFioPublicKey.
        */
       java.lang.String getOwnerFioPublicKey();
       /**
@@ -2508,6 +2625,7 @@ public final class FIO {
        * </pre>
        *
        * <code>string owner_fio_public_key = 2;</code>
+       * @return The bytes for ownerFioPublicKey.
        */
       com.google.protobuf.ByteString
           getOwnerFioPublicKeyBytes();
@@ -2518,6 +2636,7 @@ public final class FIO {
        * </pre>
        *
        * <code>uint64 fee = 3;</code>
+       * @return The fee.
        */
       long getFee();
     }
@@ -2528,7 +2647,7 @@ public final class FIO {
      *
      * Protobuf type {@code TW.FIO.Proto.Action.RegisterFioAddress}
      */
-    public  static final class RegisterFioAddress extends
+    public static final class RegisterFioAddress extends
         com.google.protobuf.GeneratedMessageV3 implements
         // @@protoc_insertion_point(message_implements:TW.FIO.Proto.Action.RegisterFioAddress)
         RegisterFioAddressOrBuilder {
@@ -2629,7 +2748,9 @@ public final class FIO {
        * </pre>
        *
        * <code>string fio_address = 1;</code>
+       * @return The fioAddress.
        */
+      @java.lang.Override
       public java.lang.String getFioAddress() {
         java.lang.Object ref = fioAddress_;
         if (ref instanceof java.lang.String) {
@@ -2648,7 +2769,9 @@ public final class FIO {
        * </pre>
        *
        * <code>string fio_address = 1;</code>
+       * @return The bytes for fioAddress.
        */
+      @java.lang.Override
       public com.google.protobuf.ByteString
           getFioAddressBytes() {
         java.lang.Object ref = fioAddress_;
@@ -2671,7 +2794,9 @@ public final class FIO {
        * </pre>
        *
        * <code>string owner_fio_public_key = 2;</code>
+       * @return The ownerFioPublicKey.
        */
+      @java.lang.Override
       public java.lang.String getOwnerFioPublicKey() {
         java.lang.Object ref = ownerFioPublicKey_;
         if (ref instanceof java.lang.String) {
@@ -2690,7 +2815,9 @@ public final class FIO {
        * </pre>
        *
        * <code>string owner_fio_public_key = 2;</code>
+       * @return The bytes for ownerFioPublicKey.
        */
+      @java.lang.Override
       public com.google.protobuf.ByteString
           getOwnerFioPublicKeyBytes() {
         java.lang.Object ref = ownerFioPublicKey_;
@@ -2713,7 +2840,9 @@ public final class FIO {
        * </pre>
        *
        * <code>uint64 fee = 3;</code>
+       * @return The fee.
        */
+      @java.lang.Override
       public long getFee() {
         return fee_;
       }
@@ -3066,6 +3195,7 @@ public final class FIO {
          * </pre>
          *
          * <code>string fio_address = 1;</code>
+         * @return The fioAddress.
          */
         public java.lang.String getFioAddress() {
           java.lang.Object ref = fioAddress_;
@@ -3085,6 +3215,7 @@ public final class FIO {
          * </pre>
          *
          * <code>string fio_address = 1;</code>
+         * @return The bytes for fioAddress.
          */
         public com.google.protobuf.ByteString
             getFioAddressBytes() {
@@ -3105,6 +3236,8 @@ public final class FIO {
          * </pre>
          *
          * <code>string fio_address = 1;</code>
+         * @param value The fioAddress to set.
+         * @return This builder for chaining.
          */
         public Builder setFioAddress(
             java.lang.String value) {
@@ -3122,6 +3255,7 @@ public final class FIO {
          * </pre>
          *
          * <code>string fio_address = 1;</code>
+         * @return This builder for chaining.
          */
         public Builder clearFioAddress() {
           
@@ -3135,6 +3269,8 @@ public final class FIO {
          * </pre>
          *
          * <code>string fio_address = 1;</code>
+         * @param value The bytes for fioAddress to set.
+         * @return This builder for chaining.
          */
         public Builder setFioAddressBytes(
             com.google.protobuf.ByteString value) {
@@ -3155,6 +3291,7 @@ public final class FIO {
          * </pre>
          *
          * <code>string owner_fio_public_key = 2;</code>
+         * @return The ownerFioPublicKey.
          */
         public java.lang.String getOwnerFioPublicKey() {
           java.lang.Object ref = ownerFioPublicKey_;
@@ -3174,6 +3311,7 @@ public final class FIO {
          * </pre>
          *
          * <code>string owner_fio_public_key = 2;</code>
+         * @return The bytes for ownerFioPublicKey.
          */
         public com.google.protobuf.ByteString
             getOwnerFioPublicKeyBytes() {
@@ -3194,6 +3332,8 @@ public final class FIO {
          * </pre>
          *
          * <code>string owner_fio_public_key = 2;</code>
+         * @param value The ownerFioPublicKey to set.
+         * @return This builder for chaining.
          */
         public Builder setOwnerFioPublicKey(
             java.lang.String value) {
@@ -3211,6 +3351,7 @@ public final class FIO {
          * </pre>
          *
          * <code>string owner_fio_public_key = 2;</code>
+         * @return This builder for chaining.
          */
         public Builder clearOwnerFioPublicKey() {
           
@@ -3224,6 +3365,8 @@ public final class FIO {
          * </pre>
          *
          * <code>string owner_fio_public_key = 2;</code>
+         * @param value The bytes for ownerFioPublicKey to set.
+         * @return This builder for chaining.
          */
         public Builder setOwnerFioPublicKeyBytes(
             com.google.protobuf.ByteString value) {
@@ -3244,7 +3387,9 @@ public final class FIO {
          * </pre>
          *
          * <code>uint64 fee = 3;</code>
+         * @return The fee.
          */
+        @java.lang.Override
         public long getFee() {
           return fee_;
         }
@@ -3254,6 +3399,8 @@ public final class FIO {
          * </pre>
          *
          * <code>uint64 fee = 3;</code>
+         * @param value The fee to set.
+         * @return This builder for chaining.
          */
         public Builder setFee(long value) {
           
@@ -3267,6 +3414,7 @@ public final class FIO {
          * </pre>
          *
          * <code>uint64 fee = 3;</code>
+         * @return This builder for chaining.
          */
         public Builder clearFee() {
           
@@ -3337,6 +3485,7 @@ public final class FIO {
        * </pre>
        *
        * <code>string fio_address = 1;</code>
+       * @return The fioAddress.
        */
       java.lang.String getFioAddress();
       /**
@@ -3345,6 +3494,7 @@ public final class FIO {
        * </pre>
        *
        * <code>string fio_address = 1;</code>
+       * @return The bytes for fioAddress.
        */
       com.google.protobuf.ByteString
           getFioAddressBytes();
@@ -3399,6 +3549,7 @@ public final class FIO {
        * </pre>
        *
        * <code>uint64 fee = 3;</code>
+       * @return The fee.
        */
       long getFee();
     }
@@ -3409,7 +3560,7 @@ public final class FIO {
      *
      * Protobuf type {@code TW.FIO.Proto.Action.AddPubAddress}
      */
-    public  static final class AddPubAddress extends
+    public static final class AddPubAddress extends
         com.google.protobuf.GeneratedMessageV3 implements
         // @@protoc_insertion_point(message_implements:TW.FIO.Proto.Action.AddPubAddress)
         AddPubAddressOrBuilder {
@@ -3517,7 +3668,9 @@ public final class FIO {
        * </pre>
        *
        * <code>string fio_address = 1;</code>
+       * @return The fioAddress.
        */
+      @java.lang.Override
       public java.lang.String getFioAddress() {
         java.lang.Object ref = fioAddress_;
         if (ref instanceof java.lang.String) {
@@ -3536,7 +3689,9 @@ public final class FIO {
        * </pre>
        *
        * <code>string fio_address = 1;</code>
+       * @return The bytes for fioAddress.
        */
+      @java.lang.Override
       public com.google.protobuf.ByteString
           getFioAddressBytes() {
         java.lang.Object ref = fioAddress_;
@@ -3560,6 +3715,7 @@ public final class FIO {
        *
        * <code>repeated .TW.FIO.Proto.PublicAddress public_addresses = 2;</code>
        */
+      @java.lang.Override
       public java.util.List<wallet.core.jni.proto.FIO.PublicAddress> getPublicAddressesList() {
         return publicAddresses_;
       }
@@ -3570,6 +3726,7 @@ public final class FIO {
        *
        * <code>repeated .TW.FIO.Proto.PublicAddress public_addresses = 2;</code>
        */
+      @java.lang.Override
       public java.util.List<? extends wallet.core.jni.proto.FIO.PublicAddressOrBuilder> 
           getPublicAddressesOrBuilderList() {
         return publicAddresses_;
@@ -3581,6 +3738,7 @@ public final class FIO {
        *
        * <code>repeated .TW.FIO.Proto.PublicAddress public_addresses = 2;</code>
        */
+      @java.lang.Override
       public int getPublicAddressesCount() {
         return publicAddresses_.size();
       }
@@ -3591,6 +3749,7 @@ public final class FIO {
        *
        * <code>repeated .TW.FIO.Proto.PublicAddress public_addresses = 2;</code>
        */
+      @java.lang.Override
       public wallet.core.jni.proto.FIO.PublicAddress getPublicAddresses(int index) {
         return publicAddresses_.get(index);
       }
@@ -3601,6 +3760,7 @@ public final class FIO {
        *
        * <code>repeated .TW.FIO.Proto.PublicAddress public_addresses = 2;</code>
        */
+      @java.lang.Override
       public wallet.core.jni.proto.FIO.PublicAddressOrBuilder getPublicAddressesOrBuilder(
           int index) {
         return publicAddresses_.get(index);
@@ -3614,7 +3774,9 @@ public final class FIO {
        * </pre>
        *
        * <code>uint64 fee = 3;</code>
+       * @return The fee.
        */
+      @java.lang.Override
       public long getFee() {
         return fee_;
       }
@@ -4007,6 +4169,7 @@ public final class FIO {
          * </pre>
          *
          * <code>string fio_address = 1;</code>
+         * @return The fioAddress.
          */
         public java.lang.String getFioAddress() {
           java.lang.Object ref = fioAddress_;
@@ -4026,6 +4189,7 @@ public final class FIO {
          * </pre>
          *
          * <code>string fio_address = 1;</code>
+         * @return The bytes for fioAddress.
          */
         public com.google.protobuf.ByteString
             getFioAddressBytes() {
@@ -4046,6 +4210,8 @@ public final class FIO {
          * </pre>
          *
          * <code>string fio_address = 1;</code>
+         * @param value The fioAddress to set.
+         * @return This builder for chaining.
          */
         public Builder setFioAddress(
             java.lang.String value) {
@@ -4063,6 +4229,7 @@ public final class FIO {
          * </pre>
          *
          * <code>string fio_address = 1;</code>
+         * @return This builder for chaining.
          */
         public Builder clearFioAddress() {
           
@@ -4076,6 +4243,8 @@ public final class FIO {
          * </pre>
          *
          * <code>string fio_address = 1;</code>
+         * @param value The bytes for fioAddress to set.
+         * @return This builder for chaining.
          */
         public Builder setFioAddressBytes(
             com.google.protobuf.ByteString value) {
@@ -4408,7 +4577,9 @@ public final class FIO {
          * </pre>
          *
          * <code>uint64 fee = 3;</code>
+         * @return The fee.
          */
+        @java.lang.Override
         public long getFee() {
           return fee_;
         }
@@ -4418,6 +4589,8 @@ public final class FIO {
          * </pre>
          *
          * <code>uint64 fee = 3;</code>
+         * @param value The fee to set.
+         * @return This builder for chaining.
          */
         public Builder setFee(long value) {
           
@@ -4431,6 +4604,7 @@ public final class FIO {
          * </pre>
          *
          * <code>uint64 fee = 3;</code>
+         * @return This builder for chaining.
          */
         public Builder clearFee() {
           
@@ -4501,6 +4675,7 @@ public final class FIO {
        * </pre>
        *
        * <code>string payee_public_key = 1;</code>
+       * @return The payeePublicKey.
        */
       java.lang.String getPayeePublicKey();
       /**
@@ -4509,6 +4684,7 @@ public final class FIO {
        * </pre>
        *
        * <code>string payee_public_key = 1;</code>
+       * @return The bytes for payeePublicKey.
        */
       com.google.protobuf.ByteString
           getPayeePublicKeyBytes();
@@ -4519,6 +4695,7 @@ public final class FIO {
        * </pre>
        *
        * <code>uint64 amount = 2;</code>
+       * @return The amount.
        */
       long getAmount();
 
@@ -4528,6 +4705,7 @@ public final class FIO {
        * </pre>
        *
        * <code>uint64 fee = 3;</code>
+       * @return The fee.
        */
       long getFee();
     }
@@ -4538,7 +4716,7 @@ public final class FIO {
      *
      * Protobuf type {@code TW.FIO.Proto.Action.Transfer}
      */
-    public  static final class Transfer extends
+    public static final class Transfer extends
         com.google.protobuf.GeneratedMessageV3 implements
         // @@protoc_insertion_point(message_implements:TW.FIO.Proto.Action.Transfer)
         TransferOrBuilder {
@@ -4637,7 +4815,9 @@ public final class FIO {
        * </pre>
        *
        * <code>string payee_public_key = 1;</code>
+       * @return The payeePublicKey.
        */
+      @java.lang.Override
       public java.lang.String getPayeePublicKey() {
         java.lang.Object ref = payeePublicKey_;
         if (ref instanceof java.lang.String) {
@@ -4656,7 +4836,9 @@ public final class FIO {
        * </pre>
        *
        * <code>string payee_public_key = 1;</code>
+       * @return The bytes for payeePublicKey.
        */
+      @java.lang.Override
       public com.google.protobuf.ByteString
           getPayeePublicKeyBytes() {
         java.lang.Object ref = payeePublicKey_;
@@ -4679,7 +4861,9 @@ public final class FIO {
        * </pre>
        *
        * <code>uint64 amount = 2;</code>
+       * @return The amount.
        */
+      @java.lang.Override
       public long getAmount() {
         return amount_;
       }
@@ -4692,7 +4876,9 @@ public final class FIO {
        * </pre>
        *
        * <code>uint64 fee = 3;</code>
+       * @return The fee.
        */
+      @java.lang.Override
       public long getFee() {
         return fee_;
       }
@@ -5046,6 +5232,7 @@ public final class FIO {
          * </pre>
          *
          * <code>string payee_public_key = 1;</code>
+         * @return The payeePublicKey.
          */
         public java.lang.String getPayeePublicKey() {
           java.lang.Object ref = payeePublicKey_;
@@ -5065,6 +5252,7 @@ public final class FIO {
          * </pre>
          *
          * <code>string payee_public_key = 1;</code>
+         * @return The bytes for payeePublicKey.
          */
         public com.google.protobuf.ByteString
             getPayeePublicKeyBytes() {
@@ -5085,6 +5273,8 @@ public final class FIO {
          * </pre>
          *
          * <code>string payee_public_key = 1;</code>
+         * @param value The payeePublicKey to set.
+         * @return This builder for chaining.
          */
         public Builder setPayeePublicKey(
             java.lang.String value) {
@@ -5102,6 +5292,7 @@ public final class FIO {
          * </pre>
          *
          * <code>string payee_public_key = 1;</code>
+         * @return This builder for chaining.
          */
         public Builder clearPayeePublicKey() {
           
@@ -5115,6 +5306,8 @@ public final class FIO {
          * </pre>
          *
          * <code>string payee_public_key = 1;</code>
+         * @param value The bytes for payeePublicKey to set.
+         * @return This builder for chaining.
          */
         public Builder setPayeePublicKeyBytes(
             com.google.protobuf.ByteString value) {
@@ -5135,7 +5328,9 @@ public final class FIO {
          * </pre>
          *
          * <code>uint64 amount = 2;</code>
+         * @return The amount.
          */
+        @java.lang.Override
         public long getAmount() {
           return amount_;
         }
@@ -5145,6 +5340,8 @@ public final class FIO {
          * </pre>
          *
          * <code>uint64 amount = 2;</code>
+         * @param value The amount to set.
+         * @return This builder for chaining.
          */
         public Builder setAmount(long value) {
           
@@ -5158,6 +5355,7 @@ public final class FIO {
          * </pre>
          *
          * <code>uint64 amount = 2;</code>
+         * @return This builder for chaining.
          */
         public Builder clearAmount() {
           
@@ -5173,7 +5371,9 @@ public final class FIO {
          * </pre>
          *
          * <code>uint64 fee = 3;</code>
+         * @return The fee.
          */
+        @java.lang.Override
         public long getFee() {
           return fee_;
         }
@@ -5183,6 +5383,8 @@ public final class FIO {
          * </pre>
          *
          * <code>uint64 fee = 3;</code>
+         * @param value The fee to set.
+         * @return This builder for chaining.
          */
         public Builder setFee(long value) {
           
@@ -5196,6 +5398,7 @@ public final class FIO {
          * </pre>
          *
          * <code>uint64 fee = 3;</code>
+         * @return This builder for chaining.
          */
         public Builder clearFee() {
           
@@ -5266,6 +5469,7 @@ public final class FIO {
        * </pre>
        *
        * <code>string fio_address = 1;</code>
+       * @return The fioAddress.
        */
       java.lang.String getFioAddress();
       /**
@@ -5274,6 +5478,7 @@ public final class FIO {
        * </pre>
        *
        * <code>string fio_address = 1;</code>
+       * @return The bytes for fioAddress.
        */
       com.google.protobuf.ByteString
           getFioAddressBytes();
@@ -5284,6 +5489,7 @@ public final class FIO {
        * </pre>
        *
        * <code>string owner_fio_public_key = 2;</code>
+       * @return The ownerFioPublicKey.
        */
       java.lang.String getOwnerFioPublicKey();
       /**
@@ -5292,6 +5498,7 @@ public final class FIO {
        * </pre>
        *
        * <code>string owner_fio_public_key = 2;</code>
+       * @return The bytes for ownerFioPublicKey.
        */
       com.google.protobuf.ByteString
           getOwnerFioPublicKeyBytes();
@@ -5302,6 +5509,7 @@ public final class FIO {
        * </pre>
        *
        * <code>uint64 fee = 3;</code>
+       * @return The fee.
        */
       long getFee();
     }
@@ -5312,7 +5520,7 @@ public final class FIO {
      *
      * Protobuf type {@code TW.FIO.Proto.Action.RenewFioAddress}
      */
-    public  static final class RenewFioAddress extends
+    public static final class RenewFioAddress extends
         com.google.protobuf.GeneratedMessageV3 implements
         // @@protoc_insertion_point(message_implements:TW.FIO.Proto.Action.RenewFioAddress)
         RenewFioAddressOrBuilder {
@@ -5413,7 +5621,9 @@ public final class FIO {
        * </pre>
        *
        * <code>string fio_address = 1;</code>
+       * @return The fioAddress.
        */
+      @java.lang.Override
       public java.lang.String getFioAddress() {
         java.lang.Object ref = fioAddress_;
         if (ref instanceof java.lang.String) {
@@ -5432,7 +5642,9 @@ public final class FIO {
        * </pre>
        *
        * <code>string fio_address = 1;</code>
+       * @return The bytes for fioAddress.
        */
+      @java.lang.Override
       public com.google.protobuf.ByteString
           getFioAddressBytes() {
         java.lang.Object ref = fioAddress_;
@@ -5455,7 +5667,9 @@ public final class FIO {
        * </pre>
        *
        * <code>string owner_fio_public_key = 2;</code>
+       * @return The ownerFioPublicKey.
        */
+      @java.lang.Override
       public java.lang.String getOwnerFioPublicKey() {
         java.lang.Object ref = ownerFioPublicKey_;
         if (ref instanceof java.lang.String) {
@@ -5474,7 +5688,9 @@ public final class FIO {
        * </pre>
        *
        * <code>string owner_fio_public_key = 2;</code>
+       * @return The bytes for ownerFioPublicKey.
        */
+      @java.lang.Override
       public com.google.protobuf.ByteString
           getOwnerFioPublicKeyBytes() {
         java.lang.Object ref = ownerFioPublicKey_;
@@ -5497,7 +5713,9 @@ public final class FIO {
        * </pre>
        *
        * <code>uint64 fee = 3;</code>
+       * @return The fee.
        */
+      @java.lang.Override
       public long getFee() {
         return fee_;
       }
@@ -5850,6 +6068,7 @@ public final class FIO {
          * </pre>
          *
          * <code>string fio_address = 1;</code>
+         * @return The fioAddress.
          */
         public java.lang.String getFioAddress() {
           java.lang.Object ref = fioAddress_;
@@ -5869,6 +6088,7 @@ public final class FIO {
          * </pre>
          *
          * <code>string fio_address = 1;</code>
+         * @return The bytes for fioAddress.
          */
         public com.google.protobuf.ByteString
             getFioAddressBytes() {
@@ -5889,6 +6109,8 @@ public final class FIO {
          * </pre>
          *
          * <code>string fio_address = 1;</code>
+         * @param value The fioAddress to set.
+         * @return This builder for chaining.
          */
         public Builder setFioAddress(
             java.lang.String value) {
@@ -5906,6 +6128,7 @@ public final class FIO {
          * </pre>
          *
          * <code>string fio_address = 1;</code>
+         * @return This builder for chaining.
          */
         public Builder clearFioAddress() {
           
@@ -5919,6 +6142,8 @@ public final class FIO {
          * </pre>
          *
          * <code>string fio_address = 1;</code>
+         * @param value The bytes for fioAddress to set.
+         * @return This builder for chaining.
          */
         public Builder setFioAddressBytes(
             com.google.protobuf.ByteString value) {
@@ -5939,6 +6164,7 @@ public final class FIO {
          * </pre>
          *
          * <code>string owner_fio_public_key = 2;</code>
+         * @return The ownerFioPublicKey.
          */
         public java.lang.String getOwnerFioPublicKey() {
           java.lang.Object ref = ownerFioPublicKey_;
@@ -5958,6 +6184,7 @@ public final class FIO {
          * </pre>
          *
          * <code>string owner_fio_public_key = 2;</code>
+         * @return The bytes for ownerFioPublicKey.
          */
         public com.google.protobuf.ByteString
             getOwnerFioPublicKeyBytes() {
@@ -5978,6 +6205,8 @@ public final class FIO {
          * </pre>
          *
          * <code>string owner_fio_public_key = 2;</code>
+         * @param value The ownerFioPublicKey to set.
+         * @return This builder for chaining.
          */
         public Builder setOwnerFioPublicKey(
             java.lang.String value) {
@@ -5995,6 +6224,7 @@ public final class FIO {
          * </pre>
          *
          * <code>string owner_fio_public_key = 2;</code>
+         * @return This builder for chaining.
          */
         public Builder clearOwnerFioPublicKey() {
           
@@ -6008,6 +6238,8 @@ public final class FIO {
          * </pre>
          *
          * <code>string owner_fio_public_key = 2;</code>
+         * @param value The bytes for ownerFioPublicKey to set.
+         * @return This builder for chaining.
          */
         public Builder setOwnerFioPublicKeyBytes(
             com.google.protobuf.ByteString value) {
@@ -6028,7 +6260,9 @@ public final class FIO {
          * </pre>
          *
          * <code>uint64 fee = 3;</code>
+         * @return The fee.
          */
+        @java.lang.Override
         public long getFee() {
           return fee_;
         }
@@ -6038,6 +6272,8 @@ public final class FIO {
          * </pre>
          *
          * <code>uint64 fee = 3;</code>
+         * @param value The fee to set.
+         * @return This builder for chaining.
          */
         public Builder setFee(long value) {
           
@@ -6051,6 +6287,7 @@ public final class FIO {
          * </pre>
          *
          * <code>uint64 fee = 3;</code>
+         * @return This builder for chaining.
          */
         public Builder clearFee() {
           
@@ -6121,6 +6358,7 @@ public final class FIO {
        * </pre>
        *
        * <code>string payer_fio_name = 1;</code>
+       * @return The payerFioName.
        */
       java.lang.String getPayerFioName();
       /**
@@ -6129,6 +6367,7 @@ public final class FIO {
        * </pre>
        *
        * <code>string payer_fio_name = 1;</code>
+       * @return The bytes for payerFioName.
        */
       com.google.protobuf.ByteString
           getPayerFioNameBytes();
@@ -6139,6 +6378,7 @@ public final class FIO {
        * </pre>
        *
        * <code>string payer_fio_address = 2;</code>
+       * @return The payerFioAddress.
        */
       java.lang.String getPayerFioAddress();
       /**
@@ -6147,6 +6387,7 @@ public final class FIO {
        * </pre>
        *
        * <code>string payer_fio_address = 2;</code>
+       * @return The bytes for payerFioAddress.
        */
       com.google.protobuf.ByteString
           getPayerFioAddressBytes();
@@ -6157,6 +6398,7 @@ public final class FIO {
        * </pre>
        *
        * <code>string payee_fio_name = 3;</code>
+       * @return The payeeFioName.
        */
       java.lang.String getPayeeFioName();
       /**
@@ -6165,6 +6407,7 @@ public final class FIO {
        * </pre>
        *
        * <code>string payee_fio_name = 3;</code>
+       * @return The bytes for payeeFioName.
        */
       com.google.protobuf.ByteString
           getPayeeFioNameBytes();
@@ -6175,6 +6418,7 @@ public final class FIO {
        * </pre>
        *
        * <code>.TW.FIO.Proto.NewFundsContent content = 4;</code>
+       * @return Whether the content field is set.
        */
       boolean hasContent();
       /**
@@ -6183,6 +6427,7 @@ public final class FIO {
        * </pre>
        *
        * <code>.TW.FIO.Proto.NewFundsContent content = 4;</code>
+       * @return The content.
        */
       wallet.core.jni.proto.FIO.NewFundsContent getContent();
       /**
@@ -6200,6 +6445,7 @@ public final class FIO {
        * </pre>
        *
        * <code>uint64 fee = 5;</code>
+       * @return The fee.
        */
       long getFee();
     }
@@ -6210,7 +6456,7 @@ public final class FIO {
      *
      * Protobuf type {@code TW.FIO.Proto.Action.NewFundsRequest}
      */
-    public  static final class NewFundsRequest extends
+    public static final class NewFundsRequest extends
         com.google.protobuf.GeneratedMessageV3 implements
         // @@protoc_insertion_point(message_implements:TW.FIO.Proto.Action.NewFundsRequest)
         NewFundsRequestOrBuilder {
@@ -6331,7 +6577,9 @@ public final class FIO {
        * </pre>
        *
        * <code>string payer_fio_name = 1;</code>
+       * @return The payerFioName.
        */
+      @java.lang.Override
       public java.lang.String getPayerFioName() {
         java.lang.Object ref = payerFioName_;
         if (ref instanceof java.lang.String) {
@@ -6350,7 +6598,9 @@ public final class FIO {
        * </pre>
        *
        * <code>string payer_fio_name = 1;</code>
+       * @return The bytes for payerFioName.
        */
+      @java.lang.Override
       public com.google.protobuf.ByteString
           getPayerFioNameBytes() {
         java.lang.Object ref = payerFioName_;
@@ -6373,7 +6623,9 @@ public final class FIO {
        * </pre>
        *
        * <code>string payer_fio_address = 2;</code>
+       * @return The payerFioAddress.
        */
+      @java.lang.Override
       public java.lang.String getPayerFioAddress() {
         java.lang.Object ref = payerFioAddress_;
         if (ref instanceof java.lang.String) {
@@ -6392,7 +6644,9 @@ public final class FIO {
        * </pre>
        *
        * <code>string payer_fio_address = 2;</code>
+       * @return The bytes for payerFioAddress.
        */
+      @java.lang.Override
       public com.google.protobuf.ByteString
           getPayerFioAddressBytes() {
         java.lang.Object ref = payerFioAddress_;
@@ -6415,7 +6669,9 @@ public final class FIO {
        * </pre>
        *
        * <code>string payee_fio_name = 3;</code>
+       * @return The payeeFioName.
        */
+      @java.lang.Override
       public java.lang.String getPayeeFioName() {
         java.lang.Object ref = payeeFioName_;
         if (ref instanceof java.lang.String) {
@@ -6434,7 +6690,9 @@ public final class FIO {
        * </pre>
        *
        * <code>string payee_fio_name = 3;</code>
+       * @return The bytes for payeeFioName.
        */
+      @java.lang.Override
       public com.google.protobuf.ByteString
           getPayeeFioNameBytes() {
         java.lang.Object ref = payeeFioName_;
@@ -6457,7 +6715,9 @@ public final class FIO {
        * </pre>
        *
        * <code>.TW.FIO.Proto.NewFundsContent content = 4;</code>
+       * @return Whether the content field is set.
        */
+      @java.lang.Override
       public boolean hasContent() {
         return content_ != null;
       }
@@ -6467,7 +6727,9 @@ public final class FIO {
        * </pre>
        *
        * <code>.TW.FIO.Proto.NewFundsContent content = 4;</code>
+       * @return The content.
        */
+      @java.lang.Override
       public wallet.core.jni.proto.FIO.NewFundsContent getContent() {
         return content_ == null ? wallet.core.jni.proto.FIO.NewFundsContent.getDefaultInstance() : content_;
       }
@@ -6478,6 +6740,7 @@ public final class FIO {
        *
        * <code>.TW.FIO.Proto.NewFundsContent content = 4;</code>
        */
+      @java.lang.Override
       public wallet.core.jni.proto.FIO.NewFundsContentOrBuilder getContentOrBuilder() {
         return getContent();
       }
@@ -6490,7 +6753,9 @@ public final class FIO {
        * </pre>
        *
        * <code>uint64 fee = 5;</code>
+       * @return The fee.
        */
+      @java.lang.Override
       public long getFee() {
         return fee_;
       }
@@ -6890,6 +7155,7 @@ public final class FIO {
          * </pre>
          *
          * <code>string payer_fio_name = 1;</code>
+         * @return The payerFioName.
          */
         public java.lang.String getPayerFioName() {
           java.lang.Object ref = payerFioName_;
@@ -6909,6 +7175,7 @@ public final class FIO {
          * </pre>
          *
          * <code>string payer_fio_name = 1;</code>
+         * @return The bytes for payerFioName.
          */
         public com.google.protobuf.ByteString
             getPayerFioNameBytes() {
@@ -6929,6 +7196,8 @@ public final class FIO {
          * </pre>
          *
          * <code>string payer_fio_name = 1;</code>
+         * @param value The payerFioName to set.
+         * @return This builder for chaining.
          */
         public Builder setPayerFioName(
             java.lang.String value) {
@@ -6946,6 +7215,7 @@ public final class FIO {
          * </pre>
          *
          * <code>string payer_fio_name = 1;</code>
+         * @return This builder for chaining.
          */
         public Builder clearPayerFioName() {
           
@@ -6959,6 +7229,8 @@ public final class FIO {
          * </pre>
          *
          * <code>string payer_fio_name = 1;</code>
+         * @param value The bytes for payerFioName to set.
+         * @return This builder for chaining.
          */
         public Builder setPayerFioNameBytes(
             com.google.protobuf.ByteString value) {
@@ -6979,6 +7251,7 @@ public final class FIO {
          * </pre>
          *
          * <code>string payer_fio_address = 2;</code>
+         * @return The payerFioAddress.
          */
         public java.lang.String getPayerFioAddress() {
           java.lang.Object ref = payerFioAddress_;
@@ -6998,6 +7271,7 @@ public final class FIO {
          * </pre>
          *
          * <code>string payer_fio_address = 2;</code>
+         * @return The bytes for payerFioAddress.
          */
         public com.google.protobuf.ByteString
             getPayerFioAddressBytes() {
@@ -7018,6 +7292,8 @@ public final class FIO {
          * </pre>
          *
          * <code>string payer_fio_address = 2;</code>
+         * @param value The payerFioAddress to set.
+         * @return This builder for chaining.
          */
         public Builder setPayerFioAddress(
             java.lang.String value) {
@@ -7035,6 +7311,7 @@ public final class FIO {
          * </pre>
          *
          * <code>string payer_fio_address = 2;</code>
+         * @return This builder for chaining.
          */
         public Builder clearPayerFioAddress() {
           
@@ -7048,6 +7325,8 @@ public final class FIO {
          * </pre>
          *
          * <code>string payer_fio_address = 2;</code>
+         * @param value The bytes for payerFioAddress to set.
+         * @return This builder for chaining.
          */
         public Builder setPayerFioAddressBytes(
             com.google.protobuf.ByteString value) {
@@ -7068,6 +7347,7 @@ public final class FIO {
          * </pre>
          *
          * <code>string payee_fio_name = 3;</code>
+         * @return The payeeFioName.
          */
         public java.lang.String getPayeeFioName() {
           java.lang.Object ref = payeeFioName_;
@@ -7087,6 +7367,7 @@ public final class FIO {
          * </pre>
          *
          * <code>string payee_fio_name = 3;</code>
+         * @return The bytes for payeeFioName.
          */
         public com.google.protobuf.ByteString
             getPayeeFioNameBytes() {
@@ -7107,6 +7388,8 @@ public final class FIO {
          * </pre>
          *
          * <code>string payee_fio_name = 3;</code>
+         * @param value The payeeFioName to set.
+         * @return This builder for chaining.
          */
         public Builder setPayeeFioName(
             java.lang.String value) {
@@ -7124,6 +7407,7 @@ public final class FIO {
          * </pre>
          *
          * <code>string payee_fio_name = 3;</code>
+         * @return This builder for chaining.
          */
         public Builder clearPayeeFioName() {
           
@@ -7137,6 +7421,8 @@ public final class FIO {
          * </pre>
          *
          * <code>string payee_fio_name = 3;</code>
+         * @param value The bytes for payeeFioName to set.
+         * @return This builder for chaining.
          */
         public Builder setPayeeFioNameBytes(
             com.google.protobuf.ByteString value) {
@@ -7159,6 +7445,7 @@ public final class FIO {
          * </pre>
          *
          * <code>.TW.FIO.Proto.NewFundsContent content = 4;</code>
+         * @return Whether the content field is set.
          */
         public boolean hasContent() {
           return contentBuilder_ != null || content_ != null;
@@ -7169,6 +7456,7 @@ public final class FIO {
          * </pre>
          *
          * <code>.TW.FIO.Proto.NewFundsContent content = 4;</code>
+         * @return The content.
          */
         public wallet.core.jni.proto.FIO.NewFundsContent getContent() {
           if (contentBuilder_ == null) {
@@ -7310,7 +7598,9 @@ public final class FIO {
          * </pre>
          *
          * <code>uint64 fee = 5;</code>
+         * @return The fee.
          */
+        @java.lang.Override
         public long getFee() {
           return fee_;
         }
@@ -7320,6 +7610,8 @@ public final class FIO {
          * </pre>
          *
          * <code>uint64 fee = 5;</code>
+         * @param value The fee to set.
+         * @return This builder for chaining.
          */
         public Builder setFee(long value) {
           
@@ -7333,6 +7625,7 @@ public final class FIO {
          * </pre>
          *
          * <code>uint64 fee = 5;</code>
+         * @return This builder for chaining.
          */
         public Builder clearFee() {
           
@@ -7396,7 +7689,8 @@ public final class FIO {
     private int messageOneofCase_ = 0;
     private java.lang.Object messageOneof_;
     public enum MessageOneofCase
-        implements com.google.protobuf.Internal.EnumLite {
+        implements com.google.protobuf.Internal.EnumLite,
+            com.google.protobuf.AbstractMessage.InternalOneOfEnum {
       REGISTER_FIO_ADDRESS_MESSAGE(1),
       ADD_PUB_ADDRESS_MESSAGE(2),
       TRANSFER_MESSAGE(3),
@@ -7408,6 +7702,8 @@ public final class FIO {
         this.value = value;
       }
       /**
+       * @param value The number of the enum to look for.
+       * @return The enum associated with the given number.
        * @deprecated Use {@link #forNumber(int)} instead.
        */
       @java.lang.Deprecated
@@ -7440,13 +7736,17 @@ public final class FIO {
     public static final int REGISTER_FIO_ADDRESS_MESSAGE_FIELD_NUMBER = 1;
     /**
      * <code>.TW.FIO.Proto.Action.RegisterFioAddress register_fio_address_message = 1;</code>
+     * @return Whether the registerFioAddressMessage field is set.
      */
+    @java.lang.Override
     public boolean hasRegisterFioAddressMessage() {
       return messageOneofCase_ == 1;
     }
     /**
      * <code>.TW.FIO.Proto.Action.RegisterFioAddress register_fio_address_message = 1;</code>
+     * @return The registerFioAddressMessage.
      */
+    @java.lang.Override
     public wallet.core.jni.proto.FIO.Action.RegisterFioAddress getRegisterFioAddressMessage() {
       if (messageOneofCase_ == 1) {
          return (wallet.core.jni.proto.FIO.Action.RegisterFioAddress) messageOneof_;
@@ -7456,6 +7756,7 @@ public final class FIO {
     /**
      * <code>.TW.FIO.Proto.Action.RegisterFioAddress register_fio_address_message = 1;</code>
      */
+    @java.lang.Override
     public wallet.core.jni.proto.FIO.Action.RegisterFioAddressOrBuilder getRegisterFioAddressMessageOrBuilder() {
       if (messageOneofCase_ == 1) {
          return (wallet.core.jni.proto.FIO.Action.RegisterFioAddress) messageOneof_;
@@ -7466,13 +7767,17 @@ public final class FIO {
     public static final int ADD_PUB_ADDRESS_MESSAGE_FIELD_NUMBER = 2;
     /**
      * <code>.TW.FIO.Proto.Action.AddPubAddress add_pub_address_message = 2;</code>
+     * @return Whether the addPubAddressMessage field is set.
      */
+    @java.lang.Override
     public boolean hasAddPubAddressMessage() {
       return messageOneofCase_ == 2;
     }
     /**
      * <code>.TW.FIO.Proto.Action.AddPubAddress add_pub_address_message = 2;</code>
+     * @return The addPubAddressMessage.
      */
+    @java.lang.Override
     public wallet.core.jni.proto.FIO.Action.AddPubAddress getAddPubAddressMessage() {
       if (messageOneofCase_ == 2) {
          return (wallet.core.jni.proto.FIO.Action.AddPubAddress) messageOneof_;
@@ -7482,6 +7787,7 @@ public final class FIO {
     /**
      * <code>.TW.FIO.Proto.Action.AddPubAddress add_pub_address_message = 2;</code>
      */
+    @java.lang.Override
     public wallet.core.jni.proto.FIO.Action.AddPubAddressOrBuilder getAddPubAddressMessageOrBuilder() {
       if (messageOneofCase_ == 2) {
          return (wallet.core.jni.proto.FIO.Action.AddPubAddress) messageOneof_;
@@ -7492,13 +7798,17 @@ public final class FIO {
     public static final int TRANSFER_MESSAGE_FIELD_NUMBER = 3;
     /**
      * <code>.TW.FIO.Proto.Action.Transfer transfer_message = 3;</code>
+     * @return Whether the transferMessage field is set.
      */
+    @java.lang.Override
     public boolean hasTransferMessage() {
       return messageOneofCase_ == 3;
     }
     /**
      * <code>.TW.FIO.Proto.Action.Transfer transfer_message = 3;</code>
+     * @return The transferMessage.
      */
+    @java.lang.Override
     public wallet.core.jni.proto.FIO.Action.Transfer getTransferMessage() {
       if (messageOneofCase_ == 3) {
          return (wallet.core.jni.proto.FIO.Action.Transfer) messageOneof_;
@@ -7508,6 +7818,7 @@ public final class FIO {
     /**
      * <code>.TW.FIO.Proto.Action.Transfer transfer_message = 3;</code>
      */
+    @java.lang.Override
     public wallet.core.jni.proto.FIO.Action.TransferOrBuilder getTransferMessageOrBuilder() {
       if (messageOneofCase_ == 3) {
          return (wallet.core.jni.proto.FIO.Action.Transfer) messageOneof_;
@@ -7518,13 +7829,17 @@ public final class FIO {
     public static final int RENEW_FIO_ADDRESS_MESSAGE_FIELD_NUMBER = 4;
     /**
      * <code>.TW.FIO.Proto.Action.RenewFioAddress renew_fio_address_message = 4;</code>
+     * @return Whether the renewFioAddressMessage field is set.
      */
+    @java.lang.Override
     public boolean hasRenewFioAddressMessage() {
       return messageOneofCase_ == 4;
     }
     /**
      * <code>.TW.FIO.Proto.Action.RenewFioAddress renew_fio_address_message = 4;</code>
+     * @return The renewFioAddressMessage.
      */
+    @java.lang.Override
     public wallet.core.jni.proto.FIO.Action.RenewFioAddress getRenewFioAddressMessage() {
       if (messageOneofCase_ == 4) {
          return (wallet.core.jni.proto.FIO.Action.RenewFioAddress) messageOneof_;
@@ -7534,6 +7849,7 @@ public final class FIO {
     /**
      * <code>.TW.FIO.Proto.Action.RenewFioAddress renew_fio_address_message = 4;</code>
      */
+    @java.lang.Override
     public wallet.core.jni.proto.FIO.Action.RenewFioAddressOrBuilder getRenewFioAddressMessageOrBuilder() {
       if (messageOneofCase_ == 4) {
          return (wallet.core.jni.proto.FIO.Action.RenewFioAddress) messageOneof_;
@@ -7544,13 +7860,17 @@ public final class FIO {
     public static final int NEW_FUNDS_REQUEST_MESSAGE_FIELD_NUMBER = 5;
     /**
      * <code>.TW.FIO.Proto.Action.NewFundsRequest new_funds_request_message = 5;</code>
+     * @return Whether the newFundsRequestMessage field is set.
      */
+    @java.lang.Override
     public boolean hasNewFundsRequestMessage() {
       return messageOneofCase_ == 5;
     }
     /**
      * <code>.TW.FIO.Proto.Action.NewFundsRequest new_funds_request_message = 5;</code>
+     * @return The newFundsRequestMessage.
      */
+    @java.lang.Override
     public wallet.core.jni.proto.FIO.Action.NewFundsRequest getNewFundsRequestMessage() {
       if (messageOneofCase_ == 5) {
          return (wallet.core.jni.proto.FIO.Action.NewFundsRequest) messageOneof_;
@@ -7560,6 +7880,7 @@ public final class FIO {
     /**
      * <code>.TW.FIO.Proto.Action.NewFundsRequest new_funds_request_message = 5;</code>
      */
+    @java.lang.Override
     public wallet.core.jni.proto.FIO.Action.NewFundsRequestOrBuilder getNewFundsRequestMessageOrBuilder() {
       if (messageOneofCase_ == 5) {
          return (wallet.core.jni.proto.FIO.Action.NewFundsRequest) messageOneof_;
@@ -8022,13 +8343,17 @@ public final class FIO {
           wallet.core.jni.proto.FIO.Action.RegisterFioAddress, wallet.core.jni.proto.FIO.Action.RegisterFioAddress.Builder, wallet.core.jni.proto.FIO.Action.RegisterFioAddressOrBuilder> registerFioAddressMessageBuilder_;
       /**
        * <code>.TW.FIO.Proto.Action.RegisterFioAddress register_fio_address_message = 1;</code>
+       * @return Whether the registerFioAddressMessage field is set.
        */
+      @java.lang.Override
       public boolean hasRegisterFioAddressMessage() {
         return messageOneofCase_ == 1;
       }
       /**
        * <code>.TW.FIO.Proto.Action.RegisterFioAddress register_fio_address_message = 1;</code>
+       * @return The registerFioAddressMessage.
        */
+      @java.lang.Override
       public wallet.core.jni.proto.FIO.Action.RegisterFioAddress getRegisterFioAddressMessage() {
         if (registerFioAddressMessageBuilder_ == null) {
           if (messageOneofCase_ == 1) {
@@ -8122,6 +8447,7 @@ public final class FIO {
       /**
        * <code>.TW.FIO.Proto.Action.RegisterFioAddress register_fio_address_message = 1;</code>
        */
+      @java.lang.Override
       public wallet.core.jni.proto.FIO.Action.RegisterFioAddressOrBuilder getRegisterFioAddressMessageOrBuilder() {
         if ((messageOneofCase_ == 1) && (registerFioAddressMessageBuilder_ != null)) {
           return registerFioAddressMessageBuilder_.getMessageOrBuilder();
@@ -8158,13 +8484,17 @@ public final class FIO {
           wallet.core.jni.proto.FIO.Action.AddPubAddress, wallet.core.jni.proto.FIO.Action.AddPubAddress.Builder, wallet.core.jni.proto.FIO.Action.AddPubAddressOrBuilder> addPubAddressMessageBuilder_;
       /**
        * <code>.TW.FIO.Proto.Action.AddPubAddress add_pub_address_message = 2;</code>
+       * @return Whether the addPubAddressMessage field is set.
        */
+      @java.lang.Override
       public boolean hasAddPubAddressMessage() {
         return messageOneofCase_ == 2;
       }
       /**
        * <code>.TW.FIO.Proto.Action.AddPubAddress add_pub_address_message = 2;</code>
+       * @return The addPubAddressMessage.
        */
+      @java.lang.Override
       public wallet.core.jni.proto.FIO.Action.AddPubAddress getAddPubAddressMessage() {
         if (addPubAddressMessageBuilder_ == null) {
           if (messageOneofCase_ == 2) {
@@ -8258,6 +8588,7 @@ public final class FIO {
       /**
        * <code>.TW.FIO.Proto.Action.AddPubAddress add_pub_address_message = 2;</code>
        */
+      @java.lang.Override
       public wallet.core.jni.proto.FIO.Action.AddPubAddressOrBuilder getAddPubAddressMessageOrBuilder() {
         if ((messageOneofCase_ == 2) && (addPubAddressMessageBuilder_ != null)) {
           return addPubAddressMessageBuilder_.getMessageOrBuilder();
@@ -8294,13 +8625,17 @@ public final class FIO {
           wallet.core.jni.proto.FIO.Action.Transfer, wallet.core.jni.proto.FIO.Action.Transfer.Builder, wallet.core.jni.proto.FIO.Action.TransferOrBuilder> transferMessageBuilder_;
       /**
        * <code>.TW.FIO.Proto.Action.Transfer transfer_message = 3;</code>
+       * @return Whether the transferMessage field is set.
        */
+      @java.lang.Override
       public boolean hasTransferMessage() {
         return messageOneofCase_ == 3;
       }
       /**
        * <code>.TW.FIO.Proto.Action.Transfer transfer_message = 3;</code>
+       * @return The transferMessage.
        */
+      @java.lang.Override
       public wallet.core.jni.proto.FIO.Action.Transfer getTransferMessage() {
         if (transferMessageBuilder_ == null) {
           if (messageOneofCase_ == 3) {
@@ -8394,6 +8729,7 @@ public final class FIO {
       /**
        * <code>.TW.FIO.Proto.Action.Transfer transfer_message = 3;</code>
        */
+      @java.lang.Override
       public wallet.core.jni.proto.FIO.Action.TransferOrBuilder getTransferMessageOrBuilder() {
         if ((messageOneofCase_ == 3) && (transferMessageBuilder_ != null)) {
           return transferMessageBuilder_.getMessageOrBuilder();
@@ -8430,13 +8766,17 @@ public final class FIO {
           wallet.core.jni.proto.FIO.Action.RenewFioAddress, wallet.core.jni.proto.FIO.Action.RenewFioAddress.Builder, wallet.core.jni.proto.FIO.Action.RenewFioAddressOrBuilder> renewFioAddressMessageBuilder_;
       /**
        * <code>.TW.FIO.Proto.Action.RenewFioAddress renew_fio_address_message = 4;</code>
+       * @return Whether the renewFioAddressMessage field is set.
        */
+      @java.lang.Override
       public boolean hasRenewFioAddressMessage() {
         return messageOneofCase_ == 4;
       }
       /**
        * <code>.TW.FIO.Proto.Action.RenewFioAddress renew_fio_address_message = 4;</code>
+       * @return The renewFioAddressMessage.
        */
+      @java.lang.Override
       public wallet.core.jni.proto.FIO.Action.RenewFioAddress getRenewFioAddressMessage() {
         if (renewFioAddressMessageBuilder_ == null) {
           if (messageOneofCase_ == 4) {
@@ -8530,6 +8870,7 @@ public final class FIO {
       /**
        * <code>.TW.FIO.Proto.Action.RenewFioAddress renew_fio_address_message = 4;</code>
        */
+      @java.lang.Override
       public wallet.core.jni.proto.FIO.Action.RenewFioAddressOrBuilder getRenewFioAddressMessageOrBuilder() {
         if ((messageOneofCase_ == 4) && (renewFioAddressMessageBuilder_ != null)) {
           return renewFioAddressMessageBuilder_.getMessageOrBuilder();
@@ -8566,13 +8907,17 @@ public final class FIO {
           wallet.core.jni.proto.FIO.Action.NewFundsRequest, wallet.core.jni.proto.FIO.Action.NewFundsRequest.Builder, wallet.core.jni.proto.FIO.Action.NewFundsRequestOrBuilder> newFundsRequestMessageBuilder_;
       /**
        * <code>.TW.FIO.Proto.Action.NewFundsRequest new_funds_request_message = 5;</code>
+       * @return Whether the newFundsRequestMessage field is set.
        */
+      @java.lang.Override
       public boolean hasNewFundsRequestMessage() {
         return messageOneofCase_ == 5;
       }
       /**
        * <code>.TW.FIO.Proto.Action.NewFundsRequest new_funds_request_message = 5;</code>
+       * @return The newFundsRequestMessage.
        */
+      @java.lang.Override
       public wallet.core.jni.proto.FIO.Action.NewFundsRequest getNewFundsRequestMessage() {
         if (newFundsRequestMessageBuilder_ == null) {
           if (messageOneofCase_ == 5) {
@@ -8666,6 +9011,7 @@ public final class FIO {
       /**
        * <code>.TW.FIO.Proto.Action.NewFundsRequest new_funds_request_message = 5;</code>
        */
+      @java.lang.Override
       public wallet.core.jni.proto.FIO.Action.NewFundsRequestOrBuilder getNewFundsRequestMessageOrBuilder() {
         if ((messageOneofCase_ == 5) && (newFundsRequestMessageBuilder_ != null)) {
           return newFundsRequestMessageBuilder_.getMessageOrBuilder();
@@ -8760,6 +9106,7 @@ public final class FIO {
      * </pre>
      *
      * <code>bytes chain_id = 1;</code>
+     * @return The chainId.
      */
     com.google.protobuf.ByteString getChainId();
 
@@ -8769,6 +9116,7 @@ public final class FIO {
      * </pre>
      *
      * <code>uint64 head_block_number = 2;</code>
+     * @return The headBlockNumber.
      */
     long getHeadBlockNumber();
 
@@ -8778,6 +9126,7 @@ public final class FIO {
      * </pre>
      *
      * <code>uint64 ref_block_prefix = 3;</code>
+     * @return The refBlockPrefix.
      */
     long getRefBlockPrefix();
   }
@@ -8788,7 +9137,7 @@ public final class FIO {
    *
    * Protobuf type {@code TW.FIO.Proto.ChainParams}
    */
-  public  static final class ChainParams extends
+  public static final class ChainParams extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:TW.FIO.Proto.ChainParams)
       ChainParamsOrBuilder {
@@ -8886,7 +9235,9 @@ public final class FIO {
      * </pre>
      *
      * <code>bytes chain_id = 1;</code>
+     * @return The chainId.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString getChainId() {
       return chainId_;
     }
@@ -8899,7 +9250,9 @@ public final class FIO {
      * </pre>
      *
      * <code>uint64 head_block_number = 2;</code>
+     * @return The headBlockNumber.
      */
+    @java.lang.Override
     public long getHeadBlockNumber() {
       return headBlockNumber_;
     }
@@ -8912,7 +9265,9 @@ public final class FIO {
      * </pre>
      *
      * <code>uint64 ref_block_prefix = 3;</code>
+     * @return The refBlockPrefix.
      */
+    @java.lang.Override
     public long getRefBlockPrefix() {
       return refBlockPrefix_;
     }
@@ -9266,7 +9621,9 @@ public final class FIO {
        * </pre>
        *
        * <code>bytes chain_id = 1;</code>
+       * @return The chainId.
        */
+      @java.lang.Override
       public com.google.protobuf.ByteString getChainId() {
         return chainId_;
       }
@@ -9276,6 +9633,8 @@ public final class FIO {
        * </pre>
        *
        * <code>bytes chain_id = 1;</code>
+       * @param value The chainId to set.
+       * @return This builder for chaining.
        */
       public Builder setChainId(com.google.protobuf.ByteString value) {
         if (value == null) {
@@ -9292,6 +9651,7 @@ public final class FIO {
        * </pre>
        *
        * <code>bytes chain_id = 1;</code>
+       * @return This builder for chaining.
        */
       public Builder clearChainId() {
         
@@ -9307,7 +9667,9 @@ public final class FIO {
        * </pre>
        *
        * <code>uint64 head_block_number = 2;</code>
+       * @return The headBlockNumber.
        */
+      @java.lang.Override
       public long getHeadBlockNumber() {
         return headBlockNumber_;
       }
@@ -9317,6 +9679,8 @@ public final class FIO {
        * </pre>
        *
        * <code>uint64 head_block_number = 2;</code>
+       * @param value The headBlockNumber to set.
+       * @return This builder for chaining.
        */
       public Builder setHeadBlockNumber(long value) {
         
@@ -9330,6 +9694,7 @@ public final class FIO {
        * </pre>
        *
        * <code>uint64 head_block_number = 2;</code>
+       * @return This builder for chaining.
        */
       public Builder clearHeadBlockNumber() {
         
@@ -9345,7 +9710,9 @@ public final class FIO {
        * </pre>
        *
        * <code>uint64 ref_block_prefix = 3;</code>
+       * @return The refBlockPrefix.
        */
+      @java.lang.Override
       public long getRefBlockPrefix() {
         return refBlockPrefix_;
       }
@@ -9355,6 +9722,8 @@ public final class FIO {
        * </pre>
        *
        * <code>uint64 ref_block_prefix = 3;</code>
+       * @param value The refBlockPrefix to set.
+       * @return This builder for chaining.
        */
       public Builder setRefBlockPrefix(long value) {
         
@@ -9368,6 +9737,7 @@ public final class FIO {
        * </pre>
        *
        * <code>uint64 ref_block_prefix = 3;</code>
+       * @return This builder for chaining.
        */
       public Builder clearRefBlockPrefix() {
         
@@ -9438,6 +9808,7 @@ public final class FIO {
      * </pre>
      *
      * <code>uint32 expiry = 1;</code>
+     * @return The expiry.
      */
     int getExpiry();
 
@@ -9447,6 +9818,7 @@ public final class FIO {
      * </pre>
      *
      * <code>.TW.FIO.Proto.ChainParams chain_params = 2;</code>
+     * @return Whether the chainParams field is set.
      */
     boolean hasChainParams();
     /**
@@ -9455,6 +9827,7 @@ public final class FIO {
      * </pre>
      *
      * <code>.TW.FIO.Proto.ChainParams chain_params = 2;</code>
+     * @return The chainParams.
      */
     wallet.core.jni.proto.FIO.ChainParams getChainParams();
     /**
@@ -9472,6 +9845,7 @@ public final class FIO {
      * </pre>
      *
      * <code>bytes private_key = 3;</code>
+     * @return The privateKey.
      */
     com.google.protobuf.ByteString getPrivateKey();
 
@@ -9481,6 +9855,7 @@ public final class FIO {
      * </pre>
      *
      * <code>string tpid = 4;</code>
+     * @return The tpid.
      */
     java.lang.String getTpid();
     /**
@@ -9489,6 +9864,7 @@ public final class FIO {
      * </pre>
      *
      * <code>string tpid = 4;</code>
+     * @return The bytes for tpid.
      */
     com.google.protobuf.ByteString
         getTpidBytes();
@@ -9499,6 +9875,7 @@ public final class FIO {
      * </pre>
      *
      * <code>.TW.FIO.Proto.Action action = 5;</code>
+     * @return Whether the action field is set.
      */
     boolean hasAction();
     /**
@@ -9507,6 +9884,7 @@ public final class FIO {
      * </pre>
      *
      * <code>.TW.FIO.Proto.Action action = 5;</code>
+     * @return The action.
      */
     wallet.core.jni.proto.FIO.Action getAction();
     /**
@@ -9525,7 +9903,7 @@ public final class FIO {
    *
    * Protobuf type {@code TW.FIO.Proto.SigningInput}
    */
-  public  static final class SigningInput extends
+  public static final class SigningInput extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:TW.FIO.Proto.SigningInput)
       SigningInputOrBuilder {
@@ -9651,7 +10029,9 @@ public final class FIO {
      * </pre>
      *
      * <code>uint32 expiry = 1;</code>
+     * @return The expiry.
      */
+    @java.lang.Override
     public int getExpiry() {
       return expiry_;
     }
@@ -9664,7 +10044,9 @@ public final class FIO {
      * </pre>
      *
      * <code>.TW.FIO.Proto.ChainParams chain_params = 2;</code>
+     * @return Whether the chainParams field is set.
      */
+    @java.lang.Override
     public boolean hasChainParams() {
       return chainParams_ != null;
     }
@@ -9674,7 +10056,9 @@ public final class FIO {
      * </pre>
      *
      * <code>.TW.FIO.Proto.ChainParams chain_params = 2;</code>
+     * @return The chainParams.
      */
+    @java.lang.Override
     public wallet.core.jni.proto.FIO.ChainParams getChainParams() {
       return chainParams_ == null ? wallet.core.jni.proto.FIO.ChainParams.getDefaultInstance() : chainParams_;
     }
@@ -9685,6 +10069,7 @@ public final class FIO {
      *
      * <code>.TW.FIO.Proto.ChainParams chain_params = 2;</code>
      */
+    @java.lang.Override
     public wallet.core.jni.proto.FIO.ChainParamsOrBuilder getChainParamsOrBuilder() {
       return getChainParams();
     }
@@ -9697,7 +10082,9 @@ public final class FIO {
      * </pre>
      *
      * <code>bytes private_key = 3;</code>
+     * @return The privateKey.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString getPrivateKey() {
       return privateKey_;
     }
@@ -9710,7 +10097,9 @@ public final class FIO {
      * </pre>
      *
      * <code>string tpid = 4;</code>
+     * @return The tpid.
      */
+    @java.lang.Override
     public java.lang.String getTpid() {
       java.lang.Object ref = tpid_;
       if (ref instanceof java.lang.String) {
@@ -9729,7 +10118,9 @@ public final class FIO {
      * </pre>
      *
      * <code>string tpid = 4;</code>
+     * @return The bytes for tpid.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString
         getTpidBytes() {
       java.lang.Object ref = tpid_;
@@ -9752,7 +10143,9 @@ public final class FIO {
      * </pre>
      *
      * <code>.TW.FIO.Proto.Action action = 5;</code>
+     * @return Whether the action field is set.
      */
+    @java.lang.Override
     public boolean hasAction() {
       return action_ != null;
     }
@@ -9762,7 +10155,9 @@ public final class FIO {
      * </pre>
      *
      * <code>.TW.FIO.Proto.Action action = 5;</code>
+     * @return The action.
      */
+    @java.lang.Override
     public wallet.core.jni.proto.FIO.Action getAction() {
       return action_ == null ? wallet.core.jni.proto.FIO.Action.getDefaultInstance() : action_;
     }
@@ -9773,6 +10168,7 @@ public final class FIO {
      *
      * <code>.TW.FIO.Proto.Action action = 5;</code>
      */
+    @java.lang.Override
     public wallet.core.jni.proto.FIO.ActionOrBuilder getActionOrBuilder() {
       return getAction();
     }
@@ -10184,7 +10580,9 @@ public final class FIO {
        * </pre>
        *
        * <code>uint32 expiry = 1;</code>
+       * @return The expiry.
        */
+      @java.lang.Override
       public int getExpiry() {
         return expiry_;
       }
@@ -10194,6 +10592,8 @@ public final class FIO {
        * </pre>
        *
        * <code>uint32 expiry = 1;</code>
+       * @param value The expiry to set.
+       * @return This builder for chaining.
        */
       public Builder setExpiry(int value) {
         
@@ -10207,6 +10607,7 @@ public final class FIO {
        * </pre>
        *
        * <code>uint32 expiry = 1;</code>
+       * @return This builder for chaining.
        */
       public Builder clearExpiry() {
         
@@ -10224,6 +10625,7 @@ public final class FIO {
        * </pre>
        *
        * <code>.TW.FIO.Proto.ChainParams chain_params = 2;</code>
+       * @return Whether the chainParams field is set.
        */
       public boolean hasChainParams() {
         return chainParamsBuilder_ != null || chainParams_ != null;
@@ -10234,6 +10636,7 @@ public final class FIO {
        * </pre>
        *
        * <code>.TW.FIO.Proto.ChainParams chain_params = 2;</code>
+       * @return The chainParams.
        */
       public wallet.core.jni.proto.FIO.ChainParams getChainParams() {
         if (chainParamsBuilder_ == null) {
@@ -10375,7 +10778,9 @@ public final class FIO {
        * </pre>
        *
        * <code>bytes private_key = 3;</code>
+       * @return The privateKey.
        */
+      @java.lang.Override
       public com.google.protobuf.ByteString getPrivateKey() {
         return privateKey_;
       }
@@ -10385,6 +10790,8 @@ public final class FIO {
        * </pre>
        *
        * <code>bytes private_key = 3;</code>
+       * @param value The privateKey to set.
+       * @return This builder for chaining.
        */
       public Builder setPrivateKey(com.google.protobuf.ByteString value) {
         if (value == null) {
@@ -10401,6 +10808,7 @@ public final class FIO {
        * </pre>
        *
        * <code>bytes private_key = 3;</code>
+       * @return This builder for chaining.
        */
       public Builder clearPrivateKey() {
         
@@ -10416,6 +10824,7 @@ public final class FIO {
        * </pre>
        *
        * <code>string tpid = 4;</code>
+       * @return The tpid.
        */
       public java.lang.String getTpid() {
         java.lang.Object ref = tpid_;
@@ -10435,6 +10844,7 @@ public final class FIO {
        * </pre>
        *
        * <code>string tpid = 4;</code>
+       * @return The bytes for tpid.
        */
       public com.google.protobuf.ByteString
           getTpidBytes() {
@@ -10455,6 +10865,8 @@ public final class FIO {
        * </pre>
        *
        * <code>string tpid = 4;</code>
+       * @param value The tpid to set.
+       * @return This builder for chaining.
        */
       public Builder setTpid(
           java.lang.String value) {
@@ -10472,6 +10884,7 @@ public final class FIO {
        * </pre>
        *
        * <code>string tpid = 4;</code>
+       * @return This builder for chaining.
        */
       public Builder clearTpid() {
         
@@ -10485,6 +10898,8 @@ public final class FIO {
        * </pre>
        *
        * <code>string tpid = 4;</code>
+       * @param value The bytes for tpid to set.
+       * @return This builder for chaining.
        */
       public Builder setTpidBytes(
           com.google.protobuf.ByteString value) {
@@ -10507,6 +10922,7 @@ public final class FIO {
        * </pre>
        *
        * <code>.TW.FIO.Proto.Action action = 5;</code>
+       * @return Whether the action field is set.
        */
       public boolean hasAction() {
         return actionBuilder_ != null || action_ != null;
@@ -10517,6 +10933,7 @@ public final class FIO {
        * </pre>
        *
        * <code>.TW.FIO.Proto.Action action = 5;</code>
+       * @return The action.
        */
       public wallet.core.jni.proto.FIO.Action getAction() {
         if (actionBuilder_ == null) {
@@ -10713,6 +11130,7 @@ public final class FIO {
      * </pre>
      *
      * <code>string json = 1;</code>
+     * @return The json.
      */
     java.lang.String getJson();
     /**
@@ -10721,27 +11139,29 @@ public final class FIO {
      * </pre>
      *
      * <code>string json = 1;</code>
+     * @return The bytes for json.
      */
     com.google.protobuf.ByteString
         getJsonBytes();
 
     /**
      * <pre>
-     * Filled with message upon error
+     * Optional error
      * </pre>
      *
-     * <code>string error = 2;</code>
+     * <code>.TW.Common.Proto.SigningError error = 2;</code>
+     * @return The enum numeric value on the wire for error.
      */
-    java.lang.String getError();
+    int getErrorValue();
     /**
      * <pre>
-     * Filled with message upon error
+     * Optional error
      * </pre>
      *
-     * <code>string error = 2;</code>
+     * <code>.TW.Common.Proto.SigningError error = 2;</code>
+     * @return The error.
      */
-    com.google.protobuf.ByteString
-        getErrorBytes();
+    wallet.core.jni.proto.Common.SigningError getError();
   }
   /**
    * <pre>
@@ -10750,7 +11170,7 @@ public final class FIO {
    *
    * Protobuf type {@code TW.FIO.Proto.SigningOutput}
    */
-  public  static final class SigningOutput extends
+  public static final class SigningOutput extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:TW.FIO.Proto.SigningOutput)
       SigningOutputOrBuilder {
@@ -10761,7 +11181,7 @@ public final class FIO {
     }
     private SigningOutput() {
       json_ = "";
-      error_ = "";
+      error_ = 0;
     }
 
     @java.lang.Override
@@ -10800,10 +11220,10 @@ public final class FIO {
               json_ = s;
               break;
             }
-            case 18: {
-              java.lang.String s = input.readStringRequireUtf8();
+            case 16: {
+              int rawValue = input.readEnum();
 
-              error_ = s;
+              error_ = rawValue;
               break;
             }
             default: {
@@ -10846,7 +11266,9 @@ public final class FIO {
      * </pre>
      *
      * <code>string json = 1;</code>
+     * @return The json.
      */
+    @java.lang.Override
     public java.lang.String getJson() {
       java.lang.Object ref = json_;
       if (ref instanceof java.lang.String) {
@@ -10865,7 +11287,9 @@ public final class FIO {
      * </pre>
      *
      * <code>string json = 1;</code>
+     * @return The bytes for json.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString
         getJsonBytes() {
       java.lang.Object ref = json_;
@@ -10881,45 +11305,30 @@ public final class FIO {
     }
 
     public static final int ERROR_FIELD_NUMBER = 2;
-    private volatile java.lang.Object error_;
+    private int error_;
     /**
      * <pre>
-     * Filled with message upon error
+     * Optional error
      * </pre>
      *
-     * <code>string error = 2;</code>
+     * <code>.TW.Common.Proto.SigningError error = 2;</code>
+     * @return The enum numeric value on the wire for error.
      */
-    public java.lang.String getError() {
-      java.lang.Object ref = error_;
-      if (ref instanceof java.lang.String) {
-        return (java.lang.String) ref;
-      } else {
-        com.google.protobuf.ByteString bs = 
-            (com.google.protobuf.ByteString) ref;
-        java.lang.String s = bs.toStringUtf8();
-        error_ = s;
-        return s;
-      }
+    @java.lang.Override public int getErrorValue() {
+      return error_;
     }
     /**
      * <pre>
-     * Filled with message upon error
+     * Optional error
      * </pre>
      *
-     * <code>string error = 2;</code>
+     * <code>.TW.Common.Proto.SigningError error = 2;</code>
+     * @return The error.
      */
-    public com.google.protobuf.ByteString
-        getErrorBytes() {
-      java.lang.Object ref = error_;
-      if (ref instanceof java.lang.String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
-        error_ = b;
-        return b;
-      } else {
-        return (com.google.protobuf.ByteString) ref;
-      }
+    @java.lang.Override public wallet.core.jni.proto.Common.SigningError getError() {
+      @SuppressWarnings("deprecation")
+      wallet.core.jni.proto.Common.SigningError result = wallet.core.jni.proto.Common.SigningError.valueOf(error_);
+      return result == null ? wallet.core.jni.proto.Common.SigningError.UNRECOGNIZED : result;
     }
 
     private byte memoizedIsInitialized = -1;
@@ -10939,8 +11348,8 @@ public final class FIO {
       if (!getJsonBytes().isEmpty()) {
         com.google.protobuf.GeneratedMessageV3.writeString(output, 1, json_);
       }
-      if (!getErrorBytes().isEmpty()) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 2, error_);
+      if (error_ != wallet.core.jni.proto.Common.SigningError.OK.getNumber()) {
+        output.writeEnum(2, error_);
       }
       unknownFields.writeTo(output);
     }
@@ -10954,8 +11363,9 @@ public final class FIO {
       if (!getJsonBytes().isEmpty()) {
         size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, json_);
       }
-      if (!getErrorBytes().isEmpty()) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, error_);
+      if (error_ != wallet.core.jni.proto.Common.SigningError.OK.getNumber()) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeEnumSize(2, error_);
       }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
@@ -10974,8 +11384,7 @@ public final class FIO {
 
       if (!getJson()
           .equals(other.getJson())) return false;
-      if (!getError()
-          .equals(other.getError())) return false;
+      if (error_ != other.error_) return false;
       if (!unknownFields.equals(other.unknownFields)) return false;
       return true;
     }
@@ -10990,7 +11399,7 @@ public final class FIO {
       hash = (37 * hash) + JSON_FIELD_NUMBER;
       hash = (53 * hash) + getJson().hashCode();
       hash = (37 * hash) + ERROR_FIELD_NUMBER;
-      hash = (53 * hash) + getError().hashCode();
+      hash = (53 * hash) + error_;
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
       return hash;
@@ -11130,7 +11539,7 @@ public final class FIO {
         super.clear();
         json_ = "";
 
-        error_ = "";
+        error_ = 0;
 
         return this;
       }
@@ -11212,9 +11621,8 @@ public final class FIO {
           json_ = other.json_;
           onChanged();
         }
-        if (!other.getError().isEmpty()) {
-          error_ = other.error_;
-          onChanged();
+        if (other.error_ != 0) {
+          setErrorValue(other.getErrorValue());
         }
         this.mergeUnknownFields(other.unknownFields);
         onChanged();
@@ -11252,6 +11660,7 @@ public final class FIO {
        * </pre>
        *
        * <code>string json = 1;</code>
+       * @return The json.
        */
       public java.lang.String getJson() {
         java.lang.Object ref = json_;
@@ -11271,6 +11680,7 @@ public final class FIO {
        * </pre>
        *
        * <code>string json = 1;</code>
+       * @return The bytes for json.
        */
       public com.google.protobuf.ByteString
           getJsonBytes() {
@@ -11291,6 +11701,8 @@ public final class FIO {
        * </pre>
        *
        * <code>string json = 1;</code>
+       * @param value The json to set.
+       * @return This builder for chaining.
        */
       public Builder setJson(
           java.lang.String value) {
@@ -11308,6 +11720,7 @@ public final class FIO {
        * </pre>
        *
        * <code>string json = 1;</code>
+       * @return This builder for chaining.
        */
       public Builder clearJson() {
         
@@ -11321,6 +11734,8 @@ public final class FIO {
        * </pre>
        *
        * <code>string json = 1;</code>
+       * @param value The bytes for json to set.
+       * @return This builder for chaining.
        */
       public Builder setJsonBytes(
           com.google.protobuf.ByteString value) {
@@ -11334,91 +11749,76 @@ public final class FIO {
         return this;
       }
 
-      private java.lang.Object error_ = "";
+      private int error_ = 0;
       /**
        * <pre>
-       * Filled with message upon error
+       * Optional error
        * </pre>
        *
-       * <code>string error = 2;</code>
+       * <code>.TW.Common.Proto.SigningError error = 2;</code>
+       * @return The enum numeric value on the wire for error.
        */
-      public java.lang.String getError() {
-        java.lang.Object ref = error_;
-        if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          error_ = s;
-          return s;
-        } else {
-          return (java.lang.String) ref;
-        }
+      @java.lang.Override public int getErrorValue() {
+        return error_;
       }
       /**
        * <pre>
-       * Filled with message upon error
+       * Optional error
        * </pre>
        *
-       * <code>string error = 2;</code>
+       * <code>.TW.Common.Proto.SigningError error = 2;</code>
+       * @param value The enum numeric value on the wire for error to set.
+       * @return This builder for chaining.
        */
-      public com.google.protobuf.ByteString
-          getErrorBytes() {
-        java.lang.Object ref = error_;
-        if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
-              com.google.protobuf.ByteString.copyFromUtf8(
-                  (java.lang.String) ref);
-          error_ = b;
-          return b;
-        } else {
-          return (com.google.protobuf.ByteString) ref;
-        }
-      }
-      /**
-       * <pre>
-       * Filled with message upon error
-       * </pre>
-       *
-       * <code>string error = 2;</code>
-       */
-      public Builder setError(
-          java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  
+      public Builder setErrorValue(int value) {
+        
         error_ = value;
         onChanged();
         return this;
       }
       /**
        * <pre>
-       * Filled with message upon error
+       * Optional error
        * </pre>
        *
-       * <code>string error = 2;</code>
+       * <code>.TW.Common.Proto.SigningError error = 2;</code>
+       * @return The error.
+       */
+      @java.lang.Override
+      public wallet.core.jni.proto.Common.SigningError getError() {
+        @SuppressWarnings("deprecation")
+        wallet.core.jni.proto.Common.SigningError result = wallet.core.jni.proto.Common.SigningError.valueOf(error_);
+        return result == null ? wallet.core.jni.proto.Common.SigningError.UNRECOGNIZED : result;
+      }
+      /**
+       * <pre>
+       * Optional error
+       * </pre>
+       *
+       * <code>.TW.Common.Proto.SigningError error = 2;</code>
+       * @param value The error to set.
+       * @return This builder for chaining.
+       */
+      public Builder setError(wallet.core.jni.proto.Common.SigningError value) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        
+        error_ = value.getNumber();
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * Optional error
+       * </pre>
+       *
+       * <code>.TW.Common.Proto.SigningError error = 2;</code>
+       * @return This builder for chaining.
        */
       public Builder clearError() {
         
-        error_ = getDefaultInstance().getError();
-        onChanged();
-        return this;
-      }
-      /**
-       * <pre>
-       * Filled with message upon error
-       * </pre>
-       *
-       * <code>string error = 2;</code>
-       */
-      public Builder setErrorBytes(
-          com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  checkByteStringIsUtf8(value);
-        
-        error_ = value;
+        error_ = 0;
         onChanged();
         return this;
       }
@@ -11539,46 +11939,48 @@ public final class FIO {
       descriptor;
   static {
     java.lang.String[] descriptorData = {
-      "\n\tFIO.proto\022\014TW.FIO.Proto\"5\n\rPublicAddre" +
-      "ss\022\023\n\013coin_symbol\030\001 \001(\t\022\017\n\007address\030\002 \001(\t" +
-      "\"\205\001\n\017NewFundsContent\022\034\n\024payee_public_add" +
-      "ress\030\001 \001(\t\022\016\n\006amount\030\002 \001(\t\022\023\n\013coin_symbo" +
-      "l\030\003 \001(\t\022\014\n\004memo\030\004 \001(\t\022\014\n\004hash\030\005 \001(\t\022\023\n\013o" +
-      "ffline_url\030\006 \001(\t\"\364\006\n\006Action\022O\n\034register_" +
-      "fio_address_message\030\001 \001(\0132\'.TW.FIO.Proto" +
-      ".Action.RegisterFioAddressH\000\022E\n\027add_pub_" +
-      "address_message\030\002 \001(\0132\".TW.FIO.Proto.Act" +
-      "ion.AddPubAddressH\000\0229\n\020transfer_message\030" +
-      "\003 \001(\0132\035.TW.FIO.Proto.Action.TransferH\000\022I" +
-      "\n\031renew_fio_address_message\030\004 \001(\0132$.TW.F" +
-      "IO.Proto.Action.RenewFioAddressH\000\022I\n\031new" +
-      "_funds_request_message\030\005 \001(\0132$.TW.FIO.Pr" +
-      "oto.Action.NewFundsRequestH\000\032T\n\022Register" +
-      "FioAddress\022\023\n\013fio_address\030\001 \001(\t\022\034\n\024owner" +
-      "_fio_public_key\030\002 \001(\t\022\013\n\003fee\030\003 \001(\004\032h\n\rAd" +
-      "dPubAddress\022\023\n\013fio_address\030\001 \001(\t\0225\n\020publ" +
-      "ic_addresses\030\002 \003(\0132\033.TW.FIO.Proto.Public" +
-      "Address\022\013\n\003fee\030\003 \001(\004\032A\n\010Transfer\022\030\n\020paye" +
-      "e_public_key\030\001 \001(\t\022\016\n\006amount\030\002 \001(\004\022\013\n\003fe" +
-      "e\030\003 \001(\004\032Q\n\017RenewFioAddress\022\023\n\013fio_addres" +
-      "s\030\001 \001(\t\022\034\n\024owner_fio_public_key\030\002 \001(\t\022\013\n" +
-      "\003fee\030\003 \001(\004\032\231\001\n\017NewFundsRequest\022\026\n\016payer_" +
-      "fio_name\030\001 \001(\t\022\031\n\021payer_fio_address\030\002 \001(" +
-      "\t\022\026\n\016payee_fio_name\030\003 \001(\t\022.\n\007content\030\004 \001" +
-      "(\0132\035.TW.FIO.Proto.NewFundsContent\022\013\n\003fee" +
-      "\030\005 \001(\004B\017\n\rmessage_oneof\"T\n\013ChainParams\022\020" +
-      "\n\010chain_id\030\001 \001(\014\022\031\n\021head_block_number\030\002 " +
-      "\001(\004\022\030\n\020ref_block_prefix\030\003 \001(\004\"\230\001\n\014Signin" +
-      "gInput\022\016\n\006expiry\030\001 \001(\r\022/\n\014chain_params\030\002" +
-      " \001(\0132\031.TW.FIO.Proto.ChainParams\022\023\n\013priva" +
-      "te_key\030\003 \001(\014\022\014\n\004tpid\030\004 \001(\t\022$\n\006action\030\005 \001" +
-      "(\0132\024.TW.FIO.Proto.Action\",\n\rSigningOutpu" +
-      "t\022\014\n\004json\030\001 \001(\t\022\r\n\005error\030\002 \001(\tB\027\n\025wallet" +
-      ".core.jni.protob\006proto3"
+      "\n\tFIO.proto\022\014TW.FIO.Proto\032\014Common.proto\"" +
+      "5\n\rPublicAddress\022\023\n\013coin_symbol\030\001 \001(\t\022\017\n" +
+      "\007address\030\002 \001(\t\"\205\001\n\017NewFundsContent\022\034\n\024pa" +
+      "yee_public_address\030\001 \001(\t\022\016\n\006amount\030\002 \001(\t" +
+      "\022\023\n\013coin_symbol\030\003 \001(\t\022\014\n\004memo\030\004 \001(\t\022\014\n\004h" +
+      "ash\030\005 \001(\t\022\023\n\013offline_url\030\006 \001(\t\"\364\006\n\006Actio" +
+      "n\022O\n\034register_fio_address_message\030\001 \001(\0132" +
+      "\'.TW.FIO.Proto.Action.RegisterFioAddress" +
+      "H\000\022E\n\027add_pub_address_message\030\002 \001(\0132\".TW" +
+      ".FIO.Proto.Action.AddPubAddressH\000\0229\n\020tra" +
+      "nsfer_message\030\003 \001(\0132\035.TW.FIO.Proto.Actio" +
+      "n.TransferH\000\022I\n\031renew_fio_address_messag" +
+      "e\030\004 \001(\0132$.TW.FIO.Proto.Action.RenewFioAd" +
+      "dressH\000\022I\n\031new_funds_request_message\030\005 \001" +
+      "(\0132$.TW.FIO.Proto.Action.NewFundsRequest" +
+      "H\000\032T\n\022RegisterFioAddress\022\023\n\013fio_address\030" +
+      "\001 \001(\t\022\034\n\024owner_fio_public_key\030\002 \001(\t\022\013\n\003f" +
+      "ee\030\003 \001(\004\032h\n\rAddPubAddress\022\023\n\013fio_address" +
+      "\030\001 \001(\t\0225\n\020public_addresses\030\002 \003(\0132\033.TW.FI" +
+      "O.Proto.PublicAddress\022\013\n\003fee\030\003 \001(\004\032A\n\010Tr" +
+      "ansfer\022\030\n\020payee_public_key\030\001 \001(\t\022\016\n\006amou" +
+      "nt\030\002 \001(\004\022\013\n\003fee\030\003 \001(\004\032Q\n\017RenewFioAddress" +
+      "\022\023\n\013fio_address\030\001 \001(\t\022\034\n\024owner_fio_publi" +
+      "c_key\030\002 \001(\t\022\013\n\003fee\030\003 \001(\004\032\231\001\n\017NewFundsReq" +
+      "uest\022\026\n\016payer_fio_name\030\001 \001(\t\022\031\n\021payer_fi" +
+      "o_address\030\002 \001(\t\022\026\n\016payee_fio_name\030\003 \001(\t\022" +
+      ".\n\007content\030\004 \001(\0132\035.TW.FIO.Proto.NewFunds" +
+      "Content\022\013\n\003fee\030\005 \001(\004B\017\n\rmessage_oneof\"T\n" +
+      "\013ChainParams\022\020\n\010chain_id\030\001 \001(\014\022\031\n\021head_b" +
+      "lock_number\030\002 \001(\004\022\030\n\020ref_block_prefix\030\003 " +
+      "\001(\004\"\230\001\n\014SigningInput\022\016\n\006expiry\030\001 \001(\r\022/\n\014" +
+      "chain_params\030\002 \001(\0132\031.TW.FIO.Proto.ChainP" +
+      "arams\022\023\n\013private_key\030\003 \001(\014\022\014\n\004tpid\030\004 \001(\t" +
+      "\022$\n\006action\030\005 \001(\0132\024.TW.FIO.Proto.Action\"K" +
+      "\n\rSigningOutput\022\014\n\004json\030\001 \001(\t\022,\n\005error\030\002" +
+      " \001(\0162\035.TW.Common.Proto.SigningErrorB\027\n\025w" +
+      "allet.core.jni.protob\006proto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
         new com.google.protobuf.Descriptors.FileDescriptor[] {
+          wallet.core.jni.proto.Common.getDescriptor(),
         });
     internal_static_TW_FIO_Proto_PublicAddress_descriptor =
       getDescriptor().getMessageTypes().get(0);
@@ -11646,6 +12048,7 @@ public final class FIO {
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_TW_FIO_Proto_SigningOutput_descriptor,
         new java.lang.String[] { "Json", "Error", });
+    wallet.core.jni.proto.Common.getDescriptor();
   }
 
   // @@protoc_insertion_point(outer_class_scope)
