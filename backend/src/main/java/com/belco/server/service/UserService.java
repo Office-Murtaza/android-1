@@ -308,10 +308,10 @@ public class UserService implements UserDetailsService {
             user.setStatus(verificationReview.getStatus());
             save(user);
 
-            if (dto.isAutoConfirm()) {
+            //if (dto.isAutoConfirm()) {
                 dto.setId(verificationReview.getId());
                 updateVerification(user.getId(), dto);
-            }
+            //}
 
             return Response.ok(verificationReview != null);
         } catch (Exception e) {
