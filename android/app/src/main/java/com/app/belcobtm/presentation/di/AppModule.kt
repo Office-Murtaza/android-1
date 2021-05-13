@@ -84,18 +84,10 @@ val viewModelModule = module {
     viewModel { VerificationVipViewModel(get()) }
     viewModel { SwapViewModel(get(), get(), get(), get(), get(), get()) }
     viewModel { WalletsViewModel(get(), get()) }
-    viewModel { (coinCode: String) ->
-        TradeRecallViewModel(coinCode, get(), get(), get(), get(), get())
-    }
-    viewModel { (coinCode: String) ->
-        TradeReserveViewModel(coinCode, get(), get(), get(), get(), get(), get(), get())
-    }
-    viewModel {
-        StakingViewModel(get(), get(), get(), get(), get(), get())
-    }
-    viewModel { (phone: String) ->
-        SmsCodeViewModel(phone, get())
-    }
+    viewModel { (coinCode: String) -> TradeRecallViewModel(coinCode, get(), get(), get(), get()) }
+    viewModel { (coinCode: String) -> TradeReserveViewModel(coinCode, get(), get(), get(), get(), get(), get()) }
+    viewModel { StakingViewModel(get(), get(), get(), get(), get()) }
+    viewModel { (phone: String) -> SmsCodeViewModel(phone, get()) }
     viewModel { RecoverSeedViewModel(get()) }
     viewModel { CreateSeedViewModel(get(), get(), get()) }
     viewModel { SettingsViewModel() }
@@ -104,12 +96,8 @@ val viewModelModule = module {
     viewModel { UpdatePasswordViewModel(get()) }
     viewModel { PhoneChangeViewModel(get(), get(), get(), get<PhoneNumberValidator>()) }
     viewModel { AtmViewModel(get()) }
-    viewModel { (txId: String, coinCode: String) ->
-        TransactionDetailsViewModel(txId, coinCode, get(), get())
-    }
-    viewModel {
-        SendGiftViewModel(get(), get(), get(), get(), get())
-    }
+    viewModel { (txId: String, coinCode: String) -> TransactionDetailsViewModel(txId, coinCode, get(), get()) }
+    viewModel { SendGiftViewModel(get(), get(), get(), get(), get()) }
     viewModel { (coinCode: String) -> WithdrawViewModel(coinCode, get(), get(), get(), get()) }
     viewModel { (coinCode: String) -> DepositViewModel(coinCode, get()) }
     viewModel { ContactListViewModel(get(), get<PhoneNumberValidator>(), get()) }

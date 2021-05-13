@@ -8,7 +8,6 @@ import com.app.belcobtm.domain.transaction.interactor.trade.TradeReserveTransact
 import com.app.belcobtm.domain.transaction.interactor.trade.TradeReserveTransactionCreateUseCase
 import com.app.belcobtm.domain.wallet.LocalCoinType
 import com.app.belcobtm.domain.wallet.interactor.GetCoinByCodeUseCase
-import com.app.belcobtm.domain.wallet.interactor.GetFreshCoinUseCase
 import com.app.belcobtm.domain.wallet.item.CoinDataItem
 import com.app.belcobtm.domain.wallet.item.isEthRelatedCoin
 import com.app.belcobtm.presentation.core.coin.AmountCoinValidator
@@ -24,7 +23,6 @@ import kotlinx.coroutines.launch
 class TradeReserveViewModel(
     private val coinCode: String,
     private val getCoinByCodeUseCase: GetCoinByCodeUseCase,
-    private val getCoinUseCace: GetFreshCoinUseCase,
     private val createTransactionUseCase: TradeReserveTransactionCreateUseCase,
     private val completeTransactionUseCase: TradeReserveTransactionCompleteUseCase,
     private val coinLimitsValueProvider: CoinLimitsValueProvider,
@@ -134,8 +132,8 @@ class TradeReserveViewModel(
     }
 
     private fun fetchEtherium() {
-        getCoinUseCace.invoke(
-            params = GetFreshCoinUseCase.Params(LocalCoinType.ETH.name),
+        getCoinByCodeUseCase.invoke(
+            params = LocalCoinType.ETH.name,
             onSuccess = {
                 etheriumCoinDataItem = it
                 _initialLoadLiveData.value = LoadingData.Success(Unit)
