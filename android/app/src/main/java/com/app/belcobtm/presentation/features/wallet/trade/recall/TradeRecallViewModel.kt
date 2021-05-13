@@ -7,7 +7,6 @@ import androidx.lifecycle.viewModelScope
 import com.app.belcobtm.domain.transaction.interactor.trade.TradeRecallTransactionCompleteUseCase
 import com.app.belcobtm.domain.wallet.LocalCoinType
 import com.app.belcobtm.domain.wallet.interactor.GetCoinByCodeUseCase
-import com.app.belcobtm.domain.wallet.interactor.GetFreshCoinUseCase
 import com.app.belcobtm.domain.wallet.item.CoinDataItem
 import com.app.belcobtm.domain.wallet.item.isEthRelatedCoin
 import com.app.belcobtm.presentation.core.coin.CoinCodeProvider
@@ -23,7 +22,6 @@ import kotlinx.coroutines.launch
 class TradeRecallViewModel(
     private val coinCode: String,
     private val getCoinByCodeUseCase: GetCoinByCodeUseCase,
-    private val getCoinDataUseCase: GetFreshCoinUseCase,
     private val completeTransactionUseCase: TradeRecallTransactionCompleteUseCase,
     private val coinCodeProvider: CoinCodeProvider,
     private val coinLimitsValueProvider: CoinLimitsValueProvider
@@ -119,8 +117,8 @@ class TradeRecallViewModel(
     }
 
     private fun fetchEtherium() {
-        getCoinDataUseCase.invoke(
-            params = GetFreshCoinUseCase.Params(LocalCoinType.ETH.name),
+        getCoinByCodeUseCase(
+            params = LocalCoinType.ETH.name,
             onSuccess = {
                 etheriumCoinDataItem = it
                 _initialLoadLiveData.value = LoadingData.Success(Unit)
