@@ -4,6 +4,6 @@ import com.app.belcobtm.data.rest.settings.request.VerificationBlankRequest.Comp
 
 data class VipVerificationRequest(
     val snn: String,
-    val file: String,
-    val tierId: Int = VIP_VERIFICATION
+    val ssnFilename: String,
+    val tier: Int = VIP_VERIFICATION
 )

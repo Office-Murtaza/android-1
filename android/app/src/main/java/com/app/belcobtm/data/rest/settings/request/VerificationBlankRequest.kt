@@ -1,8 +1,8 @@
 package com.app.belcobtm.data.rest.settings.request
 
 data class VerificationBlankRequest(
-    val file: String,
-    val idNumber: String,
+    val idCardNumberFilename: String,
+    val idCardNumber: String,
     val firstName: String,
     val lastName: String,
     val address: String,
@@ -10,7 +10,7 @@ data class VerificationBlankRequest(
     val country: String,
     val province: String,
     val zipCode: String,
-    val tierId: Int = VERIFICATION
+    val tier: Int = VERIFICATION
 ) {
     companion object {
         const val VERIFICATION = 1
