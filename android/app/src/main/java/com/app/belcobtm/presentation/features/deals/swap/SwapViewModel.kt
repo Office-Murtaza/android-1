@@ -81,26 +81,24 @@ class SwapViewModel(
     fun fetchInitialData() {
         viewModelScope.launch {
             _initLoadingData.value = LoadingData.Loading(Unit)
-            val allCoins = accountDao.getItemList().orEmpty().filter(AccountEntity::isEnabled)
-            if (allCoins.isNotEmpty()) {
-                getCoinListUseCase(
-                    params = Unit,
-                    onSuccess = { coinsDataList ->
-                        originCoinsData.clear()
-                        originCoinsData.addAll(coinsDataList)
-                        _initLoadingData.value = LoadingData.Success(Unit)
-                        if (originCoinsData.size >= 2) {
-                            // move to next step
-                            updateCoins(originCoinsData[0], originCoinsData[1])
-                        } else {
-                            _initLoadingData.value = LoadingData.Error(Failure.OperationCannotBePerformed)
-                        }
-                    },
-                    onError = { _initLoadingData.value = LoadingData.Error(Failure.ServerError()) }
-                )
-            } else {
-                _initLoadingData.value = LoadingData.Error(Failure.ServerError())
-            }
+            val allCoins = accountDao.getItemList().orEmpty()
+                .filter(AccountEntity::isEnabled)
+                .associateBy { it.type.name }
+            getCoinListUseCase(
+                params = Unit,
+                onSuccess = { coinsDataList ->
+                    originCoinsData.clear()
+                    originCoinsData.addAll(coinsDataList.filter { allCoins[it.code] != null })
+                    _initLoadingData.value = LoadingData.Success(Unit)
+                    if (originCoinsData.size >= 2) {
+                        // move to next step
+                        updateCoins(originCoinsData[0], originCoinsData[1])
+                    } else {
+                        _initLoadingData.value = LoadingData.Error(Failure.OperationCannotBePerformed)
+                    }
+                },
+                onError = { _initLoadingData.value = LoadingData.Error(it) }
+            )
         }
     }
 
