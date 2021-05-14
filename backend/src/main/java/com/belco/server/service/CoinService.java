@@ -181,9 +181,8 @@ public class CoinService {
         return CompletableFuture.supplyAsync(() -> {
             CoinEnum coin = CoinEnum.valueOf(userCoin.getCoin().getCode());
 
-            Integer scale = coin.getCoinEntity().getScale();
             BigDecimal coinPrice = coin.getPrice();
-            BigDecimal coinBalance = coin.getBalance(userCoin.getAddress()).setScale(scale, BigDecimal.ROUND_DOWN).stripTrailingZeros();
+            BigDecimal coinBalance = coin.getBalance(userCoin.getAddress());
             BigDecimal coinFiatBalance = Util.format(coinBalance.multiply(coinPrice), 3);
             BigDecimal reservedBalance = userCoin.getReservedBalance().stripTrailingZeros();
             BigDecimal reservedFiatBalance = Util.format(reservedBalance.multiply(coinPrice), 3);
