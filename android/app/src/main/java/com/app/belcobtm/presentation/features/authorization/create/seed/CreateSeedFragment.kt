@@ -2,14 +2,15 @@ package com.app.belcobtm.presentation.features.authorization.create.seed
 
 import android.content.ClipData
 import android.content.ClipboardManager
+import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.os.bundleOf
-import androidx.core.view.children
 import androidx.lifecycle.Observer
+import androidx.lifecycle.observe
 import androidx.navigation.fragment.navArgs
 import com.app.belcobtm.R
 import com.app.belcobtm.databinding.FragmentCreateSeedBinding
@@ -18,6 +19,7 @@ import com.app.belcobtm.presentation.core.extensions.show
 import com.app.belcobtm.presentation.core.helper.AlertHelper
 import com.app.belcobtm.presentation.core.helper.ClipBoardHelper
 import com.app.belcobtm.presentation.core.ui.fragment.BaseFragment
+import com.app.belcobtm.presentation.features.authorization.recover.seed.SeedWatcher
 import com.app.belcobtm.presentation.features.pin.code.PinCodeFragment
 import com.app.belcobtm.presentation.features.sms.code.SmsCodeFragment
 import org.koin.android.ext.android.inject
@@ -33,7 +35,6 @@ class CreateSeedFragment : BaseFragment<FragmentCreateSeedBinding>() {
         goBack()
     }
     override val retryListener: View.OnClickListener = View.OnClickListener { createWallet() }
-    private var seedPhrase = ""
 
     override fun FragmentCreateSeedBinding.initViews() {
         setToolbarTitle(
@@ -55,9 +56,6 @@ class CreateSeedFragment : BaseFragment<FragmentCreateSeedBinding>() {
             showBottomMenu()
             generateButtonView.hide()
             pasteButtonView.hide()
-            args.seed?.run {
-                showSeed(this)
-            }
         } else {
             generateButtonView.show()
             pasteButtonView.show()
@@ -65,8 +63,9 @@ class CreateSeedFragment : BaseFragment<FragmentCreateSeedBinding>() {
     }
 
     override fun FragmentCreateSeedBinding.initListeners() {
+        seedView.addTextChangedListener(SeedWatcher(requireContext()))
         copyButtonView.setOnClickListener {
-            copyToClipboard(seedPhrase)
+            copyToClipboard(seedView.text.toString())
         }
         generateButtonView.setOnClickListener {
             viewModel.createSeed()
@@ -93,31 +92,19 @@ class CreateSeedFragment : BaseFragment<FragmentCreateSeedBinding>() {
                 bundleOf(PinCodeFragment.TAG_PIN_MODE to PinCodeFragment.KEY_PIN_MODE_CREATE)
             )
         })
+        viewModel.invalidSeedErrorMessage.observe(viewLifecycleOwner) { messageRes ->
+            messageRes?.let(::showSnackBar)
+        }
     }
 
     private fun showSeed(seedPhrase: String) {
-        this.seedPhrase = seedPhrase
-        val wordList: List<String> = seedPhrase
-            .replace(CHAR_NEXT_LINE, CHAR_SPACE)
-            .splitToSequence(CHAR_SPACE)
-            .filter { it.isNotEmpty() }
-            .toList()
+        binding.seedView.setText(seedPhrase)
+        binding.seedView.setSelection(seedPhrase.length)
+    }
 
-        binding.word1.text = wordList[0]
-        binding.word2.text = wordList[1]
-        binding.word3.text = wordList[2]
-        binding.word4.text = wordList[3]
-        binding.word5.text = wordList[4]
-        binding.word6.text = wordList[5]
-        binding.word7.text = wordList[6]
-        binding.word8.text = wordList[7]
-        binding.word9.text = wordList[8]
-        binding.word10.text = wordList[9]
-        binding.word11.text = wordList[10]
-        binding.word12.text = wordList[11]
-        binding.chipGroupView.children.forEach {
-            it.show()
-        }
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        args.seed?.takeIf { args.mode == MODE_SETTINGS }?.let(::showSeed)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean = if (item.itemId == android.R.id.home) {
@@ -166,6 +153,7 @@ class CreateSeedFragment : BaseFragment<FragmentCreateSeedBinding>() {
 
     private fun createWallet() {
         viewModel.createWallet(
+            binding.seedView.text.toString(),
             requireArguments().getString(SmsCodeFragment.TAG_PHONE, ""),
             requireArguments().getString(TAG_PASSWORD, "")
         )

@@ -6,7 +6,7 @@ import android.text.Spanned
 import android.text.TextWatcher
 import androidx.core.text.getSpans
 
-class RecoverSeedWatcher(private val context: Context) : TextWatcher {
+class SeedWatcher(private val context: Context) : TextWatcher {
     private var start: Int = 0
     private var end: Int = 0
     private var before: Int = 0
