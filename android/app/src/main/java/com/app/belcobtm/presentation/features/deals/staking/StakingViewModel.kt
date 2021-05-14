@@ -11,7 +11,6 @@ import com.app.belcobtm.domain.transaction.interactor.StakeWithdrawUseCase
 import com.app.belcobtm.domain.transaction.item.StakeDetailsDataItem
 import com.app.belcobtm.domain.wallet.LocalCoinType
 import com.app.belcobtm.domain.wallet.interactor.GetCoinByCodeUseCase
-import com.app.belcobtm.domain.wallet.interactor.GetFreshCoinUseCase
 import com.app.belcobtm.domain.wallet.item.CoinDataItem
 import com.app.belcobtm.presentation.core.DateFormat
 import com.app.belcobtm.presentation.core.SingleLiveData
@@ -21,7 +20,6 @@ import kotlinx.coroutines.launch
 
 class StakingViewModel(
     private val getCoinByCodeUseCase: GetCoinByCodeUseCase,
-    private val getFreshCoinUseCase: GetFreshCoinUseCase,
     private val stakeCreateUseCase: StakeCreateUseCase,
     private val stakeCancelUseCase: StakeCancelUseCase,
     private val stakeWithdrawUseCase: StakeWithdrawUseCase,
@@ -51,8 +49,8 @@ class StakingViewModel(
                 this.coinDataItem = catmCoin
                 // it is necessary to get latest data as we will be checking
                 // balance value to proceess next operations
-                getFreshCoinUseCase(
-                    GetFreshCoinUseCase.Params(LocalCoinType.ETH.name),
+                getCoinByCodeUseCase(
+                    LocalCoinType.ETH.name,
                     onSuccess = { etherium ->
                         etheriumCoinDataItem = etherium
                         loadBaseData()

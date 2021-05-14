@@ -11,7 +11,7 @@ import com.app.belcobtm.domain.Failure
 import com.app.belcobtm.domain.transaction.interactor.CheckXRPAddressActivatedUseCase
 import com.app.belcobtm.domain.transaction.interactor.SwapUseCase
 import com.app.belcobtm.domain.wallet.LocalCoinType
-import com.app.belcobtm.domain.wallet.interactor.GetFreshCoinsUseCase
+import com.app.belcobtm.domain.wallet.interactor.GetCoinListUseCase
 import com.app.belcobtm.domain.wallet.item.CoinDataItem
 import com.app.belcobtm.domain.wallet.item.isEthRelatedCoin
 import com.app.belcobtm.presentation.core.SingleLiveData
@@ -23,7 +23,7 @@ import kotlinx.coroutines.launch
 
 class SwapViewModel(
     private val accountDao: AccountDao,
-    private val getFreshCoinsUseCase: GetFreshCoinsUseCase,
+    private val getCoinListUseCase: GetCoinListUseCase,
     private val amountValidator: AmountCoinValidator,
     private val swapUseCase: SwapUseCase,
     private val checkXRPAddressActivatedUseCase: CheckXRPAddressActivatedUseCase,
@@ -83,9 +83,8 @@ class SwapViewModel(
             _initLoadingData.value = LoadingData.Loading(Unit)
             val allCoins = accountDao.getItemList().orEmpty().filter(AccountEntity::isEnabled)
             if (allCoins.isNotEmpty()) {
-                val coinCodesList = allCoins.map { it.type.name }
-                getFreshCoinsUseCase(
-                    params = GetFreshCoinsUseCase.Params(coinCodesList),
+                getCoinListUseCase(
+                    params = Unit,
                     onSuccess = { coinsDataList ->
                         originCoinsData.clear()
                         originCoinsData.addAll(coinsDataList)

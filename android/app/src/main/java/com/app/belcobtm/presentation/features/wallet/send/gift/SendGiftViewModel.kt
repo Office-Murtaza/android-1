@@ -6,7 +6,7 @@ import com.app.belcobtm.R
 import com.app.belcobtm.data.disk.database.AccountDao
 import com.app.belcobtm.domain.Failure
 import com.app.belcobtm.domain.transaction.interactor.SendGiftTransactionCreateUseCase
-import com.app.belcobtm.domain.wallet.interactor.GetFreshCoinsUseCase
+import com.app.belcobtm.domain.wallet.interactor.GetCoinListUseCase
 import com.app.belcobtm.domain.wallet.item.CoinDataItem
 import com.app.belcobtm.presentation.core.coin.AmountCoinValidator
 import com.app.belcobtm.presentation.core.coin.CoinLimitsValueProvider
@@ -17,7 +17,7 @@ import kotlinx.coroutines.launch
 
 class SendGiftViewModel(
     private val transactionCreateUseCase: SendGiftTransactionCreateUseCase,
-    private val getFreshCoinsUseCase: GetFreshCoinsUseCase,
+    private val getCoinListUseCase: GetCoinListUseCase,
     private val accountDao: AccountDao,
     private val coinLimitsValueProvider: CoinLimitsValueProvider,
     private val amountCoinValidator: AmountCoinValidator
@@ -79,9 +79,8 @@ class SendGiftViewModel(
             _initialLoadingData.value = LoadingData.Loading(Unit)
             val allCoins = accountDao.getItemList().orEmpty()
             if (allCoins.isNotEmpty()) {
-                val coinCodesList = allCoins.map { it.type.name }
-                getFreshCoinsUseCase(
-                    params = GetFreshCoinsUseCase.Params(coinCodesList),
+                getCoinListUseCase(
+                    params = Unit,
                     onSuccess = { coinsDataList ->
                         coinList = coinsDataList
                         val coin = coinList.firstOrNull()
