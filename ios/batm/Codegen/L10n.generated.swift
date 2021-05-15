@@ -771,6 +771,12 @@ extension L.P2p.Filter {
     static let title = "p2p.filter.price.title"
   }
 
+  struct Range {
+    static let distance = "p2p.filter.range.distance"
+    static let max = "p2p.filter.range.max"
+    static let min = "p2p.filter.range.min"
+  }
+
   struct Sort {
   }
 }
@@ -816,6 +822,10 @@ extension L.P2p.No.Open {
 }
 extension L.P2p.Order {
 
+  struct Create {
+    static let price = "p2p.order.create.price"
+  }
+
   struct Details {
     static let status = "p2p.order.details.status"
     static let title = "p2p.order.details.title"
@@ -829,6 +839,16 @@ extension L.P2p.Order {
     static let paid = "p2p.order.status.paid"
     static let released = "p2p.order.status.released"
     static let solved = "p2p.order.status.solved"
+  }
+}
+extension L.P2p.Order.Create {
+
+  struct Fiat {
+    static let error = "p2p.order.create.fiat.error"
+  }
+
+  struct Reserved {
+    static let error = "p2p.order.create.reserved.error"
   }
 }
 extension L.P2p.Order.Details {
@@ -896,6 +916,9 @@ extension L.P2p.Trade {
     static let message = "p2p.trade.canceled.message"
   }
 
+  struct Create {
+  }
+
   struct Created {
     static let message = "p2p.trade.created.message"
   }
@@ -912,6 +935,12 @@ extension L.P2p.Trade {
 
   struct Updated {
     static let message = "p2p.trade.updated.message"
+  }
+}
+extension L.P2p.Trade.Create {
+
+  struct Vc {
+    static let title = "p2p.trade.create.vc.title"
   }
 }
 extension L.P2p.Trade.Details {

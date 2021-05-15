@@ -57,6 +57,11 @@ class P2PDistanceRangeView: UIView {
         toField.update(attributedText: toAttrString)
     }
   
+    func update(isUserInteractionEnabled: Bool, keyboardType: UIKeyboardType) {
+        fromField.update(userInteractionEnabled: true, keyboardType: keyboardType)
+        toField.update(userInteractionEnabled: true, keyboardType: keyboardType)
+    }
+    
   func setInitFieldsValues(from: CGFloat, to: CGFloat) {
     let (fromAttrString, toAttrString) = transformToAttributedRange(from: from, to: to)
     fromField.update(attributedText: fromAttrString)
@@ -114,8 +119,8 @@ class P2PDistanceRangeView: UIView {
     
     func setupUI() {
         
-      fromField.setup(placeholder: localize(L.P2p.Range.from), attributedText: NSAttributedString(), userInteractionEnabled: false)
-      toField.setup(placeholder: localize(L.P2p.Range.to), attributedText: NSAttributedString(), userInteractionEnabled: false)
+        fromField.setup(placeholder: localize(L.P2p.Filter.Range.min), attributedText: NSAttributedString(), userInteractionEnabled: false)
+        toField.setup(placeholder: localize(L.P2p.Filter.Range.max), attributedText: NSAttributedString(), userInteractionEnabled: false)
         
         addSubviews([
             distanceSlider,
@@ -159,7 +164,21 @@ class P2PDistanceRangeView: UIView {
         distanceSlider.maximumValue = range.last ?? 1
         distanceSlider.snapStepSize = stepSize
         distanceSlider.value = range
-        self.measureString = measureString
+        fromField.update(measurmentValue: measureString)
+        fromField.update { [unowned self] (value) in
+            guard let floatValue = Double(value)  else { return }
+            distanceSlider.value = [CGFloat(floatValue), range.last ?? 1]
+            
+        }
+        
+        
+        toField.update(measurmentValue: measureString)
+        
+        toField.update { [unowned self]  (value) in
+            guard let floatValue = Double(value)  else { return }
+            self.distanceSlider.value = [range.first ?? 0, CGFloat(floatValue)]
+        }
+        
         self.isMeasurePosistionLast = isMeasurePosistionLast
         let (from, to) = transformToAttributedRange(from: distanceSlider.minimumValue, to: distanceSlider.maximumValue)
         fromField.update(attributedText: from)

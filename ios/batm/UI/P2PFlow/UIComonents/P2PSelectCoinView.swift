@@ -23,7 +23,7 @@ class P2PSelectCoinView: CoinExchangeSwapTextFieldView {
                     feeLabel,
                     priceLabel)
         coinTextField.font = .systemFont(ofSize: 22, weight: .bold)
-        priceLabel.text = "Price"
+        priceLabel.text = localize(L.P2p.Order.Create.price)
     }
     
     override func setupLayout() {

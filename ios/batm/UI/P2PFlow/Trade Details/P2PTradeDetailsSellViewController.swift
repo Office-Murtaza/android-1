@@ -10,8 +10,11 @@ class P2PTradeDetailsSellViewController: P2PTradeDetailsBaseViewController {
   
   private let sellButton = MDCButton.sell
   
-  func setup(trade: Trade, distance: String) {
+    private var reservedBalance: Double = 0
+    
+    func setup(trade: Trade, distance: String, reservedBalance: Double) {
     super.setup(trade: trade)
+        self.reservedBalance = reservedBalance
     guard let makerId = trade.makerPublicId,
           let tradeRate = trade.makerTradingRate,
           let totalTrades = trade.makerTotalTrades else { return }

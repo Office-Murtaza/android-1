@@ -94,6 +94,7 @@
 		05F704852602267600DF3722 /* TransactionTypeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05F704842602267600DF3722 /* TransactionTypeView.swift */; };
 		05F704872602277E00DF3722 /* TransactionStatusView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05F704862602277E00DF3722 /* TransactionStatusView.swift */; };
 		05F7048926022CB700DF3722 /* TransactionDetailsDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05F7048826022CB700DF3722 /* TransactionDetailsDataSource.swift */; };
+		230C9D6726545664003273F0 /* P2PSectionHeaderBottomView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 230C9D662654565F003273F0 /* P2PSectionHeaderBottomView.swift */; };
 		2312D7CF25FEA39A0071B2F8 /* GeolocatoinService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2312D7CE25FEA39A0071B2F8 /* GeolocatoinService.swift */; };
 		2318A08A25D1C16B006F3EC4 /* LocalAuthentication.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2318A08925D1C16B006F3EC4 /* LocalAuthentication.framework */; };
 		2318A08C25D1C2A9006F3EC4 /* LAContext+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2318A08B25D1C2A9006F3EC4 /* LAContext+Extensions.swift */; };
@@ -174,6 +175,8 @@
 		23BC176B264FAC9F002A1214 /* P2PCreateOrderDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23BC176A264FAC9F002A1214 /* P2PCreateOrderDataModel.swift */; };
 		23BC176F264FB210002A1214 /* P2PCreateOrderPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23BC176E264FB210002A1214 /* P2PCreateOrderPresenter.swift */; };
 		23BC1775264FB3E7002A1214 /* P2PCreateOrderModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23BC1774264FB3E7002A1214 /* P2PCreateOrderModel.swift */; };
+		23BC177F26500058002A1214 /* Decimal+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23BC177E26500058002A1214 /* Decimal+Extensions.swift */; };
+		23BC1783265006B1002A1214 /* P2PInlineErrorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23BC1782265006B1002A1214 /* P2PInlineErrorView.swift */; };
 		23BF987D25A3A12D00119C30 /* TransferSelectReceiverViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23BF987C25A3A12D00119C30 /* TransferSelectReceiverViewController.swift */; };
 		23BF988125A3A15100119C30 /* TransferSelectReceiverPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23BF988025A3A15100119C30 /* TransferSelectReceiverPresenter.swift */; };
 		23BF988925A3A18D00119C30 /* TransferSelectReceiverAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23BF988825A3A18D00119C30 /* TransferSelectReceiverAssembly.swift */; };
@@ -770,6 +773,7 @@
 		05F704862602277E00DF3722 /* TransactionStatusView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionStatusView.swift; sourceTree = "<group>"; };
 		05F7048826022CB700DF3722 /* TransactionDetailsDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionDetailsDataSource.swift; sourceTree = "<group>"; };
 		142D5BA6DA2741657FE02671 /* Pods_batmTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_batmTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		230C9D662654565F003273F0 /* P2PSectionHeaderBottomView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = P2PSectionHeaderBottomView.swift; sourceTree = "<group>"; };
 		2312D7CE25FEA39A0071B2F8 /* GeolocatoinService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeolocatoinService.swift; sourceTree = "<group>"; };
 		2318A08925D1C16B006F3EC4 /* LocalAuthentication.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = LocalAuthentication.framework; path = System/Library/Frameworks/LocalAuthentication.framework; sourceTree = SDKROOT; };
 		2318A08B25D1C2A9006F3EC4 /* LAContext+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LAContext+Extensions.swift"; sourceTree = "<group>"; };
@@ -850,6 +854,8 @@
 		23BC176A264FAC9F002A1214 /* P2PCreateOrderDataModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = P2PCreateOrderDataModel.swift; sourceTree = "<group>"; };
 		23BC176E264FB210002A1214 /* P2PCreateOrderPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = P2PCreateOrderPresenter.swift; sourceTree = "<group>"; };
 		23BC1774264FB3E7002A1214 /* P2PCreateOrderModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = P2PCreateOrderModel.swift; sourceTree = "<group>"; };
+		23BC177E26500058002A1214 /* Decimal+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Decimal+Extensions.swift"; sourceTree = "<group>"; };
+		23BC1782265006B1002A1214 /* P2PInlineErrorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = P2PInlineErrorView.swift; sourceTree = "<group>"; };
 		23BF987C25A3A12D00119C30 /* TransferSelectReceiverViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransferSelectReceiverViewController.swift; sourceTree = "<group>"; };
 		23BF988025A3A15100119C30 /* TransferSelectReceiverPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransferSelectReceiverPresenter.swift; sourceTree = "<group>"; };
 		23BF988825A3A18D00119C30 /* TransferSelectReceiverAssembly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransferSelectReceiverAssembly.swift; sourceTree = "<group>"; };
@@ -1730,6 +1736,7 @@
 		23A6B759263B514F00DE2738 /* UIComonents */ = {
 			isa = PBXGroup;
 			children = (
+				230C9D662654565F003273F0 /* P2PSectionHeaderBottomView.swift */,
 				23A6B75A263B514F00DE2738 /* P2PFloatingButton.swift */,
 				23A6B75B263B514F00DE2738 /* P2POutlinedTextField.swift */,
 				23A6B75C263B514F00DE2738 /* P2PTagContainerView.swift */,
@@ -1809,6 +1816,7 @@
 				23BC176A264FAC9F002A1214 /* P2PCreateOrderDataModel.swift */,
 				23BC176E264FB210002A1214 /* P2PCreateOrderPresenter.swift */,
 				23BC1774264FB3E7002A1214 /* P2PCreateOrderModel.swift */,
+				23BC1782265006B1002A1214 /* P2PInlineErrorView.swift */,
 			);
 			path = "Create Order Popup";
 			sourceTree = "<group>";
@@ -2799,6 +2807,7 @@
 				23F4138925AA55DD006853CB /* Contact+Extensions.swift */,
 				0503565125B73AB100FCA326 /* Double+Extension.swift */,
 				2318A08B25D1C2A9006F3EC4 /* LAContext+Extensions.swift */,
+				23BC177E26500058002A1214 /* Decimal+Extensions.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -3880,6 +3889,7 @@
 				DBBF29A822D3872D00A5DE6A /* CoinsBalance+Mapping.swift in Sources */,
 				DB2C971D23449109006E7D61 /* CoinSendGiftPresenter.swift in Sources */,
 				23BF989A25A4480700119C30 /* ContactsManager.swift in Sources */,
+				23BC177F26500058002A1214 /* Decimal+Extensions.swift in Sources */,
 				2312D7CF25FEA39A0071B2F8 /* GeolocatoinService.swift in Sources */,
 				DB9616B822C63E270078E92D /* Account.swift in Sources */,
 				DB49463822DF274B001EE56E /* ManageWalletsTableViewDataSource.swift in Sources */,
@@ -3947,6 +3957,8 @@
 				055A9B7A257552D000A8E8F1 /* DealsFlow+Dependencies.swift in Sources */,
 				052B79BA260A64D000A0D636 /* BuySellTradeDetailsFormView.swift in Sources */,
 				05A7C4FC258815B70039E0B5 /* CreateWalletResponse.swift in Sources */,
+				23BC1783265006B1002A1214 /* P2PInlineErrorView.swift in Sources */,
+				DB350532248E7C170074DCF8 /* BuySellTradeDetailsFormView.swift in Sources */,
 				DBEE1371230E80680020E211 /* Transactions+Mapping.swift in Sources */,
 				DB8D408322C3DBC000D5FBD0 /* CreateWalletPresenter.swift in Sources */,
 				DB5185B0231FE68300052229 /* CoinWithdrawAssembly.swift in Sources */,
@@ -4072,6 +4084,7 @@
 				DB9616A522C602CC0078E92D /* SeedPhraseAssembly.swift in Sources */,
 				DBA6843522E42BF70079429E /* BTMTabBarController.swift in Sources */,
 				0522EB61255988310028CD51 /* SupportPresenter.swift in Sources */,
+				230C9D6726545664003273F0 /* P2PSectionHeaderBottomView.swift in Sources */,
 				DB9616A122C5FD1D0078E92D /* SeedPhraseViewController.swift in Sources */,
 				DB66CEB42475AAF300FDB694 /* BuySellTrades+Mapping.swift in Sources */,
 				DBCA52BC232BBDD200483618 /* Utxos.swift in Sources */,
