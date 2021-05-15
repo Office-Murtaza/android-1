@@ -98,6 +98,8 @@ class P2PViewController: ModuleViewController<P2PPresenter>, MDCTabBarDelegate {
             .observeOn(MainScheduler())
             .do { [weak self] (location) in
             self?.buyDataSource.reload(location: location)
+            self?.sellDataSource.reload(location: location)
+            self?.myViewController?.update(location: location)
         }
             .subscribe()
             .disposed(by: disposeBag)

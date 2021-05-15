@@ -816,6 +816,11 @@ extension L.P2p.No.Open {
 }
 extension L.P2p.Order {
 
+  struct Details {
+    static let status = "p2p.order.details.status"
+    static let title = "p2p.order.details.title"
+  }
+
   struct Status {
     static let canceled = "p2p.order.status.canceled"
     static let disputing = "p2p.order.status.disputing"
@@ -824,6 +829,21 @@ extension L.P2p.Order {
     static let paid = "p2p.order.status.paid"
     static let released = "p2p.order.status.released"
     static let solved = "p2p.order.status.solved"
+  }
+}
+extension L.P2p.Order.Details {
+
+  struct My {
+    static let score = "p2p.order.details.my.score"
+  }
+
+  struct Score {
+  }
+}
+extension L.P2p.Order.Details.Score {
+
+  struct From {
+    static let partner = "p2p.order.details.score.from.partner"
   }
 }
 extension L.P2p.Payment {

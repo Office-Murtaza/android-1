@@ -38,6 +38,7 @@ class P2PTradeDetailsBuyViewController: P2PTradeDetailsBaseViewController {
   
   @objc func buyTrade() {
     let controller = P2PCreateOrderPopupViewController()
+    controller.setup(tradePrice: trade?.price ?? 0, platformFee: 3, coinCode: trade?.coin ?? "")
     controller.modalPresentationStyle = .overCurrentContext
     present(controller, animated: true, completion: nil)
   }

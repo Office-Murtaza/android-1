@@ -2,12 +2,19 @@ import UIKit
 import SnapKit
 import MaterialComponents
 
+protocol P2PCreateOrderPopupViewControllerDelegate: AnyObject {
+    func didTapCreateOrder(model: P2PCreateOrderDataModel)
+}
+
 class P2PCreateOrderPopupViewController: UIViewController {
   
   private let containerView = UIView()
   private let orderAmountView = P2PCreateOrderAmountView()
-  
-  
+  private var tradePrice: Double = 0
+    private var platformFee: Double = 0
+  private let presenter = P2PCreateOrderPresenter()
+    private var coinCode = ""
+    
   private let platformFeeTitleLabel: UILabel = {
     let label = UILabel()
     label.font = .systemFont(ofSize: 12)
@@ -31,12 +38,20 @@ class P2PCreateOrderPopupViewController: UIViewController {
   
   override func viewDidLoad() {
     super.viewDidLoad()
+    presenter.output = self
     view.backgroundColor = UIColor.black.withAlphaComponent(0.3)
     orderAmountView.fiatTextField.becomeFirstResponder()
+    orderAmountView.fiatTextField.addTarget(self, action: #selector(textChanged(_:)), for: .editingChanged)
     setupUI()
     setupLayout()
     setupRecognizers()
   }
+    
+    @objc private func textChanged(_ textField: UITextField) {
+       guard let fiatAmount = textField.text else { return }
+       presenter.updatedFiatAmount(fiat: fiatAmount, fee: platformFee, price: tradePrice)
+    }
+    
   
   func setupRecognizers() {
     let tapRecognizer = UITapGestureRecognizer(target: self, action: #selector(hideController))
@@ -71,8 +86,21 @@ class P2PCreateOrderPopupViewController: UIViewController {
     platformFeeTitleLabel.text = localize(L.P2p.Create.Order.platformFee)
     platformFeeValueLabel.text = "0"
     
+    submitButton.addTarget(self, action: #selector(createOrder), for: .touchUpInside)
+    
   }
-  
+    
+    func setup(tradePrice: Double, platformFee: Double, coinCode: String) {
+        self.tradePrice = tradePrice
+        self.platformFee = platformFee
+        self.coinCode = coinCode
+        orderAmountView.cryptoAmountValue.text = "0 \(coinCode)"
+    }
+
+    @objc private func createOrder() {
+//        let model = P2PCreateOrderModel(tradeId: <#T##String#>, price: <#T##Double#>, cryptoAmount: <#T##Double#>, fiatAmount: <#T##Double#>)
+    }
+
   func setupLayout() {
     orderAmountView.snp.makeConstraints {
       $0.top.left.right.equalToSuperview()
@@ -99,4 +127,11 @@ class P2PCreateOrderPopupViewController: UIViewController {
     
   }
   
+}
+
+extension P2PCreateOrderPopupViewController: P2PCreateOrderPresenterOutput {
+    func updated(crypto: String, fee: String) {
+        orderAmountView.cryptoAmountValue.text = "\(crypto) \(coinCode)"
+        platformFeeValueLabel.text = fee
+    }
 }

@@ -3,6 +3,7 @@ import RxSwift
 import RxCocoa
 import SnapKit
 import MaterialComponents
+import CoreLocation
 
 protocol MyViewControllerDelegate: AnyObject {
   func didTapCreateTrade()
@@ -58,7 +59,7 @@ class MyViewController: UIViewController, MDCTabBarDelegate {
     let myTrades = trades.trades.filter { $0.makerUserId == userId }
     let myOrders = trades.orders.filter { $0.makerUserId == userId }
     myTradesViewController.update(trades: myTrades)
-    openOrdersViewController.update(orders: myOrders)
+    openOrdersViewController.update(orders: myOrders, trades: trades)
     let verificationStatus = TradeVerificationStatus(rawValue: trades.makerStatus )
     infoViewController.update(id: trades.makerPublicId,
                               verificationImage: verificationStatus?.image,
@@ -71,6 +72,10 @@ class MyViewController: UIViewController, MDCTabBarDelegate {
     self.balance = balance
     self.myTradesViewController.update(balance: balance)
   }
+    
+    func update(location: CLLocation?) {
+        openOrdersViewController.update(location: location)
+    }
   
   private func setupUI() {
     tabBar.delegate = self

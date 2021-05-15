@@ -492,3 +492,8 @@
 "p2p.trade.created.message" = "Trade successfully created";
 "p2p.trade.canceled.message" = "Trade successfully canceled";
 
+"p2p.order.details.title" = "Order Details";
+"p2p.order.details.status" = "Status";
+"p2p.order.details.my.score" = "My Score";
+"p2p.order.details.score.from.partner" = "Score from a partner";
+
