@@ -22,7 +22,7 @@ import org.koin.android.viewmodel.ext.android.viewModel
 
 class RecoverSeedFragment : BaseFragment<FragmentRecoverSeedBinding>() {
     private val viewModel: RecoverSeedViewModel by viewModel()
-    private var watcher: RecoverSeedWatcher? = null
+    private var watcher: SeedWatcher? = null
     private val clipBoardHelper: ClipBoardHelper by inject()
     override val isToolbarEnabled: Boolean = true
     override val isHomeButtonEnabled: Boolean = true
@@ -71,7 +71,7 @@ class RecoverSeedFragment : BaseFragment<FragmentRecoverSeedBinding>() {
 
     @SuppressLint("SetTextI18n")
     override fun FragmentRecoverSeedBinding.initListeners() {
-        watcher = RecoverSeedWatcher(requireContext())
+        watcher = SeedWatcher(requireContext())
         seedView.addTextChangedListener(watcher)
         nextButtonView.setOnClickListener { recoverWallet() }
         pasteButtonView.setOnClickListener {
@@ -92,8 +92,8 @@ class RecoverSeedFragment : BaseFragment<FragmentRecoverSeedBinding>() {
 
     private fun recoverWallet() {
         val wordList: List<String> = binding.seedView.getString()
-            .replace(RecoverSeedWatcher.CHAR_NEXT_LINE, RecoverSeedWatcher.CHAR_SPACE)
-            .splitToSequence(RecoverSeedWatcher.CHAR_SPACE)
+            .replace(SeedWatcher.CHAR_NEXT_LINE, SeedWatcher.CHAR_SPACE)
+            .splitToSequence(SeedWatcher.CHAR_SPACE)
             .filter { it.isNotEmpty() }
             .toList()
 

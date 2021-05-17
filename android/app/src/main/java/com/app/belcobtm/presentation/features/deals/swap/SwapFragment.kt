@@ -21,6 +21,11 @@ import com.app.belcobtm.presentation.features.deals.swap.adapter.CoinDialogAdapt
 import org.koin.android.viewmodel.ext.android.viewModel
 
 class SwapFragment : BaseFragment<FragmentSwapBinding>() {
+
+    companion object {
+        const val MIN_COINS_TO_ENABLE_DIALOG_PICKER = 2
+    }
+
     private val viewModel: SwapViewModel by viewModel()
     private val textWatcher = DoubleTextWatcher(
         maxCharsAfterDotFirst = DoubleTextWatcher.MAX_CHARS_AFTER_DOT_CRYPTO,
@@ -53,9 +58,14 @@ class SwapFragment : BaseFragment<FragmentSwapBinding>() {
     override val isHomeButtonEnabled: Boolean = true
     override var isMenuEnabled: Boolean = true
     override val retryListener: View.OnClickListener = View.OnClickListener {
-        if (viewModel.initLoadingData.value is LoadingData.Error) {
-            // data not yet initialized
-            viewModel.fetchInitialData()
+        val initialLoading = viewModel.initLoadingData.value
+        if (initialLoading is LoadingData.Error) {
+            if (initialLoading.errorType is Failure.OperationCannotBePerformed) {
+                getNavController()?.popBackStack()
+            } else {
+                // data not yet initialized
+                viewModel.fetchInitialData()
+            }
         } else {
             // re submit swap
             viewModel.executeSwap()
@@ -117,11 +127,12 @@ class SwapFragment : BaseFragment<FragmentSwapBinding>() {
                     baseBinding.errorView.errorImageView.setImageResource(R.drawable.ic_screen_state_something_wrong)
                     baseBinding.errorView.errorTitleView.setText(R.string.cannot_perform_swap_error)
                     baseBinding.errorView.errorDescriptionView.setText(R.string.cannot_perform_swap_error_message)
-                    baseBinding.errorView.errorRetryButtonView.toggle(false)
+                    baseBinding.errorView.errorRetryButtonView.setText(R.string.cannot_perform_swap_error_button_title)
                 }
                 else -> {
                     hideKeyboard()
                     baseErrorHandler(it)
+                    baseBinding.errorView.errorRetryButtonView.setText(R.string.retry)
                 }
             }
         })
@@ -135,7 +146,11 @@ class SwapFragment : BaseFragment<FragmentSwapBinding>() {
                 true -> LocalCoinType.ETH.name
                 false -> coinCode
             }
-            sendCoinInputLayout.setCoinData(coinCode, localType.resIcon())
+            sendCoinInputLayout.setCoinData(
+                coinCode,
+                localType.resIcon(),
+                viewModel.originCoinsData.size > MIN_COINS_TO_ENABLE_DIALOG_PICKER
+            )
             sendCoinInputLayout.setHelperText(
                 getString(
                     R.string.swap_screen_balance_formatted,
@@ -155,7 +170,11 @@ class SwapFragment : BaseFragment<FragmentSwapBinding>() {
                 true -> LocalCoinType.ETH.name
                 false -> coinCode
             }
-            receiveCoinInputLayout.setCoinData(coinCode, localType.resIcon())
+            receiveCoinInputLayout.setCoinData(
+                coinCode,
+                localType.resIcon(),
+                viewModel.originCoinsData.size > MIN_COINS_TO_ENABLE_DIALOG_PICKER
+            )
             receiveCoinInputLayout.setHelperText(
                 getString(
                     R.string.swap_screen_balance_formatted,
@@ -224,6 +243,9 @@ class SwapFragment : BaseFragment<FragmentSwapBinding>() {
         val safeContext = context ?: return
         val coinsList = viewModel.originCoinsData.toMutableList().apply {
             removeAll(coinsToExclude)
+        }
+        if (coinsList.isEmpty()) {
+            return
         }
         val adapter = CoinDialogAdapter(safeContext, coinsList)
         AlertDialog.Builder(safeContext)

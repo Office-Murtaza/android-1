@@ -65,12 +65,15 @@ class WalletRepositoryImpl(
 
     override suspend fun getBalanceItem(): Either<Failure, BalanceDataItem> {
         val data = walletObserver.observe().receiveAsFlow()
-            .filterIsInstance<WalletBalance.Balance>()
             .firstOrNull()
-        if (data != null) {
-            return Either.Right(data.data)
+        return when {
+            data != null && data is WalletBalance.Balance ->
+                Either.Right(data.data)
+            data is WalletBalance.Error ->
+                Either.Left(data.error)
+            else ->
+                Either.Left(Failure.ServerError())
         }
-        return Either.Left(Failure.ServerError())
     }
 
     override suspend fun getChart(

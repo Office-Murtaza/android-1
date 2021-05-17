@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/rootView"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -20,128 +19,41 @@
             android:id="@+id/description"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="16dp"
+            android:layout_margin="@dimen/margin_main"
             android:background="@drawable/bg_rounded"
             android:backgroundTint="#ebf4fd"
             android:drawableTop="@drawable/ic_warning"
             android:drawablePadding="8dp"
             android:drawableTint="@color/colorPrimary"
             android:gravity="center"
-            android:padding="16dp"
+            android:padding="@dimen/margin_main"
             android:textColor="@color/colorPrimary"
             android:textSize="16sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <com.app.belcobtm.presentation.features.authorization.create.seed.ChipGroupCenter
-            android:id="@+id/chip_group_view"
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/seed_container_view"
+            style="@style/TextInputLayoutOutline"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginBottom="8dp"
-            android:background="@drawable/seed_phrase_border"
-            android:padding="4dp"
+            android:layout_marginStart="@dimen/margin_main"
+            android:layout_marginTop="@dimen/margin_half"
+            android:layout_marginEnd="@dimen/margin_main"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/description">
 
-            <com.google.android.material.chip.Chip
-                android:id="@+id/word1"
-                style="@style/Button.Chip"
-                android:clickable="false"
-                android:focusable="false"
-                android:visibility="invisible"
-                tools:text="first" />
-
-            <com.google.android.material.chip.Chip
-                android:id="@+id/word2"
-                style="@style/Button.Chip"
-                android:clickable="false"
-                android:focusable="false"
-                android:visibility="invisible"
-                tools:text="second" />
-
-            <com.google.android.material.chip.Chip
-                android:id="@+id/word3"
-                style="@style/Button.Chip"
-                android:clickable="false"
-                android:focusable="false"
-                android:visibility="invisible"
-                tools:text="third" />
-
-            <com.google.android.material.chip.Chip
-                android:id="@+id/word4"
-                style="@style/Button.Chip"
-                android:clickable="false"
-                android:focusable="false"
-                android:visibility="invisible"
-                tools:text="fourth" />
-
-            <com.google.android.material.chip.Chip
-                android:id="@+id/word5"
-                style="@style/Button.Chip"
-                android:clickable="false"
-                android:focusable="false"
-                android:visibility="invisible"
-                tools:text="fifth" />
-
-            <com.google.android.material.chip.Chip
-                android:id="@+id/word6"
-                style="@style/Button.Chip"
-                android:clickable="false"
-                android:focusable="false"
-                android:visibility="invisible"
-                tools:text="sixth" />
-
-            <com.google.android.material.chip.Chip
-                android:id="@+id/word7"
-                style="@style/Button.Chip"
-                android:clickable="false"
-                android:focusable="false"
-                android:visibility="invisible"
-                tools:text="seventh" />
-
-            <com.google.android.material.chip.Chip
-                android:id="@+id/word8"
-                style="@style/Button.Chip"
-                android:visibility="invisible"
-                tools:text="eighth" />
-
-            <com.google.android.material.chip.Chip
-                android:id="@+id/word9"
-                style="@style/Button.Chip"
-                android:clickable="false"
-                android:focusable="false"
-                android:visibility="invisible"
-                tools:text="ninth" />
-
-            <com.google.android.material.chip.Chip
-                android:id="@+id/word10"
-                style="@style/Button.Chip"
-                android:clickable="false"
-                android:focusable="false"
-                android:visibility="invisible"
-                tools:text="tenth" />
-
-            <com.google.android.material.chip.Chip
-                android:id="@+id/word11"
-                style="@style/Button.Chip"
-                android:clickable="false"
-                android:focusable="false"
-                android:visibility="invisible"
-                tools:text="eleventh" />
-
-            <com.google.android.material.chip.Chip
-                android:id="@+id/word12"
-                style="@style/Button.Chip"
-                android:clickable="false"
-                android:focusable="false"
-                android:visibility="invisible"
-                tools:text="twelfth" />
-        </com.app.belcobtm.presentation.features.authorization.create.seed.ChipGroupCenter>
+            <com.app.belcobtm.presentation.core.ui.view.EditTextNoAutoFill
+                android:id="@+id/seed_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="top"
+                android:importantForAutofill="no"
+                android:inputType="textMultiLine|textNoSuggestions"
+                android:minHeight="150dp" />
+        </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/generate_button_view"
@@ -149,13 +61,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="@dimen/margin_main"
             android:text="@string/generate"
             app:icon="@drawable/ic_generate"
             app:iconTint="@color/colorPrimary"
             app:layout_constraintEnd_toStartOf="@+id/paste_button_view"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/chip_group_view" />
+            app:layout_constraintTop_toBottomOf="@+id/seed_container_view" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/paste_button_view"
@@ -163,13 +75,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="@dimen/margin_main"
             android:text="@string/paste"
             app:icon="@drawable/ic_paste"
             app:iconTint="@color/colorPrimary"
             app:layout_constraintEnd_toStartOf="@+id/copy_button_view"
             app:layout_constraintStart_toEndOf="@+id/generate_button_view"
-            app:layout_constraintTop_toBottomOf="@+id/chip_group_view" />
+            app:layout_constraintTop_toBottomOf="@+id/seed_container_view" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/copy_button_view"
@@ -177,13 +89,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="@dimen/margin_main"
             android:text="@string/copy_text"
             app:icon="@drawable/ic_copy"
             app:iconTint="@color/colorPrimary"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/paste_button_view"
-            app:layout_constraintTop_toBottomOf="@+id/chip_group_view" />
+            app:layout_constraintTop_toBottomOf="@+id/seed_container_view" />
 
         <Space
             android:id="@+id/space"

@@ -29,7 +29,7 @@ fun CoinType.verboseValue(): String = when (this) {
     CoinType.BINANCE -> "Binance"
     CoinType.TRON -> "Tron"
     CoinType.XRP -> "Ripple"
-    CoinType.DOGECOIN -> "Doge"
+    CoinType.DOGECOIN -> "Dogecoin"
     CoinType.DASH -> "Dash"
     else -> ""
 }
@@ -42,7 +42,7 @@ fun CoinType.code(): String = when (this) {
     CoinType.BINANCE -> "BNB"
     CoinType.TRON -> "TRX"
     CoinType.XRP -> "XRP"
-    CoinType.DOGECOIN -> "Doge"
+    CoinType.DOGECOIN -> "Dogecoin"
     CoinType.DASH -> "Dash"
     else -> ""
 }
