@@ -30,6 +30,7 @@ public class OrderDetailsDTO {
     private BigDecimal price;
     private BigDecimal cryptoAmount;
     private BigDecimal fiatAmount;
+    private String paymentMethods;
     private String terms;
 
     private Long makerUserId;

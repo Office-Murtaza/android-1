@@ -107,7 +107,7 @@ public class BlockbookService {
             }
         }
 
-        return null;
+        return 0L;
     }
 
     public boolean isTransactionSeenOnBlockchain(CoinType coinType, String txId) {

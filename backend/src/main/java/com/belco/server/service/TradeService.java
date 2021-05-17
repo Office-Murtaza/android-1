@@ -201,6 +201,7 @@ public class TradeService {
             order.setPrice(dto.getPrice());
             order.setCryptoAmount(dto.getCryptoAmount());
             order.setFiatAmount(dto.getFiatAmount());
+            order.setPaymentMethods(trade.getPaymentMethods());
             order.setTerms(trade.getTerms());
             order.setMakerUserId(maker.getId());
             order.setMakerPublicId(maker.getIdentity().getPublicId());
