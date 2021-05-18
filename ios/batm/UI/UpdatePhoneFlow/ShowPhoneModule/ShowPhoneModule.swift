@@ -1,8 +1,8 @@
 import Foundation
 
-protocol ShowPhoneModule: class {
+protocol ShowPhoneModule: AnyObject {
   func setup(with phoneNumber: PhoneNumber)
 }
-protocol ShowPhoneModuleDelegate: class {
+protocol ShowPhoneModuleDelegate: AnyObject {
   func didSelectUpdatePhone(phoneNumber: String)
 }

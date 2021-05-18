@@ -121,6 +121,8 @@ final class CoinStakingViewController: ModuleViewController<CoinStakingPresenter
                     self?.setupCancelView(with: stakeDetails, coinBalance: coinBalance)
                 case .canceled, .withdrawPending:
                     self?.setupWithdrawView(with: stakeDetails, coinBalance: coinBalance)
+                default:
+                    return
                 }
             })
             .disposed(by: disposeBag)
@@ -254,17 +256,18 @@ final class CoinStakingViewController: ModuleViewController<CoinStakingPresenter
     
     private func setupCancelView(with stakeDetails: StakeDetails, coinBalance: CoinBalance) {
         let rewardAmount = String(format: localize(L.CoinStaking.Header.Reward.value),
-                                  "\(stakeDetails.rewardAmount?.formatted() ?? "0") \(coinBalance.type.code)",
-                                  "\(stakeDetails.rewardPercent?.formatted() ?? "0")%")
+                                  "\(stakeDetails.rewardAmount.formatted() ?? "0") \(coinBalance.type.code)",
+                                  "\(stakeDetails.rewardPercent)%")
         
-        formView.configureStakeAmount(with: "\(stakeDetails.amount?.formatted() ?? "0")")
+        
+        formView.configureStakeAmount(with: "\(stakeDetails.cryptoAmount?.formatted() ?? "0")")
         
         stakingInfoView.configureRightView(with: localize(L.CoinStaking.Header.createdDate),
                                            value: stakeDetails.createTimestamp)
         
         cancelInfoView.configureRightView(with: localize(L.CoinStaking.Header.Duration.title),
                                           value: String(format: localize(L.CoinStaking.Header.Duration.value),
-                                                        stakeDetails.duration ?? 0))
+                                                        stakeDetails.duration))
         
         rewardsInfoView.configureLeftView(with: localize(L.CoinStaking.Header.Reward.title),
                                           value: rewardAmount,
@@ -275,9 +278,10 @@ final class CoinStakingViewController: ModuleViewController<CoinStakingPresenter
     
     private func setupWithdrawView(with stakeDetails: StakeDetails, coinBalance: CoinBalance) {
         let rewardAmount = String(format: localize(L.CoinStaking.Header.Reward.value),
-                                  "\(stakeDetails.rewardAmount?.formatted() ?? "0") \(coinBalance.type.code)",
-                                  "\(stakeDetails.rewardPercent?.formatted() ?? "0")%")
-        formView.configureStakeAmount(with: "\(stakeDetails.amount?.formatted() ?? "0")")
+                                  "\(stakeDetails.rewardAmount.formatted() ?? "0") \(coinBalance.type.code)",
+                                  "\(stakeDetails.rewardPercent)%")
+        formView.configureStakeAmount(with: "\(stakeDetails.cryptoAmount?.formatted() ?? "0")")
+        
         
         stakingInfoView.configureRightView(with: localize(L.CoinStaking.Header.createdDate),
                                            value: stakeDetails.createTimestamp)
@@ -291,10 +295,10 @@ final class CoinStakingViewController: ModuleViewController<CoinStakingPresenter
         
         rewardsInfoView.configureRightView(with: localize(L.CoinStaking.Header.Duration.title),
                                            value: String(format: localize(L.CoinStaking.Header.Duration.value),
-                                                         stakeDetails.duration ?? 0))
+                                                         stakeDetails.duration))
         
         withdrawView.configure(with: UIImage(named: "schedule"),
                                description: String(format: localize(L.CoinStaking.WithdrawView.description),
-                                                   stakeDetails.tillWithdrawal ?? 0))
+                                                   stakeDetails.tillWithdraw))
     }
 }

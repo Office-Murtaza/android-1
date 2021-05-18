@@ -1,59 +1,47 @@
 import RxFlow
 
-protocol TradesFlowControllerDelegate: class {
-  func didFinishTradesFlow()
+protocol TradesFlowControllerDelegate: AnyObject {
+    func didFinishTradesFlow()
 }
 
 class TradesFlowController: FlowController {
-  
-  weak var delegate: TradesFlowControllerDelegate?
-  
+    weak var delegate: TradesFlowControllerDelegate?
 }
 
 extension TradesFlowController: TradesModuleDelegate {
-  
-  func didFinishTrades() {
-    delegate?.didFinishTradesFlow()
-  }
-  
-  func showBuySellTradeDetails(coinBalance: CoinBalance, trade: BuySellTrade, type: TradeType) {
-    step.accept(TradesFlow.Steps.buySellTradeDetails(coinBalance, trade, type))
-  }
-  
-  func showCreateEditTrade(coinBalance: CoinBalance) {
-    step.accept(TradesFlow.Steps.createEditTrade(coinBalance))
-  }
-  
-  func showReserve(coin: BTMCoin, coinBalances: [CoinBalance], coinDetails: CoinDetails) {
-    step.accept(TradesFlow.Steps.reserve(coin, coinBalances, coinDetails))
-  }
-  
-  func showRecall(coin: BTMCoin, coinBalances: [CoinBalance], coinDetails: CoinDetails) {
-    step.accept(TradesFlow.Steps.recall(coin, coinBalances, coinDetails))
-  }
-  
+    func didFinishTrades() {
+        delegate?.didFinishTradesFlow()
+    }
+    
+    func showBuySellTradeDetails(coinBalance: CoinBalance, trade: BuySellTrade, type: TradeType) {
+        step.accept(TradesFlow.Steps.buySellTradeDetails(coinBalance, trade, type))
+    }
+    
+    func showCreateEditTrade(coinBalance: CoinBalance) {
+        step.accept(TradesFlow.Steps.createEditTrade(coinBalance))
+    }
 }
 
 extension TradesFlowController: BuySellTradeDetailsModuleDelegate {
-  func didFinishBuySellTradeDetails() {
-    step.accept(TradesFlow.Steps.pop)
-  }
+    func didFinishBuySellTradeDetails() {
+        step.accept(TradesFlow.Steps.pop)
+    }
 }
 
 extension TradesFlowController: CreateEditTradeModuleDelegate {
-  func didFinishCreateEditTrade() {
-    step.accept(TradesFlow.Steps.pop)
-  }
+    func didFinishCreateEditTrade() {
+        step.accept(TradesFlow.Steps.pop)
+    }
 }
 
 extension TradesFlowController: ReserveModuleDelegate {
-    func didFinishReserve(with transactionResult: String) {
+    func didFinishReserve(with transactionResult: String, transactionDetails: TransactionDetails?) {
         step.accept(TradesFlow.Steps.pop)
     }
 }
 
 extension TradesFlowController: RecallModuleDelegate {
-    func didFinishRecall(with transactionResult: String) {
+    func didFinishRecall(with transactionResult: String, transactionDetails: TransactionDetails?) {
         step.accept(TradesFlow.Steps.pop)
     }
 }

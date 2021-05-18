@@ -198,8 +198,8 @@ class CoinExchangeSwapTextFieldView: UIView, UIPickerViewDataSource, HasDisposeB
         let cryptoAmount = useReserved ? coinBalance.reservedBalance : coinBalance.balance
         let fiatAmount = useReserved ? coinBalance.reservedFiatBalance : coinBalance.fiatBalance
         
-        configure(cryptoAmount: cryptoAmount, fiatAmount: fiatAmount,txFee: coinDetails.txFee, type: coinBalance.type, weighted: weighted)
-        configureFee(fee: coinDetails.txFee, type: coinBalance.type)
+        configure(cryptoAmount: cryptoAmount, fiatAmount: fiatAmount,txFee: coinDetails.txFee.value, type: coinBalance.type, weighted: weighted)
+        configureFee(fee: coinDetails.txFee.value, type: coinBalance.type)
     }
     
     private func configure(cryptoAmount: Decimal, fiatAmount: Decimal,txFee: Decimal , type: CustomCoinType, weighted: Bool = false) {

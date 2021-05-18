@@ -1,7 +1,7 @@
 import Foundation
 
-protocol CreateWalletModule: class {}
-protocol CreateWalletModuleDelegate: class {
+protocol CreateWalletModule: AnyObject {}
+protocol CreateWalletModuleDelegate: AnyObject {
   func didCancelCreatingWallet()
   func finishCreatingWallet(phoneNumber: String, password: String)
 }

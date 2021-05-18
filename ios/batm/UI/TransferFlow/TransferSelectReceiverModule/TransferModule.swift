@@ -1,8 +1,8 @@
 import Foundation
 
-protocol TransferModule: class {
+protocol TransferModule: AnyObject {
     func resetState() 
 }
-protocol TransferModuleDelegate: class {
+protocol TransferModuleDelegate: AnyObject {
     func showSendGift(contact: BContact)
 }

@@ -1,8 +1,8 @@
 import Foundation
 
-protocol RecoverSeedPhraseModule: class {
+protocol RecoverSeedPhraseModule: AnyObject {
   func setup(phoneNumber: String, password: String)
 }
-protocol RecoverSeedPhraseModuleDelegate: class {
+protocol RecoverSeedPhraseModuleDelegate: AnyObject {
   func finishRecoveringSeedPhrase()
 }

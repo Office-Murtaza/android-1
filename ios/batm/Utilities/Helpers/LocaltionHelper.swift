@@ -2,7 +2,7 @@
 //  LocaltionHelper.swift
 //  batm
 //
-//  Created by Dmytro Kolesnyk2 on 25.03.2021.
+//  Created by Dmytro Kolesnyk on 25.03.2021.
 //  Copyright © 2021 Daniel Tischenko. All rights reserved.
 //
 

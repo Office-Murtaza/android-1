@@ -34,7 +34,7 @@ class P2PPresenter: ModulePresenter, P2PModule {
     fetchDataRelay
       .asObservable()
       .flatMap { [unowned self]  in
-        return self.track(wallet.getCoinsBalance(filteredByActive: true).asObservable())
+        return self.track(wallet.getCoinsBalance().asObservable())
       }.subscribe(onNext: { [weak self] result in
         self?.balance.accept(result)
       })

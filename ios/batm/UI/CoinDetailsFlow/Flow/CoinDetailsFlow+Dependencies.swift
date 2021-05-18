@@ -15,16 +15,11 @@ extension CoinDetailsFlow {
         .implements(CoinDetailsModuleDelegate.self,
                     CoinDepositModuleDelegate.self,
                     CoinWithdrawModuleDelegate.self,
-                    CoinSendGiftModuleDelegate.self,
-                    CoinSellModuleDelegate.self)
-        .implements(CoinSellDetailsAnotherAddressModuleDelegate.self,
-                    CoinSellDetailsCurrentAddressModuleDelegate.self,
-                    CoinExchangeModuleDelegate.self,
-                    CoinStakingModuleDelegate.self,
                     TransactionDetailsModuleDelegate.self,
-                    TradesFlowControllerDelegate.self,
                     ReserveModuleDelegate.self,
-                    RecallModuleDelegate.self)
+                    RecallModuleDelegate.self,
+                    CoinSellDetailsAnotherAddressModuleDelegate.self,
+                    CoinSellDetailsCurrentAddressModuleDelegate.self)
     }
   }
 }

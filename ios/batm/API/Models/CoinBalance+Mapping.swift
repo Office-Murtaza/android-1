@@ -24,5 +24,6 @@ extension CoinBalance: ImmutableMappable {
     self.reservedFiatBalance = reservedFiatBalance
     self.price = price
     index = try map.value("idx")
+    details = try map.value("details")
   }
 }

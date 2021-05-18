@@ -2,7 +2,7 @@
 //  TransactionDetailsDataSource.swift
 //  batm
 //
-//  Created by Dmytro Kolesnyk2 on 17.03.2021.
+//  Created by Dmytro Kolesnyk on 17.03.2021.
 //  Copyright © 2021 Daniel Tischenko. All rights reserved.
 //
 
@@ -19,7 +19,7 @@ enum TransactionDetailsItemType {
 }
 
 final class TransactionDetailsDataSource: NSObject, HasDisposeBag, ItemsCountProvider {
-    let transactionsRelay = PublishRelay< (details: TransactionDetails, coinType: CustomCoinType)?>()
+    let transactionsRelay = PublishRelay<TransactionDetails?>()
     var transactionCells: [TransactionDetailsItemType] = []
     
     weak var tableView: UITableView? {
@@ -33,11 +33,18 @@ final class TransactionDetailsDataSource: NSObject, HasDisposeBag, ItemsCountPro
         }
     }
     
-    private var value:  (details: TransactionDetails, coinType: CustomCoinType)? {
+    var coinType: CustomCoinType? {
         didSet {
             tableView?.reloadData()
         }
     }
+    
+    private var value: TransactionDetails? {
+        didSet {
+            tableView?.reloadData()
+        }
+    }
+    
     
     override init() {
         super.init()
@@ -49,15 +56,14 @@ final class TransactionDetailsDataSource: NSObject, HasDisposeBag, ItemsCountPro
         transactionsRelay
             .asDriver(onErrorDriveWith: .empty())
             .drive(onNext: { [weak self] in
-                self?.value = $0
-                self?.setupCells()
+                self?.setupCells(with: $0)
             })
             .disposed(by: disposeBag)
     }
     
-    private func setupCells() {
-        guard let details = value?.details,
-              let coinType = value?.coinType,
+    private func setupCells(with transactionDetails: TransactionDetails?) {
+        guard let details = transactionDetails,
+              let coinType = coinType,
               let transactionType = details.type else { return }
         
         let id = TransactionDetailsItemType.transactionDetails(title: localize(L.TransactionDetails.HeaderTitle.id),
@@ -67,6 +73,7 @@ final class TransactionDetailsDataSource: NSObject, HasDisposeBag, ItemsCountPro
                                                                    data: "\(details.cryptoAmount?.formatted() ?? "") \(coinType.code)")
         let fee = TransactionDetailsItemType.transactionDetails(title: localize(L.TransactionDetails.HeaderTitle.fee),
                                                                 data: "\(details.cryptoFee?.formatted() ?? "") \(coinType.code)")
+        
         let confirmations = TransactionDetailsItemType.transactionDetails(title: localize(L.TransactionDetails.HeaderTitle.confirmations),
                                                                           data: details.confirmations.toString())
         let fromAddress = TransactionDetailsItemType.transactionDetails(title: localize(L.TransactionDetails.HeaderTitle.fromAddress),
@@ -74,17 +81,17 @@ final class TransactionDetailsDataSource: NSObject, HasDisposeBag, ItemsCountPro
         let toAddress = TransactionDetailsItemType.transactionDetails(title: localize(L.TransactionDetails.HeaderTitle.toAddress),
                                                                       data: details.toAddress)
         let date = TransactionDetailsItemType.transactionDetails(title: localize(L.TransactionDetails.HeaderTitle.date),
-                                                                 data: details.date)
+                                                                 data: details.timestamp?.timestampToStringDate(format: GlobalConstants.longDateForm))
         let fromPhone = TransactionDetailsItemType.transactionDetails(title: localize(L.TransactionDetails.HeaderTitle.fromPhone),
                                                                       data: details.fromPhone)
         let toPhone = TransactionDetailsItemType.transactionDetails(title: localize(L.TransactionDetails.HeaderTitle.toPhone),
                                                                     data: details.toPhone)
         let swapId = TransactionDetailsItemType.transactionDetails(title: localize(L.TransactionDetails.HeaderTitle.swapId),
-                                                                   data: details.swapTxId,
-                                                                   link: details.swapLink)
+                                                                   data: details.refTxId,
+                                                                   link: details.refLink)
         let swapAmount = TransactionDetailsItemType
             .transactionDetails(title: localize(L.TransactionDetails.HeaderTitle.swapAmount),
-                                data: "\(details.swapCryptoAmount?.formatted() ?? "") \(details.swapCoin?.code ?? "")")
+                                data: "\(details.refCryptoAmount?.formatted() ?? "") \(details.refCoin?.code ?? "")")
         let sellAmount = TransactionDetailsItemType.transactionDetails(title: localize(L.TransactionDetails.HeaderTitle.sellAmount),
                                                                        data: "$\(details.fiatAmount?.formatted() ?? "")")
         let type = TransactionDetailsItemType.type(title: localize(L.TransactionDetails.HeaderTitle.type),
@@ -128,11 +135,11 @@ final class TransactionDetailsDataSource: NSObject, HasDisposeBag, ItemsCountPro
             transactionCells.append(toPhone)
         }
         
-        if details.imageId != nil, details.message != nil {
+        if details.image != nil, details.message != nil {
             transactionCells.append(gif)
         }
         
-        if details.swapTxId != nil, details.swapLink != nil, details.swapCoin != nil, details.swapCryptoAmount != nil {
+        if details.refTxId != nil, details.refLink != nil, details.refCoin != nil, details.refCryptoAmount != nil {
             transactionCells.append(swapId)
             transactionCells.append(swapAmount)
         }
@@ -142,6 +149,8 @@ final class TransactionDetailsDataSource: NSObject, HasDisposeBag, ItemsCountPro
             transactionCells.append(cashStatus)
             transactionCells.append(qrCode)
         }
+        
+        value = transactionDetails
     }
 }
 
@@ -172,11 +181,11 @@ extension TransactionDetailsDataSource: UITableViewDataSource {
             return cell
         case .gif:
             let cell = tableView.dequeueReusableCell(TransactionGifCell.self, for: indexPath)
-            cell.configure(imageId: value?.details.imageId, message: value?.details.message)
+            cell.configure(image: value?.image, message: value?.message)
             return cell
         case .qrCode:
             let cell = tableView.dequeueReusableCell(QRCodeCell.self, for: indexPath)
-            guard let qrCode = UIImage.qrCode(from: value?.details.sellInfo ?? "") else { return UITableViewCell() }
+            guard let qrCode = UIImage.qrCode(from: value?.sellInfo ?? "") else { return UITableViewCell() }
             cell.configure(qrCode: qrCode)
             return cell
         }

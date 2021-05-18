@@ -15,11 +15,11 @@ final class CoinStakingPresenter: ModulePresenter, CoinStakingModule {
     
     let didViewLoad = PublishRelay<Void>()
     let didUpdateCompleted = PublishRelay<String>()
+
+    private var stakeSuccessStatus: String?
     private let reloadScreenRelay = PublishRelay<Void>()
     private let usecase: DealsUsecase
-    private let balanceService: BalanceService
     private let store: Store
-    private var stakeSuccessStatus: String?
     
     weak var delegate: CoinStakingModuleDelegate?
     
@@ -28,10 +28,8 @@ final class CoinStakingPresenter: ModulePresenter, CoinStakingModule {
     }
     
     init(usecase: DealsUsecase,
-         balanceService: BalanceService,
          store: Store = CoinStakingStore()) {
         self.usecase = usecase
-        self.balanceService = balanceService
         self.store = store
     }
     
@@ -40,19 +38,24 @@ final class CoinStakingPresenter: ModulePresenter, CoinStakingModule {
     func bind(input: Input) {
         didViewLoad
             .flatMap { [unowned self] _ in
-                return self.track(Completable.concat(self.usecase.getStakeDetails(for: .catm)
-                                                        .do(onSuccess: { [store] in store.action.accept(.setupStakeDetails($0)) })
-                                                        .asCompletable(),
-                                                     self.usecase.getCoinDetails(for: .catm)
-                                                        .do(onSuccess: { [store] in store.action.accept(.setupCoinDetails($0)) })
-                                                        .asCompletable(),
-                                                     self.usecase.getCoin(for: .catm)
-                                                        .do(onSuccess: { [store] in store.action.accept(.setupCoin($0)) })
-                                                        .asCompletable(),
-                                                     self.balanceService.getCoinsBalance()
-                                                        .do(onNext: { [store] in store.action.accept(.setupCoinBalances($0.coins)) })
-                                                        .asSingle()
-                                                        .asCompletable()))
+                return self.track(Observable.combineLatest(self.usecase.getStakeDetails(for: .catm)
+                                                            .do(onSuccess: { [store] in
+                                                                store.action.accept(.setupStakeDetails($0))
+                                                            })
+                                                            .asObservable(),
+                                                           self.usecase.getCoin(for: .catm)
+                                                            .do(onSuccess: { [store] in
+                                                                store.action.accept(.setupCoin($0))
+                                                            })
+                                                            .asObservable(),
+                                                           self.usecase.getCoinsBalance()
+                                                            .do(onNext: { [store] in
+                                                                store.action.accept(.setupCoinBalances($0.coins))
+                                                            }),
+                                                           self.usecase.getCoinDetails(for: .catm)
+                                                            .do(onNext: { [store] in
+                                                                store.action.accept(.setupCoinDetails($0))
+                                                            })))
             }
             .subscribe()
             .disposed(by: disposeBag)
@@ -83,17 +86,14 @@ final class CoinStakingPresenter: ModulePresenter, CoinStakingModule {
         reloadScreenRelay
             .flatMap { [unowned self] _ in
                 return self.track(Completable.concat(self.usecase.getStakeDetails(for: .catm)
-                                                        .do(onSuccess: { [store] in store.action.accept(.setupStakeDetails($0)) })
-                                                        .asCompletable(),
-                                                     self.usecase.getCoinDetails(for: .catm)
-                                                        .do(onSuccess: { [store] in store.action.accept(.setupCoinDetails($0)) })
+                                                        .do(onSuccess: { [store] in
+                                                            store.action.accept(.setupStakeDetails($0))
+                                                        })
                                                         .asCompletable(),
                                                      self.usecase.getCoin(for: .catm)
-                                                        .do(onSuccess: { [store] in store.action.accept(.setupCoin($0)) })
-                                                        .asCompletable(),
-                                                     self.balanceService.getCoinsBalance()
-                                                        .do(onNext: { [store] in store.action.accept(.setupCoinBalances($0.coins)) })
-                                                        .asSingle()
+                                                        .do(onSuccess: { [store] in
+                                                            store.action.accept(.setupCoin($0))
+                                                        })
                                                         .asCompletable()))
             }
             .subscribe(onNext: { [weak self] in

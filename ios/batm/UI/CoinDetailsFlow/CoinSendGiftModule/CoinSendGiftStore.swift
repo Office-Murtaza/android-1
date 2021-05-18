@@ -11,7 +11,7 @@ enum CoinSendGiftAction: Equatable {
     case updatePhoneError(String?)
     case updateCoinAmountError(String?)
     case updateMessageError(String?)
-    case updateImageId(String?)
+    case updateImage(String?)
     case updateValidationState
     case setupContact(BContact)
     case finishFetchingCoinsData(CoinsBalance, CoinDetails, [BTMCoin])
@@ -32,7 +32,7 @@ struct CoinSendGiftState: Equatable {
     var phoneError: String?
     var coinAmountError: String?
     var messageError: String?
-    var imageId: String?
+    var image: String?
     var validationState: ValidationState = .unknown
     var contact: BContact?
     var coins: [BTMCoin]?
@@ -108,7 +108,8 @@ final class CoinSendGiftStore: ViewStore<CoinSendGiftAction, CoinSendGiftState> 
         switch action {
         case let .setupCoin(coin): state.coin = coin
         case let .setupCoinBalances(coinBalances): state.coinBalances = coinBalances
-        case let .setupCoinDetails(coinDetails): state.coinDetails = coinDetails
+        case let .setupCoinDetails(coinDetails):
+            state.coinDetails = coinDetails
         case let .updatePhone(phone):
             state.phone = PartialFormatter.default.formatPartial(phone ?? "")
             state.phoneError = nil
@@ -121,7 +122,7 @@ final class CoinSendGiftStore: ViewStore<CoinSendGiftAction, CoinSendGiftState> 
         case let .updatePhoneError(phoneError): state.phoneError = phoneError
         case let .updateCoinAmountError(coinAmountError): state.coinAmountError = coinAmountError
         case let .updateMessageError(messageError): state.messageError = messageError
-        case let .updateImageId(imageId): state.imageId = imageId
+        case let .updateImage(image): state.image = image
         case .updateValidationState: validate(&state)
         case let .setupContact(contact):
             state.contact = contact
@@ -135,8 +136,6 @@ final class CoinSendGiftStore: ViewStore<CoinSendGiftAction, CoinSendGiftState> 
                 state.fromCoin = coin
                 state.fromCoinType = coin.type
             }
-            
-            
          
         case let .updateFromCoin(coin):
             state.fromCoin = coin

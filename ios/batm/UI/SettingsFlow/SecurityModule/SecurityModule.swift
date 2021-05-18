@@ -1,7 +1,7 @@
 import Foundation
 
-protocol SecurityModule: class {}
-protocol SecurityModuleDelegate: class {
+protocol SecurityModule: AnyObject {}
+protocol SecurityModuleDelegate: AnyObject {
   func didSelectUpdatePhone(_ phoneNumber: String)
   func didSelectUpdatePassword()
   func didSelectUpdatePIN(_ pinCode: String)

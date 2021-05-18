@@ -60,12 +60,3 @@ enum TransactionType: Int {
         }
     }
 }
-
-struct Transaction: Equatable {
-  let txId: String?
-  let txDbId: String?
-  let dateString: String?
-  let type: TransactionType?
-  let status: TransactionStatus?
-  let amount: Decimal
-}

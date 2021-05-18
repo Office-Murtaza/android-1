@@ -1,8 +1,8 @@
 import Foundation
 
-protocol SeedPhraseModule: class {
+protocol SeedPhraseModule: AnyObject {
   func setup(for mode: SeedPhraseMode)
 }
-protocol SeedPhraseModuleDelegate: class {
+protocol SeedPhraseModuleDelegate: AnyObject {
   func didFinishCopyingSeedPhrase()
 }

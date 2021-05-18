@@ -1,7 +1,7 @@
 import Foundation
 
-protocol RecoverModule: class {}
-protocol RecoverModuleDelegate: class {
+protocol RecoverModule: AnyObject {}
+protocol RecoverModuleDelegate: AnyObject {
   func didCancelRecovering()
   func finishRecovering(phoneNumber: String, password: String)
 }

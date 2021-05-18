@@ -141,7 +141,17 @@ final class AppAssembly: Assembly {
                               socketURL: socketURL)
     }.inObjectScope(.container)
     
-    
+    container.register(TransactionDetailsService.self) { ioc in
+        let api = ioc.resolve(APIGateway.self)!
+        let accountStorage = ioc.resolve(AccountStorage.self)!
+        let errorService = ioc.resolve(ErrorService.self)!
+        let socketURL = ioc.resolve(URL.self, name: Keys.socketUrl.rawValue)!
+        
+        return TransactionDetailsServiceImpl(api: api,
+                                      accountStorage: accountStorage,
+                                      errorService: errorService,
+                                      socketURL: socketURL)
+    }.inObjectScope(.container)
   }
   
   fileprivate func assembleUsecases(container: Container) {
@@ -171,19 +181,23 @@ final class AppAssembly: Assembly {
       let api = ioc.resolve(APIGateway.self)!
       let accountStorage = ioc.resolve(AccountStorage.self)!
       let walletStorage = ioc.resolve(BTMWalletStorage.self)!
+      let balanceService = ioc.resolve(BalanceService.self)!
       return WalletUsecaseImpl(api: api,
                                accountStorage: accountStorage,
-                               walletStorage: walletStorage)
+                               walletStorage: walletStorage,
+                               balanceService: balanceService)
       }.inObjectScope(.container)
     container.register(DealsUsecase.self) { ioc in
         let api = ioc.resolve(APIGateway.self)!
         let accountStorage = ioc.resolve(AccountStorage.self)!
         let walletService = ioc.resolve(WalletService.self)!
         let walletStorage = ioc.resolve(BTMWalletStorage.self)!
+        let balanceService = ioc.resolve(BalanceService.self)!
         return DealsUsecaseImpl(api: api,
                                 accountStorage: accountStorage,
                                 walletService: walletService,
-                                walletStorage: walletStorage)
+                                walletStorage: walletStorage,
+                                balanceService: balanceService)
     }.inObjectScope(.container)
     container.register(ATMUsecase.self) { ioc in
       let api = ioc.resolve(APIGateway.self)!
@@ -202,10 +216,14 @@ final class AppAssembly: Assembly {
       let accountStorage = ioc.resolve(AccountStorage.self)!
       let walletStorage = ioc.resolve(BTMWalletStorage.self)!
       let walletService = ioc.resolve(WalletService.self)!
+      let balanceService = ioc.resolve(BalanceService.self)!
+      let transactionService = ioc.resolve(TransactionDetailsService.self)!
       return CoinDetailsUsecaseImpl(api: api,
                                     accountStorage: accountStorage,
                                     walletStorage: walletStorage,
-                                    walletService: walletService)
+                                    walletService: walletService,
+                                    balanceService: balanceService,
+                                    transactionService: transactionService)
       }.inObjectScope(.container)
     container.register(TradesUsecase.self) { ioc in
       let api = ioc.resolve(APIGateway.self)!

@@ -3,7 +3,7 @@ import RxSwift
 import RxCocoa
 import MaterialComponents
 
-protocol ManageWalletsCellDelegate: class {
+protocol ManageWalletsCellDelegate: AnyObject {
   func didTapChangeVisibility(_ coin: BTMCoin)
 }
 

@@ -1,9 +1,9 @@
 import UIKit
 
-protocol VIPVerificationModule: class {
+protocol VIPVerificationModule: AnyObject {
   func didPick(image: UIImage)
 }
-protocol VIPVerificationModuleDelegate: class {
+protocol VIPVerificationModuleDelegate: AnyObject {
   func showPicker(from module: VIPVerificationModule)
   func didFinishVIPVerification()
 }

@@ -2,7 +2,7 @@ import UIKit
 import RxCocoa
 import RxSwift
 
-protocol SplashModule: class { }
+protocol SplashModule: AnyObject { }
 
 final class SplashViewController: UIViewController, SplashModule {
 

@@ -15,15 +15,12 @@ class DealsPresenter: ModulePresenter, DealsModule {
     weak var delegate: DealsModuleDelegate?
     let types = DealsCellType.allCases
     private let usecase: DealsUsecase
-    private let balanceService: BalanceService
     private let store: Store
     
     init(usecase: DealsUsecase,
-         store: Store = DealsStore(),
-         balanceService: BalanceService) {
+         store: Store = DealsStore()) {
         self.usecase = usecase
         self.store = store
-        self.balanceService = balanceService
     }
     
     func bind(input: Input) {

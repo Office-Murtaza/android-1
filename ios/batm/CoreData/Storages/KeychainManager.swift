@@ -2,7 +2,7 @@
 //  KeychainManager.swift
 //  batm
 //
-//  Created by Dmytro Kolesnyk2 on 07.12.2020.
+//  Created by Dmytro Kolesnyk on 07.12.2020.
 //  Copyright © 2020 Daniel Tischenko. All rights reserved.
 //
 

@@ -8,5 +8,5 @@
 
 import Foundation
 
-protocol SupportModule: class {}
-protocol SupportModuleDelegate: class {}
+protocol SupportModule: AnyObject {}
+protocol SupportModuleDelegate: AnyObject {}

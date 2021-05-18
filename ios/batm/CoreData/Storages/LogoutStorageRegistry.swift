@@ -1,7 +1,7 @@
 import Foundation
 import RxSwift
 
-protocol ClearOnLogoutStorage: class {
+protocol ClearOnLogoutStorage: AnyObject {
   func clear() -> Completable
 }
 

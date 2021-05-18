@@ -1,4 +1,4 @@
 import Foundation
 
-protocol AboutModule: class {}
-protocol AboutModuleDelegate: class {}
+protocol AboutModule: AnyObject {}
+protocol AboutModuleDelegate: AnyObject {}

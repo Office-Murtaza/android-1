@@ -2,7 +2,7 @@ import Foundation
 import RxSwift
 import RxFlow
 
-protocol MainFlowControllerDelegate: class {}
+protocol MainFlowControllerDelegate: AnyObject {}
 
 class MainFlowController: FlowController, FlowActivator {
   

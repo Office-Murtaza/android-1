@@ -1,6 +1,6 @@
 import RxFlow
 
-protocol SeedPhraseFlowControllerDelegate: class {
+protocol SeedPhraseFlowControllerDelegate: AnyObject {
   func didFinishSeedPhraseFlow()
 }
 

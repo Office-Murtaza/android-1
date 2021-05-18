@@ -2,7 +2,7 @@ import Moya
 import RxSwift
 import RxCocoa
 
-protocol RefreshCredentialsService: class {
+protocol RefreshCredentialsService: AnyObject {
   func refresh() -> Completable
 }
 

@@ -43,6 +43,7 @@ class LogoutUsecaseImpl: LogoutUsecase {
     return self.accountStorage.get()
       .flatMap { [unowned self] (account) -> Single<APIEmptyResponse> in
         let request = UnlinkRequest(userId: account.userId)
+        UserDefaultsHelper.userPhoneNumber = nil
         return self.networkService.execute(request)
       }
       .flatMap{ [unowned self] _ in self.logout() }

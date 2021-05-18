@@ -1,7 +1,7 @@
 import Swinject
 import UIKit
 
-protocol PickerActionSheetDelegate: class {
+protocol PickerActionSheetDelegate: AnyObject {
   func didSelect(_ item: PickerConfig.PickerItem)
 }
 

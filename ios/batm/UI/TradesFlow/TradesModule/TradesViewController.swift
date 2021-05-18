@@ -5,9 +5,6 @@ import SnapKit
 import MaterialComponents
 
 final class TradesViewController: ModuleViewController<TradesPresenter>, MDCTabBarDelegate {
-  
-  let didTapRecallRelay = PublishRelay<Void>()
-  let didTapReserveRelay = PublishRelay<Void>()
   let didTapCreateRelay = PublishRelay<Void>()
   
   var buyTradesDataSource: BuySellTradesTableViewDataSource!
@@ -64,12 +61,6 @@ final class TradesViewController: ModuleViewController<TradesPresenter>, MDCTabB
   private func setupFAB() {
     fab.view.addItem(title: localize(L.Trades.create), image: UIImage(named: "fab_create")) { [unowned self] _ in
       self.didTapCreateRelay.accept(())
-    }
-    fab.view.addItem(title: localize(L.Trades.recall), image: UIImage(named: "fab_recall")) { [unowned self] _ in
-      self.didTapRecallRelay.accept(())
-    }
-    fab.view.addItem(title: localize(L.Trades.reserve), image: UIImage(named: "fab_reserve")) { [unowned self] _ in
-      self.didTapReserveRelay.accept(())
     }
   }
 
@@ -161,8 +152,6 @@ final class TradesViewController: ModuleViewController<TradesPresenter>, MDCTabB
     let showMoreSellTradesDriver = sellTradesTableView.rx.willDisplayLastCell.asDriver(onErrorDriveWith: .empty())
     let buyTradeSelectedDriver = buyTradesTableView.rx.itemSelected.asDriver()
     let sellTradeSelectedDriver = sellTradesTableView.rx.itemSelected.asDriver()
-    let recallDriver = didTapRecallRelay.asDriver(onErrorDriveWith: .empty())
-    let reserveDriver = didTapReserveRelay.asDriver(onErrorDriveWith: .empty())
     let createDriver = didTapCreateRelay.asDriver(onErrorDriveWith: .empty())
     
     presenter.bind(input: TradesPresenter.Input(refreshBuyTrades: refreshBuyTradesDriver,
@@ -171,8 +160,6 @@ final class TradesViewController: ModuleViewController<TradesPresenter>, MDCTabB
                                                 showMoreSellTrades: showMoreSellTradesDriver,
                                                 buyTradeSelected: buyTradeSelectedDriver,
                                                 sellTradeSelected: sellTradeSelectedDriver,
-                                                recall: recallDriver,
-                                                reserve: reserveDriver,
                                                 create: createDriver))
   }
   

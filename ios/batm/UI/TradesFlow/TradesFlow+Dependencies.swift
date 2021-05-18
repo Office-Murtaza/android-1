@@ -13,9 +13,7 @@ extension TradesFlow {
         }
         .implements(TradesModuleDelegate.self,
                     BuySellTradeDetailsModuleDelegate.self,
-                    CreateEditTradeModuleDelegate.self,
-                    ReserveModuleDelegate.self,
-                    RecallModuleDelegate.self)
+                    CreateEditTradeModuleDelegate.self)
         .inObjectScope(.container)
     }
   }

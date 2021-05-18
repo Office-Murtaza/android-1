@@ -4,15 +4,23 @@ import RxCocoa
 import TrustWalletCore
 
 final class TransactionDetailsPresenter: ModulePresenter, TransactionDetailsModule {
+    typealias Store = ViewStore<TransactionDetailsAction, TransactionDetailsState>
     struct Input {}
     
     weak var delegate: TransactionDetailsModuleDelegate?
+    var state: Driver<TransactionDetailsState> { store.state }
+    let didViewLoadRelay = PublishRelay<Void>()
     
-    private(set) var transactionDetails: (details: TransactionDetails, coinType: CustomCoinType)?
+    private let usecase: CoinDetailsUsecase
+    private let store: Store
     
-    func setup(with details: TransactionDetails, coinType: CustomCoinType) {
-        transactionDetails = (details, coinType)
+    init(usecase: CoinDetailsUsecase,
+         store: Store = TransactionDetailsStore()) {
+        self.usecase = usecase
+        self.store = store
     }
     
-    func bind(input: Input) {}
+    func setup(with transactionDetails: TransactionDetails, coinType: CustomCoinType) {
+        store.action.accept(.setupTransactionDetails(transactionDetails: transactionDetails, coinType: coinType))
+    }
 }

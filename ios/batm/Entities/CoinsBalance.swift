@@ -8,4 +8,3 @@ struct CoinsBalance: Equatable {
     return CoinsBalance(totalBalance: 0, coins: [])
   }
 }
-

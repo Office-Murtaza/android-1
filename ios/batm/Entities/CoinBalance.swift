@@ -10,6 +10,7 @@ struct CoinBalance: Equatable {
   let reservedFiatBalance: Decimal
   let price: Decimal
   let index: Int
+  let details: CoinDetails
 }
 
 extension CoinBalance: Comparable {

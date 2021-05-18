@@ -1,6 +1,6 @@
 import RxFlow
 
-protocol UnlinkFlowControllerDelegate: class {}
+protocol UnlinkFlowControllerDelegate: AnyObject {}
 
 class UnlinkFlowController: FlowController {
   

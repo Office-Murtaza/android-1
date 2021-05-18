@@ -33,21 +33,3 @@ class DecimalIntTransform: TransformType {
     return nil
   }
 }
-
-extension Optional where Wrapped == Decimal {
-    func toString() -> String {
-        return "\(self ?? 0)"
-    }
-}
-
-extension Optional where Wrapped == Int {
-    func toString() -> String {
-        return "\(self ?? 0)"
-    }
-}
-
-extension Optional where Wrapped == Double {
-    func toString() -> String {
-        return "\(self ?? 0)"
-    }
-}

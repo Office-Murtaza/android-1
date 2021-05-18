@@ -1,6 +1,6 @@
 import Foundation
 
-protocol UpdatePasswordModule: class {}
-protocol UpdatePasswordModuleDelegate: class {
+protocol UpdatePasswordModule: AnyObject {}
+protocol UpdatePasswordModuleDelegate: AnyObject {
   func didUpdatePassword()
 }

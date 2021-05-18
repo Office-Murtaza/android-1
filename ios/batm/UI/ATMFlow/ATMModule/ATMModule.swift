@@ -1,4 +1,4 @@
 import Foundation
 
-protocol ATMModule: class {}
-protocol ATMModuleDelegate: class {}
+protocol ATMModule: AnyObject {}
+protocol ATMModuleDelegate: AnyObject {}

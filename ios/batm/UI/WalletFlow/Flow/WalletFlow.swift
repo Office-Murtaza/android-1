@@ -11,7 +11,7 @@ class WalletFlow: BaseFlow<BTMNavigationController, WalletFlowController> {
   
   enum Steps: Step, Equatable {
     case wallet
-    case coinDetails([CoinBalance], CoinDetails, PriceChartDetails)
+    case coinDetails(CustomCoinType)
     case coinDetailsPredefinedData(CoinDetailsPredefinedDataConfig)
   }
   
@@ -29,9 +29,9 @@ class WalletFlow: BaseFlow<BTMNavigationController, WalletFlowController> {
       module.controller.tabBarItem.image = UIImage(named: "tab_bar_wallet")
       module.controller.tabBarItem.selectedImage = UIImage(named: "tab_bar_active_wallet")
       return push(module.controller, animated: false)
-    case let .coinDetails(coinBalances, coinDetails, data):
+    case let .coinDetails(type):
       let flow = CoinDetailsFlow(view: view, parent: self)
-      let step = CoinDetailsFlow.Steps.coinDetails(coinBalances, coinDetails, data)
+      let step = CoinDetailsFlow.Steps.coinDetails(type)
       return next(flow: flow, step: step)
     case let .coinDetailsPredefinedData(config):
       let flow = CoinDetailsFlow(view: view, parent: self)

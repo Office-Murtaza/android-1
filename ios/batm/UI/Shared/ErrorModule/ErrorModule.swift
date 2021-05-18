@@ -1,8 +1,8 @@
 import Foundation
 
-protocol ErrorModule: class {
+protocol ErrorModule: AnyObject {
   func setup(with type: ErrorType)
 }
-protocol ErrorModuleDelegate: class {
+protocol ErrorModuleDelegate: AnyObject {
   func didFinishError()
 }

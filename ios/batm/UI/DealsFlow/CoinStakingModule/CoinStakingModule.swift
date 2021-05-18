@@ -1,9 +1,9 @@
 import Foundation
 
-protocol CoinStakingModule: class {
+protocol CoinStakingModule: AnyObject {
     func setup()
 }
 
-protocol CoinStakingModuleDelegate: class {
+protocol CoinStakingModuleDelegate: AnyObject {
     func didFinishCoinStaking()
 }

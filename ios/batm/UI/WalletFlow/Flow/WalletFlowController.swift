@@ -2,25 +2,23 @@ import Foundation
 import RxSwift
 import RxFlow
 
-protocol WalletFlowControllerDelegate: class {}
+protocol WalletFlowControllerDelegate: AnyObject {}
 
 class WalletFlowController: FlowController, FlowActivator {
-  
-  var initialStep: Step = WalletFlow.Steps.wallet
-  
-  weak var delegate: WalletFlowControllerDelegate?
-  weak var module: WalletModule?
-  
+    weak var delegate: WalletFlowControllerDelegate?
+    weak var module: WalletModule?
+    var initialStep: Step = WalletFlow.Steps.wallet
+    
 }
 
 extension WalletFlowController: WalletModuleDelegate {
-  func showCoinDetails(coinBalances: [CoinBalance], coinDetails: CoinDetails, data: PriceChartDetails) {
-    step.accept(WalletFlow.Steps.coinDetails(coinBalances, coinDetails, data))
-  }
-  
-  func showCoinDetail(predefinedConfig: CoinDetailsPredefinedDataConfig) {
-    step.accept(WalletFlow.Steps.coinDetailsPredefinedData(predefinedConfig))
-  }
+    func showCoinDetails(for type: CustomCoinType) {
+        step.accept(WalletFlow.Steps.coinDetails(type))
+    }
+    
+    func showCoinDetail(predefinedConfig: CoinDetailsPredefinedDataConfig) {
+        step.accept(WalletFlow.Steps.coinDetailsPredefinedData(predefinedConfig))
+    }
 }
 
 extension WalletFlowController: CoinDetailsFlowControllerDelegate {}

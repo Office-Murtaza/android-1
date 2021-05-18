@@ -1,6 +1,6 @@
 import Foundation
 
-protocol ManageWalletsModule: class {}
-protocol ManageWalletsModuleDelegate: class {
+protocol ManageWalletsModule: AnyObject {}
+protocol ManageWalletsModuleDelegate: AnyObject {
   func didChangeVisibility()
 }
