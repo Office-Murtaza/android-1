@@ -18,6 +18,7 @@ public class SocketService {
     }
 
     public void pushTransaction(String phone, TransactionDetailsDTO dto) {
+        System.out.println(" ++++ pushTransaction, phone: " + phone + ", dto: " + dto.toString());
         simpMessagingTemplate.convertAndSendToUser(phone, "/queue/transaction", dto);
     }
 
