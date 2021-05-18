@@ -144,6 +144,7 @@
                     android:layout_height="wrap_content"
                     android:digits="1234567890"
                     android:inputType="number"
+                    android:minWidth="60dp"
                     tools:text="10 miles" />
 
             </com.google.android.material.textfield.TextInputLayout>
@@ -164,6 +165,7 @@
                     android:layout_height="wrap_content"
                     android:digits="1234567890"
                     android:inputType="number"
+                    android:minWidth="60dp"
                     tools:text="1000 miles" />
 
             </com.google.android.material.textfield.TextInputLayout>

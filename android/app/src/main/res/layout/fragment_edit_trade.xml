@@ -184,6 +184,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:digits="1234567890$"
+                android:minWidth="60dp"
                 tools:text="$100" />
 
         </com.google.android.material.textfield.TextInputLayout>
@@ -202,6 +203,7 @@
                 android:id="@+id/amount_max_limit_edit_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:minWidth="60dp"
                 android:digits="1234567890$"
                 tools:text="$100" />
 

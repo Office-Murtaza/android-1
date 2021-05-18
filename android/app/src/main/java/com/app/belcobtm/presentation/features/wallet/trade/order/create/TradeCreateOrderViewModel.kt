@@ -9,10 +9,8 @@ import com.app.belcobtm.domain.trade.details.GetTradeDetailsUseCase
 import com.app.belcobtm.domain.trade.order.CreateOrderUseCase
 import com.app.belcobtm.domain.wallet.LocalCoinType
 import com.app.belcobtm.domain.wallet.interactor.GetCoinByCodeUseCase
-import com.app.belcobtm.presentation.core.formatter.Formatter
 import com.app.belcobtm.presentation.core.livedata.DoubleCombinedLiveData
 import com.app.belcobtm.presentation.core.mvvm.LoadingData
-import com.app.belcobtm.presentation.core.parser.StringParser
 import com.app.belcobtm.presentation.core.provider.string.StringProvider
 import com.app.belcobtm.presentation.features.wallet.trade.list.model.TradeItem
 import com.app.belcobtm.presentation.features.wallet.trade.order.create.model.TradeCryptoAmount
@@ -23,9 +21,7 @@ class TradeCreateOrderViewModel(
     private val getTradeDetailsUseCase: GetTradeDetailsUseCase,
     private val getCoinByCodeUseCase: GetCoinByCodeUseCase,
     private val createOrderUseCase: CreateOrderUseCase,
-    private val stringProvider: StringProvider,
-    private val amountFormatter: Formatter<Double>,
-    private val amountParser: StringParser<Double>
+    private val stringProvider: StringProvider
 ) : ViewModel() {
 
     private val _initialLoadingData = MutableLiveData<LoadingData<Unit>>()
@@ -57,10 +53,6 @@ class TradeCreateOrderViewModel(
     private var trade: TradeItem? = null
     private var platformFeePercent: Double = 0.0
     private var reservedBalanceUsd: Double = 0.0
-
-    fun formatAmount(amount: Double) = amountFormatter.format(amount)
-
-    fun parseAmount(input: String) = amountParser.parse(input)
 
     fun updateAmount(amount: Double) {
         _fiatAmount.value = amount

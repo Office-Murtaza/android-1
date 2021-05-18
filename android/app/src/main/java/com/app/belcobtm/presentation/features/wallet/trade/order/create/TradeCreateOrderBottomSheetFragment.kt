@@ -10,7 +10,7 @@ import androidx.navigation.fragment.navArgs
 import com.app.belcobtm.R
 import com.app.belcobtm.databinding.FragmentTradeCreateOrderBinding
 import com.app.belcobtm.databinding.IncludeErrorScreenBinding
-import com.app.belcobtm.presentation.core.extensions.setTextSilently
+import com.app.belcobtm.presentation.core.extensions.getDouble
 import com.app.belcobtm.presentation.core.extensions.toStringCoin
 import com.app.belcobtm.presentation.core.extensions.toStringPercents
 import com.app.belcobtm.presentation.core.extensions.toggle
@@ -43,7 +43,7 @@ class TradeCreateOrderBottomSheetFragment : BaseBottomSheetFragment() {
         }
     }
     private val amountTextWatcher = SafeDecimalEditTextWatcher { editable ->
-        viewModel.updateAmount(viewModel.parseAmount(editable.toString()) / 100)
+        viewModel.updateAmount(editable.getDouble())
     }
 
     override fun getTheme(): Int = R.style.DialogStyle
@@ -56,9 +56,6 @@ class TradeCreateOrderBottomSheetFragment : BaseBottomSheetFragment() {
         viewModel.createTradeLoadingData.listen(success = {
             findNavController().navigate(TradeCreateOrderBottomSheetFragmentDirections.toOrderDetails(it))
         })
-        viewModel.fiatAmount.observe(viewLifecycleOwner) {
-            binding.amountEditText.setTextSilently(amountTextWatcher, viewModel.formatAmount(it))
-        }
         viewModel.platformFee.observe(viewLifecycleOwner) {
             binding.platformFeeLabel.text = requireContext().resources.getString(
                 R.string.trade_buy_sell_dialog_platform_fee_formatted,

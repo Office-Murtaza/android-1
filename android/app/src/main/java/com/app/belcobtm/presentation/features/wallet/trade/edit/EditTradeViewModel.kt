@@ -14,7 +14,6 @@ import com.app.belcobtm.domain.wallet.item.CoinDataItem
 import com.app.belcobtm.presentation.core.formatter.Formatter
 import com.app.belcobtm.presentation.core.livedata.TripleCombinedLiveData
 import com.app.belcobtm.presentation.core.mvvm.LoadingData
-import com.app.belcobtm.presentation.core.parser.StringParser
 import com.app.belcobtm.presentation.core.provider.string.StringProvider
 import com.app.belcobtm.presentation.features.wallet.trade.create.model.AvailableTradePaymentOption
 
@@ -24,9 +23,7 @@ class EditTradeViewModel(
     private val getCoinListUseCase: GetCoinListUseCase,
     private val editTradeUseCase: EditTradeUseCase,
     private val stringProvider: StringProvider,
-    private val priceFormatter: Formatter<Double>,
-    private val amountFormatter: Formatter<Int>,
-    private val amountParser: StringParser<Double>
+    private val amountFormatter: Formatter<Int>
 ) : ViewModel() {
 
     private val _initialLoadingData = MutableLiveData<LoadingData<Unit>>()
@@ -77,12 +74,6 @@ class EditTradeViewModel(
             }
             stringProvider.getString(R.string.trade_crypto_amount_value, cryptoAmount, coin?.code.orEmpty())
         }
-
-    fun parseAmount(input: String) = amountParser.parse(input)
-
-    fun formatAmount(amount: Int) = amountFormatter.format(amount)
-
-    fun formatPrice(price: Double) = priceFormatter.format(price)
 
     fun fetchTradeDetails(tradeId: String) {
         _initialLoadingData.value = LoadingData.Loading(Unit)

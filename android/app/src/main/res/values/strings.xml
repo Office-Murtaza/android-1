@@ -333,7 +333,7 @@
     <string name="swap_screen_balance_formatted">Balance %1$s %2$s\nFee ~%3$s %4$s</string>
     <string name="swap_screen_rate_formatted"><![CDATA[<b>%1$s</b> %2$s ~ <b>%3$s</b> %4$s]]></string>
     <string name="swap_screen_fee_formatted"><![CDATA[%1$s\%% ~ %2$s %3$s]]></string>
-    <string name="swap_screen_usd_label">USD converted value</string>
+    <string name="swap_screen_usd_label">USD Converted Value</string>
     <string name="swap_screen_usd_value">$ %1$s</string>
     <string name="swap_screen_fee">Platform fee</string>
     <string name="swap_screen_select_coin">Select coin please</string>
@@ -423,7 +423,7 @@
     <string name="staking_screen_anual_percent">Annual percent</string>
     <string name="staking_screen_cancel_period">Hold period</string>
     <string name="staking_screen_usd_converted">USD converted value</string>
-    <string name="staking_screen_anual_reward">Annual reward amount</string>
+    <string name="staking_screen_anual_reward">Annual Reward Amount</string>
     <string name="staking_screen_created">Created</string>
     <string name="staking_screen_canceled">Canceled</string>
     <string name="staking_screen_duration">Duration</string>
@@ -607,7 +607,7 @@
     <string name="trade_create_price_limits_label">Limits</string>
     <string name="trade_create_terms_label">Terms</string>
     <string name="create_trade_button_title">Submit</string>
-    <string name="create_trade_price_input_hint">Price</string>
+    <string name="create_trade_price_input_hint">Price, $</string>
     <string name="trade_create_terms_hint">Type your terms or comments</string>
     <string name="create_trade_cash_label">Cash</string>
     <string name="create_trade_paypal_label">PayPal</string>
@@ -625,8 +625,8 @@
     <string name="open_orders_label">Open orders</string>
     <string name="edit_trade_button_title">Edit</string>
     <string name="cancel_trade_button_title">Cancel</string>
-    <string name="from_hint_label">From</string>
-    <string name="to_hint_label">To</string>
+    <string name="from_hint_label">Min</string>
+    <string name="to_hint_label">Max</string>
     <string name="create_trade_success_message">Trade successfully posted</string>
     <string name="price_decimal_separator">.</string>
     <string name="price_grouping_separator">,</string>
@@ -644,7 +644,7 @@
     <string name="trade_filter_dialog_sort_option_distance_label">Distance</string>
     <string name="trade_filter_dialog_reset_filter_button_label">Reset all</string>
     <string name="trade_filter_dialog_sort_label">Sort by</string>
-    <string name="trade_filter_distance_label">Distance range</string>
+    <string name="trade_filter_distance_label">Distance range, mi</string>
     <string name="trade_filter_dialog_coins_label">Coins</string>
 
     <string name="my_trade_details_screen_title">Trade details</string>
@@ -694,4 +694,5 @@
     <string name="cannot_perform_swap_error_button_title">Ok</string>
     <string name="attach_id_scan_label">Attach id Scan</string>
     <string name="attach_id_selfie_label">Attach id Selfie</string>
+    <string name="send_gift_phone_number_prefix">+1</string>
 </resources>
