@@ -16,6 +16,7 @@
             android:id="@+id/searchEditText"
             style="@style/VerificationBlankScreen.EditText"
             android:hint="@string/transfer_contact_search_hint"
+            android:text="@string/send_gift_phone_number_prefix"
             android:imeOptions="actionDone"
             android:inputType="textPersonName"
             android:nextFocusDown="@id/addressView" />

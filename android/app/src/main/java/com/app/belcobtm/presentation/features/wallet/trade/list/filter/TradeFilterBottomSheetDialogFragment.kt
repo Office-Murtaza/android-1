@@ -80,7 +80,7 @@ class TradeFilterBottomSheetDialogFragment : BottomSheetDialogFragment() {
                     binding.distanceRangeSlider.values.apply { set(0, distance.toFloat()) }
             }
             binding.distanceMinLimitEditText.setTextSilently(
-                minAmountTextWatcher, viewModel.formatDistance(distance), distance.toString().length
+                minAmountTextWatcher, distance.toString(), distance.toString().length
             )
         }
         viewModel.distanceRangeError.observe(viewLifecycleOwner) {
@@ -93,7 +93,7 @@ class TradeFilterBottomSheetDialogFragment : BottomSheetDialogFragment() {
                     binding.distanceRangeSlider.values.apply { set(1, distance.toFloat()) }
             }
             binding.distanceMaxLimitEditText.setTextSilently(
-                maxAmountTextWatcher, viewModel.formatDistance(distance), distance.toString().length
+                maxAmountTextWatcher, distance.toString(), distance.toString().length
             )
         }
         viewModel.closeFilter.observe(viewLifecycleOwner) {

@@ -1,17 +1,11 @@
 package com.app.belcobtm.presentation.core.parser
 
-import java.util.*
-
-class PriceDoubleParser(locale: Locale) : StringParser<Double> {
-
-    private val currency = Currency.getInstance(locale)
+class PriceDoubleParser : StringParser<Double> {
 
     companion object {
         const val PRICE_DOUBLE_PARSER_QUALIFIER = "PriceDoubleParser"
     }
 
-    override fun parse(input: String): Double {
-        val cleanString = input.replace("[${currency.symbol},.]".toRegex(), "").ifEmpty { "0" }
-        return cleanString.toDouble()
-    }
+    override fun parse(input: String): Double =
+        input.toDouble()
 }

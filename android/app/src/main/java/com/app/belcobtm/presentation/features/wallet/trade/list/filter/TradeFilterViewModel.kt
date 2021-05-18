@@ -119,8 +119,6 @@ class TradeFilterViewModel(
 
     fun parseDistance(input: String): Int = distanceParser.parse(input)
 
-    fun formatDistance(distance: Int): String = stringProvider.getString(R.string.distance_label_formatted, distance)
-
     fun selectSort(@SortOption option: Int) {
         _sortOption.value = option
     }

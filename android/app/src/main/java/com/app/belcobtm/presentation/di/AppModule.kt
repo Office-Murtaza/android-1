@@ -108,9 +108,7 @@ val viewModelModule = module {
     viewModel {
         EditTradeViewModel(
             get(), get(), get(), get(), get(),
-            get(named(DOUBLE_CURRENCY_PRICE_FORMATTER_QUALIFIER)),
-            get(named(INT_CURRENCY_PRICE_FORMATTER_QUALIFIER)),
-            get(named(PRICE_DOUBLE_PARSER_QUALIFIER))
+            get(named(DOUBLE_CURRENCY_PRICE_FORMATTER_QUALIFIER))
         )
     }
     viewModel { TradeOrdersViewModel(get()) }
@@ -125,9 +123,7 @@ val viewModelModule = module {
     viewModel {
         CreateTradeViewModel(
             get(), get(), get(), get(), get(),
-            get(named(DOUBLE_CURRENCY_PRICE_FORMATTER_QUALIFIER)),
-            get(named(INT_CURRENCY_PRICE_FORMATTER_QUALIFIER)),
-            get(named(PRICE_DOUBLE_PARSER_QUALIFIER))
+            get(named(INT_CURRENCY_PRICE_FORMATTER_QUALIFIER))
         )
     }
     viewModel { TradeFilterViewModel(get(), get(), get(), get(), get(named(DISTANCE_INT_PARSER_QUALIFIER))) }
@@ -137,13 +133,7 @@ val viewModelModule = module {
             get(named(GOOGLE_MAPS_DIRECTIONS_QUERY_FORMATTER))
         )
     }
-    viewModel {
-        TradeCreateOrderViewModel(
-            get(), get(), get(), get(),
-            get(named(DOUBLE_CURRENCY_PRICE_FORMATTER_QUALIFIER)),
-            get(named(PRICE_DOUBLE_PARSER_QUALIFIER))
-        )
-    }
+    viewModel { TradeCreateOrderViewModel(get(), get(), get(), get()) }
     viewModel { TradeOrderRateViewModel(get(), get()) }
     viewModel { OrderChatViewModel(get(), get(), get()) }
     viewModel { HistoryChatViewModel(get()) }
@@ -169,7 +159,7 @@ val helperModule = module {
         GoogleMapsDirectionQueryFormatter()
     }
     factory<Formatter<Int>>(named(TradeCountFormatter.TRADE_COUNT_FORMATTER_QUALIFIER)) { TradeCountFormatter(get()) }
-    factory<StringParser<Double>>(named(PRICE_DOUBLE_PARSER_QUALIFIER)) { PriceDoubleParser(get()) }
+    factory<StringParser<Double>>(named(PRICE_DOUBLE_PARSER_QUALIFIER)) { PriceDoubleParser() }
     factory<StringParser<Int>>(named(DISTANCE_INT_PARSER_QUALIFIER)) { DistanceParser() }
     single<StringProvider> { ResourceStringProvider(androidApplication().resources) }
 }

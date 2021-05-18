@@ -12,10 +12,7 @@ import com.app.belcobtm.domain.Failure
 import com.app.belcobtm.domain.wallet.LocalCoinType
 import com.app.belcobtm.domain.wallet.item.CoinDataItem
 import com.app.belcobtm.presentation.core.adapter.MultiTypeAdapter
-import com.app.belcobtm.presentation.core.extensions.resIcon
-import com.app.belcobtm.presentation.core.extensions.setTextSilently
-import com.app.belcobtm.presentation.core.extensions.toStringCoin
-import com.app.belcobtm.presentation.core.extensions.toggle
+import com.app.belcobtm.presentation.core.extensions.*
 import com.app.belcobtm.presentation.core.helper.AlertHelper
 import com.app.belcobtm.presentation.core.mvvm.LoadingData
 import com.app.belcobtm.presentation.core.ui.fragment.BaseFragment
@@ -54,21 +51,20 @@ class CreateTradeFragment : BaseFragment<FragmentCreateTradeBinding>() {
     }
 
     private val priceTextWatcher = SafeDecimalEditTextWatcher { editable ->
-        viewModel.updatePrice(viewModel.parseAmount(editable.toString()) / 100)
+        viewModel.updatePrice(editable.getDouble())
     }
 
     private val minAmountValue by lazy { resources.getInteger(R.integer.trade_amount_min) }
     private val maxAmountValue by lazy { resources.getInteger(R.integer.trade_amount_max) }
 
     private val minAmountTextWatcher = SafeDecimalEditTextWatcher { editable ->
-        val currentMax = binding.amountMaxLimitEditText.text?.toString()
-            ?.let(viewModel::parseAmount)?.toInt() ?: maxAmountValue
-        val parsedAmount = viewModel.parseAmount(editable.toString()).toInt().coerceAtMost(currentMax)
+        val currentMax = binding.amountMaxLimitEditText.text?.getInt() ?: maxAmountValue
+        val parsedAmount = editable.getInt().coerceAtMost(currentMax)
         viewModel.updateMinAmount(parsedAmount)
     }
 
     private val maxAmountTextWatcher = SafeDecimalEditTextWatcher { editable ->
-        val parsedAmount = viewModel.parseAmount(editable.toString()).toInt().coerceAtMost(maxAmountValue)
+        val parsedAmount = editable.getInt().coerceAtMost(maxAmountValue)
         viewModel.updateMaxAmount(parsedAmount)
     }
 
@@ -79,7 +75,7 @@ class CreateTradeFragment : BaseFragment<FragmentCreateTradeBinding>() {
         setToolbarTitle(R.string.create_trade_screen_title)
         coinDetailsView.setMaxButtonEnabled(false)
         coinDetailsView.setErrorEnabled(false)
-        coinDetailsView.getEditText().setText(viewModel.formatPrice(0.0))
+        coinDetailsView.getEditText().setText(0.0.toString())
         coinDetailsView.setHint(requireContext().getString(R.string.create_trade_price_input_hint))
         coinDetailsView.setPadding(0, 0, 0, 0)
         paymentOptions.adapter = adapter
@@ -90,27 +86,27 @@ class CreateTradeFragment : BaseFragment<FragmentCreateTradeBinding>() {
     }
 
     override fun FragmentCreateTradeBinding.initObservers() {
+        val amountStepSize = resources.getInteger(R.integer.trade_amount_step)
         viewModel.selectedCoin.observe(viewLifecycleOwner, ::setCoinData)
         viewModel.cryptoAmountError.observe(viewLifecycleOwner) {
             coinDetailsView.setErrorText(it, true)
         }
         viewModel.initialLoadingData.listen({})
-        viewModel.price.observe(viewLifecycleOwner) { price ->
-            coinDetailsView.getEditText().setTextSilently(
-                priceTextWatcher, viewModel.formatPrice(price)
-            )
-        }
         viewModel.amountMinLimit.observe(viewLifecycleOwner) { amount ->
             if (amount in minAmountValue..maxAmountValue) {
-                amountRangeSlider.values = amountRangeSlider.values.apply { set(0, amount.toFloat()) }
+                amountRangeSlider.values = amountRangeSlider.values.apply {
+                    set(0, (amount - amount % amountStepSize).toFloat())
+                }
             }
-            amountMinLimitEditText.setTextSilently(minAmountTextWatcher, viewModel.formatAmount(amount))
+            amountMinLimitEditText.setTextSilently(minAmountTextWatcher, amount.toString())
         }
         viewModel.amountMaxLimit.observe(viewLifecycleOwner) { amount ->
             if (amount in minAmountValue..maxAmountValue) {
-                amountRangeSlider.values = amountRangeSlider.values.apply { set(1, amount.toFloat()) }
+                amountRangeSlider.values = amountRangeSlider.values.apply {
+                    set(1, (amount - amount % amountStepSize).toFloat())
+                }
             }
-            amountMaxLimitEditText.setTextSilently(maxAmountTextWatcher, viewModel.formatAmount(amount))
+            amountMaxLimitEditText.setTextSilently(maxAmountTextWatcher, amount.toString())
         }
         viewModel.cryptoAmountFormatted.observe(viewLifecycleOwner, cryptoAmountValue::setText)
         viewModel.priceError.observe(viewLifecycleOwner) {

@@ -15,7 +15,6 @@ import com.app.belcobtm.domain.wallet.item.CoinDataItem
 import com.app.belcobtm.presentation.core.formatter.Formatter
 import com.app.belcobtm.presentation.core.livedata.TripleCombinedLiveData
 import com.app.belcobtm.presentation.core.mvvm.LoadingData
-import com.app.belcobtm.presentation.core.parser.StringParser
 import com.app.belcobtm.presentation.core.provider.string.StringProvider
 import com.app.belcobtm.presentation.features.wallet.trade.create.model.AvailableTradePaymentOption
 import com.app.belcobtm.presentation.features.wallet.trade.create.model.CreateTradeItem
@@ -26,9 +25,7 @@ class CreateTradeViewModel(
     private val createTradeUseCase: CreateTradeUseCase,
     private val checkTradeCreationAvailabilityUseCase: CheckTradeCreationAvailabilityUseCase,
     private val stringProvider: StringProvider,
-    private val priceFormatter: Formatter<Double>,
-    private val amountFormatter: Formatter<Int>,
-    private val amountParser: StringParser<Double>
+    private val amountFormatter: Formatter<Int>
 ) : ViewModel() {
 
     private lateinit var coinList: List<CoinDataItem>
@@ -79,12 +76,6 @@ class CreateTradeViewModel(
     init {
         fetchInitialData()
     }
-
-    fun parseAmount(input: String) = amountParser.parse(input)
-
-    fun formatAmount(amount: Int) = amountFormatter.format(amount)
-
-    fun formatPrice(price: Double) = priceFormatter.format(price)
 
     fun fetchInitialData() {
         _initialLoadingData.value = LoadingData.Loading(Unit)
