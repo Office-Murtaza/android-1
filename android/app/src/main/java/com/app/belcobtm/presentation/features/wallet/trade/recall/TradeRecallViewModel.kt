@@ -101,7 +101,7 @@ class TradeRecallViewModel(
         return false
     }
 
-    fun getTransactionFee(): Double = coinDataItem.reservedBalanceCoin - coinDataItem.details.txFee
+    fun getTransactionFee(): Double = coinDataItem.details.txFee
 
     fun getCoinCode(): String = coinCodeProvider.getCoinCode(coinDataItem)
 
