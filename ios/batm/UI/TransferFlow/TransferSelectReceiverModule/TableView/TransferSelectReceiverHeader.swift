@@ -6,7 +6,7 @@ import RxCocoa
 class TransferSelectReceiverHeader: UIView {
     
     let phoneNumberTextField: MDCTextField = {
-        let field = MDCTextField.phone
+        let field = MDCTextField.default
         field.rightView = nil
         return field
     }()

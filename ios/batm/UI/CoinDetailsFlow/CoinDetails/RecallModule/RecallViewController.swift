@@ -38,6 +38,8 @@ final class RecallViewController: ModuleViewController<RecallPresenter> {
         let coinTypeDriver = presenter.state.map { $0.coin?.type }.filterNil()
         let feeDriver = presenter.state.map { $0.coinDetails?.txFee }
         
+        setupGesture()
+        
         rx.firstTimeViewDidAppear
             .asObservable()
             .doOnNext { [weak self] in
@@ -116,5 +118,17 @@ final class RecallViewController: ModuleViewController<RecallPresenter> {
         presenter.bind(input: RecallPresenter.Input(updateCoinAmount: updateCoinAmountDriver,
                                                     max: maxDriver,
                                                     recall: recallDriver))
+    }
+}
+
+extension RecallViewController: UIGestureRecognizerDelegate {
+    var tapRecognizer: UITapGestureRecognizer { UITapGestureRecognizer() }
+    
+    func setupGesture() {
+        view.addGestureRecognizer(tapRecognizer)
+        
+        tapRecognizer.rx.event.asDriver().map { _ in () }
+            .drive(onNext: { [unowned self] in self.view.endEditing(true) })
+            .disposed(by: disposeBag)
     }
 }

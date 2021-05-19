@@ -32,7 +32,7 @@ protocol CoinDetailsUsecase {
     func createStake(from coin: BTMCoin, with coinDetails: CoinDetails, amount: Decimal) -> Completable
     func cancelStake(from coin: BTMCoin, with coinDetails: CoinDetails, stakeDetails: StakeDetails) -> Completable
     func withdrawStake(from coin: BTMCoin, with coinDetails: CoinDetails, stakeDetails: StakeDetails) -> Completable
-    func getCoinDetails(for type: CustomCoinType) -> Observable<CoinDetails>
+    func getCoinDetails(for type: CustomCoinType) -> Observable<CoinDetails?>
     func getCoinsBalance() -> Observable<CoinsBalance>
     func getCoinActivatedState(for coin: BTMCoin) -> Single<Bool>
 }
@@ -406,7 +406,7 @@ class CoinDetailsUsecaseImpl: CoinDetailsUsecase {
             .flatMap { [api] in api.getStakeDetails(userId: $0.userId, type: type) }
     }
     
-    func getCoinDetails(for type: CustomCoinType) -> Observable<CoinDetails> {
+    func getCoinDetails(for type: CustomCoinType) -> Observable<CoinDetails?> {
         return balanceService.getCoinDetails(for: type)
     }
     

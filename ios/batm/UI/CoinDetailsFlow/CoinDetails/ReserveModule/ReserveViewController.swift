@@ -37,6 +37,8 @@ final class ReserveViewController: ModuleViewController<ReservePresenter> {
     }
     
     func setupUIBindings() {
+        setupGesture()
+        
         rx.firstTimeViewDidAppear
             .asObservable()
             .doOnNext { [weak self] in
@@ -120,5 +122,17 @@ final class ReserveViewController: ModuleViewController<ReservePresenter> {
         presenter.bind(input: ReservePresenter.Input(updateCoinAmount: updateCoinAmountDriver,
                                                      max: maxDriver,
                                                      reserve: reserveDriver))
+    }
+}
+
+extension ReserveViewController: UIGestureRecognizerDelegate {
+    var tapRecognizer: UITapGestureRecognizer { UITapGestureRecognizer() }
+    
+    func setupGesture() {
+        view.addGestureRecognizer(tapRecognizer)
+        
+        tapRecognizer.rx.event.asDriver().map { _ in () }
+            .drive(onNext: { [unowned self] in self.view.endEditing(true) })
+            .disposed(by: disposeBag)
     }
 }

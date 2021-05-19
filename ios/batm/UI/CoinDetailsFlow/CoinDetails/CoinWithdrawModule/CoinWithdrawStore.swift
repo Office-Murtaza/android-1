@@ -3,7 +3,7 @@ import Foundation
 enum CoinWithdrawAction: Equatable {
     case setupCoin(BTMCoin)
     case setupCoinBalances([CoinBalance], CustomCoinType)
-    case setupCoinDetails(CoinDetails)
+    case setupCoinDetails(CoinDetails?)
     case setupTransactionDetails(TransactionDetails)
     case updateAddress(String?)
     case updateCoinAmount(String?)

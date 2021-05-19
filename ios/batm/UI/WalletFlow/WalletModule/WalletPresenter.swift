@@ -84,6 +84,10 @@ class WalletPresenter: ModulePresenter, WalletModule {
         
     }
     
+    func removeCoinDetails() {
+        usecase.removeCoinDetails()
+    }
+    
     private func catmPredefinedData(balance: CoinBalance) -> CoinDetailsPredefinedDataConfig {
         let horizontalLineData: [[Double]] = [[0, 50], [100, 50]]
         return CoinDetailsPredefinedDataConfig(price: NSDecimalNumber(decimal: balance.price).doubleValue,

@@ -4,7 +4,7 @@ import PhoneNumberKit
 enum CoinSendGiftAction: Equatable {
     case setupCoin(BTMCoin)
     case setupCoinBalances([CoinBalance])
-    case setupCoinDetails(CoinDetails)
+    case setupCoinDetails(CoinDetails?)
     case updatePhone(String?)
     case updateCoinAmount(String?)
     case updateMessage(String?)
