@@ -3,17 +3,12 @@ import RxSwift
 import TrustWalletCore
 
 protocol WalletUsecase {
-    
-    
   func getCoinsBalance() -> Observable<CoinsBalance>
-  func getCoinsBalance(filteredByActive: Bool) -> Single<CoinsBalance>
   func getCoinDetails(for type: CustomCoinType) -> Observable<CoinDetails>
   func getPriceChartDetails(for type: CustomCoinType, period: SelectedPeriod) -> Single<PriceChartDetails>
   func getCoins() -> Observable<Void>
   func getCoinsList() -> Single<[BTMCoin]>
-  
   func getTrades() -> Single<Trades>
-  
   func createTrade(data: P2PCreateTradeDataModel) -> Single<Trade>
   func editTrade(data: P2PEditTradeDataModel) -> Single<Trade>
   func cancelTrade(id: String) -> Single<Trade>
@@ -25,7 +20,7 @@ class WalletUsecaseImpl: WalletUsecase, HasDisposeBag {
   let api: APIGateway
   let accountStorage: AccountStorage
   let walletStorage: BTMWalletStorage
-    let balanceService: BalanceService
+  let balanceService: BalanceService
     
   init(api: APIGateway,
        accountStorage: AccountStorage,
@@ -39,39 +34,6 @@ class WalletUsecaseImpl: WalletUsecase, HasDisposeBag {
     
     func getCoinsBalance() -> Observable<CoinsBalance> {
         return balanceService.getCoinsBalance()
-    }
-    
-    
-    func getCoinsBalance(filteredByActive: Bool = true) -> Single<CoinsBalance> {
-        if filteredByActive {
-            return getFilteredByActiveCoinsBalance()
-        } else {
-            return getAllCoinsBalance()
-        }
-    }
-    
-  func getFilteredByActiveCoinsBalance() -> Single<CoinsBalance> {
-    return walletStorage.get()
-      .map { $0.coins.filter { $0.isVisible } }
-      .asObservable()
-      .withLatestFrom(accountStorage.get()) { ($1, $0) }
-      .flatMap { [api] in
-        api.getCoinsBalance(userId: $0.userId, coins: $1)
-      }
-      .doOnNext { [unowned self] in self.updateIndexes(for: $0) }
-      .asSingle()
-  }
-    
-    func getAllCoinsBalance() -> Single<CoinsBalance> {
-      return walletStorage.get()
-        .map { $0.coins }
-        .asObservable()
-        .withLatestFrom(accountStorage.get()) { ($1, $0) }
-        .flatMap { [api] in
-          api.getCoinsBalance(userId: $0.userId, coins: $1)
-        }
-        .doOnNext { [unowned self] in self.updateIndexes(for: $0) }
-        .asSingle()
     }
     
   private func updateIndexes(for coinsBalance: CoinsBalance) {
