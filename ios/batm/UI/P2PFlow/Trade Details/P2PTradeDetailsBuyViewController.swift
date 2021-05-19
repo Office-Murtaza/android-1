@@ -2,17 +2,22 @@ import UIKit
 import SnapKit
 import MaterialComponents
 
+protocol P2PTradeDetailsBuyViewControllerDelegate: AnyObject {
+    func createOrder(model: P2PCreateOrderDataModel)
+}
+
 class P2PTradeDetailsBuyViewController: P2PTradeDetailsBaseViewController {
   private let tradeView =  P2PTradeDetailsRateView()
   private let tradeViewSeparator = P2PSeparatorView()
-  
   private let infoMessageView = P2PTradeDetailsTextInfoView()
-  
   private let buyButton = MDCButton.buy
+  private var reservedBalance: Double = 0
   
+    weak var delegate: P2PTradeDetailsBuyViewControllerDelegate?
   
-  func setup(trade: Trade, distance: String) {
+    func setup(trade: Trade, distance: String, reservedBalance: Double) {
     super.setup(trade: trade)
+        self.reservedBalance = reservedBalance
     guard let makerId = trade.makerPublicId,
           let tradeRate = trade.makerTradingRate,
           let totalTrades = trade.makerTotalTrades else { return }
@@ -37,7 +42,13 @@ class P2PTradeDetailsBuyViewController: P2PTradeDetailsBaseViewController {
   }
   
   @objc func buyTrade() {
+    guard let trade = trade else { return }
     let controller = P2PCreateOrderPopupViewController()
+    controller.delegate = self
+    controller.setup(trade: trade,
+                     platformFee: 3,
+                     reservedBalance: reservedBalance)
+    
     controller.modalPresentationStyle = .overCurrentContext
     present(controller, animated: true, completion: nil)
   }
@@ -72,5 +83,16 @@ class P2PTradeDetailsBuyViewController: P2PTradeDetailsBaseViewController {
       $0.height.equalTo(50)
     }
   }
-  
+}
+
+extension P2PTradeDetailsBuyViewController: P2PCreateOrderPopupViewControllerDelegate {
+    func createOrder(price: Double, cryptoAmount: Double, fiatAmount: Double) {
+        guard let trade = trade, let tradeId = trade.id else { return }
+        let model = P2PCreateOrderDataModel(
+            tradeId: tradeId,
+            price: price,
+            cryptoAmount: cryptoAmount,
+            fiatAmount: fiatAmount)
+        delegate?.createOrder(model: model)
+    }
 }

@@ -17,6 +17,7 @@ class P2PPresenter: ModulePresenter, P2PModule {
   var tradeSuccessMessage = BehaviorRelay<String>(value: "")
   
   var balance = PublishRelay<CoinsBalance>()
+  private var coins: [CoinBalance]?
   var socketTrade = PublishRelay<Trade>()
     
   private let locationService = GeolocationService()
@@ -37,6 +38,7 @@ class P2PPresenter: ModulePresenter, P2PModule {
         return self.track(wallet.getCoinsBalance().asObservable())
       }.subscribe(onNext: { [weak self] result in
         self?.balance.accept(result)
+        self?.coins = result.coins
       })
       .disposed(by: disposeBag)
     
@@ -120,5 +122,10 @@ class P2PPresenter: ModulePresenter, P2PModule {
             }
             errorService.showError(for: .serverError).subscribe().disposed(by: disposable)
         }).disposed(by: disposeBag)
+    }
+    
+    func createOrder(model: P2PCreateOrderDataModel) {
+        guard let useCase = walletUseCase else { return }
+        track(useCase.createOrder(data: model)).asObservable().subscribe().disposed(by: disposeBag)
     }
 }
