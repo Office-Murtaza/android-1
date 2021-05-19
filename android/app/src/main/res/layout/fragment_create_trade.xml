@@ -42,11 +42,12 @@
                 android:layout_height="wrap_content"
                 android:checkable="true"
                 android:text="@string/trade_type_buy_label"
-                android:textColor="#48C583"
+                android:textColor="@color/buy_chip_icon_color"
                 app:checkedIconVisible="false"
-                app:chipBackgroundColor="#2648C583"
+                app:chipBackgroundColor="@color/buy_chip_bg_color"
                 app:chipIcon="@drawable/ic_trade_type_buy"
-                app:chipStrokeColor="#48C583"
+                app:chipIconTint="@color/buy_chip_icon_color"
+                app:chipStrokeColor="#0073E4"
                 app:chipStrokeWidth="@dimen/divider_size" />
 
             <com.google.android.material.chip.Chip
@@ -55,11 +56,12 @@
                 android:layout_height="wrap_content"
                 android:checkable="true"
                 android:text="@string/trade_type_sell_label"
-                android:textColor="#EDB900"
+                android:textColor="@color/sell_chip_icon_color"
                 app:checkedIconVisible="false"
-                app:chipBackgroundColor="#26EDB900"
+                app:chipBackgroundColor="@color/sell_chip_bg_color"
+                app:chipIconTint="@color/sell_chip_icon_color"
                 app:chipIcon="@drawable/ic_trade_type_sell"
-                app:chipStrokeColor="#EDB900" />
+                app:chipStrokeColor="#0073E4" />
 
         </com.google.android.material.chip.ChipGroup>
 
@@ -183,9 +185,9 @@
                 android:id="@+id/amount_min_limit_edit_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:minWidth="60dp"
                 android:digits="1234567890$"
                 android:inputType="number"
+                android:minWidth="60dp"
                 tools:text="$100" />
 
         </com.google.android.material.textfield.TextInputLayout>
@@ -205,8 +207,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:digits="1234567890$"
-                android:minWidth="60dp"
                 android:inputType="number"
+                android:minWidth="60dp"
                 tools:text="$100" />
 
         </com.google.android.material.textfield.TextInputLayout>
