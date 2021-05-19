@@ -93,7 +93,9 @@ public class BlockbookService {
     }
 
     public Long getByteFee(CoinType coinType) {
-        if (nodeService.isNodeAvailable(coinType)) {
+        if(coinType == CoinType.DOGECOIN) {
+            return new BigDecimal("0.00001").divide(new BigDecimal(1000)).multiply(DIVIDER).longValue();
+        } else if (nodeService.isNodeAvailable(coinType)) {
             try {
                 JSONObject res = rest.getForObject(nodeService.getNodeUrl(coinType) + "/api/v2/estimatefee/3", JSONObject.class);
 

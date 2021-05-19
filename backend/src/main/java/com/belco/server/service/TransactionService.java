@@ -223,7 +223,11 @@ public class TransactionService {
             }
         }
 
-        return getTransactionDetails(userId, coin, txId);
+        TransactionDetailsDTO details = getTransactionDetails(userId, coin, txId);
+
+        socketService.pushTransaction(userService.findById(userId).getPhone(), details);
+
+        return details;
     }
 
     @Scheduled(cron = "0 */1 * * * *")
