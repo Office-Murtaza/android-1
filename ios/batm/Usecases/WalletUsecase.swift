@@ -3,8 +3,11 @@ import RxSwift
 import TrustWalletCore
 
 protocol WalletUsecase {
+    
+    
+  func getCoinsBalance() -> Observable<CoinsBalance>
   func getCoinsBalance(filteredByActive: Bool) -> Single<CoinsBalance>
-  func getCoinDetails(for type: CustomCoinType) -> Single<CoinDetails>
+  func getCoinDetails(for type: CustomCoinType) -> Observable<CoinDetails>
   func getPriceChartDetails(for type: CustomCoinType, period: SelectedPeriod) -> Single<PriceChartDetails>
   func getCoins() -> Observable<Void>
   func getCoinsList() -> Single<[BTMCoin]>
@@ -22,14 +25,22 @@ class WalletUsecaseImpl: WalletUsecase, HasDisposeBag {
   let api: APIGateway
   let accountStorage: AccountStorage
   let walletStorage: BTMWalletStorage
-  
+    let balanceService: BalanceService
+    
   init(api: APIGateway,
        accountStorage: AccountStorage,
-       walletStorage: BTMWalletStorage) {
+       walletStorage: BTMWalletStorage,
+       balanceService: BalanceService) {
     self.api = api
     self.accountStorage = accountStorage
     self.walletStorage = walletStorage
+    self.balanceService = balanceService
   }
+    
+    func getCoinsBalance() -> Observable<CoinsBalance> {
+        return balanceService.getCoinsBalance()
+    }
+    
     
     func getCoinsBalance(filteredByActive: Bool = true) -> Single<CoinsBalance> {
         if filteredByActive {
@@ -71,9 +82,9 @@ class WalletUsecaseImpl: WalletUsecase, HasDisposeBag {
       .disposed(by: disposeBag)
   }
   
-  func getCoinDetails(for type: CustomCoinType) -> Single<CoinDetails> {
-    return api.getCoinDetails(type: type)
-  }
+    func getCoinDetails(for type: CustomCoinType) -> Observable<CoinDetails> {
+        return balanceService.getCoinDetails(for: type)
+    }
 
   func getPriceChartDetails(for type: CustomCoinType, period: SelectedPeriod) -> Single<PriceChartDetails> {
     return api.getPriceChart(type: type, period: period)
