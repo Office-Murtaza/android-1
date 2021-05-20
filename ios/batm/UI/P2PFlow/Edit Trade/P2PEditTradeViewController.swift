@@ -118,7 +118,7 @@ class P2PEditTradeViewController: UIViewController {
     limitsView.setup(range: [100, 10000], measureString: "$ ", isMeasurePosistionLast: false)
   
     if currentModel.maxLimit != 0 {
-      limitsView.distanceSlider.value = [CGFloat(currentModel.minLimit), CGFloat(currentModel.maxLimit)]
+//      limitsView.distanceSlider.value = [CGFloat(currentModel.minLimit), CGFloat(currentModel.maxLimit)]
       limitsView.setInitFieldsValues(from: CGFloat(currentModel.minLimit), to: CGFloat(currentModel.maxLimit))
     }
     

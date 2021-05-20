@@ -108,7 +108,10 @@ class P2PCreateTradeViewController: UIViewController {
         view.backgroundColor = .white
       paymentMethodsHeader.update(title: localize(L.P2p.Payment.Methods.title))
         setupPaymentMethodsView(payments: payments)
+        
         limitsView.setup(range: [CGFloat(minRange), CGFloat(maxRange)], measureString: "", isMeasurePosistionLast: false)
+        limitsView.update(isUserInteractionEnabled: true, keyboardType: .decimalPad)
+        
       limitsHeader.update(title: localize(L.P2p.Limits.title))
       termsHeader.update(title: localize(L.P2p.Terms.title))
         termsTextFieldController = ThemedTextInputControllerOutlinedTextArea(textInput: termsTextField)
@@ -291,7 +294,7 @@ class P2PCreateTradeViewController: UIViewController {
             $0.left.equalToSuperview().offset(30)
             $0.right.equalToSuperview().offset(-30)
             $0.top.equalTo(limitsHeader.snp.bottom)
-            $0.height.equalTo(120)
+            $0.height.equalTo(100)
         }
         
         termsSeparator.snp.makeConstraints {

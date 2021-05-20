@@ -225,7 +225,7 @@ class P2PFiltersViewController: UIViewController {
             $0.left.equalToSuperview().offset(30)
             $0.right.equalToSuperview().offset(-30)
             $0.top.equalTo(distanceHeader.snp.bottom)
-            $0.height.equalTo(110)
+            $0.height.equalTo(100)
         }
         
         sortBySeparator.snp.makeConstraints {
