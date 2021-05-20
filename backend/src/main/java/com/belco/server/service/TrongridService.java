@@ -136,6 +136,7 @@ public class TrongridService {
                 dto.setStatus(getStatus(res.optJSONArray("ret").getJSONObject(0).optString("contractRet")).getValue());
                 dto.setTimestamp(res.optJSONObject("raw_data").optLong("timestamp"));
             } catch (Exception e) {
+                dto.setStatus(TransactionStatus.FAIL.getValue());
                 e.printStackTrace();
 
                 if (nodeService.switchToReserveNode(COIN_TYPE)) {

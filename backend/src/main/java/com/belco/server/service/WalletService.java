@@ -255,22 +255,7 @@ public class WalletService {
                 String txId = coin.submitTransaction(dto);
 
                 if (StringUtils.isNotBlank(txId)) {
-                    TransactionDetailsDTO tx = new TransactionDetailsDTO();
-                    tx.setTxId(txId);
-                    tx.setCoin(coin.name());
-                    tx.setCryptoAmount(amount);
-                    tx.setFromAddress(fromAddress);
-                    tx.setToAddress(toAddress);
-
-                    if (isServerAddress(fromAddress)) {
-                        tx.setType(TransactionType.SELL.getValue());
-                    } else {
-                        tx.setType(TransactionType.MOVE.getValue());
-                    }
-
-                    tx.setStatus(coin.getTransactionDetails(txId, StringUtils.EMPTY).getStatus());
-
-                    mongo.save(tx);
+                    persist(coin, fromAddress, toAddress, amount, txId);
 
                     return txId;
                 }
@@ -280,6 +265,29 @@ public class WalletService {
         }
 
         return null;
+    }
+
+    private void persist(CoinService.CoinEnum coin, String fromAddress, String toAddress, BigDecimal amount, String txId) {
+        try {
+            TransactionDetailsDTO tx = new TransactionDetailsDTO();
+            tx.setTxId(txId);
+            tx.setCoin(coin.name());
+            tx.setCryptoAmount(amount);
+            tx.setFromAddress(fromAddress);
+            tx.setToAddress(toAddress);
+
+            if (isServerAddress(fromAddress)) {
+                tx.setType(TransactionType.SELL.getValue());
+            } else {
+                tx.setType(TransactionType.MOVE.getValue());
+            }
+
+            tx.setStatus(coin.getTransactionDetails(txId, StringUtils.EMPTY).getStatus());
+
+            mongo.save(tx);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public boolean isServerAddress(String address) {
