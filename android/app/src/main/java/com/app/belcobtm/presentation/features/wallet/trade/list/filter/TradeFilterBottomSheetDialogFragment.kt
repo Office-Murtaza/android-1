@@ -37,14 +37,14 @@ class TradeFilterBottomSheetDialogFragment : BottomSheetDialogFragment() {
     private val minDistanceValue by lazy { resources.getInteger(R.integer.trade_filter_min_distance) }
     private val maxDistanceValue by lazy { resources.getInteger(R.integer.trade_filter_max_distance) }
 
-    private val minAmountTextWatcher = SafeDecimalEditTextWatcher { editable ->
+    private val minDistanceTextWatcher = SafeDecimalEditTextWatcher { editable ->
         val currentMax = binding.distanceMaxLimitEditText.text?.toString()
             ?.let(viewModel::parseDistance)?.toInt() ?: maxDistanceValue
         val parsedAmount = viewModel.parseDistance(editable.toString()).coerceAtMost(currentMax)
         viewModel.updateMinDistance(parsedAmount)
     }
 
-    private val maxAmountTextWatcher = SafeDecimalEditTextWatcher { editable ->
+    private val maxDistanceTextWatcher = SafeDecimalEditTextWatcher { editable ->
         val parsedAmount = viewModel.parseDistance(editable.toString()).coerceAtMost(maxDistanceValue)
         viewModel.updateMaxDistance(parsedAmount)
     }
@@ -54,14 +54,15 @@ class TradeFilterBottomSheetDialogFragment : BottomSheetDialogFragment() {
         binding.coins.adapter = coinsAdapter
         binding.paymentOptions.adapter = paymentsAdapter
         viewModel.fetchInitialData()
-        viewModel.updateMinDistance(binding.distanceRangeSlider.values[0].toInt())
-        viewModel.updateMaxDistance(binding.distanceRangeSlider.values[1].toInt())
+        binding.distanceMaxLimitEditText.addTextChangedListener(maxDistanceTextWatcher)
+        binding.distanceMinLimitEditText.addTextChangedListener(minDistanceTextWatcher)
+        viewModel.updateMinDistance(minDistanceValue)
+        viewModel.updateMaxDistance(maxDistanceValue)
         viewModel.coins.observe(viewLifecycleOwner, coinsAdapter::update)
         viewModel.paymentOptions.observe(viewLifecycleOwner, paymentsAdapter::update)
         viewModel.distanceEnabled.observe(viewLifecycleOwner) {
             with(binding) {
                 distanceLabel.toggle(it)
-                distanceRangeSlider.toggle(it)
                 distanceMinLimitInputLayout.toggle(it)
                 distanceMaxLimitInputLayout.toggle(it)
                 distanceRangeSliderDivider.toggle(it)
@@ -75,26 +76,13 @@ class TradeFilterBottomSheetDialogFragment : BottomSheetDialogFragment() {
             }
         }
         viewModel.distanceMinLimit.observe(viewLifecycleOwner) { distance ->
-            if (distance >= minDistanceValue) {
-                binding.distanceRangeSlider.values =
-                    binding.distanceRangeSlider.values.apply { set(0, distance.toFloat()) }
-            }
             binding.distanceMinLimitEditText.setTextSilently(
-                minAmountTextWatcher, distance.toString(), distance.toString().length
+                minDistanceTextWatcher, distance.toString(), distance.toString().length
             )
         }
         viewModel.distanceRangeError.observe(viewLifecycleOwner) {
             it?.let(binding.distanceRangeError::setText)
             binding.distanceRangeError.toggle(it != null)
-        }
-        viewModel.distanceMaxLimit.observe(viewLifecycleOwner) { distance ->
-            if (distance <= maxDistanceValue) {
-                binding.distanceRangeSlider.values =
-                    binding.distanceRangeSlider.values.apply { set(1, distance.toFloat()) }
-            }
-            binding.distanceMaxLimitEditText.setTextSilently(
-                maxAmountTextWatcher, distance.toString(), distance.toString().length
-            )
         }
         viewModel.closeFilter.observe(viewLifecycleOwner) {
             findNavController().popBackStack()
@@ -120,12 +108,6 @@ class TradeFilterBottomSheetDialogFragment : BottomSheetDialogFragment() {
                 resources.getDimensionPixelSize(R.dimen.divider_size).toFloat()
             } else {
                 0.0f
-            }
-        }
-        binding.distanceRangeSlider.addOnChangeListener { slider, _, fromUser ->
-            if (fromUser) {
-                viewModel.updateMinDistance(slider.values[0].toInt())
-                viewModel.updateMaxDistance(slider.values[1].toInt())
             }
         }
         binding.resetFilters.setOnClickListener {

@@ -98,11 +98,7 @@ class TradeFilterViewModel(
                             minDistance > maxDistance
                     )
         ) {
-            _distanceRangeError.value = stringProvider.getString(
-                R.string.create_trade_amount_range_error,
-                stringProvider.getString(R.string.distance_label_formatted, minAvailableDistance),
-                stringProvider.getString(R.string.distance_label_formatted, maxAvailableDistance)
-            )
+            _distanceRangeError.value = stringProvider.getString(R.string.create_trade_amount_range_error)
             return
         } else {
             _distanceRangeError.value = null

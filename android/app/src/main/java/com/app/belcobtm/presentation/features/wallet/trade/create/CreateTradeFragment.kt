@@ -38,7 +38,11 @@ class CreateTradeFragment : BaseFragment<FragmentCreateTradeBinding>() {
                 viewModel.fetchInitialData()
             } else {
                 viewModel.createTrade(
-                    if (binding.tradeTypeBuyChip.isChecked) TradeType.BUY else TradeType.SELL,
+                    when {
+                        binding.tradeTypeBuyChip.isChecked -> TradeType.BUY
+                        binding.tradeTypeSellChip.isChecked -> TradeType.SELL
+                        else -> -1
+                    },
                     binding.termsInput.editText?.text.toString(), minAmountValue, maxAmountValue
                 )
             }
@@ -81,33 +85,18 @@ class CreateTradeFragment : BaseFragment<FragmentCreateTradeBinding>() {
         paymentOptions.adapter = adapter
         paymentOptions.setHasFixedSize(true)
         paymentOptions.overScrollMode = View.OVER_SCROLL_NEVER
-        viewModel.updateMinAmount(amountRangeSlider.values[0].toInt())
-        viewModel.updateMaxAmount(amountRangeSlider.values[1].toInt())
+        viewModel.updateMinAmount(minAmountValue)
+        viewModel.updateMaxAmount(maxAmountValue)
+        binding.amountMinLimitEditText.setText(minAmountValue.toString())
+        binding.amountMaxLimitEditText.setText(maxAmountValue.toString())
     }
 
     override fun FragmentCreateTradeBinding.initObservers() {
-        val amountStepSize = resources.getInteger(R.integer.trade_amount_step)
         viewModel.selectedCoin.observe(viewLifecycleOwner, ::setCoinData)
         viewModel.cryptoAmountError.observe(viewLifecycleOwner) {
             coinDetailsView.setErrorText(it, true)
         }
         viewModel.initialLoadingData.listen({})
-        viewModel.amountMinLimit.observe(viewLifecycleOwner) { amount ->
-            if (amount in minAmountValue..maxAmountValue) {
-                amountRangeSlider.values = amountRangeSlider.values.apply {
-                    set(0, (amount - amount % amountStepSize).toFloat())
-                }
-            }
-            amountMinLimitEditText.setTextSilently(minAmountTextWatcher, amount.toString())
-        }
-        viewModel.amountMaxLimit.observe(viewLifecycleOwner) { amount ->
-            if (amount in minAmountValue..maxAmountValue) {
-                amountRangeSlider.values = amountRangeSlider.values.apply {
-                    set(1, (amount - amount % amountStepSize).toFloat())
-                }
-            }
-            amountMaxLimitEditText.setTextSilently(maxAmountTextWatcher, amount.toString())
-        }
         viewModel.cryptoAmountFormatted.observe(viewLifecycleOwner, cryptoAmountValue::setText)
         viewModel.priceError.observe(viewLifecycleOwner) {
             coinDetailsView.setErrorText(it, true)
@@ -149,12 +138,6 @@ class CreateTradeFragment : BaseFragment<FragmentCreateTradeBinding>() {
         coinDetailsView.getEditText().addTextChangedListener(priceTextWatcher)
         amountMinLimitEditText.addTextChangedListener(minAmountTextWatcher)
         amountMaxLimitEditText.addTextChangedListener(maxAmountTextWatcher)
-        amountRangeSlider.addOnChangeListener { slider, _, fromUser ->
-            if (fromUser) {
-                viewModel.updateMinAmount(slider.values[0].toInt())
-                viewModel.updateMaxAmount(slider.values[1].toInt())
-            }
-        }
         coinDetailsView.setOnCoinButtonClickListener(View.OnClickListener {
             showSelectCoinDialog {
                 viewModel.selectCoin(it)
@@ -162,7 +145,11 @@ class CreateTradeFragment : BaseFragment<FragmentCreateTradeBinding>() {
         })
         createTradeButton.setOnClickListener {
             viewModel.createTrade(
-                if (binding.tradeTypeBuyChip.isChecked) TradeType.BUY else TradeType.SELL,
+                when {
+                    binding.tradeTypeBuyChip.isChecked -> TradeType.BUY
+                    binding.tradeTypeSellChip.isChecked -> TradeType.SELL
+                    else -> -1
+                },
                 binding.termsInput.editText?.text.toString(), minAmountValue, maxAmountValue
             )
         }
