@@ -6,7 +6,6 @@ import QRCodeReader
 import MaterialComponents
 
 final class CoinWithdrawViewController: ModuleViewController<CoinWithdrawPresenter>, QRCodeReaderViewControllerDelegate {
-    lazy var rootScrollView = RootScrollView()
     lazy var headerView = HeaderView()
     lazy var formView = CoinWithdrawFormView()
     lazy var submitButton = MDCButton.submit
@@ -23,22 +22,12 @@ final class CoinWithdrawViewController: ModuleViewController<CoinWithdrawPresent
     private let didScanAddressRelay = PublishRelay<String?>()
     
     override func setupUI() {
-        view.addSubview(rootScrollView)
-        rootScrollView.contentView.addSubviews(headerView,
-                                               formView,
-                                               submitButton)
-        
-        setupDefaultKeyboardHandling()
+        view.addSubviews(headerView,
+                         formView,
+                         submitButton)
     }
     
     override func setupLayout() {
-        rootScrollView.snp.makeConstraints {
-            $0.top.equalTo(view.safeAreaLayoutGuide)
-            $0.left.right.bottom.equalToSuperview()
-        }
-        rootScrollView.contentView.snp.makeConstraints {
-            $0.height.equalToSuperview()
-        }
         headerView.snp.makeConstraints {
             $0.top.equalToSuperview().offset(25)
             $0.left.equalToSuperview().offset(15)
@@ -56,6 +45,8 @@ final class CoinWithdrawViewController: ModuleViewController<CoinWithdrawPresent
     }
     
     func setupUIBindings() {
+        setupGesture()
+        
         rx.firstTimeViewDidAppear
             .asObservable()
             .doOnNext { [weak self] in
@@ -177,5 +168,17 @@ final class CoinWithdrawViewController: ModuleViewController<CoinWithdrawPresent
     private func showQrReader() {
         qrReaderVC.delegate = self
         present(qrReaderVC, animated: true, completion: nil)
+    }
+}
+
+extension CoinWithdrawViewController: UIGestureRecognizerDelegate {
+    var tapRecognizer: UITapGestureRecognizer { UITapGestureRecognizer() }
+    
+    func setupGesture() {
+        view.addGestureRecognizer(tapRecognizer)
+        
+        tapRecognizer.rx.event.asDriver().map { _ in () }
+            .drive(onNext: { [unowned self] in self.view.endEditing(true) })
+            .disposed(by: disposeBag)
     }
 }

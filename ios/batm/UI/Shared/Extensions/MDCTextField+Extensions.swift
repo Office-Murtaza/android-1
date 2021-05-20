@@ -99,6 +99,9 @@ extension MDCOutlinedTextArea {
   static var address: MDCOutlinedTextArea {
     let textField = MDCOutlinedTextArea.default
     textField.minimumNumberOfVisibleRows = 1
+    
+    textField.textView.isScrollEnabled = false
+    
     textField.maximumNumberOfVisibleRows = 3
     textField.textView.autocapitalizationType = .none
     textField.textView.autocorrectionType = .no
@@ -134,7 +137,6 @@ extension MDCOutlinedTextArea {
       leadingAssistiveLabel.text = nil
     }
   }
-  
 }
 
 extension Reactive where Base: MDCOutlinedTextArea {

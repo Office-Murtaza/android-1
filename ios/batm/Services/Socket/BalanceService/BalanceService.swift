@@ -19,7 +19,8 @@ enum BalanceServiceError: Error {
 
 protocol BalanceService: BalanceServiceWebSocket {
     func getCoinsBalance() -> Observable<CoinsBalance>
-    func getCoinDetails(for coinType: CustomCoinType) -> Observable<CoinDetails>
+    func getCoinDetails(for coinType: CustomCoinType) -> Observable<CoinDetails?>
+    func removeCoinDetails()
 }
 
 class BalanceServiceImpl: BalanceService {
@@ -35,7 +36,7 @@ class BalanceServiceImpl: BalanceService {
     
     private var coinType: CustomCoinType?
     private var balanceProperty = BehaviorRelay<CoinsBalance>(value: CoinsBalance.empty)
-    private var detailsProperty = BehaviorRelay<CoinDetails>(value: .empty)
+    private var detailsProperty = BehaviorRelay<CoinDetails?>(value: .empty)
     private let disposeBag: DisposeBag = DisposeBag()
     private let socketURL: URL
     
@@ -59,9 +60,13 @@ class BalanceServiceImpl: BalanceService {
         }
     }
     
-    func getCoinDetails(for coinType: CustomCoinType) -> Observable<CoinDetails> {
+    func getCoinDetails(for coinType: CustomCoinType) -> Observable<CoinDetails?> {
         self.coinType = coinType
         return detailsProperty.asObservable()
+    }
+    
+    func removeCoinDetails() {
+        detailsProperty.accept(nil)
     }
     
     func subscribeSystemNotifications() {
@@ -73,7 +78,7 @@ class BalanceServiceImpl: BalanceService {
                                                selector: #selector(handleBackground),
                                                name: UIApplication.didEnterBackgroundNotification,
                                                object: nil)
-        let  notificationName = Notification.Name(RefreshCredentialsConstants.refreshNotificationName)
+        let notificationName = Notification.Name(RefreshCredentialsConstants.refreshNotificationName)
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(disconnectAndStart),
                                                name: notificationName,
@@ -196,29 +201,15 @@ extension BalanceServiceImpl: BalanceServiceWebSocket {
     }
     
     private func handleErrorModel(_ model: MessageModel) {
-        let messageKey = "message"
-        let accessDeniedKey = "Access is denied"
-        guard let errorMessage = model.headers[messageKey],
-              errorMessage == accessDeniedKey else {
-            errorService
-                .showError(for: .serverError)
-                .subscribe()
-                .disposed(by: disposeBag)
-            return
-        }
-        disconnectAndStart()
+        self.disconnectAndStart()
     }
     
     @objc private func disconnectAndStart() {
         disconnect()
+            .observeOn(ConcurrentDispatchQueueScheduler(qos: .background))
+            .retry(maxAttempts: 1, delay: 60)
             .subscribe { [weak self] in
                 self?.start()
-            } onError: { [weak self] (error) in
-                guard let self = self else { return }
-                self.errorService
-                    .showError(for: .serverError)
-                    .subscribe()
-                    .disposed(by: self.disposeBag)
             }.disposed(by: disposeBag)
     }
 }

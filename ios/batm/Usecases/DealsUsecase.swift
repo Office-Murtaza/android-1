@@ -11,7 +11,7 @@ protocol DealsUsecase {
     func createStake(from coin: BTMCoin, with coinDetails: CoinDetails, amount: Decimal) -> Completable
     func cancelStake(from coin: BTMCoin, with coinDetails: CoinDetails, stakeDetails: StakeDetails) -> Completable
     func withdrawStake(from coin: BTMCoin, with coinDetails: CoinDetails, stakeDetails: StakeDetails) -> Completable
-    func getCoinDetails(for type: CustomCoinType) -> Observable<CoinDetails>
+    func getCoinDetails(for type: CustomCoinType) -> Observable<CoinDetails?>
     func getCoinsBalance() -> Observable<CoinsBalance>
     func getCoin(for type: CustomCoinType) -> Single<BTMCoin>
     func getTrades() -> Single<Trades>
@@ -54,7 +54,7 @@ class DealsUsecaseImpl: DealsUsecase {
             }
     }
     
-    func getCoinDetails(for type: CustomCoinType) -> Observable<CoinDetails> {
+    func getCoinDetails(for type: CustomCoinType) -> Observable<CoinDetails?> {
         return balanceService.getCoinDetails(for: type)
     }
     

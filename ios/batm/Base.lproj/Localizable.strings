@@ -355,7 +355,7 @@
 "recall.form.error.too_low_amount" = "Reserved amount is lower than transaction fee";
 
 "coin_staking.header.staking_anual_percent" = "Annual percent";
-"coin_staking.header.usd_converted.title" = "USD converted value";
+"coin_staking.header.usd_converted.title" = "Converted value";
 "coin_staking.header.usd_converted.value" = "$ %@";
 "coin_staking.header.created_date" = "Created";
 "coin_staking.header.cancel_hold_period" = "Hold period";
@@ -414,7 +414,7 @@
 "swap.platformfee" = "Platform fee";
 "swap.tilda" = "~";
 "swap.percent" = "%";
-"swap.usd.title" = "USD converted value";
+"swap.usd.title" = "Converted value";
 "swap.alert.coins_not_enough" = "Please, enable coins from Settings/Wallets and try again";
 
 "transfer.receiver.phone.placeholder" = "Type mobile number or contact name";
@@ -503,4 +503,3 @@
 "p2p.order.details.score.from.partner" = "Score from a partner";
 "p2p.order.create.fiat.error" = "Amount is bigger/less than specified limits";
 "p2p.order.create.reserved.error" = "Amount is bigger than your reserved balance";
-

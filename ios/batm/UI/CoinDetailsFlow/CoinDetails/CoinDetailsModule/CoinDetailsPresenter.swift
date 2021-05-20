@@ -148,6 +148,7 @@ final class CoinDetailsPresenter: ModulePresenter, CoinDetailsModule {
     }
     
     private func updateChartDetails(period: SelectedPeriod) -> Completable {
+        store.action.accept(.updateSelectedPeriod(period))
         return Completable.create { [unowned self] completable -> Disposable in
             guard let type = self.store.currentState.coin?.type ?? self.store.currentState.predefinedData?.balance.type else {
                 completable(.completed)
@@ -155,12 +156,12 @@ final class CoinDetailsPresenter: ModulePresenter, CoinDetailsModule {
             }
             
             if let predefinedData = self.store.currentState.predefinedData {
-                store.action.accept(.updateSelectedPeriod(period, PriceChartDetails(prices: predefinedData.chartData)))
+                store.action.accept(.updateSelectedPeriodDetails(PriceChartDetails(prices: predefinedData.chartData)))
             } else {
                 self.walletUsecase
                     .getPriceChartDetails(for: type, period: period)
                     .subscribe(onSuccess: { [store] (details) in
-                        store.action.accept(.updateSelectedPeriod(period, details))
+                        store.action.accept(.updateSelectedPeriodDetails(details))
                     }).disposed(by: self.disposeBag)
             }
             
@@ -224,7 +225,7 @@ final class CoinDetailsPresenter: ModulePresenter, CoinDetailsModule {
                                  from index: Int = 0) -> Single<Transactions> {
         
         return usecase.getTransactions(for: type, from: index)
-            .do(onSuccess: { [weak self, store] in
+            .do(onSuccess: { [store] in
                 store.action.accept(.finishFetchingTransactions($0, transactionDetails))
                 store.action.accept(.updatePage(index))
             },

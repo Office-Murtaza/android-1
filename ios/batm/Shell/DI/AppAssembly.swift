@@ -148,9 +148,9 @@ final class AppAssembly: Assembly {
         let socketURL = ioc.resolve(URL.self, name: Keys.socketUrl.rawValue)!
         
         return TransactionDetailsServiceImpl(api: api,
-                                      accountStorage: accountStorage,
-                                      errorService: errorService,
-                                      socketURL: socketURL)
+                                             accountStorage: accountStorage,
+                                             errorService: errorService,
+                                             socketURL: socketURL)
     }.inObjectScope(.container)
   }
   
@@ -248,7 +248,12 @@ final class AppAssembly: Assembly {
     container.register(PinCodeUsecase.self) { ioc in
       let pinCodeStorage = ioc.resolve(PinCodeStorage.self)!
       let refreshService = ioc.resolve(RefreshCredentialsService.self)!
-      return PinCodeUsecaseImpl(pinCodeStorage: pinCodeStorage, refreshService: refreshService)
+        let tradeService = ioc.resolve(TradeSocketService.self)!
+        let transactionDetailsService = ioc.resolve(TransactionDetailsService.self)!
+      return PinCodeUsecaseImpl(pinCodeStorage: pinCodeStorage,
+                                refreshService: refreshService,
+                                tradeService: tradeService,
+                                transactionDetailsService: transactionDetailsService)
       }.inObjectScope(.container)
     container.register(PinCodeService.self) { ioc in
       let pinCodeStorage = ioc.resolve(PinCodeStorage.self)!
