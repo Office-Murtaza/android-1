@@ -1,12 +1,23 @@
 import UIKit
 import SnapKit
 
+typealias P2POutlinedTextFieldCallback = (String) -> Void
+
 class P2POutlinedTextField: UIView {
 
     
     private let placeholderLabel = UILabel()
     private let containerView = UIView()
     private let textField = UITextField()
+    private let measurementLabel = UILabel()
+    private var gestureRecognizer: UITapGestureRecognizer?
+    private lazy var horizontalStack: UIStackView = {
+        let stack = UIStackView()
+        stack.distribution = .fillProportionally
+        stack.axis = .horizontal
+        return stack
+    }()
+    private var callback: P2POutlinedTextFieldCallback?
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -18,7 +29,21 @@ class P2POutlinedTextField: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
+    @objc func tapAction() {
+        textField.becomeFirstResponder()
+    }
+    
+    func update(callback: @escaping P2POutlinedTextFieldCallback) {
+        self.callback = callback
+    }
+    
     private func setupUI() {
+    
+        self.gestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(tapAction))
+        if let recognizer = gestureRecognizer {
+            self.addGestureRecognizer(recognizer)
+        }
+        
         containerView.layer.borderWidth = 1 / UIScreen.main.scale
         containerView.layer.borderColor = UIColor.lightGray.cgColor
         containerView.layer.cornerRadius = 3
@@ -26,8 +51,14 @@ class P2POutlinedTextField: UIView {
         
         placeholderLabel.backgroundColor = .white
         placeholderLabel.font = .systemFont(ofSize: 12)
+        containerView.addSubviews([
+            horizontalStack
+        ])
         
-        containerView.addSubview(textField)
+        horizontalStack.addArrangedSubviews([
+            textField,
+            measurementLabel
+        ])
         
         textField.font = .systemFont(ofSize: 16)
         
@@ -35,7 +66,13 @@ class P2POutlinedTextField: UIView {
             containerView,
             placeholderLabel
         ])
-        
+
+        textField.addTarget(self, action: #selector(textChanged(_:)), for: .editingChanged)
+    }
+    
+    @objc func textChanged(_ textField: UITextField) {
+        guard let text = textField.text else { return }
+        callback?(text)
     }
     
     private func setupLayout() {
@@ -49,11 +86,9 @@ class P2POutlinedTextField: UIView {
             $0.height.equalTo(15)
         }
         
-        textField.snp.makeConstraints {
-            $0.top.equalToSuperview().offset(5)
-            $0.left.equalToSuperview().offset(16)
-            $0.right.equalToSuperview().offset(-16)
-            $0.bottom.equalToSuperview().offset(-5)
+        horizontalStack.snp.makeConstraints {
+            $0.left.equalToSuperview().offset(5)
+            $0.top.right.bottom.equalToSuperview()
         }
     }
     
@@ -61,6 +96,16 @@ class P2POutlinedTextField: UIView {
         placeholderLabel.text = placeholder
         textField.isUserInteractionEnabled = userInteractionEnabled
         textField.attributedText = attributedText
+    }
+    
+    func update(userInteractionEnabled: Bool, keyboardType: UIKeyboardType) {
+        textField.isUserInteractionEnabled = userInteractionEnabled
+        textField.keyboardType = keyboardType
+      
+    }
+    
+    func update(measurmentValue: String) {
+        measurementLabel.text = measurmentValue
     }
     
     func update(attributedText: NSAttributedString) {

@@ -9,7 +9,7 @@ enum P2PFilterSortType: CaseIterable {
     var title: String {
         switch self {
         case .price: return localize(L.P2p.Filter.Price.title)
-        case .distance: return localize(L.P2p.Filter.Distance.title)
+        case .distance: return localize(L.P2p.Filter.Range.distance)
         }
     }
     
@@ -75,10 +75,12 @@ class P2PFiltersViewController: UIViewController {
     private var coins: [CustomCoinType]
     private var payments: [TradePaymentMethods]
     private var sortType: [P2PFilterSortType]
+    private var preselectedSortBy: P2PFilterSortType
     
     init(coins: [CustomCoinType],
          payments: [TradePaymentMethods],
          sortTypes: [P2PFilterSortType],
+         preselectedSortBy: P2PFilterSortType,
          minRange: Int,
          maxRange: Int) {
         self.coins = coins
@@ -86,12 +88,16 @@ class P2PFiltersViewController: UIViewController {
         self.sortType = sortTypes
         self.minRange = minRange
         self.maxRange = maxRange
-
+        self.preselectedSortBy = preselectedSortBy
         super.init(nibName: nil, bundle: nil)
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    @objc func hideKeyboard() {
+        view.endEditing(true)
     }
     
     override func viewDidLoad() {
@@ -107,7 +113,8 @@ class P2PFiltersViewController: UIViewController {
         
       distanceHeader.update(title: localize(L.P2p.Filter.Distance.title))
         
-      distanceView.setup(range: [CGFloat(minRange ?? 0), CGFloat(maxRange ?? 0)], measureString: localize(L.P2p.Filter.miles))
+      distanceView.setup(range: [CGFloat(minRange ?? 0), CGFloat(maxRange ?? 0)], measureString: "", stepSize: 1)
+      distanceView.update(isUserInteractionEnabled: true, keyboardType: .decimalPad)
         
       sortByHeader.update(title: localize(L.P2p.Filter.Sort.By.title))
         setupSortByView(tags: sortType.map{ $0.title })
@@ -125,6 +132,9 @@ class P2PFiltersViewController: UIViewController {
             self?.maxRange = maxRange
         }
 
+        let tapRecognizer = UITapGestureRecognizer(target: self, action: #selector(hideKeyboard))
+        view.addGestureRecognizer(tapRecognizer)
+        
     }
 
     private func setupUI() {
@@ -248,6 +258,7 @@ class P2PFiltersViewController: UIViewController {
         
         for type in coins {
             let tag = P2PTagView()
+            tag.didSelected()
             tag.update(image: type.mediumLogo, title: type.code)
             tag.layoutIfNeeded()
             tags.append(tag)
@@ -272,6 +283,9 @@ class P2PFiltersViewController: UIViewController {
         var tagViews = [P2PTagView]()
         for title in tags {
             let tag = P2PTagView()
+            if title == preselectedSortBy.title {
+                tag.didSelected()
+            }
             tag.delegte = self
             tag.update(image: nil, title: title)
             tag.layoutIfNeeded()

@@ -52,6 +52,7 @@ class P2PSellBuyView: UIView {
     private var selected = false
     private var type: P2PSellBuyViewType?
     private var tapRecognizer: UITapGestureRecognizer?
+    private let selectedView = P2PTagViewSelectedOverlay()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -114,11 +115,13 @@ class P2PSellBuyView: UIView {
     private func selectedState() {
         contentView.layer.borderColor = type?.contentColor.cgColor
         contentView.layer.borderWidth = 2
+        selectedView.isHidden = false
     }
     
     private func regularState() {
         contentView.layer.borderColor = nil
         contentView.layer.borderWidth = 0
+        selectedView.isHidden = true
     }
 
     private lazy var contentView: UIView = {
@@ -149,10 +152,12 @@ class P2PSellBuyView: UIView {
     }
     
     func setupUI() {
+        selectedView.isHidden = true
         addSubview(contentView)
         contentView.addSubviews([
             arrowImageView,
-            titleLabel
+            titleLabel,
+            selectedView
         ])
     }
     
@@ -172,6 +177,10 @@ class P2PSellBuyView: UIView {
             $0.height.equalTo(10)
             $0.centerY.equalToSuperview()
             $0.right.equalTo(titleLabel.snp.left).offset(-8)
+        }
+        
+        selectedView.snp.makeConstraints {
+            $0.edges.equalToSuperview()
         }
     }
 

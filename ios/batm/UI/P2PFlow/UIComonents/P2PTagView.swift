@@ -5,7 +5,12 @@ protocol P2PTagViewDelegate: AnyObject {
     func didTapTag(view: P2PTagView)
 }
 
+enum P2PTagViewConst {
+    static let imageViewSize: CGFloat = 20
+}
+
 class P2PTagView: UIView {
+    
     
     weak var delegte: P2PTagViewDelegate?
     
@@ -46,6 +51,8 @@ class P2PTagView: UIView {
     private lazy var imageView: UIImageView = {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFit
+        imageView.layer.cornerRadius = P2PTagViewConst.imageViewSize / 2
+        imageView.layer.masksToBounds = true
         return imageView
     }()
     
@@ -94,7 +101,7 @@ class P2PTagView: UIView {
             $0.left.equalToSuperview().offset(8)
             $0.top.equalToSuperview().offset(6)
             $0.bottom.equalToSuperview().offset(-6)
-            $0.height.width.equalTo(20)
+            $0.height.width.equalTo(P2PTagViewConst.imageViewSize)
             $0.width.equalTo(imageViewWidth)
         }
         
@@ -168,7 +175,7 @@ class P2PTagViewSelectedOverlay: UIView {
             $0.left.equalToSuperview().offset(8)
             $0.top.equalToSuperview().offset(6)
             $0.bottom.equalToSuperview().offset(-6)
-            $0.height.width.equalTo(20)
+            $0.height.width.equalTo(P2PTagViewConst.imageViewSize)
         }
     }
     

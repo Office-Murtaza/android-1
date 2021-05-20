@@ -25,9 +25,19 @@ protocol P2PCreateTradeViewControllerDelegate: AnyObject {
 class P2PCreateTradeViewController: UIViewController {
 
     var selectedType: P2PSellBuyViewType = .buy
-    var minRange: Int?
-    var maxRange: Int?
-
+    var minRange: Int = 100
+    var maxRange: Int = 10000 {
+        didSet {
+            calculateFee()
+        }
+    }
+    
+    private var currentPrice: Double = 0 {
+        didSet {
+            calculateFee()
+        }
+    }
+    
     private var balance: CoinsBalance
     private var payments: [TradePaymentMethods]
     let submitButton = MDCButton.submit
@@ -68,7 +78,7 @@ class P2PCreateTradeViewController: UIViewController {
     private let limitsSeparator = P2PSeparatorView()
     
     private let termsSeparator = P2PSeparatorView()
-    private let termsHeader = P2PSectionHeaderView()
+    private let termsHeader = P2PSectionHeaderBottomView()
     lazy var termsTextField: MDCMultilineTextField = {
            let field = MDCMultilineTextField.default
            field.borderView = nil
@@ -81,6 +91,7 @@ class P2PCreateTradeViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        title = localize(L.P2p.Trade.Create.Vc.title)
         setupUI()
         setupLayout()
         bind()
@@ -97,7 +108,7 @@ class P2PCreateTradeViewController: UIViewController {
         view.backgroundColor = .white
       paymentMethodsHeader.update(title: localize(L.P2p.Payment.Methods.title))
         setupPaymentMethodsView(payments: payments)
-        limitsView.setup(range: [100, 10000], measureString: "$ ", isMeasurePosistionLast: false)
+        limitsView.setup(range: [CGFloat(minRange), CGFloat(maxRange)], measureString: "", isMeasurePosistionLast: false)
       limitsHeader.update(title: localize(L.P2p.Limits.title))
       termsHeader.update(title: localize(L.P2p.Terms.title))
         termsTextFieldController = ThemedTextInputControllerOutlinedTextArea(textInput: termsTextField)
@@ -135,13 +146,25 @@ class P2PCreateTradeViewController: UIViewController {
         ])
         
         coinExchangeView.configure(for: .bitcoin, coins: balance.coins.map { $0.type })
-        
+        coinExchangeView.amountTextField.addTarget(self, action: #selector(priceChanged(_:)), for: .editingChanged)
         
         limitsView.selectedMinRange { [weak self] minRange in
             self?.minRange = minRange
         } maxRange: { [weak self] maxRange in
             self?.maxRange = maxRange
         }
+        
+    }
+    
+    @objc func priceChanged(_ textField: UITextField) {
+        guard let price = Double(textField.text ?? "") else { return }
+        currentPrice = price
+    }
+    
+    func calculateFee() {
+        guard currentPrice > 0 else { return }
+        let value = Double(maxRange) / currentPrice
+        limitsView.feeLabel.text = "~ \(value.coinFormatted)"
     }
     
     private func addNotificationObserver() {
@@ -281,7 +304,7 @@ class P2PCreateTradeViewController: UIViewController {
         termsHeader.snp.remakeConstraints {
             $0.top.equalTo(termsSeparator.snp.bottom)
             $0.right.left.equalToSuperview()
-            $0.height.equalTo(65)
+            $0.height.equalTo(45)
         }
         
         termsTextField.snp.makeConstraints {

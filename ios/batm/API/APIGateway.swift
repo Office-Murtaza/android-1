@@ -89,6 +89,7 @@ protocol APIGateway {
   func createTrade(userId: Int, data: P2PCreateTradeDataModel) -> Single<Trade>
   func editTrade(userId: Int, data: P2PEditTradeDataModel) -> Single<Trade>
   func cancelTrade(userId: Int, id: String) -> Single<Trade>
+  func createOrder(userId: Int, tradeId: String, price: Double, cryptoAmount: Double, fiatAmount: Double) -> Single<Order>
 }
 
 final class APIGatewayImpl: APIGateway {
@@ -409,4 +410,13 @@ final class APIGatewayImpl: APIGateway {
     return execute(request)
   }
   
+    func createOrder(userId: Int, tradeId: String, price: Double, cryptoAmount: Double, fiatAmount: Double) -> Single<Order> {
+    let request = CreateOrderRequest(userId: userId,
+                                     tradeId: tradeId,
+                                     price: price,
+                                     cryptoAmount: cryptoAmount,
+                                     fiatAmount: fiatAmount)
+        
+    return execute(request)
+  }
 }

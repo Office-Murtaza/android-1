@@ -2,7 +2,7 @@ import UIKit
 import CoreLocation
 
 protocol TradesDataSourceDelegate: AnyObject {
-  func didSelected(tradeModel: TradeViewModel, type: P2PTradesType)
+    func didSelected(tradeModel: TradeViewModel, type: P2PTradesType, reservedBalance: Double)
 }
 
 class TradesDataSource: NSObject,  TradeListDataSource {
@@ -15,11 +15,16 @@ class TradesDataSource: NSObject,  TradeListDataSource {
     weak var tableView: UITableView?
     var currentTotal: Double?
     var currentRate: Double?
-  
+    var balance: CoinsBalance?
+    
     func setup(controller: TradeListViewController) {
         self.controller = controller
         controller.delegate = self
         setup(tableView: controller.tableView)
+    }
+    
+    func update(balance: CoinsBalance) {
+        self.balance = balance
     }
     
     private func setup(tableView: UITableView?) {
@@ -99,7 +104,12 @@ class TradesDataSource: NSObject,  TradeListDataSource {
   func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
     let tradeModel = tradesViewModels[indexPath.row]
     if let type = currentType {
-      delegate?.didSelected(tradeModel: tradeModel, type: type)
+        let coinBalance = balance?.coins.first(where: { (balance) -> Bool in
+            balance.type == tradeModel.coin
+        })
+        let reservedBalance: Double = (coinBalance?.reservedBalance ?? 0).doubleValue
+        delegate?.didSelected(tradeModel: tradeModel, type: type, reservedBalance: reservedBalance)
+        
     }
   }
   

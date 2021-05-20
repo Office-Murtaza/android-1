@@ -726,3 +726,25 @@ struct CancelTradesRequest: AuthorizedAPIRequest {
                               encoding: URLEncoding.customDefault)
   }
 }
+
+struct CreateOrderRequest: AuthorizedAPIRequest {
+    typealias ResponseType = APIResponse<Order>
+    typealias ResponseTrait = SingleResponseTrait
+    
+    let userId: Int
+    let tradeId: String
+    let price: Double
+    let cryptoAmount: Double
+    let fiatAmount: Double
+    
+    var path: String { return "/user/\(userId)/order" }
+    var method: HTTPMethod { return .post }
+    var task: HTTPTask {
+      return .requestParameters(parameters: ["tradeId": tradeId,
+                                             "price": price,
+                                             "cryptoAmount": cryptoAmount,
+                                             "fiatAmount" : fiatAmount],
+                                
+                                encoding: JSONEncoding.default)
+    }
+}

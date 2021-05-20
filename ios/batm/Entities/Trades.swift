@@ -61,6 +61,9 @@ struct Order: Equatable {
     var takerTotalTrades: Double?
     var takerTradingRate: Double?
     var paymentMethods: String?
+    var makerLatitude: Double?
+    var makerLongitude: Double?
+    
 }
 
 struct Trades: Equatable {

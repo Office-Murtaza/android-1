@@ -1,4 +1,5 @@
 import UIKit
+import CoreLocation
 
 class MyOpenOrdersCellViewModel {
     
@@ -30,6 +31,20 @@ class MyOpenOrdersCellViewModel {
             
         return images
     }
+    
+    var distanceInMiles: String?
+        
+    var distance: Double?
+    
+    func update(location: CLLocation?) {
+           guard let location = location,
+                 let latitude = order.makerLatitude,
+                 let longitude = order.makerLongitude  else { return }
+           let markerLocation = CLLocation(latitude: latitude, longitude: longitude)
+           distance = (markerLocation.distance(from: location) * 0.000621371).rounded()
+           distanceInMiles = String(distance ?? 0)
+       }
+    
     
     //MARK: - Crypto amount
     

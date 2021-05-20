@@ -12,7 +12,7 @@ class P2PSectionHeaderView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    private let titleLabel: UILabel = {
+    let titleLabel: UILabel = {
         let label = UILabel()
         label.font = .systemFont(ofSize: 20, weight: .regular)
         return label
@@ -22,7 +22,7 @@ class P2PSectionHeaderView: UIView {
         addSubview(titleLabel)
     }
     
-    private func setupLayout() {
+   func setupLayout() {
         titleLabel.snp.makeConstraints {
             $0.top.bottom.right.equalToSuperview()
             $0.left.equalToSuperview().offset(15)

@@ -20,6 +20,7 @@ class P2PCreateTradeLimitsView: P2PDistanceRangeView {
         let label = UILabel()
         label.font = .systemFont(ofSize: 12, weight: .regular)
         label.textColor = UIColor(hexString: "#000000", alpha: 0.6)
+        label.text = "0"
         return label
     }()
     
@@ -28,28 +29,24 @@ class P2PCreateTradeLimitsView: P2PDistanceRangeView {
         
         addSubviews([
             errorImageView,
-            errorLabel,
+            //TODO: commented temporary
+//            errorLabel,
             feeLabel
         ])
-        
-        //TEST DATA
-        errorLabel.text = "test validation"
-        feeLabel.text = "fee"
-        
     }
     
     override func setupLayout() {
         super.setupLayout()
+        //TODO: commented temporary
+//        errorImageView.snp.makeConstraints {
+//            $0.top.equalTo(fromField.snp.bottom).offset(10)
+//            $0.left.equalTo(fromField.snp.left)
+//        }
         
-        errorImageView.snp.makeConstraints {
-            $0.top.equalTo(fromField.snp.bottom).offset(10)
-            $0.left.equalTo(fromField.snp.left)
-        }
-        
-        errorLabel.snp.makeConstraints {
-            $0.top.equalTo(errorImageView.snp.top)
-            $0.left.equalTo(errorImageView.snp.right).offset(5)
-        }
+//        errorLabel.snp.makeConstraints {
+//            $0.top.equalTo(errorImageView.snp.top)
+//            $0.left.equalTo(errorImageView.snp.right).offset(5)
+//        }
         
         feeLabel.snp.makeConstraints {
             $0.top.equalTo(toField.snp.bottom).offset(10)

@@ -426,7 +426,7 @@
 
 "p2p.trade_type.title" = "Trade Type";
 "p2p.payment.methods.title" = "Payment methods";
-"p2p.limits.title" = "Limits";
+"p2p.limits.title" = "Limits, $";
 "p2p.terms.title" = "Terms";
 "p2p.terms.placeholder" = "Type your terms or comments";
 
@@ -437,12 +437,17 @@
 "p2p.trade.details.info" = "Selling cryptocurrency at the best rate. Ready to meet select cash as a method of payment. Always available, write in chat 24/7.";
 
 "p2p.filter.price.title" = "Price";
-"p2p.filter.distance.title" = "Distance";
+"p2p.filter.distance.title" = "Distance range, mi";
 "p2p.filter.coins.title" = "Coins";
 "p2p.filter.payment.methods.title" = "Payment methods";
 "p2p.filter.distance.range.title" = "Distance range";
 "p2p.filter.sort.by.title" = "Sort by";
 "p2p.filter.miles" = " miles";
+"p2p.filter.range.min" = "Min";
+"p2p.filter.range.max" = "Max";
+"p2p.order.create.price" = "Price, $";
+"p2p.trade.create.vc.title" = "New Trade";
+"p2p.filter.range.distance" = "Distance";
 
 "p2p.range.from" = "From";
 "p2p.range.to" = "To";
@@ -491,4 +496,11 @@
 "p2p.trade.updated.message" = "Trade successfully updated";
 "p2p.trade.created.message" = "Trade successfully created";
 "p2p.trade.canceled.message" = "Trade successfully canceled";
+
+"p2p.order.details.title" = "Order Details";
+"p2p.order.details.status" = "Status";
+"p2p.order.details.my.score" = "My Score";
+"p2p.order.details.score.from.partner" = "Score from a partner";
+"p2p.order.create.fiat.error" = "Amount is bigger/less than specified limits";
+"p2p.order.create.reserved.error" = "Amount is bigger than your reserved balance";
 

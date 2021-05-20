@@ -1,7 +1,13 @@
 import UIKit
 
+protocol P2PInfoCoinModel {
+    var coin: CustomCoinType? { get }
+    var price: String { get }
+    var limit: String { get }
+    var sellbuyType: P2PSellBuyViewType { get }
+}
 
-struct P2PTradeDetailsCoinInfoModel {
+struct P2PTradeDetailsCoinInfoModel: P2PInfoCoinModel {
   let trade: Trade
   
   var coin: CustomCoinType? {
@@ -18,6 +24,26 @@ struct P2PTradeDetailsCoinInfoModel {
   
   var sellbuyType: P2PSellBuyViewType {
       return trade.type == 1 ? .buy : .sell
+  }
+}
+
+struct P2POrderDetailsCoinInfoModel: P2PInfoCoinModel {
+  let order: Order
+  
+  var coin: CustomCoinType? {
+      return CustomCoinType(code:order.coin ?? "BTC")
+  }
+  
+  var price: String {
+      return "$ \((order.price ?? 0).coinFormatted)"
+  }
+  
+  var limit: String {
+      return ""
+  }
+  
+  var sellbuyType: P2PSellBuyViewType {
+    return order.status == 1 ? .buy : .sell
   }
   
 }
@@ -97,7 +123,7 @@ class P2PTradeDetailsCoinInfoView: UIView {
       }
   }
   
-  func update(data: P2PTradeDetailsCoinInfoModel) {
+  func update(data: P2PInfoCoinModel) {
       priceLabel.text = data.price
       coinView.update(coin: data.coin)
       limitLabel.text = data.limit

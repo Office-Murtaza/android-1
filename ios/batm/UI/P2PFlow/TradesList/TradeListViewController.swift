@@ -25,6 +25,8 @@ class TradeListViewController: UIViewController {
     
     weak var delegate: TradeListDelegate?
     
+    private var type: P2PTradesType?
+    
     lazy var tableView: UITableView = {
         let table = UITableView()
         table.separatorStyle = .none
@@ -35,8 +37,9 @@ class TradeListViewController: UIViewController {
     private var filterController: P2PFiltersViewController?
     
     
-    init() {
+    init(type: P2PTradesType) {
         super.init(nibName: nil, bundle: nil)
+        self.type = type
         setupUI()
         setupLayout()
     }
@@ -44,7 +47,7 @@ class TradeListViewController: UIViewController {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+
     private func setupUI() {
         
         setupFilterController()
@@ -64,11 +67,13 @@ class TradeListViewController: UIViewController {
     }
     
     private func setupFilterController() {
+        let sortBy: P2PFilterSortType = .price
         filterController = P2PFiltersViewController(coins: CustomCoinType.allCases,
                                                     payments: TradePaymentMethods.allCases,
                                                     sortTypes: P2PFilterSortType.allCases,
+                                                    preselectedSortBy: sortBy,
                                                     minRange: 0,
-                                                    maxRange: 100000)
+                                                    maxRange: 10)
         filterController?.delegate = self
     }
     
