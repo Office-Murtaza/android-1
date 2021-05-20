@@ -475,9 +475,9 @@
 
 "p2p.reserved.title" = "Reserved";
 
-"p2p.success.rate.title" = "Success rate";
+"p2p.success.rate.title" = "Rate";
 
-"p2p.total.trades.title" = "Total trades";
+"p2p.total.trades.title" = "Trades";
 
 "p2p.no.open.orders.yet" = "There isn't open orders yet.";
 

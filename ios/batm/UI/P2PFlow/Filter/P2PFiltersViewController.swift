@@ -134,7 +134,7 @@ class P2PFiltersViewController: UIViewController {
 
         let tapRecognizer = UITapGestureRecognizer(target: self, action: #selector(hideKeyboard))
         view.addGestureRecognizer(tapRecognizer)
-        
+        setupDefaultKeyboardHandling()
     }
 
     private func setupUI() {

@@ -78,7 +78,6 @@ class P2PCreateTradeViewController: UIViewController {
     private let limitsSeparator = P2PSeparatorView()
     
     private let termsSeparator = P2PSeparatorView()
-    private let termsHeader = P2PSectionHeaderBottomView()
     lazy var termsTextField: MDCMultilineTextField = {
            let field = MDCMultilineTextField.default
            field.borderView = nil
@@ -95,8 +94,9 @@ class P2PCreateTradeViewController: UIViewController {
         setupUI()
         setupLayout()
         bind()
-      tradeTypeHeader.update(title: localize(L.P2p.TradeType.title))
+        tradeTypeHeader.update(title: localize(L.P2p.TradeType.title))
         addNotificationObserver()
+        setupDefaultKeyboardHandling()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -113,7 +113,6 @@ class P2PCreateTradeViewController: UIViewController {
         limitsView.update(isUserInteractionEnabled: true, keyboardType: .decimalPad)
         
       limitsHeader.update(title: localize(L.P2p.Limits.title))
-      termsHeader.update(title: localize(L.P2p.Terms.title))
         termsTextFieldController = ThemedTextInputControllerOutlinedTextArea(textInput: termsTextField)
       termsTextFieldController?.placeholderText = localize(L.P2p.Terms.placeholder)
         termsTextFieldController?.minimumLines = 3
@@ -142,7 +141,6 @@ class P2PCreateTradeViewController: UIViewController {
             limitsHeader,
             limitsView,
             termsSeparator,
-            termsHeader,
             termsTextField,
             submitButton,
             emptyFooterView
@@ -304,14 +302,8 @@ class P2PCreateTradeViewController: UIViewController {
             $0.right.equalToSuperview().offset(-15)
         }
         
-        termsHeader.snp.remakeConstraints {
-            $0.top.equalTo(termsSeparator.snp.bottom)
-            $0.right.left.equalToSuperview()
-            $0.height.equalTo(45)
-        }
-        
         termsTextField.snp.makeConstraints {
-            $0.top.equalTo(termsHeader.snp.bottom)
+            $0.top.equalTo(termsSeparator.snp.bottom)
             $0.left.equalToSuperview().offset(5)
             $0.right.equalToSuperview().offset(-5)
             $0.height.equalTo(105)
