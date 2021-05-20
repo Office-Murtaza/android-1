@@ -135,6 +135,16 @@ class P2PDistanceRangeView: UIView {
         fromField.update(attributedText: fromAttrString)
         toField.update(attributedText: toAttrString)
 
+        fromField.update { [weak self] (value) in
+            guard let floatValue = Int(value) else { return }
+            self?.minRange?(floatValue)
+        }
+        
+        toField.update { [weak self] (value) in
+            guard let floatValue = Int(value) else { return }
+            self?.maxRange?(floatValue)
+        }
+        
         self.isMeasurePosistionLast = isMeasurePosistionLast
     }
 }

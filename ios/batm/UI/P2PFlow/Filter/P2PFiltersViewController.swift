@@ -271,6 +271,7 @@ class P2PFiltersViewController: UIViewController {
         var methods = [P2PTagView]()
         for method in payments {
             let tag = P2PTagView()
+            tag.didSelected()
             tag.update(image: method.image, title: method.title)
             tag.layoutIfNeeded()
             methods.append(tag)

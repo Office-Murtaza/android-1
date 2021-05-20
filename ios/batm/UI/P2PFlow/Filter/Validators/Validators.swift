@@ -28,9 +28,11 @@ struct PaymentValidator: Validator {
             .compactMap{ Int($0) }
             .compactMap{ TradePaymentMethods(rawValue: $0)}
         
-        let paymentIntersection = Set(tradePayments).intersection(Set(paymentMethods))
-        
-        return paymentIntersection.isNotEmpty
+        for method in tradePayments {
+            if paymentMethods.contains(method) { return true }
+        }
+
+        return false
     }
 }
 
