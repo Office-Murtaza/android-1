@@ -12,6 +12,7 @@ import com.app.belcobtm.domain.trade.create.CreateTradeUseCase
 import com.app.belcobtm.domain.trade.create.GetAvailableTradePaymentOptionsUseCase
 import com.app.belcobtm.domain.wallet.interactor.GetCoinListUseCase
 import com.app.belcobtm.domain.wallet.item.CoinDataItem
+import com.app.belcobtm.presentation.core.extensions.toStringCoin
 import com.app.belcobtm.presentation.core.formatter.Formatter
 import com.app.belcobtm.presentation.core.livedata.TripleCombinedLiveData
 import com.app.belcobtm.presentation.core.mvvm.LoadingData
@@ -58,19 +59,21 @@ class CreateTradeViewModel(
     val priceError: LiveData<String?> = _priceError
 
     private val _amountMinLimit = MutableLiveData<Int>()
-    val amountMinLimit: LiveData<Int> = _amountMinLimit
 
     private val _amountMaxLimit = MutableLiveData<Int>()
-    val amountMaxLimit: LiveData<Int> = _amountMaxLimit
 
     val cryptoAmountFormatted: LiveData<String> =
-        TripleCombinedLiveData(price, amountMaxLimit, selectedCoin) { price, maxAmount, coin ->
+        TripleCombinedLiveData(price, _amountMaxLimit, selectedCoin) { price, maxAmount, coin ->
             val cryptoAmount = if (maxAmount == null || price == null || price == 0.0) {
                 0.0
             } else {
                 maxAmount.toDouble() / price
             }
-            stringProvider.getString(R.string.trade_crypto_amount_value, cryptoAmount, coin?.code.orEmpty())
+            stringProvider.getString(
+                R.string.trade_crypto_amount_value,
+                cryptoAmount.toStringCoin(),
+                coin?.code.orEmpty()
+            )
         }
 
     init {
@@ -128,6 +131,10 @@ class CreateTradeViewModel(
             .filter(AvailableTradePaymentOption::selected)
             .map { it.payment.paymentId }
             .toList()
+        if (type == -1) {
+            _snackbarMessage.value = stringProvider.getString(R.string.trade_type_not_selected_error_message)
+            return
+        }
         if (paymentOptions.isEmpty()) {
             _snackbarMessage.value = stringProvider.getString(R.string.create_trade_no_payment_options_selected_error)
             return
@@ -146,11 +153,7 @@ class CreateTradeViewModel(
             || toAmount < minRangeAmount || toAmount > maxRangeAmount ||
             toAmount < fromAmount
         ) {
-            _amounRangeError.value = stringProvider.getString(
-                R.string.create_trade_amount_range_error,
-                amountFormatter.format(minRangeAmount),
-                amountFormatter.format(maxRangeAmount)
-            )
+            _amounRangeError.value = stringProvider.getString(R.string.create_trade_amount_range_error)
             return
         } else {
             _amounRangeError.value = null

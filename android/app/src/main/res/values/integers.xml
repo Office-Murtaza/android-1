@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <integer name="trade_filter_min_distance">0</integer>
-    <integer name="trade_filter_max_distance">10000</integer>
-    <integer name="trade_filter_distance_step">10</integer>
+    <integer name="trade_filter_max_distance">10</integer>
     <integer name="trade_amount_min">100</integer>
-    <integer name="trade_amount_max">100000</integer>
-    <integer name="trade_amount_step">100</integer>
+    <integer name="trade_amount_max">1000</integer>
 </resources>

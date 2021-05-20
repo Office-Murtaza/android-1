@@ -11,6 +11,7 @@ import com.app.belcobtm.domain.trade.details.EditTradeUseCase
 import com.app.belcobtm.domain.trade.details.GetTradeDetailsUseCase
 import com.app.belcobtm.domain.wallet.interactor.GetCoinListUseCase
 import com.app.belcobtm.domain.wallet.item.CoinDataItem
+import com.app.belcobtm.presentation.core.extensions.toStringCoin
 import com.app.belcobtm.presentation.core.formatter.Formatter
 import com.app.belcobtm.presentation.core.livedata.TripleCombinedLiveData
 import com.app.belcobtm.presentation.core.mvvm.LoadingData
@@ -54,10 +55,8 @@ class EditTradeViewModel(
     val priceError: LiveData<String?> = _priceError
 
     private val _amountMinLimit = MutableLiveData<Int>()
-    val amountMinLimit: LiveData<Int> = _amountMinLimit
 
     private val _amountMaxLimit = MutableLiveData<Int>()
-    val amountMaxLimit: LiveData<Int> = _amountMaxLimit
 
     private val _tradeType = MutableLiveData<@TradeType Int>()
     val tradeType: LiveData<@TradeType Int> = _tradeType
@@ -66,13 +65,17 @@ class EditTradeViewModel(
     val initialTerms: LiveData<String> = _initialTerms
 
     val cryptoAmountFormatted: LiveData<String> =
-        TripleCombinedLiveData(price, amountMaxLimit, selectedCoin) { price, maxAmount, coin ->
+        TripleCombinedLiveData(price, _amountMaxLimit, selectedCoin) { price, maxAmount, coin ->
             val cryptoAmount = if (maxAmount == null || price == null || price == 0.0) {
                 0.0
             } else {
                 maxAmount.toDouble() / price
             }
-            stringProvider.getString(R.string.trade_crypto_amount_value, cryptoAmount, coin?.code.orEmpty())
+            stringProvider.getString(
+                R.string.trade_crypto_amount_value,
+                cryptoAmount.toStringCoin(),
+                coin?.code.orEmpty()
+            )
         }
 
     fun fetchTradeDetails(tradeId: String) {
@@ -153,11 +156,7 @@ class EditTradeViewModel(
             fromAmount < minRangeAmount || fromAmount > maxRangeAmount
             || toAmount < minRangeAmount || toAmount > maxRangeAmount
         ) {
-            _priceRangeError.value = stringProvider.getString(
-                R.string.edit_trade_amount_range_error,
-                amountFormatter.format(minRangeAmount),
-                amountFormatter.format(maxRangeAmount)
-            )
+            _priceRangeError.value = stringProvider.getString(R.string.edit_trade_amount_range_error)
             return
         } else {
             _priceRangeError.value = null

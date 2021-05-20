@@ -367,7 +367,6 @@
     <string name="trade_screen_post">Post</string>
     <string name="trade_screen_user">User</string>
     <string name="trade_screen_payment_method">Payment</string>
-    <string name="trade_screen_limits">Limits</string>
     <string name="trade_screen_terms">Terms</string>
     <string name="trade_screen_request_details">Request details</string>
     <string name="trade_screen_user_field">%1$s (%2$d, %3$s, %4$dkm)</string>
@@ -595,16 +594,16 @@
     <string name="order_status_solved_label">Done</string>
 
     <string name="trade_create_reserved_balance_formatted"><![CDATA[Reserved %1$s %2$s]]></string>
-    <string name="trade_crypto_amount_value"><![CDATA[~%1$s %2$s]]></string>
+    <string name="trade_crypto_amount_value">%1$s %2$s</string>
     <string name="fiat_amount_label">Fiat amount</string>
     <string name="crypto_amount_label">Crypto amount</string>
-    <string name="no_trades_message">You haven\'t ccreated a single trade yet.</string>
+    <string name="no_trades_message">You haven\'t created a single trade yet.</string>
     <string name="create_trade_screen_title">New trade</string>
     <string name="open_create_trade_button_title">Create new trade</string>
     <string name="create_trade_menu_title">Create trade</string>
     <string name="create_trade_screen_trade_type_label">Trade type</string>
     <string name="payment_options_label">Payment Methods</string>
-    <string name="trade_create_price_limits_label">Limits</string>
+    <string name="trade_create_price_limits_label">Limits, $</string>
     <string name="trade_create_terms_label">Terms</string>
     <string name="create_trade_button_title">Submit</string>
     <string name="create_trade_price_input_hint">Price, $</string>
@@ -612,12 +611,13 @@
     <string name="create_trade_cash_label">Cash</string>
     <string name="create_trade_paypal_label">PayPal</string>
     <string name="create_trade_venmo_label">Venmo</string>
-    <string name="create_trade_cash_app_label">Cash app</string>
+    <string name="create_trade_cash_app_label">Cash App</string>
     <string name="create_trade_payoneer_label">Payoneer</string>
     <string name="min_price_value_label">$0</string>
     <string name="max_price_value_label">$10000</string>
     <string name="create_trade_price_zero_error">Price cannot be zero</string>
-    <string name="create_trade_amount_range_error">Invalid amount range. Enter value from %1$s to %2$s</string>
+    <string name="create_trade_amount_range_error">Invalid amount range. min value should be lower than max value</string>
+    <string name="trade_type_not_selected_error_message">Please select trade type</string>
     <string name="create_trade_no_payment_options_selected_error">Select at least one payment option</string>
     <string name="create_trade_not_enough_crypto_balance">Max limit exceeds reserved balance</string>
     <string name="create_trade_already_exists">You already have a %1$s %2$s trade</string>
@@ -653,7 +653,7 @@
 
     <string name="edit_trade_screen_title">Edit trade</string>
     <string name="edit_trade_price_zero_error">Price cannot be zero</string>
-    <string name="edit_trade_amount_range_error">Invalid amount range. Enter value from %1$s to %2$s</string>
+    <string name="edit_trade_amount_range_error">Invalid amount range. min value should be lower than max value</string>
     <string name="edit_trade_no_payment_options_selected_error">Select at least one payment option</string>
     <string name="edit_trade_not_enough_crypto_balance">Max limit exceeds reserved balance</string>
     <string name="edit_trade_success_message">Trade successfully edited</string>
@@ -695,4 +695,5 @@
     <string name="attach_id_scan_label">Attach id Scan</string>
     <string name="attach_id_selfie_label">Attach id Selfie</string>
     <string name="send_gift_phone_number_prefix">+1</string>
+    <string name="dash">-</string>
 </resources>
