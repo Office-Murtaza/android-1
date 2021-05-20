@@ -129,7 +129,11 @@ public class TransactionService {
                 dto = coinCode.getTransactionDetails(txId, address);
             } else {
                 dto = tx;
-                dto.setType(TransactionType.getType(dto.getFromAddress(), dto.getToAddress(), address).getValue());
+
+                TransactionType type = TransactionType.getType(dto.getFromAddress(), dto.getToAddress(), address);
+                if(type != null) {
+                    dto.setType(type.getValue());
+                }
             }
 
             buySellRecOpt = recordRep.findOneByIdentityAndDetailAndCryptoCurrency(user.getIdentity(), txId, coinCode.name());
@@ -147,8 +151,16 @@ public class TransactionService {
                 }
             }
 
-            dto.setType(buySell.getTransactionType().getValue());
-            dto.setStatus(buySell.getTransactionStatus(TransactionType.valueOf(dto.getType())).getValue());
+            TransactionType type = buySell.getTransactionType();
+            if(type != null) {
+                dto.setType(type.getValue());
+            }
+
+            TransactionStatus status = buySell.getTransactionStatus(TransactionType.valueOf(dto.getType()));
+            if(status != null) {
+                dto.setStatus(status.getValue());
+            }
+
             dto.setCryptoAmount(buySell.getCryptoAmount().stripTrailingZeros());
             dto.setFiatAmount(buySell.getCashAmount().setScale(0));
             dto.setToAddress(buySell.getCryptoAddress());
@@ -308,7 +320,7 @@ public class TransactionService {
 
             if (receiverOpt.isPresent()) {
                 TransactionDetailsDTO tx2 = new TransactionDetailsDTO();
-                tx2.setUserId(userId);
+                tx2.setUserId(receiverOpt.get().getId());
                 tx2.setTxId(txId);
                 tx.setLink(coin.getExplorerUrl() + "/" + txId);
                 tx2.setCoin(coin.name());
