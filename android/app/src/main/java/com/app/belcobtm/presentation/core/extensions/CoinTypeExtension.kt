@@ -42,8 +42,8 @@ fun CoinType.code(): String = when (this) {
     CoinType.BINANCE -> "BNB"
     CoinType.TRON -> "TRX"
     CoinType.XRP -> "XRP"
-    CoinType.DOGECOIN -> "Dogecoin"
-    CoinType.DASH -> "Dash"
+    CoinType.DOGECOIN -> "DOGE"
+    CoinType.DASH -> "DASH"
     else -> ""
 }
 
