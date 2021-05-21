@@ -93,9 +93,7 @@ public class BlockbookService {
     }
 
     public Long getByteFee(CoinType coinType) {
-        if(coinType == CoinType.DOGECOIN) {
-            return new BigDecimal("0.00001").divide(new BigDecimal(1000)).multiply(DIVIDER).longValue();
-        } else if (nodeService.isNodeAvailable(coinType)) {
+        if (nodeService.isNodeAvailable(coinType)) {
             try {
                 JSONObject res = rest.getForObject(nodeService.getNodeUrl(coinType) + "/api/v2/estimatefee/3", JSONObject.class);
 
@@ -165,7 +163,7 @@ public class BlockbookService {
         tx.setTxId(txId);
         tx.setLink(nodeService.getExplorerUrl(coinType) + "/" + txId);
 
-        if(type != null) {
+        if (type != null) {
             tx.setType(type.getValue());
         }
 

@@ -10,6 +10,7 @@ import com.belco.server.model.VerificationTier;
 import com.belco.server.repository.*;
 import com.belco.server.util.Util;
 import org.apache.commons.lang.RandomStringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -296,6 +297,7 @@ public class UserService implements UserDetailsService {
                 verificationReview.setIdCardNumberFilename(dto.getIdCardNumberFilename());
                 verificationReview.setIdCardNumberMimetype(MIME_TYPE);
             } else if (dto.getTier() == VerificationTier.VIP_VERIFICATION) {
+                verificationReview = verificationReviewRep.findFirstByIdentityOrderByIdDesc(user.getIdentity());
                 verificationReview.setTier(dto.getTier().getValue());
                 verificationReview.setIdentity(user.getIdentity());
                 verificationReview.setStatus(VerificationStatus.VIP_VERIFICATION_PENDING.getValue());
@@ -308,10 +310,10 @@ public class UserService implements UserDetailsService {
             user.setStatus(verificationReview.getStatus());
             save(user);
 
-            //if (dto.isAutoConfirm()) {
+            if (dto.isAutoConfirm()) {
                 dto.setId(verificationReview.getId());
                 updateVerification(user.getId(), dto);
-            //}
+            }
 
             return Response.ok(verificationReview != null);
         } catch (Exception e) {
@@ -329,6 +331,37 @@ public class UserService implements UserDetailsService {
             verificationReview.setMessage(dto.getMessage());
             verificationReviewRep.save(verificationReview);
         } else if (verificationReview.getTier() == VerificationTier.VERIFICATION.getValue()) {
+            if (StringUtils.isNotBlank(dto.getAddress())) {
+                verificationReview.setAddress(dto.getAddress());
+            }
+            if (StringUtils.isNotBlank(dto.getCountry())) {
+                verificationReview.setCountry(dto.getCountry());
+            }
+            if (StringUtils.isNotBlank(dto.getProvince())) {
+                verificationReview.setProvince(dto.getProvince());
+            }
+            if (StringUtils.isNotBlank(dto.getCity())) {
+                verificationReview.setCity(dto.getCity());
+            }
+            if (StringUtils.isNotBlank(dto.getZipCode())) {
+                verificationReview.setZipCode(dto.getZipCode());
+            }
+            if (StringUtils.isNotBlank(dto.getFirstName())) {
+                verificationReview.setFirstName(dto.getFirstName());
+            }
+            if (StringUtils.isNotBlank(dto.getLastName())) {
+                verificationReview.setLastName(dto.getLastName());
+            }
+            if (StringUtils.isNotBlank(dto.getIdCardNumber())) {
+                verificationReview.setIdCardNumber(dto.getIdCardNumber());
+            }
+            if (StringUtils.isNotBlank(dto.getIdCardNumberFilename())) {
+                verificationReview.setIdCardNumberFilename(dto.getIdCardNumberFilename());
+                verificationReview.setIdCardNumberMimetype(MIME_TYPE);
+            }
+
+            verificationReview = verificationReviewRep.save(verificationReview);
+
             IdentityPiece idScan = identityPieceRep.findFirstByIdentityAndPieceTypeOrderByIdDesc(verificationReview.getIdentity(), IdentityPiece.TYPE_ID_SCAN);
 
             if (idScan != null) {
@@ -404,6 +437,16 @@ public class UserService implements UserDetailsService {
             verificationReview.setStatus(VerificationStatus.VERIFIED.getValue());
             verificationReviewRep.save(verificationReview);
         } else if (verificationReview.getTier() == VerificationTier.VIP_VERIFICATION.getValue()) {
+            if (StringUtils.isNotBlank(dto.getSsn())) {
+                verificationReview.setSsn(dto.getSsn());
+            }
+            if (StringUtils.isNotBlank(dto.getSsnFilename())) {
+                verificationReview.setSsnFilename(dto.getSsnFilename());
+                verificationReview.setSsnMimetype(MIME_TYPE);
+            }
+
+            verificationReview = verificationReviewRep.save(verificationReview);
+
             IdentityPiece selfie = identityPieceRep.findFirstByIdentityAndPieceTypeOrderByIdDesc(verificationReview.getIdentity(), IdentityPiece.TYPE_SELFIE);
 
             if (selfie != null) {

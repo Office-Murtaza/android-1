@@ -637,7 +637,11 @@ public class TransactionService {
                     tx.setRefTxId(t.getTxId());
                     tx.setRefCoin(t.getCoin());
                     tx.setRefCryptoAmount(t.getCryptoAmount());
-                    mongo.save(tx);
+                    tx.setTimestamp(System.currentTimeMillis());
+
+                    TransactionDetailsDTO tSaved = mongo.save(tx);
+
+                    socketService.pushTransaction(userService.findById(t.getUserId()).getPhone(), tSaved);
 
                     t.setRefTxId(txId);
                     t.setProcessed(ProcessedType.COMPLETE.getValue());

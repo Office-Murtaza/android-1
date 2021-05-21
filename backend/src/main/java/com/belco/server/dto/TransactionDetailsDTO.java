@@ -20,6 +20,9 @@ import java.math.BigDecimal;
 public class TransactionDetailsDTO {
 
     @Id
+    private String id;
+
+    @Indexed
     private String txId;
 
     private Long txDBId;
