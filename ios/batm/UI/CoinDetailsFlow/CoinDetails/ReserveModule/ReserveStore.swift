@@ -3,7 +3,7 @@ import Foundation
 enum ReserveAction: Equatable {
     case setupCoin(BTMCoin)
     case setupCoinBalances([CoinBalance]?, CustomCoinType)
-    case setupCoinDetails(CoinDetails)
+    case setupCoinDetails(CoinDetails?)
     case setupTransactionDetails(TransactionDetails)
     case updateCurrencyAmount(String?)
     case updateCoinAmount(String?)

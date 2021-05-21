@@ -78,13 +78,13 @@ class TransactionDetailsServiceImpl: TransactionDetailsService {
                                                selector: #selector(handleBackground),
                                                name: UIApplication.didEnterBackgroundNotification,
                                                object: nil)
-        let  connectNotificationName = Notification.Name(TransactionDetailsNotification.connectTransaction)
+        let notificationName = NSNotification.Name(RefreshCredentialsConstants.refreshNotificationName)
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(disconnectAndStart),
-                                               name: connectNotificationName,
+                                               name: notificationName,
                                                object: nil)
         
-        let  disconnectNotificationName = Notification.Name(TransactionDetailsNotification.disconnectTransaction)
+        let disconnectNotificationName = Notification.Name(TransactionDetailsNotification.disconnectTransaction)
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(handleBackground),
                                                name: disconnectNotificationName,
@@ -192,29 +192,15 @@ extension TransactionDetailsServiceImpl: TransactionDetailsServiceWebSocket {
     }
     
     private func handleErrorModel(_ model: MessageModel) {
-        let messageKey = "message"
-        let accessDeniedKey = "Access is denied"
-        guard let errorMessage = model.headers[messageKey],
-              errorMessage == accessDeniedKey else {
-            errorService
-                .showError(for: .serverError)
-                .subscribe()
-                .disposed(by: disposeBag)
-            return
-        }
-        disconnectAndStart()
+        self.disconnectAndStart()
     }
     
     @objc private func disconnectAndStart() {
         disconnect()
+            .observeOn(ConcurrentDispatchQueueScheduler(qos: .background))
+            .retry(maxAttempts: 1, delay: 60)
             .subscribe { [weak self] in
                 self?.start()
-            } onError: { [weak self] (error) in
-                guard let self = self else { return }
-                self.errorService
-                    .showError(for: .serverError)
-                    .subscribe()
-                    .disposed(by: self.disposeBag)
             }.disposed(by: disposeBag)
     }
 }

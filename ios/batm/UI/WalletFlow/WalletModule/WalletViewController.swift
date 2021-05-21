@@ -21,6 +21,7 @@ class WalletViewController: ModuleViewController<WalletPresenter> {
         }
         
         presenter.disconnectAndRemoveTransactionDetailsNotification()
+        presenter.removeCoinDetails()
     }
     
     override func viewDidLayoutSubviews() {

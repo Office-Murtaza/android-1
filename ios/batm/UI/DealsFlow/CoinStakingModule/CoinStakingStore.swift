@@ -3,7 +3,7 @@ import Foundation
 enum CoinStakingAction: Equatable {
     case setupCoin(BTMCoin)
     case setupCoinBalances([CoinBalance])
-    case setupCoinDetails(CoinDetails)
+    case setupCoinDetails(CoinDetails?)
     case setupStakeDetails(StakeDetails)
     case updateCoinAmount(String?)
     case updateCoinAmountError(String?)

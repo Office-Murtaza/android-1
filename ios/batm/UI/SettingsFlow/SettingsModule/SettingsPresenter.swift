@@ -20,7 +20,7 @@ class SettingsPresenter: ModulePresenter, SettingsModule {
     input.select
       .asObservable()
       .map { [types] in types[$0.item] }
-      .subscribe(onNext: { [unowned self, delegate] in
+      .subscribe(onNext: { [delegate] in
         switch $0 {
         case .wallet: delegate?.didSelectWallet()
         case .security: delegate?.didSelectSecurity()

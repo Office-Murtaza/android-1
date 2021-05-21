@@ -13,6 +13,7 @@
 		05144137258950D7000B56E7 /* DealsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05144136258950D7000B56E7 /* DealsCell.swift */; };
 		0514414125895378000B56E7 /* DealsTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0514414025895378000B56E7 /* DealsTableView.swift */; };
 		0514414525895412000B56E7 /* DealsTableViewDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0514414425895412000B56E7 /* DealsTableViewDataSource.swift */; };
+		0522E90C26569D8900724DAF /* RxSwift+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0522E90B26569D8900724DAF /* RxSwift+Extension.swift */; };
 		0522EB23255984AC0028CD51 /* SupportCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0522EB22255984AC0028CD51 /* SupportCell.swift */; };
 		0522EB27255988230028CD51 /* SupportViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0522EB26255988230028CD51 /* SupportViewController.swift */; };
 		0522EB61255988310028CD51 /* SupportPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0522EB60255988310028CD51 /* SupportPresenter.swift */; };
@@ -690,6 +691,7 @@
 		05144136258950D7000B56E7 /* DealsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DealsCell.swift; sourceTree = "<group>"; };
 		0514414025895378000B56E7 /* DealsTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DealsTableView.swift; sourceTree = "<group>"; };
 		0514414425895412000B56E7 /* DealsTableViewDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DealsTableViewDataSource.swift; sourceTree = "<group>"; };
+		0522E90B26569D8900724DAF /* RxSwift+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RxSwift+Extension.swift"; sourceTree = "<group>"; };
 		0522EB22255984AC0028CD51 /* SupportCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SupportCell.swift; sourceTree = "<group>"; };
 		0522EB26255988230028CD51 /* SupportViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SupportViewController.swift; sourceTree = "<group>"; };
 		0522EB60255988310028CD51 /* SupportPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SupportPresenter.swift; sourceTree = "<group>"; };
@@ -1904,14 +1906,6 @@
 			path = TableView;
 			sourceTree = "<group>";
 		};
-		23CA7551264B093B007CB91C /* TradeService */ = {
-			isa = PBXGroup;
-			children = (
-				23CA7552264B096A007CB91C /* TradeSocketService.swift */,
-			);
-			path = TradeService;
-			sourceTree = "<group>";
-		};
 		23F13F8C264C5F1500633808 /* Order Details */ = {
 			isa = PBXGroup;
 			children = (
@@ -2797,6 +2791,7 @@
 				DB904A9D22C00E2A007CB734 /* RxFlow+Extensions.swift */,
 				052AFB1D2646F04B00CCFA4A /* String+Extension.swift */,
 				DB96168B22C517C80078E92D /* PhoneNumberKit+Extensions.swift */,
+				0522E90B26569D8900724DAF /* RxSwift+Extension.swift */,
 				680B948625F69A5700819B2F /* Int+Extensions.swift */,
 				DB96168D22C52E3D0078E92D /* Observable+Extensions.swift */,
 				DB9616ED22C74EB40078E92D /* RecursiveLock+Extensions.swift */,
@@ -3958,7 +3953,6 @@
 				052B79BA260A64D000A0D636 /* BuySellTradeDetailsFormView.swift in Sources */,
 				05A7C4FC258815B70039E0B5 /* CreateWalletResponse.swift in Sources */,
 				23BC1783265006B1002A1214 /* P2PInlineErrorView.swift in Sources */,
-				DB350532248E7C170074DCF8 /* BuySellTradeDetailsFormView.swift in Sources */,
 				DBEE1371230E80680020E211 /* Transactions+Mapping.swift in Sources */,
 				DB8D408322C3DBC000D5FBD0 /* CreateWalletPresenter.swift in Sources */,
 				DB5185B0231FE68300052229 /* CoinWithdrawAssembly.swift in Sources */,
@@ -4126,6 +4120,7 @@
 				DBC68CBB22F8798F00473247 /* UpdatePhonePresenter.swift in Sources */,
 				DBA7A4A6235662AD000BE997 /* CoinSellViewController.swift in Sources */,
 				DB38046E241E7610008EDDE6 /* CoinDetailsHeaderView.swift in Sources */,
+				0522E90C26569D8900724DAF /* RxSwift+Extension.swift in Sources */,
 				DB96173922C7B2610078E92D /* BTMCoinConverter.swift in Sources */,
 				DB8D40AB22C3EF9400D5FBD0 /* RootFlow+Dependencies.swift in Sources */,
 				DB96173B22C7B3480078E92D /* BTMWalletStorage.swift in Sources */,
@@ -4216,7 +4211,6 @@
 				05F704852602267600DF3722 /* TransactionTypeView.swift in Sources */,
 				DB5EB8DC2452C5CC00CD1C63 /* CoinSellFormView.swift in Sources */,
 				23BC175F264D6692002A1214 /* P2POrderDetailsAmountView.swift in Sources */,
-				DB5F18C02472AC6B00E37311 /* BuySellTradesTableViewDataSource.swift in Sources */,
 				DB1D21F024AE6F2A001E9696 /* CoinStakingPresenter.swift in Sources */,
 				055A9BC52575874D00A8E8F1 /* NotificationsTableViewDataSource.swift in Sources */,
 				23BC1767264DBED8002A1214 /* P2POrderDetailsScoreView.swift in Sources */,
@@ -4349,7 +4343,6 @@
 				DB308EB522E737FA003D91AF /* OpenHour.swift in Sources */,
 				DBECA63722F7FC36002C2610 /* ShowPhoneViewController.swift in Sources */,
 				DB66CEB82475BAC200FDB694 /* UITableView+Extensions.swift in Sources */,
-				DB1CFB53246C518200020104 /* TradesModule.swift in Sources */,
 				23F13F8E264C5F3500633808 /* P2POrderDetailsViewController.swift in Sources */,
 				055A9B7E257552E500A8E8F1 /* DealsPresenter.swift in Sources */,
 				DB96168822C50E720078E92D /* CreateWalletStore.swift in Sources */,
@@ -4613,7 +4606,7 @@
 				CODE_SIGN_ENTITLEMENTS = batm/batm.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 127;
+				CURRENT_PROJECT_VERSION = 130;
 				DEVELOPMENT_TEAM = 2RUJ559RK4;
 				INFOPLIST_FILE = batm/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
@@ -4638,7 +4631,7 @@
 				CODE_SIGN_ENTITLEMENTS = batm/batm.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 127;
+				CURRENT_PROJECT_VERSION = 130;
 				DEVELOPMENT_TEAM = 2RUJ559RK4;
 				INFOPLIST_FILE = batm/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;

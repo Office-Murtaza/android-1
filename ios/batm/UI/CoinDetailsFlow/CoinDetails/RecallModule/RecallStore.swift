@@ -4,7 +4,7 @@ enum RecallAction: Equatable {
     case setupCoin(BTMCoin)
     case setupCoinBalances([CoinBalance]?, CustomCoinType)
     case setupTransactionDetails(TransactionDetails)
-    case setupCoinDetails(CoinDetails)
+    case setupCoinDetails(CoinDetails?)
     case updateCurrencyAmount(String?)
     case updateCoinAmount(String?)
     case updateValidationState
