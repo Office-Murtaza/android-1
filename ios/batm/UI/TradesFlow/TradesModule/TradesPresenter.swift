@@ -105,7 +105,7 @@ final class TradesPresenter: ModulePresenter, TradesModule {
   }
   
   private func setupBindings() {
-    locationService.requestLocationIfNeeded()
+    locationService.requestLocationIfNeeded(nil)
     
     state
       .map { $0.coinBalance?.type }

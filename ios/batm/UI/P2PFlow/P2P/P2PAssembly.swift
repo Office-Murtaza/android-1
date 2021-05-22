@@ -11,7 +11,7 @@ class P2PAssembly: Assembly {
             presenter.walletUseCase = resolver.resolve(WalletUsecase.self)
             presenter.errorService = resolver.resolve(ErrorService.self)
             presenter.tradeSocketService = resolver.resolve(TradeSocketService.self)
-            
+            presenter.locationService = resolver.resolve(LocationService.self)
             viewController.presenter = presenter
             viewController.buyViewController = TradeListViewController(type: .buy)
             viewController.sellViewController = TradeListViewController(type: .sell)

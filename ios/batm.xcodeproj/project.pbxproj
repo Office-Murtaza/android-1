@@ -96,7 +96,6 @@
 		05F704872602277E00DF3722 /* TransactionStatusView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05F704862602277E00DF3722 /* TransactionStatusView.swift */; };
 		05F7048926022CB700DF3722 /* TransactionDetailsDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05F7048826022CB700DF3722 /* TransactionDetailsDataSource.swift */; };
 		230C9D6726545664003273F0 /* P2PSectionHeaderBottomView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 230C9D662654565F003273F0 /* P2PSectionHeaderBottomView.swift */; };
-		2312D7CF25FEA39A0071B2F8 /* GeolocatoinService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2312D7CE25FEA39A0071B2F8 /* GeolocatoinService.swift */; };
 		2318A08A25D1C16B006F3EC4 /* LocalAuthentication.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2318A08925D1C16B006F3EC4 /* LocalAuthentication.framework */; };
 		2318A08C25D1C2A9006F3EC4 /* LAContext+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2318A08B25D1C2A9006F3EC4 /* LAContext+Extensions.swift */; };
 		23234DA425AB9B4500CA90F7 /* TransferSectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23234DA325AB9B4500CA90F7 /* TransferSectionView.swift */; };
@@ -776,7 +775,6 @@
 		05F7048826022CB700DF3722 /* TransactionDetailsDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionDetailsDataSource.swift; sourceTree = "<group>"; };
 		142D5BA6DA2741657FE02671 /* Pods_batmTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_batmTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		230C9D662654565F003273F0 /* P2PSectionHeaderBottomView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = P2PSectionHeaderBottomView.swift; sourceTree = "<group>"; };
-		2312D7CE25FEA39A0071B2F8 /* GeolocatoinService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeolocatoinService.swift; sourceTree = "<group>"; };
 		2318A08925D1C16B006F3EC4 /* LocalAuthentication.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = LocalAuthentication.framework; path = System/Library/Frameworks/LocalAuthentication.framework; sourceTree = SDKROOT; };
 		2318A08B25D1C2A9006F3EC4 /* LAContext+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LAContext+Extensions.swift"; sourceTree = "<group>"; };
 		23234DA325AB9B4500CA90F7 /* TransferSectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransferSectionView.swift; sourceTree = "<group>"; };
@@ -1976,7 +1974,6 @@
 				DB04E4D622D880B5000E2D85 /* PinCodeService.swift */,
 				DB38683A2476CA2B0070E13E /* LocationService.swift */,
 				23BF989925A4480700119C30 /* ContactsManager.swift */,
-				2312D7CE25FEA39A0071B2F8 /* GeolocatoinService.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -3885,7 +3882,6 @@
 				DB2C971D23449109006E7D61 /* CoinSendGiftPresenter.swift in Sources */,
 				23BF989A25A4480700119C30 /* ContactsManager.swift in Sources */,
 				23BC177F26500058002A1214 /* Decimal+Extensions.swift in Sources */,
-				2312D7CF25FEA39A0071B2F8 /* GeolocatoinService.swift in Sources */,
 				DB9616B822C63E270078E92D /* Account.swift in Sources */,
 				DB49463822DF274B001EE56E /* ManageWalletsTableViewDataSource.swift in Sources */,
 				DBBF29A222D381A200A5DE6A /* CoinBalance.swift in Sources */,
