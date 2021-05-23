@@ -38,13 +38,32 @@ class P2PCreateTradeVlidatorBase {
 
 class P2PCreateTradeCoinsValidator:  P2PCreateTradeVlidatorBase {
     var coins: Double = 0
+    var selectedCoin: CustomCoinType = .bitcoin
+    var userTrades = [Trade]()
+    var tradeType: P2PSellBuyViewType = .buy
+    //MARK: - setup
     
+    func setup(trades: [Trade], userId: Int) {
+        self.userTrades = trades.filter { $0.makerUserId == userId }
+    }
+    
+    //MARK: - updates
     func update(coins: Double) {
         self.coins = coins
     }
     
+    func update(coinType: CustomCoinType) {
+        self.selectedCoin = coinType
+    }
+    
+    func update(tradeType: P2PSellBuyViewType) {
+        self.tradeType = tradeType
+    }
+    
     override func check() {
         
+        
+        //MARK: - amount validation
         isValid = !coins.isZero
         
         if coins.isZero {
@@ -52,6 +71,17 @@ class P2PCreateTradeCoinsValidator:  P2PCreateTradeVlidatorBase {
         } else {
             delegate?.hideError()
         }
+        
+        //MARK: - coin type
+        
+        let trades = userTrades.filter { $0.coin == selectedCoin.code }
+        let tradesWithType = trades.filter { $0.type == tradeType.rawValue }
+        
+        if tradesWithType.isNotEmpty {
+             isValid = false
+            delegate?.showErrorMessage("You already have a \(selectedCoin.code) \(tradeType.title) trade")
+        }
+        
     }
 }
 

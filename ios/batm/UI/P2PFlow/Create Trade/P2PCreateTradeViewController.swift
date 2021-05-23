@@ -24,6 +24,8 @@ protocol P2PCreateTradeViewControllerDelegate: AnyObject {
 
 class P2PCreateTradeViewController: UIViewController {
 
+    let trades: Trades
+    let userId: Int
     var selectedType: P2PSellBuyViewType = .buy
     var minRange: Double = 100
     var maxRange: Double = 10000 {
@@ -40,16 +42,22 @@ class P2PCreateTradeViewController: UIViewController {
     
     private var balance: CoinsBalance
     private var payments: [TradePaymentMethods]
-    
     private let formValidator = P2PCreateTradeFormValidator()
     
     let submitButton = MDCButton.submit
     weak var delegate: P2PCreateTradeViewControllerDelegate?
     
-    init(balance: CoinsBalance, payments: [TradePaymentMethods], delegate: P2PCreateTradeViewControllerDelegate) {
+    init(trades: Trades,
+         userId: Int,
+         balance: CoinsBalance,
+         payments: [TradePaymentMethods],
+         delegate: P2PCreateTradeViewControllerDelegate) {
         self.balance = balance
         self.payments = payments
         self.delegate = delegate
+        self.trades = trades
+        self.userId = userId
+        
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -184,6 +192,7 @@ class P2PCreateTradeViewController: UIViewController {
          limitInlineError,
          termsInlineError].forEach{ $0.isHidden = true }
         
+        coinValidator.setup(trades: trades.trades, userId: userId)
         formValidator.register(view: coinInlineError, validator: coinValidator)
         formValidator.register(view: paymentMethodsInlineError, validator: paymentMethodValidator)
         formValidator.register(view: limitInlineError, validator: limitValidator)
@@ -207,6 +216,7 @@ class P2PCreateTradeViewController: UIViewController {
     @objc func amountDidChange(_ textField: UITextField) {
     
         guard let value = Double(textField.text ?? "") else { return }
+        
         coinValidator.update(coins: value)
         coinValidator.check()
     }
@@ -405,6 +415,8 @@ class P2PCreateTradeViewController: UIViewController {
         coinExchangeView.didSelectPickerRow.asObservable().subscribe { [unowned self] type in
             if let selectedbalance = balance.coins.first(where: { $0.type == type.element }) {
                 self.coinExchangeView.setCoinBalance(selectedbalance)
+                self.coinValidator.update(coinType: selectedbalance.type)
+                self.coinValidator.check()
             }
         }.disposed(by: disposeBag)
         
@@ -429,6 +441,8 @@ class P2PCreateTradeViewController: UIViewController {
 extension P2PCreateTradeViewController: P2PCreateTradeSellBuyViewDelegate {
     func didSelectedType(_ type: P2PSellBuyViewType) {
         selectedType = type
+        coinValidator.update(tradeType: type)
+        coinValidator.check()
     }
 }
 
