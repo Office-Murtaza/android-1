@@ -31,8 +31,8 @@ struct FilterScopeModel {
     let coins: [CustomCoinType]
     let paymentMethods: [TradePaymentMethods]
     let sortType: [P2PFilterSortType]
-    let minRange: Int
-    let maxRange: Int
+    let minRange: Double
+    let maxRange: Double
     
     var isEmpty: Bool {
         return coins.isEmpty && paymentMethods.isEmpty && sortType.isEmpty
@@ -70,8 +70,8 @@ class P2PFiltersViewController: UIViewController {
     
     private let resetAllButton = P2PResetAllView()
     
-    private var minRange:Int?
-    private var maxRange:Int?
+    private var minRange:Double?
+    private var maxRange:Double?
     private var coins: [CustomCoinType]
     private var payments: [TradePaymentMethods]
     private var sortType: [P2PFilterSortType]
@@ -81,8 +81,8 @@ class P2PFiltersViewController: UIViewController {
          payments: [TradePaymentMethods],
          sortTypes: [P2PFilterSortType],
          preselectedSortBy: P2PFilterSortType,
-         minRange: Int,
-         maxRange: Int) {
+         minRange: Double,
+         maxRange: Double) {
         self.coins = coins
         self.payments = payments
         self.sortType = sortTypes

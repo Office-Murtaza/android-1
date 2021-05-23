@@ -5,7 +5,7 @@ import MaterialComponents
 
 class P2PDistanceRangeView: UIView {
     
-    typealias P2PDistanceRangeAction = (Int) -> Void
+    typealias P2PDistanceRangeAction = (Double) -> Void
     
     private var minRange: P2PDistanceRangeAction?
     private var maxRange: P2PDistanceRangeAction?
@@ -136,12 +136,12 @@ class P2PDistanceRangeView: UIView {
         toField.update(attributedText: toAttrString)
 
         fromField.update { [weak self] (value) in
-            guard let floatValue = Int(value) else { return }
+            guard let floatValue = Double(value) else { return }
             self?.minRange?(floatValue)
         }
         
         toField.update { [weak self] (value) in
-            guard let floatValue = Int(value) else { return }
+            guard let floatValue = Double(value) else { return }
             self?.maxRange?(floatValue)
         }
         

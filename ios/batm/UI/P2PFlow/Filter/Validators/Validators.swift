@@ -38,11 +38,11 @@ struct PaymentValidator: Validator {
 
 struct RangeValidator: Validator {
     let distance: Double
-    let minRange: Int
-    let maxRange: Int
+    let minRange: Double
+    let maxRange: Double
     
     func isValid() -> Bool {
-        return minRange..<maxRange ~= Int(distance)
+        return minRange..<maxRange ~= distance
     }
 }
 

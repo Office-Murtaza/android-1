@@ -53,8 +53,8 @@ class P2PTradeDetailsEditViewController: P2PTradeDetailsBaseViewController {
         
         let editTradeData = P2PEditTradeDataModel(id: trade.id ?? "",
                                                   price: trade.price ?? 0,
-                                                  minLimit: Int(trade.minLimit ?? 0),
-                                                  maxLimit: Int(trade.maxLimit ?? 0),
+                                                  minLimit: trade.minLimit ?? 0,
+                                                  maxLimit: trade.maxLimit ?? 0,
                                                   paymentMethods: trade.paymentMethods ?? "",
                                                   terms: trade.terms ?? "")
         
