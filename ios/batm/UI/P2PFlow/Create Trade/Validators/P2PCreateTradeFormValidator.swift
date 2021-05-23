@@ -108,6 +108,9 @@ class  P2PCreateTradePaymentValidator: P2PCreateTradeVlidatorBase {
 class P2PCreateTradeLimitsValidator: P2PCreateTradeVlidatorBase {
     var min: Double = 0
     var max: Double = 0
+    var tradeType: P2PSellBuyViewType = .buy
+    var price: Double = 0
+    var reservedBalance: Double = 0
     
     func update(min: Double) {
         self.min = min
@@ -117,7 +120,19 @@ class P2PCreateTradeLimitsValidator: P2PCreateTradeVlidatorBase {
         self.max = max
     }
     
+    func update(tradeType: P2PSellBuyViewType) {
+        self.tradeType = tradeType
+    }
+    func update(price: Double) {
+        self.price = price
+    }
+    
+    func update(reservedBalance: Double) {
+        self.reservedBalance = reservedBalance
+    }
+    
     override func check() {
+        
         if min == 0, max == 0 {
             isValid = false
             delegate?.showErrorMessage("max and min should not be nil")
@@ -127,6 +142,17 @@ class P2PCreateTradeLimitsValidator: P2PCreateTradeVlidatorBase {
             delegate?.showErrorMessage("max shold be more than min")
             return
         }
+        
+        if tradeType == .sell {
+            let isReservedValid = reservedBalance >= max / price
+            if isReservedValid == false {
+                isValid = false
+                delegate?.showErrorMessage("Max limit exceeds reserved balance")
+                return
+            } 
+        }
+        
+        
         isValid = true
         delegate?.hideError()
     }

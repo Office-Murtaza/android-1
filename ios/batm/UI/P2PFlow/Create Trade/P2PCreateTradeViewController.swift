@@ -216,9 +216,10 @@ class P2PCreateTradeViewController: UIViewController {
     @objc func amountDidChange(_ textField: UITextField) {
     
         guard let value = Double(textField.text ?? "") else { return }
-        
         coinValidator.update(coins: value)
         coinValidator.check()
+        limitValidator.update(price: value)
+        limitValidator.check()
     }
     
     @objc func priceChanged(_ textField: UITextField) {
@@ -410,6 +411,10 @@ class P2PCreateTradeViewController: UIViewController {
         
         guard let firstBalance = balance.coins.first else { return }
         
+        if let defaultReserved = balance.coins.first(where: { $0.type == .bitcoin }) {
+            limitValidator.update(reservedBalance: defaultReserved.reservedBalance.doubleValue)
+        }
+        
         coinExchangeView.setCoinBalance(firstBalance)
         
         coinExchangeView.didSelectPickerRow.asObservable().subscribe { [unowned self] type in
@@ -417,6 +422,8 @@ class P2PCreateTradeViewController: UIViewController {
                 self.coinExchangeView.setCoinBalance(selectedbalance)
                 self.coinValidator.update(coinType: selectedbalance.type)
                 self.coinValidator.check()
+                self.limitValidator.update(reservedBalance: selectedbalance.reservedBalance.doubleValue)
+                self.limitValidator.check()
             }
         }.disposed(by: disposeBag)
         
@@ -443,6 +450,8 @@ extension P2PCreateTradeViewController: P2PCreateTradeSellBuyViewDelegate {
         selectedType = type
         coinValidator.update(tradeType: type)
         coinValidator.check()
+        limitValidator.update(tradeType: type)
+        limitValidator.check()
     }
 }
 
@@ -459,6 +468,8 @@ extension P2PCreateTradeViewController: P2PTextFieldDelegate {
             let value = Double(textField.text ?? "0") ?? 0
             coinValidator.update(coins: value)
             coinValidator.check()
+            limitValidator.update(price: value)
+            limitValidator.check()
         }
     }
 }
