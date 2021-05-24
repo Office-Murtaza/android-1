@@ -101,11 +101,6 @@ class EditTradeFragment : BaseFragment<FragmentEditTradeBinding>() {
             coinDetailsView.setErrorText(it, true)
         }
         viewModel.initialLoadingData.listen()
-        viewModel.price.observe(viewLifecycleOwner) { price ->
-            coinDetailsView.getEditText().setTextSilently(
-                priceTextWatcher, price.toString()
-            )
-        }
         viewModel.cryptoAmountFormatted.observe(viewLifecycleOwner, cryptoAmountValue::setText)
         viewModel.cryptoAmountError.observe(viewLifecycleOwner) {
             coinDetailsView.setErrorText(it, true)

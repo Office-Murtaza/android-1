@@ -568,8 +568,8 @@
     <string name="trade_list_my_info_tab_title">My…</string>
     <string name="trade_list_account_info_verified_label">Verified</string>
 
-    <string name="user_trade_info_success_rate_label">Success rate</string>
-    <string name="user_trade_info_total_trades_label">Total trades</string>
+    <string name="user_trade_info_success_rate_label">Success Rate</string>
+    <string name="user_trade_info_total_trades_label">Total Trades</string>
     <string name="user_trade_info_not_verified_status_label">Not verified</string>
     <string name="user_trade_info_verification_pending_status_label">Verification pending</string>
     <string name="user_trade_info_verification_reject_status_label">Verification rejected</string>
