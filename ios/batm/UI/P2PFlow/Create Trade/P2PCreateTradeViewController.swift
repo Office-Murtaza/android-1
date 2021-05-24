@@ -108,7 +108,7 @@ class P2PCreateTradeViewController: UIViewController {
     private let paymentMethodValidator = P2PCreateTradePaymentValidator()
     private let limitValidator = P2PCreateTradeLimitsValidator()
     private let termsValidator = P2PCreateTradeTermsValidator()
-    
+    var prevResponder: UIView?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -235,8 +235,8 @@ class P2PCreateTradeViewController: UIViewController {
     
     private func addNotificationObserver() {
         let notificationCenter = NotificationCenter.default
+        notificationCenter.addObserver(self, selector: #selector(adjustForKeyboard), name: UIResponder.keyboardWillShowNotification, object: nil)
         notificationCenter.addObserver(self, selector: #selector(adjustForKeyboard), name: UIResponder.keyboardWillHideNotification, object: nil)
-        notificationCenter.addObserver(self, selector: #selector(adjustForKeyboard), name: UIResponder.keyboardWillChangeFrameNotification, object: nil)
     }
     
     private func removeNotificationObserver() {
@@ -244,23 +244,37 @@ class P2PCreateTradeViewController: UIViewController {
     }
     
     @objc func adjustForKeyboard(notification: Notification) {
-        guard termsTextField.isFirstResponder == true else { return }
+        let currentResponder = [limitsView.fromField.textField, limitsView.toField.textField, termsTextField].first(where: {$0.isFirstResponder == true })
+        let responderGroup = [limitsView.fromField.textField as UIView , limitsView.toField.textField as UIView]
         guard let keyboardValue = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue else { return }
         let keyboardScreenEndFrame = keyboardValue.cgRectValue
         let keyboardViewEndFrame = view.convert(keyboardScreenEndFrame, from: view.window)
-
+        print("notification name", notification.name)
         if notification.name == UIResponder.keyboardWillHideNotification {
-            scrollView.contentInset = .zero
+            
+            scrollView.setContentOffset(.zero, animated: true)
+            UIView.animate(withDuration: 0.2) { [weak self] in
+                self?.scrollView.contentInset = .zero
+            }
+            prevResponder = nil
         } else {
-            scrollView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: keyboardViewEndFrame.height - view.safeAreaInsets.bottom, right: 0)
+            if let prev = prevResponder, responderGroup.contains(prev), currentResponder != termsTextField { return }
+            UIView.animate(withDuration: 0.2) { [weak self] in
+                self?.scrollView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: keyboardViewEndFrame.height - CGFloat(self?.view.safeAreaInsets.bottom ?? 0), right: 0)
+            }
             let bottomOffset = CGPoint(x: 0, y: scrollView.contentSize.height - scrollView.frame.size.height + scrollView.contentInset.bottom);
-            scrollView.setContentOffset(bottomOffset, animated: true)
+            scrollView.setContentOffset((bottomOffset), animated: true)
         }
-
+        prevResponder = currentResponder
     }
 
     @objc private func didTapView() {
         view.endEditing(true)
+        scrollView.setContentOffset(.zero, animated: true)
+        UIView.animate(withDuration: 0.2) { [weak self] in
+            self?.scrollView.contentInset = .zero
+        }
+        prevResponder = nil
     }
     
     @objc private func createTrade() {

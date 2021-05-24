@@ -8,7 +8,7 @@ class P2POutlinedTextField: UIView {
     
     private let placeholderLabel = UILabel()
     private let containerView = UIView()
-    private let textField = UITextField()
+    let textField = UITextField()
     private let measurementLabel = UILabel()
     private var gestureRecognizer: UITapGestureRecognizer?
     private lazy var horizontalStack: UIStackView = {
