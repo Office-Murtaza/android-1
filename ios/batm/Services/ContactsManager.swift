@@ -32,9 +32,13 @@ class CGroup: NSObject, NSCopying {
             return
         }
         filteredContacts = contacts.filter({ (contact) -> Bool in
-            let result = contact.phones.filter{ $0.contains(phone) }
+            let result = contact.phones.filter { $0.contains(phone) }
             return result.isNotEmpty
         })
+        
+        if (filteredContacts?.isEmpty).value {
+            filteredContacts = contacts.filter { ($0.name?.lowercased().contains(phone.lowercased())).value }
+        }
     }
     
     func copy(with zone: NSZone? = nil) -> Any {

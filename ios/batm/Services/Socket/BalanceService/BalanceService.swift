@@ -61,7 +61,10 @@ class BalanceServiceImpl: BalanceService {
     }
     
     func getCoinDetails(for coinType: CustomCoinType) -> Observable<CoinDetails?> {
-        self.coinType = coinType
+        balanceProperty.asObservable().subscribe(onNext: { [weak self] in
+            self?.detailsProperty.accept($0.coins.first { $0.type == coinType }?.details)
+        })
+        .disposed(by: disposeBag)
         return detailsProperty.asObservable()
     }
     
@@ -195,8 +198,6 @@ extension BalanceServiceImpl: BalanceServiceWebSocket {
     func notify(_ model: MessageModel) {
         guard let json = model.jsonData,
               let balance = CoinsBalance(JSON: json) else { return }
-        let details = balance.coins.first { $0.type == coinType }?.details ?? .empty
-        detailsProperty.accept(details)
         balanceProperty.accept(balance)
     }
     

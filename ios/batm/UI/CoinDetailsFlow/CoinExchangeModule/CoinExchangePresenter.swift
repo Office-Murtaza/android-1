@@ -49,7 +49,7 @@ final class CoinExchangePresenter: ModulePresenter, CoinExchangeModule {
         didViewAppear
             .asObservable()
             .flatMap { [unowned self]  in
-                return self.track(Observable.combineLatest(self.walletUseCase.getCoinsBalance(),
+                return self.track(Observable.combineLatest(self.walletUseCase.getCoinsBalance().single().asObservable(),
                                                            self.walletUseCase.getCoinsList().asObservable()))
             }.subscribe({ [weak self] in
                 guard let coins = $0.element?.1, coins.count >= 2 else {

@@ -26,7 +26,7 @@ final class CoinWithdrawFormView: UIView, HasDisposeBag {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func configure(coinType: CustomCoinType, fee: Decimal?) {
+    func configure(coinType: CustomCoinType, fee: Decimal) {
         coinAmountTextFieldView.configure(coinType: coinType, fee: fee)
     }
     

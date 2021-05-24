@@ -27,9 +27,9 @@ struct TransferReceiverState {
     }
     
     var filteredContacts: [CGroup]? {
-        guard let enteredPhone = self.phone, let initContacts = contacts else { return contacts}
-        let filteredContacts = initContacts.map{ $0.copy() as! CGroup }
-        filteredContacts.forEach {$0.filterContacts(phone: enteredPhone) }
+        guard let enteredPhone = self.phone, let initContacts = contacts else { return contacts }
+        let filteredContacts = initContacts.map { $0.copy() as! CGroup }
+        filteredContacts.forEach { $0.filterContacts(phone: enteredPhone) }
         var groups = filteredContacts.filter{ $0.filteredContacts?.count ?? 0 > 0 }
         
         var emptyGroups = [CGroup]()

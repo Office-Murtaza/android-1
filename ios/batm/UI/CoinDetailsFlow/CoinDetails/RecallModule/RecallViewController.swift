@@ -36,7 +36,7 @@ final class RecallViewController: ModuleViewController<RecallPresenter> {
     
     func setupUIBindings() {
         let coinTypeDriver = presenter.state.map { $0.coin?.type }.filterNil()
-        let feeDriver = presenter.state.map { $0.coinDetails?.txFee }
+        let feeDriver = presenter.state.map { $0.coinDetails?.txFee }.filterNil()
         
         setupGesture()
         
