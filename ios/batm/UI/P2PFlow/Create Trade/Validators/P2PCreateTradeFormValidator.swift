@@ -67,7 +67,7 @@ class P2PCreateTradeCoinsValidator:  P2PCreateTradeVlidatorBase {
         isValid = !coins.isZero
         
         if coins.isZero {
-            delegate?.showErrorMessage("Must be not empty")
+            delegate?.showErrorMessage(localize(L.P2p.Crate.Trade.Validation.Not.empty))
         } else {
             delegate?.hideError()
         }
@@ -78,8 +78,8 @@ class P2PCreateTradeCoinsValidator:  P2PCreateTradeVlidatorBase {
         let tradesWithType = trades.filter { $0.type == tradeType.rawValue }
         
         if tradesWithType.isNotEmpty {
-             isValid = false
-            delegate?.showErrorMessage("You already have a \(selectedCoin.code) \(tradeType.title) trade")
+            isValid = false
+            delegate?.showErrorMessage(String(format: localize(L.P2p.Create.Trade.Validation.trade), selectedCoin.code, tradeType.title))
         }
         
     }
@@ -101,7 +101,8 @@ class  P2PCreateTradePaymentValidator: P2PCreateTradeVlidatorBase {
             }
         }
         isValid = false
-        delegate?.showErrorMessage("select one method")
+        delegate?.showErrorMessage(localize(L.P2p.Create.Trade.Validation.Payment.methods))
+        
     }
 }
 
@@ -135,11 +136,11 @@ class P2PCreateTradeLimitsValidator: P2PCreateTradeVlidatorBase {
         
         if min == 0, max == 0 {
             isValid = false
-            delegate?.showErrorMessage("max and min should not be nil")
+            delegate?.showErrorMessage(localize(L.P2p.Create.Trade.Validation.Wrong.limits))
             return
         } else if min > max {
             isValid = false
-            delegate?.showErrorMessage("max shold be more than min")
+            delegate?.showErrorMessage(localize(L.P2p.Create.Trade.Validation.Wrong.max))
             return
         }
         
@@ -147,9 +148,9 @@ class P2PCreateTradeLimitsValidator: P2PCreateTradeVlidatorBase {
             let isReservedValid = reservedBalance >= max / price
             if isReservedValid == false {
                 isValid = false
-                delegate?.showErrorMessage("Max limit exceeds reserved balance")
+                delegate?.showErrorMessage(localize(L.P2p.Create.Trade.Validation.Reserved.balance))
                 return
-            } 
+            }
         }
         
         
@@ -169,7 +170,7 @@ class  P2PCreateTradeTermsValidator: P2PCreateTradeVlidatorBase {
         isValid = !(terms?.isEmpty ?? true)
         
         if isValid == false {
-            delegate?.showErrorMessage("select one method")
+            delegate?.showErrorMessage(localize(L.P2p.Create.Trade.Validation.terms))
         } else {
             delegate?.hideError()
         }

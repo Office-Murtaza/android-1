@@ -503,3 +503,11 @@
 "p2p.order.details.score.from.partner" = "Score from a partner";
 "p2p.order.create.fiat.error" = "Amount is bigger/less than specified limits";
 "p2p.order.create.reserved.error" = "Amount is bigger than your reserved balance";
+
+"p2p.crate.trade.validation.not.empty" = "Must be not empty";
+"p2p.create.trade.validation.trade" = "You already have a %@ %@ trade";
+"p2p.create.trade.validation.payment.methods" = "Please select payment method";
+"p2p.create.trade.validation.wrong.limits" = "Max and Min should not be nil";
+"p2p.create.trade.validation.wrong.max" = "Max should be more than Min";
+"p2p.create.trade.validation.reserved.balance" = "Max limit exceeds reserved balance";
+"p2p.create.trade.validation.terms" = "Please fill terms";

@@ -653,6 +653,9 @@ extension L.P2p {
     static let title = "p2p.buy.title"
   }
 
+  struct Crate {
+  }
+
   struct Create {
   }
 
@@ -727,6 +730,22 @@ extension L.P2p {
   struct Trading {
   }
 }
+extension L.P2p.Crate {
+
+  struct Trade {
+  }
+}
+extension L.P2p.Crate.Trade {
+
+  struct Validation {
+  }
+}
+extension L.P2p.Crate.Trade.Validation {
+
+  struct Not {
+    static let empty = "p2p.crate.trade.validation.not.empty"
+  }
+}
 extension L.P2p.Create {
 
   struct New {
@@ -735,11 +754,36 @@ extension L.P2p.Create {
   struct Order {
     static let platformFee = "p2p.create.order.platform_fee"
   }
+
+  struct Trade {
+  }
 }
 extension L.P2p.Create.New {
 
   struct Trade {
     static let title = "p2p.create.new.trade.title"
+  }
+}
+extension L.P2p.Create.Trade {
+
+  struct Validation {
+    static let terms = "p2p.create.trade.validation.terms"
+    static let trade = "p2p.create.trade.validation.trade"
+  }
+}
+extension L.P2p.Create.Trade.Validation {
+
+  struct Payment {
+    static let methods = "p2p.create.trade.validation.payment.methods"
+  }
+
+  struct Reserved {
+    static let balance = "p2p.create.trade.validation.reserved.balance"
+  }
+
+  struct Wrong {
+    static let limits = "p2p.create.trade.validation.wrong.limits"
+    static let max = "p2p.create.trade.validation.wrong.max"
   }
 }
 extension L.P2p.Crypto {
