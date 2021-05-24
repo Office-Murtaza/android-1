@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
 @Setter
@@ -16,6 +17,7 @@ import java.util.List;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class AuthenticationDTO {
 
+    private String username;
     private String phone;
     private String password;
     private Integer platform;
@@ -27,5 +29,5 @@ public class AuthenticationDTO {
     private String timezone;
     private String notificationsToken;
     private String byReferralCode;
-    private List<CoinDTO> coins;
+    private List<CoinDTO> coins = new ArrayList<>();
 }

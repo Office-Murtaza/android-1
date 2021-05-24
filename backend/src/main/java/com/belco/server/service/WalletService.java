@@ -1,6 +1,9 @@
 package com.belco.server.service;
 
-import com.belco.server.dto.*;
+import com.belco.server.dto.CoinDTO;
+import com.belco.server.dto.TransactionDTO;
+import com.belco.server.dto.TransactionDetailsDTO;
+import com.belco.server.dto.WalletDetailsDTO;
 import com.belco.server.entity.Coin;
 import com.belco.server.entity.CoinPath;
 import com.belco.server.entity.Wallet;
@@ -58,17 +61,7 @@ public class WalletService {
             WalletDetailsDTO details = new WalletDetailsDTO();
             details.setWallet(hdWallet);
 
-            Map<CoinType, CoinDTO> coins = new HashMap<>();
-            coins.put(CoinType.BITCOIN, new CoinDTO(CoinService.CoinEnum.BTC.name(), new BitcoinAddress(HDWallet.getPublicKeyFromExtended(getXpub(hdWallet, CoinType.BITCOIN), CoinType.BITCOIN, getPath(CoinType.BITCOIN)), CoinType.BITCOIN.p2pkhPrefix()).description(), hdWallet.getKeyForCoin(CoinType.BITCOIN)));
-            coins.put(CoinType.BITCOINCASH, new CoinDTO(CoinService.CoinEnum.BCH.name(), CoinType.BITCOINCASH.deriveAddress(hdWallet.getKeyForCoin(CoinType.BITCOINCASH)), hdWallet.getKeyForCoin(CoinType.BITCOINCASH)));
-            coins.put(CoinType.LITECOIN, new CoinDTO(CoinService.CoinEnum.LTC.name(), CoinType.LITECOIN.deriveAddress(hdWallet.getKeyForCoin(CoinType.LITECOIN)), hdWallet.getKeyForCoin(CoinType.LITECOIN)));
-            coins.put(CoinType.DASH, new CoinDTO(CoinService.CoinEnum.DASH.name(), CoinType.DASH.deriveAddress(hdWallet.getKeyForCoin(CoinType.DASH)), hdWallet.getKeyForCoin(CoinType.DASH)));
-            coins.put(CoinType.DOGECOIN, new CoinDTO(CoinService.CoinEnum.DOGE.name(), CoinType.DOGECOIN.deriveAddress(hdWallet.getKeyForCoin(CoinType.DOGECOIN)), hdWallet.getKeyForCoin(CoinType.DOGECOIN)));
-            coins.put(CoinType.ETHEREUM, new CoinDTO(CoinService.CoinEnum.ETH.name(), CoinType.ETHEREUM.deriveAddress(hdWallet.getKeyForCoin(CoinType.ETHEREUM)), hdWallet.getKeyForCoin(CoinType.ETHEREUM)));
-            coins.put(CoinType.BINANCE, new CoinDTO(CoinService.CoinEnum.BNB.name(), CoinType.BINANCE.deriveAddress(hdWallet.getKeyForCoin(CoinType.BINANCE)), hdWallet.getKeyForCoin(CoinType.BINANCE)));
-            coins.put(CoinType.XRP, new CoinDTO(CoinService.CoinEnum.XRP.name(), CoinType.XRP.deriveAddress(hdWallet.getKeyForCoin(CoinType.XRP)), hdWallet.getKeyForCoin(CoinType.XRP)));
-            coins.put(CoinType.TRON, new CoinDTO(CoinService.CoinEnum.TRX.name(), CoinType.TRON.deriveAddress(hdWallet.getKeyForCoin(CoinType.TRON)), hdWallet.getKeyForCoin(CoinType.TRON)));
-
+            Map<CoinType, CoinDTO> coins = assemblyCoins(hdWallet);
             details.setCoins(coins);
 
             wallets.put(w.getId(), details);
@@ -77,18 +70,40 @@ public class WalletService {
         });
     }
 
-    public WalletDTO generateNewWallet() {
+    public WalletDetailsDTO generateNewWallet() {
         HDWallet hdWallet = new HDWallet(128, "");
 
-        List<CoinDTO> coins = new ArrayList<>();
-        coins.add(new CoinDTO(CoinService.CoinEnum.BTC.name(), "192ChmGNvyLbSGLYHLKfR9AHWSJRU6UyUe", null)); //new BitcoinAddress(HDWallet.getPublicKeyFromExtended(getXpub(hdWallet, CoinType.BITCOIN), CoinType.BITCOIN, getPath(CoinType.BITCOIN)), CoinType.BITCOIN.p2pkhPrefix()).description(), hdWallet.getKeyForCoin(CoinType.BITCOIN)));
-        coins.add(new CoinDTO(CoinService.CoinEnum.ETH.name(), "0x348188Af0fC9035FBB1AA1A0e680bfd76f9ed878", null)); //CoinType.ETHEREUM.deriveAddress(hdWallet.getKeyForCoin(CoinType.ETHEREUM)), hdWallet.getKeyForCoin(CoinType.ETHEREUM)));
+        WalletDetailsDTO details = new WalletDetailsDTO();
+        details.setWallet(hdWallet);
 
-        WalletDTO dto = new WalletDTO();
-        dto.setSeedEncrypted(Util.encrypt(hdWallet.mnemonic(), secret));
-        dto.setCoins(coins);
+        Map<CoinType, CoinDTO> coins = assemblyCoins(hdWallet);
+        details.setCoins(coins);
 
-        return dto;
+        return details;
+    }
+
+    public String encrypt(String seed) {
+        return Util.encrypt(seed, secret);
+    }
+
+    public String decrypt(String seedEncrypted) {
+        return Util.decrypt(seedEncrypted, secret);
+    }
+
+    private Map<CoinType, CoinDTO> assemblyCoins(HDWallet hdWallet) {
+        Map<CoinType, CoinDTO> coins = new HashMap<>();
+
+        coins.put(CoinType.BITCOIN, new CoinDTO(CoinService.CoinEnum.BTC.name(), new BitcoinAddress(HDWallet.getPublicKeyFromExtended(getXpub(hdWallet, CoinType.BITCOIN), CoinType.BITCOIN, getPath(CoinType.BITCOIN)), CoinType.BITCOIN.p2pkhPrefix()).description(), hdWallet.getKeyForCoin(CoinType.BITCOIN)));
+        coins.put(CoinType.BITCOINCASH, new CoinDTO(CoinService.CoinEnum.BCH.name(), CoinType.BITCOINCASH.deriveAddress(hdWallet.getKeyForCoin(CoinType.BITCOINCASH)), hdWallet.getKeyForCoin(CoinType.BITCOINCASH)));
+        coins.put(CoinType.LITECOIN, new CoinDTO(CoinService.CoinEnum.LTC.name(), CoinType.LITECOIN.deriveAddress(hdWallet.getKeyForCoin(CoinType.LITECOIN)), hdWallet.getKeyForCoin(CoinType.LITECOIN)));
+        coins.put(CoinType.DASH, new CoinDTO(CoinService.CoinEnum.DASH.name(), CoinType.DASH.deriveAddress(hdWallet.getKeyForCoin(CoinType.DASH)), hdWallet.getKeyForCoin(CoinType.DASH)));
+        coins.put(CoinType.DOGECOIN, new CoinDTO(CoinService.CoinEnum.DOGE.name(), CoinType.DOGECOIN.deriveAddress(hdWallet.getKeyForCoin(CoinType.DOGECOIN)), hdWallet.getKeyForCoin(CoinType.DOGECOIN)));
+        coins.put(CoinType.ETHEREUM, new CoinDTO(CoinService.CoinEnum.ETH.name(), CoinType.ETHEREUM.deriveAddress(hdWallet.getKeyForCoin(CoinType.ETHEREUM)), hdWallet.getKeyForCoin(CoinType.ETHEREUM)));
+        coins.put(CoinType.BINANCE, new CoinDTO(CoinService.CoinEnum.BNB.name(), CoinType.BINANCE.deriveAddress(hdWallet.getKeyForCoin(CoinType.BINANCE)), hdWallet.getKeyForCoin(CoinType.BINANCE)));
+        coins.put(CoinType.XRP, new CoinDTO(CoinService.CoinEnum.XRP.name(), CoinType.XRP.deriveAddress(hdWallet.getKeyForCoin(CoinType.XRP)), hdWallet.getKeyForCoin(CoinType.XRP)));
+        coins.put(CoinType.TRON, new CoinDTO(CoinService.CoinEnum.TRX.name(), CoinType.TRON.deriveAddress(hdWallet.getKeyForCoin(CoinType.TRON)), hdWallet.getKeyForCoin(CoinType.TRON)));
+
+        return coins;
     }
 
     public String getPath(CoinType coinType) {

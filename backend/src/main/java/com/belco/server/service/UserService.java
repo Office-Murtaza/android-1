@@ -93,13 +93,10 @@ public class UserService implements UserDetailsService {
         List<IdentityPieceCellPhone> pieceCellPhones = identityPieceCellPhoneRep.findByPhoneNumber(formattedPhone);
 
         if (pieceCellPhones.isEmpty()) {
-            user.setIdentity(createNewIdentity(savedUser, new Date(), formattedPhone));
+            user.setIdentity(createNewIdentity(savedUser, new Date(), formattedPhone, dto.getUsername()));
         } else {
-            user.setIdentity(selectFromExistingIdentities(savedUser, pieceCellPhones));
+            user.setIdentity(selectFromExistingIdentities(savedUser, pieceCellPhones, dto.getUsername()));
         }
-
-        coinService.addUserCoins(user, dto.getCoins());
-        transactionService.deliverPendingTransfers(dto.getPhone());
 
         return user;
     }
@@ -181,6 +178,10 @@ public class UserService implements UserDetailsService {
         return userRep.findOneByPhone(phone);
     }
 
+    public Optional<Identity> findByUsername(String username) {
+        return identityRep.findOneByPublicId(username);
+    }
+
     public String getTransferAddress(CoinService.CoinEnum coinCode, String phone) {
         Optional<User> userOpt = findByPhone(phone);
 
@@ -195,7 +196,7 @@ public class UserService implements UserDetailsService {
         }
     }
 
-    private Identity selectFromExistingIdentities(User savedUser, List<IdentityPieceCellPhone> pieceCellPhones) {
+    private Identity selectFromExistingIdentities(User savedUser, List<IdentityPieceCellPhone> pieceCellPhones, String username) {
         pieceCellPhones.sort(Comparator.comparing(IdentityPieceCellPhone::getId).reversed());
 
         Optional<IdentityPieceCellPhone> identityPieceCellPhone = pieceCellPhones.stream().filter(e -> e.getIdentity().getState() == Identity.STATE_REGISTERED).findFirst();
@@ -207,10 +208,14 @@ public class UserService implements UserDetailsService {
         Identity identity = identityPieceCellPhone.get().getIdentity();
         identity.setUser(savedUser);
 
+        if(StringUtils.isNotBlank(username)) {
+            identity.setPublicId(username);
+        }
+
         return identityRep.save(identity);
     }
 
-    private Identity createNewIdentity(User savedUser, Date date, String formattedPhone) {
+    private Identity createNewIdentity(User savedUser, Date date, String formattedPhone, String username) {
         Limit dailyLimit = new Limit();
         dailyLimit.setAmount(DAILY_LIMIT);
         dailyLimit.setCurrency("USD");
@@ -222,7 +227,13 @@ public class UserService implements UserDetailsService {
         Limit savedTrxLimit = limitRep.save(trxLimit);
 
         Identity identity = new Identity();
-        identity.setPublicId(Util.generatePublicId());
+
+        if(StringUtils.isNotBlank(username)) {
+            identity.setPublicId(username);
+        } else {
+            identity.setPublicId(Util.generatePublicId());
+        }
+
         identity.setState(Identity.STATE_REGISTERED);
         identity.setVipbuydiscount(BigDecimal.ZERO);
         identity.setVipselldiscount(BigDecimal.ZERO);

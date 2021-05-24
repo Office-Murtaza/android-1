@@ -23,4 +23,5 @@ public class TokenDTO {
     private String firebaseToken;
     private List<String> roles;
     private BalanceDTO balance;
+    private String seedEncrypted;
 }

@@ -1,5 +1,6 @@
 package com.belco.server.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -16,5 +17,7 @@ public class CoinDTO {
 
     private String code;
     private String address;
+
+    @JsonIgnore
     private PrivateKey privateKey;
 }

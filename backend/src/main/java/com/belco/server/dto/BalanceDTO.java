@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
 @Setter
@@ -18,5 +19,5 @@ public class BalanceDTO {
 
     private BigDecimal totalBalance;
     private String totalBalanceStr;
-    private List<CoinBalanceDTO> coins;
+    private List<CoinBalanceDTO> coins = new ArrayList<>();
 }

@@ -9,7 +9,6 @@ import com.belco.server.security.JWTTokenProvider;
 import com.belco.server.service.*;
 import com.belco.server.util.Constant;
 import com.belco.server.util.Util;
-import com.mongodb.BasicDBObject;
 import com.mongodb.client.model.UpdateOptions;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.codec.binary.Base64;
@@ -25,6 +24,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -44,6 +45,7 @@ public class UserController {
     private final PasswordEncoder passwordEncoder;
     private final TwilioService twilioService;
     private final CoinService coinService;
+    private final WalletService walletService;
     private final NotificationService notificationService;
     private final MongoTemplate mongo;
 
@@ -53,7 +55,7 @@ public class UserController {
     @Value("${twilio.verify-delay}")
     private Long verifyDelay;
 
-    public UserController(JWTTokenProvider tokenProvider, AuthenticationManager authenticationManager, UserService userService, TransactionService transactionService, TokenRep refreshTokenRep, PasswordEncoder passwordEncoder, TwilioService twilioService, CoinService coinService, NotificationService notificationService, MongoTemplate mongo) {
+    public UserController(JWTTokenProvider tokenProvider, AuthenticationManager authenticationManager, UserService userService, TransactionService transactionService, TokenRep refreshTokenRep, PasswordEncoder passwordEncoder, TwilioService twilioService, CoinService coinService, WalletService walletService, NotificationService notificationService, MongoTemplate mongo) {
         this.tokenProvider = tokenProvider;
         this.authenticationManager = authenticationManager;
         this.userService = userService;
@@ -62,6 +64,7 @@ public class UserController {
         this.passwordEncoder = passwordEncoder;
         this.twilioService = twilioService;
         this.coinService = coinService;
+        this.walletService = walletService;
         this.notificationService = notificationService;
         this.mongo = mongo;
     }
@@ -88,7 +91,7 @@ public class UserController {
             Document d = mongo.getCollection(COLL_PHONE_VERIFY_TRACKER).find(new Document("phone", dto.getPhone())).first();
             long time = System.currentTimeMillis() - verifyDelay;
 
-            if(d == null || d.getLong("timestamp") < time) {
+            if (d == null || d.getLong("timestamp") < time) {
                 String code = twilioService.sendVerificationCode(dto.getPhone());
 
                 if (StringUtils.isBlank(code)) {
@@ -112,19 +115,25 @@ public class UserController {
     @PostMapping("/register")
     public Response register(@RequestBody AuthenticationDTO dto) {
         try {
-            if (dto.getCoins().isEmpty()) {
-                return Response.validationError("Empty coin list");
+            if (userService.findByPhone(dto.getPhone()).isPresent()) {
+                return Response.validationError("Phone is already used");
             }
 
-            Optional<User> userOpt = userService.findByPhone(dto.getPhone());
-
-            if (userOpt.isPresent()) {
-                return Response.error(4, "Phone is already used");
+            if (StringUtils.isNotBlank(dto.getUsername()) && userService.findByUsername(dto.getUsername()).isPresent()) {
+                return Response.validationError("Username is already used");
             }
 
             User user = userService.register(dto);
-
             TokenDTO jwt = getJwt(user.getId(), user.getIdentity().getId(), dto.getPhone(), dto.getPassword());
+
+            if (dto.getCoins().isEmpty()) {
+                WalletDetailsDTO walletDetails = walletService.generateNewWallet();
+                dto.setCoins(new ArrayList<>(walletDetails.getCoins().values()));
+                jwt.setSeedEncrypted(walletService.encrypt(walletDetails.getWallet().mnemonic()));
+            }
+
+            coinService.addUserCoins(user, dto.getCoins());
+            transactionService.deliverPendingTransfers(dto.getPhone());
 
             Token token = new Token();
             token.setRefreshToken(jwt.getRefreshToken());
@@ -147,25 +156,16 @@ public class UserController {
     @PostMapping("/recover")
     public Response recover(@RequestBody AuthenticationDTO dto) {
         try {
-            if (dto.getCoins().isEmpty()) {
-                return Response.validationError("Empty coin list");
-            }
-
             Optional<User> userOpt = userService.findByPhone(dto.getPhone());
             if (!userOpt.isPresent()) {
-                return Response.error(4, "Phone doesn't exist");
+                return Response.validationError("Phone doesn't exist");
             }
 
             User user = userOpt.get();
 
             boolean isPasswordMatch = passwordEncoder.matches(dto.getPassword(), user.getPassword());
             if (!isPasswordMatch) {
-                return Response.error(5, "Wrong password");
-            }
-
-            boolean isCoinAddressesMatch = coinService.isCoinsAddressMatch(user, dto.getCoins());
-            if (!isCoinAddressesMatch) {
-                return Response.error(6, "Seed phrase you entered is invalid. Please try again");
+                return Response.validationError("Wrong password");
             }
 
             TokenDTO jwt = getJwt(user.getId(), user.getIdentity().getId(), dto.getPhone(), dto.getPassword());
@@ -184,14 +184,13 @@ public class UserController {
             user.setTimezone(dto.getTimezone());
             user.setNotificationsToken(dto.getNotificationsToken());
 
-            if (user.getReferral() == null) {
-                userService.addUserReferral(user);
+            user = userService.save(user);
+
+            if (!dto.getCoins().isEmpty()) {
+                coinService.addUserCoins(user, dto.getCoins());
             }
 
-            userService.save(user);
-            coinService.addUserCoins(user, dto.getCoins());
-
-            List<String> coins = dto.getCoins().stream().map(e -> e.getCode()).collect(Collectors.toList());
+            List<String> coins = user.getUserCoins().stream().map(e -> e.getCoin().getCode()).collect(Collectors.toList());
 
             jwt.setBalance(coinService.getCoinsBalance(user.getId(), coins));
 
@@ -366,6 +365,6 @@ public class UserController {
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.add(Constant.AUTHORIZATION_HEADER, "Bearer " + jwt);
 
-        return new TokenDTO(userId, identityId, jwt, System.currentTimeMillis() + tokenDuration, refreshToken, firebaseToken, authentication.getAuthorities().stream().map(role -> role.getAuthority()).collect(Collectors.toList()), null);
+        return new TokenDTO(userId, identityId, jwt, System.currentTimeMillis() + tokenDuration, refreshToken, firebaseToken, authentication.getAuthorities().stream().map(role -> role.getAuthority()).collect(Collectors.toList()), null, null);
     }
 }
