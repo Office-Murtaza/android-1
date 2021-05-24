@@ -11,7 +11,7 @@ typealias LocationResult = (CLLocation?) -> Void
 
 protocol LocationManager: AnyObject {
   var delegate: CLLocationManagerDelegate? { get set }
-  
+  var location: CLLocation? { get }
   func requestLocation()
   func requestWhenInUseAuthorization()
 }
@@ -43,6 +43,11 @@ class LocationServiceImpl: NSObject, LocationService, CLLocationManagerDelegate,
         if let callback = callback {
             resultClosure = callback
         }
+        
+        if let location = locationManager.location {
+            callback?(location)
+        }
+        
         switch CLLocationManager.authorizationStatus() {
         case .authorizedAlways, .authorizedWhenInUse:
             requestLocationIfUpdatedMoreThanDayAgo()
@@ -56,6 +61,7 @@ class LocationServiceImpl: NSObject, LocationService, CLLocationManagerDelegate,
     print("UPDATE_LOCATION_ERROR:", error)
   }
   
+    
   func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
     if let location = locations.first {
       resultClosure?(location)

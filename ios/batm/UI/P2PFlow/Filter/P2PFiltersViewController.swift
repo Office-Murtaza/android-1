@@ -76,6 +76,7 @@ class P2PFiltersViewController: UIViewController {
     private var payments: [TradePaymentMethods]
     private var sortType: [P2PFilterSortType]
     private var preselectedSortBy: P2PFilterSortType
+    private var isDistancePresentationEnabled: Bool = false
     
     init(coins: [CustomCoinType],
          payments: [TradePaymentMethods],
@@ -90,6 +91,12 @@ class P2PFiltersViewController: UIViewController {
         self.maxRange = maxRange
         self.preselectedSortBy = preselectedSortBy
         super.init(nibName: nil, bundle: nil)
+    }
+    
+    func update(isLocationEnabled: Bool) {
+        isDistancePresentationEnabled = isLocationEnabled
+        distanceView.isHidden = !isDistancePresentationEnabled
+        distanceHeader.isHidden = !isDistancePresentationEnabled
     }
     
     required init?(coder: NSCoder) {
@@ -160,6 +167,9 @@ class P2PFiltersViewController: UIViewController {
             sortByTagsView,
             resetAllButton
         ])
+        
+        distanceView.isHidden = !isDistancePresentationEnabled
+        distanceHeader.isHidden = !isDistancePresentationEnabled
     }
     
     private func setupLayout() {
