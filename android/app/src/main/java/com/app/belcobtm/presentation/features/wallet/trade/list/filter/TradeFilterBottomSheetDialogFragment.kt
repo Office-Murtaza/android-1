@@ -80,6 +80,11 @@ class TradeFilterBottomSheetDialogFragment : BottomSheetDialogFragment() {
                 minDistanceTextWatcher, distance.toString(), distance.toString().length
             )
         }
+        viewModel.distanceMaxLimit.observe(viewLifecycleOwner) { distance ->
+            binding.distanceMaxLimitEditText.setTextSilently(
+                maxDistanceTextWatcher, distance.toString(), distance.toString().length
+            )
+        }
         viewModel.distanceRangeError.observe(viewLifecycleOwner) {
             it?.let(binding.distanceRangeError::setText)
             binding.distanceRangeError.toggle(it != null)
