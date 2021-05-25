@@ -19,7 +19,7 @@ final class ReserveFormView: UIView, HasDisposeBag {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func configure(coinType: CustomCoinType, fee: Decimal? = nil) {
+    func configure(coinType: CustomCoinType, fee: Decimal) {
         coinAmountTextFieldView.configure(coinType: coinType, fee: fee)
     }
     

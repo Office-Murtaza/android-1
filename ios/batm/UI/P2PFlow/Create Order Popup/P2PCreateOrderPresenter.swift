@@ -21,6 +21,6 @@ class P2PCreateOrderPresenter: P2PCreateOrderPresenterInput {
                                               platformFee: fee,
                                               reservedBalance: reservedBalance)
         
-        output?.updated(crypto: data.cryptoAmount.coinFormatted ?? "0", fee: data.feeAmount.coinFormatted ?? "0", error: error)
+        output?.updated(crypto: data.cryptoAmount.coinFormatted, fee: data.feeAmount.coinFormatted, error: error)
     }
 }

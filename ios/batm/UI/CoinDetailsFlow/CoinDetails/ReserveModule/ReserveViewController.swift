@@ -78,6 +78,7 @@ final class ReserveViewController: ModuleViewController<ReservePresenter> {
         
         let feeDriver = presenter.state
             .map { $0.coinDetails?.txFee }
+            .filterNil()
         
         Driver.combineLatest(coinTypeDriver, feeDriver)
             .drive(onNext: { [formView] in formView.configure(coinType: $0, fee: $1) })
