@@ -171,6 +171,7 @@ extension TransactionDetailsServiceImpl: TransactionDetailsServiceWebSocket {
             completable(.completed)
             return Disposables.create {}
         }
+        .retry(maxAttempts: 1, delay: 60)
     }
     
     func handleMessage(_ model: MessageModel) {

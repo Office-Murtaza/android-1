@@ -181,6 +181,7 @@ extension BalanceServiceImpl: BalanceServiceWebSocket {
             completable(.completed)
             return Disposables.create {}
         }
+        .retry(maxAttempts: 1, delay: 60)
     }
     
     func handleMessage(_ model: MessageModel) {
@@ -202,7 +203,7 @@ extension BalanceServiceImpl: BalanceServiceWebSocket {
     }
     
     private func handleErrorModel(_ model: MessageModel) {
-        self.disconnectAndStart()
+        disconnectAndStart()
     }
     
     @objc private func disconnectAndStart() {
