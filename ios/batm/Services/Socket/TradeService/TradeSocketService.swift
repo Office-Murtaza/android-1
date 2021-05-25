@@ -116,25 +116,21 @@ extension TradeServiceImpl: TradeServiceWebSocket {
     }
     
     func subscribe() {
-        
         guard let userId = account?.userId else { return }
         
         api.getPhoneNumber(userId: userId)
             .observeOn(ConcurrentDispatchQueueScheduler(qos: .background))
-            .subscribe { [weak self] (phone) in
+            .subscribe { [weak self] phone in
+                self?.phone = phone.phoneNumber
                 let message = SubscribeMessageBuilder().build(with: [
                     "id" : phone.phoneNumber,
                     "destination" : "/topic/trade"
                 ])
                 
                 self?.socket?.write(string: message)
-                
             } onError: { (error) in
                 print("error")
             }.disposed(by: disposeBag)
-        
-        
-        
     }
     
     func unsubscribe() -> Completable {
@@ -146,7 +142,7 @@ extension TradeServiceImpl: TradeServiceWebSocket {
             let payload = [
                 "id" : phoneNumber,
                 "destination" : "/topic/trade"
-            ];
+            ]
             
             let message = UnsubscribeMessageBuilder().build(with: payload)
             self?.socket?.write(string: message, completion: {
