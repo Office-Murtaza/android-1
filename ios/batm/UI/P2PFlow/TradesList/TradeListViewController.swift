@@ -26,6 +26,7 @@ class TradeListViewController: UIViewController {
     weak var delegate: TradeListDelegate?
     
     private var type: P2PTradesType?
+    private var location: CLLocation?
     
     lazy var tableView: UITableView = {
         let table = UITableView()
@@ -47,7 +48,12 @@ class TradeListViewController: UIViewController {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-
+    
+    func update(location: CLLocation?) {
+        self.location = location
+        filterController?.update(isLocationEnabled: (location != nil))
+    }
+    
     private func setupUI() {
         
         setupFilterController()
@@ -68,6 +74,7 @@ class TradeListViewController: UIViewController {
     
     private func setupFilterController() {
         let sortBy: P2PFilterSortType = .price
+        
         filterController = P2PFiltersViewController(coins: CustomCoinType.allCases,
                                                     payments: TradePaymentMethods.allCases,
                                                     sortTypes: P2PFilterSortType.allCases,

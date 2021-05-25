@@ -4,12 +4,14 @@ import RxCocoa
 import CoreLocation
 
 protocol LocationService {
-  func requestLocationIfNeeded()
+  func requestLocationIfNeeded(_ callback: LocationResult?)
 }
+
+typealias LocationResult = (CLLocation?) -> Void
 
 protocol LocationManager: AnyObject {
   var delegate: CLLocationManagerDelegate? { get set }
-  
+  var location: CLLocation? { get }
   func requestLocation()
   func requestWhenInUseAuthorization()
 }
@@ -17,12 +19,13 @@ protocol LocationManager: AnyObject {
 extension CLLocationManager: LocationManager {}
 
 class LocationServiceImpl: NSObject, LocationService, CLLocationManagerDelegate, HasDisposeBag {
-  
+ 
   let api: APIGateway
   let accountStorage: AccountStorage
   let locationUpdateDateStorage: LocationUpdateDateStorage
   let locationManager: LocationManager
-  
+  private var resultClosure: LocationResult?
+    
   init(api: APIGateway,
        accountStorage: AccountStorage,
        locationUpdateDateStorage: LocationUpdateDateStorage,
@@ -35,23 +38,33 @@ class LocationServiceImpl: NSObject, LocationService, CLLocationManagerDelegate,
     
     self.locationManager.delegate = self
   }
-  
-  func requestLocationIfNeeded() {
-    switch CLLocationManager.authorizationStatus() {
-    case .authorizedAlways, .authorizedWhenInUse:
-      requestLocationIfUpdatedMoreThanDayAgo()
-    case .notDetermined:
-      locationManager.requestWhenInUseAuthorization()
-    default: break
+
+    func requestLocationIfNeeded(_ callback: LocationResult?) {
+        if let callback = callback {
+            resultClosure = callback
+        }
+        
+        if let location = locationManager.location {
+            callback?(location)
+        }
+        
+        switch CLLocationManager.authorizationStatus() {
+        case .authorizedAlways, .authorizedWhenInUse:
+            requestLocationIfUpdatedMoreThanDayAgo()
+        case .notDetermined:
+            locationManager.requestWhenInUseAuthorization()
+        default: break
+        }
     }
-  }
   
   func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
     print("UPDATE_LOCATION_ERROR:", error)
   }
   
+    
   func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
     if let location = locations.first {
+      resultClosure?(location)
       accountStorage.get()
         .flatMapCompletable { [api] in api.updateLocation(userId: $0.userId,
                                                           latitude: location.coordinate.latitude,

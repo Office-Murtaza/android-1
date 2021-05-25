@@ -12,6 +12,7 @@ class P2PPresenter: ModulePresenter, P2PModule {
   var walletUseCase: WalletUsecase?
   var userId: Int?
   var tradeSocketService: TradeSocketService?
+  var locationService: LocationService?
   
   var isCreationError = BehaviorRelay<Bool>(value: false)
   var tradeSuccessMessage = BehaviorRelay<String>(value: "")
@@ -20,7 +21,6 @@ class P2PPresenter: ModulePresenter, P2PModule {
   private var coins: [CoinBalance]?
   var socketTrade = PublishRelay<Trade>()
     
-  private let locationService = GeolocationService()
   private let fetchDataRelay = PublishRelay<Void>()
   var errorService: ErrorService?
   
@@ -71,9 +71,9 @@ class P2PPresenter: ModulePresenter, P2PModule {
   }
   
   func checkLocation() {
-    locationService.requestLocation { [weak self] (result) in
-      self?.currentLocation.accept(result)
-    }
+    locationService?.requestLocationIfNeeded({ [weak self] (result) in
+        self?.currentLocation.accept(result)
+    })
   }
   
   func didSelectedSubmit(data: P2PCreateTradeDataModel) {

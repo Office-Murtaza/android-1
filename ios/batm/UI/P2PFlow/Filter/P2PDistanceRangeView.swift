@@ -5,25 +5,7 @@ import MaterialComponents
 
 class P2PDistanceRangeView: UIView {
     
-    typealias P2PDistanceRangeAction = (Int) -> Void
-    
-    lazy var distanceSlider: MultiSlider = {
-        let slider = MultiSlider()
-        slider.orientation = .horizontal
-        slider.tintColor = UIColor(hexString: "0073E4")
-        slider.showsThumbImageShadow = false
-        
-        slider.minimumValue = 0
-        slider.maximumValue = 1
-
-        slider.value = [0, 1]
-        slider.outerTrackColor = .lightGray
-        slider.thumbImage = UIImage(named: "p2p_slider_thumb")
-        slider.addTarget(self, action: #selector(sliderChanged(_:)), for: .valueChanged)
-        
-        
-        return slider
-    }()
+    typealias P2PDistanceRangeAction = (Double) -> Void
     
     private var minRange: P2PDistanceRangeAction?
     private var maxRange: P2PDistanceRangeAction?
@@ -47,14 +29,6 @@ class P2PDistanceRangeView: UIView {
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
-    }
-    
-    @objc func sliderChanged(_ slider: MultiSlider) {
-        let (fromAttrString, toAttrString) = transformToAttributedRange(from: slider.value.first ?? 0, to: slider.value.last ?? 0)
-        minRange?(Int(slider.value.first ?? 0))
-        maxRange?(Int(slider.value.last ?? 0))
-        fromField.update(attributedText: fromAttrString)
-        toField.update(attributedText: toAttrString)
     }
   
     func update(isUserInteractionEnabled: Bool, keyboardType: UIKeyboardType) {
@@ -123,7 +97,6 @@ class P2PDistanceRangeView: UIView {
         toField.setup(placeholder: localize(L.P2p.Filter.Range.max), attributedText: NSAttributedString(), userInteractionEnabled: false)
         
         addSubviews([
-            distanceSlider,
             fromField,
             hyphenView,
             toField
@@ -131,14 +104,8 @@ class P2PDistanceRangeView: UIView {
     }
     
     func setupLayout() {
-        distanceSlider.snp.makeConstraints {
-            $0.top.equalToSuperview()
-            $0.left.equalToSuperview()
-            $0.right.equalToSuperview()
-        }
-        
         fromField.snp.makeConstraints {
-            $0.top.equalTo(distanceSlider.snp.bottom)
+            $0.top.equalToSuperview().offset(10)
             $0.left.equalToSuperview()
             $0.height.equalTo(40)
             $0.right.equalTo(hyphenView.snp.left).offset(-16)
@@ -160,28 +127,24 @@ class P2PDistanceRangeView: UIView {
     }
     
     func setup(range: [CGFloat], measureString: String, isMeasurePosistionLast: Bool = true , stepSize: CGFloat = 100) {
-        distanceSlider.minimumValue = range.first ?? 0
-        distanceSlider.maximumValue = range.last ?? 1
-        distanceSlider.snapStepSize = stepSize
-        distanceSlider.value = range
         fromField.update(measurmentValue: measureString)
-        fromField.update { [unowned self] (value) in
-            guard let floatValue = Double(value)  else { return }
-            distanceSlider.value = [CGFloat(floatValue), range.last ?? 1]
-            
+        toField.update(measurmentValue: measureString)
+
+        let (fromAttrString, toAttrString) = transformToAttributedRange(from: range.first ?? 0, to: range.last ?? 0)
+
+        fromField.update(attributedText: fromAttrString)
+        toField.update(attributedText: toAttrString)
+
+        fromField.update { [weak self] (value) in
+            guard let floatValue = Double(value) else { return }
+            self?.minRange?(floatValue)
         }
         
-        
-        toField.update(measurmentValue: measureString)
-        
-        toField.update { [unowned self]  (value) in
-            guard let floatValue = Double(value)  else { return }
-            self.distanceSlider.value = [range.first ?? 0, CGFloat(floatValue)]
+        toField.update { [weak self] (value) in
+            guard let floatValue = Double(value) else { return }
+            self?.maxRange?(floatValue)
         }
         
         self.isMeasurePosistionLast = isMeasurePosistionLast
-        let (from, to) = transformToAttributedRange(from: distanceSlider.minimumValue, to: distanceSlider.maximumValue)
-        fromField.update(attributedText: from)
-        toField.update(attributedText: to)
     }
 }

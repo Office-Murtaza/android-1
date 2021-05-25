@@ -31,8 +31,8 @@ struct FilterScopeModel {
     let coins: [CustomCoinType]
     let paymentMethods: [TradePaymentMethods]
     let sortType: [P2PFilterSortType]
-    let minRange: Int
-    let maxRange: Int
+    let minRange: Double
+    let maxRange: Double
     
     var isEmpty: Bool {
         return coins.isEmpty && paymentMethods.isEmpty && sortType.isEmpty
@@ -70,19 +70,20 @@ class P2PFiltersViewController: UIViewController {
     
     private let resetAllButton = P2PResetAllView()
     
-    private var minRange:Int?
-    private var maxRange:Int?
+    private var minRange:Double?
+    private var maxRange:Double?
     private var coins: [CustomCoinType]
     private var payments: [TradePaymentMethods]
     private var sortType: [P2PFilterSortType]
     private var preselectedSortBy: P2PFilterSortType
+    private var isDistancePresentationEnabled: Bool = false
     
     init(coins: [CustomCoinType],
          payments: [TradePaymentMethods],
          sortTypes: [P2PFilterSortType],
          preselectedSortBy: P2PFilterSortType,
-         minRange: Int,
-         maxRange: Int) {
+         minRange: Double,
+         maxRange: Double) {
         self.coins = coins
         self.payments = payments
         self.sortType = sortTypes
@@ -90,6 +91,12 @@ class P2PFiltersViewController: UIViewController {
         self.maxRange = maxRange
         self.preselectedSortBy = preselectedSortBy
         super.init(nibName: nil, bundle: nil)
+    }
+    
+    func update(isLocationEnabled: Bool) {
+        isDistancePresentationEnabled = isLocationEnabled
+        distanceView.isHidden = !isDistancePresentationEnabled
+        distanceHeader.isHidden = !isDistancePresentationEnabled
     }
     
     required init?(coder: NSCoder) {
@@ -134,7 +141,7 @@ class P2PFiltersViewController: UIViewController {
 
         let tapRecognizer = UITapGestureRecognizer(target: self, action: #selector(hideKeyboard))
         view.addGestureRecognizer(tapRecognizer)
-        
+        setupDefaultKeyboardHandling()
     }
 
     private func setupUI() {
@@ -160,6 +167,9 @@ class P2PFiltersViewController: UIViewController {
             sortByTagsView,
             resetAllButton
         ])
+        
+        distanceView.isHidden = !isDistancePresentationEnabled
+        distanceHeader.isHidden = !isDistancePresentationEnabled
     }
     
     private func setupLayout() {
@@ -225,7 +235,7 @@ class P2PFiltersViewController: UIViewController {
             $0.left.equalToSuperview().offset(30)
             $0.right.equalToSuperview().offset(-30)
             $0.top.equalTo(distanceHeader.snp.bottom)
-            $0.height.equalTo(110)
+            $0.height.equalTo(100)
         }
         
         sortBySeparator.snp.makeConstraints {
@@ -271,6 +281,7 @@ class P2PFiltersViewController: UIViewController {
         var methods = [P2PTagView]()
         for method in payments {
             let tag = P2PTagView()
+            tag.didSelected()
             tag.update(image: method.image, title: method.title)
             tag.layoutIfNeeded()
             methods.append(tag)

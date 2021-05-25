@@ -8,8 +8,8 @@ struct P2PCreateTradeDataModel: Encodable {
     let type: Int
     let coin: String
     let price: Double
-    let minLimit: Int
-    let maxLimit: Int
+    let minLimit: Double
+    let maxLimit: Double
     let paymentMethods: String
     let terms: String
   
@@ -24,9 +24,11 @@ protocol P2PCreateTradeViewControllerDelegate: AnyObject {
 
 class P2PCreateTradeViewController: UIViewController {
 
+    let trades: Trades
+    let userId: Int
     var selectedType: P2PSellBuyViewType = .buy
-    var minRange: Int = 100
-    var maxRange: Int = 10000 {
+    var minRange: Double = 100
+    var maxRange: Double = 10000 {
         didSet {
             calculateFee()
         }
@@ -40,13 +42,22 @@ class P2PCreateTradeViewController: UIViewController {
     
     private var balance: CoinsBalance
     private var payments: [TradePaymentMethods]
+    private let formValidator = P2PCreateTradeFormValidator()
+    
     let submitButton = MDCButton.submit
     weak var delegate: P2PCreateTradeViewControllerDelegate?
     
-    init(balance: CoinsBalance, payments: [TradePaymentMethods], delegate: P2PCreateTradeViewControllerDelegate) {
+    init(trades: Trades,
+         userId: Int,
+         balance: CoinsBalance,
+         payments: [TradePaymentMethods],
+         delegate: P2PCreateTradeViewControllerDelegate) {
         self.balance = balance
         self.payments = payments
         self.delegate = delegate
+        self.trades = trades
+        self.userId = userId
+        
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -68,17 +79,19 @@ class P2PCreateTradeViewController: UIViewController {
     
     private let tradeSeparator = P2PSeparatorView()
     private let coinExchangeView = P2PSelectCoinView()
+    private let coinInlineError = P2PFormInlineErrorView()
     private let coinExchangeSeparator = P2PSeparatorView()
     
     private let paymentMethodsHeader = P2PSectionHeaderView()
     private let paymentMethodsView = P2PTagContainerView(width: UIScreen.main.bounds.size.width - 20)
+    private let paymentMethodsInlineError = P2PFormInlineErrorView()
     private let paymentMethodSeparator = P2PSeparatorView()
+    
     private let limitsHeader = P2PSectionHeaderView()
     private let limitsView = P2PCreateTradeLimitsView()
+    private let limitInlineError = P2PFormInlineErrorView()
     private let limitsSeparator = P2PSeparatorView()
     
-    private let termsSeparator = P2PSeparatorView()
-    private let termsHeader = P2PSectionHeaderBottomView()
     lazy var termsTextField: MDCMultilineTextField = {
            let field = MDCMultilineTextField.default
            field.borderView = nil
@@ -86,8 +99,16 @@ class P2PCreateTradeViewController: UIViewController {
            return field
        }()
     
+    private let termsInlineError = P2PFormInlineErrorView()
+    private let termsSeparator = P2PSeparatorView()
     var termsTextFieldController: ThemedTextInputControllerOutlinedTextArea?
     private var emptyFooterView = UIView()
+    
+    private let coinValidator = P2PCreateTradeCoinsValidator()
+    private let paymentMethodValidator = P2PCreateTradePaymentValidator()
+    private let limitValidator = P2PCreateTradeLimitsValidator()
+    private let termsValidator = P2PCreateTradeTermsValidator()
+    var prevResponder: UIView?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -95,7 +116,7 @@ class P2PCreateTradeViewController: UIViewController {
         setupUI()
         setupLayout()
         bind()
-      tradeTypeHeader.update(title: localize(L.P2p.TradeType.title))
+        tradeTypeHeader.update(title: localize(L.P2p.TradeType.title))
         addNotificationObserver()
     }
     
@@ -108,9 +129,14 @@ class P2PCreateTradeViewController: UIViewController {
         view.backgroundColor = .white
       paymentMethodsHeader.update(title: localize(L.P2p.Payment.Methods.title))
         setupPaymentMethodsView(payments: payments)
+        
         limitsView.setup(range: [CGFloat(minRange), CGFloat(maxRange)], measureString: "", isMeasurePosistionLast: false)
+        limitValidator.update(min: Double(minRange))
+        limitValidator.update(max: Double(maxRange))
+        
+        limitsView.update(isUserInteractionEnabled: true, keyboardType: .decimalPad)
+        
       limitsHeader.update(title: localize(L.P2p.Limits.title))
-      termsHeader.update(title: localize(L.P2p.Terms.title))
         termsTextFieldController = ThemedTextInputControllerOutlinedTextArea(textInput: termsTextField)
       termsTextFieldController?.placeholderText = localize(L.P2p.Terms.placeholder)
         termsTextFieldController?.minimumLines = 3
@@ -122,7 +148,7 @@ class P2PCreateTradeViewController: UIViewController {
         
         scrollView.addSubview(stackView)
         scrollView.keyboardDismissMode = .onDrag
-        
+
         let tapRecognizer = UITapGestureRecognizer(target: self, action: #selector(didTapView))
         stackView.addGestureRecognizer(tapRecognizer)
         
@@ -132,15 +158,18 @@ class P2PCreateTradeViewController: UIViewController {
             selectTradeTypeView,
             tradeSeparator,
             coinExchangeView,
+            coinInlineError,
             coinExchangeSeparator,
             paymentMethodsHeader,
             paymentMethodsView,
+            paymentMethodsInlineError,
             paymentMethodSeparator,
             limitsHeader,
             limitsView,
+            limitInlineError,
             termsSeparator,
-            termsHeader,
             termsTextField,
+            termsInlineError,
             submitButton,
             emptyFooterView
         ])
@@ -150,10 +179,47 @@ class P2PCreateTradeViewController: UIViewController {
         
         limitsView.selectedMinRange { [weak self] minRange in
             self?.minRange = minRange
+            self?.limitValidator.update(min: Double(minRange))
+            self?.limitValidator.check()
         } maxRange: { [weak self] maxRange in
             self?.maxRange = maxRange
+            self?.limitValidator.update(max: Double(maxRange))
+            self?.limitValidator.check()
         }
         
+        [coinInlineError,
+         paymentMethodsInlineError,
+         limitInlineError,
+         termsInlineError].forEach{ $0.isHidden = true }
+        
+        coinValidator.setup(trades: trades.trades, userId: userId)
+        formValidator.register(view: coinInlineError, validator: coinValidator)
+        formValidator.register(view: paymentMethodsInlineError, validator: paymentMethodValidator)
+        formValidator.register(view: limitInlineError, validator: limitValidator)
+        formValidator.register(view: termsInlineError, validator: termsValidator)
+        
+        coinExchangeView.amountTextField.addTarget(self, action: #selector(amountDidChange(_:)), for: .editingChanged)
+        coinExchangeView.amountTextField.deleteDelegate = self
+       
+        termsTextField.rx.text
+            .asDriver()
+            .filterNil()
+            .filterEmpty()
+            .do { [weak self] (value) in
+            self?.termsValidator.update(terms: value)
+            self?.termsValidator.check()
+        }.asObservable()
+        .subscribe()
+        .disposed(by: disposeBag)
+    }
+    
+    @objc func amountDidChange(_ textField: UITextField) {
+    
+        guard let value = Double(textField.text ?? "") else { return }
+        coinValidator.update(coins: value)
+        coinValidator.check()
+        limitValidator.update(price: value)
+        limitValidator.check()
     }
     
     @objc func priceChanged(_ textField: UITextField) {
@@ -169,8 +235,8 @@ class P2PCreateTradeViewController: UIViewController {
     
     private func addNotificationObserver() {
         let notificationCenter = NotificationCenter.default
+        notificationCenter.addObserver(self, selector: #selector(adjustForKeyboard), name: UIResponder.keyboardWillShowNotification, object: nil)
         notificationCenter.addObserver(self, selector: #selector(adjustForKeyboard), name: UIResponder.keyboardWillHideNotification, object: nil)
-        notificationCenter.addObserver(self, selector: #selector(adjustForKeyboard), name: UIResponder.keyboardWillChangeFrameNotification, object: nil)
     }
     
     private func removeNotificationObserver() {
@@ -178,26 +244,45 @@ class P2PCreateTradeViewController: UIViewController {
     }
     
     @objc func adjustForKeyboard(notification: Notification) {
-        guard termsTextField.isFirstResponder == true else { return }
+        let currentResponder = [limitsView.fromField.textField, limitsView.toField.textField, termsTextField].first(where: {$0.isFirstResponder == true })
+        let responderGroup = [limitsView.fromField.textField as UIView , limitsView.toField.textField as UIView]
         guard let keyboardValue = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue else { return }
         let keyboardScreenEndFrame = keyboardValue.cgRectValue
         let keyboardViewEndFrame = view.convert(keyboardScreenEndFrame, from: view.window)
-
+        print("notification name", notification.name)
         if notification.name == UIResponder.keyboardWillHideNotification {
-            scrollView.contentInset = .zero
+            
+            scrollView.setContentOffset(.zero, animated: true)
+            UIView.animate(withDuration: 0.2) { [weak self] in
+                self?.scrollView.contentInset = .zero
+            }
+            prevResponder = nil
         } else {
-            scrollView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: keyboardViewEndFrame.height - view.safeAreaInsets.bottom, right: 0)
+            if let prev = prevResponder, responderGroup.contains(prev), currentResponder != termsTextField { return }
+            UIView.animate(withDuration: 0.2) { [weak self] in
+                self?.scrollView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: keyboardViewEndFrame.height - CGFloat(self?.view.safeAreaInsets.bottom ?? 0), right: 0)
+            }
             let bottomOffset = CGPoint(x: 0, y: scrollView.contentSize.height - scrollView.frame.size.height + scrollView.contentInset.bottom);
-            scrollView.setContentOffset(bottomOffset, animated: true)
+            scrollView.setContentOffset((bottomOffset), animated: true)
         }
-
+        prevResponder = currentResponder
     }
-    
+
     @objc private func didTapView() {
         view.endEditing(true)
+        scrollView.setContentOffset(.zero, animated: true)
+        UIView.animate(withDuration: 0.2) { [weak self] in
+            self?.scrollView.contentInset = .zero
+        }
+        prevResponder = nil
     }
     
     @objc private func createTrade() {
+        
+        formValidator.validate()
+        
+        guard formValidator.isFormValid() == true else { return }
+        
         let selectedPaymentTitles = paymentMethodsView.selectedTitles()
         let methods = selectedPaymentTitles.compactMap{TradePaymentMethods(method: $0)?.rawValue}.map { String($0)}
         let paymentMethods = methods.joined(separator: ",")
@@ -205,11 +290,11 @@ class P2PCreateTradeViewController: UIViewController {
         let data = P2PCreateTradeDataModel(type: selectedType.rawValue,
                                 coin: coinExchangeView.coinType?.code ?? "",
                                 price: Double(coinExchangeView.amountTextField.text ?? "") ?? 0 ,
-                                minLimit: minRange ?? 0,
-                                maxLimit: maxRange ?? 0,
+                                minLimit: minRange,
+                                maxLimit: maxRange,
                                 paymentMethods: paymentMethods,
                                 terms: termsTextField.text ?? "")
-
+    
         delegate?.didSelectedSubmit(data: data)
     }
     
@@ -244,7 +329,6 @@ class P2PCreateTradeViewController: UIViewController {
         }
         
         tradeSeparator.snp.makeConstraints {
-            $0.top.equalTo(selectTradeTypeView.snp.bottom)
             $0.height.equalTo(separatorHeight)
             $0.left.equalToSuperview().offset(15)
             $0.right.equalToSuperview().offset(-15)
@@ -256,8 +340,12 @@ class P2PCreateTradeViewController: UIViewController {
             $0.height.equalTo(100)
         }
         
+        coinInlineError.snp.makeConstraints {
+            $0.left.equalToSuperview().offset(15)
+            $0.height.equalTo(30)
+        }
+        
         coinExchangeSeparator.snp.makeConstraints {
-            $0.top.equalTo(coinExchangeView.snp.bottom)
             $0.height.equalTo(separatorHeight)
             $0.left.equalToSuperview().offset(15)
             $0.right.equalToSuperview().offset(-15)
@@ -274,8 +362,12 @@ class P2PCreateTradeViewController: UIViewController {
             $0.right.left.equalToSuperview()
         }
 
+        paymentMethodsInlineError.snp.makeConstraints {
+            $0.left.equalToSuperview().offset(15)
+            $0.height.equalTo(30)
+        }
+        
         paymentMethodSeparator.snp.makeConstraints {
-            $0.top.equalTo(paymentMethodsView.snp.bottom)
             $0.height.equalTo(separatorHeight)
             $0.left.equalToSuperview().offset(15)
             $0.right.equalToSuperview().offset(-15)
@@ -291,31 +383,33 @@ class P2PCreateTradeViewController: UIViewController {
             $0.left.equalToSuperview().offset(30)
             $0.right.equalToSuperview().offset(-30)
             $0.top.equalTo(limitsHeader.snp.bottom)
-            $0.height.equalTo(120)
+            $0.height.equalTo(100)
+        }
+        
+        limitInlineError.snp.makeConstraints {
+            $0.left.equalToSuperview().offset(15)
+            $0.height.equalTo(30)
         }
         
         termsSeparator.snp.makeConstraints {
-            $0.top.equalTo(limitsView.snp.bottom).offset(20)
             $0.height.equalTo(separatorHeight)
             $0.left.equalToSuperview().offset(15)
             $0.right.equalToSuperview().offset(-15)
         }
         
-        termsHeader.snp.remakeConstraints {
-            $0.top.equalTo(termsSeparator.snp.bottom)
-            $0.right.left.equalToSuperview()
-            $0.height.equalTo(45)
-        }
-        
         termsTextField.snp.makeConstraints {
-            $0.top.equalTo(termsHeader.snp.bottom)
+            $0.top.equalTo(termsSeparator.snp.bottom)
             $0.left.equalToSuperview().offset(5)
             $0.right.equalToSuperview().offset(-5)
             $0.height.equalTo(105)
         }
         
+        termsInlineError.snp.makeConstraints {
+            $0.left.equalToSuperview().offset(15)
+            $0.height.equalTo(30)
+        }
+        
         submitButton.snp.makeConstraints {
-            $0.top.equalTo(termsTextField.snp.bottom)
             $0.height.equalTo(50)
             $0.left.right.equalToSuperview().inset(15)
         }
@@ -331,13 +425,23 @@ class P2PCreateTradeViewController: UIViewController {
         
         guard let firstBalance = balance.coins.first else { return }
         
+        if let defaultReserved = balance.coins.first(where: { $0.type == .bitcoin }) {
+            limitValidator.update(reservedBalance: defaultReserved.reservedBalance.doubleValue)
+        }
+        
         coinExchangeView.setCoinBalance(firstBalance)
         
         coinExchangeView.didSelectPickerRow.asObservable().subscribe { [unowned self] type in
             if let selectedbalance = balance.coins.first(where: { $0.type == type.element }) {
                 self.coinExchangeView.setCoinBalance(selectedbalance)
+                self.coinValidator.update(coinType: selectedbalance.type)
+                self.coinValidator.check()
+                self.limitValidator.update(reservedBalance: selectedbalance.reservedBalance.doubleValue)
+                self.limitValidator.check()
             }
         }.disposed(by: disposeBag)
+        
+        
         
     }
     
@@ -345,6 +449,7 @@ class P2PCreateTradeViewController: UIViewController {
         var methods = [P2PTagView]()
         for method in payments {
             let tag = P2PTagView()
+            tag.delegte = self
             tag.update(image: method.image, title: method.title)
             tag.layoutIfNeeded()
             methods.append(tag)
@@ -357,5 +462,28 @@ class P2PCreateTradeViewController: UIViewController {
 extension P2PCreateTradeViewController: P2PCreateTradeSellBuyViewDelegate {
     func didSelectedType(_ type: P2PSellBuyViewType) {
         selectedType = type
+        coinValidator.update(tradeType: type)
+        coinValidator.check()
+        limitValidator.update(tradeType: type)
+        limitValidator.check()
+    }
+}
+
+extension P2PCreateTradeViewController: P2PTagViewDelegate {
+    func didTapTag(view: P2PTagView) {
+        paymentMethodValidator.update(paymentView: view)
+        paymentMethodValidator.check()
+    }
+}
+
+extension P2PCreateTradeViewController: P2PTextFieldDelegate {
+    func textFieldDidDelete(_ textField: UITextField) {
+        if textField == coinExchangeView.amountTextField {
+            let value = Double(textField.text ?? "0") ?? 0
+            coinValidator.update(coins: value)
+            coinValidator.check()
+            limitValidator.update(price: value)
+            limitValidator.check()
+        }
     }
 }

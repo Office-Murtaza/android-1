@@ -28,19 +28,21 @@ struct PaymentValidator: Validator {
             .compactMap{ Int($0) }
             .compactMap{ TradePaymentMethods(rawValue: $0)}
         
-        let paymentIntersection = Set(tradePayments).intersection(Set(paymentMethods))
-        
-        return paymentIntersection.isNotEmpty
+        for method in tradePayments {
+            if paymentMethods.contains(method) { return true }
+        }
+
+        return false
     }
 }
 
 struct RangeValidator: Validator {
     let distance: Double
-    let minRange: Int
-    let maxRange: Int
+    let minRange: Double
+    let maxRange: Double
     
     func isValid() -> Bool {
-        return minRange..<maxRange ~= Int(distance)
+        return minRange..<maxRange ~= distance
     }
 }
 

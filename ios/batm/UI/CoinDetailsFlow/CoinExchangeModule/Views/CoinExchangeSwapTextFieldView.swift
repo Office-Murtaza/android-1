@@ -38,8 +38,8 @@ class CoinExchangeSwapTextFieldView: UIView, UIPickerViewDataSource, HasDisposeB
         return label
     }()
     
-    lazy var amountTextField: UITextField = {
-        let textField = UITextField()
+    lazy var amountTextField: P2PTextField = {
+        let textField = P2PTextField()
         textField.textAlignment = .right
         textField.textColor = .black
         textField.attributedPlaceholder = NSAttributedString(string: "0", attributes: [.foregroundColor : UIColor.black])

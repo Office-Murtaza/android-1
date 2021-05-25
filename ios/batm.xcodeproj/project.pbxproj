@@ -96,7 +96,6 @@
 		05F704872602277E00DF3722 /* TransactionStatusView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05F704862602277E00DF3722 /* TransactionStatusView.swift */; };
 		05F7048926022CB700DF3722 /* TransactionDetailsDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05F7048826022CB700DF3722 /* TransactionDetailsDataSource.swift */; };
 		230C9D6726545664003273F0 /* P2PSectionHeaderBottomView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 230C9D662654565F003273F0 /* P2PSectionHeaderBottomView.swift */; };
-		2312D7CF25FEA39A0071B2F8 /* GeolocatoinService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2312D7CE25FEA39A0071B2F8 /* GeolocatoinService.swift */; };
 		2318A08A25D1C16B006F3EC4 /* LocalAuthentication.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2318A08925D1C16B006F3EC4 /* LocalAuthentication.framework */; };
 		2318A08C25D1C2A9006F3EC4 /* LAContext+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2318A08B25D1C2A9006F3EC4 /* LAContext+Extensions.swift */; };
 		23234DA425AB9B4500CA90F7 /* TransferSectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23234DA325AB9B4500CA90F7 /* TransferSectionView.swift */; };
@@ -104,6 +103,9 @@
 		2328A78D25E6F5CE007CA97D /* Trades+Mapping.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2328A78C25E6F5CE007CA97D /* Trades+Mapping.swift */; };
 		232E345E2558772B00A9BF72 /* SocketMessageBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 232E345D2558772B00A9BF72 /* SocketMessageBuilder.swift */; };
 		232E346425593BA200A9BF72 /* SocketResultMessageMapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 232E346325593BA200A9BF72 /* SocketResultMessageMapper.swift */; };
+		23315F1926592033002E01E6 /* P2PFormInlineErrorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23315F1826592032002E01E6 /* P2PFormInlineErrorView.swift */; };
+		23315F1E26593036002E01E6 /* P2PCreateTradeFormValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23315F1D26593036002E01E6 /* P2PCreateTradeFormValidator.swift */; };
+		23315F262659A433002E01E6 /* P2PTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23315F252659A433002E01E6 /* P2PTextField.swift */; };
 		234B90A725AE38FF0012F2A2 /* TransferFlow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 234B90A625AE38FF0012F2A2 /* TransferFlow.swift */; };
 		234B90AD25AE39110012F2A2 /* TransferFlowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 234B90AC25AE39110012F2A2 /* TransferFlowController.swift */; };
 		234B90B125AE3AB60012F2A2 /* TransferModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 234B90B025AE3AB60012F2A2 /* TransferModule.swift */; };
@@ -776,7 +778,6 @@
 		05F7048826022CB700DF3722 /* TransactionDetailsDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionDetailsDataSource.swift; sourceTree = "<group>"; };
 		142D5BA6DA2741657FE02671 /* Pods_batmTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_batmTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		230C9D662654565F003273F0 /* P2PSectionHeaderBottomView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = P2PSectionHeaderBottomView.swift; sourceTree = "<group>"; };
-		2312D7CE25FEA39A0071B2F8 /* GeolocatoinService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeolocatoinService.swift; sourceTree = "<group>"; };
 		2318A08925D1C16B006F3EC4 /* LocalAuthentication.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = LocalAuthentication.framework; path = System/Library/Frameworks/LocalAuthentication.framework; sourceTree = SDKROOT; };
 		2318A08B25D1C2A9006F3EC4 /* LAContext+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LAContext+Extensions.swift"; sourceTree = "<group>"; };
 		23234DA325AB9B4500CA90F7 /* TransferSectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransferSectionView.swift; sourceTree = "<group>"; };
@@ -784,6 +785,9 @@
 		2328A78C25E6F5CE007CA97D /* Trades+Mapping.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Trades+Mapping.swift"; sourceTree = "<group>"; };
 		232E345D2558772B00A9BF72 /* SocketMessageBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SocketMessageBuilder.swift; sourceTree = "<group>"; };
 		232E346325593BA200A9BF72 /* SocketResultMessageMapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SocketResultMessageMapper.swift; sourceTree = "<group>"; };
+		23315F1826592032002E01E6 /* P2PFormInlineErrorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = P2PFormInlineErrorView.swift; sourceTree = "<group>"; };
+		23315F1D26593036002E01E6 /* P2PCreateTradeFormValidator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = P2PCreateTradeFormValidator.swift; sourceTree = "<group>"; };
+		23315F252659A433002E01E6 /* P2PTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = P2PTextField.swift; sourceTree = "<group>"; };
 		234B90A625AE38FF0012F2A2 /* TransferFlow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransferFlow.swift; sourceTree = "<group>"; };
 		234B90AC25AE39110012F2A2 /* TransferFlowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransferFlowController.swift; sourceTree = "<group>"; };
 		234B90B025AE3AB60012F2A2 /* TransferModule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransferModule.swift; sourceTree = "<group>"; };
@@ -1692,6 +1696,14 @@
 			path = P2PFlow;
 			sourceTree = "<group>";
 		};
+		23315F1C2659300F002E01E6 /* Validators */ = {
+			isa = PBXGroup;
+			children = (
+				23315F1D26593036002E01E6 /* P2PCreateTradeFormValidator.swift */,
+			);
+			path = Validators;
+			sourceTree = "<group>";
+		};
 		234B90A525AE38F10012F2A2 /* Flow */ = {
 			isa = PBXGroup;
 			children = (
@@ -1750,6 +1762,8 @@
 				23A6B762263B514F00DE2738 /* P2PTagView.swift */,
 				23A6B763263B514F00DE2738 /* P2PSellBuyView.swift */,
 				23A6B764263B514F00DE2738 /* P2PCoinView.swift */,
+				23315F1826592032002E01E6 /* P2PFormInlineErrorView.swift */,
+				23315F252659A433002E01E6 /* P2PTextField.swift */,
 			);
 			path = UIComonents;
 			sourceTree = "<group>";
@@ -1834,6 +1848,7 @@
 		23A6B781263B515000DE2738 /* Create Trade */ = {
 			isa = PBXGroup;
 			children = (
+				23315F1C2659300F002E01E6 /* Validators */,
 				23A6B782263B515000DE2738 /* P2PCreateTradeSellBuyView.swift */,
 				23A6B783263B515000DE2738 /* P2PCreateTradeLimitsView.swift */,
 				23A6B784263B515000DE2738 /* P2PCreateTradeViewController.swift */,
@@ -1976,7 +1991,6 @@
 				DB04E4D622D880B5000E2D85 /* PinCodeService.swift */,
 				DB38683A2476CA2B0070E13E /* LocationService.swift */,
 				23BF989925A4480700119C30 /* ContactsManager.swift */,
-				2312D7CE25FEA39A0071B2F8 /* GeolocatoinService.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -3829,6 +3843,7 @@
 				DB2F250D2360687800274C60 /* CoinSellDetailsCurrentAddressViewController.swift in Sources */,
 				DB8325B524F46AFA00AFD577 /* HeaderView.swift in Sources */,
 				DBDA456A24E5C1BD002A3AF5 /* AboutViewController.swift in Sources */,
+				23315F262659A433002E01E6 /* P2PTextField.swift in Sources */,
 				DB86FD262477FBD5002FE22D /* LocationUpdateDateRecord+CoreDataClass.swift in Sources */,
 				052B79C3260A64D000A0D636 /* TradesAssembly.swift in Sources */,
 				DB1AF0E224436D6D0037C998 /* MDCContainerScheme+Extensions.swift in Sources */,
@@ -3885,7 +3900,6 @@
 				DB2C971D23449109006E7D61 /* CoinSendGiftPresenter.swift in Sources */,
 				23BF989A25A4480700119C30 /* ContactsManager.swift in Sources */,
 				23BC177F26500058002A1214 /* Decimal+Extensions.swift in Sources */,
-				2312D7CF25FEA39A0071B2F8 /* GeolocatoinService.swift in Sources */,
 				DB9616B822C63E270078E92D /* Account.swift in Sources */,
 				DB49463822DF274B001EE56E /* ManageWalletsTableViewDataSource.swift in Sources */,
 				DBBF29A222D381A200A5DE6A /* CoinBalance.swift in Sources */,
@@ -4287,6 +4301,7 @@
 				05E6A848260163CB00479414 /* TransactionCashStatus.swift in Sources */,
 				DB86FD2C2477FFC4002FE22D /* LocationUpdateDateStorage.swift in Sources */,
 				23EFC72525B0E6B800EB20D1 /* TransferHideKeyboardView.swift in Sources */,
+				23315F1E26593036002E01E6 /* P2PCreateTradeFormValidator.swift in Sources */,
 				052B79C2260A64D000A0D636 /* TradesModule.swift in Sources */,
 				DBF98D4024502B0700AF6D5A /* CoinDepositPresenter.swift in Sources */,
 				DB95EB2A230AEFEA0059C84C /* UIImage+Extensions.swift in Sources */,
@@ -4419,6 +4434,7 @@
 				DB96169922C5F52F0078E92D /* CreateWalletFormView.swift in Sources */,
 				DBF75DE6240D1A5300E12CB0 /* VerificationFilePickerView.swift in Sources */,
 				DBF98D4524502EF800AF6D5A /* FloatingActionButton.swift in Sources */,
+				23315F1926592033002E01E6 /* P2PFormInlineErrorView.swift in Sources */,
 				052B79C4260A64D000A0D636 /* TradesPresenter.swift in Sources */,
 				DB2C971C23449109006E7D61 /* CoinSendGiftViewController.swift in Sources */,
 				DB70852D22CFAE2F00FFE4F7 /* MainFlowController.swift in Sources */,
@@ -4642,7 +4658,7 @@
 				MARKETING_VERSION = 1.9;
 				PRODUCT_BUNDLE_IDENTIFIER = com.belcobtm.BelcoWallet;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = BelcoWalletAppStoreProfile;
+				PROVISIONING_PROFILE_SPECIFIER = "BelcoWallet Release Profile";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
 			};

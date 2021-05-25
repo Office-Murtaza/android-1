@@ -7,8 +7,8 @@ import MaterialComponents
 struct P2PEditTradeDataModel: Encodable {
   let id: String
   let price: Double
-  let minLimit: Int
-  let maxLimit: Int
+  let minLimit: Double
+  let maxLimit: Double
   let paymentMethods: String
   let terms: String
   
@@ -24,8 +24,8 @@ protocol P2PEditTradeViewControllerDelegate: AnyObject {
 class P2PEditTradeViewController: UIViewController {
   
   let selectedType: P2PSellBuyViewType
-  var minRange: Int?
-  var maxRange: Int?
+  var minRange: Double?
+  var maxRange: Double?
   
   let currentModel: P2PEditTradeDataModel
   
@@ -118,7 +118,7 @@ class P2PEditTradeViewController: UIViewController {
     limitsView.setup(range: [100, 10000], measureString: "$ ", isMeasurePosistionLast: false)
   
     if currentModel.maxLimit != 0 {
-      limitsView.distanceSlider.value = [CGFloat(currentModel.minLimit), CGFloat(currentModel.maxLimit)]
+//      limitsView.distanceSlider.value = [CGFloat(currentModel.minLimit), CGFloat(currentModel.maxLimit)]
       limitsView.setInitFieldsValues(from: CGFloat(currentModel.minLimit), to: CGFloat(currentModel.maxLimit))
     }
     

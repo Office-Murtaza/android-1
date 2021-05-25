@@ -85,8 +85,16 @@ class P2PViewController: ModuleViewController<P2PPresenter>, MDCTabBarDelegate {
   }
     
     @objc func createTrade() {
-        guard let balance = balance else { return }
-        let controller = P2PCreateTradeViewController(balance: balance, payments: TradePaymentMethods.allCases, delegate: self)
+        guard let balance = balance,
+              let trades = presenter.trades.value,
+              let id = presenter.userId else { return }
+        
+        let controller = P2PCreateTradeViewController(trades: trades,
+                                                      userId: id,
+                                                      balance: balance,
+                                                      payments:TradePaymentMethods.allCases,
+                                                      delegate: self)
+        
         navigationController?.pushViewController(controller, animated: true)
     }
   
@@ -97,13 +105,14 @@ class P2PViewController: ModuleViewController<P2PPresenter>, MDCTabBarDelegate {
             .distinctUntilChanged()
             .observeOn(MainScheduler())
             .do { [weak self] (location) in
-            self?.buyDataSource.reload(location: location)
-            self?.sellDataSource.reload(location: location)
-            self?.myViewController?.update(location: location)
+                self?.buyViewController?.update(location: location)
+                self?.sellViewController?.update(location: location)
+                self?.buyDataSource.reload(location: location)
+                self?.sellDataSource.reload(location: location)
+                self?.myViewController?.update(location: location)
         }
             .subscribe()
             .disposed(by: disposeBag)
-        
         presenter.trades
             .asObservable()
             .filterNil()
