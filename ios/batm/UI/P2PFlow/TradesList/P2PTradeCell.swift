@@ -64,7 +64,7 @@ class P2PTradeCell: UITableViewCell {
         rateView.isHidden = viewModel.isRateHidden
         
         if let distance = viewModel.distanceInMiles {
-            distanceView.update(distance: "\(distance) miles")
+            distanceView.update(distance: "\(distance) miles", isDistanceNeeded: false)
         }
     }
 
@@ -287,8 +287,6 @@ class P2PDistanceView: UIView {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        setupUI()
-        setupLayout()
     }
     
     required init?(coder: NSCoder) {
@@ -304,6 +302,15 @@ class P2PDistanceView: UIView {
         return stack
     }()
     
+    private lazy var bigStackView: UIStackView = {
+        let stack = UIStackView()
+        addSubview(stack)
+        stack.axis = .horizontal
+        stack.distribution = .fillProportionally
+        stack.spacing = 16
+        return stack
+    }()
+    
     private lazy var myLocationImageView: UIImageView = {
         let image = UIImageView()
         image.contentMode = .scaleAspectFit
@@ -316,22 +323,45 @@ class P2PDistanceView: UIView {
         return label
     }()
     
-    public func update(distance: String) {
+    private lazy var userDistanceImageView: UIImageView = {
+        let image = UIImageView()
+        image.contentMode = .scaleAspectFit
+        return image
+    }()
+    
+    private var isDistanceNeeded: Bool = false
+    
+    public func update(distance: String, isDistanceNeeded: Bool) {
+        self.isDistanceNeeded = isDistanceNeeded
+        
         distanceLabel.text = distance
         myLocationImageView.image = UIImage(named: "p2p_my_location")
+        if isDistanceNeeded {
+            userDistanceImageView.image = UIImage(named: "p2p_user_distance")
+        }
+        
+        setupUI()
+        setupLayout()
     }
     
     private func setupUI() {
-        addSubview(stackView)
+        addSubview(bigStackView)
         stackView.addArrangedSubviews([
             myLocationImageView,
             distanceLabel
         ])
+        
+        bigStackView.addArrangedSubview(stackView)
+        if isDistanceNeeded {
+            bigStackView.addArrangedSubview(userDistanceImageView)
+        }
     }
 
     private func setupLayout() {
-        stackView.snp.makeConstraints {
-            $0.edges.equalToSuperview()
+        let offset = isDistanceNeeded ? -16 : 0
+        bigStackView.snp.makeConstraints {
+            $0.top.left.bottom.equalToSuperview()
+            $0.right.equalToSuperview().offset(offset)
         }
     }
 }

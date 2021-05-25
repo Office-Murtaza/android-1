@@ -35,8 +35,7 @@ enum SecurityCellType: Equatable, SettingsCellTypeRepresentable {
     case .updatePIN: return UIImage(named: "security_pin")
     case .seedPhrase: return UIImage(named: "security_seed_phrase")
     case .unlink: return UIImage(named: "security_unlink")
-    case .faceId: return UIImage(named: "faceID")
-    case .touchId: return UIImage(named: "touchID")
+    case .faceId, .touchId: return UIImage(named: "settingsFaceId")
     }
   }
     
