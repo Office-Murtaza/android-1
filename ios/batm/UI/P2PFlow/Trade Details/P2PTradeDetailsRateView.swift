@@ -26,7 +26,7 @@ class P2PTradeDetailsRateView: UIView {
     
     markerIdView.update(markerId: markerId, statusImage: statusImage)
     rateView.update(rate: rate.formatted() ?? "0", tradesCount: totalTrades.formatted() ?? "0")
-    distanceView.update(distance: distance)
+    distanceView.update(distance: distance, isDistanceNeeded: true)
   }
   
   private func setupUI() {
