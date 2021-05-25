@@ -20,12 +20,12 @@ protocol CoinDetailsUsecase {
                   to phone: String,
                   amount: Decimal,
                   message: String,
-                  image: String?) -> Completable
+                  image: String?) -> Single<TransactionDetails>
     func exchange(from fromCoin: BTMCoin,
                   with coinDetails: CoinDetails,
                   to toCoinType: CustomCoinType,
                   amount: Decimal,
-                  toCoinAmount: Decimal) -> Completable
+                  toCoinAmount: Decimal) -> Single<TransactionDetails>
     func reserve(from coin: BTMCoin, with coinDetails: CoinDetails, amount: Decimal) -> Single<TransactionDetails>
     func recall(from coin: BTMCoin, amount: Decimal) -> Single<TransactionDetails>
     func getStakeDetails(for type: CustomCoinType) -> Single<StakeDetails>
@@ -142,7 +142,7 @@ class CoinDetailsUsecaseImpl: CoinDetailsUsecase {
                   to phone: String,
                   amount: Decimal,
                   message: String,
-                  image: String?) -> Completable {
+                  image: String?) -> Single<TransactionDetails> {
         return api.getGiftAddress(type: coin.type, phone: phone)
             .map { $0.address }
             .flatMap { [walletService] destination in
@@ -157,18 +157,18 @@ class CoinDetailsUsecaseImpl: CoinDetailsUsecase {
                 return accountStorage.get()
                     .map { ($0, transactionResultString, toAddress) }
             }
-            .flatMapCompletable { [unowned self] account, transactionResultString, toAddress in
-                return self.submit(userId: account.userId,
-                                   type: coin.type,
-                                   txType: .sendTransfer,
-                                   amount: amount,
-                                   fee: coinDetails.txFee,
-                                   fromAddress: coin.address,
-                                   toAddress: toAddress,
-                                   phone: phone,
-                                   message: message,
-                                   image: image,
-                                   transactionResultString: transactionResultString)
+            .flatMap { [unowned self] account, transactionResultString, toAddress in
+                return self.coinDetailsSubmit(userId: account.userId,
+                                              type: coin.type,
+                                              txType: .sendTransfer,
+                                              amount: amount,
+                                              fee: coinDetails.txFee,
+                                              fromAddress: coin.address,
+                                              toAddress: toAddress,
+                                              phone: phone,
+                                              message: message,
+                                              image: image,
+                                              transactionResultString: transactionResultString)
             }
     }
     
@@ -211,7 +211,7 @@ class CoinDetailsUsecaseImpl: CoinDetailsUsecase {
                   with coinDetails: CoinDetails,
                   to toCoinType: CustomCoinType,
                   amount: Decimal,
-                  toCoinAmount: Decimal) -> Completable {
+                  toCoinAmount: Decimal) -> Single<TransactionDetails> {
         return accountStorage.get()
             .flatMap { [walletService] account in
                 return walletService.getTransactionHex(for: fromCoin,
@@ -221,17 +221,17 @@ class CoinDetailsUsecaseImpl: CoinDetailsUsecase {
                                                        stakingType: nil)
                     .map { (account, $0) }
             }
-            .flatMapCompletable { [unowned self] account, transactionResultString in
-                return self.submit(userId: account.userId,
-                                   type: fromCoin.type,
-                                   txType: .sendSwap,
-                                   amount: amount,
-                                   fee: coinDetails.txFee,
-                                   fromAddress: fromCoin.address,
-                                   toAddress: fromCoin.type.isETHBased ? coinDetails.contractAddress : coinDetails.walletAddress,
-                                   toCoinType: toCoinType,
-                                   toCoinAmount: toCoinAmount,
-                                   transactionResultString: transactionResultString)
+            .flatMap { [unowned self] account, transactionResultString in
+                return self.coinDetailsSubmit(userId: account.userId,
+                                              type: fromCoin.type,
+                                              txType: .sendSwap,
+                                              amount: amount,
+                                              fee: coinDetails.txFee,
+                                              fromAddress: fromCoin.address,
+                                              toAddress: fromCoin.type.isETHBased ? coinDetails.contractAddress : coinDetails.walletAddress,
+                                              toCoinType: toCoinType,
+                                              toCoinAmount: toCoinAmount,
+                                              transactionResultString: transactionResultString)
             }
     }
     

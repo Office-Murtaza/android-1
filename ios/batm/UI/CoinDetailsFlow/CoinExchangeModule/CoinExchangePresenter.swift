@@ -169,7 +169,7 @@ final class CoinExchangePresenter: ModulePresenter, CoinExchangeModule {
             .doOnNext { [store] in store.action.accept(.updateValidationState) }
             .withLatestFrom(state)
             .filter { $0.validationState.isValid }
-            .flatMap { [unowned self] in self.track(self.exchange(for: $0)) }
+            .flatMap { [unowned self] in self.track(self.exchange(for: $0).asCompletable()) }
             .subscribe(onNext: { [delegate] in delegate?.didFinishCoinExchange() })
             .disposed(by: disposeBag)
         
@@ -184,7 +184,7 @@ final class CoinExchangePresenter: ModulePresenter, CoinExchangeModule {
         delegate?.handleError()
     }
     
-    private func exchange(for state: CoinExchangeState) -> Completable {
+    private func exchange(for state: CoinExchangeState) -> Single<TransactionDetails> {
         return usecase.exchange(from: state.fromCoin!,
                                 with: state.coinDetails!,
                                 to: state.toCoinType!,

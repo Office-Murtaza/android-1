@@ -118,7 +118,7 @@ final class CoinSendGiftPresenter: ModulePresenter, CoinSendGiftModule {
             .doOnNext { [store] in store.action.accept(.updateValidationState) }
             .withLatestFrom(state)
             .filter { $0.validationState.isValid }
-            .flatMap { [unowned self] in self.track(self.sendGift(for: $0)) }
+            .flatMap { [unowned self] in self.track(self.sendGift(for: $0).asCompletable()) }
             .subscribe(onNext: { [delegate] in
                 delegate?.didFinishCoinSendGift()
             })
@@ -127,7 +127,7 @@ final class CoinSendGiftPresenter: ModulePresenter, CoinSendGiftModule {
         fetchDataRelay.accept(())
     }
     
-    private func sendGift(for state: CoinSendGiftState) -> Completable {
+    private func sendGift(for state: CoinSendGiftState) -> Single<TransactionDetails> {
         return usecase.sendGift(from: state.fromCoin!,
                                 with: state.coinDetails!,
                                 to: state.phoneE164,
