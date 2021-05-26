@@ -244,12 +244,12 @@ class P2PCreateTradeViewController: UIViewController {
     }
     
     @objc func adjustForKeyboard(notification: Notification) {
+        guard coinExchangeView.amountTextField.isFirstResponder == false else { return }
         let currentResponder = [limitsView.fromField.textField, limitsView.toField.textField, termsTextField].first(where: {$0.isFirstResponder == true })
         let responderGroup = [limitsView.fromField.textField as UIView , limitsView.toField.textField as UIView]
         guard let keyboardValue = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue else { return }
         let keyboardScreenEndFrame = keyboardValue.cgRectValue
         let keyboardViewEndFrame = view.convert(keyboardScreenEndFrame, from: view.window)
-        print("notification name", notification.name)
         if notification.name == UIResponder.keyboardWillHideNotification {
             
             scrollView.setContentOffset(.zero, animated: true)
