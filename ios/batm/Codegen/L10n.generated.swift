@@ -769,6 +769,7 @@ extension L.P2p.Create.Trade {
   struct Validation {
     static let terms = "p2p.create.trade.validation.terms"
     static let trade = "p2p.create.trade.validation.trade"
+    static let type = "p2p.create.trade.validation.type"
   }
 }
 extension L.P2p.Create.Trade.Validation {

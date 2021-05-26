@@ -40,7 +40,6 @@ class P2PCreateTradeSellBuyView: UIView {
         sellView.update(type: .sell)
         buyView.delegate = self
         sellView.delegate = self
-        buyView.setSelected(true)
         
         addSubviews([
             buyView,

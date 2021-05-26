@@ -511,3 +511,4 @@
 "p2p.create.trade.validation.wrong.max" = "Max should be more than Min";
 "p2p.create.trade.validation.reserved.balance" = "Max limit exceeds reserved balance";
 "p2p.create.trade.validation.terms" = "Provide more details about the trade";
+"p2p.create.trade.validation.type" = "Select trade type";

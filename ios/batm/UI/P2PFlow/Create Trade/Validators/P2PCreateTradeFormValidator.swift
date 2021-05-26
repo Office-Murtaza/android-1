@@ -36,6 +36,26 @@ class P2PCreateTradeVlidatorBase {
     func check() {}
 }
 
+
+class P2PCreateTradeTypeValidator: P2PCreateTradeVlidatorBase {
+    var type: P2PSellBuyViewType?
+    
+    func updae(type: P2PSellBuyViewType) {
+        self.type = type
+    }
+    
+    override func check() {
+        guard type != nil else {
+            isValid = false
+            delegate?.showErrorMessage(localize(L.P2p.Create.Trade.Validation.type))
+            return
+        }
+        
+        isValid = true
+        delegate?.hideError()
+    }
+}
+
 class P2PCreateTradeCoinsValidator:  P2PCreateTradeVlidatorBase {
     var coins: Double = 0
     var selectedCoin: CustomCoinType = .bitcoin
