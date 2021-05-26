@@ -87,7 +87,11 @@ class P2PViewController: ModuleViewController<P2PPresenter>, MDCTabBarDelegate {
     @objc func createTrade() {
         guard let balance = balance,
               let trades = presenter.trades.value,
-              let id = presenter.userId else { return }
+              let id = presenter.userId else {
+            print("CreateT balance: \(self.balance)")
+            print("CreateT trades: \(presenter.trades.value)")
+            print("CreateT user id: \(presenter.userId)")
+            return }
         
         let controller = P2PCreateTradeViewController(trades: trades,
                                                       userId: id,
@@ -125,20 +129,20 @@ class P2PViewController: ModuleViewController<P2PPresenter>, MDCTabBarDelegate {
                 self.myViewController?.update(trades: trades, userId: id)
             }.subscribe()
             .disposed(by: disposeBag)
+
+        presenter.balance.subscribeOn(MainScheduler()).subscribe { (balance) in
+            self.balance = balance
+        }.disposed(by: disposeBag)
         
-      presenter.balance.observeOn(MainScheduler()).subscribe { [unowned self] (balance) in
-        self.balance = balance
-      }.disposed(by: disposeBag)
-      
-      presenter.balance.observeOn(MainScheduler()).subscribe { [unowned self] (balance) in
-        self.myViewController?.update(balance: balance)
-      }.disposed(by: disposeBag)
+        presenter.balance.subscribeOn(MainScheduler()).filterNil().subscribe { (balance) in
+            self.myViewController?.update(balance: balance)
+        }.disposed(by: disposeBag)
         
-        presenter.balance.observeOn(MainScheduler()).subscribe { [unowned self] (balance) in
+        presenter.balance.subscribeOn(MainScheduler()).filterNil().subscribe { (balance) in
             self.buyDataSource.update(balance: balance)
         }.disposed(by: disposeBag)
         
-        presenter.balance.observeOn(MainScheduler()).subscribe { [unowned self] (balance) in
+        presenter.balance.subscribeOn(MainScheduler()).filterNil().subscribe { (balance) in
             self.sellDataSource.update(balance: balance)
         }.disposed(by: disposeBag)
       
@@ -163,7 +167,6 @@ class P2PViewController: ModuleViewController<P2PPresenter>, MDCTabBarDelegate {
             .subscribe { [unowned self] (trade) in
                 self.sellDataSource.update(trade: trade)
         }.disposed(by: disposeBag)
-
 
     }
     
