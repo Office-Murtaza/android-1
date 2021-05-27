@@ -37,10 +37,7 @@ class EditTradeFragment : BaseFragment<FragmentEditTradeBinding>() {
             if (viewModel.initialLoadingData.value is LoadingData.Error<Unit>) {
                 viewModel.fetchTradeDetails(args.tradeId)
             } else {
-                viewModel.editTrade(
-                    args.tradeId, binding.termsInput.editText?.text.toString(),
-                    minAmountValue, maxAmountValue
-                )
+                viewModel.editTrade(args.tradeId, binding.termsInput.editText?.text.toString())
             }
         }
 
@@ -54,17 +51,13 @@ class EditTradeFragment : BaseFragment<FragmentEditTradeBinding>() {
         viewModel.updatePrice(editable.getDouble())
     }
 
-    private val minAmountValue by lazy { resources.getInteger(R.integer.trade_amount_min) }
-    private val maxAmountValue by lazy { resources.getInteger(R.integer.trade_amount_max) }
-
     private val minAmountTextWatcher = SafeDecimalEditTextWatcher { editable ->
-        val currentMax = binding.amountMaxLimitEditText.text?.getInt() ?: maxAmountValue
-        val parsedAmount = editable.getInt().coerceAtMost(currentMax)
+        val parsedAmount = editable.getInt()
         viewModel.updateMinAmount(parsedAmount)
     }
 
     private val maxAmountTextWatcher = SafeDecimalEditTextWatcher { editable ->
-        val parsedAmount = editable.getInt().coerceAtMost(maxAmountValue)
+        val parsedAmount = editable.getInt()
         viewModel.updateMaxAmount(parsedAmount)
     }
 
@@ -87,19 +80,12 @@ class EditTradeFragment : BaseFragment<FragmentEditTradeBinding>() {
         paymentOptions.adapter = adapter
         paymentOptions.setHasFixedSize(true)
         paymentOptions.overScrollMode = View.OVER_SCROLL_NEVER
-        viewModel.updateMinAmount(minAmountValue)
-        viewModel.updateMaxAmount(maxAmountValue)
-        binding.amountMinLimitEditText.setText(minAmountValue.toString())
-        binding.amountMaxLimitEditText.setText(maxAmountValue.toString())
     }
 
     override fun FragmentEditTradeBinding.initObservers() {
         viewModel.selectedCoin.observe(viewLifecycleOwner, ::setCoinData)
         viewModel.initialTerms.observe(viewLifecycleOwner) {
             termsInput.editText?.setText(it)
-        }
-        viewModel.cryptoAmountError.observe(viewLifecycleOwner) {
-            coinDetailsView.setErrorText(it, true)
         }
         viewModel.initialLoadingData.listen(error = {
             AlertDialog.Builder(requireContext())
@@ -114,9 +100,11 @@ class EditTradeFragment : BaseFragment<FragmentEditTradeBinding>() {
         viewModel.cryptoAmountFormatted.observe(viewLifecycleOwner, cryptoAmountValue::setText)
         viewModel.cryptoAmountError.observe(viewLifecycleOwner) {
             coinDetailsView.setErrorText(it, true)
+            coinDetailsView.setErrorEnabled(!it.isNullOrEmpty())
         }
         viewModel.priceError.observe(viewLifecycleOwner) {
             coinDetailsView.setErrorText(it, true)
+            coinDetailsView.setErrorEnabled(!it.isNullOrEmpty())
         }
         viewModel.priceRangeError.observe(viewLifecycleOwner) {
             it?.let(amountRangeError::setText)
@@ -125,12 +113,16 @@ class EditTradeFragment : BaseFragment<FragmentEditTradeBinding>() {
         viewModel.snackbarMessage.observe(viewLifecycleOwner) {
             Snackbar.make(root, it, Snackbar.LENGTH_SHORT).show()
         }
-        viewModel.amountMinLimit.observe(viewLifecycleOwner) { amount ->
+        viewModel.paymentOptionsError.observe(viewLifecycleOwner) {
+            it?.let(paymentOptionsError::setText)
+            paymentOptionsError.toggle(it != null)
+        }
+        viewModel.initialAmountMinLimit.observe(viewLifecycleOwner) { amount ->
             binding.amountMinLimitEditText.setTextSilently(
                 minAmountTextWatcher, amount.toString(), amount.toString().length
             )
         }
-        viewModel.amountMaxLimit.observe(viewLifecycleOwner) { amount ->
+        viewModel.initialAmountMaxLimit.observe(viewLifecycleOwner) { amount ->
             binding.amountMaxLimitEditText.setTextSilently(
                 maxAmountTextWatcher, amount.toString(), amount.toString().length
             )
@@ -149,9 +141,6 @@ class EditTradeFragment : BaseFragment<FragmentEditTradeBinding>() {
                 tradeTypeBuyChip.isChecked = true
                 tradeTypeSellChip.isEnabled = false
             }
-        }
-        viewModel.cryptoAmountError.observe(viewLifecycleOwner) {
-            coinDetailsView.setErrorText(it, true)
         }
         viewModel.editTradeLoadingData.listen(
             success = {
@@ -183,10 +172,7 @@ class EditTradeFragment : BaseFragment<FragmentEditTradeBinding>() {
         amountMinLimitEditText.addTextChangedListener(minAmountTextWatcher)
         amountMaxLimitEditText.addTextChangedListener(maxAmountTextWatcher)
         editTradeButton.setOnClickListener {
-            viewModel.editTrade(
-                args.tradeId, binding.termsInput.editText?.text.toString(),
-                minAmountValue, maxAmountValue
-            )
+            viewModel.editTrade(args.tradeId, binding.termsInput.editText?.text.toString())
         }
         binding.amountMinLimitEditText.actionDoneListener {
             hideKeyboard()

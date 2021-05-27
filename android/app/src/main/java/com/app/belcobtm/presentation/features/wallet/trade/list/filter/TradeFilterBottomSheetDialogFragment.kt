@@ -38,18 +38,14 @@ class TradeFilterBottomSheetDialogFragment : BottomSheetDialogFragment() {
 
     private val viewModel by viewModel<TradeFilterViewModel>()
     private lateinit var binding: FragmentTradeFilterBinding
-    private val minDistanceValue by lazy { resources.getInteger(R.integer.trade_filter_min_distance) }
-    private val maxDistanceValue by lazy { resources.getInteger(R.integer.trade_filter_max_distance) }
 
     private val minDistanceTextWatcher = SafeDecimalEditTextWatcher { editable ->
-        val currentMax = binding.distanceMaxLimitEditText.text?.toString()
-            ?.let(viewModel::parseDistance)?.toInt() ?: maxDistanceValue
-        val parsedAmount = viewModel.parseDistance(editable.toString()).coerceAtMost(currentMax)
+        val parsedAmount = viewModel.parseDistance(editable.toString())
         viewModel.updateMinDistance(parsedAmount)
     }
 
     private val maxDistanceTextWatcher = SafeDecimalEditTextWatcher { editable ->
-        val parsedAmount = viewModel.parseDistance(editable.toString()).coerceAtMost(maxDistanceValue)
+        val parsedAmount = viewModel.parseDistance(editable.toString())
         viewModel.updateMaxDistance(parsedAmount)
     }
 
@@ -58,10 +54,8 @@ class TradeFilterBottomSheetDialogFragment : BottomSheetDialogFragment() {
         binding.coins.adapter = coinsAdapter
         binding.paymentOptions.adapter = paymentsAdapter
         viewModel.fetchInitialData()
-        binding.distanceMaxLimitEditText.addTextChangedListener(maxDistanceTextWatcher)
         binding.distanceMinLimitEditText.addTextChangedListener(minDistanceTextWatcher)
-        viewModel.updateMinDistance(minDistanceValue)
-        viewModel.updateMaxDistance(maxDistanceValue)
+        binding.distanceMaxLimitEditText.addTextChangedListener(maxDistanceTextWatcher)
         viewModel.coins.observe(viewLifecycleOwner, coinsAdapter::update)
         viewModel.paymentOptions.observe(viewLifecycleOwner, paymentsAdapter::update)
         viewModel.distanceEnabled.observe(viewLifecycleOwner) {
@@ -79,16 +73,6 @@ class TradeFilterBottomSheetDialogFragment : BottomSheetDialogFragment() {
                 SortOption.PRICE -> binding.sortByPrice.isChecked = true
                 SortOption.DISTANCE -> binding.sortByDistance.isChecked = true
             }
-        }
-        viewModel.distanceMinLimit.observe(viewLifecycleOwner) { distance ->
-            binding.distanceMinLimitEditText.setTextSilently(
-                minDistanceTextWatcher, distance.toString(), distance.toString().length
-            )
-        }
-        viewModel.distanceMaxLimit.observe(viewLifecycleOwner) { distance ->
-            binding.distanceMaxLimitEditText.setTextSilently(
-                maxDistanceTextWatcher, distance.toString(), distance.toString().length
-            )
         }
         viewModel.distanceRangeError.observe(viewLifecycleOwner) {
             it?.let(binding.distanceRangeError::setText)
@@ -120,11 +104,17 @@ class TradeFilterBottomSheetDialogFragment : BottomSheetDialogFragment() {
                 0.0f
             }
         }
+        viewModel.initialDistanceMinLimit.observe(viewLifecycleOwner) {
+            binding.distanceMinLimitEditText.setTextSilently(minDistanceTextWatcher, it.toString())
+        }
+        viewModel.initialDistanceMaxLimit.observe(viewLifecycleOwner) {
+            binding.distanceMaxLimitEditText.setTextSilently(maxDistanceTextWatcher, it.toString())
+        }
         binding.resetFilters.setOnClickListener {
             viewModel.resetFilter()
         }
         binding.applyFilterButton.setOnClickListener {
-            viewModel.applyFilter(minDistanceValue, maxDistanceValue)
+            viewModel.applyFilter()
         }
         binding.distanceMinLimitEditText.actionDoneListener {
             hideKeyboard()

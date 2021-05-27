@@ -31,12 +31,14 @@ class TradeFilterViewModel(
         get() = _paymentOptions
 
     private val _distanceMinLimit = MutableLiveData<Int>()
-    val distanceMinLimit: LiveData<Int>
-        get() = _distanceMinLimit
 
     private val _distanceMaxLimit = MutableLiveData<Int>()
-    val distanceMaxLimit: LiveData<Int>
-        get() = _distanceMaxLimit
+
+    private val _initialDistanceMinLimit = MutableLiveData<Int>()
+    val initialDistanceMinLimit: LiveData<Int> = _initialDistanceMinLimit
+
+    private val _initialDistanceMaxLimit = MutableLiveData<Int>()
+    val initialDistanceMaxLimit: LiveData<Int> = _initialDistanceMaxLimit
 
     private val _distanceRangeError = MutableLiveData<String?>()
     val distanceRangeError: LiveData<String?>
@@ -60,7 +62,9 @@ class TradeFilterViewModel(
             _coins.value = it.coins
             _distanceEnabled.value = it.distanceFilterEnabled
             _distanceMinLimit.value = it.minDistance
+            _initialDistanceMinLimit.value = it.minDistance
             _distanceMaxLimit.value = it.maxDistance
+            _initialDistanceMaxLimit.value = it.maxDistance
             _sortOption.value = it.sortOption
         }, onError = {
 
@@ -97,21 +101,22 @@ class TradeFilterViewModel(
         })
     }
 
-    fun applyFilter(minAvailableDistance: Int, maxAvailableDistance: Int) {
+    fun applyFilter() {
         val distanceEnabled = distanceEnabled.value ?: false
-        val minDistance = distanceMinLimit.value ?: 0
-        val maxDistance = distanceMaxLimit.value ?: 0
-        if (
-            distanceEnabled && (
-                    minDistance < minAvailableDistance || minDistance > maxAvailableDistance
-                            || maxDistance < minAvailableDistance || maxDistance > maxAvailableDistance ||
-                            minDistance > maxDistance
-                    )
-        ) {
-            _distanceRangeError.value = stringProvider.getString(R.string.create_trade_amount_range_error)
-            return
-        } else {
-            _distanceRangeError.value = null
+        val minDistance = _distanceMinLimit.value ?: 0
+        val maxDistance = _distanceMaxLimit.value ?: 0
+        when {
+            distanceEnabled && minDistance > maxDistance -> {
+                _distanceRangeError.value = stringProvider.getString(R.string.create_trade_amount_range_error)
+                return
+            }
+            distanceEnabled && maxDistance == 0 -> {
+                _distanceRangeError.value = stringProvider.getString(R.string.trade_filter_distance_range_zero_error)
+                return
+            }
+            else -> {
+                _distanceRangeError.value = null
+            }
         }
         val newFilter = TradeFilterItem(
             coins.value.orEmpty(), paymentOptions.value.orEmpty(),
