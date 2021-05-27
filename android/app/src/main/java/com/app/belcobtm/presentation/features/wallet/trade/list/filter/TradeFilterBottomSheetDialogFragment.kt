@@ -1,10 +1,12 @@
 package com.app.belcobtm.presentation.features.wallet.trade.list.filter
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.ViewTreeObserver
+import android.view.inputmethod.InputMethodManager
 import android.widget.FrameLayout
 import androidx.lifecycle.observe
 import androidx.navigation.fragment.findNavController
@@ -12,6 +14,7 @@ import com.app.belcobtm.R
 import com.app.belcobtm.data.model.trade.filter.SortOption
 import com.app.belcobtm.databinding.FragmentTradeFilterBinding
 import com.app.belcobtm.presentation.core.adapter.MultiTypeAdapter
+import com.app.belcobtm.presentation.core.extensions.actionDoneListener
 import com.app.belcobtm.presentation.core.extensions.setTextSilently
 import com.app.belcobtm.presentation.core.extensions.toggle
 import com.app.belcobtm.presentation.core.views.listeners.SafeDecimalEditTextWatcher
@@ -29,7 +32,7 @@ class TradeFilterBottomSheetDialogFragment : BottomSheetDialogFragment() {
     }
 
     private val paymentsAdapter: MultiTypeAdapter by lazy {
-        MultiTypeAdapter().apply { registerDelegate(TradePaymentOptionDelegate()) }
+        MultiTypeAdapter().apply { registerDelegate(TradePaymentOptionDelegate(viewModel::changePaymentSelection)) }
     }
 
     private val viewModel by viewModel<TradeFilterViewModel>()
@@ -66,6 +69,7 @@ class TradeFilterBottomSheetDialogFragment : BottomSheetDialogFragment() {
                 distanceMinLimitInputLayout.toggle(it)
                 distanceMaxLimitInputLayout.toggle(it)
                 distanceRangeSliderDivider.toggle(it)
+                limitsRangeDivider.toggle(it)
                 sortByDistance.toggle(it)
             }
         }
@@ -121,7 +125,20 @@ class TradeFilterBottomSheetDialogFragment : BottomSheetDialogFragment() {
         binding.applyFilterButton.setOnClickListener {
             viewModel.applyFilter(minDistanceValue, maxDistanceValue)
         }
+        binding.distanceMinLimitEditText.actionDoneListener {
+            hideKeyboard()
+            binding.distanceMinLimitEditText.clearFocus()
+        }
+        binding.distanceMaxLimitEditText.actionDoneListener {
+            hideKeyboard()
+            binding.distanceMaxLimitEditText.clearFocus()
+        }
         return binding.root
+    }
+
+    private fun hideKeyboard() = activity?.currentFocus?.let { focus ->
+        val imm = activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
+        imm?.hideSoftInputFromWindow(focus.windowToken, 0)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

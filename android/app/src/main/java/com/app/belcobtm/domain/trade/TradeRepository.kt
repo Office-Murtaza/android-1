@@ -9,6 +9,7 @@ import com.app.belcobtm.domain.Either
 import com.app.belcobtm.domain.Failure
 import com.app.belcobtm.presentation.features.wallet.trade.create.model.CreateTradeItem
 import com.app.belcobtm.presentation.features.wallet.trade.edit.EditTradeItem
+import com.app.belcobtm.presentation.features.wallet.trade.list.filter.model.TradeFilterItem
 import com.app.belcobtm.presentation.features.wallet.trade.order.create.model.TradeOrderItem
 import com.app.belcobtm.presentation.features.wallet.trade.order.details.model.UpdateOrderStatusItem
 import kotlinx.coroutines.flow.Flow
@@ -29,7 +30,7 @@ interface TradeRepository {
 
     fun getTrade(tradeId: String): Either<Failure, Trade>
 
-    fun getFilter(): TradeFilter?
+    fun getFilterItem(): TradeFilterItem
 
     fun clearCache()
 

@@ -42,6 +42,9 @@ class EditTradeViewModel(
     private val _price = MutableLiveData<Double>(0.0)
     val price: LiveData<Double> = _price
 
+    private val _initialPrice = MutableLiveData<Double>(0.0)
+    val initialPrice: LiveData<Double> = _initialPrice
+
     private val _availablePaymentOptions = MutableLiveData<List<AvailableTradePaymentOption>>()
     val availablePaymentOptions: LiveData<List<AvailableTradePaymentOption>> = _availablePaymentOptions
 
@@ -55,8 +58,10 @@ class EditTradeViewModel(
     val priceError: LiveData<String?> = _priceError
 
     private val _amountMinLimit = MutableLiveData<Int>()
+    val amountMinLimit: LiveData<Int> = _amountMinLimit
 
     private val _amountMaxLimit = MutableLiveData<Int>()
+    val amountMaxLimit: LiveData<Int> = _amountMaxLimit
 
     private val _tradeType = MutableLiveData<@TradeType Int>()
     val tradeType: LiveData<@TradeType Int> = _tradeType
@@ -83,13 +88,14 @@ class EditTradeViewModel(
         getAvailableTradePaymentOptionsUseCase.invoke(Unit, onSuccess = { availablePaymentOptions ->
             getTradeDetailsUseCase.invoke(tradeId, onSuccess = { trade ->
                 _availablePaymentOptions.value = availablePaymentOptions.map { paymentOption ->
-                    paymentOption.apply { selected = trade.paymentMethods.contains(paymentOption.payment) }
+                    paymentOption.copy(selected = trade.paymentMethods.contains(paymentOption.payment))
                 }
                 _tradeType.value = trade.type
                 _initialTerms.value = trade.terms
                 _amountMinLimit.value = trade.minLimit.toInt()
-                _amountMinLimit.value = trade.maxLimit.toInt()
+                _amountMaxLimit.value = trade.maxLimit.toInt()
                 _price.value = trade.price
+                _initialPrice.value = trade.price
                 getCoinListUseCase(
                     params = Unit,
                     onSuccess = { coinsDataList ->
@@ -114,6 +120,16 @@ class EditTradeViewModel(
             it.printStackTrace()
             _initialLoadingData.value = LoadingData.Error(Failure.ServerError())
         })
+    }
+
+    fun changePaymentSelection(paymentOption: AvailableTradePaymentOption) {
+        _availablePaymentOptions.value = availablePaymentOptions.value.orEmpty().map {
+            if (it.id == paymentOption.id) {
+                it.copy(selected = !paymentOption.selected)
+            } else {
+                it
+            }
+        }
     }
 
     fun updatePrice(amount: Double) {

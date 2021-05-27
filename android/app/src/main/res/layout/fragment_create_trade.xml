@@ -58,11 +58,27 @@
                 android:textColor="@color/sell_chip_icon_color"
                 app:checkedIconVisible="false"
                 app:chipBackgroundColor="@color/sell_chip_bg_color"
-                app:chipIconTint="@color/sell_chip_icon_color"
                 app:chipIcon="@drawable/ic_trade_type_sell"
+                app:chipIconTint="@color/sell_chip_icon_color"
                 app:chipStrokeColor="#0073E4" />
 
         </com.google.android.material.chip.ChipGroup>
+
+        <TextView
+            android:id="@+id/trade_type_chip_group_error"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_main"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:textColor="@color/colorError"
+            android:textSize="12sp"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/trade_type_chip_group"
+            tools:text="Validation error message"
+            tools:visibility="visible" />
 
         <View
             android:id="@+id/trade_type_chip_group_divider"
@@ -74,7 +90,7 @@
             android:background="@color/thin_divider"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/trade_type_chip_group" />
+            app:layout_constraintTop_toBottomOf="@id/trade_type_chip_group_error" />
 
         <com.app.belcobtm.presentation.core.views.CoinInputLayout
             android:id="@+id/coin_details_view"
@@ -127,6 +143,22 @@
             app:spanCount="5"
             tools:listitem="@layout/item_trade_payment_option" />
 
+        <TextView
+            android:id="@+id/payment_options_error"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_main"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:textColor="@color/colorError"
+            android:textSize="12sp"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/payment_options"
+            tools:text="Validation error message"
+            tools:visibility="visible" />
+
         <View
             android:id="@+id/payment_options_view_divider"
             android:layout_width="match_parent"
@@ -137,7 +169,7 @@
             android:background="@color/thin_divider"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/payment_options" />
+            app:layout_constraintTop_toBottomOf="@id/payment_options_error" />
 
         <TextView
             android:id="@+id/price_limits_label"
@@ -171,6 +203,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:digits="1234567890"
+                android:imeOptions="actionDone"
+                android:inputType="number"
                 android:maxLength="10"
                 tools:text="$100" />
 
@@ -205,6 +239,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:digits="1234567890"
+                android:imeOptions="actionDone"
+                android:inputType="number"
                 android:maxLength="10"
                 tools:text="$100" />
 
@@ -253,21 +289,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/amount_range_error" />
 
-        <TextView
-            android:id="@+id/terms_label"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/margin_main"
-            android:layout_marginTop="@dimen/margin_main"
-            android:layout_marginEnd="@dimen/margin_main"
-            android:text="@string/trade_create_terms_label"
-            android:textColor="@color/black_text_color"
-            android:textSize="20sp"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/limits_view_divider" />
-
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/terms_input"
             android:layout_width="match_parent"
@@ -278,14 +299,14 @@
             app:hintEnabled="false"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/terms_label">
+            app:layout_constraintTop_toBottomOf="@id/limits_view_divider">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@android:color/transparent"
-                android:inputType="textMultiLine"
                 android:hint="@string/trade_create_terms_hint"
+                android:inputType="textMultiLine"
                 android:paddingTop="@dimen/margin_half"
                 android:paddingBottom="@dimen/margin_half"
                 android:textSize="16sp" />

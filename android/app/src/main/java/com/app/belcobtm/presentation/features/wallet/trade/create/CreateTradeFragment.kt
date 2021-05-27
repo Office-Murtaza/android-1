@@ -18,6 +18,7 @@ import com.app.belcobtm.presentation.core.mvvm.LoadingData
 import com.app.belcobtm.presentation.core.ui.fragment.BaseFragment
 import com.app.belcobtm.presentation.core.views.listeners.SafeDecimalEditTextWatcher
 import com.app.belcobtm.presentation.features.deals.swap.adapter.CoinDialogAdapter
+import com.app.belcobtm.presentation.features.wallet.trade.container.TradeContainerFragment
 import com.app.belcobtm.presentation.features.wallet.trade.create.delegate.TradePaymentOptionDelegate
 import com.google.android.material.chip.Chip
 import com.google.android.material.snackbar.Snackbar
@@ -50,7 +51,7 @@ class CreateTradeFragment : BaseFragment<FragmentCreateTradeBinding>() {
 
     private val adapter by lazy {
         MultiTypeAdapter().apply {
-            registerDelegate(TradePaymentOptionDelegate())
+            registerDelegate(TradePaymentOptionDelegate(viewModel::changePaymentSelection))
         }
     }
 
@@ -105,6 +106,18 @@ class CreateTradeFragment : BaseFragment<FragmentCreateTradeBinding>() {
             it?.let(amountRangeError::setText)
             amountRangeError.toggle(it != null)
         }
+        viewModel.amountRangeError.observe(viewLifecycleOwner) {
+            it?.let(amountRangeError::setText)
+            amountRangeError.toggle(it != null)
+        }
+        viewModel.tradeTypeError.observe(viewLifecycleOwner) {
+            it?.let(tradeTypeChipGroupError::setText)
+            tradeTypeChipGroupError.toggle(it != null)
+        }
+        viewModel.paymentOptionsError.observe(viewLifecycleOwner) {
+            it?.let(paymentOptionsError::setText)
+            paymentOptionsError.toggle(it != null)
+        }
         viewModel.snackbarMessage.observe(viewLifecycleOwner) {
             Snackbar.make(root, it, Snackbar.LENGTH_SHORT).show()
         }
@@ -115,6 +128,8 @@ class CreateTradeFragment : BaseFragment<FragmentCreateTradeBinding>() {
                     requireContext(),
                     R.string.create_trade_success_message
                 )
+                getNavController()?.previousBackStackEntry?.savedStateHandle
+                    ?.set(TradeContainerFragment.CREATE_TRADE_KEY, true)
                 popBackStack()
             },
             error = {
@@ -152,6 +167,14 @@ class CreateTradeFragment : BaseFragment<FragmentCreateTradeBinding>() {
                 },
                 binding.termsInput.editText?.text.toString(), minAmountValue, maxAmountValue
             )
+        }
+        binding.amountMinLimitEditText.actionDoneListener {
+            hideKeyboard()
+            binding.amountMinLimitEditText.clearFocus()
+        }
+        binding.amountMaxLimitEditText.actionDoneListener {
+            hideKeyboard()
+            binding.amountMaxLimitEditText.clearFocus()
         }
     }
 

@@ -28,6 +28,12 @@ class TradeInfoContainerFragment : BaseFragment<FragmentTradeInfoContainerBindin
         baseBinding.toolbarView.hide()
     }
 
+    fun preselectScreen(position: Int) {
+        binding.viewPager.post {
+            binding.viewPager.currentItem = position
+        }
+    }
+
     override fun FragmentTradeInfoContainerBinding.initViews() {
         viewPager.adapter = TradeInfoContainerViewPagerAdapter(childFragmentManager, requireActivity().lifecycle)
         TabLayoutMediator(tabLayout, viewPager) { tab, position ->

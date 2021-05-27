@@ -1,5 +1,6 @@
 package com.app.belcobtm.data.inmemory.trade
 
+import com.app.belcobtm.data.disk.database.AccountEntity
 import com.app.belcobtm.data.helper.DistanceCalculator
 import com.app.belcobtm.data.mapper.OrderResponseToOrderMapper
 import com.app.belcobtm.data.mapper.TradeResponseToTradeMapper
@@ -16,6 +17,7 @@ import com.app.belcobtm.domain.Failure
 import com.app.belcobtm.domain.flatMap
 import com.app.belcobtm.domain.map
 import com.app.belcobtm.domain.trade.order.mapper.ChatMessageMapper
+import com.app.belcobtm.presentation.features.wallet.trade.list.filter.model.TradeFilterItem
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -60,7 +62,12 @@ class TradeInMemoryCache(
     val filter: TradeFilter?
         get() = tradeFilter.value
 
+    lateinit var filterItem: TradeFilterItem
+
     var calculateDistance = false
+        private set
+
+    lateinit var enabledCoins: List<AccountEntity>
         private set
 
     private var distanceCalculationJob: Job? = null
@@ -75,8 +82,9 @@ class TradeInMemoryCache(
         }
     }
 
-    fun updateFilter(filter: TradeFilter) {
+    fun updateFilter(filter: TradeFilter, filterItem: TradeFilterItem) {
         tradeFilter.value = filter
+        this.filterItem = filterItem
     }
 
     fun findTrade(tradeId: String): Either<Failure, Trade> {
@@ -137,5 +145,9 @@ class TradeInMemoryCache(
             orders[chatOrder.id] = chatOrder.copy(chatHistory = chatOrder.chatHistory + mappedMessage)
             cache.value = Either.Right(it.copy(orders = orders))
         }
+    }
+
+    fun initCoins(enabledCoins: List<AccountEntity>) {
+        this.enabledCoins = enabledCoins
     }
 }

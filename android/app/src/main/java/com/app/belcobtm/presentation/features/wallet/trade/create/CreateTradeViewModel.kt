@@ -13,7 +13,6 @@ import com.app.belcobtm.domain.trade.create.GetAvailableTradePaymentOptionsUseCa
 import com.app.belcobtm.domain.wallet.interactor.GetCoinListUseCase
 import com.app.belcobtm.domain.wallet.item.CoinDataItem
 import com.app.belcobtm.presentation.core.extensions.toStringCoin
-import com.app.belcobtm.presentation.core.formatter.Formatter
 import com.app.belcobtm.presentation.core.livedata.TripleCombinedLiveData
 import com.app.belcobtm.presentation.core.mvvm.LoadingData
 import com.app.belcobtm.presentation.core.provider.string.StringProvider
@@ -25,8 +24,7 @@ class CreateTradeViewModel(
     private val getCoinListUseCase: GetCoinListUseCase,
     private val createTradeUseCase: CreateTradeUseCase,
     private val checkTradeCreationAvailabilityUseCase: CheckTradeCreationAvailabilityUseCase,
-    private val stringProvider: StringProvider,
-    private val amountFormatter: Formatter<Int>
+    private val stringProvider: StringProvider
 ) : ViewModel() {
 
     private lateinit var coinList: List<CoinDataItem>
@@ -49,11 +47,17 @@ class CreateTradeViewModel(
     private val _availablePaymentOptions = MutableLiveData<List<AvailableTradePaymentOption>>()
     val availablePaymentOptions: LiveData<List<AvailableTradePaymentOption>> = _availablePaymentOptions
 
+    private val _amountRangeError = MutableLiveData<String?>()
+    val amountRangeError: LiveData<String?> = _amountRangeError
+
     private val _snackbarMessage = MutableLiveData<String>()
     val snackbarMessage: LiveData<String> = _snackbarMessage
 
-    private val _amounRangeError = MutableLiveData<String?>()
-    val amountRangeError: LiveData<String?> = _amounRangeError
+    private val _tradeTypeError = MutableLiveData<String?>()
+    val tradeTypeError: LiveData<String?> = _tradeTypeError
+
+    private val _paymentOptionsError = MutableLiveData<String?>()
+    val paymentOptionsError: LiveData<String?> = _paymentOptionsError
 
     private val _priceError = MutableLiveData<String?>()
     val priceError: LiveData<String?> = _priceError
@@ -101,6 +105,16 @@ class CreateTradeViewModel(
         }, onError = { _initialLoadingData.value = LoadingData.Error(Failure.ServerError()) })
     }
 
+    fun changePaymentSelection(paymentOption: AvailableTradePaymentOption) {
+        _availablePaymentOptions.value = availablePaymentOptions.value.orEmpty().map {
+            if (it.id == paymentOption.id) {
+                it.copy(selected = !paymentOption.selected)
+            } else {
+                it
+            }
+        }
+    }
+
     fun getCoinsToSelect(): List<CoinDataItem> =
         coinList.filter { selectedCoin.value?.code != it.code }
 
@@ -131,32 +145,44 @@ class CreateTradeViewModel(
             .filter(AvailableTradePaymentOption::selected)
             .map { it.payment.paymentId }
             .toList()
+        var errorCount = 0
         if (type == -1) {
-            _snackbarMessage.value = stringProvider.getString(R.string.trade_type_not_selected_error_message)
-            return
+            _tradeTypeError.value = stringProvider.getString(R.string.trade_type_not_selected_error_message)
+            errorCount++
+        } else {
+            _tradeTypeError.value = null
         }
         if (paymentOptions.isEmpty()) {
-            _snackbarMessage.value = stringProvider.getString(R.string.create_trade_no_payment_options_selected_error)
-            return
+            _paymentOptionsError.value =
+                stringProvider.getString(R.string.create_trade_no_payment_options_selected_error)
+            errorCount++
+        } else {
+            _paymentOptionsError.value = null
         }
         val price = price.value ?: 0.0
         if (price <= 0.0) {
             _priceError.value = stringProvider.getString(R.string.create_trade_price_zero_error)
-            return
+            errorCount++
         } else {
             _priceError.value = null
         }
         val fromAmount = _amountMinLimit.value ?: 0
         val toAmount = _amountMaxLimit.value ?: 0
-        if (
+        when {
+            fromAmount == 0 || toAmount == 0 -> {
+                _amountRangeError.value = stringProvider.getString(R.string.create_trade_amount_range_zero_error)
+                errorCount++
+            }
             fromAmount < minRangeAmount || fromAmount > maxRangeAmount
-            || toAmount < minRangeAmount || toAmount > maxRangeAmount ||
-            toAmount < fromAmount
-        ) {
-            _amounRangeError.value = stringProvider.getString(R.string.create_trade_amount_range_error)
+                    || toAmount < minRangeAmount || toAmount > maxRangeAmount ||
+                    toAmount < fromAmount -> {
+                _amountRangeError.value = stringProvider.getString(R.string.create_trade_amount_range_error)
+                errorCount++
+            }
+            else -> _amountRangeError.value = null
+        }
+        if (errorCount > 0) {
             return
-        } else {
-            _amounRangeError.value = null
         }
         val cryptoAmount = toAmount / price
         if (type == TradeType.SELL && cryptoAmount > selectedCoin.value?.reservedBalanceCoin ?: 0.0) {

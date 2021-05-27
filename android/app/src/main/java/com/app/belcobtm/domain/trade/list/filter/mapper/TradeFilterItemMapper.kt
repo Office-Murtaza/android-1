@@ -14,9 +14,7 @@ class TradeFilterItemMapper(
 
     fun map(payments: List<@PaymentOption Int>, entities: List<AccountEntity>, filter: TradeFilter?): TradeFilterItem {
         val availablePayments = payments.map {
-            paymentMapper.map(it).apply {
-                selected = filter?.paymentOptions?.contains(it) ?: false
-            }
+            paymentMapper.map(it).copy(selected = filter?.paymentOptions?.contains(it) ?: false)
         }
         val coins = entities.map { coinMapper.map(it, filter?.coinCode.orEmpty()) }
         return TradeFilterItem(

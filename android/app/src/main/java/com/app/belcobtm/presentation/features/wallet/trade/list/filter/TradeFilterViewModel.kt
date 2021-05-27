@@ -81,6 +81,16 @@ class TradeFilterViewModel(
         }
     }
 
+    fun changePaymentSelection(paymentOption: AvailableTradePaymentOption) {
+        _paymentOptions.value = paymentOptions.value.orEmpty().map {
+            if (it.id == paymentOption.id) {
+                it.copy(selected = !paymentOption.selected)
+            } else {
+                it
+            }
+        }
+    }
+
     fun resetFilter() {
         resetFilterUseCase.invoke(Unit, onSuccess = {
             fetchInitialData()
