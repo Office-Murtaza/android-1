@@ -697,4 +697,8 @@
     <string name="attach_id_selfie_label">Attach id Selfie</string>
     <string name="send_gift_phone_number_prefix">+1</string>
     <string name="dash">-</string>
+
+    <string name="create_trade_get_coin_list_error_title">Error</string>
+    <string name="create_trade_get_coin_list_error_message">An error occurred receiving your balance. Please check that balance available</string>
+    <string name="create_trade_get_coin_list_error_button_title">OK</string>
 </resources>

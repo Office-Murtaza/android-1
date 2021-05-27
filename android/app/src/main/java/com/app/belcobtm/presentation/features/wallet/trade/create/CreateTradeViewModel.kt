@@ -102,7 +102,9 @@ class CreateTradeViewModel(
                 },
                 onError = { _initialLoadingData.value = LoadingData.Error(Failure.ServerError()) }
             )
-        }, onError = { _initialLoadingData.value = LoadingData.Error(Failure.ServerError()) })
+        }, onError = {
+            _initialLoadingData.value = LoadingData.Error(Failure.ServerError())
+        })
     }
 
     fun changePaymentSelection(paymentOption: AvailableTradePaymentOption) {
@@ -134,12 +136,7 @@ class CreateTradeViewModel(
         _selectedCoin.value = coinDataItem
     }
 
-    fun createTrade(
-        @TradeType type: Int,
-        terms: String,
-        minRangeAmount: Int,
-        maxRangeAmount: Int
-    ) {
+    fun createTrade(@TradeType type: Int, terms: String) {
         val paymentOptions = availablePaymentOptions.value.orEmpty()
             .asSequence()
             .filter(AvailableTradePaymentOption::selected)
@@ -173,9 +170,7 @@ class CreateTradeViewModel(
                 _amountRangeError.value = stringProvider.getString(R.string.create_trade_amount_range_zero_error)
                 errorCount++
             }
-            fromAmount < minRangeAmount || fromAmount > maxRangeAmount
-                    || toAmount < minRangeAmount || toAmount > maxRangeAmount ||
-                    toAmount < fromAmount -> {
+            toAmount < fromAmount -> {
                 _amountRangeError.value = stringProvider.getString(R.string.create_trade_amount_range_error)
                 errorCount++
             }

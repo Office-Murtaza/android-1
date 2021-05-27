@@ -4,12 +4,15 @@ import android.content.Context
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View
+import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import androidx.annotation.DrawableRes
+import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import com.app.belcobtm.R
 import com.app.belcobtm.databinding.ViewCoinInputLayoutBinding
+import com.app.belcobtm.presentation.core.extensions.actionDoneListener
 import com.app.belcobtm.presentation.core.extensions.invisible
 import com.app.belcobtm.presentation.core.extensions.show
 import com.app.belcobtm.presentation.core.extensions.toggle
@@ -31,6 +34,12 @@ class CoinInputLayout @JvmOverloads constructor(
             paddingRight,
             paddingBottom + resources.getDimensionPixelOffset(R.dimen.margin_x2)
         )
+        binding.coinInputEditText.actionDoneListener {
+            val imm = context.getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
+            val activity = context as AppCompatActivity
+            imm?.hideSoftInputFromWindow(activity.currentFocus?.windowToken, 0)
+            binding.coinInputEditText.clearFocus()
+        }
     }
 
     fun getEditText(): EditText = binding.coinInputEditText

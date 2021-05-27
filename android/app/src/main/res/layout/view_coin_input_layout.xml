@@ -31,6 +31,7 @@
             android:paddingEnd="@dimen/margin_main"
             android:paddingBottom="@dimen/margin_half"
             android:singleLine="true"
+            android:imeOptions="actionDone"
             android:textAppearance="@style/SwapAmountTextAppearance"
             tools:hint="Coin amount" />
 

@@ -1,11 +1,11 @@
 package com.app.belcobtm.presentation.features.wallet.trade.list.filter
 
+import android.app.Dialog
 import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.ViewTreeObserver
 import android.view.inputmethod.InputMethodManager
 import android.widget.FrameLayout
 import androidx.lifecycle.observe
@@ -24,6 +24,7 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import org.koin.android.viewmodel.ext.android.viewModel
+
 
 class TradeFilterBottomSheetDialogFragment : BottomSheetDialogFragment() {
 
@@ -136,31 +137,19 @@ class TradeFilterBottomSheetDialogFragment : BottomSheetDialogFragment() {
         return binding.root
     }
 
+    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
+        val dialog = super.onCreateDialog(savedInstanceState)
+        dialog.setOnShowListener { dialog ->
+            val d = dialog as BottomSheetDialog
+            val bottomSheet =
+                d.findViewById<View>(R.id.design_bottom_sheet) as FrameLayout?
+            BottomSheetBehavior.from<FrameLayout?>(bottomSheet!!).state = BottomSheetBehavior.STATE_EXPANDED
+        }
+        return dialog
+    }
+
     private fun hideKeyboard() = activity?.currentFocus?.let { focus ->
         val imm = activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
         imm?.hideSoftInputFromWindow(focus.windowToken, 0)
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        forceExpand()
-    }
-
-    private fun forceExpand() {
-        val listener = object : ViewTreeObserver.OnGlobalLayoutListener {
-            override fun onGlobalLayout() {
-                (dialog as BottomSheetDialog?)?.let { dialog ->
-                    val bottomSheet = dialog.findViewById<FrameLayout>(
-                        com.google.android.material.R.id.design_bottom_sheet
-                    )
-                    if (bottomSheet != null) {
-                        val bottomSheetBehavior: BottomSheetBehavior<*> = BottomSheetBehavior.from(bottomSheet)
-                        bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
-                    }
-                }
-                requireView().viewTreeObserver.removeOnGlobalLayoutListener(this)
-            }
-        }
-        requireView().viewTreeObserver.addOnGlobalLayoutListener(listener)
     }
 }

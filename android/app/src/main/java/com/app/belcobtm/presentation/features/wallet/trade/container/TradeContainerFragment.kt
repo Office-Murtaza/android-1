@@ -113,11 +113,11 @@ class TradeContainerFragment : BaseFragment<FragmentTradeListContainerBinding>()
 
     @NeedsPermission(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION)
     fun loadWithDistanceCalculation() {
-        viewModel.checkBalanceAndFetchTrades(calculateDistanceEnabled = true)
+        viewModel.fetchTrades(calculateDistanceEnabled = true)
     }
 
     @OnPermissionDenied(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION)
     fun loadWithoutDistanceCalculation() {
-        viewModel.checkBalanceAndFetchTrades(calculateDistanceEnabled = false)
+        viewModel.fetchTrades(calculateDistanceEnabled = false)
     }
 }
