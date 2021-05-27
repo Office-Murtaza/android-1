@@ -475,7 +475,7 @@ extension P2PCreateTradeViewController: P2PCreateTradeSellBuyViewDelegate {
         coinValidator.check()
         limitValidator.update(tradeType: type)
         limitValidator.check()
-        typeValidator.updae(type: type)
+        typeValidator.update(type: type)
         typeValidator.check()
     }
 }

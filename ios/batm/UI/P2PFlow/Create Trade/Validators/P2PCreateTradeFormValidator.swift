@@ -40,7 +40,7 @@ class P2PCreateTradeVlidatorBase {
 class P2PCreateTradeTypeValidator: P2PCreateTradeVlidatorBase {
     var type: P2PSellBuyViewType?
     
-    func updae(type: P2PSellBuyViewType) {
+    func update(type: P2PSellBuyViewType) {
         self.type = type
     }
     

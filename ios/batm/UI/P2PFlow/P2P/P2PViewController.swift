@@ -87,11 +87,7 @@ class P2PViewController: ModuleViewController<P2PPresenter>, MDCTabBarDelegate {
     @objc func createTrade() {
         guard let balance = balance,
               let trades = presenter.trades.value,
-              let id = presenter.userId else {
-            print("CreateT balance: \(self.balance)")
-            print("CreateT trades: \(presenter.trades.value)")
-            print("CreateT user id: \(presenter.userId)")
-            return }
+              let id = presenter.userId else { return }
         
         let controller = P2PCreateTradeViewController(trades: trades,
                                                       userId: id,
@@ -130,20 +126,20 @@ class P2PViewController: ModuleViewController<P2PPresenter>, MDCTabBarDelegate {
             }.subscribe()
             .disposed(by: disposeBag)
 
-        presenter.balance.subscribeOn(MainScheduler()).subscribe { (balance) in
-            self.balance = balance
+        presenter.balance.subscribeOn(MainScheduler()).subscribe { [weak self] (balance) in
+            self?.balance = balance
         }.disposed(by: disposeBag)
         
-        presenter.balance.subscribeOn(MainScheduler()).filterNil().subscribe { (balance) in
-            self.myViewController?.update(balance: balance)
+        presenter.balance.subscribeOn(MainScheduler()).filterNil().subscribe { [weak self] (balance) in
+            self?.myViewController?.update(balance: balance)
         }.disposed(by: disposeBag)
         
-        presenter.balance.subscribeOn(MainScheduler()).filterNil().subscribe { (balance) in
-            self.buyDataSource.update(balance: balance)
+        presenter.balance.subscribeOn(MainScheduler()).filterNil().subscribe { [weak self] (balance) in
+            self?.buyDataSource.update(balance: balance)
         }.disposed(by: disposeBag)
         
-        presenter.balance.subscribeOn(MainScheduler()).filterNil().subscribe { (balance) in
-            self.sellDataSource.update(balance: balance)
+        presenter.balance.subscribeOn(MainScheduler()).filterNil().subscribe { [weak self] (balance) in
+            self?.sellDataSource.update(balance: balance)
         }.disposed(by: disposeBag)
       
       presenter.tradeSuccessMessage
