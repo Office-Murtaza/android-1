@@ -11,11 +11,8 @@ import com.app.belcobtm.data.websockets.serializer.RequestSerializer
 import com.app.belcobtm.data.websockets.serializer.ResponseDeserializer
 import com.app.belcobtm.presentation.core.Endpoint
 import com.squareup.moshi.Moshi
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 class WebSocketTransactionsObserver(
     private val socketClient: SocketClient,
@@ -27,8 +24,10 @@ class WebSocketTransactionsObserver(
 ) : TransactionsObserver {
 
     private val ioScope = CoroutineScope(Dispatchers.IO)
+    private var reconnectCounter = 0
 
     private companion object {
+        const val MAX_RECONNECT_AMOUNT = 5
         const val ID_HEADER = "id"
         const val AUTH_HEADER = "Authorization"
 
@@ -48,7 +47,13 @@ class WebSocketTransactionsObserver(
                 .collect {
                     when (it) {
                         is SocketResponse.Opened -> onOpened()
-                        is SocketResponse.Failure -> connect()
+                        is SocketResponse.Failure -> {
+                            if (reconnectCounter <= MAX_RECONNECT_AMOUNT) {
+                                reconnectCounter++
+                                delay(reconnectCounter * 1000L)
+                                connect()
+                            }
+                        }
                         is SocketResponse.Message ->
                             processMessage(it.content)
                     }

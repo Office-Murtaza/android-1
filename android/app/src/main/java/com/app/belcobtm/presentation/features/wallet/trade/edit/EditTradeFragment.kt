@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.observe
 import androidx.navigation.fragment.navArgs
 import com.app.belcobtm.R
@@ -100,7 +101,16 @@ class EditTradeFragment : BaseFragment<FragmentEditTradeBinding>() {
         viewModel.cryptoAmountError.observe(viewLifecycleOwner) {
             coinDetailsView.setErrorText(it, true)
         }
-        viewModel.initialLoadingData.listen()
+        viewModel.initialLoadingData.listen(error = {
+            AlertDialog.Builder(requireContext())
+                .setTitle(R.string.create_trade_get_coin_list_error_title)
+                .setMessage(R.string.create_trade_get_coin_list_error_message)
+                .setPositiveButton(R.string.create_trade_get_coin_list_error_button_title) { _, _ ->
+                    popBackStack()
+                }
+                .create()
+                .show()
+        })
         viewModel.cryptoAmountFormatted.observe(viewLifecycleOwner, cryptoAmountValue::setText)
         viewModel.cryptoAmountError.observe(viewLifecycleOwner) {
             coinDetailsView.setErrorText(it, true)

@@ -12,7 +12,6 @@ import com.app.belcobtm.domain.trade.details.GetTradeDetailsUseCase
 import com.app.belcobtm.domain.wallet.interactor.GetCoinListUseCase
 import com.app.belcobtm.domain.wallet.item.CoinDataItem
 import com.app.belcobtm.presentation.core.extensions.toStringCoin
-import com.app.belcobtm.presentation.core.formatter.Formatter
 import com.app.belcobtm.presentation.core.livedata.TripleCombinedLiveData
 import com.app.belcobtm.presentation.core.mvvm.LoadingData
 import com.app.belcobtm.presentation.core.provider.string.StringProvider
@@ -23,8 +22,7 @@ class EditTradeViewModel(
     private val getAvailableTradePaymentOptionsUseCase: GetAvailableTradePaymentOptionsUseCase,
     private val getCoinListUseCase: GetCoinListUseCase,
     private val editTradeUseCase: EditTradeUseCase,
-    private val stringProvider: StringProvider,
-    private val amountFormatter: Formatter<Int>
+    private val stringProvider: StringProvider
 ) : ViewModel() {
 
     private val _initialLoadingData = MutableLiveData<LoadingData<Unit>>()
@@ -108,16 +106,13 @@ class EditTradeViewModel(
                         }
                     },
                     onError = {
-                        it.printStackTrace()
                         _initialLoadingData.value = LoadingData.Error(Failure.ServerError())
                     }
                 )
             }, onError = {
-                it.printStackTrace()
                 _initialLoadingData.value = LoadingData.Error(Failure.ServerError())
             })
         }, onError = {
-            it.printStackTrace()
             _initialLoadingData.value = LoadingData.Error(Failure.ServerError())
         })
     }

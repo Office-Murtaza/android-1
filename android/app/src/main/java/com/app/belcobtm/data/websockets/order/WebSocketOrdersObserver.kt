@@ -26,8 +26,10 @@ class WebSocketOrdersObserver(
 ) : OrdersObserver {
 
     private val ioScope = CoroutineScope(Dispatchers.IO)
+    private var reconnectCounter = 0
 
     private companion object {
+        const val MAX_RECONNECT_AMOUNT = 5
         const val ID_HEADER = "id"
         const val AUTH_HEADER = "Authorization"
         const val COINS_HEADER = "coins"
@@ -48,7 +50,13 @@ class WebSocketOrdersObserver(
                 .collect {
                     when (it) {
                         is SocketResponse.Opened -> onOpened()
-                        is SocketResponse.Failure -> connect()
+                        is SocketResponse.Failure -> {
+                            if (reconnectCounter <= MAX_RECONNECT_AMOUNT) {
+                                reconnectCounter++
+                                delay(reconnectCounter * 1000L)
+                                connect()
+                            }
+                        }
                         is SocketResponse.Message ->
                             processMessage(it.content)
                     }
