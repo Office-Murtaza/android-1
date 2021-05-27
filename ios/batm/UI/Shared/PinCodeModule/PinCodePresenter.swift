@@ -113,6 +113,8 @@ class PinCodePresenter: ModulePresenter, PinCodeModule {
                 .refresh()
                 .do(onError: { [weak self] _ in self?.clearCode() }, onCompleted: { [weak self] in
                     self?.balanceService.start()
+                    self?.usecase.startTrades()
+                    self?.usecase.startTransactionDetails()
                 }).subscribe({ [weak self]  _ in self?.delegate?.didFinishPinCode(for: .verification, with: "") })
                 .disposed(by: self?.disposeBag ?? DisposeBag() )
         } failure: {
@@ -145,6 +147,8 @@ class PinCodePresenter: ModulePresenter, PinCodeModule {
         }
         UserDefaultsHelper.pinCodeWasEntered = true
         self.balanceService.start()
+        usecase.startTrades()
+        usecase.startTransactionDetails()
         return usecase.save(pinCode: state.code)
     }
     
