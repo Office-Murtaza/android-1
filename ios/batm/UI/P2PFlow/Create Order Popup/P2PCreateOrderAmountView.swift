@@ -15,6 +15,7 @@ class P2PCreateOrderAmountView: UIView {
     let label = UILabel()
     label.font = .systemFont(ofSize: 22)
     label.textColor = UIColor.black
+    label.adjustsFontSizeToFitWidth = true
     return label
   }()
   
@@ -29,6 +30,9 @@ class P2PCreateOrderAmountView: UIView {
     let textField = UITextField()
     textField.font = .systemFont(ofSize: 22)
     textField.keyboardType = .decimalPad
+    textField.adjustsFontSizeToFitWidth = true
+    textField.minimumFontSize = 10
+    textField.textAlignment = .right
     return textField
   }()
   
@@ -68,6 +72,7 @@ class P2PCreateOrderAmountView: UIView {
     cryptoAmountValue.snp.makeConstraints {
       $0.top.equalTo(cryptoAmountTitle.snp.bottom).offset(8)
       $0.left.equalTo(cryptoAmountTitle.snp.left)
+      $0.right.equalTo(self.snp.centerX)
     }
     
     fiatAmountTitle.snp.makeConstraints {
@@ -78,6 +83,7 @@ class P2PCreateOrderAmountView: UIView {
     fiatTextField.snp.makeConstraints {
       $0.top.equalTo(cryptoAmountValue.snp.top)
       $0.right.equalToSuperview().offset(-15)
+      $0.left.equalTo(self.snp.centerX)
     }
     
   }

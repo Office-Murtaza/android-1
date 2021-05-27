@@ -39,6 +39,18 @@ class P2PTagContainerView: UIView {
             .forEach { $0.reset() }
     }
     
+    func selectTag(title: String) {
+        let tag =  subviews.compactMap { $0 as? P2PTagView }
+                   .first(where: { $0.title == title } )
+        tag?.didSelected()
+    }
+    
+    func selectAll() {
+        subviews
+            .compactMap { $0 as? P2PTagView }
+            .forEach { $0.didSelected() }
+    }
+    
     func reloadLayout() {
         let containerWidth = estimatedWidth
         let tagYSpacing: CGFloat = 8

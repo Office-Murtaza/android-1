@@ -268,7 +268,9 @@ class P2PFiltersViewController: UIViewController {
         
         for type in coins {
             let tag = P2PTagView()
-            tag.didSelected()
+            if type.defaultCoinType == .bitcoin {
+                tag.didSelected()
+            }
             tag.update(image: type.mediumLogo, title: type.code)
             tag.layoutIfNeeded()
             tags.append(tag)
@@ -323,8 +325,15 @@ class P2PFiltersViewController: UIViewController {
     
     private func resetAll() {
         coinsTagsView.resetAll()
+        coinsTagsView.selectTag(title: CustomCoinType.bitcoin.code)
+        
         paymentMethodsView.resetAll()
+        paymentMethodsView.selectAll()
+        
         sortByTagsView.resetAll()
+        
+        sortByTagsView.selectTag(title: P2PFilterSortType.price.title)
+        
         self.delegate?.resetAllFilters()
     }
     

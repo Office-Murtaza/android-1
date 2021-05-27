@@ -17,7 +17,8 @@ class P2PPresenter: ModulePresenter, P2PModule {
   var isCreationError = BehaviorRelay<Bool>(value: false)
   var tradeSuccessMessage = BehaviorRelay<String>(value: "")
   
-  var balance = PublishRelay<CoinsBalance>()
+  var balance = BehaviorRelay<CoinsBalance?>(value: nil)
+    
   private var coins: [CoinBalance]?
   var socketTrade = PublishRelay<Trade>()
     

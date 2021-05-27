@@ -125,21 +125,21 @@ class P2PViewController: ModuleViewController<P2PPresenter>, MDCTabBarDelegate {
                 self.myViewController?.update(trades: trades, userId: id)
             }.subscribe()
             .disposed(by: disposeBag)
-        
-      presenter.balance.observeOn(MainScheduler()).subscribe { [unowned self] (balance) in
-        self.balance = balance
-      }.disposed(by: disposeBag)
-      
-      presenter.balance.observeOn(MainScheduler()).subscribe { [unowned self] (balance) in
-        self.myViewController?.update(balance: balance)
-      }.disposed(by: disposeBag)
-        
-        presenter.balance.observeOn(MainScheduler()).subscribe { [unowned self] (balance) in
-            self.buyDataSource.update(balance: balance)
+
+        presenter.balance.subscribeOn(MainScheduler()).subscribe { [weak self] (balance) in
+            self?.balance = balance
         }.disposed(by: disposeBag)
         
-        presenter.balance.observeOn(MainScheduler()).subscribe { [unowned self] (balance) in
-            self.sellDataSource.update(balance: balance)
+        presenter.balance.subscribeOn(MainScheduler()).filterNil().subscribe { [weak self] (balance) in
+            self?.myViewController?.update(balance: balance)
+        }.disposed(by: disposeBag)
+        
+        presenter.balance.subscribeOn(MainScheduler()).filterNil().subscribe { [weak self] (balance) in
+            self?.buyDataSource.update(balance: balance)
+        }.disposed(by: disposeBag)
+        
+        presenter.balance.subscribeOn(MainScheduler()).filterNil().subscribe { [weak self] (balance) in
+            self?.sellDataSource.update(balance: balance)
         }.disposed(by: disposeBag)
       
       presenter.tradeSuccessMessage
@@ -163,7 +163,6 @@ class P2PViewController: ModuleViewController<P2PPresenter>, MDCTabBarDelegate {
             .subscribe { [unowned self] (trade) in
                 self.sellDataSource.update(trade: trade)
         }.disposed(by: disposeBag)
-
 
     }
     
