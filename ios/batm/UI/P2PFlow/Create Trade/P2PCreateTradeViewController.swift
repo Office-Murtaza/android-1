@@ -28,7 +28,7 @@ class P2PCreateTradeViewController: UIViewController {
     let userId: Int
     var selectedType: P2PSellBuyViewType = .buy
     var minRange: Double = 100
-    var maxRange: Double = 10000 {
+    var maxRange: Double = 1000 {
         didSet {
             calculateFee()
         }
@@ -92,6 +92,7 @@ class P2PCreateTradeViewController: UIViewController {
     private let limitsView = P2PCreateTradeLimitsView()
     private let limitInlineError = P2PFormInlineErrorView()
     private let limitsSeparator = P2PSeparatorView()
+    private var selectedCointype: CustomCoinType = .bitcoin
     
     lazy var termsTextField: MDCMultilineTextField = {
            let field = MDCMultilineTextField.default
@@ -234,9 +235,12 @@ class P2PCreateTradeViewController: UIViewController {
     }
     
     func calculateFee() {
-        guard currentPrice > 0 else { return }
+        guard currentPrice > 0 else {
+            limitsView.feeLabel.text = "~ 0 \(selectedCointype.code)"
+            return
+        }
         let value = Double(maxRange) / currentPrice
-        limitsView.feeLabel.text = "~ \(value.coinFormatted)"
+        limitsView.feeLabel.text = "~ \(value.coinFormatted) \(selectedCointype.code)"
     }
     
     private func addNotificationObserver() {
@@ -432,6 +436,8 @@ class P2PCreateTradeViewController: UIViewController {
         }
     }
     
+    
+    
     private func bind() {
         
         guard let firstBalance = balance.coins.first else { return }
@@ -444,6 +450,7 @@ class P2PCreateTradeViewController: UIViewController {
         
         coinExchangeView.didSelectPickerRow.asObservable().subscribe { [unowned self] type in
             if let selectedbalance = balance.coins.first(where: { $0.type == type.element }) {
+                self.selectedCointype = selectedbalance.type
                 self.coinExchangeView.setCoinBalance(selectedbalance)
                 self.coinValidator.update(coinType: selectedbalance.type)
                 self.coinValidator.check()

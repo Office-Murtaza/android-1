@@ -25,7 +25,17 @@ class P2PEditTradeViewController: UIViewController {
   
   let selectedType: P2PSellBuyViewType
   var minRange: Double?
-  var maxRange: Double?
+    var maxRange: Double = 1000 {
+        didSet {
+            calculateFee()
+        }
+    }
+    
+    private var currentPrice: Double = 0 {
+        didSet {
+            calculateFee()
+        }
+    }
   
   let currentModel: P2PEditTradeDataModel
   
@@ -69,8 +79,9 @@ class P2PEditTradeViewController: UIViewController {
   private var emptyFooterView = UIView()
   
   private let scrollView = UIScrollView()
+  private var selectedCointype: CustomCoinType = .bitcoin
   
-  init(balance: CoinsBalance,
+    init(balance: CoinsBalance,
        payments: [TradePaymentMethods],
        delegate: P2PEditTradeViewControllerDelegate,
        editModel: P2PEditTradeDataModel,
@@ -115,10 +126,9 @@ class P2PEditTradeViewController: UIViewController {
     paymentMethodsHeader.update(title: localize(L.P2p.Payment.Methods.title))
     setupPaymentMethodsView(payments: payments)
     
-    limitsView.setup(range: [100, 10000], measureString: "$ ", isMeasurePosistionLast: false)
+    limitsView.setup(range: [100, 10000], measureString: "", isMeasurePosistionLast: false)
   
     if currentModel.maxLimit != 0 {
-//      limitsView.distanceSlider.value = [CGFloat(currentModel.minLimit), CGFloat(currentModel.maxLimit)]
       limitsView.setInitFieldsValues(from: CGFloat(currentModel.minLimit), to: CGFloat(currentModel.maxLimit))
     }
     
@@ -163,7 +173,10 @@ class P2PEditTradeViewController: UIViewController {
     ])
     
     coinExchangeView.configure(for: .bitcoin, coins: balance.coins.map { $0.type })
+    coinExchangeView.amountTextField.addTarget(self, action: #selector(priceChanged(_:)), for: .editingChanged)
+    coinExchangeView.amountTextField.deleteDelegate = self
     
+    limitsView.update(isUserInteractionEnabled: true, keyboardType: .decimalPad)
     
     limitsView.selectedMinRange { [weak self] minRange in
       self?.minRange = minRange
@@ -171,7 +184,21 @@ class P2PEditTradeViewController: UIViewController {
       self?.maxRange = maxRange
     }
   }
-  
+    
+    @objc func priceChanged(_ textField: UITextField) {
+        guard let price = textField.text?.formattedStringToDouble() else { return }
+        currentPrice = price
+    }
+
+    private func calculateFee() {
+        guard currentPrice > 0 else {
+            limitsView.feeLabel.text = "~ 0 \(selectedCointype.code)"
+            return
+        }
+        let value = Double(maxRange) / currentPrice
+        limitsView.feeLabel.text = "~ \(value.coinFormatted) \(selectedCointype.code)"
+    }
+    
   private func addNotificationObserver() {
     let notificationCenter = NotificationCenter.default
     notificationCenter.addObserver(self, selector: #selector(adjustForKeyboard), name: UIResponder.keyboardWillHideNotification, object: nil)
@@ -208,7 +235,7 @@ class P2PEditTradeViewController: UIViewController {
     let paymentMethods = methods.joined(separator: ",")
 
     let data = P2PEditTradeDataModel(id: currentModel.id,
-                                     price: Double(coinExchangeView.amountTextField.text ?? "") ?? 0,
+                                     price: coinExchangeView.amountTextField.text?.formattedStringToDouble() ?? 0,
                                      minLimit: minRange ?? 0,
                                      maxLimit: maxRange ?? 0,
                                      paymentMethods: paymentMethods,
@@ -335,10 +362,11 @@ class P2PEditTradeViewController: UIViewController {
     
     guard let firstBalance = balance.coins.first else { return }
     let currentBalance = balance.coins.first(where: {$0.type.code == coinType})
-    coinExchangeView.setCoinBalance(currentBalance ?? firstBalance, amount: "$ \(currentModel.price.formatted() ?? "0")")
+    coinExchangeView.setCoinBalance(currentBalance ?? firstBalance, amount: currentModel.price.formatted() ?? "0")
     
     coinExchangeView.didSelectPickerRow.asObservable().subscribe { [unowned self] type in
       if let selectedbalance = balance.coins.first(where: { $0.type == type.element }) {
+        self.selectedCointype = selectedbalance.type
         self.coinExchangeView.setCoinBalance(selectedbalance)
       }
     }.disposed(by: disposeBag)
@@ -365,3 +393,9 @@ class P2PEditTradeViewController: UIViewController {
   }
 }
 
+extension P2PEditTradeViewController: P2PTextFieldDelegate {
+    func textFieldDidDelete(_ textField: UITextField) {
+        let price = textField.text?.formattedStringToDouble() ?? 0
+        currentPrice = price
+    }
+}
