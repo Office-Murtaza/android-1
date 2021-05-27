@@ -617,6 +617,7 @@
     <string name="max_price_value_label">$10000</string>
     <string name="create_trade_price_zero_error">Price cannot be zero</string>
     <string name="create_trade_amount_range_zero_error">Min and max value should be greater than zero</string>
+    <string name="trade_filter_distance_range_zero_error">Max value should be greater than zero</string>
     <string name="create_trade_amount_range_error">Invalid amount range. min value should be lower than max value</string>
     <string name="trade_type_not_selected_error_message">Please select trade type</string>
     <string name="create_trade_no_payment_options_selected_error">Select at least one payment option</string>

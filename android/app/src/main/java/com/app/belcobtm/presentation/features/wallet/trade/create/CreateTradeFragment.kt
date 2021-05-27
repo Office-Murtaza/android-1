@@ -94,6 +94,7 @@ class CreateTradeFragment : BaseFragment<FragmentCreateTradeBinding>() {
         viewModel.selectedCoin.observe(viewLifecycleOwner, ::setCoinData)
         viewModel.cryptoAmountError.observe(viewLifecycleOwner) {
             coinDetailsView.setErrorText(it, true)
+            coinDetailsView.setErrorEnabled(!it.isNullOrEmpty())
         }
         viewModel.initialLoadingData.listen(error = {
             AlertDialog.Builder(requireContext())
@@ -108,6 +109,7 @@ class CreateTradeFragment : BaseFragment<FragmentCreateTradeBinding>() {
         viewModel.cryptoAmountFormatted.observe(viewLifecycleOwner, cryptoAmountValue::setText)
         viewModel.priceError.observe(viewLifecycleOwner) {
             coinDetailsView.setErrorText(it, true)
+            coinDetailsView.setErrorEnabled(!it.isNullOrEmpty())
         }
         viewModel.amountRangeError.observe(viewLifecycleOwner) {
             it?.let(amountRangeError::setText)
