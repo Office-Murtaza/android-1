@@ -323,7 +323,7 @@
     <string name="send_gift_screen_balance_formatted"><![CDATA[Balance %1$s %2$s\nFee ~%3$s %4$s]]></string>
     <string name="send_gift_screen_message">Message</string>
     <string name="send_gift_screen_submit_button_label">Submit</string>
-    <string name="send_gift_screen_converted_label">USD converted value</string>
+    <string name="send_gift_screen_converted_label">Converted Value</string>
     <string name="send_gift_screen_add_gif_label">Add gif</string>
     <string name="send_gift_screen_add_note_label">Add note</string>
 
@@ -333,7 +333,7 @@
     <string name="swap_screen_balance_formatted">Balance %1$s %2$s\nFee ~%3$s %4$s</string>
     <string name="swap_screen_rate_formatted"><![CDATA[<b>%1$s</b> %2$s ~ <b>%3$s</b> %4$s]]></string>
     <string name="swap_screen_fee_formatted"><![CDATA[%1$s\%% ~ %2$s %3$s]]></string>
-    <string name="swap_screen_usd_label">USD Converted Value</string>
+    <string name="swap_screen_usd_label">Converted Value</string>
     <string name="swap_screen_usd_value">$ %1$s</string>
     <string name="swap_screen_fee">Platform fee</string>
     <string name="swap_screen_select_coin">Select coin please</string>
@@ -419,10 +419,10 @@
     <string name="staking_screen_success_created">Stake successfully created</string>
     <string name="staking_screen_success_canceled">Stake successfully canceled</string>
     <string name="staking_screen_success_withdrawn">Stake successfully withdrawn</string>
-    <string name="staking_screen_anual_percent">Annual percent</string>
-    <string name="staking_screen_cancel_period">Hold period</string>
-    <string name="staking_screen_usd_converted">USD converted value</string>
-    <string name="staking_screen_anual_reward">Annual Reward Amount</string>
+    <string name="staking_screen_anual_percent">Annual Percent</string>
+    <string name="staking_screen_cancel_period">Hold Period</string>
+    <string name="staking_screen_usd_converted">Converted Value</string>
+    <string name="staking_screen_anual_reward">Reward Amount</string>
     <string name="staking_screen_created">Created</string>
     <string name="staking_screen_canceled">Canceled</string>
     <string name="staking_screen_duration">Duration</string>
@@ -568,15 +568,15 @@
     <string name="trade_list_my_info_tab_title">My…</string>
     <string name="trade_list_account_info_verified_label">Verified</string>
 
-    <string name="user_trade_info_success_rate_label">Success Rate</string>
-    <string name="user_trade_info_total_trades_label">Total Trades</string>
-    <string name="user_trade_info_not_verified_status_label">Not verified</string>
-    <string name="user_trade_info_verification_pending_status_label">Verification pending</string>
-    <string name="user_trade_info_verification_reject_status_label">Verification rejected</string>
+    <string name="user_trade_info_success_rate_label">Rate</string>
+    <string name="user_trade_info_total_trades_label">Trades</string>
+    <string name="user_trade_info_not_verified_status_label">Not Verified</string>
+    <string name="user_trade_info_verification_pending_status_label">Verification Pending</string>
+    <string name="user_trade_info_verification_reject_status_label">Verification Rejected</string>
     <string name="user_trade_info_verified_status_label">Verified</string>
-    <string name="user_trade_info_vip_verification_pending_status_label">Vip verification pending</string>
-    <string name="user_trade_info_vip_verification_reject_status_label">Vip verification rejected</string>
-    <string name="user_trade_info_vip_verified_status_label">Vip verified</string>
+    <string name="user_trade_info_vip_verification_pending_status_label">Vip Verification Pending</string>
+    <string name="user_trade_info_vip_verification_reject_status_label">Vip Verification Rejected</string>
+    <string name="user_trade_info_vip_verified_status_label">Vip Verified</string>
 
     <string name="trade_info_my_trades_tab_title">Trades</string>
     <string name="trade_info_open_orders_tab_title">Open orders</string>
@@ -616,6 +616,7 @@
     <string name="min_price_value_label">$0</string>
     <string name="max_price_value_label">$10000</string>
     <string name="create_trade_price_zero_error">Price cannot be zero</string>
+    <string name="create_trade_amount_range_zero_error">Min and max value should be greater than zero</string>
     <string name="create_trade_amount_range_error">Invalid amount range. min value should be lower than max value</string>
     <string name="trade_type_not_selected_error_message">Please select trade type</string>
     <string name="create_trade_no_payment_options_selected_error">Select at least one payment option</string>

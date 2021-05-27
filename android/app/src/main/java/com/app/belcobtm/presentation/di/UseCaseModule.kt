@@ -102,7 +102,7 @@ val useCaseModule = module {
     single { GetAvailableTradePaymentOptionsUseCase(get(), get()) }
     single { CreateTradeUseCase(get()) }
     single { CheckTradeCreationAvailabilityUseCase(get(), get()) }
-    single { LoadFilterDataUseCase(get(), get(), get()) }
+    single { LoadFilterDataUseCase(get()) }
     single { ResetFilterUseCase(get()) }
     single { ApplyFilterUseCase(get(), get()) }
     single { GetTradeDetailsUseCase(get(), get()) }

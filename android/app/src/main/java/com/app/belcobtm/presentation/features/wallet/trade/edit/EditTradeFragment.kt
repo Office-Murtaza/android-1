@@ -45,7 +45,7 @@ class EditTradeFragment : BaseFragment<FragmentEditTradeBinding>() {
 
     private val adapter by lazy {
         MultiTypeAdapter().apply {
-            registerDelegate(TradePaymentOptionDelegate())
+            registerDelegate(TradePaymentOptionDelegate(viewModel::changePaymentSelection))
         }
     }
 
@@ -115,6 +115,21 @@ class EditTradeFragment : BaseFragment<FragmentEditTradeBinding>() {
         viewModel.snackbarMessage.observe(viewLifecycleOwner) {
             Snackbar.make(root, it, Snackbar.LENGTH_SHORT).show()
         }
+        viewModel.amountMinLimit.observe(viewLifecycleOwner) { amount ->
+            binding.amountMinLimitEditText.setTextSilently(
+                minAmountTextWatcher, amount.toString(), amount.toString().length
+            )
+        }
+        viewModel.amountMaxLimit.observe(viewLifecycleOwner) { amount ->
+            binding.amountMaxLimitEditText.setTextSilently(
+                maxAmountTextWatcher, amount.toString(), amount.toString().length
+            )
+        }
+        viewModel.initialPrice.observe(viewLifecycleOwner) { amount ->
+            binding.coinDetailsView.getEditText().setTextSilently(
+                priceTextWatcher, amount.toString(), amount.toString().length
+            )
+        }
         viewModel.availablePaymentOptions.observe(viewLifecycleOwner, adapter::update)
         viewModel.tradeType.observe(viewLifecycleOwner) {
             if (it == TradeType.SELL) {
@@ -162,6 +177,14 @@ class EditTradeFragment : BaseFragment<FragmentEditTradeBinding>() {
                 args.tradeId, binding.termsInput.editText?.text.toString(),
                 minAmountValue, maxAmountValue
             )
+        }
+        binding.amountMinLimitEditText.actionDoneListener {
+            hideKeyboard()
+            binding.amountMinLimitEditText.clearFocus()
+        }
+        binding.amountMaxLimitEditText.actionDoneListener {
+            hideKeyboard()
+            binding.amountMaxLimitEditText.clearFocus()
         }
     }
 

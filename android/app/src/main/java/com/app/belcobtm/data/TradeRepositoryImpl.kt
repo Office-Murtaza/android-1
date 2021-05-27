@@ -4,6 +4,7 @@ import android.content.res.Resources
 import android.location.Location
 import com.app.belcobtm.R
 import com.app.belcobtm.data.disk.database.AccountDao
+import com.app.belcobtm.data.disk.database.AccountEntity
 import com.app.belcobtm.data.inmemory.trade.TradeInMemoryCache
 import com.app.belcobtm.data.model.trade.PaymentOption
 import com.app.belcobtm.data.model.trade.Trade
@@ -16,9 +17,11 @@ import com.app.belcobtm.domain.Either
 import com.app.belcobtm.domain.Failure
 import com.app.belcobtm.domain.map
 import com.app.belcobtm.domain.trade.TradeRepository
+import com.app.belcobtm.domain.trade.list.filter.mapper.TradeFilterItemMapper
 import com.app.belcobtm.domain.wallet.LocalCoinType
 import com.app.belcobtm.presentation.features.wallet.trade.create.model.CreateTradeItem
 import com.app.belcobtm.presentation.features.wallet.trade.edit.EditTradeItem
+import com.app.belcobtm.presentation.features.wallet.trade.list.filter.model.TradeFilterItem
 import com.app.belcobtm.presentation.features.wallet.trade.order.create.model.TradeOrderItem
 import com.app.belcobtm.presentation.features.wallet.trade.order.details.model.UpdateOrderStatusItem
 import kotlinx.coroutines.flow.Flow
@@ -28,7 +31,8 @@ class TradeRepositoryImpl(
     private val tradeInMemoryCache: TradeInMemoryCache,
     private val accountDao: AccountDao,
     private val resources: Resources,
-    private val locationProvider: LocationProvider
+    private val locationProvider: LocationProvider,
+    private val mapper: TradeFilterItemMapper
 ) : TradeRepository {
 
     override fun getAvailablePaymentOptions(): List<@PaymentOption Int> =
@@ -59,24 +63,31 @@ class TradeRepositoryImpl(
     override fun getTrade(tradeId: String): Either<Failure, Trade> =
         tradeInMemoryCache.findTrade(tradeId)
 
-    override fun getFilter(): TradeFilter? =
-        tradeInMemoryCache.filter
+    override fun getFilterItem(): TradeFilterItem =
+        tradeInMemoryCache.filterItem
 
     override fun clearCache() {
         tradeInMemoryCache.clearCache()
     }
 
     override suspend fun updateFilter(filter: TradeFilter) {
-        tradeInMemoryCache.updateFilter(filter)
+        tradeInMemoryCache.updateFilter(filter, createTradeFilterItem(filter))
     }
 
     override suspend fun resetFilters() {
-        tradeInMemoryCache.updateFilter(createInitialFilter(tradeInMemoryCache.calculateDistance))
+        val filter = createInitialFilter(
+            tradeInMemoryCache.enabledCoins,
+            tradeInMemoryCache.calculateDistance
+        )
+        tradeInMemoryCache.updateFilter(filter, createTradeFilterItem(filter))
     }
 
     override suspend fun fetchTrades(calculateDistance: Boolean) {
         val result = tradeApiService.loadTrades()
-        tradeInMemoryCache.updateFilter(createInitialFilter(calculateDistance))
+        val enabledCoins = accountDao.getItemList().orEmpty()
+        tradeInMemoryCache.initCoins(enabledCoins)
+        val filter = createInitialFilter(tradeInMemoryCache.enabledCoins, calculateDistance)
+        tradeInMemoryCache.updateFilter(filter, createTradeFilterItem(filter))
         tradeInMemoryCache.updateCache(calculateDistance, result)
     }
 
@@ -118,11 +129,9 @@ class TradeRepositoryImpl(
         return response.map { tradeInMemoryCache.updateOrders(it) }
     }
 
-    private suspend fun createInitialFilter(calculateDistance: Boolean): TradeFilter {
-        val enabledCoins = accountDao.getItemList()
-            .orEmpty()
-            .map { it.type.name }
-        val initialCoin = enabledCoins.find { it == LocalCoinType.BTC.name } ?: enabledCoins.firstOrNull() ?: ""
+    private fun createInitialFilter(enabledCoins: List<AccountEntity>, calculateDistance: Boolean): TradeFilter {
+        val initialCoin = enabledCoins.find { it.type.name == LocalCoinType.BTC.name }?.type?.name
+            ?: enabledCoins.firstOrNull()?.type?.name ?: ""
         return TradeFilter(
             initialCoin,
             getAvailablePaymentOptions(),
@@ -130,6 +139,14 @@ class TradeRepositoryImpl(
             resources.getInteger(R.integer.trade_filter_min_distance),
             resources.getInteger(R.integer.trade_filter_max_distance),
             SortOption.PRICE
+        )
+    }
+
+    private fun createTradeFilterItem(filter: TradeFilter): TradeFilterItem {
+        return mapper.map(
+            getAvailablePaymentOptions(),
+            tradeInMemoryCache.enabledCoins,
+            filter
         )
     }
 }
