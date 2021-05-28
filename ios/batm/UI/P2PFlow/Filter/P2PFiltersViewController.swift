@@ -72,6 +72,9 @@ class P2PFiltersViewController: UIViewController {
     
     private var minRange:Double?
     private var maxRange:Double?
+    private var defaultMinRange:Double?
+    private var defaultMaxRange:Double?
+    
     private var coins: [CustomCoinType]
     private var payments: [TradePaymentMethods]
     private var sortType: [P2PFilterSortType]
@@ -89,6 +92,8 @@ class P2PFiltersViewController: UIViewController {
         self.sortType = sortTypes
         self.minRange = minRange
         self.maxRange = maxRange
+        self.defaultMinRange = minRange
+        self.defaultMaxRange = maxRange
         self.preselectedSortBy = preselectedSortBy
         super.init(nibName: nil, bundle: nil)
     }
@@ -331,8 +336,8 @@ class P2PFiltersViewController: UIViewController {
         paymentMethodsView.selectAll()
         
         sortByTagsView.resetAll()
-        
         sortByTagsView.selectTag(title: P2PFilterSortType.price.title)
+        distanceView.setup(range: [CGFloat(defaultMinRange ?? 0), CGFloat(defaultMaxRange ?? 0)], measureString: "", stepSize: 1)
         
         self.delegate?.resetAllFilters()
     }
