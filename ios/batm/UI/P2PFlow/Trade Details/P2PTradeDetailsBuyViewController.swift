@@ -1,6 +1,7 @@
 import UIKit
 import SnapKit
 import MaterialComponents
+
 class P2PTradeDetailsBuyViewController: P2PTradeDetailsBaseViewController {
   
   weak var delegate: P2PTradeDetailsCreateOrderDelegate?
@@ -23,6 +24,8 @@ class P2PTradeDetailsBuyViewController: P2PTradeDetailsBaseViewController {
   
   override func setupUI() {
     super.setupUI()
+    
+    coinInfoView.update(isSellBuyHidden: true)
     
     stackView.addArrangedSubviews([
       tradeView,

@@ -8,7 +8,7 @@ class P2PTradeDetailsBaseViewController: UIViewController {
   
   var trade: Trade?
   private let scrollView = UIScrollView()
-  private let coinInfoView = P2PTradeDetailsCoinInfoView()
+  let coinInfoView = P2PTradeDetailsCoinInfoView()
   
     private let paymentMethods = P2PTradeDetailsPaymentMethodsView()
   let paymentMethodsSeparator = P2PSeparatorView()
@@ -44,6 +44,7 @@ class P2PTradeDetailsBaseViewController: UIViewController {
   }
   
   func setupUI() {
+    
     view.addSubviews([
       scrollView,
     ])

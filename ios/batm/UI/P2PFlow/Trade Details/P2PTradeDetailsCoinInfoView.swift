@@ -60,6 +60,10 @@ class P2PTradeDetailsCoinInfoView: UIView {
     fatalError("init(coder:) has not been implemented")
   }
   
+  func update(isSellBuyHidden: Bool = false) {
+    sellBuyView.isHidden = isSellBuyHidden
+  }
+    
   private let coinView = P2PCoinView()
   
   private let sellBuyView = P2PSellBuyView()

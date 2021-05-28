@@ -26,6 +26,8 @@ class P2PTradeDetailsSellViewController: P2PTradeDetailsBaseViewController {
   override func setupUI() {
     super.setupUI()
     
+    coinInfoView.update(isSellBuyHidden: true)
+    
     stackView.addArrangedSubviews([
       tradeView,
       tradeViewSeparator,
