@@ -3,11 +3,13 @@ import SnapKit
 import MaterialComponents
 
 class P2PTradeDetailsSellViewController: P2PTradeDetailsBaseViewController {
+  
+  weak var delegate: P2PTradeDetailsCreateOrderDelegate?
+
   private let tradeView =  P2PTradeDetailsRateView()
   private let tradeViewSeparator = P2PSeparatorView()
   
   private let infoMessageView = P2PTradeDetailsTextInfoView()
-  
   private let sellButton = MDCButton.sell
   
     private var reservedBalance: Double = 0
@@ -32,8 +34,20 @@ class P2PTradeDetailsSellViewController: P2PTradeDetailsBaseViewController {
     ])
     
     infoMessageView.update(message: localize(L.P2p.Trade.Details.info))
-    
+    sellButton.addTarget(self, action: #selector(sellTrade), for: .touchUpInside)
   }
+    
+    @objc func sellTrade() {
+      guard let trade = trade else { return }
+      let controller = P2PCreateOrderPopupViewController()
+      controller.delegate = self
+      controller.setup(trade: trade,
+                       platformFee: 3,
+                       reservedBalance: reservedBalance)
+      
+      controller.modalPresentationStyle = .overCurrentContext
+      present(controller, animated: true, completion: nil)
+    }
   
   override func setupLayout() {
     super.setupLayout()
@@ -67,3 +81,16 @@ class P2PTradeDetailsSellViewController: P2PTradeDetailsBaseViewController {
   }
   
 }
+
+extension P2PTradeDetailsSellViewController: P2PCreateOrderPopupViewControllerDelegate {
+    func createOrder(price: Double, cryptoAmount: Double, fiatAmount: Double) {
+        guard let trade = trade, let tradeId = trade.id else { return }
+        let model = P2PCreateOrderDataModel(
+            tradeId: tradeId,
+            price: price,
+            cryptoAmount: cryptoAmount,
+            fiatAmount: fiatAmount)
+        delegate?.createOrder(model: model)
+    }
+}
+

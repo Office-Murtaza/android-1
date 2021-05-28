@@ -196,6 +196,12 @@ extension MDCButton {
     button.setTitle(localize(L.Shared.Button.edit), for: .normal)
     return button
   }
+    
+    static var save: MDCButton {
+      let button = MDCButton.contained
+        button.setTitle(localize(L.Shared.Button.save), for: .normal)
+      return button
+    }
   
   static var buySell: MDCButton {
     let button = MDCButton.contained

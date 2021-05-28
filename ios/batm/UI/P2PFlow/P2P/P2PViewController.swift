@@ -77,8 +77,8 @@ class P2PViewController: ModuleViewController<P2PPresenter>, MDCTabBarDelegate {
     
     guard let buyController = buyViewController, let sellController = sellViewController else { return }
     
-    buyDataSource.setup(controller: buyController)
-    sellDataSource.setup(controller: sellController)
+    buyDataSource.setup(controller: sellController)
+    sellDataSource.setup(controller: buyController)
     buyDataSource.delegate = self
     sellDataSource.delegate = self
  
@@ -217,22 +217,22 @@ extension P2PViewController: TradesDataSourceDelegate {
     func didSelected(tradeModel: TradeViewModel, type: P2PTradesType, reservedBalance: Double) {
         switch type {
         case .buy:
+            let sellController = P2PTradeDetailsSellViewController()
+            sellController.delegate = self
+            sellController.setup(trade: tradeModel.trade, distance: "\(tradeModel.distanceInMiles ?? "0") Miles", reservedBalance: reservedBalance)
+            navigationController?.pushViewController(sellController, animated: true)
+            
+        case .sell:
             let buyController = P2PTradeDetailsBuyViewController()
             buyController.delegate = self
             buyController.setup(trade: tradeModel.trade, distance: "\(tradeModel.distanceInMiles ?? "0") Miles", reservedBalance: reservedBalance)
             navigationController?.pushViewController(buyController, animated: true)
-        case .sell:
-            let sellController = P2PTradeDetailsSellViewController()
-            sellController.setup(trade: tradeModel.trade, distance: "\(tradeModel.distanceInMiles ?? "0") Miles", reservedBalance: reservedBalance)
-            navigationController?.pushViewController(sellController, animated: true)
         }
     }
 }
 
-extension P2PViewController: P2PTradeDetailsBuyViewControllerDelegate {
+extension P2PViewController: P2PTradeDetailsCreateOrderDelegate {
     func createOrder(model: P2PCreateOrderDataModel) {
         presenter.createOrder(model: model)
     }
 }
-
-
