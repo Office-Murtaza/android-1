@@ -23,8 +23,8 @@ class TradeContainerViewPagerAdapter(
 
     override fun createFragment(position: Int): Fragment =
         when (position) {
-            BUY_TRADES_TAB_POSITION -> TradeListFragment.newInstance(TradeType.BUY)
-            SELL_TRADES_TAB_POSITION -> TradeListFragment.newInstance(TradeType.SELL)
+            BUY_TRADES_TAB_POSITION -> TradeListFragment.newInstance(TradeType.SELL)
+            SELL_TRADES_TAB_POSITION -> TradeListFragment.newInstance(TradeType.BUY)
             TRADE_INFO_TAB_POSITION -> TradeInfoContainerFragment()
             else -> throw RuntimeException("Illegal position of tab $position")
         }

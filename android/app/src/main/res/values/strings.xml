@@ -635,7 +635,8 @@
     <string name="price_format">###,##0.00</string>
     <string name="no_orders_message">There isn\'t open orders yet</string>
     <string name="no_trades_result_message">There isn\'t trades with the applied filter</string>
-    <string name="trade_details_buy_sell_button_title">Buy/Sell</string>
+    <string name="trade_details_buy_button_title">Buy</string>
+    <string name="trade_details_sell_button_title">Sell</string>
     <string name="trade_buy_sell_crypto_amount_label">Crypto amount</string>
     <string name="trade_buy_sell_submit_button_label">Submit</string>
     <string name="usd_amount_label">Fiat amount</string>

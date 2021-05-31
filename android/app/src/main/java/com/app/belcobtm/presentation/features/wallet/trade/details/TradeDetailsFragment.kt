@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat
 import androidx.lifecycle.observe
 import androidx.navigation.fragment.navArgs
 import com.app.belcobtm.R
@@ -14,7 +13,6 @@ import com.app.belcobtm.data.model.trade.TradeType
 import com.app.belcobtm.databinding.FragmentTradeDetailsBinding
 import com.app.belcobtm.presentation.core.adapter.MultiTypeAdapter
 import com.app.belcobtm.presentation.core.extensions.resIcon
-import com.app.belcobtm.presentation.core.extensions.setDrawableStart
 import com.app.belcobtm.presentation.core.extensions.toHtmlSpan
 import com.app.belcobtm.presentation.core.extensions.toggle
 import com.app.belcobtm.presentation.core.ui.fragment.BaseFragment
@@ -79,18 +77,10 @@ class TradeDetailsFragment : BaseFragment<FragmentTradeDetailsBinding>() {
         viewModel.terms.observe(viewLifecycleOwner, terms::setText)
         viewModel.amountRange.observe(viewLifecycleOwner, amountRange::setText)
         viewModel.tradeType.observe(viewLifecycleOwner) {
-            with(tradeType) {
-                if (it == TradeType.BUY) {
-                    setBackgroundResource(R.drawable.trade_type_buy_background)
-                    setDrawableStart(R.drawable.ic_trade_type_buy)
-                    setText(R.string.trade_type_buy_label)
-                    setTextColor(ContextCompat.getColor(binding.root.context, R.color.trade_type_buy_trade_text_color))
-                } else {
-                    setBackgroundResource(R.drawable.trade_type_sell_background)
-                    setDrawableStart(R.drawable.ic_trade_type_sell)
-                    setText(R.string.trade_type_sell_label)
-                    setTextColor(ContextCompat.getColor(binding.root.context, R.color.trade_type_sell_trade_text_color))
-                }
+            if (it == TradeType.BUY) {
+                buySellButton.setText(R.string.trade_details_sell_button_title)
+            } else {
+                buySellButton.setText(R.string.trade_details_buy_button_title)
             }
         }
         viewModel.selectedCoin.observe(viewLifecycleOwner) {
