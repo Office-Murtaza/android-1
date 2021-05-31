@@ -4,6 +4,7 @@ import RxCocoa
 import SnapKit
 import MaterialComponents
 import MessageUI
+import CoreLocation
 
 class P2PViewController: ModuleViewController<P2PPresenter>, MDCTabBarDelegate {
     
@@ -18,6 +19,7 @@ class P2PViewController: ModuleViewController<P2PPresenter>, MDCTabBarDelegate {
     private var controllers = [UIViewController]()
     private var prevIndex = 0
     private var balance: CoinsBalance?
+    var currentLocation: CLLocation?
     
     lazy var pageController: UIPageViewController = {
         let controller = UIPageViewController(transitionStyle: .scroll,
@@ -105,6 +107,7 @@ class P2PViewController: ModuleViewController<P2PPresenter>, MDCTabBarDelegate {
             .distinctUntilChanged()
             .observeOn(MainScheduler())
             .do { [weak self] (location) in
+                self?.currentLocation = location
                 self?.buyViewController?.update(location: location)
                 self?.sellViewController?.update(location: location)
                 self?.buyDataSource.reload(location: location)
@@ -232,6 +235,19 @@ extension P2PViewController: TradesDataSourceDelegate {
 }
 
 extension P2PViewController: P2PTradeDetailsCreateOrderDelegate {
+    func didTapDistance(trade: Trade) {
+        guard let userLocation = currentLocation else { return }
+    
+        let makerLatitude = trade.makerLatitude
+        let makerLongitude = trade.makerLongitude
+        
+        let url = "maps://?saddr=\(userLocation.coordinate.latitude),\(userLocation.coordinate.longitude)&daddr=\(makerLatitude),\(makerLongitude)"
+        
+        guard let openUrl = URL(string:url) else { return }
+        
+        UIApplication.shared.open(openUrl, options: [:], completionHandler: nil)
+    }
+    
     func createOrder(model: P2PCreateOrderDataModel) {
         presenter.createOrder(model: model)
     }

@@ -2,6 +2,7 @@ import UIKit
 
 protocol P2PTradeDetailsCreateOrderDelegate: AnyObject {
     func createOrder(model: P2PCreateOrderDataModel)
+    func didTapDistance(trade: Trade)
 }
 
 class P2PTradeDetailsBaseViewController: UIViewController {

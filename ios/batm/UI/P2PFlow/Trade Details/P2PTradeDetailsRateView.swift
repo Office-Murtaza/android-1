@@ -2,7 +2,14 @@
 import UIKit
 import SnapKit
 
+protocol P2PTradeDetailsRateViewDelegate: AnyObject {
+    func didTapDistance()
+}
+
 class P2PTradeDetailsRateView: UIView {
+    
+   weak var delegate: P2PTradeDetailsRateViewDelegate?
+    
   private let markerIdView = MarkerIdView()
   private let rateView = P2PCellRateView()
   private let distanceView = P2PDistanceView()
@@ -23,13 +30,13 @@ class P2PTradeDetailsRateView: UIView {
              rate: Double,
              totalTrades: Double,
              distance: String) {
-    
     markerIdView.update(markerId: markerId, statusImage: statusImage)
     rateView.update(rate: rate.formatted() ?? "0", tradesCount: totalTrades.formatted() ?? "0")
     distanceView.update(distance: distance, isDistanceNeeded: true)
   }
   
   private func setupUI() {
+    distanceView.delegate = self
     addSubviews([
       markerIdView,
       rateView,
@@ -67,4 +74,10 @@ class P2PTradeDetailsRateView: UIView {
     }
   }
   
+}
+
+extension P2PTradeDetailsRateView: P2PDistanceViewDelegate {
+    func didTapDistance() {
+        delegate?.didTapDistance()
+    }
 }

@@ -13,15 +13,14 @@ class P2PTradeDetailsBuyViewController: P2PTradeDetailsBaseViewController {
   private var reservedBalance: Double = 0
   
     func setup(trade: Trade, distance: String, reservedBalance: Double) {
-    super.setup(trade: trade)
+        super.setup(trade: trade)
         self.reservedBalance = reservedBalance
-    guard let makerId = trade.makerPublicId,
-          let tradeRate = trade.makerTradingRate,
-          let totalTrades = trade.makerTotalTrades else { return }
-    tradeView.setup(markerId: makerId , statusImage: nil, rate: tradeRate, totalTrades: totalTrades, distance: distance)
+        guard let makerId = trade.makerPublicId,
+              let tradeRate = trade.makerTradingRate,
+              let totalTrades = trade.makerTotalTrades else { return }
+        tradeView.setup(markerId: makerId , statusImage: nil, rate: tradeRate, totalTrades: totalTrades, distance: distance)
+    }
     
-  }
-  
   override func setupUI() {
     super.setupUI()
     

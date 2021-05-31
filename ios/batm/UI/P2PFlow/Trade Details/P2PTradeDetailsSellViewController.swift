@@ -27,6 +27,7 @@ class P2PTradeDetailsSellViewController: P2PTradeDetailsBaseViewController {
     super.setupUI()
     
     coinInfoView.update(isSellBuyHidden: true)
+    tradeView.delegate = self
     
     stackView.addArrangedSubviews([
       tradeView,
@@ -96,3 +97,9 @@ extension P2PTradeDetailsSellViewController: P2PCreateOrderPopupViewControllerDe
     }
 }
 
+extension P2PTradeDetailsSellViewController: P2PTradeDetailsRateViewDelegate {
+    func didTapDistance() {
+        guard let trade = trade else { return }
+        delegate?.didTapDistance(trade: trade)
+    }
+}
