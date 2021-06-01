@@ -67,7 +67,11 @@ class TradesDataSource: NSObject,  TradeListDataSource {
     }
   
     func update(trade: Trade) {
-        guard trade.type == currentType?.rawValue else { return }
+        let ids = tradesViewModels.compactMap{ $0.trade.id }
+
+        guard trade.type == currentType?.rawValue,
+              let tradeId = trade.id,
+              ids.contains(tradeId) == false else { return }
         
         let appendModel = TradeViewModel(trade: trade, totalTrades: currentTotal ?? 0, rate: currentRate ?? 0)
         tradesViewModels.insert(appendModel, at: 0)
