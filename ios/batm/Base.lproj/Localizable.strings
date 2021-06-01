@@ -502,7 +502,7 @@
 "p2p.order.details.status" = "Status";
 "p2p.order.details.my.score" = "My Score";
 "p2p.order.details.score.from.partner" = "Score from a partner";
-"p2p.order.create.fiat.error" = "Amount is bigger/less than specified limits";
+"p2p.order.create.fiat.error" = "Fiat amount is not in trade limits range";
 "p2p.order.create.reserved.error" = "Amount is bigger than your reserved balance";
 
 "p2p.crate.trade.validation.not.empty" = "Price must be greather than zero";

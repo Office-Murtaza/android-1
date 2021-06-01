@@ -27,14 +27,27 @@ class P2PCreateOrderModel: P2PCreateOrderModelInput {
                             reservedBalance: Double) -> CreateOrderModelResult {
         let cryptoAmount = calculateCryptoAmount(fiatAmount, trade.price ?? 0)
         let feeAmount = calculateFeeAmount(cryptoAmount, platformFee)
-        let error = validate(trade: trade,
-                             fiatAmount: fiatAmount,
-                             cryptoAmount: cryptoAmount,
-                             reservedBalance: reservedBalance)
-        
         let data = P2PCreateOrderData(cryptoAmount: cryptoAmount, feeAmount: feeAmount)
         
-        return (data, error)
+        guard let type = trade.type, let tradeType = P2PTradesType(rawValue: type) else {
+            return (data, nil)
+        }
+
+        var validationError: P2PCreateOrderValidationError?
+        
+        if tradeType == .sell {
+            validationError = validateSellTrade(trade,
+                                           fiatAmount: fiatAmount,
+                                           cryptoAmount: cryptoAmount,
+                                           reservedBalance: reservedBalance)
+        } else {
+            validationError = validateBuyTrade(trade,
+                                           fiatAmount: fiatAmount,
+                                           cryptoAmount: cryptoAmount,
+                                           reservedBalance: reservedBalance)
+        }
+        
+        return (data, validationError)
     }
     
     private func calculateCryptoAmount(_ fiatAmount: Double,_ tradePrice: Double) -> Double {
@@ -47,17 +60,25 @@ class P2PCreateOrderModel: P2PCreateOrderModelInput {
         return feeAmount
     }
     
-    private func validate(trade: Trade, fiatAmount: Double, cryptoAmount: Double, reservedBalance: Double) -> P2PCreateOrderValidationError? {
+    private func validateBuyTrade(_ trade: Trade, fiatAmount: Double, cryptoAmount: Double, reservedBalance: Double) -> P2PCreateOrderValidationError? {
         var error: P2PCreateOrderValidationError?
         isFiatAmountValid(trade: trade, fiatAmount: fiatAmount, error: &error)
         isReservedBalanceValid(reservedBalance: reservedBalance, cryptoAmount: cryptoAmount, error: &error)
         return error
     }
     
+    private func validateSellTrade(_ trade: Trade, fiatAmount: Double, cryptoAmount: Double, reservedBalance: Double) -> P2PCreateOrderValidationError? {
+        var error: P2PCreateOrderValidationError?
+        isFiatAmountValid(trade: trade, fiatAmount: fiatAmount, error: &error)
+        return error
+    }
+    
     @discardableResult
     private func isFiatAmountValid(trade: Trade, fiatAmount: Double, error: inout P2PCreateOrderValidationError?) -> Bool {
         guard let min = trade.minLimit, let max = trade.maxLimit else { return true }
-        if min...max ~= fiatAmount { return true }
+        if max > min {
+            if min...max ~= fiatAmount { return true }
+        }
         error = P2PCreateOrderValidationError(message: localize(L.P2p.Order.Create.Fiat.error))
         return false
     }
