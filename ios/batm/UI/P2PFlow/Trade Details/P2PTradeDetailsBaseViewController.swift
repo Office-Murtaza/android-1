@@ -1,12 +1,17 @@
 import UIKit
 
+protocol P2PTradeDetailsCreateOrderDelegate: AnyObject {
+    func createOrder(model: P2PCreateOrderDataModel)
+    func didTapDistance(trade: Trade)
+}
+
 class P2PTradeDetailsBaseViewController: UIViewController {
   
   var trade: Trade?
   private let scrollView = UIScrollView()
-  private let coinInfoView = P2PTradeDetailsCoinInfoView()
-
-  private let paymentMethods = P2PTradeDetailsPaymentMethodsView()
+  let coinInfoView = P2PTradeDetailsCoinInfoView()
+  
+    private let paymentMethods = P2PTradeDetailsPaymentMethodsView()
   let paymentMethodsSeparator = P2PSeparatorView()
   
   lazy var stackView: UIStackView = {
@@ -40,6 +45,7 @@ class P2PTradeDetailsBaseViewController: UIViewController {
   }
   
   func setupUI() {
+    
     view.addSubviews([
       scrollView,
     ])

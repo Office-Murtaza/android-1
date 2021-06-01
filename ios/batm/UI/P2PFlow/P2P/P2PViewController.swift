@@ -4,6 +4,7 @@ import RxCocoa
 import SnapKit
 import MaterialComponents
 import MessageUI
+import CoreLocation
 
 class P2PViewController: ModuleViewController<P2PPresenter>, MDCTabBarDelegate {
     
@@ -18,6 +19,7 @@ class P2PViewController: ModuleViewController<P2PPresenter>, MDCTabBarDelegate {
     private var controllers = [UIViewController]()
     private var prevIndex = 0
     private var balance: CoinsBalance?
+    var currentLocation: CLLocation?
     
     lazy var pageController: UIPageViewController = {
         let controller = UIPageViewController(transitionStyle: .scroll,
@@ -77,8 +79,8 @@ class P2PViewController: ModuleViewController<P2PPresenter>, MDCTabBarDelegate {
     
     guard let buyController = buyViewController, let sellController = sellViewController else { return }
     
-    buyDataSource.setup(controller: buyController)
-    sellDataSource.setup(controller: sellController)
+    buyDataSource.setup(controller: sellController)
+    sellDataSource.setup(controller: buyController)
     buyDataSource.delegate = self
     sellDataSource.delegate = self
  
@@ -105,6 +107,7 @@ class P2PViewController: ModuleViewController<P2PPresenter>, MDCTabBarDelegate {
             .distinctUntilChanged()
             .observeOn(MainScheduler())
             .do { [weak self] (location) in
+                self?.currentLocation = location
                 self?.buyViewController?.update(location: location)
                 self?.sellViewController?.update(location: location)
                 self?.buyDataSource.reload(location: location)
@@ -217,22 +220,35 @@ extension P2PViewController: TradesDataSourceDelegate {
     func didSelected(tradeModel: TradeViewModel, type: P2PTradesType, reservedBalance: Double) {
         switch type {
         case .buy:
+            let sellController = P2PTradeDetailsSellViewController()
+            sellController.delegate = self
+            sellController.setup(trade: tradeModel.trade, distance: "\(tradeModel.distanceInMiles ?? "0") Miles", reservedBalance: reservedBalance)
+            navigationController?.pushViewController(sellController, animated: true)
+            
+        case .sell:
             let buyController = P2PTradeDetailsBuyViewController()
             buyController.delegate = self
             buyController.setup(trade: tradeModel.trade, distance: "\(tradeModel.distanceInMiles ?? "0") Miles", reservedBalance: reservedBalance)
             navigationController?.pushViewController(buyController, animated: true)
-        case .sell:
-            let sellController = P2PTradeDetailsSellViewController()
-            sellController.setup(trade: tradeModel.trade, distance: "\(tradeModel.distanceInMiles ?? "0") Miles", reservedBalance: reservedBalance)
-            navigationController?.pushViewController(sellController, animated: true)
         }
     }
 }
 
-extension P2PViewController: P2PTradeDetailsBuyViewControllerDelegate {
+extension P2PViewController: P2PTradeDetailsCreateOrderDelegate {
+    func didTapDistance(trade: Trade) {
+        guard let userLocation = currentLocation else { return }
+    
+        let makerLatitude = trade.makerLatitude
+        let makerLongitude = trade.makerLongitude
+        
+        let url = "maps://?saddr=\(userLocation.coordinate.latitude),\(userLocation.coordinate.longitude)&daddr=\(makerLatitude),\(makerLongitude)"
+        
+        guard let openUrl = URL(string:url) else { return }
+        
+        UIApplication.shared.open(openUrl, options: [:], completionHandler: nil)
+    }
+    
     func createOrder(model: P2PCreateOrderDataModel) {
         presenter.createOrder(model: model)
     }
 }
-
-

@@ -2,31 +2,29 @@ import UIKit
 import SnapKit
 import MaterialComponents
 
-protocol P2PTradeDetailsBuyViewControllerDelegate: AnyObject {
-    func createOrder(model: P2PCreateOrderDataModel)
-}
-
 class P2PTradeDetailsBuyViewController: P2PTradeDetailsBaseViewController {
+  
+  weak var delegate: P2PTradeDetailsCreateOrderDelegate?
+    
   private let tradeView =  P2PTradeDetailsRateView()
   private let tradeViewSeparator = P2PSeparatorView()
   private let infoMessageView = P2PTradeDetailsTextInfoView()
   private let buyButton = MDCButton.buy
   private var reservedBalance: Double = 0
   
-    weak var delegate: P2PTradeDetailsBuyViewControllerDelegate?
-  
     func setup(trade: Trade, distance: String, reservedBalance: Double) {
-    super.setup(trade: trade)
+        super.setup(trade: trade)
         self.reservedBalance = reservedBalance
-    guard let makerId = trade.makerPublicId,
-          let tradeRate = trade.makerTradingRate,
-          let totalTrades = trade.makerTotalTrades else { return }
-    tradeView.setup(markerId: makerId , statusImage: nil, rate: tradeRate, totalTrades: totalTrades, distance: distance)
+        guard let makerId = trade.makerPublicId,
+              let tradeRate = trade.makerTradingRate,
+              let totalTrades = trade.makerTotalTrades else { return }
+        tradeView.setup(markerId: makerId , statusImage: nil, rate: tradeRate, totalTrades: totalTrades, distance: distance)
+    }
     
-  }
-  
   override func setupUI() {
     super.setupUI()
+    
+    coinInfoView.update(isSellBuyHidden: true)
     
     stackView.addArrangedSubviews([
       tradeView,

@@ -43,7 +43,7 @@ class P2PEditTradeViewController: UIViewController {
   private var payments: [TradePaymentMethods]
   private let coinType: String
   
-  let editButton = MDCButton.edit
+  let saveButton = MDCButton.save
   weak var delegate: P2PEditTradeViewControllerDelegate?
   
   private lazy var stackView: UIStackView = {
@@ -140,7 +140,7 @@ class P2PEditTradeViewController: UIViewController {
     termsTextFieldController?.placeholderText = localize(L.P2p.Terms.placeholder)
     termsTextFieldController?.minimumLines = 3
     
-    editButton.addTarget(self, action: #selector(editTrade), for: .touchUpInside)
+    saveButton.addTarget(self, action: #selector(editTrade), for: .touchUpInside)
     selectTradeTypeView.setActive(type: selectedType)
     
     view.addSubviews([
@@ -168,7 +168,7 @@ class P2PEditTradeViewController: UIViewController {
       termsSeparator,
       termsHeader,
       termsTextField,
-      editButton,
+      saveButton,
       emptyFooterView
     ])
     
@@ -345,14 +345,14 @@ class P2PEditTradeViewController: UIViewController {
       $0.height.equalTo(105)
     }
     
-    editButton.snp.makeConstraints {
+    saveButton.snp.makeConstraints {
       $0.top.equalTo(termsTextField.snp.bottom)
       $0.height.equalTo(50)
       $0.left.right.equalToSuperview().inset(15)
     }
     
     emptyFooterView.snp.makeConstraints {
-      $0.top.equalTo(editButton.snp.bottom)
+      $0.top.equalTo(saveButton.snp.bottom)
       $0.left.right.equalToSuperview()
       $0.height.equalTo(40)
     }
@@ -362,6 +362,7 @@ class P2PEditTradeViewController: UIViewController {
     
     guard let firstBalance = balance.coins.first else { return }
     let currentBalance = balance.coins.first(where: {$0.type.code == coinType})
+    currentPrice = currentModel.price
     coinExchangeView.setCoinBalance(currentBalance ?? firstBalance, amount: currentModel.price.formatted() ?? "0")
     
     coinExchangeView.didSelectPickerRow.asObservable().subscribe { [unowned self] type in

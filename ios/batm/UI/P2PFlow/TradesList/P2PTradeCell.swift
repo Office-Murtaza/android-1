@@ -283,7 +283,13 @@ class P2PCellRateView: UIView {
     }
 }
 
+protocol P2PDistanceViewDelegate: AnyObject {
+    func didTapDistance()
+}
+
 class P2PDistanceView: UIView {
+    
+    weak var delegate: P2PDistanceViewDelegate?
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -323,22 +329,26 @@ class P2PDistanceView: UIView {
         return label
     }()
     
-    private lazy var userDistanceImageView: UIImageView = {
-        let image = UIImageView()
-        image.contentMode = .scaleAspectFit
-        return image
+    private lazy var userDistanceButton: UIButton = {
+        let button = UIButton()
+        button.setImage(UIImage(named: "p2p_user_distance"), for: .normal)
+        button.addTarget(self, action: #selector(didTapDistance), for: .touchUpInside)
+        return button
     }()
     
     private var isDistanceNeeded: Bool = false
+    
+    
+    @objc func didTapDistance() {
+        delegate?.didTapDistance()
+    }
     
     public func update(distance: String, isDistanceNeeded: Bool) {
         self.isDistanceNeeded = isDistanceNeeded
         
         distanceLabel.text = distance
         myLocationImageView.image = UIImage(named: "p2p_my_location")
-        if isDistanceNeeded {
-            userDistanceImageView.image = UIImage(named: "p2p_user_distance")
-        }
+        userDistanceButton.isHidden = !isDistanceNeeded
         
         setupUI()
         setupLayout()
@@ -353,7 +363,7 @@ class P2PDistanceView: UIView {
         
         bigStackView.addArrangedSubview(stackView)
         if isDistanceNeeded {
-            bigStackView.addArrangedSubview(userDistanceImageView)
+            bigStackView.addArrangedSubview(userDistanceButton)
         }
     }
 
