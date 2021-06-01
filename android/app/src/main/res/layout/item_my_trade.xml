@@ -67,7 +67,6 @@
         android:gravity="end"
         android:textColor="@color/black_text_color"
         android:textSize="16sp"
-        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@id/trade_type"

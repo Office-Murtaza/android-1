@@ -433,6 +433,13 @@
             app:layout_constraintTop_toTopOf="@id/partner_score_label"
             tools:text="4.25" />
 
+        <androidx.constraintlayout.widget.Group
+            android:id="@+id/rating_group"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            app:constraint_referenced_ids="partner_score_label,partner_score_value,my_score_divider,my_score_label,my_score_value" />
+
         <Button
             android:id="@+id/primary_action_button"
             style="@style/Button.Primary"

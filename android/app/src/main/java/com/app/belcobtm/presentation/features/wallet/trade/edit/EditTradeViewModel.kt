@@ -187,7 +187,7 @@ class EditTradeViewModel(
         }
         val cryptoAmount = toAmount / price
         if (tradeType.value == TradeType.SELL && cryptoAmount > selectedCoin.value?.reservedBalanceCoin ?: 0.0) {
-            _snackbarMessage.value = stringProvider.getString(R.string.edit_trade_not_enough_crypto_balance)
+            _priceRangeError.value = stringProvider.getString(R.string.edit_trade_not_enough_crypto_balance)
             return
         }
         _editTradeLoadingData.value = LoadingData.Loading()

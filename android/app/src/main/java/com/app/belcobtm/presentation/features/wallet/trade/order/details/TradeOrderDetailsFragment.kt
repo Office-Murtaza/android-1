@@ -9,6 +9,7 @@ import androidx.core.content.ContextCompat
 import androidx.lifecycle.observe
 import androidx.navigation.fragment.navArgs
 import com.app.belcobtm.R
+import com.app.belcobtm.data.model.trade.OrderStatus
 import com.app.belcobtm.data.model.trade.TradeType
 import com.app.belcobtm.databinding.FragmentTradeOrderDetailsBinding
 import com.app.belcobtm.presentation.core.adapter.MultiTypeAdapter
@@ -98,6 +99,7 @@ class TradeOrderDetailsFragment : BaseFragment<FragmentTradeOrderDetailsBinding>
         viewModel.orderStatus.observe(viewLifecycleOwner) {
             statusValue.setText(it.statusLabelId)
             statusValue.setDrawableEnd(it.statusDrawableId)
+            ratingGroup.toggle(it.statusId == OrderStatus.RELEASED || it.statusId == OrderStatus.SOLVED)
         }
         viewModel.partnerScore.observe(viewLifecycleOwner) {
             partnerScoreValue.text = it.toString()

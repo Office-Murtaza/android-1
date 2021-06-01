@@ -549,7 +549,7 @@
     <string name="deals_toolsbar_title">Deals</string>
     <string name="deals_staking">Staking</string>
     <string name="deals_swap">Swap</string>
-    <string name="deals_trade">P2P Trading</string>
+    <string name="deals_trade">P2P Trade</string>
     <string name="deals_transfer">Transfer</string>
 
     <!-- Transfer flow -->
@@ -595,8 +595,8 @@
 
     <string name="trade_create_reserved_balance_formatted"><![CDATA[Reserved %1$s %2$s]]></string>
     <string name="trade_crypto_amount_value">%1$s %2$s</string>
-    <string name="fiat_amount_label">Fiat amount</string>
-    <string name="crypto_amount_label">Crypto amount</string>
+    <string name="fiat_amount_label">Fiat Amount</string>
+    <string name="crypto_amount_label">Crypto Amount</string>
     <string name="no_trades_message">You haven\'t created a single trade yet.</string>
     <string name="create_trade_screen_title">New trade</string>
     <string name="open_create_trade_button_title">Create new trade</string>
@@ -689,7 +689,7 @@
     <string name="perfect_rating_label">Awesome</string>
     <string name="send_message_error">Failed to send message please try again</string>
     <string name="my_score_label">My Score</string>
-    <string name="score_from_a_partner_label">Score From A Partner</string>
+    <string name="score_from_a_partner_label">Partner Score</string>
     <string name="trade_order_details_crypto_amount_label">Crypto Amount</string>
     <string name="trade_order_details_fiat_amount">Fiat Amount</string>
     <string name="cannot_perform_swap_error">Cannot perform swap</string>
