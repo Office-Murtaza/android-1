@@ -181,7 +181,7 @@ class CreateTradeViewModel(
         }
         val cryptoAmount = toAmount / price
         if (type == TradeType.SELL && cryptoAmount > selectedCoin.value?.reservedBalanceCoin ?: 0.0) {
-            _snackbarMessage.value = stringProvider.getString(R.string.create_trade_not_enough_crypto_balance)
+            _amountRangeError.value = stringProvider.getString(R.string.create_trade_not_enough_crypto_balance)
             return
         }
         val coinCode = selectedCoin.value?.code.orEmpty()
