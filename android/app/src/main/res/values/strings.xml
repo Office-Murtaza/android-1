@@ -560,7 +560,7 @@
     <string name="phone_number_country_code">+1</string>
 
     <!-- New trade screen -->
-    <string name="trade_list_screen_title">P2P Trading</string>
+    <string name="trade_list_screen_title">P2P Trade</string>
     <string name="trade_list_item_price_range_format">%1$s - %2$s</string>
     <string name="trade_list_item_total_trades_formatted">%d trades</string>
     <string name="trade_list_buy_tab_title">Buy</string>
@@ -601,7 +601,7 @@
     <string name="create_trade_screen_title">New trade</string>
     <string name="open_create_trade_button_title">Create new trade</string>
     <string name="create_trade_menu_title">Create trade</string>
-    <string name="create_trade_screen_trade_type_label">Trade type</string>
+    <string name="create_trade_screen_trade_type_label">Trade Type</string>
     <string name="payment_options_label">Payment Methods</string>
     <string name="trade_create_price_limits_label">Limits, $</string>
     <string name="trade_create_terms_label">Terms</string>
@@ -624,7 +624,7 @@
     <string name="create_trade_not_enough_crypto_balance">Max limit exceeds reserved balance</string>
     <string name="create_trade_already_exists">You already have a %1$s %2$s trade</string>
     <string name="payment_methods_label">Payment Methods</string>
-    <string name="open_orders_label">Open orders</string>
+    <string name="open_orders_label">Open Orders</string>
     <string name="edit_trade_button_title">Edit</string>
     <string name="cancel_trade_button_title">Cancel</string>
     <string name="from_hint_label">Min</string>
@@ -639,7 +639,9 @@
     <string name="trade_details_sell_button_title">Sell</string>
     <string name="trade_buy_sell_crypto_amount_label">Crypto amount</string>
     <string name="trade_buy_sell_submit_button_label">Submit</string>
-    <string name="usd_amount_label">Fiat amount</string>
+    <string name="usd_amount_label">Fiat Amount, $</string>
+    <string name="create_order_reserved_amount">Reserved %s %s</string>
+    <string name="create_order_total_amount">%s %s</string>
     <string name="item_no_trades_reset_all_filters_button_label">Reset all filters</string>
 
     <string name="distance_label_formatted">%1$s miles</string>
@@ -703,4 +705,6 @@
     <string name="create_trade_get_coin_list_error_title">Error</string>
     <string name="create_trade_get_coin_list_error_message">An error occurred receiving your balance. Please check that balance available</string>
     <string name="create_trade_get_coin_list_error_button_title">OK</string>
+    <string name="you_will_get_label">You Will Get</string>
+    <string name="order_details_id_label">ID</string>
 </resources>

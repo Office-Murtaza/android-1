@@ -1,10 +1,13 @@
 package com.app.belcobtm.presentation.features.wallet.trade.order.details
 
 import android.annotation.SuppressLint
+import android.content.ClipData
+import android.content.ClipboardManager
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.view.*
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.observe
 import androidx.navigation.fragment.navArgs
@@ -14,6 +17,7 @@ import com.app.belcobtm.data.model.trade.TradeType
 import com.app.belcobtm.databinding.FragmentTradeOrderDetailsBinding
 import com.app.belcobtm.presentation.core.adapter.MultiTypeAdapter
 import com.app.belcobtm.presentation.core.extensions.*
+import com.app.belcobtm.presentation.core.helper.AlertHelper
 import com.app.belcobtm.presentation.core.mvvm.LoadingData
 import com.app.belcobtm.presentation.core.ui.fragment.BaseFragment
 import com.app.belcobtm.presentation.features.wallet.trade.list.delegate.TradePaymentOptionDelegate
@@ -96,6 +100,9 @@ class TradeOrderDetailsFragment : BaseFragment<FragmentTradeOrderDetailsBinding>
         viewModel.makerTotalTrades.observe(viewLifecycleOwner) {
             makerTradeCountLabel.text = it.toHtmlSpan()
         }
+        viewModel.orderId.observe(viewLifecycleOwner) {
+            orderIdValue.text = it
+        }
         viewModel.orderStatus.observe(viewLifecycleOwner) {
             statusValue.setText(it.statusLabelId)
             statusValue.setDrawableEnd(it.statusDrawableId)
@@ -103,11 +110,9 @@ class TradeOrderDetailsFragment : BaseFragment<FragmentTradeOrderDetailsBinding>
         }
         viewModel.partnerScore.observe(viewLifecycleOwner) {
             partnerScoreValue.text = it.toString()
-            partnerScoreValue.toggle(it != null)
         }
         viewModel.myScore.observe(viewLifecycleOwner) {
             myScoreValue.text = it.toString()
-            myScoreValue.toggle(it != null)
         }
         viewModel.distance.observe(viewLifecycleOwner) {
             binding.distanceLabel.text = it
@@ -172,8 +177,17 @@ class TradeOrderDetailsFragment : BaseFragment<FragmentTradeOrderDetailsBinding>
             mapIntent.setPackage(requireContext().getString(R.string.google_maps_package))
             startActivity(mapIntent)
         }
+        binding.icOrderIdCopy.setOnClickListener {
+            copyToClipboard(viewModel.orderId.value.orEmpty())
+        }
     }
 
+    private fun copyToClipboard(copiedText: String) {
+        val clipboard = requireContext().getSystemService(AppCompatActivity.CLIPBOARD_SERVICE) as ClipboardManager
+        val clip = ClipData.newPlainText(copiedText, copiedText)
+        clipboard.setPrimaryClip(clip)
+        AlertHelper.showToastShort(requireContext(), R.string.copied)
+    }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.order_details_menu, menu)

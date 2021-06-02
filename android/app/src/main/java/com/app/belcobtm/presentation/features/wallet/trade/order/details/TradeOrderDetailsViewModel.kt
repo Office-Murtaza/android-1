@@ -75,6 +75,9 @@ class TradeOrderDetailsViewModel(
     private val _orderStatus = MutableLiveData<OrderStatusItem>()
     val orderStatus: LiveData<OrderStatusItem> = _orderStatus
 
+    private val _orderId = MutableLiveData<String>()
+    val orderId: LiveData<String> = _orderId
+
     private val _myScore = MutableLiveData<Double?>()
     val myScore: LiveData<Double?> = _myScore
 
@@ -171,6 +174,7 @@ class TradeOrderDetailsViewModel(
 
     private fun showContent(order: OrderItem) {
         _coin.value = order.coin
+        _orderId.value = order.id
         _terms.value = order.terms
         _price.value = order.trade.priceFormatted
         _orderStatus.value = order.orderStatus

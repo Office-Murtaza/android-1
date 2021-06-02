@@ -12,7 +12,8 @@ class DistanceCalculator(
 ) {
 
     private companion object {
-        const val EARTH_RADIUS_KM = 6371;
+        const val EARTH_RADIUS_KM = 6371
+        const val KM_TO_MILES_MULTIPLIER = 0.62137
     }
 
     suspend fun updateDistanceToTrades(trades: MutableMap<String, Trade>): MutableMap<String, Trade> {
@@ -41,7 +42,7 @@ class DistanceCalculator(
         val a = sin(dLat / 2) * sin(dLat / 2) +
                 sin(dLon / 2) * sin(dLon / 2) * cos(fromLatRadians) * cos(toLatRadians)
         val c = 2 * atan2(sqrt(a), sqrt(1 - a))
-        return EARTH_RADIUS_KM * c;
+        return EARTH_RADIUS_KM * c * KM_TO_MILES_MULTIPLIER
     }
 
     private fun degreesToRadians(degrees: Double) = degrees * Math.PI / 180
