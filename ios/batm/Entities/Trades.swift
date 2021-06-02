@@ -63,6 +63,7 @@ struct Order: Equatable {
     var paymentMethods: String?
     var makerLatitude: Double?
     var makerLongitude: Double?
+    var takerUserId: Int?
     
 }
 

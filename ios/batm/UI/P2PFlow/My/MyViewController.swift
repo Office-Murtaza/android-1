@@ -57,7 +57,7 @@ class MyViewController: UIViewController, MDCTabBarDelegate {
   
   func update(trades: Trades, userId: Int?) {
     let myTrades = trades.trades.filter { $0.makerUserId == userId }
-    let myOrders = trades.orders.filter { $0.makerUserId == userId }
+    let myOrders = trades.orders.filter { $0.makerUserId == userId || $0.takerUserId == userId }
     myTradesViewController.update(trades: myTrades)
     openOrdersViewController.update(orders: myOrders, trades: trades)
     let verificationStatus = TradeVerificationStatus(rawValue: trades.makerStatus )

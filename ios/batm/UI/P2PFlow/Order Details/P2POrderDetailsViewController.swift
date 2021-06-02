@@ -37,8 +37,8 @@ class P2POrderDetailsViewController: UIViewController {
         self.order = order
         let infoModel = P2POrderDetailsCoinInfoModel(order: order)
         coinInfoView.update(data: infoModel)
-        amountView.update(cryptoAmount: order.cryptoAmount?.coinFormatted ?? "",
-                          fiatAmount: order.fiatAmount?.coinFormatted ?? "")
+        amountView.update(cryptoAmount:"\(order.cryptoAmount?.coinFormatted ?? "") \(order.coin ?? "")",
+                          fiatAmount: "$ \(order.fiatAmount?.coinFormatted ?? "")")
         statusView.update(status: TradeOrderStatus(rawValue: order.status ?? 1) ?? .new)
         setupPaymenMethodsView(order: order)
         
