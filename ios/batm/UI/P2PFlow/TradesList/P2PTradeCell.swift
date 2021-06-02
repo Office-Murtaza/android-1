@@ -26,7 +26,7 @@ class P2PTradeCell: UITableViewCell {
     
     private lazy var priceLabel: UILabel = {
         let price = UILabel()
-        price.font = .systemFont(ofSize: 16, weight: .regular)
+        price.font = .systemFont(ofSize: 16, weight: .bold)
         return price
     }()
     
@@ -38,7 +38,7 @@ class P2PTradeCell: UITableViewCell {
     
     private lazy var limitLabel: UILabel = {
         let label = UILabel()
-        label.font = .systemFont(ofSize: 16, weight: .bold)
+        label.font = .systemFont(ofSize: 16, weight: .regular)
         return label
     }()
     

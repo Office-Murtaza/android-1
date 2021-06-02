@@ -67,12 +67,16 @@ class TradesDataSource: NSObject,  TradeListDataSource {
     }
   
     func update(trade: Trade) {
-        guard trade.type == currentType?.rawValue else { return }
         
         let appendModel = TradeViewModel(trade: trade, totalTrades: currentTotal ?? 0, rate: currentRate ?? 0)
+        
+        if let index = tradesViewModels.firstIndex(where: { $0.trade.id == trade.id }) {
+            tradesViewModels.remove(at: index)
+        }
+
         tradesViewModels.insert(appendModel, at: 0)
         initViewModels = tradesViewModels
-
+        
         DispatchQueue.main.async { [weak self] in
             self?.tableView?.reloadData()
         }

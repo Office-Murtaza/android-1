@@ -236,11 +236,11 @@ class P2PCreateTradeViewController: UIViewController {
     
     func calculateFee() {
         guard currentPrice > 0 else {
-            limitsView.feeLabel.text = "~ 0 \(selectedCointype.code)"
+            limitsView.feeLabel.text = "0 \(selectedCointype.code)"
             return
         }
         let value = Double(maxRange) / currentPrice
-        limitsView.feeLabel.text = "~ \(value.coinFormatted) \(selectedCointype.code)"
+        limitsView.feeLabel.text = "\(value.coinFormatted) \(selectedCointype.code)"
     }
     
     private func addNotificationObserver() {
