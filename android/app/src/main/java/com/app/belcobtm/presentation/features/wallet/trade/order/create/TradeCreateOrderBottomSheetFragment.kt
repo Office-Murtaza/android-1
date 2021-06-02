@@ -72,6 +72,16 @@ class TradeCreateOrderBottomSheetFragment : BaseBottomSheetFragment() {
             binding.amountError.text = it
             binding.amountError.toggle(it != null)
         }
+        viewModel.reservedBalance.observe(viewLifecycleOwner) {
+            binding.reservedAmountLabel.text = getString(
+                R.string.create_order_reserved_amount, it.reservedBalanceCrypto.toStringCoin(), it.coinName
+            )
+        }
+        viewModel.amountWithoutFee.observe(viewLifecycleOwner) {
+            binding.totalCryptoValue.text = getString(
+                R.string.create_order_total_amount, it.totalValueCrypto.toStringCoin(), it.coinName
+            )
+        }
         binding.submitButton.setOnClickListener {
             viewModel.createOrder()
         }

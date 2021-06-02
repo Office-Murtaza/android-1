@@ -13,9 +13,7 @@ import com.app.belcobtm.presentation.core.livedata.DoubleCombinedLiveData
 import com.app.belcobtm.presentation.core.mvvm.LoadingData
 import com.app.belcobtm.presentation.core.provider.string.StringProvider
 import com.app.belcobtm.presentation.features.wallet.trade.list.model.TradeItem
-import com.app.belcobtm.presentation.features.wallet.trade.order.create.model.TradeCryptoAmount
-import com.app.belcobtm.presentation.features.wallet.trade.order.create.model.TradeFee
-import com.app.belcobtm.presentation.features.wallet.trade.order.create.model.TradeOrderItem
+import com.app.belcobtm.presentation.features.wallet.trade.order.create.model.*
 
 class TradeCreateOrderViewModel(
     private val getTradeDetailsUseCase: GetTradeDetailsUseCase,
@@ -39,6 +37,9 @@ class TradeCreateOrderViewModel(
     private val _coin = MutableLiveData<LocalCoinType>()
     val coin: LiveData<LocalCoinType> = _coin
 
+    private val _reservedBalance = MutableLiveData<ReservedBalance>()
+    val reservedBalance: LiveData<ReservedBalance> = _reservedBalance
+
     val cryptoAmount: LiveData<TradeCryptoAmount> = DoubleCombinedLiveData(fiatAmount, coin) { fiat, coin ->
         TradeCryptoAmount(fiat?.div(trade?.price ?: 0.0) ?: 0.0, coin?.name.orEmpty())
     }
@@ -47,6 +48,13 @@ class TradeCreateOrderViewModel(
             platformFeePercent,
             (crypto?.cryptoAmount ?: 0.0) * platformFeePercent / 100,
             coin?.name.orEmpty()
+        )
+    }
+
+    val amountWithoutFee: LiveData<TotalValue> = DoubleCombinedLiveData(cryptoAmount, platformFee) { amount, fee ->
+        TotalValue(
+            (amount?.cryptoAmount ?: 0.0) - (fee?.platformFeeCrypto ?: 0.0),
+            fee?.coinCode.orEmpty()
         )
     }
 
@@ -66,6 +74,10 @@ class TradeCreateOrderViewModel(
                 this.platformFeePercent = coinDataItem.details.platformTradeFee
                 this._coin.value = trade.coin
                 this.reservedBalanceUsd = coinDataItem.reservedBalanceUsd
+                _reservedBalance.value = ReservedBalance(
+                    coinDataItem.reservedBalanceCoin,
+                    coinDataItem.code
+                )
                 this._initialLoadingData.value = LoadingData.Success(Unit)
             }, onError = { _initialLoadingData.value = LoadingData.Error(it) })
         }, onError = { _initialLoadingData.value = LoadingData.Error(it) })
