@@ -76,6 +76,13 @@ class MyViewController: UIViewController, MDCTabBarDelegate {
     func update(location: CLLocation?) {
         openOrdersViewController.update(location: location)
     }
+    
+    func openOrder(order: Order) {
+        tabBar.setSelectedItem(self.openOrdersItem, animated: true)
+        tabBar(tabBar,didSelect: self.openOrdersItem)
+        let orderModel = MyOpenOrdersCellViewModel(order: order)
+        self.openOrdersViewController.presentOrderDetails(vm: orderModel)
+    }
   
   private func setupUI() {
     tabBar.delegate = self

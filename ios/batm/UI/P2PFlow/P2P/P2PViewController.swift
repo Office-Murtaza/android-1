@@ -166,6 +166,11 @@ class P2PViewController: ModuleViewController<P2PPresenter>, MDCTabBarDelegate {
             .subscribe { [unowned self] (trade) in
                 self.sellDataSource.update(trade: trade)
         }.disposed(by: disposeBag)
+        
+        
+        presenter.createdOrder.subscribeOn(MainScheduler()).filterNil().subscribe {[weak self] (order) in
+            self?.navigateToOrderDetails(order)
+        }.disposed(by: disposeBag)
 
     }
     
@@ -181,6 +186,16 @@ class P2PViewController: ModuleViewController<P2PPresenter>, MDCTabBarDelegate {
             $0.bottom.equalToSuperview()
         }
         
+    }
+    
+    func navigateToOrderDetails(_ order: Order) {
+        navigationController?.popToViewController(self, animated: true)
+        view.makeToast(localize(L.P2p.Order.Created.message))
+        
+        tabBar.setSelectedItem(self.myTradesItem, animated: true)
+        tabBar(tabBar,didSelect: self.myTradesItem)
+        
+        myViewController?.openOrder(order: order)
     }
     
     //MARK: - Tabbar delegate
@@ -252,3 +267,4 @@ extension P2PViewController: P2PTradeDetailsCreateOrderDelegate {
         presenter.createOrder(model: model)
     }
 }
+

@@ -497,6 +497,7 @@
 "p2p.trade.updated.message" = "Trade successfully updated";
 "p2p.trade.created.message" = "Trade successfully created";
 "p2p.trade.canceled.message" = "Trade successfully canceled";
+"p2p.order.created.message" = "Order successfully created";
 
 "p2p.order.details.title" = "Order Details";
 "p2p.order.details.status" = "Status";

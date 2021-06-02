@@ -871,6 +871,10 @@ extension L.P2p.Order {
     static let price = "p2p.order.create.price"
   }
 
+  struct Created {
+    static let message = "p2p.order.created.message"
+  }
+
   struct Details {
     static let status = "p2p.order.details.status"
     static let title = "p2p.order.details.title"
