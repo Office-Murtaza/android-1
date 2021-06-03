@@ -78,7 +78,6 @@
 		05B7596F25880C3800F23F23 /* CreateWalletResponse+Mapping.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05B7596E25880C3800F23F23 /* CreateWalletResponse+Mapping.swift */; };
 		05BAE28F264C0B31004766FA /* TransactionDetailsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05BAE28E264C0B31004766FA /* TransactionDetailsService.swift */; };
 		05BAE294264C0B36004766FA /* BalanceService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05BAE292264C0B36004766FA /* BalanceService.swift */; };
-		05BAE299264C0E94004766FA /* TradeSocketService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05BAE298264C0E93004766FA /* TradeSocketService.swift */; };
 		05C62222257ECE28008787F3 /* KeychainManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05C62221257ECE28008787F3 /* KeychainManager.swift */; };
 		05D56FD4260CE4ED00AA7052 /* LocaltionHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05D56FD3260CE4ED00AA7052 /* LocaltionHelper.swift */; };
 		05E35FE725AE585900E2167C /* WithdrawView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05E35FE625AE585900E2167C /* WithdrawView.swift */; };
@@ -116,6 +115,8 @@
 		2362ECE325A7AA4500E9BC85 /* SwapUsdValueView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2362ECE225A7AA4500E9BC85 /* SwapUsdValueView.swift */; };
 		237EC457256DAE8A005BB79B /* PriceChartDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = 237EC456256DAE8A005BB79B /* PriceChartDetails.swift */; };
 		239685DB2575988A00C0FF1E /* CoinExchangeSwapTextFieldView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 239685DA2575988A00C0FF1E /* CoinExchangeSwapTextFieldView.swift */; };
+		2397A8372669736700070777 /* TradeSocketService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2397A8362669736700070777 /* TradeSocketService.swift */; };
+		2397A83C266973A000070777 /* OrderSocketService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2397A83B266973A000070777 /* OrderSocketService.swift */; };
 		23A6B790263B515000DE2738 /* TradePaymentMethods.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23A6B74B263B514F00DE2738 /* TradePaymentMethods.swift */; };
 		23A6B791263B515000DE2738 /* TradeVerificationStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23A6B74C263B514F00DE2738 /* TradeVerificationStatus.swift */; };
 		23A6B792263B515000DE2738 /* TradeOrderStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23A6B74D263B514F00DE2738 /* TradeOrderStatus.swift */; };
@@ -759,7 +760,6 @@
 		05B7596E25880C3800F23F23 /* CreateWalletResponse+Mapping.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CreateWalletResponse+Mapping.swift"; sourceTree = "<group>"; };
 		05BAE28E264C0B31004766FA /* TransactionDetailsService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TransactionDetailsService.swift; sourceTree = "<group>"; };
 		05BAE292264C0B36004766FA /* BalanceService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BalanceService.swift; sourceTree = "<group>"; };
-		05BAE298264C0E93004766FA /* TradeSocketService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TradeSocketService.swift; path = batm/Services/Socket/TradeService/TradeSocketService.swift; sourceTree = SOURCE_ROOT; };
 		05C6219F257EB413008787F3 /* batm.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = batm.entitlements; sourceTree = "<group>"; };
 		05C62221257ECE28008787F3 /* KeychainManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainManager.swift; sourceTree = "<group>"; };
 		05D56FD3260CE4ED00AA7052 /* LocaltionHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocaltionHelper.swift; sourceTree = "<group>"; };
@@ -799,6 +799,8 @@
 		2362ECE225A7AA4500E9BC85 /* SwapUsdValueView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwapUsdValueView.swift; sourceTree = "<group>"; };
 		237EC456256DAE8A005BB79B /* PriceChartDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PriceChartDetails.swift; sourceTree = "<group>"; };
 		239685DA2575988A00C0FF1E /* CoinExchangeSwapTextFieldView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoinExchangeSwapTextFieldView.swift; sourceTree = "<group>"; };
+		2397A8362669736700070777 /* TradeSocketService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TradeSocketService.swift; sourceTree = "<group>"; };
+		2397A83B266973A000070777 /* OrderSocketService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderSocketService.swift; sourceTree = "<group>"; };
 		23A6B74B263B514F00DE2738 /* TradePaymentMethods.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TradePaymentMethods.swift; sourceTree = "<group>"; };
 		23A6B74C263B514F00DE2738 /* TradeVerificationStatus.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TradeVerificationStatus.swift; sourceTree = "<group>"; };
 		23A6B74D263B514F00DE2738 /* TradeOrderStatus.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TradeOrderStatus.swift; sourceTree = "<group>"; };
@@ -1573,7 +1575,8 @@
 		0561151726050D080066BD9A /* Socket */ = {
 			isa = PBXGroup;
 			children = (
-				05BAE295264C0B3B004766FA /* TradeService */,
+				2397A83A2669737600070777 /* OrderService */,
+				2397A8352669736700070777 /* TradeService */,
 				05BAE290264C0B36004766FA /* BalanceService */,
 				05BAE28D264C0B31004766FA /* TransactionService */,
 				232E345D2558772B00A9BF72 /* SocketMessageBuilder.swift */,
@@ -1630,15 +1633,6 @@
 			);
 			path = BalanceService;
 			sourceTree = "<group>";
-		};
-		05BAE295264C0B3B004766FA /* TradeService */ = {
-			isa = PBXGroup;
-			children = (
-				05BAE298264C0E93004766FA /* TradeSocketService.swift */,
-			);
-			name = TradeService;
-			path = batm/Services/TradeService;
-			sourceTree = SOURCE_ROOT;
 		};
 		05E6A83F2601602F00479414 /* UIColor+Extensions */ = {
 			isa = PBXGroup;
@@ -1721,6 +1715,22 @@
 				234EE5C925D30AB100884141 /* SecurityTableDataSource.swift */,
 			);
 			path = DataSource;
+			sourceTree = "<group>";
+		};
+		2397A8352669736700070777 /* TradeService */ = {
+			isa = PBXGroup;
+			children = (
+				2397A8362669736700070777 /* TradeSocketService.swift */,
+			);
+			path = TradeService;
+			sourceTree = "<group>";
+		};
+		2397A83A2669737600070777 /* OrderService */ = {
+			isa = PBXGroup;
+			children = (
+				2397A83B266973A000070777 /* OrderSocketService.swift */,
+			);
+			path = OrderService;
 			sourceTree = "<group>";
 		};
 		23A6B74A263B514F00DE2738 /* Helpers */ = {
@@ -3851,7 +3861,6 @@
 				052B79C3260A64D000A0D636 /* TradesAssembly.swift in Sources */,
 				DB1AF0E224436D6D0037C998 /* MDCContainerScheme+Extensions.swift in Sources */,
 				DB308EBB22E738FC003D91AF /* MapAddresses+Mapping.swift in Sources */,
-				05BAE299264C0E94004766FA /* TradeSocketService.swift in Sources */,
 				05B7596F25880C3800F23F23 /* CreateWalletResponse+Mapping.swift in Sources */,
 				DBA6844222E44AE40079429E /* ATMPresenter.swift in Sources */,
 				DB8F078924103E8F00770643 /* PickerFlow+Dependencies.swift in Sources */,
@@ -4069,6 +4078,7 @@
 				23A6B7C4263B515000DE2738 /* P2PAssembly.swift in Sources */,
 				DB9616F322C750CA0078E92D /* Converter.swift in Sources */,
 				DBC68CB122F8755000473247 /* ResponseResult.swift in Sources */,
+				2397A8372669736700070777 /* TradeSocketService.swift in Sources */,
 				DB1BAEF52503E70200D65477 /* GlobalConstants.swift in Sources */,
 				DB59EA1B22F9C4BF00EB64A7 /* UpdatePasswordFlowController.swift in Sources */,
 				055A9BA92575823400A8E8F1 /* NotificationsPresenter.swift in Sources */,
@@ -4383,6 +4393,7 @@
 				DB96172922C76E360078E92D /* BTMWallet.swift in Sources */,
 				23A6B7BA263B515000DE2738 /* P2PCreateOrderAmountView.swift in Sources */,
 				DBBF29B022D3EE6200A5DE6A /* LogoutUsecase.swift in Sources */,
+				2397A83C266973A000070777 /* OrderSocketService.swift in Sources */,
 				DB7A9D122459CEE800006B54 /* QRCodeCardView.swift in Sources */,
 				DB8F077F2410343800770643 /* PickerDelegate.swift in Sources */,
 				DB83624424C1DF3300A5FEFC /* PhoneVerificationPresenter.swift in Sources */,
