@@ -106,6 +106,7 @@
 		23315F1926592033002E01E6 /* P2PFormInlineErrorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23315F1826592032002E01E6 /* P2PFormInlineErrorView.swift */; };
 		23315F1E26593036002E01E6 /* P2PCreateTradeFormValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23315F1D26593036002E01E6 /* P2PCreateTradeFormValidator.swift */; };
 		23315F262659A433002E01E6 /* P2PTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23315F252659A433002E01E6 /* P2PTextField.swift */; };
+		234665972668B1F800B566E3 /* P2POrderDetailsIdView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 234665962668B1F800B566E3 /* P2POrderDetailsIdView.swift */; };
 		234B90A725AE38FF0012F2A2 /* TransferFlow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 234B90A625AE38FF0012F2A2 /* TransferFlow.swift */; };
 		234B90AD25AE39110012F2A2 /* TransferFlowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 234B90AC25AE39110012F2A2 /* TransferFlowController.swift */; };
 		234B90B125AE3AB60012F2A2 /* TransferModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 234B90B025AE3AB60012F2A2 /* TransferModule.swift */; };
@@ -788,6 +789,7 @@
 		23315F1826592032002E01E6 /* P2PFormInlineErrorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = P2PFormInlineErrorView.swift; sourceTree = "<group>"; };
 		23315F1D26593036002E01E6 /* P2PCreateTradeFormValidator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = P2PCreateTradeFormValidator.swift; sourceTree = "<group>"; };
 		23315F252659A433002E01E6 /* P2PTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = P2PTextField.swift; sourceTree = "<group>"; };
+		234665962668B1F800B566E3 /* P2POrderDetailsIdView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = P2POrderDetailsIdView.swift; sourceTree = "<group>"; };
 		234B90A625AE38FF0012F2A2 /* TransferFlow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransferFlow.swift; sourceTree = "<group>"; };
 		234B90AC25AE39110012F2A2 /* TransferFlowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransferFlowController.swift; sourceTree = "<group>"; };
 		234B90B025AE3AB60012F2A2 /* TransferModule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransferModule.swift; sourceTree = "<group>"; };
@@ -1928,6 +1930,7 @@
 				23BC175E264D6692002A1214 /* P2POrderDetailsAmountView.swift */,
 				23BC1762264D69E4002A1214 /* P2POrderDetailsStatusView.swift */,
 				23BC1766264DBED8002A1214 /* P2POrderDetailsScoreView.swift */,
+				234665962668B1F800B566E3 /* P2POrderDetailsIdView.swift */,
 			);
 			path = "Order Details";
 			sourceTree = "<group>";
@@ -4252,6 +4255,7 @@
 				DB8D40A922C3EEDE00D5FBD0 /* LoginFlow+Dependencies.swift in Sources */,
 				05F7047F2602262400DF3722 /* TransactionDetailsCell.swift in Sources */,
 				DBDA456F24E5C272002A3AF5 /* AboutCell.swift in Sources */,
+				234665972668B1F800B566E3 /* P2POrderDetailsIdView.swift in Sources */,
 				DBBF299822D3748C00A5DE6A /* UICollectionView+ReusableView.swift in Sources */,
 				DBA4F4A724CE2F1000E6FAAB /* PinCodeKeyboardBackButton.swift in Sources */,
 				DB5B2DDC230A74D000821713 /* CoinDetailsFlow.swift in Sources */,

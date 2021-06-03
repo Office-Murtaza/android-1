@@ -18,6 +18,8 @@ class P2POrderDetailsViewController: UIViewController {
     private let myScoreView = P2POrderDetailsScoreView()
     private let myScoreViewSeparator = P2PSeparatorView()
     private let partnerScoreView = P2POrderDetailsScoreView()
+    private let idView = P2POrderDetailsIdView()
+    private let idViewSeparator = P2PSeparatorView()
     
     lazy var stackView: UIStackView = {
       let stack = UIStackView()
@@ -52,6 +54,9 @@ class P2POrderDetailsViewController: UIViewController {
         myScoreView.setup(title: localize(L.P2p.Order.Details.My.score), score: myRate)
         partnerScoreView.setup(title: localize(L.P2p.Order.Details.Score.From.partner), score: order.makerTradingRate.toString())
         
+        idView.setup(id: order.id ?? "")
+        idView.delegate = self
+        
     }
     
     func setupPaymenMethodsView(order: Order) {
@@ -72,6 +77,8 @@ class P2POrderDetailsViewController: UIViewController {
       scrollView.addSubview(stackView)
       stackView.addArrangedSubviews([
         coinInfoView,
+        idView,
+        idViewSeparator,
         amountView,
         amountViewSeparator,
         statusView,
@@ -109,6 +116,17 @@ class P2POrderDetailsViewController: UIViewController {
         coinInfoView.snp.makeConstraints {
             $0.top.left.right.equalToSuperview()
             $0.height.equalTo(105)
+        }
+        
+        idView.snp.makeConstraints {
+            $0.height.equalTo(56)
+        }
+        
+        idViewSeparator.snp.makeConstraints {
+            $0.top.equalTo(idView.snp.bottom)
+            $0.height.equalTo(separatorHeight)
+            $0.left.equalToSuperview().offset(15)
+            $0.right.equalToSuperview().offset(-15)
         }
         
         amountView.snp.makeConstraints {
@@ -185,5 +203,11 @@ class P2POrderDetailsViewController: UIViewController {
         partnerScoreView.snp.makeConstraints {
             $0.height.equalTo(58)
         }
+    }
+}
+
+extension P2POrderDetailsViewController: P2POrderDetailsIdViewDelegate {
+    func didSelectedCopy(id: String) {
+        UIPasteboard.general.string = id
     }
 }
