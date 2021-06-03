@@ -1,11 +1,18 @@
 import UIKit
 import CoreLocation
 
+protocol MyOpenOrdersViewControllerDelegate: AnyObject {
+    func didTapDistance(order: Order)
+}
+
 class MyOpenOrdersViewController: UIViewController {
+    
+    weak var delegate: MyOpenOrdersViewControllerDelegate?
     
     private let dataSource = MyOpenOrdersDataSource()
     private let emptyView = OpenOrdersEmptyView()
     private var trades: Trades?
+    private var currentLocation: CLLocation?
     
     
     private lazy var tableView: UITableView = {
@@ -28,6 +35,7 @@ class MyOpenOrdersViewController: UIViewController {
     }
     
     func update(location: CLLocation?) {
+        currentLocation = location
         dataSource.reload(location: location)
     }
     
@@ -55,6 +63,8 @@ class MyOpenOrdersViewController: UIViewController {
     
     func presentOrderDetails(vm: MyOpenOrdersCellViewModel) {
         let orderDetails = P2POrderDetailsViewController()
+        orderDetails.delegate = self
+        vm.update(location: currentLocation)
         orderDetails.setup(order: vm.order, distance: vm.distanceInMiles ?? "", myRate: trades?.makerTradingRate.toString() ?? "0")
         navigationController?.pushViewController(orderDetails, animated: true)
     }
@@ -63,6 +73,13 @@ class MyOpenOrdersViewController: UIViewController {
 
 extension MyOpenOrdersViewController: MyOpenOrdersDataSourceDelegate {
     func didSelected(vm: MyOpenOrdersCellViewModel) {
+       vm.update(location: currentLocation)
        presentOrderDetails(vm: vm)
+    }
+}
+
+extension MyOpenOrdersViewController: P2POrderDetailsViewControllerDelegate {
+    func didTapDistance(order: Order) {
+        delegate?.didTapDistance(order: order)
     }
 }

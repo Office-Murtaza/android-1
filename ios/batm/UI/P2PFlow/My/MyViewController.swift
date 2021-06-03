@@ -9,6 +9,7 @@ protocol MyViewControllerDelegate: AnyObject {
   func didTapCreateTrade()
   func didSelectEdit(data: P2PEditTradeDataModel)
   func cancelTrade(id: String)
+  func didTapDistance(order: Order)
 }
 
 class MyViewController: UIViewController, MDCTabBarDelegate {
@@ -19,7 +20,7 @@ class MyViewController: UIViewController, MDCTabBarDelegate {
   private var controllers = [UIViewController]()
   private var prevIndex = 0
   private var balance: CoinsBalance?
-  
+  private var currentLocation: CLLocation?
   weak var delegate: MyViewControllerDelegate?
   
   lazy var pageController: UIPageViewController = {
@@ -74,6 +75,7 @@ class MyViewController: UIViewController, MDCTabBarDelegate {
   }
     
     func update(location: CLLocation?) {
+        currentLocation = location
         openOrdersViewController.update(location: location)
     }
     
@@ -81,14 +83,17 @@ class MyViewController: UIViewController, MDCTabBarDelegate {
         tabBar.setSelectedItem(self.openOrdersItem, animated: true)
         tabBar(tabBar,didSelect: self.openOrdersItem)
         let orderModel = MyOpenOrdersCellViewModel(order: order)
+        orderModel.update(location: currentLocation)
         self.openOrdersViewController.presentOrderDetails(vm: orderModel)
     }
   
   private func setupUI() {
     tabBar.delegate = self
-    myTradesViewController.delegate = self
-    view.addSubview(tabBar)
     
+    myTradesViewController.delegate = self
+    openOrdersViewController.delegate = self
+    
+    view.addSubview(tabBar)
     
     controllers = [
       myTradesViewController,
@@ -142,3 +147,8 @@ extension MyViewController: MyTradesViewControllerDelegate {
     
 }
 
+extension MyViewController: MyOpenOrdersViewControllerDelegate {
+    func didTapDistance(order: Order) {
+        delegate?.didTapDistance(order: order)
+    }
+}

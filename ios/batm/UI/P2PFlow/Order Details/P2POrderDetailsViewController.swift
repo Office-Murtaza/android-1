@@ -1,7 +1,13 @@
 import UIKit
 
+protocol P2POrderDetailsViewControllerDelegate: AnyObject {
+    func didTapDistance(order: Order)
+}
+
 class P2POrderDetailsViewController: UIViewController {
     var order: Order?
+    
+    weak var delegate: P2POrderDetailsViewControllerDelegate?
     
     private let scrollView = UIScrollView()
     private let coinInfoView = P2PTradeDetailsCoinInfoView()
@@ -56,7 +62,7 @@ class P2POrderDetailsViewController: UIViewController {
         
         idView.setup(id: order.id ?? "")
         idView.delegate = self
-        
+        tradeRateView.delegate = self
     }
     
     func setupPaymenMethodsView(order: Order) {
@@ -209,5 +215,12 @@ class P2POrderDetailsViewController: UIViewController {
 extension P2POrderDetailsViewController: P2POrderDetailsIdViewDelegate {
     func didSelectedCopy(id: String) {
         UIPasteboard.general.string = id
+    }
+}
+
+extension P2POrderDetailsViewController: P2PTradeDetailsRateViewDelegate {
+    func didTapDistance() {
+        guard let order = order else { return }
+        delegate?.didTapDistance(order: order)
     }
 }

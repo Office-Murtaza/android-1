@@ -72,7 +72,7 @@ class P2PPresenter: ModulePresenter, P2PModule {
   }
     
     func openOrderDetails(order: Order) {
-      walletUseCase?.getTrades().subscribe(onSuccess: { [weak self] (trades) in
+        walletUseCase?.getTrades().subscribeOn(MainScheduler()).subscribe(onSuccess: { [weak self] (trades) in
         self?.setup(trades: trades, userId: self?.userId ?? 0)
         self?.createdOrder.accept(order)
       }, onError: { [weak self] (error) in
