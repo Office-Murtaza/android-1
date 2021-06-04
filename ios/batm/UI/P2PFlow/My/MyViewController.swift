@@ -73,19 +73,23 @@ class MyViewController: UIViewController, MDCTabBarDelegate {
     self.balance = balance
     self.myTradesViewController.update(balance: balance)
   }
-    
-    func update(location: CLLocation?) {
-        currentLocation = location
-        openOrdersViewController.update(location: location)
-    }
-    
-    func openOrder(order: Order) {
-        tabBar.setSelectedItem(self.openOrdersItem, animated: true)
-        tabBar(tabBar,didSelect: self.openOrdersItem)
-        let orderModel = MyOpenOrdersCellViewModel(order: order)
-        orderModel.update(location: currentLocation)
-        self.openOrdersViewController.presentOrderDetails(vm: orderModel)
-    }
+  
+  func update(location: CLLocation?) {
+    currentLocation = location
+    openOrdersViewController.update(location: location)
+  }
+  
+  func openOrder(order: Order) {
+    tabBar.setSelectedItem(self.openOrdersItem, animated: true)
+    tabBar(tabBar,didSelect: self.openOrdersItem)
+    let orderModel = MyOpenOrdersCellViewModel(order: order)
+    orderModel.update(location: currentLocation)
+    self.openOrdersViewController.presentOrderDetails(vm: orderModel)
+  }
+  
+  func updateWithUpdatedOrder(_ order: Order) {
+    openOrdersViewController.updateWithUpdatedOrder(order)
+  }
   
   private func setupUI() {
     tabBar.delegate = self

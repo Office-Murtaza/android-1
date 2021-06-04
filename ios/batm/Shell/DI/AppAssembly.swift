@@ -113,6 +113,7 @@ final class AppAssembly: Assembly {
                                accountStorage: accountStorage,
                                walletStorage: walletStorage)
       }.inObjectScope(.container)
+    
     container.register(BalanceService.self) { ioc in
       let api = ioc.resolve(APIGateway.self)!
       let accountStorage = ioc.resolve(AccountStorage.self)!
@@ -135,6 +136,21 @@ final class AppAssembly: Assembly {
       let socketURL = ioc.resolve(URL.self, name: Keys.socketUrl.rawValue)!
       
       return TradeServiceImpl(api: api,
+                              accountStorage: accountStorage,
+                              walletStorage: walletStorage,
+                              errorService: errorService,
+                              socketURL: socketURL)
+    }.inObjectScope(.container)
+    
+    container.register(OrderSocketService.self) { ioc in
+      let api = ioc.resolve(APIGateway.self)!
+      let accountStorage = ioc.resolve(AccountStorage.self)!
+      let walletStorage = ioc.resolve(BTMWalletStorage.self)!
+      let errorService = ioc.resolve(ErrorService.self)!
+     
+      let socketURL = ioc.resolve(URL.self, name: Keys.socketUrl.rawValue)!
+      
+      return OrderServiceImpl(api: api,
                               accountStorage: accountStorage,
                               walletStorage: walletStorage,
                               errorService: errorService,

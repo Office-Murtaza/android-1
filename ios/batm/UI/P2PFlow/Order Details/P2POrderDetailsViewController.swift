@@ -26,6 +26,8 @@ class P2POrderDetailsViewController: UIViewController {
     private let partnerScoreView = P2POrderDetailsScoreView()
     private let idView = P2POrderDetailsIdView()
     private let idViewSeparator = P2PSeparatorView()
+  private var currentDistance: String = ""
+  private var currentRate: String = ""
     
     lazy var stackView: UIStackView = {
       let stack = UIStackView()
@@ -42,7 +44,11 @@ class P2POrderDetailsViewController: UIViewController {
     }
     
     func setup(order: Order, distance: String, myRate: String) {
-        self.order = order
+      
+      currentDistance = distance
+      currentRate = myRate
+      
+      self.order = order
         let infoModel = P2POrderDetailsCoinInfoModel(order: order)
         coinInfoView.update(data: infoModel)
         amountView.update(cryptoAmount:"\(order.cryptoAmount?.coinFormatted ?? "") \(order.coin ?? "")",
@@ -65,6 +71,10 @@ class P2POrderDetailsViewController: UIViewController {
         tradeRateView.delegate = self
     }
     
+  func update(order: Order) {
+    setup(order: order, distance: currentDistance, myRate: currentRate)
+  }
+  
     func setupPaymenMethodsView(order: Order) {
       guard let methods = order.paymentMethods else { return }
       let images =  methods

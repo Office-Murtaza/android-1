@@ -13,14 +13,15 @@ class P2PPresenter: ModulePresenter, P2PModule {
   var userId: Int?
   var tradeSocketService: TradeSocketService?
   var locationService: LocationService?
-  
+  var orderSocketService: OrderSocketService?
   var isCreationError = BehaviorRelay<Bool>(value: false)
   var tradeSuccessMessage = BehaviorRelay<String>(value: "")
   var balance = BehaviorRelay<CoinsBalance?>(value: nil)
   var createdOrder = BehaviorRelay<Order?>(value: nil)
-    
-  private var coins: [CoinBalance]?
+  var socketOrder = PublishRelay<Order>()
   var socketTrade = PublishRelay<Trade>()
+  
+  private var coins: [CoinBalance]?
     
   private let fetchDataRelay = PublishRelay<Void>()
   var errorService: ErrorService?
@@ -49,6 +50,12 @@ class P2PPresenter: ModulePresenter, P2PModule {
     
     tradeSocketService?.getTrade().subscribe(onNext: { [weak self] (trade) in
         self?.socketTrade.accept(trade)
+    }).disposed(by: disposeBag)
+    
+    orderSocketService?.start()
+    
+    orderSocketService?.getOrder().subscribe(onNext: { [weak self] (order) in
+      self?.socketOrder.accept(order)
     }).disposed(by: disposeBag)
     
   }

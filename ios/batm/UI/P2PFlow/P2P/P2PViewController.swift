@@ -168,6 +168,12 @@ class P2PViewController: ModuleViewController<P2PPresenter>, MDCTabBarDelegate {
             .subscribe { [unowned self] (trade) in
                 self.sellDataSource.update(trade: trade)
         }.disposed(by: disposeBag)
+      
+      
+      presenter.socketOrder
+          .subscribe { [unowned self] (order) in
+            self.myViewController?.updateWithUpdatedOrder(order)
+      }.disposed(by: disposeBag)
         
         
         presenter.createdOrder.subscribeOn(MainScheduler()).filterNil().subscribe {[weak self] (order) in

@@ -8,6 +8,10 @@ class MyOpenOrdersCellViewModel {
     init(order: Order) {
         self.order = order
     }
+  
+  func update(order: Order) {
+    self.order = order
+  }
     
     var price: String {
         let price = order.price ?? 0
