@@ -3,7 +3,7 @@ import CoreLocation
 
 class MyOpenOrdersCellViewModel {
     
-    let order: Order
+   private(set) var order: Order
     
     init(order: Order) {
         self.order = order
