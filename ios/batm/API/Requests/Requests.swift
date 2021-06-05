@@ -748,3 +748,37 @@ struct CreateOrderRequest: AuthorizedAPIRequest {
                                 encoding: JSONEncoding.default)
     }
 }
+
+struct CancelOrderRequest: AuthorizedAPIRequest {
+  typealias ResponseType = APIResponse<Order>
+  typealias ResponseTrait = SingleResponseTrait
+  
+  let userId: Int
+  let id: String
+  
+  var path: String { return "/user/\(userId)/order" }
+  var method: HTTPMethod { return .delete }
+  var task: HTTPTask {
+    return .requestParameters(parameters: ["id": id],
+                              encoding: URLEncoding.customDefault)
+  }
+}
+
+struct UpdateOrderRequest: AuthorizedAPIRequest {
+    typealias ResponseType = APIResponse<Order>
+    typealias ResponseTrait = SingleResponseTrait
+    
+    let userId: Int
+  let orderId: String
+  let status: Int
+  let rate: Int
+    
+    var path: String { return "/user/\(userId)/order" }
+    var method: HTTPMethod { return .put }
+    var task: HTTPTask {
+      return .requestParameters(parameters: ["id": orderId,
+                                             "status" : status,
+                                             "rate" : rate
+      ], encoding: JSONEncoding.default)
+    }
+}
