@@ -60,6 +60,21 @@ class P2PPresenter: ModulePresenter, P2PModule {
     
   }
   
+  func didTap(type: OrderDetailsActionType, model: MyOrderViewModel) {
+    if type == .cancel {
+      guard let id = model.order.id else { return }
+      walletUseCase?.cancelOrder(id: id) //subscribe and udpate!!!
+    } else {
+      updateOrder(type: type, model: model) // subscribe and udpate!!!
+    }
+  }
+  
+  private func updateOrder(type: OrderDetailsActionType, model: MyOrderViewModel) {
+    guard let id = model.order.id else { return }
+    walletUseCase?.updateOrder(id: id, status: model.orderStatus, rate: nil)
+  }
+  
+  
   func willHideModule() {
     tradeSocketService?
       .unsubscribe()

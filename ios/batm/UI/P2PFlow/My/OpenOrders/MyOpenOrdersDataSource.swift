@@ -2,17 +2,17 @@ import UIKit
 import CoreLocation
 
 protocol MyOpenOrdersDataSourceDelegate: AnyObject {
-  func didSelected(vm: MyOpenOrdersCellViewModel)
+  func didSelected(vm: MyOrderViewModel)
 }
 
 class MyOpenOrdersDataSource: NSObject, UITableViewDelegate, UITableViewDataSource {
   
-  var viewModels = [MyOpenOrdersCellViewModel]()
+  var viewModels = [MyOrderViewModel]()
   weak var delegate: MyOpenOrdersDataSourceDelegate?
   
   weak var tableView: UITableView?
   
-  func udpate(vm: [MyOpenOrdersCellViewModel]) {
+  func udpate(vm: [MyOrderViewModel]) {
     viewModels = vm
     tableView?.reloadData()
   }

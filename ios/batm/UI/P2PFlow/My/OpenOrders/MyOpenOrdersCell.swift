@@ -100,7 +100,7 @@ class MyOpenOrdersCell: UITableViewCell {
         
     }
     
-    func update(viewModel: MyOpenOrdersCellViewModel) {
+    func update(viewModel: MyOrderViewModel) {
         coinView.update(coin: viewModel.coin)
         priceLabel.text = viewModel.price
         statusView.update(status: viewModel.orderStatus)

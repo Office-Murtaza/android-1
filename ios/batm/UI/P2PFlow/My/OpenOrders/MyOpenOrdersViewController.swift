@@ -3,6 +3,7 @@ import CoreLocation
 
 protocol MyOpenOrdersViewControllerDelegate: AnyObject {
   func didTapDistance(order: Order)
+  func didTap(type: OrderDetailsActionType, model: MyOrderViewModel)
 }
 
 class MyOpenOrdersViewController: UIViewController {
@@ -29,7 +30,7 @@ class MyOpenOrdersViewController: UIViewController {
   }
   
   func update(orders: [Order], trades: Trades) {
-    let viewModels = orders.sorted { $0.timestamp ?? 0 > $1.timestamp ?? 0 }.map { MyOpenOrdersCellViewModel(order: $0) }
+    let viewModels = orders.sorted { $0.timestamp ?? 0 > $1.timestamp ?? 0 }.map { MyOrderViewModel(order: $0) }
     viewModels.forEach { (vm) in
       if let associatedTradeType = trades.trades.first(where: {$0.id == vm.order.tradeId})?.type,
          let type = P2PSellBuyViewType(rawValue: associatedTradeType) {
@@ -67,7 +68,7 @@ class MyOpenOrdersViewController: UIViewController {
     }
   }
  
-  func presentOrderDetails(vm: MyOpenOrdersCellViewModel) {
+  func presentOrderDetails(vm: MyOrderViewModel) {
    let orderDetails = P2POrderDetailsViewController()
     orderDetails.delegate = self
     vm.update(location: currentLocation)
@@ -87,7 +88,7 @@ class MyOpenOrdersViewController: UIViewController {
 }
 
 extension MyOpenOrdersViewController: MyOpenOrdersDataSourceDelegate {
-  func didSelected(vm: MyOpenOrdersCellViewModel) {
+  func didSelected(vm: MyOrderViewModel) {
     vm.update(location: currentLocation)
     presentOrderDetails(vm: vm)
   }
@@ -97,4 +98,9 @@ extension MyOpenOrdersViewController: P2POrderDetailsViewControllerDelegate {
   func didTapDistance(order: Order) {
     delegate?.didTapDistance(order: order)
   }
+  
+  func didTap(type: OrderDetailsActionType, orderModel: MyOrderViewModel) {
+    delegate?.didTap(type: type, model: orderModel)
+  }
+  
 }

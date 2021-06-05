@@ -1,7 +1,8 @@
 import UIKit
 
 protocol P2POrderDetailsViewControllerDelegate: AnyObject {
-    func didTapDistance(order: Order)
+  func didTapDistance(order: Order)
+  func didTap(type: OrderDetailsActionType, orderModel: MyOrderViewModel)
 }
 
 class P2POrderDetailsViewController: UIViewController {
@@ -28,7 +29,11 @@ class P2POrderDetailsViewController: UIViewController {
     private let idViewSeparator = P2PSeparatorView()
   private var currentDistance: String = ""
   private var currentRate: String = ""
-  var viewModel: MyOpenOrdersCellViewModel?
+  private var footerView = UIView()
+ 
+  private var actionSheet = OrderDetailsActionSheet()
+  
+  var viewModel: MyOrderViewModel?
     
     lazy var stackView: UIStackView = {
       let stack = UIStackView()
@@ -46,7 +51,7 @@ class P2POrderDetailsViewController: UIViewController {
     
   
   
-  func setup(viewModel: MyOpenOrdersCellViewModel, myRate: String) {
+  func setup(viewModel: MyOrderViewModel, myRate: String) {
     self.viewModel = viewModel
     currentDistance = viewModel.distanceInMiles ?? ""
     currentRate = myRate
@@ -73,12 +78,22 @@ class P2POrderDetailsViewController: UIViewController {
     idView.delegate = self
     tradeRateView.delegate = self
     self.order = order
+    updateActionsView()
   }
   
   func update(order: Order) {
     guard let vm = viewModel else { return }
     vm.update(order: order)
+    updateActionsView()
     setup(viewModel: vm, myRate: currentRate)
+  }
+  
+  func updateActionsView() {
+    guard let viewModel = viewModel else { return }
+    let actionsFactory = OrderDetailsActionsFactory()
+    let action = actionsFactory.generateOrderActions(type: viewModel.currentSellBuyType, status: viewModel.orderStatus)
+    actionSheet.delegate = self
+    actionSheet.update(action: action)
   }
   
     func setupPaymenMethodsView(order: Order) {
@@ -113,8 +128,11 @@ class P2POrderDetailsViewController: UIViewController {
         infoViewSeparator,
         myScoreView,
         myScoreViewSeparator,
-        partnerScoreView
+        partnerScoreView,
+        actionSheet,
+        footerView
       ])
+      
     }
     
     func setupLayout() {
@@ -225,6 +243,20 @@ class P2POrderDetailsViewController: UIViewController {
         partnerScoreView.snp.makeConstraints {
             $0.height.equalTo(58)
         }
+      
+      actionSheet.snp.makeConstraints {
+        $0.top.equalTo(partnerScoreView.snp.bottom)
+        $0.left.right.equalToSuperview()
+        $0.height.equalTo(100)
+      }
+      
+      footerView.snp.makeConstraints {
+        $0.top.equalTo(actionSheet.snp.bottom)
+        $0.left.right.equalToSuperview()
+        $0.bottom.equalToSuperview()
+        $0.height.equalTo(10)
+      }
+      
     }
 }
 
@@ -239,4 +271,11 @@ extension P2POrderDetailsViewController: P2PTradeDetailsRateViewDelegate {
         guard let order = order else { return }
         delegate?.didTapDistance(order: order)
     }
+}
+
+extension P2POrderDetailsViewController: OrderDetailsActionSheetDelegate {
+  func didTap(type: OrderDetailsActionType) {
+    guard let vm = viewModel else { return }
+    delegate?.didTap(type: type, orderModel: vm)
+  }
 }

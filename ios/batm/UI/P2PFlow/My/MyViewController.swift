@@ -10,6 +10,7 @@ protocol MyViewControllerDelegate: AnyObject {
   func didSelectEdit(data: P2PEditTradeDataModel)
   func cancelTrade(id: String)
   func didTapDistance(order: Order)
+  func didTap(type: OrderDetailsActionType, model: MyOrderViewModel)
 }
 
 class MyViewController: UIViewController, MDCTabBarDelegate {
@@ -82,7 +83,7 @@ class MyViewController: UIViewController, MDCTabBarDelegate {
   func openOrder(order: Order) {
     tabBar.setSelectedItem(self.openOrdersItem, animated: true)
     tabBar(tabBar,didSelect: self.openOrdersItem)
-    let orderModel = MyOpenOrdersCellViewModel(order: order)
+    let orderModel = MyOrderViewModel(order: order)
     orderModel.update(location: currentLocation)
     self.openOrdersViewController.presentOrderDetails(vm: orderModel)
   }
@@ -152,7 +153,12 @@ extension MyViewController: MyTradesViewControllerDelegate {
 }
 
 extension MyViewController: MyOpenOrdersViewControllerDelegate {
-    func didTapDistance(order: Order) {
-        delegate?.didTapDistance(order: order)
-    }
+  
+  func didTapDistance(order: Order) {
+    delegate?.didTapDistance(order: order)
+  }
+  
+  func didTap(type: OrderDetailsActionType, model: MyOrderViewModel) {
+    delegate?.didTap(type: type, model: model)
+  }
 }

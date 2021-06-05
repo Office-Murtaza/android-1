@@ -25,6 +25,10 @@
 "shared.button.buy" = "Buy";
 "shared.button.sell" = "Sell";
 "shared.button.save" = "Save";
+"shared.button.doing" = "Doing";
+"shared.button.paid" = "Paid";
+"shared.button.release" = "Release";
+"shared.button.dispute" = "Dispute";
 
 "welcome.first_slide.title" = "All assets in one place";
 "welcome.second_slide.title" = "Private and secure";

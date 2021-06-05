@@ -236,7 +236,6 @@ extension P2PViewController: P2PCreateTradeViewControllerDelegate {
 }
 
 extension P2PViewController: MyViewControllerDelegate {
-  
   func didTapCreateTrade() {
     createTrade()
   }
@@ -253,6 +252,11 @@ extension P2PViewController: MyViewControllerDelegate {
     guard let latitude = order.makerLatitude, let longitude = order.makerLongitude else { return }
     presentMapWithRoute(latitude: latitude, longitude: longitude)
   }
+  
+  func didTap(type: OrderDetailsActionType, model: MyOrderViewModel) {
+    presenter.didTap(type: type, model: model)
+  }
+  
 }
 
 extension P2PViewController: TradesDataSourceDelegate {

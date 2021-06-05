@@ -771,14 +771,19 @@ struct UpdateOrderRequest: AuthorizedAPIRequest {
     let userId: Int
   let orderId: String
   let status: Int
-  let rate: Int
+  let rate: Int?
     
     var path: String { return "/user/\(userId)/order" }
     var method: HTTPMethod { return .put }
     var task: HTTPTask {
-      return .requestParameters(parameters: ["id": orderId,
-                                             "status" : status,
-                                             "rate" : rate
-      ], encoding: JSONEncoding.default)
+      if let rate = rate {
+        return .requestParameters(parameters: ["id": orderId,
+                                               "status" : status,
+                                               "rate" : rate], encoding: JSONEncoding.default)
+        } else {
+          return .requestParameters(parameters: ["id": orderId,
+                                                 "status" : status], encoding: JSONEncoding.default)
+        }
+      
     }
 }
