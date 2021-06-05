@@ -4,13 +4,23 @@ import CoreLocation
 class MyOpenOrdersCellViewModel {
     
    private(set) var order: Order
+   
+  var currentSellBuyType: P2PSellBuyViewType {
+    return (order.takerId == order.makerUserId ? tradeType : tradeType?.reversed) ?? .buy
+  }
     
+  private var tradeType: P2PSellBuyViewType?
+  
     init(order: Order) {
         self.order = order
     }
   
   func update(order: Order) {
     self.order = order
+  }
+  
+  func upate(type: P2PSellBuyViewType) {
+    tradeType = type
   }
     
     var price: String {

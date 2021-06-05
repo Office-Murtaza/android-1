@@ -28,6 +28,7 @@ class P2POrderDetailsViewController: UIViewController {
     private let idViewSeparator = P2PSeparatorView()
   private var currentDistance: String = ""
   private var currentRate: String = ""
+  var viewModel: MyOpenOrdersCellViewModel?
     
     lazy var stackView: UIStackView = {
       let stack = UIStackView()
@@ -43,36 +44,41 @@ class P2POrderDetailsViewController: UIViewController {
         setupLayout()
     }
     
-    func setup(order: Order, distance: String, myRate: String) {
-      
-      currentDistance = distance
-      currentRate = myRate
-      
-      self.order = order
-        let infoModel = P2POrderDetailsCoinInfoModel(order: order)
-        coinInfoView.update(data: infoModel)
-        amountView.update(cryptoAmount:"\(order.cryptoAmount?.coinFormatted ?? "") \(order.coin ?? "")",
-                          fiatAmount: "$ \(order.fiatAmount?.coinFormatted ?? "")")
-        statusView.update(status: TradeOrderStatus(rawValue: order.status ?? 1) ?? .new)
-        setupPaymenMethodsView(order: order)
-        
-        guard let makerId = order.makerPublicId,
-              let tradeRate = order.makerTradingRate,
-              let totalTrades = order.makerTotalTrades else { return }
-        
-        tradeRateView.setup(markerId: makerId, statusImage: nil, rate: tradeRate, totalTrades: totalTrades, distance: distance)
-        infoMessageView.update(message: localize(L.P2p.Trade.Details.info))
-        
-        myScoreView.setup(title: localize(L.P2p.Order.Details.My.score), score: myRate)
-        partnerScoreView.setup(title: localize(L.P2p.Order.Details.Score.From.partner), score: order.makerTradingRate.toString())
-        
-        idView.setup(id: order.id ?? "")
-        idView.delegate = self
-        tradeRateView.delegate = self
-    }
+  
+  
+  func setup(viewModel: MyOpenOrdersCellViewModel, myRate: String) {
+    self.viewModel = viewModel
+    currentDistance = viewModel.distanceInMiles ?? ""
+    currentRate = myRate
     
+    let order = viewModel.order
+    let infoModel = P2POrderDetailsCoinInfoModel(order: order, sellbuyType: viewModel.currentSellBuyType)
+    coinInfoView.update(data: infoModel)
+    amountView.update(cryptoAmount:"\(order.cryptoAmount?.coinFormatted ?? "") \(order.coin ?? "")",
+                      fiatAmount: "$ \(order.fiatAmount?.coinFormatted ?? "")")
+    statusView.update(status: TradeOrderStatus(rawValue: order.status ?? 1) ?? .new)
+    setupPaymenMethodsView(order: order)
+    
+    guard let makerId = order.makerPublicId,
+          let tradeRate = order.makerTradingRate,
+          let totalTrades = order.makerTotalTrades else { return }
+    
+    tradeRateView.setup(markerId: makerId, statusImage: nil, rate: tradeRate, totalTrades: totalTrades, distance: currentDistance)
+    infoMessageView.update(message: localize(L.P2p.Trade.Details.info))
+    
+    myScoreView.setup(title: localize(L.P2p.Order.Details.My.score), score: myRate)
+    partnerScoreView.setup(title: localize(L.P2p.Order.Details.Score.From.partner), score: order.makerTradingRate.toString())
+    
+    idView.setup(id: order.id ?? "")
+    idView.delegate = self
+    tradeRateView.delegate = self
+    self.order = order
+  }
+  
   func update(order: Order) {
-    setup(order: order, distance: currentDistance, myRate: currentRate)
+    guard let vm = viewModel else { return }
+    vm.update(order: order)
+    setup(viewModel: vm, myRate: currentRate)
   }
   
     func setupPaymenMethodsView(order: Order) {

@@ -35,6 +35,14 @@ enum P2PSellBuyViewType: Int {
         case .buy: return localize(L.P2p.Buy.title)
         }
     }
+    
+  var reversed: P2PSellBuyViewType {
+    switch self {
+    case .sell: return .buy
+    case .buy: return .sell
+    }
+  }
+  
 }
 
 class P2PSellBuyView: UIView {

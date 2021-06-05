@@ -29,6 +29,7 @@ struct P2PTradeDetailsCoinInfoModel: P2PInfoCoinModel {
 
 struct P2POrderDetailsCoinInfoModel: P2PInfoCoinModel {
   let order: Order
+  let sellbuyType: P2PSellBuyViewType
   
   var coin: CustomCoinType? {
       return CustomCoinType(code:order.coin ?? "BTC")
@@ -40,10 +41,6 @@ struct P2POrderDetailsCoinInfoModel: P2PInfoCoinModel {
   
   var limit: String {
       return ""
-  }
-  
-  var sellbuyType: P2PSellBuyViewType {
-    return order.status == 1 ? .buy : .sell
   }
   
 }

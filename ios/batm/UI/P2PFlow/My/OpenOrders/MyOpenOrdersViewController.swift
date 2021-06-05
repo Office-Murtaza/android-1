@@ -30,6 +30,12 @@ class MyOpenOrdersViewController: UIViewController {
   
   func update(orders: [Order], trades: Trades) {
     let viewModels = orders.sorted { $0.timestamp ?? 0 > $1.timestamp ?? 0 }.map { MyOpenOrdersCellViewModel(order: $0) }
+    viewModels.forEach { (vm) in
+      if let associatedTradeType = trades.trades.first(where: {$0.id == vm.order.tradeId})?.type,
+         let type = P2PSellBuyViewType(rawValue: associatedTradeType) {
+        vm.upate(type: type)
+      }
+    }
     self.trades = trades
     dataSource.udpate(vm: viewModels)
   }
@@ -65,8 +71,7 @@ class MyOpenOrdersViewController: UIViewController {
    let orderDetails = P2POrderDetailsViewController()
     orderDetails.delegate = self
     vm.update(location: currentLocation)
-    orderDetails.setup(order: vm.order,
-                        distance: vm.distanceInMiles ?? "",
+    orderDetails.setup(viewModel: vm,
                         myRate: trades?.makerTradingRate.toString() ?? "0")
     navigationController?.pushViewController(orderDetails, animated: true)
     self.orderDetails = orderDetails
