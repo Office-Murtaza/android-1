@@ -19,7 +19,8 @@ val repositoryModule = module {
             androidApplication(),
             get(),
             get(),
-            (get() as AppDatabase).getCoinDao()
+            (get() as AppDatabase).getCoinDao(),
+            get()
         )
     }
     single<SettingsRepository> { SettingsRepositoryImpl(androidApplication(), get(), get(), get()) }

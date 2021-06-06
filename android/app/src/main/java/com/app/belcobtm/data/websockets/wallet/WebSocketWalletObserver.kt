@@ -2,10 +2,7 @@ package com.app.belcobtm.data.websockets.wallet
 
 import com.app.belcobtm.data.core.UnlinkHandler
 import com.app.belcobtm.data.disk.database.account.AccountDao
-import com.app.belcobtm.data.disk.database.wallet.CoinDetailsEntity
-import com.app.belcobtm.data.disk.database.wallet.CoinEntity
 import com.app.belcobtm.data.disk.database.wallet.WalletDao
-import com.app.belcobtm.data.disk.database.wallet.WalletEntity
 import com.app.belcobtm.data.disk.shared.preferences.SharedPreferencesHelper
 import com.app.belcobtm.data.rest.authorization.AuthApi
 import com.app.belcobtm.data.rest.authorization.request.RefreshTokenRequest
@@ -109,28 +106,7 @@ class WebSocketWalletObserver(
                 moshi.adapter(BalanceResponse::class.java)
                     .fromJson(response.body)
                     ?.let { balanceResponse ->
-                        val wallet = WalletEntity(balanceResponse.totalBalance)
-                        val coins = ArrayList<CoinEntity>()
-                        val details = ArrayList<CoinDetailsEntity>()
-                        balanceResponse.coins.forEach { response ->
-                            with(response) {
-                                val entity = CoinEntity(
-                                    id, idx, code, address, balance,
-                                    fiatBalance, reservedBalance, reservedFiatBalance, price
-                                )
-                                coins.add(entity)
-                            }
-                            with(response.details) {
-                                val entity = CoinDetailsEntity(
-                                    response.id, txFee, byteFee, scale,
-                                    platformSwapFee, platformTradeFee, walletAddress,
-                                    gasLimit, gasPrice, convertedTxFee
-                                )
-                                details.add(entity)
-                            }
-                        }
-
-                        walletDao.updateBalance(wallet, coins, details)
+                        walletDao.updateBalance(balanceResponse)
                     }
             }
         }

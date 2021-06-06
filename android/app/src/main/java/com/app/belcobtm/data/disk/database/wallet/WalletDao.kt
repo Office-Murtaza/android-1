@@ -1,6 +1,7 @@
 package com.app.belcobtm.data.disk.database.wallet
 
 import androidx.room.*
+import com.app.belcobtm.data.rest.wallet.response.BalanceResponse
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -27,10 +28,46 @@ interface WalletDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun updateWallet(walletEntity: WalletEntity)
 
+    @Query("DELETE FROM coin")
+    suspend fun clearCoin()
+
+    @Query("DELETE FROM coin_detail")
+    suspend fun clearCoinDetails()
+
+    @Query("DELETE FROM wallet")
+    suspend fun clearWallet()
+
     @Transaction
-    suspend fun updateBalance(wallet: WalletEntity, coins: List<CoinEntity>, details: List<CoinDetailsEntity>) {
+    suspend fun updateBalance(balanceResponse: BalanceResponse) {
+        val wallet = WalletEntity(balanceResponse.totalBalance)
+        val coins = ArrayList<CoinEntity>()
+        val details = ArrayList<CoinDetailsEntity>()
+        balanceResponse.coins.forEach { response ->
+            with(response) {
+                val entity = CoinEntity(
+                    id, idx, code, address, balance,
+                    fiatBalance, reservedBalance, reservedFiatBalance, price
+                )
+                coins.add(entity)
+            }
+            with(response.details) {
+                val entity = CoinDetailsEntity(
+                    response.id, txFee, byteFee, scale,
+                    platformSwapFee, platformTradeFee, walletAddress,
+                    gasLimit, gasPrice, convertedTxFee
+                )
+                details.add(entity)
+            }
+        }
         updateWallet(wallet)
         updateCoins(coins)
         updateCoinDetails(details)
+    }
+
+    @Transaction
+    suspend fun clear() {
+        clearCoin()
+        clearCoinDetails()
+        clearWallet()
     }
 }
