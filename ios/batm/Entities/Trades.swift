@@ -64,6 +64,8 @@ struct Order: Equatable {
     var makerLatitude: Double?
     var makerLongitude: Double?
     var takerUserId: Int?
+    var makerRate: Int?
+    var takerRate: Int?
     
     static var empty = Order(id: nil,
                              tradeId: nil,

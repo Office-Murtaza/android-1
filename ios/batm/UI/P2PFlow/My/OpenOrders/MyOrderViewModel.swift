@@ -78,5 +78,15 @@ class MyOrderViewModel {
     var fiatAmount: String {
         return order.fiatAmount?.coinFormatted ?? ""
     }
+  
+  var isNeedPresentRateView: Bool {
+    if order.status == OrderDetailsActionType.release.networkType {
+      switch currentSellBuyType {
+        case .sell: return order.makerRate == nil
+        case .buy: return order.takerRate == nil
+      }
+    }
+    return false
+  }
 
 }

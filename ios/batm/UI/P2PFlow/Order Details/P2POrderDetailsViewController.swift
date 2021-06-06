@@ -53,6 +53,13 @@ class P2POrderDetailsViewController: UIViewController {
   
   
   func setup(viewModel: MyOrderViewModel, myRate: String) {
+    
+    if viewModel.isNeedPresentRateView {
+      print("RATE present rate view")
+    } else {
+      print("RATE rate view not needed")
+    }
+    
     self.viewModel = viewModel
     currentDistance = viewModel.distanceInMiles ?? ""
     currentRate = myRate

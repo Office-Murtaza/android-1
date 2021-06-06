@@ -48,6 +48,8 @@ extension Order: ImmutableMappable {
         makerLatitude = try map.value("makerLatitude")
         makerLongitude = try map.value("makerLongitude")
         takerUserId = try map.value("takerUserId")
+        makerRate = try map.value("makerRate")
+        takerRate = try map.value("takerRate")
     }
 }
 
