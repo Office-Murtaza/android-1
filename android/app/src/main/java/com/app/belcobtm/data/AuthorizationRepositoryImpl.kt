@@ -8,9 +8,10 @@ import android.location.Location
 import android.location.LocationManager
 import com.app.belcobtm.data.disk.database.account.AccountDao
 import com.app.belcobtm.data.disk.database.account.AccountEntity
+import com.app.belcobtm.data.disk.database.wallet.WalletDao
 import com.app.belcobtm.data.disk.shared.preferences.SharedPreferencesHelper
 import com.app.belcobtm.data.rest.authorization.AuthApiService
-import com.app.belcobtm.data.rest.authorization.response.RecoverWalletCoinResponse
+import com.app.belcobtm.data.rest.wallet.response.CoinResponse
 import com.app.belcobtm.domain.Either
 import com.app.belcobtm.domain.Failure
 import com.app.belcobtm.domain.authorization.AuthorizationRepository
@@ -29,7 +30,8 @@ class AuthorizationRepositoryImpl(
     private val application: Application,
     private val prefHelper: SharedPreferencesHelper,
     private val apiService: AuthApiService,
-    private val daoAccount: AccountDao
+    private val daoAccount: AccountDao,
+    private val walletDao: WalletDao
 ) : AuthorizationRepository {
     private val temporaryCoinMap: MutableMap<LocalCoinType, Pair<String, String>> by lazy {
         return@lazy mutableMapOf<LocalCoinType, Pair<String, String>>()
@@ -105,6 +107,7 @@ class AuthorizationRepositoryImpl(
             val result = (response as Either.Right).b
             val accountList = createAccountEntityList(temporaryCoinMap, result.balance.coins)
             daoAccount.insertItemList(accountList)
+            walletDao.updateBalance(result.balance)
             prefHelper.accessToken = result.accessToken
             prefHelper.refreshToken = result.refreshToken
             prefHelper.firebaseToken = result.firebaseToken
@@ -144,6 +147,7 @@ class AuthorizationRepositoryImpl(
             val result = (recoverResponse as Either.Right).b
             val accountList = createAccountEntityList(temporaryCoinMap, result.balance.coins)
             daoAccount.insertItemList(accountList)
+            walletDao.updateBalance(result.balance)
             prefHelper.apiSeed = seed
             prefHelper.firebaseToken = result.firebaseToken
             prefHelper.accessToken = result.accessToken
@@ -205,7 +209,7 @@ class AuthorizationRepositoryImpl(
 
     private fun createAccountEntityList(
         temporaryCoinMap: Map<LocalCoinType, Pair<String, String>>,
-        responseCoinList: List<RecoverWalletCoinResponse>
+        responseCoinList: List<CoinResponse>
     ): List<AccountEntity> {
         val entityList: MutableList<AccountEntity> = mutableListOf()
         temporaryCoinMap.forEach { (localCoinType, value) ->
