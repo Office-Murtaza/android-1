@@ -1,4 +1,4 @@
-package com.app.belcobtm.data.disk.database
+package com.app.belcobtm.data.disk.database.account
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
@@ -21,10 +21,11 @@ fun AccountEntity.mapToDataItem(): AccountDataItem = AccountDataItem(
     privateKey = privateKey
 ).also { it.isEnabled = isEnabled }
 
-fun AccountDataItem.mapToEntity(): AccountEntity = AccountEntity(
-    id = id,
-    type = type,
-    publicKey = publicKey,
-    privateKey = privateKey,
-    isEnabled = isEnabled
-)
+fun AccountDataItem.mapToEntity(): AccountEntity =
+    AccountEntity(
+        id = id,
+        type = type,
+        publicKey = publicKey,
+        privateKey = privateKey,
+        isEnabled = isEnabled
+    )

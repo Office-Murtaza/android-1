@@ -78,7 +78,7 @@ class CreateTradeFragment : BaseFragment<FragmentCreateTradeBinding>() {
         setToolbarTitle(R.string.create_trade_screen_title)
         coinDetailsView.setMaxButtonEnabled(false)
         coinDetailsView.setErrorEnabled(false)
-        coinDetailsView.getEditText().setText(0.0.toString())
+        coinDetailsView.getEditText().setText("0")
         coinDetailsView.setHint(requireContext().getString(R.string.create_trade_price_input_hint))
         coinDetailsView.setPadding(0, 0, 0, 0)
         paymentOptions.adapter = adapter
@@ -96,16 +96,7 @@ class CreateTradeFragment : BaseFragment<FragmentCreateTradeBinding>() {
             coinDetailsView.setErrorText(it, true)
             coinDetailsView.setErrorEnabled(!it.isNullOrEmpty())
         }
-        viewModel.initialLoadingData.listen(error = {
-            AlertDialog.Builder(requireContext())
-                .setTitle(R.string.create_trade_get_coin_list_error_title)
-                .setMessage(R.string.create_trade_get_coin_list_error_message)
-                .setPositiveButton(R.string.create_trade_get_coin_list_error_button_title) { _, _ ->
-                    popBackStack()
-                }
-                .create()
-                .show()
-        })
+        viewModel.initialLoadingData.listen()
         viewModel.cryptoAmountFormatted.observe(viewLifecycleOwner, cryptoAmountValue::setText)
         viewModel.priceError.observe(viewLifecycleOwner) {
             coinDetailsView.setErrorText(it, true)

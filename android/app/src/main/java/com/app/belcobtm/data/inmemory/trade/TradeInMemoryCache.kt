@@ -1,6 +1,6 @@
 package com.app.belcobtm.data.inmemory.trade
 
-import com.app.belcobtm.data.disk.database.AccountEntity
+import com.app.belcobtm.data.disk.database.account.AccountEntity
 import com.app.belcobtm.data.helper.DistanceCalculator
 import com.app.belcobtm.data.mapper.OrderResponseToOrderMapper
 import com.app.belcobtm.data.mapper.TradeResponseToTradeMapper

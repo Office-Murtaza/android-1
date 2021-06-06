@@ -1,8 +1,7 @@
-package com.app.belcobtm.data.disk.database
+package com.app.belcobtm.data.disk.database.account
 
 import androidx.room.TypeConverter
 import com.app.belcobtm.domain.wallet.LocalCoinType
-import wallet.core.jni.CoinType
 
 class CoinTypeConverter {
     @TypeConverter

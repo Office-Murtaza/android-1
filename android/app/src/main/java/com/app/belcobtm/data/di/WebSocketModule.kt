@@ -27,27 +27,24 @@ import com.app.belcobtm.data.websockets.trade.WebSocketTradesObserver
 import com.app.belcobtm.data.websockets.transactions.TransactionsObserver
 import com.app.belcobtm.data.websockets.transactions.WebSocketTransactionsObserver
 import com.app.belcobtm.data.websockets.wallet.WalletConnectionHandler
-import com.app.belcobtm.data.websockets.wallet.WalletObserver
 import com.app.belcobtm.data.websockets.wallet.WebSocketWalletObserver
 import com.app.belcobtm.presentation.features.wallet.trade.order.chat.NewMessageItem
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import org.koin.core.qualifier.named
-import org.koin.dsl.bind
 import org.koin.dsl.module
 import java.util.concurrent.TimeUnit
 
 val WEB_SOCKET_OK_HTTP_CLIENT_QUALIFIER = named("WebSocketOkHttpClient")
 
 val webSocketModule = module {
-    single<WalletObserver> {
+    single<WalletConnectionHandler> {
         WebSocketWalletObserver(
-            get(), get(), get(),
-            get(named(STOMP_REQUEST_SERIALIZER_QUALIFIER)),
-            get(named(STOMP_RESPONSE_DESERIALIZER_QUALIFIER)),
-            get(), get(), get(authenticatorQualified), get()
+            get(), get(), get(), get(), get(named(STOMP_REQUEST_SERIALIZER_QUALIFIER)),
+            get(named(STOMP_RESPONSE_DESERIALIZER_QUALIFIER)), get(),
+            get(), get(authenticatorQualified), get()
         )
-    } bind WalletConnectionHandler::class
+    }
     single<TradesObserver> {
         WebSocketTradesObserver(
             get(), get(), get(), get(), get(),

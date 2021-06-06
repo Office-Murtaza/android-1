@@ -1,6 +1,6 @@
 package com.app.belcobtm.domain.trade.list.filter.mapper
 
-import com.app.belcobtm.data.disk.database.AccountEntity
+import com.app.belcobtm.data.disk.database.account.AccountEntity
 import com.app.belcobtm.data.model.trade.PaymentOption
 import com.app.belcobtm.data.model.trade.filter.SortOption
 import com.app.belcobtm.data.model.trade.filter.TradeFilter

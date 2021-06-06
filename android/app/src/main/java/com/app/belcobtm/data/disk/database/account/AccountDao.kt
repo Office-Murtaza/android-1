@@ -1,4 +1,4 @@
-package com.app.belcobtm.data.disk.database
+package com.app.belcobtm.data.disk.database.account
 
 import androidx.room.*
 

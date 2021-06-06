@@ -1,17 +1,19 @@
 package com.app.belcobtm.data.websockets.wallet
 
 import com.app.belcobtm.data.core.UnlinkHandler
-import com.app.belcobtm.data.disk.database.AccountDao
+import com.app.belcobtm.data.disk.database.account.AccountDao
+import com.app.belcobtm.data.disk.database.wallet.CoinDetailsEntity
+import com.app.belcobtm.data.disk.database.wallet.CoinEntity
+import com.app.belcobtm.data.disk.database.wallet.WalletDao
+import com.app.belcobtm.data.disk.database.wallet.WalletEntity
 import com.app.belcobtm.data.disk.shared.preferences.SharedPreferencesHelper
 import com.app.belcobtm.data.rest.authorization.AuthApi
 import com.app.belcobtm.data.rest.authorization.request.RefreshTokenRequest
 import com.app.belcobtm.data.rest.wallet.response.BalanceResponse
-import com.app.belcobtm.data.rest.wallet.response.mapToDataItem
 import com.app.belcobtm.data.websockets.base.SocketClient
 import com.app.belcobtm.data.websockets.base.model.SocketResponse
 import com.app.belcobtm.data.websockets.base.model.StompSocketRequest
 import com.app.belcobtm.data.websockets.base.model.StompSocketResponse
-import com.app.belcobtm.data.websockets.base.model.WalletBalance
 import com.app.belcobtm.data.websockets.serializer.RequestSerializer
 import com.app.belcobtm.data.websockets.serializer.ResponseDeserializer
 import com.app.belcobtm.domain.Failure
@@ -19,8 +21,8 @@ import com.app.belcobtm.presentation.core.Endpoint
 import com.squareup.moshi.Moshi
 import kotlinx.coroutines.*
 import kotlinx.coroutines.channels.ConflatedBroadcastChannel
-import kotlinx.coroutines.channels.ReceiveChannel
-import kotlinx.coroutines.channels.sendBlocking
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.asFlow
 import kotlinx.coroutines.flow.collect
 import java.net.HttpURLConnection
 
@@ -28,6 +30,7 @@ import java.net.HttpURLConnection
 class WebSocketWalletObserver(
     private val socketClient: SocketClient,
     private val accountDao: AccountDao,
+    private val walletDao: WalletDao,
     private val sharedPreferencesHelper: SharedPreferencesHelper,
     private val serializer: RequestSerializer<StompSocketRequest>,
     private val deserializer: ResponseDeserializer<StompSocketResponse>,
@@ -35,7 +38,7 @@ class WebSocketWalletObserver(
     private val preferencesHelper: SharedPreferencesHelper,
     private val authApi: AuthApi,
     private val unlinkHandler: UnlinkHandler
-) : WalletObserver {
+) : WalletConnectionHandler {
 
     private companion object {
         const val ID_HEADER = "id"
@@ -56,7 +59,7 @@ class WebSocketWalletObserver(
     }
 
     private val ioScope = CoroutineScope(Dispatchers.IO)
-    private val balanceInfo = ConflatedBroadcastChannel<WalletBalance>()
+    private val connectionFailure = ConflatedBroadcastChannel<Failure?>()
 
     init {
         ioScope.launch {
@@ -68,23 +71,20 @@ class WebSocketWalletObserver(
                             processError(it.cause)
                         is SocketResponse.Message ->
                             processMessage(it.content)
-                        is SocketResponse.Disconnected -> {
-                            balanceInfo.sendBlocking(WalletBalance.NoInfo)
-                        }
                     }
                 }
         }
     }
 
-    override fun observe(): ReceiveChannel<WalletBalance> =
-        balanceInfo.openSubscription()
-
     override suspend fun connect() {
         withContext(ioScope.coroutineContext) {
-            balanceInfo.send(WalletBalance.NoInfo)
+            connectionFailure.send(null)
             socketClient.connect(Endpoint.SOCKET_URL)
         }
     }
+
+    override fun observeConnectionFailure(): Flow<Failure?> =
+        connectionFailure.asFlow()
 
     override suspend fun disconnect() {
         withContext(ioScope.coroutineContext) {
@@ -108,8 +108,29 @@ class WebSocketWalletObserver(
             StompSocketResponse.CONTENT -> {
                 moshi.adapter(BalanceResponse::class.java)
                     .fromJson(response.body)
-                    ?.let { balance ->
-                        balanceInfo.send(WalletBalance.Balance(balance.mapToDataItem()))
+                    ?.let { balanceResponse ->
+                        val wallet = WalletEntity(balanceResponse.totalBalance)
+                        val coins = ArrayList<CoinEntity>()
+                        val details = ArrayList<CoinDetailsEntity>()
+                        balanceResponse.coins.forEach { response ->
+                            with(response) {
+                                val entity = CoinEntity(
+                                    id, idx, code, address, balance,
+                                    fiatBalance, reservedBalance, reservedFiatBalance, price
+                                )
+                                coins.add(entity)
+                            }
+                            with(response.details) {
+                                val entity = CoinDetailsEntity(
+                                    response.id, txFee, byteFee, scale,
+                                    platformSwapFee, platformTradeFee, walletAddress,
+                                    gasLimit, gasPrice, convertedTxFee
+                                )
+                                details.add(entity)
+                            }
+                        }
+
+                        walletDao.updateBalance(wallet, coins, details)
                     }
             }
         }
@@ -135,15 +156,7 @@ class WebSocketWalletObserver(
             is Failure -> throwable
             else -> Failure.ServerError()
         }
-        if (balanceInfo.valueOrNull != null
-            && balanceInfo.valueOrNull !is WalletBalance.Error
-        ) {
-            // notify about error only in case when balance info is not yet populated
-            balanceInfo.send(WalletBalance.Error(error))
-        } else {
-            // otherwise "swallow" an error
-            throwable.printStackTrace()
-        }
+        connectionFailure.send(error)
     }
 
     private suspend fun processErrorMessage(socketResponse: StompSocketResponse) {
@@ -168,8 +181,6 @@ class WebSocketWalletObserver(
                 unlinkHandler.performUnlink()
                 disconnect()
             }
-            else ->
-                balanceInfo.send(WalletBalance.Error(Failure.ServerError()))
         }
     }
 

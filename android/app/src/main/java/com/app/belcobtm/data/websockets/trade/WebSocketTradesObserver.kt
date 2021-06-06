@@ -1,6 +1,6 @@
 package com.app.belcobtm.data.websockets.trade
 
-import com.app.belcobtm.data.disk.database.AccountDao
+import com.app.belcobtm.data.disk.database.account.AccountDao
 import com.app.belcobtm.data.disk.shared.preferences.SharedPreferencesHelper
 import com.app.belcobtm.data.inmemory.trade.TradeInMemoryCache
 import com.app.belcobtm.data.rest.trade.response.TradeItemResponse
@@ -66,6 +66,7 @@ class WebSocketTradesObserver(
 
     override suspend fun connect() {
         withContext(ioScope.coroutineContext) {
+            reconnectCounter = 0
             socketClient.connect(Endpoint.SOCKET_URL)
         }
     }

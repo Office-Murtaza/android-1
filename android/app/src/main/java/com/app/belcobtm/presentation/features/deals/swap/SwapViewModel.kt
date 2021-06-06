@@ -5,8 +5,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.app.belcobtm.R
-import com.app.belcobtm.data.disk.database.AccountDao
-import com.app.belcobtm.data.disk.database.AccountEntity
+import com.app.belcobtm.data.disk.database.account.AccountDao
+import com.app.belcobtm.data.disk.database.account.AccountEntity
 import com.app.belcobtm.domain.Failure
 import com.app.belcobtm.domain.transaction.interactor.CheckXRPAddressActivatedUseCase
 import com.app.belcobtm.domain.transaction.interactor.SwapUseCase

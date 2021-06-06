@@ -2,9 +2,9 @@ package com.app.belcobtm.presentation.features.wallet.transactions
 
 import androidx.lifecycle.*
 import com.app.belcobtm.R
+import com.app.belcobtm.data.disk.database.wallet.WalletDao
+import com.app.belcobtm.data.disk.database.wallet.toDataItem
 import com.app.belcobtm.data.rest.wallet.request.PriceChartPeriod
-import com.app.belcobtm.data.websockets.base.model.WalletBalance
-import com.app.belcobtm.data.websockets.wallet.WalletObserver
 import com.app.belcobtm.domain.transaction.interactor.FetchTransactionsUseCase
 import com.app.belcobtm.domain.transaction.interactor.ObserveTransactionsUseCase
 import com.app.belcobtm.domain.wallet.LocalCoinType
@@ -16,13 +16,16 @@ import com.app.belcobtm.presentation.features.wallet.transactions.item.CurrentCh
 import com.app.belcobtm.presentation.features.wallet.transactions.item.TransactionsAdapterItem
 import com.app.belcobtm.presentation.features.wallet.transactions.item.TransactionsScreenItem
 import com.github.mikephil.charting.data.BarEntry
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.mapNotNull
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import kotlin.collections.set
 
 class TransactionsViewModel(
     val coinCode: String,
-    private val walletObserver: WalletObserver,
+    private val walletDao: WalletDao,
     private val chartUseCase: GetChartsUseCase,
     private val transactionsUseCase: FetchTransactionsUseCase,
     private val observeTransactionsUseCase: ObserveTransactionsUseCase
@@ -122,9 +125,8 @@ class TransactionsViewModel(
 
     private fun subscribeToCoinDataItem(coinCode: String) {
         viewModelScope.launch {
-            walletObserver.observe().receiveAsFlow()
-                .filterIsInstance<WalletBalance.Balance>()
-                .mapNotNull { balance -> balance.data.coinList.firstOrNull { it.code == coinCode } }
+            walletDao.observeCoins()
+                .mapNotNull { entity -> entity.firstOrNull { it.coin.code == coinCode }?.toDataItem() }
                 .map { coinDataItem ->
                     TransactionsScreenItem(
                         balance = coinDataItem.balanceCoin,

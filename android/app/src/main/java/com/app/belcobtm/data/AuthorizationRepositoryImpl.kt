@@ -6,8 +6,8 @@ import android.content.Context
 import android.content.pm.PackageManager
 import android.location.Location
 import android.location.LocationManager
-import com.app.belcobtm.data.disk.database.AccountDao
-import com.app.belcobtm.data.disk.database.AccountEntity
+import com.app.belcobtm.data.disk.database.account.AccountDao
+import com.app.belcobtm.data.disk.database.account.AccountEntity
 import com.app.belcobtm.data.disk.shared.preferences.SharedPreferencesHelper
 import com.app.belcobtm.data.rest.authorization.AuthApiService
 import com.app.belcobtm.data.rest.authorization.response.RecoverWalletCoinResponse

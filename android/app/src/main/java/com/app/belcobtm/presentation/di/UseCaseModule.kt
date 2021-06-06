@@ -34,7 +34,10 @@ import com.app.belcobtm.domain.transaction.interactor.*
 import com.app.belcobtm.domain.transaction.interactor.trade.TradeRecallTransactionCompleteUseCase
 import com.app.belcobtm.domain.transaction.interactor.trade.TradeReserveTransactionCompleteUseCase
 import com.app.belcobtm.domain.transaction.interactor.trade.TradeReserveTransactionCreateUseCase
-import com.app.belcobtm.domain.wallet.interactor.*
+import com.app.belcobtm.domain.wallet.interactor.ConnectToWalletUseCase
+import com.app.belcobtm.domain.wallet.interactor.GetChartsUseCase
+import com.app.belcobtm.domain.wallet.interactor.GetCoinByCodeUseCase
+import com.app.belcobtm.domain.wallet.interactor.GetCoinListUseCase
 import com.app.belcobtm.presentation.core.DateFormat.CHAT_DATE_FORMAT
 import com.app.belcobtm.presentation.core.formatter.DoubleCurrencyPriceFormatter.Companion.DOUBLE_CURRENCY_PRICE_FORMATTER_QUALIFIER
 import com.app.belcobtm.presentation.core.formatter.MilesFormatter.Companion.MILES_FORMATTER_QUALIFIER
@@ -66,7 +69,6 @@ val useCaseModule = module {
     single { SellGetLimitsUseCase(get()) }
     single { GetUserCoinListUseCase(get()) }
     single { UpdateUserCoinListUseCase(get()) }
-    single { GetBalanceUseCase(get()) }
     single { GetChartsUseCase(get()) }
     single { FetchTransactionsUseCase(get()) }
     single { WithdrawUseCase(get()) }

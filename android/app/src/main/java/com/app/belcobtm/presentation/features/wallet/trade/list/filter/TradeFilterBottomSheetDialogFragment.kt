@@ -44,6 +44,8 @@ class TradeFilterBottomSheetDialogFragment : BottomSheetDialogFragment() {
         viewModel.updateMinDistance(parsedAmount)
     }
 
+    override fun getTheme(): Int = R.style.DialogStyle
+
     private val maxDistanceTextWatcher = SafeDecimalEditTextWatcher { editable ->
         val parsedAmount = viewModel.parseDistance(editable.toString())
         viewModel.updateMaxDistance(parsedAmount)
