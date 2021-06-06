@@ -335,7 +335,7 @@
     <string name="swap_screen_fee_formatted"><![CDATA[%1$s\%% ~ %2$s %3$s]]></string>
     <string name="swap_screen_usd_label">Converted Value</string>
     <string name="swap_screen_usd_value">$ %1$s</string>
-    <string name="swap_screen_fee">Platform fee</string>
+    <string name="swap_screen_fee">Platform Fee</string>
     <string name="swap_screen_select_coin">Select coin please</string>
     <string name="swap_screen_error_coin_details_fetch">Unable to load coin details. Try again later</string>
     <string name="swap_screen_error_not_enough_balance">Not enough coins on balance</string>
@@ -637,7 +637,7 @@
     <string name="no_trades_result_message">There isn\'t trades with the applied filter</string>
     <string name="trade_details_buy_button_title">Buy</string>
     <string name="trade_details_sell_button_title">Sell</string>
-    <string name="trade_buy_sell_crypto_amount_label">Crypto amount</string>
+    <string name="trade_buy_sell_crypto_amount_label">Crypto Amount</string>
     <string name="trade_buy_sell_submit_button_label">Submit</string>
     <string name="usd_amount_label">Fiat Amount, $</string>
     <string name="create_order_reserved_amount">Reserved %s %s</string>
@@ -664,7 +664,7 @@
     <string name="edit_trade_success_message">Trade successfully edited</string>
     <string name="edit_trade_screen_edit_button_title">Save</string>
 
-    <string name="trade_buy_sell_dialog_platform_fee_formatted">Platform fee %1$s%% ~ %2$s %3$s</string>
+    <string name="trade_buy_sell_dialog_platform_fee_formatted">Platform Fee %1$s%% ~ %2$s %3$s</string>
     <string name="trade_buy_sell_dialog_crypto_amount_formatted">%1$s %2$s</string>
     <string name="trade_buy_sell_dialog_amount_zero_error">Amount cannot be zero</string>
     <string name="trade_buy_sell_dialog_amount_not_in_range_error">Amount is bigger/less than specified limits</string>
@@ -702,9 +702,6 @@
     <string name="send_gift_phone_number_prefix">+1</string>
     <string name="dash">-</string>
 
-    <string name="create_trade_get_coin_list_error_title">Error</string>
-    <string name="create_trade_get_coin_list_error_message">An error occurred receiving your balance. Please check that balance available</string>
-    <string name="create_trade_get_coin_list_error_button_title">OK</string>
     <string name="you_will_get_label">You Will Get</string>
     <string name="order_details_id_label">ID</string>
 </resources>

@@ -63,6 +63,7 @@ class WebSocketTransactionsObserver(
 
     override suspend fun connect() {
         withContext(ioScope.coroutineContext) {
+            reconnectCounter = 0
             socketClient.connect(Endpoint.SOCKET_URL)
         }
     }

@@ -112,7 +112,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/crypto_amount_value"
-        tools:text="Platform fee 3% ~ 0.00054 BTC" />
+        tools:text="Platform Fee 3% ~ 0.00054 BTC" />
 
     <TextView
         android:id="@+id/total_crypto_label"

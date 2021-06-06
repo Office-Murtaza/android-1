@@ -1,54 +1,61 @@
 package com.app.belcobtm.presentation.features.wallet.balance
 
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
-import com.app.belcobtm.data.disk.database.AccountDao
-import com.app.belcobtm.data.websockets.base.model.WalletBalance
-import com.app.belcobtm.data.websockets.wallet.WalletObserver
+import com.app.belcobtm.data.disk.database.wallet.FullCoinEntity
+import com.app.belcobtm.data.disk.database.wallet.WalletDao
+import com.app.belcobtm.data.disk.database.wallet.WalletEntity
+import com.app.belcobtm.data.websockets.wallet.WalletConnectionHandler
 import com.app.belcobtm.presentation.core.mvvm.LoadingData
 import com.app.belcobtm.presentation.features.wallet.balance.adapter.CoinListItem
-import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.receiveAsFlow
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
 
 class WalletViewModel(
-    private val accountDao: AccountDao,
-    private val walletObserver: WalletObserver
+    private val walletDao: WalletDao,
+    private val walletConnectionHandler: WalletConnectionHandler
 ) : ViewModel() {
 
-    val balanceLiveData: LiveData<LoadingData<Pair<Double, List<CoinListItem>>>> =
-        walletObserver.observe()
-            .receiveAsFlow()
-            .map { mapWalletBalance(it) }
-            .asLiveData()
+    private val _balanceLiveData = MutableLiveData<LoadingData<Pair<Double, List<CoinListItem>>>>()
+    val balanceLiveData: LiveData<LoadingData<Pair<Double, List<CoinListItem>>>> = _balanceLiveData
 
     fun reconnectToWallet() {
         viewModelScope.launch {
-            walletObserver.connect()
+            walletConnectionHandler.connect()
         }
     }
 
-    private suspend fun mapWalletBalance(
-        wallet: WalletBalance
+    init {
+        viewModelScope.launch {
+            walletDao.observeCoins()
+                .combine(walletDao.observeWallet()) { coins, wallet -> mapWalletBalance(coins, wallet) }
+                .combine(walletConnectionHandler.observeConnectionFailure()) { wallet, error ->
+                    error?.let { LoadingData.Error<Pair<Double, List<CoinListItem>>>(it) } ?: wallet
+                }
+                .collect {
+                    _balanceLiveData.value = it
+                }
+        }
+    }
+
+    private fun mapWalletBalance(
+        coins: List<FullCoinEntity>, walletEntity: WalletEntity?
     ): LoadingData<Pair<Double, List<CoinListItem>>> =
-        when (wallet) {
-            is WalletBalance.NoInfo -> LoadingData.Loading()
-            is WalletBalance.Error -> LoadingData.Error(wallet.error)
-            is WalletBalance.Balance -> {
-                wallet.data.coinList
-                    .filter { accountDao.getItem(it.code).isEnabled }
-                    .map {
-                        CoinListItem(
-                            code = it.code,
-                            balanceCrypto = it.balanceCoin + it.reservedBalanceCoin,
-                            balanceFiat = it.balanceUsd + it.reservedBalanceUsd,
-                            priceUsd = it.priceUsd
-                        )
-                    }.let { coinList ->
-                        LoadingData.Success(wallet.data.balance to coinList)
-                    }
-            }
+        if (coins.isEmpty()) {
+            LoadingData.Loading()
+        } else {
+            val coinItems = coins.filter { it.accountEntity.isEnabled }
+                .map {
+                    CoinListItem(
+                        code = it.coin.code,
+                        balanceCrypto = it.coin.balance + it.coin.reservedBalance,
+                        balanceFiat = it.coin.balanceUsd + it.coin.reservedBalanceUsd,
+                        priceUsd = it.coin.price
+                    )
+                }
+            LoadingData.Success((walletEntity?.totalBalance ?: 0.0) to coinItems)
         }
 }

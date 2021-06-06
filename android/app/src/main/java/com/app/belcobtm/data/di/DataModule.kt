@@ -16,6 +16,7 @@ import com.app.belcobtm.data.core.TransactionHashHelper
 import com.app.belcobtm.data.core.UnlinkHandler
 import com.app.belcobtm.data.disk.AssetsDataStore
 import com.app.belcobtm.data.disk.database.AppDatabase
+import com.app.belcobtm.data.disk.database.AppDatabase.Companion.MIGRATION_2_3
 import com.app.belcobtm.data.disk.shared.preferences.SharedPreferencesHelper
 import com.app.belcobtm.data.helper.DistanceCalculator
 import com.app.belcobtm.data.inmemory.trade.TradeInMemoryCache
@@ -90,11 +91,12 @@ val dataModule = module {
     single { TransactionHashHelper(get(), get(), get(), get(), get()) }
     single {
         Room.databaseBuilder(get(), AppDatabase::class.java, "belco_database")
-            .fallbackToDestructiveMigration()
+            .addMigrations(MIGRATION_2_3)
             .build()
     }
     single { Moshi.Builder().build() }
-    single { (get() as AppDatabase).getCoinDao() }
+    single { get<AppDatabase>().getCoinDao() }
+    single { get<AppDatabase>().getWalletDao() }
     single<IntentActions> { IntentActionsImpl(get()) }
     single {
         OkHttpClient().newBuilder()

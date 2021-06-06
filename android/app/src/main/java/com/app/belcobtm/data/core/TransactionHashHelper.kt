@@ -1,11 +1,11 @@
 package com.app.belcobtm.data.core
 
 import com.app.belcobtm.data.core.trx.Trx
-import com.app.belcobtm.data.disk.database.AccountDao
+import com.app.belcobtm.data.disk.database.account.AccountDao
+import com.app.belcobtm.data.disk.database.wallet.WalletDao
+import com.app.belcobtm.data.disk.database.wallet.toDataItem
 import com.app.belcobtm.data.disk.shared.preferences.SharedPreferencesHelper
 import com.app.belcobtm.data.rest.transaction.TransactionApiService
-import com.app.belcobtm.data.websockets.base.model.WalletBalance
-import com.app.belcobtm.data.websockets.wallet.WalletObserver
 import com.app.belcobtm.domain.Either
 import com.app.belcobtm.domain.Failure
 import com.app.belcobtm.domain.wallet.LocalCoinType
@@ -18,10 +18,6 @@ import com.app.belcobtm.presentation.core.toHexBytes
 import com.app.belcobtm.presentation.core.toHexBytesInByteString
 import com.google.protobuf.ByteString
 import com.squareup.moshi.Moshi
-import kotlinx.coroutines.flow.filterIsInstance
-import kotlinx.coroutines.flow.firstOrNull
-import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.receiveAsFlow
 import wallet.core.java.AnySigner
 import wallet.core.jni.*
 import wallet.core.jni.proto.*
@@ -31,7 +27,7 @@ import java.util.*
 
 class TransactionHashHelper(
     private val moshi: Moshi,
-    private val walletObserver: WalletObserver,
+    private val walletDao: WalletDao,
     private val apiService: TransactionApiService,
     private val prefsHelper: SharedPreferencesHelper,
     private val daoAccount: AccountDao
@@ -416,12 +412,8 @@ class TransactionHashHelper(
         }
     }
 
-    private suspend fun getCoinByCode(coinCode: String): CoinDataItem? {
-        return walletObserver.observe().receiveAsFlow()
-            .filterIsInstance<WalletBalance.Balance>()
-            .map { balance -> balance.data.coinList.firstOrNull { it.code == coinCode } }
-            .firstOrNull()
-    }
+    private suspend fun getCoinByCode(coinCode: String): CoinDataItem =
+        walletDao.getCoinByCode(coinCode).toDataItem()
 
     private companion object {
         private const val ETH_CATM_FUNCTION_NAME_TRANSFER: String = "transfer"

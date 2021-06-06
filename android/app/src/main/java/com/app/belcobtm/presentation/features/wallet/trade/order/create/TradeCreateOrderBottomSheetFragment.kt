@@ -1,9 +1,11 @@
 package com.app.belcobtm.presentation.features.wallet.trade.order.create
 
+import android.app.Dialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.FrameLayout
 import androidx.lifecycle.observe
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
@@ -17,6 +19,8 @@ import com.app.belcobtm.presentation.core.extensions.toggle
 import com.app.belcobtm.presentation.core.mvvm.LoadingData
 import com.app.belcobtm.presentation.core.ui.fragment.BaseBottomSheetFragment
 import com.app.belcobtm.presentation.core.views.listeners.SafeDecimalEditTextWatcher
+import com.google.android.material.bottomsheet.BottomSheetBehavior
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import org.koin.android.viewmodel.ext.android.viewModel
 
 class TradeCreateOrderBottomSheetFragment : BaseBottomSheetFragment() {
@@ -48,9 +52,21 @@ class TradeCreateOrderBottomSheetFragment : BaseBottomSheetFragment() {
 
     override fun getTheme(): Int = R.style.DialogStyle
 
+    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
+        val dialog = super.onCreateDialog(savedInstanceState)
+        dialog.setOnShowListener { dialog ->
+            val d = dialog as BottomSheetDialog
+            val bottomSheet =
+                d.findViewById<View>(R.id.design_bottom_sheet) as FrameLayout?
+            BottomSheetBehavior.from<FrameLayout?>(bottomSheet!!).state = BottomSheetBehavior.STATE_EXPANDED
+        }
+        return dialog
+    }
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = FragmentTradeCreateOrderBinding.inflate(inflater, container, false)
         viewModel.fetchTradeDetails(args.tradeId)
+        binding.amountEditText.setText("0")
         binding.amountEditText.addTextChangedListener(amountTextWatcher)
         viewModel.initialLoadingData.listen()
         viewModel.createTradeLoadingData.listen(success = {
@@ -86,5 +102,12 @@ class TradeCreateOrderBottomSheetFragment : BaseBottomSheetFragment() {
             viewModel.createOrder()
         }
         return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        binding.amountEditText.post {
+            binding.amountEditText.requestFocus()
+        }
     }
 }

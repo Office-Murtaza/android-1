@@ -1,12 +1,12 @@
 package com.app.belcobtm.data
 
 import com.app.belcobtm.data.core.TransactionHashHelper
-import com.app.belcobtm.data.disk.database.AccountDao
+import com.app.belcobtm.data.disk.database.account.AccountDao
+import com.app.belcobtm.data.disk.database.wallet.WalletDao
+import com.app.belcobtm.data.disk.database.wallet.toDataItem
 import com.app.belcobtm.data.inmemory.transactions.TransactionsInMemoryCache
 import com.app.belcobtm.data.model.transactions.TransactionsData
 import com.app.belcobtm.data.rest.transaction.TransactionApiService
-import com.app.belcobtm.data.websockets.base.model.WalletBalance
-import com.app.belcobtm.data.websockets.wallet.WalletObserver
 import com.app.belcobtm.domain.Either
 import com.app.belcobtm.domain.Failure
 import com.app.belcobtm.domain.map
@@ -18,11 +18,11 @@ import com.app.belcobtm.domain.transaction.item.StakeDetailsDataItem
 import com.app.belcobtm.domain.wallet.LocalCoinType
 import com.app.belcobtm.domain.wallet.item.CoinDataItem
 import com.app.belcobtm.domain.wallet.item.isEthRelatedCoinCode
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.Flow
 
 class TransactionRepositoryImpl(
     private val apiService: TransactionApiService,
-    private val walletObserver: WalletObserver,
+    private val walletDao: WalletDao,
     private val toolsRepository: ToolsRepository,
     private val cache: TransactionsInMemoryCache,
     private val transactionHashRepository: TransactionHashHelper,
@@ -293,10 +293,6 @@ class TransactionRepositoryImpl(
         return apiService.getXRPAddressActivated(address)
     }
 
-    private suspend fun getCoinByCode(coidCode: String): CoinDataItem? {
-        return walletObserver.observe().receiveAsFlow()
-            .filterIsInstance<WalletBalance.Balance>()
-            .map { balance -> balance.data.coinList.firstOrNull { it.code == coidCode } }
-            .firstOrNull()
-    }
+    private suspend fun getCoinByCode(coinCode: String): CoinDataItem =
+        walletDao.getCoinByCode(coinCode).toDataItem()
 }

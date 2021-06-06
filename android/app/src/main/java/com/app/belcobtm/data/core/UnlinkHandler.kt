@@ -3,7 +3,7 @@ package com.app.belcobtm.data.core
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import com.app.belcobtm.data.disk.database.AccountDao
+import com.app.belcobtm.data.disk.database.account.AccountDao
 import com.app.belcobtm.data.disk.shared.preferences.SharedPreferencesHelper
 import com.app.belcobtm.data.rest.settings.SettingsApi
 import com.app.belcobtm.data.websockets.wallet.WalletConnectionHandler

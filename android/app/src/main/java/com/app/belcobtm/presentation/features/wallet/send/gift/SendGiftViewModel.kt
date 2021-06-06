@@ -3,7 +3,7 @@ package com.app.belcobtm.presentation.features.wallet.send.gift
 import androidx.annotation.StringRes
 import androidx.lifecycle.*
 import com.app.belcobtm.R
-import com.app.belcobtm.data.disk.database.AccountDao
+import com.app.belcobtm.data.disk.database.account.AccountDao
 import com.app.belcobtm.domain.Failure
 import com.app.belcobtm.domain.transaction.interactor.SendGiftTransactionCreateUseCase
 import com.app.belcobtm.domain.wallet.interactor.GetCoinListUseCase
