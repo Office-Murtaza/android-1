@@ -3,6 +3,8 @@ package com.app.belcobtm.data.di
 import android.content.Context
 import android.preference.PreferenceManager
 import androidx.room.Room
+import androidx.security.crypto.EncryptedSharedPreferences
+import androidx.security.crypto.MasterKeys
 import com.app.belcobtm.data.ContactsRepositoryImpl
 import com.app.belcobtm.data.cloud.auth.CloudAuth
 import com.app.belcobtm.data.cloud.auth.FirebaseCloudAuth
@@ -66,10 +68,22 @@ import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import java.util.concurrent.TimeUnit
 
+
 val dataModule = module {
     single {
-        val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(get())
-        SharedPreferencesHelper(sharedPreferences)
+        // TODO can be removed after release 1.9
+        PreferenceManager.getDefaultSharedPreferences(get()).edit()
+            .clear()
+            .apply()
+        SharedPreferencesHelper(
+            EncryptedSharedPreferences.create(
+                "belco_secret_prefs",
+                MasterKeys.getOrCreate(MasterKeys.AES256_GCM_SPEC),
+                get(),
+                EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
+                EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
+            )
+        )
     }
     single { BaseInterceptor(get(), get()) }
     single { NoConnectionInterceptor(get()) }
