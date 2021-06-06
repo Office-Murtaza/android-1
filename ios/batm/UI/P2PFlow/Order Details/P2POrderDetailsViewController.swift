@@ -38,6 +38,7 @@ class P2POrderDetailsViewController: UIViewController {
     lazy var stackView: UIStackView = {
       let stack = UIStackView()
       stack.axis = .vertical
+      
       return stack
     }()
     
@@ -97,6 +98,9 @@ class P2POrderDetailsViewController: UIViewController {
   }
   
     func setupPaymenMethodsView(order: Order) {
+      
+      paymentMethods.removeAll()
+      
       guard let methods = order.paymentMethods else { return }
       let images =  methods
           .components(separatedBy: ",")
@@ -247,7 +251,6 @@ class P2POrderDetailsViewController: UIViewController {
       actionSheet.snp.makeConstraints {
         $0.top.equalTo(partnerScoreView.snp.bottom)
         $0.left.right.equalToSuperview()
-        $0.height.equalTo(100)
       }
       
       footerView.snp.makeConstraints {

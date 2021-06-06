@@ -161,7 +161,7 @@ extension MDCButton {
   
   static var dispute: MDCButton {
     let button = MDCButton.text
-    button.setTitle(localize(L.Shared.Button.cancel), for: .normal)
+    button.setTitle(localize(L.Shared.Button.dispute), for: .normal)
     return button
   }
   

@@ -1,0 +1,12 @@
+{
+  "images" : [
+    {
+      "filename" : "p2p_order_status_withdrawn.svg",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}

@@ -12,7 +12,7 @@ class OrderDetailsActionSheet: UIView {
   private lazy var stackView: UIStackView = {
     let stack = UIStackView()
     stack.axis = .vertical
-    stack.distribution = .fillEqually
+    stack.distribution = .fillProportionally
     stack.spacing = 5
     return stack
   }()

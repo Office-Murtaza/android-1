@@ -170,7 +170,7 @@ class P2PViewController: ModuleViewController<P2PPresenter>, MDCTabBarDelegate {
         }.disposed(by: disposeBag)
       
       
-      presenter.socketOrder
+      presenter.updatedOrder
           .subscribe { [unowned self] (order) in
             self.myViewController?.updateWithUpdatedOrder(order)
       }.disposed(by: disposeBag)

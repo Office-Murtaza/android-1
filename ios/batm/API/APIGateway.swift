@@ -91,7 +91,7 @@ protocol APIGateway {
   func cancelTrade(userId: Int, id: String) -> Single<Trade>
   func createOrder(userId: Int, tradeId: String, price: Double, cryptoAmount: Double, fiatAmount: Double) -> Single<Order>
   func cancelOrder(userId: Int, id: String) -> Single<Order>
-  func updateOrder(userId: Int, id: String, status: TradeOrderStatus, rate: Int?) -> Single<Order>
+  func updateOrder(userId: Int, id: String, status: OrderDetailsActionType, rate: Int?) -> Single<Order>
 
 }
 
@@ -428,8 +428,8 @@ final class APIGatewayImpl: APIGateway {
     return execute(request)
   }
   
-  func updateOrder(userId: Int, id: String, status: TradeOrderStatus, rate: Int?) -> Single<Order> {
-    let request = UpdateOrderRequest(userId: userId, orderId: id, status: status.rawValue, rate: rate)
+  func updateOrder(userId: Int, id: String, status: OrderDetailsActionType, rate: Int?) -> Single<Order> {
+    let request = UpdateOrderRequest(userId: userId, orderId: id, status: status.networkType, rate: rate)
     return execute(request)
   }
   

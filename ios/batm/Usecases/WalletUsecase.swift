@@ -17,7 +17,7 @@ protocol WalletUsecase {
     func removeCoinDetails()
   
   func cancelOrder(id: String) -> Single<Order>
-  func updateOrder(id: String, status: TradeOrderStatus, rate: Int?) -> Single<Order>
+  func updateOrder(id: String, status: OrderDetailsActionType, rate: Int?) -> Single<Order>
   
 }
 
@@ -114,7 +114,7 @@ class WalletUsecaseImpl: WalletUsecase, HasDisposeBag {
         .asSingle()
   }
   
-  func updateOrder(id: String, status: TradeOrderStatus, rate: Int?) -> Single<Order> {
+  func updateOrder(id: String, status: OrderDetailsActionType, rate: Int?) -> Single<Order> {
     return accountStorage.get()
         .asObservable()
         .flatMap { [api] user in

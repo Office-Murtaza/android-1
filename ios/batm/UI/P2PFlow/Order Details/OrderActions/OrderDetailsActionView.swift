@@ -23,6 +23,7 @@ class OrderDetailsActionView: UIView {
     renderedButton.snp.makeConstraints {
       $0.top.bottom.equalToSuperview()
       $0.right.equalToSuperview().offset(-15)
+      $0.height.equalTo(50)
       $0.left.equalToSuperview().offset(15)
     }
     

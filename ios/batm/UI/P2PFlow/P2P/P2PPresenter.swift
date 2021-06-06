@@ -18,7 +18,7 @@ class P2PPresenter: ModulePresenter, P2PModule {
   var tradeSuccessMessage = BehaviorRelay<String>(value: "")
   var balance = BehaviorRelay<CoinsBalance?>(value: nil)
   var createdOrder = BehaviorRelay<Order?>(value: nil)
-  var socketOrder = PublishRelay<Order>()
+  var updatedOrder = PublishRelay<Order>()
   var socketTrade = PublishRelay<Trade>()
   
   private var coins: [CoinBalance]?
@@ -55,7 +55,7 @@ class P2PPresenter: ModulePresenter, P2PModule {
     orderSocketService?.start()
     
     orderSocketService?.getOrder().subscribe(onNext: { [weak self] (order) in
-      self?.socketOrder.accept(order)
+      self?.updatedOrder.accept(order)
     }).disposed(by: disposeBag)
     
   }
@@ -63,15 +63,21 @@ class P2PPresenter: ModulePresenter, P2PModule {
   func didTap(type: OrderDetailsActionType, model: MyOrderViewModel) {
     if type == .cancel {
       guard let id = model.order.id else { return }
-      walletUseCase?.cancelOrder(id: id) //subscribe and udpate!!!
+      walletUseCase?.cancelOrder(id: id).subscribeOn(MainScheduler()).subscribe(onSuccess: { [weak self] (order) in
+        self?.updatedOrder.accept(order)
+      }, onError: { error in
+      }).disposed(by: disposeBag)
     } else {
-      updateOrder(type: type, model: model) // subscribe and udpate!!!
+      updateOrder(type: type, model: model)
     }
   }
   
   private func updateOrder(type: OrderDetailsActionType, model: MyOrderViewModel) {
     guard let id = model.order.id else { return }
-    walletUseCase?.updateOrder(id: id, status: model.orderStatus, rate: nil)
+    walletUseCase?.updateOrder(id: id, status: type, rate: nil).subscribeOn(MainScheduler()).subscribe(onSuccess: { [weak self] (order) in
+      self?.updatedOrder.accept(order)
+    }, onError:{ error in
+    }).disposed(by: disposeBag)
   }
   
   
