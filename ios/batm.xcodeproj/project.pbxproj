@@ -101,6 +101,7 @@
 		231D041C266BE0AF0016F6E7 /* OrderDetailsActionsFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 231D041B266BE0AF0016F6E7 /* OrderDetailsActionsFactory.swift */; };
 		231D0420266C03B40016F6E7 /* OrderDetailsActionSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 231D041F266C03B40016F6E7 /* OrderDetailsActionSheet.swift */; };
 		231D0424266C07090016F6E7 /* OrderDetailsActionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 231D0423266C07090016F6E7 /* OrderDetailsActionView.swift */; };
+		231D0429266D4FC30016F6E7 /* P2POrderRateViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 231D0428266D4FC30016F6E7 /* P2POrderRateViewController.swift */; };
 		23234DA425AB9B4500CA90F7 /* TransferSectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23234DA325AB9B4500CA90F7 /* TransferSectionView.swift */; };
 		2328A78925E6F1F4007CA97D /* Trades.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2328A78825E6F1F4007CA97D /* Trades.swift */; };
 		2328A78D25E6F5CE007CA97D /* Trades+Mapping.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2328A78C25E6F5CE007CA97D /* Trades+Mapping.swift */; };
@@ -789,6 +790,7 @@
 		231D041B266BE0AF0016F6E7 /* OrderDetailsActionsFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderDetailsActionsFactory.swift; sourceTree = "<group>"; };
 		231D041F266C03B40016F6E7 /* OrderDetailsActionSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderDetailsActionSheet.swift; sourceTree = "<group>"; };
 		231D0423266C07090016F6E7 /* OrderDetailsActionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderDetailsActionView.swift; sourceTree = "<group>"; };
+		231D0428266D4FC30016F6E7 /* P2POrderRateViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = P2POrderRateViewController.swift; sourceTree = "<group>"; };
 		23234DA325AB9B4500CA90F7 /* TransferSectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransferSectionView.swift; sourceTree = "<group>"; };
 		2328A78825E6F1F4007CA97D /* Trades.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Trades.swift; sourceTree = "<group>"; };
 		2328A78C25E6F5CE007CA97D /* Trades+Mapping.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Trades+Mapping.swift"; sourceTree = "<group>"; };
@@ -1711,6 +1713,14 @@
 			path = OrderActions;
 			sourceTree = "<group>";
 		};
+		231D0427266D4F900016F6E7 /* P2POrderRate */ = {
+			isa = PBXGroup;
+			children = (
+				231D0428266D4FC30016F6E7 /* P2POrderRateViewController.swift */,
+			);
+			path = P2POrderRate;
+			sourceTree = "<group>";
+		};
 		23315F1C2659300F002E01E6 /* Validators */ = {
 			isa = PBXGroup;
 			children = (
@@ -1955,6 +1965,7 @@
 		23F13F8C264C5F1500633808 /* Order Details */ = {
 			isa = PBXGroup;
 			children = (
+				231D0427266D4F900016F6E7 /* P2POrderRate */,
 				231D0414266BE07B0016F6E7 /* OrderActions */,
 				23F13F8D264C5F3500633808 /* P2POrderDetailsViewController.swift */,
 				23BC175E264D6692002A1214 /* P2POrderDetailsAmountView.swift */,
@@ -4457,6 +4468,7 @@
 				DB83663022FAA76B00454F5C /* UnlinkViewController.swift in Sources */,
 				DBECA62E22F7FB6C002C2610 /* UpdatePhoneFlow.swift in Sources */,
 				DBA7393A22C33F2600CEFD57 /* Localization.swift in Sources */,
+				231D0429266D4FC30016F6E7 /* P2POrderRateViewController.swift in Sources */,
 				DB5185AD231FE68300052229 /* CoinWithdrawModule.swift in Sources */,
 				23A6B79B263B515000DE2738 /* P2PTradeDetailsCoinInfoView.swift in Sources */,
 				DBBD6AA924F72CD300610A4E /* WalletTableView.swift in Sources */,
