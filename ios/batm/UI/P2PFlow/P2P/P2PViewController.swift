@@ -257,6 +257,10 @@ extension P2PViewController: MyViewControllerDelegate {
     presenter.didTap(type: type, model: model)
   }
   
+  func selectedRate(orderModel: MyOrderViewModel, rate: Int) {
+    presenter.updatedRate(model: orderModel, rate: rate)
+  }
+  
 }
 
 extension P2PViewController: TradesDataSourceDelegate {

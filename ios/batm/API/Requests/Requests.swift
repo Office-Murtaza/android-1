@@ -787,3 +787,20 @@ struct UpdateOrderRequest: AuthorizedAPIRequest {
       
     }
 }
+
+struct UpdateOrderRateRequest: AuthorizedAPIRequest {
+  typealias ResponseType = APIResponse<Order>
+  typealias ResponseTrait = SingleResponseTrait
+  
+  let userId: Int
+  let orderId: String
+  let rate: Int
+  
+  var path: String { return "/user/\(userId)/order" }
+  var method: HTTPMethod { return .put }
+  var task: HTTPTask {
+    return .requestParameters(parameters: ["id": orderId,
+                                           "rate" : rate], encoding: JSONEncoding.default)
+    
+  }
+}

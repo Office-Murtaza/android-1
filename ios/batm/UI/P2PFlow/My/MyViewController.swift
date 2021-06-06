@@ -11,6 +11,7 @@ protocol MyViewControllerDelegate: AnyObject {
   func cancelTrade(id: String)
   func didTapDistance(order: Order)
   func didTap(type: OrderDetailsActionType, model: MyOrderViewModel)
+  func selectedRate(orderModel: MyOrderViewModel, rate: Int)
 }
 
 class MyViewController: UIViewController, MDCTabBarDelegate {
@@ -160,5 +161,9 @@ extension MyViewController: MyOpenOrdersViewControllerDelegate {
   
   func didTap(type: OrderDetailsActionType, model: MyOrderViewModel) {
     delegate?.didTap(type: type, model: model)
+  }
+  
+  func selectedRate(orderModel: MyOrderViewModel, rate: Int) {
+    delegate?.selectedRate(orderModel: orderModel, rate: rate)
   }
 }

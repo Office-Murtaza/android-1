@@ -3,6 +3,7 @@ import UIKit
 protocol P2POrderDetailsViewControllerDelegate: AnyObject {
   func didTapDistance(order: Order)
   func didTap(type: OrderDetailsActionType, orderModel: MyOrderViewModel)
+  func selectedRate(orderModel: MyOrderViewModel, rate: Int)
 }
 
 class P2POrderDetailsViewController: UIViewController {
@@ -50,16 +51,14 @@ class P2POrderDetailsViewController: UIViewController {
     setupLayout()
   }
   
-  
+  override func viewDidAppear(_ animated: Bool) {
+    super.viewDidAppear(animated)
+    if viewModel?.isNeedPresentRateView == true {
+        presentRateController()
+    }
+  }
   
   func setup(viewModel: MyOrderViewModel, myRate: String) {
-    
-    if viewModel.isNeedPresentRateView {
-      print("RATE present rate view")
-    } else {
-      print("RATE rate view not needed")
-    }
-    
     self.viewModel = viewModel
     currentDistance = viewModel.distanceInMiles ?? ""
     currentRate = myRate
@@ -104,7 +103,15 @@ class P2POrderDetailsViewController: UIViewController {
     actionSheet.update(action: action)
   }
   
-  
+  func presentRateController() {
+    let controller = P2POrderRateViewController()
+    controller.delegate = self
+    controller.modalPresentationStyle = .overCurrentContext
+    let makerId = viewModel?.order.makerPublicId ?? ""
+    let title = String(format: localize(L.P2p.Order.Details.rate), makerId)
+    controller.setup(title: title)
+    present(controller, animated: true, completion: nil)
+  }
   
   func setupPaymenMethodsView(order: Order) {
     
@@ -289,5 +296,12 @@ extension P2POrderDetailsViewController: OrderDetailsActionSheetDelegate {
   func didTap(type: OrderDetailsActionType) {
     guard let vm = viewModel else { return }
     delegate?.didTap(type: type, orderModel: vm)
+  }
+}
+
+extension P2POrderDetailsViewController: P2POrderRateViewControllerDelegate {
+  func selectedRate(rate: Int) {
+    guard let vm = viewModel else { return }
+    delegate?.selectedRate(orderModel: vm, rate: rate)
   }
 }

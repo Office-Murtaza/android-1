@@ -4,6 +4,7 @@ import CoreLocation
 protocol MyOpenOrdersViewControllerDelegate: AnyObject {
   func didTapDistance(order: Order)
   func didTap(type: OrderDetailsActionType, model: MyOrderViewModel)
+  func selectedRate(orderModel: MyOrderViewModel, rate: Int)
 }
 
 class MyOpenOrdersViewController: UIViewController {
@@ -101,6 +102,10 @@ extension MyOpenOrdersViewController: P2POrderDetailsViewControllerDelegate {
   
   func didTap(type: OrderDetailsActionType, orderModel: MyOrderViewModel) {
     delegate?.didTap(type: type, model: orderModel)
+  }
+  
+  func selectedRate(orderModel: MyOrderViewModel, rate: Int) {
+    delegate?.selectedRate(orderModel: orderModel, rate: rate)
   }
   
 }

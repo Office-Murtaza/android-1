@@ -72,6 +72,14 @@ class P2PPresenter: ModulePresenter, P2PModule {
     }
   }
   
+  func updatedRate(model: MyOrderViewModel, rate: Int) {
+    guard let id = model.order.id else { return }
+    walletUseCase?.updateRate(id: id, rate: rate).subscribeOn(MainScheduler()).subscribe(onSuccess: { [weak self] (order) in
+      self?.updatedOrder.accept(order)
+    }, onError:{ error in
+    }).disposed(by: disposeBag)
+  }
+  
   private func updateOrder(type: OrderDetailsActionType, model: MyOrderViewModel) {
     guard let id = model.order.id else { return }
     walletUseCase?.updateOrder(id: id, status: type, rate: nil).subscribeOn(MainScheduler()).subscribe(onSuccess: { [weak self] (order) in

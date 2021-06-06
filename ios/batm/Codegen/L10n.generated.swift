@@ -876,6 +876,7 @@ extension L.P2p.Order {
   }
 
   struct Details {
+    static let rate = "p2p.order.details.rate"
     static let status = "p2p.order.details.status"
     static let title = "p2p.order.details.title"
   }
