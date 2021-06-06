@@ -112,10 +112,13 @@ class MyOpenOrdersCell: UITableViewCell {
                               value: viewModel.fiatAmount,
                               textAlignMent: .right)
     }
-
-    private func setupPaymentMethods(images: [UIImage]?) {
-        guard let images = images else { return }
-        let imageViews = images.map { UIImageView(image: $0) }
-        paymentMethodsView.addArrangedSubviews(imageViews)
-    }
+  
+  private func setupPaymentMethods(images: [UIImage]?) {
+    
+    paymentMethodsView.arrangedSubviews.forEach{ $0.removeFromSuperview() }
+    
+    guard let images = images else { return }
+    let imageViews = images.map { UIImageView(image: $0) }
+    paymentMethodsView.addArrangedSubviews(imageViews)
+  }
 }
