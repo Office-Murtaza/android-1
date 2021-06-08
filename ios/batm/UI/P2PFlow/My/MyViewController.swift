@@ -9,6 +9,9 @@ protocol MyViewControllerDelegate: AnyObject {
   func didTapCreateTrade()
   func didSelectEdit(data: P2PEditTradeDataModel)
   func cancelTrade(id: String)
+  func didTapDistance(order: Order)
+  func didTap(type: OrderDetailsActionType, model: MyOrderViewModel)
+  func selectedRate(orderModel: MyOrderViewModel, rate: Int)
 }
 
 class MyViewController: UIViewController, MDCTabBarDelegate {
@@ -19,7 +22,7 @@ class MyViewController: UIViewController, MDCTabBarDelegate {
   private var controllers = [UIViewController]()
   private var prevIndex = 0
   private var balance: CoinsBalance?
-  
+  private var currentLocation: CLLocation?
   weak var delegate: MyViewControllerDelegate?
   
   lazy var pageController: UIPageViewController = {
@@ -57,7 +60,7 @@ class MyViewController: UIViewController, MDCTabBarDelegate {
   
   func update(trades: Trades, userId: Int?) {
     let myTrades = trades.trades.filter { $0.makerUserId == userId }
-    let myOrders = trades.orders.filter { $0.makerUserId == userId }
+    let myOrders = trades.orders.filter { $0.makerUserId == userId || $0.takerUserId == userId }
     myTradesViewController.update(trades: myTrades)
     openOrdersViewController.update(orders: myOrders, trades: trades)
     let verificationStatus = TradeVerificationStatus(rawValue: trades.makerStatus )
@@ -72,16 +75,31 @@ class MyViewController: UIViewController, MDCTabBarDelegate {
     self.balance = balance
     self.myTradesViewController.update(balance: balance)
   }
-    
-    func update(location: CLLocation?) {
-        openOrdersViewController.update(location: location)
-    }
+  
+  func update(location: CLLocation?) {
+    currentLocation = location
+    openOrdersViewController.update(location: location)
+  }
+  
+  func openOrder(order: Order) {
+    tabBar.setSelectedItem(self.openOrdersItem, animated: true)
+    tabBar(tabBar,didSelect: self.openOrdersItem)
+    let orderModel = MyOrderViewModel(order: order)
+    orderModel.update(location: currentLocation)
+    self.openOrdersViewController.presentOrderDetails(vm: orderModel)
+  }
+  
+  func updateWithUpdatedOrder(_ order: Order) {
+    openOrdersViewController.updateWithUpdatedOrder(order)
+  }
   
   private func setupUI() {
     tabBar.delegate = self
-    myTradesViewController.delegate = self
-    view.addSubview(tabBar)
     
+    myTradesViewController.delegate = self
+    openOrdersViewController.delegate = self
+    
+    view.addSubview(tabBar)
     
     controllers = [
       myTradesViewController,
@@ -135,3 +153,17 @@ extension MyViewController: MyTradesViewControllerDelegate {
     
 }
 
+extension MyViewController: MyOpenOrdersViewControllerDelegate {
+  
+  func didTapDistance(order: Order) {
+    delegate?.didTapDistance(order: order)
+  }
+  
+  func didTap(type: OrderDetailsActionType, model: MyOrderViewModel) {
+    delegate?.didTap(type: type, model: model)
+  }
+  
+  func selectedRate(orderModel: MyOrderViewModel, rate: Int) {
+    delegate?.selectedRate(orderModel: orderModel, rate: rate)
+  }
+}

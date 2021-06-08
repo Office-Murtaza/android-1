@@ -871,7 +871,12 @@ extension L.P2p.Order {
     static let price = "p2p.order.create.price"
   }
 
+  struct Created {
+    static let message = "p2p.order.created.message"
+  }
+
   struct Details {
+    static let rate = "p2p.order.details.rate"
     static let status = "p2p.order.details.status"
     static let title = "p2p.order.details.title"
   }
@@ -1128,12 +1133,16 @@ extension L.Shared {
     static let cancel = "shared.button.cancel"
     static let copy = "shared.button.copy"
     static let create = "shared.button.create"
+    static let dispute = "shared.button.dispute"
+    static let doing = "shared.button.doing"
     static let done = "shared.button.done"
     static let edit = "shared.button.edit"
     static let goBack = "shared.button.go_back"
     static let max = "shared.button.max"
     static let next = "shared.button.next"
+    static let paid = "shared.button.paid"
     static let paste = "shared.button.paste"
+    static let release = "shared.button.release"
     static let remove = "shared.button.remove"
     static let retry = "shared.button.retry"
     static let save = "shared.button.save"

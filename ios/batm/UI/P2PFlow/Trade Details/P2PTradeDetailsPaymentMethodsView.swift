@@ -35,6 +35,10 @@ class P2PTradeDetailsPaymentMethodsView: UIView {
     paymentMethodsView.addArrangedSubviews(imageViews)
   }
   
+  func removeAll() {
+    paymentMethodsView.arrangedSubviews.forEach { $0.removeFromSuperview() }
+  }
+  
   private func setupUI() {
     
     titleLabel.text = localize(L.P2p.Trade.Details.Payment.methods)

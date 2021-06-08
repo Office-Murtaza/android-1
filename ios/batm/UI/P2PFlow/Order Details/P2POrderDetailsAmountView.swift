@@ -12,7 +12,7 @@ class P2POrderDetailsAmountView: UIView {
     
     lazy var cryptoAmountValue: UILabel = {
       let label = UILabel()
-      label.font = .systemFont(ofSize: 22)
+      label.font = .systemFont(ofSize: 16, weight: .bold)
       label.textColor = UIColor.black
       return label
     }()
@@ -26,7 +26,7 @@ class P2POrderDetailsAmountView: UIView {
     
     var fiatAmountValue: UILabel = {
         let label = UILabel()
-        label.font = .systemFont(ofSize: 22)
+        label.font = .systemFont(ofSize: 16, weight: .bold)
         label.textColor = UIColor.black
         return label
     }()
@@ -79,9 +79,9 @@ class P2POrderDetailsAmountView: UIView {
       }
      
         fiatAmountValue.snp.makeConstraints {
-        $0.top.equalTo(fiatAmountTitle.snp.bottom)
-        $0.right.equalToSuperview().offset(-15)
-      }
+            $0.top.equalTo(fiatAmountTitle.snp.bottom).offset(8)
+            $0.right.equalToSuperview().offset(-15)
+        }
       
     }
     

@@ -107,12 +107,14 @@ class P2PViewController: ModuleViewController<P2PPresenter>, MDCTabBarDelegate {
             .distinctUntilChanged()
             .observeOn(MainScheduler())
             .do { [weak self] (location) in
-                self?.currentLocation = location
-                self?.buyViewController?.update(location: location)
-                self?.sellViewController?.update(location: location)
-                self?.buyDataSource.reload(location: location)
-                self?.sellDataSource.reload(location: location)
-                self?.myViewController?.update(location: location)
+                DispatchQueue.main.async {
+                    self?.currentLocation = location
+                    self?.buyViewController?.update(location: location)
+                    self?.sellViewController?.update(location: location)
+                    self?.buyDataSource.reload(location: location)
+                    self?.sellDataSource.reload(location: location)
+                    self?.myViewController?.update(location: location)
+                }
         }
             .subscribe()
             .disposed(by: disposeBag)
@@ -166,7 +168,20 @@ class P2PViewController: ModuleViewController<P2PPresenter>, MDCTabBarDelegate {
             .subscribe { [unowned self] (trade) in
                 self.sellDataSource.update(trade: trade)
         }.disposed(by: disposeBag)
-
+      
+      
+      presenter.updatedOrder
+          .subscribe { [unowned self] (order) in
+            self.myViewController?.updateWithUpdatedOrder(order)
+      }.disposed(by: disposeBag)
+        
+        
+        presenter.createdOrder.subscribeOn(MainScheduler()).filterNil().subscribe {[weak self] (order) in
+            //Sometimes not proper scheduling to main to give more safety
+            DispatchQueue.main.async {
+                self?.navigateToOrderDetails(order)
+            }
+        }.disposed(by: disposeBag)
     }
     
     override func setupLayout() {
@@ -183,6 +198,16 @@ class P2PViewController: ModuleViewController<P2PPresenter>, MDCTabBarDelegate {
         
     }
     
+    func navigateToOrderDetails(_ order: Order) {
+        navigationController?.popToViewController(self, animated: true)
+        view.makeToast(localize(L.P2p.Order.Created.message))
+        
+        tabBar.setSelectedItem(self.myTradesItem, animated: true)
+        tabBar(tabBar,didSelect: self.myTradesItem)
+        
+        myViewController?.openOrder(order: order)
+    }
+    
     //MARK: - Tabbar delegate
     
     func tabBar(_ tabBar: MDCTabBar, didSelect item: UITabBarItem) {
@@ -191,6 +216,16 @@ class P2PViewController: ModuleViewController<P2PPresenter>, MDCTabBarDelegate {
             print(result)
             self?.prevIndex = item.tag
         }
+    }
+    
+    func presentMapWithRoute(latitude: Double, longitude: Double) {
+        guard let userLocation = currentLocation else { return }
+        
+        let url = "maps://?saddr=\(userLocation.coordinate.latitude),\(userLocation.coordinate.longitude)&daddr=\(latitude),\(longitude)"
+        
+        guard let openUrl = URL(string:url) else { return }
+        
+        UIApplication.shared.open(openUrl, options: [:], completionHandler: nil)
     }
 }
 
@@ -201,7 +236,6 @@ extension P2PViewController: P2PCreateTradeViewControllerDelegate {
 }
 
 extension P2PViewController: MyViewControllerDelegate {
-  
   func didTapCreateTrade() {
     createTrade()
   }
@@ -213,6 +247,20 @@ extension P2PViewController: MyViewControllerDelegate {
   func cancelTrade(id: String) {
     presenter.cancelTrade(id: id)
   }
+    
+  func didTapDistance(order: Order) {
+    guard let latitude = order.makerLatitude, let longitude = order.makerLongitude else { return }
+    presentMapWithRoute(latitude: latitude, longitude: longitude)
+  }
+  
+  func didTap(type: OrderDetailsActionType, model: MyOrderViewModel) {
+    presenter.didTap(type: type, model: model)
+  }
+  
+  func selectedRate(orderModel: MyOrderViewModel, rate: Int) {
+    presenter.updatedRate(model: orderModel, rate: rate)
+  }
+  
 }
 
 extension P2PViewController: TradesDataSourceDelegate {
@@ -235,20 +283,14 @@ extension P2PViewController: TradesDataSourceDelegate {
 }
 
 extension P2PViewController: P2PTradeDetailsCreateOrderDelegate {
-    func didTapDistance(trade: Trade) {
-        guard let userLocation = currentLocation else { return }
     
-        let makerLatitude = trade.makerLatitude
-        let makerLongitude = trade.makerLongitude
-        
-        let url = "maps://?saddr=\(userLocation.coordinate.latitude),\(userLocation.coordinate.longitude)&daddr=\(makerLatitude),\(makerLongitude)"
-        
-        guard let openUrl = URL(string:url) else { return }
-        
-        UIApplication.shared.open(openUrl, options: [:], completionHandler: nil)
+    func didTapDistance(trade: Trade) {
+        guard let latitude = trade.makerLatitude, let longitude = trade.makerLongitude else { return }
+        presentMapWithRoute(latitude: latitude, longitude: longitude)
     }
     
     func createOrder(model: P2PCreateOrderDataModel) {
         presenter.createOrder(model: model)
     }
 }
+

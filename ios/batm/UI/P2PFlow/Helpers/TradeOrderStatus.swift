@@ -24,12 +24,12 @@ enum TradeOrderStatus: Int {
     var image: UIImage? {
         switch self {
         case .new: return UIImage(named: "p2p_order_status_new")
-        case .canceled: return UIImage(named: "")
+        case .canceled: return UIImage(named: "p2p_order_status_canceled")
         case .doing: return UIImage(named: "p2p_order_status_doing")
         case .paid: return UIImage(named: "p2p_order_status_paid")
-        case .released: return UIImage(named: "")
+        case .released: return UIImage(named: "p2p_order_status_released")
         case .disputing: return UIImage(named: "p2p_order_status_disputing")
-        case .solved: return UIImage(named: "")
+        case .solved: return UIImage(named: "p2p_order_status_released")
         }
     }
     

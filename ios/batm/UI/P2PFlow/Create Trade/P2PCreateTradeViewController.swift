@@ -479,11 +479,8 @@ extension P2PCreateTradeViewController: P2PCreateTradeSellBuyViewDelegate {
     func didSelectedType(_ type: P2PSellBuyViewType) {
         selectedType = type
         coinValidator.update(tradeType: type)
-        coinValidator.check()
         limitValidator.update(tradeType: type)
-        limitValidator.check()
         typeValidator.update(type: type)
-        typeValidator.check()
     }
 }
 

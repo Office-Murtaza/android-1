@@ -1,13 +1,27 @@
 import UIKit
 import CoreLocation
 
-class MyOpenOrdersCellViewModel {
+class MyOrderViewModel {
     
-    let order: Order
+   private(set) var order: Order
+   
+  var currentSellBuyType: P2PSellBuyViewType {
+    return (order.takerId == order.makerUserId ? tradeType : tradeType?.reversed) ?? .buy
+  }
     
+  private var tradeType: P2PSellBuyViewType?
+  
     init(order: Order) {
         self.order = order
     }
+  
+  func update(order: Order) {
+    self.order = order
+  }
+  
+  func upate(type: P2PSellBuyViewType) {
+    tradeType = type
+  }
     
     var price: String {
         let price = order.price ?? 0
@@ -39,7 +53,8 @@ class MyOpenOrdersCellViewModel {
     func update(location: CLLocation?) {
            guard let location = location,
                  let latitude = order.makerLatitude,
-                 let longitude = order.makerLongitude  else { return }
+                 let longitude = order.makerLongitude else { return }
+        
            let markerLocation = CLLocation(latitude: latitude, longitude: longitude)
            distance = (markerLocation.distance(from: location) * 0.000621371).rounded()
            distanceInMiles = String(distance ?? 0)

@@ -141,6 +141,30 @@ extension MDCButton {
     return button
   }
   
+  static var doing: MDCButton {
+    let button = MDCButton.contained
+    button.setTitle(localize(L.Shared.Button.doing), for: .normal)
+    return button
+  }
+  
+  static var paid: MDCButton {
+    let button = MDCButton.contained
+    button.setTitle(localize(L.Shared.Button.paid), for: .normal)
+    return button
+  }
+  
+  static var release: MDCButton {
+    let button = MDCButton.contained
+    button.setTitle(localize(L.Shared.Button.release), for: .normal)
+    return button
+  }
+  
+  static var dispute: MDCButton {
+    let button = MDCButton.text
+    button.setTitle(localize(L.Shared.Button.dispute), for: .normal)
+    return button
+  }
+  
   static var withdraw: MDCButton {
     let button = MDCButton.contained
     button.setTitle(localize(L.CoinStaking.Button.withdraw), for: .normal)

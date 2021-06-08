@@ -25,6 +25,10 @@
 "shared.button.buy" = "Buy";
 "shared.button.sell" = "Sell";
 "shared.button.save" = "Save";
+"shared.button.doing" = "Doing";
+"shared.button.paid" = "Paid";
+"shared.button.release" = "Release";
+"shared.button.dispute" = "Dispute";
 
 "welcome.first_slide.title" = "All assets in one place";
 "welcome.second_slide.title" = "Private and secure";
@@ -497,6 +501,7 @@
 "p2p.trade.updated.message" = "Trade successfully updated";
 "p2p.trade.created.message" = "Trade successfully created";
 "p2p.trade.canceled.message" = "Trade successfully canceled";
+"p2p.order.created.message" = "Order successfully created";
 
 "p2p.order.details.title" = "Order Details";
 "p2p.order.details.status" = "Status";
@@ -513,3 +518,4 @@
 "p2p.create.trade.validation.reserved.balance" = "Max limit exceeds reserved balance";
 "p2p.create.trade.validation.terms" = "Provide more details about the trade";
 "p2p.create.trade.validation.type" = "Select trade type";
+"p2p.order.details.rate" = "How was you trade experience with %@";

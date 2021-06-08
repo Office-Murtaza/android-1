@@ -114,6 +114,7 @@ class PinCodePresenter: ModulePresenter, PinCodeModule {
                 .do(onError: { [weak self] _ in self?.clearCode() }, onCompleted: { [weak self] in
                     self?.balanceService.start()
                     self?.usecase.startTrades()
+                    self?.usecase.startOrdersUpdates()
                     self?.usecase.startTransactionDetails()
                 }).subscribe({ [weak self]  _ in self?.delegate?.didFinishPinCode(for: .verification, with: "") })
                 .disposed(by: self?.disposeBag ?? DisposeBag() )
@@ -148,6 +149,7 @@ class PinCodePresenter: ModulePresenter, PinCodeModule {
         UserDefaultsHelper.pinCodeWasEntered = true
         self.balanceService.start()
         usecase.startTrades()
+        usecase.startOrdersUpdates()
         usecase.startTransactionDetails()
         return usecase.save(pinCode: state.code)
     }
@@ -157,6 +159,7 @@ class PinCodePresenter: ModulePresenter, PinCodeModule {
             .do(onError: { [unowned self] _ in self.clearCode() }, onCompleted: { [unowned self] in
                 self.balanceService.start()
                 self.usecase.startTrades()
+                self.usecase.startOrdersUpdates()
                 self.usecase.startTransactionDetails()
             })
     }

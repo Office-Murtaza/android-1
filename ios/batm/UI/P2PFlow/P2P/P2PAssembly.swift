@@ -12,6 +12,7 @@ class P2PAssembly: Assembly {
             presenter.errorService = resolver.resolve(ErrorService.self)
             presenter.tradeSocketService = resolver.resolve(TradeSocketService.self)
             presenter.locationService = resolver.resolve(LocationService.self)
+            presenter.orderSocketService = resolver.resolve(OrderSocketService.self)
             viewController.presenter = presenter
             viewController.buyViewController = TradeListViewController(type: .buy)
             viewController.sellViewController = TradeListViewController(type: .sell)

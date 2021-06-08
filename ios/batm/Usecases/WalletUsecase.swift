@@ -15,6 +15,10 @@ protocol WalletUsecase {
     func createOrder(data: P2PCreateOrderDataModel) -> Single<Order>
     
     func removeCoinDetails()
+  
+  func cancelOrder(id: String) -> Single<Order>
+  func updateOrder(id: String, status: OrderDetailsActionType, rate: Int?) -> Single<Order>
+  func updateRate(id: String, rate: Int) -> Single<Order>
 }
 
 class WalletUsecaseImpl: WalletUsecase, HasDisposeBag {
@@ -100,4 +104,32 @@ class WalletUsecaseImpl: WalletUsecase, HasDisposeBag {
             }
             .asSingle()
     }
+  
+  func cancelOrder(id: String) -> Single<Order> {
+    return accountStorage.get()
+        .asObservable()
+        .flatMap { [api] user in
+          api.cancelOrder(userId: user.userId, id: id)
+        }
+        .asSingle()
+  }
+  
+  func updateOrder(id: String, status: OrderDetailsActionType, rate: Int?) -> Single<Order> {
+    return accountStorage.get()
+        .asObservable()
+        .flatMap { [api] user in
+          api.updateOrder(userId: user.userId, id: id, status: status, rate: rate)
+        }
+        .asSingle()
+  }
+  
+  func updateRate(id: String, rate: Int) -> Single<Order> {
+    return accountStorage.get()
+        .asObservable()
+        .flatMap { [api] user in
+          api.updateRate(userId: user.userId, id: id, rate: rate)
+        }
+        .asSingle()
+  }
+
 }

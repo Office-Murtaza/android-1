@@ -78,7 +78,6 @@
 		05B7596F25880C3800F23F23 /* CreateWalletResponse+Mapping.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05B7596E25880C3800F23F23 /* CreateWalletResponse+Mapping.swift */; };
 		05BAE28F264C0B31004766FA /* TransactionDetailsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05BAE28E264C0B31004766FA /* TransactionDetailsService.swift */; };
 		05BAE294264C0B36004766FA /* BalanceService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05BAE292264C0B36004766FA /* BalanceService.swift */; };
-		05BAE299264C0E94004766FA /* TradeSocketService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05BAE298264C0E93004766FA /* TradeSocketService.swift */; };
 		05C62222257ECE28008787F3 /* KeychainManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05C62221257ECE28008787F3 /* KeychainManager.swift */; };
 		05D56FD4260CE4ED00AA7052 /* LocaltionHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05D56FD3260CE4ED00AA7052 /* LocaltionHelper.swift */; };
 		05E35FE725AE585900E2167C /* WithdrawView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05E35FE625AE585900E2167C /* WithdrawView.swift */; };
@@ -98,6 +97,11 @@
 		230C9D6726545664003273F0 /* P2PSectionHeaderBottomView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 230C9D662654565F003273F0 /* P2PSectionHeaderBottomView.swift */; };
 		2318A08A25D1C16B006F3EC4 /* LocalAuthentication.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2318A08925D1C16B006F3EC4 /* LocalAuthentication.framework */; };
 		2318A08C25D1C2A9006F3EC4 /* LAContext+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2318A08B25D1C2A9006F3EC4 /* LAContext+Extensions.swift */; };
+		231D0416266BE0940016F6E7 /* OrderDetailsActionsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 231D0415266BE0940016F6E7 /* OrderDetailsActionsModel.swift */; };
+		231D041C266BE0AF0016F6E7 /* OrderDetailsActionsFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 231D041B266BE0AF0016F6E7 /* OrderDetailsActionsFactory.swift */; };
+		231D0420266C03B40016F6E7 /* OrderDetailsActionSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 231D041F266C03B40016F6E7 /* OrderDetailsActionSheet.swift */; };
+		231D0424266C07090016F6E7 /* OrderDetailsActionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 231D0423266C07090016F6E7 /* OrderDetailsActionView.swift */; };
+		231D0429266D4FC30016F6E7 /* P2POrderRateViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 231D0428266D4FC30016F6E7 /* P2POrderRateViewController.swift */; };
 		23234DA425AB9B4500CA90F7 /* TransferSectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23234DA325AB9B4500CA90F7 /* TransferSectionView.swift */; };
 		2328A78925E6F1F4007CA97D /* Trades.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2328A78825E6F1F4007CA97D /* Trades.swift */; };
 		2328A78D25E6F5CE007CA97D /* Trades+Mapping.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2328A78C25E6F5CE007CA97D /* Trades+Mapping.swift */; };
@@ -106,6 +110,7 @@
 		23315F1926592033002E01E6 /* P2PFormInlineErrorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23315F1826592032002E01E6 /* P2PFormInlineErrorView.swift */; };
 		23315F1E26593036002E01E6 /* P2PCreateTradeFormValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23315F1D26593036002E01E6 /* P2PCreateTradeFormValidator.swift */; };
 		23315F262659A433002E01E6 /* P2PTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23315F252659A433002E01E6 /* P2PTextField.swift */; };
+		234665972668B1F800B566E3 /* P2POrderDetailsIdView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 234665962668B1F800B566E3 /* P2POrderDetailsIdView.swift */; };
 		234B90A725AE38FF0012F2A2 /* TransferFlow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 234B90A625AE38FF0012F2A2 /* TransferFlow.swift */; };
 		234B90AD25AE39110012F2A2 /* TransferFlowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 234B90AC25AE39110012F2A2 /* TransferFlowController.swift */; };
 		234B90B125AE3AB60012F2A2 /* TransferModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 234B90B025AE3AB60012F2A2 /* TransferModule.swift */; };
@@ -115,6 +120,8 @@
 		2362ECE325A7AA4500E9BC85 /* SwapUsdValueView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2362ECE225A7AA4500E9BC85 /* SwapUsdValueView.swift */; };
 		237EC457256DAE8A005BB79B /* PriceChartDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = 237EC456256DAE8A005BB79B /* PriceChartDetails.swift */; };
 		239685DB2575988A00C0FF1E /* CoinExchangeSwapTextFieldView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 239685DA2575988A00C0FF1E /* CoinExchangeSwapTextFieldView.swift */; };
+		2397A8372669736700070777 /* TradeSocketService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2397A8362669736700070777 /* TradeSocketService.swift */; };
+		2397A83C266973A000070777 /* OrderSocketService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2397A83B266973A000070777 /* OrderSocketService.swift */; };
 		23A6B790263B515000DE2738 /* TradePaymentMethods.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23A6B74B263B514F00DE2738 /* TradePaymentMethods.swift */; };
 		23A6B791263B515000DE2738 /* TradeVerificationStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23A6B74C263B514F00DE2738 /* TradeVerificationStatus.swift */; };
 		23A6B792263B515000DE2738 /* TradeOrderStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23A6B74D263B514F00DE2738 /* TradeOrderStatus.swift */; };
@@ -142,7 +149,7 @@
 		23A6B7A9263B515000DE2738 /* TradeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23A6B767263B515000DE2738 /* TradeViewModel.swift */; };
 		23A6B7AA263B515000DE2738 /* TradeListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23A6B768263B515000DE2738 /* TradeListViewController.swift */; };
 		23A6B7AB263B515000DE2738 /* P2PTradeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23A6B769263B515000DE2738 /* P2PTradeCell.swift */; };
-		23A6B7AC263B515000DE2738 /* MyOpenOrdersCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23A6B76C263B515000DE2738 /* MyOpenOrdersCellViewModel.swift */; };
+		23A6B7AC263B515000DE2738 /* MyOrderViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23A6B76C263B515000DE2738 /* MyOrderViewModel.swift */; };
 		23A6B7AD263B515000DE2738 /* MyOpenOrdersCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23A6B76D263B515000DE2738 /* MyOpenOrdersCell.swift */; };
 		23A6B7AE263B515000DE2738 /* MyOpenOrdersViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23A6B76E263B515000DE2738 /* MyOpenOrdersViewController.swift */; };
 		23A6B7AF263B515000DE2738 /* MyOpenOrdersDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23A6B76F263B515000DE2738 /* MyOpenOrdersDataSource.swift */; };
@@ -758,7 +765,6 @@
 		05B7596E25880C3800F23F23 /* CreateWalletResponse+Mapping.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CreateWalletResponse+Mapping.swift"; sourceTree = "<group>"; };
 		05BAE28E264C0B31004766FA /* TransactionDetailsService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TransactionDetailsService.swift; sourceTree = "<group>"; };
 		05BAE292264C0B36004766FA /* BalanceService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BalanceService.swift; sourceTree = "<group>"; };
-		05BAE298264C0E93004766FA /* TradeSocketService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TradeSocketService.swift; path = batm/Services/Socket/TradeService/TradeSocketService.swift; sourceTree = SOURCE_ROOT; };
 		05C6219F257EB413008787F3 /* batm.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = batm.entitlements; sourceTree = "<group>"; };
 		05C62221257ECE28008787F3 /* KeychainManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainManager.swift; sourceTree = "<group>"; };
 		05D56FD3260CE4ED00AA7052 /* LocaltionHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocaltionHelper.swift; sourceTree = "<group>"; };
@@ -780,6 +786,11 @@
 		230C9D662654565F003273F0 /* P2PSectionHeaderBottomView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = P2PSectionHeaderBottomView.swift; sourceTree = "<group>"; };
 		2318A08925D1C16B006F3EC4 /* LocalAuthentication.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = LocalAuthentication.framework; path = System/Library/Frameworks/LocalAuthentication.framework; sourceTree = SDKROOT; };
 		2318A08B25D1C2A9006F3EC4 /* LAContext+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LAContext+Extensions.swift"; sourceTree = "<group>"; };
+		231D0415266BE0940016F6E7 /* OrderDetailsActionsModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderDetailsActionsModel.swift; sourceTree = "<group>"; };
+		231D041B266BE0AF0016F6E7 /* OrderDetailsActionsFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderDetailsActionsFactory.swift; sourceTree = "<group>"; };
+		231D041F266C03B40016F6E7 /* OrderDetailsActionSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderDetailsActionSheet.swift; sourceTree = "<group>"; };
+		231D0423266C07090016F6E7 /* OrderDetailsActionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderDetailsActionView.swift; sourceTree = "<group>"; };
+		231D0428266D4FC30016F6E7 /* P2POrderRateViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = P2POrderRateViewController.swift; sourceTree = "<group>"; };
 		23234DA325AB9B4500CA90F7 /* TransferSectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransferSectionView.swift; sourceTree = "<group>"; };
 		2328A78825E6F1F4007CA97D /* Trades.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Trades.swift; sourceTree = "<group>"; };
 		2328A78C25E6F5CE007CA97D /* Trades+Mapping.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Trades+Mapping.swift"; sourceTree = "<group>"; };
@@ -788,6 +799,7 @@
 		23315F1826592032002E01E6 /* P2PFormInlineErrorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = P2PFormInlineErrorView.swift; sourceTree = "<group>"; };
 		23315F1D26593036002E01E6 /* P2PCreateTradeFormValidator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = P2PCreateTradeFormValidator.swift; sourceTree = "<group>"; };
 		23315F252659A433002E01E6 /* P2PTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = P2PTextField.swift; sourceTree = "<group>"; };
+		234665962668B1F800B566E3 /* P2POrderDetailsIdView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = P2POrderDetailsIdView.swift; sourceTree = "<group>"; };
 		234B90A625AE38FF0012F2A2 /* TransferFlow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransferFlow.swift; sourceTree = "<group>"; };
 		234B90AC25AE39110012F2A2 /* TransferFlowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransferFlowController.swift; sourceTree = "<group>"; };
 		234B90B025AE3AB60012F2A2 /* TransferModule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransferModule.swift; sourceTree = "<group>"; };
@@ -797,6 +809,8 @@
 		2362ECE225A7AA4500E9BC85 /* SwapUsdValueView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwapUsdValueView.swift; sourceTree = "<group>"; };
 		237EC456256DAE8A005BB79B /* PriceChartDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PriceChartDetails.swift; sourceTree = "<group>"; };
 		239685DA2575988A00C0FF1E /* CoinExchangeSwapTextFieldView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoinExchangeSwapTextFieldView.swift; sourceTree = "<group>"; };
+		2397A8362669736700070777 /* TradeSocketService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TradeSocketService.swift; sourceTree = "<group>"; };
+		2397A83B266973A000070777 /* OrderSocketService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderSocketService.swift; sourceTree = "<group>"; };
 		23A6B74B263B514F00DE2738 /* TradePaymentMethods.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TradePaymentMethods.swift; sourceTree = "<group>"; };
 		23A6B74C263B514F00DE2738 /* TradeVerificationStatus.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TradeVerificationStatus.swift; sourceTree = "<group>"; };
 		23A6B74D263B514F00DE2738 /* TradeOrderStatus.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TradeOrderStatus.swift; sourceTree = "<group>"; };
@@ -824,7 +838,7 @@
 		23A6B767263B515000DE2738 /* TradeViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TradeViewModel.swift; sourceTree = "<group>"; };
 		23A6B768263B515000DE2738 /* TradeListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TradeListViewController.swift; sourceTree = "<group>"; };
 		23A6B769263B515000DE2738 /* P2PTradeCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = P2PTradeCell.swift; sourceTree = "<group>"; };
-		23A6B76C263B515000DE2738 /* MyOpenOrdersCellViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyOpenOrdersCellViewModel.swift; sourceTree = "<group>"; };
+		23A6B76C263B515000DE2738 /* MyOrderViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyOrderViewModel.swift; sourceTree = "<group>"; };
 		23A6B76D263B515000DE2738 /* MyOpenOrdersCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyOpenOrdersCell.swift; sourceTree = "<group>"; };
 		23A6B76E263B515000DE2738 /* MyOpenOrdersViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyOpenOrdersViewController.swift; sourceTree = "<group>"; };
 		23A6B76F263B515000DE2738 /* MyOpenOrdersDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyOpenOrdersDataSource.swift; sourceTree = "<group>"; };
@@ -1571,7 +1585,8 @@
 		0561151726050D080066BD9A /* Socket */ = {
 			isa = PBXGroup;
 			children = (
-				05BAE295264C0B3B004766FA /* TradeService */,
+				2397A83A2669737600070777 /* OrderService */,
+				2397A8352669736700070777 /* TradeService */,
 				05BAE290264C0B36004766FA /* BalanceService */,
 				05BAE28D264C0B31004766FA /* TransactionService */,
 				232E345D2558772B00A9BF72 /* SocketMessageBuilder.swift */,
@@ -1628,15 +1643,6 @@
 			);
 			path = BalanceService;
 			sourceTree = "<group>";
-		};
-		05BAE295264C0B3B004766FA /* TradeService */ = {
-			isa = PBXGroup;
-			children = (
-				05BAE298264C0E93004766FA /* TradeSocketService.swift */,
-			);
-			name = TradeService;
-			path = batm/Services/TradeService;
-			sourceTree = SOURCE_ROOT;
 		};
 		05E6A83F2601602F00479414 /* UIColor+Extensions */ = {
 			isa = PBXGroup;
@@ -1696,6 +1702,25 @@
 			path = P2PFlow;
 			sourceTree = "<group>";
 		};
+		231D0414266BE07B0016F6E7 /* OrderActions */ = {
+			isa = PBXGroup;
+			children = (
+				231D0415266BE0940016F6E7 /* OrderDetailsActionsModel.swift */,
+				231D041B266BE0AF0016F6E7 /* OrderDetailsActionsFactory.swift */,
+				231D041F266C03B40016F6E7 /* OrderDetailsActionSheet.swift */,
+				231D0423266C07090016F6E7 /* OrderDetailsActionView.swift */,
+			);
+			path = OrderActions;
+			sourceTree = "<group>";
+		};
+		231D0427266D4F900016F6E7 /* P2POrderRate */ = {
+			isa = PBXGroup;
+			children = (
+				231D0428266D4FC30016F6E7 /* P2POrderRateViewController.swift */,
+			);
+			path = P2POrderRate;
+			sourceTree = "<group>";
+		};
 		23315F1C2659300F002E01E6 /* Validators */ = {
 			isa = PBXGroup;
 			children = (
@@ -1719,6 +1744,22 @@
 				234EE5C925D30AB100884141 /* SecurityTableDataSource.swift */,
 			);
 			path = DataSource;
+			sourceTree = "<group>";
+		};
+		2397A8352669736700070777 /* TradeService */ = {
+			isa = PBXGroup;
+			children = (
+				2397A8362669736700070777 /* TradeSocketService.swift */,
+			);
+			path = TradeService;
+			sourceTree = "<group>";
+		};
+		2397A83A2669737600070777 /* OrderService */ = {
+			isa = PBXGroup;
+			children = (
+				2397A83B266973A000070777 /* OrderSocketService.swift */,
+			);
+			path = OrderService;
 			sourceTree = "<group>";
 		};
 		23A6B74A263B514F00DE2738 /* Helpers */ = {
@@ -1793,7 +1834,7 @@
 		23A6B76B263B515000DE2738 /* OpenOrders */ = {
 			isa = PBXGroup;
 			children = (
-				23A6B76C263B515000DE2738 /* MyOpenOrdersCellViewModel.swift */,
+				23A6B76C263B515000DE2738 /* MyOrderViewModel.swift */,
 				23A6B76D263B515000DE2738 /* MyOpenOrdersCell.swift */,
 				23A6B76E263B515000DE2738 /* MyOpenOrdersViewController.swift */,
 				23A6B76F263B515000DE2738 /* MyOpenOrdersDataSource.swift */,
@@ -1924,10 +1965,13 @@
 		23F13F8C264C5F1500633808 /* Order Details */ = {
 			isa = PBXGroup;
 			children = (
+				231D0427266D4F900016F6E7 /* P2POrderRate */,
+				231D0414266BE07B0016F6E7 /* OrderActions */,
 				23F13F8D264C5F3500633808 /* P2POrderDetailsViewController.swift */,
 				23BC175E264D6692002A1214 /* P2POrderDetailsAmountView.swift */,
 				23BC1762264D69E4002A1214 /* P2POrderDetailsStatusView.swift */,
 				23BC1766264DBED8002A1214 /* P2POrderDetailsScoreView.swift */,
+				234665962668B1F800B566E3 /* P2POrderDetailsIdView.swift */,
 			);
 			path = "Order Details";
 			sourceTree = "<group>";
@@ -3848,7 +3892,6 @@
 				052B79C3260A64D000A0D636 /* TradesAssembly.swift in Sources */,
 				DB1AF0E224436D6D0037C998 /* MDCContainerScheme+Extensions.swift in Sources */,
 				DB308EBB22E738FC003D91AF /* MapAddresses+Mapping.swift in Sources */,
-				05BAE299264C0E94004766FA /* TradeSocketService.swift in Sources */,
 				05B7596F25880C3800F23F23 /* CreateWalletResponse+Mapping.swift in Sources */,
 				DBA6844222E44AE40079429E /* ATMPresenter.swift in Sources */,
 				DB8F078924103E8F00770643 /* PickerFlow+Dependencies.swift in Sources */,
@@ -3858,6 +3901,7 @@
 				DB2A0DF324CD655C009C9D1C /* PhoneVerificationStore.swift in Sources */,
 				23D4D0252585690000853679 /* SwapPlatformFeeView.swift in Sources */,
 				DB4D7BC12409A133008C2BD5 /* KYCFlow+Dependencies.swift in Sources */,
+				231D0416266BE0940016F6E7 /* OrderDetailsActionsModel.swift in Sources */,
 				DBA7A4A5235662AD000BE997 /* CoinSellModule.swift in Sources */,
 				23A6B7B9263B515000DE2738 /* MyInfoSuccessRateView.swift in Sources */,
 				23A6B7C6263B515000DE2738 /* P2PPresenter.swift in Sources */,
@@ -3923,6 +3967,7 @@
 				23A6B792263B515000DE2738 /* TradeOrderStatus.swift in Sources */,
 				DB38281D240CF9BA00418D3D /* VIPVerificationViewController.swift in Sources */,
 				DB67D1B62394FB3E008EFB0D /* Error+Extensions.swift in Sources */,
+				231D0424266C07090016F6E7 /* OrderDetailsActionView.swift in Sources */,
 				DBD8C214240AF52300BD8A74 /* KYC.swift in Sources */,
 				DB4D7BC32409A133008C2BD5 /* KYCFlowController.swift in Sources */,
 				DB8D409E22C3EC9D00D5FBD0 /* UIWindow+Transitions.swift in Sources */,
@@ -4063,9 +4108,11 @@
 				DBA6844022E44AC70079429E /* ATMModule.swift in Sources */,
 				DB4D7BCB2409A17E008C2BD5 /* KYCViewController.swift in Sources */,
 				DB4F395522DEFCBB00D53BF3 /* ManageWalletsPresenter.swift in Sources */,
+				231D0420266C03B40016F6E7 /* OrderDetailsActionSheet.swift in Sources */,
 				23A6B7C4263B515000DE2738 /* P2PAssembly.swift in Sources */,
 				DB9616F322C750CA0078E92D /* Converter.swift in Sources */,
 				DBC68CB122F8755000473247 /* ResponseResult.swift in Sources */,
+				2397A8372669736700070777 /* TradeSocketService.swift in Sources */,
 				DB1BAEF52503E70200D65477 /* GlobalConstants.swift in Sources */,
 				DB59EA1B22F9C4BF00EB64A7 /* UpdatePasswordFlowController.swift in Sources */,
 				055A9BA92575823400A8E8F1 /* NotificationsPresenter.swift in Sources */,
@@ -4220,7 +4267,7 @@
 				DB70852F22CFAE5800FFE4F7 /* MainFlow.swift in Sources */,
 				DB38281F240CF9BA00418D3D /* VIPVerificationAssembly.swift in Sources */,
 				DB66CEB22475AAB100FDB694 /* BuySellTrades.swift in Sources */,
-				23A6B7AC263B515000DE2738 /* MyOpenOrdersCellViewModel.swift in Sources */,
+				23A6B7AC263B515000DE2738 /* MyOrderViewModel.swift in Sources */,
 				DB8D408922C3E4E100D5FBD0 /* Swinject.swift in Sources */,
 				05F704852602267600DF3722 /* TransactionTypeView.swift in Sources */,
 				DB5EB8DC2452C5CC00CD1C63 /* CoinSellFormView.swift in Sources */,
@@ -4248,10 +4295,12 @@
 				23A6B7BB263B515000DE2738 /* P2PCreateOrderPopupViewController.swift in Sources */,
 				23A6B790263B515000DE2738 /* TradePaymentMethods.swift in Sources */,
 				DB95EB20230AA52A0059C84C /* TransactionType.swift in Sources */,
+				231D041C266BE0AF0016F6E7 /* OrderDetailsActionsFactory.swift in Sources */,
 				DB2C971E23449109006E7D61 /* CoinSendGiftAssembly.swift in Sources */,
 				DB8D40A922C3EEDE00D5FBD0 /* LoginFlow+Dependencies.swift in Sources */,
 				05F7047F2602262400DF3722 /* TransactionDetailsCell.swift in Sources */,
 				DBDA456F24E5C272002A3AF5 /* AboutCell.swift in Sources */,
+				234665972668B1F800B566E3 /* P2POrderDetailsIdView.swift in Sources */,
 				DBBF299822D3748C00A5DE6A /* UICollectionView+ReusableView.swift in Sources */,
 				DBA4F4A724CE2F1000E6FAAB /* PinCodeKeyboardBackButton.swift in Sources */,
 				DB5B2DDC230A74D000821713 /* CoinDetailsFlow.swift in Sources */,
@@ -4379,6 +4428,7 @@
 				DB96172922C76E360078E92D /* BTMWallet.swift in Sources */,
 				23A6B7BA263B515000DE2738 /* P2PCreateOrderAmountView.swift in Sources */,
 				DBBF29B022D3EE6200A5DE6A /* LogoutUsecase.swift in Sources */,
+				2397A83C266973A000070777 /* OrderSocketService.swift in Sources */,
 				DB7A9D122459CEE800006B54 /* QRCodeCardView.swift in Sources */,
 				DB8F077F2410343800770643 /* PickerDelegate.swift in Sources */,
 				DB83624424C1DF3300A5FEFC /* PhoneVerificationPresenter.swift in Sources */,
@@ -4418,6 +4468,7 @@
 				DB83663022FAA76B00454F5C /* UnlinkViewController.swift in Sources */,
 				DBECA62E22F7FB6C002C2610 /* UpdatePhoneFlow.swift in Sources */,
 				DBA7393A22C33F2600CEFD57 /* Localization.swift in Sources */,
+				231D0429266D4FC30016F6E7 /* P2POrderRateViewController.swift in Sources */,
 				DB5185AD231FE68300052229 /* CoinWithdrawModule.swift in Sources */,
 				23A6B79B263B515000DE2738 /* P2PTradeDetailsCoinInfoView.swift in Sources */,
 				DBBD6AA924F72CD300610A4E /* WalletTableView.swift in Sources */,
@@ -4622,7 +4673,7 @@
 				CODE_SIGN_ENTITLEMENTS = batm/batm.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 137;
+				CURRENT_PROJECT_VERSION = 138;
 				DEVELOPMENT_TEAM = 2RUJ559RK4;
 				INFOPLIST_FILE = batm/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
@@ -4647,7 +4698,7 @@
 				CODE_SIGN_ENTITLEMENTS = batm/batm.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 137;
+				CURRENT_PROJECT_VERSION = 138;
 				DEVELOPMENT_TEAM = 2RUJ559RK4;
 				INFOPLIST_FILE = batm/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;

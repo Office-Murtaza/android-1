@@ -100,7 +100,7 @@ class MyOpenOrdersCell: UITableViewCell {
         
     }
     
-    func update(viewModel: MyOpenOrdersCellViewModel) {
+    func update(viewModel: MyOrderViewModel) {
         coinView.update(coin: viewModel.coin)
         priceLabel.text = viewModel.price
         statusView.update(status: viewModel.orderStatus)
@@ -112,10 +112,13 @@ class MyOpenOrdersCell: UITableViewCell {
                               value: viewModel.fiatAmount,
                               textAlignMent: .right)
     }
-
-    private func setupPaymentMethods(images: [UIImage]?) {
-        guard let images = images else { return }
-        let imageViews = images.map { UIImageView(image: $0) }
-        paymentMethodsView.addArrangedSubviews(imageViews)
-    }
+  
+  private func setupPaymentMethods(images: [UIImage]?) {
+    
+    paymentMethodsView.arrangedSubviews.forEach{ $0.removeFromSuperview() }
+    
+    guard let images = images else { return }
+    let imageViews = images.map { UIImageView(image: $0) }
+    paymentMethodsView.addArrangedSubviews(imageViews)
+  }
 }
