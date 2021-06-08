@@ -10,6 +10,7 @@ class TradesDataSource: NSObject,  TradeListDataSource {
     var tradesViewModels = [TradeViewModel]()
     var initViewModels = [TradeViewModel]()
     private var currentType: P2PTradesType?
+    private var currentUserId: Int?
     weak var controller: TradeListViewController?
     weak var delegate: TradesDataSourceDelegate?
     weak var tableView: UITableView?
@@ -38,6 +39,7 @@ class TradesDataSource: NSObject,  TradeListDataSource {
     
     func setup(trades: Trades, type: P2PTradesType, userId: Int?) {
         currentType = type
+        currentUserId = userId
         currentTotal = trades.makerTotalTrades
         currentRate = trades.makerTradingRate
   
@@ -68,6 +70,8 @@ class TradesDataSource: NSObject,  TradeListDataSource {
   
     func update(trade: Trade) {
         
+       guard trade.type == currentType?.rawValue, currentUserId != trade.makerUserId else { return }
+      
         let appendModel = TradeViewModel(trade: trade, totalTrades: currentTotal ?? 0, rate: currentRate ?? 0)
         
         if let index = tradesViewModels.firstIndex(where: { $0.trade.id == trade.id }) {

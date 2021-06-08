@@ -9,7 +9,7 @@ protocol TradeServiceWebSocket {
     func subscribe()
     func unsubscribe() -> Completable
     func disconnect() -> Completable
-}
+ }
 
 enum TradeServiceError: Error {
     case openConnectionError

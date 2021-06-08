@@ -4,15 +4,17 @@ import CoreLocation
 class MyOrderViewModel {
     
    private(set) var order: Order
+  private(set) var userId: Int
    
   var currentSellBuyType: P2PSellBuyViewType {
-    return (order.takerId == order.makerUserId ? tradeType : tradeType?.reversed) ?? .buy
+    return (order.makerUserId == userId ? tradeType : tradeType?.reversed) ?? .buy
   }
     
   private var tradeType: P2PSellBuyViewType?
   
-    init(order: Order) {
+  init(order: Order, userId: Int) {
         self.order = order
+        self.userId = userId
     }
   
   func update(order: Order) {

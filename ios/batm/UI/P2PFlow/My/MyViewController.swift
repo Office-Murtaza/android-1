@@ -23,6 +23,8 @@ class MyViewController: UIViewController, MDCTabBarDelegate {
   private var prevIndex = 0
   private var balance: CoinsBalance?
   private var currentLocation: CLLocation?
+  private var userId: Int?
+  
   weak var delegate: MyViewControllerDelegate?
   
   lazy var pageController: UIPageViewController = {
@@ -59,10 +61,13 @@ class MyViewController: UIViewController, MDCTabBarDelegate {
   }
   
   func update(trades: Trades, userId: Int?) {
+    self.userId = userId
     let myTrades = trades.trades.filter { $0.makerUserId == userId }
     let myOrders = trades.orders.filter { $0.makerUserId == userId || $0.takerUserId == userId }
     myTradesViewController.update(trades: myTrades)
-    openOrdersViewController.update(orders: myOrders, trades: trades)
+    if let id = userId {
+      openOrdersViewController.update(orders: myOrders, trades: trades, userId: id)
+    }
     let verificationStatus = TradeVerificationStatus(rawValue: trades.makerStatus )
     infoViewController.update(id: trades.makerPublicId,
                               verificationImage: verificationStatus?.image,
@@ -82,9 +87,10 @@ class MyViewController: UIViewController, MDCTabBarDelegate {
   }
   
   func openOrder(order: Order) {
+    guard let id = userId else { return }
     tabBar.setSelectedItem(self.openOrdersItem, animated: true)
     tabBar(tabBar,didSelect: self.openOrdersItem)
-    let orderModel = MyOrderViewModel(order: order)
+    let orderModel = MyOrderViewModel(order: order, userId: id)
     orderModel.update(location: currentLocation)
     self.openOrdersViewController.presentOrderDetails(vm: orderModel)
   }

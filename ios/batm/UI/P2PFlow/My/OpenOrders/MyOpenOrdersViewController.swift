@@ -30,8 +30,8 @@ class MyOpenOrdersViewController: UIViewController {
     setupLayout()
   }
   
-  func update(orders: [Order], trades: Trades) {
-    let viewModels = orders.sorted { $0.timestamp ?? 0 > $1.timestamp ?? 0 }.map { MyOrderViewModel(order: $0) }
+  func update(orders: [Order], trades: Trades, userId: Int) {
+    let viewModels = orders.sorted { $0.timestamp ?? 0 > $1.timestamp ?? 0 }.map { MyOrderViewModel(order: $0, userId: userId) }
     viewModels.forEach { (vm) in
       if let associatedTradeType = trades.trades.first(where: {$0.id == vm.order.tradeId})?.type,
          let type = P2PSellBuyViewType(rawValue: associatedTradeType) {

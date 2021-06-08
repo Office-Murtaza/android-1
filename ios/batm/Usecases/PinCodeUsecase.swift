@@ -55,11 +55,11 @@ class PinCodeUsecaseImpl: PinCodeUsecase {
     func refresh() -> Completable {
         return refreshService.refresh()
     }
-    
+  
     func startTrades() {
         tradeService.start()
     }
-    
+
     func startOrdersUpdates() {
         ordersService.start()
     }

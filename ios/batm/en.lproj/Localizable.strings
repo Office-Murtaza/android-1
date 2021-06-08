@@ -495,7 +495,7 @@
 
 "p2p.tabbar.buy.title" = "BUY";
 "p2p.tabbar.sell.title" = "SELL";
-"p2p.tabbar.my.title" = "MY...";
+"p2p.tabbar.my.title" = "MY";
 "p2p.trading.vc.title" = "P2P Trade";
 
 "p2p.trade.updated.message" = "Trade successfully updated";
