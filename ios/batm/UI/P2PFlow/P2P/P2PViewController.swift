@@ -51,7 +51,6 @@ class P2PViewController: ModuleViewController<P2PPresenter>, MDCTabBarDelegate {
   
   override func viewWillDisappear(_ animated: Bool) {
     super.viewWillDisappear(animated)
-    presenter.willHideModule()
   }
   
   override func setupUI() {
