@@ -52,8 +52,6 @@ class P2PPresenter: ModulePresenter, P2PModule {
         self?.socketTrade.accept(trade)
     }).disposed(by: disposeBag)
     
-    orderSocketService?.start()
-    
     orderSocketService?.getOrder().subscribe(onNext: { [weak self] (order) in
       self?.updatedOrder.accept(order)
     }).disposed(by: disposeBag)
@@ -86,14 +84,6 @@ class P2PPresenter: ModulePresenter, P2PModule {
       self?.updatedOrder.accept(order)
     }, onError:{ error in
     }).disposed(by: disposeBag)
-  }
-  
-  
-  func willHideModule() {
-    tradeSocketService?
-      .unsubscribe()
-      .subscribe()
-      .disposed(by: disposeBag)
   }
   
   func refreshTrades() {

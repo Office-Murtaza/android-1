@@ -266,10 +266,12 @@ final class AppAssembly: Assembly {
       let refreshService = ioc.resolve(RefreshCredentialsService.self)!
         let tradeService = ioc.resolve(TradeSocketService.self)!
         let transactionDetailsService = ioc.resolve(TransactionDetailsService.self)!
+        let ordersService = ioc.resolve(OrderSocketService.self)!
       return PinCodeUsecaseImpl(pinCodeStorage: pinCodeStorage,
                                 refreshService: refreshService,
                                 tradeService: tradeService,
-                                transactionDetailsService: transactionDetailsService)
+                                transactionDetailsService: transactionDetailsService,
+                                ordersService: ordersService)
       }.inObjectScope(.container)
     container.register(PinCodeService.self) { ioc in
       let pinCodeStorage = ioc.resolve(PinCodeStorage.self)!
