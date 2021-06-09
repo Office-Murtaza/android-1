@@ -38,7 +38,6 @@ extension Order: ImmutableMappable {
         makerStatus = try map.value("makerStatus")
         makerTotalTrades = try map.value("makerTotalTrades")
         makerTradingRate = try map.value("makerTradingRate")
-        takerId = try map.value("takerId")
         takerPublicId = try map.value("takerPublicId")
         takerLatitude = try map.value("takerLatitude")
         takerLongitude = try map.value("takerLongitude")

@@ -54,7 +54,6 @@ struct Order: Equatable {
     var makerStatus: Int?
     var makerTotalTrades: Double?
     var makerTradingRate: Double?
-    var takerId: Int?
     var takerPublicId: String?
     var takerLatitude: Double?
     var takerLongitude: Double?
@@ -81,7 +80,6 @@ struct Order: Equatable {
                              makerStatus: nil,
                              makerTotalTrades: nil,
                              makerTradingRate: nil,
-                             takerId: nil,
                              takerPublicId: nil,
                              takerLatitude: nil,
                              takerLongitude: nil,
