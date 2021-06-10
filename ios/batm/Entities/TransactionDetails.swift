@@ -6,7 +6,7 @@ struct TransactionDetails: Equatable {
     let txDbId: Int?
     let link: String?
     let coin: CustomCoinType?
-    let userId: Int?
+    let userId: String?
     let type: TransactionType?
     let status: TransactionStatus?
     let confirmations: Int?

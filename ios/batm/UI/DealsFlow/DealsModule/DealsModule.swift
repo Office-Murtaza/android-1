@@ -5,5 +5,5 @@ protocol DealsModuleDelegate: AnyObject {
     func didSelectStaking()
     func didSelectSwap()
     func didSelectTransfer()
-    func didSelectedP2p(trades: Trades, userId: Int)
+    func didSelectedP2p(trades: Trades, userId: String)
 }

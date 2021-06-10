@@ -25,7 +25,7 @@ protocol P2PCreateTradeViewControllerDelegate: AnyObject {
 class P2PCreateTradeViewController: UIViewController {
 
     let trades: Trades
-    let userId: Int
+    let userId: String
     var selectedType: P2PSellBuyViewType = .buy
     var minRange: Double = 100
     var maxRange: Double = 1000 {
@@ -48,7 +48,7 @@ class P2PCreateTradeViewController: UIViewController {
     weak var delegate: P2PCreateTradeViewControllerDelegate?
     
     init(trades: Trades,
-         userId: Int,
+         userId: String,
          balance: CoinsBalance,
          payments: [TradePaymentMethods],
          delegate: P2PCreateTradeViewControllerDelegate) {

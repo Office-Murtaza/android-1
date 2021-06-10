@@ -13,7 +13,7 @@ protocol SettingsUsecase {
     func getKYC() -> Single<KYC>
     func sendVerification(userData: VerificationUserData) -> Completable
     func sendVIPVerification(userData: VIPVerificationUserData) -> Completable
-    func getUserId() -> Single<Int>
+    func getUserId() -> Single<String>
 }
 
 class SettingsUsecaseImpl: SettingsUsecase {
@@ -91,7 +91,7 @@ class SettingsUsecaseImpl: SettingsUsecase {
             .flatMap { [api] in api.getKYC(userId: $0.userId) }
     }
     
-    func getUserId() -> Single<Int> {
+    func getUserId() -> Single<String> {
         return accountStorage.get().flatMap { Single.just($0.userId) }
     }
     

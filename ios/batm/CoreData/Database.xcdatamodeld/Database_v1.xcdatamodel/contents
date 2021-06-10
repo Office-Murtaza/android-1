@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="15508" systemVersion="18G87" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="17709" systemVersion="19H15" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
     <entity name="AccountRecord" representedClassName="AccountRecord" syncable="YES">
         <attribute name="accessToken" attributeType="String"/>
         <attribute name="expires" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="refreshToken" attributeType="String"/>
-        <attribute name="userId" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="userId" attributeType="String"/>
     </entity>
     <entity name="BTMCoinRecord" representedClassName="BTMCoinRecord" syncable="YES">
         <attribute name="address" attributeType="String"/>
@@ -24,7 +24,7 @@
         <attribute name="pinCode" attributeType="String"/>
     </entity>
     <elements>
-        <element name="AccountRecord" positionX="-63" positionY="-18" width="128" height="105"/>
+        <element name="AccountRecord" positionX="-63" positionY="-18" width="128" height="103"/>
         <element name="BTMCoinRecord" positionX="-54" positionY="18" width="128" height="118"/>
         <element name="BTMWalletRecord" positionX="-36" positionY="36" width="128" height="75"/>
         <element name="LocationUpdateDateRecord" positionX="-45" positionY="36" width="128" height="58"/>

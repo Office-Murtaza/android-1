@@ -6,7 +6,7 @@ extension CoinAddress: ImmutableMappable {
   }
   
   func mapping(map: Map) {
-    type.code >>> map["code"]
+    type.code >>> map["coin"]
     address >>> map["address"]
   }
 }

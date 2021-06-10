@@ -10,7 +10,7 @@ class TradesDataSource: NSObject,  TradeListDataSource {
     var tradesViewModels = [TradeViewModel]()
     var initViewModels = [TradeViewModel]()
     private var currentType: P2PTradesType?
-    private var currentUserId: Int?
+    private var currentUserId: String?
     weak var controller: TradeListViewController?
     weak var delegate: TradesDataSourceDelegate?
     weak var tableView: UITableView?
@@ -37,7 +37,7 @@ class TradesDataSource: NSObject,  TradeListDataSource {
         tableView?.rowHeight = 132
     }
     
-    func setup(trades: Trades, type: P2PTradesType, userId: Int?) {
+    func setup(trades: Trades, type: P2PTradesType, userId: String?) {
         currentType = type
         currentUserId = userId
         currentTotal = trades.makerTotalTrades

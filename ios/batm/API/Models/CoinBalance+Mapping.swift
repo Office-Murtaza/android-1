@@ -3,14 +3,14 @@ import TrustWalletCore
 
 extension CoinBalance: ImmutableMappable {
   init(map: Map) throws {
-    let code: String = try map.value("code")
+    let coin: String = try map.value("coin")
     
     guard
-      let mappedType = CustomCoinType(code: code),
+      let mappedType = CustomCoinType(code: coin),
       let balance = Decimal(string: try map.value("balanceStr")),
       let fiatBalance = Decimal(string: try map.value("fiatBalanceStr")),
-      let reservedBalance = Decimal(string: try map.value("reservedBalanceStr")),
-      let reservedFiatBalance = Decimal(string: try map.value("reservedFiatBalanceStr")),
+      let reservedBalance = Decimal(string: try map.value("reservedStr")),
+      let reservedFiatBalance = Decimal(string: try map.value("fiatReservedStr")),
       let price = Decimal(string: try map.value("priceStr"))
     else {
       throw ObjectMapperError.couldNotMap

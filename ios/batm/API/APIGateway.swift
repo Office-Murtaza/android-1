@@ -21,22 +21,22 @@ protocol APIGateway {
   func verifyPhone(phoneNumber: String) -> Single<PhoneVerificationResponse>
   func createAccount(phoneNumber: String, password: String, coinAddresses: [CoinAddress]) -> Single<CreateWalletResponse>
   func recoverWallet(phoneNumber: String, password: String, coinAddresses: [CoinAddress]) -> Single<CreateWalletResponse>
-  func verifyCode(userId: Int, code: String) -> Completable
+  func verifyCode(userId: String, code: String) -> Completable
   func getMapAddresses() -> Single<MapAddresses>
-  func getPhoneNumber(userId: Int) -> Single<PhoneNumber>
-  func verifyPassword(userId: Int, password: String) -> Single<Bool>
-  func verifyPhone(userId: Int, phoneNumber: String) -> Single<Bool>
-  func updatePhone(userId: Int, phoneNumber: String) -> Completable
-  func confirmPhone(userId: Int, phoneNumber: String, code: String) -> Completable
-  func updatePassword(userId: Int, oldPassword: String, newPassword: String) -> Completable
-  func getTransactions(userId: Int, type: CustomCoinType, page: Int) -> Single<Transactions>
-  func getTransactionDetails(userId: Int, type: CustomCoinType, id: String) -> Single<TransactionDetails>
+  func getPhoneNumber(userId: String) -> Single<PhoneNumber>
+  func verifyPassword(userId: String, password: String) -> Single<Bool>
+  func verifyPhone(userId: String, phoneNumber: String) -> Single<Bool>
+  func updatePhone(userId: String, phoneNumber: String) -> Completable
+  func confirmPhone(userId: String, phoneNumber: String, code: String) -> Completable
+  func updatePassword(userId: String, oldPassword: String, newPassword: String) -> Completable
+  func getTransactions(userId: String, type: CustomCoinType, page: Int) -> Single<Transactions>
+  func getTransactionDetails(userId: String, type: CustomCoinType, id: String) -> Single<TransactionDetails>
   func getUtxos(type: CustomCoinType, xpub: String) -> Single<[Utxo]>
-  func presubmitTransaction(userId: Int,
+  func presubmitTransaction(userId: String,
                             type: CustomCoinType,
                             coinAmount: Decimal,
                             currencyAmount: Decimal) -> Single<PreSubmitResponse>
-    func submitCoinTransaction(userId: Int,
+    func submitCoinTransaction(userId: String,
                                type: CustomCoinType,
                                txType: TransactionType,
                                amount: Decimal,
@@ -51,7 +51,7 @@ protocol APIGateway {
                                txhex: String?,
                                from screen: ScreenType) -> Single<TransactionDetails>
 
-  func submitTransaction(userId: Int,
+  func submitTransaction(userId: String,
                          type: CustomCoinType,
                          txType: TransactionType,
                          amount: Decimal,
@@ -71,26 +71,26 @@ protocol APIGateway {
   func getBinanceAccountInfo(type: CustomCoinType, address: String) -> Single<BinanceAccountInfo>
   func getRippleSequence(type: CustomCoinType, address: String) -> Single<RippleSequence>
   func getCurrentAccountActivated(type: CustomCoinType, address: String) -> Single<Bool>
-  func getSellDetails(userId: Int) -> Single<SellDetails>
-  func getKYC(userId: Int) -> Single<KYC>
-  func sendVerification(userId: Int, userData: VerificationUserData) -> Completable
-  func sendVIPVerification(userId: Int, userData: VIPVerificationUserData) -> Completable
-  func getBuyTrades(userId: Int, type: CustomCoinType, page: Int) -> Single<BuySellTrades>
-  func getSellTrades(userId: Int, type: CustomCoinType, page: Int) -> Single<BuySellTrades>
-  func updateLocation(userId: Int, latitude: Double, longitude: Double) -> Completable
-  func submitTradeRequest(userId: Int, data: SubmitTradeRequestData) -> Completable
-  func submitTrade(userId: Int, data: SubmitTradeData) -> Completable
-  func getStakeDetails(userId: Int, type: CustomCoinType) -> Single<StakeDetails>
-  func manageCoins(userId: Int, coin: String, visible: Bool) -> Completable
+  func getSellDetails(userId: String) -> Single<SellDetails>
+  func getKYC(userId: String) -> Single<KYC>
+  func sendVerification(userId: String, userData: VerificationUserData) -> Completable
+  func sendVIPVerification(userId: String, userData: VIPVerificationUserData) -> Completable
+  func getBuyTrades(userId: String, type: CustomCoinType, page: Int) -> Single<BuySellTrades>
+  func getSellTrades(userId: String, type: CustomCoinType, page: Int) -> Single<BuySellTrades>
+  func updateLocation(userId: String, latitude: Double, longitude: Double) -> Completable
+  func submitTradeRequest(userId: String, data: SubmitTradeRequestData) -> Completable
+  func submitTrade(userId: String, data: SubmitTradeData) -> Completable
+  func getStakeDetails(userId: String, type: CustomCoinType) -> Single<StakeDetails>
+  func manageCoins(userId: String, coin: String, visible: Bool) -> Completable
   func getPriceChart(type: CustomCoinType, period: SelectedPeriod) -> Single<PriceChartDetails>
-  func getTrades(userId: Int) -> Single<Trades>
-  func createTrade(userId: Int, data: P2PCreateTradeDataModel) -> Single<Trade>
-  func editTrade(userId: Int, data: P2PEditTradeDataModel) -> Single<Trade>
-  func cancelTrade(userId: Int, id: String) -> Single<Trade>
-  func createOrder(userId: Int, tradeId: String, price: Double, cryptoAmount: Double, fiatAmount: Double) -> Single<Order>
-  func cancelOrder(userId: Int, id: String) -> Single<Order>
-  func updateOrder(userId: Int, id: String, status: OrderDetailsActionType, rate: Int?) -> Single<Order>
-  func updateRate(userId: Int, id: String, rate: Int) -> Single<Order>
+  func getTrades(userId: String) -> Single<Trades>
+  func createTrade(userId: String, data: P2PCreateTradeDataModel) -> Single<Trade>
+  func editTrade(userId: String, data: P2PEditTradeDataModel) -> Single<Trade>
+  func cancelTrade(userId: String, id: String) -> Single<Trade>
+  func createOrder(userId: String, tradeId: String, price: Double, cryptoAmount: Double, fiatAmount: Double) -> Single<Order>
+  func cancelOrder(userId: String, id: String) -> Single<Order>
+  func updateOrder(userId: String, id: String, status: OrderDetailsActionType, rate: Int?) -> Single<Order>
+  func updateRate(userId: String, id: String, rate: Int) -> Single<Order>
 }
 
 final class APIGatewayImpl: APIGateway {
@@ -161,7 +161,7 @@ final class APIGatewayImpl: APIGateway {
     return execute(request)
   }
   
-  func verifyCode(userId: Int, code: String) -> Completable {
+  func verifyCode(userId: String, code: String) -> Completable {
     let request = VerifyCodeRequest(userId: userId, code: code)
     return execute(request)
   }
@@ -171,43 +171,43 @@ final class APIGatewayImpl: APIGateway {
     return execute(request)
   }
   
-  func getPhoneNumber(userId: Int) -> Single<PhoneNumber> {
+  func getPhoneNumber(userId: String) -> Single<PhoneNumber> {
     let request = GetPhoneNumberRequest(userId: userId)
     return execute(request)
   }
   
-  func verifyPassword(userId: Int, password: String) -> Single<Bool> {
+  func verifyPassword(userId: String, password: String) -> Single<Bool> {
     let request = VerifyPasswordRequest(userId: userId, password: password)
     return execute(request).map { $0.result }
   }
   
-  func verifyPhone(userId: Int, phoneNumber: String) -> Single<Bool> {
+  func verifyPhone(userId: String, phoneNumber: String) -> Single<Bool> {
     let request = VerifyPhoneRequest(userId: userId, phoneNumber: phoneNumber)
     return execute(request).map { $0.result }
   }
   
-  func updatePhone(userId: Int, phoneNumber: String) -> Completable {
+  func updatePhone(userId: String, phoneNumber: String) -> Completable {
     let request = UpdatePhoneRequest(userId: userId, phoneNumber: phoneNumber)
     return execute(request)
   }
   
-  func confirmPhone(userId: Int, phoneNumber: String, code: String) -> Completable {
+  func confirmPhone(userId: String, phoneNumber: String, code: String) -> Completable {
     let request = ConfirmPhoneRequest(userId: userId, phoneNumber: phoneNumber, code: code)
     return execute(request)
   }
   
-  func updatePassword(userId: Int, oldPassword: String, newPassword: String) -> Completable {
+  func updatePassword(userId: String, oldPassword: String, newPassword: String) -> Completable {
     let request = UpdatePasswordRequest(userId: userId, oldPassword: oldPassword, newPassword: newPassword)
     return execute(request)
   }
   
-  func getTransactions(userId: Int, type: CustomCoinType, page: Int) -> Single<Transactions> {
+  func getTransactions(userId: String, type: CustomCoinType, page: Int) -> Single<Transactions> {
     let index = page * 10 + 1
     let request = TransactionsRequest(userId: userId, coinId: type.code, index: index)
     return execute(request)
   }
   
-  func getTransactionDetails(userId: Int, type: CustomCoinType, id: String) -> Single<TransactionDetails> {
+  func getTransactionDetails(userId: String, type: CustomCoinType, id: String) -> Single<TransactionDetails> {
     let request = TransactionDetailsRequest(userId: userId, coinId: type.code, id: id)
     return execute(request)
   }
@@ -217,7 +217,7 @@ final class APIGatewayImpl: APIGateway {
     return execute(request).map { $0.utxos }
   }
   
-  func presubmitTransaction(userId: Int,
+  func presubmitTransaction(userId: String,
                             type: CustomCoinType,
                             coinAmount: Decimal,
                             currencyAmount: Decimal) -> Single<PreSubmitResponse> {
@@ -228,7 +228,7 @@ final class APIGatewayImpl: APIGateway {
     return execute(request)
   }
     
-    func submitCoinTransaction(userId: Int,
+    func submitCoinTransaction(userId: String,
                                type: CustomCoinType,
                                txType: TransactionType,
                                amount: Decimal,
@@ -259,7 +259,7 @@ final class APIGatewayImpl: APIGateway {
     }
 
   
-  func submitTransaction(userId: Int,
+  func submitTransaction(userId: String,
                          type: CustomCoinType,
                          txType: TransactionType,
                          amount: Decimal,
@@ -319,22 +319,22 @@ final class APIGatewayImpl: APIGateway {
     return execute(request).map { $0.result }
   }
   
-  func getSellDetails(userId: Int) -> Single<SellDetails> {
+  func getSellDetails(userId: String) -> Single<SellDetails> {
     let request = GetSellDetailsRequest(userId: userId)
     return execute(request)
   }
   
-  func getKYC(userId: Int) -> Single<KYC> {
+  func getKYC(userId: String) -> Single<KYC> {
     let request = KYCRequest(userId: userId)
     return execute(request)
   }
   
-  func sendVerification(userId: Int, userData: VerificationUserData) -> Completable {
+  func sendVerification(userId: String, userData: VerificationUserData) -> Completable {
     let request = SendVerificationRequest(userId: userId, userData: userData)
     return execute(request)
   }
   
-  func sendVIPVerification(userId: Int, userData: VIPVerificationUserData) -> Completable {
+  func sendVIPVerification(userId: String, userData: VIPVerificationUserData) -> Completable {
     let request = SendVIPVerificationRequest(userId: userId, userData: userData)
     return execute(request)
   }
@@ -344,64 +344,64 @@ final class APIGatewayImpl: APIGateway {
     return execute(request)
   }
   
-  func getBuyTrades(userId: Int, type: CustomCoinType, page: Int) -> Single<BuySellTrades> {
+  func getBuyTrades(userId: String, type: CustomCoinType, page: Int) -> Single<BuySellTrades> {
     let index = page * 10 + 1
     let request = BuySellTradesRequest(userId: userId, coinId: type.code, type: TradeType.buy, index: index)
     return execute(request)
   }
   
-  func getSellTrades(userId: Int, type: CustomCoinType, page: Int) -> Single<BuySellTrades> {
+  func getSellTrades(userId: String, type: CustomCoinType, page: Int) -> Single<BuySellTrades> {
     let index = page * 10 + 1
     let request = BuySellTradesRequest(userId: userId, coinId: type.code, type: TradeType.sell, index: index)
     return execute(request)
   }
   
-  func updateLocation(userId: Int, latitude: Double, longitude: Double) -> Completable {
+  func updateLocation(userId: String, latitude: Double, longitude: Double) -> Completable {
     let request = UpdateLocationRequest(userId: userId, latitude: latitude, longitude: longitude)
     return execute(request)
   }
   
-  func submitTradeRequest(userId: Int, data: SubmitTradeRequestData) -> Completable {
+  func submitTradeRequest(userId: String, data: SubmitTradeRequestData) -> Completable {
     let request = SubmitTradeRequestRequest(userId: userId, data: data)
     return execute(request)
   }
   
-  func submitTrade(userId: Int, data: SubmitTradeData) -> Completable {
+  func submitTrade(userId: String, data: SubmitTradeData) -> Completable {
     let request = SubmitTradeRequest(userId: userId, data: data)
     return execute(request)
   }
   
-  func getStakeDetails(userId: Int, type: CustomCoinType) -> Single<StakeDetails> {
+  func getStakeDetails(userId: String, type: CustomCoinType) -> Single<StakeDetails> {
     let request = StakeDetailsRequest(userId: userId, coinId: type.code)
     return execute(request)
   }
   
-  func manageCoins(userId: Int, coin: String, visible: Bool) -> Completable {
+  func manageCoins(userId: String, coin: String, visible: Bool) -> Completable {
     let request = ManageCoinsRequest(userId: userId, coinId: coin, isVisible: String(visible))
     return execute(request)
   }
     
-  func getTrades(userId: Int) -> Single<Trades> {
+  func getTrades(userId: String) -> Single<Trades> {
     let request = TradesRequest(userId: userId)
     return execute(request)
   }
     
-  func createTrade(userId: Int, data: P2PCreateTradeDataModel) -> Single<Trade> {
+  func createTrade(userId: String, data: P2PCreateTradeDataModel) -> Single<Trade> {
     let request = CreateTradesRequest(userId: userId, data: data)
     return execute(request)
   }
   
-  func editTrade(userId: Int, data: P2PEditTradeDataModel) -> Single<Trade> {
+  func editTrade(userId: String, data: P2PEditTradeDataModel) -> Single<Trade> {
     let request = EditTradesRequest(userId: userId, data: data)
     return execute(request)
   }
   
-  func cancelTrade(userId: Int, id: String) -> Single<Trade> {
+  func cancelTrade(userId: String, id: String) -> Single<Trade> {
     let request = CancelTradesRequest(userId: userId, id: id)
     return execute(request)
   }
   
-    func createOrder(userId: Int, tradeId: String, price: Double, cryptoAmount: Double, fiatAmount: Double) -> Single<Order> {
+    func createOrder(userId: String, tradeId: String, price: Double, cryptoAmount: Double, fiatAmount: Double) -> Single<Order> {
     let request = CreateOrderRequest(userId: userId,
                                      tradeId: tradeId,
                                      price: price,
@@ -411,17 +411,17 @@ final class APIGatewayImpl: APIGateway {
     return execute(request)
   }
   
-  func cancelOrder(userId: Int, id: String) -> Single<Order> {
+  func cancelOrder(userId: String, id: String) -> Single<Order> {
     let request = CancelOrderRequest(userId: userId, id: id)
     return execute(request)
   }
   
-  func updateOrder(userId: Int, id: String, status: OrderDetailsActionType, rate: Int?) -> Single<Order> {
+  func updateOrder(userId: String, id: String, status: OrderDetailsActionType, rate: Int?) -> Single<Order> {
     let request = UpdateOrderRequest(userId: userId, orderId: id, status: status.networkType, rate: rate)
     return execute(request)
   }
   
-  func updateRate(userId: Int, id: String, rate: Int) -> Single<Order> {
+  func updateRate(userId: String, id: String, rate: Int) -> Single<Order> {
     let request = UpdateOrderRateRequest(userId: userId, orderId: id, rate: rate)
     return execute(request)
   }

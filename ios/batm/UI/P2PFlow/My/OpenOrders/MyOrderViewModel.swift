@@ -4,7 +4,7 @@ import CoreLocation
 class MyOrderViewModel {
     
    private(set) var order: Order
-  private(set) var userId: Int
+  private(set) var userId: String
    
   var currentSellBuyType: P2PSellBuyViewType {
     return (order.makerUserId == userId ? tradeType : tradeType?.reversed) ?? .buy
@@ -12,7 +12,7 @@ class MyOrderViewModel {
     
   private var tradeType: P2PSellBuyViewType?
   
-  init(order: Order, userId: Int) {
+  init(order: Order, userId: String) {
         self.order = order
         self.userId = userId
     }

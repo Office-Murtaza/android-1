@@ -337,7 +337,7 @@ class CoinDetailsUsecaseImpl: CoinDetailsUsecase {
             }
     }
     
-    private func coinDetailsSubmit(userId: Int,
+    private func coinDetailsSubmit(userId: String,
                                    type: CustomCoinType,
                                    txType: TransactionType,
                                    amount: Decimal,
@@ -370,7 +370,7 @@ class CoinDetailsUsecaseImpl: CoinDetailsUsecase {
     
     
     
-    private func submit(userId: Int,
+    private func submit(userId: String,
                         type: CustomCoinType,
                         txType: TransactionType,
                         amount: Decimal,

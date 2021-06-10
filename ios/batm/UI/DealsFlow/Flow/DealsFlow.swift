@@ -17,7 +17,7 @@ class DealsFlow: BaseFlow<BTMNavigationController, DealsFlowController> {
         case staking
         case swap
         case transfer
-        case p2p(trades: Trades, userId: Int)
+        case p2p(trades: Trades, userId: String)
         case popToRoot(String?=nil)
     }
     

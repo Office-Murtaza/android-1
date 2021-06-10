@@ -2,7 +2,7 @@ import Foundation
 import RxSwift
 
 struct VerificationUserData {
-  let userId: Int
+  let userId: String
   let scanData: Data
   let idNumber: String
   let firstName: String
@@ -18,7 +18,7 @@ struct VerificationUserData {
 }
 
 enum VerificationAction: Equatable {
-  case updateUserId(Int)
+  case updateUserId(String)
   case updateSelectedImage(UIImage?)
   case updateIDNumber(String?)
   case updateFirstName(String?)
@@ -41,7 +41,7 @@ enum VerificationAction: Equatable {
 }
 
 struct VerificationState: Equatable {
-  var userId: Int = 0
+  var userId: String = ""
   var selectedImage: UIImage?
   var idNumber: String = ""
   var firstName: String = ""

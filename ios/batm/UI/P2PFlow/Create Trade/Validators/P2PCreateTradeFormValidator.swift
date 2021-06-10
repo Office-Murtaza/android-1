@@ -63,7 +63,7 @@ class P2PCreateTradeCoinsValidator:  P2PCreateTradeVlidatorBase {
     var tradeType: P2PSellBuyViewType = .buy
     //MARK: - setup
     
-    func setup(trades: [Trade], userId: Int) {
+    func setup(trades: [Trade], userId: String) {
         self.userTrades = trades.filter { $0.makerUserId == userId }
     }
     

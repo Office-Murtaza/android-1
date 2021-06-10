@@ -10,7 +10,7 @@ class P2PPresenter: ModulePresenter, P2PModule {
   var trades = BehaviorRelay<Trades?>(value: nil)
   var accountStorage: AccountStorage?
   var walletUseCase: WalletUsecase?
-  var userId: Int?
+  var userId: String?
   var tradeSocketService: TradeSocketService?
   var locationService: LocationService?
   var orderSocketService: OrderSocketService?
@@ -26,7 +26,7 @@ class P2PPresenter: ModulePresenter, P2PModule {
   private let fetchDataRelay = PublishRelay<Void>()
   var errorService: ErrorService?
   
-  func setup(trades: Trades, userId: Int) {
+  func setup(trades: Trades, userId: String) {
     self.userId = userId
     self.trades.accept(trades)
     
@@ -89,7 +89,7 @@ class P2PPresenter: ModulePresenter, P2PModule {
   
   func refreshTrades() {
     walletUseCase?.getTrades().subscribe(onSuccess: { [weak self] (trades) in
-      self?.setup(trades: trades, userId: self?.userId ?? 0)
+      self?.setup(trades: trades, userId: self?.userId ?? "")
     }, onError: { [weak self] (error) in
       guard let errorService = self?.errorService, let disposable = self?.disposeBag else {
         return
@@ -100,7 +100,7 @@ class P2PPresenter: ModulePresenter, P2PModule {
     
     func openOrderDetails(order: Order) {
         walletUseCase?.getTrades().subscribeOn(MainScheduler()).subscribe(onSuccess: { [weak self] (trades) in
-        self?.setup(trades: trades, userId: self?.userId ?? 0)
+        self?.setup(trades: trades, userId: self?.userId ?? "")
         self?.createdOrder.accept(order)
       }, onError: { [weak self] (error) in
         guard let errorService = self?.errorService, let disposable = self?.disposeBag else {
