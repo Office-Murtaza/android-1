@@ -426,8 +426,8 @@
 "transfer.receiver.title" = "Transfer";
 
 "p2p.create.order.platform_fee" = "Platform fee 3% ~";
-"p2p.crypto.amount.title" = "Crypto amount";
-"p2p.fiat.amount.title" = "Fiat amount";
+"p2p.crypto.amount.title" = "Crypto Amount";
+"p2p.fiat.amount.title" = "Fiat Amount";
 
 "p2p.trade_type.title" = "Trade Type";
 "p2p.payment.methods.title" = "Payment methods";

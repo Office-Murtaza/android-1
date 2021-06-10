@@ -40,6 +40,7 @@ class MyOpenOrdersViewController: UIViewController {
     }
     self.trades = trades
     dataSource.udpate(vm: viewModels)
+    emptyView.isHidden = dataSource.viewModels.isNotEmpty
   }
   
   func update(location: CLLocation?) {
@@ -84,6 +85,7 @@ class MyOpenOrdersViewController: UIViewController {
     if let presentedOrder = orderDetails?.order, presentedOrder.id == order.id {
       orderDetails?.update(order: order)
     }
+    emptyView.isHidden = dataSource.viewModels.isNotEmpty
   }
   
 }

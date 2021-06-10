@@ -70,7 +70,7 @@ class MyOrderViewModel {
     }
     
     var cryptoAmount: String {
-        return order.cryptoAmount?.coinFormatted ?? ""
+      return "\(order.cryptoAmount?.coinFormatted ?? "") \(order.coin ?? "")"
     }
     
     var fiatAmountTitle: String {
@@ -78,7 +78,7 @@ class MyOrderViewModel {
     }
     
     var fiatAmount: String {
-        return order.fiatAmount?.coinFormatted ?? ""
+        return "$ \(order.fiatAmount?.coinFormatted ?? "")"
     }
   
   var isNeedPresentRateView: Bool {

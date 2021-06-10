@@ -20,7 +20,7 @@ class MyOpenOrdersCell: UITableViewCell {
 
     private lazy var priceLabel: UILabel = {
         let price = UILabel()
-        price.font = .systemFont(ofSize: 16, weight: .regular)
+        price.font = .systemFont(ofSize: 16, weight: .bold)
         return price
     }()
     
