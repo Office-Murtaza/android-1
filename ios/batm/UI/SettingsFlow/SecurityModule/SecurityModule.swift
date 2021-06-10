@@ -6,5 +6,4 @@ protocol SecurityModuleDelegate: AnyObject {
   func didSelectUpdatePassword()
   func didSelectUpdatePIN(_ pinCode: String)
   func didSelectSeedPhrase()
-  func didSelectUnlink()
 }

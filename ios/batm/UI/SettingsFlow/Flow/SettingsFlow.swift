@@ -26,7 +26,6 @@ class SettingsFlow: BaseFlow<BTMNavigationController, SettingsFlowController> {
     case updatePassword
     case updatePIN(String)
     case seedPhrase
-    case unlink
     case popToRoot(String?)
   }
   
@@ -71,10 +70,6 @@ class SettingsFlow: BaseFlow<BTMNavigationController, SettingsFlowController> {
     case .seedPhrase:
       let flow = SeedPhraseFlow(view: view, parent: self)
       let step = SeedPhraseFlow.Steps.enterPassword
-      return next(flow: flow, step: step)
-    case .unlink:
-      let flow = UnlinkFlow(view: view, parent: self)
-      let step = UnlinkFlow.Steps.unlink
       return next(flow: flow, step: step)
     case .kyc:
       let flow = KYCFlow(view: view, parent: self)

@@ -17,14 +17,11 @@ final class UnlinkPresenter: ModulePresenter, UnlinkModule {
   }
 
   func bind(input: Input) {
-    input.unlink
-      .asObservable()
-      .flatMap { [unowned self] in self.track(self.unlink()) }
-      .subscribe()
-      .disposed(by: disposeBag)
+//    input.unlink
+//      .asObservable()
+//      .flatMap { [unowned self] in self.track(self.unlink()) }
+//      .subscribe()
+//      .disposed(by: disposeBag)
   }
   
-  private func unlink() -> Completable {
-    return usecase.unlink()
-  }
 }

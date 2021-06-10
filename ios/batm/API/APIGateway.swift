@@ -22,7 +22,6 @@ protocol APIGateway {
   func createAccount(phoneNumber: String, password: String, coinAddresses: [CoinAddress]) -> Single<CreateWalletResponse>
   func recoverWallet(phoneNumber: String, password: String, coinAddresses: [CoinAddress]) -> Single<CreateWalletResponse>
   func verifyCode(userId: Int, code: String) -> Completable
-  func getCoinDetails(type: CustomCoinType) -> Single<CoinDetails>
   func getMapAddresses() -> Single<MapAddresses>
   func getPhoneNumber(userId: Int) -> Single<PhoneNumber>
   func verifyPassword(userId: Int, password: String) -> Single<Bool>
@@ -30,7 +29,6 @@ protocol APIGateway {
   func updatePhone(userId: Int, phoneNumber: String) -> Completable
   func confirmPhone(userId: Int, phoneNumber: String, code: String) -> Completable
   func updatePassword(userId: Int, oldPassword: String, newPassword: String) -> Completable
-  func unlink(userId: Int) -> Completable
   func getTransactions(userId: Int, type: CustomCoinType, page: Int) -> Single<Transactions>
   func getTransactionDetails(userId: Int, type: CustomCoinType, id: String) -> Single<TransactionDetails>
   func getUtxos(type: CustomCoinType, xpub: String) -> Single<[Utxo]>
@@ -168,11 +166,6 @@ final class APIGatewayImpl: APIGateway {
     return execute(request)
   }
   
-  func getCoinDetails(type: CustomCoinType) -> Single<CoinDetails> {
-    let request = CoinDetailsRequest(coinId: type.code)
-    return execute(request)
-  }
-  
   func getMapAddresses() -> Single<MapAddresses> {
     let request = MapAddressesRequest()
     return execute(request)
@@ -205,11 +198,6 @@ final class APIGatewayImpl: APIGateway {
   
   func updatePassword(userId: Int, oldPassword: String, newPassword: String) -> Completable {
     let request = UpdatePasswordRequest(userId: userId, oldPassword: oldPassword, newPassword: newPassword)
-    return execute(request)
-  }
-  
-  func unlink(userId: Int) -> Completable {
-    let request = UnlinkRequest(userId: userId)
     return execute(request)
   }
   

@@ -118,19 +118,6 @@ struct VerifyCodeRequest: AuthorizedAPIRequest {
   }
 }
 
-struct CoinDetailsRequest: AuthorizedAPIRequest {
-  typealias ResponseType = APIResponse<CoinDetails>
-  typealias ResponseTrait = SingleResponseTrait
-  
-  let coinId: String
-  
-  var path: String { return "/coin/\(coinId)/details" }
-  var method: HTTPMethod { return .get }
-  var task: HTTPTask {
-    return .requestPlain
-  }
-}
-
 struct MapAddressesRequest: AuthorizedAPIRequest {
   typealias ResponseType = APIResponse<MapAddresses>
   typealias ResponseTrait = SingleResponseTrait
@@ -231,19 +218,6 @@ struct UpdatePasswordRequest: AuthorizedAPIRequest {
     return .requestParameters(parameters: ["oldPassword": oldPassword,
                                            "newPassword": newPassword],
                               encoding: JSONEncoding.default)
-  }
-}
-
-struct UnlinkRequest: AuthorizedAPIRequest {
-  typealias ResponseType = APIEmptyResponse
-  typealias ResponseTrait = SingleResponseTrait
-  
-  let userId: Int
-  
-  var path: String { return "/user/\(userId)/unlink" }
-  var method: HTTPMethod { return .get }
-  var task: HTTPTask {
-    return .requestPlain
   }
 }
 

@@ -37,7 +37,6 @@ class SecurityPresenter: ModulePresenter, SecurityModule {
         case .updatePassword: delegate?.didSelectUpdatePassword()
         case .updatePIN: self.fetchPinCode()
         case .seedPhrase: delegate?.didSelectSeedPhrase()
-        case .unlink: delegate?.didSelectUnlink()
         case .faceId: break
         case .touchId: break
         }
@@ -50,8 +49,7 @@ class SecurityPresenter: ModulePresenter, SecurityModule {
         let initialTypes: [SecurityCellType] = [.updatePhone(phoneNumber: phoneNumber),
                                          .updatePassword,
                                          .updatePIN,
-                                         .seedPhrase,
-                                         .unlink]
+                                         .seedPhrase]
         let laData = localAuthData()
         var dataTypes = [SecurityCellType]()
         

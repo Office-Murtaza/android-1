@@ -9,7 +9,6 @@ enum LogoutState: Equatable {
 
 protocol LogoutUsecase {
   func logout() -> Single<LogoutState>
-  func unlink() -> Completable
 }
 
 class LogoutUsecaseImpl: LogoutUsecase {
@@ -37,21 +36,5 @@ class LogoutUsecaseImpl: LogoutUsecase {
                     observer(.success(.errored(error)))
                    })
     }
-  }
-  
-  func unlink() -> Completable {
-    return self.accountStorage.get()
-      .flatMap { [unowned self] (account) -> Single<APIEmptyResponse> in
-        let request = UnlinkRequest(userId: account.userId)
-        UserDefaultsHelper.userPhoneNumber = nil
-        return self.networkService.execute(request)
-      }
-      .flatMap{ [unowned self] _ in self.logout() }
-      .asCompletable()
-      .catchError { [unowned self] in
-        let mappedError = $0.mapToAPIError()
-        let completableError = Completable.error(mappedError)
-        return self.logout().flatMapCompletable { _ in completableError }
-      }
   }
 }

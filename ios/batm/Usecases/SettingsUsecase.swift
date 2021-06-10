@@ -10,7 +10,6 @@ protocol SettingsUsecase {
     func confirmPhone(phoneNumber: String, code: String) -> Completable
     func updatePassword(oldPassword: String, newPassword: String) -> Completable
     func getPinCode() -> Single<String>
-    func unlink() -> Completable
     func getKYC() -> Single<KYC>
     func sendVerification(userData: VerificationUserData) -> Completable
     func sendVIPVerification(userData: VIPVerificationUserData) -> Completable
@@ -85,13 +84,6 @@ class SettingsUsecaseImpl: SettingsUsecase {
     
     func getPinCode() -> Single<String> {
         return pinCodeUsecase.get()
-    }
-    
-    func unlink() -> Completable {
-        return accountStorage.get()
-            .flatMap { [api] in api.unlink(userId: $0.userId).andThen(Single.just($0)) }
-            .flatMap { [logoutUsecase] _ in logoutUsecase.logout() }
-            .asCompletable()
     }
     
     func getKYC() -> Single<KYC> {
