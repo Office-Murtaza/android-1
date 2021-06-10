@@ -21,8 +21,6 @@ class P2POrderDetailsViewController: UIViewController {
   private let paymentViewSeparator = P2PSeparatorView()
   private let tradeRateView =  P2PTradeDetailsRateView()
   private let rateViewSeparator = P2PSeparatorView()
-  private let infoMessageView = P2PTradeDetailsTextInfoView()
-  private let infoViewSeparator = P2PSeparatorView()
   private let myScoreView = P2POrderDetailsScoreView()
   private let myScoreViewSeparator = P2PSeparatorView()
   private let partnerScoreView = P2POrderDetailsScoreView()
@@ -76,8 +74,6 @@ class P2POrderDetailsViewController: UIViewController {
           let totalTrades = order.makerTotalTrades else { return }
     
     tradeRateView.setup(markerId: makerId, statusImage: nil, rate: tradeRate, totalTrades: totalTrades, distance: currentDistance)
-    infoMessageView.update(message: localize(L.P2p.Trade.Details.info))
-    
     myScoreView.setup(title: localize(L.P2p.Order.Details.My.score), score: myRate)
     partnerScoreView.setup(title: localize(L.P2p.Order.Details.Score.From.partner), score: order.makerTradingRate.toString())
     
@@ -144,8 +140,6 @@ class P2POrderDetailsViewController: UIViewController {
       paymentViewSeparator,
       tradeRateView,
       rateViewSeparator,
-      infoMessageView,
-      infoViewSeparator,
       myScoreView,
       myScoreViewSeparator,
       partnerScoreView,
@@ -236,19 +230,7 @@ class P2POrderDetailsViewController: UIViewController {
       $0.left.equalToSuperview().offset(15)
       $0.right.equalToSuperview().offset(-15)
     }
-    
-    infoMessageView.snp.makeConstraints {
-      $0.top.equalTo(rateViewSeparator.snp.bottom)
-      $0.left.right.equalToSuperview()
-    }
-    
-    infoViewSeparator.snp.makeConstraints {
-      $0.top.equalTo(infoMessageView.snp.bottom)
-      $0.height.equalTo(separatorHeight)
-      $0.left.equalToSuperview().offset(15)
-      $0.right.equalToSuperview().offset(-15)
-    }
-    
+
     myScoreView.snp.makeConstraints {
       $0.height.equalTo(58)
     }
@@ -281,6 +263,7 @@ class P2POrderDetailsViewController: UIViewController {
 
 extension P2POrderDetailsViewController: P2POrderDetailsIdViewDelegate {
   func didSelectedCopy(id: String) {
+    view.makeToast(localize(L.Shared.copied))
     UIPasteboard.general.string = id
   }
 }
