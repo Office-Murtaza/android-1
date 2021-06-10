@@ -65,7 +65,7 @@ class TradeViewModel {
               let latitude = trade.makerLatitude,
               let longitude = trade.makerLongitude  else { return }
         let markerLocation = CLLocation(latitude: latitude, longitude: longitude)
-        distance = (markerLocation.distance(from: location) * 0.000621371).rounded()
+        distance = (markerLocation.distance(from: location) * 0.000621371).round(to: 2)
         distanceInMiles = String(distance ?? 0)
     }
     

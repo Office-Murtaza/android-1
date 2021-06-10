@@ -111,6 +111,7 @@ class MyOpenOrdersCell: UITableViewCell {
         fiatAmountView.update(title: viewModel.fiatAmountTitle,
                               value: viewModel.fiatAmount,
                               textAlignMent: .right)
+        sellBuyView.update(type: viewModel.currentSellBuyType)
     }
   
   private func setupPaymentMethods(images: [UIImage]?) {
