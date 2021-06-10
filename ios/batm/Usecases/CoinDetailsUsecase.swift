@@ -101,7 +101,7 @@ class CoinDetailsUsecaseImpl: CoinDetailsUsecase {
                     return .just(())
                 }
                 
-                return api.getCurrentAccountActivated(type: type, address: destination)
+                return api.getCurrentAccountActivated(address: destination)
                     .map { isActivated in
                         if !isActivated && amount < 20 {
                             throw APIError.serverError(ServerError(code: 3, message: localize(L.CoinWithdraw.Form.Error.notEnoughToActivate)))
@@ -134,7 +134,7 @@ class CoinDetailsUsecaseImpl: CoinDetailsUsecase {
     }
     
     func getCoinActivatedState(for coin: BTMCoin) -> Single<Bool> {
-        return api.getCurrentAccountActivated(type: coin.type, address: coin.address)
+        return api.getCurrentAccountActivated(address: coin.address)
     }
     
     func sendGift(from coin: BTMCoin,

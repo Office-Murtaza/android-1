@@ -67,10 +67,10 @@ protocol APIGateway {
                          from screen: ScreenType) -> Completable
   func getTronBlockHeader(type: CustomCoinType) -> Single<BTMTronBlockHeader>
   func getGiftAddress(type: CustomCoinType, phone: String) -> Single<GiftAddress>
-  func getNonce(type: CustomCoinType, address: String) -> Single<Nonce>
+  func getNonce(address: String) -> Single<Nonce>
   func getBinanceAccountInfo(type: CustomCoinType, address: String) -> Single<BinanceAccountInfo>
   func getRippleSequence(type: CustomCoinType, address: String) -> Single<RippleSequence>
-  func getCurrentAccountActivated(type: CustomCoinType, address: String) -> Single<Bool>
+  func getCurrentAccountActivated(address: String) -> Single<Bool>
   func getSellDetails(userId: String) -> Single<SellDetails>
   func getKYC(userId: String) -> Single<KYC>
   func sendVerification(userId: String, userData: VerificationUserData) -> Completable
@@ -290,7 +290,7 @@ final class APIGatewayImpl: APIGateway {
   }
   
   func getTronBlockHeader(type: CustomCoinType) -> Single<BTMTronBlockHeader> {
-    let request = GetTronBlockHeaderRequest(coinId: type.code)
+    let request = GetTronBlockHeaderRequest()
     return execute(request)
   }
   
@@ -299,8 +299,8 @@ final class APIGatewayImpl: APIGateway {
     return execute(request)
   }
   
-  func getNonce(type: CustomCoinType, address: String) -> Single<Nonce> {
-    let request = GetNonceRequest(coinId: type.code, address: address)
+  func getNonce(address: String) -> Single<Nonce> {
+    let request = GetNonceRequest(address: address)
     return execute(request)
   }
   
@@ -314,8 +314,8 @@ final class APIGatewayImpl: APIGateway {
     return execute(request)
   }
   
-  func getCurrentAccountActivated(type: CustomCoinType, address: String) -> Single<Bool> {
-    let request = GetCurrentAccountActivatedRequest(coinId: type.code, address: address)
+  func getCurrentAccountActivated(address: String) -> Single<Bool> {
+    let request = GetCurrentAccountActivatedRequest(address: address)
     return execute(request).map { $0.result }
   }
   

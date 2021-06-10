@@ -272,10 +272,9 @@ struct GetNonceRequest: AuthorizedAPIRequest {
   typealias ResponseType = APIResponse<Nonce>
   typealias ResponseTrait = SingleResponseTrait
   
-  let coinId: String
   let address: String
   
-  var path: String { return "/coin/\(coinId)/nonce" }
+  var path: String { return "/coin/nonce" }
   var method: HTTPMethod { return .get }
   var task: HTTPTask {
     return .requestParameters(parameters: ["address": address],
@@ -378,9 +377,7 @@ struct GetTronBlockHeaderRequest: AuthorizedAPIRequest {
   typealias ResponseType = APIResponse<BTMTronBlockHeader>
   typealias ResponseTrait = SingleResponseTrait
   
-  let coinId: String
-  
-  var path: String { return "/coin/\(coinId)/current-block" }
+  var path: String { return "/coin/current-block" }
   var method: HTTPMethod { return .get }
   var task: HTTPTask {
     return .requestPlain
@@ -433,10 +430,9 @@ struct GetCurrentAccountActivatedRequest: AuthorizedAPIRequest {
   typealias ResponseType = APIResponse<ResponseResult>
   typealias ResponseTrait = SingleResponseTrait
   
-  let coinId: String
   let address: String
   
-  var path: String { return "/coin/\(coinId)/current-account-activated" }
+  var path: String { return "/coin/current-account-activated" }
   var method: HTTPMethod { return .get }
   var task: HTTPTask {
     return .requestParameters(parameters: ["address": address], encoding: URLEncoding.customDefault)
