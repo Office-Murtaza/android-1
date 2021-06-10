@@ -74,8 +74,12 @@ class P2POrderDetailsViewController: UIViewController {
           let totalTrades = order.makerTotalTrades else { return }
     
     tradeRateView.setup(markerId: makerId, statusImage: nil, rate: tradeRate, totalTrades: totalTrades, distance: currentDistance)
+    
     myScoreView.setup(title: localize(L.P2p.Order.Details.My.score), score: myRate)
     partnerScoreView.setup(title: localize(L.P2p.Order.Details.Score.From.partner), score: order.makerTradingRate.toString())
+    
+    myScoreView.isHidden = !(viewModel.orderStatus == .released || viewModel.orderStatus == .solved)
+    partnerScoreView.isHidden = !(viewModel.orderStatus == .released || viewModel.orderStatus == .solved)
     
     idView.setup(id: order.id ?? "")
     idView.delegate = self
