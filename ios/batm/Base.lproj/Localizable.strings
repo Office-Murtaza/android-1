@@ -425,7 +425,7 @@
 "transfer.receiver.phone.placeholder" = "Type mobile number or contact name";
 "transfer.receiver.title" = "Transfer";
 
-"p2p.create.order.platform_fee" = "Platform fee 3% ~";
+"p2p.create.order.platform_fee" = "Platform Fee";
 "p2p.crypto.amount.title" = "Crypto Amount";
 "p2p.fiat.amount.title" = "Fiat Amount";
 
@@ -519,3 +519,8 @@
 "p2p.create.trade.validation.terms" = "Provide more details about the trade";
 "p2p.create.trade.validation.type" = "Select trade type";
 "p2p.order.details.rate" = "How was you trade experience with %@";
+"p2p.create.order.you.will.get" = "You Will Get";
+"p2p.create.order.you.will.send" = "You Will Send";
+"p2p.create.order.reserved" = "Reserved";
+"p2p.create.order.platform.fee" = "Platform Fee";
+

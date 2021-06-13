@@ -3,6 +3,7 @@ import Foundation
 struct P2PCreateOrderData {
     let cryptoAmount: Double
     let feeAmount: Double
+    let totalReuslt: Double
 }
 
 struct P2PCreateOrderValidationError {
@@ -15,7 +16,8 @@ protocol P2PCreateOrderModelInput: AnyObject {
     func calculateOrderData(trade: Trade,
                             fiatAmount: Double,
                             platformFee: Double,
-                            reservedBalance: Double) -> CreateOrderModelResult
+                            reservedBalance: Double,
+                            type: TradeType) -> CreateOrderModelResult
                             
 }
 
@@ -24,10 +26,13 @@ class P2PCreateOrderModel: P2PCreateOrderModelInput {
     func calculateOrderData(trade: Trade,
                             fiatAmount: Double,
                             platformFee: Double,
-                            reservedBalance: Double) -> CreateOrderModelResult {
+                            reservedBalance: Double,
+                            type: TradeType) -> CreateOrderModelResult {
         let cryptoAmount = calculateCryptoAmount(fiatAmount, trade.price ?? 0)
         let feeAmount = calculateFeeAmount(cryptoAmount, platformFee)
-        let data = P2PCreateOrderData(cryptoAmount: cryptoAmount, feeAmount: feeAmount)
+        let total = totalResult(cryptoAmount: cryptoAmount, feeAmount: feeAmount, type: type)
+      
+        let data = P2PCreateOrderData(cryptoAmount: cryptoAmount, feeAmount: feeAmount, totalReuslt: total)
         
         guard let type = trade.type, let tradeType = P2PTradesType(rawValue: type) else {
             return (data, nil)
@@ -49,6 +54,22 @@ class P2PCreateOrderModel: P2PCreateOrderModelInput {
         
         return (data, validationError)
     }
+  
+  func totalResult(cryptoAmount: Double, feeAmount: Double, type: TradeType) -> Double {
+    switch type {
+    case .sell: return totalSellResult(cryptoAmount: cryptoAmount, feeAmount: feeAmount)
+    case .buy: return totalBuyResult(cryptoAmount: cryptoAmount, feeAmount: feeAmount)
+    default: return 0
+    }
+  }
+  
+  func totalSellResult(cryptoAmount: Double, feeAmount: Double) -> Double {
+    return cryptoAmount + feeAmount
+  }
+  
+  func totalBuyResult(cryptoAmount: Double, feeAmount: Double) -> Double {
+    return cryptoAmount - feeAmount
+  }
     
     private func calculateCryptoAmount(_ fiatAmount: Double,_ tradePrice: Double) -> Double {
         let cryptoAmount = fiatAmount / tradePrice
@@ -56,7 +77,7 @@ class P2PCreateOrderModel: P2PCreateOrderModelInput {
     }
     
     private func calculateFeeAmount(_ cryptoAmount: Double,_ patformFee: Double) -> Double {
-        let feeAmount = (cryptoAmount * patformFee) / 100
+        let feeAmount = (cryptoAmount * patformFee)/2/100
         return feeAmount
     }
     

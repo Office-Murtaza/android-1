@@ -753,6 +753,7 @@ extension L.P2p.Create {
 
   struct Order {
     static let platformFee = "p2p.create.order.platform_fee"
+    static let reserved = "p2p.create.order.reserved"
   }
 
   struct Trade {
@@ -762,6 +763,22 @@ extension L.P2p.Create.New {
 
   struct Trade {
     static let title = "p2p.create.new.trade.title"
+  }
+}
+extension L.P2p.Create.Order {
+
+  struct Platform {
+    static let fee = "p2p.create.order.platform.fee"
+  }
+
+  struct You {
+  }
+}
+extension L.P2p.Create.Order.You {
+
+  struct Will {
+    static let get = "p2p.create.order.you.will.get"
+    static let send = "p2p.create.order.you.will.send"
   }
 }
 extension L.P2p.Create.Trade {

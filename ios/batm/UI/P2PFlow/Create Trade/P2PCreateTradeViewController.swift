@@ -138,6 +138,11 @@ class P2PCreateTradeViewController: UIViewController {
         limitValidator.update(min: Double(minRange))
         limitValidator.update(max: Double(maxRange))
         
+        if let defaultPlatformFee = balance.coins.first(where: { $0.type == .bitcoin})?.details.platformTradeFee?.doubleValue {
+          limitValidator.update(platformFee: defaultPlatformFee)
+        }
+      
+        
         limitsView.update(isUserInteractionEnabled: true, keyboardType: .decimalPad)
         
       limitsHeader.update(title: localize(L.P2p.Limits.title))
@@ -455,6 +460,9 @@ class P2PCreateTradeViewController: UIViewController {
                 self.coinValidator.update(coinType: selectedbalance.type)
                 self.coinValidator.check()
                 self.limitValidator.update(reservedBalance: selectedbalance.reservedBalance.doubleValue)
+                if let fee = selectedbalance.details.platformTradeFee?.doubleValue {
+                  self.limitValidator.update(platformFee: fee)
+                }
                 self.limitValidator.check()
             }
         }.disposed(by: disposeBag)
