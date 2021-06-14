@@ -23,7 +23,7 @@ class MyViewController: UIViewController, MDCTabBarDelegate {
   private var prevIndex = 0
   private var balance: CoinsBalance?
   private var currentLocation: CLLocation?
-  private var userId: Int?
+  private var userId: String?
   
   weak var delegate: MyViewControllerDelegate?
   
@@ -60,7 +60,7 @@ class MyViewController: UIViewController, MDCTabBarDelegate {
     setupLayout()
   }
   
-  func update(trades: Trades, userId: Int?) {
+  func update(trades: Trades, userId: String?) {
     self.userId = userId
     let myTrades = trades.trades.filter { $0.makerUserId == userId }
     let myOrders = trades.orders.filter { $0.makerUserId == userId || $0.takerUserId == userId }

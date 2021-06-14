@@ -25,7 +25,7 @@ protocol P2PCreateTradeViewControllerDelegate: AnyObject {
 class P2PCreateTradeViewController: UIViewController {
 
     let trades: Trades
-    let userId: Int
+    let userId: String
     var selectedType: P2PSellBuyViewType = .buy
     var minRange: Double = 100
     var maxRange: Double = 1000 {
@@ -48,7 +48,7 @@ class P2PCreateTradeViewController: UIViewController {
     weak var delegate: P2PCreateTradeViewControllerDelegate?
     
     init(trades: Trades,
-         userId: Int,
+         userId: String,
          balance: CoinsBalance,
          payments: [TradePaymentMethods],
          delegate: P2PCreateTradeViewControllerDelegate) {
@@ -137,6 +137,11 @@ class P2PCreateTradeViewController: UIViewController {
         limitsView.setup(range: [CGFloat(minRange), CGFloat(maxRange)], measureString: "", isMeasurePosistionLast: false)
         limitValidator.update(min: Double(minRange))
         limitValidator.update(max: Double(maxRange))
+        
+        if let defaultPlatformFee = balance.coins.first(where: { $0.type == .bitcoin})?.details.platformTradeFee?.doubleValue {
+          limitValidator.update(platformFee: defaultPlatformFee)
+        }
+      
         
         limitsView.update(isUserInteractionEnabled: true, keyboardType: .decimalPad)
         
@@ -455,6 +460,9 @@ class P2PCreateTradeViewController: UIViewController {
                 self.coinValidator.update(coinType: selectedbalance.type)
                 self.coinValidator.check()
                 self.limitValidator.update(reservedBalance: selectedbalance.reservedBalance.doubleValue)
+                if let fee = selectedbalance.details.platformTradeFee?.doubleValue {
+                  self.limitValidator.update(platformFee: fee)
+                }
                 self.limitValidator.check()
             }
         }.disposed(by: disposeBag)

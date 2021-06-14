@@ -4,7 +4,7 @@ import CoreLocation
 class MyOrderViewModel {
     
    private(set) var order: Order
-  private(set) var userId: Int
+  private(set) var userId: String
    
   var currentSellBuyType: P2PSellBuyViewType {
     return (order.makerUserId == userId ? tradeType : tradeType?.reversed) ?? .buy
@@ -12,7 +12,7 @@ class MyOrderViewModel {
     
   private var tradeType: P2PSellBuyViewType?
   
-  init(order: Order, userId: Int) {
+  init(order: Order, userId: String) {
         self.order = order
         self.userId = userId
     }
@@ -58,7 +58,7 @@ class MyOrderViewModel {
                  let longitude = order.makerLongitude else { return }
         
            let markerLocation = CLLocation(latitude: latitude, longitude: longitude)
-           distance = (markerLocation.distance(from: location) * 0.000621371).rounded()
+           distance = (markerLocation.distance(from: location) * 0.000621371).round(to: 2)
            distanceInMiles = String(distance ?? 0)
        }
     
@@ -70,7 +70,7 @@ class MyOrderViewModel {
     }
     
     var cryptoAmount: String {
-        return order.cryptoAmount?.coinFormatted ?? ""
+      return "\(order.cryptoAmount?.coinFormatted ?? "") \(order.coin ?? "")"
     }
     
     var fiatAmountTitle: String {
@@ -78,7 +78,7 @@ class MyOrderViewModel {
     }
     
     var fiatAmount: String {
-        return order.fiatAmount?.coinFormatted ?? ""
+        return "$ \(order.fiatAmount?.coinFormatted ?? "")"
     }
   
   var isNeedPresentRateView: Bool {

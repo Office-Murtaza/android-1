@@ -79,7 +79,7 @@ class RefreshCredentialsServiceImpl: RefreshCredentialsService {
           
           if mappedError == .notAuthorized {
             UserDefaultsHelper.isAuthorized = false
-            return self.logoutUsecase.unlink()
+            return self.logoutUsecase.logout().asCompletable()
           }
           return completableError
         }

@@ -129,7 +129,7 @@ class P2PTradeCell: UITableViewCell {
         }
         
         distanceView.snp.makeConstraints {
-            $0.top.equalTo(paymentMethodsView.snp.bottom).offset(5)
+            $0.top.equalTo(markerIdView.snp.top)
             $0.right.equalTo(paymentMethodsView)
         }
     }

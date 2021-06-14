@@ -63,8 +63,8 @@ final class VIPVerificationPresenter: ModulePresenter, VIPVerificationModule {
             .filter { $0.validationState.isValid }
         
             .map {
-                let selfieFileName = "\($0.userId ?? 0)_ssn_\(String.randomString(length: 10)).jpg"
-                return VIPVerificationUserData(userId: $0.userId ?? 0,
+                let selfieFileName = "\($0.userId ?? "")_ssn_\(String.randomString(length: 10)).jpg"
+                return VIPVerificationUserData(userId: $0.userId ?? "",
                                                selfieData: $0.selectedImageData!,
                                                ssn: $0.ssn,
                                                selfieFileName: selfieFileName)
@@ -79,7 +79,7 @@ final class VIPVerificationPresenter: ModulePresenter, VIPVerificationModule {
         return usecase.sendVIPVerification(userData: userData)
     }
     
-    private func setupFirebaseStorage(userId: Int, userData: Data, fileName: String) {
+    private func setupFirebaseStorage(userId: String, userData: Data, fileName: String) {
         let uploadRef = Storage.storage().reference().child("verification").child("\(fileName)")
         let uploadMetadata = StorageMetadata()
         uploadMetadata.contentType = "image/jpeg"

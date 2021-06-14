@@ -263,22 +263,31 @@ extension P2PViewController: MyViewControllerDelegate {
 }
 
 extension P2PViewController: TradesDataSourceDelegate {
+  
+  func didSelected(tradeModel: TradeViewModel, type: P2PTradesType, reservedBalance: Double) {
     
-    func didSelected(tradeModel: TradeViewModel, type: P2PTradesType, reservedBalance: Double) {
-        switch type {
-        case .buy:
-            let sellController = P2PTradeDetailsSellViewController()
-            sellController.delegate = self
-            sellController.setup(trade: tradeModel.trade, distance: "\(tradeModel.distanceInMiles ?? "0") Miles", reservedBalance: reservedBalance)
-            navigationController?.pushViewController(sellController, animated: true)
-            
-        case .sell:
-            let buyController = P2PTradeDetailsBuyViewController()
-            buyController.delegate = self
-            buyController.setup(trade: tradeModel.trade, distance: "\(tradeModel.distanceInMiles ?? "0") Miles", reservedBalance: reservedBalance)
-            navigationController?.pushViewController(buyController, animated: true)
-        }
+    guard let platformFee = balance?.coins.first(where: { $0.type == tradeModel.coin })?.details.platformTradeFee?.doubleValue else { return }
+    
+    switch type {
+    case .buy:
+      let sellController = P2PTradeDetailsSellViewController()
+      sellController.delegate = self
+      sellController.setup(trade: tradeModel.trade,
+                           distance: "\(tradeModel.distanceInMiles ?? "0") Miles",
+                           reservedBalance: reservedBalance,
+                           platformFee: platformFee)
+      navigationController?.pushViewController(sellController, animated: true)
+      
+    case .sell:
+      let buyController = P2PTradeDetailsBuyViewController()
+      buyController.delegate = self
+      buyController.setup(trade: tradeModel.trade,
+                          distance: "\(tradeModel.distanceInMiles ?? "0") Miles",
+                          reservedBalance: reservedBalance,
+                          platformFee: platformFee)
+      navigationController?.pushViewController(buyController, animated: true)
     }
+  }
 }
 
 extension P2PViewController: P2PTradeDetailsCreateOrderDelegate {

@@ -56,10 +56,6 @@ extension SettingsFlowController: SecurityModuleDelegate {
     step.accept(SettingsFlow.Steps.seedPhrase)
   }
   
-  func didSelectUnlink() {
-    step.accept(SettingsFlow.Steps.unlink)
-  }
-  
 }
 
 extension SettingsFlowController: SupportModuleDelegate {}

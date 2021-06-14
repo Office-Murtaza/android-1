@@ -165,7 +165,7 @@ class WalletServiceImpl: WalletService {
                                  to destination: String,
                                  amount: Decimal,
                                  stakingType: TransactionType? = nil) -> Single<String> {
-    return api.getNonce(type: coin.type, address: coin.address)
+    return api.getNonce(address: coin.address)
       .map { [unowned self] in try self.getEthereumTransactionHex(coin: coin,
                                                                   coinDetails: coinDetails,
                                                                   toAddress: destination,

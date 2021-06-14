@@ -11,7 +11,7 @@ enum P2PTradesType: Int {
 }
 
 protocol TradeListDataSource: UITableViewDataSource, UITableViewDelegate {
-    func setup(trades: Trades, type: P2PTradesType, userId: Int?)
+    func setup(trades: Trades, type: P2PTradesType, userId: String?)
     func reload(location: CLLocation?)
 }
 

@@ -2,7 +2,7 @@ import Foundation
 import RxSwift
 
 struct VIPVerificationUserData {
-  let userId: Int
+  let userId: String
   let selfieData: Data
   let ssn: String
   let selfieFileName: String
@@ -11,7 +11,7 @@ struct VIPVerificationUserData {
 }
 
 enum VIPVerificationAction: Equatable {
-  case getUserId(Int?)
+  case getUserId(String?)
   case updateSelectedImage(UIImage?)
   case updateSSN(String?)
   case updateImageError(String?)
@@ -20,7 +20,7 @@ enum VIPVerificationAction: Equatable {
 }
 
 struct VIPVerificationState: Equatable {
-  var userId: Int?
+  var userId: String?
   var selectedImage: UIImage?
   var ssn: String = ""
   var imageError: String?

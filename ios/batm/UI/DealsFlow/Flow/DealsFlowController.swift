@@ -22,7 +22,7 @@ extension DealsFlowController: DealsModuleDelegate {
         step.accept(DealsFlow.Steps.transfer)
     }
 
-    func didSelectedP2p(trades: Trades, userId: Int) {
+    func didSelectedP2p(trades: Trades, userId: String) {
         step.accept(DealsFlow.Steps.p2p(trades: trades, userId: userId))
     }
 }

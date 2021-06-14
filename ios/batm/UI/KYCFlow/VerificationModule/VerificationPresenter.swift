@@ -124,7 +124,7 @@ final class VerificationPresenter: ModulePresenter, VerificationModule {
             }
     }
     
-    private func setupFirebaseStorage(userId: Int, userData: Data, fileName: String) {
+    private func setupFirebaseStorage(userId: String, userData: Data, fileName: String) {
         let uploadRef = Storage.storage().reference().child("verification").child("\(fileName)")
         let uploadMetadata = StorageMetadata()
         uploadMetadata.contentType = "image/jpeg"

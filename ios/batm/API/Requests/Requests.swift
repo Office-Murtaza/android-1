@@ -107,7 +107,7 @@ struct VerifyCodeRequest: AuthorizedAPIRequest {
   typealias ResponseType = APIEmptyResponse
   typealias ResponseTrait = SingleResponseTrait
   
-  let userId: Int
+  let userId: String
   let code: String
   
   var path: String { return "/user/\(userId)/code/verify" }
@@ -115,19 +115,6 @@ struct VerifyCodeRequest: AuthorizedAPIRequest {
   var task: HTTPTask {
     return .requestParameters(parameters: ["code": code],
                               encoding: JSONEncoding.default)
-  }
-}
-
-struct CoinDetailsRequest: AuthorizedAPIRequest {
-  typealias ResponseType = APIResponse<CoinDetails>
-  typealias ResponseTrait = SingleResponseTrait
-  
-  let coinId: String
-  
-  var path: String { return "/coin/\(coinId)/details" }
-  var method: HTTPMethod { return .get }
-  var task: HTTPTask {
-    return .requestPlain
   }
 }
 
@@ -146,7 +133,7 @@ struct GetPhoneNumberRequest: AuthorizedAPIRequest {
   typealias ResponseType = APIResponse<PhoneNumber>
   typealias ResponseTrait = SingleResponseTrait
   
-  let userId: Int
+  let userId: String
   
   var path: String { return "/user/\(userId)/phone" }
   var method: HTTPMethod { return .get }
@@ -159,7 +146,7 @@ struct VerifyPasswordRequest: AuthorizedAPIRequest {
   typealias ResponseType = APIResponse<ResponseResult>
   typealias ResponseTrait = SingleResponseTrait
   
-  let userId: Int
+  let userId: String
   let password: String
   
   var path: String { return "/user/\(userId)/password-verify" }
@@ -174,7 +161,7 @@ struct VerifyPhoneRequest: AuthorizedAPIRequest {
   typealias ResponseType = APIResponse<ResponseResult>
   typealias ResponseTrait = SingleResponseTrait
   
-  let userId: Int
+  let userId: String
   let phoneNumber: String
   
   var path: String { return "/user/\(userId)/phone-verify" }
@@ -189,7 +176,7 @@ struct UpdatePhoneRequest: AuthorizedAPIRequest {
   typealias ResponseType = APIEmptyResponse
   typealias ResponseTrait = SingleResponseTrait
   
-  let userId: Int
+  let userId: String
   let phoneNumber: String
   
   var path: String { return "/user/\(userId)/phone" }
@@ -204,7 +191,7 @@ struct ConfirmPhoneRequest: AuthorizedAPIRequest {
   typealias ResponseType = APIEmptyResponse
   typealias ResponseTrait = SingleResponseTrait
   
-  let userId: Int
+  let userId: String
   let phoneNumber: String
   let code: String
   
@@ -221,7 +208,7 @@ struct UpdatePasswordRequest: AuthorizedAPIRequest {
   typealias ResponseType = APIEmptyResponse
   typealias ResponseTrait = SingleResponseTrait
   
-  let userId: Int
+  let userId: String
   let oldPassword: String
   let newPassword: String
   
@@ -234,24 +221,11 @@ struct UpdatePasswordRequest: AuthorizedAPIRequest {
   }
 }
 
-struct UnlinkRequest: AuthorizedAPIRequest {
-  typealias ResponseType = APIEmptyResponse
-  typealias ResponseTrait = SingleResponseTrait
-  
-  let userId: Int
-  
-  var path: String { return "/user/\(userId)/unlink" }
-  var method: HTTPMethod { return .get }
-  var task: HTTPTask {
-    return .requestPlain
-  }
-}
-
 struct TransactionsRequest: AuthorizedAPIRequest {
   typealias ResponseType = APIResponse<Transactions>
   typealias ResponseTrait = SingleResponseTrait
   
-  let userId: Int
+  let userId: String
   let coinId: String
   let index: Int
   
@@ -267,7 +241,7 @@ struct TransactionDetailsRequest: AuthorizedAPIRequest {
   typealias ResponseType = APIResponse<TransactionDetails>
   typealias ResponseTrait = SingleResponseTrait
   
-  let userId: Int
+  let userId: String
   let coinId: String
   let id: String
   
@@ -298,10 +272,9 @@ struct GetNonceRequest: AuthorizedAPIRequest {
   typealias ResponseType = APIResponse<Nonce>
   typealias ResponseTrait = SingleResponseTrait
   
-  let coinId: String
   let address: String
   
-  var path: String { return "/coin/\(coinId)/nonce" }
+  var path: String { return "/coin/nonce" }
   var method: HTTPMethod { return .get }
   var task: HTTPTask {
     return .requestParameters(parameters: ["address": address],
@@ -313,7 +286,7 @@ struct PreSubmitTransactionRequest: AuthorizedAPIRequest {
   typealias ResponseType = APIResponse<PreSubmitResponse>
   typealias ResponseTrait = SingleResponseTrait
   
-  let userId: Int
+  let userId: String
   let coinId: String
   let coinAmount: Decimal
   let currencyAmount: Decimal
@@ -332,7 +305,7 @@ struct CoinSubmitTransactionRequest: AuthorizedAPIRequest {
     typealias ResponseType = APIResponse<TransactionDetails>
     typealias ResponseTrait = SingleResponseTrait
     
-    let userId: Int
+    let userId: String
     let coinId: String
     let txType: TransactionType
     let amount: Decimal
@@ -368,7 +341,7 @@ struct SubmitTransactionRequest: AuthorizedAPIRequest {
   typealias ResponseType = APIEmptyResponse
   typealias ResponseTrait = SingleResponseTrait
   
-  let userId: Int
+  let userId: String
   let coinId: String
   let txType: TransactionType
   let amount: Decimal
@@ -404,9 +377,7 @@ struct GetTronBlockHeaderRequest: AuthorizedAPIRequest {
   typealias ResponseType = APIResponse<BTMTronBlockHeader>
   typealias ResponseTrait = SingleResponseTrait
   
-  let coinId: String
-  
-  var path: String { return "/coin/\(coinId)/current-block" }
+  var path: String { return "/coin/current-block" }
   var method: HTTPMethod { return .get }
   var task: HTTPTask {
     return .requestPlain
@@ -459,10 +430,9 @@ struct GetCurrentAccountActivatedRequest: AuthorizedAPIRequest {
   typealias ResponseType = APIResponse<ResponseResult>
   typealias ResponseTrait = SingleResponseTrait
   
-  let coinId: String
   let address: String
   
-  var path: String { return "/coin/\(coinId)/current-account-activated" }
+  var path: String { return "/coin/current-account-activated" }
   var method: HTTPMethod { return .get }
   var task: HTTPTask {
     return .requestParameters(parameters: ["address": address], encoding: URLEncoding.customDefault)
@@ -473,7 +443,7 @@ struct GetSellDetailsRequest: AuthorizedAPIRequest {
   typealias ResponseType = APIResponse<SellDetails>
   typealias ResponseTrait = SingleResponseTrait
   
-  let userId: Int
+  let userId: String
   
   var path: String { return "/user/\(userId)/limits" }
   var method: HTTPMethod { return .get }
@@ -486,7 +456,7 @@ struct KYCRequest: AuthorizedAPIRequest {
   typealias ResponseType = APIResponse<KYC>
   typealias ResponseTrait = SingleResponseTrait
   
-  let userId: Int
+  let userId: String
   
   var path: String { return "/user/\(userId)/verification" }
   var method: HTTPMethod { return .get }
@@ -499,7 +469,7 @@ struct SendVerificationRequest: AuthorizedAPIRequest {
   typealias ResponseType = APIEmptyResponse
   typealias ResponseTrait = SingleResponseTrait
   
-  let userId: Int
+  let userId: String
   let userData: VerificationUserData
   var path: String { return "/user/\(userId)/verification" }
   var method: HTTPMethod { return .post }
@@ -523,7 +493,7 @@ struct SendVIPVerificationRequest: AuthorizedAPIRequest {
   typealias ResponseType = APIEmptyResponse
   typealias ResponseTrait = SingleResponseTrait
   
-  let userId: Int
+  let userId: String
   let userData: VIPVerificationUserData
   
   var path: String { return "/user/\(userId)/verification" }
@@ -540,7 +510,7 @@ struct GetPriceChartDataRequest: AuthorizedAPIRequest {
   typealias ResponseType = APIResponse<PriceChartData>
   typealias ResponseTrait = SingleResponseTrait
   
-  let userId: Int
+  let userId: String
   let coinId: String
   
   var path: String { return "/user/\(userId)/coin/\(coinId)/price-chart" }
@@ -568,7 +538,7 @@ struct BuySellTradesRequest: AuthorizedAPIRequest {
   typealias ResponseType = APIResponse<BuySellTrades>
   typealias ResponseTrait = SingleResponseTrait
   
-  let userId: Int
+  let userId: String
   let coinId: String
   let type: TradeType
   let index: Int
@@ -587,7 +557,7 @@ struct UpdateLocationRequest: AuthorizedAPIRequest {
   typealias ResponseType = APIEmptyResponse
   typealias ResponseTrait = SingleResponseTrait
   
-  let userId: Int
+  let userId: String
   let latitude: Double
   let longitude: Double
   
@@ -604,7 +574,7 @@ struct SubmitTradeRequestRequest: AuthorizedAPIRequest {
   typealias ResponseType = APIEmptyResponse
   typealias ResponseTrait = SingleResponseTrait
   
-  let userId: Int
+  let userId: String
   let data: SubmitTradeRequestData
   
   var path: String { return "/user/\(userId)/coin/\(data.coinType.code)/trade-request" }
@@ -623,7 +593,7 @@ struct SubmitTradeRequest: AuthorizedAPIRequest {
   typealias ResponseType = APIEmptyResponse
   typealias ResponseTrait = SingleResponseTrait
   
-  let userId: Int
+  let userId: String
   let data: SubmitTradeData
   
   var path: String { return "/user/\(userId)/coin/\(data.coinType.code)/trade" }
@@ -643,7 +613,7 @@ struct StakeDetailsRequest: AuthorizedAPIRequest {
   typealias ResponseType = APIResponse<StakeDetails>
   typealias ResponseTrait = SingleResponseTrait
   
-  let userId: Int
+  let userId: String
   let coinId: String
   
   var path: String { return "/user/\(userId)/coin/\(coinId)/staking-details" }
@@ -657,7 +627,7 @@ struct ManageCoinsRequest: AuthorizedAPIRequest {
   typealias ResponseType = APIEmptyResponse
   typealias ResponseTrait = SingleResponseTrait
   
-  let userId: Int
+  let userId: String
   let coinId: String
   let isVisible: String
   
@@ -673,7 +643,7 @@ struct TradesRequest: AuthorizedAPIRequest {
   typealias ResponseType = APIResponse<Trades>
   typealias ResponseTrait = SingleResponseTrait
   
-  let userId: Int
+  let userId: String
   
   var path: String { return "/user/\(userId)/trade-history" }
   var method: HTTPMethod { return .get }
@@ -686,7 +656,7 @@ struct CreateTradesRequest: AuthorizedAPIRequest {
   typealias ResponseType = APIResponse<Trade>
   typealias ResponseTrait = SingleResponseTrait
   
-  let userId: Int
+  let userId: String
   let data: P2PCreateTradeDataModel
   
   var path: String { return "/user/\(userId)/trade" }
@@ -701,7 +671,7 @@ struct EditTradesRequest: AuthorizedAPIRequest {
   typealias ResponseType = APIResponse<Trade>
   typealias ResponseTrait = SingleResponseTrait
   
-  let userId: Int
+  let userId: String
   let data: P2PEditTradeDataModel
   
   var path: String { return "/user/\(userId)/trade" }
@@ -716,7 +686,7 @@ struct CancelTradesRequest: AuthorizedAPIRequest {
   typealias ResponseType = APIResponse<Trade>
   typealias ResponseTrait = SingleResponseTrait
   
-  let userId: Int
+  let userId: String
   let id: String
   
   var path: String { return "/user/\(userId)/trade" }
@@ -731,7 +701,7 @@ struct CreateOrderRequest: AuthorizedAPIRequest {
     typealias ResponseType = APIResponse<Order>
     typealias ResponseTrait = SingleResponseTrait
     
-    let userId: Int
+    let userId: String
     let tradeId: String
     let price: Double
     let cryptoAmount: Double
@@ -753,7 +723,7 @@ struct CancelOrderRequest: AuthorizedAPIRequest {
   typealias ResponseType = APIResponse<Order>
   typealias ResponseTrait = SingleResponseTrait
   
-  let userId: Int
+  let userId: String
   let id: String
   
   var path: String { return "/user/\(userId)/order" }
@@ -768,7 +738,7 @@ struct UpdateOrderRequest: AuthorizedAPIRequest {
     typealias ResponseType = APIResponse<Order>
     typealias ResponseTrait = SingleResponseTrait
     
-    let userId: Int
+    let userId: String
   let orderId: String
   let status: Int
   let rate: Int?
@@ -792,7 +762,7 @@ struct UpdateOrderRateRequest: AuthorizedAPIRequest {
   typealias ResponseType = APIResponse<Order>
   typealias ResponseTrait = SingleResponseTrait
   
-  let userId: Int
+  let userId: String
   let orderId: String
   let rate: Int
   

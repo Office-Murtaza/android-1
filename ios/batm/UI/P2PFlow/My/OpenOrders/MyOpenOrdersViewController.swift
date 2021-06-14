@@ -30,7 +30,7 @@ class MyOpenOrdersViewController: UIViewController {
     setupLayout()
   }
   
-  func update(orders: [Order], trades: Trades, userId: Int) {
+  func update(orders: [Order], trades: Trades, userId: String) {
     let viewModels = orders.sorted { $0.timestamp ?? 0 > $1.timestamp ?? 0 }.map { MyOrderViewModel(order: $0, userId: userId) }
     viewModels.forEach { (vm) in
       if let associatedTradeType = trades.trades.first(where: {$0.id == vm.order.tradeId})?.type,
@@ -40,6 +40,7 @@ class MyOpenOrdersViewController: UIViewController {
     }
     self.trades = trades
     dataSource.udpate(vm: viewModels)
+    emptyView.isHidden = dataSource.viewModels.isNotEmpty
   }
   
   func update(location: CLLocation?) {
@@ -84,6 +85,7 @@ class MyOpenOrdersViewController: UIViewController {
     if let presentedOrder = orderDetails?.order, presentedOrder.id == order.id {
       orderDetails?.update(order: order)
     }
+    emptyView.isHidden = dataSource.viewModels.isNotEmpty
   }
   
 }

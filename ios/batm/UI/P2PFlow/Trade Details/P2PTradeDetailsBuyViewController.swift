@@ -11,20 +11,21 @@ class P2PTradeDetailsBuyViewController: P2PTradeDetailsBaseViewController {
   private let infoMessageView = P2PTradeDetailsTextInfoView()
   private let buyButton = MDCButton.buy
   private var reservedBalance: Double = 0
+  private var platformFee: Double = 0
   
-    func setup(trade: Trade, distance: String, reservedBalance: Double) {
-        super.setup(trade: trade)
-        self.reservedBalance = reservedBalance
-        guard let makerId = trade.makerPublicId,
-              let tradeRate = trade.makerTradingRate,
-              let totalTrades = trade.makerTotalTrades else { return }
-        tradeView.setup(markerId: makerId , statusImage: nil, rate: tradeRate, totalTrades: totalTrades, distance: distance)
-    }
+  func setup(trade: Trade, distance: String, reservedBalance: Double, platformFee: Double) {
+    super.setup(trade: trade)
+    self.platformFee = platformFee
+    self.reservedBalance = reservedBalance
+    guard let makerId = trade.makerPublicId,
+          let tradeRate = trade.makerTradingRate,
+          let totalTrades = trade.makerTotalTrades else { return }
+    tradeView.setup(markerId: makerId , statusImage: nil, rate: tradeRate, totalTrades: totalTrades, distance: distance)
+  }
     
   override func setupUI() {
     super.setupUI()
     
-    coinInfoView.update(isSellBuyHidden: true)
     tradeView.delegate = self
     
     stackView.addArrangedSubviews([
@@ -45,8 +46,9 @@ class P2PTradeDetailsBuyViewController: P2PTradeDetailsBaseViewController {
     let controller = P2PCreateOrderPopupViewController()
     controller.delegate = self
     controller.setup(trade: trade,
-                     platformFee: 3,
-                     reservedBalance: reservedBalance)
+                     platformFee: platformFee,
+                     reservedBalance: reservedBalance,
+                     type: .buy)
     
     controller.modalPresentationStyle = .overCurrentContext
     present(controller, animated: true, completion: nil)

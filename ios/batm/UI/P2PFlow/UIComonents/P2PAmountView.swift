@@ -21,7 +21,7 @@ class P2PAmountView: UIView {
 
     private lazy var valueLabel: UILabel = {
         let label = UILabel()
-        label.font = .systemFont(ofSize: 16, weight: .regular)
+        label.font = .systemFont(ofSize: 16, weight: .bold)
         label.textColor = UIColor(hexString: "#212121")
         
         return label

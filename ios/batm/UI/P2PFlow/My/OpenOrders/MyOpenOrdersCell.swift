@@ -20,7 +20,7 @@ class MyOpenOrdersCell: UITableViewCell {
 
     private lazy var priceLabel: UILabel = {
         let price = UILabel()
-        price.font = .systemFont(ofSize: 16, weight: .regular)
+        price.font = .systemFont(ofSize: 16, weight: .bold)
         return price
     }()
     
@@ -111,6 +111,7 @@ class MyOpenOrdersCell: UITableViewCell {
         fiatAmountView.update(title: viewModel.fiatAmountTitle,
                               value: viewModel.fiatAmount,
                               textAlignMent: .right)
+        sellBuyView.update(type: viewModel.currentSellBuyType)
     }
   
   private func setupPaymentMethods(images: [UIImage]?) {

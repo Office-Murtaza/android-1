@@ -1,7 +1,7 @@
 import Foundation
 
 struct CreateWalletResponse: AccountProtocol {
-    let userId: Int
+    let userId: String
     let accessToken: String
     let refreshToken: String
     let expires: Date

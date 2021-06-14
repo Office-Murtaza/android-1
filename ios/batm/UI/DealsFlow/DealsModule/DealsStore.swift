@@ -12,7 +12,7 @@ struct DealsState: Equatable {
     var coinDetails: CoinDetails?
     var coin: BTMCoin?
     var trades: Trades?
-    var userId: Int?
+    var userId: String?
     var coinBalance: CoinBalance? {
         return coinBalances?.first { $0.type == coin?.type }
     }
@@ -20,7 +20,7 @@ struct DealsState: Equatable {
 
 struct TradesData {
     var trades: Trades?
-    var userId: Int?
+    var userId: String?
 }
 
 final class DealsStore: ViewStore<DealsAction, DealsState> {

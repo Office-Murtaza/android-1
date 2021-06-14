@@ -425,9 +425,9 @@
 "transfer.receiver.phone.placeholder" = "Type mobile number or contact name";
 "transfer.receiver.title" = "Transfer";
 
-"p2p.create.order.platform_fee" = "Platform fee 3% ~";
-"p2p.crypto.amount.title" = "Crypto amount";
-"p2p.fiat.amount.title" = "Fiat amount";
+"p2p.create.order.platform_fee" = "Platform Fee";
+"p2p.crypto.amount.title" = "Crypto Amount";
+"p2p.fiat.amount.title" = "Fiat Amount";
 
 "p2p.trade_type.title" = "Trade Type";
 "p2p.payment.methods.title" = "Payment methods";
@@ -505,8 +505,8 @@
 
 "p2p.order.details.title" = "Order Details";
 "p2p.order.details.status" = "Status";
-"p2p.order.details.my.score" = "My Score";
-"p2p.order.details.score.from.partner" = "Score from a partner";
+"p2p.order.details.my.score" = "My Rate";
+"p2p.order.details.score.from.partner" = "Partner Rate";
 "p2p.order.create.fiat.error" = "Fiat amount is not in trade limits range";
 "p2p.order.create.reserved.error" = "Amount is bigger than your reserved balance";
 
@@ -519,3 +519,8 @@
 "p2p.create.trade.validation.terms" = "Provide more details about the trade";
 "p2p.create.trade.validation.type" = "Select trade type";
 "p2p.order.details.rate" = "How was you trade experience with %@";
+"p2p.create.order.you.will.get" = "You Will Get";
+"p2p.create.order.you.will.send" = "You Will Send";
+"p2p.create.order.reserved" = "Reserved";
+"p2p.create.order.platform.fee" = "Platform Fee";
+

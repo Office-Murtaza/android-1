@@ -157,7 +157,7 @@ class DealsUsecaseImpl: DealsUsecase {
             }
     }
     
-    private func submit(userId: Int,
+    private func submit(userId: String,
                         type: CustomCoinType,
                         txType: TransactionType,
                         amount: Decimal,

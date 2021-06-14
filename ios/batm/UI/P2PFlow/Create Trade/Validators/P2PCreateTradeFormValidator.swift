@@ -63,7 +63,7 @@ class P2PCreateTradeCoinsValidator:  P2PCreateTradeVlidatorBase {
     var tradeType: P2PSellBuyViewType = .buy
     //MARK: - setup
     
-    func setup(trades: [Trade], userId: Int) {
+    func setup(trades: [Trade], userId: String) {
         self.userTrades = trades.filter { $0.makerUserId == userId }
     }
     
@@ -132,7 +132,8 @@ class P2PCreateTradeLimitsValidator: P2PCreateTradeVlidatorBase {
     var tradeType: P2PSellBuyViewType = .buy
     var price: Double = 0
     var reservedBalance: Double = 0
-    
+    var platformFee: Double = 2
+  
     func update(min: Double) {
         self.min = min
     }
@@ -152,6 +153,10 @@ class P2PCreateTradeLimitsValidator: P2PCreateTradeVlidatorBase {
         self.reservedBalance = reservedBalance
     }
     
+    func update(platformFee: Double) {
+        self.platformFee = platformFee
+    }
+  
     override func check() {
         
         if min == 0, max == 0 {
@@ -165,14 +170,13 @@ class P2PCreateTradeLimitsValidator: P2PCreateTradeVlidatorBase {
         }
         
         if tradeType == .sell {
-            let isReservedValid = reservedBalance >= max / price
+            let isReservedValid = reservedBalance >= (max / price) * (1 + platformFee/2/100)
             if isReservedValid == false {
                 isValid = false
                 delegate?.showErrorMessage(localize(L.P2p.Create.Trade.Validation.Reserved.balance))
                 return
             }
         }
-        
         
         isValid = true
         delegate?.hideError()

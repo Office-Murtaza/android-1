@@ -7,7 +7,6 @@ enum SecurityCellType: Equatable, SettingsCellTypeRepresentable {
   case faceId(isEnabled: Bool = UserDefaultsHelper.isLocalAuthEnabled)
   case touchId(isEnabled: Bool = UserDefaultsHelper.isLocalAuthEnabled)
   case seedPhrase
-  case unlink
 
   var title: String {
     switch self {
@@ -15,7 +14,6 @@ enum SecurityCellType: Equatable, SettingsCellTypeRepresentable {
     case .updatePassword: return localize(L.Security.Cell.updatePassword)
     case .updatePIN: return localize(L.Security.Cell.updatePIN)
     case .seedPhrase: return localize(L.Security.Cell.seedPhrase)
-    case .unlink: return localize(L.Security.Cell.unlink)
     case .faceId: return localize(L.Security.Cell.faceId)
     case .touchId: return localize(L.Security.Cell.touchId)
     }
@@ -34,7 +32,6 @@ enum SecurityCellType: Equatable, SettingsCellTypeRepresentable {
     case .updatePassword: return UIImage(named: "security_password")
     case .updatePIN: return UIImage(named: "security_pin")
     case .seedPhrase: return UIImage(named: "security_seed_phrase")
-    case .unlink: return UIImage(named: "security_unlink")
     case .faceId, .touchId: return UIImage(named: "settingsFaceId")
     }
   }
