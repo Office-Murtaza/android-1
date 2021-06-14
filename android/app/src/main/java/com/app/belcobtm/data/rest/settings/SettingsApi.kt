@@ -18,23 +18,20 @@ import retrofit2.http.Path
 interface SettingsApi {
     @GET("user/{userId}/verification")
     fun getVerificationInfoAsync(
-        @Path("userId") userId: Int
+        @Path("userId") userId: String
     ): Deferred<Response<VerificationInfoResponse>>
 
     @POST("user/{userId}/verification")
     fun sendVerificationBlankAsync(
-        @Path("userId") userId: Int,
+        @Path("userId") userId: String,
         @Body request: VerificationBlankRequest
     ): Deferred<Response<ResponseBody>>
 
     @POST("user/{userId}/verification")
     fun sendVerificationVipAsync(
-        @Path("userId") userId: Int,
+        @Path("userId") userId: String,
         @Body request: VipVerificationRequest
     ): Deferred<Response<ResponseBody>>
-
-    @GET("user/{userId}/unlink")
-    fun unlink(@Path("userId") userId: String): Deferred<Response<UpdateResponse>>
 
     @POST("user/{userId}/password")
     fun changePass(

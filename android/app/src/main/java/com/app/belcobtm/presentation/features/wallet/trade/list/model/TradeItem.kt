@@ -20,7 +20,7 @@ data class TradeItem(
     val ordersCount: Int,
     val paymentMethods: List<TradePayment>,
     val terms: String,
-    val makerId: Int,
+    val makerId: String,
     @DrawableRes val makerStatusIcon: Int,
     val makerPublicId: String,
     val makerTotalTrades: Int,

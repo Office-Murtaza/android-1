@@ -22,26 +22,20 @@ class UnlinkHandler(
     private val context: Context
 ) : KoinComponent {
 
-    private val settingsApiService: SettingsApiService by inject()
     private val connectionHandler: WalletConnectionHandler by inject()
 
-    suspend fun performUnlink(openInitialScreen: Boolean = true): Either<Failure, Boolean> {
-        val unlink = settingsApiService.unlink(prefsHelper.userId)
+    suspend fun performUnlink(openInitialScreen: Boolean = true) {
         daoAccount.clearTable()
         walletDao.clear()
         prefsHelper.clearData()
         connectionHandler.disconnect()
-        return unlink.map { unlink ->
-            if (unlink && openInitialScreen) {
-                context.startActivity(Intent(context, HostActivity::class.java).apply {
-                    flags = Intent.FLAG_ACTIVITY_CLEAR_TASK.or(Intent.FLAG_ACTIVITY_NEW_TASK)
-                    putExtras(Bundle().apply {
-                        putBoolean(HostActivity.FORCE_UNLINK_KEY, true)
-                    })
+        if (openInitialScreen) {
+            context.startActivity(Intent(context, HostActivity::class.java).apply {
+                flags = Intent.FLAG_ACTIVITY_CLEAR_TASK.or(Intent.FLAG_ACTIVITY_NEW_TASK)
+                putExtras(Bundle().apply {
+                    putBoolean(HostActivity.FORCE_UNLINK_KEY, true)
                 })
-            }
-            unlink
+            })
         }
     }
-
 }

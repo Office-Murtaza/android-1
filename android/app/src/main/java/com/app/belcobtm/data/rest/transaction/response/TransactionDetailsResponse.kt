@@ -10,7 +10,7 @@ data class TransactionDetailsResponse(
     val txDbId: String?,
     val link: String?,
     val coin: String?,
-    val userId: Int,
+    val userId: String,
     val type: Int?,
     val status: Int,
     val cashStatus: Int,

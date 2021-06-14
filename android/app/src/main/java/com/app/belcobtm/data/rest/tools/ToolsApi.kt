@@ -20,12 +20,12 @@ interface ToolsApi {
 
     @GET("user/{userId}/code/send")
     fun sendSmsCodeAsync(
-        @Path("userId") userId: Int
+        @Path("userId") userId: String
     ): Deferred<Response<SendSmsCodeResponse>>
 
     @POST("user/{userId}/code/verify")
     fun verifySmsCodeAsync(
-        @Path("userId") userId: Int,
+        @Path("userId") userId: String,
         @Body verifySmsParam: VerifySmsCodeRequest
     ): Deferred<Response<ResponseBody>>
 }

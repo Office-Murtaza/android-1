@@ -201,7 +201,7 @@ class TransactionHashHelper(
         customFunctionName: String? = null
     ): Either<Failure, String> {
         val nonceAddress = daoAccount.getItem(fromCoin.name).publicKey
-        val response = apiService.getEthereumNonce(fromCoin.name, nonceAddress)
+        val response = apiService.getEthereumNonce(nonceAddress)
 
         return if (response.isRight) {
             val nonceResponse = (response as Either.Right).b
@@ -368,7 +368,7 @@ class TransactionHashHelper(
         fromCoin: LocalCoinType,
         fromCoinAmount: Double
     ): Either<Failure, String> {
-        val response = apiService.getTronBlockHeader(fromCoin.name)
+        val response = apiService.getTronBlockHeader()
         val coinEntity = daoAccount.getItem(fromCoin.name)
 
         return if (response.isRight) {

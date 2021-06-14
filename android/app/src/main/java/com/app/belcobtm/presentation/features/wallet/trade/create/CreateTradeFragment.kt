@@ -3,7 +3,6 @@ package com.app.belcobtm.presentation.features.wallet.trade.create
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.observe
 import com.app.belcobtm.R
 import com.app.belcobtm.data.model.trade.TradeType
@@ -17,7 +16,6 @@ import com.app.belcobtm.presentation.core.helper.AlertHelper
 import com.app.belcobtm.presentation.core.mvvm.LoadingData
 import com.app.belcobtm.presentation.core.ui.fragment.BaseFragment
 import com.app.belcobtm.presentation.core.views.listeners.SafeDecimalEditTextWatcher
-import com.app.belcobtm.presentation.features.deals.swap.adapter.CoinDialogAdapter
 import com.app.belcobtm.presentation.features.wallet.trade.container.TradeContainerFragment
 import com.app.belcobtm.presentation.features.wallet.trade.create.delegate.TradePaymentOptionDelegate
 import com.google.android.material.chip.Chip
@@ -153,11 +151,11 @@ class CreateTradeFragment : BaseFragment<FragmentCreateTradeBinding>() {
         coinDetailsView.getEditText().addTextChangedListener(priceTextWatcher)
         amountMinLimitEditText.addTextChangedListener(minAmountTextWatcher)
         amountMaxLimitEditText.addTextChangedListener(maxAmountTextWatcher)
-        coinDetailsView.setOnCoinButtonClickListener(View.OnClickListener {
-            showSelectCoinDialog {
+        coinDetailsView.setOnCoinButtonClickListener {
+            AlertHelper.showSelectCoinDialog(requireContext(), viewModel.getCoinsToSelect()) {
                 viewModel.selectCoin(it)
             }
-        })
+        }
         createTradeButton.setOnClickListener {
             viewModel.createTrade(
                 when {
@@ -190,16 +188,6 @@ class CreateTradeFragment : BaseFragment<FragmentCreateTradeBinding>() {
                 coinCode
             )
         )
-    }
-
-    private fun showSelectCoinDialog(action: (CoinDataItem) -> Unit) {
-        val safeContext = context ?: return
-        val coinsList = viewModel.getCoinsToSelect()
-        val adapter = CoinDialogAdapter(safeContext, coinsList)
-        AlertDialog.Builder(safeContext)
-            .setAdapter(adapter) { _, position -> action.invoke(coinsList[position]) }
-            .create()
-            .show()
     }
 
     private fun setupTradeTypeCheckChangeListener(chip: Chip) {

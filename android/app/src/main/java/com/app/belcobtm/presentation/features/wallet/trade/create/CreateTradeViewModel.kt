@@ -179,7 +179,8 @@ class CreateTradeViewModel(
         if (errorCount > 0) {
             return
         }
-        val cryptoAmount = toAmount / price
+        val fee = selectedCoin.value?.details?.platformTradeFee ?: 0.0
+        val cryptoAmount = toAmount / price * (1  + fee / 2 / 100)
         if (type == TradeType.SELL && cryptoAmount > selectedCoin.value?.reservedBalanceCoin ?: 0.0) {
             _amountRangeError.value = stringProvider.getString(R.string.create_trade_not_enough_crypto_balance)
             return

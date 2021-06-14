@@ -3,6 +3,7 @@ package com.app.belcobtm.data.rest.settings.request
 data class VerificationBlankRequest(
     val idCardNumberFilename: String,
     val idCardNumber: String,
+    val idCardNumberMimetype: String,
     val firstName: String,
     val lastName: String,
     val address: String,

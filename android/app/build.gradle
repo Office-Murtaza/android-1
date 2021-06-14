@@ -48,11 +48,13 @@ android {
         prod {
             dimension "version"
             buildConfigField 'String', 'BASE_URL', "\"https://prod.belcobtm.com\""
+            buildConfigField 'String', 'BASE_SOCKET_URL', "\"ws://prod.belcobtm.com\""
             buildConfigField 'String', 'API_VERSION', "\"1\""
         }
         dev {
             dimension "version"
             buildConfigField 'String', 'BASE_URL', "\"http://test.belcobtm.com\""
+            buildConfigField 'String', 'BASE_SOCKET_URL', "\"ws://test.belcobtm.com\""
             buildConfigField 'String', 'API_VERSION', "\"1\""
         }
     }

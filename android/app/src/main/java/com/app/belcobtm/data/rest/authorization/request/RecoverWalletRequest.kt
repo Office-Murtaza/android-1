@@ -15,6 +15,6 @@ data class RecoverWalletRequest(
 )
 
 data class RecoverWalletCoinRequest(
-    val code: String,
+    val coin: String,
     val address: String
 )

@@ -10,10 +10,7 @@ class FetchTransactionsUseCase(
 ) : UseCase<Unit, FetchTransactionsUseCase.Params>() {
 
     override suspend fun run(params: Params): Either<Failure, Unit> =
-        repository.fetchTransactionList(params.coinCode, params.currentListSize)
+        repository.fetchTransactionList(params.coinCode)
 
-    data class Params(
-        val coinCode: String,
-        val currentListSize: Int
-    )
+    data class Params(val coinCode: String)
 }

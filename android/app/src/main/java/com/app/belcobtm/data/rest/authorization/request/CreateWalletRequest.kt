@@ -15,6 +15,6 @@ data class CreateWalletRequest(
 )
 
 data class CreateWalletCoinRequest(
-    val code: String,
+    val coin: String,
     val address: String
 )

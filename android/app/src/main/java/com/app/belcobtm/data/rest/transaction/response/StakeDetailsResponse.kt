@@ -5,7 +5,7 @@ import kotlin.math.max
 
 class StakeDetailsResponse(
     val id: String,
-    val coin: String,
+    val coinId: String,
     @StakeDetailsStatus val status: Int,
     val cryptoAmount: Double?,
     val basePeriod: Int,

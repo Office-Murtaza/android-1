@@ -37,16 +37,12 @@ class TradeApiService(
             response.body()?.let { Either.Right(it) } ?: Either.Left(Failure.ServerError())
         }
 
-    suspend fun createTrade(
-        createTradeItem: CreateTradeItem,
-        location: Location?
-    ): Either<Failure, CreateTradeResponse> =
+    suspend fun createTrade(createTradeItem: CreateTradeItem): Either<Failure, CreateTradeResponse> =
         withErrorHandling {
             val request = with(createTradeItem) {
                 CreateTradeRequest(
                     tradeType, coinCode, price, minLimit, maxLimit,
-                    paymentOptions.joinToString(","), terms,
-                    location?.latitude, location?.longitude
+                    paymentOptions.joinToString(","), terms
                 )
             }
             val response = tradeApi.createTradeAsync(prefHelper.userId, request).await()

@@ -13,7 +13,7 @@ interface WalletApi {
 
     @GET("user/{userId}/balance")
     fun getBalanceAsync(
-        @Path("userId") userId: Int,
+        @Path("userId") userId: String,
         @Query("coins") coins: List<String>
     ): Deferred<Response<BalanceResponse>>
 
@@ -25,7 +25,7 @@ interface WalletApi {
 
     @GET("user/{userId}/coin/{coinId}/manage")
     fun toggleCoinStateAsync(
-        @Path("userId") userId: Int,
+        @Path("userId") userId: String,
         @Path("coinId") coinCode: String,
         @Query("enabled") enabled: Boolean
     ): Deferred<Response<Unit>>

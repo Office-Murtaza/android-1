@@ -22,9 +22,9 @@ class SharedPreferencesHelper(private val sharedPreferences: SharedPreferences) 
         set(value) = sharedPreferences.set(FIREBASE_TOKEN, value)
         get() = sharedPreferences[FIREBASE_TOKEN] ?: ""
 
-    var userId: Int
+    var userId: String
         set(value) = sharedPreferences.set(USER_ID, value)
-        get() = sharedPreferences[USER_ID] ?: -1
+        get() = sharedPreferences[USER_ID] ?: ""
 
     var userPin: String
         set(value) = sharedPreferences.set(USER_PIN, value)
@@ -74,7 +74,7 @@ class SharedPreferencesHelper(private val sharedPreferences: SharedPreferences) 
         refreshToken = ""
         apiSeed = ""
         userPin = ""
-        userId = -1
+        userId = ""
     }
 
     companion object {

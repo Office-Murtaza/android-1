@@ -36,7 +36,7 @@ class OrderChatViewModel(
         updateLastSeenMessageTimeStampUseCase(Unit)
     }
 
-    fun sendMessage(orderId: String, myId: Int, toId: Int, message: String) {
+    fun sendMessage(orderId: String, myId: String, toId: String, message: String) {
         val attachment = _attachmentImage.value
         val name = attachmentName?.let { "${UUID.randomUUID()}_${it}" }
         setAttachment(null, null)

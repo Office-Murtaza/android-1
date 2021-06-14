@@ -21,13 +21,14 @@ class SendVerificationBlankUseCase(
 
     companion object {
         const val RANDOM_PART_SIZE = 10
+        const val FILE_EXTENSION = "jpg"
     }
 
     override suspend fun run(params: Params): Either<Failure, Unit> {
         val bitmap = BitmapFactory.decodeStream(context.contentResolver.openInputStream(params.blankItem.imageUri))
-        val fileName = "${preferencesHelper.userId}_idcard_${stringGenerator.generate(RANDOM_PART_SIZE)}.jpg"
+        val fileName = "${preferencesHelper.userId}_idcard_${stringGenerator.generate(RANDOM_PART_SIZE)}.$FILE_EXTENSION"
         cloudStorage.uploadBitmap(fileName, bitmap)
-        return repositoryImpl.sendVerificationBlank(params.blankItem, fileName)
+        return repositoryImpl.sendVerificationBlank(params.blankItem, fileName, FILE_EXTENSION)
     }
 
     data class Params(val blankItem: VerificationBlankDataItem)

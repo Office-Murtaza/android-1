@@ -96,8 +96,7 @@ class TradeRepositoryImpl(
     }
 
     override suspend fun createTrade(createTradeItem: CreateTradeItem): Either<Failure, Unit> {
-        val location = locationProvider.getCurrentLocation()
-        val response = tradeApiService.createTrade(createTradeItem, location)
+        val response = tradeApiService.createTrade(createTradeItem)
         return response.map { Unit }
     }
 

@@ -39,18 +39,22 @@ class SettingsRepositoryImpl(
 
     override suspend fun sendVerificationBlank(
         blankDataItem: VerificationBlankDataItem,
-        fileName: String
-    ): Either<Failure, Unit> = apiService.sendVerificationBlank(prefHelper.userId, blankDataItem, fileName)
+        fileName: String,
+        mimeType: String
+    ): Either<Failure, Unit> = apiService.sendVerificationBlank(
+        prefHelper.userId, blankDataItem, fileName, mimeType
+    )
 
     override fun getVerificationCountries(): List<VerificationCountryDataItem> =
         assetsDataStore.getCountries()
 
     override suspend fun sendVerificationVip(
         vipDataItem: VerificationVipDataItem,
-        fileName: String
-    ): Either<Failure, Unit> = apiService.sendVerificationVip(prefHelper.userId, vipDataItem, fileName)
-
-    override suspend fun unlink(): Either<Failure, Boolean> = apiService.unlink(prefHelper.userId)
+        fileName: String,
+        mimeType: String
+    ): Either<Failure, Unit> = apiService.sendVerificationVip(
+        prefHelper.userId, vipDataItem, fileName, mimeType
+    )
 
     override suspend fun changePass(
         oldPassword: String,

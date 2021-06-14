@@ -37,10 +37,12 @@ class TradeOrderDetailsViewModel(
     val initialLoadingData: LiveData<LoadingData<Unit>> = _initialLoadingData
 
     private val _primaryActionUpdateLoadingData = MutableLiveData<LoadingData<Unit>>()
-    val primaryActionUpdateLoadingData: LiveData<LoadingData<Unit>> = _primaryActionUpdateLoadingData
+    val primaryActionUpdateLoadingData: LiveData<LoadingData<Unit>> =
+        _primaryActionUpdateLoadingData
 
     private val _secondaryActionUpdateLoadingData = MutableLiveData<LoadingData<Unit>>()
-    val secondaryActionUpdateLoadingData: LiveData<LoadingData<Unit>> = _secondaryActionUpdateLoadingData
+    val secondaryActionUpdateLoadingData: LiveData<LoadingData<Unit>> =
+        _secondaryActionUpdateLoadingData
 
     private val _coin = MutableLiveData<LocalCoinType>()
     val coin: LiveData<LocalCoinType> = _coin
@@ -99,11 +101,11 @@ class TradeOrderDetailsViewModel(
     private val _openRateScreen = MutableLiveData<Boolean>()
     val openRateScreen: LiveData<Boolean> = _openRateScreen
 
-    private val _myId = MutableLiveData<Int>()
-    val myId: LiveData<Int> = _myId
+    private val _myId = MutableLiveData<String>()
+    val myId: LiveData<String> = _myId
 
-    private val _partnerId = MutableLiveData<Int>()
-    val partnerId: LiveData<Int> = _partnerId
+    private val _partnerId = MutableLiveData<String>()
+    val partnerId: LiveData<String> = _partnerId
 
     private var partnerLat: Double? = null
     private var partnerLong: Double? = null
@@ -116,7 +118,8 @@ class TradeOrderDetailsViewModel(
                     if (it.isRight) {
                         showContent((it as Either.Right<OrderItem>).b)
                     } else {
-                        _initialLoadingData.value = LoadingData.Error((it as Either.Left<Failure>).a)
+                        _initialLoadingData.value =
+                            LoadingData.Error((it as Either.Left<Failure>).a)
                     }
                 }
         }
@@ -151,7 +154,12 @@ class TradeOrderDetailsViewModel(
     fun getQueryForMap(): String? {
         val toLat = partnerLat ?: return null
         val toLong = partnerLong ?: return null
-        return googleMapQueryFormatter.format(GoogleMapsDirectionQueryFormatter.Location(toLat, toLong))
+        return googleMapQueryFormatter.format(
+            GoogleMapsDirectionQueryFormatter.Location(
+                toLat,
+                toLong
+            )
+        )
     }
 
     fun isActiveOrder(): Boolean {
@@ -194,7 +202,8 @@ class TradeOrderDetailsViewModel(
             _partnerScore.value = order.takerTradingRate
             _partnerPublicId.value = order.takerPublicId
             _partnerId.value = order.takerId
-            _openRateScreen.value = order.makerTradingRate == null && order.orderStatus.statusId == OrderStatus.RELEASED
+            _openRateScreen.value =
+                order.makerTradingRate == null && order.orderStatus.statusId == OrderStatus.RELEASED
             partnerLat = order.takerLatitude
             partnerLong = order.takerLongitude
         } else {
@@ -202,7 +211,8 @@ class TradeOrderDetailsViewModel(
             _partnerScore.value = order.makerTradingRate
             _partnerPublicId.value = order.makerPublicId
             _partnerId.value = order.makerId
-            _openRateScreen.value = order.takerTradingRate == null && order.orderStatus.statusId == OrderStatus.RELEASED
+            _openRateScreen.value =
+                order.takerTradingRate == null && order.orderStatus.statusId == OrderStatus.RELEASED
             partnerLat = order.makerLatitude
             partnerLong = order.makerLongitude
         }
@@ -228,7 +238,7 @@ class TradeOrderDetailsViewModel(
                     primaryButtonTitleRes = R.string.trade_order_details_screen_update_paid_button_title,
                     secondaryButtonTitleRes = R.string.trade_order_details_screen_update_cancel_button_title,
                     showPrimaryButton = true,
-                    showSecondaryButton = true,
+                    showSecondaryButton = false,
                     primaryStatusId = OrderStatus.PAID,
                     secondaryStatusId = OrderStatus.CANCELLED
                 )
@@ -251,7 +261,12 @@ class TradeOrderDetailsViewModel(
                     showSecondaryButton = true,
                     secondaryStatusId = OrderStatus.CANCELLED
                 )
-            OrderStatus.DOING, OrderStatus.PAID ->
+            OrderStatus.DOING ->
+                OrderActionButtonsState(
+                    showPrimaryButton = false,
+                    showSecondaryButton = false
+                )
+            OrderStatus.PAID ->
                 OrderActionButtonsState(
                     primaryButtonTitleRes = R.string.trade_order_details_screen_update_release_button_title,
                     secondaryButtonTitleRes = R.string.trade_order_details_screen_update_dispute_button_title,

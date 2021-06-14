@@ -95,7 +95,7 @@ class EditTradeViewModel(
                 _availablePaymentOptions.value = availablePaymentOptions.map { paymentOption ->
                     paymentOption.copy(selected = trade.paymentMethods.contains(paymentOption.payment))
                 }
-                _tradeType.value = trade.type
+                _tradeType.value = trade.tradeType
                 _initialTerms.value = trade.terms
                 _amountMinLimit.value = trade.minLimit.toInt()
                 _amountMaxLimit.value = trade.maxLimit.toInt()
@@ -185,7 +185,8 @@ class EditTradeViewModel(
         if (errorCount > 0) {
             return
         }
-        val cryptoAmount = toAmount / price
+        val fee = selectedCoin.value?.details?.platformTradeFee ?: 0.0
+        val cryptoAmount = toAmount / price * (1  + fee / 2 / 100)
         if (tradeType.value == TradeType.SELL && cryptoAmount > selectedCoin.value?.reservedBalanceCoin ?: 0.0) {
             _priceRangeError.value = stringProvider.getString(R.string.edit_trade_not_enough_crypto_balance)
             return

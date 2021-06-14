@@ -16,7 +16,7 @@ class TradesDataToTradeListMapper(
         tradeData: TradeData,
         params: ObserveTradesUseCase.Params,
         filter: TradeFilter?,
-        userId: Int
+        userId: String
     ): List<TradeItem> =
         tradeData.trades
             .values

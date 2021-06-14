@@ -1,10 +1,12 @@
 package com.app.belcobtm.presentation.features.wallet.trade.order.create
 
 import android.app.Dialog
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import android.widget.FrameLayout
 import androidx.lifecycle.observe
 import androidx.navigation.fragment.findNavController
@@ -98,6 +100,9 @@ class TradeCreateOrderBottomSheetFragment : BaseBottomSheetFragment() {
                 R.string.create_order_total_amount, it.totalValueCrypto.toStringCoin(), it.coinName
             )
         }
+        viewModel.receiveAmountLabel.observe(viewLifecycleOwner) {
+            binding.totalCryptoLabel.setText(it)
+        }
         binding.submitButton.setOnClickListener {
             viewModel.createOrder()
         }
@@ -108,6 +113,8 @@ class TradeCreateOrderBottomSheetFragment : BaseBottomSheetFragment() {
         super.onViewCreated(view, savedInstanceState)
         binding.amountEditText.post {
             binding.amountEditText.requestFocus()
+            val imm = requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
+            imm?.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0)
         }
     }
 }
