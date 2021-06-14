@@ -120,7 +120,6 @@ class P2PCreateOrderPopupViewController: UIViewController {
         self.platformFee = platformFee
         self.coinCode = trade.coin ?? ""
         self.trade = trade
-//        orderAmountView.cryptoAmountValue.text = "0 \(coinCode)"
     }
     
     @objc private func createOrder() {
@@ -170,13 +169,6 @@ class P2PCreateOrderPopupViewController: UIViewController {
         $0.top.equalTo(youWillLabel.snp.bottom).offset(20)
         $0.right.equalToSuperview().offset(-15)
       }
-      
-        
-//        platformFeeStackView.snp.makeConstraints {
-//            $0.top.equalTo(errorView.snp.bottom)
-//            $0.centerX.equalToSuperview()
-//        }
-      //TODO update error layout
 
       errorView.snp.makeConstraints {
         $0.top.equalTo(resultLabel.snp.bottom)
@@ -185,7 +177,6 @@ class P2PCreateOrderPopupViewController: UIViewController {
       }
         
         submitButton.snp.makeConstraints {
-//            $0.top.equalTo(platformFeeStackView.snp.bottom).offset(25)
             $0.left.equalToSuperview().offset(15)
             $0.right.equalToSuperview().offset(-15)
             $0.height.equalTo(50)
