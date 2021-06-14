@@ -103,13 +103,23 @@ class SwapFragment : BaseFragment<FragmentSwapBinding>() {
             val coinToSend = viewModel.coinToSend.value ?: return@OnClickListener
             val coinToReceive = viewModel.coinToReceive.value ?: return@OnClickListener
             val coinsToExclude = listOf(coinToSend, coinToReceive)
-            showSelectCoinDialog(coinsToExclude) { viewModel.setCoinToSend(it) }
+            val coinsList = viewModel.originCoinsData.toMutableList().apply {
+                removeAll(coinsToExclude)
+            }
+            AlertHelper.showSelectCoinDialog(requireContext(), coinsList) {
+                viewModel.setCoinToSend(it)
+            }
         })
         receiveCoinInputLayout.setOnCoinButtonClickListener(View.OnClickListener {
             val coinToSend = viewModel.coinToSend.value ?: return@OnClickListener
             val coinToReceive = viewModel.coinToReceive.value ?: return@OnClickListener
             val coinsToExclude = listOf(coinToSend, coinToReceive)
-            showSelectCoinDialog(coinsToExclude) { viewModel.setCoinToReceive(it) }
+            val coinsList = viewModel.originCoinsData.toMutableList().apply {
+                removeAll(coinsToExclude)
+            }
+            AlertHelper.showSelectCoinDialog(requireContext(), coinsList) {
+                viewModel.setCoinToSend(it)
+            }
         })
         sendCoinInputLayout.getEditText().addTextChangedListener(textWatcher.firstTextWatcher)
         receiveCoinInputLayout.getEditText().addTextChangedListener(textWatcher.secondTextWatcher)
@@ -234,23 +244,5 @@ class SwapFragment : BaseFragment<FragmentSwapBinding>() {
             val usdAmountString = usdAmount.toStringUsd()
             tvUSDConvertedValue.text = getString(R.string.swap_screen_usd_value, usdAmountString)
         })
-    }
-
-    private fun showSelectCoinDialog(
-        coinsToExclude: List<CoinDataItem>,
-        action: (CoinDataItem) -> Unit
-    ) {
-        val safeContext = context ?: return
-        val coinsList = viewModel.originCoinsData.toMutableList().apply {
-            removeAll(coinsToExclude)
-        }
-        if (coinsList.isEmpty()) {
-            return
-        }
-        val adapter = CoinDialogAdapter(safeContext, coinsList)
-        AlertDialog.Builder(safeContext)
-            .setAdapter(adapter) { _, position -> action.invoke(coinsList[position]) }
-            .create()
-            .show()
     }
 }

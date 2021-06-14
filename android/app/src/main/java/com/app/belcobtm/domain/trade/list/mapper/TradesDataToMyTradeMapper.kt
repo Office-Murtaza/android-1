@@ -6,7 +6,7 @@ import com.app.belcobtm.presentation.features.wallet.trade.mytrade.list.model.No
 
 class TradesDataToMyTradeMapper(private val tradeMapper: TradeToTradeItemMapper) {
 
-    fun map(tradeData: TradeData, userId: Int): List<ListItem> =
+    fun map(tradeData: TradeData, userId: String): List<ListItem> =
         tradeData.trades
             .values
             .asSequence()

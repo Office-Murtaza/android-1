@@ -644,7 +644,7 @@
     <string name="create_order_total_amount">%s %s</string>
     <string name="item_no_trades_reset_all_filters_button_label">Reset all filters</string>
 
-    <string name="distance_label_formatted">%1$s miles</string>
+    <string name="distance_label_formatted">%1$s mi away</string>
     <string name="trade_filter_dialog_sort_option_price_label">Price</string>
     <string name="trade_filter_dialog_sort_option_distance_label">Distance</string>
     <string name="trade_filter_dialog_reset_filter_button_label">Reset all</string>
@@ -703,5 +703,6 @@
     <string name="dash">-</string>
 
     <string name="you_will_get_label">You Will Get</string>
+    <string name="you_will_send_label">You Will Send</string>
     <string name="order_details_id_label">ID</string>
 </resources>

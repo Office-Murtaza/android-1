@@ -29,13 +29,9 @@ class TransactionRepositoryImpl(
     private val daoAccount: AccountDao
 ) : TransactionRepository {
 
-    override suspend fun fetchTransactionList(
-        coinCode: String,
-        currentListSize: Int
-    ): Either<Failure, Unit> =
-        apiService.fetchTransactions(coinCode, currentListSize).map {
+    override suspend fun fetchTransactionList(coinCode: String): Either<Failure, Unit> =
+        apiService.fetchTransactions(coinCode).map {
             cache.init(coinCode, it.transactions)
-            Unit
         }
 
     override fun observeTransactions(): Flow<TransactionsData> =

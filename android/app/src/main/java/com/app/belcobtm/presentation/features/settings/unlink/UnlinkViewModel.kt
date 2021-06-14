@@ -14,15 +14,11 @@ class UnlinkViewModel(
     fun unlink() {
         actionData.value = LoadingData.Loading()
         unlinkUseCase.invoke(Unit,
-        onSuccess = {
-            if (it) {
+            onSuccess = {
                 actionData.value = LoadingData.Success(Unit)
-            } else {
-                actionData.value = LoadingData.Error()
-            }
-        },
-        onError = {
-            actionData.value = LoadingData.Error(errorType = it)
-        })
+            },
+            onError = {
+                actionData.value = LoadingData.Error(errorType = it)
+            })
     }
 }

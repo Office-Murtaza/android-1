@@ -199,7 +199,7 @@ class TradeOrderDetailsFragment : BaseFragment<FragmentTradeOrderDetailsBinding>
                 navigate(
                     TradeOrderDetailsFragmentDirections.toChatOrderFragment(
                         viewModel.partnerPublicId.value.orEmpty(), args.orderId,
-                        viewModel.myId.value ?: 0, viewModel.partnerId.value ?: 0
+                        viewModel.myId.value.orEmpty(), viewModel.partnerId.value.orEmpty()
                     )
                 )
             } else {

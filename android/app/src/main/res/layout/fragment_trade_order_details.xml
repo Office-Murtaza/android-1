@@ -488,7 +488,7 @@
             android:layout_height="wrap_content"
             android:visibility="gone"
             app:constraint_referenced_ids="partner_score_label,partner_score_value,my_score_divider,my_score_label,my_score_value"
-            tools:visibility="visible" />
+            tools:visibility="gone" />
 
         <Button
             android:id="@+id/primary_action_button"
@@ -498,7 +498,8 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/partner_score_value"
-            tools:text="Doing" />
+            tools:text="Doing"
+            tools:visibility="gone"/>
 
         <Button
             android:id="@+id/secondary_action_button"
@@ -511,7 +512,8 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/primary_action_button"
-            tools:text="Cancel" />
+            tools:text="Cancel"
+            tools:visibility="gone"/>
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/vertical_guideline"

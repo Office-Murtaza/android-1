@@ -9,10 +9,8 @@ import com.app.belcobtm.domain.transaction.item.StakeDetailsDataItem
 import kotlinx.coroutines.flow.Flow
 
 interface TransactionRepository {
-    suspend fun fetchTransactionList(
-        coinCode: String,
-        currentListSize: Int
-    ): Either<Failure, Unit>
+
+    suspend fun fetchTransactionList(coinCode: String): Either<Failure, Unit>
 
     fun observeTransactions(): Flow<TransactionsData>
 

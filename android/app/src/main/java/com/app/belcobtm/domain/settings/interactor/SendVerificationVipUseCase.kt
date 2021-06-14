@@ -21,14 +21,15 @@ class SendVerificationVipUseCase(
 
     companion object {
         const val RANDOM_PART_SIZE = 10
+        const val FILE_EXTENSION = "jpg"
     }
 
     override suspend fun run(params: Params): Either<Failure, Unit> {
         val bitmap = BitmapFactory.decodeStream(context.contentResolver.openInputStream(params.vipDataItem.fileUri))
         val fileName =
-            "${preferencesHelper.userId}_snn_${stringGenerator.generate(RANDOM_PART_SIZE)}.jpg"
+            "${preferencesHelper.userId}_snn_${stringGenerator.generate(RANDOM_PART_SIZE)}.$FILE_EXTENSION"
         cloudStorage.uploadBitmap(fileName, bitmap)
-        return repositoryImpl.sendVerificationVip(params.vipDataItem, fileName)
+        return repositoryImpl.sendVerificationVip(params.vipDataItem, fileName, FILE_EXTENSION)
     }
 
     data class Params(val vipDataItem: VerificationVipDataItem)

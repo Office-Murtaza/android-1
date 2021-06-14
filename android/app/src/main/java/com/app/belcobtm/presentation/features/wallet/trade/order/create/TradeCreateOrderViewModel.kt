@@ -40,23 +40,31 @@ class TradeCreateOrderViewModel(
     private val _reservedBalance = MutableLiveData<ReservedBalance>()
     val reservedBalance: LiveData<ReservedBalance> = _reservedBalance
 
-    val cryptoAmount: LiveData<TradeCryptoAmount> = DoubleCombinedLiveData(fiatAmount, coin) { fiat, coin ->
-        TradeCryptoAmount(fiat?.div(trade?.price ?: 0.0) ?: 0.0, coin?.name.orEmpty())
-    }
-    val platformFee: LiveData<TradeFee> = DoubleCombinedLiveData(cryptoAmount, coin) { crypto, coin ->
-        TradeFee(
-            platformFeePercent,
-            (crypto?.cryptoAmount ?: 0.0) * platformFeePercent / 100,
-            coin?.name.orEmpty()
-        )
-    }
+    private val _receiveAmountLabel = MutableLiveData<Int>()
+    val receiveAmountLabel: LiveData<Int> = _receiveAmountLabel
 
-    val amountWithoutFee: LiveData<TotalValue> = DoubleCombinedLiveData(cryptoAmount, platformFee) { amount, fee ->
-        TotalValue(
-            (amount?.cryptoAmount ?: 0.0) - (fee?.platformFeeCrypto ?: 0.0),
-            fee?.coinCode.orEmpty()
-        )
-    }
+    private var includeFeeCoef = 1
+
+    val cryptoAmount: LiveData<TradeCryptoAmount> =
+        DoubleCombinedLiveData(fiatAmount, coin) { fiat, coin ->
+            TradeCryptoAmount(fiat?.div(trade?.price ?: 0.0) ?: 0.0, coin?.name.orEmpty())
+        }
+    val platformFee: LiveData<TradeFee> =
+        DoubleCombinedLiveData(cryptoAmount, coin) { crypto, coin ->
+            TradeFee(
+                platformFeePercent,
+                (crypto?.cryptoAmount ?: 0.0) * platformFeePercent / 2 / 100,
+                coin?.name.orEmpty()
+            )
+        }
+
+    val amountWithoutFee: LiveData<TotalValue> =
+        DoubleCombinedLiveData(cryptoAmount, platformFee) { amount, fee ->
+            TotalValue(
+                (amount?.cryptoAmount ?: 0.0) + includeFeeCoef * (fee?.platformFeeCrypto ?: 0.0),
+                fee?.coinCode.orEmpty()
+            )
+        }
 
     private var trade: TradeItem? = null
     private var platformFeePercent: Double = 0.0
@@ -78,6 +86,13 @@ class TradeCreateOrderViewModel(
                     coinDataItem.reservedBalanceCoin,
                     coinDataItem.code
                 )
+                if (trade.tradeType == TradeType.BUY) {
+                    includeFeeCoef = 1
+                    _receiveAmountLabel.value = R.string.you_will_send_label
+                } else {
+                    includeFeeCoef = -1
+                    _receiveAmountLabel.value = R.string.you_will_get_label
+                }
                 this._initialLoadingData.value = LoadingData.Success(Unit)
             }, onError = { _initialLoadingData.value = LoadingData.Error(it) })
         }, onError = { _initialLoadingData.value = LoadingData.Error(it) })
@@ -87,18 +102,22 @@ class TradeCreateOrderViewModel(
     fun createOrder() {
         val tradeData = trade ?: return
         val amount = fiatAmount.value ?: 0.0
-        val takerActionType = if (tradeData.tradeType == TradeType.BUY) TradeType.SELL else TradeType.BUY
+        val takerActionType =
+            if (tradeData.tradeType == TradeType.BUY) TradeType.SELL else TradeType.BUY
         val tradeAmountRange = tradeData.minLimit..tradeData.maxLimit
         if (amount == 0.0) {
-            _fiatAmountError.value = stringProvider.getString(R.string.trade_buy_sell_dialog_amount_zero_error)
+            _fiatAmountError.value =
+                stringProvider.getString(R.string.trade_buy_sell_dialog_amount_zero_error)
             return
         }
         if (takerActionType == TradeType.BUY && amount !in tradeAmountRange) {
-            _fiatAmountError.value = stringProvider.getString(R.string.trade_buy_sell_dialog_amount_not_in_range_error)
+            _fiatAmountError.value =
+                stringProvider.getString(R.string.trade_buy_sell_dialog_amount_not_in_range_error)
             return
         }
         if (takerActionType == TradeType.SELL && amount > reservedBalanceUsd) {
-            _fiatAmountError.value = stringProvider.getString(R.string.trade_buy_sell_dialog_amount_too_big_error)
+            _fiatAmountError.value =
+                stringProvider.getString(R.string.trade_buy_sell_dialog_amount_too_big_error)
             return
         }
         _fiatAmountError.value = null

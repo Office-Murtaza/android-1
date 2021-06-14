@@ -215,7 +215,7 @@ class AuthorizationRepositoryImpl(
         temporaryCoinMap.forEach { (localCoinType, value) ->
             val publicKey: String = value.first
             val privateKey: String = value.second
-            responseCoinList.find { it.code == localCoinType.name }?.let { responseItem ->
+            responseCoinList.find { it.coin == localCoinType.name }?.let { responseItem ->
                 entityList.add(
                     AccountEntity(
                         responseItem.idx,

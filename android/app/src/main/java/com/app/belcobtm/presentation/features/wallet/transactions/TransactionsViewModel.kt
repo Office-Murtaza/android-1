@@ -112,8 +112,8 @@ class TransactionsViewModel(
 
     private fun fetchTransactions() {
         transactionsUseCase.invoke(
-            FetchTransactionsUseCase.Params(coinCode, 0),
-            onSuccess = { dataItem ->
+            FetchTransactionsUseCase.Params(coinCode),
+            onSuccess = {
                 _loadingLiveData.value = LoadingData.Success(Unit)
             },
             onError = {
@@ -126,7 +126,9 @@ class TransactionsViewModel(
     private fun subscribeToCoinDataItem(coinCode: String) {
         viewModelScope.launch {
             walletDao.observeCoins()
-                .mapNotNull { entity -> entity.firstOrNull { it.coin.code == coinCode }?.toDataItem() }
+                .mapNotNull { entity ->
+                    entity.firstOrNull { it.coin.code == coinCode }?.toDataItem()
+                }
                 .map { coinDataItem ->
                     TransactionsScreenItem(
                         balance = coinDataItem.balanceCoin,

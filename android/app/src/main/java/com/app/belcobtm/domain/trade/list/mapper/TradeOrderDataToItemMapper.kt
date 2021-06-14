@@ -20,7 +20,7 @@ class TradeOrderDataToItemMapper(
     private val statusMapper: TraderStatusToIconMapper
 ) {
 
-    fun map(order: Order, tradeData: TradeData, myId: Int): OrderItem =
+    fun map(order: Order, tradeData: TradeData, myId: String): OrderItem =
         with(order) {
             val trade = tradeItemMapper.map(tradeData.trades.getValue(tradeId))
             OrderItem(
@@ -37,10 +37,10 @@ class TradeOrderDataToItemMapper(
             )
         }
 
-    private fun resolveTradeType(order: Order, trade: TradeItem, myId: Int): Int =
+    private fun resolveTradeType(order: Order, trade: TradeItem, myId: String): Int =
         when {
-            order.makerId == myId -> trade.type
-            trade.type == TradeType.BUY -> TradeType.SELL
+            order.makerId == myId -> trade.tradeType
+            trade.tradeType == TradeType.BUY -> TradeType.SELL
             else -> TradeType.BUY
         }
 

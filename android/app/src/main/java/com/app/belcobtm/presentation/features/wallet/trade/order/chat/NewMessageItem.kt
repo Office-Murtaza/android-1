@@ -4,8 +4,8 @@ import android.graphics.Bitmap
 
 data class NewMessageItem(
     val orderId: String,
-    val fromId: Int,
-    val toId: Int,
+    val fromId: String,
+    val toId: String,
     val content: String,
     val attachmentName: String? = null,
     val attachment: Bitmap? = null

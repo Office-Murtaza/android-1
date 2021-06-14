@@ -315,12 +315,12 @@
 
         <argument
             android:name="myId"
-            app:argType="integer"
+            app:argType="string"
             app:nullable="false" />
 
         <argument
             android:name="partnerId"
-            app:argType="integer"
+            app:argType="string"
             app:nullable="false" />
 
         <action

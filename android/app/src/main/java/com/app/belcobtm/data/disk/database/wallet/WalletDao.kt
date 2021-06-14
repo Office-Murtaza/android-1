@@ -45,14 +45,14 @@ interface WalletDao {
         balanceResponse.coins.forEach { response ->
             with(response) {
                 val entity = CoinEntity(
-                    id, idx, code, address, balance,
-                    fiatBalance, reservedBalance, reservedFiatBalance, price
+                    idx, idx, coin, address, balance,
+                    fiatBalance, reserved, fiatReserved, price
                 )
                 coins.add(entity)
             }
             with(response.details) {
                 val entity = CoinDetailsEntity(
-                    response.id, txFee, byteFee, scale,
+                    response.idx, txFee, byteFee, scale,
                     platformSwapFee, platformTradeFee, walletAddress,
                     gasLimit, gasPrice, convertedTxFee
                 )

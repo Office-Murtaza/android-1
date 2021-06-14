@@ -5,20 +5,17 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
-import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.observe
 import androidx.navigation.fragment.navArgs
 import com.app.belcobtm.R
 import com.app.belcobtm.databinding.FragmentSendGiftBinding
 import com.app.belcobtm.domain.Failure
 import com.app.belcobtm.domain.wallet.LocalCoinType
-import com.app.belcobtm.domain.wallet.item.CoinDataItem
 import com.app.belcobtm.presentation.core.extensions.*
 import com.app.belcobtm.presentation.core.helper.AlertHelper
 import com.app.belcobtm.presentation.core.mvvm.LoadingData
 import com.app.belcobtm.presentation.core.ui.fragment.BaseFragment
 import com.app.belcobtm.presentation.core.views.listeners.SafeDecimalEditTextWatcher
-import com.app.belcobtm.presentation.features.deals.swap.adapter.CoinDialogAdapter
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CircleCrop
 import com.bumptech.glide.request.RequestOptions
@@ -95,7 +92,7 @@ class SendGiftFragment : BaseFragment<FragmentSendGiftBinding>(),
     }
 
     override fun FragmentSendGiftBinding.initListeners() {
-        sendCoinInputLayout.setOnMaxClickListener(View.OnClickListener { viewModel.setMaxCoinAmount() })
+        sendCoinInputLayout.setOnMaxClickListener { viewModel.setMaxCoinAmount() }
         addGif.setOnClickListener { openGift() }
         gifImage.setOnClickListener { openGift() }
         removeGifButton.setOnClickListener {
@@ -104,11 +101,11 @@ class SendGiftFragment : BaseFragment<FragmentSendGiftBinding>(),
             gifImage.hide()
             removeGifButton.hide()
         }
-        sendCoinInputLayout.setOnCoinButtonClickListener(View.OnClickListener {
-            showSelectCoinDialog {
+        sendCoinInputLayout.setOnCoinButtonClickListener {
+            AlertHelper.showSelectCoinDialog(requireContext(), viewModel.getCoinsToSelect()) {
                 viewModel.selectCoin(it)
             }
-        })
+        }
         addMessage.setOnClickListener {
             addMessage.hide()
             messageView.show()
@@ -197,18 +194,6 @@ class SendGiftFragment : BaseFragment<FragmentSendGiftBinding>(),
                 coinCode
             )
         )
-    }
-
-    private fun showSelectCoinDialog(
-        action: (CoinDataItem) -> Unit
-    ) {
-        val safeContext = context ?: return
-        val coinsList = viewModel.getCoinsToSelect()
-        val adapter = CoinDialogAdapter(safeContext, coinsList)
-        AlertDialog.Builder(safeContext)
-            .setAdapter(adapter) { _, position -> action.invoke(coinsList[position]) }
-            .create()
-            .show()
     }
 
     private fun openGift() {

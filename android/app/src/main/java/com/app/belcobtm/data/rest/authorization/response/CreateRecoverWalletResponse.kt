@@ -3,7 +3,7 @@ package com.app.belcobtm.data.rest.authorization.response
 import com.app.belcobtm.data.rest.wallet.response.BalanceResponse
 
 data class CreateRecoverWalletResponse(
-    val userId: Int,
+    val userId: String,
     val identityId: Int,
     val accessToken: String,
     val expires: Long,

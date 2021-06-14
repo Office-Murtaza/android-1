@@ -6,5 +6,5 @@ data class AuthorizationResponse(
     val refreshToken: String,
     val firebaseToken: String,
     val roles: List<String>,
-    val userId: Int
+    val userId: String
 )

@@ -9,14 +9,13 @@ data class BalanceResponse(
 )
 
 data class CoinResponse(
-    val id: Int,
     val idx: Int,
-    val code: String,
+    val coin: String,
     val address: String,
     val balance: Double,
     val fiatBalance: Double,
-    val reservedBalance: Double,
-    val reservedFiatBalance: Double,
+    val reserved: Double,
+    val fiatReserved: Double,
     val price: Double,
     val details: Details
 ) {
@@ -42,10 +41,10 @@ fun CoinResponse.mapToDataItem(): CoinDataItem = CoinDataItem(
     balanceCoin = balance,
     balanceUsd = fiatBalance,
     priceUsd = price,
-    reservedBalanceCoin = reservedBalance,
-    reservedBalanceUsd = reservedFiatBalance,
+    reservedBalanceCoin = reserved,
+    reservedBalanceUsd = fiatReserved,
     publicKey = address,
-    code = code,
+    code = coin,
     details = details.mapToDataItem()
 )
 
