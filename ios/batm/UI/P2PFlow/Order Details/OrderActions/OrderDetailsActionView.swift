@@ -31,7 +31,7 @@ class OrderDetailsActionView: UIView {
   
   func renderButton(_ type: OrderDetailsActionType) -> MDCButton? {
     switch type {
-    case .cancel: return MDCButton.cancel
+    case .cancel: return MDCButton.cancelLinkButton
     case .doing: return MDCButton.doing
     case .paid: return MDCButton.paid
     case .release: return MDCButton.release

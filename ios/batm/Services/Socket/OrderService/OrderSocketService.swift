@@ -124,7 +124,7 @@ extension OrderServiceImpl: OrderServiceWebSocket {
                 self?.phone = phone.phoneNumber
                 let message = SubscribeMessageBuilder().build(with: [
                     "id" : phone.phoneNumber,
-                    "destination" : "/queue/order"
+                    "destination" : "/user/queue/order"
                 ])
                 
                 self?.socket?.write(string: message)
@@ -141,7 +141,7 @@ extension OrderServiceImpl: OrderServiceWebSocket {
         return Completable.create { [weak self] completable in
             let payload = [
                 "id" : phoneNumber,
-                "destination" : "/topic/trade"
+                "destination" : "/user/queue/order"
             ]
             
             let message = UnsubscribeMessageBuilder().build(with: payload)

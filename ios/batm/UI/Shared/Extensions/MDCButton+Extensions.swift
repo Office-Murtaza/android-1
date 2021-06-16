@@ -165,6 +165,12 @@ extension MDCButton {
     return button
   }
   
+  static var cancelLinkButton: MDCButton {
+    let button = MDCButton.text
+    button.setTitle(localize(L.Shared.Button.cancel), for: .normal)
+    return button
+  }
+  
   static var withdraw: MDCButton {
     let button = MDCButton.contained
     button.setTitle(localize(L.CoinStaking.Button.withdraw), for: .normal)
