@@ -38,6 +38,7 @@ class MyOpenOrdersDataSource: NSObject, UITableViewDelegate, UITableViewDataSour
   func updateModels(order: Order) {
     guard let orderVM = viewModels.first(where: {$0.order.id == order.id}) else { return }
     orderVM.update(order: order)
+    tableView?.reloadData()
   }
   
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
