@@ -37,7 +37,8 @@ data class OrderItem(
     val takerLongitude: Double?,
     val takerTotalTrades: Int,
     val takerTotalTradesFormatted: String,
-    val takerTradingRate: Double?
+    val takerTradingRate: Double?,
+    val distanceFormatted: String?
 ) : ListItem {
 
     companion object {
@@ -45,7 +46,7 @@ data class OrderItem(
     }
 
     override val id: String
-        get() = orderId.toString()
+        get() = orderId
 
     override val type: Int
         get() = OPEN_ORDER_TYPE

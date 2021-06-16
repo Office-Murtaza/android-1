@@ -31,7 +31,7 @@ class EditTradeFragment : BaseFragment<FragmentEditTradeBinding>() {
     private val args by navArgs<EditTradeFragmentArgs>()
     private val viewModel by viewModel<EditTradeViewModel>()
 
-    override val retryListener: View.OnClickListener?
+    override val retryListener: View.OnClickListener
         get() = View.OnClickListener {
             if (viewModel.initialLoadingData.value is LoadingData.Error<Unit>) {
                 viewModel.fetchTradeDetails(args.tradeId)
@@ -136,7 +136,7 @@ class EditTradeFragment : BaseFragment<FragmentEditTradeBinding>() {
             success = {
                 AlertHelper.showToastShort(
                     requireContext(),
-                    R.string.transactions_screen_transaction_created
+                    R.string.trade_updated_message
                 )
                 popBackStack()
             },

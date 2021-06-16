@@ -31,7 +31,7 @@ class TradeOrderDetailsFragment : BaseFragment<FragmentTradeOrderDetailsBinding>
     override val isHomeButtonEnabled: Boolean
         get() = true
 
-    override val retryListener: View.OnClickListener? = View.OnClickListener {
+    override val retryListener: View.OnClickListener = View.OnClickListener {
         val initialLoadingState: LoadingData<Unit>? = viewModel.initialLoadingData.value
         val primaryActionLoadingState: LoadingData<Unit>? = viewModel.primaryActionUpdateLoadingData.value
         val secondaryActionLoadingState: LoadingData<Unit>? = viewModel.secondaryActionUpdateLoadingData.value
@@ -84,7 +84,7 @@ class TradeOrderDetailsFragment : BaseFragment<FragmentTradeOrderDetailsBinding>
         viewModel.price.observe(viewLifecycleOwner, price::setText)
         viewModel.paymentOptions.observe(viewLifecycleOwner, adapter::update)
         viewModel.traderStatusIcon.observe(viewLifecycleOwner) {
-            binding.makerPublicId.setCompoundDrawablesWithIntrinsicBounds(
+            binding.partnerPublicId.setCompoundDrawablesWithIntrinsicBounds(
                 R.drawable.ic_account_circle, 0, it, 0
             )
         }
@@ -97,8 +97,8 @@ class TradeOrderDetailsFragment : BaseFragment<FragmentTradeOrderDetailsBinding>
                 )
             }
         }
-        viewModel.makerTotalTrades.observe(viewLifecycleOwner) {
-            makerTradeCountLabel.text = it.toHtmlSpan()
+        viewModel.partnerTotalTrades.observe(viewLifecycleOwner) {
+            partnerTradeCountLabel.text = it.toHtmlSpan()
         }
         viewModel.orderId.observe(viewLifecycleOwner) {
             orderIdValue.text = it
@@ -116,11 +116,11 @@ class TradeOrderDetailsFragment : BaseFragment<FragmentTradeOrderDetailsBinding>
         }
         viewModel.distance.observe(viewLifecycleOwner) {
             binding.distanceLabel.text = it
-            binding.distanceLabel.toggle(isVisible = true)
+            binding.distanceLabel.toggle(isVisible = it.orEmpty().isNotEmpty())
         }
-        viewModel.makerPublicId.observe(viewLifecycleOwner, makerPublicId::setText)
-        viewModel.makerTradeRate.observe(viewLifecycleOwner) {
-            makerRateValue.text = it.toString()
+        viewModel.partnerPublicId.observe(viewLifecycleOwner, partnerPublicId::setText)
+        viewModel.partnerTradeRate.observe(viewLifecycleOwner) {
+            partnerRateValue.text = it.toString()
         }
         viewModel.fiatAmount.observe(viewLifecycleOwner, fiatAmountValue::setText)
         viewModel.cryptoAmount.observe(viewLifecycleOwner, cryptoAmountValue::setText)

@@ -47,7 +47,7 @@ val webSocketModule = module {
     }
     single<TradesObserver> {
         WebSocketTradesObserver(
-            get(), get(), get(), get(), get(),
+            get(), get(), get(), get(),
             get(named(STOMP_REQUEST_SERIALIZER_QUALIFIER)),
             get(named(STOMP_RESPONSE_DESERIALIZER_QUALIFIER)),
         )
@@ -61,7 +61,7 @@ val webSocketModule = module {
     }
     single<OrdersObserver> {
         WebSocketOrdersObserver(
-            get(), get(), get(), get(), get(),
+            get(), get(), get(), get(),
             get(named(STOMP_REQUEST_SERIALIZER_QUALIFIER)),
             get(named(STOMP_RESPONSE_DESERIALIZER_QUALIFIER))
         )

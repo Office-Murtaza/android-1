@@ -48,6 +48,8 @@ interface TradeRepository {
 
     suspend fun cancelTrade(tradeId: String): Either<Failure, Unit>
 
+    suspend fun cancelOrder(orderId: String): Either<Failure, Unit>
+
     suspend fun createOrder(tradeOrder: TradeOrderItem): Either<Failure, String>
 
     suspend fun updateOrder(status: UpdateOrderStatusItem): Either<Failure, Unit>

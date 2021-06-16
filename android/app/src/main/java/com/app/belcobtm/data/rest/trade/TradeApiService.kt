@@ -2,6 +2,7 @@ package com.app.belcobtm.data.rest.trade
 
 import android.location.Location
 import com.app.belcobtm.data.disk.shared.preferences.SharedPreferencesHelper
+import com.app.belcobtm.data.mapper.OrderResponseToOrderMapper
 import com.app.belcobtm.data.model.trade.OrderStatus
 import com.app.belcobtm.data.rest.trade.request.*
 import com.app.belcobtm.data.rest.trade.response.*
@@ -10,6 +11,7 @@ import com.app.belcobtm.domain.Failure
 import com.app.belcobtm.presentation.features.wallet.trade.create.model.CreateTradeItem
 import com.app.belcobtm.presentation.features.wallet.trade.edit.EditTradeItem
 import com.app.belcobtm.presentation.features.wallet.trade.order.create.model.TradeOrderItem
+import java.net.HttpURLConnection
 
 class TradeApiService(
     private val tradeApi: TradeApi,
@@ -64,6 +66,12 @@ class TradeApiService(
     suspend fun deleteTrade(tradeId: String): Either<Failure, DeleteTradeResponse> =
         withErrorHandling {
             val response = tradeApi.deleteTradeAsync(prefHelper.userId, tradeId).await()
+            response.body()?.let { Either.Right(it) } ?: Either.Left(Failure.ServerError())
+        }
+
+    suspend fun deleteOrder(orderId: String): Either<Failure, TradeOrderItemResponse> =
+        withErrorHandling {
+            val response = tradeApi.deleteOrderAsync(prefHelper.userId, orderId).await()
             response.body()?.let { Either.Right(it) } ?: Either.Left(Failure.ServerError())
         }
 

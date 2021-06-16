@@ -1,6 +1,5 @@
 package com.app.belcobtm.data.websockets.trade
 
-import com.app.belcobtm.data.disk.database.account.AccountDao
 import com.app.belcobtm.data.disk.shared.preferences.SharedPreferencesHelper
 import com.app.belcobtm.data.inmemory.trade.TradeInMemoryCache
 import com.app.belcobtm.data.rest.trade.response.TradeItemResponse
@@ -19,7 +18,6 @@ class WebSocketTradesObserver(
     private val socketClient: SocketClient,
     private val moshi: Moshi,
     private val tradeInMemoryCache: TradeInMemoryCache,
-    private val accountDao: AccountDao,
     private val sharedPreferencesHelper: SharedPreferencesHelper,
     private val serializer: RequestSerializer<StompSocketRequest>,
     private val deserializer: ResponseDeserializer<StompSocketResponse>,
@@ -32,7 +30,6 @@ class WebSocketTradesObserver(
         const val MAX_RECONNECT_AMOUNT = 5
         const val ID_HEADER = "id"
         const val AUTH_HEADER = "Authorization"
-        const val COINS_HEADER = "coins"
 
         const val DESTINATION_HEADER = "destination"
         const val DESTINATION_VALUE = "/topic/trade"
@@ -97,15 +94,10 @@ class WebSocketTradesObserver(
     }
 
     private fun subscribe() {
-        val coinList = runBlocking {
-            accountDao.getItemList().orEmpty()
-                .map { it.type.name }
-        }.joinToString()
         val request = StompSocketRequest(
             StompSocketRequest.SUBSCRIBE, mapOf(
                 ID_HEADER to sharedPreferencesHelper.userPhone,
-                DESTINATION_HEADER to DESTINATION_VALUE,
-                COINS_HEADER to coinList
+                DESTINATION_HEADER to DESTINATION_VALUE
             )
         )
         socketClient.sendMessage(serializer.serialize(request))

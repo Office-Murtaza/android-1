@@ -3,6 +3,7 @@ package com.app.belcobtm.presentation.features.wallet.trade.order.create
 import android.app.Dialog
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -51,6 +52,9 @@ class TradeCreateOrderBottomSheetFragment : BaseBottomSheetFragment() {
     private val amountTextWatcher = SafeDecimalEditTextWatcher { editable ->
         viewModel.updateAmount(editable.getDouble())
     }
+    private val imm by lazy {
+        requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
+    }
 
     override fun getTheme(): Int = R.style.DialogStyle
 
@@ -60,24 +64,35 @@ class TradeCreateOrderBottomSheetFragment : BaseBottomSheetFragment() {
             val d = dialog as BottomSheetDialog
             val bottomSheet =
                 d.findViewById<View>(R.id.design_bottom_sheet) as FrameLayout?
-            BottomSheetBehavior.from<FrameLayout?>(bottomSheet!!).state = BottomSheetBehavior.STATE_EXPANDED
+            BottomSheetBehavior.from<FrameLayout?>(bottomSheet!!).state =
+                BottomSheetBehavior.STATE_EXPANDED
         }
         return dialog
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
         binding = FragmentTradeCreateOrderBinding.inflate(inflater, container, false)
         viewModel.fetchTradeDetails(args.tradeId)
         binding.amountEditText.setText("0")
         binding.amountEditText.addTextChangedListener(amountTextWatcher)
         viewModel.initialLoadingData.listen()
         viewModel.createTradeLoadingData.listen(success = {
-            findNavController().navigate(TradeCreateOrderBottomSheetFragmentDirections.toOrderDetails(it))
+            findNavController().navigate(
+                TradeCreateOrderBottomSheetFragmentDirections.toOrderDetails(
+                    it
+                )
+            )
         })
         viewModel.platformFee.observe(viewLifecycleOwner) {
             binding.platformFeeLabel.text = requireContext().resources.getString(
                 R.string.trade_buy_sell_dialog_platform_fee_formatted,
-                it.platformFeePercent.toStringPercents(), it.platformFeeCrypto.toStringCoin(), it.coinCode
+                it.platformFeePercent.toStringPercents(),
+                it.platformFeeCrypto.toStringCoin(),
+                it.coinCode
             )
         }
         viewModel.cryptoAmount.observe(viewLifecycleOwner) {
@@ -92,7 +107,9 @@ class TradeCreateOrderBottomSheetFragment : BaseBottomSheetFragment() {
         }
         viewModel.reservedBalance.observe(viewLifecycleOwner) {
             binding.reservedAmountLabel.text = getString(
-                R.string.create_order_reserved_amount, it.reservedBalanceCrypto.toStringCoin(), it.coinName
+                R.string.create_order_reserved_amount,
+                it.reservedBalanceCrypto.toStringCoin(),
+                it.coinName
             )
         }
         viewModel.amountWithoutFee.observe(viewLifecycleOwner) {
@@ -113,8 +130,13 @@ class TradeCreateOrderBottomSheetFragment : BaseBottomSheetFragment() {
         super.onViewCreated(view, savedInstanceState)
         binding.amountEditText.post {
             binding.amountEditText.requestFocus()
-            val imm = requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
-            imm?.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0)
+            imm?.showSoftInput(binding.amountEditText, 0)
         }
+    }
+
+    override fun onDestroyView() {
+        imm?.hideSoftInputFromWindow(binding.amountEditText.windowToken, 0)
+        binding.amountEditText.clearFocus()
+        super.onDestroyView()
     }
 }

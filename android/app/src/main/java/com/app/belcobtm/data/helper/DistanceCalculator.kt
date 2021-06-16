@@ -32,7 +32,7 @@ class DistanceCalculator(
         }
     }
 
-    private fun calculateDistance(fromLat: Double, fromLong: Double, toLat: Double, toLong: Double): Double {
+    fun calculateDistance(fromLat: Double, fromLong: Double, toLat: Double, toLong: Double): Double {
         val dLat = degreesToRadians(toLat - fromLat)
         val dLon = degreesToRadians(toLong - fromLong)
 

@@ -97,18 +97,23 @@ class TradeRepositoryImpl(
 
     override suspend fun createTrade(createTradeItem: CreateTradeItem): Either<Failure, Unit> {
         val response = tradeApiService.createTrade(createTradeItem)
-        return response.map { Unit }
+        return response.map { }
     }
 
     override suspend fun editTrade(editTrade: EditTradeItem): Either<Failure, Unit> {
         val response = tradeApiService.editTrade(editTrade)
-        return response.map { Unit }
+        return response.map { }
     }
 
     override suspend fun cancelTrade(tradeId: String): Either<Failure, Unit> {
         val response = tradeApiService.deleteTrade(tradeId)
-        return response.map { Unit }
+        return response.map { }
     }
+
+    override suspend fun cancelOrder(orderId: String): Either<Failure, Unit> =
+        tradeApiService.deleteOrder(orderId).map {
+            tradeInMemoryCache.updateOrders(it)
+        }
 
     override suspend fun createOrder(tradeOrder: TradeOrderItem): Either<Failure, String> {
         val response = tradeApiService.createOrder(tradeOrder)
@@ -128,7 +133,10 @@ class TradeRepositoryImpl(
         return response.map { tradeInMemoryCache.updateOrders(it) }
     }
 
-    private fun createInitialFilter(enabledCoins: List<AccountEntity>, calculateDistance: Boolean): TradeFilter {
+    private fun createInitialFilter(
+        enabledCoins: List<AccountEntity>,
+        calculateDistance: Boolean
+    ): TradeFilter {
         val initialCoin = enabledCoins.find { it.type.name == LocalCoinType.BTC.name }?.type?.name
             ?: enabledCoins.firstOrNull()?.type?.name ?: ""
         return TradeFilter(

@@ -1,6 +1,5 @@
 package com.app.belcobtm.data.websockets.order
 
-import com.app.belcobtm.data.disk.database.account.AccountDao
 import com.app.belcobtm.data.disk.shared.preferences.SharedPreferencesHelper
 import com.app.belcobtm.data.inmemory.trade.TradeInMemoryCache
 import com.app.belcobtm.data.rest.trade.response.TradeOrderItemResponse
@@ -18,7 +17,6 @@ import kotlinx.coroutines.flow.collect
 class WebSocketOrdersObserver(
     private val socketClient: SocketClient,
     private val tradeInMemoryCache: TradeInMemoryCache,
-    private val accountDao: AccountDao,
     private val moshi: Moshi,
     private val sharedPreferencesHelper: SharedPreferencesHelper,
     private val serializer: RequestSerializer<StompSocketRequest>,
@@ -32,10 +30,9 @@ class WebSocketOrdersObserver(
         const val MAX_RECONNECT_AMOUNT = 5
         const val ID_HEADER = "id"
         const val AUTH_HEADER = "Authorization"
-        const val COINS_HEADER = "coins"
 
         const val DESTINATION_HEADER = "destination"
-        const val DESTINATION_VALUE = "/queue/order"
+        const val DESTINATION_VALUE = "/user/queue/order"
 
         const val ACCEPT_VERSION_HEADER = "accept-version"
         const val ACCEPT_VERSION_VALUE = "1.1"
@@ -97,15 +94,10 @@ class WebSocketOrdersObserver(
     }
 
     private fun subscribe() {
-        val coinList = runBlocking {
-            accountDao.getItemList().orEmpty()
-                .map { it.type.name }
-        }.joinToString()
         val request = StompSocketRequest(
             StompSocketRequest.SUBSCRIBE, mapOf(
                 ID_HEADER to sharedPreferencesHelper.userPhone,
-                DESTINATION_HEADER to DESTINATION_VALUE,
-                COINS_HEADER to coinList
+                DESTINATION_HEADER to DESTINATION_VALUE
             )
         )
         socketClient.sendMessage(serializer.serialize(request))
