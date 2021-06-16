@@ -56,9 +56,25 @@ val useCaseModule = module {
     single { GetAuthorizePinUseCase(get()) }
     single { SaveAuthorizePinUseCase(get()) }
     single { GetVerificationInfoUseCase(get()) }
-    single { SendVerificationBlankUseCase(get(), androidApplication(), get(), get(), get(named(VERIFICATION_STORAGE))) }
+    single {
+        SendVerificationBlankUseCase(
+            get(),
+            androidApplication(),
+            get(),
+            get(),
+            get(named(VERIFICATION_STORAGE))
+        )
+    }
     single { GetVerificationCountryListUseCase(get()) }
-    single { SendVerificationVipUseCase(get(), androidApplication(), get(), get(), get(named(VERIFICATION_STORAGE))) }
+    single {
+        SendVerificationVipUseCase(
+            get(),
+            androidApplication(),
+            get(),
+            get(),
+            get(named(VERIFICATION_STORAGE))
+        )
+    }
     single { SwapUseCase(get()) }
     single { CreateTransactionUseCase(get()) }
     single { SendGiftTransactionCreateUseCase(get()) }
@@ -109,6 +125,7 @@ val useCaseModule = module {
     single { ApplyFilterUseCase(get(), get()) }
     single { GetTradeDetailsUseCase(get(), get()) }
     single { CancelTradeUseCase(get()) }
+    single { CancelOrderUseCase(get()) }
     single { EditTradeUseCase(get()) }
     single { CreateOrderUseCase(get()) }
     single { StartObserveTradeDataUseCase(get(), get()) }
@@ -117,7 +134,14 @@ val useCaseModule = module {
     single { UpdateOrderStatusUseCase(get()) }
     single { ClearCacheUseCase(get()) }
     single { RateOrderUseCase(get()) }
-    single { SendChatMessageUseCase(get(), get(), get(named(FirebaseCloudStorage.CHAT_STORAGE)), get()) }
+    single {
+        SendChatMessageUseCase(
+            get(),
+            get(),
+            get(named(FirebaseCloudStorage.CHAT_STORAGE)),
+            get()
+        )
+    }
     single { ObserveChatMessagesUseCase(get()) }
     single { ConnectToChatUseCase(get()) }
     single { DisconnectFromChatUseCase(get()) }
@@ -143,10 +167,9 @@ val useCaseModule = module {
     factory { TradesDataToStatisticsMapper(get()) }
     factory {
         TradeOrderDataToItemMapper(
-            get(),
-            get(named(DOUBLE_CURRENCY_PRICE_FORMATTER_QUALIFIER)),
-            get(named(TRADE_COUNT_FORMATTER_QUALIFIER)),
-            get()
+            get(), get(named(DOUBLE_CURRENCY_PRICE_FORMATTER_QUALIFIER)),
+            get(named(TRADE_COUNT_FORMATTER_QUALIFIER)), get(), get(),
+            get(named(MILES_FORMATTER_QUALIFIER))
         )
     }
     factory { TradesDataToOrderListMapper(get()) }

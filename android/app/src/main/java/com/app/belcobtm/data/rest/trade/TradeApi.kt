@@ -46,4 +46,10 @@ interface TradeApi {
         @Path("userId") userId: String,
         @Query("id") tradeId: String
     ): Deferred<Response<DeleteTradeResponse>>
+
+    @DELETE("user/{userId}/order")
+    fun deleteOrderAsync(
+        @Path("userId") userId: String,
+        @Query("id") orderId: String
+    ): Deferred<Response<TradeOrderItemResponse>>
 }

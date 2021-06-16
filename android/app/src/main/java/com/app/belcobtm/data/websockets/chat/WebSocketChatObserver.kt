@@ -34,7 +34,7 @@ class WebSocketChatObserver(
         const val AUTH_HEADER = "Authorization"
 
         const val DESTINATION_HEADER = "destination"
-        const val DESTINATION_VALUE = "/user/queue/order-chat"
+        const val DESTINATION_VALUE = "/user/queue/chat"
         const val DESTINATION_SEND_VALUE = "/app/chat"
 
         const val ACCEPT_VERSION_HEADER = "accept-version"

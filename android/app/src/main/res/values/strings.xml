@@ -664,7 +664,7 @@
     <string name="edit_trade_success_message">Trade successfully edited</string>
     <string name="edit_trade_screen_edit_button_title">Save</string>
 
-    <string name="trade_buy_sell_dialog_platform_fee_formatted">Platform Fee %1$s%% ~ %2$s %3$s</string>
+    <string name="trade_buy_sell_dialog_platform_fee_formatted">Platform Fee ~ %2$s %3$s</string>
     <string name="trade_buy_sell_dialog_crypto_amount_formatted">%1$s %2$s</string>
     <string name="trade_buy_sell_dialog_amount_zero_error">Amount cannot be zero</string>
     <string name="trade_buy_sell_dialog_amount_not_in_range_error">Amount is bigger/less than specified limits</string>
@@ -696,7 +696,7 @@
     <string name="trade_order_details_fiat_amount">Fiat Amount</string>
     <string name="cannot_perform_swap_error">Cannot perform swap</string>
     <string name="cannot_perform_swap_error_message">Please, enable coins from Settings/Wallets and try again</string>
-    <string name="cannot_perform_swap_error_button_title">Ok</string>
+    <string name="cannot_perform_swap_error_button_title">OK</string>
     <string name="attach_id_scan_label">Attach id Scan</string>
     <string name="attach_id_selfie_label">Attach id Selfie</string>
     <string name="send_gift_phone_number_prefix">+1</string>
@@ -705,4 +705,6 @@
     <string name="you_will_get_label">You Will Get</string>
     <string name="you_will_send_label">You Will Send</string>
     <string name="order_details_id_label">ID</string>
+    <string name="trade_updated_message">Trade was successfully updated/cancelled</string>
+    <string name="status">Status</string>
 </resources>

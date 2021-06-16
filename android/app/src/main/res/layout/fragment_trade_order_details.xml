@@ -211,7 +211,7 @@
             android:layout_marginStart="16dp"
             android:layout_marginEnd="16dp"
             android:gravity="start"
-            android:text="Status"
+            android:text="@string/status"
             android:textColor="@color/colorText"
             android:textSize="14sp"
             app:layout_constraintBottom_toBottomOf="@id/status_value"
@@ -289,7 +289,7 @@
             app:layout_constraintTop_toBottomOf="@id/payment_options" />
 
         <TextView
-            android:id="@+id/maker_public_id"
+            android:id="@+id/partner_public_id"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
@@ -302,7 +302,7 @@
             tools:text="I48784RPBVUZ7HHT" />
 
         <TextView
-            android:id="@+id/maker_rate_value"
+            android:id="@+id/partner_rate_value"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
@@ -313,7 +313,7 @@
             android:textStyle="bold"
             app:drawableStartCompat="@drawable/ic_grade"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/maker_public_id"
+            app:layout_constraintTop_toBottomOf="@id/partner_public_id"
             tools:text="4.25" />
 
         <View
@@ -322,12 +322,12 @@
             android:layout_height="0dp"
             android:layout_marginStart="8dp"
             android:background="@color/dark_bg"
-            app:layout_constraintBottom_toBottomOf="@id/maker_rate_value"
-            app:layout_constraintStart_toEndOf="@id/maker_rate_value"
-            app:layout_constraintTop_toTopOf="@id/maker_rate_value" />
+            app:layout_constraintBottom_toBottomOf="@id/partner_rate_value"
+            app:layout_constraintStart_toEndOf="@id/partner_rate_value"
+            app:layout_constraintTop_toTopOf="@id/partner_rate_value" />
 
         <TextView
-            android:id="@+id/maker_trade_count_label"
+            android:id="@+id/partner_trade_count_label"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
@@ -335,7 +335,7 @@
             android:textColor="@color/black_text_color"
             android:textSize="14sp"
             app:layout_constraintStart_toEndOf="@id/rate_trade_count_divider"
-            app:layout_constraintTop_toBottomOf="@id/maker_public_id"
+            app:layout_constraintTop_toBottomOf="@id/partner_public_id"
             tools:text="100+ trades" />
 
         <View
@@ -344,10 +344,10 @@
             android:layout_height="0dp"
             android:layout_marginStart="8dp"
             android:background="@color/dark_bg"
-            app:layout_constraintBottom_toBottomOf="@id/maker_rate_value"
+            app:layout_constraintBottom_toBottomOf="@id/partner_rate_value"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@id/maker_public_id" />
+            app:layout_constraintTop_toTopOf="@id/partner_public_id" />
 
         <TextView
             android:id="@+id/distance_label"

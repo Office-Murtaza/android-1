@@ -121,7 +121,7 @@ val viewModelModule = module {
     viewModel { TradeFilterViewModel(get(), get(), get(), get(), get(named(DISTANCE_INT_PARSER_QUALIFIER))) }
     viewModel {
         TradeOrderDetailsViewModel(
-            get(), get(), get(), get(), get(), get(),
+            get(), get(), get(), get(), get(), get(), get(),
             get(named(GOOGLE_MAPS_DIRECTIONS_QUERY_FORMATTER))
         )
     }

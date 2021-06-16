@@ -3,6 +3,7 @@ package com.app.belcobtm.domain.trade.list.mapper
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import com.app.belcobtm.R
+import com.app.belcobtm.data.helper.DistanceCalculator
 import com.app.belcobtm.data.model.trade.Order
 import com.app.belcobtm.data.model.trade.OrderStatus
 import com.app.belcobtm.data.model.trade.TradeData
@@ -17,7 +18,9 @@ class TradeOrderDataToItemMapper(
     private val tradeItemMapper: TradeToTradeItemMapper,
     private val priceFormatter: Formatter<Double>,
     private val tradeCountFormatter: Formatter<Int>,
-    private val statusMapper: TraderStatusToIconMapper
+    private val statusMapper: TraderStatusToIconMapper,
+    private val distanceCalculator: DistanceCalculator,
+    private val milesFormatter: Formatter<Double>,
 ) {
 
     fun map(order: Order, tradeData: TradeData, myId: String): OrderItem =
@@ -33,9 +36,23 @@ class TradeOrderDataToItemMapper(
                 tradeCountFormatter.format(makerTotalTrades), makerTradingRate,
                 takerId, takerStatusId, statusMapper.map(takerStatusId), takerPublicId,
                 takerLatitude, takerLongitude, takerTotalTrades,
-                tradeCountFormatter.format(takerTotalTrades), takerTradingRate
+                tradeCountFormatter.format(takerTotalTrades), takerTradingRate,
+                formatDistance()
             )
         }
+
+    private fun Order.formatDistance(): String?  {
+        takerLatitude ?: return null
+        takerLongitude ?: return null
+        makerLatitude ?: return null
+        makerLongitude ?: return null
+        return milesFormatter.format(
+            distanceCalculator.calculateDistance(
+                takerLatitude, takerLongitude, makerLatitude, makerLongitude
+            )
+        )
+    }
+
 
     private fun resolveTradeType(order: Order, trade: TradeItem, myId: String): Int =
         when {
