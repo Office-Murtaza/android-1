@@ -4,7 +4,7 @@ import CoreLocation
 class MyOrderViewModel {
     
    private(set) var order: Order
-  private(set) var userId: String
+   private(set) var userId: String
    
   var currentSellBuyType: P2PSellBuyViewType {
     return (order.makerUserId == userId ? tradeType : tradeType?.reversed) ?? .buy
@@ -89,6 +89,18 @@ class MyOrderViewModel {
       }
     }
     return false
+  }
+  
+  var makerId: String {
+    return (order.makerUserId == userId ? order.takerPublicId : order.makerPublicId) ?? ""
+  }
+  
+  var tradingRate: Double {
+    return (order.makerUserId == userId ? order.takerTradingRate : order.makerTradingRate) ?? 0
+  }
+  
+  var totalTrdades: Double {
+    return (order.makerUserId == userId ? order.takerTotalTrades : order.makerTotalTrades) ?? 0
   }
 
 }
