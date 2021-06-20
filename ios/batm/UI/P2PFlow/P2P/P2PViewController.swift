@@ -168,6 +168,10 @@ class P2PViewController: ModuleViewController<P2PPresenter>, MDCTabBarDelegate {
                 self.sellDataSource.update(trade: trade)
         }.disposed(by: disposeBag)
       
+      presenter.socketTrade
+          .subscribe { [weak self] (trade) in
+            self?.presentedTradeDetailsVC?.setup(trade: trade)
+      }.disposed(by: disposeBag)
       
       presenter.updatedOrder
           .subscribe { [unowned self] (order) in
@@ -226,6 +230,11 @@ class P2PViewController: ModuleViewController<P2PPresenter>, MDCTabBarDelegate {
         
         UIApplication.shared.open(openUrl, options: [:], completionHandler: nil)
     }
+  
+  
+  var presentedTradeVM: TradeViewModel?
+  var presentedTradeDetailsVC: P2PTradeDetailsBaseViewController?
+  
 }
 
 extension P2PViewController: P2PCreateTradeViewControllerDelegate {
@@ -259,19 +268,22 @@ extension P2PViewController: MyViewControllerDelegate {
   func selectedRate(orderModel: MyOrderViewModel, rate: Int) {
     presenter.updatedRate(model: orderModel, rate: rate)
   }
-  
+
 }
 
 extension P2PViewController: TradesDataSourceDelegate {
   
   func didSelected(tradeModel: TradeViewModel, type: P2PTradesType, reservedBalance: Double) {
+    presentedTradeVM = tradeModel
     
     guard let platformFee = balance?.coins.first(where: { $0.type == tradeModel.coin })?.details.platformTradeFee?.doubleValue else { return }
     
     switch type {
     case .buy:
       let sellController = P2PTradeDetailsSellViewController()
+      presentedTradeDetailsVC = sellController
       sellController.delegate = self
+      sellController.navigationDelegate = self
       sellController.setup(trade: tradeModel.trade,
                            distance: "\(tradeModel.distanceInMiles ?? "0") Miles",
                            reservedBalance: reservedBalance,
@@ -280,6 +292,8 @@ extension P2PViewController: TradesDataSourceDelegate {
       
     case .sell:
       let buyController = P2PTradeDetailsBuyViewController()
+      presentedTradeDetailsVC = buyController
+      buyController.navigationDelegate = self
       buyController.delegate = self
       buyController.setup(trade: tradeModel.trade,
                           distance: "\(tradeModel.distanceInMiles ?? "0") Miles",
@@ -287,6 +301,13 @@ extension P2PViewController: TradesDataSourceDelegate {
                           platformFee: platformFee)
       navigationController?.pushViewController(buyController, animated: true)
     }
+  }
+}
+
+extension P2PViewController: P2PTradeDetailsBaseViewControllerNavDelegate {
+  func willDismiss() {
+    presentedTradeVM = nil
+    presentedTradeDetailsVC = nil
   }
 }
 
