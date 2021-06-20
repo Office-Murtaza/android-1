@@ -624,7 +624,7 @@ struct StakeDetailsRequest: AuthorizedAPIRequest {
 }
 
 struct ManageCoinsRequest: AuthorizedAPIRequest {
-  typealias ResponseType = APIEmptyResponse
+  typealias ResponseType = APIResponse<ResponseResult>
   typealias ResponseTrait = SingleResponseTrait
   
   let userId: String

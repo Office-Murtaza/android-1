@@ -24,6 +24,7 @@ class ManageWalletsViewController: ModuleViewController<ManageWalletsPresenter> 
   
   private func setupUIBindings() {
     tableView.dataSource = dataSource
+    dataSource.delegate = self
     dataSource.tableView = tableView
     
     presenter.state
@@ -35,10 +36,12 @@ class ManageWalletsViewController: ModuleViewController<ManageWalletsPresenter> 
   
   override func setupBindings() {
     setupUIBindings()
-    
-    let changeVisibilityDriver = dataSource.changeVisibilityRelay.asDriver(onErrorDriveWith: .empty())
-    
-    presenter.bind(input: ManageWalletsPresenter.Input(changeVisibility: changeVisibilityDriver))
   }
   
+}
+
+extension ManageWalletsViewController: ManageWalletsTableViewDataSourceDelegate {
+  func changedVisibility(coin: BTMCoin, cell: ManageWalletsCell) {
+     presenter.changedVisibility(coin: coin, cell: cell)
+  }
 }
