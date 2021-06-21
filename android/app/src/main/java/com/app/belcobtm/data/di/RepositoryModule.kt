@@ -29,5 +29,5 @@ val repositoryModule = module {
     single<TransactionRepository> { TransactionRepositoryImpl(get(), get(), get(), get(), get(), get()) }
     single<ToolsRepository> { ToolsRepositoryImpl(get()) }
     single<AtmRepository> { AtmRepositoryImpl(get()) }
-    single<TradeRepository> { TradeRepositoryImpl(get(), get(), get(), androidApplication().resources, get(), get()) }
+    single<TradeRepository> { TradeRepositoryImpl(get(), get(), get(), androidApplication().resources, get()) }
 }

@@ -707,4 +707,6 @@
     <string name="order_details_id_label">ID</string>
     <string name="trade_updated_message">Trade was successfully updated/cancelled</string>
     <string name="status">Status</string>
+    <string name="create_order_dialog_platform_fee_label">Platform Fee</string>
+    <string name="create_order_dialog_reserved_label">Reserved</string>
 </resources>
