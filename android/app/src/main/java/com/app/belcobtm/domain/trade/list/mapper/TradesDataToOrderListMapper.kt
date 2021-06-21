@@ -10,7 +10,7 @@ class TradesDataToOrderListMapper(private val orderMapper: TradeOrderDataToItemM
             .values
             .asSequence()
             .filter { it.makerId == userId || it.takerId == userId }
-            .map { orderMapper.map(it, tradeData, userId) }
+            .mapNotNull { orderMapper.map(it, tradeData, userId) }
             .sortedWith { t, t2 -> t2.timestamp.compareTo(t.timestamp) }
             .toList()
 }

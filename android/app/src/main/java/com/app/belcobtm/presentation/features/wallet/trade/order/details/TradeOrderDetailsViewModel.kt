@@ -114,7 +114,12 @@ class TradeOrderDetailsViewModel(
             observeOrderDetailsUseCase(orderId)
                 .collect {
                     if (it.isRight) {
-                        showContent((it as Either.Right<OrderItem>).b)
+                        val orderItem = (it as Either.Right<OrderItem?>).b
+                        if (orderItem == null) {
+                            _initialLoadingData.value = LoadingData.Error(Failure.ServerError())
+                        } else {
+                            showContent(orderItem)
+                        }
                     } else {
                         _initialLoadingData.value =
                             LoadingData.Error((it as Either.Left<Failure>).a)

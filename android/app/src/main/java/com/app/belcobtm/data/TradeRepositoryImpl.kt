@@ -11,7 +11,6 @@ import com.app.belcobtm.data.model.trade.Trade
 import com.app.belcobtm.data.model.trade.TradeData
 import com.app.belcobtm.data.model.trade.filter.SortOption
 import com.app.belcobtm.data.model.trade.filter.TradeFilter
-import com.app.belcobtm.data.provider.location.LocationProvider
 import com.app.belcobtm.data.rest.trade.TradeApiService
 import com.app.belcobtm.domain.Either
 import com.app.belcobtm.domain.Failure
@@ -31,7 +30,6 @@ class TradeRepositoryImpl(
     private val tradeInMemoryCache: TradeInMemoryCache,
     private val accountDao: AccountDao,
     private val resources: Resources,
-    private val locationProvider: LocationProvider,
     private val mapper: TradeFilterItemMapper
 ) : TradeRepository {
 
@@ -84,7 +82,7 @@ class TradeRepositoryImpl(
 
     override suspend fun fetchTrades(calculateDistance: Boolean) {
         val result = tradeApiService.loadTrades()
-        val enabledCoins = accountDao.getItemList().orEmpty()
+        val enabledCoins = accountDao.getItemList()?.filter(AccountEntity::isEnabled).orEmpty()
         tradeInMemoryCache.initCoins(enabledCoins)
         val filter = createInitialFilter(tradeInMemoryCache.enabledCoins, calculateDistance)
         tradeInMemoryCache.updateFilter(filter, createTradeFilterItem(filter))

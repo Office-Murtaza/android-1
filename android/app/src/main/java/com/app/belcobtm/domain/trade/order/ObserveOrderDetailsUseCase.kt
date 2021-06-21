@@ -18,7 +18,7 @@ class ObserveOrderDetailsUseCase(
     private val sharedPreferencesHelper: SharedPreferencesHelper
 ) {
 
-    operator fun invoke(params: String): Flow<Either<Failure, OrderItem>> =
+    operator fun invoke(params: String): Flow<Either<Failure, OrderItem?>> =
         tradeRepository.observeTradeData()
             .map {
                 it?.map { tradeData ->

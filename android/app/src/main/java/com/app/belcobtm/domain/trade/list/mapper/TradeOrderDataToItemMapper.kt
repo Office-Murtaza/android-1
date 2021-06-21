@@ -23,9 +23,10 @@ class TradeOrderDataToItemMapper(
     private val milesFormatter: Formatter<Double>,
 ) {
 
-    fun map(order: Order, tradeData: TradeData, myId: String): OrderItem =
+    fun map(order: Order, tradeData: TradeData, myId: String): OrderItem? =
         with(order) {
-            val trade = tradeItemMapper.map(tradeData.trades.getValue(tradeId))
+            val cachedTrade = tradeData.trades[tradeId] ?: return@with null
+            val trade = tradeItemMapper.map(cachedTrade)
             OrderItem(
                 id, trade, myId, resolveTradeType(order, trade, myId), LocalCoinType.valueOf(coinCode),
                 OrderStatusItem(status, getStatusLabel(status), getStatusDrawable(status)),

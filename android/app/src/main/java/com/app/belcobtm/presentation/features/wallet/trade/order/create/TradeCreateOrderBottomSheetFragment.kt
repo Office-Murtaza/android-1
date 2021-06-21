@@ -88,29 +88,20 @@ class TradeCreateOrderBottomSheetFragment : BaseBottomSheetFragment() {
             )
         })
         viewModel.platformFee.observe(viewLifecycleOwner) {
-            binding.platformFeeLabel.text = requireContext().resources.getString(
-                R.string.trade_buy_sell_dialog_platform_fee_formatted,
-                it.platformFeePercent.toStringPercents(),
-                it.platformFeeCrypto.toStringCoin(),
-                it.coinCode
-            )
+            binding.feeAmountValue.text = it.platformFeeCrypto.toStringCoin()
+                .plus(" ").plus(it.coinCode)
         }
         viewModel.cryptoAmount.observe(viewLifecycleOwner) {
-            binding.cryptoAmountValue.text = requireContext().resources.getString(
-                R.string.trade_buy_sell_dialog_crypto_amount_formatted,
-                it.cryptoAmount.toStringCoin(), it.coinCode
-            )
+            binding.cryptoAmountValue.text = it.cryptoAmount.toStringCoin()
+                .plus(" ").plus(it.coinCode)
         }
         viewModel.fiatAmountError.observe(viewLifecycleOwner) {
             binding.amountError.text = it
             binding.amountError.toggle(it != null)
         }
         viewModel.reservedBalance.observe(viewLifecycleOwner) {
-            binding.reservedAmountLabel.text = getString(
-                R.string.create_order_reserved_amount,
-                it.reservedBalanceCrypto.toStringCoin(),
-                it.coinName
-            )
+            binding.reservedAmountValue.text = it.reservedBalanceCrypto.toStringCoin()
+                .plus(" ").plus(it.coinName)
         }
         viewModel.amountWithoutFee.observe(viewLifecycleOwner) {
             binding.totalCryptoValue.text = getString(
