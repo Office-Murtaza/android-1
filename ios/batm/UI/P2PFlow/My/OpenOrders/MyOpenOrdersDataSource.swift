@@ -35,8 +35,13 @@ class MyOpenOrdersDataSource: NSObject, UITableViewDelegate, UITableViewDataSour
     tableView?.rowHeight = 136
   }
   
-  func updateModels(order: Order) {
-    guard let orderVM = viewModels.first(where: {$0.order.id == order.id}) else { return }
+  func updateModels(order: Order, userId: String) {
+    guard let orderVM = viewModels.first(where: {$0.order.id == order.id}) else {
+      let newOrder = MyOrderViewModel(order: order, userId: userId)
+      viewModels.insert(newOrder, at: 0)
+      tableView?.reloadData()
+      return
+    }
     orderVM.update(order: order)
     tableView?.reloadData()
   }

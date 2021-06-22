@@ -16,6 +16,7 @@ class MyOpenOrdersViewController: UIViewController {
   private var trades: Trades?
   private var currentLocation: CLLocation?
   private weak var orderDetails: P2POrderDetailsViewController?
+  private var userId = ""
   
   private lazy var tableView: UITableView = {
     let table = UITableView()
@@ -31,6 +32,7 @@ class MyOpenOrdersViewController: UIViewController {
   }
   
   func update(orders: [Order], trades: Trades, userId: String) {
+    self.userId = userId
     let viewModels = orders.sorted { $0.timestamp ?? 0 > $1.timestamp ?? 0 }.map { MyOrderViewModel(order: $0, userId: userId) }
     viewModels.forEach { (vm) in
       if let associatedTradeType = trades.trades.first(where: {$0.id == vm.order.tradeId})?.type,
@@ -81,7 +83,7 @@ class MyOpenOrdersViewController: UIViewController {
   }
   
   func updateWithUpdatedOrder(_ order: Order) {
-    dataSource.updateModels(order: order)
+    dataSource.updateModels(order: order, userId: userId)
     if let presentedOrder = orderDetails?.order, presentedOrder.id == order.id {
       orderDetails?.update(order: order)
     }
