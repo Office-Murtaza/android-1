@@ -46,9 +46,6 @@ class P2PPresenter: ModulePresenter, P2PModule {
     
     fetchDataRelay.accept(())
     
-    tradeSocketService?.start()
-    orderSocketService?.start()
-    
     tradeSocketService?.getTrade().subscribe(onNext: { [weak self] (trade) in
         self?.socketTrade.accept(trade)
     }).disposed(by: disposeBag)
