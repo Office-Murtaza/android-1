@@ -31,14 +31,6 @@ class ManageWalletsPresenter: ModulePresenter, ManageWalletsModule {
       .bind(to: store.action)
       .disposed(by: disposeBag)
   }
-    
-  func bind(input: Input) {
-    input.changeVisibility
-      .asObservable()
-      .flatMap { [unowned self] in self.track(self.changeVisibility(of: $0)) }
-      .bind(to: store.action)
-      .disposed(by: disposeBag)
-  }
   
   private func fetchCoins() -> Observable<ManageWalletsAction> {
     return usecase.getCoins()
@@ -46,11 +38,23 @@ class ManageWalletsPresenter: ModulePresenter, ManageWalletsModule {
       .map { ManageWalletsAction.updateCoins($0) }
   }
   
-  private func changeVisibility(of coin: BTMCoin) -> Observable<ManageWalletsAction> {
-    return Observable.just(coin)
-      .flatMap { [usecase] in usecase.changeVisibility(of: $0)
-      .andThen(Observable.just(())) }
-      .doOnNext { [delegate] in delegate?.didChangeVisibility() }
-      .flatMap { [unowned self] in self.fetchCoins() }
+  func refreshCoins() {
+    usecase.getCoins().subscribe(onSuccess: { [weak self] (coins) in
+      self?.store.action.accept(.updateCoins(coins))
+    }, onError: { (error) in
+    }).disposed(by: disposeBag)
+  }
+  
+  func changedVisibility(coin: BTMCoin ,cell: ManageWalletsCell) {
+    let visibilityBeforeUpdate = coin.isVisible
+    usecase.changeVisibility(of: coin).subscribeOn(MainScheduler()).subscribe { [weak self] (result) in
+      if result == false {
+        cell.visibilitySwitch.isOn = visibilityBeforeUpdate
+      } else {
+        self?.delegate?.didChangeVisibility()
+        self?.refreshCoins()
+      }
+    } onError: { (error) in
+    }.disposed(by: disposeBag)
   }
 }

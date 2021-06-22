@@ -4,7 +4,7 @@ import RxCocoa
 import MaterialComponents
 
 protocol ManageWalletsCellDelegate: AnyObject {
-  func didTapChangeVisibility(_ coin: BTMCoin)
+  func didTapChangeVisibility(cell: ManageWalletsCell)
 }
 
 final class ManageWalletsCell: UITableViewCell {
@@ -68,15 +68,15 @@ final class ManageWalletsCell: UITableViewCell {
     }
   }
   
+  
   func configure(for coin: BTMCoin) {
     typeImageView.image = coin.type.mediumLogo
     typeLabel.text = coin.type.verboseValue
     visibilitySwitch.isOn = coin.isVisible
-    
-    visibilitySwitch.rx.isOn
-      .asDriver()
-      .filter { coin.isVisible != $0 }
-      .drive(onNext: { [unowned self] _ in self.delegate?.didTapChangeVisibility(coin) })
-      .disposed(by: disposeBag)
+    visibilitySwitch.addTarget(self, action: #selector(didChangeSwitch), for: .valueChanged)
+  }
+  
+  @objc func didChangeSwitch() {
+    delegate?.didTapChangeVisibility(cell: self)
   }
 }

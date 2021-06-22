@@ -47,45 +47,12 @@ class OrderServiceImpl: OrderSocketService {
         self.errorService = errorService
         self.socketURL = socketURL
         
-        subscribeSystemNotifications()
     }
     
     func getOrder() -> Observable<Order> {
         return orderProperty.asObservable().filter { order -> Bool in
             return order.id != nil
         }
-    }
-    
-    func subscribeSystemNotifications() {
-        NotificationCenter.default.addObserver(self,
-                                               selector: #selector(handleForeground),
-                                               name: UIApplication.willEnterForegroundNotification,
-                                               object: nil)
-        NotificationCenter.default.addObserver(self,
-                                               selector: #selector(handleBackground),
-                                               name: UIApplication.didEnterBackgroundNotification,
-                                               object:nil)
-        
-        let  notificationName = Notification.Name(RefreshCredentialsConstants.refreshNotificationName)
-        NotificationCenter.default.addObserver(self,
-                                               selector: #selector(disconnectAndStart),
-                                               name: notificationName,
-                                               object:nil)
-    }
-    
-    deinit {
-        NotificationCenter.default.removeObserver(self)
-    }
-    
-    @objc func handleForeground() {
-        start()
-    }
-    
-    @objc func handleBackground() {
-        unsubscribe()
-            .andThen(disconnect())
-            .subscribe()
-            .disposed(by: disposeBag)
     }
 }
 
@@ -109,7 +76,7 @@ extension OrderServiceImpl: OrderServiceWebSocket {
         let payload = [
             "Authorization" : token,
             "accept-version" : "1.1",
-            "heart-beat" : "1000,1000"
+            "heart-beat" : "5000,5000"
         ]
         let message = ConnectMessageBuilder().build(with: payload)
         socket?.write(string: message)
@@ -180,16 +147,13 @@ extension OrderServiceImpl: OrderServiceWebSocket {
     }
     
     private func handleErrorModel(_ model: MessageModel) {
-        self.disconnectAndStart()
-    }
-    
-    @objc private func disconnectAndStart() {
-        disconnect()
-            .observeOn(ConcurrentDispatchQueueScheduler(qos: .background))
-            .retry(maxAttempts: 1, delay: 60)
-            .subscribe { [weak self] in
-                self?.start()
-            }.disposed(by: disposeBag)
+      unsubscribe()
+          .andThen(disconnect())
+          .subscribe { [weak self] in
+              self?.start()
+          } onError: { [weak self] _ in
+              self?.handleMessage(MessageModel.errorMessage)
+          }.disposed(by: disposeBag)
     }
 }
 

@@ -69,11 +69,11 @@ class P2POrderDetailsViewController: UIViewController {
     statusView.update(status: TradeOrderStatus(rawValue: order.status ?? 1) ?? .new)
     setupPaymenMethodsView(order: order)
     
-    guard let makerId = order.makerPublicId,
-          let tradeRate = order.makerTradingRate,
-          let totalTrades = order.makerTotalTrades else { return }
-    
-    tradeRateView.setup(markerId: makerId, statusImage: nil, rate: tradeRate, totalTrades: totalTrades, distance: currentDistance)
+    tradeRateView.setup(markerId: viewModel.makerId,
+                        statusImage: nil,
+                        rate: viewModel.tradingRate,
+                        totalTrades: viewModel.totalTrdades,
+                        distance: currentDistance)
     
     myScoreView.setup(title: localize(L.P2p.Order.Details.My.score), score: myRate)
     partnerScoreView.setup(title: localize(L.P2p.Order.Details.Score.From.partner), score: order.makerTradingRate.toString())

@@ -46,46 +46,12 @@ class TradeServiceImpl: TradeSocketService {
         self.walletStorage = walletStorage
         self.errorService = errorService
         self.socketURL = socketURL
-        
-        subscribeSystemNotifications()
     }
     
     func getTrade() -> Observable<Trade> {
         return tradeProperty.asObservable().filter { trade -> Bool in
             return trade.id != nil
         }
-    }
-    
-    func subscribeSystemNotifications() {
-        NotificationCenter.default.addObserver(self,
-                                               selector: #selector(handleForeground),
-                                               name: UIApplication.willEnterForegroundNotification,
-                                               object: nil)
-        NotificationCenter.default.addObserver(self,
-                                               selector: #selector(handleBackground),
-                                               name: UIApplication.didEnterBackgroundNotification,
-                                               object:nil)
-        
-        let  notificationName = Notification.Name(RefreshCredentialsConstants.refreshNotificationName)
-        NotificationCenter.default.addObserver(self,
-                                               selector: #selector(disconnectAndStart),
-                                               name: notificationName,
-                                               object:nil)
-    }
-    
-    deinit {
-        NotificationCenter.default.removeObserver(self)
-    }
-    
-    @objc func handleForeground() {
-        start()
-    }
-    
-    @objc func handleBackground() {
-        unsubscribe()
-            .andThen(disconnect())
-            .subscribe()
-            .disposed(by: disposeBag)
     }
 }
 
@@ -109,7 +75,7 @@ extension TradeServiceImpl: TradeServiceWebSocket {
         let payload = [
             "Authorization" : token,
             "accept-version" : "1.1",
-            "heart-beat" : "1000,1000"
+            "heart-beat" : "5000,5000"
         ]
         let message = ConnectMessageBuilder().build(with: payload)
         socket?.write(string: message)
@@ -180,17 +146,15 @@ extension TradeServiceImpl: TradeServiceWebSocket {
     }
     
     private func handleErrorModel(_ model: MessageModel) {
-        self.disconnectAndStart()
+      unsubscribe()
+          .andThen(disconnect())
+          .subscribe { [weak self] in
+              self?.start()
+          } onError: { [weak self] _ in
+              self?.handleMessage(MessageModel.errorMessage)
+          }.disposed(by: disposeBag)
     }
-    
-    @objc private func disconnectAndStart() {
-        disconnect()
-            .observeOn(ConcurrentDispatchQueueScheduler(qos: .background))
-            .retry(maxAttempts: 1, delay: 60)
-            .subscribe { [weak self] in
-                self?.start()
-            }.disposed(by: disposeBag)
-    }
+
 }
 
 extension TradeServiceImpl: WebSocketDelegate {

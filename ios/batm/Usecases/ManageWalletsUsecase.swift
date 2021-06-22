@@ -4,7 +4,7 @@ import RxCocoa
 
 protocol ManageWalletsUsecase {
   func getCoins() -> Single<[BTMCoin]>
-  func changeVisibility(of coin: BTMCoin) -> Completable
+  func changeVisibility(of coin: BTMCoin) -> Single<Bool>
 }
 
 class ManageWalletsUsecaseImpl: ManageWalletsUsecase {
@@ -24,12 +24,12 @@ class ManageWalletsUsecaseImpl: ManageWalletsUsecase {
     return walletStorage.get().map { $0.coins }
   }
   
-  func changeVisibility(of coin: BTMCoin) -> Completable {
+  func changeVisibility(of coin: BTMCoin) -> Single<Bool> {
     return  walletStorage.changeVisibility(of: coin).andThen(changeVisibilityRequest(coin: coin))
   }
   
-  func changeVisibilityRequest(coin: BTMCoin) -> Completable {
+  func changeVisibilityRequest(coin: BTMCoin) -> Single<Bool> {
     return accountStorage.get()
-      .flatMapCompletable { [api] account in api.manageCoins(userId: account.userId, coin: coin.type.code, visible: !coin.isVisible)}
+      .flatMap{ [api] account in api.manageCoins(userId: account.userId, coin: coin.type.code, visible: !coin.isVisible)}
   }
 }

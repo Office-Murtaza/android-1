@@ -37,6 +37,7 @@ class WalletPresenter: ModulePresenter, WalletModule {
         
         input.refresh
             .asObservable()
+            .observeOn(MainScheduler())
             .doOnNext { [store] in store.action.accept(.startFetching) }
             .flatMap { [unowned self] in
                 self.track(self.usecase.getCoinsBalance())

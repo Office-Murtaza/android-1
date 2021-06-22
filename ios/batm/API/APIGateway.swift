@@ -81,7 +81,7 @@ protocol APIGateway {
   func submitTradeRequest(userId: String, data: SubmitTradeRequestData) -> Completable
   func submitTrade(userId: String, data: SubmitTradeData) -> Completable
   func getStakeDetails(userId: String, type: CustomCoinType) -> Single<StakeDetails>
-  func manageCoins(userId: String, coin: String, visible: Bool) -> Completable
+  func manageCoins(userId: String, coin: String, visible: Bool) -> Single<Bool>
   func getPriceChart(type: CustomCoinType, period: SelectedPeriod) -> Single<PriceChartDetails>
   func getTrades(userId: String) -> Single<Trades>
   func createTrade(userId: String, data: P2PCreateTradeDataModel) -> Single<Trade>
@@ -376,9 +376,9 @@ final class APIGatewayImpl: APIGateway {
     return execute(request)
   }
   
-  func manageCoins(userId: String, coin: String, visible: Bool) -> Completable {
+  func manageCoins(userId: String, coin: String, visible: Bool) -> Single<Bool> {
     let request = ManageCoinsRequest(userId: userId, coinId: coin, isVisible: String(visible))
-    return execute(request)
+    return execute(request).map { $0.result }
   }
     
   func getTrades(userId: String) -> Single<Trades> {

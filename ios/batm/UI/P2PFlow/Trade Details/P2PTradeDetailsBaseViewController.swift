@@ -5,14 +5,20 @@ protocol P2PTradeDetailsCreateOrderDelegate: AnyObject {
     func didTapDistance(trade: Trade)
 }
 
+protocol P2PTradeDetailsBaseViewControllerNavDelegate: AnyObject {
+  func willDismiss()
+}
+
 class P2PTradeDetailsBaseViewController: UIViewController {
   
   var trade: Trade?
   private let scrollView = UIScrollView()
   let coinInfoView = P2PTradeDetailsCoinInfoView()
   
-    private let paymentMethods = P2PTradeDetailsPaymentMethodsView()
+  private let paymentMethods = P2PTradeDetailsPaymentMethodsView()
   let paymentMethodsSeparator = P2PSeparatorView()
+  
+  weak var navigationDelegate: P2PTradeDetailsBaseViewControllerNavDelegate?
   
   lazy var stackView: UIStackView = {
     let stack = UIStackView()
@@ -27,6 +33,11 @@ class P2PTradeDetailsBaseViewController: UIViewController {
     setupLayout()
   }
 
+  override func viewWillDisappear(_ animated: Bool) {
+    super.viewWillDisappear(animated)
+    navigationDelegate?.willDismiss()
+  }
+  
   func setup(trade: Trade) {
     self.trade = trade
     let infoModel = P2PTradeDetailsCoinInfoModel(trade: trade)
@@ -35,6 +46,7 @@ class P2PTradeDetailsBaseViewController: UIViewController {
   }
   
   func setupPaymenMethodsView(trade: Trade) {
+    paymentMethods.removeAll()
     guard let methods = trade.paymentMethods else { return }
     let images =  methods
         .components(separatedBy: ",")

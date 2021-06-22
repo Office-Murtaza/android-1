@@ -2,10 +2,14 @@ import UIKit
 import RxSwift
 import RxCocoa
 
+protocol ManageWalletsTableViewDataSourceDelegate: AnyObject {
+  func changedVisibility(coin: BTMCoin, cell: ManageWalletsCell)
+}
+
 final class ManageWalletsTableViewDataSource: NSObject, UITableViewDataSource, HasDisposeBag {
   
   let coinsRelay = BehaviorRelay<[BTMCoin]>(value: [])
-  let changeVisibilityRelay = PublishRelay<BTMCoin>()
+  weak var delegate: ManageWalletsTableViewDataSourceDelegate?
   
   private var values: [BTMCoin] = [] {
     didSet {
@@ -30,7 +34,9 @@ final class ManageWalletsTableViewDataSource: NSObject, UITableViewDataSource, H
   
   private func setupBindings() {
     coinsRelay
-      .subscribe(onNext: { [unowned self] in self.values = $0 })
+      .subscribe(onNext: { [unowned self] in
+                  self.values = $0
+      })
       .disposed(by: disposeBag)
   }
   
@@ -48,7 +54,9 @@ final class ManageWalletsTableViewDataSource: NSObject, UITableViewDataSource, H
 }
 
 extension ManageWalletsTableViewDataSource: ManageWalletsCellDelegate {
-  func didTapChangeVisibility(_ coin: BTMCoin) {
-    changeVisibilityRelay.accept(coin)
+  func didTapChangeVisibility(cell: ManageWalletsCell) {
+    guard  let index = tableView?.indexPath(for: cell)?.row else { return }
+    let coin = values[index]
+    delegate?.changedVisibility(coin: coin, cell: cell)
   }
 }
