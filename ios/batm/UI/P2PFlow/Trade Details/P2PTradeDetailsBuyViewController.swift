@@ -35,7 +35,7 @@ class P2PTradeDetailsBuyViewController: P2PTradeDetailsBaseViewController {
       buyButton
     ])
     
-    infoMessageView.update(message: localize(L.P2p.Trade.Details.info))
+    infoMessageView.update(message: trade?.terms ?? "")
     
     buyButton.addTarget(self, action: #selector(buyTrade), for: .touchUpInside)
   

@@ -102,5 +102,9 @@ class MyOrderViewModel {
   var totalTrdades: Double {
     return (order.makerUserId == userId ? order.takerTotalTrades : order.makerTotalTrades) ?? 0
   }
+  
+  var terms: String {
+    return order.terms ?? ""
+  }
 
 }
