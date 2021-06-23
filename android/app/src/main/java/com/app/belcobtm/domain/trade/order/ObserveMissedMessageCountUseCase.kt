@@ -15,7 +15,7 @@ class ObserveMissedMessageCountUseCase(private val tradeRepository: TradeReposit
         tradeRepository.observeTradeData()
             .map {
                 ((it?.map { tradeData ->
-                    tradeData.orders.getValue(orderId).chatHistory
+                    tradeData.orders[orderId]?.chatHistory.orEmpty()
                 } ?: Either.Right(emptyList())) as Either.Right<List<ChatMessageItem>>).b
             }.combine(tradeRepository.observeLastSeenMessageTimestamp()) { chat, timestamp ->
                 chat.count {

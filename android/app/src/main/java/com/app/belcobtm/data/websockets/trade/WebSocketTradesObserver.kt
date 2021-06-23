@@ -3,114 +3,64 @@ package com.app.belcobtm.data.websockets.trade
 import com.app.belcobtm.data.disk.shared.preferences.SharedPreferencesHelper
 import com.app.belcobtm.data.inmemory.trade.TradeInMemoryCache
 import com.app.belcobtm.data.rest.trade.response.TradeItemResponse
+import com.app.belcobtm.data.rest.trade.response.TradeOrderItemResponse
 import com.app.belcobtm.data.websockets.base.SocketClient
 import com.app.belcobtm.data.websockets.base.model.SocketResponse
+import com.app.belcobtm.data.websockets.base.model.SocketState
 import com.app.belcobtm.data.websockets.base.model.StompSocketRequest
 import com.app.belcobtm.data.websockets.base.model.StompSocketResponse
+import com.app.belcobtm.data.websockets.manager.SocketManager
+import com.app.belcobtm.data.websockets.manager.SocketManager.Companion.DESTINATION_HEADER
+import com.app.belcobtm.data.websockets.manager.SocketManager.Companion.ID_HEADER
+import com.app.belcobtm.data.websockets.manager.WebSocketManager
+import com.app.belcobtm.data.websockets.order.WebSocketOrdersObserver
 import com.app.belcobtm.data.websockets.serializer.RequestSerializer
 import com.app.belcobtm.data.websockets.serializer.ResponseDeserializer
+import com.app.belcobtm.domain.mapSuspend
 import com.app.belcobtm.presentation.core.Endpoint
 import com.squareup.moshi.Moshi
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.filterIsInstance
+import kotlinx.coroutines.flow.filterNotNull
 
 class WebSocketTradesObserver(
-    private val socketClient: SocketClient,
-    private val moshi: Moshi,
+    private val socketManager: WebSocketManager,
     private val tradeInMemoryCache: TradeInMemoryCache,
-    private val sharedPreferencesHelper: SharedPreferencesHelper,
-    private val serializer: RequestSerializer<StompSocketRequest>,
-    private val deserializer: ResponseDeserializer<StompSocketResponse>,
+    private val moshi: Moshi,
+    private val sharedPreferencesHelper: SharedPreferencesHelper
 ) : TradesObserver {
 
     private val ioScope = CoroutineScope(Dispatchers.IO)
     private var reconnectCounter = 0
 
     private companion object {
-        const val MAX_RECONNECT_AMOUNT = 5
-        const val ID_HEADER = "id"
-        const val AUTH_HEADER = "Authorization"
-
-        const val DESTINATION_HEADER = "destination"
         const val DESTINATION_VALUE = "/topic/trade"
-
-        const val ACCEPT_VERSION_HEADER = "accept-version"
-        const val ACCEPT_VERSION_VALUE = "1.1"
-
-        const val HEARTBEAT_HEADER = "heart-beat"
-        const val HEARTBEAT_VALUE = "1000,1000"
-    }
-
-    init {
-        ioScope.launch {
-            socketClient.observeMessages()
-                .collect {
-                    when (it) {
-                        is SocketResponse.Opened -> onOpened()
-                        is SocketResponse.Failure -> {
-                            if (reconnectCounter <= MAX_RECONNECT_AMOUNT) {
-                                reconnectCounter++
-                                delay(reconnectCounter * 1000L)
-                                connect()
-                            }
-                        }
-                        is SocketResponse.Message ->
-                            processMessage(it.content)
-                    }
-                }
-        }
     }
 
     override suspend fun connect() {
-        withContext(ioScope.coroutineContext) {
-            reconnectCounter = 0
-            socketClient.connect(Endpoint.SOCKET_URL)
-        }
+        socketManager.observeSocketState()
+            .filterIsInstance<SocketState.Connected>()
+            .collect {
+                val request = StompSocketRequest(
+                    StompSocketRequest.SUBSCRIBE, mapOf(
+                        ID_HEADER to sharedPreferencesHelper.userPhone,
+                        DESTINATION_HEADER to DESTINATION_VALUE
+                    )
+                )
+                socketManager.subscribe(DESTINATION_VALUE, request)
+                    .filterNotNull()
+                    .collect { response ->
+                        response.mapSuspend {
+                            moshi.adapter(TradeItemResponse::class.java)
+                                .fromJson(it.body)
+                                ?.let(tradeInMemoryCache::updateTrades)
+                        }
+                    }
+            }
     }
 
     override suspend fun disconnect() {
-        withContext(ioScope.coroutineContext) {
-            val request = StompSocketRequest(
-                StompSocketRequest.UNSUBSCRIBE, mapOf(
-                    DESTINATION_HEADER to DESTINATION_VALUE
-                )
-            )
-            socketClient.sendMessage(serializer.serialize(request))
-            socketClient.close(1000)
-        }
-    }
-
-    private suspend fun processMessage(content: String) {
-        val response = deserializer.deserialize(content)
-        when (response.status) {
-            StompSocketResponse.CONNECTED -> subscribe()
-            StompSocketResponse.ERROR -> connect()
-            StompSocketResponse.CONTENT -> {
-                moshi.adapter(TradeItemResponse::class.java)
-                    .fromJson(response.body)
-                    ?.let(tradeInMemoryCache::updateTrades)
-            }
-        }
-    }
-
-    private fun subscribe() {
-        val request = StompSocketRequest(
-            StompSocketRequest.SUBSCRIBE, mapOf(
-                ID_HEADER to sharedPreferencesHelper.userPhone,
-                DESTINATION_HEADER to DESTINATION_VALUE
-            )
-        )
-        socketClient.sendMessage(serializer.serialize(request))
-    }
-
-    private fun onOpened() {
-        val request = StompSocketRequest(
-            StompSocketRequest.CONNECT, mapOf(
-                ACCEPT_VERSION_HEADER to ACCEPT_VERSION_VALUE,
-                AUTH_HEADER to sharedPreferencesHelper.accessToken,
-                HEARTBEAT_HEADER to HEARTBEAT_VALUE
-            )
-        )
-        socketClient.sendMessage(serializer.serialize(request))
+        socketManager.unsubscribe(DESTINATION_VALUE)
     }
 }

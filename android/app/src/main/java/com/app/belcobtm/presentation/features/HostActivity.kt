@@ -13,10 +13,12 @@ import com.app.belcobtm.domain.authorization.interactor.AuthorizationStatusGetUs
 import com.app.belcobtm.domain.authorization.interactor.ClearAppDataUseCase
 import com.app.belcobtm.presentation.features.pin.code.PinCodeFragment
 import org.koin.android.ext.android.inject
+import org.koin.android.viewmodel.ext.android.viewModel
 
 class HostActivity : AppCompatActivity() {
     private val authorizationStatusUseCase: AuthorizationStatusGetUseCase by inject()
     private val clearAppDataUseCase: ClearAppDataUseCase by inject()
+    private val hostViewModel: HostViewModel by viewModel()
 
     companion object {
         const val FORCE_UNLINK_KEY = "force.unlink.key"
@@ -55,6 +57,11 @@ class HostActivity : AppCompatActivity() {
                 bundleOf(PinCodeFragment.TAG_PIN_MODE to mode)
             )
         )
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        hostViewModel.disconnectFromSocket()
     }
 
     fun showAuthorizationScreen() {

@@ -4,7 +4,7 @@ import com.app.belcobtm.data.model.trade.Order
 import com.app.belcobtm.data.rest.trade.response.TradeOrderItemResponse
 import com.app.belcobtm.presentation.features.wallet.trade.order.chat.model.ChatMessageItem
 
-class OrderResponseToOrderMapper() {
+class OrderResponseToOrderMapper {
 
     fun map(
         trade: TradeOrderItemResponse,
@@ -14,11 +14,11 @@ class OrderResponseToOrderMapper() {
             Order(
                 id, tradeId, coin, status, timestamp,
                 price, cryptoAmount, fiatAmount, terms,
-                makerUserId, makerStatus, makerPublicId, makerLatitude,
-                makerLongitude, makerTotalTrades, makerTradingRate,
-                takerUserId, takerStatus, takerPublicId, takerLatitude,
-                takerLongitude, takerTotalTrades, takerTradingRate,
-                chatHistory
+                makerUserId, makerStatus, makerRate, makerPublicId,
+                makerLatitude, makerLongitude, makerTotalTrades,
+                makerTradingRate, takerUserId, takerStatus, takerRate,
+                takerPublicId, takerLatitude, takerLongitude,
+                takerTotalTrades, takerTradingRate, chatHistory
             )
         }
 }

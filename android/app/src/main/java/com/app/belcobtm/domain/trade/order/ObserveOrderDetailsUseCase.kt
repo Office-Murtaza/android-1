@@ -22,7 +22,7 @@ class ObserveOrderDetailsUseCase(
         tradeRepository.observeTradeData()
             .map {
                 it?.map { tradeData ->
-                    mapper.map(tradeData.orders.getValue(params), tradeData, sharedPreferencesHelper.userId)
+                    mapper.map(tradeData.orders[params], tradeData, sharedPreferencesHelper.userId)
                 } ?: Either.Left(Failure.ServerError())
             }.flowOn(Dispatchers.Default)
 
