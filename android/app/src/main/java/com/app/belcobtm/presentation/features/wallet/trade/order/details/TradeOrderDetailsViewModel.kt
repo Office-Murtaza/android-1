@@ -211,24 +211,25 @@ class TradeOrderDetailsViewModel(
         _fiatAmount.value = order.fiatAmountFormatted
         _distance.value = order.distanceFormatted
         this._partnerPublicId.value = order.trade.makerPublicId
+        val isOrderResolved = with(order.orderStatus) {
+            statusId == OrderStatus.RELEASED || statusId == OrderStatus.SOLVED
+        }
         if (order.myTradeId == order.makerId) {
-            _myScore.value = order.makerTradingRate
-            _partnerScore.value = order.takerTradingRate
+            _myScore.value = order.makerRate
+            _partnerScore.value = order.takerRate
+            _openRateScreen.value = order.makerRate == null && isOrderResolved
             this._partnerPublicId.value = order.takerPublicId
             _partnerId.value = order.takerId
-            _openRateScreen.value =
-                order.makerTradingRate == null && order.orderStatus.statusId == OrderStatus.RELEASED
             partnerLat = order.takerLatitude
             partnerLong = order.takerLongitude
             _partnerTradeRate.value = order.takerTradingRate ?: 0.0
             _partnerTotalTrades.value = order.takerTotalTradesFormatted
         } else {
-            _myScore.value = order.takerTradingRate
-            _partnerScore.value = order.makerTradingRate
+            _myScore.value = order.takerRate
+            _partnerScore.value = order.makerRate
+            _openRateScreen.value = order.takerRate == null && isOrderResolved
             this._partnerPublicId.value = order.makerPublicId
             _partnerId.value = order.makerId
-            _openRateScreen.value =
-                order.takerTradingRate == null && order.orderStatus.statusId == OrderStatus.RELEASED
             partnerLat = order.makerLatitude
             partnerLong = order.makerLongitude
             _partnerTradeRate.value = order.makerTradingRate ?: 0.0

@@ -14,11 +14,11 @@ class OrderResponseToOrderMapper() {
             Order(
                 id, tradeId, coin, status, timestamp,
                 price, cryptoAmount, fiatAmount, terms,
-                makerUserId, makerStatus, makerPublicId, makerLatitude,
-                makerLongitude, makerTotalTrades, makerTradingRate,
-                takerUserId, takerStatus, takerPublicId, takerLatitude,
-                takerLongitude, takerTotalTrades, takerTradingRate,
-                chatHistory
+                makerUserId, makerStatus, makerRate, makerPublicId,
+                makerLatitude, makerLongitude, makerTotalTrades,
+                makerTradingRate, takerUserId, takerStatus, takerRate,
+                takerPublicId, takerLatitude, takerLongitude,
+                takerTotalTrades, takerTradingRate, chatHistory
             )
         }
 }

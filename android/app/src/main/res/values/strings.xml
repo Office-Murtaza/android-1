@@ -690,8 +690,8 @@
     <string name="good_rating_label">Very good</string>
     <string name="perfect_rating_label">Awesome</string>
     <string name="send_message_error">Failed to send message please try again</string>
-    <string name="my_score_label">My Score</string>
-    <string name="score_from_a_partner_label">Partner Score</string>
+    <string name="my_score_label">My Rate</string>
+    <string name="score_from_a_partner_label">Partner Rate</string>
     <string name="trade_order_details_crypto_amount_label">Crypto Amount</string>
     <string name="trade_order_details_fiat_amount">Fiat Amount</string>
     <string name="cannot_perform_swap_error">Cannot perform swap</string>
@@ -709,4 +709,5 @@
     <string name="status">Status</string>
     <string name="create_order_dialog_platform_fee_label">Platform Fee</string>
     <string name="create_order_dialog_reserved_label">Reserved</string>
+    <string name="trade_order_details_not_rated_label">Not Rated Yet</string>
 </resources>

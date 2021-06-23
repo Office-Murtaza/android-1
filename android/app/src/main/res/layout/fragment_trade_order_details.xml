@@ -431,7 +431,6 @@
             android:textColor="@color/black_text_color"
             android:textSize="14sp"
             android:textStyle="bold"
-            app:drawableStartCompat="@drawable/ic_grade"
             app:layout_constraintBottom_toBottomOf="@id/my_score_label"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="1"
@@ -474,7 +473,6 @@
             android:textColor="@color/black_text_color"
             android:textSize="14sp"
             android:textStyle="bold"
-            app:drawableStartCompat="@drawable/ic_grade"
             app:layout_constraintBottom_toBottomOf="@id/partner_score_label"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="1"
@@ -488,7 +486,7 @@
             android:layout_height="wrap_content"
             android:visibility="gone"
             app:constraint_referenced_ids="partner_score_label,partner_score_value,my_score_divider,my_score_label,my_score_value"
-            tools:visibility="gone" />
+            tools:visibility="visible" />
 
         <Button
             android:id="@+id/primary_action_button"

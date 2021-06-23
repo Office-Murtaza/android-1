@@ -28,21 +28,23 @@ class TradeOrderDataToItemMapper(
             val cachedTrade = tradeData.trades[tradeId] ?: return@with null
             val trade = tradeItemMapper.map(cachedTrade)
             OrderItem(
-                id, trade, myId, resolveTradeType(order, trade, myId), LocalCoinType.valueOf(coinCode),
+                id, trade, myId, resolveTradeType(order, trade, myId),
+                LocalCoinType.valueOf(coinCode),
                 OrderStatusItem(status, getStatusLabel(status), getStatusDrawable(status)),
                 timestamp, price, priceFormatter.format(price),
                 cryptoAmount, fiatAmount, priceFormatter.format(fiatAmount),
-                trade.paymentMethods, terms, makerId, makerStatusId, statusMapper.map(makerStatusId),
-                makerPublicId, makerLatitude, makerLongitude, makerTotalTrades,
+                trade.paymentMethods, terms, makerId, makerStatusId,
+                statusMapper.map(makerStatusId),
+                makerRate, makerPublicId, makerLatitude, makerLongitude, makerTotalTrades,
                 tradeCountFormatter.format(makerTotalTrades), makerTradingRate,
-                takerId, takerStatusId, statusMapper.map(takerStatusId), takerPublicId,
+                takerId, takerStatusId, statusMapper.map(takerStatusId), takerRate, takerPublicId,
                 takerLatitude, takerLongitude, takerTotalTrades,
                 tradeCountFormatter.format(takerTotalTrades), takerTradingRate,
                 formatDistance()
             )
         }
 
-    private fun Order.formatDistance(): String?  {
+    private fun Order.formatDistance(): String? {
         takerLatitude ?: return null
         takerLongitude ?: return null
         makerLatitude ?: return null

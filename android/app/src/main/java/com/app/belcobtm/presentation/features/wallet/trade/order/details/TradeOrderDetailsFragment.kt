@@ -33,8 +33,10 @@ class TradeOrderDetailsFragment : BaseFragment<FragmentTradeOrderDetailsBinding>
 
     override val retryListener: View.OnClickListener = View.OnClickListener {
         val initialLoadingState: LoadingData<Unit>? = viewModel.initialLoadingData.value
-        val primaryActionLoadingState: LoadingData<Unit>? = viewModel.primaryActionUpdateLoadingData.value
-        val secondaryActionLoadingState: LoadingData<Unit>? = viewModel.secondaryActionUpdateLoadingData.value
+        val primaryActionLoadingState: LoadingData<Unit>? =
+            viewModel.primaryActionUpdateLoadingData.value
+        val secondaryActionLoadingState: LoadingData<Unit>? =
+            viewModel.secondaryActionUpdateLoadingData.value
         when {
             initialLoadingState != null && initialLoadingState is LoadingData.Error ->
                 viewModel.fetchInitialData(args.orderId)
@@ -52,10 +54,17 @@ class TradeOrderDetailsFragment : BaseFragment<FragmentTradeOrderDetailsBinding>
         }
     }
 
-    override fun createBinding(inflater: LayoutInflater, container: ViewGroup?): FragmentTradeOrderDetailsBinding =
+    override fun createBinding(
+        inflater: LayoutInflater,
+        container: ViewGroup?
+    ): FragmentTradeOrderDetailsBinding =
         FragmentTradeOrderDetailsBinding.inflate(inflater, container, false)
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         val root = super.onCreateView(inflater, container, savedInstanceState)
         viewModel.fetchInitialData(args.orderId)
         return root
@@ -109,10 +118,22 @@ class TradeOrderDetailsFragment : BaseFragment<FragmentTradeOrderDetailsBinding>
             ratingGroup.toggle(it.statusId == OrderStatus.RELEASED || it.statusId == OrderStatus.SOLVED)
         }
         viewModel.partnerScore.observe(viewLifecycleOwner) {
-            partnerScoreValue.text = it.toString()
+            if (it == null) {
+                partnerScoreValue.setText(R.string.trade_order_details_not_rated_label)
+                partnerScoreValue.setDrawableStart(0)
+            } else {
+                partnerScoreValue.text = it.toString()
+                partnerScoreValue.setDrawableStart(R.drawable.ic_grade)
+            }
         }
         viewModel.myScore.observe(viewLifecycleOwner) {
-            myScoreValue.text = it.toString()
+            if (it == null) {
+                myScoreValue.setText(R.string.trade_order_details_not_rated_label)
+                myScoreValue.setDrawableStart(0)
+            } else {
+                myScoreValue.text = it.toString()
+                myScoreValue.setDrawableStart(R.drawable.ic_grade)
+            }
         }
         viewModel.distance.observe(viewLifecycleOwner) {
             binding.distanceLabel.text = it
@@ -141,12 +162,22 @@ class TradeOrderDetailsFragment : BaseFragment<FragmentTradeOrderDetailsBinding>
                     setBackgroundResource(R.drawable.trade_type_buy_background)
                     setDrawableStart(R.drawable.ic_trade_type_buy)
                     setText(R.string.trade_type_buy_label)
-                    setTextColor(ContextCompat.getColor(binding.root.context, R.color.trade_type_buy_trade_text_color))
+                    setTextColor(
+                        ContextCompat.getColor(
+                            binding.root.context,
+                            R.color.trade_type_buy_trade_text_color
+                        )
+                    )
                 } else {
                     setBackgroundResource(R.drawable.trade_type_sell_background)
                     setDrawableStart(R.drawable.ic_trade_type_sell)
                     setText(R.string.trade_type_sell_label)
-                    setTextColor(ContextCompat.getColor(binding.root.context, R.color.trade_type_sell_trade_text_color))
+                    setTextColor(
+                        ContextCompat.getColor(
+                            binding.root.context,
+                            R.color.trade_type_sell_trade_text_color
+                        )
+                    )
                 }
             }
         }
@@ -183,7 +214,8 @@ class TradeOrderDetailsFragment : BaseFragment<FragmentTradeOrderDetailsBinding>
     }
 
     private fun copyToClipboard(copiedText: String) {
-        val clipboard = requireContext().getSystemService(AppCompatActivity.CLIPBOARD_SERVICE) as ClipboardManager
+        val clipboard =
+            requireContext().getSystemService(AppCompatActivity.CLIPBOARD_SERVICE) as ClipboardManager
         val clip = ClipData.newPlainText(copiedText, copiedText)
         clipboard.setPrimaryClip(clip)
         AlertHelper.showToastShort(requireContext(), R.string.copied)
