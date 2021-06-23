@@ -127,36 +127,6 @@ final class AppAssembly: Assembly {
                                 socketURL: socketURL)
     }.inObjectScope(.container)
     
-    container.register(TradeSocketService.self) { ioc in
-      let api = ioc.resolve(APIGateway.self)!
-      let accountStorage = ioc.resolve(AccountStorage.self)!
-      let walletStorage = ioc.resolve(BTMWalletStorage.self)!
-      let errorService = ioc.resolve(ErrorService.self)!
-     
-      let socketURL = ioc.resolve(URL.self, name: Keys.socketUrl.rawValue)!
-      
-      return TradeServiceImpl(api: api,
-                              accountStorage: accountStorage,
-                              walletStorage: walletStorage,
-                              errorService: errorService,
-                              socketURL: socketURL)
-    }.inObjectScope(.container)
-    
-    container.register(OrderSocketService.self) { ioc in
-      let api = ioc.resolve(APIGateway.self)!
-      let accountStorage = ioc.resolve(AccountStorage.self)!
-      let walletStorage = ioc.resolve(BTMWalletStorage.self)!
-      let errorService = ioc.resolve(ErrorService.self)!
-     
-      let socketURL = ioc.resolve(URL.self, name: Keys.socketUrl.rawValue)!
-      
-      return OrderServiceImpl(api: api,
-                              accountStorage: accountStorage,
-                              walletStorage: walletStorage,
-                              errorService: errorService,
-                              socketURL: socketURL)
-    }.inObjectScope(.container)
-  
   }
   
   fileprivate func assembleUsecases(container: Container) {
@@ -251,14 +221,10 @@ final class AppAssembly: Assembly {
     container.register(PinCodeUsecase.self) { ioc in
       let pinCodeStorage = ioc.resolve(PinCodeStorage.self)!
       let refreshService = ioc.resolve(RefreshCredentialsService.self)!
-        let tradeService = ioc.resolve(TradeSocketService.self)!
         let mainSocketService = ioc.resolve(MainSocketService.self)!
-        let ordersService = ioc.resolve(OrderSocketService.self)!
       return PinCodeUsecaseImpl(pinCodeStorage: pinCodeStorage,
                                 refreshService: refreshService,
-                                tradeService: tradeService,
-                                mainSocketService: mainSocketService,
-                                ordersService: ordersService)
+                                mainSocketService: mainSocketService)
       }.inObjectScope(.container)
     container.register(PinCodeService.self) { ioc in
       let pinCodeStorage = ioc.resolve(PinCodeStorage.self)!
@@ -289,8 +255,8 @@ final class AppAssembly: Assembly {
     container.register(Module<PinCodeModule>.self, name: Keys.pinCodeModule.rawValue) { resolver in
       let viewController = PinCodeViewController()
       let usecase = resolver.resolve(PinCodeUsecase.self)!
-      let balanceService = resolver.resolve(MainSocketService.self)!
-      let presenter = PinCodePresenter(usecase: usecase, balanceService: balanceService)
+      let mainSocketService = resolver.resolve(MainSocketService.self)!
+      let presenter = PinCodePresenter(usecase: usecase, mainSocketService: mainSocketService)
       
       presenter.delegate = resolver.resolve(PinCodeVerificationModuleDelegate.self)
       viewController.presenter = presenter

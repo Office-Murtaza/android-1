@@ -10,27 +10,20 @@ protocol PinCodeUsecase {
     func save(pinCode: String) -> Completable
     func verify(pinCode: String) -> Completable
     func refresh() -> Completable
-    func startTrades()
-    func startOrdersUpdates()
+    func startSocketService()
 }
 
 class PinCodeUsecaseImpl: PinCodeUsecase {
     let pinCodeStorage: PinCodeStorage
     let refreshService: RefreshCredentialsService
-    let tradeService: TradeSocketService
     let mainSocketService: MainSocketService
-    let ordersService: OrderSocketService
   
     init(pinCodeStorage: PinCodeStorage,
          refreshService: RefreshCredentialsService,
-         tradeService: TradeSocketService,
-         mainSocketService: MainSocketService,
-         ordersService: OrderSocketService) {
+         mainSocketService: MainSocketService) {
         self.pinCodeStorage = pinCodeStorage
         self.refreshService = refreshService
-        self.tradeService = tradeService
         self.mainSocketService = mainSocketService
-        self.ordersService = ordersService
     }
     
     func get() -> Single<String> {
@@ -55,11 +48,7 @@ class PinCodeUsecaseImpl: PinCodeUsecase {
         return refreshService.refresh()
     }
   
-    func startTrades() {
-        tradeService.start()
-    }
-
-    func startOrdersUpdates() {
-        ordersService.start()
+    func startSocketService() {
+        mainSocketService.start()
     }
 }
