@@ -45,18 +45,19 @@ class P2PPresenter: ModulePresenter, P2PModule {
       .disposed(by: disposeBag)
     
     fetchDataRelay.accept(())
-    
+  }
+  
+  func subscribeOnSockets() {
     tradeSocketService?.start()
     orderSocketService?.start()
     
     tradeSocketService?.getTrade().subscribe(onNext: { [weak self] (trade) in
-        self?.socketTrade.accept(trade)
+      self?.socketTrade.accept(trade)
     }).disposed(by: disposeBag)
     
     orderSocketService?.getOrder().subscribe(onNext: { [weak self] (order) in
       self?.updatedOrder.accept(order)
     }).disposed(by: disposeBag)
-    
   }
   
   func didTap(type: OrderDetailsActionType, model: MyOrderViewModel) {
