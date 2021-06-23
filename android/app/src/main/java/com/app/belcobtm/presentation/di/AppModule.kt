@@ -19,6 +19,7 @@ import com.app.belcobtm.presentation.core.parser.StringParser
 import com.app.belcobtm.presentation.core.provider.string.ResourceStringProvider
 import com.app.belcobtm.presentation.core.provider.string.StringProvider
 import com.app.belcobtm.presentation.core.validator.PhoneNumberValidator
+import com.app.belcobtm.presentation.features.HostViewModel
 import com.app.belcobtm.presentation.features.atm.AtmViewModel
 import com.app.belcobtm.presentation.features.authorization.create.seed.CreateSeedViewModel
 import com.app.belcobtm.presentation.features.authorization.create.wallet.CreateWalletViewModel
@@ -78,7 +79,7 @@ val viewModelModule = module {
     viewModel { (coinCode: String) -> TransactionsViewModel(coinCode, get(), get(), get(), get()) }
     viewModel { RecoverWalletViewModel(get(), get<PhoneNumberValidator>()) }
     viewModel { CreateWalletViewModel(get(), get<PhoneNumberValidator>()) }
-    viewModel { PinCodeViewModel(get(), get(), get(), get(), get(), get(), get(), get()) }
+    viewModel { PinCodeViewModel(get(), get(), get(), get(), get(), get(), get(), get(), get()) }
     viewModel { VerificationInfoViewModel(get(), get(named(DOUBLE_CURRENCY_PRICE_FORMATTER_QUALIFIER))) }
     viewModel { VerificationBlankViewModel(get(), get()) }
     viewModel { VerificationVipViewModel(get()) }
@@ -101,7 +102,7 @@ val viewModelModule = module {
     viewModel { (coinCode: String) -> WithdrawViewModel(coinCode, get(), get(), get(), get()) }
     viewModel { (coinCode: String) -> DepositViewModel(coinCode, get()) }
     viewModel { ContactListViewModel(get(), get<PhoneNumberValidator>(), get()) }
-    viewModel { TradeContainerViewModel(get(), get(), get(), get()) }
+    viewModel { TradeContainerViewModel(get(), get(), get(), get(), get(), get()) }
     viewModel { TradeListViewModel(get(), get()) }
     viewModel { TradeUserStatisticViewModel(get()) }
     viewModel { MyTradeDetailsViewModel(get(), get(), get(), get(named(DOUBLE_CURRENCY_PRICE_FORMATTER_QUALIFIER))) }
@@ -129,6 +130,7 @@ val viewModelModule = module {
     viewModel { TradeOrderRateViewModel(get(), get()) }
     viewModel { OrderChatViewModel(get(), get(), get()) }
     viewModel { HistoryChatViewModel(get()) }
+    viewModel { HostViewModel(get()) }
 }
 
 val viewModelHelperModule = module {

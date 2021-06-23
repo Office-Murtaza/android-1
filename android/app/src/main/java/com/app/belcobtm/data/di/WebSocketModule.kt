@@ -18,6 +18,8 @@ import com.app.belcobtm.data.websockets.chat.serializer.ChatRequestSerializer
 import com.app.belcobtm.data.websockets.chat.serializer.ChatRequestSerializer.Companion.CHAT_REQUEST_SERIALIZER_QUALIFIER
 import com.app.belcobtm.data.websockets.chat.serializer.ChatResponseDeserializer
 import com.app.belcobtm.data.websockets.chat.serializer.ChatResponseDeserializer.Companion.CHAT_RESPONSE_DESERIALIZER_QUALIFIER
+import com.app.belcobtm.data.websockets.manager.SocketManager
+import com.app.belcobtm.data.websockets.manager.WebSocketManager
 import com.app.belcobtm.data.websockets.order.OrdersObserver
 import com.app.belcobtm.data.websockets.order.WebSocketOrdersObserver
 import com.app.belcobtm.data.websockets.serializer.RequestSerializer
@@ -39,38 +41,27 @@ val WEB_SOCKET_OK_HTTP_CLIENT_QUALIFIER = named("WebSocketOkHttpClient")
 
 val webSocketModule = module {
     single<WalletConnectionHandler> {
-        WebSocketWalletObserver(
-            get(), get(), get(), get(), get(named(STOMP_REQUEST_SERIALIZER_QUALIFIER)),
-            get(named(STOMP_RESPONSE_DESERIALIZER_QUALIFIER)), get(),
-            get(), get(authenticatorQualified), get()
+        WebSocketWalletObserver(get(), get(), get(), get(), get())
+    }
+    single<WebSocketManager> {
+        SocketManager(
+            get(), get(authenticatorQualified), get(), get(),
+            get(named(STOMP_REQUEST_SERIALIZER_QUALIFIER)),
+            get(named(STOMP_RESPONSE_DESERIALIZER_QUALIFIER)),
         )
     }
     single<TradesObserver> {
-        WebSocketTradesObserver(
-            get(), get(), get(), get(),
-            get(named(STOMP_REQUEST_SERIALIZER_QUALIFIER)),
-            get(named(STOMP_RESPONSE_DESERIALIZER_QUALIFIER)),
-        )
+        WebSocketTradesObserver(get(), get(), get(), get())
     }
     single<TransactionsObserver> {
-        WebSocketTransactionsObserver(
-            get(), get(), get(), get(),
-            get(named(STOMP_REQUEST_SERIALIZER_QUALIFIER)),
-            get(named(STOMP_RESPONSE_DESERIALIZER_QUALIFIER)),
-        )
+        WebSocketTransactionsObserver(get(), get(), get(), get())
     }
     single<OrdersObserver> {
-        WebSocketOrdersObserver(
-            get(), get(), get(), get(),
-            get(named(STOMP_REQUEST_SERIALIZER_QUALIFIER)),
-            get(named(STOMP_RESPONSE_DESERIALIZER_QUALIFIER))
-        )
+        WebSocketOrdersObserver(get(), get(), get(), get())
     }
     single<ChatObserver> {
         WebSocketChatObserver(
             get(), get(), get(),
-            get(named(STOMP_REQUEST_SERIALIZER_QUALIFIER)),
-            get(named(STOMP_RESPONSE_DESERIALIZER_QUALIFIER)),
             get(named(CHAT_REQUEST_SERIALIZER_QUALIFIER)),
             get(named(CHAT_RESPONSE_DESERIALIZER_QUALIFIER))
         )

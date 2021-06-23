@@ -9,6 +9,8 @@ import com.app.belcobtm.domain.atm.interactor.GetAtmsUseCase
 import com.app.belcobtm.domain.authorization.interactor.*
 import com.app.belcobtm.domain.contacts.GetContactsUseCase
 import com.app.belcobtm.domain.settings.interactor.*
+import com.app.belcobtm.domain.socket.ConnectToSocketUseCase
+import com.app.belcobtm.domain.socket.DisconnectFromSocketUseCase
 import com.app.belcobtm.domain.tools.interactor.OldSendSmsToDeviceUseCase
 import com.app.belcobtm.domain.tools.interactor.OldVerifySmsCodeUseCase
 import com.app.belcobtm.domain.tools.interactor.SendSmsToDeviceUseCase
@@ -128,8 +130,10 @@ val useCaseModule = module {
     single { CancelOrderUseCase(get()) }
     single { EditTradeUseCase(get()) }
     single { CreateOrderUseCase(get()) }
-    single { StartObserveTradeDataUseCase(get(), get()) }
-    single { StopObserveTradeDataUseCase(get(), get()) }
+    single { StartObserveTradeDataUseCase(get()) }
+    single { StartObserveOrderDataUseCase(get()) }
+    single { StopObserveTradeDataUseCase(get()) }
+    single { StopObserveOrderDataUseCase(get()) }
     single { ObserveOrderDetailsUseCase(get(), get(), get()) }
     single { UpdateOrderStatusUseCase(get()) }
     single { ClearCacheUseCase(get()) }
@@ -152,6 +156,8 @@ val useCaseModule = module {
     single { UpdateLastSeenMessageTimeStampUseCase(get()) }
     single { ObserveTransactionsUseCase(get()) }
     single { ConnectToTransactionsUseCase(get()) }
+    single { ConnectToSocketUseCase(get()) }
+    single { DisconnectFromSocketUseCase(get()) }
     factory { TradePaymentOptionMapper() }
     factory { CoinCodeMapper() }
     factory { TradesDataToTradeListMapper(get()) }

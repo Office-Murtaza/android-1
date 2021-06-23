@@ -4,7 +4,7 @@ import com.app.belcobtm.data.model.trade.Order
 import com.app.belcobtm.data.rest.trade.response.TradeOrderItemResponse
 import com.app.belcobtm.presentation.features.wallet.trade.order.chat.model.ChatMessageItem
 
-class OrderResponseToOrderMapper() {
+class OrderResponseToOrderMapper {
 
     fun map(
         trade: TradeOrderItemResponse,

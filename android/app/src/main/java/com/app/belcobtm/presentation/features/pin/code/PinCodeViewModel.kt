@@ -12,6 +12,7 @@ import com.app.belcobtm.domain.authorization.interactor.SaveAuthorizePinUseCase
 import com.app.belcobtm.domain.settings.interactor.BioAuthAllowedByUserUseCase
 import com.app.belcobtm.domain.settings.interactor.BioAuthSupportedByPhoneUseCase
 import com.app.belcobtm.domain.settings.interactor.UnlinkUseCase
+import com.app.belcobtm.domain.socket.ConnectToSocketUseCase
 import com.app.belcobtm.domain.transaction.interactor.ConnectToTransactionsUseCase
 import com.app.belcobtm.domain.wallet.interactor.ConnectToWalletUseCase
 import com.app.belcobtm.presentation.core.SingleLiveData
@@ -28,6 +29,7 @@ class PinCodeViewModel(
     private val unlinkUseCase: UnlinkUseCase,
     private val bioAuthSupportedByPhoneUseCase: BioAuthSupportedByPhoneUseCase,
     private val bioAuthAllowedByUserUseCase: BioAuthAllowedByUserUseCase,
+    private val connectToSocketUseCase: ConnectToSocketUseCase,
     private val connectToWalletUseCase: ConnectToWalletUseCase,
     private val connectToTransactionsUseCase: ConnectToTransactionsUseCase,
     private val authorizePinUseCase: GetAuthorizePinUseCase,
@@ -48,8 +50,10 @@ class PinCodeViewModel(
     private var isError = false
 
     fun connectToWebSockets() {
-        connectToWalletUseCase(Unit)
-        connectToTransactionsUseCase(Unit)
+        connectToSocketUseCase(Unit, onSuccess = {
+            connectToWalletUseCase(Unit)
+            connectToTransactionsUseCase(Unit)
+        })
     }
 
     fun savePinCode(pinCode: String) =
