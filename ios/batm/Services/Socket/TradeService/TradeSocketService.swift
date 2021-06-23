@@ -146,15 +146,8 @@ extension TradeServiceImpl: TradeServiceWebSocket {
     }
     
     private func handleErrorModel(_ model: MessageModel) {
-      unsubscribe()
-          .andThen(disconnect())
-          .subscribe { [weak self] in
-              self?.start()
-          } onError: { [weak self] _ in
-              self?.handleMessage(MessageModel.errorMessage)
-          }.disposed(by: disposeBag)
+        start()
     }
-
 }
 
 extension TradeServiceImpl: WebSocketDelegate {
