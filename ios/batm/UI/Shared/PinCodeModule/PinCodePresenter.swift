@@ -115,7 +115,6 @@ class PinCodePresenter: ModulePresenter, PinCodeModule {
                     self?.balanceService.start()
                     self?.usecase.startTrades()
                     self?.usecase.startOrdersUpdates()
-                    self?.usecase.startTransactionDetails()
                 }).subscribe({ [weak self]  _ in self?.delegate?.didFinishPinCode(for: .verification, with: "") })
                 .disposed(by: self?.disposeBag ?? DisposeBag() )
         } failure: {
@@ -150,7 +149,6 @@ class PinCodePresenter: ModulePresenter, PinCodeModule {
         self.balanceService.start()
         usecase.startTrades()
         usecase.startOrdersUpdates()
-        usecase.startTransactionDetails()
         return usecase.save(pinCode: state.code)
     }
     
@@ -160,7 +158,6 @@ class PinCodePresenter: ModulePresenter, PinCodeModule {
                 self.balanceService.start()
                 self.usecase.startTrades()
                 self.usecase.startOrdersUpdates()
-                self.usecase.startTransactionDetails()
             })
     }
 }

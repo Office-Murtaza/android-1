@@ -218,7 +218,7 @@ extension MainSocketServiceImpl: MainServiceWebSocket {
   
   func unsubscribeTransaction() -> Completable {
     guard let phoneNumber = UserDefaultsHelper.userPhoneNumber else {
-        return Completable.error(TransactionServiceError.phoneEmptyDuringUnsubscribe)
+        return Completable.error(MainSocketServiceError.phoneEmptyDuringUnsubscribe)
     }
     
     return Completable.create { [weak self] completable in

@@ -10,7 +10,6 @@ protocol PinCodeUsecase {
     func save(pinCode: String) -> Completable
     func verify(pinCode: String) -> Completable
     func refresh() -> Completable
-//    func startTransactionDetails()
     func startTrades()
     func startOrdersUpdates()
 }
@@ -63,8 +62,4 @@ class PinCodeUsecaseImpl: PinCodeUsecase {
     func startOrdersUpdates() {
         ordersService.start()
     }
-  
-//    func startTransactionDetails() {
-//        transactionDetailsService.start()
-//    }
 }
