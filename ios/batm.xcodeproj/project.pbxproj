@@ -77,7 +77,7 @@
 		05B582B625ACD71A00A12EFB /* CoinStakingInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05B582B525ACD71A00A12EFB /* CoinStakingInfoView.swift */; };
 		05B7596F25880C3800F23F23 /* CreateWalletResponse+Mapping.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05B7596E25880C3800F23F23 /* CreateWalletResponse+Mapping.swift */; };
 		05BAE28F264C0B31004766FA /* TransactionDetailsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05BAE28E264C0B31004766FA /* TransactionDetailsService.swift */; };
-		05BAE294264C0B36004766FA /* BalanceService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05BAE292264C0B36004766FA /* BalanceService.swift */; };
+		05BAE294264C0B36004766FA /* MainSocketService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05BAE292264C0B36004766FA /* MainSocketService.swift */; };
 		05C62222257ECE28008787F3 /* KeychainManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05C62221257ECE28008787F3 /* KeychainManager.swift */; };
 		05D56FD4260CE4ED00AA7052 /* LocaltionHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05D56FD3260CE4ED00AA7052 /* LocaltionHelper.swift */; };
 		05E35FE725AE585900E2167C /* WithdrawView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05E35FE625AE585900E2167C /* WithdrawView.swift */; };
@@ -765,7 +765,7 @@
 		05B582B525ACD71A00A12EFB /* CoinStakingInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoinStakingInfoView.swift; sourceTree = "<group>"; };
 		05B7596E25880C3800F23F23 /* CreateWalletResponse+Mapping.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CreateWalletResponse+Mapping.swift"; sourceTree = "<group>"; };
 		05BAE28E264C0B31004766FA /* TransactionDetailsService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TransactionDetailsService.swift; sourceTree = "<group>"; };
-		05BAE292264C0B36004766FA /* BalanceService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BalanceService.swift; sourceTree = "<group>"; };
+		05BAE292264C0B36004766FA /* MainSocketService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainSocketService.swift; sourceTree = "<group>"; };
 		05C6219F257EB413008787F3 /* batm.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = batm.entitlements; sourceTree = "<group>"; };
 		05C62221257ECE28008787F3 /* KeychainManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainManager.swift; sourceTree = "<group>"; };
 		05D56FD3260CE4ED00AA7052 /* LocaltionHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocaltionHelper.swift; sourceTree = "<group>"; };
@@ -1589,7 +1589,7 @@
 			children = (
 				2397A83A2669737600070777 /* OrderService */,
 				2397A8352669736700070777 /* TradeService */,
-				05BAE290264C0B36004766FA /* BalanceService */,
+				05BAE290264C0B36004766FA /* MainSocketService */,
 				05BAE28D264C0B31004766FA /* TransactionService */,
 				232E345D2558772B00A9BF72 /* SocketMessageBuilder.swift */,
 				232E346325593BA200A9BF72 /* SocketResultMessageMapper.swift */,
@@ -1638,12 +1638,12 @@
 			path = TransactionService;
 			sourceTree = "<group>";
 		};
-		05BAE290264C0B36004766FA /* BalanceService */ = {
+		05BAE290264C0B36004766FA /* MainSocketService */ = {
 			isa = PBXGroup;
 			children = (
-				05BAE292264C0B36004766FA /* BalanceService.swift */,
+				05BAE292264C0B36004766FA /* MainSocketService.swift */,
 			);
-			path = BalanceService;
+			path = MainSocketService;
 			sourceTree = "<group>";
 		};
 		05E6A83F2601602F00479414 /* UIColor+Extensions */ = {
@@ -4462,7 +4462,7 @@
 				DBA6843122E42B450079429E /* WalletFlowController.swift in Sources */,
 				DB5F18C62472B16A00E37311 /* BuySellTrade+Mapping.swift in Sources */,
 				0522EB6E25598C650028CD51 /* SendHelper.swift in Sources */,
-				05BAE294264C0B36004766FA /* BalanceService.swift in Sources */,
+				05BAE294264C0B36004766FA /* MainSocketService.swift in Sources */,
 				DB9616C422C746F70078E92D /* AccountRecord+CoreDataClass.swift in Sources */,
 				23A6B797263B515000DE2738 /* P2PTradeDetailsBuyViewController.swift in Sources */,
 				DBA4F4A924CE2FFF00E6FAAB /* PinCodeKeyboardDummyView.swift in Sources */,

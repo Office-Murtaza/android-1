@@ -58,10 +58,17 @@ class TradeServiceImpl: TradeSocketService {
 extension TradeServiceImpl: TradeServiceWebSocket {
     
     func start() {
+      
+      Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { [weak self] (_) in
+        print("SOCKETT \(self?.socket)")
+      }
+      
         accountStorage.get().subscribe { [weak self] (account) in
             self?.account = account
             guard let requestURL = self?.socketURL else { return }
-            self?.socket = WebSocket(request: URLRequest(url: requestURL))
+            var request = URLRequest(url: requestURL)
+            request.timeoutInterval = 5
+            self?.socket = WebSocket(request: request)
             self?.socket?.delegate = self
             self?.socket?.connect()
         } onError: { _ in
@@ -167,7 +174,8 @@ extension TradeServiceImpl: WebSocketDelegate {
                     self?.handleMessage(MessageModel.errorMessage)
                 }.disposed(by: disposeBag)
         case .error(_): handleMessage(MessageModel.errorMessage)
-        default: break
+        default: connect()
+          break
         }
     }
 }

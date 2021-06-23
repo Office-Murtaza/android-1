@@ -25,12 +25,12 @@ class WalletUsecaseImpl: WalletUsecase, HasDisposeBag {
     let api: APIGateway
     let accountStorage: AccountStorage
     let walletStorage: BTMWalletStorage
-    let balanceService: BalanceService
+    let balanceService: MainSocketService
     
     init(api: APIGateway,
          accountStorage: AccountStorage,
          walletStorage: BTMWalletStorage,
-         balanceService: BalanceService) {
+         balanceService: MainSocketService) {
         self.api = api
         self.accountStorage = accountStorage
         self.walletStorage = walletStorage

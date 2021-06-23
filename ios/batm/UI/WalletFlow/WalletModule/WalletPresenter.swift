@@ -77,13 +77,13 @@ class WalletPresenter: ModulePresenter, WalletModule {
         fetchCoinsBalance()
     }
     
-    func disconnectAndRemoveTransactionDetailsNotification() {
-        let notificationName = Notification.Name(TransactionDetailsNotification.disconnectTransaction)
-        NotificationCenter
-            .default
-            .post(Notification(name: notificationName))
-        
-    }
+//    func disconnectAndRemoveTransactionDetailsNotification() {
+//        let notificationName = Notification.Name(TransactionDetailsNotification.disconnectTransaction)
+//        NotificationCenter
+//            .default
+//            .post(Notification(name: notificationName))
+//        
+//    }
     
     func removeCoinDetails() {
         usecase.removeCoinDetails()

@@ -114,13 +114,13 @@ final class AppAssembly: Assembly {
                                walletStorage: walletStorage)
       }.inObjectScope(.container)
     
-    container.register(BalanceService.self) { ioc in
+    container.register(MainSocketService.self) { ioc in
       let api = ioc.resolve(APIGateway.self)!
       let accountStorage = ioc.resolve(AccountStorage.self)!
       let walletStorage = ioc.resolve(BTMWalletStorage.self)!
       let errorService = ioc.resolve(ErrorService.self)!
       let socketURL = ioc.resolve(URL.self, name: Keys.socketUrl.rawValue)!
-      return BalanceServiceImpl(api: api,
+      return MainSocketServiceImpl(api: api,
                                 accountStorage: accountStorage,
                                 walletStorage: walletStorage,
                                 errorService: errorService,
@@ -197,7 +197,7 @@ final class AppAssembly: Assembly {
       let api = ioc.resolve(APIGateway.self)!
       let accountStorage = ioc.resolve(AccountStorage.self)!
       let walletStorage = ioc.resolve(BTMWalletStorage.self)!
-      let balanceService = ioc.resolve(BalanceService.self)!
+      let balanceService = ioc.resolve(MainSocketService.self)!
       return WalletUsecaseImpl(api: api,
                                accountStorage: accountStorage,
                                walletStorage: walletStorage,
@@ -208,7 +208,7 @@ final class AppAssembly: Assembly {
         let accountStorage = ioc.resolve(AccountStorage.self)!
         let walletService = ioc.resolve(WalletService.self)!
         let walletStorage = ioc.resolve(BTMWalletStorage.self)!
-        let balanceService = ioc.resolve(BalanceService.self)!
+        let balanceService = ioc.resolve(MainSocketService.self)!
         return DealsUsecaseImpl(api: api,
                                 accountStorage: accountStorage,
                                 walletService: walletService,
@@ -232,7 +232,7 @@ final class AppAssembly: Assembly {
       let accountStorage = ioc.resolve(AccountStorage.self)!
       let walletStorage = ioc.resolve(BTMWalletStorage.self)!
       let walletService = ioc.resolve(WalletService.self)!
-      let balanceService = ioc.resolve(BalanceService.self)!
+      let balanceService = ioc.resolve(MainSocketService.self)!
       let transactionService = ioc.resolve(TransactionDetailsService.self)!
       return CoinDetailsUsecaseImpl(api: api,
                                     accountStorage: accountStorage,
@@ -302,7 +302,7 @@ final class AppAssembly: Assembly {
     container.register(Module<PinCodeModule>.self, name: Keys.pinCodeModule.rawValue) { resolver in
       let viewController = PinCodeViewController()
       let usecase = resolver.resolve(PinCodeUsecase.self)!
-      let balanceService = resolver.resolve(BalanceService.self)!
+      let balanceService = resolver.resolve(MainSocketService.self)!
       let presenter = PinCodePresenter(usecase: usecase, balanceService: balanceService)
       
       presenter.delegate = resolver.resolve(PinCodeVerificationModuleDelegate.self)

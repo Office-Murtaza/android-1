@@ -23,13 +23,13 @@ class DealsUsecaseImpl: DealsUsecase {
     let accountStorage: AccountStorage
     let walletService: WalletService
     let walletStorage: BTMWalletStorage
-    let balanceService: BalanceService
+    let balanceService: MainSocketService
     
     init(api: APIGateway,
          accountStorage: AccountStorage,
          walletService: WalletService,
          walletStorage: BTMWalletStorage,
-         balanceService: BalanceService) {
+         balanceService: MainSocketService) {
         self.api = api
         self.accountStorage = accountStorage
         self.walletService = walletService

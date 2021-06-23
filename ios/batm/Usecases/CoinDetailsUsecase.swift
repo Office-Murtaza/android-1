@@ -43,21 +43,18 @@ class CoinDetailsUsecaseImpl: CoinDetailsUsecase {
     let accountStorage: AccountStorage
     let walletStorage: BTMWalletStorage
     let walletService: WalletService
-    let balanceService: BalanceService
-    let transactionService: TransactionDetailsService
+    let mainSocketService: MainSocketService
     
     init(api: APIGateway,
          accountStorage: AccountStorage,
          walletStorage: BTMWalletStorage,
          walletService: WalletService,
-         balanceService: BalanceService,
-         transactionService: TransactionDetailsService) {
+         mainSocketService: MainSocketService) {
         self.api = api
         self.accountStorage = accountStorage
         self.walletStorage = walletStorage
         self.walletService = walletService
-        self.balanceService = balanceService
-        self.transactionService = transactionService
+        self.mainSocketService = mainSocketService
     }
     
     func getTransactions(for type: CustomCoinType, from page: Int) -> Single<Transactions> {
@@ -66,11 +63,11 @@ class CoinDetailsUsecaseImpl: CoinDetailsUsecase {
     }
     
     func getTransactionDetails(for type: CustomCoinType) -> Observable<TransactionDetails?> {
-        return transactionService.getTransactionDetails()
+        return mainSocketService.getTransactionDetails()
     }
     
     func removeTransactionDetails() {
-        transactionService.removeTransactionDetails()
+      mainSocketService.removeTransactionDetails()
     }
     
     func getCoin(for type: CustomCoinType) -> Single<BTMCoin> {
@@ -407,10 +404,10 @@ class CoinDetailsUsecaseImpl: CoinDetailsUsecase {
     }
     
     func getCoinDetails(for type: CustomCoinType) -> Observable<CoinDetails?> {
-        return balanceService.getCoinDetails(for: type)
+        return mainSocketService.getCoinDetails(for: type)
     }
     
     func getCoinsBalance() -> Observable<CoinsBalance> {
-        return balanceService.getCoinsBalance()
+        return mainSocketService.getCoinsBalance()
     }
 }

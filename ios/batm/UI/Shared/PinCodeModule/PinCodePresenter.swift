@@ -16,7 +16,7 @@ class PinCodePresenter: ModulePresenter, PinCodeModule {
     
     private let usecase: PinCodeUsecase
     private let store: Store
-    private let balanceService: BalanceService
+    private let balanceService: MainSocketService
     private var laContext = LAContext()
     private var shouldUseLocalAuthOnStart = false
     
@@ -29,7 +29,7 @@ class PinCodePresenter: ModulePresenter, PinCodeModule {
     weak var delegate: PinCodeModuleDelegate?
     
     init(usecase: PinCodeUsecase,
-         balanceService: BalanceService,
+         balanceService: MainSocketService,
          store: Store = PinCodeStore()) {
         self.usecase = usecase
         self.store = store

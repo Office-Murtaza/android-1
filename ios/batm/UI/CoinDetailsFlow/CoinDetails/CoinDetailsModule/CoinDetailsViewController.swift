@@ -82,7 +82,7 @@ final class CoinDetailsViewController: ModuleViewController<CoinDetailsPresenter
         rx.firstTimeViewDidAppear
             .asObservable()
             .doOnNext { [weak self] in
-                self?.presenter.setupTransactionDetailsNotification()
+//                self?.presenter.setupTransactionDetailsNotification()
                 self?.presenter.updateScreenRelay.accept(())
             }
             .subscribe()
