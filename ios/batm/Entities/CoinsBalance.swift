@@ -1,7 +1,7 @@
 import Foundation
 
 struct CoinsBalance: Equatable {
-  let totalBalance: Decimal
+  let totalBalance: Decimal?
   var coins: [CoinBalance]
   
   static var empty: CoinsBalance {

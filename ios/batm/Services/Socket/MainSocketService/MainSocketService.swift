@@ -3,6 +3,13 @@ import RxSwift
 import RxCocoa
 import Starscream
 
+enum Destination {
+  static let balance = "/user/queue/balance"
+  static let transaction = "/user/queue/transaction"
+  static let trade = "/topic/trade"
+  static let order = "/user/queue/order"
+}
+
 protocol MainServiceWebSocket {
   func start()
   func connect()
@@ -369,14 +376,14 @@ extension MainSocketServiceImpl: MainServiceWebSocket {
   }
   
   func notify(_ model: MessageModel) {
-    guard let json = model.jsonData else { return }
-    if let balance = CoinsBalance(JSON: json) {
+    guard let json = model.jsonData, let destination = model.headers["destination"] else { return }
+    if destination == Destination.balance, let balance = CoinsBalance(JSON: json) {
       balanceProperty.accept(balance)
-    } else if let details = TransactionDetails(JSON: json) {
-      transactionDetailsProperty.accept(details)
-    } else if let order = Order(JSON: json) {
+    } else if destination == Destination.transaction, let transaction = TransactionDetails(JSON: json) {
+      transactionDetailsProperty.accept(transaction)
+    } else if destination == Destination.order, let order = Order(JSON: json) {
       orderProperty.accept(order)
-    } else if let trade = Trade(JSON: json) {
+    } else if destination == Destination.trade, let trade = Trade(JSON: json) {
       tradeProperty.accept(trade)
     }
   }
@@ -405,13 +412,12 @@ extension MainSocketServiceImpl: WebSocketDelegate {
       let model = SocketResultMessageMapper().mapMessage(string)
       handleMessage(model)
     case .reconnectSuggested(_): break
-    //            unsubscribe()
-    //                .andThen(disconnect())
-    //                .subscribe { [weak self] in
-    //                    self?.start()
-    //                } onError: { [weak self] _ in
-    //                    self?.handleMessage(MessageModel.errorMessage)
-    //                }.disposed(by: disposeBag)
+      disconnect()
+        .subscribe { [weak self] in
+          self?.start()
+        } onError: { [weak self] _ in
+          self?.handleMessage(MessageModel.errorMessage)
+        }.disposed(by: disposeBag)
     case .error(_): handleMessage(MessageModel.errorMessage)
     default: break
     }

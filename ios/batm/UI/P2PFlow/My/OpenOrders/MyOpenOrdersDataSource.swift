@@ -37,7 +37,7 @@ class MyOpenOrdersDataSource: NSObject, UITableViewDelegate, UITableViewDataSour
   
   func updateModels(order: Order, userId: String) {
     guard let orderVM = viewModels.first(where: {$0.order.id == order.id}) else {
-      let newOrder = MyOrderViewModel(order: order, userId: userId)
+      let newOrder = MyOrderViewModel(order: order, userId: order.makerUserId ?? userId)
       viewModels.insert(newOrder, at: 0)
       tableView?.reloadData()
       return

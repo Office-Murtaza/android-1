@@ -87,9 +87,9 @@ class RefreshCredentialsServiceImpl: RefreshCredentialsService {
   }
   
   func notifyCredentialsDidRefreshed() {
-    let  notificationName = Notification.Name(RefreshCredentialsConstants.refreshNotificationName)
-    NotificationCenter
-      .default
-      .post(Notification(name: notificationName))
+//    let  notificationName = Notification.Name(RefreshCredentialsConstants.refreshNotificationName)
+//    NotificationCenter
+//      .default
+//      .post(Notification(name: notificationName))
   }
 }
