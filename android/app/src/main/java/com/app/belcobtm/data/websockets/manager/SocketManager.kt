@@ -1,5 +1,6 @@
 package com.app.belcobtm.data.websockets.manager
 
+import android.util.Log
 import com.app.belcobtm.data.core.UnlinkHandler
 import com.app.belcobtm.data.disk.shared.preferences.SharedPreferencesHelper
 import com.app.belcobtm.data.rest.authorization.AuthApi
@@ -15,9 +16,7 @@ import com.app.belcobtm.domain.Either
 import com.app.belcobtm.domain.Failure
 import com.app.belcobtm.presentation.core.Endpoint
 import kotlinx.coroutines.*
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.*
 import java.net.HttpURLConnection
 import java.util.concurrent.ConcurrentHashMap
 
@@ -77,7 +76,8 @@ class SocketManager(
         }
     }
 
-    override fun observeSocketState(): Flow<SocketState> = socketState
+    override fun observeSocketState(): Flow<SocketState> =
+        socketState
 
     override suspend fun subscribe(
         destination: String,
@@ -136,9 +136,14 @@ class SocketManager(
     private suspend fun processMessage(content: String) {
         val response = deserializer.deserialize(content)
         when (response.status) {
-            StompSocketResponse.CONNECTED ->
+            StompSocketResponse.CONNECTED -> {
+                // re-emit connected state
+                socketState.value = SocketState.None
                 socketState.value = SocketState.Connected
-            StompSocketResponse.ERROR -> processErrorMessage(response)
+            }
+            StompSocketResponse.ERROR -> {
+                processErrorMessage(response)
+            }
             StompSocketResponse.CONTENT -> {
                 subscribers[response.headers[DESTINATION_HEADER]]?.value = Either.Right(response)
             }

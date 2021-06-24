@@ -2,7 +2,7 @@ package com.app.belcobtm.data.websockets.order
 
 interface OrdersObserver {
 
-    suspend fun connect()
+    fun connect()
 
-    suspend fun disconnect()
+    fun disconnect()
 }

@@ -2,7 +2,7 @@ package com.app.belcobtm.data.websockets.transactions
 
 interface TransactionsObserver {
 
-    suspend fun connect()
+    fun connect()
 
-    suspend fun disconnect()
+    fun disconnect()
 }

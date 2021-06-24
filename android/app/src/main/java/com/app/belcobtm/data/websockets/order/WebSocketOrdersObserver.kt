@@ -1,5 +1,6 @@
 package com.app.belcobtm.data.websockets.order
 
+import android.util.Log
 import com.app.belcobtm.data.disk.shared.preferences.SharedPreferencesHelper
 import com.app.belcobtm.data.inmemory.trade.TradeInMemoryCache
 import com.app.belcobtm.data.rest.trade.response.TradeOrderItemResponse
@@ -17,10 +18,7 @@ import com.app.belcobtm.domain.mapSuspend
 import com.app.belcobtm.presentation.core.Endpoint
 import com.squareup.moshi.Moshi
 import kotlinx.coroutines.*
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.filter
-import kotlinx.coroutines.flow.filterIsInstance
-import kotlinx.coroutines.flow.filterNotNull
+import kotlinx.coroutines.flow.*
 
 class WebSocketOrdersObserver(
     private val socketManager: WebSocketManager,
@@ -33,29 +31,35 @@ class WebSocketOrdersObserver(
         const val DESTINATION_VALUE = "/user/queue/order"
     }
 
-    override suspend fun connect() {
-        socketManager.observeSocketState()
-            .filterIsInstance<SocketState.Connected>()
-            .collect {
-                val request = StompSocketRequest(
-                    StompSocketRequest.SUBSCRIBE, mapOf(
-                        ID_HEADER to sharedPreferencesHelper.userPhone,
-                        DESTINATION_HEADER to DESTINATION_VALUE
+    private val ioScope = CoroutineScope(Dispatchers.IO)
+
+    override fun connect() {
+        ioScope.launch {
+            socketManager.observeSocketState()
+                .filterIsInstance<SocketState.Connected>()
+                .collectLatest {
+                    val request = StompSocketRequest(
+                        StompSocketRequest.SUBSCRIBE, mapOf(
+                            ID_HEADER to sharedPreferencesHelper.userPhone,
+                            DESTINATION_HEADER to DESTINATION_VALUE
+                        )
                     )
-                )
-                socketManager.subscribe(DESTINATION_VALUE, request)
-                    .filterNotNull()
-                    .collect { response ->
-                        response.mapSuspend {
-                            moshi.adapter(TradeOrderItemResponse::class.java)
-                                .fromJson(it.body)
-                                ?.let(tradeInMemoryCache::updateOrders)
+                    socketManager.subscribe(DESTINATION_VALUE, request)
+                        .filterNotNull()
+                        .collect { response ->
+                            response.mapSuspend {
+                                moshi.adapter(TradeOrderItemResponse::class.java)
+                                    .fromJson(it.body)
+                                    ?.let(tradeInMemoryCache::updateOrders)
+                            }
                         }
-                    }
-            }
+                }
+        }
     }
 
-    override suspend fun disconnect() {
-        socketManager.unsubscribe(DESTINATION_VALUE)
+    override fun disconnect() {
+        ioScope.launch {
+            socketManager.unsubscribe(DESTINATION_VALUE)
+        }
     }
 }

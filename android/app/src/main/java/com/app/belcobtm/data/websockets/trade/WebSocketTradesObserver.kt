@@ -1,5 +1,6 @@
 package com.app.belcobtm.data.websockets.trade
 
+import android.util.Log
 import com.app.belcobtm.data.disk.shared.preferences.SharedPreferencesHelper
 import com.app.belcobtm.data.inmemory.trade.TradeInMemoryCache
 import com.app.belcobtm.data.rest.trade.response.TradeItemResponse
@@ -21,6 +22,7 @@ import com.app.belcobtm.presentation.core.Endpoint
 import com.squareup.moshi.Moshi
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.filterIsInstance
 import kotlinx.coroutines.flow.filterNotNull
 
@@ -31,36 +33,39 @@ class WebSocketTradesObserver(
     private val sharedPreferencesHelper: SharedPreferencesHelper
 ) : TradesObserver {
 
-    private val ioScope = CoroutineScope(Dispatchers.IO)
-    private var reconnectCounter = 0
-
     private companion object {
         const val DESTINATION_VALUE = "/topic/trade"
     }
 
-    override suspend fun connect() {
-        socketManager.observeSocketState()
-            .filterIsInstance<SocketState.Connected>()
-            .collect {
-                val request = StompSocketRequest(
-                    StompSocketRequest.SUBSCRIBE, mapOf(
-                        ID_HEADER to sharedPreferencesHelper.userPhone,
-                        DESTINATION_HEADER to DESTINATION_VALUE
+    private val ioScope = CoroutineScope(Dispatchers.IO)
+
+    override fun connect() {
+        ioScope.launch {
+            socketManager.observeSocketState()
+                .filterIsInstance<SocketState.Connected>()
+                .collectLatest {
+                    val request = StompSocketRequest(
+                        StompSocketRequest.SUBSCRIBE, mapOf(
+                            ID_HEADER to sharedPreferencesHelper.userPhone,
+                            DESTINATION_HEADER to DESTINATION_VALUE
+                        )
                     )
-                )
-                socketManager.subscribe(DESTINATION_VALUE, request)
-                    .filterNotNull()
-                    .collect { response ->
-                        response.mapSuspend {
-                            moshi.adapter(TradeItemResponse::class.java)
-                                .fromJson(it.body)
-                                ?.let(tradeInMemoryCache::updateTrades)
+                    socketManager.subscribe(DESTINATION_VALUE, request)
+                        .filterNotNull()
+                        .collect { response ->
+                            response.mapSuspend {
+                                moshi.adapter(TradeItemResponse::class.java)
+                                    .fromJson(it.body)
+                                    ?.let(tradeInMemoryCache::updateTrades)
+                            }
                         }
-                    }
-            }
+                }
+        }
     }
 
-    override suspend fun disconnect() {
-        socketManager.unsubscribe(DESTINATION_VALUE)
+    override fun disconnect() {
+        ioScope.launch {
+            socketManager.unsubscribe(DESTINATION_VALUE)
+        }
     }
 }
