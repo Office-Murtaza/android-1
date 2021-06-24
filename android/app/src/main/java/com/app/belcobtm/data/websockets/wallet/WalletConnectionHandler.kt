@@ -5,9 +5,9 @@ import kotlinx.coroutines.flow.Flow
 
 interface WalletConnectionHandler {
 
-    suspend fun connect()
+    fun connect()
 
-    suspend fun disconnect()
+    fun disconnect()
 
     fun observeConnectionFailure(): Flow<Failure?>
 

@@ -1,5 +1,6 @@
 package com.app.belcobtm.data.websockets.wallet
 
+import android.util.Log
 import com.app.belcobtm.data.disk.database.account.AccountDao
 import com.app.belcobtm.data.disk.database.wallet.WalletDao
 import com.app.belcobtm.data.disk.shared.preferences.SharedPreferencesHelper
@@ -7,17 +8,16 @@ import com.app.belcobtm.data.rest.wallet.response.BalanceResponse
 import com.app.belcobtm.data.websockets.base.model.SocketState
 import com.app.belcobtm.data.websockets.base.model.StompSocketRequest
 import com.app.belcobtm.data.websockets.base.model.StompSocketResponse
-import com.app.belcobtm.data.websockets.manager.SocketManager
 import com.app.belcobtm.data.websockets.manager.SocketManager.Companion.COINS_HEADER
 import com.app.belcobtm.data.websockets.manager.SocketManager.Companion.DESTINATION_HEADER
 import com.app.belcobtm.data.websockets.manager.SocketManager.Companion.ID_HEADER
 import com.app.belcobtm.data.websockets.manager.WebSocketManager
-import com.app.belcobtm.data.websockets.serializer.RequestSerializer
-import com.app.belcobtm.data.websockets.serializer.ResponseDeserializer
 import com.app.belcobtm.domain.Failure
 import com.squareup.moshi.Moshi
-import kotlinx.coroutines.channels.ConflatedBroadcastChannel
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.launch
 
 @kotlinx.coroutines.ExperimentalCoroutinesApi
 class WebSocketWalletObserver(
@@ -30,30 +30,32 @@ class WebSocketWalletObserver(
 
     private companion object {
         const val DESTINATION_VALUE = "/user/queue/balance"
-        const val AUTH_ERROR_MESSAGE = "Access is denied"
     }
 
-    private val connectionFailure = ConflatedBroadcastChannel<Failure?>()
+    private val connectionFailure = MutableStateFlow<Failure?>(null)
+    private val ioScope = CoroutineScope(Dispatchers.IO)
 
-    override suspend fun connect() {
-        socketManager.observeSocketState()
-            .filterIsInstance<SocketState.Connected>()
-            .collect {
-                connectionFailure.send(null)
-                val coinList = accountDao.getItemList().orEmpty().joinToString { it.type.name }
-                val request = StompSocketRequest(
-                    StompSocketRequest.SUBSCRIBE, mapOf(
-                        ID_HEADER to sharedPreferencesHelper.userPhone,
-                        DESTINATION_HEADER to DESTINATION_VALUE,
-                        COINS_HEADER to coinList
+    override fun connect() {
+        ioScope.launch {
+            socketManager.observeSocketState()
+                .filterIsInstance<SocketState.Connected>()
+                .collectLatest {
+                    connectionFailure.value = null
+                    val coinList = accountDao.getItemList().orEmpty().joinToString { it.type.name }
+                    val request = StompSocketRequest(
+                        StompSocketRequest.SUBSCRIBE, mapOf(
+                            ID_HEADER to sharedPreferencesHelper.userPhone,
+                            DESTINATION_HEADER to DESTINATION_VALUE,
+                            COINS_HEADER to coinList
+                        )
                     )
-                )
-                socketManager.subscribe(DESTINATION_VALUE, request)
-                    .filterNotNull()
-                    .collect { response ->
-                        response.eitherSuspend(::processError, ::processMessage)
-                    }
-            }
+                    socketManager.subscribe(DESTINATION_VALUE, request)
+                        .filterNotNull()
+                        .collect { response ->
+                            response.eitherSuspend(::processError, ::processMessage)
+                        }
+                }
+        }
     }
 
     private suspend fun processMessage(response: StompSocketResponse) {
@@ -65,13 +67,15 @@ class WebSocketWalletObserver(
     }
 
     override fun observeConnectionFailure(): Flow<Failure?> =
-        connectionFailure.asFlow()
+        connectionFailure
 
-    override suspend fun disconnect() {
-        socketManager.unsubscribe(DESTINATION_VALUE)
+    override fun disconnect() {
+        ioScope.launch {
+            socketManager.unsubscribe(DESTINATION_VALUE)
+        }
     }
 
-    private suspend fun processError(failure: Failure) {
-        connectionFailure.send(failure)
+    private fun processError(failure: Failure) {
+        connectionFailure.value = failure
     }
 }

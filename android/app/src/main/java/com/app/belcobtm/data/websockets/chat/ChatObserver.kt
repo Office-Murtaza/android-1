@@ -4,9 +4,9 @@ import com.app.belcobtm.presentation.features.wallet.trade.order.chat.NewMessage
 
 interface ChatObserver {
 
-    suspend fun connect()
+    fun connect()
 
-    suspend fun sendMessage(messageItem: NewMessageItem)
+    fun sendMessage(messageItem: NewMessageItem)
 
-    suspend fun disconnect()
+    fun disconnect()
 }

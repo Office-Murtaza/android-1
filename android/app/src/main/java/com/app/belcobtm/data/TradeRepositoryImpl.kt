@@ -128,7 +128,7 @@ class TradeRepositoryImpl(
 
     override suspend fun rateOrder(orderId: String, rate: Int): Either<Failure, Unit> {
         val response = tradeApiService.updateOrder(orderId, rate = rate)
-        return response.map { tradeInMemoryCache.deleteOrders(it) }
+        return response.map { tradeInMemoryCache.updateOrders(it) }
     }
 
     private fun createInitialFilter(

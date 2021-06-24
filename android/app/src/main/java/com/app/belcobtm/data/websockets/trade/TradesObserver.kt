@@ -2,7 +2,7 @@ package com.app.belcobtm.data.websockets.trade
 
 interface TradesObserver {
 
-    suspend fun connect()
+    fun connect()
 
-    suspend fun disconnect()
+    fun disconnect()
 }

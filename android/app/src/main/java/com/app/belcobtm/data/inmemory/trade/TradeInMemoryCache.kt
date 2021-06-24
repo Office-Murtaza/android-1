@@ -114,14 +114,6 @@ class TradeInMemoryCache(
         }
     }
 
-    fun deleteOrders(order: TradeOrderItemResponse) {
-        cache.value?.map {
-            val orders = HashMap(it.orders)
-            orders.remove(order.id)
-            cache.value = Either.Right(it.copy(orders = orders))
-        }
-    }
-
     fun updateLastSeenMessageTimestamp() {
         lastSeenMessageTimestamp.value = System.currentTimeMillis()
     }
