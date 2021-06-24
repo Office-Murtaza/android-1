@@ -1,6 +1,11 @@
 import UIKit
 import CoreLocation
 
+enum TradeStatus: Int {
+  case active = 1
+  case canceled
+}
+
 class TradeViewModel {
     
     let trade: Trade

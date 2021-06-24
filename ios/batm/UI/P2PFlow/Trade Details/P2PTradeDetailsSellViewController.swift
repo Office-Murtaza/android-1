@@ -40,6 +40,10 @@ class P2PTradeDetailsSellViewController: P2PTradeDetailsBaseViewController {
     sellButton.addTarget(self, action: #selector(sellTrade), for: .touchUpInside)
   }
     
+  override func hideCTA() {
+    sellButton.isHidden = true
+  }
+  
     @objc func sellTrade() {
       guard let trade = trade else { return }
       let controller = P2PCreateOrderPopupViewController()

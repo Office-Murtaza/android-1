@@ -78,7 +78,13 @@ class TradesDataSource: NSObject,  TradeListDataSource {
             tradesViewModels.remove(at: index)
         }
 
+        let tradeStatus = TradeStatus(rawValue: trade.status ?? 1)
+        
+      if tradeStatus != .canceled {
         tradesViewModels.insert(appendModel, at: 0)
+      }
+       
+      
         initViewModels = tradesViewModels
         
         DispatchQueue.main.async { [weak self] in

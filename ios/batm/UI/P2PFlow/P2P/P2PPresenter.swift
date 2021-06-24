@@ -27,7 +27,17 @@ class P2PPresenter: ModulePresenter, P2PModule {
   
   func setup(trades: Trades, userId: String) {
     self.userId = userId
-    self.trades.accept(trades)
+    
+    var mutableTrades = trades
+    
+    let activeTrades = trades.trades.filter({ (trade) -> Bool in
+      let status = TradeStatus(rawValue: trade.status ?? 1)
+      return status != .canceled
+    })
+    
+    mutableTrades.trades = activeTrades
+    
+    self.trades.accept(mutableTrades)
     
     guard let wallet = walletUseCase else {
       return
@@ -47,7 +57,6 @@ class P2PPresenter: ModulePresenter, P2PModule {
   }
   
   func subscribeOnSockets() {
-    
     mainSocketService?.getTrade().subscribe(onNext: { [weak self] (trade) in
       self?.socketTrade.accept(trade)
     }).disposed(by: disposeBag)
@@ -172,7 +181,5 @@ class P2PPresenter: ModulePresenter, P2PModule {
             }
             errorService.showError(for: .serverError).subscribe().disposed(by: disposable)
         }.disposed(by: disposeBag)
-
-        
     }
 }

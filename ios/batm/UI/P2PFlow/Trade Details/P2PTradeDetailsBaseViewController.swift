@@ -40,13 +40,22 @@ class P2PTradeDetailsBaseViewController: UIViewController {
   
   func setup(trade: Trade) {
     self.trade = trade
+    let status = TradeStatus(rawValue: trade.status ?? 1) ?? .active
+    
+    if status == .canceled {
+      hideCTA()
+    }
+    
     let infoModel = P2PTradeDetailsCoinInfoModel(trade: trade)
     coinInfoView.update(data: infoModel)
     setupPaymenMethodsView(trade: trade)
   }
   
+  func hideCTA() {}
+  
   func setupPaymenMethodsView(trade: Trade) {
     paymentMethods.removeAll()
+    
     guard let methods = trade.paymentMethods else { return }
     let images =  methods
         .components(separatedBy: ",")
