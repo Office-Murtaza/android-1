@@ -107,4 +107,12 @@ class MyOrderViewModel {
     return order.terms ?? ""
   }
 
+  var makerRate: String {
+    return userId == order.takerUserId ? order.makerRate.toString() : order.takerRate.toString()
+  }
+  
+  var partnerRate: String {
+    return userId == order.takerUserId ? order.takerRate.toString() : order.makerRate.toString()
+  }
+  
 }

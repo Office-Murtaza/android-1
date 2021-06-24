@@ -44,7 +44,8 @@ class TradesDataSource: NSObject,  TradeListDataSource {
         currentRate = trades.makerTradingRate
   
         var listTrades = trades.trades.filter{ $0.type == type.rawValue }
-        
+        listTrades = listTrades.filter { TradeStatus(rawValue: $0.status ?? 1) != .canceled }
+      
         if let id = userId {
             listTrades = listTrades.filter { $0.makerUserId != id }
         }

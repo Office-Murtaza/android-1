@@ -518,7 +518,7 @@
 "p2p.create.trade.validation.reserved.balance" = "Max limit exceeds reserved balance";
 "p2p.create.trade.validation.terms" = "Provide more details about the trade";
 "p2p.create.trade.validation.type" = "Select trade type";
-"p2p.order.details.rate" = "How was you trade experience with %@";
+"p2p.order.details.rate" = "Rate your experience with %@";
 "p2p.create.order.you.will.get" = "You Will Get";
 "p2p.create.order.you.will.send" = "You Will Send";
 "p2p.create.order.reserved" = "Reserved";
