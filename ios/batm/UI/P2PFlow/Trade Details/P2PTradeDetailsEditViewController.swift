@@ -37,13 +37,18 @@ class P2PTradeDetailsEditViewController: P2PTradeDetailsBaseViewController {
             
         ])
         
-      infoMessageView.update(message: localize(L.P2p.Trade.Details.info))
+        infoMessageView.update(message: trade?.terms ?? "")
         
         editButton.addTarget(self, action: #selector(editTrade), for: .touchUpInside)
         cancelButton.addTarget(self, action: #selector(cancelTrade), for: .touchUpInside)
         openOrders.setOpenOrdersValue(trade?.openOrders)
     }
     
+  override func hideCTA() {
+    editButton.isHidden = true
+    cancelButton.isHidden = true
+  }
+  
     @objc func editTrade() {
         
         guard let balance = balance, let trade = trade else { return }

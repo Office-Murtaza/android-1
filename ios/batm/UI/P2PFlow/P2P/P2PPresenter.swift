@@ -27,17 +27,8 @@ class P2PPresenter: ModulePresenter, P2PModule {
   
   func setup(trades: Trades, userId: String) {
     self.userId = userId
-    
-    var mutableTrades = trades
-    
-    let activeTrades = trades.trades.filter({ (trade) -> Bool in
-      let status = TradeStatus(rawValue: trade.status ?? 1)
-      return status != .canceled
-    })
-    
-    mutableTrades.trades = activeTrades
-    
-    self.trades.accept(mutableTrades)
+
+    self.trades.accept(trades)
     
     guard let wallet = walletUseCase else {
       return

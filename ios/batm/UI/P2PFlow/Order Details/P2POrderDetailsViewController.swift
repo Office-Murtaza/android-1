@@ -77,8 +77,11 @@ class P2POrderDetailsViewController: UIViewController {
                         totalTrades: viewModel.totalTrdades,
                         distance: currentDistance)
     
-    myScoreView.setup(title: localize(L.P2p.Order.Details.My.score), score: myRate)
-    partnerScoreView.setup(title: localize(L.P2p.Order.Details.Score.From.partner), score: order.makerTradingRate.toString())
+    
+    
+    
+    myScoreView.setup(title: localize(L.P2p.Order.Details.My.score), score: viewModel.makerRate)
+    partnerScoreView.setup(title: localize(L.P2p.Order.Details.Score.From.partner), score: viewModel.partnerRate)
     
     myScoreView.isHidden = !(viewModel.orderStatus == .released || viewModel.orderStatus == .solved)
     myScoreViewTopSeparator.isHidden = !(viewModel.orderStatus == .released || viewModel.orderStatus == .solved)
