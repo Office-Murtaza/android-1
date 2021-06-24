@@ -35,9 +35,10 @@ class MyOpenOrdersDataSource: NSObject, UITableViewDelegate, UITableViewDataSour
     tableView?.rowHeight = 136
   }
   
-  func updateModels(order: Order, userId: String) {
+  func updateModels(order: Order, userId: String, type: P2PSellBuyViewType) {
     guard let orderVM = viewModels.first(where: {$0.order.id == order.id}) else {
-      let newOrder = MyOrderViewModel(order: order, userId: userId)
+      let newOrder = MyOrderViewModel(order: order, userId:userId)
+      newOrder.upate(type: type)
       viewModels.insert(newOrder, at: 0)
       tableView?.reloadData()
       return

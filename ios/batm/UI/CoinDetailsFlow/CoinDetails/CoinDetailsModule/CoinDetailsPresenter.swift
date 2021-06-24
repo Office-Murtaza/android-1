@@ -140,12 +140,12 @@ final class CoinDetailsPresenter: ModulePresenter, CoinDetailsModule {
         setupBindings()
     }
     
-    func setupTransactionDetailsNotification() {
-        let notificationName = Notification.Name(TransactionDetailsNotification.connectTransaction)
-        NotificationCenter
-            .default
-            .post(Notification(name: notificationName))
-    }
+//    func setupTransactionDetailsNotification() {
+//        let notificationName = Notification.Name(TransactionDetailsNotification.connectTransaction)
+//        NotificationCenter
+//            .default
+//            .post(Notification(name: notificationName))
+//    }
     
     private func updateChartDetails(period: SelectedPeriod) -> Completable {
         store.action.accept(.updateSelectedPeriod(period))

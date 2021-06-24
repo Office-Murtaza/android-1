@@ -76,14 +76,22 @@ class MyOpenOrdersViewController: UIViewController {
    let orderDetails = P2POrderDetailsViewController()
     orderDetails.delegate = self
     vm.update(location: currentLocation)
+    
+    let associatedTradeType = trades?.trades.first(where: {$0.id == vm.order.tradeId})?.type ?? 0
+    let type = P2PSellBuyViewType(rawValue: associatedTradeType) ?? .buy
+    
+    vm.upate(type: type)
     orderDetails.setup(viewModel: vm,
                         myRate: trades?.makerTradingRate.toString() ?? "0")
+    
     navigationController?.pushViewController(orderDetails, animated: true)
     self.orderDetails = orderDetails
   }
   
   func updateWithUpdatedOrder(_ order: Order) {
-    dataSource.updateModels(order: order, userId: userId)
+    let associatedTradeType = trades?.trades.first(where: {$0.id == order.tradeId})?.type ?? 0
+    let type = P2PSellBuyViewType(rawValue: associatedTradeType) ?? .buy
+    dataSource.updateModels(order: order, userId: userId, type: type)
     if let presentedOrder = orderDetails?.order, presentedOrder.id == order.id {
       orderDetails?.update(order: order)
     }

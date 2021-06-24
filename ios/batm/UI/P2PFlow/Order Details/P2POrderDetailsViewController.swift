@@ -21,6 +21,7 @@ class P2POrderDetailsViewController: UIViewController {
   private let paymentViewSeparator = P2PSeparatorView()
   private let tradeRateView =  P2PTradeDetailsRateView()
   private let rateViewSeparator = P2PSeparatorView()
+  private let myScoreViewTopSeparator = P2PSeparatorView()
   private let myScoreView = P2POrderDetailsScoreView()
   private let myScoreViewSeparator = P2PSeparatorView()
   private let partnerScoreView = P2POrderDetailsScoreView()
@@ -29,6 +30,7 @@ class P2POrderDetailsViewController: UIViewController {
   private var currentDistance: String = ""
   private var currentRate: String = ""
   private var footerView = UIView()
+  private let infoMessageView = P2PTradeDetailsTextInfoView()
   
   private var actionSheet = OrderDetailsActionSheet()
   
@@ -79,12 +81,16 @@ class P2POrderDetailsViewController: UIViewController {
     partnerScoreView.setup(title: localize(L.P2p.Order.Details.Score.From.partner), score: order.makerTradingRate.toString())
     
     myScoreView.isHidden = !(viewModel.orderStatus == .released || viewModel.orderStatus == .solved)
+    myScoreViewTopSeparator.isHidden = !(viewModel.orderStatus == .released || viewModel.orderStatus == .solved)
     partnerScoreView.isHidden = !(viewModel.orderStatus == .released || viewModel.orderStatus == .solved)
     
     idView.setup(id: order.id ?? "")
     idView.delegate = self
     tradeRateView.delegate = self
     self.order = order
+    
+    infoMessageView.update(message: viewModel.terms)
+    
     updateActionsView()
   }
   
@@ -144,6 +150,8 @@ class P2POrderDetailsViewController: UIViewController {
       paymentViewSeparator,
       tradeRateView,
       rateViewSeparator,
+      infoMessageView,
+      myScoreViewTopSeparator,
       myScoreView,
       myScoreViewSeparator,
       partnerScoreView,
@@ -234,7 +242,19 @@ class P2POrderDetailsViewController: UIViewController {
       $0.left.equalToSuperview().offset(15)
       $0.right.equalToSuperview().offset(-15)
     }
-
+    
+    infoMessageView.snp.makeConstraints {
+        $0.top.equalTo(rateViewSeparator.snp.bottom)
+        $0.left.right.equalToSuperview()
+    }
+    
+    myScoreViewTopSeparator.snp.makeConstraints {
+      $0.top.equalTo(infoMessageView.snp.bottom)
+      $0.height.equalTo(separatorHeight)
+      $0.left.equalToSuperview().offset(15)
+      $0.right.equalToSuperview().offset(-15)
+    }
+    
     myScoreView.snp.makeConstraints {
       $0.height.equalTo(58)
     }

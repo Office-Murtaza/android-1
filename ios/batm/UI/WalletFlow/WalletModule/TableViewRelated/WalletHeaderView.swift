@@ -76,6 +76,6 @@ final class WalletHeaderView: UIView {
   }
   
   func configure(for coinsBalance: CoinsBalance) {
-    valueLabel.text = coinsBalance.totalBalance.fiatFormatted.withDollarSign
+    valueLabel.text = coinsBalance.totalBalance?.fiatFormatted.withDollarSign
   }
 }

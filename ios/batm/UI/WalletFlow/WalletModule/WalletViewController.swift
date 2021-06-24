@@ -20,7 +20,7 @@ class WalletViewController: ModuleViewController<WalletPresenter> {
             self.tableView.deselectRow(at: index, animated: true)
         }
         
-        presenter.disconnectAndRemoveTransactionDetailsNotification()
+//        presenter.disconnectAndRemoveTransactionDetailsNotification()
         presenter.removeCoinDetails()
     }
     

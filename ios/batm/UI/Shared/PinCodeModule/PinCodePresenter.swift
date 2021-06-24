@@ -16,7 +16,7 @@ class PinCodePresenter: ModulePresenter, PinCodeModule {
     
     private let usecase: PinCodeUsecase
     private let store: Store
-    private let balanceService: BalanceService
+    private let mainSocketService: MainSocketService
     private var laContext = LAContext()
     private var shouldUseLocalAuthOnStart = false
     
@@ -29,11 +29,11 @@ class PinCodePresenter: ModulePresenter, PinCodeModule {
     weak var delegate: PinCodeModuleDelegate?
     
     init(usecase: PinCodeUsecase,
-         balanceService: BalanceService,
+         mainSocketService: MainSocketService,
          store: Store = PinCodeStore()) {
         self.usecase = usecase
         self.store = store
-        self.balanceService = balanceService
+        self.mainSocketService = mainSocketService
     }
     
     func setup(for stage: PinCodeStage) {
@@ -112,10 +112,8 @@ class PinCodePresenter: ModulePresenter, PinCodeModule {
             self?.usecase
                 .refresh()
                 .do(onError: { [weak self] _ in self?.clearCode() }, onCompleted: { [weak self] in
-                    self?.balanceService.start()
-                    self?.usecase.startTrades()
-                    self?.usecase.startOrdersUpdates()
-                    self?.usecase.startTransactionDetails()
+                    self?.mainSocketService.start()
+                    self?.usecase.startSocketService()
                 }).subscribe({ [weak self]  _ in self?.delegate?.didFinishPinCode(for: .verification, with: "") })
                 .disposed(by: self?.disposeBag ?? DisposeBag() )
         } failure: {
@@ -147,20 +145,16 @@ class PinCodePresenter: ModulePresenter, PinCodeModule {
             return .error(PinCodeError.notMatch)
         }
         UserDefaultsHelper.pinCodeWasEntered = true
-        self.balanceService.start()
-        usecase.startTrades()
-        usecase.startOrdersUpdates()
-        usecase.startTransactionDetails()
+        self.mainSocketService.start()
+        usecase.startSocketService()
         return usecase.save(pinCode: state.code)
     }
     
     private func verifyPin(for state: PinCodeState) -> Completable {
         return usecase.verify(pinCode: state.code).andThen(usecase.refresh())
             .do(onError: { [unowned self] _ in self.clearCode() }, onCompleted: { [unowned self] in
-                self.balanceService.start()
-                self.usecase.startTrades()
-                self.usecase.startOrdersUpdates()
-                self.usecase.startTransactionDetails()
+                self.mainSocketService.start()
+                self.usecase.startSocketService()
             })
     }
 }

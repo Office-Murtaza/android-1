@@ -11,9 +11,8 @@ class P2PPresenter: ModulePresenter, P2PModule {
   var accountStorage: AccountStorage?
   var walletUseCase: WalletUsecase?
   var userId: String?
-  var tradeSocketService: TradeSocketService?
   var locationService: LocationService?
-  var orderSocketService: OrderSocketService?
+  var mainSocketService: MainSocketService?
   var isCreationError = BehaviorRelay<Bool>(value: false)
   var tradeSuccessMessage = BehaviorRelay<String>(value: "")
   var balance = BehaviorRelay<CoinsBalance?>(value: nil)
@@ -28,7 +27,17 @@ class P2PPresenter: ModulePresenter, P2PModule {
   
   func setup(trades: Trades, userId: String) {
     self.userId = userId
-    self.trades.accept(trades)
+    
+    var mutableTrades = trades
+    
+    let activeTrades = trades.trades.filter({ (trade) -> Bool in
+      let status = TradeStatus(rawValue: trade.status ?? 1)
+      return status != .canceled
+    })
+    
+    mutableTrades.trades = activeTrades
+    
+    self.trades.accept(mutableTrades)
     
     guard let wallet = walletUseCase else {
       return
@@ -48,14 +57,11 @@ class P2PPresenter: ModulePresenter, P2PModule {
   }
   
   func subscribeOnSockets() {
-    tradeSocketService?.start()
-    orderSocketService?.start()
-    
-    tradeSocketService?.getTrade().subscribe(onNext: { [weak self] (trade) in
+    mainSocketService?.getTrade().subscribe(onNext: { [weak self] (trade) in
       self?.socketTrade.accept(trade)
     }).disposed(by: disposeBag)
     
-    orderSocketService?.getOrder().subscribe(onNext: { [weak self] (order) in
+    mainSocketService?.getOrder().subscribe(onNext: { [weak self] (order) in
       self?.updatedOrder.accept(order)
     }).disposed(by: disposeBag)
   }
@@ -175,7 +181,5 @@ class P2PPresenter: ModulePresenter, P2PModule {
             }
             errorService.showError(for: .serverError).subscribe().disposed(by: disposable)
         }.disposed(by: disposeBag)
-
-        
     }
 }
