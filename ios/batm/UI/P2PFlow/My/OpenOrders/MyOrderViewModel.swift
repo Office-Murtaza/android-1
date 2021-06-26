@@ -59,7 +59,8 @@ class MyOrderViewModel {
         
            let markerLocation = CLLocation(latitude: latitude, longitude: longitude)
            distance = (markerLocation.distance(from: location) * 0.000621371).round(to: 2)
-           distanceInMiles = String(distance ?? 0)
+           let unwrappedDistance = distance ?? 0
+           distanceInMiles = "\(unwrappedDistance) \(localize(L.P2p.Miles.away))"
        }
     
     
