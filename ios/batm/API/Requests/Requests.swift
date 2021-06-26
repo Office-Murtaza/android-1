@@ -703,9 +703,9 @@ struct CreateOrderRequest: AuthorizedAPIRequest {
     
     let userId: String
     let tradeId: String
-    let price: Double
-    let cryptoAmount: Double
-    let fiatAmount: Double
+    let price: Decimal
+    let cryptoAmount: Decimal
+    let fiatAmount: Decimal
     
     var path: String { return "/user/\(userId)/order" }
     var method: HTTPMethod { return .post }

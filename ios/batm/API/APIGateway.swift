@@ -402,11 +402,12 @@ final class APIGatewayImpl: APIGateway {
   }
   
     func createOrder(userId: String, tradeId: String, price: Double, cryptoAmount: Double, fiatAmount: Double) -> Single<Order> {
+      
     let request = CreateOrderRequest(userId: userId,
                                      tradeId: tradeId,
-                                     price: price,
-                                     cryptoAmount: cryptoAmount,
-                                     fiatAmount: fiatAmount)
+                                     price: Decimal(string: price.formatted() ?? "0") ?? 0,
+                                     cryptoAmount: Decimal(string: cryptoAmount.formatted() ?? "0") ?? 0,
+                                     fiatAmount: Decimal(string: fiatAmount.formatted() ?? "0") ?? 0)
         
     return execute(request)
   }
