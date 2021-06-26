@@ -54,7 +54,10 @@ class P2PCreateOrderPopupViewController: UIViewController {
     }
     
     @objc private func textChanged(_ textField: UITextField) {
-        guard let fiatAmount = textField.text, let trade = trade else { return }
+        guard let fiatAmount = textField.text, let trade = trade else {
+          return
+        }
+      
         resetError()
         presenter.updatedFiatAmount(trade: trade, fiat: fiatAmount,
                                     fee: platformFee,

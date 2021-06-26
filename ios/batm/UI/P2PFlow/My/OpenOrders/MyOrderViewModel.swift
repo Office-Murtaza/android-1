@@ -84,8 +84,8 @@ class MyOrderViewModel {
   var isNeedPresentRateView: Bool {
     if order.status == OrderDetailsActionType.release.networkType {
       switch currentSellBuyType {
-        case .sell: return order.makerRate == nil
-        case .buy: return order.takerRate == nil
+        case .sell: return order.takerRate == nil
+        case .buy: return order.makerRate == nil
       }
     }
     return false
@@ -103,16 +103,19 @@ class MyOrderViewModel {
     return (order.makerUserId == userId ? order.takerTotalTrades : order.makerTotalTrades) ?? 0
   }
   
-  var terms: String {
-    return order.terms ?? ""
+  var terms: String? {
+    return order.terms
   }
 
-  var makerRate: String {
-    return userId == order.takerUserId ? order.makerRate.toString() : order.takerRate.toString()
+  var myRate: String {
+    let rate = userId == order.takerUserId ? order.takerRate : order.makerRate
+    return (rate == 0 || rate == nil) ? localize(L.P2p.Not.Rated.yet) : rate.toString()
+    
   }
   
   var partnerRate: String {
-    return userId == order.takerUserId ? order.takerRate.toString() : order.makerRate.toString()
+    let rate = userId == order.takerUserId ? order.makerRate : order.takerRate
+    return (rate == 0 || rate == nil) ? localize(L.P2p.Not.Rated.yet) : rate.toString()
   }
   
 }

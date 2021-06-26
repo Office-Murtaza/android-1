@@ -38,7 +38,6 @@ class P2PCreateOrderFiatAmountView: UIView {
     ])
    
     fiatAmountTitle.text = localize(L.P2p.Fiat.Amount.title)
-    fiatTextField.text = "0"
   }
   
   private func setupLayout() {
