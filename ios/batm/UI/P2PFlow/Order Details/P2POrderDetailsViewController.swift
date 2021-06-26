@@ -53,8 +53,12 @@ class P2POrderDetailsViewController: UIViewController {
   
   override func viewDidAppear(_ animated: Bool) {
     super.viewDidAppear(animated)
+    presentRateIfNeeded()
+  }
+  
+  func presentRateIfNeeded() {
     if viewModel?.isNeedPresentRateView == true {
-        presentRateController()
+      presentRateController()
     }
   }
   
@@ -102,6 +106,7 @@ class P2POrderDetailsViewController: UIViewController {
     vm.update(order: order)
     updateActionsView()
     setup(viewModel: vm, myRate: currentRate)
+    presentRateIfNeeded()
   }
   
   func updateActionsView() {

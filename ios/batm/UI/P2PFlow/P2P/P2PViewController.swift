@@ -47,11 +47,6 @@ class P2PViewController: ModuleViewController<P2PPresenter>, MDCTabBarDelegate {
         tabBar.items = [buyTradesItem, sellTradesItem, myTradesItem]
         return tabBar
     }()
-    
-  override func viewDidAppear(_ animated: Bool) {
-    super.viewDidAppear(animated)
-    presenter.subscribeOnSockets()
-  }
   
   override func setupUI() {
     
@@ -82,7 +77,7 @@ class P2PViewController: ModuleViewController<P2PPresenter>, MDCTabBarDelegate {
     sellDataSource.setup(controller: buyController)
     buyDataSource.delegate = self
     sellDataSource.delegate = self
- 
+    presenter.subscribeOnSockets()
   }
     
     @objc func createTrade() {
