@@ -676,6 +676,10 @@ extension L.P2p {
     static let title = "p2p.limits.title"
   }
 
+  struct Miles {
+    static let away = "p2p.miles.away"
+  }
+
   struct No {
   }
 

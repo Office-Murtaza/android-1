@@ -280,7 +280,7 @@ extension P2PViewController: TradesDataSourceDelegate {
       sellController.delegate = self
       sellController.navigationDelegate = self
       sellController.setup(trade: tradeModel.trade,
-                           distance: "\(tradeModel.distanceInMiles ?? "0") Miles",
+                           distance: "\(tradeModel.distanceInMiles ?? "0") \(localize(L.P2p.Miles.away))",
                            reservedBalance: reservedBalance,
                            platformFee: platformFee)
       navigationController?.pushViewController(sellController, animated: true)
@@ -291,7 +291,7 @@ extension P2PViewController: TradesDataSourceDelegate {
       buyController.navigationDelegate = self
       buyController.delegate = self
       buyController.setup(trade: tradeModel.trade,
-                          distance: "\(tradeModel.distanceInMiles ?? "0") Miles",
+                          distance: "\(tradeModel.distanceInMiles ?? "0") \(localize(L.P2p.Miles.away))",
                           reservedBalance: reservedBalance,
                           platformFee: platformFee)
       navigationController?.pushViewController(buyController, animated: true)

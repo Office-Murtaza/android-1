@@ -65,11 +65,12 @@ class P2PTradeDetailsRateView: UIView {
       $0.top.equalToSuperview().offset(16)
       $0.bottom.equalToSuperview().offset(-16)
       $0.width.equalTo(separatorWidth)
+      $0.left.greaterThanOrEqualTo(markerIdView.snp.right).offset(10)
     }
     
     distanceView.snp.makeConstraints {
       $0.right.equalToSuperview().offset(-16)
-      $0.left.equalTo(verticalSeparator.snp.right).offset(30)
+      $0.left.lessThanOrEqualTo(verticalSeparator.snp.right).offset(30)
       $0.centerY.equalToSuperview()
     }
   }
