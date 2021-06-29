@@ -19,7 +19,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:text="How was you trade experience with I48784RPBVUZ7HHT" />
+        tools:text="Rate your trade experience with I48784RPBVUZ7HHT" />
 
     <RatingBar
         android:id="@+id/rating_bar"

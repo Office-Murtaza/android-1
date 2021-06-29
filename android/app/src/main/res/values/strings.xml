@@ -683,7 +683,7 @@
     <string name="trade_count_over_threshold_formatted"><![CDATA[<b>%d+</b>]]> trades</string>
     <string name="trade_count_not_over_threshold_formatted"><![CDATA[<b>%d</b>]]> trades</string>
     <string name="trade_rate_done_button_title">Done</string>
-    <string name="trade_rate_header_formatted">How was you trade experience with %s</string>
+    <string name="trade_rate_header_formatted">Rate your trade experience with %s</string>
     <string name="low_rating_label">Awful</string>
     <string name="bad_rating_label">Bad</string>
     <string name="normal_rating_label">Good</string>
@@ -709,5 +709,5 @@
     <string name="status">Status</string>
     <string name="create_order_dialog_platform_fee_label">Platform Fee</string>
     <string name="create_order_dialog_reserved_label">Reserved</string>
-    <string name="trade_order_details_not_rated_label">Not Rated Yet</string>
+    <string name="trade_order_details_not_rated_label">Not rated yet</string>
 </resources>
