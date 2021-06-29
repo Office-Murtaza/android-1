@@ -326,6 +326,7 @@ class P2PDistanceView: UIView {
     private lazy var distanceLabel: UILabel = {
         let label = UILabel()
         label.font = .systemFont(ofSize: 14, weight: .regular)
+        label.adjustsFontSizeToFitWidth = true
         return label
     }()
     

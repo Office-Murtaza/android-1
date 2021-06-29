@@ -676,7 +676,14 @@ extension L.P2p {
     static let title = "p2p.limits.title"
   }
 
+  struct Miles {
+    static let away = "p2p.miles.away"
+  }
+
   struct No {
+  }
+
+  struct Not {
   }
 
   struct Order {
@@ -880,6 +887,12 @@ extension L.P2p.No.Open {
 
   struct Orders {
     static let yet = "p2p.no.open.orders.yet"
+  }
+}
+extension L.P2p.Not {
+
+  struct Rated {
+    static let yet = "p2p.not.rated.yet"
   }
 }
 extension L.P2p.Order {

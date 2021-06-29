@@ -36,6 +36,7 @@ class P2POrderDetailsScoreView: UIView {
     func setup(title: String, score: String) {
         titleLabel.text = title
         scoreValueLabel.text = score
+        scoreImageView.isHidden = (score == localize(L.P2p.Not.Rated.yet))
     }
     
     private func setupUI() {

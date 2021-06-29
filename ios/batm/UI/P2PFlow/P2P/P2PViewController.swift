@@ -47,11 +47,6 @@ class P2PViewController: ModuleViewController<P2PPresenter>, MDCTabBarDelegate {
         tabBar.items = [buyTradesItem, sellTradesItem, myTradesItem]
         return tabBar
     }()
-    
-  override func viewDidAppear(_ animated: Bool) {
-    super.viewDidAppear(animated)
-    presenter.subscribeOnSockets()
-  }
   
   override func setupUI() {
     
@@ -82,7 +77,7 @@ class P2PViewController: ModuleViewController<P2PPresenter>, MDCTabBarDelegate {
     sellDataSource.setup(controller: buyController)
     buyDataSource.delegate = self
     sellDataSource.delegate = self
- 
+    presenter.subscribeOnSockets()
   }
     
     @objc func createTrade() {
@@ -285,7 +280,7 @@ extension P2PViewController: TradesDataSourceDelegate {
       sellController.delegate = self
       sellController.navigationDelegate = self
       sellController.setup(trade: tradeModel.trade,
-                           distance: "\(tradeModel.distanceInMiles ?? "0") Miles",
+                           distance: "\(tradeModel.distanceInMiles ?? "0") \(localize(L.P2p.Miles.away))",
                            reservedBalance: reservedBalance,
                            platformFee: platformFee)
       navigationController?.pushViewController(sellController, animated: true)
@@ -296,7 +291,7 @@ extension P2PViewController: TradesDataSourceDelegate {
       buyController.navigationDelegate = self
       buyController.delegate = self
       buyController.setup(trade: tradeModel.trade,
-                          distance: "\(tradeModel.distanceInMiles ?? "0") Miles",
+                          distance: "\(tradeModel.distanceInMiles ?? "0") \(localize(L.P2p.Miles.away))",
                           reservedBalance: reservedBalance,
                           platformFee: platformFee)
       navigationController?.pushViewController(buyController, animated: true)
