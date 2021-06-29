@@ -43,7 +43,7 @@ class TradeOrderRateBottomSheetFragment : BaseBottomSheetFragment() {
         })
         binding.header.text =
             resources.getString(R.string.trade_rate_header_formatted, args.partnerPublicId)
-        binding.ratingBar.rating = TradeOrderRateViewModel.GOOD_RATING.toFloat()
+        binding.ratingBar.rating = TradeOrderRateViewModel.LOW_RATING.toFloat()
         binding.ratingBar.setOnRatingBarChangeListener { _, rating, _ ->
             viewModel.onRateChanged(rating.toInt())
         }
