@@ -18,11 +18,9 @@ class MyOpenOrdersDataSource: NSObject, UITableViewDelegate, UITableViewDataSour
   }
   
   func reload(location: CLLocation?) {
-    DispatchQueue.global(qos: .background).async { [weak self] in
+    DispatchQueue.main.async { [weak self] in
       self?.viewModels.forEach{ $0.update(location: location) }
-      DispatchQueue.main.async { [weak self] in
-        self?.tableView?.reloadData()
-      }
+      self?.tableView?.reloadData()
     }
   }
   
