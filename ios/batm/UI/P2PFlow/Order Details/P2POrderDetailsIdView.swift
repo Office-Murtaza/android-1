@@ -11,13 +11,13 @@ class P2POrderDetailsIdView: UIView {
     
     private lazy var idLabel: UILabel = {
         let label = UILabel()
-        label.font = .systemFont(ofSize: 14)
+        label.font = .systemFont(ofSize: 14, weight: .bold)
         return label
     }()
     
     private lazy var idTitleLabel: UILabel = {
         let label = UILabel()
-        label.font = .systemFont(ofSize: 14, weight: .bold)
+        label.font = .systemFont(ofSize: 14)
         label.text = "ID"
         return label
     }()
