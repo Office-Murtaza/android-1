@@ -1,11 +1,3 @@
-//
-//  LocaltionHelper.swift
-//  batm
-//
-//  Created by Dmytro Kolesnyk on 25.03.2021.
-//  Copyright © 2021 Daniel Tischenko. All rights reserved.
-//
-
 import CoreLocation
 
 final class UserLocationManager: NSObject {

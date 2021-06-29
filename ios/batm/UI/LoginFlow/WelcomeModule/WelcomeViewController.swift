@@ -10,7 +10,7 @@ class WelcomeViewController: ModuleViewController<WelcomePresenter>, MFMailCompo
   let sliderView = WelcomeSliderView()
   let buttonsView = WelcomeButtonsView()
   let contactSupportButton = MDCButton.contactSupport
-  
+  let locatoinManager = UserLocationManager()
   override var shouldShowNavigationBar: Bool { return false }
   
   override func setupUI() {

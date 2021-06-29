@@ -33,6 +33,8 @@ class P2POrderDetailsViewController: UIViewController {
   private let infoMessageView = P2PTradeDetailsTextInfoView()
   
   private var actionSheet = OrderDetailsActionSheet()
+  var isRatePresented = false
+  
   
   var viewModel: MyOrderViewModel?
   
@@ -57,7 +59,8 @@ class P2POrderDetailsViewController: UIViewController {
   }
   
   func presentRateIfNeeded() {
-    if viewModel?.isNeedPresentRateView == true {
+    if viewModel?.isNeedPresentRateView == true, isRatePresented == false {
+      isRatePresented = true
       presentRateController()
     }
   }
@@ -318,5 +321,6 @@ extension P2POrderDetailsViewController: P2POrderRateViewControllerDelegate {
   func selectedRate(rate: Int) {
     guard let vm = viewModel else { return }
     delegate?.selectedRate(orderModel: vm, rate: rate)
+    navigationController?.popViewController(animated: true)
   }
 }
