@@ -405,9 +405,9 @@ final class APIGatewayImpl: APIGateway {
       
     let request = CreateOrderRequest(userId: userId,
                                      tradeId: tradeId,
-                                     price: Decimal(string: price.formatted() ?? "0") ?? 0,
-                                     cryptoAmount: Decimal(string: cryptoAmount.formatted() ?? "0") ?? 0,
-                                     fiatAmount: Decimal(string: fiatAmount.formatted() ?? "0") ?? 0)
+                                     price: Decimal(string: String(price)) ?? 0,
+                                     cryptoAmount: Decimal(string: String(cryptoAmount)) ?? 0,
+                                     fiatAmount: Decimal(string: String(fiatAmount)) ?? 0)
         
     return execute(request)
   }

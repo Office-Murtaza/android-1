@@ -734,6 +734,9 @@ extension L.P2p {
     static let title = "p2p.trade_type.title"
   }
 
+  struct Trades {
+  }
+
   struct Trading {
   }
 }
@@ -1031,6 +1034,12 @@ extension L.P2p.Trade.Details {
 
   struct Payment {
     static let methods = "p2p.trade.details.payment.methods"
+  }
+}
+extension L.P2p.Trades {
+
+  struct Small {
+    static let title = "p2p.trades.small.title"
   }
 }
 extension L.P2p.Trading {
