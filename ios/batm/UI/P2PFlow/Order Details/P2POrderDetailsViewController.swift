@@ -33,7 +33,6 @@ class P2POrderDetailsViewController: UIViewController {
   private let infoMessageView = P2PTradeDetailsTextInfoView()
   
   private var actionSheet = OrderDetailsActionSheet()
-  var isRatePresented = false
   
   
   var viewModel: MyOrderViewModel?
@@ -59,8 +58,7 @@ class P2POrderDetailsViewController: UIViewController {
   }
   
   func presentRateIfNeeded() {
-    if viewModel?.isNeedPresentRateView == true, isRatePresented == false {
-      isRatePresented = true
+    if viewModel?.isNeedPresentRateView == true {
       presentRateController()
     }
   }
