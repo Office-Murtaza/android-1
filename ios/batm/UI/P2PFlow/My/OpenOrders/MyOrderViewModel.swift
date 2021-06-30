@@ -5,7 +5,7 @@ class MyOrderViewModel {
     
    private(set) var order: Order
    private(set) var userId: String
-   
+  
   var currentSellBuyType: P2PSellBuyViewType {
     return (order.makerUserId == userId ? tradeType : tradeType?.reversed) ?? .buy
   }
@@ -84,10 +84,8 @@ class MyOrderViewModel {
   
   var isNeedPresentRateView: Bool {
     if order.status == OrderDetailsActionType.release.networkType {
-      switch currentSellBuyType {
-        case .sell: return order.takerRate == nil
-        case .buy: return order.makerRate == nil
-      }
+      let rate = userId == order.takerUserId ? order.takerRate : order.makerRate
+      return rate == nil
     }
     return false
   }

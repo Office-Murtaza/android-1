@@ -17,7 +17,8 @@ class TradesDataSource: NSObject,  TradeListDataSource {
     var currentTotal: Double?
     var currentRate: Double?
     var balance: CoinsBalance?
-    
+    var currentLocation: CLLocation?
+  
     func setup(controller: TradeListViewController) {
         self.controller = controller
         controller.delegate = self
@@ -75,6 +76,8 @@ class TradesDataSource: NSObject,  TradeListDataSource {
       
         let appendModel = TradeViewModel(trade: trade, totalTrades: currentTotal ?? 0, rate: currentRate ?? 0)
         
+        appendModel.update(location: currentLocation)
+      
         if let index = tradesViewModels.firstIndex(where: { $0.trade.id == trade.id }) {
             tradesViewModels.remove(at: index)
         }
@@ -94,6 +97,7 @@ class TradesDataSource: NSObject,  TradeListDataSource {
     }
     
     func reload(location: CLLocation?) {
+        currentLocation = location
         DispatchQueue.global(qos: .background).async { [weak self] in
             self?.tradesViewModels.forEach{ $0.update(location: location) }
             DispatchQueue.main.async { [weak self] in
