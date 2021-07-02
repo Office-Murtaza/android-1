@@ -1,0 +1,12 @@
+ext {
+    libraries = [
+            //Firebase
+            firebaseAnalytics: '17.5.0', //https://firebase.google.com/support/release-notes/android
+            cloudStorage     : '19.2.2', //https://firebase.google.com/support/release-notes/android
+            crashlytics      : '17.2.1', //https://firebase.google.com/support/release-notes/android
+            performance      : '19.0.8', //https://firebase.google.com/support/release-notes/android
+            firebaseMessaging: '20.1.0', //https://firebase.google.com/support/release-notes/android
+            auth             : '20.0.4', //https://firebase.google.com/support/release-notes/android
+    ]
+}
+

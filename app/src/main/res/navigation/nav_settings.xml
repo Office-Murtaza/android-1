@@ -1,0 +1,245 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_settings"
+    app:startDestination="@id/settings_fragment">
+
+    <fragment
+        android:id="@+id/settings_fragment"
+        android:name="com.app.belcobtm.presentation.features.settings.SettingsFragment"
+        android:label="SettingsFragment"
+        tools:layout="@layout/fragment_settings">
+
+        <action
+            android:id="@+id/settings_to_verification_info_fragment"
+            app:destination="@id/verification_info_fragment" />
+
+        <action
+            android:id="@+id/settings_to_about_fragment"
+            app:destination="@id/about_fragment" />
+
+        <action
+            android:id="@+id/settings_to_support_fragment"
+            app:destination="@id/support_fragment" />
+
+        <action
+            android:id="@+id/settings_to_manage_fragment"
+            app:destination="@id/manage_wallets_fragment" />
+
+        <action
+            android:id="@+id/settings_to_security_fragment"
+            app:destination="@id/security_fragment" />
+
+        <argument
+            android:name="view_flipper_value"
+            android:defaultValue="0"
+            app:argType="integer" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/password_fragment"
+        android:name="com.app.belcobtm.presentation.features.settings.password.PasswordFragment"
+        android:label="PasswordFragment"
+        tools:layout="@layout/fragment_password">
+
+        <action
+            android:id="@+id/password_to_create_seed_fragment"
+            app:destination="@id/create_seed_fragment"
+            app:enterAnim="@anim/slide_from_right"
+            app:exitAnim="@anim/slide_to_left"
+            app:popEnterAnim="@anim/slide_from_left"
+            app:popExitAnim="@anim/slide_to_right" />
+
+        <action
+            android:id="@+id/password_to_change_phone_fragment"
+            app:destination="@id/change_phone_fragment"
+            app:enterAnim="@anim/slide_from_right"
+            app:exitAnim="@anim/slide_to_left"
+            app:popEnterAnim="@anim/slide_from_left"
+            app:popExitAnim="@anim/slide_to_right" />
+
+        <argument
+            android:name="destination"
+            android:defaultValue="-1"
+            app:argType="integer" />
+
+        <argument
+            android:name="title"
+            android:defaultValue="-1"
+            app:argType="integer" />
+
+        <argument
+            android:name="nextScreenMode"
+            android:defaultValue="-1"
+            app:argType="integer" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/create_seed_fragment"
+        android:name="com.app.belcobtm.presentation.features.authorization.create.seed.CreateSeedFragment"
+        android:label="CreateSeedFragment"
+        tools:layout="@layout/fragment_create_seed">
+
+        <argument
+            android:name="mode"
+            android:defaultValue="-1"
+            app:argType="integer" />
+
+        <argument
+            android:name="seed"
+            android:defaultValue="@null"
+            app:argType="string"
+            app:nullable="true" />
+
+        <action
+            android:id="@+id/to_pin_code_fragment"
+            app:destination="@id/pin_code_fragment"
+            app:enterAnim="@anim/slide_from_right"
+            app:exitAnim="@anim/slide_to_left"
+            app:popEnterAnim="@anim/slide_from_left"
+            app:popExitAnim="@anim/slide_to_right" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/change_phone_fragment"
+        android:name="com.app.belcobtm.presentation.features.settings.phone.PhoneChangeFragment"
+        android:label="ChangePhoneFragment"
+        tools:layout="@layout/fragment_change_phone">
+
+        <action
+            android:id="@+id/phone_change_to_sms_fragment"
+            app:destination="@id/sms_code_fragment"
+            app:enterAnim="@anim/slide_from_right"
+            app:exitAnim="@anim/slide_to_left"
+            app:popEnterAnim="@anim/slide_from_left"
+            app:popExitAnim="@anim/slide_to_right" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/security_fragment"
+        android:name="com.app.belcobtm.presentation.features.settings.security.SecurityFragment"
+        android:label="SecurityFragment"
+        tools:layout="@layout/fragment_security">
+
+        <action
+            android:id="@+id/to_password"
+            app:destination="@id/password_fragment"
+            app:enterAnim="@anim/slide_from_right"
+            app:exitAnim="@anim/slide_to_left"
+            app:popEnterAnim="@anim/slide_from_left"
+            app:popExitAnim="@anim/slide_to_right" />
+
+        <action
+            android:id="@+id/to_pin_code"
+            app:destination="@id/pin_code_fragment"
+            app:enterAnim="@anim/slide_from_right"
+            app:exitAnim="@anim/slide_to_left"
+            app:popEnterAnim="@anim/slide_from_left"
+            app:popExitAnim="@anim/slide_to_right" />
+
+        <action
+            android:id="@+id/to_update_password"
+            app:destination="@id/update_password_fragment"
+            app:enterAnim="@anim/slide_from_right"
+            app:exitAnim="@anim/slide_to_left"
+            app:popEnterAnim="@anim/slide_from_left"
+            app:popExitAnim="@anim/slide_to_right" />
+
+        <action
+            android:id="@+id/to_unlink"
+            app:destination="@id/unlink_fragment"
+            app:enterAnim="@anim/slide_from_right"
+            app:exitAnim="@anim/slide_to_left"
+            app:popEnterAnim="@anim/slide_from_left"
+            app:popExitAnim="@anim/slide_to_right" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/sms_code_fragment"
+        android:name="com.app.belcobtm.presentation.features.sms.code.SmsCodeFragment"
+        android:label="SmsCodeFragment"
+        tools:layout="@layout/fragment_sms_code" />
+
+    <fragment
+        android:id="@+id/unlink_fragment"
+        android:name="com.app.belcobtm.presentation.features.settings.unlink.UnlinkFragment"
+        android:label="UnlinkFragment"
+        tools:layout="@layout/fragment_unlink" />
+
+    <fragment
+        android:id="@+id/pin_code_fragment"
+        android:name="com.app.belcobtm.presentation.features.pin.code.PinCodeFragment"
+        android:label="PinCodeFragment"
+        tools:layout="@layout/fragment_pin_code">
+
+        <argument
+            android:name="tag_pin_mode"
+            android:defaultValue="key_pin_mode_change"
+            app:argType="string" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/update_password_fragment"
+        android:name="com.app.belcobtm.presentation.features.settings.update_password.UpdatePasswordFragment"
+        android:label="UpdatePasswordFragment"
+        tools:layout="@layout/fragment_update_password" />
+
+    <fragment
+        android:id="@+id/verification_info_fragment"
+        android:name="com.app.belcobtm.presentation.features.settings.verification.info.VerificationInfoFragment"
+        android:label="VerificationInfoFragment"
+        tools:layout="@layout/fragment_verification_info">
+
+        <action
+            android:id="@+id/verification_info_to_verify"
+            app:destination="@id/verification_blank_fragment"
+            app:enterAnim="@anim/slide_from_right"
+            app:exitAnim="@anim/slide_to_left"
+            app:popEnterAnim="@anim/slide_from_left"
+            app:popExitAnim="@anim/slide_to_right" />
+
+        <action
+            android:id="@+id/verification_info_to_vip_verify"
+            app:destination="@id/verification_vip_fragment"
+            app:enterAnim="@anim/slide_from_right"
+            app:exitAnim="@anim/slide_to_left"
+            app:popEnterAnim="@anim/slide_from_left"
+            app:popExitAnim="@anim/slide_to_right" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/verification_blank_fragment"
+        android:name="com.app.belcobtm.presentation.features.settings.verification.blank.VerificationBlankFragment"
+        android:label="VerificationBlankFragment"
+        tools:layout="@layout/fragment_verification_blank" />
+
+    <fragment
+        android:id="@+id/verification_vip_fragment"
+        android:name="com.app.belcobtm.presentation.features.settings.verification.vip.VerificationVipFragment"
+        android:label="VerificationVipFragment"
+        tools:layout="@layout/fragment_verification_vip" />
+
+    <fragment
+        android:id="@+id/about_fragment"
+        android:name="com.app.belcobtm.presentation.features.settings.about.AboutFragment"
+        android:label="AboutFragment"
+        tools:layout="@layout/fragment_about" />
+
+    <fragment
+        android:id="@+id/manage_wallets_fragment"
+        android:name="com.app.belcobtm.presentation.features.wallet.add.WalletsFragment"
+        android:label="ManageWalletFragment"
+        tools:layout="@layout/fragment_wallets" />
+
+    <fragment
+        android:id="@+id/support_fragment"
+        android:name="com.app.belcobtm.presentation.features.settings.support.SupportFragment"
+        android:label="SupportFragment"
+        tools:layout="@layout/fragment_support" />
+
+</navigation>

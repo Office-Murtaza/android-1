@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingStart="@dimen/margin_main"
+    android:paddingEnd="@dimen/margin_main">
+
+    <TextView
+        android:id="@+id/usd_amount_label"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:gravity="end"
+        android:text="@string/usd_amount_label"
+        android:textColor="@color/gray_text_color"
+        android:textSize="17sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/amount_input_layout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:hintEnabled="false"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/usd_amount_label">
+
+        <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/amount_edit_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            android:gravity="end"
+            android:imeOptions="actionDone"
+            android:inputType="number"
+            android:padding="0dp"
+            android:textColor="@color/black_text_color"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            tools:text="$1,500">
+
+        </androidx.appcompat.widget.AppCompatEditText>
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <TextView
+        android:id="@+id/amount_error"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:gravity="end"
+        android:textColor="@color/colorError"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/amount_input_layout"
+        tools:text="Some error" />
+
+    <TextView
+        android:id="@+id/reserved_amount_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_large"
+        android:layout_marginEnd="@dimen/margin_half"
+        android:gravity="end"
+        android:text="@string/create_order_dialog_reserved_label"
+        android:textColor="@color/gray_text_color"
+        android:textSize="17sp"
+        app:layout_constraintEnd_toStartOf="@id/reserved_amount_value"
+        app:layout_constraintHorizontal_bias="1"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/amount_error" />
+
+    <TextView
+        android:id="@+id/reserved_amount_value"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_large"
+        android:gravity="end"
+        android:textColor="@color/black_text_color"
+        android:textSize="17sp"
+        app:layout_constrainedWidth="true"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/reserved_amount_label"
+        app:layout_constraintTop_toBottomOf="@id/amount_error"
+        tools:text="0.265 BTC" />
+
+    <TextView
+        android:id="@+id/crypto_amount_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/margin_half"
+        android:gravity="end"
+        android:text="@string/trade_buy_sell_crypto_amount_label"
+        android:textColor="@color/gray_text_color"
+        android:textSize="17sp"
+        app:layout_constraintEnd_toStartOf="@id/crypto_amount_value"
+        app:layout_constraintHorizontal_bias="1"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/crypto_amount_value" />
+
+    <TextView
+        android:id="@+id/crypto_amount_value"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_half"
+        android:gravity="end"
+        android:textColor="@color/black_text_color"
+        android:textSize="17sp"
+        app:layout_constrainedWidth="true"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/crypto_amount_label"
+        app:layout_constraintTop_toBottomOf="@id/reserved_amount_value"
+        tools:text="0.265 BTC" />
+
+    <TextView
+        android:id="@+id/platform_fee_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_half"
+        android:layout_marginEnd="@dimen/margin_half"
+        android:gravity="end"
+        android:text="@string/create_order_dialog_platform_fee_label"
+        android:textColor="@color/gray_text_color"
+        android:textSize="17sp"
+        app:layout_constraintEnd_toStartOf="@id/fee_amount_value"
+        app:layout_constraintHorizontal_bias="1"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/crypto_amount_value" />
+
+    <TextView
+        android:id="@+id/fee_amount_value"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_half"
+        android:gravity="end"
+        android:textColor="@color/black_text_color"
+        android:textSize="17sp"
+        app:layout_constrainedWidth="true"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/platform_fee_label"
+        app:layout_constraintTop_toBottomOf="@id/crypto_amount_value"
+        tools:text="0.265 BTC" />
+
+    <TextView
+        android:id="@+id/total_crypto_label"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_main"
+        android:gravity="end"
+        android:text="@string/you_will_get_label"
+        android:textColor="@color/gray_text_color"
+        android:textSize="17sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/platform_fee_label" />
+
+    <TextView
+        android:id="@+id/total_crypto_value"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_half"
+        android:gravity="end"
+        android:textColor="@color/black_text_color"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/total_crypto_label"
+        tools:text="0.485 BTC" />
+
+    <Button
+        android:id="@+id/submit_button"
+        style="@style/Button.Primary"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="@dimen/margin_large"
+        android:layout_marginEnd="0dp"
+        android:layout_marginBottom="32dp"
+        android:text="@string/trade_buy_sell_submit_button_label"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/total_crypto_value" />
+
+    <ProgressBar
+        android:id="@+id/progress_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <include
+        android:id="@+id/error_view"
+        layout="@layout/include_error_screen"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/content_group"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:constraint_referenced_ids="crypto_amount_label,crypto_amount_value,usd_amount_label,amount_input_layout,amount_error,platform_fee_label,submit_button,reserved_amount_label,total_crypto_label,total_crypto_value,reserved_amount_value,fee_amount_value"
+        tools:visibility="visible" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

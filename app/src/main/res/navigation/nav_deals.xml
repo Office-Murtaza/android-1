@@ -1,0 +1,372 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_deals"
+    app:startDestination="@id/fragment_deals">
+
+    <fragment
+        android:id="@+id/fragment_deals"
+        android:name="com.app.belcobtm.presentation.features.deals.DealsFragment"
+        tools:layout="@layout/fragment_deals">
+        <action
+            android:id="@+id/to_swap_fragment"
+            app:destination="@id/swap_fragment"
+            app:enterAnim="@anim/slide_from_right"
+            app:exitAnim="@anim/slide_to_left"
+            app:popEnterAnim="@anim/slide_from_left"
+            app:popExitAnim="@anim/slide_to_right" />
+
+        <action
+            android:id="@+id/to_staking_fragment"
+            app:destination="@id/staking_fragment"
+            app:enterAnim="@anim/slide_from_right"
+            app:exitAnim="@anim/slide_to_left"
+            app:popEnterAnim="@anim/slide_from_left"
+            app:popExitAnim="@anim/slide_to_right" />
+
+        <action
+            android:id="@+id/to_contact_list_fragment"
+            app:destination="@id/contact_list_fragment"
+            app:enterAnim="@anim/slide_from_right"
+            app:exitAnim="@anim/slide_to_left"
+            app:popEnterAnim="@anim/slide_from_left"
+            app:popExitAnim="@anim/slide_to_right" />
+
+        <action
+            android:id="@+id/to_trade_container_fragment"
+            app:destination="@id/trade_container_fragment"
+            app:enterAnim="@anim/slide_from_right"
+            app:exitAnim="@anim/slide_to_left"
+            app:popEnterAnim="@anim/slide_from_left"
+            app:popExitAnim="@anim/slide_to_right" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/swap_fragment"
+        android:name="com.app.belcobtm.presentation.features.deals.swap.SwapFragment"
+        android:label="ExchangeFragment"
+        tools:layout="@layout/fragment_swap" />
+
+    <fragment
+        android:id="@+id/staking_fragment"
+        android:name="com.app.belcobtm.presentation.features.deals.staking.StakingFragment"
+        android:label="ExchangeFragment"
+        tools:layout="@layout/fragment_swap" />
+
+    <fragment
+        android:id="@+id/contact_list_fragment"
+        android:name="com.app.belcobtm.presentation.features.contacts.ContactListFragment"
+        android:label="ContactListFragment"
+        tools:layout="@layout/fragment_contact_list">
+
+        <action
+            android:id="@+id/to_send_gif_fragment"
+            app:destination="@id/send_gif_fragment"
+            app:enterAnim="@anim/slide_from_right"
+            app:exitAnim="@anim/slide_to_left"
+            app:popEnterAnim="@anim/slide_from_left"
+            app:popExitAnim="@anim/slide_to_right" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/send_gif_fragment"
+        android:name="com.app.belcobtm.presentation.features.wallet.send.gift.SendGiftFragment"
+        android:label="TransferDetailsFragment"
+        tools:layout="@layout/fragment_send_gift">
+
+        <argument
+            android:name="address"
+            app:argType="string" />
+
+        <argument
+            android:name="phoneNumber"
+            app:argType="string" />
+
+        <argument
+            android:name="contactPhotoUri"
+            android:defaultValue="@null"
+            app:argType="string"
+            app:nullable="true" />
+
+        <argument
+            android:name="contactName"
+            android:defaultValue="@null"
+            app:argType="string"
+            app:nullable="true" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/trade_container_fragment"
+        android:name="com.app.belcobtm.presentation.features.wallet.trade.container.TradeContainerFragment"
+        android:label="TradeListContainerFragment"
+        tools:layout="@layout/fragment_trade_list_container">
+
+        <action
+            android:id="@+id/to_create_trade_fragment"
+            app:destination="@id/create_trade_fragment"
+            app:enterAnim="@anim/slide_from_right"
+            app:exitAnim="@anim/slide_to_left"
+            app:popEnterAnim="@anim/slide_from_left"
+            app:popExitAnim="@anim/slide_to_right" />
+
+        <action
+            android:id="@+id/to_filter_trade_fragment"
+            app:destination="@id/filter_trade_fragment"
+            app:enterAnim="@anim/slide_from_right"
+            app:exitAnim="@anim/slide_to_left"
+            app:popEnterAnim="@anim/slide_from_left"
+            app:popExitAnim="@anim/slide_to_right" />
+
+        <action
+            android:id="@+id/to_trade_details"
+            app:destination="@id/trade_details"
+            app:enterAnim="@anim/slide_from_right"
+            app:exitAnim="@anim/slide_to_left"
+            app:popEnterAnim="@anim/slide_from_left"
+            app:popExitAnim="@anim/slide_to_right" />
+
+        <action
+            android:id="@+id/to_my_trade_details"
+            app:destination="@id/my_trade_details_fragment"
+            app:enterAnim="@anim/slide_from_right"
+            app:exitAnim="@anim/slide_to_left"
+            app:popEnterAnim="@anim/slide_from_left"
+            app:popExitAnim="@anim/slide_to_right" />
+
+        <action
+            android:id="@+id/to_create_trade"
+            app:destination="@id/create_trade_fragment"
+            app:enterAnim="@anim/slide_from_right"
+            app:exitAnim="@anim/slide_to_left"
+            app:popEnterAnim="@anim/slide_from_left"
+            app:popExitAnim="@anim/slide_to_right" />
+
+        <action
+            android:id="@+id/to_order_details"
+            app:destination="@id/trade_order_details_fragment"
+            app:enterAnim="@anim/slide_from_right"
+            app:exitAnim="@anim/slide_to_left"
+            app:popEnterAnim="@anim/slide_from_left"
+            app:popExitAnim="@anim/slide_to_right" />
+    </fragment>
+
+    <dialog
+        android:id="@+id/filter_trade_fragment"
+        android:name="com.app.belcobtm.presentation.features.wallet.trade.list.filter.TradeFilterBottomSheetDialogFragment"
+        android:label="FilterFragmen"
+        tools:layout="@layout/fragment_trade_filter" />
+
+    <fragment
+        android:id="@+id/create_trade_fragment"
+        android:name="com.app.belcobtm.presentation.features.wallet.trade.create.CreateTradeFragment"
+        android:label="CreateTradeFragment"
+        tools:layout="@layout/fragment_create_trade" />
+
+    <fragment
+        android:id="@+id/trade_details"
+        android:name="com.app.belcobtm.presentation.features.wallet.trade.details.TradeDetailsFragment"
+        android:label="DetailsTradeFragment"
+        tools:layout="@layout/fragment_trade_details">
+
+        <argument
+            android:name="tradeId"
+            app:argType="string"
+            app:nullable="false" />
+
+        <action
+            android:id="@+id/to_trade_details_buy_sell"
+            app:destination="@id/trade_details_buy_sell"
+            app:enterAnim="@anim/slide_from_right"
+            app:exitAnim="@anim/slide_to_left"
+            app:popEnterAnim="@anim/slide_from_left"
+            app:popExitAnim="@anim/slide_to_right" />
+    </fragment>
+
+    <dialog
+        android:id="@+id/trade_details_buy_sell"
+        android:name="com.app.belcobtm.presentation.features.wallet.trade.order.create.TradeCreateOrderBottomSheetFragment"
+        android:label="BuySellTradeFragment"
+        tools:layout="@layout/fragment_trade_create_order">
+
+        <argument
+            android:name="tradeId"
+            app:argType="string"
+            app:nullable="false" />
+
+        <action
+            android:id="@+id/to_order_details"
+            app:destination="@id/trade_order_details_fragment"
+            app:enterAnim="@anim/slide_from_right"
+            app:exitAnim="@anim/slide_to_left"
+            app:popEnterAnim="@anim/slide_from_left"
+            app:popExitAnim="@anim/slide_to_right"
+            app:popUpTo="@+id/trade_container_fragment" />
+
+    </dialog>
+
+
+    <fragment
+        android:id="@+id/my_trade_details_fragment"
+        android:name="com.app.belcobtm.presentation.features.wallet.trade.mytrade.details.MyTradeDetailsFragment"
+        android:label="MyTradeDetailsFragment"
+        tools:layout="@layout/fragment_my_trade_details">
+
+        <argument
+            android:name="tradeId"
+            app:argType="string"
+            app:nullable="false" />
+
+        <action
+            android:id="@+id/to_edit_my_trade_details"
+            app:destination="@id/edit_trade_fragment"
+            app:enterAnim="@anim/slide_from_right"
+            app:exitAnim="@anim/slide_to_left"
+            app:popEnterAnim="@anim/slide_from_left"
+            app:popExitAnim="@anim/slide_to_right" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/edit_trade_fragment"
+        android:name="com.app.belcobtm.presentation.features.wallet.trade.edit.EditTradeFragment"
+        android:label="CreateTradeFragment"
+        tools:layout="@layout/fragment_edit_trade">
+
+        <argument
+            android:name="tradeId"
+            app:argType="string"
+            app:nullable="false" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/trade_order_details_fragment"
+        android:name="com.app.belcobtm.presentation.features.wallet.trade.order.details.TradeOrderDetailsFragment"
+        android:label="OrderDetailsFragment"
+        tools:layout="@layout/fragment_trade_order_details">
+
+        <argument
+            android:name="orderId"
+            app:argType="string"
+            app:nullable="false" />
+
+        <action
+            android:id="@+id/to_rate_order_fragment"
+            app:destination="@id/rate_order_fragment"
+            app:enterAnim="@anim/slide_from_right"
+            app:exitAnim="@anim/slide_to_left"
+            app:popEnterAnim="@anim/slide_from_left"
+            app:popExitAnim="@anim/slide_to_right" />
+
+        <action
+            android:id="@+id/to_chat_order_fragment"
+            app:destination="@id/order_chat_fragment"
+            app:enterAnim="@anim/slide_from_right"
+            app:exitAnim="@anim/slide_to_left"
+            app:popEnterAnim="@anim/slide_from_left"
+            app:popExitAnim="@anim/slide_to_right" />
+
+        <action
+            android:id="@+id/to_history_chat_order_fragment"
+            app:destination="@id/order_history_chat_fragment"
+            app:enterAnim="@anim/slide_from_right"
+            app:exitAnim="@anim/slide_to_left"
+            app:popEnterAnim="@anim/slide_from_left"
+            app:popExitAnim="@anim/slide_to_right" />
+
+    </fragment>
+
+    <dialog
+        android:id="@+id/rate_order_fragment"
+        android:name="com.app.belcobtm.presentation.features.wallet.trade.order.rate.TradeOrderRateBottomSheetFragment"
+        android:label="OrderDetailsFragment"
+        tools:layout="@layout/fragment_trade_rate">
+
+        <argument
+            android:name="partnerPublicId"
+            app:argType="string"
+            app:nullable="false" />
+
+        <argument
+            android:name="orderId"
+            app:argType="string"
+            app:nullable="false" />
+
+    </dialog>
+
+    <fragment
+        android:id="@+id/order_chat_fragment"
+        android:name="com.app.belcobtm.presentation.features.wallet.trade.order.chat.OrderChatFragment"
+        android:label="OrderChatFragment"
+        tools:layout="@layout/fragment_order_chat">
+
+
+        <argument
+            android:name="partnerPublicId"
+            app:argType="string"
+            app:nullable="false" />
+
+        <argument
+            android:name="orderId"
+            app:argType="string"
+            app:nullable="false" />
+
+        <argument
+            android:name="myId"
+            app:argType="string"
+            app:nullable="false" />
+
+        <argument
+            android:name="partnerId"
+            app:argType="string"
+            app:nullable="false" />
+
+        <action
+            android:id="@+id/to_chat_image_dialog"
+            app:destination="@id/chat_image_dialog"
+            app:enterAnim="@anim/slide_from_right"
+            app:exitAnim="@anim/slide_to_left"
+            app:popEnterAnim="@anim/slide_from_left"
+            app:popExitAnim="@anim/slide_to_right" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/order_history_chat_fragment"
+        android:name="com.app.belcobtm.presentation.features.wallet.trade.order.historychat.HistoryChatFragment"
+        android:label="OrderHistoryChat"
+        tools:layout="@layout/fragment_history_chat">
+
+        <argument
+            android:name="partnerPublicId"
+            app:argType="string"
+            app:nullable="false" />
+
+        <argument
+            android:name="orderId"
+            app:argType="string"
+            app:nullable="false" />
+
+        <action
+            android:id="@+id/to_chat_image_dialog"
+            app:destination="@id/chat_image_dialog"
+            app:enterAnim="@anim/slide_from_right"
+            app:exitAnim="@anim/slide_to_left"
+            app:popEnterAnim="@anim/slide_from_left"
+            app:popExitAnim="@anim/slide_to_right" />
+    </fragment>
+
+    <dialog
+        android:id="@+id/chat_image_dialog"
+        android:name="com.app.belcobtm.presentation.features.wallet.trade.order.chat.dialog.ChatImageDialogFragment"
+        android:label="Chat image dialog">
+
+        <argument
+            android:name="imageUrl"
+            app:argType="string"
+            app:nullable="false" />
+
+    </dialog>
+
+</navigation>

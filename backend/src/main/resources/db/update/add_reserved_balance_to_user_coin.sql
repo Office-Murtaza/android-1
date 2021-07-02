@@ -1,1 +1,0 @@
-ALTER TABLE w_usercoin ADD COLUMN reserved_balance DECIMAL(20, 10) DEFAULT 0 AFTER address;

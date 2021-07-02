@@ -1,1 +1,0 @@
-ALTER TABLE transactionrecord ADD COLUMN n INT(2) DEFAULT NULL AFTER detail;

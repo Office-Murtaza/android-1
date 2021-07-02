@@ -1,1 +1,0 @@
-ALTER TABLE w_user ADD COLUMN timezone VARCHAR (10) DEFAULT NULL AFTER longitude;

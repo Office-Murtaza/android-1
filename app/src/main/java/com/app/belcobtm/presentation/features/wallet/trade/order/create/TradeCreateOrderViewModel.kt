@@ -1,0 +1,137 @@
+package com.app.belcobtm.presentation.features.wallet.trade.order.create
+
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import com.app.belcobtm.R
+import com.app.belcobtm.data.model.trade.TradeType
+import com.app.belcobtm.domain.trade.details.GetTradeDetailsUseCase
+import com.app.belcobtm.domain.trade.order.CreateOrderUseCase
+import com.app.belcobtm.domain.wallet.LocalCoinType
+import com.app.belcobtm.domain.wallet.interactor.GetCoinByCodeUseCase
+import com.app.belcobtm.presentation.core.livedata.DoubleCombinedLiveData
+import com.app.belcobtm.presentation.core.mvvm.LoadingData
+import com.app.belcobtm.presentation.core.provider.string.StringProvider
+import com.app.belcobtm.presentation.features.wallet.trade.list.model.TradeItem
+import com.app.belcobtm.presentation.features.wallet.trade.order.create.model.*
+
+class TradeCreateOrderViewModel(
+    private val getTradeDetailsUseCase: GetTradeDetailsUseCase,
+    private val getCoinByCodeUseCase: GetCoinByCodeUseCase,
+    private val createOrderUseCase: CreateOrderUseCase,
+    private val stringProvider: StringProvider
+) : ViewModel() {
+
+    private val _initialLoadingData = MutableLiveData<LoadingData<Unit>>()
+    val initialLoadingData: LiveData<LoadingData<Unit>> = _initialLoadingData
+
+    private val _createTradeLoadingData = MutableLiveData<LoadingData<String>>()
+    val createTradeLoadingData: LiveData<LoadingData<String>> = _createTradeLoadingData
+
+    private val _fiatAmount = MutableLiveData<Double>(0.0)
+    val fiatAmount: LiveData<Double> = _fiatAmount
+
+    private val _fiatAmountError = MutableLiveData<String?>()
+    val fiatAmountError: LiveData<String?> = _fiatAmountError
+
+    private val _coin = MutableLiveData<LocalCoinType>()
+    val coin: LiveData<LocalCoinType> = _coin
+
+    private val _reservedBalance = MutableLiveData<ReservedBalance>()
+    val reservedBalance: LiveData<ReservedBalance> = _reservedBalance
+
+    private val _receiveAmountLabel = MutableLiveData<Int>()
+    val receiveAmountLabel: LiveData<Int> = _receiveAmountLabel
+
+    private var includeFeeCoef = 1
+
+    val cryptoAmount: LiveData<TradeCryptoAmount> =
+        DoubleCombinedLiveData(fiatAmount, coin) { fiat, coin ->
+            TradeCryptoAmount(fiat?.div(trade?.price ?: 0.0) ?: 0.0, coin?.name.orEmpty())
+        }
+    val platformFee: LiveData<TradeFee> =
+        DoubleCombinedLiveData(cryptoAmount, coin) { crypto, coin ->
+            TradeFee(
+                platformFeePercent,
+                (crypto?.cryptoAmount ?: 0.0) * platformFeePercent / 2 / 100,
+                coin?.name.orEmpty()
+            )
+        }
+
+    val amountWithoutFee: LiveData<TotalValue> =
+        DoubleCombinedLiveData(cryptoAmount, platformFee) { amount, fee ->
+            TotalValue(
+                (amount?.cryptoAmount ?: 0.0) + includeFeeCoef * (fee?.platformFeeCrypto ?: 0.0),
+                fee?.coinCode.orEmpty()
+            )
+        }
+
+    private var trade: TradeItem? = null
+    private var platformFeePercent: Double = 0.0
+    private var reservedBalanceUsd: Double = 0.0
+
+    fun updateAmount(amount: Double) {
+        _fiatAmount.value = amount
+    }
+
+    fun fetchTradeDetails(tradeId: String) {
+        _initialLoadingData.value = LoadingData.Loading()
+        getTradeDetailsUseCase(tradeId, onSuccess = { trade ->
+            getCoinByCodeUseCase(trade.coin.name, onSuccess = { coinDataItem ->
+                this.trade = trade
+                this.platformFeePercent = coinDataItem.details.platformTradeFee
+                this._coin.value = trade.coin
+                this.reservedBalanceUsd = coinDataItem.reservedBalanceUsd
+                _reservedBalance.value = ReservedBalance(
+                    coinDataItem.reservedBalanceCoin,
+                    coinDataItem.code
+                )
+                if (trade.tradeType == TradeType.BUY) {
+                    includeFeeCoef = 1
+                    _receiveAmountLabel.value = R.string.you_will_send_label
+                } else {
+                    includeFeeCoef = -1
+                    _receiveAmountLabel.value = R.string.you_will_get_label
+                }
+                this._initialLoadingData.value = LoadingData.Success(Unit)
+            }, onError = { _initialLoadingData.value = LoadingData.Error(it) })
+        }, onError = { _initialLoadingData.value = LoadingData.Error(it) })
+    }
+
+
+    fun createOrder() {
+        val tradeData = trade ?: return
+        val amount = fiatAmount.value ?: 0.0
+        val takerActionType =
+            if (tradeData.tradeType == TradeType.BUY) TradeType.SELL else TradeType.BUY
+        val tradeAmountRange = tradeData.minLimit..tradeData.maxLimit
+        if (amount == 0.0) {
+            _fiatAmountError.value =
+                stringProvider.getString(R.string.trade_buy_sell_dialog_amount_zero_error)
+            return
+        }
+        if (takerActionType == TradeType.BUY && amount !in tradeAmountRange) {
+            _fiatAmountError.value =
+                stringProvider.getString(R.string.trade_buy_sell_dialog_amount_not_in_range_error)
+            return
+        }
+        if (takerActionType == TradeType.SELL && amount > reservedBalanceUsd) {
+            _fiatAmountError.value =
+                stringProvider.getString(R.string.trade_buy_sell_dialog_amount_too_big_error)
+            return
+        }
+        _fiatAmountError.value = null
+        _createTradeLoadingData.value = LoadingData.Loading()
+        createOrderUseCase(TradeOrderItem(
+            tradeData.tradeId, tradeData.price,
+            cryptoAmount.value?.cryptoAmount ?: 0.0,
+            fiatAmount.value ?: 0.0,
+            tradeData.terms
+        ), onSuccess = {
+            _createTradeLoadingData.value = LoadingData.Success(it)
+        }, onError = {
+            _createTradeLoadingData.value = LoadingData.Error(it)
+        })
+    }
+
+}

@@ -1,0 +1,233 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/custom_toolbar_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/white"
+        android:minHeight="?attr/actionBarSize"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:titleTextColor="@color/colorText"
+        tools:title="Bitcoin" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/price_usd_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:textColor="@color/colorPrimary"
+        android:textSize="22sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/custom_toolbar_view"
+        tools:text="245876543 $" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/changes_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:drawableStart="@drawable/ic_arrow_drop_down"
+        android:drawableTint="#e02d2d"
+        android:textColor="#e02d2d"
+        app:layout_constraintEnd_toEndOf="@id/price_usd_view"
+        app:layout_constraintStart_toStartOf="@id/price_usd_view"
+        app:layout_constraintTop_toBottomOf="@id/price_usd_view"
+        tools:text="2.18 %" />
+
+    <com.github.mikephil.charting.charts.LineChart
+        android:id="@+id/chart_view"
+        android:layout_width="0dp"
+        android:layout_height="140dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/changes_view" />
+
+    <ProgressBar
+        android:id="@+id/chart_progress_view"
+        style="?android:attr/progressBarStyleLarge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="@+id/chart_view"
+        app:layout_constraintEnd_toEndOf="@+id/chart_view"
+        app:layout_constraintStart_toStartOf="@+id/chart_view"
+        app:layout_constraintTop_toTopOf="@+id/chart_view" />
+
+    <com.google.android.material.chip.ChipGroup
+        android:id="@+id/chart_chip_group_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/chart_view"
+        app:singleSelection="true">
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/one_day_chip_view"
+            style="@style/Button.Chip"
+            android:text="@string/transition_details_screen_one_day"
+            tools:checked="true" />
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/one_week_chip_view"
+            style="@style/Button.Chip"
+            android:text="@string/transition_details_screen_one_week" />
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/one_month_chip_view"
+            style="@style/Button.Chip"
+            android:text="@string/transition_details_screen_one_month" />
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/three_month_chip_view"
+            style="@style/Button.Chip"
+            android:text="@string/transition_details_screen_three_month" />
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/one_year_chip_view"
+            style="@style/Button.Chip"
+            android:text="@string/transition_details_screen_one_year" />
+
+    </com.google.android.material.chip.ChipGroup>
+
+    <View
+        android:id="@+id/graph_divider_view"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:layout_marginTop="4dp"
+        android:background="@drawable/bg_divider"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/chart_chip_group_view" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/balance_title_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="16dp"
+        android:text="@string/transactions_screen_balance"
+        android:textColor="#8d8d8d"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/graph_divider_view" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/balance_crypto_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@id/balance_title_view"
+        app:layout_constraintEnd_toStartOf="@id/exchange_view"
+        app:layout_constraintTop_toTopOf="@id/balance_title_view"
+        tools:text="0.000902 BTC" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/exchange_view"
+        android:layout_width="16dp"
+        android:layout_height="16dp"
+        android:layout_marginEnd="8dp"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="@id/balance_crypto_view"
+        app:layout_constraintEnd_toStartOf="@id/balance_usd_view"
+        app:layout_constraintTop_toTopOf="@id/balance_crypto_view"
+        app:srcCompat="@drawable/ic_compare_arrows" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/balance_usd_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:textColor="@color/blue_color"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@id/balance_title_view"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/balance_title_view"
+        tools:text="8.90 $" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/reserved_title_view"
+        style="@style/Transaction.Title.Medium.Key"
+        android:text="@string/add_edit_trade_screen_reserved"
+        app:layout_constraintStart_toStartOf="@id/balance_title_view"
+        app:layout_constraintTop_toBottomOf="@id/balance_title_view" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/reserved_crypto_view"
+        style="@style/Transaction.Title.Medium.Value"
+        android:layout_marginEnd="8dp"
+        app:layout_constraintBottom_toBottomOf="@id/reserved_title_view"
+        app:layout_constraintEnd_toStartOf="@id/reservedExchangeView"
+        app:layout_constraintTop_toTopOf="@id/reserved_title_view"
+        tools:text="0.00902 BTC" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/reservedExchangeView"
+        android:layout_width="16dp"
+        android:layout_height="16dp"
+        android:layout_marginEnd="8dp"
+        app:layout_constraintBottom_toBottomOf="@id/reserved_crypto_view"
+        app:layout_constraintEnd_toStartOf="@id/reserved_usd_view"
+        app:layout_constraintTop_toTopOf="@id/reserved_crypto_view"
+        app:srcCompat="@drawable/ic_compare_arrows" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/reserved_usd_view"
+        style="@style/Transaction.Title.Medium.Value"
+        android:layout_marginEnd="16dp"
+        android:textColor="@color/blue_color"
+        app:layout_constraintBottom_toBottomOf="@id/reservedExchangeView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/reservedExchangeView"
+        tools:text="8.90 USD" />
+
+    <View
+        android:id="@+id/balance_divider_view"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/bg_divider"
+        app:layout_constraintEnd_toEndOf="@id/list_view"
+        app:layout_constraintStart_toStartOf="@id/list_view"
+        app:layout_constraintTop_toBottomOf="@id/reserved_title_view" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/list_view"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/balance_divider_view"
+        tools:listitem="@layout/item_transaction" />
+
+    <io.github.kobakei.materialfabspeeddial.FabSpeedDial
+        android:id="@+id/fab_list_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:fab_extraMargin="-12dp"
+        app:fab_fabBackgroundColor="@color/blue_color"
+        app:fab_fabDrawable="@drawable/ic_add"
+        app:fab_fabDrawableTint="@android:color/white"
+        app:fab_miniFabBackgroundColor="@color/blue_color"
+        app:fab_miniFabDrawableTint="@android:color/white"
+        app:fab_miniFabRippleColor="#80000000"
+        app:fab_miniFabTextBackground="@drawable/bg_fab_text"
+        app:fab_miniFabTextColor="#58585a" />
+</androidx.constraintlayout.widget.ConstraintLayout>

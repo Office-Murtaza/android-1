@@ -1,1 +1,0 @@
-ALTER TABLE w_user ADD COLUMN platform INT(1) DEFAULT NULL AFTER role;

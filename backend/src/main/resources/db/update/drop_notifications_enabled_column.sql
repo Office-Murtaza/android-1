@@ -1,1 +1,0 @@
-ALTER TABLE w_user DROP COLUMN notifications_enabled;

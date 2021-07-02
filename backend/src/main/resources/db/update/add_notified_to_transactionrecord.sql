@@ -1,1 +1,0 @@
-ALTER TABLE transactionrecord ADD COLUMN notified INT(2) DEFAULT 0 AFTER tracked;
