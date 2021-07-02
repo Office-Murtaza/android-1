@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.lifecycle.observe
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.app.belcobtm.R
@@ -37,7 +36,6 @@ class TradeOrderRateBottomSheetFragment : BaseBottomSheetFragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentTradeRateBinding.inflate(inflater, container, false)
-        viewModel.rateLabel.observe(viewLifecycleOwner, binding.ratingValue::setText)
         viewModel.rateLoadingData.listen(success = {
             findNavController().popBackStack(R.id.trade_container_fragment, false)
         })

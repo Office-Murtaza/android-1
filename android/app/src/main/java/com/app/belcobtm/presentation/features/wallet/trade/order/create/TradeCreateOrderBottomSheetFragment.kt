@@ -77,7 +77,6 @@ class TradeCreateOrderBottomSheetFragment : BaseBottomSheetFragment() {
     ): View {
         binding = FragmentTradeCreateOrderBinding.inflate(inflater, container, false)
         viewModel.fetchTradeDetails(args.tradeId)
-        binding.amountEditText.setText("0")
         binding.amountEditText.addTextChangedListener(amountTextWatcher)
         viewModel.initialLoadingData.listen()
         viewModel.createTradeLoadingData.listen(success = {

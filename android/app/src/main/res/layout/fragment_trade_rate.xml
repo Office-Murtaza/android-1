@@ -31,18 +31,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/header" />
 
-    <TextView
-        android:id="@+id/rating_value"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:textColor="@color/black_text_color"
-        android:textSize="16sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/rating_bar"
-        tools:text="Very good" />
-
     <Button
         android:id="@+id/rate_button"
         style="@style/Button.Primary"
@@ -56,7 +44,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/rating_value"
+        app:layout_constraintTop_toBottomOf="@id/rating_bar"
         tools:text="Very good" />
 
     <ProgressBar
@@ -83,6 +71,6 @@
         android:id="@+id/content_group"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:constraint_referenced_ids="header,rating_bar,rating_value,,rate_button" />
+        app:constraint_referenced_ids="header,rating_bar,rate_button" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
