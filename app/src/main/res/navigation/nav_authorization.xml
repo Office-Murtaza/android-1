@@ -8,7 +8,7 @@
 
     <fragment
         android:id="@+id/welcome_fragment"
-        android:name="com.app.belcobtm.presentation.features.authorization.welcome.WelcomeFragment"
+        android:name="com.belcobtm.presentation.features.authorization.welcome.WelcomeFragment"
         android:label="WelcomeFragment"
         tools:layout="@layout/fragment_welcome">
         <action
@@ -36,7 +36,7 @@
 
     <fragment
         android:id="@+id/recover_wallet_fragment"
-        android:name="com.app.belcobtm.presentation.features.authorization.recover.wallet.RecoverWalletFragment"
+        android:name="com.belcobtm.presentation.features.authorization.recover.wallet.RecoverWalletFragment"
         android:label="RecoverWalletFragment"
         tools:layout="@layout/fragment_recover_wallet">
         <action
@@ -50,7 +50,7 @@
 
     <fragment
         android:id="@+id/recover_seed_fragment"
-        android:name="com.app.belcobtm.presentation.features.authorization.recover.seed.RecoverSeedFragment"
+        android:name="com.belcobtm.presentation.features.authorization.recover.seed.RecoverSeedFragment"
         android:label="RecoverSeedFragment"
         tools:layout="@layout/fragment_recover_seed">
         <action
@@ -64,7 +64,7 @@
 
     <fragment
         android:id="@+id/sms_code_fragment"
-        android:name="com.app.belcobtm.presentation.features.sms.code.SmsCodeFragment"
+        android:name="com.belcobtm.presentation.features.sms.code.SmsCodeFragment"
         android:label="SmsCodeFragment"
         tools:layout="@layout/fragment_sms_code">
         <action
@@ -85,7 +85,7 @@
 
     <fragment
         android:id="@+id/create_wallet_fragment"
-        android:name="com.app.belcobtm.presentation.features.authorization.create.wallet.CreateWalletFragment"
+        android:name="com.belcobtm.presentation.features.authorization.create.wallet.CreateWalletFragment"
         android:label="CreateWalletFragment"
         tools:layout="@layout/fragment_create_wallet">
         <action
@@ -99,7 +99,7 @@
 
     <fragment
         android:id="@+id/create_seed_fragment"
-        android:name="com.app.belcobtm.presentation.features.authorization.create.seed.CreateSeedFragment"
+        android:name="com.belcobtm.presentation.features.authorization.create.seed.CreateSeedFragment"
         android:label="CreateSeedFragment"
         tools:layout="@layout/fragment_create_seed">
 
@@ -135,13 +135,13 @@
 
     <fragment
         android:id="@+id/pin_code_fragment"
-        android:name="com.app.belcobtm.presentation.features.pin.code.PinCodeFragment"
+        android:name="com.belcobtm.presentation.features.pin.code.PinCodeFragment"
         android:label="PinCodeFragment"
         tools:layout="@layout/fragment_pin_code" />
 
     <fragment
         android:id="@+id/settings_fragment"
-        android:name="com.app.belcobtm.presentation.features.settings.SettingsFragment"
+        android:name="com.belcobtm.presentation.features.settings.SettingsFragment"
         android:label="SettingsFragment"
         tools:layout="@layout/fragment_settings">
         <argument
@@ -153,7 +153,7 @@
 
     <fragment
         android:id="@+id/support_fragment"
-        android:name="com.app.belcobtm.presentation.features.settings.support.SupportFragment"
+        android:name="com.belcobtm.presentation.features.settings.support.SupportFragment"
         android:label="SupportFragment"
         tools:layout="@layout/fragment_support"/>
 

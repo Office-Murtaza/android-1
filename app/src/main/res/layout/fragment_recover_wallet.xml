@@ -17,7 +17,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <com.app.belcobtm.presentation.core.ui.view.EditTextNoAutoFill
+        <com.belcobtm.presentation.core.ui.view.EditTextNoAutoFill
             android:id="@+id/phone_edit_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -42,7 +42,7 @@
         app:passwordToggleEnabled="true"
         app:passwordToggleTint="@color/colorPrimary">
 
-        <com.app.belcobtm.presentation.core.ui.view.EditTextNoAutoFill
+        <com.belcobtm.presentation.core.ui.view.EditTextNoAutoFill
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/recover_wallet_password"

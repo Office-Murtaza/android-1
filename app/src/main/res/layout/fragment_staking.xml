@@ -13,7 +13,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <com.app.belcobtm.presentation.core.views.CoinInputLayout
+        <com.belcobtm.presentation.core.views.CoinInputLayout
             android:id="@+id/coin_input_layout"
             android:layout_width="0dp"
             android:layout_height="wrap_content"

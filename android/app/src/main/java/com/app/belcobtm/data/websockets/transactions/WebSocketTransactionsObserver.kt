@@ -1,16 +1,16 @@
-package com.app.belcobtm.data.websockets.transactions
+package com.belcobtm.data.websockets.transactions
 
 import android.util.Log
-import com.app.belcobtm.data.disk.shared.preferences.SharedPreferencesHelper
-import com.app.belcobtm.data.inmemory.transactions.TransactionsInMemoryCache
-import com.app.belcobtm.data.rest.transaction.response.TransactionDetailsResponse
-import com.app.belcobtm.data.websockets.base.model.SocketState
-import com.app.belcobtm.data.websockets.base.model.StompSocketRequest
-import com.app.belcobtm.data.websockets.manager.SocketManager.Companion.DESTINATION_HEADER
-import com.app.belcobtm.data.websockets.manager.SocketManager.Companion.ID_HEADER
-import com.app.belcobtm.data.websockets.manager.WebSocketManager
-import com.app.belcobtm.domain.map
-import com.app.belcobtm.domain.mapSuspend
+import com.belcobtm.data.disk.shared.preferences.SharedPreferencesHelper
+import com.belcobtm.data.inmemory.transactions.TransactionsInMemoryCache
+import com.belcobtm.data.rest.transaction.response.TransactionDetailsResponse
+import com.belcobtm.data.websockets.base.model.SocketState
+import com.belcobtm.data.websockets.base.model.StompSocketRequest
+import com.belcobtm.data.websockets.manager.SocketManager.Companion.DESTINATION_HEADER
+import com.belcobtm.data.websockets.manager.SocketManager.Companion.ID_HEADER
+import com.belcobtm.data.websockets.manager.WebSocketManager
+import com.belcobtm.domain.map
+import com.belcobtm.domain.mapSuspend
 import com.squareup.moshi.Moshi
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers

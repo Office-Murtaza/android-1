@@ -1,4 +1,4 @@
-package com.app.belcobtm.presentation.features.wallet.trade.order.create
+package com.belcobtm.presentation.features.wallet.trade.order.create
 
 import android.app.Dialog
 import android.content.Context
@@ -12,16 +12,16 @@ import android.widget.FrameLayout
 import androidx.lifecycle.observe
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import com.app.belcobtm.R
-import com.app.belcobtm.databinding.FragmentTradeCreateOrderBinding
-import com.app.belcobtm.databinding.IncludeErrorScreenBinding
-import com.app.belcobtm.presentation.core.extensions.getDouble
-import com.app.belcobtm.presentation.core.extensions.toStringCoin
-import com.app.belcobtm.presentation.core.extensions.toStringPercents
-import com.app.belcobtm.presentation.core.extensions.toggle
-import com.app.belcobtm.presentation.core.mvvm.LoadingData
-import com.app.belcobtm.presentation.core.ui.fragment.BaseBottomSheetFragment
-import com.app.belcobtm.presentation.core.views.listeners.SafeDecimalEditTextWatcher
+import com.belcobtm.R
+import com.belcobtm.databinding.FragmentTradeCreateOrderBinding
+import com.belcobtm.databinding.IncludeErrorScreenBinding
+import com.belcobtm.presentation.core.extensions.getDouble
+import com.belcobtm.presentation.core.extensions.toStringCoin
+import com.belcobtm.presentation.core.extensions.toStringPercents
+import com.belcobtm.presentation.core.extensions.toggle
+import com.belcobtm.presentation.core.mvvm.LoadingData
+import com.belcobtm.presentation.core.ui.fragment.BaseBottomSheetFragment
+import com.belcobtm.presentation.core.views.listeners.SafeDecimalEditTextWatcher
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import org.koin.android.viewmodel.ext.android.viewModel

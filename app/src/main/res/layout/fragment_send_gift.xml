@@ -79,7 +79,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/contactPhone" />
 
-        <com.app.belcobtm.presentation.core.views.CoinInputLayout
+        <com.belcobtm.presentation.core.views.CoinInputLayout
             android:id="@+id/sendCoinInputLayout"
             android:layout_width="0dp"
             android:layout_height="wrap_content"

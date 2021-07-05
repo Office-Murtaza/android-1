@@ -1,4 +1,4 @@
-package com.app.belcobtm.presentation.features.settings.verification.vip
+package com.belcobtm.presentation.features.settings.verification.vip
 
 import android.Manifest
 import android.net.Uri
@@ -7,15 +7,15 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.observe
-import com.app.belcobtm.R
-import com.app.belcobtm.databinding.FragmentVerificationVipBinding
-import com.app.belcobtm.domain.Failure
-import com.app.belcobtm.presentation.core.extensions.getString
-import com.app.belcobtm.presentation.core.extensions.hide
-import com.app.belcobtm.presentation.core.extensions.show
-import com.app.belcobtm.presentation.core.extensions.toggle
-import com.app.belcobtm.presentation.core.mvvm.LoadingData
-import com.app.belcobtm.presentation.core.ui.fragment.BaseFragment
+import com.belcobtm.R
+import com.belcobtm.databinding.FragmentVerificationVipBinding
+import com.belcobtm.domain.Failure
+import com.belcobtm.presentation.core.extensions.getString
+import com.belcobtm.presentation.core.extensions.hide
+import com.belcobtm.presentation.core.extensions.show
+import com.belcobtm.presentation.core.extensions.toggle
+import com.belcobtm.presentation.core.mvvm.LoadingData
+import com.belcobtm.presentation.core.ui.fragment.BaseFragment
 import com.kroegerama.imgpicker.BottomSheetImagePicker
 import com.kroegerama.imgpicker.ButtonType
 import org.koin.android.viewmodel.ext.android.viewModel

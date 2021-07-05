@@ -1,8 +1,8 @@
-package com.app.belcobtm.data.websockets.base
+package com.belcobtm.data.websockets.base
 
 import android.util.Log
-import com.app.belcobtm.data.websockets.base.model.SocketResponse
-import com.app.belcobtm.domain.Failure
+import com.belcobtm.data.websockets.base.model.SocketResponse
+import com.belcobtm.domain.Failure
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.filterNotNull

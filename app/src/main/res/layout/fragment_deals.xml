@@ -11,7 +11,7 @@
         android:layout_marginTop="@dimen/margin_large"
         android:background="@color/thin_divider" />
 
-    <com.app.belcobtm.presentation.core.views.SettingsItemView
+    <com.belcobtm.presentation.core.views.SettingsItemView
         android:id="@+id/transfer_item"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -24,7 +24,7 @@
         android:layout_height="@dimen/divider_size"
         android:background="@color/thin_divider" />
 
-    <com.app.belcobtm.presentation.core.views.SettingsItemView
+    <com.belcobtm.presentation.core.views.SettingsItemView
         android:id="@+id/swap_item"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -37,7 +37,7 @@
         android:layout_height="@dimen/divider_size"
         android:background="@color/thin_divider" />
 
-    <com.app.belcobtm.presentation.core.views.SettingsItemView
+    <com.belcobtm.presentation.core.views.SettingsItemView
         android:id="@+id/staking_item"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -50,7 +50,7 @@
         android:layout_height="@dimen/divider_size"
         android:background="@color/thin_divider" />
 
-    <com.app.belcobtm.presentation.core.views.SettingsItemView
+    <com.belcobtm.presentation.core.views.SettingsItemView
         android:id="@+id/trade_item"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

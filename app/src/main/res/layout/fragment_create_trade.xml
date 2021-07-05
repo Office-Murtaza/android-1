@@ -92,7 +92,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/trade_type_chip_group_error" />
 
-        <com.app.belcobtm.presentation.core.views.CoinInputLayout
+        <com.belcobtm.presentation.core.views.CoinInputLayout
             android:id="@+id/coin_details_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

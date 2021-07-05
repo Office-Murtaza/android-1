@@ -1,10 +1,10 @@
-package com.app.belcobtm.domain.settings.interactor
+package com.belcobtm.domain.settings.interactor
 
-import com.app.belcobtm.data.core.UnlinkHandler
-import com.app.belcobtm.domain.Either
-import com.app.belcobtm.domain.Failure
-import com.app.belcobtm.domain.UseCase
-import com.app.belcobtm.domain.settings.SettingsRepository
+import com.belcobtm.data.core.UnlinkHandler
+import com.belcobtm.domain.Either
+import com.belcobtm.domain.Failure
+import com.belcobtm.domain.UseCase
+import com.belcobtm.domain.settings.SettingsRepository
 
 class UnlinkUseCase(private val unlinkHandler: UnlinkHandler) : UseCase<Unit, Unit>() {
 

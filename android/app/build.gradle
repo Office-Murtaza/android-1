@@ -14,7 +14,7 @@ android {
     compileSdkVersion 29
     ndkVersion "21.3.6528147"
     defaultConfig {
-        applicationId "com.app.belcobtm"
+        applicationId "com.belcobtm"
         minSdkVersion 23
         targetSdkVersion 29
         versionCode rootProject.gitCommitCount
@@ -24,9 +24,9 @@ android {
     signingConfigs {
         release {
             storeFile file("$projectDir/src/keystore.jks")
-            storePassword "com.app.belcobtm"
+            storePassword "com.belcobtm"
             keyAlias "belcobtm"
-            keyPassword "com.app.belcobtm"
+            keyPassword "com.belcobtm"
         }
     }
     buildTypes {

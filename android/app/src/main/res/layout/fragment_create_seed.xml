@@ -45,7 +45,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/description">
 
-            <com.app.belcobtm.presentation.core.ui.view.EditTextNoAutoFill
+            <com.belcobtm.presentation.core.ui.view.EditTextNoAutoFill
                 android:id="@+id/seed_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

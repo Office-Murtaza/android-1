@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/atm_fragment"
-        android:name="com.app.belcobtm.presentation.features.atm.AtmFragment"
+        android:name="com.belcobtm.presentation.features.atm.AtmFragment"
         android:label="AtmFragment"
         tools:layout="@layout/fragment_atm" />
 </navigation>

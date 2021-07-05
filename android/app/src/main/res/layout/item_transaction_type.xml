@@ -17,7 +17,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <com.app.belcobtm.presentation.core.views.TransactionTypeView
+    <com.belcobtm.presentation.core.views.TransactionTypeView
         android:id="@+id/transactionTypeView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

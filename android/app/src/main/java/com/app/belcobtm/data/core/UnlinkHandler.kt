@@ -1,17 +1,17 @@
-package com.app.belcobtm.data.core
+package com.belcobtm.data.core
 
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import com.app.belcobtm.data.disk.database.account.AccountDao
-import com.app.belcobtm.data.disk.database.wallet.WalletDao
-import com.app.belcobtm.data.disk.shared.preferences.SharedPreferencesHelper
-import com.app.belcobtm.data.rest.settings.SettingsApiService
-import com.app.belcobtm.data.websockets.wallet.WalletConnectionHandler
-import com.app.belcobtm.domain.Either
-import com.app.belcobtm.domain.Failure
-import com.app.belcobtm.domain.map
-import com.app.belcobtm.presentation.features.HostActivity
+import com.belcobtm.data.disk.database.account.AccountDao
+import com.belcobtm.data.disk.database.wallet.WalletDao
+import com.belcobtm.data.disk.shared.preferences.SharedPreferencesHelper
+import com.belcobtm.data.rest.settings.SettingsApiService
+import com.belcobtm.data.websockets.wallet.WalletConnectionHandler
+import com.belcobtm.domain.Either
+import com.belcobtm.domain.Failure
+import com.belcobtm.domain.map
+import com.belcobtm.presentation.features.HostActivity
 import org.koin.core.KoinComponent
 import org.koin.core.inject
 

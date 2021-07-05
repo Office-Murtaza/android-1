@@ -1,23 +1,23 @@
-package com.app.belcobtm.presentation.features.deals.swap
+package com.belcobtm.presentation.features.deals.swap
 
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.Observer
-import com.app.belcobtm.R
-import com.app.belcobtm.databinding.FragmentSwapBinding
-import com.app.belcobtm.domain.Failure
-import com.app.belcobtm.domain.wallet.LocalCoinType
-import com.app.belcobtm.domain.wallet.item.CoinDataItem
-import com.app.belcobtm.domain.wallet.item.isEthRelatedCoinCode
-import com.app.belcobtm.presentation.core.coin.model.ValidationResult
-import com.app.belcobtm.presentation.core.extensions.*
-import com.app.belcobtm.presentation.core.helper.AlertHelper
-import com.app.belcobtm.presentation.core.mvvm.LoadingData
-import com.app.belcobtm.presentation.core.ui.fragment.BaseFragment
-import com.app.belcobtm.presentation.core.watcher.DoubleTextWatcher
-import com.app.belcobtm.presentation.features.deals.swap.adapter.CoinDialogAdapter
+import com.belcobtm.R
+import com.belcobtm.databinding.FragmentSwapBinding
+import com.belcobtm.domain.Failure
+import com.belcobtm.domain.wallet.LocalCoinType
+import com.belcobtm.domain.wallet.item.CoinDataItem
+import com.belcobtm.domain.wallet.item.isEthRelatedCoinCode
+import com.belcobtm.presentation.core.coin.model.ValidationResult
+import com.belcobtm.presentation.core.extensions.*
+import com.belcobtm.presentation.core.helper.AlertHelper
+import com.belcobtm.presentation.core.mvvm.LoadingData
+import com.belcobtm.presentation.core.ui.fragment.BaseFragment
+import com.belcobtm.presentation.core.watcher.DoubleTextWatcher
+import com.belcobtm.presentation.features.deals.swap.adapter.CoinDialogAdapter
 import org.koin.android.viewmodel.ext.android.viewModel
 
 class SwapFragment : BaseFragment<FragmentSwapBinding>() {

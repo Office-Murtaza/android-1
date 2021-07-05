@@ -1,9 +1,9 @@
-package com.app.belcobtm.data.rest.atm
+package com.belcobtm.data.rest.atm
 
-import com.app.belcobtm.data.rest.atm.response.AtmResponse
-import com.app.belcobtm.data.rest.authorization.request.CheckCredentialsRequest
-import com.app.belcobtm.domain.Either
-import com.app.belcobtm.domain.Failure
+import com.belcobtm.data.rest.atm.response.AtmResponse
+import com.belcobtm.data.rest.authorization.request.CheckCredentialsRequest
+import com.belcobtm.domain.Either
+import com.belcobtm.domain.Failure
 
 class AtmApiService(private val atmApi: AtmApi) {
 

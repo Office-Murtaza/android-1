@@ -16,7 +16,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:titleTextColor="@color/colorText" />
 
-    <com.app.belcobtm.presentation.core.views.InterceptableFrameLayout
+    <com.belcobtm.presentation.core.views.InterceptableFrameLayout
         android:id="@+id/interceptableFrameLayout"
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -48,6 +48,6 @@
         <include
             android:id="@+id/error_view"
             layout="@layout/include_error_screen" />
-    </com.app.belcobtm.presentation.core.views.InterceptableFrameLayout>
+    </com.belcobtm.presentation.core.views.InterceptableFrameLayout>
 
 </LinearLayout>

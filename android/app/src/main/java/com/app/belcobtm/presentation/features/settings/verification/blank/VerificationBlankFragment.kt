@@ -1,4 +1,4 @@
-package com.app.belcobtm.presentation.features.settings.verification.blank
+package com.belcobtm.presentation.features.settings.verification.blank
 
 import android.Manifest
 import android.net.Uri
@@ -8,13 +8,13 @@ import android.widget.ImageView
 import androidx.appcompat.app.AlertDialog
 import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.Observer
-import com.app.belcobtm.R
-import com.app.belcobtm.databinding.FragmentVerificationBlankBinding
-import com.app.belcobtm.domain.Failure
-import com.app.belcobtm.presentation.core.extensions.*
-import com.app.belcobtm.presentation.core.helper.AlertHelper
-import com.app.belcobtm.presentation.core.mvvm.LoadingData
-import com.app.belcobtm.presentation.core.ui.fragment.BaseFragment
+import com.belcobtm.R
+import com.belcobtm.databinding.FragmentVerificationBlankBinding
+import com.belcobtm.domain.Failure
+import com.belcobtm.presentation.core.extensions.*
+import com.belcobtm.presentation.core.helper.AlertHelper
+import com.belcobtm.presentation.core.mvvm.LoadingData
+import com.belcobtm.presentation.core.ui.fragment.BaseFragment
 import com.kroegerama.imgpicker.BottomSheetImagePicker
 import com.kroegerama.imgpicker.ButtonType
 import org.koin.android.viewmodel.ext.android.viewModel

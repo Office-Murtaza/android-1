@@ -1,10 +1,10 @@
-package com.app.belcobtm.presentation.features.atm
+package com.belcobtm.presentation.features.atm
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.app.belcobtm.data.rest.atm.response.AtmResponse
-import com.app.belcobtm.domain.atm.interactor.GetAtmsUseCase
-import com.app.belcobtm.presentation.core.mvvm.LoadingData
+import com.belcobtm.data.rest.atm.response.AtmResponse
+import com.belcobtm.domain.atm.interactor.GetAtmsUseCase
+import com.belcobtm.presentation.core.mvvm.LoadingData
 import com.google.android.gms.maps.model.LatLng
 
 class AtmViewModel(private val getAtmsUseCase: GetAtmsUseCase) : ViewModel() {

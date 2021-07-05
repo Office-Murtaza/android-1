@@ -1,16 +1,16 @@
-package com.app.belcobtm.data.rest.trade
+package com.belcobtm.data.rest.trade
 
 import android.location.Location
-import com.app.belcobtm.data.disk.shared.preferences.SharedPreferencesHelper
-import com.app.belcobtm.data.mapper.OrderResponseToOrderMapper
-import com.app.belcobtm.data.model.trade.OrderStatus
-import com.app.belcobtm.data.rest.trade.request.*
-import com.app.belcobtm.data.rest.trade.response.*
-import com.app.belcobtm.domain.Either
-import com.app.belcobtm.domain.Failure
-import com.app.belcobtm.presentation.features.wallet.trade.create.model.CreateTradeItem
-import com.app.belcobtm.presentation.features.wallet.trade.edit.EditTradeItem
-import com.app.belcobtm.presentation.features.wallet.trade.order.create.model.TradeOrderItem
+import com.belcobtm.data.disk.shared.preferences.SharedPreferencesHelper
+import com.belcobtm.data.mapper.OrderResponseToOrderMapper
+import com.belcobtm.data.model.trade.OrderStatus
+import com.belcobtm.data.rest.trade.request.*
+import com.belcobtm.data.rest.trade.response.*
+import com.belcobtm.domain.Either
+import com.belcobtm.domain.Failure
+import com.belcobtm.presentation.features.wallet.trade.create.model.CreateTradeItem
+import com.belcobtm.presentation.features.wallet.trade.edit.EditTradeItem
+import com.belcobtm.presentation.features.wallet.trade.order.create.model.TradeOrderItem
 import java.net.HttpURLConnection
 
 class TradeApiService(
