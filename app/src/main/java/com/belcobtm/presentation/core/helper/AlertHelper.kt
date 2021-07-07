@@ -18,12 +18,7 @@ object AlertHelper {
         showToast(context, resText, Toast.LENGTH_LONG)
 
     private fun showToast(context: Context, resText: Int, duration: Int) {
-        Toast.makeText(context, resText, duration).also {
-            val stateList = ContextCompat.getColorStateList(context, R.color.toast_background)
-            DrawableCompat.setTintList(it.view.background, stateList)
-            it.view.findViewById<TextView>(android.R.id.message)
-                .setTextColor(ContextCompat.getColor(context, R.color.toast_text))
-        }.show()
+        Toast.makeText(context, resText, duration).show()
     }
 
     fun showToastShort(context: Context, text: String?) =
@@ -47,11 +42,6 @@ object AlertHelper {
     }
 
     private fun showToast(context: Context, text: String?, duration: Int) {
-        Toast.makeText(context, text, duration).also {
-            val stateList = ContextCompat.getColorStateList(context, R.color.toast_background)
-            DrawableCompat.setTintList(it.view.background, stateList)
-            it.view.findViewById<TextView>(android.R.id.message)
-                .setTextColor(ContextCompat.getColor(context, R.color.toast_text))
-        }.show()
+        Toast.makeText(context, text, duration).show()
     }
 }

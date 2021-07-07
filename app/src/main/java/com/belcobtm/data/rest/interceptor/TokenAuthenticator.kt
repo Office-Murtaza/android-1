@@ -1,6 +1,5 @@
 package com.belcobtm.data.rest.interceptor
 
-import android.content.Context
 import com.belcobtm.data.core.UnlinkHandler
 import com.belcobtm.data.disk.shared.preferences.SharedPreferencesHelper
 import com.belcobtm.data.rest.authorization.AuthApi
@@ -14,7 +13,6 @@ import java.net.HttpURLConnection
 
 
 class TokenAuthenticator(
-    private val context: Context,
     private val authApi: AuthApi,
     private val prefsHelper: SharedPreferencesHelper,
     private val unlinkHandler: UnlinkHandler
@@ -32,15 +30,15 @@ class TokenAuthenticator(
                 // update session
                 prefsHelper.processAuthResponse(responseBody)
                 // return old request with updated token
-                return response.request().newBuilder()
+                return response.request.newBuilder()
                     .header(
                         BaseInterceptor.HEADER_AUTHORIZATION_KEY,
                         prefsHelper.formatToken(updatedToken)
                     )
                     .build()
             }
-            response.code() == HttpURLConnection.HTTP_FORBIDDEN ||
-                    response.code() == HttpURLConnection.HTTP_UNAUTHORIZED -> {
+            response.code == HttpURLConnection.HTTP_FORBIDDEN ||
+                    response.code == HttpURLConnection.HTTP_UNAUTHORIZED -> {
                 runBlocking {
                     unlinkHandler.performUnlink()
                 }

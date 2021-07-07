@@ -4,6 +4,7 @@ import com.belcobtm.domain.Failure
 import okhttp3.Interceptor
 import okhttp3.Response
 import okhttp3.ResponseBody
+import okhttp3.ResponseBody.Companion.toResponseBody
 import org.json.JSONObject
 import java.net.HttpURLConnection
 import java.nio.charset.Charset
@@ -14,8 +15,8 @@ class ResponseInterceptor : Interceptor {
     override fun intercept(chain: Interceptor.Chain): Response = try {
         val request = chain.request()
         val response = chain.proceed(request)
-        if (!request.url().url().toString().contains("/ws")) {
-            if (response.code() == HttpURLConnection.HTTP_OK) {
+        if (!request.url.toString().contains("/ws")) {
+            if (response.code == HttpURLConnection.HTTP_OK) {
                 extractResponse(response)
             } else {
                 response
@@ -32,14 +33,13 @@ class ResponseInterceptor : Interceptor {
     }
 
     private fun extractResponse(response: Response): Response {
-        val body = response.body() ?: return response
+        val body = response.body ?: return response
         val json = getJSONFromBody(body)
         val jsonObject = JSONObject(json)
         return when {
             response.isSuccessful && !jsonObject.isNull(RESPONSE_FIELD) -> {
                 val resultJson = jsonObject.get(RESPONSE_FIELD)
-                val newBody =
-                    ResponseBody.create(body.contentType(), resultJson.toString())
+                val newBody = resultJson.toString().toResponseBody(body.contentType())
                 response.newBuilder().body(newBody).build()
             }
             response.isSuccessful && !jsonObject.isNull(ERROR_FIELD) -> {

@@ -1,17 +1,13 @@
 package com.belcobtm.presentation.features.settings.about
 
-import android.app.Application
-import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.belcobtm.App
+import androidx.lifecycle.ViewModel
+import com.belcobtm.BuildConfig
 import com.belcobtm.domain.tools.IntentActions
 import com.belcobtm.presentation.core.Const
 
-class AboutViewModel(
-    application: Application,
-    private val intentActions: IntentActions
-) : AndroidViewModel(application) {
+class AboutViewModel(private val intentActions: IntentActions) : ViewModel() {
 
     private val _appVersion = MutableLiveData<String>()
     val appVersion: LiveData<String> = _appVersion
@@ -27,10 +23,7 @@ class AboutViewModel(
     }
 
     private fun populateAppVersion() {
-        val application = getApplication<App>()
-        val packageInfo = application.packageManager.getPackageInfo(application.packageName, 0)
-        val versionName = packageInfo.versionName
-        _appVersion.value = versionName
+        _appVersion.value = BuildConfig.VERSION_NAME
     }
 }
 

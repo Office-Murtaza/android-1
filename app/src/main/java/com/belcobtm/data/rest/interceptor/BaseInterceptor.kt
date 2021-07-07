@@ -14,7 +14,7 @@ class BaseInterceptor(
 ) : Interceptor {
 
     @Throws(IOException::class)
-    override fun intercept(chain: Interceptor.Chain): Response? {
+    override fun intercept(chain: Interceptor.Chain): Response {
         return try {
             val request = chain.request()
                 .newBuilder()

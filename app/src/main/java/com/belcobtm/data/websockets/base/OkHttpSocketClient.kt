@@ -51,7 +51,7 @@ class OkHttpSocketClient(
         this.webSocket = null
         when {
             t is EOFException ->
-                connect(webSocket.request().url().toString())
+                connect(webSocket.request().url.toString())
             t is SocketException && t.message.orEmpty().contains(NO_INTERNET_MESSAGE) ->
                 messages.value = SocketResponse.Failure(Failure.NetworkConnection)
             else ->

@@ -73,20 +73,35 @@ import org.koin.dsl.module
 import java.util.*
 
 val viewModelModule = module {
-    viewModel { AboutViewModel(androidApplication(), get()) }
+    viewModel { AboutViewModel(get()) }
     viewModel { SecurityViewModel(get(), get(), get(), get(), get()) }
     viewModel { WalletViewModel(get(), get()) }
     viewModel { (coinCode: String) -> TransactionsViewModel(coinCode, get(), get(), get(), get()) }
     viewModel { RecoverWalletViewModel(get(), get<PhoneNumberValidator>()) }
     viewModel { CreateWalletViewModel(get(), get<PhoneNumberValidator>()) }
     viewModel { PinCodeViewModel(get(), get(), get(), get(), get(), get(), get(), get(), get()) }
-    viewModel { VerificationInfoViewModel(get(), get(named(DOUBLE_CURRENCY_PRICE_FORMATTER_QUALIFIER))) }
+    viewModel {
+        VerificationInfoViewModel(
+            get(),
+            get(named(DOUBLE_CURRENCY_PRICE_FORMATTER_QUALIFIER))
+        )
+    }
     viewModel { VerificationBlankViewModel(get(), get()) }
     viewModel { VerificationVipViewModel(get()) }
     viewModel { SwapViewModel(get(), get(), get(), get(), get(), get()) }
     viewModel { WalletsViewModel(get(), get()) }
     viewModel { (coinCode: String) -> TradeRecallViewModel(coinCode, get(), get(), get(), get()) }
-    viewModel { (coinCode: String) -> TradeReserveViewModel(coinCode, get(), get(), get(), get(), get(), get()) }
+    viewModel { (coinCode: String) ->
+        TradeReserveViewModel(
+            coinCode,
+            get(),
+            get(),
+            get(),
+            get(),
+            get(),
+            get()
+        )
+    }
     viewModel { StakingViewModel(get(), get(), get(), get(), get()) }
     viewModel { (phone: String) -> SmsCodeViewModel(phone, get()) }
     viewModel { RecoverSeedViewModel(get()) }
@@ -97,7 +112,14 @@ val viewModelModule = module {
     viewModel { UpdatePasswordViewModel(get()) }
     viewModel { PhoneChangeViewModel(get(), get(), get(), get<PhoneNumberValidator>()) }
     viewModel { AtmViewModel(get()) }
-    viewModel { (txId: String, coinCode: String) -> TransactionDetailsViewModel(txId, coinCode, get(), get()) }
+    viewModel { (txId: String, coinCode: String) ->
+        TransactionDetailsViewModel(
+            txId,
+            coinCode,
+            get(),
+            get()
+        )
+    }
     viewModel { SendGiftViewModel(get(), get(), get(), get(), get()) }
     viewModel { (coinCode: String) -> WithdrawViewModel(coinCode, get(), get(), get(), get()) }
     viewModel { (coinCode: String) -> DepositViewModel(coinCode, get()) }
@@ -105,7 +127,14 @@ val viewModelModule = module {
     viewModel { TradeContainerViewModel(get(), get(), get(), get(), get(), get()) }
     viewModel { TradeListViewModel(get(), get()) }
     viewModel { TradeUserStatisticViewModel(get()) }
-    viewModel { MyTradeDetailsViewModel(get(), get(), get(), get(named(DOUBLE_CURRENCY_PRICE_FORMATTER_QUALIFIER))) }
+    viewModel {
+        MyTradeDetailsViewModel(
+            get(),
+            get(),
+            get(),
+            get(named(DOUBLE_CURRENCY_PRICE_FORMATTER_QUALIFIER))
+        )
+    }
     viewModel { EditTradeViewModel(get(), get(), get(), get(), get()) }
     viewModel { TradeOrdersViewModel(get()) }
     viewModel { MyTradesViewModel(get()) }
@@ -119,7 +148,15 @@ val viewModelModule = module {
     viewModel {
         CreateTradeViewModel(get(), get(), get(), get(), get())
     }
-    viewModel { TradeFilterViewModel(get(), get(), get(), get(), get(named(DISTANCE_INT_PARSER_QUALIFIER))) }
+    viewModel {
+        TradeFilterViewModel(
+            get(),
+            get(),
+            get(),
+            get(),
+            get(named(DISTANCE_INT_PARSER_QUALIFIER))
+        )
+    }
     viewModel {
         TradeOrderDetailsViewModel(
             get(), get(), get(), get(), get(), get(), get(),
@@ -146,13 +183,29 @@ val helperModule = module {
     factory { NotificationHelper(get()) }
     single { ClipBoardHelper(androidApplication()) }
     single<Locale> { Locale.US }
-    factory<Formatter<Double>>(named(DOUBLE_CURRENCY_PRICE_FORMATTER_QUALIFIER)) { DoubleCurrencyPriceFormatter(get()) }
+    factory<Formatter<Double>>(named(DOUBLE_CURRENCY_PRICE_FORMATTER_QUALIFIER)) {
+        DoubleCurrencyPriceFormatter(
+            get()
+        )
+    }
     factory<Formatter<Double>>(named(MILES_FORMATTER_QUALIFIER)) { MilesFormatter(get()) }
-    factory<Formatter<Int>>(named(INT_CURRENCY_PRICE_FORMATTER_QUALIFIER)) { IntCurrencyPriceFormatter(get()) }
-    factory<Formatter<GoogleMapsDirectionQueryFormatter.Location>>(named(GOOGLE_MAPS_DIRECTIONS_QUERY_FORMATTER)) {
+    factory<Formatter<Int>>(named(INT_CURRENCY_PRICE_FORMATTER_QUALIFIER)) {
+        IntCurrencyPriceFormatter(
+            get()
+        )
+    }
+    factory<Formatter<GoogleMapsDirectionQueryFormatter.Location>>(
+        named(
+            GOOGLE_MAPS_DIRECTIONS_QUERY_FORMATTER
+        )
+    ) {
         GoogleMapsDirectionQueryFormatter()
     }
-    factory<Formatter<Int>>(named(TradeCountFormatter.TRADE_COUNT_FORMATTER_QUALIFIER)) { TradeCountFormatter(get()) }
+    factory<Formatter<Int>>(named(TradeCountFormatter.TRADE_COUNT_FORMATTER_QUALIFIER)) {
+        TradeCountFormatter(
+            get()
+        )
+    }
     factory<StringParser<Double>>(named(PRICE_DOUBLE_PARSER_QUALIFIER)) { PriceDoubleParser() }
     factory<StringParser<Int>>(named(DISTANCE_INT_PARSER_QUALIFIER)) { DistanceParser() }
     single<StringProvider> { ResourceStringProvider(androidApplication().resources) }

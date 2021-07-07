@@ -72,7 +72,6 @@ class SendGiftFragment : BaseFragment<FragmentSendGiftBinding>(),
         val settings = GPHSettings(
             gridType = GridType.waterfall,
             theme = GPHTheme.Light,
-            useBlurredBackground = true,
             mediaTypeConfig = arrayOf(GPHContentType.gif)
         )
         gifsDialog = GiphyDialogFragment.newInstance(settings)

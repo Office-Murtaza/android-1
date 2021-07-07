@@ -38,7 +38,8 @@ class AtmFragment : BaseFragment<FragmentAtmBinding>(),
 
     override var isMenuEnabled = true
     override val isToolbarEnabled = false
-    override val retryListener: View.OnClickListener = View.OnClickListener { viewModel.requestAtms() }
+    override val retryListener: View.OnClickListener =
+        View.OnClickListener { viewModel.requestAtms() }
 
     private var map: GoogleMap? = null
     private var locationManager: LocationManager? = null
@@ -101,7 +102,7 @@ class AtmFragment : BaseFragment<FragmentAtmBinding>(),
         )
 
         val criteria = Criteria()
-        val bestProvider = locationManager?.getBestProvider(criteria, false)
+        val bestProvider = locationManager?.getBestProvider(criteria, false) ?: return
         val lastKnownLocation = locationManager?.getLastKnownLocation(bestProvider)
         if (lastKnownLocation != null) {
             onLocationChanged(lastKnownLocation)
@@ -131,10 +132,6 @@ class AtmFragment : BaseFragment<FragmentAtmBinding>(),
 
     override fun onStatusChanged(provider: String?, status: Int, extras: Bundle?) {}
 
-    override fun onProviderEnabled(provider: String?) {}
-
-    override fun onProviderDisabled(provider: String?) {}
-
     private fun initMarkers(atms: List<AtmResponse.AtmAddress>) {
         if (map != null) {
             atms.forEach { atmItem ->
@@ -148,6 +145,9 @@ class AtmFragment : BaseFragment<FragmentAtmBinding>(),
         }
     }
 
-    override fun createBinding(inflater: LayoutInflater, container: ViewGroup?): FragmentAtmBinding =
+    override fun createBinding(
+        inflater: LayoutInflater,
+        container: ViewGroup?
+    ): FragmentAtmBinding =
         FragmentAtmBinding.inflate(inflater, container, false)
 }

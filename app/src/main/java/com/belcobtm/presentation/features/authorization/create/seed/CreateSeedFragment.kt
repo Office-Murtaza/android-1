@@ -93,7 +93,9 @@ class CreateSeedFragment : BaseFragment<FragmentCreateSeedBinding>() {
             )
         })
         viewModel.invalidSeedErrorMessage.observe(viewLifecycleOwner) { messageRes ->
-            messageRes?.let(::showSnackBar)
+            messageRes?.let {
+                showSnackBar(it)
+            }
         }
     }
 
@@ -107,14 +109,18 @@ class CreateSeedFragment : BaseFragment<FragmentCreateSeedBinding>() {
         args.seed?.takeIf { args.mode == MODE_SETTINGS }?.let(::showSeed)
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean = if (item.itemId == android.R.id.home) {
-        goBack()
-        true
-    } else {
-        false
-    }
+    override fun onOptionsItemSelected(item: MenuItem): Boolean =
+        if (item.itemId == android.R.id.home) {
+            goBack()
+            true
+        } else {
+            false
+        }
 
-    override fun createBinding(inflater: LayoutInflater, container: ViewGroup?): FragmentCreateSeedBinding =
+    override fun createBinding(
+        inflater: LayoutInflater,
+        container: ViewGroup?
+    ): FragmentCreateSeedBinding =
         FragmentCreateSeedBinding.inflate(inflater, container, false)
 
     private fun goBack() {
@@ -145,7 +151,8 @@ class CreateSeedFragment : BaseFragment<FragmentCreateSeedBinding>() {
     }
 
     private fun copyToClipboard(copiedText: String) {
-        val clipboard = requireContext().getSystemService(AppCompatActivity.CLIPBOARD_SERVICE) as ClipboardManager
+        val clipboard =
+            requireContext().getSystemService(AppCompatActivity.CLIPBOARD_SERVICE) as ClipboardManager
         val clip = ClipData.newPlainText(copiedText, copiedText)
         clipboard.setPrimaryClip(clip)
         AlertHelper.showToastShort(requireContext(), R.string.copied)
