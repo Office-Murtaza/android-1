@@ -24,9 +24,9 @@ android {
     signingConfigs {
         release {
             storeFile file("$projectDir/src/keystore.jks")
-            storePassword "com.belcobtm"
+            storePassword "com.app.belcobtm"
             keyAlias "belcobtm"
-            keyPassword "com.belcobtm"
+            keyPassword "com.app.belcobtm"
         }
     }
     buildTypes {
