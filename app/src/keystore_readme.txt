@@ -1,3 +1,3 @@
-keystore pass:   com.belcobtm
+keystore pass:   com.app.belcobtm
 alias:           belcobtm
-alias pass:      com.belcobtm
+alias pass:      com.app.belcobtm
