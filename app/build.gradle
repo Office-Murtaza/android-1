@@ -98,6 +98,9 @@ dependencies {
 
     implementation 'me.relex:circleindicator:2.1.4'
 
+    // interactive map info window
+    implementation 'com.appolica:interactive-info-window-android:1.1.0'
+
     //swipe refresh layout
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.1.0"
 

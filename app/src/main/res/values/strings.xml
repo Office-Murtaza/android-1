@@ -707,4 +707,10 @@
     <string name="create_order_dialog_platform_fee_label">Platform Fee</string>
     <string name="create_order_dialog_reserved_label">Reserved</string>
     <string name="trade_order_details_not_rated_label">Not rated yet</string>
+    <string name="get_direction_button_title">Get direction</string>
+    <string name="show_details_button_label">Show details</string>
+    <string name="hide_details_button_label">Hide details</string>
+    <string name="atm_type_buy_and_sell">Buy &amp; Sell</string>
+    <string name="atm_type_buy_only">Buy Only</string>
+    <string name="atm_closed_hours">Closed</string>
 </resources>

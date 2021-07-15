@@ -48,6 +48,7 @@ import org.koin.android.ext.koin.androidApplication
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
 import java.text.SimpleDateFormat
+import java.util.*
 
 val useCaseModule = module {
     single { AuthorizationStatusGetUseCase(get()) }
@@ -98,7 +99,20 @@ val useCaseModule = module {
     single { ChangePassUseCase(get()) }
     single { GetPhoneUseCase(get()) }
     single { UpdatePhoneUseCase(get()) }
-    single { GetAtmsUseCase(get()) }
+    single {
+        GetAtmsUseCase(
+            get(), mapOf(
+                Calendar.SUNDAY to "Sunday",
+                Calendar.MONDAY to "Monday",
+                Calendar.TUESDAY to "Tuesday",
+                Calendar.WEDNESDAY to "Wednesday",
+                Calendar.THURSDAY to "Thursday",
+                Calendar.FRIDAY to "Friday",
+                Calendar.SATURDAY to "Saturday"
+            ),
+            get(), get(named(MILES_FORMATTER_QUALIFIER)), get()
+        )
+    }
     single { ObserveTransactionDetailsUseCase(get()) }
     single { GetCoinListUseCase(get()) }
     single { VerifyPhoneUseCase(get()) }
