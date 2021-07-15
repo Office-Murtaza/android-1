@@ -66,6 +66,7 @@ import org.koin.core.qualifier.named
 import org.koin.dsl.module
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
+import java.util.concurrent.Executors
 import java.util.concurrent.TimeUnit
 
 
@@ -158,7 +159,11 @@ val dataModule = module {
         TradeInMemoryCache(get(), get(), GlobalScope, get(), get(), get())
     }
     single { DistanceCalculator(get()) }
-    single<LocationProvider> { ServiceLocationProvider(androidApplication()) }
+    single<LocationProvider> {
+        ServiceLocationProvider(
+            androidApplication(), Executors.newSingleThreadExecutor()
+        )
+    }
     single { TransactionsInMemoryCache() }
     single { UnlinkHandler(get(), get(), get(), get()) }
     factory { TradesResponseToTradeDataMapper(get(), get(), get()) }

@@ -7,6 +7,6 @@ import retrofit2.http.GET
 
 interface AtmApi {
 
-    @GET("terminal/locations")
+    @GET("locations")
     fun getAtmAddress(): Deferred<Response<AtmResponse>>
 }
