@@ -5,7 +5,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
-import androidx.lifecycle.observe
 import androidx.navigation.fragment.navArgs
 import com.belcobtm.R
 import com.belcobtm.data.model.trade.TradeType

@@ -6,6 +6,7 @@ import androidx.room.Room
 import androidx.security.crypto.EncryptedSharedPreferences
 import androidx.security.crypto.MasterKeys
 import com.belcobtm.data.ContactsRepositoryImpl
+import com.belcobtm.data.ReferralRepositoryImpl
 import com.belcobtm.data.cloud.auth.CloudAuth
 import com.belcobtm.data.cloud.auth.FirebaseCloudAuth
 import com.belcobtm.data.cloud.storage.AuthFirebaseCloudStorage
@@ -37,6 +38,8 @@ import com.belcobtm.data.rest.interceptor.BaseInterceptor
 import com.belcobtm.data.rest.interceptor.NoConnectionInterceptor
 import com.belcobtm.data.rest.interceptor.ResponseInterceptor
 import com.belcobtm.data.rest.interceptor.TokenAuthenticator
+import com.belcobtm.data.rest.referral.ReferralApi
+import com.belcobtm.data.rest.referral.ReferralApiService
 import com.belcobtm.data.rest.settings.SettingsApi
 import com.belcobtm.data.rest.settings.SettingsApiService
 import com.belcobtm.data.rest.tools.ToolsApi
@@ -49,6 +52,7 @@ import com.belcobtm.data.rest.wallet.WalletApi
 import com.belcobtm.data.rest.wallet.WalletApiService
 import com.belcobtm.domain.contacts.ContactsRepository
 import com.belcobtm.domain.notification.NotificationTokenRepository
+import com.belcobtm.domain.referral.ReferralRepository
 import com.belcobtm.domain.tools.IntentActions
 import com.belcobtm.domain.tools.IntentActionsImpl
 import com.belcobtm.presentation.core.Endpoint
@@ -141,6 +145,9 @@ val dataModule = module {
     single { get<Retrofit>().create(TradeApi::class.java) }
     single<NotificationTokenRepository> { NotificationTokenRepositoryImpl(get()) }
     single<ContactsRepository> { ContactsRepositoryImpl(get<Context>().contentResolver) }
+    single<ReferralRepository> { ReferralRepositoryImpl(get(), get(), get()) }
+    single { get<Retrofit>().create(ReferralApi::class.java) }
+    single { ReferralApiService(get()) }
     single { Firebase.storage("gs://belco-test.appspot.com") }
     single<CloudStorage>(named(CHAT_STORAGE)) {
         AuthFirebaseCloudStorage(

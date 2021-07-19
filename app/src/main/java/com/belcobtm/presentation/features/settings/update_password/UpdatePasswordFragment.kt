@@ -4,7 +4,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.widget.addTextChangedListener
-import androidx.lifecycle.observe
 import com.belcobtm.R
 import com.belcobtm.databinding.FragmentUpdatePasswordBinding
 import com.belcobtm.domain.Failure

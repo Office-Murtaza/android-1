@@ -6,7 +6,6 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.core.widget.addTextChangedListener
-import androidx.lifecycle.observe
 import com.belcobtm.BuildConfig
 import com.belcobtm.R
 import com.belcobtm.databinding.FragmentVerificationVipBinding

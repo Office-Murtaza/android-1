@@ -6,5 +6,8 @@ data class AuthorizationResponse(
     val refreshToken: String,
     val firebaseToken: String,
     val roles: List<String>,
-    val userId: String
+    val userId: String,
+    val referralCode: String?,
+    val referralInvites: Int?,
+    val referralEarned: Int?,
 )

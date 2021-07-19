@@ -2,7 +2,6 @@ package com.belcobtm.presentation.features.wallet.trade.statistic
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.lifecycle.observe
 import com.belcobtm.databinding.FragmentTradeUserInfoBinding
 import com.belcobtm.domain.Either
 import com.belcobtm.domain.Failure

@@ -7,10 +7,7 @@ import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.os.bundleOf
-import androidx.lifecycle.Observer
-import androidx.lifecycle.observe
 import androidx.navigation.fragment.navArgs
 import com.belcobtm.R
 import com.belcobtm.databinding.FragmentCreateSeedBinding
@@ -81,11 +78,11 @@ class CreateSeedFragment : BaseFragment<FragmentCreateSeedBinding>() {
     }
 
     override fun FragmentCreateSeedBinding.initObservers() {
-        viewModel.seedLiveData.observe(viewLifecycleOwner, Observer { seedPhrase ->
+        viewModel.seedLiveData.observe(viewLifecycleOwner) { seedPhrase ->
             if (args.mode != MODE_SETTINGS) {
                 showSeed(seedPhrase)
             }
-        })
+        }
         viewModel.createWalletLiveData.listen({
             navigate(
                 R.id.to_pin_code_fragment,
@@ -151,10 +148,7 @@ class CreateSeedFragment : BaseFragment<FragmentCreateSeedBinding>() {
     }
 
     private fun copyToClipboard(copiedText: String) {
-        val clipboard =
-            requireContext().getSystemService(AppCompatActivity.CLIPBOARD_SERVICE) as ClipboardManager
-        val clip = ClipData.newPlainText(copiedText, copiedText)
-        clipboard.setPrimaryClip(clip)
+        clipBoardHelper.setTextToClipboard(copiedText)
         AlertHelper.showToastShort(requireContext(), R.string.copied)
     }
 

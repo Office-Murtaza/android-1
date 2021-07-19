@@ -7,7 +7,6 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.appcompat.app.AlertDialog
 import androidx.core.widget.addTextChangedListener
-import androidx.lifecycle.Observer
 import com.belcobtm.BuildConfig
 import com.belcobtm.R
 import com.belcobtm.databinding.FragmentVerificationBlankBinding
@@ -176,7 +175,7 @@ class VerificationBlankFragment :
     }
 
     override fun FragmentVerificationBlankBinding.initObservers() {
-        viewModel.uploadingLiveData.observe(viewLifecycleOwner, Observer { loadingData ->
+        viewModel.uploadingLiveData.observe(viewLifecycleOwner) { loadingData ->
             when (loadingData) {
                 is LoadingData.Loading -> showLoading()
                 is LoadingData.Success -> {
@@ -193,7 +192,7 @@ class VerificationBlankFragment :
                     }
                 }
             }
-        })
+        }
     }
 
     override fun createBinding(

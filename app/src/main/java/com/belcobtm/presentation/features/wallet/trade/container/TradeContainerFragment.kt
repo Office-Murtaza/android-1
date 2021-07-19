@@ -3,7 +3,6 @@ package com.belcobtm.presentation.features.wallet.trade.container
 import android.Manifest
 import android.os.Bundle
 import android.view.*
-import androidx.lifecycle.observe
 import com.belcobtm.R
 import com.belcobtm.databinding.FragmentTradeListContainerBinding
 import com.belcobtm.domain.Failure

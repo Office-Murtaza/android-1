@@ -5,6 +5,7 @@ import com.belcobtm.domain.Failure
 import com.belcobtm.domain.UseCase
 import com.belcobtm.domain.authorization.AuthorizationRepository
 import com.belcobtm.domain.notification.NotificationTokenRepository
+import com.belcobtm.presentation.features.referral.ReferralClient
 
 const val RECOVER_ERROR_EMPTY_COINS = 2
 const val RECOVER_ERROR_MISSED_COINS = 3
@@ -14,11 +15,17 @@ const val RECOVER_ERROR_SEED_PHRASE = 6
 
 class RecoverWalletUseCase(
     private val repository: AuthorizationRepository,
-    private val notificationRepository: NotificationTokenRepository
+    private val notificationRepository: NotificationTokenRepository,
+    private val referralClient: ReferralClient
 ) : UseCase<Unit, RecoverWalletUseCase.Params>() {
+
     override suspend fun run(params: Params): Either<Failure, Unit> =
         repository.recoverWallet(
-            params.seed, params.phone, params.password, notificationRepository.getToken()
+            params.seed,
+            params.phone,
+            params.password,
+            notificationRepository.getToken(),
+            referralClient.getReferralData()
         )
 
     data class Params(val seed: String, val phone: String, val password: String)

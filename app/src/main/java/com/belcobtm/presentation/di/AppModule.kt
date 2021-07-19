@@ -30,6 +30,8 @@ import com.belcobtm.presentation.features.deals.staking.StakingViewModel
 import com.belcobtm.presentation.features.deals.swap.SwapViewModel
 import com.belcobtm.presentation.features.notification.NotificationHelper
 import com.belcobtm.presentation.features.pin.code.PinCodeViewModel
+import com.belcobtm.presentation.features.referral.ReferralViewModel
+import com.belcobtm.presentation.features.referral.contacts.InviteFromContactsViewModel
 import com.belcobtm.presentation.features.settings.SettingsViewModel
 import com.belcobtm.presentation.features.settings.about.AboutViewModel
 import com.belcobtm.presentation.features.settings.password.PasswordViewModel
@@ -113,12 +115,7 @@ val viewModelModule = module {
     viewModel { PhoneChangeViewModel(get(), get(), get(), get<PhoneNumberValidator>()) }
     viewModel { AtmViewModel(get()) }
     viewModel { (txId: String, coinCode: String) ->
-        TransactionDetailsViewModel(
-            txId,
-            coinCode,
-            get(),
-            get()
-        )
+        TransactionDetailsViewModel(txId, coinCode, get(), get())
     }
     viewModel { SendGiftViewModel(get(), get(), get(), get(), get()) }
     viewModel { (coinCode: String) -> WithdrawViewModel(coinCode, get(), get(), get(), get()) }
@@ -127,6 +124,7 @@ val viewModelModule = module {
     viewModel { TradeContainerViewModel(get(), get(), get(), get(), get(), get()) }
     viewModel { TradeListViewModel(get(), get()) }
     viewModel { TradeUserStatisticViewModel(get()) }
+    viewModel { InviteFromContactsViewModel(get(), get(), get(), get()) }
     viewModel {
         MyTradeDetailsViewModel(
             get(),
@@ -168,6 +166,7 @@ val viewModelModule = module {
     viewModel { OrderChatViewModel(get(), get(), get()) }
     viewModel { HistoryChatViewModel(get()) }
     viewModel { HostViewModel(get()) }
+    viewModel { ReferralViewModel(get(), get()) }
 }
 
 val viewModelHelperModule = module {

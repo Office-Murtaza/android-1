@@ -3,7 +3,6 @@ package com.belcobtm.presentation.features.deals.swap
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.lifecycle.Observer
 import com.belcobtm.R
 import com.belcobtm.databinding.FragmentSwapBinding
 import com.belcobtm.domain.Failure
@@ -90,12 +89,12 @@ class SwapFragment : BaseFragment<FragmentSwapBinding>() {
         viewCircle.setOnClickListener {
             viewModel.changeCoins()
         }
-        sendCoinInputLayout.setOnMaxClickListener(View.OnClickListener {
+        sendCoinInputLayout.setOnMaxClickListener {
             viewModel.setMaxSendAmount()
-        })
-        receiveCoinInputLayout.setOnMaxClickListener(View.OnClickListener {
+        }
+        receiveCoinInputLayout.setOnMaxClickListener {
             viewModel.setMaxSendAmount()
-        })
+        }
         sendCoinInputLayout.setOnCoinButtonClickListener(View.OnClickListener {
             val coinToSend = viewModel.coinToSend.value ?: return@OnClickListener
             val coinToReceive = viewModel.coinToReceive.value ?: return@OnClickListener
@@ -144,7 +143,7 @@ class SwapFragment : BaseFragment<FragmentSwapBinding>() {
             }
         })
         viewModel.coinsDetailsLoadingState.listen()
-        viewModel.coinToSendModel.observe(viewLifecycleOwner, Observer { coin ->
+        viewModel.coinToSendModel.observe(viewLifecycleOwner) { coin ->
             val coinCode = coin.coinCode
             val coinFee = coin.coinFee.toStringCoin()
             val coinBalance = coin.coinBalance.toStringCoin()
@@ -167,8 +166,8 @@ class SwapFragment : BaseFragment<FragmentSwapBinding>() {
                     coinCodeFee
                 )
             )
-        })
-        viewModel.coinToReceiveModel.observe(viewLifecycleOwner, Observer { coin ->
+        }
+        viewModel.coinToReceiveModel.observe(viewLifecycleOwner) { coin ->
             val coinCode = coin.coinCode
             val coinFee = coin.coinFee.toStringCoin()
             val coinBalance = coin.coinBalance.toStringCoin()
@@ -191,8 +190,8 @@ class SwapFragment : BaseFragment<FragmentSwapBinding>() {
                     coinCodeFee
                 )
             )
-        })
-        viewModel.swapRate.observe(viewLifecycleOwner, Observer { rate ->
+        }
+        viewModel.swapRate.observe(viewLifecycleOwner) { rate ->
             rateTextView.text = getString(
                 R.string.swap_screen_rate_formatted,
                 rate.fromCoinAmount.toString(),
@@ -200,46 +199,46 @@ class SwapFragment : BaseFragment<FragmentSwapBinding>() {
                 rate.swapAmount.toStringCoin(),
                 rate.swapCoinCode
             ).toHtmlSpan()
-        })
-        viewModel.swapFee.observe(viewLifecycleOwner, Observer { fee ->
+        }
+        viewModel.swapFee.observe(viewLifecycleOwner) { fee ->
             platformFeeTextView.text = getString(
                 R.string.swap_screen_fee_formatted,
                 fee.platformFeePercents.toStringCoin(),
                 fee.platformFeeCoinAmount.toStringCoin(),
                 fee.swapCoinCode
             ).toHtmlSpan()
-        })
-        viewModel.coinToSendError.observe(viewLifecycleOwner, Observer { error ->
+        }
+        viewModel.coinToSendError.observe(viewLifecycleOwner) { error ->
             when (error) {
                 is ValidationResult.Valid -> sendCoinInputLayout.setErrorText(null, false)
                 is ValidationResult.InValid ->
                     sendCoinInputLayout.setErrorText(getString(error.error), true)
             }
-        })
-        viewModel.sendCoinAmount.observe(viewLifecycleOwner, Observer { sendAmount ->
+        }
+        viewModel.sendCoinAmount.observe(viewLifecycleOwner) { sendAmount ->
             val targetEditText = sendCoinInputLayout.getEditText()
             if (targetEditText.text.getDouble() == 0.0 && sendAmount == 0.0) {
-                return@Observer
+                return@observe
             }
             val coinAmountString = sendAmount.toStringCoin()
             val watcher = textWatcher.firstTextWatcher
             targetEditText.setTextSilently(watcher, coinAmountString)
-        })
-        viewModel.receiveCoinAmount.observe(viewLifecycleOwner, Observer { receiveAmount ->
+        }
+        viewModel.receiveCoinAmount.observe(viewLifecycleOwner) { receiveAmount ->
             val targetEditText = receiveCoinInputLayout.getEditText()
             if (targetEditText.text.getDouble() == 0.0 && receiveAmount == 0.0) {
-                return@Observer
+                return@observe
             }
             val coinAmountString = receiveAmount.toStringCoin()
             val watcher = textWatcher.secondTextWatcher
             targetEditText.setTextSilently(watcher, coinAmountString)
-        })
-        viewModel.submitEnabled.observe(viewLifecycleOwner, Observer { enabled ->
+        }
+        viewModel.submitEnabled.observe(viewLifecycleOwner) { enabled ->
             nextButtonView.isEnabled = enabled
-        })
-        viewModel.usdReceiveAmount.observe(viewLifecycleOwner, Observer { usdAmount ->
+        }
+        viewModel.usdReceiveAmount.observe(viewLifecycleOwner) { usdAmount ->
             val usdAmountString = usdAmount.toStringUsd()
             tvUSDConvertedValue.text = getString(R.string.swap_screen_usd_value, usdAmountString)
-        })
+        }
     }
 }

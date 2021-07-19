@@ -90,7 +90,8 @@ class AuthorizationRepositoryImpl(
     override suspend fun createWallet(
         phone: String,
         password: String,
-        notificationToken: String
+        notificationToken: String,
+        byReferralCode: String?
     ): Either<Failure, Unit> {
         val location = getLocation()
         val response = apiService.createWallet(
@@ -99,6 +100,7 @@ class AuthorizationRepositoryImpl(
             timezone = getDeviceTimezone(),
             lat = location?.latitude,
             lng = location?.longitude,
+            byReferralCode = byReferralCode,
             notificationToken = notificationToken,
             coinMap = temporaryCoinMap.map { it.key.name to it.value.first }.toMap()
         )
@@ -113,6 +115,9 @@ class AuthorizationRepositoryImpl(
             prefHelper.firebaseToken = result.firebaseToken
             prefHelper.userId = result.userId
             prefHelper.userPhone = phone
+            prefHelper.referralCode = result.referralCode.orEmpty()
+            prefHelper.referralInvites = result.referralInvites ?: 0
+            prefHelper.referralEarned = result.referralEarned ?: 0
             temporaryCoinMap.clear()
             Either.Right(Unit)
         } else {
@@ -124,7 +129,8 @@ class AuthorizationRepositoryImpl(
         seed: String,
         phone: String,
         password: String,
-        notificationToken: String
+        notificationToken: String,
+        byReferralCode: String?
     ): Either<Failure, Unit> {
         val location = getLocation()
         val wallet = HDWallet(seed, "")
@@ -140,7 +146,8 @@ class AuthorizationRepositoryImpl(
                 location?.longitude,
                 getDeviceTimezone(),
                 notificationToken,
-                temporaryCoinMap.map { it.key.name to it.value.first }.toMap()
+                temporaryCoinMap.map { it.key.name to it.value.first }.toMap(),
+                        byReferralCode = byReferralCode
             )
 
         return if (recoverResponse.isRight) {
@@ -154,6 +161,9 @@ class AuthorizationRepositoryImpl(
             prefHelper.refreshToken = result.refreshToken
             prefHelper.userPhone = phone
             prefHelper.userId = result.userId
+            prefHelper.referralCode = result.referralCode.orEmpty()
+            prefHelper.referralInvites = result.referralInvites ?: 0
+            prefHelper.referralEarned = result.referralEarned ?: 0
             temporaryCoinMap.clear()
             Either.Right(Unit)
         } else {

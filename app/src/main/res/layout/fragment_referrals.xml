@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/screen_title"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/margin_main"
+        android:gravity="center"
+        android:text="@string/referral_screen_header"
+        android:textColor="@color/black_text_color"
+        android:textSize="24sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/additional_info"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_main"
+        android:layout_marginTop="@dimen/margin_main"
+        android:layout_marginEnd="@dimen/margin_main"
+        android:gravity="center"
+        android:text="@string/referrals_screen_additional_title"
+        android:textColor="@color/colorText"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/screen_title" />
+
+    <TextView
+        android:id="@+id/referral_reward_label"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_main"
+        android:layout_marginEnd="@dimen/margin_main"
+        android:gravity="center"
+        android:text="@string/referrals_screen_referral_reward_amount_title"
+        android:textColor="@color/black_text_color"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/additional_info" />
+
+    <LinearLayout
+        android:id="@+id/invited_users_container"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_main"
+        android:layout_marginTop="@dimen/margin_large"
+        android:layout_marginEnd="@dimen/divider_size"
+        android:background="@drawable/user_trade_info_background"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toStartOf="@id/total_earn_container"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/referral_reward_label">
+
+        <TextView
+            android:id="@+id/invited_users_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_main"
+            android:layout_marginTop="@dimen/margin_large"
+            android:text="@string/invited_users_label"
+            android:textColor="@color/colorText"
+            android:textSize="12sp"
+            app:layout_constraintStart_toStartOf="@id/account_icon"
+            app:layout_constraintTop_toBottomOf="@id/account_icon" />
+
+        <TextView
+            android:id="@+id/invited_users_value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_main"
+            android:layout_marginTop="@dimen/margin_half"
+            android:layout_marginBottom="@dimen/margin_large"
+            android:drawablePadding="6dp"
+            android:textColor="@color/black_text_color"
+            android:textSize="22sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="@id/account_icon"
+            app:layout_constraintTop_toBottomOf="@id/invited_users_label"
+            tools:text="5 users" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/total_earn_container"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/divider_size"
+        android:layout_marginTop="@dimen/margin_large"
+        android:layout_marginEnd="@dimen/margin_main"
+        android:background="@drawable/user_trade_info_background"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/invited_users_container"
+        app:layout_constraintTop_toBottomOf="@id/referral_reward_label">
+
+        <TextView
+            android:id="@+id/total_earn_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_main"
+            android:layout_marginTop="@dimen/margin_main"
+            android:text="@string/earned_amount_label"
+            android:textColor="@color/colorText"
+            android:textSize="12sp" />
+
+        <TextView
+            android:id="@+id/total_earn_value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_main"
+            android:layout_marginTop="@dimen/divider_size"
+            android:textColor="@color/black_text_color"
+            android:textSize="22sp"
+            android:textStyle="bold"
+            tools:text="500 CATM" />
+
+        <TextView
+            android:id="@+id/usd_amount_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_main"
+            android:layout_marginTop="@dimen/divider_size"
+            android:layout_marginBottom="@dimen/margin_main"
+            android:textColor="@color/colorText"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+    <FrameLayout
+        android:id="@+id/copy_link_container"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_main"
+        android:layout_marginTop="@dimen/divider_size"
+        android:layout_marginEnd="@dimen/margin_main"
+        android:background="@drawable/user_trade_info_background"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/invited_users_container">
+
+        <TextView
+            android:id="@+id/copy_link"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/margin_main"
+            android:padding="@dimen/margin_half"
+            android:textColor="@color/colorPrimary"
+            android:textSize="16sp"
+            app:drawableEndCompat="@drawable/ic_copy"
+            tools:text="https://belcobtm.com/r/giQVRF" />
+
+    </FrameLayout>
+
+    <Button
+        android:id="@+id/share_button"
+        style="@style/Button.Secondary"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_main"
+        android:layout_marginTop="@dimen/margin_x2"
+        android:layout_marginEnd="@dimen/margin_main"
+        android:text="@string/share_button_title"
+        app:icon="@drawable/ic_share"
+        app:iconGravity="textStart"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/copy_link_container" />
+
+
+    <Button
+        android:id="@+id/invite_from_contacts"
+        style="@style/Button.Primary"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/invite_from_contacts"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/share_button" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
