@@ -1,17 +1,15 @@
 package com.belcobtm.presentation.features.wallet.deposit
 
-import android.content.ClipData
-import android.content.ClipboardManager
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.view.ViewTreeObserver
-import androidx.lifecycle.Observer
 import com.belcobtm.R
 import com.belcobtm.databinding.FragmentDepositBinding
 import com.belcobtm.presentation.core.QRUtils
 import com.belcobtm.presentation.core.helper.AlertHelper
+import com.belcobtm.presentation.core.helper.ClipBoardHelper
 import com.belcobtm.presentation.core.ui.fragment.BaseFragment
+import org.koin.android.ext.android.inject
 import org.koin.android.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 
@@ -19,6 +17,7 @@ class DepositFragment : BaseFragment<FragmentDepositBinding>() {
     private val viewModel: DepositViewModel by viewModel {
         parametersOf(DepositFragmentArgs.fromBundle(requireArguments()).coinCode)
     }
+    private val clipBoardHelper: ClipBoardHelper by inject()
     override val isToolbarEnabled: Boolean = true
     override val isHomeButtonEnabled: Boolean = true
     override var isMenuEnabled: Boolean = true
@@ -29,7 +28,7 @@ class DepositFragment : BaseFragment<FragmentDepositBinding>() {
     }
 
     override fun FragmentDepositBinding.initObservers() {
-        viewModel.addressLiveData.observe(viewLifecycleOwner, Observer { address ->
+        viewModel.addressLiveData.observe(viewLifecycleOwner) { address ->
             addressView.text = address
             imageView.viewTreeObserver.addOnGlobalLayoutListener(object :
                 ViewTreeObserver.OnGlobalLayoutListener {
@@ -55,16 +54,16 @@ class DepositFragment : BaseFragment<FragmentDepositBinding>() {
                     imageView.viewTreeObserver.removeOnGlobalLayoutListener(this)
                 }
             })
-        })
+        }
     }
 
     private fun copyToClipboard(toastText: String, copiedText: String) {
-        val clipboard =
-            requireContext().getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
-        val clip = ClipData.newPlainText(toastText, copiedText)
-        clipboard.setPrimaryClip(clip)
+        clipBoardHelper.setTextToClipboard(copiedText, toastText)
     }
 
-    override fun createBinding(inflater: LayoutInflater, container: ViewGroup?): FragmentDepositBinding =
+    override fun createBinding(
+        inflater: LayoutInflater,
+        container: ViewGroup?
+    ): FragmentDepositBinding =
         FragmentDepositBinding.inflate(inflater, container, false)
 }

@@ -2,7 +2,6 @@ package com.belcobtm.presentation.features.wallet.trade.order.historychat
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.lifecycle.observe
 import androidx.navigation.fragment.navArgs
 import com.belcobtm.databinding.FragmentHistoryChatBinding
 import com.belcobtm.domain.Either

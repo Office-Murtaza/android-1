@@ -3,7 +3,6 @@ package com.belcobtm.presentation.features.wallet.trade.reserve
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.lifecycle.Observer
 import androidx.navigation.fragment.navArgs
 import com.belcobtm.R
 import com.belcobtm.databinding.FragmentTradeReserveBinding
@@ -36,7 +35,10 @@ class TradeReserveFragment : BaseFragment<FragmentTradeReserveBinding>() {
         SafeDecimalEditTextWatcher { editable ->
             val cryptoAmount = editable.getDouble()
             binding.amountUsdView.text = if (cryptoAmount > 0) {
-                getString(R.string.text_usd, (cryptoAmount * viewModel.coinItem.priceUsd).toStringUsd())
+                getString(
+                    R.string.text_usd,
+                    (cryptoAmount * viewModel.coinItem.priceUsd).toStringUsd()
+                )
             } else {
                 getString(R.string.text_usd, "0.0")
             }
@@ -59,13 +61,15 @@ class TradeReserveFragment : BaseFragment<FragmentTradeReserveBinding>() {
 
     override fun FragmentTradeReserveBinding.initObservers() {
         viewModel.initialLoadLiveData.listen(success = {
-            priceUsdView.text = getString(R.string.text_usd, viewModel.coinItem.priceUsd.toStringUsd())
+            priceUsdView.text =
+                getString(R.string.text_usd, viewModel.coinItem.priceUsd.toStringUsd())
             balanceCryptoView.text = getString(
                 R.string.text_text,
                 viewModel.coinItem.balanceCoin.toStringCoin(),
                 viewModel.coinItem.code
             )
-            balanceUsdView.text = getString(R.string.text_usd, viewModel.coinItem.balanceUsd.toStringUsd())
+            balanceUsdView.text =
+                getString(R.string.text_usd, viewModel.coinItem.balanceUsd.toStringUsd())
             amountCryptoView.helperText = getString(
                 R.string.transaction_helper_text_commission,
                 viewModel.getTransactionFee().toStringCoin(),
@@ -90,7 +94,7 @@ class TradeReserveFragment : BaseFragment<FragmentTradeReserveBinding>() {
                 popBackStack()
             }
         )
-        viewModel.cryptoFieldState.observe(viewLifecycleOwner, Observer { fieldState ->
+        viewModel.cryptoFieldState.observe(viewLifecycleOwner) { fieldState ->
             when (fieldState) {
                 InputFieldState.Valid -> amountCryptoView.clearError()
                 InputFieldState.LessThanNeedError -> amountCryptoView.error =
@@ -100,13 +104,16 @@ class TradeReserveFragment : BaseFragment<FragmentTradeReserveBinding>() {
                 InputFieldState.NotEnoughETHError -> amountCryptoView.error =
                     getString(R.string.trade_reserve_screen_not_enough_eth)
             }
-        })
+        }
     }
 
     override fun FragmentTradeReserveBinding.initViews() {
         setToolbarTitle(getString(R.string.trade_reserve_screen_title, args.coinCode))
     }
 
-    override fun createBinding(inflater: LayoutInflater, container: ViewGroup?): FragmentTradeReserveBinding =
+    override fun createBinding(
+        inflater: LayoutInflater,
+        container: ViewGroup?
+    ): FragmentTradeReserveBinding =
         FragmentTradeReserveBinding.inflate(inflater, container, false)
 }

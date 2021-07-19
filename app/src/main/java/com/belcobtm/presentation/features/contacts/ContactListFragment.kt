@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.lifecycle.observe
 import com.belcobtm.R
 import com.belcobtm.databinding.FragmentContactListBinding
 import com.belcobtm.presentation.core.adapter.MultiTypeAdapter

@@ -713,4 +713,21 @@
     <string name="atm_type_buy_and_sell">Buy &amp; Sell</string>
     <string name="atm_type_buy_only">Buy Only</string>
     <string name="atm_closed_hours">Closed</string>
+
+    <string name="invited_users_label">Invited</string>
+    <string name="earned_amount_label">Earned</string>
+    <string name="invite_from_contacts">Invite from contacts</string>
+    <string name="referrals_label">Referrals</string>
+    <string name="referral_screen_title">Referrals</string>
+    <string name="referral_screen_users_formatted">%d users</string>
+    <string name="referral_screen_coin_amount_formatted">%d CATM</string>
+    <string name="referral_screen_usd_amount_formatted">~ %s</string>
+    <string name="referral_screen_header">Invite friends — \nGet CATM coins.</string>
+    <string name="referrals_screen_additional_title">For each invited user that buys/sells/swaps/stakes/trades using our app or our ATM, both of you gets</string>
+    <string name="referrals_screen_referral_reward_amount_title">100 CATM ~ $10.00</string>
+    <string name="share_button_title">Share</string>
+    <string name="referral_message_format">1. Install Belco Wallet from %s\n2. Register and deposit, buy, sell, transfer, swap, and trade any amount of coins\n3.After that, both of us will get a 100 CATM token bonus</string>
+    <string name="referral_contacts_not_selected_error">Please select at least one contact from the list</string>
+    <string name="referral_contacts_coins_to_receive_format"><![CDATA[You will get <b>%d CATM</b> coins]]></string>
+    <string name="invite_from_contacts_screen_title">Invite from contacts</string>
 </resources>

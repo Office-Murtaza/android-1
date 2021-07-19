@@ -11,8 +11,6 @@ import android.widget.TableLayout
 import androidx.biometric.BiometricPrompt
 import androidx.core.content.ContextCompat
 import androidx.core.view.isInvisible
-import androidx.lifecycle.Observer
-import androidx.lifecycle.observe
 import com.belcobtm.App
 import com.belcobtm.R
 import com.belcobtm.databinding.FragmentPinCodeBinding
@@ -40,7 +38,8 @@ class PinCodeFragment : BaseFragment<FragmentPinCodeBinding>() {
             //do nothing, user need to enter/create pin
         }
     }
-    override val retryListener: View.OnClickListener = View.OnClickListener { viewModel.authorize() }
+    override val retryListener: View.OnClickListener =
+        View.OnClickListener { viewModel.authorize() }
 
     private var appliedState: PinCodeState? = null
 
@@ -135,9 +134,9 @@ class PinCodeFragment : BaseFragment<FragmentPinCodeBinding>() {
                 PinCodeAction.StartBioPromt -> startBioPromt()
             }
         }
-        viewModel.bioAuthVisible.observe(viewLifecycleOwner, Observer{ visible ->
+        viewModel.bioAuthVisible.observe(viewLifecycleOwner) { visible ->
             binding.keyBioView.isInvisible = !visible
-        })
+        }
     }
 
     private fun startBioPromt() {
@@ -203,6 +202,9 @@ class PinCodeFragment : BaseFragment<FragmentPinCodeBinding>() {
         const val PIN_CODE_LENGTH: Int = 4
     }
 
-    override fun createBinding(inflater: LayoutInflater, container: ViewGroup?): FragmentPinCodeBinding =
+    override fun createBinding(
+        inflater: LayoutInflater,
+        container: ViewGroup?
+    ): FragmentPinCodeBinding =
         FragmentPinCodeBinding.inflate(inflater, container, false)
 }

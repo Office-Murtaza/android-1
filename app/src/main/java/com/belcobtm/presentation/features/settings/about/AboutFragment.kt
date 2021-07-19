@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.lifecycle.Observer
 import com.belcobtm.R
 import com.belcobtm.databinding.FragmentAboutBinding
 import com.belcobtm.presentation.core.ui.fragment.BaseFragment
@@ -26,9 +25,9 @@ class AboutFragment : BaseFragment<FragmentAboutBinding>() {
     }
 
     private fun observeData() {
-        viewModel.appVersion.observe(viewLifecycleOwner, Observer { version ->
+        viewModel.appVersion.observe(viewLifecycleOwner) { version ->
             binding.versionItem.setValue(version)
-        })
+        }
     }
 
     private fun setClickListeners() {
@@ -37,6 +36,9 @@ class AboutFragment : BaseFragment<FragmentAboutBinding>() {
         binding.complaintItem.setOnClickListener { viewModel.handleItemClick(AboutItem.COMPLAINT) }
     }
 
-    override fun createBinding(inflater: LayoutInflater, container: ViewGroup?): FragmentAboutBinding =
+    override fun createBinding(
+        inflater: LayoutInflater,
+        container: ViewGroup?
+    ): FragmentAboutBinding =
         FragmentAboutBinding.inflate(inflater, container, false)
 }

@@ -2,7 +2,6 @@ package com.belcobtm.presentation.features.wallet.trade.order
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.lifecycle.observe
 import androidx.recyclerview.widget.DividerItemDecoration
 import com.belcobtm.databinding.FragmentTradeOrdersBinding
 import com.belcobtm.domain.Either

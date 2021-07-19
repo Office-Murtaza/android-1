@@ -4,7 +4,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.widget.addTextChangedListener
-import androidx.lifecycle.Observer
 import androidx.navigation.fragment.navArgs
 import com.belcobtm.R
 import com.belcobtm.databinding.FragmentPasswordBinding
@@ -64,7 +63,7 @@ class PasswordFragment : BaseFragment<FragmentPasswordBinding>() {
                 appliedState = it
             }
         )
-        viewModel.actionData.observe(viewLifecycleOwner, Observer { action ->
+        viewModel.actionData.observe(viewLifecycleOwner) { action ->
             when (action) {
                 is PasswordAction.NavigateAction -> {
                     showContent()
@@ -76,7 +75,7 @@ class PasswordFragment : BaseFragment<FragmentPasswordBinding>() {
                 }
                 PasswordAction.PopToSecurityAction -> popBackStack(R.id.security_fragment, false)
             }
-        })
+        }
     }
 
     override fun popBackStack(): Boolean {

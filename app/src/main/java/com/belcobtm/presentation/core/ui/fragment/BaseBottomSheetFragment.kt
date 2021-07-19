@@ -6,7 +6,6 @@ import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.Observer
 import com.belcobtm.R
 import com.belcobtm.databinding.IncludeErrorScreenBinding
 import com.belcobtm.domain.Failure
@@ -76,7 +75,7 @@ abstract class BaseBottomSheetFragment : BottomSheetDialogFragment() {
         error: (error: Failure?) -> Unit = baseErrorHandler,
         onUpdate: ((LoadingData<T>) -> Unit)? = null
     ) {
-        this.observe(viewLifecycleOwner, Observer { loadingData ->
+        observe(viewLifecycleOwner) { loadingData ->
             when (loadingData) {
                 is LoadingData.Loading<T> -> showLoading()
                 is LoadingData.Success<T> -> {
@@ -86,7 +85,7 @@ abstract class BaseBottomSheetFragment : BottomSheetDialogFragment() {
                 is LoadingData.Error<T> -> error.invoke(loadingData.errorType)
             }
             onUpdate?.invoke(loadingData)
-        })
+        }
     }
 
     protected open fun showLoading() {

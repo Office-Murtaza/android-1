@@ -5,6 +5,7 @@ import com.belcobtm.domain.Failure
 import com.belcobtm.domain.UseCase
 import com.belcobtm.domain.authorization.AuthorizationRepository
 import com.belcobtm.domain.notification.NotificationTokenRepository
+import com.belcobtm.presentation.features.referral.ReferralClient
 
 //we don't handle it because phone is handled on previous screen
 //and coins are hardcoded for now.
@@ -14,10 +15,17 @@ const val CREATE_ERROR_PHONE_ALREADY_EXISTS = 4
 
 class CreateWalletUseCase(
     private val repository: AuthorizationRepository,
-    private val notificationRepository: NotificationTokenRepository
+    private val notificationRepository: NotificationTokenRepository,
+    private val referralClient: ReferralClient
 ) : UseCase<Unit, CreateWalletUseCase.Params>() {
+
     override suspend fun run(params: Params): Either<Failure, Unit> =
-        repository.createWallet(params.phone, params.password, notificationRepository.getToken())
+        repository.createWallet(
+            params.phone,
+            params.password,
+            notificationRepository.getToken(),
+            referralClient.getReferralData()
+        )
 
     data class Params(val phone: String, val password: String)
 }

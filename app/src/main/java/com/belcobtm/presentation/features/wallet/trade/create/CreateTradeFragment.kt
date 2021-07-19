@@ -3,7 +3,6 @@ package com.belcobtm.presentation.features.wallet.trade.create
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.lifecycle.observe
 import com.belcobtm.R
 import com.belcobtm.data.model.trade.TradeType
 import com.belcobtm.databinding.FragmentCreateTradeBinding

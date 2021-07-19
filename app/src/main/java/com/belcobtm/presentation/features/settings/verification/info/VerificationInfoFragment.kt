@@ -2,7 +2,6 @@ package com.belcobtm.presentation.features.settings.verification.info
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.lifecycle.observe
 import com.belcobtm.R
 import com.belcobtm.databinding.FragmentVerificationInfoBinding
 import com.belcobtm.presentation.core.extensions.setDrawableEnd

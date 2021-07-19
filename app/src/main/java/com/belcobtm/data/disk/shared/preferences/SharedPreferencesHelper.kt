@@ -42,9 +42,17 @@ class SharedPreferencesHelper(private val sharedPreferences: SharedPreferences) 
         set(value) = sharedPreferences.set(USER_BIO_AUTH, value)
         get() = sharedPreferences.getBoolean(USER_BIO_AUTH, true)
 
-    var tradeLocationExpirationTime: Long
-        set(value) = sharedPreferences.set(TRADE_LOCATION_EXPIRATION_TIME, value)
-        get() = sharedPreferences[TRADE_LOCATION_EXPIRATION_TIME] ?: -1
+    var referralCode: String
+        set(value) = sharedPreferences.set(REFERRAL_CODE, value)
+        get() = sharedPreferences[REFERRAL_CODE] ?: ""
+
+    var referralInvites: Int
+        set(value) = sharedPreferences.set(REFERRAL_INVITES, value)
+        get() = sharedPreferences[REFERRAL_INVITES] ?: 0
+
+    var referralEarned: Int
+        set(value) = sharedPreferences.set(REFERRAL_EARNED, value)
+        get() = sharedPreferences[REFERRAL_EARNED] ?: 0
 
     fun processAuthResponse(authorizationResponse: AuthorizationResponse) {
         authorizationResponse.let {
@@ -52,6 +60,9 @@ class SharedPreferencesHelper(private val sharedPreferences: SharedPreferences) 
             refreshToken = it.refreshToken
             firebaseToken = it.firebaseToken
             userId = it.userId
+            referralCode = it.referralCode.orEmpty()
+            referralInvites = it.referralInvites ?: 0
+            referralEarned = it.referralEarned ?: 0
         }
     }
 
@@ -70,11 +81,11 @@ class SharedPreferencesHelper(private val sharedPreferences: SharedPreferences) 
     }
 
     fun clearData() {
-        accessToken = ""
-        refreshToken = ""
-        apiSeed = ""
-        userPin = ""
-        userId = ""
+        val token = notificationToken
+        sharedPreferences.edit()
+            .clear()
+            .apply()
+        notificationToken = token
     }
 
     companion object {
@@ -89,7 +100,8 @@ class SharedPreferencesHelper(private val sharedPreferences: SharedPreferences) 
         private const val NOTIFICATION_TOKEN = "KEY_NOTIFICATION"
         private const val USER_PHONE = "KEY_PHONE"
         private const val USER_BIO_AUTH = "KEY_BIO_AUTH"
-        private const val COINS_FEE = "PREF_KEY_COINS_FEE"
-        private const val TRADE_LOCATION_EXPIRATION_TIME = "trade_location_expiration_time"
+        private const val REFERRAL_CODE = "REFERRAL_CODE"
+        private const val REFERRAL_INVITES = "REFERRAL_INVITES"
+        private const val REFERRAL_EARNED = "REFERRAL_EARNED"
     }
 }

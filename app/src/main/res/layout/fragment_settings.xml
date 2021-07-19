@@ -72,6 +72,18 @@
         android:background="@color/thin_divider" />
 
     <com.belcobtm.presentation.core.views.SettingsItemView
+        android:id="@+id/referrals_items"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:src="@drawable/ic_referral"
+        app:text="@string/referrals_label" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/divider_size"
+        android:background="@color/thin_divider" />
+
+    <com.belcobtm.presentation.core.views.SettingsItemView
         android:id="@+id/about_item"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

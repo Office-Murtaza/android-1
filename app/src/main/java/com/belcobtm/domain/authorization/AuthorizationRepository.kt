@@ -18,11 +18,15 @@ interface AuthorizationRepository {
     suspend fun saveSeed(seed: String): Either<Failure, Unit>
 
     suspend fun createWallet(
-        phone: String, password: String, notificationToken: String
+        phone: String, password: String, notificationToken: String, byReferralCode: String?
     ): Either<Failure, Unit>
 
     suspend fun recoverWallet(
-        seed: String, phone: String, password: String, notificationToken: String
+        seed: String,
+        phone: String,
+        password: String,
+        notificationToken: String,
+        byReferralCode: String?
     ): Either<Failure, Unit>
 
     suspend fun authorize(): Either<Failure, Unit>

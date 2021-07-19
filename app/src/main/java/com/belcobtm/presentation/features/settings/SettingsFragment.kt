@@ -3,7 +3,6 @@ package com.belcobtm.presentation.features.settings
 import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.lifecycle.Observer
 import androidx.navigation.fragment.navArgs
 import com.belcobtm.R
 import com.belcobtm.databinding.FragmentSettingsBinding
@@ -36,15 +35,16 @@ class SettingsFragment : BaseFragment<FragmentSettingsBinding>() {
         notificationsItem.setOnClickListener { onSectionClick(SettingsSections.NOTIFICATIONS) }
         supportItem.setOnClickListener { onSectionClick(SettingsSections.SUPPORT) }
         aboutItem.setOnClickListener { onSectionClick(SettingsSections.ABOUT) }
+        referralsItems.setOnClickListener { onSectionClick(SettingsSections.REFERRALS) }
     }
 
     override fun FragmentSettingsBinding.initObservers() {
-        viewModel.actionData.observe(viewLifecycleOwner, Observer { action ->
+        viewModel.actionData.observe(viewLifecycleOwner) { action ->
             when (action) {
                 is SettingsAction.NavigateAction -> navigate(action.navDirections)
                 SettingsAction.NotificationOptions -> startNotificationsSettings()
             }
-        })
+        }
     }
 
     private fun onSectionClick(section: SettingsSections) {
@@ -60,6 +60,9 @@ class SettingsFragment : BaseFragment<FragmentSettingsBinding>() {
         startActivity(intent)
     }
 
-    override fun createBinding(inflater: LayoutInflater, container: ViewGroup?): FragmentSettingsBinding =
+    override fun createBinding(
+        inflater: LayoutInflater,
+        container: ViewGroup?
+    ): FragmentSettingsBinding =
         FragmentSettingsBinding.inflate(inflater, container, false)
 }

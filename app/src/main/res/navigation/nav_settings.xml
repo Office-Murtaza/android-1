@@ -31,6 +31,10 @@
             android:id="@+id/settings_to_security_fragment"
             app:destination="@id/security_fragment" />
 
+        <action
+            android:id="@+id/settings_to_referrals_fragment"
+            app:destination="@id/referrals_fragment" />
+
         <argument
             android:name="view_flipper_value"
             android:defaultValue="0"
@@ -241,5 +245,28 @@
         android:name="com.belcobtm.presentation.features.settings.support.SupportFragment"
         android:label="SupportFragment"
         tools:layout="@layout/fragment_support" />
+
+    <fragment
+        android:id="@+id/referrals_fragment"
+        android:name="com.belcobtm.presentation.features.referral.ReferralFragment"
+        android:label="ReferralsFragment"
+        tools:layout="@layout/fragment_referrals">
+
+        <action
+            android:id="@+id/referrals_to_invite_from_contacts_fragment"
+            app:destination="@id/invite_from_contacts_fragment" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/invite_from_contacts_fragment"
+        android:name="com.belcobtm.presentation.features.referral.contacts.InviteFromContactsFragment"
+        android:label="InviteFromContactsFragment"
+        tools:layout="@layout/fragment_invite_from_contacts">
+        <argument
+            android:name="message"
+            app:argType="string"
+            app:nullable="false" />
+    </fragment>
 
 </navigation>

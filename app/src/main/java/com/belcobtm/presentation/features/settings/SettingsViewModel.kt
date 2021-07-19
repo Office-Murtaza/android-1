@@ -37,6 +37,10 @@ class SettingsViewModel : ViewModel() {
             SettingsSections.NOTIFICATIONS -> {
                 actionData.value = SettingsAction.NotificationOptions
             }
+            SettingsSections.REFERRALS -> {
+                val dest = SettingsFragmentDirections.settingsToReferralsFragment()
+                actionData.value = SettingsAction.NavigateAction(dest)
+            }
         }
     }
 
@@ -63,7 +67,8 @@ enum class SettingsSections {
     KYC,
     NOTIFICATIONS,
     SUPPORT,
-    ABOUT
+    ABOUT,
+    REFERRALS,
 }
 
 sealed class SettingsAction {

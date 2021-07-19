@@ -8,7 +8,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.FrameLayout
-import androidx.lifecycle.observe
 import androidx.navigation.fragment.findNavController
 import com.belcobtm.R
 import com.belcobtm.data.model.trade.filter.SortOption
