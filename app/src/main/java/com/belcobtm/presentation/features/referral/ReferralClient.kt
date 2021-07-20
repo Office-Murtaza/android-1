@@ -15,9 +15,16 @@ class ReferralClient(private val installReferrerClient: InstallReferrerClient) {
                 complete = true
                 when (responseCode) {
                     InstallReferrerClient.InstallReferrerResponse.OK -> {
-                        val details = installReferrerClient.installReferrer
-                        val referrer = details.installReferrer.substringAfter("utm_content=")
-                        continuation.resume(referrer)
+                        val referrer = installReferrerClient.installReferrer
+                            .installReferrer
+                            .toString()
+                            .split("&")
+                            .associateByTo(
+                                HashMap(),
+                                { it.split("=").firstOrNull().orEmpty() },
+                                { it.split("=").getOrNull(1).orEmpty() }
+                            )
+                        continuation.resume(referrer["utm_content"])
                     }
                     else ->
                         continuation.resume(null)

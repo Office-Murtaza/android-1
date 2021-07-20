@@ -34,7 +34,7 @@
     <string name="setup_pin_code">Setup new PIN</string>
 
     <!-- Sms code -->
-    <string name="sms_code_screen_title">Verify phone</string>
+    <string name="sms_code_screen_title">Verify Phone</string>
     <string name="sms_code_screen_description">Enter the 4-digit code we sent you\nvia SMS to continue</string>
     <string name="sms_code_screen_did_not_get_the_code">Didn\'t get the code? </string>
     <string name="sms_code_screen_resend_code">Resend code</string>
@@ -62,7 +62,7 @@
     <string name="balance_screen_manage_wallets">Manage wallets</string>
 
     <!-- Recover Wallet -->
-    <string name="recover_wallet_screen_title">Recover old wallet</string>
+    <string name="recover_wallet_screen_title">Recover Old Wallet</string>
     <string name="recover_wallet_phone">Phone</string>
     <string name="recover_wallet_password">Password</string>
     <string name="recover_wallet_incorrect_login">Phone doesn\'t exist</string>
@@ -73,7 +73,7 @@
     <!--create wallet screen-->
     <string name="verify_sms_code">Enter SMS code</string>
     <string name="phone_number">201-555-0123</string>
-    <string name="create_wallet_screen_title">Create new wallet</string>
+    <string name="create_wallet_screen_title">Create New Wallet</string>
     <string name="create_wallet_screen_phone">Phone</string>
     <string name="create_wallet_screen_password">Password</string>
     <string name="create_wallet_screen_confirm_password">Confirm password</string>
@@ -107,7 +107,7 @@
 
 
     <!-- Create Seed Screen-->
-    <string name="create_seed_screen_title">Create seed phrase</string>
+    <string name="create_seed_screen_title">Create Seed Phrase</string>
     <string name="create_seed_screen_description">Create a new seed phrase or use your own. In case you lost seed phrase you will not be able to recover your wallet</string>
     <string name="create_seed_screen_seed_phrase_copied">Seed phrase copied</string>
     <!--    <string name="create_seed_screen_"></string>-->
@@ -160,9 +160,9 @@
         <item>Verification pending</item>
         <item>Verification rejected</item>
         <item>Verified</item>
-        <item>VIP verification pending</item>
-        <item>VIP verification rejected</item>
-        <item>VIP verified</item>
+        <item>Vip verification pending</item>
+        <item>Vip verification rejected</item>
+        <item>Vip verified</item>
     </string-array>
     <string name="verification_select">Select</string>
     <string name="verification_remove">Remove</string>
@@ -479,7 +479,7 @@
     <string name="update_phone_hint">New phone</string>
     <string name="update_pass_label">Update Password</string>
     <string name="update_pin_label">Update PIN</string>
-    <string name="bio_auth_label">Use bio auth</string>
+    <string name="bio_auth_label">Use Bio Auth</string>
     <string name="seed_phrase_label">Seed Phrase</string>
     <string name="unlink_wallet_label">Unlink</string>
     <string name="phone_changed">Phone changed</string>
@@ -567,13 +567,13 @@
 
     <string name="user_trade_info_success_rate_label">Rate</string>
     <string name="user_trade_info_total_trades_label">Trades</string>
-    <string name="user_trade_info_not_verified_status_label">Not Verified</string>
-    <string name="user_trade_info_verification_pending_status_label">Verification Pending</string>
-    <string name="user_trade_info_verification_reject_status_label">Verification Rejected</string>
+    <string name="user_trade_info_not_verified_status_label">Not verified</string>
+    <string name="user_trade_info_verification_pending_status_label">Verification pending</string>
+    <string name="user_trade_info_verification_reject_status_label">Verification rejected</string>
     <string name="user_trade_info_verified_status_label">Verified</string>
-    <string name="user_trade_info_vip_verification_pending_status_label">Vip Verification Pending</string>
-    <string name="user_trade_info_vip_verification_reject_status_label">Vip Verification Rejected</string>
-    <string name="user_trade_info_vip_verified_status_label">Vip Verified</string>
+    <string name="user_trade_info_vip_verification_pending_status_label">Vip verification pending</string>
+    <string name="user_trade_info_vip_verification_reject_status_label">Vip verification rejected</string>
+    <string name="user_trade_info_vip_verified_status_label">Vip verified</string>
 
     <string name="trade_info_my_trades_tab_title">Trades</string>
     <string name="trade_info_open_orders_tab_title">Open orders</string>
@@ -595,7 +595,7 @@
     <string name="fiat_amount_label">Fiat Amount</string>
     <string name="crypto_amount_label">Crypto Amount</string>
     <string name="no_trades_message">You haven\'t created a single trade yet.</string>
-    <string name="create_trade_screen_title">New trade</string>
+    <string name="create_trade_screen_title">New Trade</string>
     <string name="open_create_trade_button_title">Create new trade</string>
     <string name="create_trade_menu_title">Create trade</string>
     <string name="create_trade_screen_trade_type_label">Trade Type</string>
@@ -649,7 +649,7 @@
     <string name="trade_filter_distance_label">Distance range, mi</string>
     <string name="trade_filter_dialog_coins_label">Coins</string>
 
-    <string name="my_trade_details_screen_title">Trade details</string>
+    <string name="my_trade_details_screen_title">Trade Details</string>
     <string name="my_trade_details_cancel_trade_success_message">Trade successfully canceled</string>
 
 
