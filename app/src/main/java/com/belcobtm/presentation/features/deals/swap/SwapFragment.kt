@@ -10,11 +10,15 @@ import com.belcobtm.domain.wallet.LocalCoinType
 import com.belcobtm.domain.wallet.item.isEthRelatedCoinCode
 import com.belcobtm.presentation.core.coin.model.ValidationResult
 import com.belcobtm.presentation.core.extensions.*
+import com.belcobtm.presentation.core.formatter.DoubleCurrencyPriceFormatter
+import com.belcobtm.presentation.core.formatter.Formatter
 import com.belcobtm.presentation.core.helper.AlertHelper
 import com.belcobtm.presentation.core.mvvm.LoadingData
 import com.belcobtm.presentation.core.ui.fragment.BaseFragment
 import com.belcobtm.presentation.core.watcher.DoubleTextWatcher
+import org.koin.android.ext.android.inject
 import org.koin.android.viewmodel.ext.android.viewModel
+import org.koin.core.qualifier.named
 
 class SwapFragment : BaseFragment<FragmentSwapBinding>() {
 
@@ -23,6 +27,9 @@ class SwapFragment : BaseFragment<FragmentSwapBinding>() {
     }
 
     private val viewModel: SwapViewModel by viewModel()
+    private val currencyFormatter: Formatter<Double> by inject(
+        named(DoubleCurrencyPriceFormatter.DOUBLE_CURRENCY_PRICE_FORMATTER_QUALIFIER)
+    )
     private val textWatcher = DoubleTextWatcher(
         maxCharsAfterDotFirst = DoubleTextWatcher.MAX_CHARS_AFTER_DOT_CRYPTO,
         maxCharsAfterDotSecond = DoubleTextWatcher.MAX_CHARS_AFTER_DOT_CRYPTO,
@@ -237,8 +244,7 @@ class SwapFragment : BaseFragment<FragmentSwapBinding>() {
             nextButtonView.isEnabled = enabled
         }
         viewModel.usdReceiveAmount.observe(viewLifecycleOwner) { usdAmount ->
-            val usdAmountString = usdAmount.toStringUsd()
-            tvUSDConvertedValue.text = getString(R.string.swap_screen_usd_value, usdAmountString)
+            tvUSDConvertedValue.text = currencyFormatter.format(usdAmount)
         }
     }
 }

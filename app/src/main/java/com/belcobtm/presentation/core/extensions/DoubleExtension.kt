@@ -10,12 +10,6 @@ fun Double.toStringPercents(): String = if (this > 0) {
     "0"
 }
 
-fun Double.toStringUsd(): String = if (this > 0) {
-    formatWith(DecimalFormat("#.###"))
-} else {
-    "0"
-}
-
 fun Double.toStringCoin(): String = if (this > 0) {
     formatWith(DecimalFormat("#.######"))
 } else {

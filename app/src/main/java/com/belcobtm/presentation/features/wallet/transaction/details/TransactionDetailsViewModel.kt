@@ -14,7 +14,7 @@ import com.belcobtm.domain.transaction.type.TransactionType
 import com.belcobtm.presentation.core.DateFormat
 import com.belcobtm.presentation.core.QRUtils
 import com.belcobtm.presentation.core.extensions.toStringCoin
-import com.belcobtm.presentation.core.extensions.toStringUsd
+import com.belcobtm.presentation.core.formatter.Formatter
 import com.belcobtm.presentation.core.formatter.PhoneNumberFormatter
 import com.belcobtm.presentation.features.wallet.transaction.details.adapter.TransactionDetailsAdapter
 import kotlinx.coroutines.Dispatchers
@@ -24,11 +24,17 @@ class TransactionDetailsViewModel(
     private val txId: String,
     private val coinCode: String,
     private val phoneFormatter: PhoneNumberFormatter,
-    private val transactionDetailsUseCase: ObserveTransactionDetailsUseCase
+    private val transactionDetailsUseCase: ObserveTransactionDetailsUseCase,
+    private val currencyFormatter: Formatter<Double>
 ) : ViewModel() {
 
     val transactionDetailsLiveData: LiveData<List<TransactionDetailsAdapter.Item>>
-        get() = transactionDetailsUseCase.invoke(ObserveTransactionDetailsUseCase.Params(txId, coinCode))
+        get() = transactionDetailsUseCase.invoke(
+            ObserveTransactionDetailsUseCase.Params(
+                txId,
+                coinCode
+            )
+        )
             .map { mapToItemList(it) }
             .asLiveData(Dispatchers.Default)
 
@@ -132,7 +138,8 @@ class TransactionDetailsViewModel(
             result.add(gifBlockItem)
         }
         // swap id
-        val isSwap = dataItem.type == TransactionType.SWAP_SEND || dataItem.type == TransactionType.SWAP_RECEIVE
+        val isSwap =
+            dataItem.type == TransactionType.SWAP_SEND || dataItem.type == TransactionType.SWAP_RECEIVE
         if (isSwap && dataItem.refTxId != null && dataItem.refLink != null) {
             val swapBlockItem = TransactionDetailsAdapter.Item.Id(
                 R.string.transaction_details_swap_id,
@@ -153,7 +160,7 @@ class TransactionDetailsViewModel(
         if (dataItem.fiatAmount != null) {
             val sellBlockItem = TransactionDetailsAdapter.Item.Regular(
                 R.string.transaction_details_sell_amount,
-                "$".plus(" ").plus(dataItem.fiatAmount.toStringUsd())
+                currencyFormatter.format(dataItem.fiatAmount)
             )
             result.add(sellBlockItem)
         }
