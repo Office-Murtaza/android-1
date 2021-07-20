@@ -48,6 +48,7 @@ class AtmFragment : BaseFragment<FragmentAtmBinding>(),
     private var infoWindow: InfoWindow? = null
     private var locationManager: LocationManager? = null
     private var appliedState: LoadingData<List<AtmItem>>? = null
+    private var locationAvailable: Boolean = false
     private val mapInfoWindowFragment by lazy {
         childFragmentManager.findFragmentById(R.id.map) as MapInfoWindowFragment
     }
@@ -81,9 +82,9 @@ class AtmFragment : BaseFragment<FragmentAtmBinding>(),
             val spec: InfoWindow.MarkerSpecification =
                 InfoWindow.MarkerSpecification(0, 0)
             val infoWindow = InfoWindow(
-                marker, spec, AtmPopupFragment.newInstance(marker.tag as AtmItem)
+                marker, spec, AtmPopupFragment.newInstance(marker.tag as AtmItem, locationAvailable)
             ).also(::infoWindow::set)
-            mapInfoWindowFragment.infoWindowManager().toggle(infoWindow, true)
+            mapInfoWindowFragment.infoWindowManager().show(infoWindow, true)
             true
         }
         onLocationPermissionGrantedWithPermissionCheck()
@@ -97,6 +98,7 @@ class AtmFragment : BaseFragment<FragmentAtmBinding>(),
     )
     fun onLocationPermissionGranted() {
         this.map?.isMyLocationEnabled = true
+        locationAvailable = true
         locationManager =
             activity?.getSystemService(Context.LOCATION_SERVICE) as LocationManager
         locationManager?.requestLocationUpdates(
@@ -119,7 +121,6 @@ class AtmFragment : BaseFragment<FragmentAtmBinding>(),
             onLocationChanged(lastKnownLocation)
         }
     }
-
 
     @OnNeverAskAgain(
         Manifest.permission.ACCESS_FINE_LOCATION,

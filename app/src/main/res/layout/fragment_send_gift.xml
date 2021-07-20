@@ -119,9 +119,9 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginEnd="16dp"
+            android:gravity="end"
             android:textColor="@color/dark_text_color"
             android:textSize="16sp"
-            android:gravity="end"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/convertedLabel"
@@ -207,12 +207,15 @@
             app:layout_constraintTop_toTopOf="@id/verticalDivider">
 
             <androidx.appcompat.widget.AppCompatEditText
-                style="@style/EditText.InputWithMax"
+                android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:gravity="start|top"
                 android:hint="@string/send_gift_screen_message"
-                android:imeOptions="actionDone"
-                android:maxLength="160" />
+                android:inputType="textMultiLine"
+                android:singleLine="false"
+                android:paddingStart="@dimen/margin_quarter"
+                android:paddingEnd="@dimen/margin_quarter"
+                tools:text="aglgkjalskgjalkgjalksgjajsglkajglkjglaskgjlasg" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <Space

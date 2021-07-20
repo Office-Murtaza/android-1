@@ -1,10 +1,11 @@
 package com.belcobtm.presentation.features.wallet.send.gift
 
+import android.graphics.Rect
 import android.net.Uri
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
-import android.view.inputmethod.EditorInfo
 import androidx.navigation.fragment.navArgs
 import com.belcobtm.R
 import com.belcobtm.databinding.FragmentSendGiftBinding
@@ -93,8 +94,20 @@ class SendGiftFragment : BaseFragment<FragmentSendGiftBinding>(),
             .transform(CircleCrop())
             .apply(RequestOptions().override(contactImage.width, contactImage.height))
             .into(contactImage)
-        messageView.editText?.inputType = EditorInfo.IME_ACTION_DONE
         sendCoinInputLayout.getEditText().setText("0")
+    }
+
+    override fun onTouchIntercented(ev: MotionEvent) {
+        super.onTouchIntercented(ev)
+        if (binding.messageView.editText?.isFocused == true && ev.action == MotionEvent.ACTION_UP) {
+            val rect = Rect()
+            binding.messageView.getGlobalVisibleRect(rect)
+            if (!rect.contains(ev.rawX.toInt(), ev.rawY.toInt())) {
+                val isMessageEmpty = binding.messageView.editText?.text.isNullOrEmpty()
+                binding.messageView.toggle(!isMessageEmpty)
+                binding.addMessage.toggle(isMessageEmpty)
+            }
+        }
     }
 
     override fun FragmentSendGiftBinding.initListeners() {
@@ -117,14 +130,6 @@ class SendGiftFragment : BaseFragment<FragmentSendGiftBinding>(),
             messageView.show()
             messageView.requestFocus()
             showKeyboard()
-        }
-        messageView.editText?.actionDoneListener {
-            if (messageView.editText?.text.isNullOrEmpty()) {
-                messageView.hide()
-                addMessage.show()
-                messageView.editText?.clearFocus()
-            }
-            hideKeyboard()
         }
         sendCoinInputLayout.getEditText().addTextChangedListener(cryptoAmountTextWatcher)
         sendGift.setOnClickListener { sendGift() }
