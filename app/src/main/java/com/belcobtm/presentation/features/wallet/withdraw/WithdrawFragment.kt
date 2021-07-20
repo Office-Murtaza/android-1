@@ -12,6 +12,8 @@ import com.belcobtm.domain.wallet.item.isEthRelatedCoinCode
 import com.belcobtm.presentation.core.coin.CoinCodeProvider
 import com.belcobtm.presentation.core.coin.model.ValidationResult
 import com.belcobtm.presentation.core.extensions.*
+import com.belcobtm.presentation.core.formatter.DoubleCurrencyPriceFormatter
+import com.belcobtm.presentation.core.formatter.Formatter
 import com.belcobtm.presentation.core.helper.AlertHelper
 import com.belcobtm.presentation.core.helper.ClipBoardHelper
 import com.belcobtm.presentation.core.ui.fragment.BaseFragment
@@ -20,6 +22,7 @@ import com.google.zxing.integration.android.IntentIntegrator
 import org.koin.android.ext.android.inject
 import org.koin.android.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
+import org.koin.core.qualifier.named
 
 class WithdrawFragment : BaseFragment<FragmentWithdrawBinding>() {
     private val coinCodeProvider by inject<CoinCodeProvider>()
@@ -27,13 +30,16 @@ class WithdrawFragment : BaseFragment<FragmentWithdrawBinding>() {
         parametersOf(WithdrawFragmentArgs.fromBundle(requireArguments()).coinCode)
     }
     private val clipBoardHelper: ClipBoardHelper by inject()
+    private val currencyFormatter: Formatter<Double> by inject(
+        named(DoubleCurrencyPriceFormatter.DOUBLE_CURRENCY_PRICE_FORMATTER_QUALIFIER)
+    )
     private val doubleTextWatcher: DoubleTextWatcher = DoubleTextWatcher(
         firstTextWatcher = { editable ->
             val cryptoAmount: Double = editable.getDouble()
             binding.amountUsdView.text = if (cryptoAmount > 0) {
-                getString(R.string.text_usd, (cryptoAmount * viewModel.getUsdPrice()).toStringUsd())
+                currencyFormatter.format(cryptoAmount * viewModel.getUsdPrice())
             } else {
-                getString(R.string.text_usd, "0.0")
+                currencyFormatter.format(0.0)
             }
         }
     )
@@ -41,7 +47,8 @@ class WithdrawFragment : BaseFragment<FragmentWithdrawBinding>() {
     override val isToolbarEnabled: Boolean = true
     override val isHomeButtonEnabled: Boolean = true
     override var isMenuEnabled: Boolean = true
-    override val retryListener: View.OnClickListener = View.OnClickListener { binding.validateAndSubmit() }
+    override val retryListener: View.OnClickListener =
+        View.OnClickListener { binding.validateAndSubmit() }
 
     override fun FragmentWithdrawBinding.initListeners() {
         addressScanView.setOnClickListener {
@@ -66,7 +73,10 @@ class WithdrawFragment : BaseFragment<FragmentWithdrawBinding>() {
         })
         viewModel.transactionLiveData.listen(
             success = {
-                AlertHelper.showToastShort(requireContext(), R.string.transactions_screen_transaction_created)
+                AlertHelper.showToastShort(
+                    requireContext(),
+                    R.string.transactions_screen_transaction_created
+                )
                 popBackStack()
             },
             error = {
@@ -87,7 +97,10 @@ class WithdrawFragment : BaseFragment<FragmentWithdrawBinding>() {
         )
     }
 
-    override fun createBinding(inflater: LayoutInflater, container: ViewGroup?): FragmentWithdrawBinding =
+    override fun createBinding(
+        inflater: LayoutInflater,
+        container: ViewGroup?
+    ): FragmentWithdrawBinding =
         FragmentWithdrawBinding.inflate(inflater, container, false)
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -108,14 +121,14 @@ class WithdrawFragment : BaseFragment<FragmentWithdrawBinding>() {
 
     private fun FragmentWithdrawBinding.initScreen() {
         setToolbarTitle(getString(R.string.withdraw_screen_screen_title, viewModel.getCoinCode()))
-        priceUsdView.text = getString(R.string.text_usd, viewModel.getUsdPrice().toStringUsd())
+        priceUsdView.text = currencyFormatter.format(viewModel.getUsdPrice())
         balanceCryptoView.text =
             getString(
                 R.string.text_text,
                 viewModel.getCoinBalance().toStringCoin(),
                 viewModel.getCoinCode()
             )
-        balanceUsdView.text = getString(R.string.text_usd, viewModel.getUsdBalance().toStringUsd())
+        balanceUsdView.text = currencyFormatter.format(viewModel.getUsdBalance())
         amountCryptoView.hint = getString(R.string.text_amount, viewModel.getCoinCode())
         amountCryptoView.actionDoneListener { hideKeyboard() }
         nextButtonView.setOnClickListener { validateAndSubmit() }
@@ -132,10 +145,7 @@ class WithdrawFragment : BaseFragment<FragmentWithdrawBinding>() {
             viewModel.getReservedBalanceCoin().toStringCoin(),
             viewModel.getCoinCode()
         )
-        reservedUsdView.text = getString(
-            R.string.text_usd,
-            viewModel.getReservedBalanceUsd().toStringUsd()
-        )
+        reservedUsdView.text = currencyFormatter.format(viewModel.getReservedBalanceUsd())
         // to prevent paste possibility through standard method
         addressView.isLongClickable = false
         addressView.editText?.isLongClickable = false

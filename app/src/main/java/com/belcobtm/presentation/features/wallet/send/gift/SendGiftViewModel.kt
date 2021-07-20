@@ -11,7 +11,6 @@ import com.belcobtm.domain.wallet.item.CoinDataItem
 import com.belcobtm.presentation.core.coin.AmountCoinValidator
 import com.belcobtm.presentation.core.coin.CoinLimitsValueProvider
 import com.belcobtm.presentation.core.coin.model.ValidationResult
-import com.belcobtm.presentation.core.extensions.toStringUsd
 import com.belcobtm.presentation.core.mvvm.LoadingData
 import kotlinx.coroutines.launch
 
@@ -43,8 +42,8 @@ class SendGiftViewModel(
     private val _sendCoinAmount = MutableLiveData<Double>(0.0)
     val sendCoinAmount: LiveData<Double> = _sendCoinAmount
 
-    val usdAmount: LiveData<String>
-        get() = MediatorLiveData<String>().apply {
+    val usdAmount: LiveData<Double>
+        get() = MediatorLiveData<Double>().apply {
             var cryptoAmount: Double? = null
             var coinData: CoinDataItem? = null
             addSource(sendCoinAmount) {
@@ -57,9 +56,13 @@ class SendGiftViewModel(
             }
         }
 
-    private fun processCoinItem(liveData: MediatorLiveData<String>, cryptoAmount: Double?, coinData: CoinDataItem?) {
+    private fun processCoinItem(
+        liveData: MediatorLiveData<Double>,
+        cryptoAmount: Double?,
+        coinData: CoinDataItem?
+    ) {
         if (cryptoAmount != null && coinData != null) {
-            liveData.value = (cryptoAmount * coinData.priceUsd).toStringUsd()
+            liveData.value = cryptoAmount * coinData.priceUsd
         }
     }
 
@@ -91,7 +94,9 @@ class SendGiftViewModel(
                             _initialLoadingData.value = LoadingData.Success(Unit)
                         }
                     },
-                    onError = { _initialLoadingData.value = LoadingData.Error(Failure.ServerError()) }
+                    onError = {
+                        _initialLoadingData.value = LoadingData.Error(Failure.ServerError())
+                    }
                 )
             } else {
                 _initialLoadingData.value = LoadingData.Error(Failure.ServerError())

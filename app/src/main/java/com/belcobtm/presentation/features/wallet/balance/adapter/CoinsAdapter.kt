@@ -9,9 +9,10 @@ import com.belcobtm.databinding.ItemBalanceCoinBinding
 import com.belcobtm.domain.wallet.LocalCoinType
 import com.belcobtm.presentation.core.extensions.resIcon
 import com.belcobtm.presentation.core.extensions.toStringCoin
-import com.belcobtm.presentation.core.extensions.toStringUsd
+import com.belcobtm.presentation.core.formatter.Formatter
 
 class CoinsAdapter(
+    private val priceFormatter: Formatter<Double>,
     private val listener: (item: CoinListItem) -> Unit
 ) : RecyclerView.Adapter<CoinsAdapter.Holder>() {
 
@@ -38,9 +39,8 @@ class CoinsAdapter(
                     item.balanceCrypto.toStringCoin(),
                     item.code
                 )
-            balanceFiatView.text =
-                root.context.getString(R.string.text_usd, item.balanceFiat.toStringUsd())
-            priceView.text = root.context.getString(R.string.text_usd, item.priceUsd.toStringUsd())
+            balanceFiatView.text = priceFormatter.format(item.balanceFiat)
+            priceView.text = priceFormatter.format(item.priceUsd)
         }
     }
 

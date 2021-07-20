@@ -14,7 +14,12 @@ import com.belcobtm.databinding.FragmentTransactionsBinding
 import com.belcobtm.domain.wallet.LocalCoinType
 import com.belcobtm.domain.wallet.item.ChartChangesColor
 import com.belcobtm.domain.wallet.item.ChartDataItem
-import com.belcobtm.presentation.core.extensions.*
+import com.belcobtm.presentation.core.extensions.hide
+import com.belcobtm.presentation.core.extensions.setDrawableStart
+import com.belcobtm.presentation.core.extensions.toStringCoin
+import com.belcobtm.presentation.core.extensions.toggle
+import com.belcobtm.presentation.core.formatter.DoubleCurrencyPriceFormatter
+import com.belcobtm.presentation.core.formatter.Formatter
 import com.belcobtm.presentation.core.mvvm.LoadingData
 import com.belcobtm.presentation.core.ui.fragment.BaseFragment
 import com.belcobtm.presentation.features.wallet.transactions.TransactionsFABType.*
@@ -23,8 +28,10 @@ import com.belcobtm.presentation.features.wallet.transactions.item.CurrentChartI
 import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
 import io.github.kobakei.materialfabspeeddial.FabSpeedDialMenu
+import org.koin.android.ext.android.inject
 import org.koin.android.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
+import org.koin.core.qualifier.named
 
 class TransactionsFragment : BaseFragment<FragmentTransactionsBinding>() {
     private val viewModel: TransactionsViewModel by viewModel {
@@ -47,8 +54,14 @@ class TransactionsFragment : BaseFragment<FragmentTransactionsBinding>() {
     override val retryListener: View.OnClickListener = View.OnClickListener {
         viewModel.updateData()
     }
+    private val currencyFormatter: Formatter<Double> by inject(
+        named(DoubleCurrencyPriceFormatter.DOUBLE_CURRENCY_PRICE_FORMATTER_QUALIFIER)
+    )
 
-    override fun createBinding(inflater: LayoutInflater, container: ViewGroup?): FragmentTransactionsBinding =
+    override fun createBinding(
+        inflater: LayoutInflater,
+        container: ViewGroup?
+    ): FragmentTransactionsBinding =
         FragmentTransactionsBinding.inflate(inflater, container, false)
 
     private fun initFabMenu() {
@@ -135,20 +148,16 @@ class TransactionsFragment : BaseFragment<FragmentTransactionsBinding>() {
         viewModel.loadingData.listen()
         viewModel.detailsLiveData.observe(viewLifecycleOwner) {
             //important download fee
-            priceUsdView.text = getString(R.string.text_usd, it.priceUsd.toStringUsd())
+            priceUsdView.text = currencyFormatter.format(it.priceUsd)
             balanceCryptoView.text =
                 getString(R.string.text_text, it.balance.toStringCoin(), viewModel.coinCode)
-            balanceUsdView.text =
-                getString(R.string.text_usd, (it.balance * it.priceUsd).toStringUsd())
+            balanceUsdView.text = currencyFormatter.format(it.balance * it.priceUsd)
             reservedCryptoView.text = getString(
                 R.string.text_text,
                 it.reservedBalanceCoin.toStringCoin(),
                 it.reservedCode
             )
-            reservedUsdView.text = getString(
-                R.string.text_usd,
-                it.reservedBalanceUsd.toStringUsd()
-            )
+            reservedUsdView.text = currencyFormatter.format(it.reservedBalanceUsd)
         }
     }
 
@@ -174,7 +183,10 @@ class TransactionsFragment : BaseFragment<FragmentTransactionsBinding>() {
                 binding.changesView.setDrawableStart(R.drawable.ic_arrow_drop_down)
                 TextViewCompat.setCompoundDrawableTintList(
                     binding.changesView,
-                    ContextCompat.getColorStateList(binding.changesView.context, R.color.chart_changes_down)
+                    ContextCompat.getColorStateList(
+                        binding.changesView.context,
+                        R.color.chart_changes_down
+                    )
                 )
                 binding.changesView.setTextColor(
                     ContextCompat.getColor(
@@ -187,7 +199,10 @@ class TransactionsFragment : BaseFragment<FragmentTransactionsBinding>() {
                 binding.changesView.setDrawableStart(R.drawable.ic_arrow_drop_up)
                 TextViewCompat.setCompoundDrawableTintList(
                     binding.changesView,
-                    ContextCompat.getColorStateList(binding.changesView.context, R.color.chart_changes_up)
+                    ContextCompat.getColorStateList(
+                        binding.changesView.context,
+                        R.color.chart_changes_up
+                    )
                 )
                 binding.changesView.setTextColor(
                     ContextCompat.getColor(
@@ -200,7 +215,10 @@ class TransactionsFragment : BaseFragment<FragmentTransactionsBinding>() {
                 binding.changesView.setCompoundDrawables(null, null, null, null)
                 TextViewCompat.setCompoundDrawableTintList(
                     binding.changesView,
-                    ContextCompat.getColorStateList(binding.changesView.context, R.color.chart_no_highlight)
+                    ContextCompat.getColorStateList(
+                        binding.changesView.context,
+                        R.color.chart_no_highlight
+                    )
                 )
                 binding.changesView.setTextColor(
                     ContextCompat.getColor(
@@ -217,7 +235,10 @@ class TransactionsFragment : BaseFragment<FragmentTransactionsBinding>() {
             )
     }
 
-    private fun FragmentTransactionsBinding.setChart(@PriceChartPeriod chartType: Int, chartInfo: ChartDataItem) {
+    private fun FragmentTransactionsBinding.setChart(
+        @PriceChartPeriod chartType: Int,
+        chartInfo: ChartDataItem
+    ) {
         when (chartType) {
             PriceChartPeriod.PERIOD_DAY -> chartChipGroupView.check(R.id.one_day_chip_view)
             PriceChartPeriod.PERIOD_WEEK -> chartChipGroupView.check(R.id.one_week_chip_view)

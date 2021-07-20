@@ -9,13 +9,20 @@ import com.belcobtm.data.rest.transaction.response.StakeDetailsStatus
 import com.belcobtm.databinding.FragmentStakingBinding
 import com.belcobtm.domain.wallet.LocalCoinType
 import com.belcobtm.presentation.core.extensions.*
+import com.belcobtm.presentation.core.formatter.DoubleCurrencyPriceFormatter
+import com.belcobtm.presentation.core.formatter.Formatter
 import com.belcobtm.presentation.core.mvvm.LoadingData
 import com.belcobtm.presentation.core.ui.fragment.BaseFragment
 import com.belcobtm.presentation.core.watcher.DoubleTextWatcher
+import org.koin.android.ext.android.inject
 import org.koin.android.viewmodel.ext.android.viewModel
+import org.koin.core.qualifier.named
 
 class StakingFragment : BaseFragment<FragmentStakingBinding>() {
     private val viewModel: StakingViewModel by viewModel()
+    private val currencyFormatter: Formatter<Double> by inject(
+        named(DoubleCurrencyPriceFormatter.DOUBLE_CURRENCY_PRICE_FORMATTER_QUALIFIER)
+    )
     private val doubleTextWatcher: DoubleTextWatcher = DoubleTextWatcher(
         firstTextWatcher = { editable ->
             val stakingDetails = viewModel.stakeDetailsLiveData.value
@@ -32,10 +39,8 @@ class StakingFragment : BaseFragment<FragmentStakingBinding>() {
                 val annualRewardData = (cryptoAmount * annualRewardPercents / 100).toStringCoin()
                 // during stake creaation there should be some calculation like
                 // converted values based on input
-                binding.tvUsdConvertedValue.text = getString(
-                    R.string.staking_screen_usd_formatted,
-                    (cryptoAmount * viewModel.getUsdPrice()).toStringUsd()
-                )
+                binding.tvUsdConvertedValue.text =
+                    currencyFormatter.format(cryptoAmount * viewModel.getUsdPrice())
                 binding.tvAnualRewardAmountValue.text = "+".plus(
                     getString(
                         R.string.text_text,
@@ -357,10 +362,7 @@ class StakingFragment : BaseFragment<FragmentStakingBinding>() {
         // Usd converted value
         if (amount != null) {
             val usdValue = amount * price
-            binding.tvUsdConvertedValue.text = getString(
-                R.string.staking_screen_usd_formatted,
-                usdValue.toStringUsd()
-            )
+            binding.tvUsdConvertedValue.text = currencyFormatter.format(usdValue)
         }
         // Anual reward
         if (rewardsAmountAnnual != null) {
@@ -395,7 +397,7 @@ class StakingFragment : BaseFragment<FragmentStakingBinding>() {
         // header
         binding.tvStakeRate.text = getString(
             R.string.staking_screen_catm_price_formatted,
-            price.toStringUsd()
+            currencyFormatter.format(price)
         ).toHtmlSpan()
         binding.coinInputLayout.setHelperText(
             getString(
@@ -415,10 +417,7 @@ class StakingFragment : BaseFragment<FragmentStakingBinding>() {
         ) {
             binding.coinInputLayout.getEditText().setText(amount.toStringCoin())
         } else {
-            binding.tvUsdConvertedValue.text = getString(
-                R.string.staking_screen_usd_formatted,
-                "0"
-            )
+            binding.tvUsdConvertedValue.text = currencyFormatter.format(0.0)
             binding.coinInputLayout.getEditText().setText("0")
         }
     }

@@ -11,6 +11,8 @@ import com.belcobtm.databinding.FragmentSendGiftBinding
 import com.belcobtm.domain.Failure
 import com.belcobtm.domain.wallet.LocalCoinType
 import com.belcobtm.presentation.core.extensions.*
+import com.belcobtm.presentation.core.formatter.DoubleCurrencyPriceFormatter
+import com.belcobtm.presentation.core.formatter.Formatter
 import com.belcobtm.presentation.core.helper.AlertHelper
 import com.belcobtm.presentation.core.mvvm.LoadingData
 import com.belcobtm.presentation.core.ui.fragment.BaseFragment
@@ -25,7 +27,9 @@ import com.giphy.sdk.ui.GPHSettings
 import com.giphy.sdk.ui.themes.GPHTheme
 import com.giphy.sdk.ui.themes.GridType
 import com.giphy.sdk.ui.views.GiphyDialogFragment
+import org.koin.android.ext.android.inject
 import org.koin.android.viewmodel.ext.android.viewModel
+import org.koin.core.qualifier.named
 
 class SendGiftFragment : BaseFragment<FragmentSendGiftBinding>(),
     GiphyDialogFragment.GifSelectionListener {
@@ -50,6 +54,10 @@ class SendGiftFragment : BaseFragment<FragmentSendGiftBinding>(),
             )
         }
     }
+
+    private val currencyFormatter: Formatter<Double> by inject(
+        named(DoubleCurrencyPriceFormatter.DOUBLE_CURRENCY_PRICE_FORMATTER_QUALIFIER)
+    )
 
     private val cryptoAmountTextWatcher by lazy {
         SafeDecimalEditTextWatcher { editable ->
@@ -141,7 +149,7 @@ class SendGiftFragment : BaseFragment<FragmentSendGiftBinding>(),
             binding.sendCoinInputLayout.setErrorText(it?.let(::getString), true)
         }
         viewModel.usdAmount.observe(viewLifecycleOwner) {
-            binding.amountUsdView.text = getString(R.string.text_usd, it)
+            binding.amountUsdView.text = currencyFormatter.format(it)
         }
         viewModel.coinToSend.observe(viewLifecycleOwner) {
             setCoinData()

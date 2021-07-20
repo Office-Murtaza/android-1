@@ -7,13 +7,17 @@ import androidx.navigation.fragment.navArgs
 import com.belcobtm.R
 import com.belcobtm.databinding.FragmentTradeRecallBinding
 import com.belcobtm.presentation.core.extensions.*
+import com.belcobtm.presentation.core.formatter.DoubleCurrencyPriceFormatter
+import com.belcobtm.presentation.core.formatter.Formatter
 import com.belcobtm.presentation.core.helper.AlertHelper
 import com.belcobtm.presentation.core.mvvm.LoadingData
 import com.belcobtm.presentation.core.ui.fragment.BaseFragment
 import com.belcobtm.presentation.core.views.listeners.SafeDecimalEditTextWatcher
 import com.belcobtm.presentation.features.wallet.trade.reserve.InputFieldState
+import org.koin.android.ext.android.inject
 import org.koin.android.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
+import org.koin.core.qualifier.named
 
 class TradeRecallFragment : BaseFragment<FragmentTradeRecallBinding>() {
     override var isMenuEnabled: Boolean = true
@@ -28,6 +32,9 @@ class TradeRecallFragment : BaseFragment<FragmentTradeRecallBinding>() {
         }
     }
     private val args by navArgs<TradeRecallFragmentArgs>()
+    private val currencyFormatter: Formatter<Double> by inject(
+        named(DoubleCurrencyPriceFormatter.DOUBLE_CURRENCY_PRICE_FORMATTER_QUALIFIER)
+    )
     private val viewModel: TradeRecallViewModel by viewModel {
         parametersOf(args.coinCode)
     }
@@ -35,9 +42,9 @@ class TradeRecallFragment : BaseFragment<FragmentTradeRecallBinding>() {
         SafeDecimalEditTextWatcher { editable ->
             val cryptoAmount = editable.getDouble()
             binding.amountUsdView.text = if (cryptoAmount > 0) {
-                getString(R.string.text_usd, (cryptoAmount * viewModel.coinItem.priceUsd).toStringUsd())
+                currencyFormatter.format(cryptoAmount * viewModel.coinItem.priceUsd)
             } else {
-                getString(R.string.text_usd, "0.0")
+                currencyFormatter.format(0.0)
             }
             viewModel.selectedAmount = cryptoAmount
         }
@@ -55,23 +62,19 @@ class TradeRecallFragment : BaseFragment<FragmentTradeRecallBinding>() {
 
     override fun FragmentTradeRecallBinding.initObservers() {
         viewModel.initialLoadLiveData.listen(success = {
-            priceUsdView.text = getString(R.string.text_usd, viewModel.coinItem.priceUsd.toStringUsd())
+            priceUsdView.text = currencyFormatter.format(viewModel.coinItem.priceUsd)
             balanceCryptoView.text = getString(
                 R.string.text_text,
                 viewModel.coinItem.balanceCoin.toStringCoin(),
                 viewModel.coinItem.code
             )
-            balanceUsdView.text =
-                getString(R.string.text_usd, viewModel.coinItem.balanceUsd.toStringUsd())
+            balanceUsdView.text = currencyFormatter.format(viewModel.coinItem.balanceUsd)
             reservedCryptoView.text = getString(
                 R.string.text_text,
                 viewModel.coinItem.reservedBalanceCoin.toStringCoin(),
                 viewModel.coinItem.code
             )
-            reservedUsdView.text = getString(
-                R.string.text_usd,
-                viewModel.coinItem.reservedBalanceUsd.toStringUsd()
-            )
+            reservedUsdView.text = currencyFormatter.format(viewModel.coinItem.reservedBalanceUsd)
             amountCryptoView.helperText = getString(
                 R.string.transaction_helper_text_commission,
                 viewModel.getTransactionFee().toStringCoin(),
@@ -107,6 +110,9 @@ class TradeRecallFragment : BaseFragment<FragmentTradeRecallBinding>() {
         setToolbarTitle(getString(R.string.trade_recall_screen_title, args.coinCode))
     }
 
-    override fun createBinding(inflater: LayoutInflater, container: ViewGroup?): FragmentTradeRecallBinding =
+    override fun createBinding(
+        inflater: LayoutInflater,
+        container: ViewGroup?
+    ): FragmentTradeRecallBinding =
         FragmentTradeRecallBinding.inflate(inflater, container, false)
 }

@@ -68,6 +68,7 @@ import com.belcobtm.presentation.features.wallet.transaction.details.Transaction
 import com.belcobtm.presentation.features.wallet.transactions.TransactionsViewModel
 import com.belcobtm.presentation.features.wallet.withdraw.WithdrawViewModel
 import io.michaelrocks.libphonenumber.android.PhoneNumberUtil
+import org.koin.android.ext.android.inject
 import org.koin.android.ext.koin.androidApplication
 import org.koin.android.viewmodel.dsl.viewModel
 import org.koin.core.qualifier.named
@@ -115,7 +116,9 @@ val viewModelModule = module {
     viewModel { PhoneChangeViewModel(get(), get(), get(), get<PhoneNumberValidator>()) }
     viewModel { AtmViewModel(get()) }
     viewModel { (txId: String, coinCode: String) ->
-        TransactionDetailsViewModel(txId, coinCode, get(), get())
+        TransactionDetailsViewModel(
+            txId, coinCode, get(), get(), get(named(DOUBLE_CURRENCY_PRICE_FORMATTER_QUALIFIER))
+        )
     }
     viewModel { SendGiftViewModel(get(), get(), get(), get(), get()) }
     viewModel { (coinCode: String) -> WithdrawViewModel(coinCode, get(), get(), get(), get()) }

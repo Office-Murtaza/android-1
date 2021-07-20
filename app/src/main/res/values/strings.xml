@@ -114,7 +114,6 @@
 
     <!--balance-->
     <string name="balance_screen_title_screen">Total</string>
-    <string name="balance_screen_balance">$ %1$s</string>
     <string name="atm">ATM</string>
     <string name="settings">Settings</string>
     <string name="wallet">Wallet</string>
@@ -331,7 +330,6 @@
     <string name="swap_screen_rate_formatted"><![CDATA[<b>%1$s</b> %2$s ~ <b>%3$s</b> %4$s]]></string>
     <string name="swap_screen_fee_formatted"><![CDATA[%1$s\%% ~ %2$s %3$s]]></string>
     <string name="swap_screen_usd_label">Converted Value</string>
-    <string name="swap_screen_usd_value">$ %1$s</string>
     <string name="swap_screen_fee">Platform Fee</string>
     <string name="swap_screen_select_coin">Select coin please</string>
     <string name="swap_screen_error_coin_details_fetch">Unable to load coin details. Try again later</string>
@@ -426,8 +424,7 @@
     <string name="staking_screen_rewards">Rewards</string>
     <string name="staking_screen_rewards_amount">%1$s CATM\n%2$s %%</string>
     <string name="staking_screen_rewards_percent">%1$s%%</string>
-    <string name="staking_screen_usd_formatted">&#x24; %1$s</string>
-    <string name="staking_screen_catm_price_formatted"><![CDATA[<b>1</b> CATM = $ <b>%s</b>]]></string>
+    <string name="staking_screen_catm_price_formatted"><![CDATA[<b>1</b> CATM = <b>%s</b>]]></string>
     <string name="staking_screen_balance_formatted">@string/swap_screen_balance_formatted</string>
     <string name="staking_screen_staked">Staked</string>
     <string name="staking_screen_title">Staking</string>
@@ -460,7 +457,6 @@
     <string name="clipboard">Copied</string>
 
     <string name="text_text">%1$s %2$s</string>
-    <string name="text_usd">%1$s $</string>
     <string name="text_amount">%1$s amount</string>
     <string name="usd_amount">USD amount</string>
 
