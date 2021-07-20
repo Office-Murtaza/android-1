@@ -100,9 +100,11 @@
         android:paddingBottom="0dp"
         android:text="@string/show_details_button_label"
         app:drawableEndCompat="@drawable/ic_chevron_down"
+        app:layout_constraintBottom_toTopOf="@id/atm_open_hours"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/atm_type" />
+        app:layout_constraintTop_toBottomOf="@id/atm_type"
+        app:layout_goneMarginBottom="@dimen/margin_main" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/atm_open_hours"
@@ -112,9 +114,11 @@
         android:layout_marginEnd="@dimen/margin_main"
         android:orientation="vertical"
         android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@id/get_direction"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/show_details"
+        app:layout_goneMarginBottom="@dimen/margin_main"
         tools:listitem="@layout/item_atm_info_popup_open_hours" />
 
     <Button
@@ -123,13 +127,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/margin_main"
-        android:layout_marginTop="@dimen/margin_half"
+        android:layout_marginTop="0dp"
         android:layout_marginEnd="@dimen/margin_main"
         android:layout_marginBottom="@dimen/margin_main"
         android:text="@string/get_direction_button_title"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/atm_open_hours" />
+        app:layout_constraintTop_toBottomOf="@id/atm_open_hours"
+        tools:visibility="visible" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

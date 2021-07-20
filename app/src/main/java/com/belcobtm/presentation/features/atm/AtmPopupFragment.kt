@@ -15,6 +15,7 @@ import com.belcobtm.databinding.AtmInfoWindowBinding
 import com.belcobtm.presentation.core.adapter.MultiTypeAdapter
 import com.belcobtm.presentation.core.extensions.setDrawableEnd
 import com.belcobtm.presentation.core.extensions.setDrawableStart
+import com.belcobtm.presentation.core.extensions.toggle
 import com.belcobtm.presentation.core.formatter.Formatter
 import com.belcobtm.presentation.core.formatter.GoogleMapsDirectionQueryFormatter
 import com.belcobtm.presentation.core.ui.fragment.BaseFragment
@@ -30,10 +31,12 @@ class AtmPopupFragment : BaseFragment<AtmInfoWindowBinding>() {
     companion object {
 
         const val ATM_BUNDLE_KEY = "info.window.popup.atm.key"
+        const val LOCATION_AVAILABLE_BUNDLE_KEY = "info.window.popup.location.available.key"
 
-        fun newInstance(atm: AtmItem) = AtmPopupFragment().apply {
+        fun newInstance(atm: AtmItem, locationAvailable: Boolean) = AtmPopupFragment().apply {
             arguments = Bundle().apply {
                 putParcelable(ATM_BUNDLE_KEY, atm)
+                putBoolean(LOCATION_AVAILABLE_BUNDLE_KEY, locationAvailable)
             }
         }
     }
@@ -54,6 +57,7 @@ class AtmPopupFragment : BaseFragment<AtmInfoWindowBinding>() {
     override fun AtmInfoWindowBinding.initViews() {
         val atm = requireArguments().getParcelable<AtmItem>(ATM_BUNDLE_KEY)
             ?: throw IllegalStateException("No atm object in arguments")
+        getDirection.toggle(requireArguments().getBoolean(LOCATION_AVAILABLE_BUNDLE_KEY, false))
         atmName.text = atm.title
         atmAddress.text = atm.address
         atmOpenHours.adapter = adapter
