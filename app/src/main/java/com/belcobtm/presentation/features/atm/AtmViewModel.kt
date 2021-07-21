@@ -7,8 +7,12 @@ import com.belcobtm.domain.atm.interactor.GetAtmsUseCase
 import com.belcobtm.presentation.core.mvvm.LoadingData
 
 class AtmViewModel(private val getAtmsUseCase: GetAtmsUseCase) : ViewModel() {
-    val stateData =
-        MutableLiveData<LoadingData<List<AtmItem>>>(LoadingData.Success(emptyList()))
+
+    val stateData = MutableLiveData<LoadingData<AtmsInfoItem>>(
+        LoadingData.Success(
+            AtmsInfoItem(emptyList(), null)
+        )
+    )
 
     fun requestAtms() {
         getAtmsUseCase.invoke(Unit,

@@ -1,5 +1,6 @@
 package com.belcobtm.domain.atm.interactor
 
+import android.location.Location
 import com.belcobtm.data.helper.DistanceCalculator
 import com.belcobtm.data.provider.location.LocationProvider
 import com.belcobtm.data.rest.atm.response.AtmResponse
@@ -7,6 +8,7 @@ import com.belcobtm.domain.*
 import com.belcobtm.domain.atm.AtmRepository
 import com.belcobtm.presentation.core.formatter.Formatter
 import com.belcobtm.presentation.features.atm.AtmItem
+import com.belcobtm.presentation.features.atm.AtmsInfoItem
 import com.belcobtm.presentation.features.atm.OpenHoursItem
 import com.google.android.gms.maps.model.LatLng
 import java.util.*
@@ -18,13 +20,14 @@ class GetAtmsUseCase(
     private val distanceCalculator: DistanceCalculator,
     private val milesFormatter: Formatter<Double>,
     private val locationProvider: LocationProvider
-) : UseCase<List<AtmItem>, Unit>() {
+) : UseCase<AtmsInfoItem, Unit>() {
 
-    override suspend fun run(params: Unit): Either<Failure, List<AtmItem>> =
+    override suspend fun run(params: Unit): Either<Failure, AtmsInfoItem> =
         atmRepository.getAtms().mapSuspend { response ->
             val calendar = Calendar.getInstance()
             val numOfDay = calendar.get(Calendar.DAY_OF_WEEK)
-            response.locations.map { address ->
+            val location = locationProvider.getCurrentLocation()
+            val atms = response.locations.map { address ->
                 val daysMap =
                     address.days.associateByTo(HashMap(), AtmResponse.AtmAddress.OpenDay::day)
                 AtmItem(
@@ -39,14 +42,15 @@ class GetAtmsUseCase(
                             daysMap[openDay.lowercase()] == null
                         )
                     },
-                    formatDistance(address.latitude, address.longitude),
+                    formatDistance(address.latitude, address.longitude, location),
                     address.operation
                 )
             }
+            AtmsInfoItem(atms, location)
         }
 
-    private suspend fun formatDistance(latitude: Double, longitude: Double): String =
-        locationProvider.getCurrentLocation()?.let {
+    private fun formatDistance(latitude: Double, longitude: Double, location: Location?): String =
+        location?.let {
             milesFormatter.format(
                 distanceCalculator.calculateDistance(
                     latitude, longitude, it.latitude, it.longitude

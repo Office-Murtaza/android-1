@@ -75,7 +75,7 @@
         android:id="@+id/referrals_items"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:src="@drawable/ic_referral"
+        app:src="@drawable/ic_referrals"
         app:text="@string/referrals_label" />
 
     <View
