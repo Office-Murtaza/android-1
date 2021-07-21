@@ -128,14 +128,7 @@ val viewModelModule = module {
     viewModel { TradeListViewModel(get(), get()) }
     viewModel { TradeUserStatisticViewModel(get()) }
     viewModel { InviteFromContactsViewModel(get(), get(), get(), get()) }
-    viewModel {
-        MyTradeDetailsViewModel(
-            get(),
-            get(),
-            get(),
-            get(named(DOUBLE_CURRENCY_PRICE_FORMATTER_QUALIFIER))
-        )
-    }
+    viewModel { MyTradeDetailsViewModel(get(), get(), get()) }
     viewModel { EditTradeViewModel(get(), get(), get(), get(), get()) }
     viewModel { TradeOrdersViewModel(get()) }
     viewModel { MyTradesViewModel(get()) }

@@ -35,10 +35,17 @@ class TradeDetailsFragment : BaseFragment<FragmentTradeDetailsBinding>() {
         viewModel.fetchTradeDetails(args.tradeId)
     }
 
-    override fun createBinding(inflater: LayoutInflater, container: ViewGroup?): FragmentTradeDetailsBinding =
+    override fun createBinding(
+        inflater: LayoutInflater,
+        container: ViewGroup?
+    ): FragmentTradeDetailsBinding =
         FragmentTradeDetailsBinding.inflate(inflater, container, false)
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         val root = super.onCreateView(inflater, container, savedInstanceState)
         viewModel.fetchTradeDetails(args.tradeId)
         return root
@@ -75,8 +82,9 @@ class TradeDetailsFragment : BaseFragment<FragmentTradeDetailsBinding>() {
         }
         viewModel.terms.observe(viewLifecycleOwner, terms::setText)
         viewModel.amountRange.observe(viewLifecycleOwner, amountRange::setText)
-        viewModel.tradeType.observe(viewLifecycleOwner) {
-            if (it == TradeType.BUY) {
+        viewModel.tradeType.observe(viewLifecycleOwner) { (tradeType, canMakeOrder) ->
+            buySellButton.toggle(canMakeOrder)
+            if (tradeType == TradeType.BUY) {
                 buySellButton.setText(R.string.trade_details_sell_button_title)
             } else {
                 buySellButton.setText(R.string.trade_details_buy_button_title)
