@@ -49,9 +49,15 @@ class TradeItemViewHolder(
             binding.makerPublicId.setCompoundDrawablesWithIntrinsicBounds(
                 R.drawable.ic_account_circle, 0, makerStatusIcon, 0
             )
-            binding.priceRange.text = binding.root.context.getString(
-                R.string.trade_list_item_price_range_format, minLimitFormatted, maxLimitFormatted
-            )
+            binding.priceRange.text = if (model.minLimit > model.maxLimit) {
+                binding.root.context.getString(R.string.trade_amount_range_out_of_stock)
+            } else {
+                binding.root.context.getString(
+                    R.string.trade_list_item_price_range_format,
+                    minLimitFormatted,
+                    maxLimitFormatted
+                )
+            }
             binding.priceLabel.text = priceFormatted
             binding.makerTradeCountLabel.text = makerTotalTradesFormatted.toHtmlSpan()
             binding.makerRateLabel.text = makerTradingRate.toString()

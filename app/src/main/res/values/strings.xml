@@ -555,6 +555,7 @@
     <!-- New trade screen -->
     <string name="trade_list_screen_title">P2P Trade</string>
     <string name="trade_list_item_price_range_format">%1$s - %2$s</string>
+    <string name="trade_amount_range_out_of_stock">Out of stock</string>
     <string name="trade_list_item_total_trades_formatted">%d trades</string>
     <string name="trade_list_buy_tab_title">Buy</string>
     <string name="trade_list_sell_tab_title">Sell</string>

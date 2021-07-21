@@ -46,10 +46,15 @@ class MyTradeViewHolder(
             val context = binding.root.context
             binding.coinIcon.setImageResource(coin.resIcon())
             binding.coinCode.text = coin.name
-            binding.priceRange.text = context.getString(
-                R.string.trade_list_item_price_range_format,
-                minLimitFormatted, maxLimitFormatted
-            )
+            binding.priceRange.text = if (model.minLimit > model.maxLimit) {
+                context.getString(R.string.trade_amount_range_out_of_stock)
+            } else {
+                context.getString(
+                    R.string.trade_list_item_price_range_format,
+                    minLimitFormatted,
+                    maxLimitFormatted
+                )
+            }
             binding.priceLabel.text = priceFormatted
             paymentAdapter.update(paymentMethods)
             with(binding.tradeType) {
@@ -57,12 +62,22 @@ class MyTradeViewHolder(
                     setBackgroundResource(R.drawable.trade_type_buy_background)
                     setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_trade_type_buy, 0, 0, 0)
                     setText(R.string.trade_type_buy_label)
-                    setTextColor(ContextCompat.getColor(context, R.color.trade_type_buy_trade_text_color))
+                    setTextColor(
+                        ContextCompat.getColor(
+                            context,
+                            R.color.trade_type_buy_trade_text_color
+                        )
+                    )
                 } else {
                     setBackgroundResource(R.drawable.trade_type_sell_background)
                     setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_trade_type_sell, 0, 0, 0)
                     setText(R.string.trade_type_sell_label)
-                    setTextColor(ContextCompat.getColor(context, R.color.trade_type_sell_trade_text_color))
+                    setTextColor(
+                        ContextCompat.getColor(
+                            context,
+                            R.color.trade_type_sell_trade_text_color
+                        )
+                    )
                 }
             }
         }

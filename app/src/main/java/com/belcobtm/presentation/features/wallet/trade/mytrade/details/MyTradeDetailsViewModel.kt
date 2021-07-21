@@ -16,8 +16,7 @@ import com.belcobtm.presentation.features.wallet.trade.list.model.TradePayment
 class MyTradeDetailsViewModel(
     private val getTradeDetailsUseCase: GetTradeDetailsUseCase,
     private val cancelTradeUseCase: CancelTradeUseCase,
-    private val stringProvider: StringProvider,
-    private val priceFormatter: Formatter<Double>
+    private val stringProvider: StringProvider
 ) : ViewModel() {
 
     private val _initialLoadingData = MutableLiveData<LoadingData<Unit>>()
@@ -51,13 +50,17 @@ class MyTradeDetailsViewModel(
         _initialLoadingData.value = LoadingData.Loading()
         getTradeDetailsUseCase.invoke(tradeId, onSuccess = {
             _selectedCoin.value = it.coin
-            _price.value = priceFormatter.format(it.price)
+            _price.value = it.priceFormatted
             _tradeType.value = it.tradeType
-            _amountRange.value = stringProvider.getString(
-                R.string.trade_list_item_price_range_format,
-                priceFormatter.format(it.minLimit),
-                priceFormatter.format(it.maxLimit)
-            )
+            _amountRange.value = if (it.minLimit > it.maxLimit) {
+                stringProvider.getString(R.string.trade_amount_range_out_of_stock)
+            } else {
+                stringProvider.getString(
+                    R.string.trade_list_item_price_range_format,
+                    it.minLimitFormatted,
+                    it.maxLimitFormatted
+                )
+            }
             _paymentOptions.value = it.paymentMethods
             _ordersCount.value = it.ordersCount
             _terms.value = it.terms
