@@ -3,30 +3,44 @@ package com.belcobtm.presentation.features.atm
 import android.Manifest
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.Canvas
-import android.location.Criteria
 import android.location.Location
-import android.location.LocationListener
-import android.location.LocationManager
+import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.DrawableRes
 import androidx.core.content.ContextCompat
-import com.appolica.interactiveinfowindow.InfoWindow
-import com.appolica.interactiveinfowindow.fragment.MapInfoWindowFragment
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.transition.Fade
+import androidx.transition.TransitionManager
 import com.belcobtm.R
+import com.belcobtm.data.rest.atm.response.OperationType
+import com.belcobtm.databinding.AtmInfoBottomSheetBinding
 import com.belcobtm.databinding.FragmentAtmBinding
+import com.belcobtm.presentation.core.adapter.MultiTypeAdapter
+import com.belcobtm.presentation.core.extensions.setDrawableEnd
+import com.belcobtm.presentation.core.extensions.setDrawableStart
+import com.belcobtm.presentation.core.extensions.toggle
+import com.belcobtm.presentation.core.formatter.Formatter
+import com.belcobtm.presentation.core.formatter.GoogleMapsDirectionQueryFormatter
 import com.belcobtm.presentation.core.helper.AlertHelper
 import com.belcobtm.presentation.core.mvvm.LoadingData
 import com.belcobtm.presentation.core.ui.fragment.BaseFragment
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
+import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.*
+import com.google.android.material.bottomsheet.BottomSheetBehavior
+import com.google.android.material.transition.MaterialFade
+import org.koin.android.ext.android.inject
 import org.koin.android.viewmodel.ext.android.viewModel
+import org.koin.core.qualifier.named
 import permissions.dispatcher.NeedsPermission
 import permissions.dispatcher.OnNeverAskAgain
 import permissions.dispatcher.RuntimePermissions
@@ -35,8 +49,7 @@ import permissions.dispatcher.RuntimePermissions
 @RuntimePermissions
 class AtmFragment : BaseFragment<FragmentAtmBinding>(),
     GoogleMap.OnInfoWindowClickListener,
-    OnMapReadyCallback,
-    LocationListener {
+    OnMapReadyCallback {
     private val viewModel by viewModel<AtmViewModel>()
 
     override var isMenuEnabled = true
@@ -45,29 +58,41 @@ class AtmFragment : BaseFragment<FragmentAtmBinding>(),
         View.OnClickListener { viewModel.requestAtms() }
 
     private var map: GoogleMap? = null
-    private var infoWindow: InfoWindow? = null
-    private var locationManager: LocationManager? = null
-    private var appliedState: LoadingData<List<AtmItem>>? = null
+    private var location: Location? = null
+    private var appliedState: LoadingData<AtmsInfoItem>? = null
     private var locationAvailable: Boolean = false
-    private val mapInfoWindowFragment by lazy {
-        childFragmentManager.findFragmentById(R.id.map) as MapInfoWindowFragment
+
+    private val bottomSheetBehavior: BottomSheetBehavior<View> by lazy {
+        BottomSheetBehavior.from(binding.bottomSheet.root)
+    }
+
+    private val googleMapQueryFormatter by inject<Formatter<GoogleMapsDirectionQueryFormatter.Location>>(
+        named(GoogleMapsDirectionQueryFormatter.GOOGLE_MAPS_DIRECTIONS_QUERY_FORMATTER)
+    )
+
+    private val adapter by lazy {
+        MultiTypeAdapter().apply {
+            registerDelegate(AtmInfoPopupOpenHoursDelegate())
+        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val mapFragment = childFragmentManager.findFragmentById(R.id.map) as MapInfoWindowFragment
-        mapFragment.getMapAsync(this)
+        val mapFragment = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment?
+        mapFragment?.getMapAsync(this)
     }
 
     override fun onInfoWindowClick(marker: Marker?) {
-//        AlertHelper.showToastShort(requireContext(),  "Info window clicked")
     }
 
     override fun FragmentAtmBinding.initObservers() {
         viewModel.stateData.listen(
             success = { state ->
                 state.doIfChanged(appliedState?.commonData) {
-                    initMarkers(it)
+                    if (map != null) {
+                        it.location?.let(::onLocationChanged)
+                    }
+                    initMarkers(it.atms)
                 }
             },
             onUpdate = {
@@ -79,16 +104,80 @@ class AtmFragment : BaseFragment<FragmentAtmBinding>(),
     override fun onMapReady(map: GoogleMap) {
         this.map = map
         map.setOnMarkerClickListener { marker: Marker ->
-            val spec: InfoWindow.MarkerSpecification =
-                InfoWindow.MarkerSpecification(0, 0)
-            val infoWindow = InfoWindow(
-                marker, spec, AtmPopupFragment.newInstance(marker.tag as AtmItem, locationAvailable)
-            ).also(::infoWindow::set)
-            mapInfoWindowFragment.infoWindowManager().show(infoWindow, true)
+            binding.bottomSheet.update(marker.tag as AtmItem)
+            if (bottomSheetBehavior.state != BottomSheetBehavior.STATE_EXPANDED) {
+                bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
+            }
             true
         }
         onLocationPermissionGrantedWithPermissionCheck()
         viewModel.requestAtms()
+    }
+
+    private fun AtmInfoBottomSheetBinding.update(atm: AtmItem) {
+        TransitionManager.beginDelayedTransition(root, Fade())
+        getDirection.toggle(locationAvailable)
+        atmName.text = atm.title
+        atmAddress.text = atm.address
+        atmOpenHours.adapter = adapter
+        atmOpenHours.layoutManager = LinearLayoutManager(requireContext())
+        if (atm.type == OperationType.BUY_AND_SELL_ONLY) {
+            atmType.setText(R.string.atm_type_buy_and_sell)
+            atmType.background = ContextCompat.getDrawable(
+                requireContext(), R.drawable.atm_type_buy_and_sell_bg
+            )
+            atmType.setTextColor(
+                ContextCompat.getColor(
+                    requireContext(), R.color.atm_type_buy_and_sell_text_color
+                )
+            )
+            atmType.setDrawableStart(R.drawable.ic_atm_type_buy_and_sell)
+        } else {
+            atmType.setText(R.string.atm_type_buy_only)
+            atmType.background = ContextCompat.getDrawable(
+                requireContext(), R.drawable.atm_type_buy_only_bg
+            )
+            atmType.setTextColor(
+                ContextCompat.getColor(
+                    requireContext(), R.color.atm_type_buy_only_text_color
+                )
+            )
+            atmType.setDrawableStart(R.drawable.ic_atm_type_buy_only)
+        }
+        adapter.update(atm.openHours)
+        closeButton.setOnClickListener {
+            bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
+        }
+        atmDistance.text = atm.distance
+        if (atm.distance.isNotEmpty()) {
+            atmDistance.setDrawableStart(R.drawable.ic_location)
+        } else {
+            atmDistance.background = null
+        }
+        getDirection.setOnClickListener {
+            val gmmIntentUri = Uri.parse(
+                googleMapQueryFormatter.format(
+                    GoogleMapsDirectionQueryFormatter.Location(
+                        atm.latLng.latitude, atm.latLng.longitude
+                    )
+                )
+            )
+            val mapIntent = Intent(Intent.ACTION_VIEW, gmmIntentUri)
+            mapIntent.setPackage(requireContext().getString(R.string.google_maps_package))
+            startActivity(mapIntent)
+        }
+        showDetails.setOnClickListener {
+            TransitionManager.beginDelayedTransition(root, MaterialFade())
+            if (atmOpenHours.visibility == View.VISIBLE) {
+                atmOpenHours.visibility = View.GONE
+                showDetails.setText(R.string.show_details_button_label)
+                showDetails.setDrawableEnd(R.drawable.ic_chevron_down)
+            } else {
+                atmOpenHours.visibility = View.VISIBLE
+                showDetails.setText(R.string.hide_details_button_label)
+                showDetails.setDrawableEnd(R.drawable.ic_chevron_up)
+            }
+        }
     }
 
     @SuppressLint("MissingPermission")
@@ -97,29 +186,9 @@ class AtmFragment : BaseFragment<FragmentAtmBinding>(),
         Manifest.permission.ACCESS_COARSE_LOCATION
     )
     fun onLocationPermissionGranted() {
-        this.map?.isMyLocationEnabled = true
+        map?.isMyLocationEnabled = true
         locationAvailable = true
-        locationManager =
-            activity?.getSystemService(Context.LOCATION_SERVICE) as LocationManager
-        locationManager?.requestLocationUpdates(
-            LocationManager.GPS_PROVIDER,
-            5000,
-            10f,
-            this
-        )
-        locationManager?.requestLocationUpdates(
-            LocationManager.NETWORK_PROVIDER,
-            0,
-            0f,
-            this
-        )
-
-        val criteria = Criteria()
-        val bestProvider = locationManager?.getBestProvider(criteria, false) ?: return
-        val lastKnownLocation = locationManager?.getLastKnownLocation(bestProvider)
-        if (lastKnownLocation != null) {
-            onLocationChanged(lastKnownLocation)
-        }
+        location?.let(::onLocationChanged)
     }
 
     @OnNeverAskAgain(
@@ -130,19 +199,12 @@ class AtmFragment : BaseFragment<FragmentAtmBinding>(),
         AlertHelper.showToastShort(requireContext(), R.string.verification_please_on_permissions)
     }
 
-    //    LocationListener start
-    override fun onLocationChanged(location: Location) {
+    private fun onLocationChanged(location: Location) {
         val posLat = location.latitude
         val posLng = location.longitude
-
         val position = LatLng(posLat, posLng)
         map?.animateCamera(CameraUpdateFactory.newLatLngZoom(position, 5f))
-
-        locationManager?.removeUpdates(this)
-
     }
-
-    override fun onStatusChanged(provider: String?, status: Int, extras: Bundle?) {}
 
     private fun initMarkers(atms: List<AtmItem>) {
         if (map != null) {
@@ -168,12 +230,6 @@ class AtmFragment : BaseFragment<FragmentAtmBinding>(),
         container: ViewGroup?
     ): FragmentAtmBinding =
         FragmentAtmBinding.inflate(inflater, container, false)
-
-    fun closePopup() {
-        infoWindow?.let {
-            mapInfoWindowFragment.infoWindowManager().hide(it, true)
-        }
-    }
 
     private fun bitmapDescriptorFromVector(
         context: Context,
