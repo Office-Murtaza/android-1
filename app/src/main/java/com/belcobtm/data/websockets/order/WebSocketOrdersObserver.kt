@@ -25,12 +25,13 @@ class WebSocketOrdersObserver(
     }
 
     private val ioScope = CoroutineScope(Dispatchers.IO)
+    private var subscribeJob: Job? = null
 
     override fun connect() {
-        ioScope.launch {
+        subscribeJob = ioScope.launch {
             socketManager.observeSocketState()
                 .filterIsInstance<SocketState.Connected>()
-                .collectLatest {
+                .flatMapLatest {
                     val request = StompSocketRequest(
                         StompSocketRequest.SUBSCRIBE, mapOf(
                             ID_HEADER to sharedPreferencesHelper.userPhone,
@@ -38,20 +39,23 @@ class WebSocketOrdersObserver(
                         )
                     )
                     socketManager.subscribe(DESTINATION_VALUE, request)
-                        .filterNotNull()
-                        .collect { response ->
-                            response.mapSuspend {
-                                moshi.adapter(TradeOrderItemResponse::class.java)
-                                    .fromJson(it.body)
-                                    ?.let(tradeInMemoryCache::updateOrders)
+                }.filterNotNull()
+                .collectLatest { response ->
+                    response.mapSuspend { response ->
+                        moshi.adapter(TradeOrderItemResponse::class.java)
+                            .fromJson(response.body)
+                            ?.let {
+                                tradeInMemoryCache.updateOrders(it)
                             }
-                        }
+                    }
                 }
         }
     }
 
     override fun disconnect() {
         ioScope.launch {
+            subscribeJob?.cancel()
+            subscribeJob = null
             socketManager.unsubscribe(DESTINATION_VALUE)
         }
     }

@@ -13,6 +13,7 @@ import androidx.navigation.fragment.navArgs
 import com.belcobtm.R
 import com.belcobtm.databinding.FragmentTradeCreateOrderBinding
 import com.belcobtm.databinding.IncludeErrorScreenBinding
+import com.belcobtm.domain.Failure
 import com.belcobtm.presentation.core.extensions.getDouble
 import com.belcobtm.presentation.core.extensions.toStringCoin
 import com.belcobtm.presentation.core.extensions.toggle
@@ -82,6 +83,12 @@ class TradeCreateOrderBottomSheetFragment : BaseBottomSheetFragment() {
                     it
                 )
             )
+        }, error = {
+            if (it !is Failure.ValidationError) {
+                baseErrorHandler(it)
+            } else {
+                showContent()
+            }
         })
         viewModel.platformFee.observe(viewLifecycleOwner) {
             binding.feeAmountValue.text = it.platformFeeCrypto.toStringCoin()

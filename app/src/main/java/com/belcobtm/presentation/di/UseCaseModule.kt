@@ -27,6 +27,7 @@ import com.belcobtm.domain.trade.create.mapper.PaymentIdToAvailablePaymentOption
 import com.belcobtm.domain.trade.details.CancelTradeUseCase
 import com.belcobtm.domain.trade.details.EditTradeUseCase
 import com.belcobtm.domain.trade.details.GetTradeDetailsUseCase
+import com.belcobtm.domain.trade.details.ObserveTradeDetailsUseCase
 import com.belcobtm.domain.trade.list.*
 import com.belcobtm.domain.trade.list.filter.ApplyFilterUseCase
 import com.belcobtm.domain.trade.list.filter.LoadFilterDataUseCase
@@ -146,6 +147,7 @@ val useCaseModule = module {
     single { ResetFilterUseCase(get()) }
     single { ApplyFilterUseCase(get(), get()) }
     single { GetTradeDetailsUseCase(get(), get()) }
+    single { ObserveTradeDetailsUseCase(get(), get()) }
     single { CancelTradeUseCase(get()) }
     single { CancelOrderUseCase(get()) }
     single { EditTradeUseCase(get()) }

@@ -24,7 +24,7 @@ interface TradeRepository {
 
     fun observeLastSeenMessageTimestamp(): Flow<Long>
 
-    fun updateLastSeenMessageTimestamp()
+    suspend fun updateLastSeenMessageTimestamp()
 
     fun getTradeData(): Either<Failure, TradeData>?
 
@@ -32,7 +32,7 @@ interface TradeRepository {
 
     fun getFilterItem(): TradeFilterItem
 
-    fun clearCache()
+    suspend fun clearCache()
 
     suspend fun updateFilter(filter: TradeFilter)
 

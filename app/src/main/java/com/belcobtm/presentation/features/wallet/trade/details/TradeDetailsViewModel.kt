@@ -4,19 +4,26 @@ import androidx.annotation.DrawableRes
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.belcobtm.R
 import com.belcobtm.data.inmemory.trade.TradeInMemoryCache.Companion.UNDEFINED_DISTANCE
 import com.belcobtm.data.model.trade.TradeType
-import com.belcobtm.domain.trade.details.GetTradeDetailsUseCase
+import com.belcobtm.domain.Either
+import com.belcobtm.domain.Failure
+import com.belcobtm.domain.trade.details.ObserveTradeDetailsUseCase
 import com.belcobtm.domain.wallet.LocalCoinType
 import com.belcobtm.presentation.core.formatter.Formatter
 import com.belcobtm.presentation.core.formatter.GoogleMapsDirectionQueryFormatter
 import com.belcobtm.presentation.core.mvvm.LoadingData
 import com.belcobtm.presentation.core.provider.string.StringProvider
+import com.belcobtm.presentation.features.wallet.trade.list.model.TradeItem
 import com.belcobtm.presentation.features.wallet.trade.list.model.TradePayment
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.filterNotNull
+import kotlinx.coroutines.launch
 
 class TradeDetailsViewModel(
-    private val getTradeDetailsUseCase: GetTradeDetailsUseCase,
+    private val observeTradeDetailsUseCase: ObserveTradeDetailsUseCase,
     private val stringProvider: StringProvider,
     private val priceFormatter: Formatter<Double>,
     private val googleMapQueryFormatter: Formatter<GoogleMapsDirectionQueryFormatter.Location>
@@ -63,35 +70,47 @@ class TradeDetailsViewModel(
 
     fun fetchTradeDetails(tradeId: String) {
         _initialLoadingData.value = LoadingData.Loading()
-        getTradeDetailsUseCase.invoke(tradeId, onSuccess = {
-            _selectedCoin.value = it.coin
-            _price.value = priceFormatter.format(it.price)
-            val isOutOfStock = it.minLimit > it.maxLimit
-            _amountRange.value = if (isOutOfStock) {
-                stringProvider.getString(R.string.trade_amount_range_out_of_stock)
-            } else {
-                stringProvider.getString(
-                    R.string.trade_list_item_price_range_format,
-                    it.minLimitFormatted,
-                    it.maxLimitFormatted
-                )
-            }
-            _paymentOptions.value = it.paymentMethods
-            _traderRate.value = it.makerTradingRate
-            _totalTrades.value = it.makerTotalTradesFormatted
-            _publicId.value = it.makerPublicId
-            _traderStatus.value = it.makerStatusIcon
-            _tradeType.value = it.tradeType to !isOutOfStock
-            _terms.value = it.terms
-            if (it.distance != UNDEFINED_DISTANCE) {
-                _distance.value = it.distanceFormatted
-            }
-            toTradeLat = it.makerLatitude
-            toTradeLong = it.makerLongitude
-            _initialLoadingData.value = LoadingData.Success(Unit)
-        }, onError = {
-            _initialLoadingData.value = LoadingData.Error(it)
-        })
+        viewModelScope.launch {
+            observeTradeDetailsUseCase(tradeId)
+                .filterNotNull()
+                .collectLatest {
+                    if (it.isRight) {
+                        updateTradeData((it as Either.Right<TradeItem>).b)
+                    } else {
+                        _initialLoadingData.value = LoadingData.Error(
+                            (it as Either.Left<Failure>).a
+                        )
+                    }
+                }
+        }
+    }
+
+    private fun updateTradeData(tradeItem: TradeItem) {
+        _selectedCoin.value = tradeItem.coin
+        _price.value = priceFormatter.format(tradeItem.price)
+        val isOutOfStock = tradeItem.minLimit > tradeItem.maxLimit
+        _amountRange.value = if (isOutOfStock) {
+            stringProvider.getString(R.string.trade_amount_range_out_of_stock)
+        } else {
+            stringProvider.getString(
+                R.string.trade_list_item_price_range_format,
+                tradeItem.minLimitFormatted,
+                tradeItem.maxLimitFormatted
+            )
+        }
+        _paymentOptions.value = tradeItem.paymentMethods
+        _traderRate.value = tradeItem.makerTradingRate
+        _totalTrades.value = tradeItem.makerTotalTradesFormatted
+        _publicId.value = tradeItem.makerPublicId
+        _traderStatus.value = tradeItem.makerStatusIcon
+        _tradeType.value = tradeItem.tradeType to !isOutOfStock
+        _terms.value = tradeItem.terms
+        if (tradeItem.distance != UNDEFINED_DISTANCE) {
+            _distance.value = tradeItem.distanceFormatted
+        }
+        toTradeLat = tradeItem.makerLatitude
+        toTradeLong = tradeItem.makerLongitude
+        _initialLoadingData.value = LoadingData.Success(Unit)
     }
 
     fun getQueryForMap(): String? {
