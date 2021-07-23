@@ -63,6 +63,7 @@ import com.google.firebase.storage.ktx.storage
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import com.squareup.moshi.Moshi
 import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.asCoroutineDispatcher
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import org.koin.android.ext.koin.androidApplication
@@ -163,7 +164,12 @@ val dataModule = module {
     }
     single<CloudAuth>() { FirebaseCloudAuth(Firebase.auth) }
     single {
-        TradeInMemoryCache(get(), get(), GlobalScope, get(), get(), get())
+        TradeInMemoryCache(
+            get(), get(), GlobalScope, get(), get(), get(),
+            Executors.newSingleThreadExecutor().asCoroutineDispatcher(),
+            Executors.newSingleThreadExecutor().asCoroutineDispatcher(),
+            Executors.newSingleThreadExecutor().asCoroutineDispatcher(),
+        )
     }
     single { DistanceCalculator(get()) }
     single<LocationProvider> {

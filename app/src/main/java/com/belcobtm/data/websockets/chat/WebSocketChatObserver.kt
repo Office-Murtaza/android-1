@@ -14,10 +14,8 @@ import com.belcobtm.domain.mapSuspend
 import com.belcobtm.presentation.features.wallet.trade.order.chat.NewMessageItem
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.filterIsInstance
-import kotlinx.coroutines.flow.filterNotNull
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 
 class WebSocketChatObserver(
@@ -34,12 +32,13 @@ class WebSocketChatObserver(
     }
 
     private val ioScope = CoroutineScope(Dispatchers.IO)
+    private var subscribeJob: Job? = null
 
     override fun connect() {
-        ioScope.launch {
+        subscribeJob = ioScope.launch {
             socketManager.observeSocketState()
                 .filterIsInstance<SocketState.Connected>()
-                .collectLatest {
+                .flatMapLatest {
                     val request = StompSocketRequest(
                         StompSocketRequest.SUBSCRIBE, mapOf(
                             ID_HEADER to sharedPreferencesHelper.userPhone,
@@ -47,18 +46,19 @@ class WebSocketChatObserver(
                         )
                     )
                     socketManager.subscribe(DESTINATION_VALUE, request)
-                        .filterNotNull()
-                        .collect { response ->
-                            response.mapSuspend {
-                                tradeInMemoryCache.updateChat(deserializer.deserialize(it.body))
-                            }
-                        }
+                }.filterNotNull()
+                .collectLatest { response ->
+                    response.mapSuspend {
+                        tradeInMemoryCache.updateChat(deserializer.deserialize(it.body))
+                    }
                 }
         }
     }
 
     override fun disconnect() {
         ioScope.launch {
+            subscribeJob?.cancel()
+            subscribeJob = null
             socketManager.unsubscribe(DESTINATION_VALUE)
         }
     }

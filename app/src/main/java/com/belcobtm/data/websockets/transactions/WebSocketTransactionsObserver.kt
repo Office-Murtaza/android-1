@@ -12,6 +12,7 @@ import com.belcobtm.domain.mapSuspend
 import com.squareup.moshi.Moshi
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.filterIsInstance
@@ -30,10 +31,10 @@ class WebSocketTransactionsObserver(
     }
 
     private val ioScope = CoroutineScope(Dispatchers.IO)
+    private var subscribeJob: Job? = null
 
     override fun connect() {
-        ioScope.launch {
-
+        subscribeJob = ioScope.launch {
             socketManager.observeSocketState()
                 .filterIsInstance<SocketState.Connected>()
                 .collectLatest {
@@ -59,6 +60,8 @@ class WebSocketTransactionsObserver(
 
     override fun disconnect() {
         ioScope.launch {
+            subscribeJob?.cancel()
+            subscribeJob = null
             socketManager.unsubscribe(DESTINATION_VALUE)
         }
     }

@@ -15,6 +15,7 @@ import com.belcobtm.domain.Failure
 import com.squareup.moshi.Moshi
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 
@@ -33,12 +34,13 @@ class WebSocketWalletObserver(
 
     private val connectionFailure = MutableStateFlow<Failure?>(null)
     private val ioScope = CoroutineScope(Dispatchers.IO)
+    private var subscribeJob: Job? = null
 
     override fun connect() {
-        ioScope.launch {
+        subscribeJob = ioScope.launch {
             socketManager.observeSocketState()
                 .filterIsInstance<SocketState.Connected>()
-                .collectLatest {
+                .flatMapLatest {
                     connectionFailure.value = null
                     val coinList = accountDao.getItemList().orEmpty().joinToString { it.type.name }
                     val request = StompSocketRequest(
@@ -49,10 +51,9 @@ class WebSocketWalletObserver(
                         )
                     )
                     socketManager.subscribe(DESTINATION_VALUE, request)
-                        .filterNotNull()
-                        .collect { response ->
-                            response.eitherSuspend(::processError, ::processMessage)
-                        }
+                }.filterNotNull()
+                .collect { response ->
+                    response.eitherSuspend(::processError, ::processMessage)
                 }
         }
     }
@@ -70,6 +71,8 @@ class WebSocketWalletObserver(
 
     override fun disconnect() {
         ioScope.launch {
+            subscribeJob?.cancel()
+            subscribeJob = null
             socketManager.unsubscribe(DESTINATION_VALUE)
         }
     }

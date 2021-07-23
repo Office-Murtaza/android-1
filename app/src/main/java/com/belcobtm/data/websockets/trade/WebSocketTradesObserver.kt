@@ -11,10 +11,7 @@ import com.belcobtm.data.websockets.manager.WebSocketManager
 import com.belcobtm.domain.mapSuspend
 import com.squareup.moshi.Moshi
 import kotlinx.coroutines.*
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.filterIsInstance
-import kotlinx.coroutines.flow.filterNotNull
+import kotlinx.coroutines.flow.*
 
 class WebSocketTradesObserver(
     private val socketManager: WebSocketManager,
@@ -28,12 +25,13 @@ class WebSocketTradesObserver(
     }
 
     private val ioScope = CoroutineScope(Dispatchers.IO)
+    private var subscribeJob: Job? = null
 
     override fun connect() {
-        ioScope.launch {
+        subscribeJob = ioScope.launch {
             socketManager.observeSocketState()
                 .filterIsInstance<SocketState.Connected>()
-                .collectLatest {
+                .flatMapLatest {
                     val request = StompSocketRequest(
                         StompSocketRequest.SUBSCRIBE, mapOf(
                             ID_HEADER to sharedPreferencesHelper.userPhone,
@@ -41,20 +39,23 @@ class WebSocketTradesObserver(
                         )
                     )
                     socketManager.subscribe(DESTINATION_VALUE, request)
-                        .filterNotNull()
-                        .collect { response ->
-                            response.mapSuspend {
-                                moshi.adapter(TradeItemResponse::class.java)
-                                    .fromJson(it.body)
-                                    ?.let(tradeInMemoryCache::updateTrades)
+                }.filterNotNull()
+                .collectLatest { response ->
+                    response.mapSuspend { response ->
+                        moshi.adapter(TradeItemResponse::class.java)
+                            .fromJson(response.body)
+                            ?.let {
+                                tradeInMemoryCache.updateTrades(it)
                             }
-                        }
+                    }
                 }
         }
     }
 
     override fun disconnect() {
         ioScope.launch {
+            subscribeJob?.cancel()
+            subscribeJob = null
             socketManager.unsubscribe(DESTINATION_VALUE)
         }
     }

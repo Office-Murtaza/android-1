@@ -18,13 +18,11 @@ import com.belcobtm.domain.flatMap
 import com.belcobtm.domain.map
 import com.belcobtm.domain.trade.order.mapper.ChatMessageMapper
 import com.belcobtm.presentation.features.wallet.trade.list.filter.model.TradeFilterItem
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
+import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.launch
+import java.util.concurrent.Executors
 
 class TradeInMemoryCache(
     private val tradesMapper: TradesResponseToTradeDataMapper,
@@ -32,7 +30,10 @@ class TradeInMemoryCache(
     private val distanceCalculatorScope: CoroutineScope,
     private val orderMapper: OrderResponseToOrderMapper,
     private val tradeMapper: TradeResponseToTradeMapper,
-    private val chatMessageMapper: ChatMessageMapper
+    private val chatMessageMapper: ChatMessageMapper,
+    private val cacheDispatcher: CoroutineDispatcher,
+    private val filterDispatcher: CoroutineDispatcher,
+    private val chatDispatcher: CoroutineDispatcher,
 ) {
 
     companion object {
@@ -72,19 +73,27 @@ class TradeInMemoryCache(
 
     private var distanceCalculationJob: Job? = null
 
-    suspend fun updateCache(calculateDistance: Boolean, response: Either<Failure, TradesResponse>) {
-        this.calculateDistance = calculateDistance
-        if (response.isLeft) {
-            cache.value = response as Either.Left<Failure>
-        } else {
-            cache.value = Either.Right(tradesMapper.map((response as Either.Right<TradesResponse>).b))
-            startDistanceCalculation()
+    suspend fun updateCache(
+        needCalculateDistance: Boolean,
+        response: Either<Failure, TradesResponse>
+    ) {
+        withContext(cacheDispatcher) {
+            calculateDistance = needCalculateDistance
+            if (response.isLeft) {
+                cache.value = response as Either.Left<Failure>
+            } else {
+                cache.value =
+                    Either.Right(tradesMapper.map((response as Either.Right<TradesResponse>).b))
+                startDistanceCalculation()
+            }
         }
     }
 
-    fun updateFilter(filter: TradeFilter, filterItem: TradeFilterItem) {
-        tradeFilter.value = filter
-        this.filterItem = filterItem
+    suspend fun updateFilter(filter: TradeFilter, filterItem: TradeFilterItem) {
+        withContext(filterDispatcher) {
+            tradeFilter.value = filter
+            this@TradeInMemoryCache.filterItem = filterItem
+        }
     }
 
     fun findTrade(tradeId: String): Either<Failure, Trade> {
@@ -95,31 +104,39 @@ class TradeInMemoryCache(
         }
     }
 
-    fun updateTrades(trade: TradeItemResponse) {
-        cache.value?.map {
-            val mappedTrade = tradeMapper.map(trade)
-            val trades = HashMap(it.trades)
-            trades[mappedTrade.id] = mappedTrade
-            cache.value = Either.Right(it.copy(trades = trades))
-            startDistanceCalculation()
+    suspend fun updateTrades(trade: TradeItemResponse) {
+        withContext(cacheDispatcher) {
+            cache.value?.map {
+                val mappedTrade = tradeMapper.map(trade)
+                val trades = HashMap(it.trades)
+                trades[mappedTrade.id] = mappedTrade
+                cache.value = Either.Right(it.copy(trades = trades))
+                startDistanceCalculation()
+            }
         }
     }
 
-    fun updateOrders(order: TradeOrderItemResponse) {
-        cache.value?.map {
-            val mappedOrder = orderMapper.map(order, it.orders[order.id]?.chatHistory.orEmpty())
-            val orders = HashMap(it.orders)
-            orders[mappedOrder.id] = mappedOrder
-            cache.value = Either.Right(it.copy(orders = orders))
+    suspend fun updateOrders(order: TradeOrderItemResponse) {
+        withContext(cacheDispatcher) {
+            cache.value?.map {
+                val mappedOrder = orderMapper.map(order, it.orders[order.id]?.chatHistory.orEmpty())
+                val orders = HashMap(it.orders)
+                orders[mappedOrder.id] = mappedOrder
+                cache.value = Either.Right(it.copy(orders = orders))
+            }
         }
     }
 
-    fun updateLastSeenMessageTimestamp() {
-        lastSeenMessageTimestamp.value = System.currentTimeMillis()
+    suspend fun updateLastSeenMessageTimestamp() {
+        withContext(chatDispatcher) {
+            lastSeenMessageTimestamp.value = System.currentTimeMillis()
+        }
     }
 
-    fun clearCache() {
-        cache.value = null
+    suspend fun clearCache() {
+        withContext(cacheDispatcher) {
+            cache.value = null
+        }
     }
 
     private fun startDistanceCalculation() {
@@ -132,18 +149,23 @@ class TradeInMemoryCache(
             if (currentCache is Either.Right<TradeData>) {
                 val tradeData = currentCache.b
                 val tradesWithDistance = distanceCalculator.updateDistanceToTrades(tradeData.trades)
-                cache.value = Either.Right(tradeData.copy(trades = tradesWithDistance))
+                withContext(cacheDispatcher) {
+                    cache.value = Either.Right(tradeData.copy(trades = tradesWithDistance))
+                }
             }
         }
     }
 
     suspend fun updateChat(response: ChatMessageResponse) {
-        val mappedMessage = chatMessageMapper.map(response, isFromHistory = false)
-        cache.value?.map {
-            val chatOrder = it.orders.getValue(response.orderId)
-            val orders = HashMap(it.orders)
-            orders[chatOrder.id] = chatOrder.copy(chatHistory = chatOrder.chatHistory + mappedMessage)
-            cache.value = Either.Right(it.copy(orders = orders))
+        withContext(chatDispatcher) {
+            val mappedMessage = chatMessageMapper.map(response, isFromHistory = false)
+            cache.value?.map {
+                val chatOrder = it.orders.getValue(response.orderId)
+                val orders = HashMap(it.orders)
+                orders[chatOrder.id] =
+                    chatOrder.copy(chatHistory = chatOrder.chatHistory + mappedMessage)
+                cache.value = Either.Right(it.copy(orders = orders))
+            }
         }
     }
 

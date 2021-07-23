@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.belcobtm.R
 import com.belcobtm.data.model.trade.TradeType
+import com.belcobtm.domain.Failure
 import com.belcobtm.domain.trade.details.GetTradeDetailsUseCase
 import com.belcobtm.domain.trade.order.CreateOrderUseCase
 import com.belcobtm.domain.wallet.LocalCoinType
@@ -130,6 +131,9 @@ class TradeCreateOrderViewModel(
         ), onSuccess = {
             _createTradeLoadingData.value = LoadingData.Success(it)
         }, onError = {
+            if (it is Failure.ValidationError) {
+                _fiatAmountError.value = it.message
+            }
             _createTradeLoadingData.value = LoadingData.Error(it)
         })
     }
