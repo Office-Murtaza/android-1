@@ -44,7 +44,8 @@ class EditTradeViewModel(
     val initialPrice: LiveData<Double> = _initialPrice
 
     private val _availablePaymentOptions = MutableLiveData<List<AvailableTradePaymentOption>>()
-    val availablePaymentOptions: LiveData<List<AvailableTradePaymentOption>> = _availablePaymentOptions
+    val availablePaymentOptions: LiveData<List<AvailableTradePaymentOption>> =
+        _availablePaymentOptions
 
     private val _snackbarMessage = MutableLiveData<String>()
     val snackbarMessage: LiveData<String> = _snackbarMessage
@@ -106,13 +107,13 @@ class EditTradeViewModel(
                 getCoinListUseCase(
                     params = Unit,
                     onSuccess = { coinsDataList ->
-                        val coin: CoinDataItem? = coinsDataList.firstOrNull { it.code == trade.coin.name }
-                        if (coin == null) {
-                            _initialLoadingData.value = LoadingData.Error(Failure.ServerError())
-                        } else {
-                            _selectedCoin.value = coin
-                            _initialLoadingData.value = LoadingData.Success(Unit)
+                        val coin: CoinDataItem? = coinsDataList.firstOrNull {
+                            it.code == trade.coin.name
                         }
+                        _initialLoadingData.value = coin?.let {
+                            _selectedCoin.value = it
+                            LoadingData.Success(Unit)
+                        } ?: LoadingData.Error(Failure.ServerError())
                     },
                     onError = {
                         _initialLoadingData.value = LoadingData.Error(Failure.ServerError())
@@ -173,11 +174,13 @@ class EditTradeViewModel(
         val toAmount = _amountMaxLimit.value ?: 0
         when {
             fromAmount == 0 || toAmount == 0 -> {
-                _priceRangeError.value = stringProvider.getString(R.string.create_trade_amount_range_zero_error)
+                _priceRangeError.value =
+                    stringProvider.getString(R.string.create_trade_amount_range_zero_error)
                 errorCount++
             }
             toAmount < fromAmount -> {
-                _priceRangeError.value = stringProvider.getString(R.string.create_trade_amount_range_error)
+                _priceRangeError.value =
+                    stringProvider.getString(R.string.create_trade_amount_range_error)
                 errorCount++
             }
             else -> _priceRangeError.value = null
@@ -186,16 +189,19 @@ class EditTradeViewModel(
             return
         }
         val fee = selectedCoin.value?.details?.platformTradeFee ?: 0.0
-        val cryptoAmount = toAmount / price * (1  + fee / 2 / 100)
+        val cryptoAmount = toAmount / price * (1 + fee / 2 / 100)
         if (tradeType.value == TradeType.SELL && cryptoAmount > selectedCoin.value?.reservedBalanceCoin ?: 0.0) {
-            _priceRangeError.value = stringProvider.getString(R.string.edit_trade_not_enough_crypto_balance)
+            _priceRangeError.value =
+                stringProvider.getString(R.string.edit_trade_not_enough_crypto_balance)
             return
         }
         _editTradeLoadingData.value = LoadingData.Loading()
         editTradeUseCase(
-            EditTradeItem(tradeId, price, fromAmount, toAmount, terms, paymentOptions), onSuccess = {
+            EditTradeItem(tradeId, price, fromAmount, toAmount, terms, paymentOptions),
+            onSuccess = {
                 _editTradeLoadingData.value = LoadingData.Success(it)
-            }, onError = {
+            },
+            onError = {
                 _editTradeLoadingData.value = LoadingData.Error(it)
             }
         )

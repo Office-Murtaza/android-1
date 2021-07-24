@@ -45,7 +45,8 @@ class CreateTradeViewModel(
     val price: LiveData<Double> = _price
 
     private val _availablePaymentOptions = MutableLiveData<List<AvailableTradePaymentOption>>()
-    val availablePaymentOptions: LiveData<List<AvailableTradePaymentOption>> = _availablePaymentOptions
+    val availablePaymentOptions: LiveData<List<AvailableTradePaymentOption>> =
+        _availablePaymentOptions
 
     private val _amountRangeError = MutableLiveData<String?>()
     val amountRangeError: LiveData<String?> = _amountRangeError
@@ -93,12 +94,10 @@ class CreateTradeViewModel(
                 onSuccess = { coinsDataList ->
                     coinList = coinsDataList
                     val coin = coinList.firstOrNull()
-                    if (coin == null) {
-                        _initialLoadingData.value = LoadingData.Error(Failure.ServerError())
-                    } else {
-                        _selectedCoin.value = coin
-                        _initialLoadingData.value = LoadingData.Success(Unit)
-                    }
+                    _initialLoadingData.value = coin?.let {
+                        _selectedCoin.value = it
+                        LoadingData.Success(Unit)
+                    } ?: LoadingData.Error(Failure.ServerError())
                 },
                 onError = { _initialLoadingData.value = LoadingData.Error(Failure.ServerError()) }
             )
@@ -144,7 +143,8 @@ class CreateTradeViewModel(
             .toList()
         var errorCount = 0
         if (type == -1) {
-            _tradeTypeError.value = stringProvider.getString(R.string.trade_type_not_selected_error_message)
+            _tradeTypeError.value =
+                stringProvider.getString(R.string.trade_type_not_selected_error_message)
             errorCount++
         } else {
             _tradeTypeError.value = null
@@ -167,11 +167,13 @@ class CreateTradeViewModel(
         val toAmount = _amountMaxLimit.value ?: 0
         when {
             fromAmount == 0 || toAmount == 0 -> {
-                _amountRangeError.value = stringProvider.getString(R.string.create_trade_amount_range_zero_error)
+                _amountRangeError.value =
+                    stringProvider.getString(R.string.create_trade_amount_range_zero_error)
                 errorCount++
             }
             toAmount < fromAmount -> {
-                _amountRangeError.value = stringProvider.getString(R.string.create_trade_amount_range_error)
+                _amountRangeError.value =
+                    stringProvider.getString(R.string.create_trade_amount_range_error)
                 errorCount++
             }
             else -> _amountRangeError.value = null
@@ -180,9 +182,10 @@ class CreateTradeViewModel(
             return
         }
         val fee = selectedCoin.value?.details?.platformTradeFee ?: 0.0
-        val cryptoAmount = toAmount / price * (1  + fee / 2 / 100)
+        val cryptoAmount = toAmount / price * (1 + fee / 2 / 100)
         if (type == TradeType.SELL && cryptoAmount > selectedCoin.value?.reservedBalanceCoin ?: 0.0) {
-            _amountRangeError.value = stringProvider.getString(R.string.create_trade_not_enough_crypto_balance)
+            _amountRangeError.value =
+                stringProvider.getString(R.string.create_trade_not_enough_crypto_balance)
             return
         }
         val coinCode = selectedCoin.value?.code.orEmpty()
@@ -202,7 +205,8 @@ class CreateTradeViewModel(
                     _snackbarMessage.value = stringProvider.getString(
                         R.string.create_trade_already_exists, coinCode, tradeLabel
                     )
-                    _createTradeLoadingData.value = LoadingData.Error(Failure.ClientValidationError())
+                    _createTradeLoadingData.value =
+                        LoadingData.Error(Failure.ClientValidationError())
                 }
             },
             onError = {
