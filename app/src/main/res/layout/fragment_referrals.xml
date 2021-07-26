@@ -51,15 +51,15 @@
     <LinearLayout
         android:id="@+id/invited_users_container"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:layout_marginStart="@dimen/margin_main"
-        android:layout_marginTop="@dimen/margin_large"
         android:layout_marginEnd="@dimen/divider_size"
         android:background="@drawable/user_trade_info_background"
         android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="@id/total_earn_container"
         app:layout_constraintEnd_toStartOf="@id/total_earn_container"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/referral_reward_label">
+        app:layout_constraintTop_toTopOf="@id/total_earn_container">
 
         <TextView
             android:id="@+id/invited_users_label"
@@ -69,9 +69,7 @@
             android:layout_marginTop="@dimen/margin_large"
             android:text="@string/invited_users_label"
             android:textColor="@color/colorText"
-            android:textSize="12sp"
-            app:layout_constraintStart_toStartOf="@id/account_icon"
-            app:layout_constraintTop_toBottomOf="@id/account_icon" />
+            android:textSize="12sp" />
 
         <TextView
             android:id="@+id/invited_users_value"
@@ -80,7 +78,6 @@
             android:layout_marginStart="@dimen/margin_main"
             android:layout_marginTop="@dimen/margin_half"
             android:layout_marginBottom="@dimen/margin_large"
-            android:drawablePadding="6dp"
             android:textColor="@color/black_text_color"
             android:textSize="22sp"
             android:textStyle="bold"
@@ -135,6 +132,13 @@
             android:textStyle="bold" />
     </LinearLayout>
 
+    <androidx.constraintlayout.widget.Barrier
+        android:id="@+id/container_barrier"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:barrierDirection="bottom"
+        app:constraint_referenced_ids="total_earn_container,invited_users_container" />
+
     <FrameLayout
         android:id="@+id/copy_link_container"
         android:layout_width="0dp"
@@ -145,7 +149,7 @@
         android:background="@drawable/user_trade_info_background"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/invited_users_container">
+        app:layout_constraintTop_toBottomOf="@id/container_barrier">
 
         <TextView
             android:id="@+id/copy_link"
