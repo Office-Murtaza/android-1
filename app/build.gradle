@@ -30,15 +30,13 @@ android {
         }
     }
     buildTypes {
-        debug {
-            firebaseAppDistribution {
-                groups = "testers"
-            }
-        }
         release {
             debuggable false
             minifyEnabled true
             shrinkResources true
+            firebaseAppDistribution {
+                groups = "testers"
+            }
             signingConfig signingConfigs.release
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
