@@ -9,7 +9,6 @@ data class CreateWalletRequest(
     val latitude: Double?,
     val longitude: Double?,
     val timezone: String,
-    val referralCodeFrom: String?,
     val notificationToken: String?,
     val coins: List<CreateWalletCoinRequest>,
     val platform: Int = 2//android

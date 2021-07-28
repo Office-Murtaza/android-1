@@ -36,8 +36,7 @@ class AuthApiService(private val authApi: AuthApi) {
         lng: Double?,
         timezone: String,
         notificationToken: String?,
-        coinMap: Map<String, String>,
-        byReferralCode: String?,
+        coinMap: Map<String, String>
     ): Either<Failure, CreateRecoverWalletResponse> = try {
         val coinList = coinMap.map { CreateWalletCoinRequest(it.key, it.value) }
         val request = CreateWalletRequest(
@@ -49,7 +48,6 @@ class AuthApiService(private val authApi: AuthApi) {
             lat,
             lng,
             timezone,
-            byReferralCode,
             notificationToken,
             coinList
         )
@@ -67,8 +65,7 @@ class AuthApiService(private val authApi: AuthApi) {
         lng: Double?,
         timezone: String,
         notificationToken: String?,
-        coinMap: Map<String, String>,
-        byReferralCode: String?,
+        coinMap: Map<String, String>
     ): Either<Failure, CreateRecoverWalletResponse> = try {
         val coinList = coinMap.map { RecoverWalletCoinRequest(it.key, it.value) }
         val request = RecoverWalletRequest(
@@ -80,7 +77,6 @@ class AuthApiService(private val authApi: AuthApi) {
             lat,
             lng,
             timezone,
-            byReferralCode,
             notificationToken,
             coinList
         )

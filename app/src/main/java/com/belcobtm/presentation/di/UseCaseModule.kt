@@ -1,6 +1,5 @@
 package com.belcobtm.presentation.di
 
-import com.android.installreferrer.api.InstallReferrerClient
 import com.belcobtm.data.cloud.storage.FirebaseCloudStorage
 import com.belcobtm.data.cloud.storage.FirebaseCloudStorage.Companion.VERIFICATION_STORAGE
 import com.belcobtm.data.core.RandomStringGenerator
@@ -50,7 +49,6 @@ import com.belcobtm.presentation.core.DateFormat.CHAT_DATE_FORMAT
 import com.belcobtm.presentation.core.formatter.DoubleCurrencyPriceFormatter.Companion.DOUBLE_CURRENCY_PRICE_FORMATTER_QUALIFIER
 import com.belcobtm.presentation.core.formatter.MilesFormatter.Companion.MILES_FORMATTER_QUALIFIER
 import com.belcobtm.presentation.core.formatter.TradeCountFormatter.Companion.TRADE_COUNT_FORMATTER_QUALIFIER
-import com.belcobtm.presentation.features.referral.ReferralClient
 import org.koin.android.ext.koin.androidApplication
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
@@ -61,7 +59,7 @@ val useCaseModule = module {
     single { AuthorizationStatusGetUseCase(get()) }
     single { ClearAppDataUseCase(get()) }
     single { AuthorizationCheckCredentialsUseCase(get()) }
-    single { CreateWalletUseCase(get(), get(), get()) }
+    single { CreateWalletUseCase(get(), get()) }
     single { AuthorizeUseCase(get()) }
     single { GetAuthorizePinUseCase(get()) }
     single { SaveAuthorizePinUseCase(get()) }
@@ -99,7 +97,7 @@ val useCaseModule = module {
     single { FetchTransactionsUseCase(get()) }
     single { WithdrawUseCase(get()) }
     single { GetCoinByCodeUseCase(get()) }
-    single { RecoverWalletUseCase(get(), get(), get()) }
+    single { RecoverWalletUseCase(get(), get()) }
     single { CreateSeedUseCase(get()) }
     single { CheckPassUseCase(get()) }
     single { UnlinkUseCase(get()) }
@@ -181,7 +179,6 @@ val useCaseModule = module {
     single { ConnectToSocketUseCase(get()) }
     single { DisconnectFromSocketUseCase(get()) }
     single { LoadReferralUseCase(get()) }
-    single { ReferralClient(InstallReferrerClient.newBuilder(androidApplication()).build()) }
     single { GetExistedPhoneNumbersUseCase(get(), get()) }
     single { SearchAvailableContactsUseCase(get()) }
     single { CreateRecipientsUseCase() }
