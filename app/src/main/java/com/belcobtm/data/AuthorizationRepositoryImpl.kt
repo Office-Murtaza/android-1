@@ -90,8 +90,7 @@ class AuthorizationRepositoryImpl(
     override suspend fun createWallet(
         phone: String,
         password: String,
-        notificationToken: String,
-        byReferralCode: String?
+        notificationToken: String
     ): Either<Failure, Unit> {
         val location = getLocation()
         val response = apiService.createWallet(
@@ -100,7 +99,6 @@ class AuthorizationRepositoryImpl(
             timezone = getDeviceTimezone(),
             lat = location?.latitude,
             lng = location?.longitude,
-            byReferralCode = byReferralCode,
             notificationToken = notificationToken,
             coinMap = temporaryCoinMap.map { it.key.name to it.value.first }.toMap()
         )
@@ -129,8 +127,7 @@ class AuthorizationRepositoryImpl(
         seed: String,
         phone: String,
         password: String,
-        notificationToken: String,
-        byReferralCode: String?
+        notificationToken: String
     ): Either<Failure, Unit> {
         val location = getLocation()
         val wallet = HDWallet(seed, "")
@@ -146,8 +143,7 @@ class AuthorizationRepositoryImpl(
                 location?.longitude,
                 getDeviceTimezone(),
                 notificationToken,
-                temporaryCoinMap.map { it.key.name to it.value.first }.toMap(),
-                        byReferralCode = byReferralCode
+                temporaryCoinMap.map { it.key.name to it.value.first }.toMap()
             )
 
         return if (recoverResponse.isRight) {

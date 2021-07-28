@@ -9,7 +9,6 @@ data class RecoverWalletRequest(
     val latitude: Double?,
     val longitude: Double?,
     val timezone: String,
-    val referralCodeFrom: String?,
     val notificationToken: String?,
     val coins: List<RecoverWalletCoinRequest>,
     val platform: Int = 2, //android
