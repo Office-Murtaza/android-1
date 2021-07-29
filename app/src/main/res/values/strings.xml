@@ -727,4 +727,5 @@
     <string name="referral_contacts_not_selected_error">Please select at least one contact from the list</string>
     <string name="referral_contacts_coins_to_receive_format"><![CDATA[You will get <b>%d CATM</b> coins]]></string>
     <string name="invite_from_contacts_screen_title">Invite from contacts</string>
+    <string name="create_trade_terms_validation_error">Terms cannot be empty</string>
 </resources>

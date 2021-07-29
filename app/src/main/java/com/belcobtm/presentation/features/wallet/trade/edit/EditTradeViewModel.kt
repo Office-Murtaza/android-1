@@ -69,6 +69,9 @@ class EditTradeViewModel(
     private val _paymentOptionsError = MutableLiveData<String?>()
     val paymentOptionsError: LiveData<String?> = _paymentOptionsError
 
+    private val _termsError = MutableLiveData<String?>()
+    val termsError: LiveData<String?> = _termsError
+
     private val _tradeType = MutableLiveData<@TradeType Int>()
     val tradeType: LiveData<@TradeType Int> = _tradeType
 
@@ -184,6 +187,13 @@ class EditTradeViewModel(
                 errorCount++
             }
             else -> _priceRangeError.value = null
+        }
+        if (terms.isEmpty()) {
+            _termsError.value =
+                stringProvider.getString(R.string.create_trade_terms_validation_error)
+            errorCount++
+        } else {
+            _termsError.value = null
         }
         if (errorCount > 0) {
             return

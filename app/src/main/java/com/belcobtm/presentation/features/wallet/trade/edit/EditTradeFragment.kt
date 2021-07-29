@@ -95,6 +95,9 @@ class EditTradeFragment : BaseFragment<FragmentEditTradeBinding>() {
             coinDetailsView.setErrorText(it, true)
             coinDetailsView.setErrorEnabled(!it.isNullOrEmpty())
         }
+        viewModel.termsError.observe(viewLifecycleOwner) {
+            binding.termsInput.error = it
+        }
         viewModel.priceRangeError.observe(viewLifecycleOwner) {
             it?.let(amountRangeError::setText)
             amountRangeError.toggle(it != null)
