@@ -18,7 +18,7 @@ import com.belcobtm.presentation.core.ui.fragment.BaseFragment
 import com.belcobtm.presentation.features.pin.code.PinCodeFragment
 import com.belcobtm.presentation.features.sms.code.SmsCodeFragment
 import org.koin.android.ext.android.inject
-import org.koin.android.viewmodel.ext.android.viewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class RecoverSeedFragment : BaseFragment<FragmentRecoverSeedBinding>() {
     private val viewModel: RecoverSeedViewModel by viewModel()

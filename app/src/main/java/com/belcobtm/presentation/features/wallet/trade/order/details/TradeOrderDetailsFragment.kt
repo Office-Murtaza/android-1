@@ -23,7 +23,7 @@ import com.belcobtm.presentation.features.wallet.trade.list.delegate.TradePaymen
 import com.google.android.material.badge.BadgeDrawable
 import com.google.android.material.badge.BadgeDrawable.TOP_END
 import com.google.android.material.badge.BadgeUtils
-import org.koin.android.viewmodel.ext.android.viewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class TradeOrderDetailsFragment : BaseFragment<FragmentTradeOrderDetailsBinding>() {
 
@@ -84,7 +84,7 @@ class TradeOrderDetailsFragment : BaseFragment<FragmentTradeOrderDetailsBinding>
         viewModel.disconnectFromChat()
     }
 
-    @SuppressLint("UnsafeExperimentalUsageError")
+    @SuppressLint("UnsafeExperimentalUsageError", "UnsafeOptInUsageError")
     override fun FragmentTradeOrderDetailsBinding.initObservers() {
         viewModel.initialLoadingData.listen()
         viewModel.primaryActionUpdateLoadingData.listen()

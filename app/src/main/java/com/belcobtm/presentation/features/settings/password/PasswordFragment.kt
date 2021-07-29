@@ -10,7 +10,7 @@ import com.belcobtm.databinding.FragmentPasswordBinding
 import com.belcobtm.domain.Failure
 import com.belcobtm.presentation.core.mvvm.LoadingData
 import com.belcobtm.presentation.core.ui.fragment.BaseFragment
-import org.koin.android.viewmodel.ext.android.viewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class PasswordFragment : BaseFragment<FragmentPasswordBinding>() {
     private val viewModel by viewModel<PasswordViewModel>()

@@ -19,7 +19,7 @@ import com.belcobtm.presentation.features.wallet.trade.container.TradeContainerF
 import com.belcobtm.presentation.features.wallet.trade.create.delegate.TradePaymentOptionDelegate
 import com.google.android.material.chip.Chip
 import com.google.android.material.snackbar.Snackbar
-import org.koin.android.viewmodel.ext.android.viewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class CreateTradeFragment : BaseFragment<FragmentCreateTradeBinding>() {
 
@@ -30,7 +30,7 @@ class CreateTradeFragment : BaseFragment<FragmentCreateTradeBinding>() {
 
     private val viewModel by viewModel<CreateTradeViewModel>()
 
-    override val retryListener: View.OnClickListener?
+    override val retryListener: View.OnClickListener
         get() = View.OnClickListener {
             if (viewModel.initialLoadingData.value is LoadingData.Error<Unit>) {
                 viewModel.fetchInitialData()

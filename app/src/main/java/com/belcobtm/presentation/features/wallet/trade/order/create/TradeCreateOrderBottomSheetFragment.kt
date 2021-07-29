@@ -22,7 +22,7 @@ import com.belcobtm.presentation.core.ui.fragment.BaseBottomSheetFragment
 import com.belcobtm.presentation.core.views.listeners.SafeDecimalEditTextWatcher
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
-import org.koin.android.viewmodel.ext.android.viewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class TradeCreateOrderBottomSheetFragment : BaseBottomSheetFragment() {
 

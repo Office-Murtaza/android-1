@@ -15,7 +15,7 @@ import com.belcobtm.presentation.features.wallet.trade.container.TradeContainerF
 import com.belcobtm.presentation.features.wallet.trade.container.TradeContainerViewModel
 import com.belcobtm.presentation.features.wallet.trade.mytrade.list.delegate.MyTradeDelegate
 import com.belcobtm.presentation.features.wallet.trade.mytrade.list.delegate.MyTradesNoTradesDelegate
-import org.koin.android.viewmodel.ext.android.viewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MyTradesFragment : BaseFragment<FragmentMyTradesBinding>() {
 

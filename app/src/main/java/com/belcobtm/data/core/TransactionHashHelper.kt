@@ -206,36 +206,50 @@ class TransactionHashHelper(
         return if (response.isRight) {
             val nonceResponse = (response as Either.Right).b
             val coinItem = getCoinByCode(fromCoin.name)
-            val amountMultipliedByDivider = BigDecimal(fromCoinAmount * when (fromCoin) {
-                LocalCoinType.USDC -> USDC_UNIT
-                else -> CoinType.ETHEREUM.unit()
-            })
+            val amountMultipliedByDivider = BigDecimal(
+                fromCoinAmount * when (fromCoin) {
+                    LocalCoinType.USDC -> USDC_UNIT
+                    else -> CoinType.ETHEREUM.unit()
+                }
+            )
             // todo find out what should be used for gasLimit / gasPrice
-            val hexAmount = addLeadingZeroes(amountMultipliedByDivider.toLong().toString(16)).toHexByteArray()
+            val hexAmount =
+                addLeadingZeroes(amountMultipliedByDivider.toLong().toString(16)).toHexByteArray()
             val hexNonce = addLeadingZeroes(nonceResponse?.toString(16) ?: "").toHexByteArray()
-            val hexGasLimit = addLeadingZeroes((coinItem?.details?.gasLimit ?: 0).toString(16))?.toHexByteArray()
-            val hexGasPrice = addLeadingZeroes((coinItem?.details?.gasPrice ?: 0).toString(16))?.toHexByteArray()
+            val hexGasLimit = addLeadingZeroes((coinItem.details.gasLimit ?: 0).toString(16))
+                .toHexByteArray()
+            val hexGasPrice = addLeadingZeroes((coinItem.details.gasPrice ?: 0).toString(16))
+                .toHexByteArray()
             val input = Ethereum.SigningInput.newBuilder().also {
                 it.chainId = ByteString.copyFrom("0x1".toHexByteArray())
                 it.nonce = ByteString.copyFrom(hexNonce)
                 it.gasLimit = ByteString.copyFrom(hexGasLimit)
                 it.gasPrice = ByteString.copyFrom(hexGasPrice)
-                it.privateKey = daoAccount.getItem(fromCoin.name).privateKey.toHexBytesInByteString()
+                it.privateKey =
+                    daoAccount.getItem(fromCoin.name).privateKey.toHexBytesInByteString()
             }
 
             if (fromCoin.name.isEthRelatedCoinCode()) {
                 val function = when (customFunctionName) {
                     ETH_CATM_FUNCTION_NAME_CREATE_STAKE -> {
                         val function = EthereumAbiFunction(ETH_CATM_FUNCTION_NAME_CREATE_STAKE)
-                        function.addParamUInt256(amountMultipliedByDivider.toBigInteger().toByteArray(), false)
+                        function.addParamUInt256(
+                            amountMultipliedByDivider.toBigInteger().toByteArray(), false
+                        )
                         function
                     }
-                    ETH_CATM_FUNCTION_NAME_CANCEL_STAKE -> EthereumAbiFunction(ETH_CATM_FUNCTION_NAME_CANCEL_STAKE)
-                    ETH_CATM_FUNCTION_NAME_WITHDRAW_STAKE -> EthereumAbiFunction(ETH_CATM_FUNCTION_NAME_WITHDRAW_STAKE)
+                    ETH_CATM_FUNCTION_NAME_CANCEL_STAKE -> EthereumAbiFunction(
+                        ETH_CATM_FUNCTION_NAME_CANCEL_STAKE
+                    )
+                    ETH_CATM_FUNCTION_NAME_WITHDRAW_STAKE -> EthereumAbiFunction(
+                        ETH_CATM_FUNCTION_NAME_WITHDRAW_STAKE
+                    )
                     else -> {
                         val function = EthereumAbiFunction(ETH_CATM_FUNCTION_NAME_TRANSFER)
                         function.addParamAddress(toAddress.toHexByteArray(), false)
-                        function.addParamUInt256(amountMultipliedByDivider.toBigInteger().toByteArray(), false)
+                        function.addParamUInt256(
+                            amountMultipliedByDivider.toBigInteger().toByteArray(), false
+                        )
                         function
                     }
                 }
@@ -246,7 +260,8 @@ class TransactionHashHelper(
                 input.toAddress = toAddress
             }
 
-            val output = AnySigner.sign(input.build(), CoinType.ETHEREUM, Ethereum.SigningOutput.parser())
+            val output =
+                AnySigner.sign(input.build(), CoinType.ETHEREUM, Ethereum.SigningOutput.parser())
             val transactionHash = Numeric.toHexString(output.encoded.toByteArray())
             Either.Right(transactionHash)
         } else {
@@ -292,8 +307,9 @@ class TransactionHashHelper(
                         it.account = coinEntity.publicKey
                         it.amount = (fromCoinAmount * CoinType.XRP.unit()).toLong()
                         it.destination = toAddress
-                        it.fee = ((getCoinByCode(CoinType.XRP.code())?.details?.txFee?.toBigDecimal()
-                            ?: BigDecimal(0.000020)) * BigDecimal.valueOf(CoinType.XRP.unit())).toLong()
+                        it.fee =
+                            ((getCoinByCode(CoinType.XRP.code())?.details?.txFee?.toBigDecimal()
+                                ?: BigDecimal(0.000020)) * BigDecimal.valueOf(CoinType.XRP.unit())).toLong()
                         it.privateKey = ByteString.copyFrom(privateKey.data())
                     }
                     val signBytes = AnySigner.sign(
@@ -402,7 +418,8 @@ class TransactionHashHelper(
                 it.privateKey = coinEntity.privateKey.toHexBytesInByteString()
             }.build()
 
-            val signJson = AnySigner.sign(signingInput, CoinType.TRON, Tron.SigningOutput.parser()).json
+            val signJson =
+                AnySigner.sign(signingInput, CoinType.TRON, Tron.SigningOutput.parser()).json
             val adapter = moshi.adapter(Trx::class.java)
             val jsonContent = adapter.fromJson(signJson)
             val correctJson = adapter.toJson(jsonContent)

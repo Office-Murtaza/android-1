@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import com.belcobtm.R
 import com.belcobtm.databinding.FragmentAboutBinding
 import com.belcobtm.presentation.core.ui.fragment.BaseFragment
-import org.koin.android.viewmodel.ext.android.viewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class AboutFragment : BaseFragment<FragmentAboutBinding>() {
 

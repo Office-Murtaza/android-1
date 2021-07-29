@@ -15,7 +15,7 @@ import com.belcobtm.presentation.core.formatter.Formatter
 import com.belcobtm.presentation.core.helper.ClipBoardHelper
 import com.belcobtm.presentation.core.ui.fragment.BaseFragment
 import org.koin.android.ext.android.inject
-import org.koin.android.viewmodel.ext.android.viewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.qualifier.named
 
 class ReferralFragment : BaseFragment<FragmentReferralsBinding>() {

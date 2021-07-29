@@ -22,7 +22,7 @@ import com.belcobtm.presentation.features.wallet.trade.list.filter.delegate.Item
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
-import org.koin.android.viewmodel.ext.android.viewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
 class TradeFilterBottomSheetDialogFragment : BottomSheetDialogFragment() {
@@ -50,7 +50,7 @@ class TradeFilterBottomSheetDialogFragment : BottomSheetDialogFragment() {
         viewModel.updateMaxDistance(parsedAmount)
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = FragmentTradeFilterBinding.inflate(inflater, container, false)
         binding.coins.adapter = coinsAdapter
         binding.paymentOptions.adapter = paymentsAdapter

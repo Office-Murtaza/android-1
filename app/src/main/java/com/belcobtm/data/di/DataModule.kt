@@ -1,7 +1,6 @@
 package com.belcobtm.data.di
 
 import android.content.Context
-import android.preference.PreferenceManager
 import androidx.room.Room
 import androidx.security.crypto.EncryptedSharedPreferences
 import androidx.security.crypto.MasterKeys
@@ -77,10 +76,6 @@ import java.util.concurrent.TimeUnit
 
 val dataModule = module {
     single {
-        // TODO can be removed after release 1.9
-        PreferenceManager.getDefaultSharedPreferences(get()).edit()
-            .clear()
-            .apply()
         SharedPreferencesHelper(
             EncryptedSharedPreferences.create(
                 "belco_secret_prefs",

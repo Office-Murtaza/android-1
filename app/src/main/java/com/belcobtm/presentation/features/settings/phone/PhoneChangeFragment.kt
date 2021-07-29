@@ -11,7 +11,7 @@ import com.belcobtm.domain.settings.interactor.ERROR_UPDATE_PHONE_IS_SAME
 import com.belcobtm.domain.settings.interactor.ERROR_UPDATE_PHONE_IS_USED
 import com.belcobtm.presentation.core.mvvm.LoadingData
 import com.belcobtm.presentation.core.ui.fragment.BaseFragment
-import org.koin.android.viewmodel.ext.android.viewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class PhoneChangeFragment : BaseFragment<FragmentChangePhoneBinding>() {
     val viewModel by viewModel<PhoneChangeViewModel>()

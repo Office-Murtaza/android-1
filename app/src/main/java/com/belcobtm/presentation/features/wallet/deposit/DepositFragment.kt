@@ -10,7 +10,7 @@ import com.belcobtm.presentation.core.helper.AlertHelper
 import com.belcobtm.presentation.core.helper.ClipBoardHelper
 import com.belcobtm.presentation.core.ui.fragment.BaseFragment
 import org.koin.android.ext.android.inject
-import org.koin.android.viewmodel.ext.android.viewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 
 class DepositFragment : BaseFragment<FragmentDepositBinding>() {

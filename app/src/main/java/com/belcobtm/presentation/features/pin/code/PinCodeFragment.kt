@@ -19,7 +19,7 @@ import com.belcobtm.presentation.core.extensions.toggle
 import com.belcobtm.presentation.core.ui.fragment.BaseFragment
 import com.belcobtm.presentation.features.HostActivity
 import com.belcobtm.presentation.features.HostNavigationFragment
-import org.koin.android.viewmodel.ext.android.viewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class PinCodeFragment : BaseFragment<FragmentPinCodeBinding>() {
     private val viewModel: PinCodeViewModel by viewModel()

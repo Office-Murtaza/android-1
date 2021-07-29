@@ -13,7 +13,7 @@ import com.belcobtm.presentation.core.extensions.*
 import com.belcobtm.presentation.core.helper.AlertHelper
 import com.belcobtm.presentation.core.mvvm.LoadingData
 import com.belcobtm.presentation.core.ui.fragment.BaseFragment
-import org.koin.android.viewmodel.ext.android.viewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 
 class SmsCodeFragment : BaseFragment<FragmentSmsCodeBinding>() {
@@ -58,9 +58,6 @@ class SmsCodeFragment : BaseFragment<FragmentSmsCodeBinding>() {
                 if (isResendClicked) {
                     showResendDialog()
                 }
-
-                //TODO for remove
-                println("SMS code $it")
             },
             error = {
                 when (it) {
@@ -138,6 +135,9 @@ class SmsCodeFragment : BaseFragment<FragmentSmsCodeBinding>() {
         const val REQUEST_TAG_IS_SUCCESS = "sms_code_is_success"
     }
 
-    override fun createBinding(inflater: LayoutInflater, container: ViewGroup?): FragmentSmsCodeBinding =
+    override fun createBinding(
+        inflater: LayoutInflater,
+        container: ViewGroup?
+    ): FragmentSmsCodeBinding =
         FragmentSmsCodeBinding.inflate(inflater, container, false)
 }

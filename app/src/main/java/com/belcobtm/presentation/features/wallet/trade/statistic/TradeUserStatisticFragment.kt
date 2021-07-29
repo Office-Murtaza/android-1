@@ -9,7 +9,7 @@ import com.belcobtm.presentation.core.extensions.hide
 import com.belcobtm.presentation.core.ui.fragment.BaseFragment
 import com.belcobtm.presentation.features.wallet.trade.container.TradeContainerViewModel
 import com.belcobtm.presentation.features.wallet.trade.list.model.TradeStatistics
-import org.koin.android.viewmodel.ext.android.viewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class TradeUserStatisticFragment : BaseFragment<FragmentTradeUserInfoBinding>() {
 

@@ -20,7 +20,7 @@ import com.belcobtm.presentation.core.views.listeners.SafeDecimalEditTextWatcher
 import com.belcobtm.presentation.features.wallet.trade.create.delegate.TradePaymentOptionDelegate
 import com.google.android.material.chip.Chip
 import com.google.android.material.snackbar.Snackbar
-import org.koin.android.viewmodel.ext.android.viewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class EditTradeFragment : BaseFragment<FragmentEditTradeBinding>() {
 

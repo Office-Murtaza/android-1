@@ -16,7 +16,7 @@ import com.belcobtm.presentation.features.wallet.trade.list.model.NoOrders
 import com.belcobtm.presentation.features.wallet.trade.list.model.OrderItem
 import com.belcobtm.presentation.features.wallet.trade.order.delegate.NoOrdersDelegate
 import com.belcobtm.presentation.features.wallet.trade.order.delegate.OpenOrdersDelegate
-import org.koin.android.viewmodel.ext.android.viewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class TradeOrdersFragment : BaseFragment<FragmentTradeOrdersBinding>() {
 

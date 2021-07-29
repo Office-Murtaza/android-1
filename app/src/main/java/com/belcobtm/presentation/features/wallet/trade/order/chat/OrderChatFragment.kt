@@ -22,7 +22,7 @@ import com.belcobtm.presentation.core.ui.fragment.BaseFragment
 import com.belcobtm.presentation.features.wallet.trade.order.chat.delegate.MyMessageDelegate
 import com.belcobtm.presentation.features.wallet.trade.order.chat.delegate.PartnerMessageDelegate
 import com.google.android.material.snackbar.Snackbar
-import org.koin.android.viewmodel.ext.android.viewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
 class OrderChatFragment : BaseFragment<FragmentOrderChatBinding>() {

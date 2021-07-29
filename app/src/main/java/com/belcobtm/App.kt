@@ -32,6 +32,7 @@ class App : Application() {
         Giphy.configure(applicationContext, Const.GIPHY_API_KEY)
 
         startKoin {
+            androidContext(applicationContext)
             modules(
                 listOf(
                     dataModule,
@@ -44,10 +45,7 @@ class App : Application() {
                     helperModule
                 )
             )
-            androidContext(applicationContext)
         }
-        // TODO token cleanup can be removed after force update
-        prefHelper.clearValue(SharedPreferencesHelper.ACCESS_TOKEN)
     }
 
     companion object {

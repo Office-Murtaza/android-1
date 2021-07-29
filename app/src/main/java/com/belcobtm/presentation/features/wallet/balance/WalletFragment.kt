@@ -3,6 +3,8 @@ package com.belcobtm.presentation.features.wallet.balance
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
+import com.belcobtm.R
 import com.belcobtm.databinding.FragmentBalanceBinding
 import com.belcobtm.domain.Failure
 import com.belcobtm.presentation.core.formatter.DoubleCurrencyPriceFormatter
@@ -11,7 +13,7 @@ import com.belcobtm.presentation.core.ui.fragment.BaseFragment
 import com.belcobtm.presentation.features.wallet.balance.adapter.CoinsAdapter
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.koin.android.ext.android.inject
-import org.koin.android.viewmodel.ext.android.viewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.qualifier.named
 
 @ExperimentalCoroutinesApi
@@ -29,6 +31,10 @@ class WalletFragment : BaseFragment<FragmentBalanceBinding>() {
         View.OnClickListener { viewModel.reconnectToWallet() }
 
     override fun FragmentBalanceBinding.initViews() {
+        requireActivity().window.statusBarColor = ContextCompat.getColor(
+            requireContext(),
+            R.color.colorPrimary
+        )
         adapter = CoinsAdapter(currencyFormatter) {
             navigate(WalletFragmentDirections.toTransactionsFragment(it.code))
         }
@@ -52,6 +58,14 @@ class WalletFragment : BaseFragment<FragmentBalanceBinding>() {
                     else -> showErrorSomethingWrong()
                 }
             }
+        )
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        requireActivity().window.statusBarColor = ContextCompat.getColor(
+            requireContext(),
+            R.color.colorStatusBar
         )
     }
 

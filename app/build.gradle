@@ -18,12 +18,12 @@ android {
         minSdkVersion 23
         targetSdkVersion 30
         versionCode rootProject.gitCommitCount
-        versionName "1.9"
+        versionName "2.0"
         vectorDrawables.useSupportLibrary = true
     }
     signingConfigs {
         release {
-            storeFile file("$projectDir/src/keystore.jks")
+            storeFile file("$rootDir/signing/keystore.jks")
             storePassword "com.app.belcobtm"
             keyAlias "belcobtm"
             keyPassword "com.app.belcobtm"
@@ -76,14 +76,14 @@ android {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation 'androidx.appcompat:appcompat:1.3.0'
-    implementation 'com.google.android.material:material:1.3.0'
+    implementation 'androidx.appcompat:appcompat:1.3.1'
+    implementation 'com.google.android.material:material:1.4.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
     implementation 'com.google.android.gms:play-services-maps:17.0.1'
     implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
-    implementation "androidx.fragment:fragment-ktx:1.3.0"
+    implementation "androidx.fragment:fragment-ktx:1.3.6"
 
-    implementation 'androidx.core:core-ktx:1.5.0'
+    implementation 'androidx.core:core-ktx:1.6.0'
 
     implementation "androidx.security:security-crypto:1.0.0"
 
@@ -136,8 +136,7 @@ dependencies {
     implementation 'com.github.bumptech.glide:glide:4.11.0'
 
     //Koin
-    implementation "org.koin:koin-android:2.1.5"
-    implementation "org.koin:koin-android-viewmodel:2.1.5"
+    implementation "io.insert-koin:koin-android:3.1.2"
 
     //Moshi
     implementation "com.squareup.retrofit2:converter-moshi:2.9.0"
@@ -184,5 +183,4 @@ dependencies {
         // protobuf-lite that firebase-config and Tink depends on.
         exclude group: 'com.google.protobuf'
     })
-
 }

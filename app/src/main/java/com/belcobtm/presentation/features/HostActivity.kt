@@ -13,7 +13,7 @@ import com.belcobtm.domain.authorization.interactor.AuthorizationStatusGetUseCas
 import com.belcobtm.domain.authorization.interactor.ClearAppDataUseCase
 import com.belcobtm.presentation.features.pin.code.PinCodeFragment
 import org.koin.android.ext.android.inject
-import org.koin.android.viewmodel.ext.android.viewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class HostActivity : AppCompatActivity() {
     private val authorizationStatusUseCase: AuthorizationStatusGetUseCase by inject()
