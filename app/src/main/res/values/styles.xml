@@ -45,6 +45,11 @@
         <item name="windowNoTitle">true</item>
     </style>
 
+    <style name="Toolbar">
+        <item name="android:background">@color/colorPrimary</item>
+        <item name="titleTextColor">@android:color/white</item>
+    </style>
+
     <style name="BottomNavigationMenuTextStyle">
         <item name="android:textSize">12sp</item>
     </style>

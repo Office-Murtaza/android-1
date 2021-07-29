@@ -61,14 +61,6 @@ class WalletFragment : BaseFragment<FragmentBalanceBinding>() {
         )
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        requireActivity().window.statusBarColor = ContextCompat.getColor(
-            requireContext(),
-            R.color.colorStatusBar
-        )
-    }
-
     override fun createBinding(
         inflater: LayoutInflater,
         container: ViewGroup?
