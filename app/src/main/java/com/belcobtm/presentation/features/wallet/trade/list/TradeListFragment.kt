@@ -20,7 +20,7 @@ import com.belcobtm.presentation.features.wallet.trade.list.delegate.NoTradesDel
 import com.belcobtm.presentation.features.wallet.trade.list.delegate.TradeItemDelegate
 import com.belcobtm.presentation.features.wallet.trade.list.model.NoTrades
 import com.belcobtm.presentation.features.wallet.trade.list.model.TradeItem
-import org.koin.android.viewmodel.ext.android.viewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class TradeListFragment : BaseFragment<FragmentTradeListBinding>() {
 

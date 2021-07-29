@@ -14,7 +14,7 @@ import com.belcobtm.presentation.core.views.listeners.SafeDecimalEditTextWatcher
 import com.belcobtm.presentation.features.contacts.adapter.ContactListDiffUtil
 import com.belcobtm.presentation.features.contacts.adapter.delegate.ContactDelegate
 import com.belcobtm.presentation.features.contacts.adapter.delegate.ContactHeaderDelegate
-import org.koin.android.viewmodel.ext.android.viewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import permissions.dispatcher.NeedsPermission
 import permissions.dispatcher.RuntimePermissions
 

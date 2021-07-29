@@ -7,7 +7,7 @@ import com.belcobtm.R
 import com.belcobtm.databinding.FragmentUnlinkBinding
 import com.belcobtm.presentation.core.ui.fragment.BaseFragment
 import com.belcobtm.presentation.features.HostActivity
-import org.koin.android.viewmodel.ext.android.viewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
 class UnlinkFragment : BaseFragment<FragmentUnlinkBinding>() {

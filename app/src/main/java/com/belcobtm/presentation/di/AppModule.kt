@@ -68,9 +68,8 @@ import com.belcobtm.presentation.features.wallet.transaction.details.Transaction
 import com.belcobtm.presentation.features.wallet.transactions.TransactionsViewModel
 import com.belcobtm.presentation.features.wallet.withdraw.WithdrawViewModel
 import io.michaelrocks.libphonenumber.android.PhoneNumberUtil
-import org.koin.android.ext.android.inject
 import org.koin.android.ext.koin.androidApplication
-import org.koin.android.viewmodel.dsl.viewModel
+import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
 import java.util.*

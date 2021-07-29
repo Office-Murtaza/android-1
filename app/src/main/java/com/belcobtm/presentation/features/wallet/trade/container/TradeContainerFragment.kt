@@ -14,7 +14,7 @@ import com.belcobtm.presentation.features.wallet.trade.container.adapter.TradeCo
 import com.belcobtm.presentation.features.wallet.trade.info.TradeInfoContainerFragment
 import com.belcobtm.presentation.features.wallet.trade.info.adapter.TradeInfoContainerViewPagerAdapter
 import com.google.android.material.tabs.TabLayoutMediator
-import org.koin.android.viewmodel.ext.android.viewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import permissions.dispatcher.NeedsPermission
 import permissions.dispatcher.OnPermissionDenied
 import permissions.dispatcher.RuntimePermissions

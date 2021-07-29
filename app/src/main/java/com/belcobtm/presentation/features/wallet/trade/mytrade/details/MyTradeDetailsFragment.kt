@@ -17,7 +17,7 @@ import com.belcobtm.presentation.core.helper.AlertHelper
 import com.belcobtm.presentation.core.mvvm.LoadingData
 import com.belcobtm.presentation.core.ui.fragment.BaseFragment
 import com.belcobtm.presentation.features.wallet.trade.list.delegate.TradePaymentOptionDelegate
-import org.koin.android.viewmodel.ext.android.viewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MyTradeDetailsFragment : BaseFragment<FragmentMyTradeDetailsBinding>() {
 
@@ -39,10 +39,17 @@ class MyTradeDetailsFragment : BaseFragment<FragmentMyTradeDetailsBinding>() {
         }
     }
 
-    override fun createBinding(inflater: LayoutInflater, container: ViewGroup?): FragmentMyTradeDetailsBinding =
+    override fun createBinding(
+        inflater: LayoutInflater,
+        container: ViewGroup?
+    ): FragmentMyTradeDetailsBinding =
         FragmentMyTradeDetailsBinding.inflate(inflater, container, false)
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         val root = super.onCreateView(inflater, container, savedInstanceState)
         viewModel.fetchTradeDetails(args.tradeId)
         return root
@@ -77,12 +84,22 @@ class MyTradeDetailsFragment : BaseFragment<FragmentMyTradeDetailsBinding>() {
                     setBackgroundResource(R.drawable.trade_type_buy_background)
                     setDrawableStart(R.drawable.ic_trade_type_buy)
                     setText(R.string.trade_type_buy_label)
-                    setTextColor(ContextCompat.getColor(binding.root.context, R.color.trade_type_buy_trade_text_color))
+                    setTextColor(
+                        ContextCompat.getColor(
+                            binding.root.context,
+                            R.color.trade_type_buy_trade_text_color
+                        )
+                    )
                 } else {
                     setBackgroundResource(R.drawable.trade_type_sell_background)
                     setDrawableStart(R.drawable.ic_trade_type_sell)
                     setText(R.string.trade_type_sell_label)
-                    setTextColor(ContextCompat.getColor(binding.root.context, R.color.trade_type_sell_trade_text_color))
+                    setTextColor(
+                        ContextCompat.getColor(
+                            binding.root.context,
+                            R.color.trade_type_sell_trade_text_color
+                        )
+                    )
                 }
             }
         }

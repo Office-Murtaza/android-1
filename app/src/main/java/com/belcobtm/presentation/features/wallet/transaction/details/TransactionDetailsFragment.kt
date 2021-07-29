@@ -12,7 +12,7 @@ import com.belcobtm.presentation.core.decorator.DividerDecorator
 import com.belcobtm.presentation.core.decorator.SpaceDecorator
 import com.belcobtm.presentation.core.ui.fragment.BaseFragment
 import com.belcobtm.presentation.features.wallet.transaction.details.adapter.TransactionDetailsAdapter
-import org.koin.android.viewmodel.ext.android.viewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 
 class TransactionDetailsFragment :

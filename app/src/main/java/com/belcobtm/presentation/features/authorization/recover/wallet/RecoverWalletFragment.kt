@@ -11,7 +11,7 @@ import com.belcobtm.presentation.core.extensions.*
 import com.belcobtm.presentation.core.ui.fragment.BaseFragment
 import com.belcobtm.presentation.features.authorization.recover.seed.RecoverSeedFragment
 import com.belcobtm.presentation.features.sms.code.SmsCodeFragment
-import org.koin.android.viewmodel.ext.android.viewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class RecoverWalletFragment : BaseFragment<FragmentRecoverWalletBinding>() {
 
