@@ -349,9 +349,15 @@ abstract class BaseFragment<V : ViewBinding> : Fragment(),
                 val drawable = ContextCompat.getDrawable(activity.applicationContext, homeButtonDrawable)
                 drawable?.setTint(ContextCompat.getColor(activity.applicationContext, R.color.colorPrimary))
                 (activity as HostActivity).supportActionBar?.setHomeAsUpIndicator(drawable)
+                requireActivity().window.statusBarColor = ContextCompat.getColor(
+                    requireContext(), R.color.colorPrimary
+                )
                 actionBar.show()
             } else {
                 actionBar.hide()
+                requireActivity().window.statusBarColor = ContextCompat.getColor(
+                    requireContext(), R.color.colorStatusBar
+                )
             }
 
             showBackButton(isBackButtonEnabled || (isToolbarEnabled && isHomeButtonEnabled))
@@ -359,4 +365,6 @@ abstract class BaseFragment<V : ViewBinding> : Fragment(),
         }
         activity.invalidateOptionsMenu()
     }
+
+
 }
