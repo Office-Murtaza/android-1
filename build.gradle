@@ -34,5 +34,13 @@ allprojects {
         maven { url 'https://jitpack.io' }
         maven { url "http://giphy.bintray.com/giphy-sdk" }
         maven { url "https://oss.sonatype.org/content/repositories/snapshots" }
+        maven {
+            name = "GitHubPackages"
+            url = uri("https://maven.pkg.github.com/trustwallet/wallet-core")
+            credentials {
+                username = "VadimKulinich"
+                password = "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"
+            }
+        }
     }
 }
