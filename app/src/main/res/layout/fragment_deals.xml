@@ -14,6 +14,7 @@
         app:withChevron="true" />
 
     <View
+        android:id="@+id/transfer_item_divider"
         android:layout_width="match_parent"
         android:layout_height="@dimen/divider_size"
         android:background="@color/thin_divider" />
@@ -27,6 +28,7 @@
         app:withChevron="true" />
 
     <View
+        android:id="@+id/swap_item_divider"
         android:layout_width="match_parent"
         android:layout_height="@dimen/divider_size"
         android:background="@color/thin_divider" />
@@ -40,6 +42,7 @@
         app:withChevron="true" />
 
     <View
+        android:id="@+id/staking_item_divider"
         android:layout_width="match_parent"
         android:layout_height="@dimen/divider_size"
         android:background="@color/thin_divider" />
@@ -53,6 +56,7 @@
         app:withChevron="true" />
 
     <View
+        android:id="@+id/trade_item_divider"
         android:layout_width="match_parent"
         android:layout_height="@dimen/divider_size"
         android:background="@color/thin_divider" />

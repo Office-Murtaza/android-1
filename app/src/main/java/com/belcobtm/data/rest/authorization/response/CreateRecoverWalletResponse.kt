@@ -1,5 +1,6 @@
 package com.belcobtm.data.rest.authorization.response
 
+import com.belcobtm.data.rest.service.ServiceFeeResponse
 import com.belcobtm.data.rest.wallet.response.BalanceResponse
 
 data class CreateRecoverWalletResponse(
@@ -13,5 +14,7 @@ data class CreateRecoverWalletResponse(
     val referralCode: String?,
     val referralInvites: Int?,
     val referralEarned: Int?,
-    val balance: BalanceResponse
+    val balance: BalanceResponse,
+    val services: List<Int>,
+    val fees: List<ServiceFeeResponse>
 )

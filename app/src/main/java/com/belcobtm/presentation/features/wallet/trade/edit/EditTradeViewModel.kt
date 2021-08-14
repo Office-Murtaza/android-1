@@ -4,8 +4,10 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.belcobtm.R
+import com.belcobtm.data.disk.database.service.ServiceType
 import com.belcobtm.data.model.trade.TradeType
 import com.belcobtm.domain.Failure
+import com.belcobtm.domain.service.ServiceInfoProvider
 import com.belcobtm.domain.trade.create.GetAvailableTradePaymentOptionsUseCase
 import com.belcobtm.domain.trade.details.EditTradeUseCase
 import com.belcobtm.domain.trade.details.GetTradeDetailsUseCase
@@ -22,7 +24,8 @@ class EditTradeViewModel(
     private val getAvailableTradePaymentOptionsUseCase: GetAvailableTradePaymentOptionsUseCase,
     private val getCoinListUseCase: GetCoinListUseCase,
     private val editTradeUseCase: EditTradeUseCase,
-    private val stringProvider: StringProvider
+    private val stringProvider: StringProvider,
+    private val serviceInfoProvider: ServiceInfoProvider
 ) : ViewModel() {
 
     private val _initialLoadingData = MutableLiveData<LoadingData<Unit>>()
@@ -37,10 +40,10 @@ class EditTradeViewModel(
     private val _cryptoAmountError = MutableLiveData<String?>()
     val cryptoAmountError: LiveData<String?> = _cryptoAmountError
 
-    private val _price = MutableLiveData<Double>(0.0)
+    private val _price = MutableLiveData(0.0)
     val price: LiveData<Double> = _price
 
-    private val _initialPrice = MutableLiveData<Double>(0.0)
+    private val _initialPrice = MutableLiveData(0.0)
     val initialPrice: LiveData<Double> = _initialPrice
 
     private val _availablePaymentOptions = MutableLiveData<List<AvailableTradePaymentOption>>()
@@ -198,8 +201,8 @@ class EditTradeViewModel(
         if (errorCount > 0) {
             return
         }
-        val fee = selectedCoin.value?.details?.platformTradeFee ?: 0.0
-        val cryptoAmount = toAmount / price * (1 + fee / 2 / 100)
+        val fee = serviceInfoProvider.getServiceFee(ServiceType.TRADE)
+        val cryptoAmount = toAmount / price * (1 + fee / 100)
         if (tradeType.value == TradeType.SELL && cryptoAmount > selectedCoin.value?.reservedBalanceCoin ?: 0.0) {
             _priceRangeError.value =
                 stringProvider.getString(R.string.edit_trade_not_enough_crypto_balance)

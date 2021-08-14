@@ -90,7 +90,7 @@ val viewModelModule = module {
     }
     viewModel { VerificationBlankViewModel(get(), get()) }
     viewModel { VerificationVipViewModel(get()) }
-    viewModel { SwapViewModel(get(), get(), get(), get(), get(), get()) }
+    viewModel { SwapViewModel(get(), get(), get(), get(), get(), get(), get()) }
     viewModel { WalletsViewModel(get(), get()) }
     viewModel { (coinCode: String) -> TradeRecallViewModel(coinCode, get(), get(), get(), get()) }
     viewModel { (coinCode: String) ->
@@ -128,7 +128,7 @@ val viewModelModule = module {
     viewModel { TradeUserStatisticViewModel(get()) }
     viewModel { InviteFromContactsViewModel(get(), get(), get(), get()) }
     viewModel { MyTradeDetailsViewModel(get(), get(), get()) }
-    viewModel { EditTradeViewModel(get(), get(), get(), get(), get()) }
+    viewModel { EditTradeViewModel(get(), get(), get(), get(), get(), get()) }
     viewModel { TradeOrdersViewModel(get()) }
     viewModel { MyTradesViewModel(get()) }
     viewModel {
@@ -139,7 +139,7 @@ val viewModelModule = module {
         )
     }
     viewModel {
-        CreateTradeViewModel(get(), get(), get(), get(), get())
+        CreateTradeViewModel(get(), get(), get(), get(), get(), get())
     }
     viewModel {
         TradeFilterViewModel(
@@ -156,7 +156,7 @@ val viewModelModule = module {
             get(named(GOOGLE_MAPS_DIRECTIONS_QUERY_FORMATTER))
         )
     }
-    viewModel { TradeCreateOrderViewModel(get(), get(), get(), get()) }
+    viewModel { TradeCreateOrderViewModel(get(), get(), get(), get(), get()) }
     viewModel { TradeOrderRateViewModel(get(), get()) }
     viewModel { OrderChatViewModel(get(), get(), get()) }
     viewModel { HistoryChatViewModel(get()) }

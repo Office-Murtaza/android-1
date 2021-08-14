@@ -7,7 +7,9 @@ import androidx.lifecycle.viewModelScope
 import com.belcobtm.R
 import com.belcobtm.data.disk.database.account.AccountDao
 import com.belcobtm.data.disk.database.account.AccountEntity
+import com.belcobtm.data.disk.database.service.ServiceType
 import com.belcobtm.domain.Failure
+import com.belcobtm.domain.service.ServiceInfoProvider
 import com.belcobtm.domain.transaction.interactor.CheckXRPAddressActivatedUseCase
 import com.belcobtm.domain.transaction.interactor.SwapUseCase
 import com.belcobtm.domain.wallet.LocalCoinType
@@ -28,6 +30,7 @@ class SwapViewModel(
     private val swapUseCase: SwapUseCase,
     private val checkXRPAddressActivatedUseCase: CheckXRPAddressActivatedUseCase,
     private val coinLimitsValueProvider: CoinLimitsValueProvider,
+    private val serviceInfoProvider: ServiceInfoProvider
 ) : ViewModel() {
 
     val originCoinsData = mutableListOf<CoinDataItem>()
@@ -94,7 +97,8 @@ class SwapViewModel(
                         // move to next step
                         updateCoins(originCoinsData[0], originCoinsData[1])
                     } else {
-                        _initLoadingData.value = LoadingData.Error(Failure.OperationCannotBePerformed)
+                        _initLoadingData.value =
+                            LoadingData.Error(Failure.OperationCannotBePerformed)
                     }
                 },
                 onError = { _initLoadingData.value = LoadingData.Error(it) }
@@ -289,7 +293,7 @@ class SwapViewModel(
         // amount(B) = amount(A) x price(A) / price(B) x (1 - swapProfitPercent / 100) - fee(B)
         val price = sendAmount * calcCoinsRatio(sendCoin, receiveCoin)
         val receiveCoinFee = getReceiveCoinFee(receiveCoin)
-        val sendCoinFee = getCoinFeeActual(sendCoin)
+        val sendCoinFee = getCoinFeeActual()
         val result = price * sendCoinFee - receiveCoinFee
         return 0.0.coerceAtLeast(result)
     }
@@ -304,7 +308,7 @@ class SwapViewModel(
         // amount(A) = (amount(B) + fee(B)) x price(B) / price(A) / (1 - swapProfitPercent / 100)
         val receiveCoinFee = getReceiveCoinFee(receiveCoin)
         val coinRatio = calcCoinsRatio(receiveCoin, sendCoin)
-        val sendCoinFee = getCoinFeeActual(sendCoin)
+        val sendCoinFee = getCoinFeeActual()
         val result = (receiveAmount + receiveCoinFee) * coinRatio / sendCoinFee
         return 0.0.coerceAtLeast(result)
     }
@@ -320,8 +324,8 @@ class SwapViewModel(
         }
     }
 
-    private fun getCoinFeeActual(coinDetailsDataItem: CoinDataItem): Double {
-        return 1 - coinDetailsDataItem.details.platformSwapFee / 100
+    private fun getCoinFeeActual(): Double {
+        return 1 - serviceInfoProvider.getServiceFee(ServiceType.SWAP) / 100
     }
 
     private fun calcCoinsRatio(coin1: CoinDataItem, coin2: CoinDataItem): Double {
@@ -333,7 +337,7 @@ class SwapViewModel(
         val coinToReceive = coinToReceive.value ?: return
         // Platform fee(B) = amount(A) x price(A) / price(B) x (swapProfitPercent / 100)
         val receiveRawAmount = sendAmount * calcCoinsRatio(coinToSend, coinToReceive)
-        val platformFeeActual = coinToReceive.details.platformSwapFee
+        val platformFeeActual = serviceInfoProvider.getServiceFee(ServiceType.SWAP)
         val platformFeeCoinsAmount = receiveRawAmount * (platformFeeActual / 100)
         _swapFee.value = SwapFeeModelView(
             platformFeeActual,

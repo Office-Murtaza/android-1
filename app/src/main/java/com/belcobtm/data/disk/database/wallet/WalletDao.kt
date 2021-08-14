@@ -52,8 +52,7 @@ interface WalletDao {
             }
             with(response.details) {
                 val entity = CoinDetailsEntity(
-                    response.idx, txFee, byteFee, scale,
-                    platformSwapFee, platformTradeFee, walletAddress,
+                    response.idx, txFee, byteFee, scale, walletAddress,
                     gasLimit, gasPrice, convertedTxFee
                 )
                 details.add(entity)

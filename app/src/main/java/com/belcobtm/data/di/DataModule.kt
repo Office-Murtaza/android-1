@@ -6,6 +6,7 @@ import androidx.security.crypto.EncryptedSharedPreferences
 import androidx.security.crypto.MasterKeys
 import com.belcobtm.data.ContactsRepositoryImpl
 import com.belcobtm.data.ReferralRepositoryImpl
+import com.belcobtm.data.ServiceRepositoryImpl
 import com.belcobtm.data.cloud.auth.CloudAuth
 import com.belcobtm.data.cloud.auth.FirebaseCloudAuth
 import com.belcobtm.data.cloud.storage.AuthFirebaseCloudStorage
@@ -19,6 +20,7 @@ import com.belcobtm.data.core.UnlinkHandler
 import com.belcobtm.data.disk.AssetsDataStore
 import com.belcobtm.data.disk.database.AppDatabase
 import com.belcobtm.data.disk.database.AppDatabase.Companion.MIGRATION_2_3
+import com.belcobtm.data.disk.database.AppDatabase.Companion.MIGRATION_3_4
 import com.belcobtm.data.disk.shared.preferences.SharedPreferencesHelper
 import com.belcobtm.data.helper.DistanceCalculator
 import com.belcobtm.data.inmemory.trade.TradeInMemoryCache
@@ -52,6 +54,7 @@ import com.belcobtm.data.rest.wallet.WalletApiService
 import com.belcobtm.domain.contacts.ContactsRepository
 import com.belcobtm.domain.notification.NotificationTokenRepository
 import com.belcobtm.domain.referral.ReferralRepository
+import com.belcobtm.domain.service.ServiceRepository
 import com.belcobtm.domain.tools.IntentActions
 import com.belcobtm.domain.tools.IntentActionsImpl
 import com.belcobtm.presentation.core.Endpoint
@@ -61,6 +64,8 @@ import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.ktx.storage
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import com.squareup.moshi.Moshi
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.asCoroutineDispatcher
 import okhttp3.OkHttpClient
@@ -107,11 +112,13 @@ val dataModule = module {
     single {
         Room.databaseBuilder(get(), AppDatabase::class.java, "belco_database")
             .addMigrations(MIGRATION_2_3)
+            .addMigrations(MIGRATION_3_4)
             .build()
     }
     single { Moshi.Builder().build() }
     single { get<AppDatabase>().getCoinDao() }
     single { get<AppDatabase>().getWalletDao() }
+    single { get<AppDatabase>().getServiceDao() }
     single<IntentActions> { IntentActionsImpl(get()) }
     single {
         OkHttpClient().newBuilder()
@@ -172,6 +179,7 @@ val dataModule = module {
             androidApplication(), Executors.newSingleThreadExecutor()
         )
     }
+    single<ServiceRepository> { ServiceRepositoryImpl(get(), CoroutineScope(Dispatchers.IO)) }
     single { TransactionsInMemoryCache() }
     single { UnlinkHandler(get(), get(), get(), get()) }
     factory { TradesResponseToTradeDataMapper(get(), get(), get()) }

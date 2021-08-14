@@ -17,8 +17,6 @@ data class CoinDataItem(
         val txFee: Double,
         val byteFee: Long,
         val scale: Int,
-        val platformSwapFee: Double,
-        val platformTradeFee: Double,
         val walletAddress: String,
         val gasLimit: Long?,
         val gasPrice: Long?,

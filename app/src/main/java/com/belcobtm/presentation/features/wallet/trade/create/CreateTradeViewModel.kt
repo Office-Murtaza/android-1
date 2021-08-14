@@ -4,9 +4,11 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.belcobtm.R
+import com.belcobtm.data.disk.database.service.ServiceType
 import com.belcobtm.data.model.trade.PaymentOption
 import com.belcobtm.data.model.trade.TradeType
 import com.belcobtm.domain.Failure
+import com.belcobtm.domain.service.ServiceInfoProvider
 import com.belcobtm.domain.trade.create.CheckTradeCreationAvailabilityUseCase
 import com.belcobtm.domain.trade.create.CreateTradeUseCase
 import com.belcobtm.domain.trade.create.GetAvailableTradePaymentOptionsUseCase
@@ -24,7 +26,8 @@ class CreateTradeViewModel(
     private val getCoinListUseCase: GetCoinListUseCase,
     private val createTradeUseCase: CreateTradeUseCase,
     private val checkTradeCreationAvailabilityUseCase: CheckTradeCreationAvailabilityUseCase,
-    private val stringProvider: StringProvider
+    private val stringProvider: StringProvider,
+    private val serviceInfoProvider: ServiceInfoProvider
 ) : ViewModel() {
 
     private lateinit var coinList: List<CoinDataItem>
@@ -41,7 +44,7 @@ class CreateTradeViewModel(
     private val _cryptoAmountError = MutableLiveData<String?>()
     val cryptoAmountError: LiveData<String?> = _cryptoAmountError
 
-    private val _price = MutableLiveData<Double>(0.0)
+    private val _price = MutableLiveData(0.0)
     val price: LiveData<Double> = _price
 
     private val _availablePaymentOptions = MutableLiveData<List<AvailableTradePaymentOption>>()
@@ -191,8 +194,8 @@ class CreateTradeViewModel(
         if (errorCount > 0) {
             return
         }
-        val fee = selectedCoin.value?.details?.platformTradeFee ?: 0.0
-        val cryptoAmount = toAmount / price * (1 + fee / 2 / 100)
+        val fee = serviceInfoProvider.getServiceFee(ServiceType.TRADE)
+        val cryptoAmount = toAmount / price * (1 + fee / 100)
         if (type == TradeType.SELL && cryptoAmount > selectedCoin.value?.reservedBalanceCoin ?: 0.0) {
             _amountRangeError.value =
                 stringProvider.getString(R.string.create_trade_not_enough_crypto_balance)

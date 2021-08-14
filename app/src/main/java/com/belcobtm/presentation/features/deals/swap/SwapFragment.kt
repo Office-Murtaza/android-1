@@ -121,7 +121,7 @@ class SwapFragment : BaseFragment<FragmentSwapBinding>() {
                 removeAll(coinsToExclude)
             }
             AlertHelper.showSelectCoinDialog(requireContext(), coinsList) {
-                viewModel.setCoinToSend(it)
+                viewModel.setCoinToReceive(it)
             }
         })
         sendCoinInputLayout.getEditText().addTextChangedListener(textWatcher.firstTextWatcher)

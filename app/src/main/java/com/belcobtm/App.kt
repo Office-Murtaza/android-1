@@ -8,6 +8,8 @@ import com.belcobtm.data.di.dataModule
 import com.belcobtm.data.di.repositoryModule
 import com.belcobtm.data.di.webSocketModule
 import com.belcobtm.data.disk.shared.preferences.SharedPreferencesHelper
+import com.belcobtm.domain.service.ServiceInfoProvider
+import com.belcobtm.domain.service.ServiceRepository
 import com.belcobtm.presentation.core.Const
 import com.belcobtm.presentation.di.helperModule
 import com.belcobtm.presentation.di.useCaseModule
@@ -19,7 +21,7 @@ import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
 
 class App : Application() {
-    private val prefHelper: SharedPreferencesHelper by inject()
+    private val serviceRepository: ServiceRepository by inject()
 
     init {
         instance = this
@@ -46,6 +48,7 @@ class App : Application() {
                 )
             )
         }
+        serviceRepository.prefetchServices()
     }
 
     companion object {

@@ -23,8 +23,6 @@ fun FullCoinEntity.toDataItem() = CoinDataItem(
         coinDetails.txFee,
         coinDetails.byteFee,
         coinDetails.scale,
-        coinDetails.platformSwapFee,
-        coinDetails.platformTradeFee,
         coinDetails.walletAddress,
         coinDetails.gasLimit,
         coinDetails.gasPrice,
