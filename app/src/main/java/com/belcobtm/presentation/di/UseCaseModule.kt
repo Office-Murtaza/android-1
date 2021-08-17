@@ -12,6 +12,7 @@ import com.belcobtm.domain.referral.CreateRecipientsUseCase
 import com.belcobtm.domain.referral.GetExistedPhoneNumbersUseCase
 import com.belcobtm.domain.referral.LoadReferralUseCase
 import com.belcobtm.domain.referral.SearchAvailableContactsUseCase
+import com.belcobtm.domain.service.ServiceInfoProvider
 import com.belcobtm.domain.settings.interactor.*
 import com.belcobtm.domain.socket.ConnectToSocketUseCase
 import com.belcobtm.domain.socket.DisconnectFromSocketUseCase
@@ -104,6 +105,7 @@ val useCaseModule = module {
     single { ChangePassUseCase(get()) }
     single { GetPhoneUseCase(get()) }
     single { UpdatePhoneUseCase(get()) }
+    single { ServiceInfoProvider(get()) }
     single {
         GetAtmsUseCase(
             get(), mapOf(

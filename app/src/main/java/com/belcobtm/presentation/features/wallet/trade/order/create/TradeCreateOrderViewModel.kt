@@ -4,8 +4,10 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.belcobtm.R
+import com.belcobtm.data.disk.database.service.ServiceType
 import com.belcobtm.data.model.trade.TradeType
 import com.belcobtm.domain.Failure
+import com.belcobtm.domain.service.ServiceInfoProvider
 import com.belcobtm.domain.trade.details.GetTradeDetailsUseCase
 import com.belcobtm.domain.trade.order.CreateOrderUseCase
 import com.belcobtm.domain.wallet.LocalCoinType
@@ -20,7 +22,8 @@ class TradeCreateOrderViewModel(
     private val getTradeDetailsUseCase: GetTradeDetailsUseCase,
     private val getCoinByCodeUseCase: GetCoinByCodeUseCase,
     private val createOrderUseCase: CreateOrderUseCase,
-    private val stringProvider: StringProvider
+    private val stringProvider: StringProvider,
+    private val serviceInfoProvider: ServiceInfoProvider
 ) : ViewModel() {
 
     private val _initialLoadingData = MutableLiveData<LoadingData<Unit>>()
@@ -80,7 +83,7 @@ class TradeCreateOrderViewModel(
         getTradeDetailsUseCase(tradeId, onSuccess = { trade ->
             getCoinByCodeUseCase(trade.coin.name, onSuccess = { coinDataItem ->
                 this.trade = trade
-                this.platformFeePercent = coinDataItem.details.platformTradeFee
+                this.platformFeePercent = serviceInfoProvider.getServiceFee(ServiceType.TRADE)
                 this._coin.value = trade.coin
                 this.reservedBalanceUsd = coinDataItem.reservedBalanceUsd
                 _reservedBalance.value = ReservedBalance(

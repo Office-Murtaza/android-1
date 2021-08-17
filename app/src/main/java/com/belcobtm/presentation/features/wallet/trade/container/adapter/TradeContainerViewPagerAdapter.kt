@@ -9,23 +9,32 @@ import com.belcobtm.presentation.features.wallet.trade.info.TradeInfoContainerFr
 import com.belcobtm.presentation.features.wallet.trade.list.TradeListFragment
 
 class TradeContainerViewPagerAdapter(
+    private val isSellAvailable: Boolean,
     fragmentManager: FragmentManager,
     lifecycle: Lifecycle
 ) : FragmentStateAdapter(fragmentManager, lifecycle) {
 
     companion object {
-        const val BUY_TRADES_TAB_POSITION = 0
-        const val SELL_TRADES_TAB_POSITION = 1
-        const val TRADE_INFO_TAB_POSITION = 2
+        const val FIRST_TAB_POSITION = 0
+        const val SECOND_TAB_POSITION = 1
+        const val THIRD_TAB_POSITION = 2
     }
 
-    override fun getItemCount(): Int = 3
+    override fun getItemCount(): Int = if (isSellAvailable) 3 else 2
 
     override fun createFragment(position: Int): Fragment =
-        when (position) {
-            BUY_TRADES_TAB_POSITION -> TradeListFragment.newInstance(TradeType.SELL)
-            SELL_TRADES_TAB_POSITION -> TradeListFragment.newInstance(TradeType.BUY)
-            TRADE_INFO_TAB_POSITION -> TradeInfoContainerFragment()
-            else -> throw RuntimeException("Illegal position of tab $position")
+        if (isSellAvailable) {
+            when (position) {
+                FIRST_TAB_POSITION -> TradeListFragment.newInstance(TradeType.SELL)
+                SECOND_TAB_POSITION -> TradeListFragment.newInstance(TradeType.BUY)
+                THIRD_TAB_POSITION -> TradeInfoContainerFragment()
+                else -> throw RuntimeException("Illegal position of tab $position")
+            }
+        } else {
+            when (position) {
+                FIRST_TAB_POSITION -> TradeListFragment.newInstance(TradeType.SELL)
+                SECOND_TAB_POSITION -> TradeInfoContainerFragment()
+                else -> throw RuntimeException("Illegal position of tab $position")
+            }
         }
 }
