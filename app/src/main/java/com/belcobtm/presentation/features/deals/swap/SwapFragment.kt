@@ -1,8 +1,12 @@
 package com.belcobtm.presentation.features.deals.swap
 
+import android.content.Context
+import android.inputmethodservice.InputMethodService
+import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import com.belcobtm.R
 import com.belcobtm.databinding.FragmentSwapBinding
 import com.belcobtm.domain.Failure
@@ -81,6 +85,18 @@ class SwapFragment : BaseFragment<FragmentSwapBinding>() {
         receiveCoinInputLayout.getEditText().setHint(R.string.swap_screen_receive_hint)
         sendCoinInputLayout.getEditText().setTextSilently(textWatcher.firstTextWatcher, "0")
         receiveCoinInputLayout.getEditText().setTextSilently(textWatcher.secondTextWatcher, "0")
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        binding.root.post {
+            binding.sendCoinInputLayout.getEditText().requestFocus()
+            binding.sendCoinInputLayout.getEditText().setSelection(
+                binding.sendCoinInputLayout.getEditText().length()
+            )
+            (requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager)
+                ?.showSoftInput(binding.sendCoinInputLayout.getEditText(), 0)
+        }
     }
 
     override fun createBinding(
