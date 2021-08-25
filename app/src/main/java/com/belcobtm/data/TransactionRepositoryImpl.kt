@@ -125,7 +125,8 @@ class TransactionRepositoryImpl(
         }
     }
 
-    override suspend fun sellGetLimits(): Either<Failure, SellLimitsDataItem> = apiService.sellGetLimitsAsync()
+    override suspend fun sellGetLimits(): Either<Failure, SellLimitsDataItem> =
+        apiService.sellGetLimitsAsync()
 
     override suspend fun sellPreSubmit(
         smsCode: String,

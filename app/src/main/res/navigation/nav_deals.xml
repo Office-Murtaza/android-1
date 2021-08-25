@@ -40,6 +40,14 @@
             app:exitAnim="@anim/slide_to_left"
             app:popEnterAnim="@anim/slide_from_left"
             app:popExitAnim="@anim/slide_to_right" />
+
+        <action
+            android:id="@+id/to_atm_sell_fragment"
+            app:destination="@id/atm_sell_fragment"
+            app:enterAnim="@anim/slide_from_right"
+            app:exitAnim="@anim/slide_to_left"
+            app:popEnterAnim="@anim/slide_from_left"
+            app:popExitAnim="@anim/slide_to_right" />
     </fragment>
 
     <fragment
@@ -368,5 +376,21 @@
             app:nullable="false" />
 
     </dialog>
+
+    <fragment
+        android:id="@+id/atm_sell_fragment"
+        android:name="com.belcobtm.presentation.features.deals.atm.sell.AtmSellFragment"
+        android:label="AtmSellFragment"
+        tools:layout="@layout/fragment_atm_sell">
+
+        <action
+            android:id="@+id/to_verification_info"
+            app:destination="@id/verification_info_fragment"
+            app:enterAnim="@anim/slide_from_right"
+            app:exitAnim="@anim/slide_to_left"
+            app:popEnterAnim="@anim/slide_from_left"
+            app:popExitAnim="@anim/slide_to_right" />
+
+    </fragment>
 
 </navigation>

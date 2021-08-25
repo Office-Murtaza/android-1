@@ -61,4 +61,18 @@
         android:layout_height="@dimen/divider_size"
         android:background="@color/thin_divider" />
 
+    <com.belcobtm.presentation.core.views.SettingsItemView
+        android:id="@+id/atm_sell_item"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:src="@drawable/ic_atm_sell"
+        app:text="@string/atm_sell_title"
+        app:withChevron="true" />
+
+    <View
+        android:id="@+id/atm_sell_item_divider"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/divider_size"
+        android:background="@color/thin_divider" />
+
 </androidx.appcompat.widget.LinearLayoutCompat>
