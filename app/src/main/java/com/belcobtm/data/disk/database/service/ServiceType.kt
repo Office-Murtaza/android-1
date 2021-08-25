@@ -16,7 +16,6 @@ annotation class ServiceType {
         const val SWAP = 2
         const val STAKING = 3
         const val TRADE = 4
-        // TODO sell trades?
         const val SELL = 5
     }
 }
