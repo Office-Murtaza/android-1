@@ -8,17 +8,15 @@ import android.location.Location
 import android.location.LocationManager
 import com.belcobtm.data.disk.database.account.AccountDao
 import com.belcobtm.data.disk.database.account.AccountEntity
-import com.belcobtm.data.disk.database.service.ServiceDao
-import com.belcobtm.data.disk.database.service.ServiceEntity
 import com.belcobtm.data.disk.database.wallet.WalletDao
 import com.belcobtm.data.disk.shared.preferences.SharedPreferencesHelper
 import com.belcobtm.data.rest.authorization.AuthApiService
-import com.belcobtm.data.rest.service.ServiceFeeResponse
 import com.belcobtm.data.rest.wallet.response.CoinResponse
 import com.belcobtm.domain.Either
 import com.belcobtm.domain.Failure
 import com.belcobtm.domain.authorization.AuthorizationRepository
 import com.belcobtm.domain.authorization.AuthorizationStatus
+import com.belcobtm.domain.service.ServiceRepository
 import com.belcobtm.domain.wallet.LocalCoinType
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -28,7 +26,6 @@ import org.web3j.utils.Numeric
 import wallet.core.jni.*
 import java.text.SimpleDateFormat
 import java.util.*
-import kotlin.collections.HashMap
 
 class AuthorizationRepositoryImpl(
     private val application: Application,
@@ -36,7 +33,7 @@ class AuthorizationRepositoryImpl(
     private val apiService: AuthApiService,
     private val daoAccount: AccountDao,
     private val walletDao: WalletDao,
-    private val serviceDao: ServiceDao
+    private val serviceRepository: ServiceRepository
 ) : AuthorizationRepository {
     private val temporaryCoinMap: MutableMap<LocalCoinType, Pair<String, String>> by lazy {
         return@lazy mutableMapOf<LocalCoinType, Pair<String, String>>()
@@ -111,10 +108,9 @@ class AuthorizationRepositoryImpl(
         return if (response.isRight) {
             val result = (response as Either.Right).b
             val accountList = createAccountEntityList(temporaryCoinMap, result.balance.coins)
-            val services = createServiceEntityList(result.services, result.fees)
             daoAccount.insertItemList(accountList)
             walletDao.updateBalance(result.balance)
-            serviceDao.updateServices(services)
+            serviceRepository.updateServices(result.services, result.fees)
             prefHelper.accessToken = result.accessToken
             prefHelper.refreshToken = result.refreshToken
             prefHelper.firebaseToken = result.firebaseToken
@@ -128,18 +124,6 @@ class AuthorizationRepositoryImpl(
         } else {
             response as Either.Left
         }
-    }
-
-    private fun createServiceEntityList(
-        services: List<Int>,
-        fees: List<ServiceFeeResponse>
-    ): List<ServiceEntity> {
-        val feesMap = fees.associateByTo(
-            HashMap(),
-            ServiceFeeResponse::service,
-            ServiceFeeResponse::percent
-        )
-        return services.map { ServiceEntity(it, feesMap[it] ?: 0.0) }
     }
 
     override suspend fun recoverWallet(
@@ -167,11 +151,10 @@ class AuthorizationRepositoryImpl(
 
         return if (recoverResponse.isRight) {
             val result = (recoverResponse as Either.Right).b
-            val services = createServiceEntityList(result.services, result.fees)
             val accountList = createAccountEntityList(temporaryCoinMap, result.balance.coins)
+            serviceRepository.updateServices(result.services, result.fees)
             daoAccount.insertItemList(accountList)
             walletDao.updateBalance(result.balance)
-            serviceDao.updateServices(services)
             prefHelper.apiSeed = seed
             prefHelper.firebaseToken = result.firebaseToken
             prefHelper.accessToken = result.accessToken
@@ -192,6 +175,7 @@ class AuthorizationRepositoryImpl(
         val response = apiService.authorizeByRefreshToken(prefHelper.refreshToken)
         return if (response.isRight) {
             val body = (response as Either.Right).b
+            serviceRepository.updateServices(body.services, body.fees)
             prefHelper.processAuthResponse(body)
             Either.Right(Unit)
         } else {

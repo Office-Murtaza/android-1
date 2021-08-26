@@ -5,12 +5,18 @@ import com.belcobtm.domain.Failure
 import com.belcobtm.domain.UseCase
 import com.belcobtm.domain.transaction.TransactionRepository
 
-class SellUseCase(private val repository: TransactionRepository) : UseCase<Unit, SellUseCase.Params>() {
+class SellUseCase(private val repository: TransactionRepository) :
+    UseCase<Unit, SellUseCase.Params>() {
     override suspend fun run(params: Params): Either<Failure, Unit> =
-        repository.sell(params.coinFrom, params.coinFromAmount)
+        with(params) {
+            repository.sell(coin, coinAmount, usdAmount, fee)
+        }
 
     data class Params(
-        val coinFrom: String,
-        val coinFromAmount: Double
+        val coin: String,
+        val price: Double,
+        val coinAmount: Double,
+        val usdAmount: Double,
+        val fee: Double
     )
 }

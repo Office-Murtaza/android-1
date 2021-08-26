@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/app_nav_graph"
+    app:startDestination="@id/splash_screen">
+
+    <include app:graph="@navigation/nav_authorization" />
+
+    <include app:graph="@navigation/nav_pin_code" />
+
+    <fragment
+        android:id="@+id/main_screen"
+        android:name="com.belcobtm.presentation.features.MainFragment"
+        android:label="MainScreen" />
+
+    <fragment
+        android:id="@+id/splash_screen"
+        android:name="com.belcobtm.presentation.features.splash.SplashFragment"
+        android:label="SplashScreen" />
+
+</navigation>

@@ -82,7 +82,12 @@ val viewModelModule = module {
     viewModel { (coinCode: String) -> TransactionsViewModel(coinCode, get(), get(), get(), get()) }
     viewModel { RecoverWalletViewModel(get(), get<PhoneNumberValidator>()) }
     viewModel { CreateWalletViewModel(get(), get<PhoneNumberValidator>()) }
-    viewModel { PinCodeViewModel(get(), get(), get(), get(), get(), get(), get(), get(), get()) }
+    viewModel {
+        PinCodeViewModel(
+            get(), get(), get(), get(), get(), get(),
+            get(), get(), get(), get(), get()
+        )
+    }
     viewModel {
         VerificationInfoViewModel(
             get(),
@@ -134,7 +139,7 @@ val viewModelModule = module {
     viewModel { MyTradesViewModel(get()) }
     viewModel {
         AtmSellViewModel(
-            get(), get(), get(), get(),
+            get(), get(), get(), get(), get(), get(), get(),
             get(named(DOUBLE_CURRENCY_PRICE_FORMATTER_QUALIFIER)),
         )
     }

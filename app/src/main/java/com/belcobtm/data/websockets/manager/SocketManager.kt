@@ -13,6 +13,7 @@ import com.belcobtm.data.websockets.serializer.RequestSerializer
 import com.belcobtm.data.websockets.serializer.ResponseDeserializer
 import com.belcobtm.domain.Either
 import com.belcobtm.domain.Failure
+import com.belcobtm.domain.service.ServiceRepository
 import com.belcobtm.presentation.core.Endpoint
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.*
@@ -24,6 +25,7 @@ class SocketManager(
     private val authApi: AuthApi,
     private val unlinkHandler: UnlinkHandler,
     private val preferencesHelper: SharedPreferencesHelper,
+    private val serviceRepository: ServiceRepository,
     private val serializer: RequestSerializer<StompSocketRequest>,
     private val deserializer: ResponseDeserializer<StompSocketResponse>
 ) : WebSocketManager {
@@ -184,6 +186,7 @@ class SocketManager(
         val code = response.code()
         when {
             code == HttpURLConnection.HTTP_OK && body != null -> {
+                serviceRepository.updateServices(body.services, body.fees)
                 preferencesHelper.processAuthResponse(body)
                 disconnect()
                 connect()

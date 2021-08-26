@@ -7,7 +7,7 @@ import androidx.annotation.IntDef
     ServiceType.SWAP,
     ServiceType.STAKING,
     ServiceType.TRADE,
-    ServiceType.SELL
+    ServiceType.ATM_SELL
 )
 @Retention(AnnotationRetention.SOURCE)
 annotation class ServiceType {
@@ -16,7 +16,6 @@ annotation class ServiceType {
         const val SWAP = 2
         const val STAKING = 3
         const val TRADE = 4
-        // TODO sell trades?
-        const val SELL = 5
+        const val ATM_SELL = 5
     }
 }

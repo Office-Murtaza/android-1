@@ -10,7 +10,6 @@ import com.belcobtm.presentation.core.Endpoint
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
-import org.koin.android.ext.koin.androidApplication
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
 import retrofit2.Retrofit
@@ -26,7 +25,7 @@ val authenticatorQualified = named("auth")
  * There is a copy of OkHttClient and Retrofit provision under `dataModule`
  * */
 val authenticatorModule = module {
-    single { TokenAuthenticator(get(authenticatorQualified), get(), get()) }
+    single { TokenAuthenticator(get(authenticatorQualified), get(), get(), get()) }
     single(authenticatorQualified) {
         get<Retrofit>(authenticatorQualified).create(AuthApi::class.java)
     }

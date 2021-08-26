@@ -178,7 +178,7 @@
             tools:text="$ 245.66" />
 
         <androidx.legacy.widget.Space
-            android:id="@+id/spaceView"
+            android:id="@+id/space_view"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_marginTop="16dp"
@@ -196,7 +196,8 @@
             android:layout_marginBottom="@dimen/margin_half"
             android:text="@string/swap_screen_fee"
             android:textAppearance="@style/Text.Regular1"
-            app:layout_constraintBottom_toTopOf="@id/next_button_view"
+            app:layout_constraintTop_toBottomOf="@id/space_view"
+            app:layout_constraintBottom_toTopOf="@id/sell_button"
             app:layout_constraintEnd_toStartOf="@id/platform_fee_text_view"
             app:layout_constraintHorizontal_chainStyle="packed"
             app:layout_constraintStart_toStartOf="parent" />
@@ -209,27 +210,31 @@
             android:layout_marginEnd="@dimen/margin_main"
             android:layout_marginBottom="@dimen/margin_half"
             android:textAppearance="@style/Text.Regular1"
-            app:layout_constraintBottom_toTopOf="@id/next_button_view"
+            app:layout_constraintBottom_toTopOf="@id/sell_button"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/platformFeeLabel"
             tools:text="3% ~ 0.25673 LTC" />
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/next_button_view"
+        <Button
+            android:id="@+id/sell_button"
             style="@style/Button.Primary"
             android:text="@string/submit"
+            android:layout_marginBottom="0dp"
             app:layout_constraintBottom_toTopOf="@id/update_limits_button"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
 
-        <com.google.android.material.button.MaterialButton
+        <Button
             android:id="@+id/update_limits_button"
-            style="@style/Button.Secondary"
-            android:layout_margin="@dimen/margin_main"
+            style="@style/Button.Secondary.NoOutlined"
+            android:layout_marginStart="@dimen/margin_main"
+            android:layout_marginEnd="@dimen/margin_main"
+            android:layout_marginBottom="@dimen/margin_main"
             android:text="@string/update_limits_button_label"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintStart_toStartOf="parent"
+            tools:visibility="visible"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

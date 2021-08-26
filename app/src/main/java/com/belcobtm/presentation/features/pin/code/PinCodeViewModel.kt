@@ -14,7 +14,9 @@ import com.belcobtm.domain.settings.interactor.BioAuthSupportedByPhoneUseCase
 import com.belcobtm.domain.settings.interactor.UnlinkUseCase
 import com.belcobtm.domain.socket.ConnectToSocketUseCase
 import com.belcobtm.domain.transaction.interactor.ConnectToTransactionsUseCase
+import com.belcobtm.domain.transaction.interactor.DisconnectFromTransactionsUseCase
 import com.belcobtm.domain.wallet.interactor.ConnectToWalletUseCase
+import com.belcobtm.domain.wallet.interactor.DisconnectFromWalletUseCase
 import com.belcobtm.presentation.core.SingleLiveData
 import com.belcobtm.presentation.features.pin.code.PinCodeFragment.Companion.KEY_PIN_MODE_CHANGE
 import com.belcobtm.presentation.features.pin.code.PinCodeFragment.Companion.KEY_PIN_MODE_CREATE
@@ -32,6 +34,8 @@ class PinCodeViewModel(
     private val connectToSocketUseCase: ConnectToSocketUseCase,
     private val connectToWalletUseCase: ConnectToWalletUseCase,
     private val connectToTransactionsUseCase: ConnectToTransactionsUseCase,
+    private val disconnectFromWalletUseCase: DisconnectFromWalletUseCase,
+    private val disconnectFromTransactionsUseCase: DisconnectFromTransactionsUseCase,
     private val authorizePinUseCase: GetAuthorizePinUseCase,
     private val savePinCodeUseCase: SaveAuthorizePinUseCase
 ) : ViewModel() {
@@ -54,6 +58,11 @@ class PinCodeViewModel(
             connectToWalletUseCase(Unit)
             connectToTransactionsUseCase(Unit)
         })
+    }
+
+    fun unsubscribe() {
+        disconnectFromWalletUseCase(Unit)
+        disconnectFromTransactionsUseCase(Unit)
     }
 
     fun savePinCode(pinCode: String) =

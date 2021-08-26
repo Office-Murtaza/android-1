@@ -124,16 +124,20 @@ class TransactionApiService(
     }
 
     suspend fun sell(
-        coinFromAmount: Double,
-        coinFrom: String,
-        hash: String
+        coin: String,
+        coinAmount: Double,
+        usdAmount: Double,
+        price: Double,
+        fee: Double
     ): Either<Failure, TransactionDetailsResponse> = try {
         val requestBody = SellRequest(
             type = TRANSACTION_SELL,
-            cryptoAmount = coinFromAmount,
-            hex = hash
+            price = price,
+            cryptoAmount = coinAmount,
+            fiatAmount = usdAmount,
+            serviceFee = fee
         )
-        val request = api.sellAsync(prefHelper.userId, coinFrom, requestBody).await()
+        val request = api.sellAsync(prefHelper.userId, coin, requestBody).await()
         request.body()?.let { Either.Right(it) } ?: Either.Left(Failure.ServerError())
     } catch (failure: Failure) {
         failure.printStackTrace()

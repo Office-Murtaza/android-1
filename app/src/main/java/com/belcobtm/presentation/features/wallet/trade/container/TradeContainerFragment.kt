@@ -3,6 +3,7 @@ package com.belcobtm.presentation.features.wallet.trade.container
 import android.Manifest
 import android.os.Bundle
 import android.view.*
+import androidx.navigation.fragment.findNavController
 import com.belcobtm.R
 import com.belcobtm.data.disk.database.service.ServiceType
 import com.belcobtm.databinding.FragmentTradeListContainerBinding
@@ -46,7 +47,7 @@ class TradeContainerFragment : BaseFragment<FragmentTradeListContainerBinding>()
 
     override fun FragmentTradeListContainerBinding.initViews() {
         setToolbarTitle(R.string.trade_list_screen_title)
-        val isSellAvailable = serviceInfoProvider.isAvailableService(ServiceType.SELL)
+        val isSellAvailable = serviceInfoProvider.isAvailableService(ServiceType.ATM_SELL)
         viewPager.adapter = TradeContainerViewPagerAdapter(
             isSellAvailable, childFragmentManager, requireActivity().lifecycle
         )
@@ -103,11 +104,11 @@ class TradeContainerFragment : BaseFragment<FragmentTradeListContainerBinding>()
     }
 
     override fun FragmentTradeListContainerBinding.initObservers() {
-        getNavController()?.currentBackStackEntry?.savedStateHandle
+        findNavController().currentBackStackEntry?.savedStateHandle
             ?.getLiveData<Boolean>(CREATE_TRADE_KEY)?.observe(viewLifecycleOwner) {
                 if (it) {
-                    val isSellAvailable = serviceInfoProvider.isAvailableService(ServiceType.SELL)
-                    getNavController()?.currentBackStackEntry?.savedStateHandle?.set(
+                    val isSellAvailable = serviceInfoProvider.isAvailableService(ServiceType.ATM_SELL)
+                    findNavController().currentBackStackEntry?.savedStateHandle?.set(
                         CREATE_TRADE_KEY,
                         false
                     )

@@ -70,6 +70,9 @@ class WebSocketWalletObserver(
         connectionFailure
 
     override fun disconnect() {
+        if(subscribeJob == null) {
+            return
+        }
         ioScope.launch {
             subscribeJob?.cancel()
             subscribeJob = null

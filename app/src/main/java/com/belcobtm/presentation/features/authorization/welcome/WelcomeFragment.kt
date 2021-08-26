@@ -3,6 +3,7 @@ package com.belcobtm.presentation.features.authorization.welcome
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.belcobtm.R
 import com.belcobtm.databinding.FragmentWelcomeBinding
@@ -11,8 +12,6 @@ import com.belcobtm.presentation.core.ui.fragment.BaseFragment
 class WelcomeFragment : BaseFragment<FragmentWelcomeBinding>() {
 
     override val isToolbarEnabled: Boolean = false
-    override val backPressedListener: View.OnClickListener =
-        View.OnClickListener { requireActivity().finish() }
 
     override fun FragmentWelcomeBinding.initViews() {
         pagerView.apply {
@@ -34,6 +33,6 @@ class WelcomeFragment : BaseFragment<FragmentWelcomeBinding>() {
 
     private fun startSupportFragment() {
         val direction = WelcomeFragmentDirections.toSupportFragment()
-        getNavController()?.navigate(direction)
+        findNavController().navigate(direction)
     }
 }

@@ -68,7 +68,7 @@ class SwapFragment : BaseFragment<FragmentSwapBinding>() {
         val initialLoading = viewModel.initLoadingData.value
         if (initialLoading is LoadingData.Error) {
             if (initialLoading.errorType is Failure.OperationCannotBePerformed) {
-                getNavController()?.popBackStack()
+                popBackStack()
             } else {
                 // data not yet initialized
                 viewModel.fetchInitialData()

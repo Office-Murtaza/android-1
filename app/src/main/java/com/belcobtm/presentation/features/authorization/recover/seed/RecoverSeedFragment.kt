@@ -1,11 +1,14 @@
 package com.belcobtm.presentation.features.authorization.recover.seed
 
 import android.annotation.SuppressLint
+import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.OnBackPressedCallback
 import androidx.core.os.bundleOf
+import androidx.navigation.fragment.findNavController
 import com.belcobtm.R
 import com.belcobtm.databinding.FragmentRecoverSeedBinding
 import com.belcobtm.domain.Failure
@@ -26,14 +29,26 @@ class RecoverSeedFragment : BaseFragment<FragmentRecoverSeedBinding>() {
     private val clipBoardHelper: ClipBoardHelper by inject()
     override val isToolbarEnabled: Boolean = true
     override val isHomeButtonEnabled: Boolean = true
-    override val backPressedListener: View.OnClickListener =
-        View.OnClickListener { popBackStack(R.id.recover_wallet_fragment, false) }
     override val retryListener: View.OnClickListener = View.OnClickListener { recoverWallet() }
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        val root = super.onCreateView(inflater, container, savedInstanceState)
+        val callback: OnBackPressedCallback = object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                findNavController().popBackStack(R.id.recover_wallet_fragment, false)
+            }
+        }
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, callback)
+        return root
+    }
 
     override fun FragmentRecoverSeedBinding.initViews() {
         setToolbarTitle(R.string.recover_seed_screen_title)
     }
-
 
     override fun FragmentRecoverSeedBinding.initObservers() {
         viewModel.recoverWalletLiveData.listen(
@@ -83,12 +98,13 @@ class RecoverSeedFragment : BaseFragment<FragmentRecoverSeedBinding>() {
         }
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean = if (item.itemId == android.R.id.home) {
-        popBackStack(R.id.recover_wallet_fragment, false)
-        true
-    } else {
-        false
-    }
+    override fun onOptionsItemSelected(item: MenuItem): Boolean =
+        if (item.itemId == android.R.id.home) {
+            popBackStack(R.id.recover_wallet_fragment, false)
+            true
+        } else {
+            false
+        }
 
     private fun recoverWallet() {
         val wordList: List<String> = binding.seedView.getString()
@@ -113,6 +129,9 @@ class RecoverSeedFragment : BaseFragment<FragmentRecoverSeedBinding>() {
         const val SEED_PHRASE_WORDS_SIZE = 12
     }
 
-    override fun createBinding(inflater: LayoutInflater, container: ViewGroup?): FragmentRecoverSeedBinding =
+    override fun createBinding(
+        inflater: LayoutInflater,
+        container: ViewGroup?
+    ): FragmentRecoverSeedBinding =
         FragmentRecoverSeedBinding.inflate(inflater, container, false)
 }

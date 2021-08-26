@@ -734,4 +734,11 @@
     <string name="today_limit_label">Today limit</string>
     <string name="tx_limit_label">Tx limit</string>
     <string name="converted_value_label">Converted value</string>
+    <string name="atm_sell_coin_rate"><![CDATA[<b>%1$s</b> %2$s\n ~ <b>%3$s</b>]]></string>
+    <string name="sell_amount_exceeds_limit">Amount exceeds reserved balance</string>
+    <string name="sell_amount_exceeds_today_limit">Amount exceeds today limit</string>
+
+    <string name="verification_info_deeplink">belcobtm://verification_info</string>
+    <string name="transactions_deeplink">belcobtm://transactions/{coin_code}</string>
+    <string name="transactions_deeplink_format">belcobtm://transactions/%s</string>
 </resources>

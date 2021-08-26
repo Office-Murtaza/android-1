@@ -6,6 +6,8 @@ import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.os.bundleOf
+import androidx.navigation.NavOptions
+import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import com.belcobtm.R
 import com.belcobtm.domain.authorization.AuthorizationStatus
@@ -16,9 +18,12 @@ import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class HostActivity : AppCompatActivity() {
-    private val authorizationStatusUseCase: AuthorizationStatusGetUseCase by inject()
+    // todo move to view model
     private val clearAppDataUseCase: ClearAppDataUseCase by inject()
     private val hostViewModel: HostViewModel by viewModel()
+    private val navController by lazy {
+        (supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment).navController
+    }
 
     companion object {
         const val FORCE_UNLINK_KEY = "force.unlink.key"
@@ -27,6 +32,7 @@ class HostActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         setTheme(R.style.AppTheme)
         super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_host)
         window.decorView.systemUiVisibility = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             View.SYSTEM_UI_FLAG_LAYOUT_STABLE or View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
         } else {
@@ -36,27 +42,11 @@ class HostActivity : AppCompatActivity() {
         if (intent.extras?.getBoolean(FORCE_UNLINK_KEY) == true) {
             showAuthorizationScreen()
         }
-        when (authorizationStatusUseCase.invoke()) {
-            AuthorizationStatus.PIN_CODE_CREATE -> showPinScreen(PinCodeFragment.KEY_PIN_MODE_CREATE)
-            AuthorizationStatus.PIN_CODE_ENTER -> showPinScreen()
-            else -> showAuthorizationScreen()
-        }
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         super.onOptionsItemSelected(item)
         return false
-    }
-
-    fun showMainScreen() = setHostFragment(HostNavigationFragment())
-
-    fun showPinScreen(mode: String = PinCodeFragment.KEY_PIN_MODE_ENTER) {
-        setHostFragment(
-            NavHostFragment.create(
-                R.navigation.nav_pin_code,
-                bundleOf(PinCodeFragment.TAG_PIN_MODE to mode)
-            )
-        )
     }
 
     override fun onDestroy() {
@@ -66,12 +56,6 @@ class HostActivity : AppCompatActivity() {
 
     fun showAuthorizationScreen() {
         clearAppDataUseCase.invoke()
-        setHostFragment(NavHostFragment.create(R.navigation.nav_authorization))
-    }
-
-    private fun setHostFragment(fragment: NavHostFragment) {
-        supportFragmentManager.beginTransaction()
-            .replace(android.R.id.content, fragment, fragment.javaClass.name)
-            .commit()
+        navController.navigate(R.id.nav_authorization)
     }
 }

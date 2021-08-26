@@ -7,13 +7,12 @@ import android.os.Bundle
 import android.view.*
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
-import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.LiveData
-import androidx.navigation.NavController
 import androidx.navigation.NavDirections
+import androidx.navigation.NavOptions
 import androidx.navigation.Navigator
 import androidx.navigation.fragment.findNavController
 import androidx.viewbinding.ViewBinding
@@ -26,7 +25,6 @@ import com.belcobtm.presentation.core.extensions.toggle
 import com.belcobtm.presentation.core.mvvm.LoadingData
 import com.belcobtm.presentation.core.views.InterceptableFrameLayout
 import com.belcobtm.presentation.features.HostActivity
-import com.belcobtm.presentation.features.HostNavigationFragment
 import com.google.android.material.snackbar.Snackbar
 import org.koin.android.ext.android.get
 import org.koin.core.parameter.parametersOf
@@ -34,13 +32,11 @@ import org.koin.core.parameter.parametersOf
 abstract class BaseFragment<V : ViewBinding> : Fragment(),
     InterceptableFrameLayout.OnInterceptEventListener {
     private var cachedToolbarTitle: String = ""
-    private var navController: NavController? = null
     protected open val isToolbarEnabled: Boolean = true
     protected open val isHomeButtonEnabled: Boolean = false
     protected open var isMenuEnabled: Boolean = false
     protected open val homeButtonDrawable: Int = R.drawable.ic_arrow_back
     protected open val retryListener: View.OnClickListener? = null
-    protected open val backPressedListener: View.OnClickListener = View.OnClickListener { popBackStack() }
     protected open val isFirstShowContent: Boolean = true
 
     //field used for dynamic setting of back button because we handle it on resume
@@ -68,7 +64,7 @@ abstract class BaseFragment<V : ViewBinding> : Fragment(),
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setHasOptionsMenu(true)
+        setHasOptionsMenu(isToolbarEnabled)
     }
 
     override fun onCreateView(
@@ -80,12 +76,6 @@ abstract class BaseFragment<V : ViewBinding> : Fragment(),
         binding = createBinding(inflater, container)
         baseBinding.contentContainerView.addView(binding.root)
         initToolbar()
-        val callback: OnBackPressedCallback = object : OnBackPressedCallback(true) {
-            override fun handleOnBackPressed() {
-                backPressedListener.onClick(null)
-            }
-        }
-        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, callback)
         return baseBinding.root
     }
 
@@ -97,7 +87,6 @@ abstract class BaseFragment<V : ViewBinding> : Fragment(),
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        this.navController = findNavController()
         updateActionBar()
         baseBinding.interceptableFrameLayout.interceptListener = this
         baseBinding.errorView.errorRetryButtonView.setOnClickListener(retryListener)
@@ -111,20 +100,10 @@ abstract class BaseFragment<V : ViewBinding> : Fragment(),
         }
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        this.navController = null
-    }
-
-    override fun onResume() {
-        super.onResume()
-        showBottomMenu()
-    }
-
     override fun onOptionsItemSelected(item: MenuItem): Boolean =
         if (item.itemId == android.R.id.home) {
             hideKeyboard()
-            popBackStack()
+            findNavController().popBackStack()
             true
         } else {
             false
@@ -155,51 +134,35 @@ abstract class BaseFragment<V : ViewBinding> : Fragment(),
         get<T>(null) { parametersOf(this) }
     }
 
-    protected fun getNavController(): NavController? = navController
-
     //catch exceptions in this block for simultaneous tap and navigation issue based on destination change
     protected fun navigate(resId: Int) {
-        try {
-            navController?.navigate(resId)
-        } catch (e: Exception) {
-            //catch exception for navigation
-        }
+        findNavController().navigate(resId)
     }
 
     protected fun navigate(resId: Int, args: Bundle) {
-        try {
-            navController?.navigate(resId, args)
-        } catch (e: Exception) {
-            //catch exception for navigation
-        }
+        findNavController().navigate(resId, args)
     }
 
     protected fun navigate(resId: Int, args: Bundle, extras: Navigator.Extras) {
-        try {
-            navController?.navigate(resId, args, null, extras)
-        } catch (e: Exception) {
-            //catch exception for navigation
-        }
+        findNavController().navigate(resId, args, null, extras)
+    }
+
+    protected fun navigate(resId: Int, options: NavOptions) {
+        findNavController().navigate(resId, null, options)
+    }
+
+    protected fun navigate(resId: Int, args: Bundle, options: NavOptions) {
+        findNavController().navigate(resId, args, options)
     }
 
     protected fun navigate(navDestination: NavDirections) {
-        try {
-            navController?.navigate(navDestination)
-        } catch (e: Exception) {
-            e.printStackTrace()
-            //catch exception for navigation
-        }
+        findNavController().navigate(navDestination)
     }
 
-    protected fun setGraph(graphResId: Int) {
-        navController?.setGraph(graphResId)
-    }
+    open fun popBackStack() = findNavController().popBackStack()
 
-    open fun popBackStack() = navController?.popBackStack() ?: false
-
-    protected fun popBackStack(destinationId: Int, inclusive: Boolean): Boolean {
-        return navController?.popBackStack(destinationId, inclusive) ?: false
-    }
+    protected fun popBackStack(destinationId: Int, inclusive: Boolean): Boolean =
+        findNavController().popBackStack(destinationId, inclusive)
 
     protected fun setToolbarTitle(title: String) {
         this.cachedToolbarTitle = title
@@ -287,17 +250,6 @@ abstract class BaseFragment<V : ViewBinding> : Fragment(),
         updateContentContainer(isErrorVisible = true)
     }
 
-    protected fun showBottomMenu() {
-        activity?.supportFragmentManager?.findFragmentByTag(HostNavigationFragment::class.java.name)
-            ?.let {
-                if (isMenuEnabled) {
-                    (it as HostNavigationFragment).showBottomMenu()
-                } else {
-                    (it as HostNavigationFragment).hideBottomMenu()
-                }
-            }
-    }
-
     protected fun updateContentContainer(
         isContentVisible: Boolean = false,
         isProgressVisible: Boolean = false,
@@ -346,8 +298,14 @@ abstract class BaseFragment<V : ViewBinding> : Fragment(),
         val activity = requireActivity() as AppCompatActivity
         activity.supportActionBar?.let { actionBar ->
             if (isToolbarEnabled) {
-                val drawable = ContextCompat.getDrawable(activity.applicationContext, homeButtonDrawable)
-                drawable?.setTint(ContextCompat.getColor(activity.applicationContext, R.color.colorPrimary))
+                val drawable =
+                    ContextCompat.getDrawable(activity.applicationContext, homeButtonDrawable)
+                drawable?.setTint(
+                    ContextCompat.getColor(
+                        activity.applicationContext,
+                        R.color.colorPrimary
+                    )
+                )
                 (activity as HostActivity).supportActionBar?.setHomeAsUpIndicator(drawable)
                 requireActivity().window.statusBarColor = ContextCompat.getColor(
                     requireContext(), R.color.colorPrimary
