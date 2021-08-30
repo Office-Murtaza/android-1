@@ -123,6 +123,7 @@
 -keep class com.belcobtm.data.rest.transaction.response.** { *; }
 -keep class com.belcobtm.data.rest.wallet.request.** { *; }
 -keep class com.belcobtm.data.rest.wallet.response.** { *; }
+-keep class com.belcobtm.data.websockets.chat.model.** { *; }
 
 -keep class com.belcobtm.presentation.core.extensions.** { *; }
 
