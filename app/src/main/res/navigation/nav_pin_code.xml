@@ -9,5 +9,5 @@
         android:id="@+id/pin_code_fragment"
         android:name="com.belcobtm.presentation.features.pin.code.PinCodeFragment"
         android:label="PinCodeFragment"
-        tools:layout="@layout/fragment_pin_code" />
+        tools:layout="@layout/fragment_pin_code"/>
 </navigation>

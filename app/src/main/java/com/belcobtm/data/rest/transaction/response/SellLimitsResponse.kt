@@ -4,17 +4,13 @@ import com.belcobtm.domain.transaction.item.SellLimitsDataItem
 import java.io.Serializable
 
 data class LimitsResponse(
-    val dailyLimit: Limit?,
-    val txLimit: Limit?,
-    val sellProfitRate: Double
+    val dailyLimit: Double?,
+    val txLimit: Double?,
+    val todayLimit: Double?
 )
 
-data class Limit(
-    val USD: Double?
-) : Serializable
-
 fun LimitsResponse.mapToDataItem(): SellLimitsDataItem = SellLimitsDataItem(
-    usdDailyLimit = dailyLimit?.USD ?: 0.0,
-    usdTxLimit = dailyLimit?.USD ?: 0.0,
-    profitRate = sellProfitRate
+    dailyLimit = dailyLimit ?: 0.0,
+    txLimit = txLimit ?: 0.0,
+    todayLimit = todayLimit ?: 0.0
 )

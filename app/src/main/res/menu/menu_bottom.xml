@@ -11,7 +11,7 @@
         android:title="@string/bottom_menu_deals" />
 
     <item
-        android:id="@+id/nav_locations"
+        android:id="@+id/nav_atm"
         android:icon="@drawable/ic_menu_location"
         android:title="@string/bottom_menu_locations" />
 

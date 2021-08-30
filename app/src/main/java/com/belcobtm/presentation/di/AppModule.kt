@@ -26,6 +26,7 @@ import com.belcobtm.presentation.features.authorization.create.wallet.CreateWall
 import com.belcobtm.presentation.features.authorization.recover.seed.RecoverSeedViewModel
 import com.belcobtm.presentation.features.authorization.recover.wallet.RecoverWalletViewModel
 import com.belcobtm.presentation.features.contacts.ContactListViewModel
+import com.belcobtm.presentation.features.deals.atm.sell.AtmSellViewModel
 import com.belcobtm.presentation.features.deals.staking.StakingViewModel
 import com.belcobtm.presentation.features.deals.swap.SwapViewModel
 import com.belcobtm.presentation.features.notification.NotificationHelper
@@ -81,7 +82,12 @@ val viewModelModule = module {
     viewModel { (coinCode: String) -> TransactionsViewModel(coinCode, get(), get(), get(), get()) }
     viewModel { RecoverWalletViewModel(get(), get<PhoneNumberValidator>()) }
     viewModel { CreateWalletViewModel(get(), get<PhoneNumberValidator>()) }
-    viewModel { PinCodeViewModel(get(), get(), get(), get(), get(), get(), get(), get(), get()) }
+    viewModel {
+        PinCodeViewModel(
+            get(), get(), get(), get(), get(), get(),
+            get(), get(), get(), get(), get()
+        )
+    }
     viewModel {
         VerificationInfoViewModel(
             get(),
@@ -131,6 +137,12 @@ val viewModelModule = module {
     viewModel { EditTradeViewModel(get(), get(), get(), get(), get(), get()) }
     viewModel { TradeOrdersViewModel(get()) }
     viewModel { MyTradesViewModel(get()) }
+    viewModel {
+        AtmSellViewModel(
+            get(), get(), get(), get(), get(), get(), get(),
+            get(named(DOUBLE_CURRENCY_PRICE_FORMATTER_QUALIFIER)),
+        )
+    }
     viewModel {
         TradeDetailsViewModel(
             get(), get(),

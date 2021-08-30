@@ -71,7 +71,7 @@ class PasswordFragment : BaseFragment<FragmentPasswordBinding>() {
                 }
                 is PasswordAction.BackStackAction -> {
                     showContent()
-                    getNavController()?.popBackStack()
+                    popBackStack()
                 }
                 PasswordAction.PopToSecurityAction -> popBackStack(R.id.security_fragment, false)
             }

@@ -29,6 +29,9 @@ class DealsFragment : BaseFragment<FragmentDealsBinding>() {
         val isTradeEnabled = availabilityProvider.isAvailableService(ServiceType.TRADE)
         tradeItem.toggle(isTradeEnabled)
         tradeItemDivider.toggle(isTradeEnabled)
+        val isAtmSellEnabled = availabilityProvider.isAvailableService(ServiceType.ATM_SELL)
+        atmSellItem.toggle(isAtmSellEnabled)
+        atmSellItemDivider.toggle(isAtmSellEnabled)
     }
 
     override fun createBinding(
@@ -42,5 +45,6 @@ class DealsFragment : BaseFragment<FragmentDealsBinding>() {
         stakingItem.setOnClickListener { navigate(DealsFragmentDirections.toStakingFragment()) }
         transferItem.setOnClickListener { navigate(DealsFragmentDirections.toContactListFragment()) }
         tradeItem.setOnClickListener { navigate(DealsFragmentDirections.toTradeContainerFragment()) }
+        atmSellItem.setOnClickListener { navigate(DealsFragmentDirections.toAtmSellFragment()) }
     }
 }

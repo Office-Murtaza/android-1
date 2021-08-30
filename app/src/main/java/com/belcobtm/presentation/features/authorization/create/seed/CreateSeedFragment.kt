@@ -1,12 +1,11 @@
 package com.belcobtm.presentation.features.authorization.create.seed
 
-import android.content.ClipData
-import android.content.ClipboardManager
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.OnBackPressedCallback
 import androidx.core.os.bundleOf
 import androidx.navigation.fragment.navArgs
 import com.belcobtm.R
@@ -28,9 +27,6 @@ class CreateSeedFragment : BaseFragment<FragmentCreateSeedBinding>() {
     private val clipBoardHelper: ClipBoardHelper by inject()
     override val isToolbarEnabled: Boolean = true
     override val isHomeButtonEnabled: Boolean = true
-    override val backPressedListener: View.OnClickListener = View.OnClickListener {
-        goBack()
-    }
     override val retryListener: View.OnClickListener = View.OnClickListener { createWallet() }
 
     override fun FragmentCreateSeedBinding.initViews() {
@@ -50,7 +46,6 @@ class CreateSeedFragment : BaseFragment<FragmentCreateSeedBinding>() {
         showBackButton(true)
         if (args.mode == MODE_SETTINGS) {
             isMenuEnabled = true
-            showBottomMenu()
             generateButtonView.hide()
             pasteButtonView.hide()
         } else {
@@ -104,6 +99,12 @@ class CreateSeedFragment : BaseFragment<FragmentCreateSeedBinding>() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         args.seed?.takeIf { args.mode == MODE_SETTINGS }?.let(::showSeed)
+        val callback: OnBackPressedCallback = object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                goBack()
+            }
+        }
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, callback)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean =

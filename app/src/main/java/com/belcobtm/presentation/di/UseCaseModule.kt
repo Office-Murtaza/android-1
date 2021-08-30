@@ -42,10 +42,7 @@ import com.belcobtm.domain.transaction.interactor.*
 import com.belcobtm.domain.transaction.interactor.trade.TradeRecallTransactionCompleteUseCase
 import com.belcobtm.domain.transaction.interactor.trade.TradeReserveTransactionCompleteUseCase
 import com.belcobtm.domain.transaction.interactor.trade.TradeReserveTransactionCreateUseCase
-import com.belcobtm.domain.wallet.interactor.ConnectToWalletUseCase
-import com.belcobtm.domain.wallet.interactor.GetChartsUseCase
-import com.belcobtm.domain.wallet.interactor.GetCoinByCodeUseCase
-import com.belcobtm.domain.wallet.interactor.GetCoinListUseCase
+import com.belcobtm.domain.wallet.interactor.*
 import com.belcobtm.presentation.core.DateFormat.CHAT_DATE_FORMAT
 import com.belcobtm.presentation.core.formatter.DoubleCurrencyPriceFormatter.Companion.DOUBLE_CURRENCY_PRICE_FORMATTER_QUALIFIER
 import com.belcobtm.presentation.core.formatter.MilesFormatter.Companion.MILES_FORMATTER_QUALIFIER
@@ -92,6 +89,7 @@ val useCaseModule = module {
     single { SendSmsToDeviceUseCase(get()) }
     single { SellPreSubmitUseCase(get()) }
     single { SellGetLimitsUseCase(get()) }
+    single { SellUseCase(get()) }
     single { GetUserCoinListUseCase(get()) }
     single { UpdateUserCoinListUseCase(get()) }
     single { GetChartsUseCase(get()) }
@@ -128,6 +126,7 @@ val useCaseModule = module {
     single { StakeCancelUseCase(get()) }
     single { StakeWithdrawUseCase(get()) }
     single { ConnectToWalletUseCase(get()) }
+    single { DisconnectFromWalletUseCase(get()) }
     single { CheckXRPAddressActivatedUseCase(get()) }
     single { GetContactsUseCase(get()) }
     single { SaveSeedUseCase(get()) }
@@ -178,6 +177,7 @@ val useCaseModule = module {
     single { UpdateLastSeenMessageTimeStampUseCase(get()) }
     single { ObserveTransactionsUseCase(get()) }
     single { ConnectToTransactionsUseCase(get()) }
+    single { DisconnectFromTransactionsUseCase(get()) }
     single { ConnectToSocketUseCase(get()) }
     single { DisconnectFromSocketUseCase(get()) }
     single { LoadReferralUseCase(get()) }

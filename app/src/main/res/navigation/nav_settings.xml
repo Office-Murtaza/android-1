@@ -214,6 +214,8 @@
             app:popEnterAnim="@anim/slide_from_left"
             app:popExitAnim="@anim/slide_to_right" />
 
+        <deepLink app:uri="@string/verification_info_deeplink" />
+
     </fragment>
 
     <fragment

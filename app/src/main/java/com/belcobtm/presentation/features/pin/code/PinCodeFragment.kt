@@ -2,15 +2,19 @@ package com.belcobtm.presentation.features.pin.code
 
 import android.content.Context
 import android.os.Build
+import android.os.Bundle
 import android.os.VibrationEffect
 import android.os.Vibrator
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TableLayout
+import androidx.activity.OnBackPressedCallback
 import androidx.biometric.BiometricPrompt
 import androidx.core.content.ContextCompat
 import androidx.core.view.isInvisible
+import androidx.navigation.NavOptions
+import androidx.navigation.fragment.findNavController
 import com.belcobtm.App
 import com.belcobtm.R
 import com.belcobtm.databinding.FragmentPinCodeBinding
@@ -18,11 +22,12 @@ import com.belcobtm.domain.Failure
 import com.belcobtm.presentation.core.extensions.toggle
 import com.belcobtm.presentation.core.ui.fragment.BaseFragment
 import com.belcobtm.presentation.features.HostActivity
-import com.belcobtm.presentation.features.HostNavigationFragment
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class PinCodeFragment : BaseFragment<FragmentPinCodeBinding>() {
     private val viewModel: PinCodeViewModel by viewModel()
+
+    // TODO move to args
     private val pinMode: String by lazy {
         requireArguments().getString(
             TAG_PIN_MODE,
@@ -31,17 +36,28 @@ class PinCodeFragment : BaseFragment<FragmentPinCodeBinding>() {
     }
     override val isToolbarEnabled: Boolean = false
     override var isMenuEnabled: Boolean = true
-    override val backPressedListener: View.OnClickListener = View.OnClickListener {
-        if (pinMode == KEY_PIN_MODE_CHANGE) {
-            popBackStack(R.id.security_fragment, false)
-        } else {
-            //do nothing, user need to enter/create pin
-        }
-    }
     override val retryListener: View.OnClickListener =
         View.OnClickListener { viewModel.authorize() }
 
     private var appliedState: PinCodeState? = null
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        val root = super.onCreateView(inflater, container, savedInstanceState)
+        val callback: OnBackPressedCallback = object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                if (pinMode == KEY_PIN_MODE_CHANGE) {
+                    findNavController().popBackStack()
+                }
+            }
+        }
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, callback)
+        viewModel.unsubscribe()
+        return root
+    }
 
     override fun FragmentPinCodeBinding.initViews() {
         appliedState = null
@@ -85,10 +101,6 @@ class PinCodeFragment : BaseFragment<FragmentPinCodeBinding>() {
                     keyboardView.layoutParams = keyboardView.layoutParams.apply {
                         height = TableLayout.LayoutParams.WRAP_CONTENT
                     }
-                    activity
-                        ?.supportFragmentManager
-                        ?.findFragmentByTag(HostNavigationFragment::class.java.name)
-                        ?.let { fragment -> (fragment as? HostNavigationFragment)?.showBottomMenu() }
                 }
             }
             state.visiblePin.doIfChanged(appliedState?.visiblePin) {
@@ -111,7 +123,12 @@ class PinCodeFragment : BaseFragment<FragmentPinCodeBinding>() {
             when (action) {
                 is PinCodeAction.Success -> {
                     viewModel.connectToWebSockets()
-                    (requireActivity() as HostActivity).showMainScreen()
+                    navigate(
+                        R.id.main_screen,
+                        NavOptions.Builder()
+                            .setPopUpTo(R.id.pin_code_fragment, true)
+                            .build()
+                    )
                 }
                 is PinCodeAction.ChangedPin -> {
                     showSnackBar(R.string.pin_updated)

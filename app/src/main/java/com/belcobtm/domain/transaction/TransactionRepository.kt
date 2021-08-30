@@ -44,8 +44,10 @@ interface TransactionRepository {
     ): Either<Failure, SellPreSubmitDataItem>
 
     suspend fun sell(
-        fromCoin: String,
-        fromCoinAmount: Double
+        coin: String,
+        coinAmount: Double,
+        usdAmount: Double,
+        fee: Double
     ): Either<Failure, Unit>
 
     suspend fun exchange(

@@ -3,6 +3,7 @@ package com.belcobtm.presentation.features.wallet.trade.create
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.fragment.findNavController
 import com.belcobtm.R
 import com.belcobtm.data.model.trade.TradeType
 import com.belcobtm.databinding.FragmentCreateTradeBinding
@@ -128,7 +129,7 @@ class CreateTradeFragment : BaseFragment<FragmentCreateTradeBinding>() {
                     requireContext(),
                     R.string.create_trade_success_message
                 )
-                getNavController()?.previousBackStackEntry?.savedStateHandle
+                findNavController().previousBackStackEntry?.savedStateHandle
                     ?.set(TradeContainerFragment.CREATE_TRADE_KEY, true)
                 popBackStack()
             },

@@ -9,5 +9,7 @@ import com.belcobtm.domain.transaction.item.SellLimitsDataItem
 class SellGetLimitsUseCase(
     private val repository: TransactionRepository
 ) : UseCase<SellLimitsDataItem, Unit>() {
-    override suspend fun run(unit: Unit): Either<Failure, SellLimitsDataItem> = repository.sellGetLimits()
+
+    override suspend fun run(params: Unit): Either<Failure, SellLimitsDataItem> =
+        repository.sellGetLimits()
 }
