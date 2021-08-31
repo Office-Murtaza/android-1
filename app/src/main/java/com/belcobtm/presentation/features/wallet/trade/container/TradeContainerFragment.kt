@@ -3,6 +3,7 @@ package com.belcobtm.presentation.features.wallet.trade.container
 import android.Manifest
 import android.os.Bundle
 import android.view.*
+import androidx.navigation.fragment.findNavController
 import com.belcobtm.R
 import com.belcobtm.databinding.FragmentTradeListContainerBinding
 import com.belcobtm.domain.Failure
@@ -85,10 +86,10 @@ class TradeContainerFragment : BaseFragment<FragmentTradeListContainerBinding>()
     }
 
     override fun FragmentTradeListContainerBinding.initObservers() {
-        getNavController()?.currentBackStackEntry?.savedStateHandle
+        findNavController().currentBackStackEntry?.savedStateHandle
             ?.getLiveData<Boolean>(CREATE_TRADE_KEY)?.observe(viewLifecycleOwner) {
                 if (it) {
-                    getNavController()?.currentBackStackEntry?.savedStateHandle?.set(CREATE_TRADE_KEY, false)
+                    findNavController().currentBackStackEntry?.savedStateHandle?.set(CREATE_TRADE_KEY, false)
                     viewPager.postDelayed({
                         viewPager.currentItem = TRADE_INFO_TAB_POSITION
                         val userInfoFragment = childFragmentManager
