@@ -88,6 +88,6 @@ class TradeOrderDataToItemMapper(
             OrderStatus.RELEASED -> R.string.order_status_released_label
             OrderStatus.DISPUTING -> R.string.order_status_disputing_label
             OrderStatus.SOLVED -> R.string.order_status_solved_label
-            else -> throw RuntimeException("Unknown trade type $status")
+            else -> throw RuntimeException("Unknown order status $status")
         }
 }

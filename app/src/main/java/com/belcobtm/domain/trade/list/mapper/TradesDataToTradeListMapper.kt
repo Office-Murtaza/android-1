@@ -2,6 +2,7 @@ package com.belcobtm.domain.trade.list.mapper
 
 import com.belcobtm.data.inmemory.trade.TradeInMemoryCache.Companion.UNDEFINED_DISTANCE
 import com.belcobtm.data.model.trade.TradeData
+import com.belcobtm.data.model.trade.TradeStatus
 import com.belcobtm.data.model.trade.TradeType
 import com.belcobtm.data.model.trade.filter.SortOption
 import com.belcobtm.data.model.trade.filter.TradeFilter
@@ -22,6 +23,7 @@ class TradesDataToTradeListMapper(
             .values
             .asSequence()
             .filter { it.type == params.tradeType }
+            .filter { it.status != TradeStatus.DELETED }
             .filter { it.makerId != userId }
             .let { sequence ->
                 filter?.let { filter ->

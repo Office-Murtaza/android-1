@@ -46,6 +46,8 @@ interface TradeRepository {
 
     suspend fun editTrade(editTrade: EditTradeItem): Either<Failure, Unit>
 
+    suspend fun deleteTrade(tradeId: String): Either<Failure, Unit>
+
     suspend fun cancelTrade(tradeId: String): Either<Failure, Unit>
 
     suspend fun cancelOrder(orderId: String): Either<Failure, Unit>

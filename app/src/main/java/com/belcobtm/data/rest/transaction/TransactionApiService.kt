@@ -13,6 +13,7 @@ import com.belcobtm.domain.Failure
 import com.belcobtm.domain.transaction.item.SellLimitsDataItem
 import com.belcobtm.domain.transaction.item.SellPreSubmitDataItem
 import com.belcobtm.domain.transaction.item.StakeDetailsDataItem
+import com.belcobtm.domain.wallet.item.CoinDataItem
 
 class TransactionApiService(
     private val api: TransactionApi,
@@ -147,8 +148,8 @@ class TransactionApiService(
     suspend fun exchange(
         coinFromAmount: Double,
         coinToAmount: Double,
-        coinFrom: String,
-        coinTo: String,
+        coinFrom: CoinDataItem,
+        coinTo: CoinDataItem,
         hash: String,
         fee: Double?,
         fromAddress: String?,
@@ -160,11 +161,13 @@ class TransactionApiService(
             fromAddress = fromAddress,
             toAddress = toAddress,
             cryptoAmount = coinFromAmount,
-            refCoin = coinTo,
+            price = coinFrom.priceUsd,
+            refCoin = coinTo.code,
+            refCoinPrice = coinTo.priceUsd,
             refCryptoAmount = coinToAmount,
-            fee = fee,
+            serviceFee = fee
         )
-        val request = api.exchangeAsync(prefHelper.userId, coinFrom, requestBody).await()
+        val request = api.exchangeAsync(prefHelper.userId, coinFrom.code, requestBody).await()
         request.body()?.let { Either.Right(it) } ?: Either.Left(Failure.ServerError())
     } catch (failure: Failure) {
         failure.printStackTrace()

@@ -136,7 +136,7 @@ val viewModelModule = module {
     viewModel { MyTradeDetailsViewModel(get(), get(), get()) }
     viewModel { EditTradeViewModel(get(), get(), get(), get(), get(), get()) }
     viewModel { TradeOrdersViewModel(get()) }
-    viewModel { MyTradesViewModel(get()) }
+    viewModel { MyTradesViewModel(get(), get()) }
     viewModel {
         AtmSellViewModel(
             get(), get(), get(), get(), get(), get(), get(),
@@ -170,7 +170,7 @@ val viewModelModule = module {
     }
     viewModel { TradeCreateOrderViewModel(get(), get(), get(), get(), get()) }
     viewModel { TradeOrderRateViewModel(get(), get()) }
-    viewModel { OrderChatViewModel(get(), get(), get()) }
+    viewModel { OrderChatViewModel(get(), get(), get(), get()) }
     viewModel { HistoryChatViewModel(get()) }
     viewModel { HostViewModel(get()) }
     viewModel { ReferralViewModel(get(), get()) }

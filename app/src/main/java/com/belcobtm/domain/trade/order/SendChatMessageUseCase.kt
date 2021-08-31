@@ -2,6 +2,7 @@ package com.belcobtm.domain.trade.order
 
 import com.belcobtm.data.cloud.auth.CloudAuth
 import com.belcobtm.data.cloud.storage.CloudStorage
+import com.belcobtm.data.core.RandomStringGenerator
 import com.belcobtm.data.disk.shared.preferences.SharedPreferencesHelper
 import com.belcobtm.data.websockets.chat.ChatObserver
 import com.belcobtm.domain.Either

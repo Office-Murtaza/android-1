@@ -6,19 +6,25 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
+import com.belcobtm.data.core.RandomStringGenerator
 import com.belcobtm.domain.trade.order.ObserveChatMessagesUseCase
 import com.belcobtm.domain.trade.order.SendChatMessageUseCase
 import com.belcobtm.domain.trade.order.UpdateLastSeenMessageTimeStampUseCase
 import com.belcobtm.presentation.core.adapter.model.ListItem
 import com.belcobtm.presentation.core.mvvm.LoadingData
 import kotlinx.coroutines.Dispatchers
-import java.util.*
 
 class OrderChatViewModel(
     private val sendChatMessageUseCase: SendChatMessageUseCase,
     private val observeChatUseCase: ObserveChatMessagesUseCase,
+    private val stringGenerator: RandomStringGenerator,
     private val updateLastSeenMessageTimeStampUseCase: UpdateLastSeenMessageTimeStampUseCase
 ) : ViewModel() {
+
+    private companion object {
+        const val FILE_NAME_LENGTH = 10
+        const val FILE_EXTENSION = "jpg"
+    }
 
     private val _chatObserverLoadingData = MutableLiveData<LoadingData<Unit>>()
     val chatObserverLoadingData: LiveData<LoadingData<Unit>> = _chatObserverLoadingData
@@ -38,7 +44,7 @@ class OrderChatViewModel(
 
     fun sendMessage(orderId: String, myId: String, toId: String, message: String) {
         val attachment = _attachmentImage.value
-        val name = attachmentName?.let { "${UUID.randomUUID()}_${it}" }
+        val name = attachmentName?.let { "${stringGenerator.generate(FILE_NAME_LENGTH)}.$FILE_EXTENSION" }
         setAttachment(null, null)
         _chatObserverLoadingData.value = LoadingData.Loading()
         sendChatMessageUseCase(

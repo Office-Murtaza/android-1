@@ -1,11 +1,13 @@
 package com.belcobtm.presentation.features.wallet.trade.details
 
 import android.content.Intent
+import android.graphics.Typeface
 import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.navigation.fragment.navArgs
 import com.belcobtm.R
 import com.belcobtm.data.model.trade.TradeType
@@ -82,6 +84,19 @@ class TradeDetailsFragment : BaseFragment<FragmentTradeDetailsBinding>() {
         }
         viewModel.terms.observe(viewLifecycleOwner, terms::setText)
         viewModel.amountRange.observe(viewLifecycleOwner, amountRange::setText)
+        viewModel.isOutOfStock.observe(viewLifecycleOwner) { isOutOfStock ->
+            if(isOutOfStock) {
+                with(amountRange) {
+                    setTextColor(ContextCompat.getColor(context, R.color.colorError))
+                    setTypeface(typeface, Typeface.BOLD)
+                }
+            } else {
+                with(amountRange) {
+                    setTextColor(ContextCompat.getColor(context, R.color.black_text_color))
+                    setTypeface(typeface, Typeface.NORMAL)
+                }
+            }
+        }
         viewModel.tradeType.observe(viewLifecycleOwner) { (tradeType, canMakeOrder) ->
             buySellButton.toggle(canMakeOrder)
             if (tradeType == TradeType.BUY) {

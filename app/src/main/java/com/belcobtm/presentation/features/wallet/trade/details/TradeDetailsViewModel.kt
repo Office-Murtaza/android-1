@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.belcobtm.R
 import com.belcobtm.data.inmemory.trade.TradeInMemoryCache.Companion.UNDEFINED_DISTANCE
+import com.belcobtm.data.model.trade.TradeStatus
 import com.belcobtm.data.model.trade.TradeType
 import com.belcobtm.domain.Either
 import com.belcobtm.domain.Failure
@@ -65,6 +66,9 @@ class TradeDetailsViewModel(
     private val _amountRange = MutableLiveData<String>()
     val amountRange: LiveData<String> = _amountRange
 
+    private val _isOutOfStock = MutableLiveData<Boolean>()
+    val isOutOfStock: LiveData<Boolean> = _isOutOfStock
+
     private var toTradeLat: Double? = null
     private var toTradeLong: Double? = null
 
@@ -89,6 +93,7 @@ class TradeDetailsViewModel(
         _selectedCoin.value = tradeItem.coin
         _price.value = priceFormatter.format(tradeItem.price)
         val isOutOfStock = tradeItem.minLimit > tradeItem.maxLimit
+        _isOutOfStock.value = isOutOfStock
         _amountRange.value = if (isOutOfStock) {
             stringProvider.getString(R.string.trade_amount_range_out_of_stock)
         } else {

@@ -160,6 +160,7 @@ class TransactionRepositoryImpl(
     ): Either<Failure, Unit> {
         val coinType = LocalCoinType.valueOf(fromCoin)
         val fromCoinItem = getCoinByCode(fromCoin)
+        val toCoinItem = getCoinByCode(coinTo)
         val toAddress: String = if (fromCoin.isEthRelatedCoinCode()) {
             fromCoinItem.publicKey
         } else {
@@ -174,7 +175,7 @@ class TransactionRepositoryImpl(
             val hash = (hashResponse as Either.Right).b
             apiService.exchange(
                 fromCoinAmount, toCoinAmount,
-                fromCoin, coinTo, hash,
+                fromCoinItem, toCoinItem, hash,
                 fee, fromAddress, toAddressSend
             ).map { cache.update(it) }
         } else {

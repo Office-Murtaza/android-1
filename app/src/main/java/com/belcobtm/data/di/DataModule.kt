@@ -164,7 +164,7 @@ val dataModule = module {
             FirebaseCloudStorage(get<FirebaseStorage>().reference.child("verification"))
         )
     }
-    single<CloudAuth>() { FirebaseCloudAuth(Firebase.auth) }
+    single<CloudAuth> { FirebaseCloudAuth(Firebase.auth) }
     single {
         TradeInMemoryCache(
             get(), get(), GlobalScope, get(), get(), get(),

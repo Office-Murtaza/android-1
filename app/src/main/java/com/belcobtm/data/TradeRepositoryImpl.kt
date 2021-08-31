@@ -104,15 +104,18 @@ class TradeRepositoryImpl(
         return response.map { }
     }
 
-    override suspend fun cancelTrade(tradeId: String): Either<Failure, Unit> {
+    override suspend fun deleteTrade(tradeId: String): Either<Failure, Unit> {
         val response = tradeApiService.deleteTrade(tradeId)
-        return response.map { }
+        return response.mapSuspend { tradeInMemoryCache.updateTrades(it) }
+    }
+
+    override suspend fun cancelTrade(tradeId: String): Either<Failure, Unit> {
+        val response = tradeApiService.cancelTrade(tradeId)
+        return response.mapSuspend { tradeInMemoryCache.updateTrades(it) }
     }
 
     override suspend fun cancelOrder(orderId: String): Either<Failure, Unit> =
-        tradeApiService.deleteOrder(orderId).mapSuspend {
-            tradeInMemoryCache.updateOrders(it)
-        }
+        tradeApiService.deleteOrder(orderId).mapSuspend { tradeInMemoryCache.updateOrders(it) }
 
     override suspend fun createOrder(tradeOrder: TradeOrderItem): Either<Failure, String> {
         val response = tradeApiService.createOrder(tradeOrder)

@@ -3,7 +3,7 @@ package com.belcobtm.data.core
 class RandomStringGenerator {
 
     companion object {
-        private val CHAR_POOL = ('a'..'z') + ('A'..'Z') + ('0'..'9')
+        private val CHAR_POOL = ('a'..'z') + ('0'..'9')
     }
 
     fun generate(size: Int): String =

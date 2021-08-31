@@ -8,7 +8,7 @@
     <string name="bottom_menu_locations">Locations</string>
     <string name="bottom_menu_settings">Settings</string>
     <string name="bottom_menu_wallet">Wallet</string>
-    <string name="bottom_menu_deals">Deals</string>
+    <string name="bottom_menu_deals">Services</string>
 
     <!-- Base screen -->
     <string name="base_screen_no_internet_title">No internet connection</string>
@@ -301,19 +301,6 @@
     <string name="withdraw_screen_where_money_libovski">Insufficient ETH balance for transaction fee</string>
     <string name="withdraw_screen_max_exceeded">Max amount exceeded</string>
 
-    <!-- Sell screen -->
-    <string name="sell_screen_price">Price</string>
-    <string name="sell_screen_balance">Balance</string>
-    <string name="sell_screen_daily_limit">Daily Limit</string>
-    <string name="sell_screen_tx_limit">Tx Limit</string>
-    <string name="sell_screen_not_enough_tradable_balance">Not enough on a tradable balance</string>
-    <string name="sell_screen_atm_contains_only_count_banknotes">ATM contains only 20 and 50 banknotes</string>
-    <string name="sell_screen_sell_from_another_address">Sell from another address</string>
-    <string name="sell_screen_instructions_1">Please send this exact amount by scanning QR code above or the payment will be reject.</string>
-    <string name="sell_screen_instructions_2">Wait a few minutes before your payment is confirmed. You will receive an SMS when cash withdrawal is ready.</string>
-    <string name="sell_screen_instructions_3">On the ATM choose REDEEM TICKET.</string>
-    <string name="sell_screen_instructions_4">Scan QR code from transaction details popup.</string>
-
     <!-- Send gift screen -->
     <string name="send_gift_screen_title">Transfer</string>
     <string name="send_gift_screen_balance_formatted"><![CDATA[Balance %1$s %2$s\nFee ~%3$s %4$s]]></string>
@@ -539,7 +526,7 @@
     <string name="selfie_validation_text">Please, upload ID selfie image</string>
 
     <!--Deals-->
-    <string name="deals_toolsbar_title">Deals</string>
+    <string name="deals_toolsbar_title">Services</string>
     <string name="deals_staking">Staking</string>
     <string name="deals_swap">Swap</string>
     <string name="deals_trade">P2P Trade</string>
@@ -737,8 +724,15 @@
     <string name="atm_sell_coin_rate"><![CDATA[<b>%1$s</b> %2$s\n ~ <b>%3$s</b>]]></string>
     <string name="sell_amount_exceeds_limit">Amount exceeds reserved balance</string>
     <string name="sell_amount_exceeds_today_limit">Amount exceeds today limit</string>
+    <string name="sell_screen_balance">Balance</string>
+    <string name="coin_balance_format">%1$s %2$s</string>
+    <string name="sell_screen_balance_formatted">%1$s %2$s</string>
 
     <string name="verification_info_deeplink">belcobtm://verification_info</string>
     <string name="transactions_deeplink">belcobtm://transactions/{coin_code}</string>
     <string name="transactions_deeplink_format">belcobtm://transactions/%s</string>
+    <string name="reserved_deeplink">belcobtm://reserved/{coin_code}</string>
+    <string name="reserved_deeplink_format">belcobtm://transactions/%s</string>
+    <string name="delete_button">Delete</string>
+    <string name="delete_label">Delete</string>
 </resources>

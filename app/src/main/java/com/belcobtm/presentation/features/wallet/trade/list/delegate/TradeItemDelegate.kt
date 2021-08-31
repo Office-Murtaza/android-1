@@ -1,8 +1,10 @@
 package com.belcobtm.presentation.features.wallet.trade.list.delegate
 
+import android.graphics.Typeface
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import com.belcobtm.R
 import com.belcobtm.data.inmemory.trade.TradeInMemoryCache.Companion.UNDEFINED_DISTANCE
 import com.belcobtm.databinding.ItemTradeBinding
@@ -43,20 +45,29 @@ class TradeItemViewHolder(
 
     override fun bind(model: TradeItem) {
         with(model) {
+            val context = binding.root.context
             binding.coinIcon.setImageResource(coin.resIcon())
             binding.coinCode.text = coin.name
             binding.makerPublicId.text = makerPublicId
             binding.makerPublicId.setCompoundDrawablesWithIntrinsicBounds(
                 R.drawable.ic_account_circle, 0, makerStatusIcon, 0
             )
-            binding.priceRange.text = if (model.minLimit > model.maxLimit) {
-                binding.root.context.getString(R.string.trade_amount_range_out_of_stock)
+            if (model.minLimit > model.maxLimit) {
+                with(binding.priceRange) {
+                    text = context.getString(R.string.trade_amount_range_out_of_stock)
+                    setTextColor(ContextCompat.getColor(context, R.color.colorError))
+                    setTypeface(typeface, Typeface.BOLD)
+                }
             } else {
-                binding.root.context.getString(
-                    R.string.trade_list_item_price_range_format,
-                    minLimitFormatted,
-                    maxLimitFormatted
-                )
+                with(binding.priceRange) {
+                    text = context.getString(
+                        R.string.trade_list_item_price_range_format,
+                        minLimitFormatted,
+                        maxLimitFormatted
+                    )
+                    setTextColor(ContextCompat.getColor(context, R.color.black_text_color))
+                    setTypeface(typeface, Typeface.NORMAL)
+                }
             }
             binding.priceLabel.text = priceFormatted
             binding.makerTradeCountLabel.text = makerTotalTradesFormatted.toHtmlSpan()

@@ -9,6 +9,7 @@ import com.belcobtm.domain.trade.list.mapper.TradesDataToMyTradeMapper
 import com.belcobtm.presentation.core.adapter.model.ListItem
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 

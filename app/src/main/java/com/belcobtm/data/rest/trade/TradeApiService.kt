@@ -3,6 +3,7 @@ package com.belcobtm.data.rest.trade
 import android.location.Location
 import com.belcobtm.data.disk.shared.preferences.SharedPreferencesHelper
 import com.belcobtm.data.model.trade.OrderStatus
+import com.belcobtm.data.model.trade.TradeStatus
 import com.belcobtm.data.rest.trade.request.*
 import com.belcobtm.data.rest.trade.response.*
 import com.belcobtm.domain.Either
@@ -61,9 +62,16 @@ class TradeApiService(
             response.body()?.let { Either.Right(it) } ?: Either.Left(Failure.ServerError())
         }
 
-    suspend fun deleteTrade(tradeId: String): Either<Failure, DeleteTradeResponse> =
+    suspend fun deleteTrade(tradeId: String): Either<Failure, TradeItemResponse> =
         withErrorHandling {
             val response = tradeApi.deleteTradeAsync(prefHelper.userId, tradeId).await()
+            response.body()?.let { Either.Right(it) } ?: Either.Left(Failure.ServerError())
+        }
+
+    suspend fun cancelTrade(tradeId: String): Either<Failure, TradeItemResponse> =
+        withErrorHandling {
+            val request = CancelTradeRequest(tradeId, TradeStatus.CANCELLED)
+            val response = tradeApi.cancelTradeAsync(prefHelper.userId, request).await()
             response.body()?.let { Either.Right(it) } ?: Either.Left(Failure.ServerError())
         }
 

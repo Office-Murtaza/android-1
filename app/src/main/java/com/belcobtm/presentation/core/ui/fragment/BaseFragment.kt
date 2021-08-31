@@ -2,6 +2,7 @@ package com.belcobtm.presentation.core.ui.fragment
 
 import android.content.ComponentCallbacks
 import android.content.Context
+import android.graphics.Color
 import android.graphics.Rect
 import android.os.Bundle
 import android.view.*
@@ -16,6 +17,7 @@ import androidx.navigation.NavOptions
 import androidx.navigation.Navigator
 import androidx.navigation.fragment.findNavController
 import androidx.viewbinding.ViewBinding
+import com.belcobtm.BuildConfig
 import com.belcobtm.R
 import com.belcobtm.databinding.FragmentBaseBinding
 import com.belcobtm.domain.Failure
@@ -307,15 +309,32 @@ abstract class BaseFragment<V : ViewBinding> : Fragment(),
                     )
                 )
                 (activity as HostActivity).supportActionBar?.setHomeAsUpIndicator(drawable)
-                requireActivity().window.statusBarColor = ContextCompat.getColor(
-                    requireContext(), R.color.colorPrimary
-                )
+                with(requireActivity().window) {
+                    statusBarColor = ContextCompat.getColor(requireContext(), R.color.colorPrimary)
+                    if(android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.R) {
+                        decorView.windowInsetsController?.setSystemBarsAppearance(
+                            WindowInsetsController.APPEARANCE_LIGHT_STATUS_BARS,
+                            WindowInsetsController.APPEARANCE_LIGHT_STATUS_BARS
+                        )
+                    } else {
+                        decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
+                    }
+                }
+
                 actionBar.show()
             } else {
                 actionBar.hide()
-                requireActivity().window.statusBarColor = ContextCompat.getColor(
-                    requireContext(), R.color.colorStatusBar
-                )
+                with(requireActivity().window) {
+                    statusBarColor = ContextCompat.getColor(requireContext(), R.color.colorStatusBar)
+//                    if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.R) {
+//                        decorView.windowInsetsController?.setSystemBarsAppearance(
+//                            WindowInsetsController.APPEARANCE_LIGHT_STATUS_BARS,
+//                            WindowInsetsController.APPEARANCE_LIGHT_STATUS_BARS
+//                        )
+//                    } else {
+//                        decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_DA
+//                    }
+                }
             }
 
             showBackButton(isBackButtonEnabled || (isToolbarEnabled && isHomeButtonEnabled))

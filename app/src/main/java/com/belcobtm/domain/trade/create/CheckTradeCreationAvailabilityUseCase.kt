@@ -2,6 +2,7 @@ package com.belcobtm.domain.trade.create
 
 import com.belcobtm.data.disk.shared.preferences.SharedPreferencesHelper
 import com.belcobtm.data.model.trade.TradeData
+import com.belcobtm.data.model.trade.TradeStatus
 import com.belcobtm.data.model.trade.TradeType
 import com.belcobtm.domain.Either
 import com.belcobtm.domain.Failure
@@ -19,7 +20,10 @@ class CheckTradeCreationAvailabilityUseCase(
             val userId = sharedPreferencesHelper.userId
             val trades = (cacheData as Either.Right<TradeData>).b
             val canCreateTrade = trades.trades.values.none {
-                it.makerId == userId && it.type == params.tradeType && it.coinCode == params.coinCode
+                it.makerId == userId &&
+                        it.type == params.tradeType &&
+                        it.coinCode == params.coinCode &&
+                        it.status != TradeStatus.DELETED
             }
             Either.Right(canCreateTrade)
         } else {

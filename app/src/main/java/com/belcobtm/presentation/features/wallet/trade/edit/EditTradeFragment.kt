@@ -4,6 +4,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.net.toUri
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.belcobtm.R
 import com.belcobtm.data.model.trade.TradeType
@@ -181,13 +183,13 @@ class EditTradeFragment : BaseFragment<FragmentEditTradeBinding>() {
         val coinBalance = coin.reservedBalanceCoin.toStringCoin()
         val localType = LocalCoinType.valueOf(coinCode)
         binding.coinDetailsView.setCoinData(coinCode, localType.resIcon(), showCoinArrow = false)
-        binding.coinDetailsView.setHelperText(
-            getString(
-                R.string.trade_create_reserved_balance_formatted,
-                coinBalance,
-                coinCode
-            )
-        )
+        val balancePart = getString(R.string.sell_screen_balance)
+        val coinPart = getString(R.string.coin_balance_format, coinBalance, coinCode)
+        val balanceFormatted = getString(R.string.sell_screen_balance_formatted, balancePart, coinPart)
+        binding.coinDetailsView.setHelperTextWithLink(balanceFormatted, coinPart) {
+            val uri = getString(R.string.reserved_deeplink_format, coinCode).toUri()
+            findNavController().navigate(uri)
+        }
     }
 
     private fun setupTradeTypeCheckChangeListener(chip: Chip) {

@@ -1,9 +1,13 @@
 package com.belcobtm.presentation.features.wallet.trade.mytrade.list.delegate
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AlphaAnimation
 import androidx.core.content.ContextCompat
+import androidx.core.view.children
 import com.belcobtm.R
+import com.belcobtm.data.model.trade.TradeStatus
 import com.belcobtm.data.model.trade.TradeType
 import com.belcobtm.databinding.ItemMyTradeBinding
 import com.belcobtm.presentation.core.adapter.MultiTypeAdapter
@@ -14,6 +18,7 @@ import com.belcobtm.presentation.features.wallet.trade.list.delegate.TradePaymen
 import com.belcobtm.presentation.features.wallet.trade.list.model.TradeItem
 
 class MyTradeDelegate(
+    private val onTradeDeletedClick: (TradeItem) -> Unit,
     private val onTradeDetailsClick: (TradeItem) -> Unit
 ) : AdapterDelegate<TradeItem, MyTradeViewHolder>() {
     override val viewType: Int
@@ -22,12 +27,13 @@ class MyTradeDelegate(
     override fun createHolder(parent: ViewGroup, inflater: LayoutInflater): MyTradeViewHolder =
         MyTradeViewHolder(
             ItemMyTradeBinding.inflate(inflater, parent, false),
-            onTradeDetailsClick
+            onTradeDeletedClick, onTradeDetailsClick
         )
 }
 
 class MyTradeViewHolder(
     private val binding: ItemMyTradeBinding,
+    onTradeDeletedClick: (TradeItem) -> Unit,
     onTradeDetailsClick: (TradeItem) -> Unit
 ) : MultiTypeViewHolder<TradeItem>(binding.root) {
 
@@ -36,8 +42,11 @@ class MyTradeViewHolder(
     init {
         paymentAdapter.registerDelegate(TradePaymentOptionDelegate())
         binding.paymentOptions.adapter = paymentAdapter
-        binding.root.setOnClickListener {
+        binding.myTradeRoot.setOnClickListener {
             onTradeDetailsClick(model)
+        }
+        binding.deleteTrade.setOnClickListener {
+            onTradeDeletedClick(model)
         }
     }
 
@@ -78,6 +87,15 @@ class MyTradeViewHolder(
                             R.color.trade_type_sell_trade_text_color
                         )
                     )
+                }
+            }
+            if(model.status == TradeStatus.CANCELLED) {
+                binding.myTradeRoot.children.forEach {
+                    it.alpha = 0.5f
+                }
+            } else {
+                binding.myTradeRoot.children.forEach {
+                    it.alpha = 1f
                 }
             }
         }

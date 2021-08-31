@@ -121,6 +121,8 @@
         <argument
             android:name="coin_code"
             app:argType="string" />
+
+        <deepLink app:uri="@string/reserved_deeplink" />
     </fragment>
 
     <fragment
