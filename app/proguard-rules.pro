@@ -125,6 +125,10 @@
 -keep class com.belcobtm.data.rest.wallet.response.** { *; }
 -keep class com.belcobtm.data.websockets.chat.model.** { *; }
 
+# Objects serialized over Moshi
+-keep class com.belcobtm.domain.settings.item.VerificationStateDataItem { *; }
+-keep class com.belcobtm.domain.settings.item.VerificationCountryDataItem { *; }
+
 -keep class com.belcobtm.presentation.core.extensions.** { *; }
 
 # Wallet Core library
