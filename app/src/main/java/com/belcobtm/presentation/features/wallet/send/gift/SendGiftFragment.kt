@@ -1,11 +1,14 @@
 package com.belcobtm.presentation.features.wallet.send.gift
 
+import android.content.Context
 import android.graphics.Rect
 import android.net.Uri
+import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import androidx.navigation.fragment.navArgs
 import com.belcobtm.R
 import com.belcobtm.databinding.FragmentSendGiftBinding
@@ -210,6 +213,18 @@ class SendGiftFragment : BaseFragment<FragmentSendGiftBinding>(),
     private fun openGift() {
         gifsDialog.show(childFragmentManager, "gifs_dialog")
         gifsDialog.gifSelectionListener = this
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        binding.root.post {
+            binding.sendCoinInputLayout.getEditText().requestFocus()
+            binding.sendCoinInputLayout.getEditText().setSelection(
+                binding.sendCoinInputLayout.getEditText().length()
+            )
+            (requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager)
+                ?.showSoftInput(binding.sendCoinInputLayout.getEditText(), 0)
+        }
     }
 
     override fun onDismissed(selectedContentType: GPHContentType) {

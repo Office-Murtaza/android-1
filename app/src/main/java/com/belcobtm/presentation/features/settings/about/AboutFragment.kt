@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.belcobtm.R
 import com.belcobtm.databinding.FragmentAboutBinding
+import com.belcobtm.domain.tools.openViewActivity
 import com.belcobtm.presentation.core.ui.fragment.BaseFragment
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -27,6 +28,9 @@ class AboutFragment : BaseFragment<FragmentAboutBinding>() {
     private fun observeData() {
         viewModel.appVersion.observe(viewLifecycleOwner) { version ->
             binding.versionItem.setValue(version)
+        }
+        viewModel.link.observe(viewLifecycleOwner) { (title, link) ->
+            requireActivity().openViewActivity(link, title)
         }
     }
 
