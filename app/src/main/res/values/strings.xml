@@ -741,4 +741,8 @@
     <string name="verification_info_deeplink">belcobtm://verification_info</string>
     <string name="transactions_deeplink">belcobtm://transactions/{coin_code}</string>
     <string name="transactions_deeplink_format">belcobtm://transactions/%s</string>
+
+    <string name="about_screen_terms_picker_title">Terms &amp; Conditions</string>
+    <string name="about_screen_privacy_picker_title">Privacy Policy</string>
+    <string name="about_screen_complaint_picker_title">Complaint Policy</string>
 </resources>
