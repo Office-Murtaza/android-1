@@ -22,7 +22,7 @@ class TradeToTradeItemMapper(
                 maxLimit, priceFormatter.format(maxLimit),
                 ordersCount, paymentMethods.map(paymentOptionMapper::map),
                 terms, makerId, statusMapper.map(makerStatus),
-                makerPublicId, makerTotalTrades, tradeCountFormatter.format(makerTotalTrades),
+                makerUsername, makerTotalTrades, tradeCountFormatter.format(makerTotalTrades),
                 makerTradingRate, makerLatitude, makerLongitude, distance,
                 milesFormatter.format(distance)
             )

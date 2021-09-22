@@ -23,7 +23,7 @@ class AuthApiService(private val authApi: AuthApi) {
         password: String
     ): Either<Failure, Pair<Boolean, Boolean>> = try {
         val request = authApi.authorizationCheckCredentialsAsync(CheckCredentialsRequest(phone, password)).await()
-        request.body()?.let { Either.Right(Pair(it.phoneExist, it.passwordMatch)) }
+        request.body()?.let { Either.Right(Pair(it.phoneExists, it.passwordsMatch)) }
             ?: Either.Left(Failure.ServerError())
     } catch (failure: Failure) {
         Either.Left(failure)

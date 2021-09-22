@@ -729,10 +729,25 @@
     <string name="sell_screen_balance_formatted">%1$s %2$s</string>
 
     <string name="verification_info_deeplink">belcobtm://verification_info</string>
-    <string name="transactions_deeplink">belcobtm://transactions/{coin_code}</string>
-    <string name="transactions_deeplink_format">belcobtm://transactions/%s</string>
-    <string name="reserved_deeplink">belcobtm://reserved/{coin_code}</string>
-    <string name="reserved_deeplink_format">belcobtm://transactions/%s</string>
     <string name="delete_button">Delete</string>
     <string name="delete_label">Delete</string>
+
+    <!-- Deeplink uri & format -->
+    <string name="transactions_deeplink">belcobtm://transactions/{coin_code}</string>
+    <string name="transactions_deeplink_format">belcobtm://transactions/%s</string>
+
+    <string name="reserved_deeplink">belcobtm://reserved/{coin_code}</string>
+    <string name="reserved_deeplink_format">belcobtm://transactions/%s</string>
+
+    <string name="trade_details_deeplink">belcobtm://trade_details/{tradeId}</string>
+    <string name="trade_details_deeplink_format">belcobtm://trade_details/%s</string>
+
+    <string name="order_details_deeplink">belcobtm://order_details/{orderId}</string>
+    <string name="order_details_deeplink_format">belcobtm://order_details/%s</string>
+
+    <string name="chat_deeplink">belcobtm://chat/{orderId}</string>
+    <string name="chat_deeplink_format">belcobtm://chat/%s</string>
+
+    <string name="trade_container_deeplink">belcobtm://trade_container/{innerDeeplink}</string>
+    <string name="trade_container_deeplink_format">belcobtm://trade_container/%s</string>
 </resources>

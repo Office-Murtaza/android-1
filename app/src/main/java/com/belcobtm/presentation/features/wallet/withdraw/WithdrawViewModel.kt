@@ -64,7 +64,7 @@ class WithdrawViewModel(
     fun getMaxValue(): Double =
         coinLimitsValueProvider.getMaxValue(fromCoinDataItem)
 
-    fun getTransactionFee(): Double = fromCoinDataItem.details.txFee
+    fun getTransactionFee(): Double = 0.0
 
     fun getCoinBalance(): Double = fromCoinDataItem.balanceCoin
 

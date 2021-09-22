@@ -5,12 +5,12 @@ import com.belcobtm.domain.Failure
 import com.belcobtm.domain.UseCase
 import com.belcobtm.domain.tools.ToolsRepository
 
-class SendSmsToDeviceUseCase(
+class VerifySmsCodeUseCase(
     private val repository: ToolsRepository
-) : UseCase<Boolean, SendSmsToDeviceUseCase.Params>() {
+) : UseCase<Boolean, VerifySmsCodeUseCase.Params>() {
 
     override suspend fun run(params: Params): Either<Failure, Boolean> =
-        repository.sendSmsToDevice(params.phone)
+        repository.verifySmsCode(params.phone, params.code)
 
-    data class Params(val phone: String)
+    data class Params(val phone: String, val code: String)
 }

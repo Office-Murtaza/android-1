@@ -111,7 +111,7 @@ val viewModelModule = module {
         )
     }
     viewModel { StakingViewModel(get(), get(), get(), get(), get()) }
-    viewModel { (phone: String) -> SmsCodeViewModel(phone, get()) }
+    viewModel { (phone: String) -> SmsCodeViewModel(phone, get(), get()) }
     viewModel { RecoverSeedViewModel(get()) }
     viewModel { CreateSeedViewModel(get(), get(), get()) }
     viewModel { SettingsViewModel() }
@@ -186,7 +186,7 @@ val viewModelHelperModule = module {
 }
 
 val helperModule = module {
-    factory { NotificationHelper(get()) }
+    factory { NotificationHelper(get(), get()) }
     single { ClipBoardHelper(androidApplication()) }
     single<Locale> { Locale.US }
     factory<Formatter<Double>>(named(DOUBLE_CURRENCY_PRICE_FORMATTER_QUALIFIER)) {

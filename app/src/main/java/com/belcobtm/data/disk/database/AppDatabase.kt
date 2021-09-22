@@ -23,7 +23,7 @@ import com.belcobtm.data.disk.database.wallet.WalletEntity
         WalletEntity::class,
         ServiceEntity::class
     ],
-    version = 4
+    version = 6
 )
 @TypeConverters(CoinTypeConverter::class)
 abstract class AppDatabase : RoomDatabase() {
@@ -105,6 +105,77 @@ abstract class AppDatabase : RoomDatabase() {
                 )
                 database.execSQL("DROP TABLE coin_detail")
                 database.execSQL("ALTER TABLE coin_detail_copy RENAME to coin_detail")
+            }
+        }
+        val MIGRATION_4_5 = object : Migration(4, 5) {
+            override fun migrate(database: SupportSQLiteDatabase) {
+                database.execSQL("DROP TABLE coin")
+                database.execSQL("DROP TABLE coin_detail")
+                database.execSQL("DROP TABLE AccountEntity")
+                database.execSQL(
+                    """
+                    CREATE TABLE IF NOT EXISTS coin_detail (
+                        c_code TEXT NOT NULL PRIMARY KEY,
+                        tx_fee DOUBLE NOT NULL,
+                        byte_fee INTEGER NOT NULL,
+                        scale INTEGER NOT NULL,
+                        wallet_address TEXT NOT NULL,
+                        gas_limit INTEGER,
+                        gas_price INTEGER,
+                        converted_tx_fee REAL,
+                        FOREIGN KEY(`c_code`) REFERENCES `coin`(`code`) ON UPDATE NO ACTION ON DELETE CASCADE
+                    ) 
+                """
+                )
+                database.execSQL(
+                    """
+                    CREATE TABLE IF NOT EXISTS coin (
+                        code TEXT NOT NULL PRIMARY KEY,
+                        address TEXT NOT NULL,
+                        balance REAL NOT NULL,
+                        balance_usd REAL NOT NULL,
+                        reserved_balance REAL NOT NULL,
+                        reserved_balance_usd REAL NOT NULL,
+                        price REAL NOT NULL
+                    ) 
+                """
+                )
+                database.execSQL(
+                    """
+                    CREATE TABLE IF NOT EXISTS account_entity (
+                        coin_name TEXT NOT NULL PRIMARY KEY,
+                        public_key TEXT NOT NULL,
+                        private_key TEXT NOT NULL,
+                        is_enabled INTEGER NOT NULL,
+                        FOREIGN KEY(`coin_name`) REFERENCES `coin`(`code`) ON UPDATE NO ACTION ON DELETE CASCADE
+                    ) 
+                """
+                )
+            }
+        }
+        val MIGRATION_5_6 = object : Migration(5, 6) {
+            override fun migrate(database: SupportSQLiteDatabase) {
+                database.execSQL("DROP TABLE coin_detail")
+                database.execSQL("DROP TABLE account_entity")
+                database.execSQL(
+                    """
+                    CREATE TABLE IF NOT EXISTS coin_detail (
+                        c_code TEXT NOT NULL PRIMARY KEY,
+                        wallet_address TEXT NOT NULL,
+                        FOREIGN KEY(`c_code`) REFERENCES `coin`(`code`) ON UPDATE NO ACTION ON DELETE CASCADE
+                    ) 
+                """
+                )
+                database.execSQL(
+                    """
+                    CREATE TABLE IF NOT EXISTS account_entity (
+                        coin_name TEXT NOT NULL PRIMARY KEY,
+                        public_key TEXT NOT NULL,
+                        private_key TEXT NOT NULL,
+                        is_enabled INTEGER NOT NULL
+                    ) 
+                """
+                )
             }
         }
     }

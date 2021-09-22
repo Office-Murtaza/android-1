@@ -326,14 +326,6 @@ abstract class BaseFragment<V : ViewBinding> : Fragment(),
                 actionBar.hide()
                 with(requireActivity().window) {
                     statusBarColor = ContextCompat.getColor(requireContext(), R.color.colorStatusBar)
-//                    if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.R) {
-//                        decorView.windowInsetsController?.setSystemBarsAppearance(
-//                            WindowInsetsController.APPEARANCE_LIGHT_STATUS_BARS,
-//                            WindowInsetsController.APPEARANCE_LIGHT_STATUS_BARS
-//                        )
-//                    } else {
-//                        decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_DA
-//                    }
                 }
             }
 

@@ -156,7 +156,7 @@ class SwapViewModel(
             return
         }
         if (receiveCoinItem.code == LocalCoinType.XRP.name) {
-            val minXRPValue = 20 + receiveCoinItem.details.txFee
+            val minXRPValue = 20
             if (receiveCoinAmount < minXRPValue) {
                 _swapLoadingData.value = LoadingData.Loading()
                 checkXRPAddressActivatedUseCase(
@@ -220,12 +220,12 @@ class SwapViewModel(
         _coinToSendModel.value = CoinPresentationModel(
             coinToSend.code,
             coinToSend.balanceCoin,
-            coinToSend.details.txFee
+            0.0
         )
         _coinToReceiveModel.value = CoinPresentationModel(
             coinToReceive.code,
             coinToReceive.balanceCoin,
-            coinToReceive.details.txFee
+            0.0
         )
         // notify UI that coin details has beed successfully fetched
         _coinsDetailsLoadingState.value = LoadingData.Success(Unit)
@@ -318,10 +318,11 @@ class SwapViewModel(
     ): Double {
         // fee(B) = convertedTxFee(B) in case B is CATM or USDC
         // fee(B) = txFee(B) for the rest of coins.
-        return when (receiveCoin.isEthRelatedCoin()) {
-            true -> receiveCoin.details.convertedTxFee!!
-            false -> receiveCoin.details.txFee
-        }
+        return 0.0
+//        return when (receiveCoin.isEthRelatedCoin()) {
+//            true -> receiveCoin.details.convertedTxFee!!
+//            false -> receiveCoin.details.txFee
+//        }
     }
 
     private fun getCoinFeeActual(): Double {

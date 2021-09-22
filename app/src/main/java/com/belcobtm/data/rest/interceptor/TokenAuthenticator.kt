@@ -1,12 +1,9 @@
 package com.belcobtm.data.rest.interceptor
 
 import com.belcobtm.data.core.UnlinkHandler
-import com.belcobtm.data.disk.database.service.ServiceDao
-import com.belcobtm.data.disk.database.service.ServiceEntity
 import com.belcobtm.data.disk.shared.preferences.SharedPreferencesHelper
 import com.belcobtm.data.rest.authorization.AuthApi
 import com.belcobtm.data.rest.authorization.request.RefreshTokenRequest
-import com.belcobtm.data.rest.service.ServiceFeeResponse
 import com.belcobtm.domain.service.ServiceRepository
 import kotlinx.coroutines.runBlocking
 import okhttp3.Authenticator
@@ -33,7 +30,7 @@ class TokenAuthenticator(
             responseCode == HttpURLConnection.HTTP_OK && responseBody != null -> {
                 val updatedToken = responseBody.accessToken
                 runBlocking {
-                    serviceRepository.updateServices(responseBody.services, responseBody.fees)
+                    serviceRepository.updateServices(responseBody.services, responseBody.serviceFees)
                 }
                 // update session
                 prefsHelper.processAuthResponse(responseBody)

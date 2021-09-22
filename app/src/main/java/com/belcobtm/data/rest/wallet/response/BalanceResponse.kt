@@ -9,30 +9,21 @@ data class BalanceResponse(
 )
 
 data class CoinResponse(
-    val idx: Int,
     val coin: String,
     val address: String,
+    val price: Double,
     val balance: Double,
     val fiatBalance: Double,
     val reserved: Double,
     val fiatReserved: Double,
-    val price: Double,
     val details: Details
 ) {
-    data class Details(
-        val txFee: Double,
-        val byteFee: Long,
-        val scale: Int,
-        val walletAddress: String,
-        val gasLimit: Long?,
-        val gasPrice: Long?,
-        val convertedTxFee: Double?
-    )
+    data class Details(val serverAddress: String)
 }
 
 fun BalanceResponse.mapToDataItem(): BalanceDataItem = BalanceDataItem(
     balance = totalBalance,
-    coinList = coins.sortedBy { it.idx }.map { it.mapToDataItem() }
+    coinList = coins.map { it.mapToDataItem() }
 )
 
 fun CoinResponse.mapToDataItem(): CoinDataItem = CoinDataItem(
@@ -46,12 +37,4 @@ fun CoinResponse.mapToDataItem(): CoinDataItem = CoinDataItem(
     details = details.mapToDataItem()
 )
 
-fun CoinResponse.Details.mapToDataItem() = CoinDataItem.Details(
-    txFee = txFee,
-    byteFee = byteFee,
-    scale = scale,
-    walletAddress = walletAddress,
-    gasLimit = gasLimit,
-    gasPrice = gasPrice,
-    convertedTxFee = convertedTxFee
-)
+fun CoinResponse.Details.mapToDataItem() = CoinDataItem.Details(walletAddress = serverAddress)

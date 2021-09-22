@@ -1,6 +1,7 @@
 package com.belcobtm.domain.trade
 
 import android.location.Location
+import com.belcobtm.data.model.trade.Order
 import com.belcobtm.data.model.trade.PaymentOption
 import com.belcobtm.data.model.trade.Trade
 import com.belcobtm.data.model.trade.TradeData
@@ -29,6 +30,8 @@ interface TradeRepository {
     fun getTradeData(): Either<Failure, TradeData>?
 
     fun getTrade(tradeId: String): Either<Failure, Trade>
+
+    fun getOrder(orderId: String): Either<Failure, Order>
 
     fun getFilterItem(): TradeFilterItem
 

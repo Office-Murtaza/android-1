@@ -53,7 +53,10 @@ class AuthorizationRepositoryImpl(
 
     override fun clearAppData() {
         prefHelper.clearData()
-        CoroutineScope(Dispatchers.IO).launch { daoAccount.clearTable() }
+        CoroutineScope(Dispatchers.IO).launch {
+            daoAccount.clearTable()
+            walletDao.clear()
+        }
     }
 
     override suspend fun authorizationCheckCredentials(
@@ -108,9 +111,9 @@ class AuthorizationRepositoryImpl(
         return if (response.isRight) {
             val result = (response as Either.Right).b
             val accountList = createAccountEntityList(temporaryCoinMap, result.balance.coins)
-            daoAccount.insertItemList(accountList)
             walletDao.updateBalance(result.balance)
-            serviceRepository.updateServices(result.services, result.fees)
+            daoAccount.insertItemList(accountList)
+            serviceRepository.updateServices(result.services, result.serviceFees)
             prefHelper.accessToken = result.accessToken
             prefHelper.refreshToken = result.refreshToken
             prefHelper.firebaseToken = result.firebaseToken
@@ -152,9 +155,9 @@ class AuthorizationRepositoryImpl(
         return if (recoverResponse.isRight) {
             val result = (recoverResponse as Either.Right).b
             val accountList = createAccountEntityList(temporaryCoinMap, result.balance.coins)
-            serviceRepository.updateServices(result.services, result.fees)
-            daoAccount.insertItemList(accountList)
+            serviceRepository.updateServices(result.services, result.serviceFees)
             walletDao.updateBalance(result.balance)
+            daoAccount.insertItemList(accountList)
             prefHelper.apiSeed = seed
             prefHelper.firebaseToken = result.firebaseToken
             prefHelper.accessToken = result.accessToken
@@ -175,7 +178,7 @@ class AuthorizationRepositoryImpl(
         val response = apiService.authorizeByRefreshToken(prefHelper.refreshToken)
         return if (response.isRight) {
             val body = (response as Either.Right).b
-            serviceRepository.updateServices(body.services, body.fees)
+            serviceRepository.updateServices(body.services, body.serviceFees)
             prefHelper.processAuthResponse(body)
             Either.Right(Unit)
         } else {
@@ -229,8 +232,7 @@ class AuthorizationRepositoryImpl(
             responseCoinList.find { it.coin == localCoinType.name }?.let { responseItem ->
                 entityList.add(
                     AccountEntity(
-                        responseItem.idx,
-                        localCoinType,
+                        localCoinType.name,
                         publicKey,
                         privateKey,
                         true

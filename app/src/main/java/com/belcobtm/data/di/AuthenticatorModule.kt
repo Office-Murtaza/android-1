@@ -6,6 +6,7 @@ import com.belcobtm.data.rest.interceptor.NoConnectionInterceptor
 import com.belcobtm.data.rest.interceptor.ResponseInterceptor
 import com.belcobtm.data.rest.interceptor.TokenAuthenticator
 import com.belcobtm.data.rest.settings.SettingsApi
+import com.belcobtm.data.rest.unlink.UnlinkApi
 import com.belcobtm.presentation.core.Endpoint
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import okhttp3.OkHttpClient
@@ -28,6 +29,9 @@ val authenticatorModule = module {
     single { TokenAuthenticator(get(authenticatorQualified), get(), get(), get()) }
     single(authenticatorQualified) {
         get<Retrofit>(authenticatorQualified).create(AuthApi::class.java)
+    }
+    single(authenticatorQualified) {
+        get<Retrofit>(authenticatorQualified).create(UnlinkApi::class.java)
     }
     single(authenticatorQualified) {
         get<Retrofit>(authenticatorQualified).create(SettingsApi::class.java)

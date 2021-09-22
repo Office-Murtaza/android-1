@@ -1,20 +1,15 @@
 package com.belcobtm.presentation.features.wallet.balance
 
-import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
-import androidx.core.net.toUri
-import androidx.navigation.fragment.findNavController
 import com.belcobtm.R
 import com.belcobtm.databinding.FragmentBalanceBinding
 import com.belcobtm.domain.Failure
 import com.belcobtm.presentation.core.formatter.DoubleCurrencyPriceFormatter
 import com.belcobtm.presentation.core.formatter.Formatter
 import com.belcobtm.presentation.core.ui.fragment.BaseFragment
-import com.belcobtm.presentation.features.MainFragment.Companion.INNER_DESTINATION_BUNDLE_ID
-import com.belcobtm.presentation.features.MainFragment.Companion.INNER_DESTINATION_ID
 import com.belcobtm.presentation.features.wallet.balance.adapter.CoinsAdapter
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.koin.android.ext.android.inject

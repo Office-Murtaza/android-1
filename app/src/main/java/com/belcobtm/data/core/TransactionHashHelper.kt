@@ -191,7 +191,7 @@ class TransactionHashHelper(
         if (coinName == null) {
             return Long.MIN_VALUE
         }
-        return getCoinByCode(coinName)?.details?.byteFee ?: Long.MIN_VALUE
+        return Long.MIN_VALUE
     }
 
     private suspend fun createTransactionHashETH(
@@ -216,9 +216,9 @@ class TransactionHashHelper(
             val hexAmount =
                 addLeadingZeroes(amountMultipliedByDivider.toLong().toString(16)).toHexByteArray()
             val hexNonce = addLeadingZeroes(nonceResponse?.toString(16) ?: "").toHexByteArray()
-            val hexGasLimit = addLeadingZeroes((coinItem.details.gasLimit ?: 0).toString(16))
+            val hexGasLimit = addLeadingZeroes((0).toString(16))
                 .toHexByteArray()
-            val hexGasPrice = addLeadingZeroes((coinItem.details.gasPrice ?: 0).toString(16))
+            val hexGasPrice = addLeadingZeroes((0).toString(16))
                 .toHexByteArray()
             val input = Ethereum.SigningInput.newBuilder().also {
                 it.chainId = ByteString.copyFrom("0x1".toHexByteArray())
@@ -308,8 +308,7 @@ class TransactionHashHelper(
                         it.amount = (fromCoinAmount * CoinType.XRP.unit()).toLong()
                         it.destination = toAddress
                         it.fee =
-                            ((getCoinByCode(CoinType.XRP.code())?.details?.txFee?.toBigDecimal()
-                                ?: BigDecimal(0.000020)) * BigDecimal.valueOf(CoinType.XRP.unit())).toLong()
+                            ((BigDecimal(0.000020)) * BigDecimal.valueOf(CoinType.XRP.unit())).toLong()
                         it.privateKey = ByteString.copyFrom(privateKey.data())
                     }
                     val signBytes = AnySigner.sign(

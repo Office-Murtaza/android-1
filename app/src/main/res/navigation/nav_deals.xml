@@ -110,6 +110,7 @@
         android:name="com.belcobtm.presentation.features.wallet.trade.container.TradeContainerFragment"
         android:label="TradeListContainerFragment"
         tools:layout="@layout/fragment_trade_list_container">
+        <deepLink app:uri="@string/trade_container_deeplink" />
 
         <action
             android:id="@+id/to_create_trade_fragment"
@@ -158,6 +159,12 @@
             app:exitAnim="@anim/slide_to_left"
             app:popEnterAnim="@anim/slide_from_left"
             app:popExitAnim="@anim/slide_to_right" />
+
+        <argument
+            android:name="innerDeeplink"
+            app:argType="string"
+            app:nullable="true"
+            android:defaultValue="@null"/>
     </fragment>
 
     <dialog
@@ -177,6 +184,8 @@
         android:name="com.belcobtm.presentation.features.wallet.trade.details.TradeDetailsFragment"
         android:label="DetailsTradeFragment"
         tools:layout="@layout/fragment_trade_details">
+
+        <deepLink app:uri="@string/trade_details_deeplink" />
 
         <argument
             android:name="tradeId"
@@ -255,6 +264,8 @@
         android:label="OrderDetailsFragment"
         tools:layout="@layout/fragment_trade_order_details">
 
+        <deepLink app:uri="@string/order_details_deeplink" />
+
         <argument
             android:name="orderId"
             app:argType="string"
@@ -310,26 +321,12 @@
         android:label="OrderChatFragment"
         tools:layout="@layout/fragment_order_chat">
 
-
-        <argument
-            android:name="partnerPublicId"
-            app:argType="string"
-            app:nullable="false" />
-
         <argument
             android:name="orderId"
             app:argType="string"
             app:nullable="false" />
 
-        <argument
-            android:name="myId"
-            app:argType="string"
-            app:nullable="false" />
-
-        <argument
-            android:name="partnerId"
-            app:argType="string"
-            app:nullable="false" />
+        <deepLink app:uri="@string/chat_deeplink" />
 
         <action
             android:id="@+id/to_chat_image_dialog"

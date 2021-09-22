@@ -42,13 +42,13 @@ class OrderChatViewModel(
         updateLastSeenMessageTimeStampUseCase(Unit)
     }
 
-    fun sendMessage(orderId: String, myId: String, toId: String, message: String) {
+    fun sendMessage(orderId: String, message: String) {
         val attachment = _attachmentImage.value
         val name = attachmentName?.let { "${stringGenerator.generate(FILE_NAME_LENGTH)}.$FILE_EXTENSION" }
         setAttachment(null, null)
         _chatObserverLoadingData.value = LoadingData.Loading()
         sendChatMessageUseCase(
-            NewMessageItem(orderId, myId, toId, message, name, attachment),
+            SendChatMessageUseCase.Params(orderId, message, name, attachment),
             onSuccess = { _chatObserverLoadingData.value = LoadingData.Success(Unit) },
             onError = { _chatObserverLoadingData.value = LoadingData.Error(it) }
         )

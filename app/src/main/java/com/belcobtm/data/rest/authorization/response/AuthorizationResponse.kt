@@ -13,5 +13,5 @@ data class AuthorizationResponse(
     val referralInvites: Int?,
     val referralEarned: Int?,
     val services: List<Int>,
-    val fees: List<ServiceFeeResponse>,
+    val serviceFees: List<ServiceFeeResponse>,
 )

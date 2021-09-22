@@ -19,6 +19,7 @@ import com.belcobtm.domain.socket.DisconnectFromSocketUseCase
 import com.belcobtm.domain.tools.interactor.OldSendSmsToDeviceUseCase
 import com.belcobtm.domain.tools.interactor.OldVerifySmsCodeUseCase
 import com.belcobtm.domain.tools.interactor.SendSmsToDeviceUseCase
+import com.belcobtm.domain.tools.interactor.VerifySmsCodeUseCase
 import com.belcobtm.domain.trade.ClearCacheUseCase
 import com.belcobtm.domain.trade.create.CheckTradeCreationAvailabilityUseCase
 import com.belcobtm.domain.trade.create.CreateTradeUseCase
@@ -82,6 +83,7 @@ val useCaseModule = module {
     single { OldSendSmsToDeviceUseCase(get()) }
     single { OldVerifySmsCodeUseCase(get()) }
     single { SendSmsToDeviceUseCase(get()) }
+    single { VerifySmsCodeUseCase(get()) }
     single { SellPreSubmitUseCase(get()) }
     single { SellGetLimitsUseCase(get()) }
     single { SellUseCase(get()) }
@@ -159,7 +161,7 @@ val useCaseModule = module {
         SendChatMessageUseCase(
             get(), get(),
             get(named(FirebaseCloudStorage.CHAT_STORAGE)),
-            get()
+            get(), get()
         )
     }
     single { ObserveChatMessagesUseCase(get()) }

@@ -13,15 +13,15 @@ interface AccountDao {
     @Update
     suspend fun updateItem(entity: AccountEntity)
 
-    @Query("SELECT * FROM AccountEntity WHERE type ==:code")
+    @Query("SELECT * FROM account_entity WHERE coin_name ==:code")
     suspend fun getItem(code: String): AccountEntity
 
-    @Query("SELECT * FROM AccountEntity")
+    @Query("SELECT * FROM account_entity")
     suspend fun getItemList(): List<AccountEntity>?
 
-    @Query("DELETE FROM AccountEntity")
+    @Query("DELETE FROM account_entity")
     suspend fun clearTable()
 
-    @Query("SELECT * FROM AccountEntity LIMIT 1")
+    @Query("SELECT * FROM account_entity LIMIT 1")
     suspend fun isTableHasItems(): AccountEntity?
 }

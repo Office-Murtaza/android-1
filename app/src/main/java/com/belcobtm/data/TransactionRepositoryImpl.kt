@@ -69,7 +69,7 @@ class TransactionRepositoryImpl(
         val hashResponse =
             transactionHashRepository.createTransactionHash(coinType, fromCoinAmount, toAddress)
         return if (hashResponse.isRight) {
-            val fee = getCoinByCode(fromCoin).details.txFee
+            val fee = 0.0
             val fromAddress = daoAccount.getItem(fromCoin).publicKey
             apiService.withdraw(
                 (hashResponse as Either.Right).b,
@@ -98,7 +98,7 @@ class TransactionRepositoryImpl(
             val hashResponse =
                 transactionHashRepository.createTransactionHash(coinType, amount, toAddress)
             if (hashResponse.isRight) {
-                val fee = getCoinByCode(coinCode).details.txFee
+                val fee = 0.0
                 val item = daoAccount.getItem(coinCode)
                 val fromAddress = item.publicKey
                 val hash = (hashResponse as Either.Right).b
@@ -170,7 +170,7 @@ class TransactionRepositoryImpl(
             transactionHashRepository.createTransactionHash(coinType, fromCoinAmount, toAddress)
         return if (hashResponse.isRight) {
             val toAddressSend = fromCoinItem.details.walletAddress
-            val fee = fromCoinItem.details.txFee
+            val fee = 0.0
             val fromAddress = daoAccount.getItem(fromCoin).publicKey
             val hash = (hashResponse as Either.Right).b
             apiService.exchange(
@@ -212,7 +212,7 @@ class TransactionRepositoryImpl(
         val coinItem = getCoinByCode(coinCode)
         val fromAddress = coinItem.details.walletAddress
         val toAddress = coinItem.publicKey
-        val fee = coinItem.details.txFee
+        val fee = 0.0
         return apiService.submitReserve(coinCode, fromAddress, toAddress, cryptoAmount, fee, hash)
             .map { cache.update(it) }
     }
@@ -234,8 +234,8 @@ class TransactionRepositoryImpl(
             val hash = (transactionResponse as Either.Right).b
             val fromAddress = coinItem.details.walletAddress
             val toAddress = coinItem.publicKey
-            val coinFee = coinItem.details.txFee
-            apiService.stakeCreate(coinCode, fromAddress, toAddress, cryptoAmount, coinFee, hash)
+            val fee = 0.0
+            apiService.stakeCreate(coinCode, fromAddress, toAddress, cryptoAmount, fee, hash)
                 .map { cache.update(it) }
         } else {
             transactionResponse as Either.Left
@@ -254,8 +254,8 @@ class TransactionRepositoryImpl(
             val hash = (transactionResponse as Either.Right).b
             val fromAddress = coinItem.details.walletAddress
             val toAddress = coinItem.publicKey
-            val coinFee = coinItem.details.txFee
-            apiService.stakeCancel(coinCode, fromAddress, toAddress, 0.0, coinFee, hash)
+            val fee = 0.0
+            apiService.stakeCancel(coinCode, fromAddress, toAddress, 0.0, fee, hash)
                 .map { cache.update(it) }
         } else {
             transactionResponse as Either.Left
@@ -275,8 +275,8 @@ class TransactionRepositoryImpl(
             val hash = (transactionResponse as Either.Right).b
             val fromAddress = coinItem.details.walletAddress
             val toAddress = coinItem.publicKey
-            val coinFee = coinItem.details.txFee
-            apiService.unStake(coinCode, fromAddress, toAddress, cryptoAmount, coinFee, hash)
+            val fee = 0.0
+            apiService.unStake(coinCode, fromAddress, toAddress, cryptoAmount, fee, hash)
                 .map { cache.update(it) }
         } else {
             transactionResponse as Either.Left

@@ -21,25 +21,13 @@ interface TradeApi {
     fun createTradeAsync(
         @Path("userId") userId: String,
         @Body createTrade: CreateTradeRequest
-    ): Deferred<Response<CreateTradeResponse>>
-
-    @POST("user/{userId}/order")
-    fun createOrderAsync(
-        @Path("userId") userId: String,
-        @Body tradeOrder: CreateOrderRequest
-    ): Deferred<Response<TradeOrderItemResponse>>
-
-    @PUT("user/{userId}/order")
-    fun updateOrderAsync(
-        @Path("userId") userId: String,
-        @Body orderStatus: UpdateOrderRequest
-    ): Deferred<Response<TradeOrderItemResponse>>
+    ): Deferred<Response<TradeItemResponse>>
 
     @PUT("user/{userId}/trade")
     fun editTradeAsync(
         @Path("userId") userId: String,
         @Body editTrade: EditTradeRequest
-    ): Deferred<Response<EditTradeResponse>>
+    ): Deferred<Response<TradeItemResponse>>
 
     @PUT("user/{userId}/trade")
     fun cancelTradeAsync(
@@ -52,6 +40,18 @@ interface TradeApi {
         @Path("userId") userId: String,
         @Query("id") tradeId: String
     ): Deferred<Response<TradeItemResponse>>
+
+    @POST("user/{userId}/order")
+    fun createOrderAsync(
+        @Path("userId") userId: String,
+        @Body tradeOrder: CreateOrderRequest
+    ): Deferred<Response<TradeOrderItemResponse>>
+
+    @PUT("user/{userId}/order")
+    fun updateOrderAsync(
+        @Path("userId") userId: String,
+        @Body orderStatus: UpdateOrderRequest
+    ): Deferred<Response<TradeOrderItemResponse>>
 
     @DELETE("user/{userId}/order")
     fun deleteOrderAsync(

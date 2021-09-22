@@ -1,9 +1,11 @@
 package com.belcobtm.presentation.features.wallet.trade.container
 
 import android.Manifest
+import android.net.Uri
 import android.os.Bundle
 import android.view.*
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import com.belcobtm.R
 import com.belcobtm.databinding.FragmentTradeListContainerBinding
 import com.belcobtm.domain.Failure
@@ -35,12 +37,18 @@ class TradeContainerFragment : BaseFragment<FragmentTradeListContainerBinding>()
 
     private val viewModel by viewModel<TradeContainerViewModel>()
 
-    override fun createBinding(inflater: LayoutInflater, container: ViewGroup?): FragmentTradeListContainerBinding =
+    private val args by navArgs<TradeContainerFragmentArgs>()
+
+    override fun createBinding(
+        inflater: LayoutInflater,
+        container: ViewGroup?
+    ): FragmentTradeListContainerBinding =
         FragmentTradeListContainerBinding.inflate(inflater, container, false)
 
     override fun FragmentTradeListContainerBinding.initViews() {
         setToolbarTitle(R.string.trade_list_screen_title)
-        viewPager.adapter = TradeContainerViewPagerAdapter(childFragmentManager, requireActivity().lifecycle)
+        viewPager.adapter =
+            TradeContainerViewPagerAdapter(childFragmentManager, requireActivity().lifecycle)
         TabLayoutMediator(tabLayout, viewPager) { tab, position ->
             tab.text = when (position) {
                 BUY_TRADES_TAB_POSITION -> getString(R.string.trade_list_buy_tab_title)
@@ -89,7 +97,10 @@ class TradeContainerFragment : BaseFragment<FragmentTradeListContainerBinding>()
         findNavController().currentBackStackEntry?.savedStateHandle
             ?.getLiveData<Boolean>(CREATE_TRADE_KEY)?.observe(viewLifecycleOwner) {
                 if (it) {
-                    findNavController().currentBackStackEntry?.savedStateHandle?.set(CREATE_TRADE_KEY, false)
+                    findNavController().currentBackStackEntry?.savedStateHandle?.set(
+                        CREATE_TRADE_KEY,
+                        false
+                    )
                     viewPager.postDelayed({
                         viewPager.currentItem = TRADE_INFO_TAB_POSITION
                         val userInfoFragment = childFragmentManager
@@ -98,7 +109,14 @@ class TradeContainerFragment : BaseFragment<FragmentTradeListContainerBinding>()
                     }, 500)
                 }
             }
-        viewModel.loadingData.listen(error = {
+        viewModel.loadingData.listen(
+            success = {
+                val innerDeeplink = args.innerDeeplink
+                if (!innerDeeplink.isNullOrEmpty()) {
+                    findNavController().navigate(Uri.parse(innerDeeplink))
+                }
+            },
+            error = {
             when (it) {
                 is Failure.NetworkConnection -> showErrorNoInternetConnection()
                 is Failure.MessageError -> {
@@ -111,12 +129,18 @@ class TradeContainerFragment : BaseFragment<FragmentTradeListContainerBinding>()
         })
     }
 
-    @NeedsPermission(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION)
+    @NeedsPermission(
+        Manifest.permission.ACCESS_FINE_LOCATION,
+        Manifest.permission.ACCESS_COARSE_LOCATION
+    )
     fun loadWithDistanceCalculation() {
         viewModel.fetchTrades(calculateDistanceEnabled = true)
     }
 
-    @OnPermissionDenied(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION)
+    @OnPermissionDenied(
+        Manifest.permission.ACCESS_FINE_LOCATION,
+        Manifest.permission.ACCESS_COARSE_LOCATION
+    )
     fun loadWithoutDistanceCalculation() {
         viewModel.fetchTrades(calculateDistanceEnabled = false)
     }

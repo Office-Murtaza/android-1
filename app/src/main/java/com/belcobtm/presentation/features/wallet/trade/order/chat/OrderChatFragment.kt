@@ -59,7 +59,7 @@ class OrderChatFragment : BaseFragment<FragmentOrderChatBinding>() {
         FragmentOrderChatBinding.inflate(inflater, container, false)
 
     override fun FragmentOrderChatBinding.initViews() {
-        setToolbarTitle(args.partnerPublicId)
+        setToolbarTitle(args.orderId)
         binding.chatList.adapter = adapter
     }
 
@@ -70,7 +70,7 @@ class OrderChatFragment : BaseFragment<FragmentOrderChatBinding>() {
 
     override fun FragmentOrderChatBinding.initListeners() {
         binding.message.actionDoneListener {
-            viewModel.sendMessage(args.orderId, args.myId, args.partnerId, binding.message.text?.toString().orEmpty())
+            viewModel.sendMessage(args.orderId, binding.message.text?.toString().orEmpty())
             binding.message.text = null
         }
         binding.attachmentButton.setOnClickListener {

@@ -36,9 +36,9 @@ class TradeOrderDataToItemMapper(
                 cryptoAmount, fiatAmount, priceFormatter.format(fiatAmount),
                 trade.paymentMethods, terms, makerId, makerStatusId,
                 statusMapper.map(makerStatusId),
-                makerRate, makerPublicId, makerLatitude, makerLongitude, makerTotalTrades,
+                makerRate, makerUsername, makerLatitude, makerLongitude, makerTotalTrades,
                 tradeCountFormatter.format(makerTotalTrades), makerTradingRate,
-                takerId, takerStatusId, statusMapper.map(takerStatusId), takerRate, takerPublicId,
+                takerId, takerStatusId, statusMapper.map(takerStatusId), takerRate, takerUsername,
                 takerLatitude, takerLongitude, takerTotalTrades,
                 tradeCountFormatter.format(takerTotalTrades), takerTradingRate,
                 formatDistance()

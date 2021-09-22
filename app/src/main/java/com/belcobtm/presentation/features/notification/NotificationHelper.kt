@@ -11,15 +11,25 @@ import android.net.Uri
 import android.os.Build
 import androidx.core.app.NotificationCompat
 import com.belcobtm.R
+import com.belcobtm.presentation.core.provider.string.StringProvider
 
 
-class NotificationHelper(private val base: Context) {
+class NotificationHelper(
+    private val stringProvider: StringProvider,
+    private val base: Context
+) {
 
     companion object {
         const val PRIMARY_CHANNEL = "default"
 
         const val TITLE_KEY = "title"
         const val MESSAGE_KEY = "message"
+        const val DEEPLINK_ID_KEY = "id"
+        const val DEEPLINK_TYPE_KEY = "type"
+        const val DEEPLINK_TYPE_TRADE = 1
+        const val DEEPLINK_TYPE_ORDER = 2
+        const val DEEPLINK_TYPE_CHAT = 3
+        const val DEEPLINK_TYPE_TRANSACTIONS = 4
     }
 
     private val isSdkMoreO = Build.VERSION.SDK_INT >= Build.VERSION_CODES.O
@@ -51,6 +61,33 @@ class NotificationHelper(private val base: Context) {
             setContentIntent(action)
         }
         return builder.build()
+    }
+
+    fun resolveDeeplink(deeplinkType: String?, deeplinkId: String?): Uri? {
+        if (deeplinkId.isNullOrEmpty()) {
+            return null
+        }
+        val link = when (deeplinkType?.toIntOrNull()) {
+            DEEPLINK_TYPE_CHAT ->
+                stringProvider.getString(
+                    R.string.trade_container_deeplink_format,
+                    stringProvider.getString(R.string.chat_deeplink_format, deeplinkId)
+                )
+            DEEPLINK_TYPE_ORDER ->
+                stringProvider.getString(
+                    R.string.trade_container_deeplink_format,
+                    stringProvider.getString(R.string.order_details_deeplink_format, deeplinkId)
+                )
+            DEEPLINK_TYPE_TRADE ->
+                stringProvider.getString(
+                    R.string.trade_container_deeplink_format,
+                    stringProvider.getString(R.string.trade_details_deeplink_format, deeplinkId)
+                )
+            DEEPLINK_TYPE_TRANSACTIONS ->
+                stringProvider.getString(R.string.transactions_deeplink_format, deeplinkId)
+            else -> null
+        }
+        return link?.let(Uri::parse)
     }
 
     @SuppressLint("NewApi")

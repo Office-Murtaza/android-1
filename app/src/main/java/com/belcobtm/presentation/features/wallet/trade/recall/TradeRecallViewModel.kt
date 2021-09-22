@@ -101,7 +101,7 @@ class TradeRecallViewModel(
         return false
     }
 
-    fun getTransactionFee(): Double = coinDataItem.details.txFee
+    fun getTransactionFee(): Double = 0.0
 
     fun getCoinCode(): String = coinCodeProvider.getCoinCode(coinDataItem)
 
@@ -110,8 +110,8 @@ class TradeRecallViewModel(
     private fun enoughETHForExtraFee(currentCryptoAmount: Double): Boolean {
         if (coinDataItem.isEthRelatedCoin()) {
             val controlValue =
-                coinDataItem.details.txFee * etheriumCoinDataItem!!.priceUsd / coinDataItem.priceUsd
-            return currentCryptoAmount <= controlValue.withScale(coinDataItem.details.scale)
+                0.0 * etheriumCoinDataItem!!.priceUsd / coinDataItem.priceUsd
+            return currentCryptoAmount <= controlValue.withScale(0)
         }
         return true
     }

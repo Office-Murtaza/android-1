@@ -1,16 +1,12 @@
 package com.belcobtm.presentation.features.settings
 
 import android.content.Intent
-import android.os.Bundle
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.navArgs
 import com.belcobtm.R
 import com.belcobtm.databinding.FragmentSettingsBinding
 import com.belcobtm.presentation.core.ui.fragment.BaseFragment
-import com.belcobtm.presentation.features.MainFragment
-import com.belcobtm.presentation.features.MainFragment.Companion.INNER_DESTINATION_ID
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class SettingsFragment : BaseFragment<FragmentSettingsBinding>() {

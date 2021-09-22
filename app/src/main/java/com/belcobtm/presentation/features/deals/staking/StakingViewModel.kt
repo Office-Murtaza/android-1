@@ -77,7 +77,7 @@ class StakingViewModel(
                         price = coinDataItem.priceUsd,
                         balanceCoin = coinDataItem.balanceCoin,
                         balanceUsd = coinDataItem.balanceUsd,
-                        ethFee = coinDataItem.details.txFee,
+                        ethFee = 0.0,
                         reservedBalanceCoin = coinDataItem.reservedBalanceCoin,
                         reservedBalanceUsd = coinDataItem.reservedBalanceUsd,
                         reservedCode = coinDataItem.code,
@@ -153,12 +153,12 @@ class StakingViewModel(
     }
 
     fun isNotEnoughETHBalanceForCATM(): Boolean =
-        etheriumCoinDataItem.balanceCoin < coinDataItem.details.txFee
+        etheriumCoinDataItem.balanceCoin < 0.0
 
     fun getMaxValue(): Double = if (coinDataItem.code == LocalCoinType.CATM.name) {
         coinDataItem.balanceCoin
     } else {
-        0.0.coerceAtLeast(coinDataItem.balanceCoin - coinDataItem.details.txFee)
+        0.0.coerceAtLeast(coinDataItem.balanceCoin - 0.0)
     }
 
     fun getUsdPrice(): Double = coinDataItem.priceUsd

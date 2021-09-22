@@ -16,5 +16,5 @@ data class CreateRecoverWalletResponse(
     val referralEarned: Int?,
     val balance: BalanceResponse,
     val services: List<Int>,
-    val fees: List<ServiceFeeResponse>
+    val serviceFees: List<ServiceFeeResponse>
 )

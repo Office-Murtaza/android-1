@@ -99,12 +99,6 @@ class TradeOrderDetailsViewModel(
     private val _openRateScreen = MutableLiveData<Boolean>()
     val openRateScreen: LiveData<Boolean> = _openRateScreen
 
-    private val _myId = MutableLiveData<String>()
-    val myId: LiveData<String> = _myId
-
-    private val _partnerId = MutableLiveData<String>()
-    val partnerId: LiveData<String> = _partnerId
-
     private var partnerLat: Double? = null
     private var partnerLong: Double? = null
 
@@ -208,7 +202,6 @@ class TradeOrderDetailsViewModel(
         )
         _fiatAmount.value = order.fiatAmountFormatted
         _distance.value = order.distanceFormatted
-        this._partnerPublicId.value = order.trade.makerPublicId
         val isOrderResolved = with(order.orderStatus) {
             statusId == OrderStatus.RELEASED || statusId == OrderStatus.SOLVED
         }
@@ -217,7 +210,6 @@ class TradeOrderDetailsViewModel(
             _partnerScore.value = order.takerRate
             _openRateScreen.value = order.makerRate == null && isOrderResolved
             this._partnerPublicId.value = order.takerPublicId
-            _partnerId.value = order.takerId
             partnerLat = order.takerLatitude
             partnerLong = order.takerLongitude
             _partnerTradeRate.value = order.takerTradingRate ?: 0.0
@@ -227,14 +219,12 @@ class TradeOrderDetailsViewModel(
             _partnerScore.value = order.makerRate
             _openRateScreen.value = order.takerRate == null && isOrderResolved
             this._partnerPublicId.value = order.makerPublicId
-            _partnerId.value = order.makerId
             partnerLat = order.makerLatitude
             partnerLong = order.makerLongitude
             _partnerTradeRate.value = order.makerTradingRate ?: 0.0
             _partnerTotalTrades.value = order.makerTotalTradesFormatted
         }
         val isBuyer = order.mappedTradeType == TradeType.BUY
-        _myId.value = order.myTradeId
         _buttonsState.value = if (isBuyer) setupBuyerButtons(order) else setupSellerButtons(order)
         _initialLoadingData.value = LoadingData.Success(Unit)
     }

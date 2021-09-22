@@ -21,6 +21,8 @@ import com.belcobtm.data.disk.AssetsDataStore
 import com.belcobtm.data.disk.database.AppDatabase
 import com.belcobtm.data.disk.database.AppDatabase.Companion.MIGRATION_2_3
 import com.belcobtm.data.disk.database.AppDatabase.Companion.MIGRATION_3_4
+import com.belcobtm.data.disk.database.AppDatabase.Companion.MIGRATION_4_5
+import com.belcobtm.data.disk.database.AppDatabase.Companion.MIGRATION_5_6
 import com.belcobtm.data.disk.shared.preferences.SharedPreferencesHelper
 import com.belcobtm.data.helper.DistanceCalculator
 import com.belcobtm.data.inmemory.trade.TradeInMemoryCache
@@ -49,6 +51,7 @@ import com.belcobtm.data.rest.trade.TradeApi
 import com.belcobtm.data.rest.trade.TradeApiService
 import com.belcobtm.data.rest.transaction.TransactionApi
 import com.belcobtm.data.rest.transaction.TransactionApiService
+import com.belcobtm.data.rest.unlink.UnlinkApi
 import com.belcobtm.data.rest.wallet.WalletApi
 import com.belcobtm.data.rest.wallet.WalletApiService
 import com.belcobtm.domain.contacts.ContactsRepository
@@ -113,6 +116,8 @@ val dataModule = module {
         Room.databaseBuilder(get(), AppDatabase::class.java, "belco_database")
             .addMigrations(MIGRATION_2_3)
             .addMigrations(MIGRATION_3_4)
+            .addMigrations(MIGRATION_4_5)
+            .addMigrations(MIGRATION_5_6)
             .build()
     }
     single { Moshi.Builder().build() }
@@ -181,7 +186,7 @@ val dataModule = module {
     }
     single<ServiceRepository> { ServiceRepositoryImpl(get(), CoroutineScope(Dispatchers.IO)) }
     single { TransactionsInMemoryCache() }
-    single { UnlinkHandler(get(), get(), get(), get()) }
+    single { UnlinkHandler(get(), get(), get(), get(), get(authenticatorQualified)) }
     factory { TradesResponseToTradeDataMapper(get(), get(), get()) }
     factory { OrderResponseToOrderMapper() }
     factory { TradeResponseToTradeMapper() }

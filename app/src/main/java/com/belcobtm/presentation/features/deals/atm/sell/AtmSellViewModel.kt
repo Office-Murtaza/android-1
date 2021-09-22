@@ -162,7 +162,7 @@ class AtmSellViewModel(
             1.0, coin.code, priceFormatter.format(coin.priceUsd)
         )
         _selectedCoinModel.value = CoinPresentationModel(
-            coin.code, coin.balanceCoin, coin.details.txFee
+            coin.code, coin.balanceCoin, 0.0
         )
     }
 

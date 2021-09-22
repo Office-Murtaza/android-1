@@ -129,8 +129,7 @@ class TradeCreateOrderViewModel(
         createOrderUseCase(TradeOrderItem(
             tradeData.tradeId, tradeData.price,
             cryptoAmount.value?.cryptoAmount ?: 0.0,
-            fiatAmount.value ?: 0.0,
-            tradeData.terms
+            fiatAmount.value ?: 0.0
         ), onSuccess = {
             _createTradeLoadingData.value = LoadingData.Success(it)
         }, onError = {

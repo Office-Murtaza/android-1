@@ -1,5 +1,6 @@
 package com.belcobtm.presentation.features.splash
 
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -13,6 +14,7 @@ import com.belcobtm.domain.authorization.AuthorizationStatus
 import com.belcobtm.domain.authorization.interactor.AuthorizationStatusGetUseCase
 import com.belcobtm.domain.authorization.interactor.ClearAppDataUseCase
 import com.belcobtm.presentation.core.ui.fragment.BaseFragment
+import com.belcobtm.presentation.features.notification.NotificationHelper
 import com.belcobtm.presentation.features.pin.code.PinCodeFragment
 import org.koin.android.ext.android.inject
 
@@ -23,6 +25,7 @@ class SplashFragment : BaseFragment<FragmentSplashBinding>() {
 
     private val authorizationStatusUseCase: AuthorizationStatusGetUseCase by inject()
     private val clearAppDataUseCase: ClearAppDataUseCase by inject()
+    private val notificationHelper: NotificationHelper by inject()
 
     override fun createBinding(
         inflater: LayoutInflater,
@@ -40,6 +43,24 @@ class SplashFragment : BaseFragment<FragmentSplashBinding>() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        requireActivity().intent.extras?.let { extras ->
+            val deeplink = notificationHelper.resolveDeeplink(
+                extras.getString(NotificationHelper.DEEPLINK_TYPE_KEY),
+                extras.getString(NotificationHelper.DEEPLINK_ID_KEY),
+            )
+            handleDeeplink(deeplink)
+        } ?: regularFlow()
+    }
+
+    private fun handleDeeplink(deeplink: Uri?) {
+        if (deeplink != null) {
+            findNavController().navigate(
+                R.id.nav_pin_code, bundleOf(PinCodeFragment.KEY_DEEPLINK to deeplink.toString())
+            )
+        }
+    }
+
+    private fun regularFlow() {
         when (authorizationStatusUseCase.invoke()) {
             AuthorizationStatus.PIN_CODE_CREATE -> showPinScreen(PinCodeFragment.KEY_PIN_MODE_CREATE)
             AuthorizationStatus.PIN_CODE_ENTER -> showPinScreen()

@@ -145,6 +145,6 @@ class SendGiftViewModel(
 
     private fun updateCoinInfo(coinToSend: CoinDataItem) {
         _coinToSend.value = coinToSend
-        _fee.value = coinToSend.details.txFee
+        _fee.value = 0.0
     }
 }

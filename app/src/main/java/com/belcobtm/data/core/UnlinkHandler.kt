@@ -6,16 +6,19 @@ import android.os.Bundle
 import com.belcobtm.data.disk.database.account.AccountDao
 import com.belcobtm.data.disk.database.wallet.WalletDao
 import com.belcobtm.data.disk.shared.preferences.SharedPreferencesHelper
+import com.belcobtm.data.rest.unlink.UnlinkApi
 import com.belcobtm.data.websockets.wallet.WalletConnectionHandler
 import com.belcobtm.presentation.features.HostActivity
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
+import java.lang.Exception
 
 class UnlinkHandler(
     private val prefsHelper: SharedPreferencesHelper,
     private val daoAccount: AccountDao,
     private val walletDao: WalletDao,
-    private val context: Context
+    private val context: Context,
+    private val unlinkApi: UnlinkApi
 ) : KoinComponent {
 
     private val connectionHandler: WalletConnectionHandler by inject()
@@ -23,6 +26,7 @@ class UnlinkHandler(
     suspend fun performUnlink(openInitialScreen: Boolean = true) {
         daoAccount.clearTable()
         walletDao.clear()
+        unlink()
         prefsHelper.clearData()
         connectionHandler.disconnect()
         if (openInitialScreen) {
@@ -32,6 +36,13 @@ class UnlinkHandler(
                     putBoolean(HostActivity.FORCE_UNLINK_KEY, true)
                 })
             })
+        }
+    }
+
+    private suspend fun unlink() {
+        try {
+            unlinkApi.unlinkAsync(prefsHelper.userId).await()
+        } catch (e: Exception) {
         }
     }
 }

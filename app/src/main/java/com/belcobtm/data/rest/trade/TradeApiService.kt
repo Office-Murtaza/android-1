@@ -38,7 +38,7 @@ class TradeApiService(
             response.body()?.let { Either.Right(it) } ?: Either.Left(Failure.ServerError())
         }
 
-    suspend fun createTrade(createTradeItem: CreateTradeItem): Either<Failure, CreateTradeResponse> =
+    suspend fun createTrade(createTradeItem: CreateTradeItem): Either<Failure, TradeItemResponse> =
         withErrorHandling {
             val request = with(createTradeItem) {
                 CreateTradeRequest(
@@ -50,7 +50,7 @@ class TradeApiService(
             response.body()?.let { Either.Right(it) } ?: Either.Left(Failure.ServerError())
         }
 
-    suspend fun editTrade(editTradeItem: EditTradeItem): Either<Failure, EditTradeResponse> =
+    suspend fun editTrade(editTradeItem: EditTradeItem): Either<Failure, TradeItemResponse> =
         withErrorHandling {
             val request = with(editTradeItem) {
                 EditTradeRequest(
@@ -84,7 +84,7 @@ class TradeApiService(
     suspend fun createOrder(tradeOrder: TradeOrderItem): Either<Failure, TradeOrderItemResponse> =
         withErrorHandling {
             val request = with(tradeOrder) {
-                CreateOrderRequest(tradeId, price, cryptoAmount, fiatAmount, terms)
+                CreateOrderRequest(tradeId, price, cryptoAmount, fiatAmount)
             }
             val response = tradeApi.createOrderAsync(prefHelper.userId, request).await()
             response.body()?.let { Either.Right(it) } ?: Either.Left(Failure.ServerError())

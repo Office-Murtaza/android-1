@@ -96,7 +96,7 @@ class TradeReserveViewModel(
         )
     }
 
-    fun getTransactionFee(): Double = coinDataItem.details.txFee
+    fun getTransactionFee(): Double = 0.0
 
     fun getCoinCode(): String = coinCodeProvider.getCoinCode(coinDataItem)
 

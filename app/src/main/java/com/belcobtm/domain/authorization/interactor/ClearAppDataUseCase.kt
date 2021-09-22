@@ -8,6 +8,7 @@ import kotlinx.coroutines.launch
 
 class ClearAppDataUseCase(private val repository: AuthorizationRepository) {
 
+    // TODO fix issue with thread
     operator fun invoke() {
         CoroutineScope(Dispatchers.Main).launch { repository.clearAppData() }
     }
