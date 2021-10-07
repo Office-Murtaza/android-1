@@ -15,8 +15,7 @@ class AccountRepositoryImpl(
 ) : AccountRepository {
 
     override suspend fun getAccountCoinsList(): List<AccountDataItem> {
-        return (daoAccount.getItemList() ?: emptyList())
-            .sortedBy { it.id }.map { it.mapToDataItem() }
+        return (daoAccount.getItemList() ?: emptyList()).map { it.mapToDataItem() }
     }
 
     override suspend fun updateAccountCoinsList(

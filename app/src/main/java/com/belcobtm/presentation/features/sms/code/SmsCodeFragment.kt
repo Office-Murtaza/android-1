@@ -11,7 +11,6 @@ import com.belcobtm.domain.Failure
 import com.belcobtm.domain.authorization.interactor.AUTH_ERROR_PHONE_NOT_SUPPORTED
 import com.belcobtm.presentation.core.extensions.*
 import com.belcobtm.presentation.core.helper.AlertHelper
-import com.belcobtm.presentation.core.mvvm.LoadingData
 import com.belcobtm.presentation.core.ui.fragment.BaseFragment
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
@@ -46,7 +45,7 @@ class SmsCodeFragment : BaseFragment<FragmentSmsCodeBinding>() {
             errorMessageView.invisible()
             pinEntryView.isError = false
             if (editable.length == SMS_CODE_LENGTH) {
-                openNextScreen()
+                viewModel.verifyCode(pinEntryView.text.toString())
             }
         }
     }
@@ -59,49 +58,44 @@ class SmsCodeFragment : BaseFragment<FragmentSmsCodeBinding>() {
                     showResendDialog()
                 }
             },
-            error = {
-                when (it) {
-                    is Failure.NetworkConnection -> showErrorNoInternetConnection()
-                    is Failure.MessageError -> {
-                        if (it.code == AUTH_ERROR_PHONE_NOT_SUPPORTED) {
-                            showContent()
-                            errorTextView.show()
-                        } else {
-                            showSnackBar(it.message ?: "")
-                            showContent()
-                        }
-                    }
-                    is Failure.ServerError -> if (it.message.equals(
-                            "No value for errorMsg",
-                            true
-                        )
-                    ) {
-                        showSnackBar("Incorrect phone number")
-                        showContent()
-                        popBackStack()
-                    } else {
-                        showErrorServerError()
-                    }
-                    else -> showErrorSomethingWrong()
-                }
-            })
-        viewModel.phoneUpdateData.listen(
-            success = {
-                if (it) {
-                    showSnackBar(R.string.phone_updated)
-                    openNextScreen()
-                } else {
-                    baseErrorHandler(Failure.ServerError())
-                }
-            }
+            error = ::handleError
+        )
+        viewModel.smsVerifyLiveData.listen(
+            success = ::openNextScreen,
+            error = ::handleError
         )
     }
 
-    private fun openNextScreen() {
-        val isSuccessLoadingData =
-            (viewModel.smsLiveData.value as? LoadingData.Success)?.data == binding.pinEntryView.getString()
+    private fun handleError(it: Failure?) {
+        when (it) {
+            is Failure.NetworkConnection -> showErrorNoInternetConnection()
+            is Failure.MessageError -> {
+                if (it.code == AUTH_ERROR_PHONE_NOT_SUPPORTED) {
+                    showContent()
+                    binding.errorTextView.show()
+                } else {
+                    showSnackBar(it.message ?: "")
+                    showContent()
+                }
+            }
+            is Failure.ServerError -> if (it.message.equals(
+                    "No value for errorMsg",
+                    true
+                )
+            ) {
+                showSnackBar("Incorrect phone number")
+                showContent()
+                popBackStack()
+            } else {
+                showErrorServerError()
+            }
+            else -> showErrorSomethingWrong()
+        }
+    }
+
+    private fun openNextScreen(correctCode: Boolean) {
         when {
-            isSuccessLoadingData -> {
+            correctCode -> {
                 val nextScreenId = requireArguments().getInt(TAG_NEXT_FRAGMENT_ID, -1)
                 if (nextScreenId >= 0) {
                     navigate(requireArguments().getInt(TAG_NEXT_FRAGMENT_ID), requireArguments())
@@ -110,7 +104,7 @@ class SmsCodeFragment : BaseFragment<FragmentSmsCodeBinding>() {
                     popBackStack()
                 }
             }
-            !isSuccessLoadingData && binding.pinEntryView.getString().length == SMS_CODE_LENGTH -> {
+            !correctCode && binding.pinEntryView.getString().length == SMS_CODE_LENGTH -> {
                 binding.errorMessageView.show()
                 binding.pinEntryView.isError = true
             }

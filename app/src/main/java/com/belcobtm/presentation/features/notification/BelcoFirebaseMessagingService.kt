@@ -4,6 +4,7 @@ import android.app.PendingIntent
 import android.content.Intent
 import androidx.core.app.NotificationManagerCompat
 import com.belcobtm.domain.notification.NotificationTokenRepository
+import com.belcobtm.presentation.core.provider.string.StringProvider
 import com.belcobtm.presentation.features.HostActivity
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
@@ -20,6 +21,8 @@ class BelcoFirebaseMessagingService : FirebaseMessagingService() {
 
     private val notificationRepository: NotificationTokenRepository by inject()
 
+    private val stringProvider: StringProvider by inject()
+
     override fun onNewToken(token: String) {
         notificationRepository.saveToken(token)
     }
@@ -29,12 +32,16 @@ class BelcoFirebaseMessagingService : FirebaseMessagingService() {
         showNotification(remoteMessage.data)
     }
 
-    private fun showNotification(data: Map<String, String>) {
+    private fun showNotification(notificationData: Map<String, String>) {
         val pendingIntent = PendingIntent.getActivity(
             this,
             NOTIFICATION_REQUEST_CODE,
             Intent(this, HostActivity::class.java).apply {
                 flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NO_HISTORY
+                data = notificationHelper.resolveDeeplink(
+                    notificationData[NotificationHelper.DEEPLINK_TYPE_KEY],
+                    notificationData[NotificationHelper.DEEPLINK_ID_KEY],
+                )
             },
             PendingIntent.FLAG_ONE_SHOT
         )
@@ -42,7 +49,7 @@ class BelcoFirebaseMessagingService : FirebaseMessagingService() {
         NotificationManagerCompat.from(this)
             .notify(
                 NOTIFICATION_ID,
-                notificationHelper.getNotification(data, pendingIntent)
+                notificationHelper.getNotification(notificationData, pendingIntent)
             )
     }
 }

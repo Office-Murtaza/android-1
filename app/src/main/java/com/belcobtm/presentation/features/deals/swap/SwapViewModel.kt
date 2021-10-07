@@ -11,7 +11,9 @@ import com.belcobtm.data.disk.database.service.ServiceType
 import com.belcobtm.domain.Failure
 import com.belcobtm.domain.service.ServiceInfoProvider
 import com.belcobtm.domain.transaction.interactor.CheckXRPAddressActivatedUseCase
+import com.belcobtm.domain.transaction.interactor.GetTransactionPlanUseCase
 import com.belcobtm.domain.transaction.interactor.SwapUseCase
+import com.belcobtm.domain.transaction.item.TransactionPlanItem
 import com.belcobtm.domain.wallet.LocalCoinType
 import com.belcobtm.domain.wallet.interactor.GetCoinListUseCase
 import com.belcobtm.domain.wallet.item.CoinDataItem
@@ -30,7 +32,8 @@ class SwapViewModel(
     private val swapUseCase: SwapUseCase,
     private val checkXRPAddressActivatedUseCase: CheckXRPAddressActivatedUseCase,
     private val coinLimitsValueProvider: CoinLimitsValueProvider,
-    private val serviceInfoProvider: ServiceInfoProvider
+    private val serviceInfoProvider: ServiceInfoProvider,
+    private val getTransactionPlanUseCase: GetTransactionPlanUseCase
 ) : ViewModel() {
 
     val originCoinsData = mutableListOf<CoinDataItem>()
@@ -77,6 +80,12 @@ class SwapViewModel(
     private val _initLoadingData = MutableLiveData<LoadingData<Unit>>()
     val initLoadingData: LiveData<LoadingData<Unit>> = _initLoadingData
 
+    private val _transactionPlanLiveData = MutableLiveData<LoadingData<Unit>>()
+    val transactionPlanLiveData: LiveData<LoadingData<Unit>> = _transactionPlanLiveData
+
+    private var fromTransactionPlanItem: TransactionPlanItem? = null
+    private var toTransactionPlanItem: TransactionPlanItem? = null
+
     init {
         fetchInitialData()
     }
@@ -92,10 +101,26 @@ class SwapViewModel(
                 onSuccess = { coinsDataList ->
                     originCoinsData.clear()
                     originCoinsData.addAll(coinsDataList.filter { allCoins[it.code] != null })
-                    _initLoadingData.value = LoadingData.Success(Unit)
                     if (originCoinsData.size >= 2) {
                         // move to next step
-                        updateCoins(originCoinsData[0], originCoinsData[1])
+                        val coinToSend = originCoinsData[0]
+                        val coinToReceive = originCoinsData[1]
+                        getTransactionPlanUseCase(coinToSend.code,
+                            onSuccess = { fromPlanItem ->
+                                fromTransactionPlanItem = fromPlanItem
+                                getTransactionPlanUseCase(coinToReceive.code,
+                                    onSuccess = { toPlanItem ->
+                                        toTransactionPlanItem = toPlanItem
+                                        _initLoadingData.value = LoadingData.Success(Unit)
+                                        updateCoinsInternal(coinToSend, coinToReceive)
+                                    }, onError = {
+                                        _initLoadingData.value =
+                                            LoadingData.Error(Failure.OperationCannotBePerformed)
+                                    })
+                            }, onError = {
+                                _initLoadingData.value =
+                                    LoadingData.Error(Failure.OperationCannotBePerformed)
+                            })
                     } else {
                         _initLoadingData.value =
                             LoadingData.Error(Failure.OperationCannotBePerformed)
@@ -142,8 +167,9 @@ class SwapViewModel(
 
     fun setMaxSendAmount() {
         val currentCoinToSend = coinToSend.value ?: return
+        val transactionPlanItem = fromTransactionPlanItem ?: return
         val maxAmount = coinLimitsValueProvider
-            .getMaxValue(currentCoinToSend)
+            .getMaxValue(currentCoinToSend, transactionPlanItem.txFee)
         setSendAmount(maxAmount)
     }
 
@@ -156,7 +182,7 @@ class SwapViewModel(
             return
         }
         if (receiveCoinItem.code == LocalCoinType.XRP.name) {
-            val minXRPValue = 20 + receiveCoinItem.details.txFee
+            val minXRPValue = 20
             if (receiveCoinAmount < minXRPValue) {
                 _swapLoadingData.value = LoadingData.Loading()
                 checkXRPAddressActivatedUseCase(
@@ -187,12 +213,15 @@ class SwapViewModel(
         sendCoin: CoinDataItem,
         receiveCoin: CoinDataItem
     ) {
+        val transactionPlanItem = fromTransactionPlanItem ?: return
         _swapLoadingData.value = LoadingData.Loading()
         swapUseCase(
             params = SwapUseCase.Params(
                 sendAmount,
                 receiveAmount,
                 sendCoin.code,
+                _swapFee.value?.platformFeeCoinAmount ?: 0.0,
+                transactionPlanItem,
                 receiveCoin.code
             ),
             onSuccess = { _swapLoadingData.value = LoadingData.Success(it) },
@@ -204,6 +233,19 @@ class SwapViewModel(
         if (coinToSend == coinToReceive) {
             return
         }
+        _coinToSend.value = coinToSend
+        _coinToReceive.value = coinToReceive
+        fetchTransactionPlans(coinToSend, coinToReceive)
+    }
+
+    private fun updateCoinsInternal(coinToSend: CoinDataItem, coinToReceive: CoinDataItem) {
+        if (coinToSend == coinToReceive) {
+            return
+        }
+
+        val fromPlanItem = fromTransactionPlanItem ?: return
+        val toPlanItem = toTransactionPlanItem ?: return
+
         // clear up the values to operate with 0 amount in the callbacks
         clearSendAndReceiveAmount()
         _coinToSend.value = coinToSend
@@ -220,12 +262,12 @@ class SwapViewModel(
         _coinToSendModel.value = CoinPresentationModel(
             coinToSend.code,
             coinToSend.balanceCoin,
-            coinToSend.details.txFee
+            fromPlanItem.txFee
         )
         _coinToReceiveModel.value = CoinPresentationModel(
             coinToReceive.code,
             coinToReceive.balanceCoin,
-            coinToReceive.details.txFee
+            toPlanItem.txFee
         )
         // notify UI that coin details has beed successfully fetched
         _coinsDetailsLoadingState.value = LoadingData.Success(Unit)
@@ -233,11 +275,12 @@ class SwapViewModel(
 
     private fun validateCoinToSendAmount(coinAmount: Double): Boolean {
         val currentCoinToSend = coinToSend.value ?: return false
+        val transactionPlanItem = fromTransactionPlanItem ?: return false
         val balanceValidationResult = amountValidator.validateBalance(
             coinAmount, currentCoinToSend, originCoinsData
         )
         val maxCoinAmount = coinLimitsValueProvider
-            .getMaxValue(currentCoinToSend)
+            .getMaxValue(currentCoinToSend, transactionPlanItem.txFee)
         val validationResult = when {
             balanceValidationResult is ValidationResult.InValid -> {
                 balanceValidationResult
@@ -318,9 +361,10 @@ class SwapViewModel(
     ): Double {
         // fee(B) = convertedTxFee(B) in case B is CATM or USDC
         // fee(B) = txFee(B) for the rest of coins.
+        val toPlanItem = toTransactionPlanItem ?: return 0.0
         return when (receiveCoin.isEthRelatedCoin()) {
-            true -> receiveCoin.details.convertedTxFee!!
-            false -> receiveCoin.details.txFee
+            true -> toPlanItem.nativeTxFee
+            false -> toPlanItem.txFee
         }
     }
 
@@ -350,6 +394,44 @@ class SwapViewModel(
     private fun clearSendAndReceiveAmount() {
         _sendCoinAmount.value = 0.0
         _receiveCoinAmount.value = 0.0
+    }
+
+    fun reFetchTransactionPlans() {
+        val coinToSend = coinToSend.value ?: return
+        val coinToReceive = coinToReceive.value ?: return
+        fetchTransactionPlans(coinToSend, coinToReceive)
+    }
+
+    private fun fetchTransactionPlans(
+        coinToSend: CoinDataItem,
+        coinToReceive: CoinDataItem
+    ) {
+        _transactionPlanLiveData.value = LoadingData.Loading()
+        if (coinToSend.code == fromTransactionPlanItem?.coinCode) {
+            getTransactionPlanUseCase(
+                coinToReceive.code,
+                onSuccess = { toPlan ->
+                    toTransactionPlanItem = toPlan
+                    updateCoinsInternal(coinToSend, coinToReceive)
+                    _transactionPlanLiveData.value = LoadingData.Success(Unit)
+                },
+                onError = {
+                    _transactionPlanLiveData.value = LoadingData.Error(it)
+                }
+            )
+        } else {
+            getTransactionPlanUseCase(
+                coinToSend.code,
+                onSuccess = { fromPlan ->
+                    fromTransactionPlanItem = fromPlan
+                    updateCoinsInternal(coinToSend, coinToReceive)
+                    _transactionPlanLiveData.value = LoadingData.Success(Unit)
+                },
+                onError = {
+                    _transactionPlanLiveData.value = LoadingData.Error(it)
+                }
+            )
+        }
     }
 }
 

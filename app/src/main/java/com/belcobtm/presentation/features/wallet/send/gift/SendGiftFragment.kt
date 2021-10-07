@@ -47,16 +47,27 @@ class SendGiftFragment : BaseFragment<FragmentSendGiftBinding>(),
     override val isHomeButtonEnabled: Boolean = true
     override var isMenuEnabled: Boolean = true
     override val retryListener: View.OnClickListener = View.OnClickListener {
-        if (viewModel.initialLoadingData.value is LoadingData.Error) {
-            viewModel.fetchInitialData()
-        } else {
-            viewModel.sendGift(
-                binding.sendCoinInputLayout.getEditText().text.getDouble(),
-                sendGiftArgs.phoneNumber,
-                binding.messageView.getString(),
-                gifMedia?.id
-            )
+        when {
+            viewModel.initialLoadingData.value is LoadingData.Error ->
+                viewModel.fetchInitialData(sendGiftArgs.phoneNumber)
+            else -> {
+                viewModel.sendGift(
+                    binding.sendCoinInputLayout.getEditText().text.getDouble(),
+                    sendGiftArgs.phoneNumber,
+                    binding.messageView.getString(),
+                    gifMedia?.id
+                )
+            }
         }
+    }
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        viewModel.fetchInitialData(sendGiftArgs.phoneNumber)
+        return super.onCreateView(inflater, container, savedInstanceState)
     }
 
     private val currencyFormatter: Formatter<Double> by inject(
@@ -139,7 +150,8 @@ class SendGiftFragment : BaseFragment<FragmentSendGiftBinding>(),
     }
 
     override fun FragmentSendGiftBinding.initObservers() {
-        viewModel.initialLoadingData.listen({})
+        viewModel.initialLoadingData.listen()
+        viewModel.transactionPlanLiveData.listen()
         viewModel.sendCoinAmount.observe(viewLifecycleOwner) { cryptoAmount ->
             with(sendCoinInputLayout.getEditText()) {
                 if (text.getDouble() == 0.0 && cryptoAmount == 0.0) {

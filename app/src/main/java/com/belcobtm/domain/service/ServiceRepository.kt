@@ -1,6 +1,5 @@
 package com.belcobtm.domain.service
 
-import com.belcobtm.data.disk.database.service.ServiceEntity
 import com.belcobtm.data.disk.database.service.ServiceType
 import com.belcobtm.data.rest.service.ServiceFeeResponse
 

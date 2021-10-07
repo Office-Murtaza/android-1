@@ -1,6 +1,11 @@
 package com.belcobtm.presentation.core.views
 
 import android.content.Context
+import android.text.SpannableString
+import android.text.Spanned
+import android.text.TextPaint
+import android.text.method.LinkMovementMethod
+import android.text.style.ClickableSpan
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View
@@ -12,10 +17,7 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import com.belcobtm.R
 import com.belcobtm.databinding.ViewCoinInputLayoutBinding
-import com.belcobtm.presentation.core.extensions.actionDoneListener
-import com.belcobtm.presentation.core.extensions.invisible
-import com.belcobtm.presentation.core.extensions.show
-import com.belcobtm.presentation.core.extensions.toggle
+import com.belcobtm.presentation.core.extensions.*
 
 class CoinInputLayout @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
@@ -64,6 +66,25 @@ class CoinInputLayout @JvmOverloads constructor(
 
     fun setHelperText(text: CharSequence?) {
         binding.tvHelperText.text = text
+    }
+
+    fun setHelperTextWithLink(text: CharSequence, clickablePart: String, listener: () -> Unit) {
+        val ss = SpannableString(text)
+        val clickableSpan = object : ClickableSpan() {
+            override fun onClick(widget: View) {
+                listener()
+            }
+
+            override fun updateDrawState(ds: TextPaint) {
+                super.updateDrawState(ds)
+                ds.isUnderlineText = false
+            }
+        }
+        val start = text.indexOf(clickablePart)
+        ss.setSpan(clickableSpan, start, start + clickablePart.length, Spanned.SPAN_EXCLUSIVE_INCLUSIVE)
+        binding.tvHelperText.setDrawableEnd(R.drawable.ic_chevron_left_link)
+        binding.tvHelperText.movementMethod = LinkMovementMethod.getInstance()
+        binding.tvHelperText.text = ss
     }
 
     fun setMaxVisible(visible: Boolean) {

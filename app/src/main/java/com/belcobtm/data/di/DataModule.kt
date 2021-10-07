@@ -15,12 +15,16 @@ import com.belcobtm.data.cloud.storage.FirebaseCloudStorage
 import com.belcobtm.data.cloud.storage.FirebaseCloudStorage.Companion.CHAT_STORAGE
 import com.belcobtm.data.cloud.storage.FirebaseCloudStorage.Companion.VERIFICATION_STORAGE
 import com.belcobtm.data.core.NetworkUtils
-import com.belcobtm.data.core.TransactionHashHelper
+import com.belcobtm.data.core.TransactionHelper
 import com.belcobtm.data.core.UnlinkHandler
+import com.belcobtm.data.core.factory.*
+import com.belcobtm.data.core.helper.*
 import com.belcobtm.data.disk.AssetsDataStore
 import com.belcobtm.data.disk.database.AppDatabase
 import com.belcobtm.data.disk.database.AppDatabase.Companion.MIGRATION_2_3
 import com.belcobtm.data.disk.database.AppDatabase.Companion.MIGRATION_3_4
+import com.belcobtm.data.disk.database.AppDatabase.Companion.MIGRATION_4_5
+import com.belcobtm.data.disk.database.AppDatabase.Companion.MIGRATION_5_6
 import com.belcobtm.data.disk.shared.preferences.SharedPreferencesHelper
 import com.belcobtm.data.helper.DistanceCalculator
 import com.belcobtm.data.inmemory.trade.TradeInMemoryCache
@@ -106,11 +110,23 @@ val dataModule = module {
     single { TradeApiService(get(), get()) }
     single { NetworkUtils(get()) }
     single { AssetsDataStore(get()) }
-    single { TransactionHashHelper(get(), get(), get(), get(), get()) }
+    single { BlockTransactionInputBuilderFactory(get(), get()) }
+    single { BlockTransactionHelper(get(), get(), get()) }
+    single { BinanceTransactionInputBuilderFactory(get()) }
+    single { BinanceTransactionHelper(get()) }
+    single { RippleTransactionInputBuilderFactory(get()) }
+    single { RippleTransactionHelper(get()) }
+    single { EthTransactionInputBuilderFactory(get(), get()) }
+    single { EthTransactionHelper(get()) }
+    single { TronTransactionInputBuilderFactory(get(), get()) }
+    single { TronTransactionHelper(get(), get()) }
+    single { TransactionHelper(get(), get(), get(), get(), get()) }
     single {
         Room.databaseBuilder(get(), AppDatabase::class.java, "belco_database")
             .addMigrations(MIGRATION_2_3)
             .addMigrations(MIGRATION_3_4)
+            .addMigrations(MIGRATION_4_5)
+            .addMigrations(MIGRATION_5_6)
             .build()
     }
     single { Moshi.Builder().build() }
@@ -161,7 +177,7 @@ val dataModule = module {
             FirebaseCloudStorage(get<FirebaseStorage>().reference.child("verification"))
         )
     }
-    single<CloudAuth>() { FirebaseCloudAuth(Firebase.auth) }
+    single<CloudAuth> { FirebaseCloudAuth(Firebase.auth) }
     single {
         TradeInMemoryCache(
             get(), get(), GlobalScope, get(), get(), get(),
@@ -178,7 +194,7 @@ val dataModule = module {
     }
     single<ServiceRepository> { ServiceRepositoryImpl(get(), CoroutineScope(Dispatchers.IO)) }
     single { TransactionsInMemoryCache() }
-    single { UnlinkHandler(get(), get(), get(), get()) }
+    single { UnlinkHandler(get(), get(), get(), get(), get(authenticatorQualified)) }
     factory { TradesResponseToTradeDataMapper(get(), get(), get()) }
     factory { OrderResponseToOrderMapper() }
     factory { TradeResponseToTradeMapper() }

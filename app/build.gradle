@@ -102,7 +102,7 @@ dependencies {
     //swipe refresh layout
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.1.0"
 
-    implementation "com.trustwallet:wallet-core:2.3.9"
+    implementation "com.trustwallet:wallet-core:2.6.11"
 
     // Etherium client
     implementation "org.web3j:core:3.0.1-android"

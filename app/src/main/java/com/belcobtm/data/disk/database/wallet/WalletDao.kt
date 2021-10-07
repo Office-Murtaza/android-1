@@ -7,16 +7,34 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface WalletDao {
 
-    @Query("SELECT * FROM coin_detail INNER JOIN coin INNER JOIN accountentity WHERE coin_detail.c_id = coin.coin_id AND coin.idx = accountentity.id")
+    @Query(
+        """
+        SELECT * 
+        FROM coin_detail INNER JOIN coin INNER JOIN account_entity 
+        WHERE coin_detail.c_code = coin.code AND coin.code = account_entity.coin_name
+    """
+    )
     fun observeCoins(): Flow<List<FullCoinEntity>>
 
     @Query("SELECT * FROM wallet")
     fun observeWallet(): Flow<WalletEntity?>
 
-    @Query("SELECT * FROM coin_detail INNER JOIN coin INNER JOIN accountentity WHERE coin_detail.c_id = coin.coin_id AND coin.idx = accountentity.id")
+    @Query(
+        """
+        SELECT *
+        FROM coin_detail INNER JOIN coin INNER JOIN account_entity
+        WHERE coin_detail.c_code = coin.code AND coin.code = account_entity.coin_name
+    """
+    )
     suspend fun getCoins(): List<FullCoinEntity>
 
-    @Query("SELECT * FROM coin_detail INNER JOIN coin INNER JOIN accountentity WHERE coin_detail.c_id = coin.coin_id AND coin.idx = accountentity.id AND coin.code = :code")
+    @Query(
+        """
+        SELECT * 
+        FROM coin_detail INNER JOIN coin INNER JOIN account_entity
+        WHERE coin_detail.c_code = coin.code AND coin.code = account_entity.coin_name AND coin.code = :code
+    """
+    )
     suspend fun getCoinByCode(code: String): FullCoinEntity
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
@@ -45,16 +63,13 @@ interface WalletDao {
         balanceResponse.coins.forEach { response ->
             with(response) {
                 val entity = CoinEntity(
-                    idx, idx, coin, address, balance,
-                    fiatBalance, reserved, fiatReserved, price
+                    coin, address, balance, fiatBalance,
+                    reserved, fiatReserved, price
                 )
                 coins.add(entity)
             }
             with(response.details) {
-                val entity = CoinDetailsEntity(
-                    response.idx, txFee, byteFee, scale, walletAddress,
-                    gasLimit, gasPrice, convertedTxFee
-                )
+                val entity = CoinDetailsEntity(response.coin, serverAddress)
                 details.add(entity)
             }
         }

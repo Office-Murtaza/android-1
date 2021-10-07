@@ -9,7 +9,6 @@ import androidx.navigation.fragment.findNavController
 import com.belcobtm.R
 import com.belcobtm.databinding.FragmentAtmSellBinding
 import com.belcobtm.domain.wallet.LocalCoinType
-import com.belcobtm.domain.wallet.item.isEthRelatedCoinCode
 import com.belcobtm.presentation.core.extensions.*
 import com.belcobtm.presentation.core.helper.AlertHelper
 import com.belcobtm.presentation.core.mvvm.LoadingData
@@ -87,27 +86,19 @@ class AtmSellFragment : BaseFragment<FragmentAtmSellBinding>() {
         }
         viewModel.selectedCoinModel.observe(viewLifecycleOwner) { coin ->
             val coinCode = coin.coinCode
-            val coinFee = coin.coinFee.toStringCoin()
             val coinBalance = coin.coinBalance.toStringCoin()
             val localType = LocalCoinType.valueOf(coinCode)
-            val coinCodeFee = when (coinCode.isEthRelatedCoinCode()) {
-                true -> LocalCoinType.ETH.name
-                false -> coinCode
-            }
+            val balancePart = getString(R.string.sell_screen_balance)
+            val coinPart = getString(R.string.coin_balance_format, coinBalance, coinCode)
             coinInputLayout.setCoinData(
-                coinCode,
-                localType.resIcon(),
+                coinCode, localType.resIcon(),
                 viewModel.originCoinsData.size > SwapFragment.MIN_COINS_TO_ENABLE_DIALOG_PICKER
             )
-            coinInputLayout.setHelperText(
-                getString(
-                    R.string.swap_screen_balance_formatted,
-                    coinBalance,
-                    coinCode,
-                    coinFee,
-                    coinCodeFee
-                )
-            )
+            val balanceFormatted = getString(R.string.sell_screen_balance_formatted, balancePart, coinPart)
+            coinInputLayout.setHelperTextWithLink(balanceFormatted, coinPart) {
+                val uri = getString(R.string.reserved_deeplink_format, coinCode).toUri()
+                findNavController().navigate(uri)
+            }
         }
         viewModel.todayLimitFormatted.observe(viewLifecycleOwner, txLimitValue::setText)
         viewModel.dailyLimitFormatted.observe(viewLifecycleOwner, dayLimitValue::setText)

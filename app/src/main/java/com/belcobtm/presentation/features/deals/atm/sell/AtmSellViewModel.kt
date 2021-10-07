@@ -120,7 +120,7 @@ class AtmSellViewModel(
 
     fun setMaxSendAmount() {
         val currentCoinToSend = selectedCoin.value ?: return
-        val maxAmount = coinLimitsValueProvider.getMaxValue(currentCoinToSend)
+        val maxAmount = coinLimitsValueProvider.getMaxValue(currentCoinToSend, 0.0)
         setAmount(maxAmount * currentCoinToSend.priceUsd)
     }
 
@@ -145,7 +145,8 @@ class AtmSellViewModel(
             return
         }
         if (usdAmount > todayLimit) {
-            _usdAmountError.value = stringProvider.getString(R.string.sell_amount_exceeds_today_limit)
+            _usdAmountError.value =
+                stringProvider.getString(R.string.sell_amount_exceeds_today_limit)
             return
         }
         _sellLoadingData.value = LoadingData.Loading()
@@ -162,7 +163,7 @@ class AtmSellViewModel(
             1.0, coin.code, priceFormatter.format(coin.priceUsd)
         )
         _selectedCoinModel.value = CoinPresentationModel(
-            coin.code, coin.balanceCoin, coin.details.txFee
+            coin.code, coin.balanceCoin, 0.0
         )
     }
 

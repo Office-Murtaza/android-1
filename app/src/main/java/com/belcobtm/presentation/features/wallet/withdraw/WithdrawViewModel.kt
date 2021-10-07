@@ -3,23 +3,27 @@ package com.belcobtm.presentation.features.wallet.withdraw
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import com.belcobtm.domain.transaction.interactor.GetFakeFeeUseCase
+import com.belcobtm.domain.transaction.interactor.GetFeeUseCase
+import com.belcobtm.domain.transaction.interactor.GetTransactionPlanUseCase
 import com.belcobtm.domain.transaction.interactor.WithdrawUseCase
+import com.belcobtm.domain.transaction.item.TransactionPlanItem
 import com.belcobtm.domain.wallet.interactor.GetCoinListUseCase
 import com.belcobtm.domain.wallet.item.CoinDataItem
 import com.belcobtm.presentation.core.coin.AmountCoinValidator
 import com.belcobtm.presentation.core.coin.CoinLimitsValueProvider
 import com.belcobtm.presentation.core.coin.model.ValidationResult
 import com.belcobtm.presentation.core.mvvm.LoadingData
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 
 class WithdrawViewModel(
     private val coinCode: String,
-    getCoinListUseCase: GetCoinListUseCase,
+    private val getCoinListUseCase: GetCoinListUseCase,
     private val withdrawUseCase: WithdrawUseCase,
     private val coinLimitsValueProvider: CoinLimitsValueProvider,
-    private val amountCoinValidator: AmountCoinValidator
+    private val amountCoinValidator: AmountCoinValidator,
+    private val getTransactionPlanUseCase: GetTransactionPlanUseCase,
+    private val getFeeUseCase: GetFeeUseCase,
+    private val getFakeFeeUseCase: GetFakeFeeUseCase
 ) : ViewModel() {
 
     val transactionLiveData: MutableLiveData<LoadingData<Unit>> = MutableLiveData()
@@ -31,13 +35,37 @@ class WithdrawViewModel(
     val loadingLiveData: LiveData<LoadingData<Unit>>
         get() = _loadingLiveData
 
+    private val _fee = MutableLiveData<Double>()
+    val fee: LiveData<Double>
+        get() = _fee
+
+    private var transactionPlan: TransactionPlanItem? = null
+
     init {
+        fetchInitialData()
+    }
+
+    fun fetchInitialData() {
         _loadingLiveData.value = LoadingData.Loading()
-        getCoinListUseCase.invoke(Unit, onSuccess = {
-            coinDataItemList = it
+        getCoinListUseCase.invoke(Unit, onSuccess = { coins ->
+            coinDataItemList = coins
             fromCoinDataItem = coinDataItemList.find { it.code == coinCode }
                 ?: throw IllegalStateException("Invalid coin code that is not presented in a list $coinCode")
-            _loadingLiveData.value = LoadingData.Success(Unit)
+            getTransactionPlanUseCase(
+                fromCoinDataItem.code,
+                onSuccess = { transactionPlan ->
+                    this.transactionPlan = transactionPlan
+                    getFakeFeeUseCase(
+                        GetFakeFeeUseCase.Params(fromCoinDataItem.code, transactionPlan),
+                        onSuccess = { fee ->
+                            _fee.value = fee
+                            _loadingLiveData.value = LoadingData.Success(Unit)
+                        }, onError = {
+                            _loadingLiveData.value = LoadingData.Error(it)
+                        })
+                }, onError = {
+                    _loadingLiveData.value = LoadingData.Error(it)
+                })
         }, onError = {
             _loadingLiveData.value = LoadingData.Error(it)
         })
@@ -47,24 +75,29 @@ class WithdrawViewModel(
         toAddress: String,
         coinAmount: Double
     ) {
-        transactionLiveData.value = LoadingData.Loading()
-        withdrawUseCase.invoke(
-            params = WithdrawUseCase.Params(getCoinCode(), coinAmount, toAddress),
-            onSuccess = {
-                // we need to add some delay as server returns 200 before writting to DB
-                viewModelScope.launch {
-                    delay(1000)
-                    transactionLiveData.value = LoadingData.Success(it)
-                }
-            },
-            onError = { transactionLiveData.value = LoadingData.Error(it) }
-        )
+        val transactionPlan = transactionPlan ?: return
+        getFeeUseCase(GetFeeUseCase.Params(
+            toAddress, fromCoinDataItem.code, coinAmount, transactionPlan
+        ), onSuccess = {
+            transactionLiveData.value = LoadingData.Loading()
+            withdrawUseCase.invoke(
+                params = WithdrawUseCase.Params(
+                    getCoinCode(),
+                    coinAmount,
+                    toAddress,
+                    _fee.value ?: 0.0,
+                    transactionPlan
+                ),
+                onSuccess = { transactionLiveData.value = LoadingData.Success(it) },
+                onError = { transactionLiveData.value = LoadingData.Error(it) }
+            )
+        }, onError = {
+            transactionLiveData.value = LoadingData.Error(it)
+        })
     }
 
     fun getMaxValue(): Double =
-        coinLimitsValueProvider.getMaxValue(fromCoinDataItem)
-
-    fun getTransactionFee(): Double = fromCoinDataItem.details.txFee
+        coinLimitsValueProvider.getMaxValue(fromCoinDataItem, _fee.value ?: 0.0)
 
     fun getCoinBalance(): Double = fromCoinDataItem.balanceCoin
 

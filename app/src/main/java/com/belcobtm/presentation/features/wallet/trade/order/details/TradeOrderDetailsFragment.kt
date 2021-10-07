@@ -228,10 +228,7 @@ class TradeOrderDetailsFragment : BaseFragment<FragmentTradeOrderDetailsBinding>
         R.id.chat_menu_item -> {
             if (viewModel.isActiveOrder()) {
                 navigate(
-                    TradeOrderDetailsFragmentDirections.toChatOrderFragment(
-                        viewModel.partnerPublicId.value.orEmpty(), args.orderId,
-                        viewModel.myId.value.orEmpty(), viewModel.partnerId.value.orEmpty()
-                    )
+                    TradeOrderDetailsFragmentDirections.toChatOrderFragment(args.orderId)
                 )
             } else {
                 navigate(

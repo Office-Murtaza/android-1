@@ -4,17 +4,20 @@ import com.belcobtm.data.rest.service.ServiceFeeResponse
 import com.belcobtm.data.rest.wallet.response.BalanceResponse
 
 data class CreateRecoverWalletResponse(
-    val userId: String,
-    val identityId: Int,
     val accessToken: String,
     val expires: Long,
     val refreshToken: String,
     val firebaseToken: String,
+    val user: UserDetailsResponse,
+    val balance: BalanceResponse,
+    val serviceFees: List<ServiceFeeResponse>
+)
+
+data class UserDetailsResponse(
+    val id: String,
     val roles: List<String>?,
     val referralCode: String?,
-    val referralInvites: Int?,
+    val referrals: Int?,
     val referralEarned: Int?,
-    val balance: BalanceResponse,
-    val services: List<Int>,
-    val fees: List<ServiceFeeResponse>
+    val availableServices: List<Int>
 )

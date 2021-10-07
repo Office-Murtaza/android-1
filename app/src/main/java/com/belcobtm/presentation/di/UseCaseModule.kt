@@ -19,15 +19,13 @@ import com.belcobtm.domain.socket.DisconnectFromSocketUseCase
 import com.belcobtm.domain.tools.interactor.OldSendSmsToDeviceUseCase
 import com.belcobtm.domain.tools.interactor.OldVerifySmsCodeUseCase
 import com.belcobtm.domain.tools.interactor.SendSmsToDeviceUseCase
+import com.belcobtm.domain.tools.interactor.VerifySmsCodeUseCase
 import com.belcobtm.domain.trade.ClearCacheUseCase
 import com.belcobtm.domain.trade.create.CheckTradeCreationAvailabilityUseCase
 import com.belcobtm.domain.trade.create.CreateTradeUseCase
 import com.belcobtm.domain.trade.create.GetAvailableTradePaymentOptionsUseCase
 import com.belcobtm.domain.trade.create.mapper.PaymentIdToAvailablePaymentOptionMapper
-import com.belcobtm.domain.trade.details.CancelTradeUseCase
-import com.belcobtm.domain.trade.details.EditTradeUseCase
-import com.belcobtm.domain.trade.details.GetTradeDetailsUseCase
-import com.belcobtm.domain.trade.details.ObserveTradeDetailsUseCase
+import com.belcobtm.domain.trade.details.*
 import com.belcobtm.domain.trade.list.*
 import com.belcobtm.domain.trade.list.filter.ApplyFilterUseCase
 import com.belcobtm.domain.trade.list.filter.LoadFilterDataUseCase
@@ -38,6 +36,7 @@ import com.belcobtm.domain.trade.list.filter.mapper.TradeFilterMapper
 import com.belcobtm.domain.trade.list.mapper.*
 import com.belcobtm.domain.trade.order.*
 import com.belcobtm.domain.trade.order.mapper.ChatMessageMapper
+import com.belcobtm.domain.transaction.interactor.GetFeeUseCase
 import com.belcobtm.domain.transaction.interactor.*
 import com.belcobtm.domain.transaction.interactor.trade.TradeRecallTransactionCompleteUseCase
 import com.belcobtm.domain.transaction.interactor.trade.TradeReserveTransactionCompleteUseCase
@@ -67,7 +66,6 @@ val useCaseModule = module {
             get(),
             androidApplication(),
             get(),
-            get(),
             get(named(VERIFICATION_STORAGE))
         )
     }
@@ -76,7 +74,6 @@ val useCaseModule = module {
         SendVerificationVipUseCase(
             get(),
             androidApplication(),
-            get(),
             get(),
             get(named(VERIFICATION_STORAGE))
         )
@@ -87,6 +84,7 @@ val useCaseModule = module {
     single { OldSendSmsToDeviceUseCase(get()) }
     single { OldVerifySmsCodeUseCase(get()) }
     single { SendSmsToDeviceUseCase(get()) }
+    single { VerifySmsCodeUseCase(get()) }
     single { SellPreSubmitUseCase(get()) }
     single { SellGetLimitsUseCase(get()) }
     single { SellUseCase(get()) }
@@ -147,6 +145,7 @@ val useCaseModule = module {
     single { ApplyFilterUseCase(get(), get()) }
     single { GetTradeDetailsUseCase(get(), get()) }
     single { ObserveTradeDetailsUseCase(get(), get()) }
+    single { DeleteTradeUseCase(get()) }
     single { CancelTradeUseCase(get()) }
     single { CancelOrderUseCase(get()) }
     single { EditTradeUseCase(get()) }
@@ -161,10 +160,9 @@ val useCaseModule = module {
     single { RateOrderUseCase(get()) }
     single {
         SendChatMessageUseCase(
-            get(),
-            get(),
+            get(), get(),
             get(named(FirebaseCloudStorage.CHAT_STORAGE)),
-            get()
+            get(), get()
         )
     }
     single { ObserveChatMessagesUseCase(get()) }
@@ -184,6 +182,10 @@ val useCaseModule = module {
     single { GetExistedPhoneNumbersUseCase(get(), get()) }
     single { SearchAvailableContactsUseCase(get()) }
     single { CreateRecipientsUseCase() }
+    single { GetTransactionPlanUseCase(get()) }
+    single { GetFeeUseCase(get()) }
+    single { GetFakeFeeUseCase(get(), get()) }
+    single { GetTransferAddressUseCase(get()) }
     factory { TradePaymentOptionMapper() }
     factory { CoinCodeMapper() }
     factory { TradesDataToTradeListMapper(get()) }

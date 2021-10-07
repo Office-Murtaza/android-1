@@ -19,13 +19,5 @@ fun FullCoinEntity.toDataItem() = CoinDataItem(
     publicKey = coin.address,
     code = coin.code,
     isEnabled = accountEntity.isEnabled,
-    details = CoinDataItem.Details(
-        coinDetails.txFee,
-        coinDetails.byteFee,
-        coinDetails.scale,
-        coinDetails.walletAddress,
-        coinDetails.gasLimit,
-        coinDetails.gasPrice,
-        coinDetails.convertedTxFee
-    )
+    details = CoinDataItem.Details(coinDetails.walletAddress)
 )

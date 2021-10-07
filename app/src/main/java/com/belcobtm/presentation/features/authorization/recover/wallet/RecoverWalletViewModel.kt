@@ -14,7 +14,7 @@ class RecoverWalletViewModel(
 
     fun checkCredentials(phone: String, password: String) {
         checkCredentialsLiveData.value = LoadingData.Loading()
-        checkCredentialsUseCase.invoke(
+        checkCredentialsUseCase(
             AuthorizationCheckCredentialsUseCase.Params(phone, password),
             onSuccess = { checkCredentialsLiveData.value = LoadingData.Success(it) },
             onError = { checkCredentialsLiveData.value = LoadingData.Error(it) }

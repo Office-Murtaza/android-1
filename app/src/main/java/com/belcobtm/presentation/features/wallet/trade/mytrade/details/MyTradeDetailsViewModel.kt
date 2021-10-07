@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.belcobtm.R
+import com.belcobtm.data.model.trade.TradeStatus
 import com.belcobtm.data.model.trade.TradeType
 import com.belcobtm.domain.Either
 import com.belcobtm.domain.Failure
@@ -52,6 +53,12 @@ class MyTradeDetailsViewModel(
     private val _amountRange = MutableLiveData<String>()
     val amountRange: LiveData<String> = _amountRange
 
+    private val _isOutOfStock = MutableLiveData<Boolean>()
+    val isOutOfStock: LiveData<Boolean> = _isOutOfStock
+
+    private val _isCancelled = MutableLiveData<Boolean>()
+    val isCancelled: LiveData<Boolean> = _isCancelled
+
     fun fetchTradeDetails(tradeId: String) {
         _initialLoadingData.value = LoadingData.Loading()
         viewModelScope.launch {
@@ -73,7 +80,9 @@ class MyTradeDetailsViewModel(
         _selectedCoin.value = trade.coin
         _price.value = trade.priceFormatted
         _tradeType.value = trade.tradeType
-        _amountRange.value = if (trade.minLimit > trade.maxLimit) {
+        val isOutOfStock = trade.minLimit > trade.maxLimit
+        _isOutOfStock.value = isOutOfStock
+        _amountRange.value = if (isOutOfStock) {
             stringProvider.getString(R.string.trade_amount_range_out_of_stock)
         } else {
             stringProvider.getString(
@@ -85,6 +94,7 @@ class MyTradeDetailsViewModel(
         _paymentOptions.value = trade.paymentMethods
         _ordersCount.value = trade.ordersCount
         _terms.value = trade.terms
+        _isCancelled.value = trade.status == TradeStatus.CANCELLED
         _initialLoadingData.value = LoadingData.Success(Unit)
     }
 

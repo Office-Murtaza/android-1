@@ -13,15 +13,7 @@ data class CoinDataItem(
     val isEnabled: Boolean = true,
     val details: Details
 ) {
-    data class Details(
-        val txFee: Double,
-        val byteFee: Long,
-        val scale: Int,
-        val walletAddress: String,
-        val gasLimit: Long?,
-        val gasPrice: Long?,
-        val convertedTxFee: Double?
-    )
+    data class Details(val walletAddress: String)
 }
 
 fun CoinDataItem.isEthRelatedCoin(): Boolean {

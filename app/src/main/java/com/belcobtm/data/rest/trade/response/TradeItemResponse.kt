@@ -6,10 +6,9 @@ import com.belcobtm.data.model.trade.TraderStatus
 
 data class TradeItemResponse(
     val id: String,
-    @TradeType val type: Int,
     val coin: String,
+    @TradeType val type: Int,
     @TradeStatus val status: Int,
-    val timestamp: Long,
     val price: Double,
     val minLimit: Double,
     val maxLimit: Double,
@@ -18,9 +17,10 @@ data class TradeItemResponse(
     val terms: String,
     val makerUserId: String,
     @TraderStatus val makerStatus: Int,
-    val makerPublicId: String,
+    val makerUsername: String?,
     val makerLatitude: Double?,
     val makerLongitude: Double?,
-    val makerTotalTrades: Int,
-    val makerTradingRate: Double
+    val makerTradeTotal: Int,
+    val makerTradeRate: Double,
+    val timestamp: Long
 )

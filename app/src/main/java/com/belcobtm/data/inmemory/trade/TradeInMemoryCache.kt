@@ -5,6 +5,7 @@ import com.belcobtm.data.helper.DistanceCalculator
 import com.belcobtm.data.mapper.OrderResponseToOrderMapper
 import com.belcobtm.data.mapper.TradeResponseToTradeMapper
 import com.belcobtm.data.mapper.TradesResponseToTradeDataMapper
+import com.belcobtm.data.model.trade.Order
 import com.belcobtm.data.model.trade.Trade
 import com.belcobtm.data.model.trade.TradeData
 import com.belcobtm.data.model.trade.filter.TradeFilter
@@ -100,6 +101,14 @@ class TradeInMemoryCache(
         val currentCache = cache.value ?: return Either.Left(Failure.ServerError())
         return currentCache.flatMap { tradeData ->
             tradeData.trades[tradeId]?.let { Either.Right(it) }
+                ?: Either.Left(Failure.ServerError())
+        }
+    }
+
+    fun findOrder(orderId: String): Either<Failure, Order> {
+        val currentCache = cache.value ?: return Either.Left(Failure.ServerError())
+        return currentCache.flatMap { tradeData ->
+            tradeData.orders[orderId]?.let { Either.Right(it) }
                 ?: Either.Left(Failure.ServerError())
         }
     }

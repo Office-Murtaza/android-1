@@ -1,6 +1,6 @@
 package com.belcobtm.data.rest.authorization.response
 
 class CheckCredentialsResponse(
-    val passwordMatch: Boolean,
-    val phoneExist: Boolean
+    val passwordsMatch: Boolean,
+    val phoneExists: Boolean
 )

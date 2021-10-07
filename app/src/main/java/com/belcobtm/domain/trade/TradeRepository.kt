@@ -1,6 +1,7 @@
 package com.belcobtm.domain.trade
 
 import android.location.Location
+import com.belcobtm.data.model.trade.Order
 import com.belcobtm.data.model.trade.PaymentOption
 import com.belcobtm.data.model.trade.Trade
 import com.belcobtm.data.model.trade.TradeData
@@ -30,6 +31,8 @@ interface TradeRepository {
 
     fun getTrade(tradeId: String): Either<Failure, Trade>
 
+    fun getOrder(orderId: String): Either<Failure, Order>
+
     fun getFilterItem(): TradeFilterItem
 
     suspend fun clearCache()
@@ -45,6 +48,8 @@ interface TradeRepository {
     suspend fun createTrade(createTradeItem: CreateTradeItem): Either<Failure, Unit>
 
     suspend fun editTrade(editTrade: EditTradeItem): Either<Failure, Unit>
+
+    suspend fun deleteTrade(tradeId: String): Either<Failure, Unit>
 
     suspend fun cancelTrade(tradeId: String): Either<Failure, Unit>
 

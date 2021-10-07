@@ -97,7 +97,7 @@
             android:background="@android:color/transparent"
             android:hint="Type your message"
             android:imeOptions="actionDone"
-            android:inputType="textShortMessage"
+            android:inputType="text"
             android:padding="8dp"
             tools:text="$100" />
 

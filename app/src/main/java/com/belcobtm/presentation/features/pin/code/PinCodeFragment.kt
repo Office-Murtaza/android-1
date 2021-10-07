@@ -12,6 +12,7 @@ import android.widget.TableLayout
 import androidx.activity.OnBackPressedCallback
 import androidx.biometric.BiometricPrompt
 import androidx.core.content.ContextCompat
+import androidx.core.os.bundleOf
 import androidx.core.view.isInvisible
 import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
@@ -22,12 +23,12 @@ import com.belcobtm.domain.Failure
 import com.belcobtm.presentation.core.extensions.toggle
 import com.belcobtm.presentation.core.ui.fragment.BaseFragment
 import com.belcobtm.presentation.features.HostActivity
+import com.belcobtm.presentation.features.MainFragment
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class PinCodeFragment : BaseFragment<FragmentPinCodeBinding>() {
     private val viewModel: PinCodeViewModel by viewModel()
 
-    // TODO move to args
     private val pinMode: String by lazy {
         requireArguments().getString(
             TAG_PIN_MODE,
@@ -123,12 +124,23 @@ class PinCodeFragment : BaseFragment<FragmentPinCodeBinding>() {
             when (action) {
                 is PinCodeAction.Success -> {
                     viewModel.connectToWebSockets()
-                    navigate(
-                        R.id.main_screen,
-                        NavOptions.Builder()
-                            .setPopUpTo(R.id.pin_code_fragment, true)
-                            .build()
-                    )
+                    val deeplink = arguments?.getString(KEY_DEEPLINK)
+                    if (deeplink.isNullOrEmpty()) {
+                        navigate(
+                            R.id.main_screen,
+                            NavOptions.Builder()
+                                .setPopUpTo(R.id.pin_code_fragment, true)
+                                .build()
+                        )
+                    } else {
+                        navigate(
+                            R.id.main_screen,
+                            bundleOf(MainFragment.KEY_DEEPLINK to deeplink),
+                            NavOptions.Builder()
+                                .setPopUpTo(R.id.pin_code_fragment, true)
+                                .build()
+                        )
+                    }
                 }
                 is PinCodeAction.ChangedPin -> {
                     showSnackBar(R.string.pin_updated)
@@ -211,6 +223,7 @@ class PinCodeFragment : BaseFragment<FragmentPinCodeBinding>() {
         const val KEY_PIN_MODE_CREATE = "key_pin_mode_create"
         const val KEY_PIN_MODE_CHANGE = "key_pin_mode_change"
         const val KEY_PIN_MODE_ENTER = "key_pin_mode_enter"
+        const val KEY_DEEPLINK = "key_deeplink"
 
         const val STEP_VERIFY = 0
         const val STEP_CREATE = 1

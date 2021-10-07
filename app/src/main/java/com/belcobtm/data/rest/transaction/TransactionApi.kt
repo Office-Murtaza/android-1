@@ -9,6 +9,12 @@ import retrofit2.http.*
 
 interface TransactionApi {
 
+    @GET("user/{userId}/coin/{coinCode}/transaction-plan")
+    fun getTransactionPlanAsync(
+        @Path("userId") userId: String,
+        @Path("coinCode") coinCode: String
+    ): Deferred<Response<TransactionPlanResponse>>
+
     @GET("user/{userId}/coin/{coinCode}/transaction-history")
     fun getTransactionsAsync(
         @Path("userId") userId: String,

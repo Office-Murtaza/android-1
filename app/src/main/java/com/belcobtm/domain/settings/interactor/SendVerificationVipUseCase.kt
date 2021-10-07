@@ -14,20 +14,19 @@ import com.belcobtm.domain.settings.item.VerificationVipDataItem
 class SendVerificationVipUseCase(
     private val repositoryImpl: SettingsRepository,
     private val context: Context,
-    private val preferencesHelper: SharedPreferencesHelper,
     private val stringGenerator: RandomStringGenerator,
     private val cloudStorage: CloudStorage
 ) : UseCase<Unit, SendVerificationVipUseCase.Params>() {
 
     companion object {
-        const val RANDOM_PART_SIZE = 10
+        const val RANDOM_PART_SIZE = 8
         const val FILE_EXTENSION = "jpg"
     }
 
     override suspend fun run(params: Params): Either<Failure, Unit> {
         val bitmap = BitmapFactory.decodeStream(context.contentResolver.openInputStream(params.vipDataItem.fileUri))
         val fileName =
-            "${preferencesHelper.userId}_snn_${stringGenerator.generate(RANDOM_PART_SIZE)}.$FILE_EXTENSION"
+            "snn_${stringGenerator.generate(RANDOM_PART_SIZE)}.$FILE_EXTENSION"
         cloudStorage.uploadBitmap(fileName, bitmap)
         return repositoryImpl.sendVerificationVip(params.vipDataItem, fileName, FILE_EXTENSION)
     }

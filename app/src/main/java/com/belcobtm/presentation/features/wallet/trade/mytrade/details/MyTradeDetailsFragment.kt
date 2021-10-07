@@ -1,5 +1,6 @@
 package com.belcobtm.presentation.features.wallet.trade.mytrade.details
 
+import android.graphics.Typeface
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -11,8 +12,10 @@ import com.belcobtm.data.model.trade.TradeType
 import com.belcobtm.databinding.FragmentMyTradeDetailsBinding
 import com.belcobtm.domain.Failure
 import com.belcobtm.presentation.core.adapter.MultiTypeAdapter
+import com.belcobtm.presentation.core.extensions.hide
 import com.belcobtm.presentation.core.extensions.resIcon
 import com.belcobtm.presentation.core.extensions.setDrawableStart
+import com.belcobtm.presentation.core.extensions.toggle
 import com.belcobtm.presentation.core.helper.AlertHelper
 import com.belcobtm.presentation.core.mvvm.LoadingData
 import com.belcobtm.presentation.core.ui.fragment.BaseFragment
@@ -78,6 +81,23 @@ class MyTradeDetailsFragment : BaseFragment<FragmentMyTradeDetailsBinding>() {
         }
         viewModel.terms.observe(viewLifecycleOwner, terms::setText)
         viewModel.amountRange.observe(viewLifecycleOwner, amountRange::setText)
+        viewModel.isOutOfStock.observe(viewLifecycleOwner) { isOutOfStock ->
+            if (isOutOfStock) {
+                with(amountRange) {
+                    setTextColor(ContextCompat.getColor(context, R.color.colorError))
+                    setTypeface(typeface, Typeface.BOLD)
+                }
+            } else {
+                with(amountRange) {
+                    setTextColor(ContextCompat.getColor(context, R.color.black_text_color))
+                    setTypeface(typeface, Typeface.NORMAL)
+                }
+            }
+        }
+        viewModel.isCancelled.observe(viewLifecycleOwner) { isCancelled ->
+            cancelButton.toggle(!isCancelled)
+            editButton.toggle(!isCancelled)
+        }
         viewModel.tradeType.observe(viewLifecycleOwner) {
             with(tradeType) {
                 if (it == TradeType.BUY) {

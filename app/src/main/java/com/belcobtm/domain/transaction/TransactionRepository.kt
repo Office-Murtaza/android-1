@@ -3,27 +3,37 @@ package com.belcobtm.domain.transaction
 import com.belcobtm.data.model.transactions.TransactionsData
 import com.belcobtm.domain.Either
 import com.belcobtm.domain.Failure
-import com.belcobtm.domain.transaction.item.SellLimitsDataItem
-import com.belcobtm.domain.transaction.item.SellPreSubmitDataItem
-import com.belcobtm.domain.transaction.item.StakeDetailsDataItem
+import com.belcobtm.domain.transaction.item.*
 import kotlinx.coroutines.flow.Flow
 
 interface TransactionRepository {
+
+    suspend fun getTransactionPlan(coinCode: String): Either<Failure, TransactionPlanItem>
 
     suspend fun fetchTransactionList(coinCode: String): Either<Failure, Unit>
 
     fun observeTransactions(): Flow<TransactionsData>
 
+    suspend fun getFee(
+        fromCoin: String,
+        fromCoinAmount: Double,
+        fromTransactionPlan: TransactionPlanItem,
+        toAddress: String
+    ): Either<Failure, Double>
+
     suspend fun createTransaction(
         fromCoin: String,
         fromCoinAmount: Double,
+        fromTransactionPlan: TransactionPlanItem,
         isNeedSendSms: Boolean
     ): Either<Failure, String>
 
     suspend fun withdraw(
+        toAddress: String,
         fromCoin: String,
         fromCoinAmount: Double,
-        toAddress: String
+        fee: Double,
+        fromTransactionPlan: TransactionPlanItem,
     ): Either<Failure, Unit>
 
     suspend fun sendGift(
@@ -31,7 +41,10 @@ interface TransactionRepository {
         coinCode: String,
         giftId: String?,
         phone: String,
-        message: String?
+        message: String?,
+        fee: Double,
+        toAddress: String,
+        transactionPlanItem: TransactionPlanItem,
     ): Either<Failure, Unit>
 
     suspend fun sellGetLimits(): Either<Failure, SellLimitsDataItem>
@@ -54,23 +67,28 @@ interface TransactionRepository {
         fromCoinAmount: Double,
         toCoinAmount: Double,
         fromCoin: String,
-        coinTo: String
+        coinTo: String,
+        fee: Double,
+        transactionPlanItem: TransactionPlanItem,
     ): Either<Failure, Unit>
 
     suspend fun tradeRecallTransactionComplete(
         coinCode: String,
-        cryptoAmount: Double
+        cryptoAmount: Double,
     ): Either<Failure, Unit>
 
     suspend fun tradeReserveTransactionCreate(
         coinCode: String,
-        cryptoAmount: Double
+        cryptoAmount: Double,
+        transactionPlanItem: TransactionPlanItem,
     ): Either<Failure, String>
 
     suspend fun tradeReserveTransactionComplete(
         coinCode: String,
         cryptoAmount: Double,
-        hash: String
+        hash: String,
+        fee: Double,
+        transactionPlanItem: TransactionPlanItem,
     ): Either<Failure, Unit>
 
     suspend fun stakeDetails(
@@ -79,19 +97,24 @@ interface TransactionRepository {
 
     suspend fun stakeCreate(
         coinCode: String,
-        cryptoAmount: Double
+        cryptoAmount: Double,
+        transactionPlanItem: TransactionPlanItem,
     ): Either<Failure, Unit>
 
     suspend fun stakeCancel(
-        coinCode: String
+        coinCode: String,
+        transactionPlanItem: TransactionPlanItem,
     ): Either<Failure, Unit>
 
     suspend fun stakeWithdraw(
         coinCode: String,
-        cryptoAmount: Double
+        cryptoAmount: Double,
+        transactionPlanItem: TransactionPlanItem,
     ): Either<Failure, Unit>
 
     suspend fun checkXRPAddressActivated(
         address: String
     ): Either<Failure, Boolean>
+
+    suspend fun getTransferAddress(phone: String, coinCode: String): Either<Failure, String>
 }

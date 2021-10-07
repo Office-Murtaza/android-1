@@ -4,12 +4,21 @@ import com.belcobtm.domain.Either
 import com.belcobtm.domain.Failure
 import com.belcobtm.domain.UseCase
 import com.belcobtm.domain.transaction.TransactionRepository
+import com.belcobtm.domain.transaction.item.TransactionPlanItem
 
 class StakeCreateUseCase(
     private val transactionRepository: TransactionRepository
 ) : UseCase<Unit, StakeCreateUseCase.Params>() {
     override suspend fun run(params: Params): Either<Failure, Unit> =
-        transactionRepository.stakeCreate(params.coinCode, params.cryptoAmount)
+        transactionRepository.stakeCreate(
+            params.coinCode,
+            params.cryptoAmount,
+            params.transactionPlanItem
+        )
 
-    data class Params(val coinCode: String, val cryptoAmount: Double)
+    data class Params(
+        val coinCode: String,
+        val cryptoAmount: Double,
+        val transactionPlanItem: TransactionPlanItem
+    )
 }

@@ -13,7 +13,7 @@ data class Trade(
     val paymentMethods: List<@PaymentOption Int>,
     val terms: String,
     val makerId: String,
-    val makerPublicId: String,
+    val makerUsername: String,
     @TraderStatus val makerStatus: Int,
     val makerLatitude: Double?,
     val makerLongitude: Double?,

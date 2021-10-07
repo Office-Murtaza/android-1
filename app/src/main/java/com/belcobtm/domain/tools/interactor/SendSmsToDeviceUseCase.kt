@@ -7,9 +7,10 @@ import com.belcobtm.domain.tools.ToolsRepository
 
 class SendSmsToDeviceUseCase(
     private val repository: ToolsRepository
-) :
-    UseCase<String, SendSmsToDeviceUseCase.Params>() {
-    override suspend fun run(params: Params): Either<Failure, String> = repository.sendSmsToDevice(params.phone)
+) : UseCase<Boolean, SendSmsToDeviceUseCase.Params>() {
+
+    override suspend fun run(params: Params): Either<Failure, Boolean> =
+        repository.sendSmsToDevice(params.phone)
 
     data class Params(val phone: String)
 }

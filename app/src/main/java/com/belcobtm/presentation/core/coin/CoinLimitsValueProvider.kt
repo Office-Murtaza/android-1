@@ -6,10 +6,14 @@ import kotlin.math.max
 
 class CoinLimitsValueProvider {
 
-    fun getMaxValue(coin: CoinDataItem, useReservedBalance: Boolean = false) = when (coin.code) {
+    fun getMaxValue(
+        coin: CoinDataItem,
+        txFee: Double,
+        useReservedBalance: Boolean = false
+    ) = when (coin.code) {
         LocalCoinType.CATM.name -> coin.getBalance(useReservedBalance)
-        LocalCoinType.XRP.name -> max(0.0, coin.getBalance(useReservedBalance) - coin.details.txFee - 20)
-        else -> max(0.0, coin.getBalance(useReservedBalance) - coin.details.txFee)
+        LocalCoinType.XRP.name -> max(0.0, coin.getBalance(useReservedBalance) - txFee - 20)
+        else -> max(0.0, coin.getBalance(useReservedBalance) - txFee)
     }
 
     private fun CoinDataItem.getBalance(useReservedBalance: Boolean) =

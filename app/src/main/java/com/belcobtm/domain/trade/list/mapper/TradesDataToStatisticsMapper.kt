@@ -12,7 +12,7 @@ class TradesDataToStatisticsMapper(
     fun map(tradeData: TradeData): TradeStatistics =
         with(tradeData.statistics) {
             TradeStatistics(
-                publicId,
+                publicId.orEmpty(),
                 statusMapper.map(status),
                 getStatusLabel(status),
                 totalTrades,

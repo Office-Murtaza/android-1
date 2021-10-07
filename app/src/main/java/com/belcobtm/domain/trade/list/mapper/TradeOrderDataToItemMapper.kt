@@ -36,9 +36,9 @@ class TradeOrderDataToItemMapper(
                 cryptoAmount, fiatAmount, priceFormatter.format(fiatAmount),
                 trade.paymentMethods, terms, makerId, makerStatusId,
                 statusMapper.map(makerStatusId),
-                makerRate, makerPublicId, makerLatitude, makerLongitude, makerTotalTrades,
+                makerRate, makerUsername, makerLatitude, makerLongitude, makerTotalTrades,
                 tradeCountFormatter.format(makerTotalTrades), makerTradingRate,
-                takerId, takerStatusId, statusMapper.map(takerStatusId), takerRate, takerPublicId,
+                takerId, takerStatusId, statusMapper.map(takerStatusId), takerRate, takerUsername,
                 takerLatitude, takerLongitude, takerTotalTrades,
                 tradeCountFormatter.format(takerTotalTrades), takerTradingRate,
                 formatDistance()
@@ -88,6 +88,6 @@ class TradeOrderDataToItemMapper(
             OrderStatus.RELEASED -> R.string.order_status_released_label
             OrderStatus.DISPUTING -> R.string.order_status_disputing_label
             OrderStatus.SOLVED -> R.string.order_status_solved_label
-            else -> throw RuntimeException("Unknown trade type $status")
+            else -> throw RuntimeException("Unknown order status $status")
         }
 }

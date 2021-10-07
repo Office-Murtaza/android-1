@@ -59,10 +59,10 @@ class SharedPreferencesHelper(private val sharedPreferences: SharedPreferences) 
             accessToken = it.accessToken
             refreshToken = it.refreshToken
             firebaseToken = it.firebaseToken
-            userId = it.userId
-            referralCode = it.referralCode.orEmpty()
-            referralInvites = it.referralInvites ?: 0
-            referralEarned = it.referralEarned ?: 0
+            userId = it.user.id
+            referralCode = it.user.referralCode.orEmpty()
+            referralInvites = it.user.referrals ?: 0
+            referralEarned = it.user.referralEarned ?: 0
         }
     }
 

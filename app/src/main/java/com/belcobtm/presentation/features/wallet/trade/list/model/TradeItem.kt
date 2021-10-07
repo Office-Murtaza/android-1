@@ -1,6 +1,7 @@
 package com.belcobtm.presentation.features.wallet.trade.list.model
 
 import androidx.annotation.DrawableRes
+import com.belcobtm.data.model.trade.TradeStatus
 import com.belcobtm.data.model.trade.TradeType
 import com.belcobtm.domain.wallet.LocalCoinType
 import com.belcobtm.presentation.core.adapter.model.ListItem
@@ -9,7 +10,7 @@ data class TradeItem(
     val tradeId: String,
     @TradeType val tradeType: Int,
     val coin: LocalCoinType,
-    val status: Int,
+    @TradeStatus val status: Int,
     val price: Double,
     val timestamp: Long,
     val priceFormatted: String,
