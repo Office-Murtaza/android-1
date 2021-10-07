@@ -1,10 +1,12 @@
 package com.belcobtm.presentation.features.contacts
 
 import android.Manifest
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import com.belcobtm.R
 import com.belcobtm.databinding.FragmentContactListBinding
 import com.belcobtm.presentation.core.adapter.MultiTypeAdapter
@@ -46,6 +48,14 @@ class ContactListFragment : BaseFragment<FragmentContactListBinding>() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         loadInitialDataWithPermissionCheck()
+        binding.root.post {
+            binding.searchEditText.requestFocus()
+            binding.searchEditText.setSelection(
+                binding.searchEditText.length()
+            )
+            (requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager)
+                ?.showSoftInput(binding.searchEditText, 0)
+        }
     }
 
     @NeedsPermission(Manifest.permission.READ_CONTACTS)

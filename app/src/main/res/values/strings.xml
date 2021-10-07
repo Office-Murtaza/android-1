@@ -750,4 +750,8 @@
 
     <string name="trade_container_deeplink">belcobtm://trade_container/{innerDeeplink}</string>
     <string name="trade_container_deeplink_format">belcobtm://trade_container/%s</string>
+  
+    <string name="about_screen_terms_picker_title">Terms &amp; Conditions</string>
+    <string name="about_screen_privacy_picker_title">Privacy Policy</string>
+    <string name="about_screen_complaint_picker_title">Complaint Policy</string>
 </resources>
