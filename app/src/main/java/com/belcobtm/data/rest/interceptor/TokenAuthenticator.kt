@@ -30,7 +30,11 @@ class TokenAuthenticator(
             responseCode == HttpURLConnection.HTTP_OK && responseBody != null -> {
                 val updatedToken = responseBody.accessToken
                 runBlocking {
-                    serviceRepository.updateServices(responseBody.services, responseBody.serviceFees)
+                    serviceRepository.updateServices(
+                        responseBody.user.availableServices,
+                        responseBody.serviceFees
+                    )
+
                 }
                 // update session
                 prefsHelper.processAuthResponse(responseBody)

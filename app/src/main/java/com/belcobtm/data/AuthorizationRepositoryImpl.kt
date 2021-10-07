@@ -113,15 +113,15 @@ class AuthorizationRepositoryImpl(
             val accountList = createAccountEntityList(temporaryCoinMap, result.balance.coins)
             walletDao.updateBalance(result.balance)
             daoAccount.insertItemList(accountList)
-            serviceRepository.updateServices(result.services, result.serviceFees)
+            serviceRepository.updateServices(result.user.availableServices, result.serviceFees)
             prefHelper.accessToken = result.accessToken
             prefHelper.refreshToken = result.refreshToken
             prefHelper.firebaseToken = result.firebaseToken
-            prefHelper.userId = result.userId
+            prefHelper.userId = result.user.id
             prefHelper.userPhone = phone
-            prefHelper.referralCode = result.referralCode.orEmpty()
-            prefHelper.referralInvites = result.referralInvites ?: 0
-            prefHelper.referralEarned = result.referralEarned ?: 0
+            prefHelper.referralCode = result.user.referralCode.orEmpty()
+            prefHelper.referralInvites = result.user.referrals ?: 0
+            prefHelper.referralEarned = result.user.referralEarned ?: 0
             temporaryCoinMap.clear()
             Either.Right(Unit)
         } else {
@@ -155,7 +155,7 @@ class AuthorizationRepositoryImpl(
         return if (recoverResponse.isRight) {
             val result = (recoverResponse as Either.Right).b
             val accountList = createAccountEntityList(temporaryCoinMap, result.balance.coins)
-            serviceRepository.updateServices(result.services, result.serviceFees)
+            serviceRepository.updateServices(result.user.availableServices, result.serviceFees)
             walletDao.updateBalance(result.balance)
             daoAccount.insertItemList(accountList)
             prefHelper.apiSeed = seed
@@ -163,10 +163,10 @@ class AuthorizationRepositoryImpl(
             prefHelper.accessToken = result.accessToken
             prefHelper.refreshToken = result.refreshToken
             prefHelper.userPhone = phone
-            prefHelper.userId = result.userId
-            prefHelper.referralCode = result.referralCode.orEmpty()
-            prefHelper.referralInvites = result.referralInvites ?: 0
-            prefHelper.referralEarned = result.referralEarned ?: 0
+            prefHelper.userId = result.user.id
+            prefHelper.referralCode = result.user.referralCode.orEmpty()
+            prefHelper.referralInvites = result.user.referrals ?: 0
+            prefHelper.referralEarned = result.user.referralEarned ?: 0
             temporaryCoinMap.clear()
             Either.Right(Unit)
         } else {
@@ -178,7 +178,11 @@ class AuthorizationRepositoryImpl(
         val response = apiService.authorizeByRefreshToken(prefHelper.refreshToken)
         return if (response.isRight) {
             val body = (response as Either.Right).b
-            serviceRepository.updateServices(body.services, body.serviceFees)
+            serviceRepository.updateServices(
+                body.user.availableServices,
+                body.serviceFees
+            )
+            walletDao.updateBalance(body.balance)
             prefHelper.processAuthResponse(body)
             Either.Right(Unit)
         } else {
@@ -229,7 +233,7 @@ class AuthorizationRepositoryImpl(
         temporaryCoinMap.forEach { (localCoinType, value) ->
             val publicKey: String = value.first
             val privateKey: String = value.second
-            responseCoinList.find { it.coin == localCoinType.name }?.let { responseItem ->
+            responseCoinList.find { it.coin == localCoinType.name }?.let {
                 entityList.add(
                     AccountEntity(
                         localCoinType.name,

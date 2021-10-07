@@ -186,7 +186,10 @@ class SocketManager(
         val code = response.code()
         when {
             code == HttpURLConnection.HTTP_OK && body != null -> {
-                serviceRepository.updateServices(body.services, body.serviceFees)
+                serviceRepository.updateServices(
+                    body.user.availableServices,
+                    body.serviceFees
+                )
                 preferencesHelper.processAuthResponse(body)
                 disconnect()
                 connect()

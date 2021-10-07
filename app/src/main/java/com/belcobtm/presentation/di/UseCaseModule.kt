@@ -36,6 +36,7 @@ import com.belcobtm.domain.trade.list.filter.mapper.TradeFilterMapper
 import com.belcobtm.domain.trade.list.mapper.*
 import com.belcobtm.domain.trade.order.*
 import com.belcobtm.domain.trade.order.mapper.ChatMessageMapper
+import com.belcobtm.domain.transaction.interactor.GetFeeUseCase
 import com.belcobtm.domain.transaction.interactor.*
 import com.belcobtm.domain.transaction.interactor.trade.TradeRecallTransactionCompleteUseCase
 import com.belcobtm.domain.transaction.interactor.trade.TradeReserveTransactionCompleteUseCase
@@ -181,6 +182,10 @@ val useCaseModule = module {
     single { GetExistedPhoneNumbersUseCase(get(), get()) }
     single { SearchAvailableContactsUseCase(get()) }
     single { CreateRecipientsUseCase() }
+    single { GetTransactionPlanUseCase(get()) }
+    single { GetFeeUseCase(get()) }
+    single { GetFakeFeeUseCase(get(), get()) }
+    single { GetTransferAddressUseCase(get()) }
     factory { TradePaymentOptionMapper() }
     factory { CoinCodeMapper() }
     factory { TradesDataToTradeListMapper(get()) }

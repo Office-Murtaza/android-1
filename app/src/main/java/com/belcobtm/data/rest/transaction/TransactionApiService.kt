@@ -13,12 +13,23 @@ import com.belcobtm.domain.Failure
 import com.belcobtm.domain.transaction.item.SellLimitsDataItem
 import com.belcobtm.domain.transaction.item.SellPreSubmitDataItem
 import com.belcobtm.domain.transaction.item.StakeDetailsDataItem
+import com.belcobtm.domain.transaction.item.TransactionPlanItem
 import com.belcobtm.domain.wallet.item.CoinDataItem
 
 class TransactionApiService(
     private val api: TransactionApi,
     private val prefHelper: SharedPreferencesHelper
 ) {
+
+    suspend fun getTransactionPlan(coinCode: String): Either<Failure, TransactionPlanItem> =
+        try {
+            val request = api.getTransactionPlanAsync(prefHelper.userId, coinCode).await()
+            request.body()?.let { body -> Either.Right(body.mapToDataItem(coinCode)) }
+                ?: Either.Left(Failure.ServerError())
+        } catch (failure: Failure) {
+            failure.printStackTrace()
+            Either.Left(failure)
+        }
 
     suspend fun fetchTransactions(coinCode: String): Either<Failure, GetTransactionsResponse> =
         try {

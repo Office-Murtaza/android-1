@@ -6,19 +6,22 @@ import com.belcobtm.domain.UseCase
 import com.belcobtm.domain.transaction.TransactionRepository
 import com.belcobtm.domain.transaction.item.TransactionPlanItem
 
-class StakeCreateUseCase(
+class GetFeeUseCase(
     private val transactionRepository: TransactionRepository
-) : UseCase<Unit, StakeCreateUseCase.Params>() {
-    override suspend fun run(params: Params): Either<Failure, Unit> =
-        transactionRepository.stakeCreate(
+) : UseCase<Double, GetFeeUseCase.Params>() {
+
+    override suspend fun run(params: Params): Either<Failure, Double> =
+        transactionRepository.getFee(
             params.coinCode,
-            params.cryptoAmount,
-            params.transactionPlanItem
+            params.coinAmount,
+            params.transactionPlanItem,
+            params.toAddress
         )
 
     data class Params(
+        val toAddress: String,
         val coinCode: String,
-        val cryptoAmount: Double,
+        val coinAmount: Double,
         val transactionPlanItem: TransactionPlanItem
     )
 }

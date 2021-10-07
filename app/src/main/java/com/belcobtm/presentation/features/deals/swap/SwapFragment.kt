@@ -1,7 +1,6 @@
 package com.belcobtm.presentation.features.deals.swap
 
 import android.content.Context
-import android.inputmethodservice.InputMethodService
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -66,16 +65,21 @@ class SwapFragment : BaseFragment<FragmentSwapBinding>() {
     override var isMenuEnabled: Boolean = true
     override val retryListener: View.OnClickListener = View.OnClickListener {
         val initialLoading = viewModel.initLoadingData.value
-        if (initialLoading is LoadingData.Error) {
-            if (initialLoading.errorType is Failure.OperationCannotBePerformed) {
-                popBackStack()
-            } else {
-                // data not yet initialized
-                viewModel.fetchInitialData()
+        when {
+            initialLoading is LoadingData.Error -> {
+                if (initialLoading.errorType is Failure.OperationCannotBePerformed) {
+                    popBackStack()
+                } else {
+                    // data not yet initialized
+                    viewModel.fetchInitialData()
+                }
             }
-        } else {
-            // re submit swap
-            viewModel.executeSwap()
+            viewModel.transactionPlanLiveData.value is LoadingData.Error ->
+                viewModel.reFetchTransactionPlans()
+            else -> {
+                // re submit swap
+                viewModel.executeSwap()
+            }
         }
     }
 
@@ -149,6 +153,7 @@ class SwapFragment : BaseFragment<FragmentSwapBinding>() {
             AlertHelper.showToastShort(requireContext(), R.string.swap_screen_success_message)
             popBackStack()
         })
+        viewModel.transactionPlanLiveData.listen()
         viewModel.initLoadingData.listen(error = {
             when (it) {
                 is Failure.OperationCannotBePerformed -> {

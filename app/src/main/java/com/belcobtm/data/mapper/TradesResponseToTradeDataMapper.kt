@@ -34,7 +34,6 @@ class TradesResponseToTradeDataMapper(
 
     private fun mapStatistic(response: TradesResponse): UserTradeStatistics =
         with(response) {
-            // TODO fix issues with public id
             UserTradeStatistics(makerUsername.orEmpty(), makerStatus, makerTradeTotal, makerTradeRate)
         }
 

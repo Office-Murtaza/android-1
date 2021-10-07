@@ -96,12 +96,12 @@ val viewModelModule = module {
     }
     viewModel { VerificationBlankViewModel(get(), get()) }
     viewModel { VerificationVipViewModel(get()) }
-    viewModel { SwapViewModel(get(), get(), get(), get(), get(), get(), get()) }
+    viewModel { SwapViewModel(get(), get(), get(), get(), get(), get(), get(), get()) }
     viewModel { WalletsViewModel(get(), get()) }
-    viewModel { (coinCode: String) -> TradeRecallViewModel(coinCode, get(), get(), get(), get()) }
     viewModel { (coinCode: String) ->
-        TradeReserveViewModel(
+        TradeRecallViewModel(
             coinCode,
+            get(),
             get(),
             get(),
             get(),
@@ -110,7 +110,19 @@ val viewModelModule = module {
             get()
         )
     }
-    viewModel { StakingViewModel(get(), get(), get(), get(), get()) }
+    viewModel { (coinCode: String) ->
+        TradeReserveViewModel(
+            coinCode,
+            get(),
+            get(),
+            get(),
+            get(),
+            get(),
+            get(),
+            get()
+        )
+    }
+    viewModel { StakingViewModel(get(), get(), get(), get(), get(), get()) }
     viewModel { (phone: String) -> SmsCodeViewModel(phone, get(), get()) }
     viewModel { RecoverSeedViewModel(get()) }
     viewModel { CreateSeedViewModel(get(), get(), get()) }
@@ -125,8 +137,19 @@ val viewModelModule = module {
             txId, coinCode, get(), get(), get(named(DOUBLE_CURRENCY_PRICE_FORMATTER_QUALIFIER))
         )
     }
-    viewModel { SendGiftViewModel(get(), get(), get(), get(), get()) }
-    viewModel { (coinCode: String) -> WithdrawViewModel(coinCode, get(), get(), get(), get()) }
+    viewModel { SendGiftViewModel(get(), get(), get(), get(), get(), get(), get()) }
+    viewModel { (coinCode: String) ->
+        WithdrawViewModel(
+            coinCode,
+            get(),
+            get(),
+            get(),
+            get(),
+            get(),
+            get(),
+            get()
+        )
+    }
     viewModel { (coinCode: String) -> DepositViewModel(coinCode, get()) }
     viewModel { ContactListViewModel(get(), get<PhoneNumberValidator>(), get()) }
     viewModel { TradeContainerViewModel(get(), get(), get(), get(), get(), get()) }

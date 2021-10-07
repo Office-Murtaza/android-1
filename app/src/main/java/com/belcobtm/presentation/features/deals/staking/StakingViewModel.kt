@@ -4,11 +4,9 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.belcobtm.domain.transaction.interactor.StakeCancelUseCase
-import com.belcobtm.domain.transaction.interactor.StakeCreateUseCase
-import com.belcobtm.domain.transaction.interactor.StakeDetailsGetUseCase
-import com.belcobtm.domain.transaction.interactor.StakeWithdrawUseCase
+import com.belcobtm.domain.transaction.interactor.*
 import com.belcobtm.domain.transaction.item.StakeDetailsDataItem
+import com.belcobtm.domain.transaction.item.TransactionPlanItem
 import com.belcobtm.domain.wallet.LocalCoinType
 import com.belcobtm.domain.wallet.interactor.GetCoinByCodeUseCase
 import com.belcobtm.domain.wallet.item.CoinDataItem
@@ -23,9 +21,11 @@ class StakingViewModel(
     private val stakeCreateUseCase: StakeCreateUseCase,
     private val stakeCancelUseCase: StakeCancelUseCase,
     private val stakeWithdrawUseCase: StakeWithdrawUseCase,
-    private val stakeDetailsUseCase: StakeDetailsGetUseCase
+    private val stakeDetailsUseCase: StakeDetailsGetUseCase,
+    private val getTransactionPlanUseCase: GetTransactionPlanUseCase
 ) : ViewModel() {
     private var stakeDetailsDataItem: StakeDetailsDataItem? = null
+    private var transactionPlanItem: TransactionPlanItem? = null
 
     private val _stakeDetailsLiveData = MutableLiveData<LoadingData<StakingScreenItem>>()
     val stakeDetailsLiveData: LiveData<LoadingData<StakingScreenItem>> = _stakeDetailsLiveData
@@ -43,20 +43,29 @@ class StakingViewModel(
     fun loadData() {
         val catmCoinCode = LocalCoinType.CATM.name
         _stakeDetailsLiveData.value = LoadingData.Loading()
-        getCoinByCodeUseCase(
+        getTransactionPlanUseCase(
             catmCoinCode,
-            onSuccess = { catmCoin ->
-                this.coinDataItem = catmCoin
-                // it is necessary to get latest data as we will be checking
-                // balance value to proceess next operations
+            onSuccess = { planItem ->
+                transactionPlanItem = planItem
                 getCoinByCodeUseCase(
-                    LocalCoinType.ETH.name,
-                    onSuccess = { etherium ->
-                        etheriumCoinDataItem = etherium
-                        loadBaseData()
+                    catmCoinCode,
+                    onSuccess = { catmCoin ->
+                        this.coinDataItem = catmCoin
+                        // it is necessary to get latest data as we will be checking
+                        // balance value to proceess next operations
+                        getCoinByCodeUseCase(
+                            LocalCoinType.ETH.name,
+                            onSuccess = { etherium ->
+                                etheriumCoinDataItem = etherium
+                                loadBaseData(planItem)
+                            },
+                            onError = { failure2 ->
+                                _stakeDetailsLiveData.value = LoadingData.Error(failure2)
+                            }
+                        )
                     },
-                    onError = { failure2 ->
-                        _stakeDetailsLiveData.value = LoadingData.Error(failure2)
+                    onError = {
+                        _stakeDetailsLiveData.value = LoadingData.Error(it)
                     }
                 )
             },
@@ -66,7 +75,7 @@ class StakingViewModel(
         )
     }
 
-    private fun loadBaseData() {
+    private fun loadBaseData(planItem: TransactionPlanItem) {
         stakeDetailsUseCase.invoke(
             params = StakeDetailsGetUseCase.Params(coinDataItem.code),
             onError = { _stakeDetailsLiveData.value = LoadingData.Error(it) },
@@ -77,7 +86,7 @@ class StakingViewModel(
                         price = coinDataItem.priceUsd,
                         balanceCoin = coinDataItem.balanceCoin,
                         balanceUsd = coinDataItem.balanceUsd,
-                        ethFee = 0.0,
+                        ethFee = planItem.txFee,
                         reservedBalanceCoin = coinDataItem.reservedBalanceCoin,
                         reservedBalanceUsd = coinDataItem.reservedBalanceUsd,
                         reservedCode = coinDataItem.code,
@@ -99,9 +108,10 @@ class StakingViewModel(
     }
 
     fun stakeCreate(amount: Double) {
+        val transactionPlanItem = transactionPlanItem ?: return
         _transactionLiveData.value = LoadingData.Loading()
         stakeCreateUseCase.invoke(
-            params = StakeCreateUseCase.Params(coinDataItem.code, amount),
+            params = StakeCreateUseCase.Params(coinDataItem.code, amount, transactionPlanItem),
             onSuccess = {
                 viewModelScope.launch {
                     delay(1000L)
@@ -116,9 +126,10 @@ class StakingViewModel(
     }
 
     fun stakeCancel() {
+        val transactionPlanItem = transactionPlanItem ?: return
         _transactionLiveData.value = LoadingData.Loading()
         stakeCancelUseCase.invoke(
-            params = StakeCancelUseCase.Params(coinDataItem.code),
+            params = StakeCancelUseCase.Params(coinDataItem.code, transactionPlanItem),
             onSuccess = {
                 viewModelScope.launch {
                     delay(1000L)
@@ -135,9 +146,10 @@ class StakingViewModel(
     fun unstakeCreateTransaction() {
         val amount =
             (stakeDetailsDataItem?.amount ?: 0.0) + (stakeDetailsDataItem?.rewardsAmount ?: 0.0)
+        val transactionPlanItem = transactionPlanItem ?: return
         _transactionLiveData.value = LoadingData.Loading()
         stakeWithdrawUseCase.invoke(
-            params = StakeWithdrawUseCase.Params(coinDataItem.code, amount),
+            params = StakeWithdrawUseCase.Params(coinDataItem.code, amount, transactionPlanItem),
             onSuccess = {
                 viewModelScope.launch {
                     delay(1000L)
@@ -147,18 +159,19 @@ class StakingViewModel(
                 }
             },
             onError = {
-                _transactionLiveData.value = LoadingData.Error(it, StakingTransactionState.WITHDRAW)
+                _transactionLiveData.value =
+                    LoadingData.Error(it, StakingTransactionState.WITHDRAW)
             }
         )
     }
 
     fun isNotEnoughETHBalanceForCATM(): Boolean =
-        etheriumCoinDataItem.balanceCoin < 0.0
+        etheriumCoinDataItem.balanceCoin < (transactionPlanItem?.txFee ?: 0.0)
 
     fun getMaxValue(): Double = if (coinDataItem.code == LocalCoinType.CATM.name) {
         coinDataItem.balanceCoin
     } else {
-        0.0.coerceAtLeast(coinDataItem.balanceCoin - 0.0)
+        0.0.coerceAtLeast(coinDataItem.balanceCoin - (transactionPlanItem?.txFee ?: 0.0))
     }
 
     fun getUsdPrice(): Double = coinDataItem.priceUsd

@@ -99,7 +99,7 @@ class ContactListFragment : BaseFragment<FragmentContactListBinding>() {
             val selectedContact = viewModel.selectedContact.value
             navigate(
                 ContactListFragmentDirections.toSendGifFragment(
-                    "", phoneNumber, selectedContact?.photoUri, selectedContact?.displayName
+                    phoneNumber, selectedContact?.photoUri, selectedContact?.displayName
                 )
             )
         } else {

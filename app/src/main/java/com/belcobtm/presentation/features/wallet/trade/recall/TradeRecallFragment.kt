@@ -75,13 +75,15 @@ class TradeRecallFragment : BaseFragment<FragmentTradeRecallBinding>() {
                 viewModel.coinItem.code
             )
             reservedUsdView.text = currencyFormatter.format(viewModel.coinItem.reservedBalanceUsd)
-            amountCryptoView.helperText = getString(
-                R.string.transaction_helper_text_commission,
-                viewModel.getTransactionFee().toStringCoin(),
-                viewModel.getCoinCode()
-            )
             amountCryptoView.hint = getString(R.string.text_amount, viewModel.coinItem.code)
         })
+        viewModel.fee.observe(viewLifecycleOwner) { fee ->
+            amountCryptoView.helperText = getString(
+                R.string.transaction_helper_text_commission,
+                fee.toStringCoin(),
+                viewModel.getCoinCode()
+            )
+        }
         viewModel.transactionLiveData.listen(
             success = {
                 AlertHelper.showToastShort(

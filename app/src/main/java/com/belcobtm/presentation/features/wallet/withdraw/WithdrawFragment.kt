@@ -95,6 +95,16 @@ class WithdrawFragment : BaseFragment<FragmentWithdrawBinding>() {
                 }
             }
         )
+        viewModel.fee.observe(viewLifecycleOwner) { fee ->
+            amountCryptoView.helperText = getString(
+                R.string.transaction_helper_text_commission,
+                fee.toStringCoin(),
+                when (viewModel.getCoinCode().isEthRelatedCoinCode()) {
+                    true -> LocalCoinType.ETH.name
+                    false -> viewModel.getCoinCode()
+                }
+            )
+        }
     }
 
     override fun createBinding(
@@ -132,14 +142,6 @@ class WithdrawFragment : BaseFragment<FragmentWithdrawBinding>() {
         amountCryptoView.hint = getString(R.string.text_amount, viewModel.getCoinCode())
         amountCryptoView.actionDoneListener { hideKeyboard() }
         nextButtonView.setOnClickListener { validateAndSubmit() }
-        amountCryptoView.helperText = getString(
-            R.string.transaction_helper_text_commission,
-            viewModel.getTransactionFee().toStringCoin(),
-            when (viewModel.getCoinCode().isEthRelatedCoinCode()) {
-                true -> LocalCoinType.ETH.name
-                false -> viewModel.getCoinCode()
-            }
-        )
         reservedCryptoView.text = getString(
             R.string.text_text,
             viewModel.getReservedBalanceCoin().toStringCoin(),

@@ -29,7 +29,6 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 class PinCodeFragment : BaseFragment<FragmentPinCodeBinding>() {
     private val viewModel: PinCodeViewModel by viewModel()
 
-    // TODO move to args
     private val pinMode: String by lazy {
         requireArguments().getString(
             TAG_PIN_MODE,

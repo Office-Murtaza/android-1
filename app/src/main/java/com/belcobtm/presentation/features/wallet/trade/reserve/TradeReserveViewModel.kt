@@ -4,8 +4,10 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.belcobtm.domain.transaction.interactor.GetTransactionPlanUseCase
 import com.belcobtm.domain.transaction.interactor.trade.TradeReserveTransactionCompleteUseCase
 import com.belcobtm.domain.transaction.interactor.trade.TradeReserveTransactionCreateUseCase
+import com.belcobtm.domain.transaction.item.TransactionPlanItem
 import com.belcobtm.domain.wallet.LocalCoinType
 import com.belcobtm.domain.wallet.interactor.GetCoinByCodeUseCase
 import com.belcobtm.domain.wallet.item.CoinDataItem
@@ -27,8 +29,12 @@ class TradeReserveViewModel(
     private val completeTransactionUseCase: TradeReserveTransactionCompleteUseCase,
     private val coinLimitsValueProvider: CoinLimitsValueProvider,
     private val amountCoinValidator: AmountCoinValidator,
-    private val coinCodeProvider: CoinCodeProvider
+    private val coinCodeProvider: CoinCodeProvider,
+    private val getTransactionPlanUseCase: GetTransactionPlanUseCase
 ) : ViewModel() {
+
+    private var transactionPlanItem: TransactionPlanItem? = null
+
     private val _initialLoadLiveData = MutableLiveData<LoadingData<Unit>>()
     val initialLoadLiveData: LiveData<LoadingData<Unit>> = _initialLoadLiveData
 
@@ -54,36 +60,47 @@ class TradeReserveViewModel(
         getCoinByCodeUseCase.invoke(coinCode, onSuccess = { coinItem ->
             this.coinDataItem = coinItem
             this.coinItem = coinItem.mapToScreenItem()
-            if (coinItem.isEthRelatedCoin()) {
-                // for CATM amount calculation we need ETH coin
-                fetchEtherium()
-            } else {
-                _initialLoadLiveData.value = LoadingData.Success(Unit)
-            }
+            getTransactionPlanUseCase(coinCode, onSuccess = {
+                transactionPlanItem = it
+                if (coinItem.isEthRelatedCoin()) {
+                    // for CATM amount calculation we need ETH coin
+                    fetchEtherium()
+                } else {
+                    _initialLoadLiveData.value = LoadingData.Success(Unit)
+                }
+            }, onError = {
+                _initialLoadLiveData.value = LoadingData.Error(it)
+            })
         }, onError = {
             _initialLoadLiveData.value = LoadingData.Error(it)
         })
     }
 
     fun createTransaction() {
+        val transactionPlanItem = transactionPlanItem ?: return
         if (!validateCryptoAmount()) {
             return
         }
         _createTransactionLiveData.value = LoadingData.Loading()
         createTransactionUseCase.invoke(
-            params = TradeReserveTransactionCreateUseCase.Params(coinDataItem.code, selectedAmount),
+            params = TradeReserveTransactionCreateUseCase.Params(
+                coinDataItem.code, selectedAmount, transactionPlanItem
+            ),
             onSuccess = { completeTransaction(it) },
             onError = { _createTransactionLiveData.value = LoadingData.Error(it) }
         )
     }
 
     private fun completeTransaction(hash: String) {
+        val transactionPlanItem = transactionPlanItem ?: return
         _createTransactionLiveData.value = LoadingData.Loading()
         completeTransactionUseCase.invoke(
             params = TradeReserveTransactionCompleteUseCase.Params(
                 coinDataItem.code,
                 selectedAmount,
-                hash
+                hash,
+                getTransactionFee(),
+                transactionPlanItem
             ),
             onSuccess = {
                 // we need to add some delay as server returns 200 before writting to DB
@@ -96,12 +113,12 @@ class TradeReserveViewModel(
         )
     }
 
-    fun getTransactionFee(): Double = 0.0
+    fun getTransactionFee(): Double = resolveFee(coinDataItem)
 
     fun getCoinCode(): String = coinCodeProvider.getCoinCode(coinDataItem)
 
     fun getMaxValue(): Double =
-        coinLimitsValueProvider.getMaxValue(coinDataItem)
+        coinLimitsValueProvider.getMaxValue(coinDataItem, 0.0)
 
     private fun validateCryptoAmount(): Boolean {
         val maxValue = getMaxValue()
@@ -141,4 +158,11 @@ class TradeReserveViewModel(
             onError = { _initialLoadLiveData.value = LoadingData.Error(it) }
         )
     }
+
+    private fun resolveFee(coinDataItem: CoinDataItem): Double =
+        if (coinDataItem.isEthRelatedCoin()) {
+            transactionPlanItem?.nativeTxFee ?: 0.0
+        } else {
+            transactionPlanItem?.txFee ?: 0.0
+        }
 }
