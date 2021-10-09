@@ -83,12 +83,13 @@ class AuthorizationRepositoryImpl(
     }
 
     override suspend fun saveSeed(seed: String): Either<Failure, Unit> {
-        val wallet = HDWallet(seed, "")
+        val formattedSeed = seed.trim()
+        val wallet = HDWallet(formattedSeed, "")
         temporaryCoinMap.clear()
         temporaryCoinMap.putAll(
             LocalCoinType.values().map { Pair(it, createTemporaryAccount(it, wallet)) }.toMap()
         )
-        prefHelper.apiSeed = seed
+        prefHelper.apiSeed = formattedSeed
         return Either.Right(Unit)
     }
 

@@ -60,11 +60,13 @@ class CreateSeedFragment : BaseFragment<FragmentCreateSeedBinding>() {
             copyToClipboard(seedView.text.toString())
         }
         generateButtonView.setOnClickListener {
+            seedView.setText("")
             viewModel.createSeed()
         }
         pasteButtonView.setOnClickListener {
             val seed = clipBoardHelper.getTextFromClipboard()?.takeIf(String::isNotBlank)
             if (seed != null && viewModel.isValidSeed(seed)) {
+                seedView.setText("")
                 viewModel.saveSeed(seed)
             } else {
                 showSnackBar(R.string.seed_pharse_paste_error_message)
