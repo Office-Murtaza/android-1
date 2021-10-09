@@ -17,11 +17,7 @@ import org.koin.core.parameter.parametersOf
 
 class SmsCodeFragment : BaseFragment<FragmentSmsCodeBinding>() {
     private val viewModel: SmsCodeViewModel by viewModel {
-        parametersOf(
-            requireArguments().getString(
-                TAG_PHONE
-            )
-        )
+        parametersOf(requireArguments().getString(TAG_PHONE))
     }
     private var isResendClicked: Boolean = false
     override val isToolbarEnabled: Boolean = true
