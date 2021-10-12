@@ -16,7 +16,7 @@ class SellUseCase(private val repository: TransactionRepository) :
         val coin: String,
         val price: Double,
         val coinAmount: Double,
-        val usdAmount: Double,
+        val usdAmount: Int,
         val fee: Double
     )
 }

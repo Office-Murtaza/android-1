@@ -36,6 +36,7 @@ class WithdrawFragment : BaseFragment<FragmentWithdrawBinding>() {
     private val doubleTextWatcher: DoubleTextWatcher = DoubleTextWatcher(
         firstTextWatcher = { editable ->
             val cryptoAmount: Double = editable.getDouble()
+            viewModel.setAmount(cryptoAmount)
             binding.amountUsdView.text = if (cryptoAmount > 0) {
                 currencyFormatter.format(cryptoAmount * viewModel.getUsdPrice())
             } else {
@@ -60,9 +61,7 @@ class WithdrawFragment : BaseFragment<FragmentWithdrawBinding>() {
             }
         }
         maxCryptoView.setOnClickListener {
-            amountCryptoView.setText(
-                viewModel.getMaxValue().toStringCoin()
-            )
+            viewModel.setMaxAmount()
         }
         amountCryptoView.editText?.addTextChangedListener(doubleTextWatcher.firstTextWatcher)
     }
@@ -71,6 +70,23 @@ class WithdrawFragment : BaseFragment<FragmentWithdrawBinding>() {
         viewModel.loadingLiveData.listen({
             initScreen()
         })
+        viewModel.amount.observe(viewLifecycleOwner) {
+            val formattedCoin = it.amount.toStringCoin()
+            amountCryptoView.editText?.setTextSilently(
+                doubleTextWatcher.firstTextWatcher,
+                formattedCoin, formattedCoin.length
+            )
+        }
+        viewModel.fee.observe(viewLifecycleOwner) { fee ->
+            amountCryptoView.helperText = getString(
+                R.string.transaction_helper_text_commission,
+                fee.toStringCoin(),
+                when (viewModel.getCoinCode().isEthRelatedCoinCode()) {
+                    true -> LocalCoinType.ETH.name
+                    false -> viewModel.getCoinCode()
+                }
+            )
+        }
         viewModel.transactionLiveData.listen(
             success = {
                 AlertHelper.showToastShort(
@@ -95,16 +111,6 @@ class WithdrawFragment : BaseFragment<FragmentWithdrawBinding>() {
                 }
             }
         )
-        viewModel.fee.observe(viewLifecycleOwner) { fee ->
-            amountCryptoView.helperText = getString(
-                R.string.transaction_helper_text_commission,
-                fee.toStringCoin(),
-                when (viewModel.getCoinCode().isEthRelatedCoinCode()) {
-                    true -> LocalCoinType.ETH.name
-                    false -> viewModel.getCoinCode()
-                }
-            )
-        }
     }
 
     override fun createBinding(
@@ -159,20 +165,19 @@ class WithdrawFragment : BaseFragment<FragmentWithdrawBinding>() {
 
         var errors = 0
 
-        val validationResult = viewModel.validateAmount(amountCryptoView.getDouble())
-        if (validationResult is ValidationResult.InValid) {
-            errors++
-            amountCryptoView.showError(validationResult.error)
-        }
-
         if (amountCryptoView.getDouble() <= 0) {
             errors++
             amountCryptoView.showError(R.string.balance_amount_too_small)
         }
 
-        if (amountCryptoView.getDouble() > viewModel.getMaxValue()) {
+        if (!viewModel.isSufficientBalance()) {
             errors++
             amountCryptoView.showError(R.string.balance_amount_exceeded)
+        }
+
+        if (!viewModel.isSufficientEth()) {
+            errors++
+            amountCryptoView.showError(R.string.withdraw_screen_where_money_libovski)
         }
 
         if (!isValidAddress()) {
@@ -181,7 +186,7 @@ class WithdrawFragment : BaseFragment<FragmentWithdrawBinding>() {
         }
 
         if (errors == 0) {
-            viewModel.withdraw(addressView.getString(), amountCryptoView.getDouble())
+            viewModel.withdraw(addressView.getString())
         }
     }
 

@@ -1,6 +1,7 @@
 package com.belcobtm.presentation.core.views
 
 import android.content.Context
+import android.text.InputType
 import android.text.SpannableString
 import android.text.Spanned
 import android.text.TextPaint
@@ -46,6 +47,13 @@ class CoinInputLayout @JvmOverloads constructor(
 
     fun getEditText(): EditText = binding.coinInputEditText
 
+    fun updateInputMode(isIntOnly: Boolean = false) {
+        binding.coinInputEditText.inputType = if (isIntOnly)
+            InputType.TYPE_CLASS_NUMBER
+        else
+            InputType.TYPE_NUMBER_FLAG_DECIMAL
+    }
+
     fun setOnCoinButtonClickListener(listener: OnClickListener) {
         binding.coinButton.setOnClickListener(listener)
     }
@@ -81,7 +89,12 @@ class CoinInputLayout @JvmOverloads constructor(
             }
         }
         val start = text.indexOf(clickablePart)
-        ss.setSpan(clickableSpan, start, start + clickablePart.length, Spanned.SPAN_EXCLUSIVE_INCLUSIVE)
+        ss.setSpan(
+            clickableSpan,
+            start,
+            start + clickablePart.length,
+            Spanned.SPAN_EXCLUSIVE_INCLUSIVE
+        )
         binding.tvHelperText.setDrawableEnd(R.drawable.ic_chevron_left_link)
         binding.tvHelperText.movementMethod = LinkMovementMethod.getInstance()
         binding.tvHelperText.text = ss

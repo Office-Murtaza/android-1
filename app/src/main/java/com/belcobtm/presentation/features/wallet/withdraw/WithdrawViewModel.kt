@@ -3,27 +3,24 @@ package com.belcobtm.presentation.features.wallet.withdraw
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.belcobtm.domain.transaction.interactor.GetFakeFeeUseCase
-import com.belcobtm.domain.transaction.interactor.GetFeeUseCase
-import com.belcobtm.domain.transaction.interactor.GetTransactionPlanUseCase
-import com.belcobtm.domain.transaction.interactor.WithdrawUseCase
+import com.belcobtm.domain.transaction.interactor.*
+import com.belcobtm.domain.transaction.item.AmountItem
+import com.belcobtm.domain.transaction.item.SignedTransactionPlanItem
 import com.belcobtm.domain.transaction.item.TransactionPlanItem
+import com.belcobtm.domain.wallet.LocalCoinType
 import com.belcobtm.domain.wallet.interactor.GetCoinListUseCase
 import com.belcobtm.domain.wallet.item.CoinDataItem
-import com.belcobtm.presentation.core.coin.AmountCoinValidator
-import com.belcobtm.presentation.core.coin.CoinLimitsValueProvider
-import com.belcobtm.presentation.core.coin.model.ValidationResult
+import com.belcobtm.domain.wallet.item.isEthRelatedCoin
 import com.belcobtm.presentation.core.mvvm.LoadingData
 
 class WithdrawViewModel(
     private val coinCode: String,
     private val getCoinListUseCase: GetCoinListUseCase,
     private val withdrawUseCase: WithdrawUseCase,
-    private val coinLimitsValueProvider: CoinLimitsValueProvider,
-    private val amountCoinValidator: AmountCoinValidator,
     private val getTransactionPlanUseCase: GetTransactionPlanUseCase,
-    private val getFeeUseCase: GetFeeUseCase,
-    private val getFakeFeeUseCase: GetFakeFeeUseCase
+    private val getSignedTransactionPlanUseCase: GetSignedTransactionPlanUseCase,
+    private val getFakeSignedTransactionPlanUseCase: GetFakeSignedTransactionPlanUseCase,
+    private val getMaxValueBySignedTransactionUseCase: GetMaxValueBySignedTransactionUseCase
 ) : ViewModel() {
 
     val transactionLiveData: MutableLiveData<LoadingData<Unit>> = MutableLiveData()
@@ -35,11 +32,16 @@ class WithdrawViewModel(
     val loadingLiveData: LiveData<LoadingData<Unit>>
         get() = _loadingLiveData
 
+    private val _amount = MutableLiveData<AmountItem>()
+    val amount: LiveData<AmountItem>
+        get() = _amount
+
     private val _fee = MutableLiveData<Double>()
     val fee: LiveData<Double>
         get() = _fee
 
     private var transactionPlan: TransactionPlanItem? = null
+    private var signedTransactionPlanItem: SignedTransactionPlanItem? = null
 
     init {
         fetchInitialData()
@@ -55,10 +57,15 @@ class WithdrawViewModel(
                 fromCoinDataItem.code,
                 onSuccess = { transactionPlan ->
                     this.transactionPlan = transactionPlan
-                    getFakeFeeUseCase(
-                        GetFakeFeeUseCase.Params(fromCoinDataItem.code, transactionPlan),
-                        onSuccess = { fee ->
-                            _fee.value = fee
+                    getFakeSignedTransactionPlanUseCase(
+                        GetFakeSignedTransactionPlanUseCase.Params(
+                            fromCoinDataItem.code,
+                            transactionPlan,
+                            useMaxAmount = false
+                        ),
+                        onSuccess = { signedTransactionPlan ->
+                            signedTransactionPlanItem = signedTransactionPlan
+                            _fee.value = signedTransactionPlan.fee
                             _loadingLiveData.value = LoadingData.Success(Unit)
                         }, onError = {
                             _loadingLiveData.value = LoadingData.Error(it)
@@ -71,14 +78,14 @@ class WithdrawViewModel(
         })
     }
 
-    fun withdraw(
-        toAddress: String,
-        coinAmount: Double
-    ) {
+    fun withdraw(toAddress: String) {
+        val coinAmount = _amount.value?.amount ?: 0.0
         val transactionPlan = transactionPlan ?: return
-        getFeeUseCase(GetFeeUseCase.Params(
+        getSignedTransactionPlanUseCase(GetSignedTransactionPlanUseCase.Params(
             toAddress, fromCoinDataItem.code, coinAmount, transactionPlan
         ), onSuccess = {
+            _fee.value = it.fee
+            signedTransactionPlanItem = it
             transactionLiveData.value = LoadingData.Loading()
             withdrawUseCase.invoke(
                 params = WithdrawUseCase.Params(
@@ -96,8 +103,40 @@ class WithdrawViewModel(
         })
     }
 
-    fun getMaxValue(): Double =
-        coinLimitsValueProvider.getMaxValue(fromCoinDataItem, _fee.value ?: 0.0)
+    fun setAmount(amount: Double) {
+        if (_amount.value?.useMax == true) {
+            transactionPlan?.let { plan ->
+                getFakeSignedTransactionPlanUseCase(
+                    GetFakeSignedTransactionPlanUseCase.Params(
+                        fromCoinDataItem.code, plan, useMaxAmount = false, amount = amount
+                    ),
+                    onSuccess = { signedTransactionPlan ->
+                        signedTransactionPlanItem = signedTransactionPlan
+                        _fee.value = signedTransactionPlan.fee
+                    },
+                    onError = { /* Failure impossible */ }
+                )
+            }
+        }
+        _amount.value = AmountItem(amount, useMax = false)
+    }
+
+    fun setMaxAmount() {
+        val transactionPlan = transactionPlan ?: return
+        if (_amount.value?.useMax == true) {
+            return
+        }
+        getMaxValueBySignedTransactionUseCase(
+            GetMaxValueBySignedTransactionUseCase.Params(
+                transactionPlan,
+                fromCoinDataItem,
+            ),
+            onSuccess = {
+                _fee.value = it.fee
+                _amount.value = AmountItem(it.amount, useMax = true)
+            }, onError = { /* error impossible */ }
+        )
+    }
 
     fun getCoinBalance(): Double = fromCoinDataItem.balanceCoin
 
@@ -111,8 +150,20 @@ class WithdrawViewModel(
 
     fun getCoinCode(): String = coinCode
 
-    fun validateAmount(amount: Double): ValidationResult =
-        amountCoinValidator.validateBalance(
-            amount, fromCoinDataItem, coinDataItemList
-        )
+    fun isSufficientBalance(): Boolean {
+        val amount = _amount.value?.amount ?: 0.0
+        val fee = _fee.value ?: 0.0
+        return if (!fromCoinDataItem.isEthRelatedCoin()) {
+            amount + fee <= signedTransactionPlanItem?.availableAmount ?: 0.0
+        } else {
+            amount <= fromCoinDataItem.reservedBalanceCoin
+        }
+    }
+
+    fun isSufficientEth(): Boolean {
+        val ethBalance = coinDataItemList.firstOrNull {
+            it.code == LocalCoinType.ETH.name
+        }?.balanceCoin ?: 0.0
+        return !fromCoinDataItem.isEthRelatedCoin() || ethBalance >= (transactionPlan?.txFee ?: 0.0)
+    }
 }

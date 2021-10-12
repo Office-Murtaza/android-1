@@ -111,7 +111,7 @@ val dataModule = module {
     single { NetworkUtils(get()) }
     single { AssetsDataStore(get()) }
     single { BlockTransactionInputBuilderFactory(get(), get()) }
-    single { BlockTransactionHelper(get(), get(), get()) }
+    single { BlockTransactionHelper(get()) }
     single { BinanceTransactionInputBuilderFactory(get()) }
     single { BinanceTransactionHelper(get()) }
     single { RippleTransactionInputBuilderFactory(get()) }

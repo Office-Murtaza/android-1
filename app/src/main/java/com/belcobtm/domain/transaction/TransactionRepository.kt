@@ -14,12 +14,13 @@ interface TransactionRepository {
 
     fun observeTransactions(): Flow<TransactionsData>
 
-    suspend fun getFee(
+    suspend fun getSignedPlan(
         fromCoin: String,
         fromCoinAmount: Double,
         fromTransactionPlan: TransactionPlanItem,
-        toAddress: String
-    ): Either<Failure, Double>
+        toAddress: String,
+        useMaxAmountFlag: Boolean
+    ): Either<Failure, SignedTransactionPlanItem>
 
     suspend fun createTransaction(
         fromCoin: String,
@@ -59,7 +60,7 @@ interface TransactionRepository {
     suspend fun sell(
         coin: String,
         coinAmount: Double,
-        usdAmount: Double,
+        usdAmount: Int,
         fee: Double
     ): Either<Failure, Unit>
 

@@ -3,8 +3,6 @@ package com.belcobtm.presentation.features.wallet.trade.recall
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.belcobtm.domain.transaction.interactor.GetFakeFeeUseCase
-import com.belcobtm.domain.transaction.interactor.GetFeeUseCase
 import com.belcobtm.domain.transaction.interactor.GetTransactionPlanUseCase
 import com.belcobtm.domain.transaction.interactor.trade.TradeRecallTransactionCompleteUseCase
 import com.belcobtm.domain.transaction.item.TransactionPlanItem
@@ -13,7 +11,6 @@ import com.belcobtm.domain.wallet.interactor.GetCoinByCodeUseCase
 import com.belcobtm.domain.wallet.item.CoinDataItem
 import com.belcobtm.domain.wallet.item.isEthRelatedCoin
 import com.belcobtm.presentation.core.coin.CoinCodeProvider
-import com.belcobtm.presentation.core.coin.CoinLimitsValueProvider
 import com.belcobtm.presentation.core.extensions.withScale
 import com.belcobtm.presentation.core.item.CoinScreenItem
 import com.belcobtm.presentation.core.item.mapToScreenItem
@@ -25,10 +22,7 @@ class TradeRecallViewModel(
     private val getCoinByCodeUseCase: GetCoinByCodeUseCase,
     private val completeTransactionUseCase: TradeRecallTransactionCompleteUseCase,
     private val coinCodeProvider: CoinCodeProvider,
-    private val coinLimitsValueProvider: CoinLimitsValueProvider,
-    private val getTransactionPlanUseCase: GetTransactionPlanUseCase,
-    private val getFeeUseCase: GetFeeUseCase,
-    private val getFakeFeeUseCase: GetFakeFeeUseCase
+    private val getTransactionPlanUseCase: GetTransactionPlanUseCase
 ) : ViewModel() {
 
     private var transactionPlanItem: TransactionPlanItem? = null
@@ -64,20 +58,13 @@ class TradeRecallViewModel(
             this.coinItem = coinItem.mapToScreenItem()
             getTransactionPlanUseCase(coinCode, onSuccess = { transactionPlan ->
                 transactionPlanItem = transactionPlan
-                getFakeFeeUseCase(
-                    GetFakeFeeUseCase.Params(coinCode, transactionPlan),
-                    onSuccess = { fee ->
-                        _fee.value = fee
-                        if (coinItem.isEthRelatedCoin()) {
-                            // for CATM amount calculation we need ETH coin
-                            fetchEtherium()
-                        } else {
-                            _initialLoadLiveData.value = LoadingData.Success(Unit)
-                        }
-                    }, onError = {
-                        _initialLoadLiveData.value = LoadingData.Error(it)
-                    }
-                )
+                _fee.value = transactionPlan.txFee
+                if (coinItem.isEthRelatedCoin()) {
+                    // for CATM amount calculation we need ETH coin
+                    fetchEtherium()
+                } else {
+                    _initialLoadLiveData.value = LoadingData.Success(Unit)
+                }
             }, onError = {
                 _initialLoadLiveData.value = LoadingData.Error(it)
             })
@@ -87,34 +74,21 @@ class TradeRecallViewModel(
     }
 
     fun performTransaction() {
-        val transactionPlanItem = transactionPlanItem ?: return
         if (!validateCryptoAmount()) {
             return
         }
-        getFeeUseCase(
-            GetFeeUseCase.Params(
-                coinDataItem.details.walletAddress,
-                coinCode,
-                selectedAmount,
-                transactionPlanItem
+        _transactionLiveData.value = LoadingData.Loading()
+        completeTransactionUseCase.invoke(
+            params = TradeRecallTransactionCompleteUseCase.Params(
+                coinDataItem.code,
+                selectedAmount
             ),
-            onSuccess = { actualFee ->
-                _fee.value = actualFee
-                _transactionLiveData.value = LoadingData.Loading()
-                completeTransactionUseCase.invoke(
-                    params = TradeRecallTransactionCompleteUseCase.Params(
-                        coinDataItem.code,
-                        selectedAmount
-                    ),
-                    onSuccess = {
-                        // we need to add some delay as server returns 200 before writting to DB
-                        _transactionLiveData.value = LoadingData.Success(Unit)
-                    },
-                    onError = { _transactionLiveData.value = LoadingData.Error(it) }
-                )
-            }, onError = {
-                _transactionLiveData.value = LoadingData.Error(it)
-            })
+            onSuccess = {
+                // we need to add some delay as server returns 200 before writting to DB
+                _transactionLiveData.value = LoadingData.Success(Unit)
+            },
+            onError = { _transactionLiveData.value = LoadingData.Error(it) }
+        )
     }
 
     private fun validateCryptoAmount(): Boolean {
@@ -138,11 +112,11 @@ class TradeRecallViewModel(
     fun getCoinCode(): String = coinCodeProvider.getCoinCode(coinDataItem)
 
     fun getMaxValue(): Double =
-        coinLimitsValueProvider.getMaxValue(
-            coinDataItem,
-            _fee.value ?: 0.0,
-            useReservedBalance = true
-        )
+        if (coinDataItem.isEthRelatedCoin()) {
+            coinDataItem.reservedBalanceCoin - (transactionPlanItem?.nativeTxFee ?: 0.0)
+        } else {
+            coinDataItem.reservedBalanceCoin - (transactionPlanItem?.txFee ?: 0.0)
+        }
 
     private fun enoughETHForExtraFee(currentCryptoAmount: Double): Boolean {
         if (coinDataItem.isEthRelatedCoin()) {

@@ -192,7 +192,7 @@
     <string name="transactions_screen_balance">Balance</string>
     <string name="transactions_screen_transaction_created">Transaction was successfully created</string>
     <string name="transaction_changes_percent">%1$s %%</string>
-    <string name="transaction_helper_text_commission">Fee ~ %1$s %2$s</string>
+    <string name="transaction_helper_text_commission">Fee %1$s %2$s</string>
 
     <!--transaction status-->
     <string name="transaction_status_unknown">Unknown</string>
@@ -233,8 +233,8 @@
     <string name="transaction_details_to_phone">To Phone</string>
     <string name="transaction_details_swap_amount">Swap Amount</string>
     <string name="transaction_details_sell_amount">Sell Amount</string>
-    <string name="transaction_details_id">ID</string>
-    <string name="transaction_details_swap_id">Swap ID</string>
+    <string name="transaction_details_id">Tx Id</string>
+    <string name="transaction_details_swap_id">Swap Id</string>
     <string name="transaction_details_type">Type</string>
     <string name="transaction_details_status">Status</string>
     <string name="transaction_details_cash_status">Cash status</string>
@@ -297,25 +297,26 @@
     <string name="withdraw_screen_screen_title">Withdraw %1$s</string>
     <string name="withdraw_screen_price">Price</string>
     <string name="withdraw_screen_balance">Balance</string>
-    <string name="withdraw_screen_recipient_address">Recipient address</string>
+    <string name="withdraw_screen_recipient_address">Receiver Address</string>
     <string name="withdraw_screen_where_money_libovski">Insufficient ETH balance for transaction fee</string>
     <string name="withdraw_screen_max_exceeded">Max amount exceeded</string>
 
     <!-- Send gift screen -->
     <string name="send_gift_screen_title">Transfer</string>
-    <string name="send_gift_screen_balance_formatted"><![CDATA[Balance %1$s %2$s\nFee ~%3$s %4$s]]></string>
+    <string name="send_gift_screen_balance_formatted"><![CDATA[Balance %1$s %2$s\nFee %3$s %4$s]]></string>
     <string name="send_gift_screen_message">Message</string>
     <string name="send_gift_screen_submit_button_label">Submit</string>
     <string name="send_gift_screen_converted_label">Converted Value</string>
     <string name="send_gift_screen_add_gif_label">Add gif</string>
     <string name="send_gift_screen_add_note_label">Add note</string>
+    <string name="send_gift_screen_where_money_libovski">Insufficient ETH balance for transaction fee</string>
 
     <!-- Coin to coin screen -->
     <string name="swap_screen_title">Swap</string>
     <string name="swap_screen_price">Price</string>
-    <string name="swap_screen_balance_formatted">Balance %1$s %2$s\nFee ~%3$s %4$s</string>
-    <string name="swap_screen_rate_formatted"><![CDATA[<b>%1$s</b> %2$s ~ <b>%3$s</b> %4$s]]></string>
-    <string name="swap_screen_fee_formatted"><![CDATA[%1$s\%% ~ %2$s %3$s]]></string>
+    <string name="swap_screen_balance_formatted">Balance %1$s %2$s\nFee %3$s %4$s</string>
+    <string name="swap_screen_rate_formatted"><![CDATA[<b>%1$s</b> %2$s <b>%3$s</b> %4$s]]></string>
+    <string name="swap_screen_fee_formatted"><![CDATA[%1$s\%% %2$s %3$s]]></string>
     <string name="swap_screen_usd_label">Converted Value</string>
     <string name="swap_screen_fee">Platform fee</string>
     <string name="swap_screen_select_coin">Select coin please</string>
@@ -444,7 +445,7 @@
     <string name="clipboard">Copied</string>
 
     <string name="text_text">%1$s %2$s</string>
-    <string name="text_amount">%1$s amount</string>
+    <string name="text_amount">%1$s Amount</string>
     <string name="usd_amount">USD amount</string>
 
     //settings
@@ -645,7 +646,7 @@
     <string name="edit_trade_success_message">Trade successfully edited</string>
     <string name="edit_trade_screen_edit_button_title">Save</string>
 
-    <string name="trade_buy_sell_dialog_platform_fee_formatted">Platform Fee ~ %2$s %3$s</string>
+    <string name="trade_buy_sell_dialog_platform_fee_formatted">Platform Fee %2$s %3$s</string>
     <string name="trade_buy_sell_dialog_crypto_amount_formatted">%1$s %2$s</string>
     <string name="trade_buy_sell_dialog_amount_zero_error">Amount cannot be zero</string>
     <string name="trade_buy_sell_dialog_amount_not_in_range_error">Amount is bigger/less than specified limits</string>
@@ -723,7 +724,9 @@
     <string name="converted_value_label">Converted value</string>
     <string name="atm_sell_coin_rate"><![CDATA[<b>%1$s</b> %2$s\n ~ <b>%3$s</b>]]></string>
     <string name="sell_amount_exceeds_limit">Amount exceeds reserved balance</string>
+    <string name="sell_amount_zero">Amount can\'t be zero</string>
     <string name="sell_amount_exceeds_today_limit">Amount exceeds today limit</string>
+    <string name="sell_amount_wrong_divider">Amount should be /20, /50 or /100</string>
     <string name="sell_screen_balance">Balance</string>
     <string name="coin_balance_format">%1$s %2$s</string>
     <string name="sell_screen_balance_formatted">%1$s %2$s</string>

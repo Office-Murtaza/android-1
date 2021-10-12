@@ -4,20 +4,23 @@ import com.belcobtm.data.core.TransactionHelper
 import com.belcobtm.data.disk.database.account.AccountDao
 import com.belcobtm.data.disk.database.wallet.WalletDao
 import com.belcobtm.data.disk.database.wallet.toDataItem
+import com.belcobtm.data.disk.shared.preferences.SharedPreferencesHelper
 import com.belcobtm.data.inmemory.transactions.TransactionsInMemoryCache
 import com.belcobtm.data.model.transactions.TransactionsData
 import com.belcobtm.data.rest.transaction.TransactionApiService
+import com.belcobtm.data.rest.transaction.response.hash.UtxoItemResponse
 import com.belcobtm.domain.*
 import com.belcobtm.domain.tools.ToolsRepository
 import com.belcobtm.domain.transaction.TransactionRepository
-import com.belcobtm.domain.transaction.item.SellLimitsDataItem
-import com.belcobtm.domain.transaction.item.SellPreSubmitDataItem
-import com.belcobtm.domain.transaction.item.StakeDetailsDataItem
-import com.belcobtm.domain.transaction.item.TransactionPlanItem
+import com.belcobtm.domain.transaction.item.*
 import com.belcobtm.domain.wallet.LocalCoinType
 import com.belcobtm.domain.wallet.item.CoinDataItem
+import com.belcobtm.domain.wallet.item.isBtcCoin
 import com.belcobtm.domain.wallet.item.isEthRelatedCoinCode
+import com.belcobtm.presentation.core.extensions.customPurpose
+import com.belcobtm.presentation.core.extensions.customXpubVersion
 import kotlinx.coroutines.flow.Flow
+import wallet.core.jni.HDWallet
 
 class TransactionRepositoryImpl(
     private val apiService: TransactionApiService,
@@ -25,11 +28,27 @@ class TransactionRepositoryImpl(
     private val toolsRepository: ToolsRepository,
     private val cache: TransactionsInMemoryCache,
     private val transactionRepository: TransactionHelper,
-    private val daoAccount: AccountDao
+    private val daoAccount: AccountDao,
+    private val preferencesHelper: SharedPreferencesHelper
 ) : TransactionRepository {
 
+    private var utxos: List<UtxoItemResponse> = emptyList()
+
     override suspend fun getTransactionPlan(coinCode: String): Either<Failure, TransactionPlanItem> =
-        apiService.getTransactionPlan(coinCode)
+        if (coinCode.isBtcCoin()) {
+            val coin = LocalCoinType.valueOf(coinCode).trustWalletType
+            val hdWallet = HDWallet(preferencesHelper.apiSeed, "")
+            val publicKey = hdWallet.getExtendedPublicKey(
+                coin.customPurpose(), coin, coin.customXpubVersion()
+            )
+            apiService.getUtxoList(coinCode, publicKey).flatMapSuspend {
+                utxos = it
+                apiService.getTransactionPlan(coinCode)
+            }
+        } else {
+            utxos = emptyList()
+            apiService.getTransactionPlan(coinCode)
+        }
 
     override suspend fun fetchTransactionList(coinCode: String): Either<Failure, Unit> =
         apiService.fetchTransactions(coinCode).map {
@@ -39,16 +58,19 @@ class TransactionRepositoryImpl(
     override fun observeTransactions(): Flow<TransactionsData> =
         cache.observableData
 
-    override suspend fun getFee(
+    override suspend fun getSignedPlan(
         fromCoin: String,
         fromCoinAmount: Double,
         fromTransactionPlan: TransactionPlanItem,
-        toAddress: String
-    ): Either<Failure, Double> = transactionRepository.getFee(
+        toAddress: String,
+        useMaxAmountFlag: Boolean
+    ): Either<Failure, SignedTransactionPlanItem> = transactionRepository.getSignedTransactionPlan(
         toAddress,
         LocalCoinType.valueOf(fromCoin),
         fromCoinAmount,
-        fromTransactionPlan
+        fromTransactionPlan,
+        useMaxAmountFlag,
+        utxos
     )
 
     override suspend fun createTransaction(
@@ -61,7 +83,7 @@ class TransactionRepositoryImpl(
         val coinType = LocalCoinType.valueOf(fromCoin)
         val hashResponse =
             transactionRepository.createTransactionHash(
-                toAddress, coinType, fromCoinAmount, fromTransactionPlan
+                toAddress, coinType, fromCoinAmount, fromTransactionPlan, utxos
             )
         return when {
             isNeedSendSms && hashResponse.isRight -> {
@@ -90,7 +112,8 @@ class TransactionRepositoryImpl(
                 toAddress,
                 coinType,
                 fromCoinAmount,
-                fromTransactionPlan
+                fromTransactionPlan,
+                utxos
             )
         return if (hashResponse.isRight) {
             val fromAddress = daoAccount.getItem(fromCoin).publicKey
@@ -119,7 +142,7 @@ class TransactionRepositoryImpl(
     ): Either<Failure, Unit> {
         val coinType = LocalCoinType.valueOf(coinCode)
         val hashResponse = transactionRepository.createTransactionHash(
-            toAddress, coinType, amount, transactionPlanItem
+            toAddress, coinType, amount, transactionPlanItem, utxos
         )
         return if (hashResponse.isRight) {
             val item = daoAccount.getItem(coinCode)
@@ -165,7 +188,7 @@ class TransactionRepositoryImpl(
     override suspend fun sell(
         coin: String,
         coinAmount: Double,
-        usdAmount: Double,
+        usdAmount: Int,
         fee: Double
     ): Either<Failure, Unit> {
         return apiService.sell(coin, coinAmount, usdAmount, getCoinByCode(coin).priceUsd, fee)
@@ -189,7 +212,7 @@ class TransactionRepositoryImpl(
             fromCoinItem.details.walletAddress
         }
         val hashResponse = transactionRepository.createTransactionHash(
-            toAddress, coinType, fromCoinAmount, transactionPlanItem
+            toAddress, coinType, fromCoinAmount, transactionPlanItem, utxos
         )
         return if (hashResponse.isRight) {
             val toAddressSend = fromCoinItem.details.walletAddress
@@ -220,7 +243,7 @@ class TransactionRepositoryImpl(
         val toAddress = getCoinByCode(coinCode).details.walletAddress
         val coinType = LocalCoinType.valueOf(coinCode)
         val hashResponse = transactionRepository.createTransactionHash(
-            toAddress, coinType, cryptoAmount, transactionPlanItem
+            toAddress, coinType, cryptoAmount, transactionPlanItem, utxos
         )
         return when {
             hashResponse.isRight -> hashResponse as Either.Right

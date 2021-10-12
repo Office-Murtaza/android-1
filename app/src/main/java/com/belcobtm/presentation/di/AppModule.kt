@@ -1,9 +1,7 @@
 package com.belcobtm.presentation.di
 
 import android.content.Context
-import com.belcobtm.presentation.core.coin.AmountCoinValidator
 import com.belcobtm.presentation.core.coin.CoinCodeProvider
-import com.belcobtm.presentation.core.coin.CoinLimitsValueProvider
 import com.belcobtm.presentation.core.formatter.*
 import com.belcobtm.presentation.core.formatter.DoubleCurrencyPriceFormatter.Companion.DOUBLE_CURRENCY_PRICE_FORMATTER_QUALIFIER
 import com.belcobtm.presentation.core.formatter.Formatter
@@ -96,31 +94,11 @@ val viewModelModule = module {
     }
     viewModel { VerificationBlankViewModel(get(), get()) }
     viewModel { VerificationVipViewModel(get()) }
-    viewModel { SwapViewModel(get(), get(), get(), get(), get(), get(), get(), get()) }
+    viewModel { SwapViewModel(get(), get(), get(), get(), get(), get(), get()) }
     viewModel { WalletsViewModel(get(), get()) }
+    viewModel { (coinCode: String) -> TradeRecallViewModel(coinCode, get(), get(), get(), get()) }
     viewModel { (coinCode: String) ->
-        TradeRecallViewModel(
-            coinCode,
-            get(),
-            get(),
-            get(),
-            get(),
-            get(),
-            get(),
-            get()
-        )
-    }
-    viewModel { (coinCode: String) ->
-        TradeReserveViewModel(
-            coinCode,
-            get(),
-            get(),
-            get(),
-            get(),
-            get(),
-            get(),
-            get()
-        )
+        TradeReserveViewModel(coinCode, get(), get(), get(), get(), get(), get(), get(), get())
     }
     viewModel { StakingViewModel(get(), get(), get(), get(), get(), get()) }
     viewModel { (phone: String) -> SmsCodeViewModel(phone, get(), get()) }
@@ -137,11 +115,10 @@ val viewModelModule = module {
             txId, coinCode, get(), get(), get(named(DOUBLE_CURRENCY_PRICE_FORMATTER_QUALIFIER))
         )
     }
-    viewModel { SendGiftViewModel(get(), get(), get(), get(), get(), get(), get()) }
+    viewModel { SendGiftViewModel(get(), get(), get(), get(), get(), get(), get(), get()) }
     viewModel { (coinCode: String) ->
         WithdrawViewModel(
             coinCode,
-            get(),
             get(),
             get(),
             get(),
@@ -162,7 +139,7 @@ val viewModelModule = module {
     viewModel { MyTradesViewModel(get(), get()) }
     viewModel {
         AtmSellViewModel(
-            get(), get(), get(), get(), get(), get(), get(),
+            get(), get(), get(), get(), get(), get(),
             get(named(DOUBLE_CURRENCY_PRICE_FORMATTER_QUALIFIER)),
         )
     }
@@ -200,9 +177,7 @@ val viewModelModule = module {
 }
 
 val viewModelHelperModule = module {
-    factory { CoinLimitsValueProvider() }
     factory { CoinCodeProvider() }
-    factory { AmountCoinValidator() }
     factory { PhoneNumberUtil.createInstance(get<Context>()) }
     factory { PhoneNumberValidator(get()) }
     factory { PhoneNumberFormatter(get<Locale>().country) }

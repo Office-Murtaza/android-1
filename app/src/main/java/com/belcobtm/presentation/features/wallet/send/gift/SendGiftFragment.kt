@@ -14,6 +14,8 @@ import com.belcobtm.R
 import com.belcobtm.databinding.FragmentSendGiftBinding
 import com.belcobtm.domain.Failure
 import com.belcobtm.domain.wallet.LocalCoinType
+import com.belcobtm.domain.wallet.item.CoinDataItem
+import com.belcobtm.domain.wallet.item.isEthRelatedCoinCode
 import com.belcobtm.presentation.core.extensions.*
 import com.belcobtm.presentation.core.formatter.DoubleCurrencyPriceFormatter
 import com.belcobtm.presentation.core.formatter.Formatter
@@ -50,6 +52,8 @@ class SendGiftFragment : BaseFragment<FragmentSendGiftBinding>(),
         when {
             viewModel.initialLoadingData.value is LoadingData.Error ->
                 viewModel.fetchInitialData(sendGiftArgs.phoneNumber)
+            viewModel.transactionPlanLiveData.value is LoadingData.Error ->
+                viewModel.coinToSend.value?.let(viewModel::selectCoin)
             else -> {
                 viewModel.sendGift(
                     binding.sendCoinInputLayout.getEditText().text.getDouble(),
@@ -77,8 +81,8 @@ class SendGiftFragment : BaseFragment<FragmentSendGiftBinding>(),
     private val cryptoAmountTextWatcher by lazy {
         SafeDecimalEditTextWatcher { editable ->
             val parsedCoinAmount = editable.getDouble()
-            if (parsedCoinAmount != viewModel.sendCoinAmount.value) {
-                viewModel.updateAmountToSend(parsedCoinAmount)
+            if (parsedCoinAmount != viewModel.amount.value?.amount) {
+                viewModel.setAmount(parsedCoinAmount)
             }
             if (editable.isEmpty()) {
                 editable.insert(0, "0")
@@ -125,7 +129,7 @@ class SendGiftFragment : BaseFragment<FragmentSendGiftBinding>(),
     }
 
     override fun FragmentSendGiftBinding.initListeners() {
-        sendCoinInputLayout.setOnMaxClickListener { viewModel.setMaxCoinAmount() }
+        sendCoinInputLayout.setOnMaxClickListener { viewModel.setMaxAmount() }
         addGif.setOnClickListener { openGift() }
         gifImage.setOnClickListener { openGift() }
         removeGifButton.setOnClickListener {
@@ -152,13 +156,13 @@ class SendGiftFragment : BaseFragment<FragmentSendGiftBinding>(),
     override fun FragmentSendGiftBinding.initObservers() {
         viewModel.initialLoadingData.listen()
         viewModel.transactionPlanLiveData.listen()
-        viewModel.sendCoinAmount.observe(viewLifecycleOwner) { cryptoAmount ->
+        viewModel.amount.observe(viewLifecycleOwner) { cryptoAmount ->
             with(sendCoinInputLayout.getEditText()) {
-                if (text.getDouble() == 0.0 && cryptoAmount == 0.0) {
+                if (text.getDouble() == 0.0 && cryptoAmount.amount == 0.0) {
                     return@observe
                 }
                 removeTextChangedListener(cryptoAmountTextWatcher)
-                setText(cryptoAmount.toStringCoin())
+                setText(cryptoAmount.amount.toStringCoin())
                 if (isFocused) {
                     setSelection(text.length)
                 }
@@ -166,16 +170,13 @@ class SendGiftFragment : BaseFragment<FragmentSendGiftBinding>(),
             }
         }
         viewModel.cryptoAmountError.observe(viewLifecycleOwner) {
-            binding.sendCoinInputLayout.setErrorText(it?.let(::getString), true)
+            sendCoinInputLayout.setErrorText(it?.let(::getString), true)
         }
         viewModel.usdAmount.observe(viewLifecycleOwner) {
-            binding.amountUsdView.text = currencyFormatter.format(it)
+            amountUsdView.text = currencyFormatter.format(it)
         }
-        viewModel.coinToSend.observe(viewLifecycleOwner) {
-            setCoinData()
-        }
-        viewModel.fee.observe(viewLifecycleOwner) {
-            setCoinData()
+        viewModel.coinWithFee.observe(viewLifecycleOwner) { (coin, fee) ->
+            setCoinData(coin, fee)
         }
         viewModel.sendGiftLoadingData.listen(
             success = {
@@ -204,9 +205,7 @@ class SendGiftFragment : BaseFragment<FragmentSendGiftBinding>(),
             })
     }
 
-    private fun setCoinData() {
-        val coin = viewModel.coinToSend.value ?: return
-        val fee = viewModel.fee.value ?: return
+    private fun setCoinData(coin: CoinDataItem, fee: Double) {
         val coinCode = coin.code
         val coinBalance = coin.balanceCoin.toStringCoin()
         val localType = LocalCoinType.valueOf(coinCode)
@@ -217,7 +216,10 @@ class SendGiftFragment : BaseFragment<FragmentSendGiftBinding>(),
                 coinBalance,
                 coinCode,
                 fee.toStringCoin(),
-                coinCode
+                when (viewModel.getCoinCode().isEthRelatedCoinCode()) {
+                    true -> LocalCoinType.ETH.name
+                    false -> viewModel.getCoinCode()
+                }
             )
         )
     }

@@ -16,8 +16,16 @@ data class CoinDataItem(
     data class Details(val walletAddress: String)
 }
 
-fun CoinDataItem.isEthRelatedCoin(): Boolean {
-    return this.code.isEthRelatedCoinCode()
+fun CoinDataItem.isEthRelatedCoin(): Boolean = code.isEthRelatedCoinCode()
+
+fun CoinDataItem.isBtcCoin(): Boolean = code.isBtcCoin()
+
+fun String.isBtcCoin(): Boolean {
+    return this == LocalCoinType.BTC.name ||
+            this == LocalCoinType.BCH.name ||
+            this == LocalCoinType.LTC.name ||
+            this == LocalCoinType.DASH.name ||
+            this == LocalCoinType.DOGE.name
 }
 
 fun String.isEthRelatedCoinCode(): Boolean {
