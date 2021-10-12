@@ -1,5 +1,6 @@
 package com.belcobtm.data.core.helper
 
+import android.util.Log
 import com.belcobtm.data.core.factory.BlockTransactionInputBuilderFactory
 import com.belcobtm.data.disk.shared.preferences.SharedPreferencesHelper
 import com.belcobtm.data.rest.transaction.TransactionApiService
@@ -19,19 +20,16 @@ import wallet.core.jni.HDWallet
 import wallet.core.jni.proto.Bitcoin
 
 
-class BlockTransactionHelper(
-    private val blockFactory: BlockTransactionInputBuilderFactory,
-    private val preferencesHelper: SharedPreferencesHelper,
-    private val transactionApiService: TransactionApiService
-) {
+class BlockTransactionHelper(private val blockFactory: BlockTransactionInputBuilderFactory) {
 
     suspend fun getSignedTransactionPlan(
         useMaxAmountFlag: Boolean,
         toAddress: String,
         fromCoin: LocalCoinType,
         fromCoinAmount: Double,
-        fromTransactionPlan: TransactionPlanItem
-    ): Either<Failure, SignedTransactionPlanItem> = fetchUtxoAndPerform(fromCoin) { utxos ->
+        fromTransactionPlan: TransactionPlanItem,
+        utxos: List<UtxoItemResponse>
+    ): SignedTransactionPlanItem {
         val input = blockFactory.createInput(
             utxos, toAddress, fromCoin,
             fromCoinAmount, fromTransactionPlan
@@ -45,15 +43,17 @@ class BlockTransactionHelper(
         )
         val availableAmount = plan.availableAmount.toDouble() / fromCoin.trustWalletType.unit()
         val fee = plan.fee / fromCoin.trustWalletType.unit().toDouble()
-        SignedTransactionPlanItem(fee, availableAmount)
+        Log.d("FEE", "fee $fee, $availableAmount, utxo $utxos")
+        return SignedTransactionPlanItem(fee, availableAmount)
     }
 
     suspend fun getHash(
         toAddress: String,
         fromCoin: LocalCoinType,
         fromCoinAmount: Double,
-        fromTransactionPlan: TransactionPlanItem
-    ): Either<Failure, String> = fetchUtxoAndPerform(fromCoin) { utxos ->
+        fromTransactionPlan: TransactionPlanItem,
+        utxos: List<UtxoItemResponse>
+    ): String {
         val input = blockFactory.createInput(
             utxos, toAddress, fromCoin,
             fromCoinAmount, fromTransactionPlan
@@ -63,20 +63,6 @@ class BlockTransactionHelper(
             fromCoin.trustWalletType,
             Bitcoin.SigningOutput.parser()
         ).encoded.toByteArray()
-        Numeric.toHexString(signBytes).substring(2)
-    }
-
-    private suspend fun <T> fetchUtxoAndPerform(
-        localCoin: LocalCoinType,
-        onUtxoFetched: suspend (List<UtxoItemResponse>) -> T
-    ): Either<Failure, T> {
-        val coin = localCoin.trustWalletType
-        val hdWallet = HDWallet(preferencesHelper.apiSeed, "")
-        val publicKey = hdWallet.getExtendedPublicKey(
-            coin.customPurpose(), coin, coin.customXpubVersion()
-        )
-        return transactionApiService.getUtxoList(localCoin.name, publicKey).mapSuspend {
-            onUtxoFetched(it)
-        }
+        return Numeric.toHexString(signBytes).substring(2)
     }
 }

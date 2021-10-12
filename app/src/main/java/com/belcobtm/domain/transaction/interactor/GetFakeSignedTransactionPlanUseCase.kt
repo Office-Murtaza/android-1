@@ -18,7 +18,7 @@ class GetFakeSignedTransactionPlanUseCase(
         walletRepository.getCoinItemByCode(params.coinCode).flatMapSuspend { coinDataItem ->
             transactionRepository.getSignedPlan(
                 params.coinCode,
-                coinDataItem.balanceCoin / 2,
+                params.amount ?: coinDataItem.balanceCoin / 2,
                 params.transactionPlanItem,
                 coinDataItem.details.walletAddress,
                 params.useMaxAmount
@@ -28,6 +28,7 @@ class GetFakeSignedTransactionPlanUseCase(
     data class Params(
         val coinCode: String,
         val transactionPlanItem: TransactionPlanItem,
-        val useMaxAmount: Boolean
+        val useMaxAmount: Boolean,
+        val amount: Double? = null
     )
 }

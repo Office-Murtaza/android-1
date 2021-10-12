@@ -144,7 +144,7 @@ class SendGiftViewModel(
             transactionPlanItem?.let { plan ->
                 getFakeSignedTransactionPlanUseCase(
                     GetFakeSignedTransactionPlanUseCase.Params(
-                        coin.code, plan, useMaxAmount = false
+                        coin.code, plan, useMaxAmount = false, amount = amount
                     ),
                     onSuccess = { signedTransactionPlan ->
                         signedTransactionPlanItem = signedTransactionPlan

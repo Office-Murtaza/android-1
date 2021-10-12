@@ -154,7 +154,7 @@ class TradeReserveViewModel(
             transactionPlanItem?.let { plan ->
                 getFakeSignedTransactionPlanUseCase(
                     GetFakeSignedTransactionPlanUseCase.Params(
-                        coinDataItem.code, plan, useMaxAmount = false
+                        coinDataItem.code, plan, useMaxAmount = false, amount = amount
                     ),
                     onSuccess = { signedTransactionPlan ->
                         signedTransactionPlanItem = signedTransactionPlan

@@ -108,7 +108,7 @@ class WithdrawViewModel(
             transactionPlan?.let { plan ->
                 getFakeSignedTransactionPlanUseCase(
                     GetFakeSignedTransactionPlanUseCase.Params(
-                        fromCoinDataItem.code, plan, useMaxAmount = false
+                        fromCoinDataItem.code, plan, useMaxAmount = false, amount = amount
                     ),
                     onSuccess = { signedTransactionPlan ->
                         signedTransactionPlanItem = signedTransactionPlan
