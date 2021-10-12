@@ -4,18 +4,20 @@ import com.belcobtm.domain.Either
 import com.belcobtm.domain.Failure
 import com.belcobtm.domain.UseCase
 import com.belcobtm.domain.transaction.TransactionRepository
+import com.belcobtm.domain.transaction.item.SignedTransactionPlanItem
 import com.belcobtm.domain.transaction.item.TransactionPlanItem
 
-class GetFeeUseCase(
+class GetSignedTransactionPlanUseCase(
     private val transactionRepository: TransactionRepository
-) : UseCase<Double, GetFeeUseCase.Params>() {
+) : UseCase<SignedTransactionPlanItem, GetSignedTransactionPlanUseCase.Params>() {
 
-    override suspend fun run(params: Params): Either<Failure, Double> =
-        transactionRepository.getFee(
+    override suspend fun run(params: Params): Either<Failure, SignedTransactionPlanItem> =
+        transactionRepository.getSignedPlan(
             params.coinCode,
             params.coinAmount,
             params.transactionPlanItem,
-            params.toAddress
+            params.toAddress,
+            useMaxAmountFlag = false
         )
 
     data class Params(

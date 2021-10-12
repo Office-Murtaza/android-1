@@ -7,6 +7,7 @@ import com.belcobtm.data.rest.transaction.response.hash.UtxoItemResponse
 import com.belcobtm.domain.Either
 import com.belcobtm.domain.Failure
 import com.belcobtm.domain.mapSuspend
+import com.belcobtm.domain.transaction.item.SignedTransactionPlanItem
 import com.belcobtm.domain.transaction.item.TransactionPlanItem
 import com.belcobtm.domain.wallet.LocalCoinType
 import com.belcobtm.presentation.core.Numeric
@@ -24,23 +25,27 @@ class BlockTransactionHelper(
     private val transactionApiService: TransactionApiService
 ) {
 
-    suspend fun getFee(
+    suspend fun getSignedTransactionPlan(
+        useMaxAmountFlag: Boolean,
         toAddress: String,
         fromCoin: LocalCoinType,
         fromCoinAmount: Double,
         fromTransactionPlan: TransactionPlanItem
-    ): Either<Failure, Double> = fetchUtxoAndPerform(fromCoin) { utxos ->
+    ): Either<Failure, SignedTransactionPlanItem> = fetchUtxoAndPerform(fromCoin) { utxos ->
         val input = blockFactory.createInput(
             utxos, toAddress, fromCoin,
             fromCoinAmount, fromTransactionPlan
         )
+        input.useMaxAmount = useMaxAmountFlag
         input.amount = (fromCoinAmount * fromCoin.trustWalletType.unit()).toLong()
         val plan = AnySigner.plan(
             input.build(),
             fromCoin.trustWalletType,
             Bitcoin.TransactionPlan.parser()
         )
-        plan.fee / fromCoin.trustWalletType.unit().toDouble()
+        val availableAmount = plan.availableAmount.toDouble() / fromCoin.trustWalletType.unit()
+        val fee = plan.fee / fromCoin.trustWalletType.unit().toDouble()
+        SignedTransactionPlanItem(fee, availableAmount)
     }
 
     suspend fun getHash(

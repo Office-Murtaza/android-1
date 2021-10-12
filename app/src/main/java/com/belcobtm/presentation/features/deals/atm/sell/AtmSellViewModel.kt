@@ -14,7 +14,6 @@ import com.belcobtm.domain.transaction.interactor.SellGetLimitsUseCase
 import com.belcobtm.domain.transaction.interactor.SellUseCase
 import com.belcobtm.domain.wallet.interactor.GetCoinListUseCase
 import com.belcobtm.domain.wallet.item.CoinDataItem
-import com.belcobtm.presentation.core.coin.CoinLimitsValueProvider
 import com.belcobtm.presentation.core.extensions.toStringCoin
 import com.belcobtm.presentation.core.formatter.Formatter
 import com.belcobtm.presentation.core.livedata.DoubleCombinedLiveData
@@ -30,7 +29,6 @@ class AtmSellViewModel(
     private val sellGetLimitsUseCase: SellGetLimitsUseCase,
     private val sellUseCase: SellUseCase,
     private val accountDao: AccountDao,
-    private val coinLimitsValueProvider: CoinLimitsValueProvider,
     private val serviceInfoProvider: ServiceInfoProvider,
     private val stringProvider: StringProvider,
     private val priceFormatter: Formatter<Double>
@@ -120,7 +118,7 @@ class AtmSellViewModel(
 
     fun setMaxSendAmount() {
         val currentCoinToSend = selectedCoin.value ?: return
-        val maxAmount = coinLimitsValueProvider.getMaxValue(currentCoinToSend, 0.0)
+        val maxAmount = currentCoinToSend.balanceCoin - (fee.value?.platformFeeCoinAmount ?: 0.0)
         setAmount(maxAmount * currentCoinToSend.priceUsd)
     }
 

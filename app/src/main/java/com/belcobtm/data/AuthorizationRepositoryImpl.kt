@@ -183,7 +183,6 @@ class AuthorizationRepositoryImpl(
                 body.user.availableServices,
                 body.serviceFees
             )
-            walletDao.updateBalance(body.balance)
             prefHelper.processAuthResponse(body)
             Either.Right(Unit)
         } else {

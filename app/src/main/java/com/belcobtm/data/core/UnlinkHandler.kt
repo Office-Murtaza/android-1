@@ -41,7 +41,9 @@ class UnlinkHandler(
 
     private suspend fun unlink() {
         try {
-            unlinkApi.unlinkAsync(prefsHelper.userId).await()
+            if(prefsHelper.userId.isNotEmpty()) {
+                unlinkApi.unlinkAsync(prefsHelper.userId).await()
+            }
         } catch (e: Exception) {
         }
     }

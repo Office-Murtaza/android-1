@@ -1,5 +1,6 @@
 package com.belcobtm.presentation.features.wallet.trade.reserve
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -41,20 +42,18 @@ class TradeReserveFragment : BaseFragment<FragmentTradeReserveBinding>() {
     private val cryptoAmountTextWatcher by lazy {
         SafeDecimalEditTextWatcher { editable ->
             val cryptoAmount = editable.getDouble()
+            viewModel.setAmount(cryptoAmount)
             binding.amountUsdView.text = if (cryptoAmount > 0) {
                 currencyFormatter.format(cryptoAmount * viewModel.coinItem.priceUsd)
             } else {
                 currencyFormatter.format(0.0)
             }
-            viewModel.selectedAmount = cryptoAmount
         }
     }
 
     override fun FragmentTradeReserveBinding.initListeners() {
         maxCryptoView.setOnClickListener {
-            amountCryptoView.setText(
-                viewModel.getMaxValue().toStringCoin()
-            )
+            viewModel.setMaxAmount()
         }
         amountCryptoView.editText?.actionDoneListener {
             hideKeyboard()
@@ -72,11 +71,6 @@ class TradeReserveFragment : BaseFragment<FragmentTradeReserveBinding>() {
                 viewModel.coinItem.code
             )
             balanceUsdView.text = currencyFormatter.format(viewModel.coinItem.balanceUsd)
-            amountCryptoView.helperText = getString(
-                R.string.transaction_helper_text_commission,
-                viewModel.getTransactionFee().toStringCoin(),
-                viewModel.getCoinCode()
-            )
             reservedCryptoView.text = getString(
                 R.string.text_text,
                 viewModel.coinItem.reservedBalanceCoin.toStringCoin(),
@@ -85,6 +79,20 @@ class TradeReserveFragment : BaseFragment<FragmentTradeReserveBinding>() {
             reservedUsdView.text = currencyFormatter.format(viewModel.coinItem.reservedBalanceUsd)
             amountCryptoView.hint = getString(R.string.text_amount, viewModel.coinItem.code)
         })
+        viewModel.fee.observe(viewLifecycleOwner) { fee ->
+            amountCryptoView.helperText = getString(
+                R.string.transaction_helper_text_commission,
+                fee.toStringCoin(),
+                viewModel.getCoinCode()
+            )
+        }
+        viewModel.amount.observe(viewLifecycleOwner) {
+            val formattedCoin = it.amount.toStringCoin()
+            amountCryptoView.editText?.setTextSilently(
+                cryptoAmountTextWatcher,
+                formattedCoin, formattedCoin.length
+            )
+        }
         viewModel.createTransactionLiveData.listen(
             success = {
                 AlertHelper.showToastShort(

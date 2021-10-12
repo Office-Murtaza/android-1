@@ -11,6 +11,7 @@ import com.belcobtm.data.disk.database.service.ServiceType
 import com.belcobtm.domain.Failure
 import com.belcobtm.domain.service.ServiceInfoProvider
 import com.belcobtm.domain.transaction.interactor.CheckXRPAddressActivatedUseCase
+import com.belcobtm.domain.transaction.interactor.GetMaxValueBySignedTransactionUseCase
 import com.belcobtm.domain.transaction.interactor.GetTransactionPlanUseCase
 import com.belcobtm.domain.transaction.interactor.SwapUseCase
 import com.belcobtm.domain.transaction.item.TransactionPlanItem
@@ -19,8 +20,6 @@ import com.belcobtm.domain.wallet.interactor.GetCoinListUseCase
 import com.belcobtm.domain.wallet.item.CoinDataItem
 import com.belcobtm.domain.wallet.item.isEthRelatedCoin
 import com.belcobtm.presentation.core.SingleLiveData
-import com.belcobtm.presentation.core.coin.AmountCoinValidator
-import com.belcobtm.presentation.core.coin.CoinLimitsValueProvider
 import com.belcobtm.presentation.core.coin.model.ValidationResult
 import com.belcobtm.presentation.core.mvvm.LoadingData
 import kotlinx.coroutines.launch
@@ -28,12 +27,11 @@ import kotlinx.coroutines.launch
 class SwapViewModel(
     private val accountDao: AccountDao,
     private val getCoinListUseCase: GetCoinListUseCase,
-    private val amountValidator: AmountCoinValidator,
     private val swapUseCase: SwapUseCase,
     private val checkXRPAddressActivatedUseCase: CheckXRPAddressActivatedUseCase,
-    private val coinLimitsValueProvider: CoinLimitsValueProvider,
     private val serviceInfoProvider: ServiceInfoProvider,
-    private val getTransactionPlanUseCase: GetTransactionPlanUseCase
+    private val getTransactionPlanUseCase: GetTransactionPlanUseCase,
+    private val getMaxValueBySignedTransactionUseCase: GetMaxValueBySignedTransactionUseCase
 ) : ViewModel() {
 
     val originCoinsData = mutableListOf<CoinDataItem>()
@@ -168,9 +166,15 @@ class SwapViewModel(
     fun setMaxSendAmount() {
         val currentCoinToSend = coinToSend.value ?: return
         val transactionPlanItem = fromTransactionPlanItem ?: return
-        val maxAmount = coinLimitsValueProvider
-            .getMaxValue(currentCoinToSend, transactionPlanItem.txFee)
-        setSendAmount(maxAmount)
+        getMaxValueBySignedTransactionUseCase(
+            GetMaxValueBySignedTransactionUseCase.Params(
+                transactionPlanItem,
+                currentCoinToSend,
+            ),
+            onSuccess = {
+                setSendAmount(it.amount)
+            }, onError = { /* error impossible */ }
+        )
     }
 
     fun executeSwap() {
@@ -274,17 +278,8 @@ class SwapViewModel(
     }
 
     private fun validateCoinToSendAmount(coinAmount: Double): Boolean {
-        val currentCoinToSend = coinToSend.value ?: return false
-        val transactionPlanItem = fromTransactionPlanItem ?: return false
-        val balanceValidationResult = amountValidator.validateBalance(
-            coinAmount, currentCoinToSend, originCoinsData
-        )
-        val maxCoinAmount = coinLimitsValueProvider
-            .getMaxValue(currentCoinToSend, transactionPlanItem.txFee)
+        val maxCoinAmount = getMaxValue()
         val validationResult = when {
-            balanceValidationResult is ValidationResult.InValid -> {
-                balanceValidationResult
-            }
             coinAmount > maxCoinAmount -> {
                 ValidationResult.InValid(R.string.swap_screen_max_error)
             }
@@ -297,6 +292,15 @@ class SwapViewModel(
         }
         _coinToSendError.value = validationResult
         return validationResult == ValidationResult.Valid
+    }
+
+    private fun getMaxValue(): Double {
+        val coinDataItem = coinToSend.value ?: return 0.0
+        return if (coinDataItem.isEthRelatedCoin()) {
+            coinDataItem.reservedBalanceCoin - (fromTransactionPlanItem?.nativeTxFee ?: 0.0)
+        } else {
+            coinDataItem.reservedBalanceCoin - (fromTransactionPlanItem?.txFee ?: 0.0)
+        }
     }
 
     private fun validateCoinsAmount(): Boolean {

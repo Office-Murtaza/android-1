@@ -10,10 +10,7 @@ import com.belcobtm.data.rest.transaction.TransactionApiService
 import com.belcobtm.domain.*
 import com.belcobtm.domain.tools.ToolsRepository
 import com.belcobtm.domain.transaction.TransactionRepository
-import com.belcobtm.domain.transaction.item.SellLimitsDataItem
-import com.belcobtm.domain.transaction.item.SellPreSubmitDataItem
-import com.belcobtm.domain.transaction.item.StakeDetailsDataItem
-import com.belcobtm.domain.transaction.item.TransactionPlanItem
+import com.belcobtm.domain.transaction.item.*
 import com.belcobtm.domain.wallet.LocalCoinType
 import com.belcobtm.domain.wallet.item.CoinDataItem
 import com.belcobtm.domain.wallet.item.isEthRelatedCoinCode
@@ -39,16 +36,18 @@ class TransactionRepositoryImpl(
     override fun observeTransactions(): Flow<TransactionsData> =
         cache.observableData
 
-    override suspend fun getFee(
+    override suspend fun getSignedPlan(
         fromCoin: String,
         fromCoinAmount: Double,
         fromTransactionPlan: TransactionPlanItem,
-        toAddress: String
-    ): Either<Failure, Double> = transactionRepository.getFee(
+        toAddress: String,
+        useMaxAmountFlag: Boolean
+    ): Either<Failure, SignedTransactionPlanItem> = transactionRepository.getSignedTransactionPlan(
         toAddress,
         LocalCoinType.valueOf(fromCoin),
         fromCoinAmount,
-        fromTransactionPlan
+        fromTransactionPlan,
+        useMaxAmountFlag
     )
 
     override suspend fun createTransaction(

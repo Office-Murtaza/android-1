@@ -20,6 +20,14 @@ fun CoinDataItem.isEthRelatedCoin(): Boolean {
     return this.code.isEthRelatedCoinCode()
 }
 
+fun CoinDataItem.isBtcCoin(): Boolean {
+    return code == LocalCoinType.BTC.name ||
+            code == LocalCoinType.BCH.name ||
+            code == LocalCoinType.LTC.name ||
+            code == LocalCoinType.DASH.name ||
+            code == LocalCoinType.DOGE.name
+}
+
 fun String.isEthRelatedCoinCode(): Boolean {
     return this == LocalCoinType.USDC.name || this == LocalCoinType.CATM.name
 }

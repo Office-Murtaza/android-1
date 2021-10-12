@@ -6,6 +6,8 @@ import android.view.ViewGroup
 import androidx.navigation.fragment.navArgs
 import com.belcobtm.R
 import com.belcobtm.databinding.FragmentTradeRecallBinding
+import com.belcobtm.domain.wallet.LocalCoinType
+import com.belcobtm.domain.wallet.item.isEthRelatedCoinCode
 import com.belcobtm.presentation.core.extensions.*
 import com.belcobtm.presentation.core.formatter.DoubleCurrencyPriceFormatter
 import com.belcobtm.presentation.core.formatter.Formatter
@@ -72,7 +74,10 @@ class TradeRecallFragment : BaseFragment<FragmentTradeRecallBinding>() {
             reservedCryptoView.text = getString(
                 R.string.text_text,
                 viewModel.coinItem.reservedBalanceCoin.toStringCoin(),
-                viewModel.coinItem.code
+                when (viewModel.getCoinCode().isEthRelatedCoinCode()) {
+                    true -> LocalCoinType.ETH.name
+                    false -> viewModel.getCoinCode()
+                }
             )
             reservedUsdView.text = currencyFormatter.format(viewModel.coinItem.reservedBalanceUsd)
             amountCryptoView.hint = getString(R.string.text_amount, viewModel.coinItem.code)

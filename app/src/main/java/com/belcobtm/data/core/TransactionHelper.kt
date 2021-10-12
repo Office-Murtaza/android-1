@@ -6,6 +6,7 @@ import com.belcobtm.data.core.factory.EthTransactionInputBuilderFactory.Companio
 import com.belcobtm.data.core.helper.*
 import com.belcobtm.domain.Either
 import com.belcobtm.domain.Failure
+import com.belcobtm.domain.transaction.item.SignedTransactionPlanItem
 import com.belcobtm.domain.transaction.item.TransactionPlanItem
 import com.belcobtm.domain.wallet.LocalCoinType
 
@@ -18,25 +19,26 @@ class TransactionHelper(
     private val tronTransactionHelper: TronTransactionHelper,
 ) {
 
-    suspend fun getFee(
+    suspend fun getSignedTransactionPlan(
         toAddress: String,
         fromCoin: LocalCoinType,
         fromCoinAmount: Double,
-        fromTransactionPlan: TransactionPlanItem
-    ): Either<Failure, Double> = when (fromCoin) {
+        fromTransactionPlan: TransactionPlanItem,
+        useMaxAmountFlag: Boolean
+    ): Either<Failure, SignedTransactionPlanItem> = when (fromCoin) {
         LocalCoinType.BTC,
         LocalCoinType.BCH,
         LocalCoinType.DOGE,
         LocalCoinType.DASH,
-        LocalCoinType.LTC -> blockTransactionHelper.getFee(
-            toAddress, fromCoin, fromCoinAmount, fromTransactionPlan
+        LocalCoinType.LTC -> blockTransactionHelper.getSignedTransactionPlan(
+            useMaxAmountFlag, toAddress, fromCoin, fromCoinAmount, fromTransactionPlan
         )
         LocalCoinType.ETH,
         LocalCoinType.XRP,
         LocalCoinType.BNB,
-        LocalCoinType.TRX -> Either.Right(fromTransactionPlan.txFee)
+        LocalCoinType.TRX,
         LocalCoinType.USDC,
-        LocalCoinType.CATM -> Either.Right(fromTransactionPlan.nativeTxFee)
+        LocalCoinType.CATM -> Either.Right(SignedTransactionPlanItem(fromTransactionPlan.txFee))
     }
 
     suspend fun createTransactionHash(
