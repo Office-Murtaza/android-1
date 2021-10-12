@@ -23,6 +23,7 @@ import com.belcobtm.presentation.features.deals.swap.CoinPresentationModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import kotlin.math.max
 
 class AtmSellViewModel(
     private val getCoinListUseCase: GetCoinListUseCase,
@@ -42,8 +43,8 @@ class AtmSellViewModel(
     private val _sellLoadingData = MutableLiveData<LoadingData<Unit>>()
     val sellLoadingData: LiveData<LoadingData<Unit>> = _sellLoadingData
 
-    private val _usdAmount = MutableLiveData(0.0)
-    val usdAmount: LiveData<Double> = _usdAmount
+    private val _usdAmount = MutableLiveData(0)
+    val usdAmount: LiveData<Int> = _usdAmount
 
     private val _usdAmountError = MutableLiveData<String>()
     val usdAmountError: LiveData<String> = _usdAmountError
@@ -61,7 +62,7 @@ class AtmSellViewModel(
         DoubleCombinedLiveData(usdAmount, selectedCoin) { amount, coin ->
             val feePercent = serviceInfoProvider.getServiceFee(ServiceType.ATM_SELL)
             val price = coin?.priceUsd ?: 0.0
-            (amount ?: 0.0) / price * (1 + feePercent / 100)
+            (amount?.toDouble() ?: 0.0) / price * (100 + feePercent) / 100.0
         }
 
     val formattedCoinAmount: LiveData<String> =
@@ -75,7 +76,7 @@ class AtmSellViewModel(
             val price = coin?.priceUsd ?: 0.0
             AtmSellFeeModelView(
                 feePercent,
-                (amount ?: 0.0) / price * (feePercent / 100),
+                (amount?.toDouble() ?: 0.0) / price * (feePercent / 100.0),
                 coin?.code.orEmpty()
             )
         }
@@ -118,8 +119,10 @@ class AtmSellViewModel(
 
     fun setMaxSendAmount() {
         val currentCoinToSend = selectedCoin.value ?: return
-        val maxAmount = currentCoinToSend.balanceCoin - (fee.value?.platformFeeCoinAmount ?: 0.0)
-        setAmount(maxAmount * currentCoinToSend.priceUsd)
+        val a = currentCoinToSend.reservedBalanceUsd * currentCoinToSend.priceUsd *
+                (100 - serviceInfoProvider.getServiceFee(ServiceType.ATM_SELL)) / 100
+        val maxAmount = max(a / 20 * 20, max(a / 50 * 50, a / 100 * 100)).toInt()
+        setAmount(maxAmount)
     }
 
     fun setCoin(coin: CoinDataItem) {
@@ -128,7 +131,7 @@ class AtmSellViewModel(
         }
     }
 
-    fun setAmount(sendAmount: Double) {
+    fun setAmount(sendAmount: Int) {
         _usdAmount.value = sendAmount
     }
 
@@ -138,6 +141,14 @@ class AtmSellViewModel(
         val usdAmount = usdAmount.value ?: return
         val todayLimit = _todayLimit.value ?: return
         val fee = serviceInfoProvider.getServiceFee(ServiceType.ATM_SELL)
+        if(usdAmount <= 0) {
+            _usdAmountError.value = stringProvider.getString(R.string.sell_amount_zero)
+            return
+        }
+        if(usdAmount % 100 != 0 && usdAmount % 20 != 0 && usdAmount % 100 != 0) {
+            _usdAmountError.value = stringProvider.getString(R.string.sell_amount_wrong_divider)
+            return
+        }
         if (amount > coin.reservedBalanceCoin) {
             _usdAmountError.value = stringProvider.getString(R.string.sell_amount_exceeds_limit)
             return
@@ -161,7 +172,7 @@ class AtmSellViewModel(
             1.0, coin.code, priceFormatter.format(coin.priceUsd)
         )
         _selectedCoinModel.value = CoinPresentationModel(
-            coin.code, coin.balanceCoin, 0.0
+            coin.code, coin.reservedBalanceCoin, 0.0
         )
     }
 
@@ -173,7 +184,7 @@ class AtmSellViewModel(
                 _dailyLimitFormatted.value = priceFormatter.format(it.dailyLimit)
                 _todayLimitFormatted.value = priceFormatter.format(it.todayLimit)
                 updateCoin(coinDataItem)
-                _usdAmount.value = 0.0
+                _usdAmount.value = 0
                 _initLoadingData.value = LoadingData.Success(Unit)
             },
             onError = { _initLoadingData.value = LoadingData.Error(it) }

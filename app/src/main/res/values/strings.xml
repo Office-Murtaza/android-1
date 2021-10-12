@@ -724,7 +724,9 @@
     <string name="converted_value_label">Converted value</string>
     <string name="atm_sell_coin_rate"><![CDATA[<b>%1$s</b> %2$s\n ~ <b>%3$s</b>]]></string>
     <string name="sell_amount_exceeds_limit">Amount exceeds reserved balance</string>
+    <string name="sell_amount_zero">Amount can\'t be zero</string>
     <string name="sell_amount_exceeds_today_limit">Amount exceeds today limit</string>
+    <string name="sell_amount_wrong_divider">Amount should be /20, /50 or /100</string>
     <string name="sell_screen_balance">Balance</string>
     <string name="coin_balance_format">%1$s %2$s</string>
     <string name="sell_screen_balance_formatted">%1$s %2$s</string>

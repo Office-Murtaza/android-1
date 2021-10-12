@@ -138,7 +138,7 @@ class TransactionApiService(
     suspend fun sell(
         coin: String,
         coinAmount: Double,
-        usdAmount: Double,
+        usdAmount: Int,
         price: Double,
         fee: Double
     ): Either<Failure, TransactionDetailsResponse> = try {

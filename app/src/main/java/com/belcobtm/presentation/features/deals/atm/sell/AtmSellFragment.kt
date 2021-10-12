@@ -33,7 +33,7 @@ class AtmSellFragment : BaseFragment<FragmentAtmSellBinding>() {
     private val viewModel by viewModel<AtmSellViewModel>()
 
     private val textWatcher = SafeDecimalEditTextWatcher { editable ->
-        val parsedAmount = editable.getDouble()
+        val parsedAmount = editable.getDouble().toInt()
         if (parsedAmount != viewModel.usdAmount.value) {
             viewModel.setAmount(parsedAmount)
         }
@@ -72,17 +72,17 @@ class AtmSellFragment : BaseFragment<FragmentAtmSellBinding>() {
     override fun FragmentAtmSellBinding.initViews() {
         setToolbarTitle(R.string.atm_sell_title)
         coinInputLayout.getEditText().setTextSilently(textWatcher, "0")
+        coinInputLayout.updateInputMode(isIntOnly = true)
     }
 
     override fun FragmentAtmSellBinding.initObservers() {
         viewModel.initLoadingData.listen()
         viewModel.usdAmount.observe(viewLifecycleOwner) { sendAmount ->
             val targetEditText = coinInputLayout.getEditText()
-            if (targetEditText.text.getDouble() == 0.0 && sendAmount == 0.0) {
+            if (targetEditText.text.getDouble() == 0.0 && sendAmount == 0) {
                 return@observe
             }
-            val coinAmountString = sendAmount.toStringPercents()
-            targetEditText.setTextSilently(textWatcher, coinAmountString)
+            targetEditText.setTextSilently(textWatcher, sendAmount.toString())
         }
         viewModel.selectedCoinModel.observe(viewLifecycleOwner) { coin ->
             val coinCode = coin.coinCode
@@ -94,7 +94,8 @@ class AtmSellFragment : BaseFragment<FragmentAtmSellBinding>() {
                 coinCode, localType.resIcon(),
                 viewModel.originCoinsData.size > SwapFragment.MIN_COINS_TO_ENABLE_DIALOG_PICKER
             )
-            val balanceFormatted = getString(R.string.sell_screen_balance_formatted, balancePart, coinPart)
+            val balanceFormatted =
+                getString(R.string.sell_screen_balance_formatted, balancePart, coinPart)
             coinInputLayout.setHelperTextWithLink(balanceFormatted, coinPart) {
                 val uri = getString(R.string.reserved_deeplink_format, coinCode).toUri()
                 findNavController().navigate(uri)

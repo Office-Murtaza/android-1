@@ -164,7 +164,7 @@ class TransactionRepositoryImpl(
     override suspend fun sell(
         coin: String,
         coinAmount: Double,
-        usdAmount: Double,
+        usdAmount: Int,
         fee: Double
     ): Either<Failure, Unit> {
         return apiService.sell(coin, coinAmount, usdAmount, getCoinByCode(coin).priceUsd, fee)

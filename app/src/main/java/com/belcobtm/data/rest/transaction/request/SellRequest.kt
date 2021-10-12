@@ -5,6 +5,6 @@ data class SellRequest(
     val type: Int,
     val cryptoAmount: Double,
     val price: Double,
-    val fiatAmount: Double,
+    val fiatAmount: Int,
     val serviceFee: Double
 )

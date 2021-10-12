@@ -60,7 +60,7 @@ interface TransactionRepository {
     suspend fun sell(
         coin: String,
         coinAmount: Double,
-        usdAmount: Double,
+        usdAmount: Int,
         fee: Double
     ): Either<Failure, Unit>
 
