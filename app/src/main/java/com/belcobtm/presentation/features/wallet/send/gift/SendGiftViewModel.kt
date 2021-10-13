@@ -25,7 +25,8 @@ class SendGiftViewModel(
     private val getTransferAddressUseCase: GetTransferAddressUseCase,
     private val getSignedTransactionPlanUseCase: GetSignedTransactionPlanUseCase,
     private val getFakeSignedTransactionPlanUseCase: GetFakeSignedTransactionPlanUseCase,
-    private val getMaxValueBySignedTransactionUseCase: GetMaxValueBySignedTransactionUseCase
+    private val getMaxValueBySignedTransactionUseCase: GetMaxValueBySignedTransactionUseCase,
+    private val receiverAccountActivatedUseCase: ReceiverAccountActivatedUseCase
 ) : ViewModel() {
 
     private lateinit var coinList: List<CoinDataItem>
@@ -195,23 +196,55 @@ class SendGiftViewModel(
         ), onSuccess = {
             signedTransactionPlanItem = it
             _fee.value = it.fee
-            transactionCreateUseCase.invoke(
-                params = SendGiftTransactionCreateUseCase.Params(
-                    amount = amount,
-                    coinCode = coinToSend.code,
-                    phone = phone,
-                    message = message,
-                    giftId = giftId,
-                    toAddress = toAddress,
-                    fee = _fee.value ?: 0.0,
-                    transactionPlanItem = transactionPlanItem
-                ),
-                onSuccess = { _sendGiftLoadingData.value = LoadingData.Success(it) },
-                onError = { _sendGiftLoadingData.value = LoadingData.Error(it) }
-            )
+            if (coinToSend.code == LocalCoinType.XRP.name) {
+                if (amount < 20) {
+                    _cryptoAmountError.value = R.string.xrp_too_small_amount_error
+                    _sendGiftLoadingData.value = LoadingData.DismissProgress()
+                    return@getSignedTransactionPlanUseCase
+                } else {
+                    receiverAccountActivatedUseCase(
+                        ReceiverAccountActivatedUseCase.Params(toAddress, coinToSend.code),
+                        onSuccess = { activated ->
+                            if (activated) {
+                                sendGiftInternal(amount, coinToSend, phone, message, giftId, transactionPlanItem)
+                            } else {
+                                _cryptoAmountError.value = R.string.xrp_too_small_amount_error
+                                _sendGiftLoadingData.value = LoadingData.DismissProgress()
+                            }
+                        },
+                        onError = { _sendGiftLoadingData.value = LoadingData.Error(it) }
+                    )
+                }
+            } else {
+                sendGiftInternal(amount, coinToSend, phone, message, giftId, transactionPlanItem)
+            }
         }, onError = {
-
+            _sendGiftLoadingData.value = LoadingData.Error(it)
         })
+    }
+
+    private fun sendGiftInternal(
+        amount: Double,
+        coinToSend: CoinDataItem,
+        phone: String,
+        message: String?,
+        giftId: String?,
+        transactionPlanItem: TransactionPlanItem
+    ) {
+        transactionCreateUseCase.invoke(
+            params = SendGiftTransactionCreateUseCase.Params(
+                amount = amount,
+                coinCode = coinToSend.code,
+                phone = phone,
+                message = message,
+                giftId = giftId,
+                toAddress = toAddress,
+                fee = _fee.value ?: 0.0,
+                transactionPlanItem = transactionPlanItem
+            ),
+            onSuccess = { _sendGiftLoadingData.value = LoadingData.Success(it) },
+            onError = { _sendGiftLoadingData.value = LoadingData.Error(it) }
+        )
     }
 
     fun selectCoin(coinDataItem: CoinDataItem) {

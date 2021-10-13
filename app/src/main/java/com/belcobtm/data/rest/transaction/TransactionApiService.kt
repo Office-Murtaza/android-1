@@ -3,6 +3,7 @@ package com.belcobtm.data.rest.transaction
 import com.belcobtm.data.disk.shared.preferences.SharedPreferencesHelper
 import com.belcobtm.data.rest.transaction.request.*
 import com.belcobtm.data.rest.transaction.response.GetTransactionsResponse
+import com.belcobtm.data.rest.transaction.response.ReceiverAccountActivatedResponse
 import com.belcobtm.data.rest.transaction.response.TransactionDetailsResponse
 import com.belcobtm.data.rest.transaction.response.hash.BinanceBlockResponse
 import com.belcobtm.data.rest.transaction.response.hash.TronRawDataResponse
@@ -34,6 +35,17 @@ class TransactionApiService(
     suspend fun fetchTransactions(coinCode: String): Either<Failure, GetTransactionsResponse> =
         try {
             val request = api.getTransactionsAsync(prefHelper.userId, coinCode).await()
+            request.body()?.let { body -> Either.Right(body) } ?: Either.Left(Failure.ServerError())
+        } catch (failure: Failure) {
+            failure.printStackTrace()
+            Either.Left(failure)
+        }
+
+    suspend fun receiverAccountActivated(
+        coinCode: String, toAddress: String
+    ): Either<Failure, ReceiverAccountActivatedResponse> =
+        try {
+            val request = api.receiverAccountActivatedAsync(coinCode, toAddress).await()
             request.body()?.let { body -> Either.Right(body) } ?: Either.Left(Failure.ServerError())
         } catch (failure: Failure) {
             failure.printStackTrace()

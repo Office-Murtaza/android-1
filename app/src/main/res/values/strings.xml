@@ -190,7 +190,7 @@
     <string name="recall">Recall</string>
     <string name="wallet_code_clipboard">Wallet code copied to clipboard</string>
     <string name="transactions_screen_balance">Balance</string>
-    <string name="transactions_screen_transaction_created">Transaction was successfully created</string>
+    <string name="transactions_screen_transaction_created">Transaction successfully created</string>
     <string name="transaction_changes_percent">%1$s %%</string>
     <string name="transaction_helper_text_commission">Fee %1$s %2$s</string>
 
@@ -751,4 +751,6 @@
 
     <string name="trade_container_deeplink">belcobtm://trade_container/{innerDeeplink}</string>
     <string name="trade_container_deeplink_format">belcobtm://trade_container/%s</string>
+
+    <string name="xrp_too_small_amount_error">Receiver address is not activated, send at least 20 XRP</string>
 </resources>

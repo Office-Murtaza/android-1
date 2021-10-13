@@ -85,6 +85,7 @@ class TradeReserveFragment : BaseFragment<FragmentTradeReserveBinding>() {
                 viewModel.getCoinCode()
             )
         }
+        viewModel.cryptoAmountError.observe(viewLifecycleOwner, amountCryptoView::setError)
         viewModel.amount.observe(viewLifecycleOwner) {
             if(it.amount <= 0.0) {
                 return@observe

@@ -1,9 +1,9 @@
 package com.belcobtm.presentation.features.wallet.withdraw
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.belcobtm.R
 import com.belcobtm.domain.transaction.interactor.*
 import com.belcobtm.domain.transaction.item.AmountItem
 import com.belcobtm.domain.transaction.item.SignedTransactionPlanItem
@@ -14,6 +14,7 @@ import com.belcobtm.domain.wallet.item.CoinDataItem
 import com.belcobtm.domain.wallet.item.isBtcCoin
 import com.belcobtm.domain.wallet.item.isEthRelatedCoin
 import com.belcobtm.presentation.core.mvvm.LoadingData
+import com.belcobtm.presentation.core.provider.string.StringProvider
 
 class WithdrawViewModel(
     private val coinCode: String,
@@ -22,7 +23,9 @@ class WithdrawViewModel(
     private val getTransactionPlanUseCase: GetTransactionPlanUseCase,
     private val getSignedTransactionPlanUseCase: GetSignedTransactionPlanUseCase,
     private val getFakeSignedTransactionPlanUseCase: GetFakeSignedTransactionPlanUseCase,
-    private val getMaxValueBySignedTransactionUseCase: GetMaxValueBySignedTransactionUseCase
+    private val getMaxValueBySignedTransactionUseCase: GetMaxValueBySignedTransactionUseCase,
+    private val stringProvider: StringProvider,
+    private val receiverAccountActivatedUseCase: ReceiverAccountActivatedUseCase
 ) : ViewModel() {
 
     val transactionLiveData: MutableLiveData<LoadingData<Unit>> = MutableLiveData()
@@ -41,6 +44,10 @@ class WithdrawViewModel(
     private val _fee = MutableLiveData<Double>()
     val fee: LiveData<Double>
         get() = _fee
+
+    private val _cryptoAmountError = MutableLiveData<String?>()
+    val cryptoAmountError: LiveData<String?>
+        get() = _cryptoAmountError
 
     private var transactionPlan: TransactionPlanItem? = null
     private var signedTransactionPlanItem: SignedTransactionPlanItem? = null
@@ -83,26 +90,58 @@ class WithdrawViewModel(
     fun withdraw(toAddress: String) {
         val coinAmount = _amount.value?.amount ?: 0.0
         val transactionPlan = transactionPlan ?: return
+        _cryptoAmountError.value = null
         getSignedTransactionPlanUseCase(GetSignedTransactionPlanUseCase.Params(
             toAddress, fromCoinDataItem.code, coinAmount, transactionPlan
-        ), onSuccess = {
-            _fee.value = it.fee
-            signedTransactionPlanItem = it
+        ), onSuccess = { signedTransactionPlan ->
+            _fee.value = signedTransactionPlan.fee
+            signedTransactionPlanItem = signedTransactionPlan
             transactionLiveData.value = LoadingData.Loading()
-            withdrawUseCase.invoke(
-                params = WithdrawUseCase.Params(
-                    getCoinCode(),
-                    coinAmount,
-                    toAddress,
-                    _fee.value ?: 0.0,
-                    transactionPlan
-                ),
-                onSuccess = { transactionLiveData.value = LoadingData.Success(it) },
-                onError = { transactionLiveData.value = LoadingData.Error(it) }
-            )
+            if (fromCoinDataItem.code == LocalCoinType.XRP.name) {
+                if (coinAmount < 20) {
+                    _cryptoAmountError.value =
+                        stringProvider.getString(R.string.xrp_too_small_amount_error)
+                    transactionLiveData.value = LoadingData.DismissProgress()
+                    return@getSignedTransactionPlanUseCase
+                } else {
+                    receiverAccountActivatedUseCase(
+                        ReceiverAccountActivatedUseCase.Params(toAddress, coinCode),
+                        onSuccess = { activated ->
+                            if (activated) {
+                                withdrawInternal(coinAmount, toAddress, transactionPlan)
+                            } else {
+                                _cryptoAmountError.value =
+                                    stringProvider.getString(R.string.xrp_too_small_amount_error)
+                                transactionLiveData.value = LoadingData.DismissProgress()
+                            }
+                        },
+                        onError = { transactionLiveData.value = LoadingData.Error(it) }
+                    )
+                }
+            } else {
+                withdrawInternal(coinAmount, toAddress, transactionPlan)
+            }
         }, onError = {
             transactionLiveData.value = LoadingData.Error(it)
         })
+    }
+
+    private fun withdrawInternal(
+        coinAmount: Double,
+        toAddress: String,
+        transactionPlan: TransactionPlanItem
+    ) {
+        withdrawUseCase.invoke(
+            params = WithdrawUseCase.Params(
+                getCoinCode(),
+                coinAmount,
+                toAddress,
+                _fee.value ?: 0.0,
+                transactionPlan
+            ),
+            onSuccess = { transactionLiveData.value = LoadingData.Success(it) },
+            onError = { transactionLiveData.value = LoadingData.Error(it) }
+        )
     }
 
     fun setAmount(amount: Double) {

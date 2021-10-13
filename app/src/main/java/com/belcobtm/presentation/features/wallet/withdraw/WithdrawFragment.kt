@@ -90,6 +90,7 @@ class WithdrawFragment : BaseFragment<FragmentWithdrawBinding>() {
                 }
             )
         }
+        viewModel.cryptoAmountError.observe(viewLifecycleOwner, amountCryptoView::setError)
         viewModel.transactionLiveData.listen(
             success = {
                 AlertHelper.showToastShort(

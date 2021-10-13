@@ -21,6 +21,12 @@ interface TransactionApi {
         @Path("coinCode") coinCode: String
     ): Deferred<Response<GetTransactionsResponse>>
 
+    @GET("coin/{coinCode}/receiver-account-activated")
+    fun receiverAccountActivatedAsync(
+        @Path("coinCode") coinCode: String,
+        @Query("toAddress") toAddress: String
+    ): Deferred<Response<ReceiverAccountActivatedResponse>>
+
     @POST("user/{userId}/coin/{coinCode}/submit")
     fun withdrawAsync(
         @Path("userId") userId: String,
