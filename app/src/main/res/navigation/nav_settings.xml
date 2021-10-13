@@ -228,7 +228,13 @@
         android:id="@+id/verification_vip_fragment"
         android:name="com.belcobtm.presentation.features.settings.verification.vip.VerificationVipFragment"
         android:label="VerificationVipFragment"
-        tools:layout="@layout/fragment_verification_vip" />
+        tools:layout="@layout/fragment_verification_vip">
+
+        <argument
+            android:name="info"
+            app:argType="com.belcobtm.domain.settings.item.VerificationInfoDataItem"
+            app:nullable="false" />
+    </fragment>
 
     <fragment
         android:id="@+id/about_fragment"

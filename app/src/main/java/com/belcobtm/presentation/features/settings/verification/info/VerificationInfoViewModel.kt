@@ -20,13 +20,13 @@ class VerificationInfoViewModel(
     val stateData = MutableLiveData<LoadingData<VerificationInfoState>>()
     val actionData = SingleLiveData<VerificationInfoAction>()
 
-    private var status: VerificationStatus? = null
+    private var item: VerificationInfoDataItem? = null
 
     fun updateData() {
         stateData.value = LoadingData.Loading()
         getVerificationInfoUseCase.invoke(Unit,
             onSuccess = {
-                status = it.status
+                item = it
                 stateData.value = LoadingData.Success(
                     VerificationInfoState(
                         statusColor = getColorByStatus(it.status),
@@ -54,16 +54,6 @@ class VerificationInfoViewModel(
             else -> R.drawable.ic_warning_outlined
         }
 
-    private fun getBannerMessage(status: VerificationStatus): Int =
-        when (status) {
-            VerificationStatus.NOT_VERIFIED -> R.string.verification_status_not_verified_message
-            VerificationStatus.VERIFIED -> R.string.verification_status_verified_message
-            VerificationStatus.VERIFICATION_PENDING,
-            VerificationStatus.VIP_VERIFICATION_PENDING -> R.string.verification_status_pending_message
-            VerificationStatus.VERIFICATION_REJECTED -> R.string.verification_status_rejected_message
-            else -> 0
-        }
-
     private fun getStatusIcon(status: VerificationStatus): Int =
         when (status) {
             VerificationStatus.VERIFICATION_PENDING,
@@ -77,11 +67,13 @@ class VerificationInfoViewModel(
 
     fun onNextClick() {
         actionData.value = VerificationInfoAction.NavigateAction(
-            when (status) {
+            when (item?.status) {
                 VerificationStatus.NOT_VERIFIED,
-                VerificationStatus.VERIFICATION_REJECTED -> VerificationInfoFragmentDirections.verificationInfoToVerify()
+                VerificationStatus.VERIFICATION_REJECTED ->
+                    VerificationInfoFragmentDirections.verificationInfoToVerify()
                 VerificationStatus.VERIFIED,
-                VerificationStatus.VIP_VERIFICATION_REJECTED -> VerificationInfoFragmentDirections.verificationInfoToVipVerify()
+                VerificationStatus.VIP_VERIFICATION_REJECTED ->
+                    VerificationInfoFragmentDirections.verificationInfoToVipVerify(item ?: return)
                 else -> throw IllegalStateException("Not available for verification for this state")
             }
         )

@@ -4,6 +4,7 @@ import android.net.Uri
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.belcobtm.domain.settings.interactor.SendVerificationVipUseCase
+import com.belcobtm.domain.settings.item.VerificationInfoDataItem
 import com.belcobtm.domain.settings.item.VerificationVipDataItem
 import com.belcobtm.presentation.core.mvvm.LoadingData
 
@@ -15,9 +16,25 @@ class VerificationVipViewModel(
 
     fun sendBlank(
         file: Uri,
-        ssn: String
+        ssn: String,
+        verificationDataItem: VerificationInfoDataItem
     ) {
-        val dataItem = VerificationVipDataItem(file, ssn.toInt())
+
+        val dataItem = with(verificationDataItem) {
+            VerificationVipDataItem(
+                idCardNumber = idCardNumber,
+                idCardNumberFilename = idCardNumberFilename,
+                address = address,
+                city = city,
+                country = country,
+                province = province,
+                zipCode = zipCode,
+                firstName = firstName,
+                lastName = lastName,
+                fileUri = file,
+                ssn = ssn.toInt()
+            )
+        }
         uploadingLiveData.value = LoadingData.Loading()
         vipUseCase.invoke(SendVerificationVipUseCase.Params(dataItem),
             onSuccess = { uploadingLiveData.value = LoadingData.Success(it) },

@@ -65,7 +65,6 @@ val useCaseModule = module {
         SendVerificationBlankUseCase(
             get(),
             androidApplication(),
-            get(),
             get(named(VERIFICATION_STORAGE))
         )
     }
@@ -74,7 +73,6 @@ val useCaseModule = module {
         SendVerificationVipUseCase(
             get(),
             androidApplication(),
-            get(),
             get(named(VERIFICATION_STORAGE))
         )
     }

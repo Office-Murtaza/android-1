@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.core.widget.addTextChangedListener
+import androidx.navigation.fragment.navArgs
 import com.belcobtm.BuildConfig
 import com.belcobtm.R
 import com.belcobtm.databinding.FragmentVerificationVipBinding
@@ -28,6 +29,7 @@ class VerificationVipFragment :
     BottomSheetImagePicker.OnImagesSelectedListener {
 
     private val viewModel: VerificationVipViewModel by viewModel()
+    private val args by navArgs<VerificationVipFragmentArgs>()
     override val isHomeButtonEnabled = true
     override var isMenuEnabled = true
     private var validated = false
@@ -109,7 +111,13 @@ class VerificationVipFragment :
     private fun sendVip() {
         validated = true
         if (isValidFields()) {
-            viewModel.fileUri?.let { viewModel.sendBlank(it, binding.snnView.getString()) }
+            viewModel.fileUri?.let {
+                viewModel.sendBlank(
+                    it,
+                    binding.snnView.getString(),
+                    args.info
+                )
+            }
         }
     }
 
@@ -140,6 +148,9 @@ class VerificationVipFragment :
         }
     }
 
-    override fun createBinding(inflater: LayoutInflater, container: ViewGroup?): FragmentVerificationVipBinding =
+    override fun createBinding(
+        inflater: LayoutInflater,
+        container: ViewGroup?
+    ): FragmentVerificationVipBinding =
         FragmentVerificationVipBinding.inflate(inflater, container, false)
 }
