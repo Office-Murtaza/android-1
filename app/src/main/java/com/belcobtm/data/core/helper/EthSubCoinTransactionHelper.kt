@@ -3,11 +3,9 @@ package com.belcobtm.data.core.helper
 import com.belcobtm.data.core.factory.EthTransactionInputBuilderFactory
 import com.belcobtm.domain.transaction.item.TransactionPlanItem
 import com.belcobtm.domain.wallet.LocalCoinType
-import com.belcobtm.presentation.core.Numeric
-import wallet.core.java.AnySigner
-import wallet.core.jni.proto.Ethereum
 
-class EthTransactionHelper(
+// Applicable only for CATM and USDC
+class EthSubCoinTransactionHelper(
     private val ethFactory: EthTransactionInputBuilderFactory
 ) {
 
@@ -16,7 +14,7 @@ class EthTransactionHelper(
         fromCoin: LocalCoinType,
         fromCoinAmount: Double,
         fromTransactionPlan: TransactionPlanItem
-    ): String = ethFactory.createForEth(
+    ): String = ethFactory.createForSubEth(
         toAddress,
         fromCoin,
         fromCoinAmount,
