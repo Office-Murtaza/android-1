@@ -60,8 +60,6 @@ import com.belcobtm.domain.contacts.ContactsRepository
 import com.belcobtm.domain.notification.NotificationTokenRepository
 import com.belcobtm.domain.referral.ReferralRepository
 import com.belcobtm.domain.service.ServiceRepository
-import com.belcobtm.domain.tools.IntentActions
-import com.belcobtm.domain.tools.IntentActionsImpl
 import com.belcobtm.presentation.core.Endpoint
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
@@ -138,7 +136,6 @@ val dataModule = module {
     single { get<AppDatabase>().getCoinDao() }
     single { get<AppDatabase>().getWalletDao() }
     single { get<AppDatabase>().getServiceDao() }
-    single<IntentActions> { IntentActionsImpl(get()) }
     single {
         OkHttpClient().newBuilder()
             .connectTimeout(60, TimeUnit.SECONDS)

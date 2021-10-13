@@ -1,22 +1,11 @@
 package com.belcobtm.domain.tools
 
-import android.content.Context
 import android.content.Intent
 import android.net.Uri
+import androidx.fragment.app.FragmentActivity
 
-interface IntentActions {
-    fun openViewActivity(path: String)
-}
-
-class IntentActionsImpl(val appContext: Context) :
-    IntentActions {
-    override fun openViewActivity(path: String) {
-        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(path))
-        .apply {
-            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-        }
-        intent.resolveActivity(appContext.packageManager)?.run {
-            appContext.startActivity(intent)
-        }
-    }
+fun FragmentActivity.openViewActivity(path: String, title: String = "") {
+    val intent = Intent(Intent.ACTION_VIEW, Uri.parse(path))
+    Intent.createChooser(intent, title)
+    startActivity(Intent.createChooser(intent, title))
 }
