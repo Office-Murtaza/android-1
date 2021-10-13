@@ -82,9 +82,6 @@ class SendGiftFragment : BaseFragment<FragmentSendGiftBinding>(),
             if (parsedCoinAmount != viewModel.amount.value?.amount) {
                 viewModel.setAmount(parsedCoinAmount)
             }
-            if (editable.isEmpty()) {
-                editable.insert(0, "0")
-            }
         }
     }
 
@@ -156,7 +153,7 @@ class SendGiftFragment : BaseFragment<FragmentSendGiftBinding>(),
         viewModel.transactionPlanLiveData.listen()
         viewModel.amount.observe(viewLifecycleOwner) { cryptoAmount ->
             with(sendCoinInputLayout.getEditText()) {
-                if (text.getDouble() == 0.0 && cryptoAmount.amount == 0.0) {
+                if(cryptoAmount.amount <= 0.0) {
                     return@observe
                 }
                 removeTextChangedListener(cryptoAmountTextWatcher)

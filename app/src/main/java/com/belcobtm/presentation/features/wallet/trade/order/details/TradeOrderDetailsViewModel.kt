@@ -208,21 +208,21 @@ class TradeOrderDetailsViewModel(
         if (order.myTradeId == order.makerId) {
             _myScore.value = order.makerRate
             _partnerScore.value = order.takerRate
-            _openRateScreen.value = order.makerRate == null && isOrderResolved
             this._partnerPublicId.value = order.takerPublicId
             partnerLat = order.takerLatitude
             partnerLong = order.takerLongitude
             _partnerTradeRate.value = order.takerTradingRate ?: 0.0
             _partnerTotalTrades.value = order.takerTotalTradesFormatted
+            _openRateScreen.value = order.makerRate == null && isOrderResolved
         } else {
             _myScore.value = order.takerRate
             _partnerScore.value = order.makerRate
-            _openRateScreen.value = order.takerRate == null && isOrderResolved
             this._partnerPublicId.value = order.makerPublicId
             partnerLat = order.makerLatitude
             partnerLong = order.makerLongitude
             _partnerTradeRate.value = order.makerTradingRate ?: 0.0
             _partnerTotalTrades.value = order.makerTotalTradesFormatted
+            _openRateScreen.value = order.takerRate == null && isOrderResolved
         }
         val isBuyer = order.mappedTradeType == TradeType.BUY
         _buttonsState.value = if (isBuyer) setupBuyerButtons(order) else setupSellerButtons(order)

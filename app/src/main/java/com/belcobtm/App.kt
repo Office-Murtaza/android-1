@@ -16,6 +16,7 @@ import com.belcobtm.presentation.di.useCaseModule
 import com.belcobtm.presentation.di.viewModelHelperModule
 import com.belcobtm.presentation.di.viewModelModule
 import com.giphy.sdk.ui.Giphy
+import com.google.firebase.crashlytics.internal.common.CrashlyticsCore
 import org.koin.android.ext.android.inject
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin

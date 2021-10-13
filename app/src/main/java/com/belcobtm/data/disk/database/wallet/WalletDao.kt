@@ -12,6 +12,7 @@ interface WalletDao {
         SELECT * 
         FROM coin_detail INNER JOIN coin INNER JOIN account_entity 
         WHERE coin_detail.c_code = coin.code AND coin.code = account_entity.coin_name
+        ORDER BY coin_detail.coin_index
     """
     )
     fun observeCoins(): Flow<List<FullCoinEntity>>
@@ -24,6 +25,7 @@ interface WalletDao {
         SELECT *
         FROM coin_detail INNER JOIN coin INNER JOIN account_entity
         WHERE coin_detail.c_code = coin.code AND coin.code = account_entity.coin_name
+        ORDER BY coin_detail.coin_index
     """
     )
     suspend fun getCoins(): List<FullCoinEntity>
@@ -69,7 +71,7 @@ interface WalletDao {
                 coins.add(entity)
             }
             with(response.details) {
-                val entity = CoinDetailsEntity(response.coin, serverAddress)
+                val entity = CoinDetailsEntity(response.coin, response.details.index, serverAddress)
                 details.add(entity)
             }
         }

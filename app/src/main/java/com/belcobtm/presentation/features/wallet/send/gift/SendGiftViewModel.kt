@@ -12,6 +12,7 @@ import com.belcobtm.domain.transaction.item.TransactionPlanItem
 import com.belcobtm.domain.wallet.LocalCoinType
 import com.belcobtm.domain.wallet.interactor.GetCoinListUseCase
 import com.belcobtm.domain.wallet.item.CoinDataItem
+import com.belcobtm.domain.wallet.item.isBtcCoin
 import com.belcobtm.domain.wallet.item.isEthRelatedCoin
 import com.belcobtm.presentation.core.mvvm.LoadingData
 import kotlinx.coroutines.launch
@@ -253,14 +254,14 @@ class SendGiftViewModel(
         val amount = _amount.value?.amount ?: 0.0
         val fee = _fee.value ?: 0.0
         val coinDataItem = _coinToSend.value ?: return false
-        return if (!coinDataItem.isEthRelatedCoin()) {
-            amount + fee < signedTransactionPlanItem?.availableAmount ?: 0.0
+        return if (coinDataItem.isBtcCoin()) {
+            amount + fee <= signedTransactionPlanItem?.availableAmount ?: 0.0
         } else {
-            amount < coinDataItem.reservedBalanceCoin
+            amount <= coinDataItem.balanceCoin
         }
     }
 
-    fun isSufficientEth(): Boolean {
+    private fun isSufficientEth(): Boolean {
         val coinDataItem = _coinToSend.value ?: return false
         val ethBalance = coinList.firstOrNull {
             it.code == LocalCoinType.ETH.name

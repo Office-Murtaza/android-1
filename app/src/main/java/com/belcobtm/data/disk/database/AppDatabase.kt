@@ -23,7 +23,7 @@ import com.belcobtm.data.disk.database.wallet.WalletEntity
         WalletEntity::class,
         ServiceEntity::class
     ],
-    version = 6
+    version = 7
 )
 @TypeConverters(CoinTypeConverter::class)
 abstract class AppDatabase : RoomDatabase() {
@@ -67,7 +67,7 @@ abstract class AppDatabase : RoomDatabase() {
                     ) 
                 """
                 )
-                database.execSQL(" CREATE TABLE IF NOT EXISTS wallet (total_balance REAL NOT NULL PRIMARY KEY)")
+                database.execSQL("CREATE TABLE IF NOT EXISTS wallet (total_balance REAL NOT NULL PRIMARY KEY)")
             }
         }
         val MIGRATION_3_4 = object : Migration(3, 4) {
@@ -174,6 +174,14 @@ abstract class AppDatabase : RoomDatabase() {
                         private_key TEXT NOT NULL,
                         is_enabled INTEGER NOT NULL
                     ) 
+                """
+                )
+            }
+        }
+        val MIGRATION_6_7 = object : Migration(6, 7) {
+            override fun migrate(database: SupportSQLiteDatabase) {
+                database.execSQL(
+                    """ALTER TABLE coin_detail ADD COLUMN coin_index INTEGER default 0
                 """
                 )
             }

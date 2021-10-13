@@ -1,6 +1,7 @@
 package com.belcobtm.presentation.features.wallet.trade.order.rate
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -39,6 +40,7 @@ class TradeOrderRateBottomSheetFragment : BaseBottomSheetFragment() {
         viewModel.rateLoadingData.listen(success = {
             findNavController().popBackStack(R.id.trade_container_fragment, false)
         })
+        Log.d("RATE", "id is ${args.partnerPublicId}")
         binding.header.text =
             resources.getString(R.string.trade_rate_header_formatted, args.partnerPublicId)
         binding.ratingBar.rating = TradeOrderRateViewModel.LOW_RATING.toFloat()

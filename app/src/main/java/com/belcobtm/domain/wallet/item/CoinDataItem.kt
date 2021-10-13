@@ -13,7 +13,7 @@ data class CoinDataItem(
     val isEnabled: Boolean = true,
     val details: Details
 ) {
-    data class Details(val walletAddress: String)
+    data class Details(val index: Int, val walletAddress: String)
 }
 
 fun CoinDataItem.isEthRelatedCoin(): Boolean = code.isEthRelatedCoinCode()

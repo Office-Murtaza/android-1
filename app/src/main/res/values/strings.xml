@@ -439,13 +439,13 @@
     <string name="update">Update</string>
     <string name="cancel">Cancel</string>
     <string name="done">Done</string>
-    <string name="copied">Copied</string>
+    <string name="copied">Copied!</string>
     <string name="retry">Retry</string>
     <string name="copy_text">Copy</string>
-    <string name="clipboard">Copied</string>
+    <string name="clipboard">Copied!</string>
 
     <string name="text_text">%1$s %2$s</string>
-    <string name="text_amount">%1$s Amount</string>
+    <string name="text_amount">Amount</string>
     <string name="usd_amount">USD amount</string>
 
     //settings
@@ -727,7 +727,9 @@
     <string name="sell_amount_zero">Amount can\'t be zero</string>
     <string name="sell_amount_exceeds_today_limit">Amount exceeds today limit</string>
     <string name="sell_amount_wrong_divider">Amount should be /20, /50 or /100</string>
+    <string name="sell_amount_hint">Enter /20, /50 or /100 amount</string>
     <string name="sell_screen_balance">Balance</string>
+    <string name="sell_screen_fee_formatted"><![CDATA[Platform fee %1$s\%%, %2$s %3$s]]></string>
     <string name="coin_balance_format">%1$s %2$s</string>
     <string name="sell_screen_balance_formatted">%1$s %2$s</string>
 
@@ -740,7 +742,7 @@
     <string name="transactions_deeplink_format">belcobtm://transactions/%s</string>
 
     <string name="reserved_deeplink">belcobtm://reserved/{coin_code}</string>
-    <string name="reserved_deeplink_format">belcobtm://transactions/%s</string>
+    <string name="reserved_deeplink_format">belcobtm://reserved/%s</string>
 
     <string name="trade_details_deeplink">belcobtm://trade_details/{tradeId}</string>
     <string name="trade_details_deeplink_format">belcobtm://trade_details/%s</string>

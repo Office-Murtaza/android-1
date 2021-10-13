@@ -119,7 +119,7 @@ class AtmSellViewModel(
 
     fun setMaxSendAmount() {
         val currentCoinToSend = selectedCoin.value ?: return
-        val a = currentCoinToSend.reservedBalanceUsd * currentCoinToSend.priceUsd *
+        val a = currentCoinToSend.reservedBalanceCoin * currentCoinToSend.priceUsd *
                 (100 - serviceInfoProvider.getServiceFee(ServiceType.ATM_SELL)) / 100
         val maxAmount = max(a / 20 * 20, max(a / 50 * 50, a / 100 * 100)).toInt()
         setAmount(maxAmount)

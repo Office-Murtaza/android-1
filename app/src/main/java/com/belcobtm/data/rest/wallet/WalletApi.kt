@@ -23,7 +23,7 @@ interface WalletApi {
         @Query("period") @PriceChartPeriod period: Int
     ): Deferred<Response<ChartResponse>>
 
-    @GET("user/{userId}/coin/{coinId}/manage")
+    @GET("user/{userId}/coin/{coinId}/switch")
     fun toggleCoinStateAsync(
         @Path("userId") userId: String,
         @Path("coinId") coinCode: String,

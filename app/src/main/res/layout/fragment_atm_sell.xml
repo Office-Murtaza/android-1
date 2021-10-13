@@ -182,37 +182,21 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_marginTop="16dp"
-            app:layout_constraintBottom_toTopOf="@id/platformFeeLabel"
+            app:layout_constraintBottom_toTopOf="@id/platform_fee_text_view"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tx_limit_divider" />
 
         <TextView
-            android:id="@+id/platformFeeLabel"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/margin_main"
-            android:layout_marginEnd="4dp"
-            android:layout_marginBottom="@dimen/margin_half"
-            android:text="@string/swap_screen_fee"
-            android:textAppearance="@style/Text.Regular1"
-            app:layout_constraintTop_toBottomOf="@id/space_view"
-            app:layout_constraintBottom_toTopOf="@id/sell_button"
-            app:layout_constraintEnd_toStartOf="@id/platform_fee_text_view"
-            app:layout_constraintHorizontal_chainStyle="packed"
-            app:layout_constraintStart_toStartOf="parent" />
-
-        <TextView
             android:id="@+id/platform_fee_text_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="4dp"
             android:layout_marginEnd="@dimen/margin_main"
             android:layout_marginBottom="@dimen/margin_half"
             android:textAppearance="@style/Text.Regular1"
             app:layout_constraintBottom_toTopOf="@id/sell_button"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/platformFeeLabel"
+            app:layout_constraintStart_toStartOf="parent"
             tools:text="3% ~ 0.25673 LTC" />
 
         <Button

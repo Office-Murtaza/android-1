@@ -25,6 +25,7 @@ import com.belcobtm.data.disk.database.AppDatabase.Companion.MIGRATION_2_3
 import com.belcobtm.data.disk.database.AppDatabase.Companion.MIGRATION_3_4
 import com.belcobtm.data.disk.database.AppDatabase.Companion.MIGRATION_4_5
 import com.belcobtm.data.disk.database.AppDatabase.Companion.MIGRATION_5_6
+import com.belcobtm.data.disk.database.AppDatabase.Companion.MIGRATION_6_7
 import com.belcobtm.data.disk.shared.preferences.SharedPreferencesHelper
 import com.belcobtm.data.helper.DistanceCalculator
 import com.belcobtm.data.inmemory.trade.TradeInMemoryCache
@@ -129,6 +130,7 @@ val dataModule = module {
             .addMigrations(MIGRATION_3_4)
             .addMigrations(MIGRATION_4_5)
             .addMigrations(MIGRATION_5_6)
+            .addMigrations(MIGRATION_6_7)
             .build()
     }
     single { Moshi.Builder().build() }

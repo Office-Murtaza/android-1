@@ -16,6 +16,7 @@ import com.belcobtm.domain.transaction.item.TransactionPlanItem
 import com.belcobtm.domain.wallet.LocalCoinType
 import com.belcobtm.domain.wallet.interactor.GetCoinByCodeUseCase
 import com.belcobtm.domain.wallet.item.CoinDataItem
+import com.belcobtm.domain.wallet.item.isBtcCoin
 import com.belcobtm.domain.wallet.item.isEthRelatedCoin
 import com.belcobtm.presentation.core.coin.CoinCodeProvider
 import com.belcobtm.presentation.core.item.CoinScreenItem
@@ -216,10 +217,10 @@ class TradeReserveViewModel(
     private fun isSufficientBalance(): Boolean {
         val amount = _amount.value?.amount ?: 0.0
         val fee = _fee.value ?: 0.0
-        return if (!coinDataItem.isEthRelatedCoin()) {
-            amount + fee < signedTransactionPlanItem?.availableAmount ?: 0.0
+        return if (coinDataItem.isBtcCoin()) {
+            amount + fee <= signedTransactionPlanItem?.availableAmount ?: 0.0
         } else {
-            amount < coinDataItem.reservedBalanceCoin
+            amount <= coinDataItem.balanceCoin
         }
     }
 

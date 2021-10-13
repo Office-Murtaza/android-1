@@ -71,6 +71,9 @@ class WithdrawFragment : BaseFragment<FragmentWithdrawBinding>() {
             initScreen()
         })
         viewModel.amount.observe(viewLifecycleOwner) {
+            if (it.amount <= 0.0) {
+                return@observe
+            }
             val formattedCoin = it.amount.toStringCoin()
             amountCryptoView.editText?.setTextSilently(
                 doubleTextWatcher.firstTextWatcher,
@@ -145,7 +148,6 @@ class WithdrawFragment : BaseFragment<FragmentWithdrawBinding>() {
                 viewModel.getCoinCode()
             )
         balanceUsdView.text = currencyFormatter.format(viewModel.getUsdBalance())
-        amountCryptoView.hint = getString(R.string.text_amount, viewModel.getCoinCode())
         amountCryptoView.actionDoneListener { hideKeyboard() }
         nextButtonView.setOnClickListener { validateAndSubmit() }
         reservedCryptoView.text = getString(

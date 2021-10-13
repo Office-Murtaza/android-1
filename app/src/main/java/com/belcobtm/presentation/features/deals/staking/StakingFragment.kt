@@ -56,11 +56,6 @@ class StakingFragment : BaseFragment<FragmentStakingBinding>() {
                     binding.coinInputLayout.getEditText().setText(text)
                     binding.coinInputLayout.getEditText().setSelection(text.length)
                 }
-                // "0" should always be displayed for user
-                // even through they try to clear the input
-                if (editable.isEmpty()) {
-                    editable.insert(0, "0")
-                }
             }
         }
     )

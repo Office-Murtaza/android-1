@@ -22,6 +22,7 @@ import com.belcobtm.presentation.core.watcher.DoubleTextWatcher
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.qualifier.named
+import java.lang.RuntimeException
 
 class SwapFragment : BaseFragment<FragmentSwapBinding>() {
 
@@ -41,21 +42,11 @@ class SwapFragment : BaseFragment<FragmentSwapBinding>() {
             if (parsedCoinAmount != viewModel.sendCoinAmount.value) {
                 viewModel.setSendAmount(parsedCoinAmount)
             }
-            // "0" should always be displayed for user
-            // even through they try to clear the input
-            if (editable.isEmpty()) {
-                editable.insert(0, "0")
-            }
         },
         secondTextWatcher = { editable ->
             val parsedCoinAmount = editable.getDouble()
             if (parsedCoinAmount != viewModel.receiveCoinAmount.value) {
                 viewModel.setReceiveAmount(parsedCoinAmount)
-            }
-            // "0" should always be displayed for user
-            // even through they try to clear the input
-            if (editable.isEmpty()) {
-                editable.insert(0, "0")
             }
         }
     )

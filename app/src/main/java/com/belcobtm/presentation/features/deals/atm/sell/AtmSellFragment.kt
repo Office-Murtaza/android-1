@@ -37,11 +37,6 @@ class AtmSellFragment : BaseFragment<FragmentAtmSellBinding>() {
         if (parsedAmount != viewModel.usdAmount.value) {
             viewModel.setAmount(parsedAmount)
         }
-        // "0" should always be displayed for user
-        // even through they try to clear the input
-        if (editable.isEmpty()) {
-            editable.insert(0, "0")
-        }
     }
 
     override fun createBinding(
@@ -73,6 +68,7 @@ class AtmSellFragment : BaseFragment<FragmentAtmSellBinding>() {
         setToolbarTitle(R.string.atm_sell_title)
         coinInputLayout.getEditText().setTextSilently(textWatcher, "0")
         coinInputLayout.updateInputMode(isIntOnly = true)
+        coinInputLayout.setHelperText2(getString(R.string.sell_amount_hint))
     }
 
     override fun FragmentAtmSellBinding.initObservers() {
@@ -107,7 +103,7 @@ class AtmSellFragment : BaseFragment<FragmentAtmSellBinding>() {
         viewModel.formattedCoinAmount.observe(viewLifecycleOwner, convertedValueValue::setText)
         viewModel.fee.observe(viewLifecycleOwner) { fee ->
             platformFeeTextView.text = getString(
-                R.string.swap_screen_fee_formatted,
+                R.string.sell_screen_fee_formatted,
                 fee.platformFeePercent.toStringCoin(),
                 fee.platformFeeCoinAmount.toStringCoin(),
                 fee.swapCoinCode
