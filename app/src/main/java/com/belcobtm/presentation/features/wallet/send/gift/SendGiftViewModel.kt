@@ -112,10 +112,10 @@ class SendGiftViewModel(
                     onSuccess = { coinsDataList ->
                         coinList = coinsDataList
                         val coin = coinList.firstOrNull()
-                        _coinToSend.value = coin
                         if (coin == null) {
                             _initialLoadingData.value = LoadingData.Error(Failure.ServerError())
                         } else {
+                            coin.let(_coinToSend::setValue)
                             getTransferAddressUseCase(
                                 GetTransferAddressUseCase.Params(phoneNumber, coin.code),
                                 onSuccess = { address ->
