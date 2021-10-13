@@ -29,6 +29,11 @@ interface TransactionRepository {
         isNeedSendSms: Boolean
     ): Either<Failure, String>
 
+    suspend fun receiverAccountActivated(
+        fromCoin: String,
+        toAddress: String
+    ): Either<Failure, Boolean>
+
     suspend fun withdraw(
         toAddress: String,
         fromCoin: String,

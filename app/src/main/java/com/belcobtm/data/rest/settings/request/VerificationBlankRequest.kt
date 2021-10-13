@@ -1,9 +1,10 @@
 package com.belcobtm.data.rest.settings.request
 
+import com.belcobtm.domain.settings.type.VerificationStatus
+
 data class VerificationBlankRequest(
     val idCardNumberFilename: String,
     val idCardNumber: String,
-    val idCardNumberMimetype: String,
     val firstName: String,
     val lastName: String,
     val address: String,
@@ -11,10 +12,5 @@ data class VerificationBlankRequest(
     val country: String,
     val province: String,
     val zipCode: String,
-    val tier: Int = VERIFICATION
-) {
-    companion object {
-        const val VERIFICATION = 1
-        const val VIP_VERIFICATION = 2
-    }
-}
+    val status: Int = VerificationStatus.VERIFICATION_PENDING.code
+)

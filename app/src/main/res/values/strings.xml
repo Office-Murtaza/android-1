@@ -190,7 +190,7 @@
     <string name="recall">Recall</string>
     <string name="wallet_code_clipboard">Wallet code copied to clipboard</string>
     <string name="transactions_screen_balance">Balance</string>
-    <string name="transactions_screen_transaction_created">Transaction was successfully created</string>
+    <string name="transactions_screen_transaction_created">Transaction successfully created</string>
     <string name="transaction_changes_percent">%1$s %%</string>
     <string name="transaction_helper_text_commission">Fee %1$s %2$s</string>
 
@@ -439,13 +439,13 @@
     <string name="update">Update</string>
     <string name="cancel">Cancel</string>
     <string name="done">Done</string>
-    <string name="copied">Copied</string>
+    <string name="copied">Copied!</string>
     <string name="retry">Retry</string>
     <string name="copy_text">Copy</string>
-    <string name="clipboard">Copied</string>
+    <string name="clipboard">Copied!</string>
 
     <string name="text_text">%1$s %2$s</string>
-    <string name="text_amount">%1$s Amount</string>
+    <string name="text_amount">Amount</string>
     <string name="usd_amount">USD amount</string>
 
     //settings
@@ -500,10 +500,6 @@
     <string name="unlink_text_top">Please, make sure you have stored your credentials and seed phrase before unlinking the wallet. Otherwise, you may lose all assets</string>
 
     //verification
-    <string name="verification_status_not_verified_message"><![CDATA[To increase your limits to <b>$3,000</b> per transaction and <b>$10,000</b> per day, please verify your account.]]></string>
-    <string name="verification_status_pending_message">At this time we are verifying your information. You will receive a push notification when the verification is completed.</string>
-    <string name="verification_status_rejected_message"><![CDATA[To increase your limits to <b>$10,000</b> per transaction and <b>$20,000</b> per day, please verify your account.]]></string>
-    <string name="verification_status_verified_message"><![CDATA[To increase your limits to <b>$3,000</b> per transaction and <b>$10,000</b> per day, please verify your account.]]></string>
     <string name="verify_label">Verify</string>
     <string name="vip_verify_label">VIP Verify</string>
 
@@ -727,7 +723,9 @@
     <string name="sell_amount_zero">Amount can\'t be zero</string>
     <string name="sell_amount_exceeds_today_limit">Amount exceeds today limit</string>
     <string name="sell_amount_wrong_divider">Amount should be /20, /50 or /100</string>
+    <string name="sell_amount_hint">Enter /20, /50 or /100 amount</string>
     <string name="sell_screen_balance">Balance</string>
+    <string name="sell_screen_fee_formatted"><![CDATA[Platform fee %1$s\%%, %2$s %3$s]]></string>
     <string name="coin_balance_format">%1$s %2$s</string>
     <string name="sell_screen_balance_formatted">%1$s %2$s</string>
 
@@ -740,7 +738,7 @@
     <string name="transactions_deeplink_format">belcobtm://transactions/%s</string>
 
     <string name="reserved_deeplink">belcobtm://reserved/{coin_code}</string>
-    <string name="reserved_deeplink_format">belcobtm://transactions/%s</string>
+    <string name="reserved_deeplink_format">belcobtm://reserved/%s</string>
 
     <string name="trade_details_deeplink">belcobtm://trade_details/{tradeId}</string>
     <string name="trade_details_deeplink_format">belcobtm://trade_details/%s</string>
@@ -753,6 +751,7 @@
 
     <string name="trade_container_deeplink">belcobtm://trade_container/{innerDeeplink}</string>
     <string name="trade_container_deeplink_format">belcobtm://trade_container/%s</string>
+    <string name="xrp_too_small_amount_error">Receiver address is not activated, send at least 20 XRP</string>
   
     <string name="about_screen_terms_picker_title">Terms &amp; Conditions</string>
     <string name="about_screen_privacy_picker_title">Privacy Policy</string>

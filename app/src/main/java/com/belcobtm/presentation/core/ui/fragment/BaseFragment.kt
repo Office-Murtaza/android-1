@@ -271,6 +271,7 @@ abstract class BaseFragment<V : ViewBinding> : Fragment(),
         observe(viewLifecycleOwner) { loadingData ->
             when (loadingData) {
                 is LoadingData.Loading<T> -> showLoading()
+                is LoadingData.DismissProgress<T> -> showContent()
                 is LoadingData.Success<T> -> {
                     success.invoke(loadingData.data)
                     showContent()
@@ -311,7 +312,7 @@ abstract class BaseFragment<V : ViewBinding> : Fragment(),
                 (activity as HostActivity).supportActionBar?.setHomeAsUpIndicator(drawable)
                 with(requireActivity().window) {
                     statusBarColor = ContextCompat.getColor(requireContext(), R.color.colorPrimary)
-                    if(android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.R) {
+                    if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.R) {
                         decorView.windowInsetsController?.setSystemBarsAppearance(
                             WindowInsetsController.APPEARANCE_LIGHT_STATUS_BARS,
                             WindowInsetsController.APPEARANCE_LIGHT_STATUS_BARS
@@ -325,7 +326,8 @@ abstract class BaseFragment<V : ViewBinding> : Fragment(),
             } else {
                 actionBar.hide()
                 with(requireActivity().window) {
-                    statusBarColor = ContextCompat.getColor(requireContext(), R.color.colorStatusBar)
+                    statusBarColor =
+                        ContextCompat.getColor(requireContext(), R.color.colorStatusBar)
                 }
             }
 

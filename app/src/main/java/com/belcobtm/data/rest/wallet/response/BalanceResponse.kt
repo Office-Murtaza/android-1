@@ -18,7 +18,10 @@ data class CoinResponse(
     val fiatReserved: Double,
     val details: Details
 ) {
-    data class Details(val serverAddress: String)
+    data class Details(
+        val index: Int,
+        val serverAddress: String
+    )
 }
 
 fun BalanceResponse.mapToDataItem(): BalanceDataItem = BalanceDataItem(
@@ -37,4 +40,7 @@ fun CoinResponse.mapToDataItem(): CoinDataItem = CoinDataItem(
     details = details.mapToDataItem()
 )
 
-fun CoinResponse.Details.mapToDataItem() = CoinDataItem.Details(walletAddress = serverAddress)
+fun CoinResponse.Details.mapToDataItem() = CoinDataItem.Details(
+    index = index,
+    walletAddress = serverAddress
+)

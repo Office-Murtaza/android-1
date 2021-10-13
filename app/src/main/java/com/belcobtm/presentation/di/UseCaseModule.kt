@@ -65,7 +65,6 @@ val useCaseModule = module {
         SendVerificationBlankUseCase(
             get(),
             androidApplication(),
-            get(),
             get(named(VERIFICATION_STORAGE))
         )
     }
@@ -74,7 +73,6 @@ val useCaseModule = module {
         SendVerificationVipUseCase(
             get(),
             androidApplication(),
-            get(),
             get(named(VERIFICATION_STORAGE))
         )
     }
@@ -187,6 +185,7 @@ val useCaseModule = module {
     single { GetFakeSignedTransactionPlanUseCase(get(), get()) }
     single { GetMaxValueBySignedTransactionUseCase(get()) }
     single { GetTransferAddressUseCase(get()) }
+    single { ReceiverAccountActivatedUseCase(get()) }
     factory { TradePaymentOptionMapper() }
     factory { CoinCodeMapper() }
     factory { TradesDataToTradeListMapper(get()) }

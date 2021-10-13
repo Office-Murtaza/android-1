@@ -77,7 +77,6 @@ class TradeReserveFragment : BaseFragment<FragmentTradeReserveBinding>() {
                 viewModel.coinItem.code
             )
             reservedUsdView.text = currencyFormatter.format(viewModel.coinItem.reservedBalanceUsd)
-            amountCryptoView.hint = getString(R.string.text_amount, viewModel.coinItem.code)
         })
         viewModel.fee.observe(viewLifecycleOwner) { fee ->
             amountCryptoView.helperText = getString(
@@ -86,7 +85,11 @@ class TradeReserveFragment : BaseFragment<FragmentTradeReserveBinding>() {
                 viewModel.getCoinCode()
             )
         }
+        viewModel.cryptoAmountError.observe(viewLifecycleOwner, amountCryptoView::setError)
         viewModel.amount.observe(viewLifecycleOwner) {
+            if(it.amount <= 0.0) {
+                return@observe
+            }
             val formattedCoin = it.amount.toStringCoin()
             amountCryptoView.editText?.setTextSilently(
                 cryptoAmountTextWatcher,

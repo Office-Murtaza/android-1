@@ -29,7 +29,16 @@ class SettingsRepositoryImpl(
                     status = VerificationStatus.getStatusByCode(responseItem.status),
                     txLimit = responseItem.txLimit,
                     dayLimit = responseItem.dailyLimit,
-                    message = responseItem.message ?: ""
+                    message = responseItem.message.orEmpty(),
+                    idCardNumber = responseItem.idCardNumber.orEmpty(),
+                    idCardNumberFilename = responseItem.idCardNumberFilename.orEmpty(),
+                    firstName = responseItem.firstName.orEmpty(),
+                    lastName = responseItem.lastName.orEmpty(),
+                    address = responseItem.address.orEmpty(),
+                    province = responseItem.province.orEmpty(),
+                    country = responseItem.country.orEmpty(),
+                    zipCode = responseItem.zipCode.orEmpty(),
+                    city = responseItem.city.orEmpty(),
                 )
             )
         } else {
@@ -39,10 +48,9 @@ class SettingsRepositoryImpl(
 
     override suspend fun sendVerificationBlank(
         blankDataItem: VerificationBlankDataItem,
-        fileName: String,
-        mimeType: String
+        fileName: String
     ): Either<Failure, Unit> = apiService.sendVerificationBlank(
-        prefHelper.userId, blankDataItem, fileName, mimeType
+        prefHelper.userId, blankDataItem, fileName
     )
 
     override fun getVerificationCountries(): List<VerificationCountryDataItem> =
@@ -50,10 +58,9 @@ class SettingsRepositoryImpl(
 
     override suspend fun sendVerificationVip(
         vipDataItem: VerificationVipDataItem,
-        fileName: String,
-        mimeType: String
+        fileName: String
     ): Either<Failure, Unit> = apiService.sendVerificationVip(
-        prefHelper.userId, vipDataItem, fileName, mimeType
+        prefHelper.userId, vipDataItem, fileName
     )
 
     override suspend fun changePass(

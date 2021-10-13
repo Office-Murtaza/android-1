@@ -1,8 +1,5 @@
 package com.belcobtm.data.core
 
-import com.belcobtm.data.core.factory.EthTransactionInputBuilderFactory.Companion.ETH_CATM_FUNCTION_NAME_CANCEL_STAKE
-import com.belcobtm.data.core.factory.EthTransactionInputBuilderFactory.Companion.ETH_CATM_FUNCTION_NAME_CREATE_STAKE
-import com.belcobtm.data.core.factory.EthTransactionInputBuilderFactory.Companion.ETH_CATM_FUNCTION_NAME_WITHDRAW_STAKE
 import com.belcobtm.data.core.helper.*
 import com.belcobtm.data.rest.transaction.response.hash.UtxoItemResponse
 import com.belcobtm.domain.Either
@@ -15,6 +12,7 @@ import com.belcobtm.domain.wallet.LocalCoinType
 class TransactionHelper(
     private val blockTransactionHelper: BlockTransactionHelper,
     private val ethTransactionHelper: EthTransactionHelper,
+    private val ethSubCoinTransactionHelper: EthSubCoinTransactionHelper,
     private val rippleTransactionHelper: RippleTransactionHelper,
     private val binanceTransactionHelper: BinanceTransactionHelper,
     private val tronTransactionHelper: TronTransactionHelper,
@@ -61,10 +59,14 @@ class TransactionHelper(
                 toAddress, fromCoin, fromCoinAmount, fromTransactionPlan, utxos
             )
         )
-        LocalCoinType.ETH,
+        LocalCoinType.ETH -> Either.Right(
+            ethTransactionHelper.getHash(
+                toAddress, fromCoin, fromCoinAmount, fromTransactionPlan
+            )
+        )
         LocalCoinType.USDC,
         LocalCoinType.CATM -> Either.Right(
-            ethTransactionHelper.getHash(
+            ethSubCoinTransactionHelper.getHash(
                 toAddress, fromCoin, fromCoinAmount, fromTransactionPlan
             )
         )
@@ -93,8 +95,7 @@ class TransactionHelper(
         toAddress,
         LocalCoinType.CATM,
         fromCoinAmount,
-        fromTransactionPlan,
-        ETH_CATM_FUNCTION_NAME_CREATE_STAKE
+        fromTransactionPlan
     )
 
     suspend fun createTransactionStakeCancelHash(
@@ -105,8 +106,7 @@ class TransactionHelper(
         toAddress,
         LocalCoinType.CATM,
         fromCoinAmount,
-        fromTransactionPlan,
-        ETH_CATM_FUNCTION_NAME_CANCEL_STAKE
+        fromTransactionPlan
     )
 
     suspend fun createTransactionUnStakeHash(
@@ -117,7 +117,6 @@ class TransactionHelper(
         toAddress,
         LocalCoinType.CATM,
         fromCoinAmount,
-        fromTransactionPlan,
-        ETH_CATM_FUNCTION_NAME_WITHDRAW_STAKE
+        fromTransactionPlan
     )
 }

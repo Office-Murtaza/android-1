@@ -4,10 +4,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.belcobtm.domain.transaction.interactor.GetFakeSignedTransactionPlanUseCase
-import com.belcobtm.domain.transaction.interactor.GetMaxValueBySignedTransactionUseCase
-import com.belcobtm.domain.transaction.interactor.GetSignedTransactionPlanUseCase
-import com.belcobtm.domain.transaction.interactor.GetTransactionPlanUseCase
+import com.belcobtm.R
+import com.belcobtm.domain.transaction.interactor.*
 import com.belcobtm.domain.transaction.interactor.trade.TradeReserveTransactionCompleteUseCase
 import com.belcobtm.domain.transaction.interactor.trade.TradeReserveTransactionCreateUseCase
 import com.belcobtm.domain.transaction.item.AmountItem
@@ -16,11 +14,13 @@ import com.belcobtm.domain.transaction.item.TransactionPlanItem
 import com.belcobtm.domain.wallet.LocalCoinType
 import com.belcobtm.domain.wallet.interactor.GetCoinByCodeUseCase
 import com.belcobtm.domain.wallet.item.CoinDataItem
+import com.belcobtm.domain.wallet.item.isBtcCoin
 import com.belcobtm.domain.wallet.item.isEthRelatedCoin
 import com.belcobtm.presentation.core.coin.CoinCodeProvider
 import com.belcobtm.presentation.core.item.CoinScreenItem
 import com.belcobtm.presentation.core.item.mapToScreenItem
 import com.belcobtm.presentation.core.mvvm.LoadingData
+import com.belcobtm.presentation.core.provider.string.StringProvider
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -33,7 +33,9 @@ class TradeReserveViewModel(
     private val getTransactionPlanUseCase: GetTransactionPlanUseCase,
     private val getSignedTransactionPlanUseCase: GetSignedTransactionPlanUseCase,
     private val getFakeSignedTransactionPlanUseCase: GetFakeSignedTransactionPlanUseCase,
-    private val getMaxValueBySignedTransactionUseCase: GetMaxValueBySignedTransactionUseCase
+    private val getMaxValueBySignedTransactionUseCase: GetMaxValueBySignedTransactionUseCase,
+    private val stringProvider: StringProvider,
+    private val receiverAccountActivatedUseCase: ReceiverAccountActivatedUseCase
 ) : ViewModel() {
 
     private var transactionPlanItem: TransactionPlanItem? = null
@@ -58,6 +60,10 @@ class TradeReserveViewModel(
     private val _fee = MutableLiveData<Double>()
     val fee: LiveData<Double>
         get() = _fee
+
+    private val _cryptoAmountError = MutableLiveData<String?>()
+    val cryptoAmountError: LiveData<String?>
+        get() = _cryptoAmountError
 
     private var etheriumCoinDataItem: CoinDataItem? = null
     private lateinit var coinDataItem: CoinDataItem
@@ -113,16 +119,48 @@ class TradeReserveViewModel(
             _fee.value = it.fee
             signedTransactionPlanItem = it
             _createTransactionLiveData.value = LoadingData.Loading()
-            createTransactionUseCase.invoke(
-                params = TradeReserveTransactionCreateUseCase.Params(
-                    coinDataItem.code, cryptoAmount, transactionPlanItem
-                ),
-                onSuccess = { completeTransaction(it) },
-                onError = { _createTransactionLiveData.value = LoadingData.Error(it) }
-            )
+            if (coinDataItem.code == LocalCoinType.XRP.name) {
+                if (cryptoAmount < 20) {
+                    _cryptoAmountError.value =
+                        stringProvider.getString(R.string.xrp_too_small_amount_error)
+                    _createTransactionLiveData.value = LoadingData.DismissProgress()
+                    return@getSignedTransactionPlanUseCase
+                } else {
+                    receiverAccountActivatedUseCase(
+                        ReceiverAccountActivatedUseCase.Params(
+                            coinDataItem.details.walletAddress, coinCode
+                        ),
+                        onSuccess = { activated ->
+                            if (activated) {
+                                createTransactionInternal(cryptoAmount, transactionPlanItem)
+                            } else {
+                                _cryptoAmountError.value =
+                                    stringProvider.getString(R.string.xrp_too_small_amount_error)
+                                _createTransactionLiveData.value = LoadingData.DismissProgress()
+                            }
+                        },
+                        onError = { _createTransactionLiveData.value = LoadingData.Error(it) }
+                    )
+                }
+            } else {
+                createTransactionInternal(cryptoAmount, transactionPlanItem)
+            }
         }, onError = {
             _createTransactionLiveData.value = LoadingData.Error(it)
         })
+    }
+
+    private fun createTransactionInternal(
+        cryptoAmount: Double,
+        transactionPlanItem: TransactionPlanItem
+    ) {
+        createTransactionUseCase.invoke(
+            params = TradeReserveTransactionCreateUseCase.Params(
+                coinDataItem.code, cryptoAmount, transactionPlanItem
+            ),
+            onSuccess = { completeTransaction(it) },
+            onError = { _createTransactionLiveData.value = LoadingData.Error(it) }
+        )
     }
 
     private fun completeTransaction(hash: String) {
@@ -216,10 +254,10 @@ class TradeReserveViewModel(
     private fun isSufficientBalance(): Boolean {
         val amount = _amount.value?.amount ?: 0.0
         val fee = _fee.value ?: 0.0
-        return if (!coinDataItem.isEthRelatedCoin()) {
-            amount + fee < signedTransactionPlanItem?.availableAmount ?: 0.0
+        return if (coinDataItem.isBtcCoin()) {
+            amount + fee <= signedTransactionPlanItem?.availableAmount ?: 0.0
         } else {
-            amount < coinDataItem.reservedBalanceCoin
+            amount <= coinDataItem.balanceCoin
         }
     }
 

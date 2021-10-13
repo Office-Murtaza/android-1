@@ -171,7 +171,7 @@
                 android:imeOptions="actionDone"
                 android:inputType="numberDecimal"
                 android:nextFocusDown="@id/amountUsdView"
-                tools:hint="@string/text_amount"
+                android:hint="@string/text_amount"
                 tools:ignore="RtlSymmetry" />
         </com.google.android.material.textfield.TextInputLayout>
 

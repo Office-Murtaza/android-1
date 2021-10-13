@@ -99,6 +99,12 @@ class TransactionRepositoryImpl(
         }
     }
 
+    override suspend fun receiverAccountActivated(
+        fromCoin: String,
+        toAddress: String
+    ): Either<Failure, Boolean> =
+        apiService.receiverAccountActivated(fromCoin, toAddress).map { it.result }
+
     override suspend fun withdraw(
         toAddress: String,
         fromCoin: String,

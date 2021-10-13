@@ -98,7 +98,9 @@ val viewModelModule = module {
     viewModel { WalletsViewModel(get(), get()) }
     viewModel { (coinCode: String) -> TradeRecallViewModel(coinCode, get(), get(), get(), get()) }
     viewModel { (coinCode: String) ->
-        TradeReserveViewModel(coinCode, get(), get(), get(), get(), get(), get(), get(), get())
+        TradeReserveViewModel(
+            coinCode, get(), get(), get(), get(), get(), get(), get(), get(), get(), get()
+        )
     }
     viewModel { StakingViewModel(get(), get(), get(), get(), get(), get()) }
     viewModel { (phone: String) -> SmsCodeViewModel(phone, get(), get()) }
@@ -115,10 +117,12 @@ val viewModelModule = module {
             txId, coinCode, get(), get(), get(named(DOUBLE_CURRENCY_PRICE_FORMATTER_QUALIFIER))
         )
     }
-    viewModel { SendGiftViewModel(get(), get(), get(), get(), get(), get(), get(), get()) }
+    viewModel { SendGiftViewModel(get(), get(), get(), get(), get(), get(), get(), get(), get()) }
     viewModel { (coinCode: String) ->
         WithdrawViewModel(
             coinCode,
+            get(),
+            get(),
             get(),
             get(),
             get(),

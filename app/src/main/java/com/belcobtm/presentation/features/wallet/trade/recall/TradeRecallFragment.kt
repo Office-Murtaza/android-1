@@ -80,7 +80,6 @@ class TradeRecallFragment : BaseFragment<FragmentTradeRecallBinding>() {
                 }
             )
             reservedUsdView.text = currencyFormatter.format(viewModel.coinItem.reservedBalanceUsd)
-            amountCryptoView.hint = getString(R.string.text_amount, viewModel.coinItem.code)
         })
         viewModel.fee.observe(viewLifecycleOwner) { fee ->
             amountCryptoView.helperText = getString(

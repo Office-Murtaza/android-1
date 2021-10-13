@@ -18,5 +18,6 @@ import androidx.room.PrimaryKey
 )
 data class CoinDetailsEntity(
     @ColumnInfo(name = "c_code") @PrimaryKey val id: String,
+    @ColumnInfo(name = "coin_index") val index: Int,
     @ColumnInfo(name = "wallet_address") val walletAddress: String,
 )

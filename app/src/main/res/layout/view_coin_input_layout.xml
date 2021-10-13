@@ -25,13 +25,13 @@
             android:background="@android:color/transparent"
             android:digits="1234567890."
             android:gravity="end"
+            android:imeOptions="actionDone"
             android:inputType="numberDecimal"
             android:paddingStart="@dimen/margin_main"
             android:paddingTop="@dimen/margin_half"
             android:paddingEnd="@dimen/margin_main"
             android:paddingBottom="@dimen/margin_half"
             android:singleLine="true"
-            android:imeOptions="actionDone"
             android:textAppearance="@style/SwapAmountTextAppearance"
             tools:hint="Coin amount" />
 
@@ -98,11 +98,12 @@
         style="@style/Text.Regular1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_half"
         android:lineSpacingExtra="@dimen/margin_half"
         android:paddingStart="@dimen/margin_normal"
         android:paddingEnd="@dimen/margin_normal"
-        app:layout_constraintBaseline_toBaselineOf="@id/tvHelperText"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvMax"
         tools:text="Staked" />
 
     <TextView
@@ -114,6 +115,13 @@
         app:layout_constraintBottom_toTopOf="@id/tvError"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/coin_barrier" />
+
+    <androidx.constraintlayout.widget.Barrier
+        android:id="@+id/helper_barrier"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:barrierDirection="bottom"
+        app:constraint_referenced_ids="tvHelperText2,tvMax,tvHelperText" />
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/tvError"
@@ -128,7 +136,7 @@
         android:textColor="@color/colorError"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tvHelperText"
+        app:layout_constraintTop_toBottomOf="@id/helper_barrier"
         tools:text="Error message here" />
 
 </merge>

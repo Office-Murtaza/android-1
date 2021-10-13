@@ -12,22 +12,32 @@ import com.belcobtm.domain.settings.item.VerificationVipDataItem
 
 class SettingsApiService(private val api: SettingsApi) {
 
-    suspend fun getVerificationInfo(userId: String): Either<Failure, VerificationInfoResponse> = try {
-        val request = api.getVerificationInfoAsync(userId).await()
-        request.body()?.let { Either.Right(it) } ?: Either.Left(Failure.ServerError())
-    } catch (failure: Failure) {
-        failure.printStackTrace()
-        Either.Left(failure)
-    }
+    suspend fun getVerificationInfo(userId: String): Either<Failure, VerificationInfoResponse> =
+        try {
+            val request = api.getVerificationInfoAsync(userId).await()
+            request.body()?.let { Either.Right(it) } ?: Either.Left(Failure.ServerError())
+        } catch (failure: Failure) {
+            failure.printStackTrace()
+            Either.Left(failure)
+        }
 
     suspend fun sendVerificationBlank(
         userId: String,
         blankItem: VerificationBlankDataItem,
-        fileName: String,
-        mimeType: String
+        fileName: String
     ): Either<Failure, Unit> = try {
         val request = with(blankItem) {
-            VerificationBlankRequest(fileName, mimeType, idNumber, firstName, lastName, address, city, country, province, zipCode)
+            VerificationBlankRequest(
+                fileName,
+                idNumber,
+                firstName,
+                lastName,
+                address,
+                city,
+                country,
+                province,
+                zipCode
+            )
         }
         val response = api.sendVerificationBlankAsync(userId, request).await()
         response.body()?.let { Either.Right(Unit) } ?: Either.Left(Failure.ServerError())
@@ -39,10 +49,21 @@ class SettingsApiService(private val api: SettingsApi) {
     suspend fun sendVerificationVip(
         userId: String,
         dataItem: VerificationVipDataItem,
-        fileName: String,
-        mimeType: String
+        fileName: String
     ): Either<Failure, Unit> = try {
-        val request = VipVerificationRequest(dataItem.ssn.toString(), fileName, mimeType)
+        val request = VipVerificationRequest(
+            dataItem.idCardNumberFilename,
+            dataItem.idCardNumber,
+            dataItem.firstName,
+            dataItem.lastName,
+            dataItem.address,
+            dataItem.city,
+            dataItem.country,
+            dataItem.province,
+            dataItem.zipCode,
+            dataItem.ssn.toString(),
+            fileName
+        )
         val response = api.sendVerificationVipAsync(userId, request).await()
         response.body()?.let { Either.Right(Unit) } ?: Either.Left(Failure.ServerError())
     } catch (failure: Failure) {
@@ -50,8 +71,13 @@ class SettingsApiService(private val api: SettingsApi) {
         Either.Left(failure)
     }
 
-    suspend fun changePass(userId: String, oldPassword: String, newPassword: String): Either<Failure, Boolean> = try {
-        val request = api.changePass(userId.toString(), ChangePassBody(newPassword, oldPassword)).await()
+    suspend fun changePass(
+        userId: String,
+        oldPassword: String,
+        newPassword: String
+    ): Either<Failure, Boolean> = try {
+        val request =
+            api.changePass(userId.toString(), ChangePassBody(newPassword, oldPassword)).await()
 
         request.body()?.let { Either.Right(it.result) } ?: Either.Left(Failure.ServerError())
     } catch (failure: Failure) {

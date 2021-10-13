@@ -25,6 +25,7 @@ import com.belcobtm.data.disk.database.AppDatabase.Companion.MIGRATION_2_3
 import com.belcobtm.data.disk.database.AppDatabase.Companion.MIGRATION_3_4
 import com.belcobtm.data.disk.database.AppDatabase.Companion.MIGRATION_4_5
 import com.belcobtm.data.disk.database.AppDatabase.Companion.MIGRATION_5_6
+import com.belcobtm.data.disk.database.AppDatabase.Companion.MIGRATION_6_7
 import com.belcobtm.data.disk.shared.preferences.SharedPreferencesHelper
 import com.belcobtm.data.helper.DistanceCalculator
 import com.belcobtm.data.inmemory.trade.TradeInMemoryCache
@@ -118,15 +119,17 @@ val dataModule = module {
     single { RippleTransactionHelper(get()) }
     single { EthTransactionInputBuilderFactory(get(), get()) }
     single { EthTransactionHelper(get()) }
+    single { EthSubCoinTransactionHelper(get()) }
     single { TronTransactionInputBuilderFactory(get(), get()) }
     single { TronTransactionHelper(get(), get()) }
-    single { TransactionHelper(get(), get(), get(), get(), get()) }
+    single { TransactionHelper(get(), get(), get(), get(), get(), get()) }
     single {
         Room.databaseBuilder(get(), AppDatabase::class.java, "belco_database")
             .addMigrations(MIGRATION_2_3)
             .addMigrations(MIGRATION_3_4)
             .addMigrations(MIGRATION_4_5)
             .addMigrations(MIGRATION_5_6)
+            .addMigrations(MIGRATION_6_7)
             .build()
     }
     single { Moshi.Builder().build() }
