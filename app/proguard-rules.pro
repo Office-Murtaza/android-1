@@ -131,6 +131,7 @@
 -keep class com.belcobtm.domain.settings.item.VerificationCountryDataItem { *; }
 
 -keep class com.belcobtm.presentation.core.extensions.** { *; }
+-keep class com.belcobtm.domain.settings.item.** { *; }
 
 # Wallet Core library
 -keep class wallet.core.jni.** { *; }

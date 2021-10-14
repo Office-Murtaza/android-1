@@ -118,9 +118,5 @@ interface TransactionRepository {
         transactionPlanItem: TransactionPlanItem,
     ): Either<Failure, Unit>
 
-    suspend fun checkXRPAddressActivated(
-        address: String
-    ): Either<Failure, Boolean>
-
     suspend fun getTransferAddress(phone: String, coinCode: String): Either<Failure, String>
 }

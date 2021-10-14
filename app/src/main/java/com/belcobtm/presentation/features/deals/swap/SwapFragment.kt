@@ -22,7 +22,6 @@ import com.belcobtm.presentation.core.watcher.DoubleTextWatcher
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.qualifier.named
-import java.lang.RuntimeException
 
 class SwapFragment : BaseFragment<FragmentSwapBinding>() {
 
@@ -39,13 +38,13 @@ class SwapFragment : BaseFragment<FragmentSwapBinding>() {
         maxCharsAfterDotSecond = DoubleTextWatcher.MAX_CHARS_AFTER_DOT_CRYPTO,
         firstTextWatcher = { editable ->
             val parsedCoinAmount = editable.getDouble()
-            if (parsedCoinAmount != viewModel.sendCoinAmount.value) {
+            if (parsedCoinAmount != viewModel.sendCoinAmount.value?.amount) {
                 viewModel.setSendAmount(parsedCoinAmount)
             }
         },
         secondTextWatcher = { editable ->
             val parsedCoinAmount = editable.getDouble()
-            if (parsedCoinAmount != viewModel.receiveCoinAmount.value) {
+            if (parsedCoinAmount != viewModel.receiveCoinAmount.value?.amount) {
                 viewModel.setReceiveAmount(parsedCoinAmount)
             }
         }
@@ -111,7 +110,7 @@ class SwapFragment : BaseFragment<FragmentSwapBinding>() {
             viewModel.setMaxSendAmount()
         }
         receiveCoinInputLayout.setOnMaxClickListener {
-            viewModel.setMaxSendAmount()
+            viewModel.setMaxReceiveAmount()
         }
         sendCoinInputLayout.setOnCoinButtonClickListener(View.OnClickListener {
             val coinToSend = viewModel.coinToSend.value ?: return@OnClickListener
@@ -234,21 +233,28 @@ class SwapFragment : BaseFragment<FragmentSwapBinding>() {
                     sendCoinInputLayout.setErrorText(getString(error.error), true)
             }
         }
+        viewModel.coinToReceiveError.observe(viewLifecycleOwner) { error ->
+            when (error) {
+                is ValidationResult.Valid -> receiveCoinInputLayout.setErrorText(null, false)
+                is ValidationResult.InValid ->
+                    receiveCoinInputLayout.setErrorText(getString(error.error), true)
+            }
+        }
         viewModel.sendCoinAmount.observe(viewLifecycleOwner) { sendAmount ->
             val targetEditText = sendCoinInputLayout.getEditText()
-            if (targetEditText.text.getDouble() == 0.0 && sendAmount == 0.0) {
+            if (targetEditText.text.getDouble() == 0.0 && sendAmount.amount == 0.0) {
                 return@observe
             }
-            val coinAmountString = sendAmount.toStringCoin()
+            val coinAmountString = sendAmount.amount.toStringCoin()
             val watcher = textWatcher.firstTextWatcher
             targetEditText.setTextSilently(watcher, coinAmountString)
         }
         viewModel.receiveCoinAmount.observe(viewLifecycleOwner) { receiveAmount ->
             val targetEditText = receiveCoinInputLayout.getEditText()
-            if (targetEditText.text.getDouble() == 0.0 && receiveAmount == 0.0) {
+            if (targetEditText.text.getDouble() == 0.0 && receiveAmount.amount == 0.0) {
                 return@observe
             }
-            val coinAmountString = receiveAmount.toStringCoin()
+            val coinAmountString = receiveAmount.amount.toStringCoin()
             val watcher = textWatcher.secondTextWatcher
             targetEditText.setTextSilently(watcher, coinAmountString)
         }

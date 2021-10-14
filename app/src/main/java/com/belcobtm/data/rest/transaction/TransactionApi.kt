@@ -2,7 +2,7 @@ package com.belcobtm.data.rest.transaction
 
 import com.belcobtm.data.rest.transaction.request.*
 import com.belcobtm.data.rest.transaction.response.*
-import com.belcobtm.data.rest.transaction.response.hash.*
+import com.belcobtm.data.rest.transaction.response.hash.UtxoListResponse
 import kotlinx.coroutines.Deferred
 import retrofit2.Response
 import retrofit2.http.*
@@ -78,29 +78,6 @@ interface TransactionApi {
         @Path("coinCode") coinCode: String,
         @Query("xpub") extendedPublicKey: String
     ): Deferred<Response<UtxoListResponse>>
-
-    @GET("coin/nonce")
-    fun getEthereumNonceAsync(
-        @Query("address") toAddress: String
-    ): Deferred<Response<EthereumResponse>>
-
-    @GET("coin/XRP/current-account")
-    fun getRippleBlockHeaderAsync(
-        @Query("address") address: String
-    ): Deferred<Response<RippleBlockResponse>>
-
-    @GET("coin/current-account-activated")
-    fun checkRippleAccountActivationAsync(
-        @Query("address") address: String
-    ): Deferred<Response<XRPAccountActivatedResponse>>
-
-    @GET("coin/BNB/current-account")
-    fun getBinanceBlockHeaderAsync(
-        @Query("address") address: String
-    ): Deferred<Response<BinanceBlockResponse>>
-
-    @GET("coin/current-block")
-    fun getTronBlockHeaderAsync(): Deferred<Response<TronBlockResponse>>
 
     @POST("user/{userId}/coin/{coinCode}/submit")
     fun submitRecallAsync(

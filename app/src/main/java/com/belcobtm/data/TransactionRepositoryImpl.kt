@@ -334,10 +334,6 @@ class TransactionRepositoryImpl(
             .map { cache.update(it) }
     }
 
-    override suspend fun checkXRPAddressActivated(address: String): Either<Failure, Boolean> {
-        return apiService.getXRPAddressActivated(address)
-    }
-
     override suspend fun getTransferAddress(
         phone: String,
         coinCode: String
