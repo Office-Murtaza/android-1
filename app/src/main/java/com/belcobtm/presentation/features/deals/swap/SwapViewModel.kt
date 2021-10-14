@@ -10,10 +10,9 @@ import com.belcobtm.data.disk.database.account.AccountEntity
 import com.belcobtm.data.disk.database.service.ServiceType
 import com.belcobtm.domain.Failure
 import com.belcobtm.domain.service.ServiceInfoProvider
-import com.belcobtm.domain.transaction.interactor.CheckXRPAddressActivatedUseCase
-import com.belcobtm.domain.transaction.interactor.GetMaxValueBySignedTransactionUseCase
-import com.belcobtm.domain.transaction.interactor.GetTransactionPlanUseCase
-import com.belcobtm.domain.transaction.interactor.SwapUseCase
+import com.belcobtm.domain.transaction.interactor.*
+import com.belcobtm.domain.transaction.item.AmountItem
+import com.belcobtm.domain.transaction.item.SignedTransactionPlanItem
 import com.belcobtm.domain.transaction.item.TransactionPlanItem
 import com.belcobtm.domain.wallet.LocalCoinType
 import com.belcobtm.domain.wallet.interactor.GetCoinListUseCase
@@ -28,10 +27,12 @@ class SwapViewModel(
     private val accountDao: AccountDao,
     private val getCoinListUseCase: GetCoinListUseCase,
     private val swapUseCase: SwapUseCase,
-    private val checkXRPAddressActivatedUseCase: CheckXRPAddressActivatedUseCase,
     private val serviceInfoProvider: ServiceInfoProvider,
     private val getTransactionPlanUseCase: GetTransactionPlanUseCase,
-    private val getMaxValueBySignedTransactionUseCase: GetMaxValueBySignedTransactionUseCase
+    private val getSignedTransactionPlanUseCase: GetSignedTransactionPlanUseCase,
+    private val receiverAccountActivatedUseCase: ReceiverAccountActivatedUseCase,
+    private val getFakeSignedTransactionPlanUseCase: GetFakeSignedTransactionPlanUseCase,
+    private val getMaxValueBySignedTransactionUseCase: GetMaxValueBySignedTransactionUseCase,
 ) : ViewModel() {
 
     val originCoinsData = mutableListOf<CoinDataItem>()
@@ -48,6 +49,9 @@ class SwapViewModel(
     private val _coinToReceiveModel = MutableLiveData<CoinPresentationModel>()
     val coinToReceiveModel: LiveData<CoinPresentationModel> = _coinToReceiveModel
 
+    private val _coinToReceiveError = MutableLiveData<ValidationResult>(ValidationResult.Valid)
+    val coinToReceiveError: LiveData<ValidationResult> = _coinToReceiveError
+
     private val _usdReceiveAmount = MutableLiveData<Double>()
     val usdReceiveAmount: LiveData<Double> = _usdReceiveAmount
 
@@ -63,14 +67,20 @@ class SwapViewModel(
     private val _coinsDetailsLoadingState = MutableLiveData<LoadingData<Unit>>()
     val coinsDetailsLoadingState: LiveData<LoadingData<Unit>> = _coinsDetailsLoadingState
 
-    private val _sendCoinAmount = MutableLiveData(0.0)
-    val sendCoinAmount: LiveData<Double> = _sendCoinAmount
+    private val _sendCoinAmount = MutableLiveData<AmountItem>()
+    val sendCoinAmount: LiveData<AmountItem> = _sendCoinAmount
+
+    private val _sendFeeAmount = MutableLiveData<Double>()
+    val sendFeeAmount: LiveData<Double> = _sendFeeAmount
 
     private val _submitEnabled = MutableLiveData(false)
     val submitEnabled: LiveData<Boolean> = _submitEnabled
 
-    private val _receiveCoinAmount = MutableLiveData(0.0)
-    val receiveCoinAmount: LiveData<Double> = _receiveCoinAmount
+    private val _receiveCoinAmount = MutableLiveData<AmountItem>()
+    val receiveCoinAmount: LiveData<AmountItem> = _receiveCoinAmount
+
+    private val _receiveFeeAmount = MutableLiveData<Double>()
+    val receiveFeeAmount: LiveData<Double> = _receiveFeeAmount
 
     private val _swapLoadingData = SingleLiveData<LoadingData<Unit>>()
     val swapLoadingData: LiveData<LoadingData<Unit>> = _swapLoadingData
@@ -82,7 +92,9 @@ class SwapViewModel(
     val transactionPlanLiveData: LiveData<LoadingData<Unit>> = _transactionPlanLiveData
 
     private var fromTransactionPlanItem: TransactionPlanItem? = null
+    private var signedFromTransactionPlanItem: SignedTransactionPlanItem? = null
     private var toTransactionPlanItem: TransactionPlanItem? = null
+    private var signedToTransactionPlanItem: SignedTransactionPlanItem? = null
 
     init {
         fetchInitialData()
@@ -145,21 +157,60 @@ class SwapViewModel(
         val coinToSend = coinToSend.value ?: return
         val coinToReceive = coinToReceive.value ?: return
         _coinToSendError.value = ValidationResult.Valid
+        _coinToReceiveError.value = ValidationResult.Valid
         updateCoins(coinToReceive, coinToSend)
     }
 
     fun setSendAmount(sendAmount: Double) {
-        _sendCoinAmount.value = sendAmount
-        _receiveCoinAmount.value = calcReceiveAmountFromSend(sendAmount)
-        updateFeeInfo(sendAmount)
+        if (_sendCoinAmount.value?.useMax == true) {
+            val coinToSend = _coinToSend.value ?: return
+            fromTransactionPlanItem?.let { plan ->
+                getFakeSignedTransactionPlanUseCase(
+                    GetFakeSignedTransactionPlanUseCase.Params(
+                        coinToSend.code, plan, useMaxAmount = false, amount = sendAmount
+                    ),
+                    onSuccess = { signedTransactionPlan ->
+                        signedFromTransactionPlanItem = signedTransactionPlan
+                        _sendFeeAmount.value = signedTransactionPlan.fee
+                    },
+                    onError = { /* Failure impossible */ }
+                )
+            }
+        }
+        setSendAmountInternal(sendAmount, useMax = false)
+    }
+
+    private fun setSendAmountInternal(sendAmount: Double, useMax: Boolean) {
+        _sendCoinAmount.value = AmountItem(sendAmount, useMax = useMax)
+        _receiveCoinAmount.value = AmountItem(calcReceiveAmountFromSend(sendAmount), useMax = useMax)
+        updatePlatformFeeInfo(sendAmount)
         validateCoinsAmount()
     }
 
     fun setReceiveAmount(receiveAmount: Double) {
+        if (_sendCoinAmount.value?.useMax == true) {
+            val coinToSend = _coinToSend.value ?: return
+            toTransactionPlanItem?.let { plan ->
+                getFakeSignedTransactionPlanUseCase(
+                    GetFakeSignedTransactionPlanUseCase.Params(
+                        coinToSend.code, plan, useMaxAmount = false, amount = receiveAmount
+                    ),
+                    onSuccess = { signedTransactionPlan ->
+                        signedToTransactionPlanItem = signedTransactionPlan
+                        _receiveFeeAmount.value = signedTransactionPlan.fee
+                    },
+                    onError = { /* Failure impossible */ }
+                )
+            }
+        }
+        setReceiveAmountInternal(receiveAmount, useMax = false)
+    }
+
+    private fun setReceiveAmountInternal(receiveAmount: Double, useMax: Boolean) {
         val sendAmount = calcSendAmountFromReceive(receiveAmount)
-        _receiveCoinAmount.value = receiveAmount
-        _sendCoinAmount.value = sendAmount
-        updateFeeInfo(sendAmount)
+        _sendCoinAmount.value = AmountItem(sendAmount, useMax = useMax)
+        _receiveCoinAmount.value = AmountItem(receiveAmount, useMax = useMax)
+        updatePlatformFeeInfo(sendAmount)
         validateCoinsAmount()
     }
 
@@ -172,7 +223,21 @@ class SwapViewModel(
                 currentCoinToSend,
             ),
             onSuccess = {
-                setSendAmount(it.amount)
+                setSendAmountInternal(it.amount, useMax = true)
+            }, onError = { /* error impossible */ }
+        )
+    }
+
+    fun setMaxReceiveAmount() {
+        val currentCoinToSend = coinToReceive.value ?: return
+        val transactionPlanItem = toTransactionPlanItem ?: return
+        getMaxValueBySignedTransactionUseCase(
+            GetMaxValueBySignedTransactionUseCase.Params(
+                transactionPlanItem,
+                currentCoinToSend,
+            ),
+            onSuccess = {
+                setReceiveAmountInternal(it.amount, useMax = true)
             }, onError = { /* error impossible */ }
         )
     }
@@ -180,17 +245,20 @@ class SwapViewModel(
     fun executeSwap() {
         val sendCoinItem = coinToSend.value ?: return
         val receiveCoinItem = coinToReceive.value ?: return
-        val sendCoinAmount = sendCoinAmount.value ?: return
-        val receiveCoinAmount = receiveCoinAmount.value ?: return
+        val sendCoinAmount = sendCoinAmount.value?.amount ?: return
+        val receiveCoinAmount = receiveCoinAmount.value?.amount ?: return
+        _coinToReceiveError.value = ValidationResult.Valid
         if (!validateCoinToSendAmount(sendCoinAmount) || !validateCoinsAmount()) {
             return
         }
+        _swapLoadingData.value = LoadingData.Loading()
         if (receiveCoinItem.code == LocalCoinType.XRP.name) {
-            val minXRPValue = 20
-            if (receiveCoinAmount < minXRPValue) {
+            if (receiveCoinAmount < 20) {
                 _swapLoadingData.value = LoadingData.Loading()
-                checkXRPAddressActivatedUseCase(
-                    params = CheckXRPAddressActivatedUseCase.Param(receiveCoinItem.details.walletAddress),
+                receiverAccountActivatedUseCase(
+                    params = ReceiverAccountActivatedUseCase.Params(
+                        receiveCoinItem.details.walletAddress, receiveCoinItem.code
+                    ),
                     onSuccess = { addressActivated ->
                         if (addressActivated) {
                             executeSwapInternal(
@@ -200,11 +268,16 @@ class SwapViewModel(
                                 receiveCoinItem
                             )
                         } else {
-                            _swapLoadingData.value = LoadingData.Error(Failure.XRPLowAmountToSend)
+                            _swapLoadingData.value = LoadingData.DismissProgress()
+                            _coinToReceiveError.value =
+                                ValidationResult.InValid(R.string.xrp_too_small_amount_error)
                         }
                     },
                     onError = { _swapLoadingData.value = LoadingData.Error(it) }
                 )
+            } else {
+                _coinToReceiveError.value =
+                    ValidationResult.InValid(R.string.xrp_too_small_amount_error)
             }
         } else {
             executeSwapInternal(sendCoinAmount, receiveCoinAmount, sendCoinItem, receiveCoinItem)
@@ -217,18 +290,40 @@ class SwapViewModel(
         sendCoin: CoinDataItem,
         receiveCoin: CoinDataItem
     ) {
-        val transactionPlanItem = fromTransactionPlanItem ?: return
-        _swapLoadingData.value = LoadingData.Loading()
-        swapUseCase(
-            params = SwapUseCase.Params(
-                sendAmount,
-                receiveAmount,
-                sendCoin.code,
-                _swapFee.value?.platformFeeCoinAmount ?: 0.0,
-                transactionPlanItem,
-                receiveCoin.code
+        val fromTransactionPlanItem = fromTransactionPlanItem ?: return
+        val toTransactionPlanItem = toTransactionPlanItem ?: return
+        getSignedTransactionPlanUseCase(
+            GetSignedTransactionPlanUseCase.Params(
+                sendCoin.details.walletAddress, sendCoin.code,
+                sendAmount, fromTransactionPlanItem
             ),
-            onSuccess = { _swapLoadingData.value = LoadingData.Success(it) },
+            onSuccess = { sendSignedPlan ->
+                signedFromTransactionPlanItem = sendSignedPlan
+                _sendFeeAmount.value = sendSignedPlan.fee
+                getSignedTransactionPlanUseCase(
+                    GetSignedTransactionPlanUseCase.Params(
+                        receiveCoin.details.walletAddress, receiveCoin.code,
+                        receiveAmount, fromTransactionPlanItem
+                    ),
+                    onSuccess = { receiveSignedPlan ->
+                        signedToTransactionPlanItem = receiveSignedPlan
+                        _receiveFeeAmount.value = sendSignedPlan.fee
+                        swapUseCase(
+                            params = SwapUseCase.Params(
+                                sendAmount,
+                                receiveAmount,
+                                sendCoin.code,
+                                _swapFee.value?.platformFeeCoinAmount ?: 0.0,
+                                fromTransactionPlanItem,
+                                receiveCoin.code
+                            ),
+                            onSuccess = { _swapLoadingData.value = LoadingData.Success(it) },
+                            onError = { _swapLoadingData.value = LoadingData.Error(it) }
+                        )
+                    },
+                    onError = { _swapLoadingData.value = LoadingData.Error(it) }
+                )
+            },
             onError = { _swapLoadingData.value = LoadingData.Error(it) }
         )
     }
@@ -252,9 +347,39 @@ class SwapViewModel(
 
         // clear up the values to operate with 0 amount in the callbacks
         clearSendAndReceiveAmount()
+
+        getFakeSignedTransactionPlanUseCase(
+            GetFakeSignedTransactionPlanUseCase.Params(
+                coinToSend.code, fromPlanItem, useMaxAmount = false, amount = 0.0
+            ),
+            onSuccess = { fromSignedTransactionPlan ->
+                signedFromTransactionPlanItem = fromSignedTransactionPlan
+                _sendFeeAmount.value = fromSignedTransactionPlan.fee
+                getFakeSignedTransactionPlanUseCase(
+                    GetFakeSignedTransactionPlanUseCase.Params(
+                        coinToReceive.code, fromPlanItem, useMaxAmount = false, amount = 0.0
+                    ),
+                    onSuccess = { toSignedTransactionPlan ->
+                        signedFromTransactionPlanItem = toSignedTransactionPlan
+                        _sendFeeAmount.value = toSignedTransactionPlan.fee
+                        recalculateAmount(coinToSend, coinToReceive, fromPlanItem, toPlanItem)
+                    },
+                    onError = { /* Failure impossible */ }
+                )
+            },
+            onError = { /* Failure impossible */ }
+        )
+    }
+
+    private fun recalculateAmount(
+        coinToSend: CoinDataItem,
+        coinToReceive: CoinDataItem,
+        fromPlanItem: TransactionPlanItem,
+        toPlanItem: TransactionPlanItem
+    ) {
         _coinToSend.value = coinToSend
         _coinToReceive.value = coinToReceive
-        val sendAmount = sendCoinAmount.value ?: 0.0
+        val sendAmount = sendCoinAmount.value?.amount ?: 0.0
         val atomicSwapAmount = calcCoinsRatio(coinToSend, coinToReceive)
         _swapRate.value = SwapRateModelView(
             1,
@@ -262,7 +387,7 @@ class SwapViewModel(
             atomicSwapAmount,
             coinToReceive.code,
         )
-        updateFeeInfo(sendAmount)
+        updatePlatformFeeInfo(sendAmount)
         _coinToSendModel.value = CoinPresentationModel(
             coinToSend.code,
             coinToSend.balanceCoin,
@@ -304,8 +429,8 @@ class SwapViewModel(
     }
 
     private fun validateCoinsAmount(): Boolean {
-        val sendAmount = sendCoinAmount.value ?: return false
-        val receiveAmount = receiveCoinAmount.value ?: return false
+        val sendAmount = sendCoinAmount.value?.amount ?: return false
+        val receiveAmount = receiveCoinAmount.value?.amount ?: return false
         val amountsArePositive = sendAmount > 0 && receiveAmount > 0
         return amountsArePositive.also { _submitEnabled.value = it }
     }
@@ -339,7 +464,7 @@ class SwapViewModel(
         // User swap from A to B, user enter amount(A),
         // amount(B) = amount(A) x price(A) / price(B) x (1 - swapProfitPercent / 100) - fee(B)
         val price = sendAmount * calcCoinsRatio(sendCoin, receiveCoin)
-        val receiveCoinFee = getReceiveCoinFee(receiveCoin)
+        val receiveCoinFee = getReceiveCoinFee()
         val sendCoinFee = getCoinFeeActual()
         val result = price * sendCoinFee - receiveCoinFee
         return 0.0.coerceAtLeast(result)
@@ -353,23 +478,18 @@ class SwapViewModel(
         // Case:
         // User swap from A to B, user enter amount(B),
         // amount(A) = (amount(B) + fee(B)) x price(B) / price(A) / (1 - swapProfitPercent / 100)
-        val receiveCoinFee = getReceiveCoinFee(receiveCoin)
+        val receiveCoinFee = getReceiveCoinFee()
         val coinRatio = calcCoinsRatio(receiveCoin, sendCoin)
         val sendCoinFee = getCoinFeeActual()
         val result = (receiveAmount + receiveCoinFee) * coinRatio / sendCoinFee
         return 0.0.coerceAtLeast(result)
     }
 
-    private fun getReceiveCoinFee(
-        receiveCoin: CoinDataItem
-    ): Double {
+    private fun getReceiveCoinFee(): Double {
         // fee(B) = convertedTxFee(B) in case B is CATM or USDC
         // fee(B) = txFee(B) for the rest of coins.
-        val toPlanItem = toTransactionPlanItem ?: return 0.0
-        return when (receiveCoin.isEthRelatedCoin()) {
-            true -> toPlanItem.nativeTxFee
-            false -> toPlanItem.txFee
-        }
+        val toPlanItem = signedToTransactionPlanItem ?: return 0.0
+        return toPlanItem.fee
     }
 
     private fun getCoinFeeActual(): Double {
@@ -380,7 +500,7 @@ class SwapViewModel(
         return coin1.priceUsd / coin2.priceUsd
     }
 
-    private fun updateFeeInfo(sendAmount: Double) {
+    private fun updatePlatformFeeInfo(sendAmount: Double) {
         val coinToSend = coinToSend.value ?: return
         val coinToReceive = coinToReceive.value ?: return
         // Platform fee(B) = amount(A) x price(A) / price(B) x (swapProfitPercent / 100)
@@ -396,8 +516,8 @@ class SwapViewModel(
     }
 
     private fun clearSendAndReceiveAmount() {
-        _sendCoinAmount.value = 0.0
-        _receiveCoinAmount.value = 0.0
+        _sendCoinAmount.value = AmountItem(0.0, useMax = false)
+        _receiveCoinAmount.value = AmountItem(0.0, useMax = false)
     }
 
     fun reFetchTransactionPlans() {

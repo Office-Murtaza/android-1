@@ -5,8 +5,6 @@ import com.belcobtm.data.rest.transaction.request.*
 import com.belcobtm.data.rest.transaction.response.GetTransactionsResponse
 import com.belcobtm.data.rest.transaction.response.ReceiverAccountActivatedResponse
 import com.belcobtm.data.rest.transaction.response.TransactionDetailsResponse
-import com.belcobtm.data.rest.transaction.response.hash.BinanceBlockResponse
-import com.belcobtm.data.rest.transaction.response.hash.TronRawDataResponse
 import com.belcobtm.data.rest.transaction.response.hash.UtxoItemResponse
 import com.belcobtm.data.rest.transaction.response.mapToDataItem
 import com.belcobtm.domain.Either
@@ -208,50 +206,6 @@ class TransactionApiService(
         Either.Left(failure)
     }
 
-    suspend fun getEthereumNonce(toAddress: String): Either<Failure, Long?> =
-        try {
-            val request = api.getEthereumNonceAsync(toAddress).await()
-            request.body()?.let { Either.Right(it.nonce) } ?: Either.Left(Failure.ServerError())
-        } catch (failure: Failure) {
-            failure.printStackTrace()
-            Either.Left(failure)
-        }
-
-    suspend fun getRippleSequence(fromAddress: String): Either<Failure, Long> = try {
-        val request = api.getRippleBlockHeaderAsync(fromAddress).await()
-        request.body()?.let { Either.Right(it.sequence ?: 0) } ?: Either.Left(Failure.ServerError())
-    } catch (failure: Failure) {
-        failure.printStackTrace()
-        Either.Left(failure)
-    }
-
-    suspend fun checkRippleAccountActivation(fromAddress: String): Either<Failure, Boolean> = try {
-        val request = api.checkRippleAccountActivationAsync(fromAddress).await()
-        request.body()?.let { Either.Right(it.result ?: false) }
-            ?: Either.Left(Failure.ServerError())
-    } catch (failure: Failure) {
-        failure.printStackTrace()
-        Either.Left(failure)
-    }
-
-    suspend fun getBinanceBlockHeader(toAddress: String): Either<Failure, BinanceBlockResponse> =
-        try {
-            val request = api.getBinanceBlockHeaderAsync(toAddress).await()
-            request.body()?.let { Either.Right(it) } ?: Either.Left(Failure.ServerError())
-        } catch (failure: Failure) {
-            failure.printStackTrace()
-            Either.Left(failure)
-        }
-
-    suspend fun getTronBlockHeader(): Either<Failure, TronRawDataResponse?> = try {
-        val request = api.getTronBlockHeaderAsync().await()
-        request.body()?.let { Either.Right(it.blockHeader?.raw_data) }
-            ?: Either.Left(Failure.ServerError())
-    } catch (failure: Failure) {
-        failure.printStackTrace()
-        Either.Left(failure)
-    }
-
     suspend fun submitRecall(
         coinCode: String,
         cryptoAmount: Double
@@ -348,15 +302,6 @@ class TransactionApiService(
         )
         val request = api.stakeOrUnStakeAsync(prefHelper.userId, coinCode, requestBody).await()
         request.body()?.let { Either.Right(it) } ?: Either.Left(Failure.ServerError())
-    } catch (failure: Failure) {
-        failure.printStackTrace()
-        Either.Left(failure)
-    }
-
-    suspend fun getXRPAddressActivated(address: String): Either<Failure, Boolean> = try {
-        val request = api.checkRippleAccountActivationAsync(address).await()
-        request.body()?.let { Either.Right(it.result ?: false) }
-            ?: Either.Left(Failure.ServerError())
     } catch (failure: Failure) {
         failure.printStackTrace()
         Either.Left(failure)

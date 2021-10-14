@@ -394,7 +394,6 @@
     <string name="error_internet_unavailable">Internet connection is unavailable</string>
     <string name="error_something_went_wrong">Something went wrong</string>
     <string name="error_transaction_cannot_be_created">The transaction can not be created</string>
-    <string name="error_xrp_amount_is_not_enough">Amount is not enough to activate receiver address</string>
 
     <string name="staking_screen_fail_create">Stake creation error</string>
     <string name="staking_screen_fail_cancel">Stake cancel error</string>

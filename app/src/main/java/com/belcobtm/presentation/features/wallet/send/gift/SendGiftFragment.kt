@@ -189,12 +189,6 @@ class SendGiftFragment : BaseFragment<FragmentSendGiftBinding>(),
                         showContent()
                     }
                     is Failure.ServerError -> showErrorServerError()
-                    is Failure.XRPLowAmountToSend -> {
-                        binding.sendCoinInputLayout.setErrorText(
-                            getString(R.string.error_xrp_amount_is_not_enough), true
-                        )
-                        showContent()
-                    }
                     else -> showErrorSomethingWrong()
                 }
             })

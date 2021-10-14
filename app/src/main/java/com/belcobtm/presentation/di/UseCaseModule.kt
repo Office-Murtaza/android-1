@@ -123,7 +123,6 @@ val useCaseModule = module {
     single { StakeWithdrawUseCase(get()) }
     single { ConnectToWalletUseCase(get()) }
     single { DisconnectFromWalletUseCase(get()) }
-    single { CheckXRPAddressActivatedUseCase(get()) }
     single { GetContactsUseCase(get()) }
     single { SaveSeedUseCase(get()) }
     single { BioAuthSupportedByPhoneUseCase(get()) }

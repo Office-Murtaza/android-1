@@ -10,7 +10,6 @@ import com.belcobtm.domain.Failure
 import com.belcobtm.domain.wallet.LocalCoinType
 import com.belcobtm.domain.wallet.item.isEthRelatedCoinCode
 import com.belcobtm.presentation.core.coin.CoinCodeProvider
-import com.belcobtm.presentation.core.coin.model.ValidationResult
 import com.belcobtm.presentation.core.extensions.*
 import com.belcobtm.presentation.core.formatter.DoubleCurrencyPriceFormatter
 import com.belcobtm.presentation.core.formatter.Formatter
@@ -107,10 +106,6 @@ class WithdrawFragment : BaseFragment<FragmentWithdrawBinding>() {
                         showContent()
                     }
                     is Failure.ServerError -> showErrorServerError()
-                    is Failure.XRPLowAmountToSend -> {
-                        amountCryptoView.showError(R.string.error_xrp_amount_is_not_enough)
-                        showContent()
-                    }
                     else -> showErrorSomethingWrong()
                 }
             }

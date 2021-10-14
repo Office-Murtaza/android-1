@@ -8,7 +8,6 @@ import java.io.IOException
  */
 sealed class Failure : IOException() {
     object NetworkConnection : Failure()
-    object XRPLowAmountToSend : Failure()
     object OperationCannotBePerformed : Failure()
 
     @Deprecated("This is old realisation for activities. In [data.rest.interceptor.ResponseInterceptor] you can find broadcast that send event for [presentation.features.HostActivity].")
