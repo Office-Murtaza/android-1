@@ -71,7 +71,10 @@ interface WalletDao {
                 coins.add(entity)
             }
             with(response.details) {
-                val entity = CoinDetailsEntity(response.coin, response.details.index, serverAddress)
+                val entity = CoinDetailsEntity(
+                    response.coin, response.details.index,
+                    serverAddress, contractAddress.orEmpty()
+                )
                 details.add(entity)
             }
         }
