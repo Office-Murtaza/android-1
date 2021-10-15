@@ -9,10 +9,10 @@ import com.belcobtm.presentation.core.Numeric
 import com.belcobtm.presentation.core.extensions.USDC_UNIT
 import com.belcobtm.presentation.core.extensions.unit
 import com.belcobtm.presentation.core.toHexByteArray
+import com.belcobtm.presentation.core.toHexBytesInByteString
 import com.google.protobuf.ByteString
 import wallet.core.java.AnySigner
 import wallet.core.jni.CoinType
-import wallet.core.jni.PrivateKey
 import wallet.core.jni.proto.Ethereum
 import java.math.BigDecimal
 
@@ -29,10 +29,9 @@ class EthTransactionInputBuilderFactory(
     ): String {
         val coinItem = walletDao.getCoinByCode(fromCoin.name).toDataItem()
         val amountMultipliedByDivider = BigDecimal(fromCoinAmount * CoinType.ETHEREUM.unit())
-            .toLong().toString(16)
         val transfer = Ethereum.Transaction.Transfer.newBuilder()
         transfer.amount = ByteString.copyFrom(
-            Numeric.hexStringToByteArray("0x${amountMultipliedByDivider}")
+            "0x${amountMultipliedByDivider.toBigInteger().toString(16)}".toHexByteArray()
         )
         val transaction = Ethereum.Transaction.newBuilder()
         transaction.setTransfer(transfer)
@@ -60,15 +59,14 @@ class EthTransactionInputBuilderFactory(
             else -> CoinType.ETHEREUM.unit()
         }
         val amountMultipliedByDivider = BigDecimal(fromCoinAmount * unit)
-            .toLong().toString(16)
         erc20Transfer.amount = ByteString.copyFrom(
-            Numeric.hexStringToByteArray("0x${amountMultipliedByDivider}")
+            "0x${amountMultipliedByDivider.toBigInteger().toString(16)}".toHexByteArray()
         )
 
         val transaction = Ethereum.Transaction.newBuilder()
         transaction.setErc20Transfer(erc20Transfer)
 
-        val input = createInput(coinItem.code, toAddress, fromTransactionPlan)
+        val input = createInput(coinItem.code, coinItem.details.contractAddress, fromTransactionPlan)
         input.setTransaction(transaction)
 
         val output =
@@ -83,41 +81,22 @@ class EthTransactionInputBuilderFactory(
         transactionPlanItem: TransactionPlanItem
     ): Ethereum.SigningInput.Builder {
         val coinEntity = accountDao.getItem(coinCode)
-        val privateKey = PrivateKey(coinEntity.privateKey.toHexByteArray())
+        val privateKey = coinEntity.privateKey
         val input = Ethereum.SigningInput.newBuilder()
         val nonce = transactionPlanItem.nonce
         val gasPrice = transactionPlanItem.gasPrice
         val gasLimit = transactionPlanItem.gasLimit
-        val hexNonce = addLeadingZeroes(nonce.toString(16)).toHexByteArray()
-        val hexGasLimit = addLeadingZeroes(gasLimit.toString(16))
-            .toHexByteArray()
-        val hexGasPrice = addLeadingZeroes(gasPrice.toString(16))
-            .toHexByteArray()
+        val hexNonce = "0x${nonce.toString(16)}".toHexByteArray()
+        val hexGasLimit = "0x${gasLimit.toString(16)}".toHexByteArray()
+        val hexGasPrice = "0x${gasPrice.toString(16)}".toHexByteArray()
 
-        input.privateKey = ByteString.copyFrom(privateKey.data())
+        input.privateKey = privateKey.toHexBytesInByteString()
         input.toAddress = toAddress
-        input.chainId = ByteString.copyFrom("0x1".toHexByteArray())
+        input.chainId = ByteString.copyFrom("0x${transactionPlanItem.chainId}".toHexByteArray())
         input.nonce = ByteString.copyFrom(hexNonce)
         input.gasPrice = ByteString.copyFrom(hexGasPrice)
         input.gasLimit = ByteString.copyFrom(hexGasLimit)
 
         return input
-    }
-
-    /**
-     * custom implementation of adding leading zeroes
-     * for hex value (%016llx)
-     */
-    private fun addLeadingZeroes(str: String): String {
-        var res = ""
-        if (str.length < 64) {
-            var i = 0
-            while ((64 - str.length) > i) {
-                i++
-                res += "0"
-            }
-            return res + str
-        }
-        return str
     }
 }
