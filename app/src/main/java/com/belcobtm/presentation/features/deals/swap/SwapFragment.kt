@@ -166,9 +166,12 @@ class SwapFragment : BaseFragment<FragmentSwapBinding>() {
             val coinFee = coin.coinFee.toStringCoin()
             val coinBalance = coin.coinBalance.toStringCoin()
             val localType = LocalCoinType.valueOf(coinCode)
-            val coinCodeFee = when (coinCode.isEthRelatedCoinCode()) {
-                true -> LocalCoinType.ETH.name
-                false -> coinCode
+            val coinCodeFee = when  {
+                coinCode.isEthRelatedCoinCode() -> LocalCoinType.ETH.name
+                coinCode == LocalCoinType.XRP.name -> getString(
+                    R.string.xrp_additional_transaction_comission, LocalCoinType.XRP.name
+                )
+                else -> coinCode
             }
             sendCoinInputLayout.setCoinData(
                 coinCode,

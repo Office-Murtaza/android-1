@@ -205,9 +205,12 @@ class SendGiftFragment : BaseFragment<FragmentSendGiftBinding>(),
                 coinBalance,
                 coinCode,
                 fee.toStringCoin(),
-                when (viewModel.getCoinCode().isEthRelatedCoinCode()) {
-                    true -> LocalCoinType.ETH.name
-                    false -> viewModel.getCoinCode()
+                when  {
+                    coinCode.isEthRelatedCoinCode() -> LocalCoinType.ETH.name
+                    coinCode == LocalCoinType.XRP.name -> getString(
+                        R.string.xrp_additional_transaction_comission, LocalCoinType.XRP.name
+                    )
+                    else -> coinCode
                 }
             )
         )

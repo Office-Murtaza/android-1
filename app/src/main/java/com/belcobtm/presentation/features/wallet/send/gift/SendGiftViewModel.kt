@@ -181,21 +181,22 @@ class SendGiftViewModel(
             _cryptoAmountError.value = R.string.balance_amount_too_small
             return
         }
-        if (!isSufficientBalance()) {
-            _cryptoAmountError.value = R.string.insufficient_balance
-            return
-        }
-        if (coinToSend.isEthRelatedCoin() && !isSufficientEth()) {
-            _cryptoAmountError.value = R.string.send_gift_screen_where_money_libovski
-            return
-        }
+        val useMax = _amount.value?.useMax ?: false
         _cryptoAmountError.value = null
         _sendGiftLoadingData.value = LoadingData.Loading()
         getSignedTransactionPlanUseCase(GetSignedTransactionPlanUseCase.Params(
-            toAddress, coinToSend.code, amount, transactionPlanItem
+            toAddress, coinToSend.code, amount, transactionPlanItem, useMax
         ), onSuccess = {
             signedTransactionPlanItem = it
             _fee.value = it.fee
+            if (!isSufficientBalance()) {
+                _cryptoAmountError.value = R.string.insufficient_balance
+                return@getSignedTransactionPlanUseCase
+            }
+            if (coinToSend.isEthRelatedCoin() && !isSufficientEth()) {
+                _cryptoAmountError.value = R.string.send_gift_screen_where_money_libovski
+                return@getSignedTransactionPlanUseCase
+            }
             if (coinToSend.code == LocalCoinType.XRP.name) {
                 if (amount < 20) {
                     _cryptoAmountError.value = R.string.xrp_too_small_amount_error

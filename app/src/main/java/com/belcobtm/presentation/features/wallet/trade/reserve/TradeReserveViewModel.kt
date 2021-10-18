@@ -110,14 +110,15 @@ class TradeReserveViewModel(
     fun createTransaction() {
         val transactionPlanItem = transactionPlanItem ?: return
         val cryptoAmount = _amount.value?.amount ?: 0.0
-        if (!validateCryptoAmount()) {
-            return
-        }
+        val useMax = _amount.value?.useMax ?: false
         getSignedTransactionPlanUseCase(GetSignedTransactionPlanUseCase.Params(
-            coinDataItem.details.walletAddress, coinCode, cryptoAmount, transactionPlanItem
+            coinDataItem.details.walletAddress, coinCode, cryptoAmount, transactionPlanItem, useMax
         ), onSuccess = {
             _fee.value = it.fee
             signedTransactionPlanItem = it
+            if (!validateCryptoAmount()) {
+                return@getSignedTransactionPlanUseCase
+            }
             _createTransactionLiveData.value = LoadingData.Loading()
             if (coinDataItem.code == LocalCoinType.XRP.name) {
                 if (cryptoAmount < 20) {

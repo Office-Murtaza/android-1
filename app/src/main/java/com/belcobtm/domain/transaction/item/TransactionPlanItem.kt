@@ -1,5 +1,7 @@
 package com.belcobtm.domain.transaction.item
 
+import com.belcobtm.data.rest.transaction.response.hash.TronBlockHeaderResponse
+
 data class TransactionPlanItem(
     val coinCode: String,
     val byteFee: Long,
@@ -8,7 +10,7 @@ data class TransactionPlanItem(
     val gasLimit: Int,
     val txFee: Double,
     val nativeTxFee: Double,
-    val blockHeader: String,
+    val blockHeader: TronBlockHeaderResponse?,
     val accountNumber: Long,
     val sequence: Long,
     val chainId: String

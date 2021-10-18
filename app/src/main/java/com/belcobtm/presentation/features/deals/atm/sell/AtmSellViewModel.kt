@@ -19,7 +19,6 @@ import com.belcobtm.presentation.core.formatter.Formatter
 import com.belcobtm.presentation.core.livedata.DoubleCombinedLiveData
 import com.belcobtm.presentation.core.mvvm.LoadingData
 import com.belcobtm.presentation.core.provider.string.StringProvider
-import com.belcobtm.presentation.features.deals.swap.CoinPresentationModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -49,8 +48,8 @@ class AtmSellViewModel(
     private val _usdAmountError = MutableLiveData<String>()
     val usdAmountError: LiveData<String> = _usdAmountError
 
-    private val _selectedCoinModel = MutableLiveData<CoinPresentationModel>()
-    val selectedCoinModel: LiveData<CoinPresentationModel> = _selectedCoinModel
+    private val _selectedCoinModel = MutableLiveData<AtmSellCoinPresentationModel>()
+    val selectedCoinModel: LiveData<AtmSellCoinPresentationModel> = _selectedCoinModel
 
     private val _selectedCoin = MutableLiveData<CoinDataItem>()
     val selectedCoin: LiveData<CoinDataItem> = _selectedCoin
@@ -119,9 +118,9 @@ class AtmSellViewModel(
 
     fun setMaxSendAmount() {
         val currentCoinToSend = selectedCoin.value ?: return
-        val a = currentCoinToSend.reservedBalanceCoin * currentCoinToSend.priceUsd *
-                (100 - serviceInfoProvider.getServiceFee(ServiceType.ATM_SELL)) / 100
-        val maxAmount = max(a / 20 * 20, max(a / 50 * 50, a / 100 * 100)).toInt()
+        val a = (currentCoinToSend.reservedBalanceCoin * currentCoinToSend.priceUsd *
+                (100.toDouble() - serviceInfoProvider.getServiceFee(ServiceType.ATM_SELL)) / 100.0).toInt()
+        val maxAmount = max(a / 20 * 20, max(a / 50 * 50, a / 100 * 100))
         setAmount(maxAmount)
     }
 
@@ -145,7 +144,7 @@ class AtmSellViewModel(
             _usdAmountError.value = stringProvider.getString(R.string.sell_amount_zero)
             return
         }
-        if(usdAmount % 100 != 0 && usdAmount % 20 != 0 && usdAmount % 100 != 0) {
+        if(usdAmount % 50 != 0 && usdAmount % 20 != 0 && usdAmount % 100 != 0) {
             _usdAmountError.value = stringProvider.getString(R.string.sell_amount_wrong_divider)
             return
         }
@@ -171,8 +170,8 @@ class AtmSellViewModel(
         _rate.value = AtmSellRateModelView(
             1.0, coin.code, priceFormatter.format(coin.priceUsd)
         )
-        _selectedCoinModel.value = CoinPresentationModel(
-            coin.code, coin.reservedBalanceCoin, 0.0
+        _selectedCoinModel.value = AtmSellCoinPresentationModel(
+            coin.code, coin.reservedBalanceCoin,  priceFormatter.format(coin.reservedBalanceUsd), 0.0
         )
     }
 
@@ -202,4 +201,11 @@ data class AtmSellRateModelView(
     val coinAmount: Double,
     val coinCode: String,
     val usdAmount: String
+)
+
+data class AtmSellCoinPresentationModel(
+    val coinCode: String,
+    val coinBalance: Double,
+    val usdBalance: String,
+    val coinFee: Double
 )

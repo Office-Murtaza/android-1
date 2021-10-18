@@ -71,7 +71,6 @@ class SwapViewModel(
     val sendCoinAmount: LiveData<AmountItem> = _sendCoinAmount
 
     private val _sendFeeAmount = MutableLiveData<Double>()
-    val sendFeeAmount: LiveData<Double> = _sendFeeAmount
 
     private val _submitEnabled = MutableLiveData(false)
     val submitEnabled: LiveData<Boolean> = _submitEnabled
@@ -80,7 +79,6 @@ class SwapViewModel(
     val receiveCoinAmount: LiveData<AmountItem> = _receiveCoinAmount
 
     private val _receiveFeeAmount = MutableLiveData<Double>()
-    val receiveFeeAmount: LiveData<Double> = _receiveFeeAmount
 
     private val _swapLoadingData = SingleLiveData<LoadingData<Unit>>()
     val swapLoadingData: LiveData<LoadingData<Unit>> = _swapLoadingData
@@ -291,11 +289,12 @@ class SwapViewModel(
         receiveCoin: CoinDataItem
     ) {
         val fromTransactionPlanItem = fromTransactionPlanItem ?: return
-        val toTransactionPlanItem = toTransactionPlanItem ?: return
+        val sendUseMax = _sendCoinAmount.value?.useMax ?: false
+        val receiveUseMax = _receiveCoinAmount.value?.useMax ?: false
         getSignedTransactionPlanUseCase(
             GetSignedTransactionPlanUseCase.Params(
                 sendCoin.details.walletAddress, sendCoin.code,
-                sendAmount, fromTransactionPlanItem
+                sendAmount, fromTransactionPlanItem, sendUseMax
             ),
             onSuccess = { sendSignedPlan ->
                 signedFromTransactionPlanItem = sendSignedPlan
@@ -303,7 +302,7 @@ class SwapViewModel(
                 getSignedTransactionPlanUseCase(
                     GetSignedTransactionPlanUseCase.Params(
                         receiveCoin.details.walletAddress, receiveCoin.code,
-                        receiveAmount, fromTransactionPlanItem
+                        receiveAmount, fromTransactionPlanItem, receiveUseMax
                     ),
                     onSuccess = { receiveSignedPlan ->
                         signedToTransactionPlanItem = receiveSignedPlan

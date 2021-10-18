@@ -43,7 +43,6 @@ class BlockTransactionHelper(private val blockFactory: BlockTransactionInputBuil
         )
         val availableAmount = plan.availableAmount.toDouble() / fromCoin.trustWalletType.unit()
         val fee = plan.fee / fromCoin.trustWalletType.unit().toDouble()
-        Log.d("FEE", "fee $fee, $availableAmount, utxo $utxos")
         return SignedTransactionPlanItem(fee, availableAmount)
     }
 
@@ -58,6 +57,12 @@ class BlockTransactionHelper(private val blockFactory: BlockTransactionInputBuil
             utxos, toAddress, fromCoin,
             fromCoinAmount, fromTransactionPlan
         )
+        val plan = AnySigner.plan(
+            input.build(),
+            fromCoin.trustWalletType,
+            Bitcoin.TransactionPlan.parser()
+        )
+        input.plan = plan
         val signBytes = AnySigner.sign(
             input.build(),
             fromCoin.trustWalletType,

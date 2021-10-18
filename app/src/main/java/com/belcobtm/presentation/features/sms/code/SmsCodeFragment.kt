@@ -68,6 +68,7 @@ class SmsCodeFragment : BaseFragment<FragmentSmsCodeBinding>() {
             is Failure.MessageError -> {
                 if (it.code == AUTH_ERROR_PHONE_NOT_SUPPORTED) {
                     showContent()
+                    binding.errorTextView.text = it.message ?: ""
                     binding.errorTextView.show()
                 } else {
                     showSnackBar(it.message ?: "")

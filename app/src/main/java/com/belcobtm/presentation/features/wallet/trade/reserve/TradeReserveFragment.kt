@@ -1,12 +1,13 @@
 package com.belcobtm.presentation.features.wallet.trade.reserve
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.navArgs
 import com.belcobtm.R
 import com.belcobtm.databinding.FragmentTradeReserveBinding
+import com.belcobtm.domain.wallet.LocalCoinType
+import com.belcobtm.domain.wallet.item.isEthRelatedCoinCode
 import com.belcobtm.presentation.core.extensions.*
 import com.belcobtm.presentation.core.formatter.DoubleCurrencyPriceFormatter
 import com.belcobtm.presentation.core.formatter.Formatter
@@ -82,7 +83,13 @@ class TradeReserveFragment : BaseFragment<FragmentTradeReserveBinding>() {
             amountCryptoView.helperText = getString(
                 R.string.transaction_helper_text_commission,
                 fee.toStringCoin(),
-                viewModel.getCoinCode()
+                when  {
+                    viewModel.getCoinCode().isEthRelatedCoinCode() -> LocalCoinType.ETH.name
+                    viewModel.getCoinCode() == LocalCoinType.XRP.name -> getString(
+                        R.string.xrp_additional_transaction_comission, LocalCoinType.XRP.name
+                    )
+                    else -> viewModel.getCoinCode()
+                }
             )
         }
         viewModel.cryptoAmountError.observe(viewLifecycleOwner, amountCryptoView::setError)

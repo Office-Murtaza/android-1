@@ -3,6 +3,7 @@ package com.belcobtm.data.core.factory
 import com.belcobtm.data.disk.database.account.AccountDao
 import com.belcobtm.data.rest.transaction.response.hash.TronRawDataResponse
 import com.belcobtm.domain.Either
+import com.belcobtm.domain.Failure
 import com.belcobtm.domain.transaction.item.TransactionPlanItem
 import com.belcobtm.domain.wallet.LocalCoinType
 import com.belcobtm.presentation.core.extensions.unit
@@ -10,6 +11,7 @@ import com.belcobtm.presentation.core.toHexBytesInByteString
 import com.squareup.moshi.Moshi
 import wallet.core.jni.CoinType
 import wallet.core.jni.proto.Tron
+import java.lang.RuntimeException
 import java.util.*
 
 class TronTransactionInputBuilderFactory(
@@ -24,8 +26,7 @@ class TronTransactionInputBuilderFactory(
         fromTransactionPlan: TransactionPlanItem
     ): Tron.SigningInput.Builder {
         val coinEntity = accountDao.getItem(fromCoin.name)
-        val rawData = moshi.adapter(TronRawDataResponse::class.java)
-            .fromJson(fromTransactionPlan.blockHeader)
+        val rawData = fromTransactionPlan.blockHeader?.raw_data
         val cryptoToSubcoin = fromCoinAmount * CoinType.TRON.unit()
         val fromAddress = coinEntity.publicKey
         val tronBlock = Tron.BlockHeader.newBuilder().also {

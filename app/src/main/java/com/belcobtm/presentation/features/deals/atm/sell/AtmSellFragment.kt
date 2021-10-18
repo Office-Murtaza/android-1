@@ -85,7 +85,9 @@ class AtmSellFragment : BaseFragment<FragmentAtmSellBinding>() {
             val coinBalance = coin.coinBalance.toStringCoin()
             val localType = LocalCoinType.valueOf(coinCode)
             val balancePart = getString(R.string.sell_screen_balance)
-            val coinPart = getString(R.string.coin_balance_format, coinBalance, coinCode)
+            val coinPart = getString(
+                R.string.coin_balance_format, coinBalance, coinCode, coin.usdBalance
+            )
             coinInputLayout.setCoinData(
                 coinCode, localType.resIcon(),
                 viewModel.originCoinsData.size > SwapFragment.MIN_COINS_TO_ENABLE_DIALOG_PICKER
