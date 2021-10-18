@@ -9,5 +9,6 @@ data class AuthorizationResponse(
     val refreshToken: String,
     val firebaseToken: String,
     val user: UserDetailsResponse,
-    val serviceFees: List<ServiceFeeResponse>
+    val serviceFees: List<ServiceFeeResponse>,
+    val balance: BalanceResponse
 )

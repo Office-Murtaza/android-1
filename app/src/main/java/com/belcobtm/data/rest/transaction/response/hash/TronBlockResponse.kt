@@ -1,8 +1,5 @@
 package com.belcobtm.data.rest.transaction.response.hash
 
-data class TronBlockResponse(
-    val blockHeader: TronBlockHeaderResponse?
-)
 
 data class TronBlockHeaderResponse(
     val raw_data: TronRawDataResponse?

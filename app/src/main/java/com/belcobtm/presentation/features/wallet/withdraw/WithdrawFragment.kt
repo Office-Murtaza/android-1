@@ -24,7 +24,6 @@ import org.koin.core.parameter.parametersOf
 import org.koin.core.qualifier.named
 
 class WithdrawFragment : BaseFragment<FragmentWithdrawBinding>() {
-    private val coinCodeProvider by inject<CoinCodeProvider>()
     private val viewModel: WithdrawViewModel by viewModel {
         parametersOf(WithdrawFragmentArgs.fromBundle(requireArguments()).coinCode)
     }
@@ -83,13 +82,17 @@ class WithdrawFragment : BaseFragment<FragmentWithdrawBinding>() {
             amountCryptoView.helperText = getString(
                 R.string.transaction_helper_text_commission,
                 fee.toStringCoin(),
-                when (viewModel.getCoinCode().isEthRelatedCoinCode()) {
-                    true -> LocalCoinType.ETH.name
-                    false -> viewModel.getCoinCode()
+                when  {
+                    viewModel.getCoinCode().isEthRelatedCoinCode() -> LocalCoinType.ETH.name
+                    viewModel.getCoinCode() == LocalCoinType.XRP.name -> getString(
+                        R.string.xrp_additional_transaction_comission, LocalCoinType.XRP.name
+                    )
+                    else -> viewModel.getCoinCode()
                 }
             )
         }
         viewModel.cryptoAmountError.observe(viewLifecycleOwner, amountCryptoView::setError)
+        viewModel.addressError.observe(viewLifecycleOwner, addressView::setError)
         viewModel.transactionLiveData.listen(
             success = {
                 AlertHelper.showToastShort(
@@ -124,10 +127,7 @@ class WithdrawFragment : BaseFragment<FragmentWithdrawBinding>() {
             if (result.contents == null) {
                 showError(R.string.cancelled)
             } else {
-                val walletCode = result.contents.replaceBefore(':', "")
-                    .replaceBefore('=', "")
-                    .removePrefix(":")
-                binding.addressView.setText(walletCode)
+                binding.addressView.setText(result.contents)
             }
         } else {
             super.onActivityResult(requestCode, resultCode, data)
@@ -160,37 +160,6 @@ class WithdrawFragment : BaseFragment<FragmentWithdrawBinding>() {
     private fun FragmentWithdrawBinding.validateAndSubmit() {
         amountCryptoView.clearError()
         addressView.clearError()
-
-        var errors = 0
-
-        if (amountCryptoView.getDouble() <= 0) {
-            errors++
-            amountCryptoView.showError(R.string.balance_amount_too_small)
-        }
-
-        if (!viewModel.isSufficientBalance()) {
-            errors++
-            amountCryptoView.showError(R.string.balance_amount_exceeded)
-        }
-
-        if (!viewModel.isSufficientEth()) {
-            errors++
-            amountCryptoView.showError(R.string.withdraw_screen_where_money_libovski)
-        }
-
-        if (!isValidAddress()) {
-            errors++
-            addressView.showError(R.string.address_invalid)
-        }
-
-        if (errors == 0) {
-            viewModel.withdraw(addressView.getString())
-        }
-    }
-
-    private fun FragmentWithdrawBinding.isValidAddress(): Boolean {
-        val coinCode = coinCodeProvider.getCoinCode(viewModel.getCoinCode())
-        val coinType = CoinTypeExtension.getTypeByCode(coinCode)
-        return coinType?.validate(addressView.getString()) ?: false
+        viewModel.withdraw(addressView.getString())
     }
 }

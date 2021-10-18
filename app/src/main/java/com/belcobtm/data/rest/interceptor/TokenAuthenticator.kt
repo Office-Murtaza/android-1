@@ -1,6 +1,7 @@
 package com.belcobtm.data.rest.interceptor
 
 import com.belcobtm.data.core.UnlinkHandler
+import com.belcobtm.data.disk.database.wallet.WalletDao
 import com.belcobtm.data.disk.shared.preferences.SharedPreferencesHelper
 import com.belcobtm.data.rest.authorization.AuthApi
 import com.belcobtm.data.rest.authorization.request.RefreshTokenRequest
@@ -15,6 +16,7 @@ import java.net.HttpURLConnection
 
 class TokenAuthenticator(
     private val authApi: AuthApi,
+    private val walletDao: WalletDao,
     private val serviceRepository: ServiceRepository,
     private val prefsHelper: SharedPreferencesHelper,
     private val unlinkHandler: UnlinkHandler
@@ -34,7 +36,7 @@ class TokenAuthenticator(
                         responseBody.user.availableServices,
                         responseBody.serviceFees
                     )
-
+                    walletDao.updateBalance(responseBody.balance)
                 }
                 // update session
                 prefsHelper.processAuthResponse(responseBody)

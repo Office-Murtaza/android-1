@@ -17,13 +17,14 @@ class GetSignedTransactionPlanUseCase(
             params.coinAmount,
             params.transactionPlanItem,
             params.toAddress,
-            useMaxAmountFlag = false
+            params.useMaxAmount
         )
 
     data class Params(
         val toAddress: String,
         val coinCode: String,
         val coinAmount: Double,
-        val transactionPlanItem: TransactionPlanItem
+        val transactionPlanItem: TransactionPlanItem,
+        val useMaxAmount: Boolean,
     )
 }

@@ -40,7 +40,6 @@ class TradeOrderRateBottomSheetFragment : BaseBottomSheetFragment() {
         viewModel.rateLoadingData.listen(success = {
             findNavController().popBackStack(R.id.trade_container_fragment, false)
         })
-        Log.d("RATE", "id is ${args.partnerPublicId}")
         binding.header.text =
             resources.getString(R.string.trade_rate_header_formatted, args.partnerPublicId)
         binding.ratingBar.rating = TradeOrderRateViewModel.LOW_RATING.toFloat()

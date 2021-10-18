@@ -29,7 +29,7 @@ class BlockTransactionInputBuilderFactory(
         val trustWalletCoin = fromCoin.trustWalletType
         val hdWallet = HDWallet(prefsHelper.apiSeed, "")
         val fromAddress = daoAccount.getItem(fromCoin.name).publicKey
-        val cryptoToSatoshi = fromCoinAmount * CoinType.BITCOIN.unit()
+        val cryptoToSatoshi = fromCoinAmount * trustWalletCoin.unit()
         val amount: Long = cryptoToSatoshi.toLong()
         val byteFee = fromTransactionPlan.byteFee
         val sngHash = BitcoinScript.hashTypeForCoin(trustWalletCoin)
@@ -41,7 +41,6 @@ class BlockTransactionInputBuilderFactory(
             .setHashType(sngHash)
             .setChangeAddress(fromAddress)
             .setToAddress(toAddress)
-            .setUseMaxAmount(false)
 
         utxos.forEach {
             val privateKey = hdWallet.getKey(trustWalletCoin, it.path)

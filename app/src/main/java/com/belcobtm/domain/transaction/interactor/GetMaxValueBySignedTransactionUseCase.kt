@@ -7,6 +7,7 @@ import com.belcobtm.domain.map
 import com.belcobtm.domain.transaction.TransactionRepository
 import com.belcobtm.domain.transaction.item.AmountWithFeeItem
 import com.belcobtm.domain.transaction.item.TransactionPlanItem
+import com.belcobtm.domain.wallet.LocalCoinType
 import com.belcobtm.domain.wallet.item.CoinDataItem
 
 class GetMaxValueBySignedTransactionUseCase(
@@ -22,7 +23,9 @@ class GetMaxValueBySignedTransactionUseCase(
             useMaxAmountFlag = true
         ).map {
             val balance = it.availableAmount ?: params.coinDataItem.balanceCoin
-            AmountWithFeeItem((balance - it.fee).coerceAtLeast(0.0), it.fee)
+            val additionalFee = if (params.coinDataItem.code == LocalCoinType.XRP.name) 20 else 0
+            val max = balance - it.fee - additionalFee
+            AmountWithFeeItem(max.coerceAtLeast(0.0), it.fee)
         }
 
     data class Params(

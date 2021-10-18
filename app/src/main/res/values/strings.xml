@@ -76,7 +76,7 @@
     <string name="create_wallet_screen_title">Create New Wallet</string>
     <string name="create_wallet_screen_phone">Phone</string>
     <string name="create_wallet_screen_password">Password</string>
-    <string name="create_wallet_screen_confirm_password">Confirm password</string>
+    <string name="create_wallet_screen_confirm_password">Confirm Password</string>
     <string name="create_wallet_error_all_fields_required">All fields are required</string>
     <string name="create_wallet_error_confirm_pass">Passwords do not match</string>
     <string name="error_short_pin">PIN should contain 6 digits</string>
@@ -193,6 +193,7 @@
     <string name="transactions_screen_transaction_created">Transaction successfully created</string>
     <string name="transaction_changes_percent">%1$s %%</string>
     <string name="transaction_helper_text_commission">Fee %1$s %2$s</string>
+    <string name="xrp_additional_transaction_comission">%1$s, locked amount 20 XRP</string>
 
     <!--transaction status-->
     <string name="transaction_status_unknown">Unknown</string>
@@ -713,10 +714,10 @@
     <string name="create_trade_terms_validation_error">Terms cannot be empty</string>
     <string name="atm_sell_title">ATM Sell</string>
     <string name="update_limits_button_label">Increase limits</string>
-    <string name="daily_limit_label">Daily limit</string>
-    <string name="today_limit_label">Today limit</string>
-    <string name="tx_limit_label">Tx limit</string>
-    <string name="converted_value_label">Converted value</string>
+    <string name="daily_limit_label">Daily Limit</string>
+    <string name="today_limit_label">Today Limit</string>
+    <string name="tx_limit_label">Tx Limit</string>
+    <string name="converted_value_label">Converted Value</string>
     <string name="atm_sell_coin_rate"><![CDATA[<b>%1$s</b> %2$s\n ~ <b>%3$s</b>]]></string>
     <string name="sell_amount_exceeds_limit">Amount exceeds reserved balance</string>
     <string name="sell_amount_zero">Amount can\'t be zero</string>
@@ -725,7 +726,7 @@
     <string name="sell_amount_hint">Enter /20, /50 or /100 amount</string>
     <string name="sell_screen_balance">Balance</string>
     <string name="sell_screen_fee_formatted"><![CDATA[Platform fee %1$s\%%, %2$s %3$s]]></string>
-    <string name="coin_balance_format">%1$s %2$s</string>
+    <string name="coin_balance_format">%1$s %2$s ~ %3$s</string>
     <string name="sell_screen_balance_formatted">%1$s %2$s</string>
 
     <string name="verification_info_deeplink">belcobtm://verification_info</string>

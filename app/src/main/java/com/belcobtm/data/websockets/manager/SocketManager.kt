@@ -1,6 +1,7 @@
 package com.belcobtm.data.websockets.manager
 
 import com.belcobtm.data.core.UnlinkHandler
+import com.belcobtm.data.disk.database.wallet.WalletDao
 import com.belcobtm.data.disk.shared.preferences.SharedPreferencesHelper
 import com.belcobtm.data.rest.authorization.AuthApi
 import com.belcobtm.data.rest.authorization.request.RefreshTokenRequest
@@ -26,6 +27,7 @@ class SocketManager(
     private val unlinkHandler: UnlinkHandler,
     private val preferencesHelper: SharedPreferencesHelper,
     private val serviceRepository: ServiceRepository,
+    private val walletDao: WalletDao,
     private val serializer: RequestSerializer<StompSocketRequest>,
     private val deserializer: ResponseDeserializer<StompSocketResponse>
 ) : WebSocketManager {
@@ -190,6 +192,7 @@ class SocketManager(
                     body.user.availableServices,
                     body.serviceFees
                 )
+                walletDao.updateBalance(body.balance)
                 preferencesHelper.processAuthResponse(body)
                 disconnect()
                 connect()
