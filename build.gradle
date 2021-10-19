@@ -38,8 +38,8 @@ allprojects {
             name = "GitHubPackages"
             url = uri("https://maven.pkg.github.com/trustwallet/wallet-core")
             credentials {
-                username = "kostyarypta"
-                password = "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"
+                username = "VadimKulinich"
+                password = "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"
             }
         }
     }
