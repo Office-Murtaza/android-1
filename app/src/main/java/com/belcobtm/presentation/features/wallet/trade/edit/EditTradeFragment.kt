@@ -184,7 +184,7 @@ class EditTradeFragment : BaseFragment<FragmentEditTradeBinding>() {
         val localType = LocalCoinType.valueOf(coinCode)
         binding.coinDetailsView.setCoinData(coinCode, localType.resIcon(), showCoinArrow = false)
         val balancePart = getString(R.string.sell_screen_balance)
-        val coinPart = getString(R.string.coin_balance_format, coinBalance, coinCode)
+        val coinPart = getString(R.string.trade_coin_balance_format, coinBalance, coinCode)
         val balanceFormatted = getString(R.string.sell_screen_balance_formatted, balancePart, coinPart)
         binding.coinDetailsView.setHelperTextWithLink(balanceFormatted, coinPart) {
             val uri = getString(R.string.reserved_deeplink_format, coinCode).toUri()
