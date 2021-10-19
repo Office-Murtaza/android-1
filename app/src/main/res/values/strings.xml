@@ -753,4 +753,6 @@
     <string name="trade_container_deeplink_format">belcobtm://trade_container/%s</string>
 
     <string name="xrp_too_small_amount_error">Receiver address is not activated, send at least 20 XRP</string>
+
+    <string name="trade_coin_balance_format">%1$s %2$s</string>
 </resources>
