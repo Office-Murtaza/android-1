@@ -1,9 +1,13 @@
 package com.belcobtm.presentation.features.deals.staking
 
+import android.content.Context
+import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
+import androidx.core.view.get
 import com.belcobtm.R
 import com.belcobtm.data.rest.transaction.response.StakeDetailsStatus
 import com.belcobtm.databinding.FragmentStakingBinding
@@ -76,6 +80,19 @@ class StakingFragment : BaseFragment<FragmentStakingBinding>() {
 
     override fun FragmentStakingBinding.initViews() {
         setToolbarTitle(R.string.staking_screen_title)
+        binding.coinInputLayout.getEditText().setText("0")
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        binding.root.post {
+            binding.coinInputLayout.getEditText().requestFocus()
+            binding.coinInputLayout.getEditText().setSelection(
+                binding.coinInputLayout.getEditText().length()
+            )
+            (requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager)
+                ?.showSoftInput(binding.coinInputLayout.getEditText(), 0)
+        }
     }
 
     override fun FragmentStakingBinding.initListeners() {
@@ -414,6 +431,8 @@ class StakingFragment : BaseFragment<FragmentStakingBinding>() {
         } else {
             binding.tvUsdConvertedValue.text = currencyFormatter.format(0.0)
             binding.coinInputLayout.getEditText().setText("0")
+            binding.coinInputLayout.getEditText()
+                .setSelection(binding.coinInputLayout.getEditText().length())
         }
     }
 

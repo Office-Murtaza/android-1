@@ -1,30 +1,31 @@
 package com.belcobtm.presentation.features.authorization.create.wallet
 
+import android.content.Context
 import android.graphics.Color
+import android.os.Bundle
 import android.telephony.PhoneNumberFormattingTextWatcher
-import android.text.SpannableString
+import android.text.SpannableStringBuilder
 import android.text.Spanned
 import android.text.TextUtils
 import android.text.method.LinkMovementMethod
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
 import com.belcobtm.R
 import com.belcobtm.databinding.FragmentCreateWalletBinding
-import com.belcobtm.domain.tools.IntentActions
+import com.belcobtm.domain.tools.openViewActivity
 import com.belcobtm.presentation.core.Const
 import com.belcobtm.presentation.core.extensions.*
 import com.belcobtm.presentation.core.helper.SimpleClickableSpan
 import com.belcobtm.presentation.core.ui.fragment.BaseFragment
 import com.belcobtm.presentation.features.authorization.create.seed.CreateSeedFragment
 import com.belcobtm.presentation.features.sms.code.SmsCodeFragment
-import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class CreateWalletFragment : BaseFragment<FragmentCreateWalletBinding>() {
-    private val intentActions: IntentActions by inject()
     private val viewModel: CreateWalletViewModel by viewModel()
     override val isToolbarEnabled: Boolean = true
     override val isHomeButtonEnabled: Boolean = true
@@ -44,7 +45,10 @@ class CreateWalletFragment : BaseFragment<FragmentCreateWalletBinding>() {
         phoneEditView.addTextChangedListener(PhoneNumberFormattingTextWatcher())
     }
 
-    override fun createBinding(inflater: LayoutInflater, container: ViewGroup?): FragmentCreateWalletBinding =
+    override fun createBinding(
+        inflater: LayoutInflater,
+        container: ViewGroup?
+    ): FragmentCreateWalletBinding =
         FragmentCreateWalletBinding.inflate(inflater, container, false)
 
     override fun FragmentCreateWalletBinding.initObservers() {
@@ -70,8 +74,9 @@ class CreateWalletFragment : BaseFragment<FragmentCreateWalletBinding>() {
     }
 
     private fun FragmentCreateWalletBinding.initTncView() {
+        val linkText = getString(R.string.welcome_screen_terms_and_conditions)
         val linkClickableSpan = SimpleClickableSpan(
-            onClick = { intentActions.openViewActivity(Const.TERMS_URL) },
+            onClick = { requireActivity().openViewActivity(Const.TERMS_URL, linkText) },
             updateDrawState = { it.isUnderlineText = false }
         )
         val defaultTextClickableSpan = SimpleClickableSpan(
@@ -81,8 +86,8 @@ class CreateWalletFragment : BaseFragment<FragmentCreateWalletBinding>() {
                 it.color = ContextCompat.getColor(requireContext(), R.color.colorText)
             }
         )
-        val linkText = getString(R.string.welcome_screen_terms_and_conditions)
-        val fullText = SpannableString(getString(R.string.welcome_screen_accept_terms_and_conditions))
+        val fullText =
+            SpannableStringBuilder(getString(R.string.welcome_screen_accept_terms_and_conditions))
         val startIndex = fullText.indexOf(linkText, 0, true)
         fullText.setSpan(
             linkClickableSpan,
@@ -113,6 +118,18 @@ class CreateWalletFragment : BaseFragment<FragmentCreateWalletBinding>() {
                 false
             }
             else -> true
+        }
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        binding.root.post {
+            binding.phoneEditView.requestFocus()
+            binding.phoneEditView.setSelection(
+                binding.phoneEditView.length()
+            )
+            (requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager)
+                ?.showSoftInput(binding.phoneEditView, 0)
         }
     }
 
