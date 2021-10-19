@@ -14,10 +14,7 @@ import wallet.core.jni.proto.Tron
 import java.lang.RuntimeException
 import java.util.*
 
-class TronTransactionInputBuilderFactory(
-    private val accountDao: AccountDao,
-    private val moshi: Moshi
-) {
+class TronTransactionInputBuilderFactory(private val accountDao: AccountDao) {
 
     suspend fun createInput(
         toAddress: String,

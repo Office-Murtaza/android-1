@@ -9,7 +9,6 @@ import wallet.core.java.AnySigner
 import wallet.core.jni.proto.Tron
 
 class TronTransactionHelper(
-    private val moshi: Moshi,
     private val tronFactory: TronTransactionInputBuilderFactory
 ) {
 
@@ -21,13 +20,10 @@ class TronTransactionHelper(
     ): String {
         val input =
             tronFactory.createInput(toAddress, fromCoin, fromCoinAmount, fromTransactionPlan)
-        val signJson = AnySigner.sign(
+        return AnySigner.sign(
             input.build(),
             fromCoin.trustWalletType,
             Tron.SigningOutput.parser()
         ).json
-        val adapter = moshi.adapter(Trx::class.java)
-        val jsonContent = adapter.fromJson(signJson)
-        return adapter.toJson(jsonContent)
     }
 }

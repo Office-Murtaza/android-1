@@ -269,7 +269,7 @@
 
         <action
             android:id="@+id/to_rate_order_fragment"
-            app:destination="@id/rate_order_fragment"
+            app:destination="@+id/rate_order_fragment"
             app:enterAnim="@anim/slide_from_right"
             app:exitAnim="@anim/slide_to_left"
             app:popEnterAnim="@anim/slide_from_left"

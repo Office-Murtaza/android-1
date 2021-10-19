@@ -125,13 +125,18 @@
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/balance_crypto_view"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:textSize="16sp"
         android:textStyle="bold"
+        android:ellipsize="end"
+        android:gravity="end"
+        android:singleLine="true"
+        android:layout_marginStart="@dimen/margin_main"
         app:layout_constraintBottom_toBottomOf="@id/balance_title_view"
         app:layout_constraintEnd_toStartOf="@id/exchange_view"
+        app:layout_constraintStart_toEndOf="@id/balance_title_view"
         app:layout_constraintTop_toTopOf="@id/balance_title_view"
         tools:text="0.000902 BTC" />
 
@@ -169,9 +174,16 @@
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/reserved_crypto_view"
         style="@style/Transaction.Title.Medium.Value"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
+        android:gravity="end"
+        android:singleLine="true"
+        android:ellipsize="end"
+        android:layout_marginStart="@dimen/margin_main"
         app:layout_constraintBottom_toBottomOf="@id/reserved_title_view"
         app:layout_constraintEnd_toStartOf="@id/reservedExchangeView"
+        app:layout_constraintStart_toEndOf="@id/reserved_title_view"
         app:layout_constraintTop_toTopOf="@id/reserved_title_view"
         tools:text="0.00902 BTC" />
 

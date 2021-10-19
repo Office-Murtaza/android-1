@@ -17,6 +17,7 @@ import com.belcobtm.domain.transaction.item.TransactionPlanItem
 import com.belcobtm.domain.wallet.LocalCoinType
 import com.belcobtm.domain.wallet.interactor.GetCoinListUseCase
 import com.belcobtm.domain.wallet.item.CoinDataItem
+import com.belcobtm.domain.wallet.item.isBtcCoin
 import com.belcobtm.domain.wallet.item.isEthRelatedCoin
 import com.belcobtm.presentation.core.SingleLiveData
 import com.belcobtm.presentation.core.coin.model.ValidationResult
@@ -221,6 +222,7 @@ class SwapViewModel(
                 currentCoinToSend,
             ),
             onSuccess = {
+                _sendFeeAmount.value = it.fee
                 setSendAmountInternal(it.amount, useMax = true)
             }, onError = { /* error impossible */ }
         )
@@ -235,6 +237,7 @@ class SwapViewModel(
                 currentCoinToSend,
             ),
             onSuccess = {
+                _sendFeeAmount.value = it.fee
                 setReceiveAmountInternal(it.amount, useMax = true)
             }, onError = { /* error impossible */ }
         )
@@ -402,9 +405,8 @@ class SwapViewModel(
     }
 
     private fun validateCoinToSendAmount(coinAmount: Double): Boolean {
-        val maxCoinAmount = getMaxValue()
         val validationResult = when {
-            coinAmount > maxCoinAmount -> {
+            !isSufficientFromBalance() -> {
                 ValidationResult.InValid(R.string.swap_screen_max_error)
             }
             coinAmount <= 0 -> {
@@ -418,12 +420,14 @@ class SwapViewModel(
         return validationResult == ValidationResult.Valid
     }
 
-    private fun getMaxValue(): Double {
-        val coinDataItem = coinToSend.value ?: return 0.0
-        return if (coinDataItem.isEthRelatedCoin()) {
-            coinDataItem.reservedBalanceCoin - (fromTransactionPlanItem?.nativeTxFee ?: 0.0)
+    private fun isSufficientFromBalance(): Boolean {
+        val coinDataItem = coinToSend.value ?: return false
+        val amount = _sendCoinAmount.value?.amount ?: 0.0
+        val fee = _sendFeeAmount.value ?: 0.0
+        return if (coinDataItem.isBtcCoin()) {
+            amount + fee <= signedFromTransactionPlanItem?.availableAmount ?: 0.0
         } else {
-            coinDataItem.reservedBalanceCoin - (fromTransactionPlanItem?.txFee ?: 0.0)
+            amount <= coinDataItem.balanceCoin
         }
     }
 

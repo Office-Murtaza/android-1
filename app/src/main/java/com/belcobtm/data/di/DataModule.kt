@@ -121,8 +121,8 @@ val dataModule = module {
     single { EthTransactionInputBuilderFactory(get(), get()) }
     single { EthTransactionHelper(get()) }
     single { EthSubCoinTransactionHelper(get()) }
-    single { TronTransactionInputBuilderFactory(get(), get()) }
-    single { TronTransactionHelper(get(), get()) }
+    single { TronTransactionInputBuilderFactory(get()) }
+    single { TronTransactionHelper(get()) }
     single { TransactionHelper(get(), get(), get(), get(), get(), get()) }
     single {
         Room.databaseBuilder(get(), AppDatabase::class.java, "belco_database")

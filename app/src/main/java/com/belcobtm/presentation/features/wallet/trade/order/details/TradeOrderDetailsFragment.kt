@@ -9,6 +9,7 @@ import android.os.Bundle
 import android.view.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.belcobtm.R
 import com.belcobtm.data.model.trade.OrderStatus
@@ -97,7 +98,9 @@ class TradeOrderDetailsFragment : BaseFragment<FragmentTradeOrderDetailsBinding>
             )
         }
         viewModel.openRateScreen.observe(viewLifecycleOwner) { showRateDialog ->
-            if (showRateDialog) {
+            val isRateDialogShowing =
+                findNavController().currentDestination?.id != R.id.rate_order_fragment
+            if (showRateDialog && isRateDialogShowing) {
                 navigate(
                     TradeOrderDetailsFragmentDirections.toRateOrderFragment(
                         viewModel.partnerPublicId.value.orEmpty(), args.orderId

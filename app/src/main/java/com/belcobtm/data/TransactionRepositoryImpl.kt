@@ -32,7 +32,7 @@ class TransactionRepositoryImpl(
     private val preferencesHelper: SharedPreferencesHelper
 ) : TransactionRepository {
 
-    private var utxos: List<UtxoItemResponse> = emptyList()
+    private var utxosPerCoint: MutableMap<String, List<UtxoItemResponse>> = HashMap()
 
     override suspend fun getTransactionPlan(coinCode: String): Either<Failure, TransactionPlanItem> =
         if (coinCode.isBtcCoin()) {
@@ -42,11 +42,11 @@ class TransactionRepositoryImpl(
                 coin.customPurpose(), coin, coin.customXpubVersion()
             )
             apiService.getUtxoList(coinCode, publicKey).flatMapSuspend {
-                utxos = it
+                utxosPerCoint[coinCode] = it
                 apiService.getTransactionPlan(coinCode)
             }
         } else {
-            utxos = emptyList()
+            utxosPerCoint.remove(coinCode)
             apiService.getTransactionPlan(coinCode)
         }
 
@@ -70,7 +70,7 @@ class TransactionRepositoryImpl(
         fromCoinAmount,
         fromTransactionPlan,
         useMaxAmountFlag,
-        utxos
+        utxosPerCoint[fromCoin].orEmpty()
     )
 
     override suspend fun createTransaction(
@@ -83,7 +83,7 @@ class TransactionRepositoryImpl(
         val coinType = LocalCoinType.valueOf(fromCoin)
         val hashResponse =
             transactionRepository.createTransactionHash(
-                toAddress, coinType, fromCoinAmount, fromTransactionPlan, utxos
+                toAddress, coinType, fromCoinAmount, fromTransactionPlan, utxosPerCoint[fromCoin].orEmpty()
             )
         return when {
             isNeedSendSms && hashResponse.isRight -> {
@@ -119,7 +119,7 @@ class TransactionRepositoryImpl(
                 coinType,
                 fromCoinAmount,
                 fromTransactionPlan,
-                utxos
+                utxosPerCoint[fromCoin].orEmpty()
             )
         return if (hashResponse.isRight) {
             val fromAddress = daoAccount.getItem(fromCoin).publicKey
@@ -148,7 +148,7 @@ class TransactionRepositoryImpl(
     ): Either<Failure, Unit> {
         val coinType = LocalCoinType.valueOf(coinCode)
         val hashResponse = transactionRepository.createTransactionHash(
-            toAddress, coinType, amount, transactionPlanItem, utxos
+            toAddress, coinType, amount, transactionPlanItem, utxosPerCoint.get(coinCode).orEmpty()
         )
         return if (hashResponse.isRight) {
             val item = daoAccount.getItem(coinCode)
@@ -218,7 +218,7 @@ class TransactionRepositoryImpl(
             fromCoinItem.details.walletAddress
         }
         val hashResponse = transactionRepository.createTransactionHash(
-            toAddress, coinType, fromCoinAmount, transactionPlanItem, utxos
+            toAddress, coinType, fromCoinAmount, transactionPlanItem, utxosPerCoint[fromCoin].orEmpty()
         )
         return if (hashResponse.isRight) {
             val toAddressSend = fromCoinItem.details.walletAddress
@@ -249,7 +249,7 @@ class TransactionRepositoryImpl(
         val toAddress = getCoinByCode(coinCode).details.walletAddress
         val coinType = LocalCoinType.valueOf(coinCode)
         val hashResponse = transactionRepository.createTransactionHash(
-            toAddress, coinType, cryptoAmount, transactionPlanItem, utxos
+            toAddress, coinType, cryptoAmount, transactionPlanItem, utxosPerCoint[coinCode].orEmpty()
         )
         return when {
             hashResponse.isRight -> hashResponse as Either.Right
