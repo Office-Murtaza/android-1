@@ -7,7 +7,7 @@ import com.belcobtm.domain.transaction.type.TransactionType
 
 data class TransactionDetailsResponse(
     val txId: String?,
-    val txDbId: String?,
+    val txDBId: String?,
     val link: String?,
     val coin: String?,
     val userId: String,
@@ -40,7 +40,7 @@ fun TransactionDetailsResponse.mapToDataItem(coinCode: String): TransactionDetai
         cryptoFee = cryptoFee,
         refCryptoAmount = refCryptoAmount,
         txId = txId,
-        txDbId = txDbId.orEmpty(),
+        txDbId = txDBId.orEmpty(),
         link = link,
         timestamp = timestamp,
         fromPhone = fromPhone,

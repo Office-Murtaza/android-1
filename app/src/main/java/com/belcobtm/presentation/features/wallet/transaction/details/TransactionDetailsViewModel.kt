@@ -6,6 +6,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import com.belcobtm.R
+import com.belcobtm.domain.Failure
 import com.belcobtm.domain.transaction.interactor.ObserveTransactionDetailsUseCase
 import com.belcobtm.domain.transaction.item.TransactionDetailsDataItem
 import com.belcobtm.domain.transaction.type.TransactionCashStatusType
@@ -16,6 +17,7 @@ import com.belcobtm.presentation.core.QRUtils
 import com.belcobtm.presentation.core.extensions.toStringCoin
 import com.belcobtm.presentation.core.formatter.Formatter
 import com.belcobtm.presentation.core.formatter.PhoneNumberFormatter
+import com.belcobtm.presentation.core.mvvm.LoadingData
 import com.belcobtm.presentation.features.wallet.transaction.details.adapter.TransactionDetailsAdapter
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.map
@@ -28,14 +30,20 @@ class TransactionDetailsViewModel(
     private val currencyFormatter: Formatter<Double>
 ) : ViewModel() {
 
-    val transactionDetailsLiveData: LiveData<List<TransactionDetailsAdapter.Item>>
+    val transactionDetailsLiveData: LiveData<LoadingData<List<TransactionDetailsAdapter.Item>>>
         get() = transactionDetailsUseCase.invoke(
             ObserveTransactionDetailsUseCase.Params(
                 txId,
                 coinCode
             )
         )
-            .map { mapToItemList(it) }
+            .map {
+                if(it != null) {
+                    LoadingData.Success(mapToItemList(it))
+                } else {
+                    LoadingData.Error(Failure.ServerError())
+                }
+            }
             .asLiveData(Dispatchers.Default)
 
     private fun mapToItemList(

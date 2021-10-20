@@ -22,6 +22,7 @@ import com.belcobtm.presentation.core.provider.string.StringProvider
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.math.BigDecimal
 import kotlin.math.max
 
 class AtmSellViewModel(
@@ -136,7 +137,7 @@ class AtmSellViewModel(
 
     fun sell() {
         val coin = _selectedCoin.value ?: return
-        val amount = coinAmount.value ?: return
+        val amount = (coinAmount.value ?: return).toStringCoin().toDouble()
         val usdAmount = usdAmount.value ?: return
         val todayLimit = _todayLimit.value ?: return
         val fee = serviceInfoProvider.getServiceFee(ServiceType.ATM_SELL)

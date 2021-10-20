@@ -35,11 +35,6 @@ class WithdrawFragment : BaseFragment<FragmentWithdrawBinding>() {
         firstTextWatcher = { editable ->
             val cryptoAmount: Double = editable.getDouble()
             viewModel.setAmount(cryptoAmount)
-            binding.amountUsdView.text = if (cryptoAmount > 0) {
-                currencyFormatter.format(cryptoAmount * viewModel.getUsdPrice())
-            } else {
-                currencyFormatter.format(0.0)
-            }
         }
     )
 
@@ -69,7 +64,12 @@ class WithdrawFragment : BaseFragment<FragmentWithdrawBinding>() {
             initScreen()
         })
         viewModel.amount.observe(viewLifecycleOwner) {
-            if (it.amount <= 0.0) {
+            binding.amountUsdView.text = if (it.amount > 0) {
+                currencyFormatter.format(it.amount * viewModel.getUsdPrice())
+            } else {
+                currencyFormatter.format(0.0)
+            }
+            if(it.amount == amountCryptoView.editText?.text?.getDouble()) {
                 return@observe
             }
             val formattedCoin = it.amount.toStringCoin()

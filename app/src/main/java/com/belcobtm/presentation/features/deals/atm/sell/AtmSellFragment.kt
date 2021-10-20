@@ -68,7 +68,8 @@ class AtmSellFragment : BaseFragment<FragmentAtmSellBinding>() {
         setToolbarTitle(R.string.atm_sell_title)
         coinInputLayout.getEditText().setTextSilently(textWatcher, "0")
         coinInputLayout.updateInputMode(isIntOnly = true)
-        coinInputLayout.setHelperText2(getString(R.string.sell_amount_hint))
+        coinInputLayout.setHint(getString(R.string.text_amount_usd))
+        coinInputLayout.setHelperText2(getString(R.string.sell_amount_helper_text))
     }
 
     override fun FragmentAtmSellBinding.initObservers() {

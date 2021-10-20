@@ -37,11 +37,10 @@ class TradeOrderRateBottomSheetFragment : BaseBottomSheetFragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentTradeRateBinding.inflate(inflater, container, false)
+        viewModel.rateLabel.observe(viewLifecycleOwner, binding.ratingValue::setText)
         viewModel.rateLoadingData.listen(success = {
             findNavController().popBackStack(R.id.trade_container_fragment, false)
         })
-        binding.header.text =
-            resources.getString(R.string.trade_rate_header_formatted, args.partnerPublicId)
         binding.ratingBar.rating = TradeOrderRateViewModel.LOW_RATING.toFloat()
         binding.ratingBar.setOnRatingBarChangeListener { _, rating, _ ->
             viewModel.onRateChanged(rating.toInt())

@@ -4,6 +4,7 @@ import com.belcobtm.data.disk.database.account.AccountDao
 import com.belcobtm.domain.transaction.item.TransactionPlanItem
 import com.belcobtm.domain.wallet.LocalCoinType
 import com.belcobtm.presentation.core.extensions.code
+import com.belcobtm.presentation.core.extensions.toStringCoin
 import com.belcobtm.presentation.core.extensions.unit
 import com.belcobtm.presentation.core.toHexByteArray
 import com.google.protobuf.ByteString
@@ -28,7 +29,7 @@ class BinanceTransactionInputBuilderFactory(
 
         val token = Binance.SendOrder.Token.newBuilder().also {
             it.denom = CoinType.BINANCE.code()
-            it.amount = (fromCoinAmount * CoinType.BINANCE.unit()).toLong()
+            it.amount = (fromCoinAmount.toStringCoin().toDouble() * CoinType.BINANCE.unit()).toLong()
         }
         val input = Binance.SendOrder.Input.newBuilder().also {
             it.address = ByteString.copyFrom(AnyAddress(fromAddress, CoinType.BINANCE).data())

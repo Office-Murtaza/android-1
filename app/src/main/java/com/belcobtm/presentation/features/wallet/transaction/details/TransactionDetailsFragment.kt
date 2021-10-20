@@ -33,10 +33,10 @@ class TransactionDetailsFragment :
     }
 
     override fun FragmentTransactionDetailsBinding.initObservers() {
-        viewModel.transactionDetailsLiveData.observe(viewLifecycleOwner) { list ->
+        viewModel.transactionDetailsLiveData.listen(success = { list ->
             val adapter = binding.rvTransactionDetails.adapter as TransactionDetailsAdapter
             adapter.submitList(list)
-        }
+        })
     }
 
     override fun createBinding(

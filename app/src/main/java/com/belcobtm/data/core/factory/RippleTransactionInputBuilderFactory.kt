@@ -4,6 +4,7 @@ import com.belcobtm.data.disk.database.account.AccountDao
 import com.belcobtm.domain.Either
 import com.belcobtm.domain.transaction.item.TransactionPlanItem
 import com.belcobtm.domain.wallet.LocalCoinType
+import com.belcobtm.presentation.core.extensions.toStringCoin
 import com.belcobtm.presentation.core.extensions.unit
 import com.belcobtm.presentation.core.toHexByteArray
 import com.google.protobuf.ByteString
@@ -27,7 +28,7 @@ class RippleTransactionInputBuilderFactory(
         return Ripple.SigningInput.newBuilder().also {
             it.sequence = fromTransactionPlan.sequence.toInt()
             it.account = coinEntity.publicKey
-            it.amount = (fromCoinAmount * CoinType.XRP.unit()).toLong()
+            it.amount = (fromCoinAmount.toStringCoin().toDouble() * CoinType.XRP.unit()).toLong()
             it.destination = toAddress
             it.fee =
                 ((BigDecimal(0.000020)) * BigDecimal.valueOf(CoinType.XRP.unit())).toLong()

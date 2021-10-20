@@ -7,6 +7,7 @@ import com.belcobtm.domain.transaction.item.TransactionPlanItem
 import com.belcobtm.domain.wallet.LocalCoinType
 import com.belcobtm.presentation.core.Numeric
 import com.belcobtm.presentation.core.extensions.USDC_UNIT
+import com.belcobtm.presentation.core.extensions.toStringCoin
 import com.belcobtm.presentation.core.extensions.unit
 import com.belcobtm.presentation.core.toHexByteArray
 import com.belcobtm.presentation.core.toHexBytesInByteString
@@ -28,7 +29,8 @@ class EthTransactionInputBuilderFactory(
         fromTransactionPlan: TransactionPlanItem
     ): String {
         val coinItem = walletDao.getCoinByCode(fromCoin.name).toDataItem()
-        val amountMultipliedByDivider = BigDecimal(fromCoinAmount * CoinType.ETHEREUM.unit())
+        val amountMultipliedByDivider =
+            BigDecimal(fromCoinAmount.toStringCoin().toDouble() * CoinType.ETHEREUM.unit())
         val transfer = Ethereum.Transaction.Transfer.newBuilder()
         transfer.amount = ByteString.copyFrom(
             "0x${amountMultipliedByDivider.toBigInteger().toString(16)}".toHexByteArray()
@@ -58,7 +60,7 @@ class EthTransactionInputBuilderFactory(
             LocalCoinType.USDC -> USDC_UNIT
             else -> CoinType.ETHEREUM.unit()
         }
-        val amountMultipliedByDivider = BigDecimal(fromCoinAmount * unit)
+        val amountMultipliedByDivider = BigDecimal(fromCoinAmount.toStringCoin().toDouble() * unit)
         erc20Transfer.amount = ByteString.copyFrom(
             "0x${amountMultipliedByDivider.toBigInteger().toString(16)}".toHexByteArray()
         )
@@ -66,7 +68,8 @@ class EthTransactionInputBuilderFactory(
         val transaction = Ethereum.Transaction.newBuilder()
         transaction.setErc20Transfer(erc20Transfer)
 
-        val input = createInput(coinItem.code, coinItem.details.contractAddress, fromTransactionPlan)
+        val input =
+            createInput(coinItem.code, coinItem.details.contractAddress, fromTransactionPlan)
         input.setTransaction(transaction)
 
         val output =

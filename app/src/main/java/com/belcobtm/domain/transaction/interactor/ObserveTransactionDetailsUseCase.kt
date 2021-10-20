@@ -11,10 +11,10 @@ class ObserveTransactionDetailsUseCase(
     private val transactionRepository: TransactionRepository
 ) {
 
-    fun invoke(params: Params): Flow<TransactionDetailsDataItem> =
+    fun invoke(params: Params): Flow<TransactionDetailsDataItem?> =
         transactionRepository.observeTransactions()
             .map { data ->
-                data.transactions.values.first { it.txId == params.txId }
+                data.transactions[params.txId]
             }.flowOn(Dispatchers.Default)
 
     data class Params(val txId: String, val coinCode: String)

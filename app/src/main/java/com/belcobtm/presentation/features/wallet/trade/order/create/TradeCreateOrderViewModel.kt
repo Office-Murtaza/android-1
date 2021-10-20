@@ -13,6 +13,7 @@ import com.belcobtm.domain.trade.order.CreateOrderUseCase
 import com.belcobtm.domain.wallet.LocalCoinType
 import com.belcobtm.domain.wallet.interactor.GetCoinByCodeUseCase
 import com.belcobtm.presentation.core.livedata.DoubleCombinedLiveData
+import com.belcobtm.presentation.core.livedata.TripleCombinedLiveData
 import com.belcobtm.presentation.core.mvvm.LoadingData
 import com.belcobtm.presentation.core.provider.string.StringProvider
 import com.belcobtm.presentation.features.wallet.trade.list.model.TradeItem
@@ -45,7 +46,6 @@ class TradeCreateOrderViewModel(
     val reservedBalance: LiveData<ReservedBalance> = _reservedBalance
 
     private val _receiveAmountLabel = MutableLiveData<Int>()
-    val receiveAmountLabel: LiveData<Int> = _receiveAmountLabel
 
     private var includeFeeCoef = 1
 
@@ -63,10 +63,15 @@ class TradeCreateOrderViewModel(
         }
 
     val amountWithoutFee: LiveData<TotalValue> =
-        DoubleCombinedLiveData(cryptoAmount, platformFee) { amount, fee ->
+        TripleCombinedLiveData(
+            cryptoAmount,
+            platformFee,
+            _receiveAmountLabel
+        ) { amount, fee, labelId ->
             TotalValue(
                 (amount?.cryptoAmount ?: 0.0) + includeFeeCoef * (fee?.platformFeeCrypto ?: 0.0),
-                fee?.coinCode.orEmpty()
+                fee?.coinCode.orEmpty(),
+                labelId ?: R.string.you_will_get_label
             )
         }
 

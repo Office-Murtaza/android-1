@@ -446,6 +446,7 @@
 
     <string name="text_text">%1$s %2$s</string>
     <string name="text_amount">Amount</string>
+    <string name="text_amount_usd">Amount, $</string>
     <string name="usd_amount">USD amount</string>
 
     //settings
@@ -494,7 +495,7 @@
     <string name="pin_updated">PIN was successfully updated</string>
     <string name="phone_updated">Phone was successfully updated</string>
     <string name="password_changed">Password was successfully updated</string>
-    <string name="wallet_unlinked">Wallet was successfully deleted from the device</string>
+    <string name="wallet_unlinked">Wallet deleted from current device</string>
 
     //unlink
     <string name="unlink_text_top">Please, make sure you have stored your credentials and seed phrase before unlinking the wallet. Otherwise, you may lose all assets</string>
@@ -617,8 +618,7 @@
     <string name="trade_details_sell_button_title">Sell</string>
     <string name="trade_buy_sell_crypto_amount_label">Crypto Amount</string>
     <string name="trade_buy_sell_submit_button_label">Submit</string>
-    <string name="usd_amount_label">Fiat Amount, $</string>
-    <string name="create_order_reserved_amount">Reserved %s %s</string>
+    <string name="usd_amount_label">Amount, $</string>
     <string name="create_order_total_amount">%s %s</string>
     <string name="item_no_trades_reset_all_filters_button_label">Reset all filters</string>
 
@@ -661,7 +661,7 @@
     <string name="trade_count_over_threshold_formatted"><![CDATA[<b>%d+</b>]]> trades</string>
     <string name="trade_count_not_over_threshold_formatted"><![CDATA[<b>%d</b>]]> trades</string>
     <string name="trade_rate_done_button_title">Done</string>
-    <string name="trade_rate_header_formatted">Rate your trade experience with %s</string>
+    <string name="trade_rate_header">How was your trade?</string>
     <string name="low_rating_label">Awful</string>
     <string name="bad_rating_label">Bad</string>
     <string name="normal_rating_label">Good</string>
@@ -680,13 +680,14 @@
     <string name="send_gift_phone_number_prefix">+1</string>
     <string name="dash">-</string>
 
-    <string name="you_will_get_label">You Will Get</string>
-    <string name="you_will_send_label">You Will Send</string>
+    <string name="you_will_get_label">You will get %s</string>
+    <string name="you_will_send_label">You will send %s</string>
     <string name="order_details_id_label">ID</string>
     <string name="trade_updated_message">Trade was successfully updated/cancelled</string>
     <string name="status">Status</string>
-    <string name="create_order_dialog_platform_fee_label">Platform Fee</string>
-    <string name="create_order_dialog_reserved_label">Reserved</string>
+    <string name="create_order_dialog_platform_fee_format">Platform Fee %s</string>
+    <string name="create_order_dialog_reserved_format">Reserved %s</string>
+    <string name="create_order_dialog_crypto_amount_format">Crypto amount %s</string>
     <string name="trade_order_details_not_rated_label">Not rated yet</string>
     <string name="get_direction_button_title">Get direction</string>
     <string name="show_details_button_label">Show details</string>
@@ -723,7 +724,7 @@
     <string name="sell_amount_zero">Amount can\'t be zero</string>
     <string name="sell_amount_exceeds_today_limit">Amount exceeds today limit</string>
     <string name="sell_amount_wrong_divider">Amount should be /20, /50 or /100</string>
-    <string name="sell_amount_hint">Enter /20, /50 or /100 amount</string>
+    <string name="sell_amount_helper_text">Enter /20, /50 or /100 amount</string>
     <string name="sell_screen_balance">Balance</string>
     <string name="sell_screen_fee_formatted"><![CDATA[Platform fee %1$s\%%, %2$s %3$s]]></string>
     <string name="coin_balance_format">%1$s %2$s ~ %3$s</string>

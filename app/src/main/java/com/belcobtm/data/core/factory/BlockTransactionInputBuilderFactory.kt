@@ -6,6 +6,7 @@ import com.belcobtm.data.rest.transaction.response.hash.UtxoItemResponse
 import com.belcobtm.domain.transaction.item.TransactionPlanItem
 import com.belcobtm.domain.wallet.LocalCoinType
 import com.belcobtm.presentation.core.Numeric
+import com.belcobtm.presentation.core.extensions.toStringCoin
 import com.belcobtm.presentation.core.extensions.unit
 import com.belcobtm.presentation.core.toHexBytes
 import com.google.protobuf.ByteString
@@ -29,7 +30,7 @@ class BlockTransactionInputBuilderFactory(
         val trustWalletCoin = fromCoin.trustWalletType
         val hdWallet = HDWallet(prefsHelper.apiSeed, "")
         val fromAddress = daoAccount.getItem(fromCoin.name).publicKey
-        val cryptoToSatoshi = fromCoinAmount * trustWalletCoin.unit()
+        val cryptoToSatoshi = fromCoinAmount.toStringCoin().toDouble() * trustWalletCoin.unit()
         val amount: Long = cryptoToSatoshi.toLong()
         val byteFee = fromTransactionPlan.byteFee
         val sngHash = BitcoinScript.hashTypeForCoin(trustWalletCoin)

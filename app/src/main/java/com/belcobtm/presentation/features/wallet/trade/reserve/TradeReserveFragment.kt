@@ -44,11 +44,6 @@ class TradeReserveFragment : BaseFragment<FragmentTradeReserveBinding>() {
         SafeDecimalEditTextWatcher { editable ->
             val cryptoAmount = editable.getDouble()
             viewModel.setAmount(cryptoAmount)
-            binding.amountUsdView.text = if (cryptoAmount > 0) {
-                currencyFormatter.format(cryptoAmount * viewModel.coinItem.priceUsd)
-            } else {
-                currencyFormatter.format(0.0)
-            }
         }
     }
 
@@ -94,7 +89,12 @@ class TradeReserveFragment : BaseFragment<FragmentTradeReserveBinding>() {
         }
         viewModel.cryptoAmountError.observe(viewLifecycleOwner, amountCryptoView::setError)
         viewModel.amount.observe(viewLifecycleOwner) {
-            if(it.amount <= 0.0) {
+            binding.amountUsdView.text = if (it.amount > 0) {
+                currencyFormatter.format(it.amount * viewModel.coinItem.priceUsd)
+            } else {
+                currencyFormatter.format(0.0)
+            }
+            if(it.amount == amountCryptoView.editText?.text?.getDouble()) {
                 return@observe
             }
             val formattedCoin = it.amount.toStringCoin()
