@@ -11,6 +11,7 @@ class SwapUseCase(
 ) : UseCase<Unit, SwapUseCase.Params>() {
 
     override suspend fun run(params: Params): Either<Failure, Unit> = repository.exchange(
+        params.useMaxAmountFlag,
         params.coinFromAmount,
         params.coinToAmount,
         params.coinFrom,
@@ -20,6 +21,7 @@ class SwapUseCase(
     )
 
     data class Params(
+        val useMaxAmountFlag: Boolean,
         val coinFromAmount: Double,
         val coinToAmount: Double,
         val coinFrom: String,

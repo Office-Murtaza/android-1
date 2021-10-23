@@ -13,6 +13,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/margin_x2"
         android:layout_marginTop="@dimen/margin_main"
+        app:hintTextColor="@color/gray_text_color"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/coinButton"
         app:layout_constraintTop_toTopOf="parent"

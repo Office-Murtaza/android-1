@@ -46,8 +46,8 @@ class AtmSellViewModel(
     private val _usdAmount = MutableLiveData(0)
     val usdAmount: LiveData<Int> = _usdAmount
 
-    private val _usdAmountError = MutableLiveData<String>()
-    val usdAmountError: LiveData<String> = _usdAmountError
+    private val _usdAmountError = MutableLiveData<String?>()
+    val usdAmountError: LiveData<String?> = _usdAmountError
 
     private val _selectedCoinModel = MutableLiveData<AtmSellCoinPresentationModel>()
     val selectedCoinModel: LiveData<AtmSellCoinPresentationModel> = _selectedCoinModel
@@ -133,6 +133,7 @@ class AtmSellViewModel(
 
     fun setAmount(sendAmount: Int) {
         _usdAmount.value = sendAmount
+        _usdAmountError.value = null
     }
 
     fun sell() {

@@ -96,6 +96,8 @@
             android:id="@+id/coin_details_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:paddingTop="@dimen/margin_half"
+            android:paddingBottom="@dimen/margin_x2"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/trade_type_chip_group_divider" />

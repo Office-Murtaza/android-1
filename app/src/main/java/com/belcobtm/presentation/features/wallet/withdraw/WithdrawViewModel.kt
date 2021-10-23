@@ -166,6 +166,7 @@ class WithdrawViewModel(
     ) {
         withdrawUseCase.invoke(
             params = WithdrawUseCase.Params(
+                _amount.value?.useMax ?: false,
                 getCoinCode(),
                 coinAmount,
                 toAddress,

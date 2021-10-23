@@ -13,12 +13,14 @@ class WithdrawUseCase(
 
     override suspend fun run(params: Params): Either<Failure, Unit> =
         repository.withdraw(
+            params.useMaxAmountFlag,
             params.toAddress, params.fromCoin,
             params.fromCoinAmount, params.fee,
             params.transactionPlanItem
         )
 
     data class Params(
+        val useMaxAmountFlag: Boolean,
         val fromCoin: String,
         val fromCoinAmount: Double,
         val toAddress: String,

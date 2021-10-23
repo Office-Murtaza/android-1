@@ -11,12 +11,14 @@ class TradeReserveTransactionCreateUseCase(private val repository: TransactionRe
 
     override suspend fun run(params: Params): Either<Failure, String> =
         repository.tradeReserveTransactionCreate(
+            params.useMaxAmountFlag,
             params.coinCode,
             params.cryptoAmount,
             params.transactionPlanItem
         )
 
     data class Params(
+        val useMaxAmountFlag: Boolean,
         val coinCode: String,
         val cryptoAmount: Double,
         val transactionPlanItem: TransactionPlanItem

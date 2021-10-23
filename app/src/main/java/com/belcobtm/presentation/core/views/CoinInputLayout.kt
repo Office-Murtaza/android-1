@@ -31,12 +31,12 @@ class CoinInputLayout @JvmOverloads constructor(
     init {
         textColorOrigin = binding.coinInputEditText.textColors.defaultColor
         setErrorText(null, false)
-        setPadding(
-            paddingLeft,
-            paddingTop + resources.getDimensionPixelOffset(R.dimen.margin_half),
-            paddingRight,
-            paddingBottom + resources.getDimensionPixelOffset(R.dimen.margin_x2)
-        )
+//        setPadding(
+//            paddingLeft,
+//            paddingTop + resources.getDimensionPixelOffset(R.dimen.margin_half),
+//            paddingRight,
+//            paddingBottom + resources.getDimensionPixelOffset(R.dimen.margin_main)
+//        )
         binding.coinInputEditText.actionDoneListener {
             val imm = context.getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
             val activity = context as AppCompatActivity

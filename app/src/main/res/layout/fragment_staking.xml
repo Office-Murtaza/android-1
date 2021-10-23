@@ -17,6 +17,8 @@
             android:id="@+id/coin_input_layout"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:paddingTop="@dimen/margin_half"
+            android:paddingBottom="@dimen/margin_x2"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />

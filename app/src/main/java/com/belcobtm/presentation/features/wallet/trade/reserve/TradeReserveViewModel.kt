@@ -157,6 +157,7 @@ class TradeReserveViewModel(
     ) {
         createTransactionUseCase.invoke(
             params = TradeReserveTransactionCreateUseCase.Params(
+                _amount.value?.useMax ?: false,
                 coinDataItem.code, cryptoAmount, transactionPlanItem
             ),
             onSuccess = { completeTransaction(it) },

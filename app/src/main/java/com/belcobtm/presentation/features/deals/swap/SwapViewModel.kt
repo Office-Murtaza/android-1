@@ -312,6 +312,7 @@ class SwapViewModel(
                         _receiveFeeAmount.value = sendSignedPlan.fee
                         swapUseCase(
                             params = SwapUseCase.Params(
+                                _sendCoinAmount.value?.useMax ?: false,
                                 sendAmount,
                                 receiveAmount,
                                 sendCoin.code,

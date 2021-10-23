@@ -23,6 +23,7 @@ interface TransactionRepository {
     ): Either<Failure, SignedTransactionPlanItem>
 
     suspend fun createTransaction(
+        useMaxAmountFlag: Boolean,
         fromCoin: String,
         fromCoinAmount: Double,
         fromTransactionPlan: TransactionPlanItem,
@@ -35,6 +36,7 @@ interface TransactionRepository {
     ): Either<Failure, Boolean>
 
     suspend fun withdraw(
+        useMaxAmountFlag: Boolean,
         toAddress: String,
         fromCoin: String,
         fromCoinAmount: Double,
@@ -43,6 +45,7 @@ interface TransactionRepository {
     ): Either<Failure, Unit>
 
     suspend fun sendGift(
+        useMaxAmountFlag: Boolean,
         amount: Double,
         coinCode: String,
         giftId: String?,
@@ -70,6 +73,7 @@ interface TransactionRepository {
     ): Either<Failure, Unit>
 
     suspend fun exchange(
+        useMaxAmountFlag: Boolean,
         fromCoinAmount: Double,
         toCoinAmount: Double,
         fromCoin: String,
@@ -84,6 +88,7 @@ interface TransactionRepository {
     ): Either<Failure, Unit>
 
     suspend fun tradeReserveTransactionCreate(
+        useMaxAmountFlag: Boolean,
         coinCode: String,
         cryptoAmount: Double,
         transactionPlanItem: TransactionPlanItem,

@@ -38,6 +38,7 @@ class BlockTransactionHelper(private val blockFactory: BlockTransactionInputBuil
     }
 
     suspend fun getHash(
+        useMaxAmountFlag: Boolean,
         toAddress: String,
         fromCoin: LocalCoinType,
         fromCoinAmount: Double,
@@ -48,6 +49,7 @@ class BlockTransactionHelper(private val blockFactory: BlockTransactionInputBuil
             utxos, toAddress, fromCoin,
             fromCoinAmount, fromTransactionPlan
         )
+        input.useMaxAmount = useMaxAmountFlag
         val plan = AnySigner.plan(
             input.build(),
             fromCoin.trustWalletType,

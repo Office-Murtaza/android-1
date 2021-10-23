@@ -10,11 +10,13 @@ class CreateTransactionUseCase(private val repository: TransactionRepository) :
     UseCase<String, CreateTransactionUseCase.Params>() {
     override suspend fun run(params: Params): Either<Failure, String> =
         repository.createTransaction(
-            params.fromCoin, params.fromCoinAmount,
-            params.transactionPlanItem, params.isNeedSendSms
+            params.useMaxAmountFlag, params.fromCoin,
+            params.fromCoinAmount, params.transactionPlanItem,
+            params.isNeedSendSms
         )
 
     data class Params(
+        val useMaxAmountFlag: Boolean,
         val fromCoin: String,
         val fromCoinAmount: Double,
         val transactionPlanItem: TransactionPlanItem,

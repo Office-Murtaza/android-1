@@ -44,6 +44,7 @@ class TransactionHelper(
     }
 
     suspend fun createTransactionHash(
+        useMaxAmountFlag: Boolean,
         toAddress: String,
         fromCoin: LocalCoinType,
         fromCoinAmount: Double,
@@ -56,13 +57,12 @@ class TransactionHelper(
         LocalCoinType.DASH,
         LocalCoinType.LTC -> Either.Right(
             blockTransactionHelper.getHash(
-                toAddress, fromCoin, fromCoinAmount, fromTransactionPlan, utxos
+                useMaxAmountFlag, toAddress, fromCoin,
+                fromCoinAmount, fromTransactionPlan, utxos
             )
         )
         LocalCoinType.ETH -> Either.Right(
-            ethTransactionHelper.getHash(
-                toAddress, fromCoin, fromCoinAmount, fromTransactionPlan
-            )
+            ethTransactionHelper.getHash(toAddress, fromCoin, fromCoinAmount, fromTransactionPlan)
         )
         LocalCoinType.USDC,
         LocalCoinType.CATM -> Either.Right(
@@ -91,7 +91,7 @@ class TransactionHelper(
         fromCoinAmount: Double,
         toAddress: String,
         fromTransactionPlan: TransactionPlanItem
-    ) = ethTransactionHelper.getHash(
+    ) = ethSubCoinTransactionHelper.getHash(
         toAddress,
         LocalCoinType.CATM,
         fromCoinAmount,
@@ -102,7 +102,7 @@ class TransactionHelper(
         fromCoinAmount: Double,
         toAddress: String,
         fromTransactionPlan: TransactionPlanItem
-    ) = ethTransactionHelper.getHash(
+    ) = ethSubCoinTransactionHelper.getHash(
         toAddress,
         LocalCoinType.CATM,
         fromCoinAmount,
@@ -113,7 +113,7 @@ class TransactionHelper(
         fromCoinAmount: Double,
         toAddress: String,
         fromTransactionPlan: TransactionPlanItem
-    ) = ethTransactionHelper.getHash(
+    ) = ethSubCoinTransactionHelper.getHash(
         toAddress,
         LocalCoinType.CATM,
         fromCoinAmount,

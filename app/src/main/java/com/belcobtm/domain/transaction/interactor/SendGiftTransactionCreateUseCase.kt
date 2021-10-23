@@ -11,6 +11,7 @@ class SendGiftTransactionCreateUseCase(
 ) : UseCase<Unit, SendGiftTransactionCreateUseCase.Params>() {
 
     override suspend fun run(params: Params): Either<Failure, Unit> = repository.sendGift(
+        useMaxAmountFlag = params.useMaxAmountFlag,
         amount = params.amount,
         coinCode = params.coinCode,
         phone = params.phone,
@@ -22,6 +23,7 @@ class SendGiftTransactionCreateUseCase(
     )
 
     data class Params(
+        val useMaxAmountFlag: Boolean,
         val amount: Double,
         val coinCode: String,
         val phone: String,

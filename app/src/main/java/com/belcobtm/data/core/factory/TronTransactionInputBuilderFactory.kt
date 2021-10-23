@@ -8,7 +8,9 @@ import com.belcobtm.domain.transaction.item.TransactionPlanItem
 import com.belcobtm.domain.wallet.LocalCoinType
 import com.belcobtm.presentation.core.extensions.toStringCoin
 import com.belcobtm.presentation.core.extensions.unit
+import com.belcobtm.presentation.core.toHexByteArray
 import com.belcobtm.presentation.core.toHexBytesInByteString
+import com.google.protobuf.ByteString
 import com.squareup.moshi.Moshi
 import wallet.core.jni.CoinType
 import wallet.core.jni.proto.Tron

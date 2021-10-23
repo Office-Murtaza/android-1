@@ -91,6 +91,7 @@ class SendGiftFragment : BaseFragment<FragmentSendGiftBinding>(),
         contactName.toggle(!sendGiftArgs.contactName.isNullOrEmpty())
         contactName.text = sendGiftArgs.contactName
         contactPhone.text = sendGiftArgs.phoneNumber
+        sendCoinInputLayout.setHint(getString(R.string.text_amount))
         setToolbarTitle(getString(R.string.send_gift_screen_title))
         val settings = GPHSettings(
             gridType = GridType.waterfall,

@@ -234,6 +234,7 @@ class SendGiftViewModel(
     ) {
         transactionCreateUseCase.invoke(
             params = SendGiftTransactionCreateUseCase.Params(
+                useMaxAmountFlag = _amount.value?.useMax ?: false,
                 amount = amount,
                 coinCode = coinToSend.code,
                 phone = phone,

@@ -74,6 +74,7 @@ class TransactionRepositoryImpl(
     )
 
     override suspend fun createTransaction(
+        useMaxAmountFlag: Boolean,
         fromCoin: String,
         fromCoinAmount: Double,
         fromTransactionPlan: TransactionPlanItem,
@@ -83,7 +84,8 @@ class TransactionRepositoryImpl(
         val coinType = LocalCoinType.valueOf(fromCoin)
         val hashResponse =
             transactionRepository.createTransactionHash(
-                toAddress, coinType, fromCoinAmount, fromTransactionPlan, utxosPerCoint[fromCoin].orEmpty()
+                useMaxAmountFlag, toAddress, coinType, fromCoinAmount,
+                fromTransactionPlan, utxosPerCoint[fromCoin].orEmpty()
             )
         return when {
             isNeedSendSms && hashResponse.isRight -> {
@@ -106,6 +108,7 @@ class TransactionRepositoryImpl(
         apiService.receiverAccountActivated(fromCoin, toAddress).map { it.result }
 
     override suspend fun withdraw(
+        useMaxAmountFlag: Boolean,
         toAddress: String,
         fromCoin: String,
         fromCoinAmount: Double,
@@ -115,10 +118,8 @@ class TransactionRepositoryImpl(
         val coinType = LocalCoinType.valueOf(fromCoin)
         val hashResponse =
             transactionRepository.createTransactionHash(
-                toAddress,
-                coinType,
-                fromCoinAmount,
-                fromTransactionPlan,
+                useMaxAmountFlag, toAddress, coinType,
+                fromCoinAmount, fromTransactionPlan,
                 utxosPerCoint[fromCoin].orEmpty()
             )
         return if (hashResponse.isRight) {
@@ -137,6 +138,7 @@ class TransactionRepositoryImpl(
     }
 
     override suspend fun sendGift(
+        useMaxAmountFlag: Boolean,
         amount: Double,
         coinCode: String,
         giftId: String?,
@@ -148,7 +150,8 @@ class TransactionRepositoryImpl(
     ): Either<Failure, Unit> {
         val coinType = LocalCoinType.valueOf(coinCode)
         val hashResponse = transactionRepository.createTransactionHash(
-            toAddress, coinType, amount, transactionPlanItem, utxosPerCoint.get(coinCode).orEmpty()
+            useMaxAmountFlag, toAddress, coinType, amount,
+            transactionPlanItem, utxosPerCoint[coinCode].orEmpty()
         )
         return if (hashResponse.isRight) {
             val item = daoAccount.getItem(coinCode)
@@ -202,6 +205,7 @@ class TransactionRepositoryImpl(
     }
 
     override suspend fun exchange(
+        useMaxAmountFlag: Boolean,
         fromCoinAmount: Double,
         toCoinAmount: Double,
         fromCoin: String,
@@ -218,7 +222,8 @@ class TransactionRepositoryImpl(
             fromCoinItem.details.walletAddress
         }
         val hashResponse = transactionRepository.createTransactionHash(
-            toAddress, coinType, fromCoinAmount, transactionPlanItem, utxosPerCoint[fromCoin].orEmpty()
+            useMaxAmountFlag, toAddress, coinType, fromCoinAmount,
+            transactionPlanItem, utxosPerCoint[fromCoin].orEmpty()
         )
         return if (hashResponse.isRight) {
             val toAddressSend = fromCoinItem.details.walletAddress
@@ -242,6 +247,7 @@ class TransactionRepositoryImpl(
     }
 
     override suspend fun tradeReserveTransactionCreate(
+        useMaxAmountFlag: Boolean,
         coinCode: String,
         cryptoAmount: Double,
         transactionPlanItem: TransactionPlanItem
@@ -249,7 +255,8 @@ class TransactionRepositoryImpl(
         val toAddress = getCoinByCode(coinCode).details.walletAddress
         val coinType = LocalCoinType.valueOf(coinCode)
         val hashResponse = transactionRepository.createTransactionHash(
-            toAddress, coinType, cryptoAmount, transactionPlanItem, utxosPerCoint[coinCode].orEmpty()
+            useMaxAmountFlag, toAddress, coinType, cryptoAmount,
+            transactionPlanItem, utxosPerCoint[coinCode].orEmpty()
         )
         return when {
             hashResponse.isRight -> hashResponse as Either.Right

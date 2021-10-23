@@ -26,6 +26,8 @@
             android:id="@+id/send_coin_input_layout"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:paddingTop="@dimen/margin_half"
+            android:paddingBottom="@dimen/margin_x2"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/top_divider" />
@@ -35,6 +37,8 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:background="@color/colorLightGray"
+            android:paddingTop="@dimen/margin_half"
+            android:paddingBottom="@dimen/margin_x2"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/send_coin_input_layout" />
@@ -98,35 +102,21 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_quoter"
             android:layout_marginEnd="@dimen/margin_half"
-            tools:text="$ 245.66"
             android:textColor="@android:color/black"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tvUSDConvertedLabel" />
+            app:layout_constraintTop_toBottomOf="@id/tvUSDConvertedLabel"
+            tools:text="$ 245.66" />
 
         <Space
             android:id="@+id/spaceView"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_marginTop="16dp"
-            app:layout_constraintBottom_toTopOf="@id/platformFeeLabel"
+            app:layout_constraintBottom_toTopOf="@id/platform_fee_text_view"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tvUSDConvertedValue" />
-
-        <TextView
-            android:id="@+id/platformFeeLabel"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/margin_main"
-            android:layout_marginEnd="4dp"
-            android:layout_marginBottom="@dimen/margin_half"
-            android:text="@string/swap_screen_fee"
-            android:textAppearance="@style/Text.Regular1"
-            app:layout_constraintBottom_toTopOf="@id/next_button_view"
-            app:layout_constraintEnd_toStartOf="@id/platform_fee_text_view"
-            app:layout_constraintHorizontal_chainStyle="packed"
-            app:layout_constraintStart_toStartOf="parent" />
 
         <TextView
             android:id="@+id/platform_fee_text_view"
@@ -138,8 +128,8 @@
             android:textAppearance="@style/Text.Regular1"
             app:layout_constraintBottom_toTopOf="@id/next_button_view"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/platformFeeLabel"
-            tools:text="3% ~ 0.25673 LTC" />
+            app:layout_constraintStart_toStartOf="parent"
+            tools:text="Platfor fee3%, 0.25673 LTC" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/next_button_view"

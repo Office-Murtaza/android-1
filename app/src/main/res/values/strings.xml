@@ -234,7 +234,7 @@
     <string name="transaction_details_to_phone">To Phone</string>
     <string name="transaction_details_swap_amount">Swap Amount</string>
     <string name="transaction_details_sell_amount">Sell Amount</string>
-    <string name="transaction_details_id">Tx Id</string>
+    <string name="transaction_details_id">ID</string>
     <string name="transaction_details_swap_id">Swap Id</string>
     <string name="transaction_details_type">Type</string>
     <string name="transaction_details_status">Status</string>
@@ -317,9 +317,8 @@
     <string name="swap_screen_price">Price</string>
     <string name="swap_screen_balance_formatted">Balance %1$s %2$s\nFee %3$s %4$s</string>
     <string name="swap_screen_rate_formatted"><![CDATA[<b>%1$s</b> %2$s <b>%3$s</b> %4$s]]></string>
-    <string name="swap_screen_fee_formatted"><![CDATA[%1$s\%% %2$s %3$s]]></string>
+    <string name="swap_screen_fee_formatted"><![CDATA[Platform fee %1$s\%%, %2$s %3$s]]></string>
     <string name="swap_screen_usd_label">Converted Value</string>
-    <string name="swap_screen_fee">Platform fee</string>
     <string name="swap_screen_select_coin">Select coin please</string>
     <string name="swap_screen_error_coin_details_fetch">Unable to load coin details. Try again later</string>
     <string name="swap_screen_error_not_enough_balance">Not enough coins on balance</string>
@@ -532,8 +531,8 @@
 
     <!-- Transfer flow -->
     <string name="transfer_screen_title">Transfer</string>
-    <string name="transfer_contact_search_hint">Type mobile number or contact name</string>
-    <string name="transfer_phone_number_invalid">Please input correct number</string>
+    <string name="transfer_contact_search_hint">Phone Number/Contact Name</string>
+    <string name="transfer_phone_number_invalid">Enter a valid phone number or contact name</string>
     <string name="empty_amount">0.00 $</string>
     <string name="phone_number_country_code">+1</string>
 
