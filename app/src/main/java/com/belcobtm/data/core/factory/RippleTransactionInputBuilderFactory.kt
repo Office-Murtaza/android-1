@@ -30,8 +30,7 @@ class RippleTransactionInputBuilderFactory(
             it.account = coinEntity.publicKey
             it.amount = (fromCoinAmount.toStringCoin().toDouble() * CoinType.XRP.unit()).toLong()
             it.destination = toAddress
-            it.fee =
-                ((BigDecimal(0.000020)) * BigDecimal.valueOf(CoinType.XRP.unit())).toLong()
+            it.fee = (fromTransactionPlan.txFee * CoinType.XRP.unit()).toLong()
             it.privateKey = ByteString.copyFrom(privateKey.data())
         }
     }

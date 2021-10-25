@@ -233,12 +233,12 @@
     <string name="transaction_details_from_phone">From Phone</string>
     <string name="transaction_details_to_phone">To Phone</string>
     <string name="transaction_details_swap_amount">Swap Amount</string>
-    <string name="transaction_details_sell_amount">Sell Amount</string>
+    <string name="transaction_details_sell_amount">Fiat Amount</string>
     <string name="transaction_details_id">ID</string>
     <string name="transaction_details_swap_id">Swap Id</string>
     <string name="transaction_details_type">Type</string>
     <string name="transaction_details_status">Status</string>
-    <string name="transaction_details_cash_status">Cash status</string>
+    <string name="transaction_details_cash_status">Cash Status</string>
 
     <!--transaction type-->
     <string name="withdraw">Withdraw</string>

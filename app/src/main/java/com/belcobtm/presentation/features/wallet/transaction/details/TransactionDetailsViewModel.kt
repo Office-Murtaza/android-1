@@ -113,14 +113,6 @@ class TransactionDetailsViewModel(
             )
             result.add(toAddressBlockItem)
         }
-        // date block
-        if (dataItem.timestamp != null) {
-            val dateBlockItem = TransactionDetailsAdapter.Item.Regular(
-                R.string.transaction_details_date,
-                DateFormat.sdfLong.format(dataItem.timestamp)
-            )
-            result.add(dateBlockItem)
-        }
         // from phone
         if (dataItem.fromPhone != null) {
             val fromPhoneBlockItem = TransactionDetailsAdapter.Item.Regular(
@@ -189,6 +181,14 @@ class TransactionDetailsViewModel(
                 result.add(qrBlockItem)
             }
         }
+        // date block
+        if (dataItem.timestamp != null) {
+            val dateBlockItem = TransactionDetailsAdapter.Item.Regular(
+                R.string.transaction_details_date,
+                DateFormat.sdfLong.format(dataItem.timestamp)
+            )
+            result.add(dateBlockItem)
+        }
         // to prevent any modifications outside
         return result.toList()
     }
@@ -217,9 +217,9 @@ class TransactionDetailsViewModel(
     private fun getImageResFromTransactionCashStatus(status: TransactionCashStatusType): Int {
         return when (status) {
             TransactionCashStatusType.UNKNOWN -> throw IllegalArgumentException()
-            TransactionCashStatusType.NOT_AVAILABLE -> R.drawable.ic_gray_dots
-            TransactionCashStatusType.AVAILABLE -> R.drawable.ic_green_ring
-            TransactionCashStatusType.WITHDRAWN -> R.drawable.ic_green_arrow_down
+            TransactionCashStatusType.PENDING -> R.drawable.ic_dots
+            TransactionCashStatusType.AVAILABLE -> R.drawable.ic_ring
+            TransactionCashStatusType.WITHDRAWN -> R.drawable.ic_arrow_down
         }
     }
 
@@ -227,7 +227,7 @@ class TransactionDetailsViewModel(
     private fun getTextResFromTransactionCashStatus(status: TransactionCashStatusType): Int {
         return when (status) {
             TransactionCashStatusType.UNKNOWN -> throw IllegalArgumentException()
-            TransactionCashStatusType.NOT_AVAILABLE -> R.string.transition_details_screen_not_available
+            TransactionCashStatusType.PENDING -> R.string.transition_details_screen_pending
             TransactionCashStatusType.AVAILABLE -> R.string.transition_details_screen_available
             TransactionCashStatusType.WITHDRAWN -> R.string.transition_details_screen_withdrawn
         }

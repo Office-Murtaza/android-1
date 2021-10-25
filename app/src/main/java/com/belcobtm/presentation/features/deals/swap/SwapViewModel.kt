@@ -277,6 +277,7 @@ class SwapViewModel(
                     onError = { _swapLoadingData.value = LoadingData.Error(it) }
                 )
             } else {
+                _swapLoadingData.value = LoadingData.DismissProgress()
                 _coinToReceiveError.value =
                     ValidationResult.InValid(R.string.xrp_too_small_amount_error)
             }
