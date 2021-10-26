@@ -50,9 +50,9 @@ class SharedPreferencesHelper(private val sharedPreferences: SharedPreferences) 
         set(value) = sharedPreferences.set(REFERRAL_INVITES, value)
         get() = sharedPreferences[REFERRAL_INVITES] ?: 0
 
-    var referralEarned: Int
+    var referralEarned: Double
         set(value) = sharedPreferences.set(REFERRAL_EARNED, value)
-        get() = sharedPreferences[REFERRAL_EARNED] ?: 0
+        get() = sharedPreferences[REFERRAL_EARNED] ?: 0.0
 
     fun processAuthResponse(authorizationResponse: AuthorizationResponse) {
         authorizationResponse.let {
@@ -62,7 +62,7 @@ class SharedPreferencesHelper(private val sharedPreferences: SharedPreferences) 
             userId = it.user.id
             referralCode = it.user.referralCode.orEmpty()
             referralInvites = it.user.referrals ?: 0
-            referralEarned = it.user.referralEarned ?: 0
+            referralEarned = it.user.referralEarned ?: 0.0
         }
     }
 

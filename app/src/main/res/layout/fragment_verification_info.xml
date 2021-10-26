@@ -42,12 +42,12 @@
 
     <TextView
         android:id="@+id/status_key_view"
+        style="@style/Text.Regular2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/margin_main"
         android:text="@string/verification_status"
         android:textColor="@color/colorText"
-        android:textSize="14sp"
         app:layout_constraintBottom_toBottomOf="@id/status_value_view"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@id/status_value_view" />
@@ -64,13 +64,13 @@
 
     <TextView
         android:id="@+id/status_value_view"
+        style="@style/Text.Regular2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
         android:layout_marginEnd="@dimen/margin_main"
         android:drawablePadding="@dimen/margin_quarter"
         android:textColor="@color/chip_default_text_color"
-        android:textSize="14sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/message_view"
@@ -79,6 +79,7 @@
 
     <TextView
         android:id="@+id/tx_limit_key_view"
+        style="@style/Text.Regular2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/margin_main"
@@ -86,7 +87,6 @@
         android:alpha="0.6"
         android:text="@string/verification_tx_limit"
         android:textColor="@color/black_text_color"
-        android:textSize="12sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/status_divider" />
 
@@ -102,10 +102,10 @@
 
     <TextView
         android:id="@+id/tx_limit_value_view"
+        style="@style/Text.Regular2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="@color/black_text_color"
-        android:textSize="16sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="@id/tx_limit_key_view"
         app:layout_constraintTop_toBottomOf="@id/tx_limit_key_view"
@@ -113,23 +113,23 @@
 
     <TextView
         android:id="@+id/daily_limit_key_view"
+        style="@style/Text.Regular2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="@dimen/margin_main"
         android:alpha="0.6"
         android:text="@string/verification_daily_limit"
         android:textColor="@color/black_text_color"
-        android:textSize="12sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@id/tx_limit_key_view" />
 
     <TextView
         android:id="@+id/daily_limit_value_view"
+        style="@style/Text.Regular2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="@dimen/margin_main"
         android:textColor="@color/black_text_color"
-        android:textSize="16sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/daily_limit_key_view"

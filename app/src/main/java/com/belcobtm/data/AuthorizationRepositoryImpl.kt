@@ -122,7 +122,7 @@ class AuthorizationRepositoryImpl(
             prefHelper.userPhone = phone
             prefHelper.referralCode = result.user.referralCode.orEmpty()
             prefHelper.referralInvites = result.user.referrals ?: 0
-            prefHelper.referralEarned = result.user.referralEarned ?: 0
+            prefHelper.referralEarned = result.user.referralEarned ?: 0.0
             temporaryCoinMap.clear()
             Either.Right(Unit)
         } else {
@@ -167,7 +167,7 @@ class AuthorizationRepositoryImpl(
             prefHelper.userId = result.user.id
             prefHelper.referralCode = result.user.referralCode.orEmpty()
             prefHelper.referralInvites = result.user.referrals ?: 0
-            prefHelper.referralEarned = result.user.referralEarned ?: 0
+            prefHelper.referralEarned = result.user.referralEarned ?: 0.0
             temporaryCoinMap.clear()
             Either.Right(Unit)
         } else {

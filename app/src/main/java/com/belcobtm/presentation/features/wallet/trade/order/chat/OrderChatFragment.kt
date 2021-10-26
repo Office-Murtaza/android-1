@@ -16,7 +16,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.belcobtm.R
 import com.belcobtm.databinding.FragmentOrderChatBinding
 import com.belcobtm.presentation.core.adapter.MultiTypeAdapter
-import com.belcobtm.presentation.core.extensions.actionDoneListener
 import com.belcobtm.presentation.core.extensions.toggle
 import com.belcobtm.presentation.core.ui.fragment.BaseFragment
 import com.belcobtm.presentation.features.wallet.trade.order.chat.delegate.MyMessageDelegate
@@ -69,7 +68,7 @@ class OrderChatFragment : BaseFragment<FragmentOrderChatBinding>() {
     }
 
     override fun FragmentOrderChatBinding.initListeners() {
-        binding.message.actionDoneListener {
+        binding.sendButton.setOnClickListener {
             viewModel.sendMessage(args.orderId, binding.message.text?.toString().orEmpty())
             binding.message.text = null
         }

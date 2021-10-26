@@ -576,7 +576,7 @@
     <string name="fiat_amount_label">Fiat Amount</string>
     <string name="crypto_amount_label">Crypto Amount</string>
     <string name="no_trades_message">You haven\'t created a single trade yet.</string>
-    <string name="create_trade_screen_title">New Trade</string>
+    <string name="create_trade_screen_title">Create Trade</string>
     <string name="open_create_trade_button_title">Create new trade</string>
     <string name="create_trade_menu_title">Create trade</string>
     <string name="create_trade_screen_trade_type_label">Trade Type</string>
@@ -633,7 +633,7 @@
     <string name="my_trade_details_cancel_trade_success_message">Trade successfully canceled</string>
 
 
-    <string name="edit_trade_screen_title">Edit trade</string>
+    <string name="edit_trade_screen_title">Trade Edit</string>
     <string name="edit_trade_price_zero_error">Price cannot be zero</string>
     <string name="edit_trade_amount_range_error">Invalid amount range. min value should be lower than max value</string>
     <string name="edit_trade_no_payment_options_selected_error">Select at least one payment option</string>
@@ -701,11 +701,11 @@
     <string name="referrals_label">Referrals</string>
     <string name="referral_screen_title">Referrals</string>
     <string name="referral_screen_users_formatted">%d users</string>
-    <string name="referral_screen_coin_amount_formatted">%d CATM</string>
+    <string name="referral_screen_coin_amount_formatted">%s CATM</string>
     <string name="referral_screen_usd_amount_formatted">~ %s</string>
     <string name="referral_screen_header">Invite friends — \nGet CATM coins.</string>
     <string name="referrals_screen_additional_title">For each invited user that buys/sells/swaps/stakes/trades using our app or our ATM, both of you gets</string>
-    <string name="referrals_screen_referral_reward_amount_title">100 CATM ~ $10.00</string>
+    <string name="referrals_screen_referral_reward_amount_title">100 CATM ~ $10</string>
     <string name="share_button_title">Share</string>
     <string name="referral_message_format">1. Install Belco Wallet from %s\n2. Register and deposit, buy, sell, transfer, swap, and trade any amount of coins\n3.After that, both of us will get a 100 CATM token bonus</string>
     <string name="referral_contacts_not_selected_error">Please select at least one contact from the list</string>
@@ -724,7 +724,7 @@
     <string name="sell_amount_exceeds_today_limit">Amount exceeds today limit</string>
     <string name="sell_amount_wrong_divider">Amount should be /20, /50 or /100</string>
     <string name="sell_amount_helper_text">Enter /20, /50 or /100 amount</string>
-    <string name="sell_screen_balance">Balance</string>
+    <string name="sell_screen_balance">Reserved</string>
     <string name="sell_screen_fee_formatted"><![CDATA[Platform fee %1$s\%%, %2$s %3$s]]></string>
     <string name="coin_balance_format">%1$s %2$s ~ %3$s</string>
     <string name="sell_screen_balance_formatted">%1$s %2$s</string>
@@ -752,8 +752,8 @@
     <string name="trade_container_deeplink">belcobtm://trade_container/{innerDeeplink}</string>
     <string name="trade_container_deeplink_format">belcobtm://trade_container/%s</string>
     <string name="xrp_too_small_amount_error">Receiver address is not activated, send at least 20 XRP</string>
-    <string name="trade_coin_balance_format">%1$s %2$s</string>
     <string name="about_screen_terms_picker_title">Terms &amp; Conditions</string>
     <string name="about_screen_privacy_picker_title">Privacy Policy</string>
     <string name="about_screen_complaint_picker_title">Complaint Policy</string>
+    <string name="fragment_trade_order_chat_send_button">Send</string>
 </resources>

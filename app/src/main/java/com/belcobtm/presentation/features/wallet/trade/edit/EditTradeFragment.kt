@@ -15,6 +15,8 @@ import com.belcobtm.domain.wallet.LocalCoinType
 import com.belcobtm.domain.wallet.item.CoinDataItem
 import com.belcobtm.presentation.core.adapter.MultiTypeAdapter
 import com.belcobtm.presentation.core.extensions.*
+import com.belcobtm.presentation.core.formatter.DoubleCurrencyPriceFormatter
+import com.belcobtm.presentation.core.formatter.Formatter
 import com.belcobtm.presentation.core.helper.AlertHelper
 import com.belcobtm.presentation.core.mvvm.LoadingData
 import com.belcobtm.presentation.core.ui.fragment.BaseFragment
@@ -22,7 +24,9 @@ import com.belcobtm.presentation.core.views.listeners.SafeDecimalEditTextWatcher
 import com.belcobtm.presentation.features.wallet.trade.create.delegate.TradePaymentOptionDelegate
 import com.google.android.material.chip.Chip
 import com.google.android.material.snackbar.Snackbar
+import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.core.qualifier.named
 
 class EditTradeFragment : BaseFragment<FragmentEditTradeBinding>() {
 
@@ -31,6 +35,9 @@ class EditTradeFragment : BaseFragment<FragmentEditTradeBinding>() {
 
     private val args by navArgs<EditTradeFragmentArgs>()
     private val viewModel by viewModel<EditTradeViewModel>()
+    private val priceFormatter by inject<Formatter<Double>>(
+        named(DoubleCurrencyPriceFormatter.DOUBLE_CURRENCY_PRICE_FORMATTER_QUALIFIER)
+    )
 
     override val retryListener: View.OnClickListener
         get() = View.OnClickListener {
@@ -123,7 +130,7 @@ class EditTradeFragment : BaseFragment<FragmentEditTradeBinding>() {
         }
         viewModel.initialPrice.observe(viewLifecycleOwner) { amount ->
             binding.coinDetailsView.getEditText().setTextSilently(
-                priceTextWatcher, amount.toString(), amount.toString().length
+                priceTextWatcher, amount.toStringCoin(), amount.toStringCoin().length
             )
         }
         viewModel.availablePaymentOptions.observe(viewLifecycleOwner, adapter::update)
@@ -184,7 +191,12 @@ class EditTradeFragment : BaseFragment<FragmentEditTradeBinding>() {
         val localType = LocalCoinType.valueOf(coinCode)
         binding.coinDetailsView.setCoinData(coinCode, localType.resIcon(), showCoinArrow = false)
         val balancePart = getString(R.string.sell_screen_balance)
-        val coinPart = getString(R.string.trade_coin_balance_format, coinBalance, coinCode)
+        val coinPart = getString(
+            R.string.coin_balance_format,
+            coinBalance,
+            coinCode,
+            priceFormatter.format(coin.reservedBalanceUsd)
+        )
         val balanceFormatted = getString(R.string.sell_screen_balance_formatted, balancePart, coinPart)
         binding.coinDetailsView.setHelperTextWithLink(balanceFormatted, coinPart) {
             val uri = getString(R.string.reserved_deeplink_format, coinCode).toUri()

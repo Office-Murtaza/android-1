@@ -12,4 +12,5 @@ class DoubleCurrencyPriceFormatter(locale: Locale) : Formatter<Double> {
     }
 
     override fun format(input: Double): String = numberFormat.format(input)
+        .replace("[.]00$".toRegex(), "")
 }

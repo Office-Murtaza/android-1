@@ -173,7 +173,12 @@ val viewModelModule = module {
             get(named(GOOGLE_MAPS_DIRECTIONS_QUERY_FORMATTER))
         )
     }
-    viewModel { TradeCreateOrderViewModel(get(), get(), get(), get(), get()) }
+    viewModel {
+        TradeCreateOrderViewModel(
+            get(), get(), get(), get(), get(),
+            get(named(DOUBLE_CURRENCY_PRICE_FORMATTER_QUALIFIER))
+        )
+    }
     viewModel { TradeOrderRateViewModel(get(), get()) }
     viewModel { OrderChatViewModel(get(), get(), get(), get()) }
     viewModel { HistoryChatViewModel(get()) }

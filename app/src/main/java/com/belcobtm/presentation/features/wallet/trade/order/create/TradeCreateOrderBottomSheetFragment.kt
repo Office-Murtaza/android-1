@@ -160,9 +160,10 @@ class TradeCreateOrderBottomSheetFragment : BaseBottomSheetFragment() {
                 }
             }
             val cryptoFormatted = getString(
-                R.string.trade_crypto_amount_value,
+                R.string.coin_balance_format,
                 it.reservedBalanceCrypto.toStringCoin(),
-                it.coinName
+                it.coinName,
+                it.reservedBalanceUsd
             )
             val formattedSpan = SpannableString(
                 getString(
@@ -197,14 +198,6 @@ class TradeCreateOrderBottomSheetFragment : BaseBottomSheetFragment() {
             viewModel.createOrder()
         }
         return binding.root
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        binding.amountEditText.post {
-            binding.amountEditText.requestFocus()
-            imm?.showSoftInput(binding.amountEditText, 0)
-        }
     }
 
     override fun onDestroyView() {

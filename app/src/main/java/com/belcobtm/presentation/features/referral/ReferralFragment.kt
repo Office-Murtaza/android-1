@@ -10,6 +10,7 @@ import androidx.navigation.fragment.findNavController
 import com.belcobtm.R
 import com.belcobtm.databinding.FragmentReferralsBinding
 import com.belcobtm.presentation.core.extensions.toHtmlSpan
+import com.belcobtm.presentation.core.extensions.toStringCoin
 import com.belcobtm.presentation.core.formatter.DoubleCurrencyPriceFormatter
 import com.belcobtm.presentation.core.formatter.Formatter
 import com.belcobtm.presentation.core.helper.ClipBoardHelper
@@ -79,7 +80,7 @@ class ReferralFragment : BaseFragment<FragmentReferralsBinding>() {
                 R.string.referral_screen_users_formatted, dataItem.invited
             )
             totalEarnValue.text = getString(
-                R.string.referral_screen_coin_amount_formatted, dataItem.earned
+                R.string.referral_screen_coin_amount_formatted, dataItem.earned.toStringCoin()
             )
             usdAmountLabel.text = getString(
                 R.string.referral_screen_usd_amount_formatted,

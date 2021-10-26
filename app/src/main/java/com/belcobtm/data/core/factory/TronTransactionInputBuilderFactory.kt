@@ -13,6 +13,7 @@ import com.belcobtm.presentation.core.toHexBytesInByteString
 import com.google.protobuf.ByteString
 import com.squareup.moshi.Moshi
 import wallet.core.jni.CoinType
+import wallet.core.jni.PrivateKey
 import wallet.core.jni.proto.Tron
 import java.lang.RuntimeException
 import java.util.*
@@ -27,15 +28,20 @@ class TronTransactionInputBuilderFactory(private val accountDao: AccountDao) {
     ): Tron.SigningInput.Builder {
         val coinEntity = accountDao.getItem(fromCoin.name)
         val rawData = fromTransactionPlan.blockHeader?.raw_data
+        val privateKey = PrivateKey(coinEntity.privateKey.toHexByteArray())
         val cryptoToSubcoin = fromCoinAmount.toStringCoin().toDouble() * CoinType.TRON.unit()
         val fromAddress = coinEntity.publicKey
+        val parentHash = rawData?.parentHash?.let { "0x$it" }?.toHexByteArray() ?: byteArrayOf()
+        val witnessAddress =
+            rawData?.witness_address?.let { "0x$it" }?.toHexByteArray() ?: byteArrayOf()
+        val txTrieRoot = rawData?.txTrieRoot?.let { "0x$it" }?.toHexByteArray() ?: byteArrayOf()
         val tronBlock = Tron.BlockHeader.newBuilder().also {
             it.number = rawData?.number ?: 0L
             it.timestamp = rawData?.timestamp ?: 0L
             it.version = rawData?.version ?: 0
-            it.parentHash = rawData?.parentHash?.toHexBytesInByteString()
-            it.witnessAddress = rawData?.witness_address?.toHexBytesInByteString()
-            it.txTrieRoot = rawData?.txTrieRoot?.toHexBytesInByteString()
+            it.parentHash = ByteString.copyFrom(parentHash)
+            it.witnessAddress = ByteString.copyFrom(witnessAddress)
+            it.txTrieRoot = ByteString.copyFrom(txTrieRoot)
         }
         val transferBuilder = Tron.TransferContract.newBuilder().also {
             it.ownerAddress = fromAddress
@@ -47,13 +53,13 @@ class TronTransactionInputBuilderFactory(private val accountDao: AccountDao) {
             it.timestamp = Date().time
             it.expiration = Calendar.getInstance().also { calendar ->
                 calendar.time = Date()
-                calendar.add(Calendar.HOUR, 10)
+                calendar.add(Calendar.HOUR, 10000)
             }.timeInMillis
             it.blockHeader = tronBlock.build()
         }
         return Tron.SigningInput.newBuilder().also {
             it.transaction = transaction.build()
-            it.privateKey = coinEntity.privateKey.toHexBytesInByteString()
+            it.privateKey = ByteString.copyFrom(privateKey.data())
         }
     }
 }

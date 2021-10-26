@@ -94,6 +94,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
         android:gravity="end"
+        android:textStyle="bold"
         android:textColor="@color/black_text_color"
         android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"

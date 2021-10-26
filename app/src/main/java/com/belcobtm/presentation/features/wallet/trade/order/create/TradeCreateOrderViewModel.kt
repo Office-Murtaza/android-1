@@ -12,6 +12,8 @@ import com.belcobtm.domain.trade.details.GetTradeDetailsUseCase
 import com.belcobtm.domain.trade.order.CreateOrderUseCase
 import com.belcobtm.domain.wallet.LocalCoinType
 import com.belcobtm.domain.wallet.interactor.GetCoinByCodeUseCase
+import com.belcobtm.presentation.core.extensions.toStringCoin
+import com.belcobtm.presentation.core.formatter.Formatter
 import com.belcobtm.presentation.core.livedata.DoubleCombinedLiveData
 import com.belcobtm.presentation.core.livedata.TripleCombinedLiveData
 import com.belcobtm.presentation.core.mvvm.LoadingData
@@ -24,7 +26,8 @@ class TradeCreateOrderViewModel(
     private val getCoinByCodeUseCase: GetCoinByCodeUseCase,
     private val createOrderUseCase: CreateOrderUseCase,
     private val stringProvider: StringProvider,
-    private val serviceInfoProvider: ServiceInfoProvider
+    private val serviceInfoProvider: ServiceInfoProvider,
+    private val priceFormatter: Formatter<Double>
 ) : ViewModel() {
 
     private val _initialLoadingData = MutableLiveData<LoadingData<Unit>>()
@@ -93,6 +96,7 @@ class TradeCreateOrderViewModel(
                 this.reservedBalanceUsd = coinDataItem.reservedBalanceUsd
                 _reservedBalance.value = ReservedBalance(
                     coinDataItem.reservedBalanceCoin,
+                    priceFormatter.format(coinDataItem.reservedBalanceUsd),
                     coinDataItem.code
                 )
                 if (trade.tradeType == TradeType.BUY) {
@@ -133,7 +137,7 @@ class TradeCreateOrderViewModel(
         _createTradeLoadingData.value = LoadingData.Loading()
         createOrderUseCase(TradeOrderItem(
             tradeData.tradeId, tradeData.price,
-            cryptoAmount.value?.cryptoAmount ?: 0.0,
+            cryptoAmount.value?.cryptoAmount?.toStringCoin()?.toDouble() ?: 0.0,
             fiatAmount.value ?: 0.0
         ), onSuccess = {
             _createTradeLoadingData.value = LoadingData.Success(it)
