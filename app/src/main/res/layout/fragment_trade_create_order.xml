@@ -9,13 +9,13 @@
 
     <TextView
         android:id="@+id/usd_amount_label"
+        style="@style/Text.Regular2"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
         android:gravity="end"
         android:text="@string/usd_amount_label"
         android:textColor="@color/gray_text_color"
-        android:textSize="17sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -62,13 +62,13 @@
 
     <TextView
         android:id="@+id/reserved_amount"
+        style="@style/Text.Regular2"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_main"
         android:layout_marginEnd="@dimen/margin_half"
         android:gravity="end"
         android:textColor="@color/gray_text_color"
-        android:textSize="17sp"
         app:drawableEndCompat="@drawable/ic_chevron_right"
         app:drawableTint="@color/colorPrimary"
         app:layout_constraintEnd_toEndOf="parent"
@@ -80,13 +80,13 @@
 
     <TextView
         android:id="@+id/crypto_amount"
+        style="@style/Text.Regular2"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_quarter"
         android:layout_marginEnd="@dimen/margin_half"
         android:gravity="end"
         android:textColor="@color/gray_text_color"
-        android:textSize="17sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1"
         app:layout_constraintHorizontal_chainStyle="packed"
@@ -96,13 +96,13 @@
 
     <TextView
         android:id="@+id/platform_fee"
+        style="@style/Text.Regular2"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_quarter"
         android:layout_marginEnd="@dimen/margin_half"
         android:gravity="end"
         android:textColor="@color/gray_text_color"
-        android:textSize="17sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1"
         app:layout_constraintHorizontal_chainStyle="packed"
@@ -112,13 +112,13 @@
 
     <TextView
         android:id="@+id/total_crypto"
+        style="@style/Text.Regular2"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_quarter"
         android:layout_marginEnd="@dimen/margin_half"
         android:gravity="end"
         android:textColor="@color/gray_text_color"
-        android:textSize="17sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/platform_fee"

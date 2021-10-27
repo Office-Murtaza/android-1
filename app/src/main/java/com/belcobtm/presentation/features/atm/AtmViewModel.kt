@@ -2,7 +2,6 @@ package com.belcobtm.presentation.features.atm
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.belcobtm.data.rest.atm.response.AtmResponse
 import com.belcobtm.domain.atm.interactor.GetAtmsUseCase
 import com.belcobtm.presentation.core.mvvm.LoadingData
 

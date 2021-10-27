@@ -95,7 +95,6 @@
             android:layout_height="wrap_content"
             android:textColor="@color/black_text_color"
             android:textSize="14sp"
-            android:textStyle="bold"
             app:layout_constraintEnd_toStartOf="@id/ic_order_id_copy"
             app:layout_constraintStart_toEndOf="@id/order_id_label"
             app:layout_constraintTop_toTopOf="@id/order_id_label"

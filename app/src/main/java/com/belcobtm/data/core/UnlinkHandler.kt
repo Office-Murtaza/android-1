@@ -7,7 +7,9 @@ import com.belcobtm.data.disk.database.account.AccountDao
 import com.belcobtm.data.disk.database.wallet.WalletDao
 import com.belcobtm.data.disk.shared.preferences.SharedPreferencesHelper
 import com.belcobtm.data.rest.unlink.UnlinkApi
+import com.belcobtm.data.websockets.manager.WebSocketManager
 import com.belcobtm.data.websockets.wallet.WalletConnectionHandler
+import com.belcobtm.domain.socket.DisconnectFromSocketUseCase
 import com.belcobtm.presentation.features.HostActivity
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject

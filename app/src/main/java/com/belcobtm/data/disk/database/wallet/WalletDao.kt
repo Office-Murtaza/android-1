@@ -85,8 +85,8 @@ interface WalletDao {
 
     @Transaction
     suspend fun clear() {
-        clearCoin()
         clearCoinDetails()
+        clearCoin()
         clearWallet()
     }
 }

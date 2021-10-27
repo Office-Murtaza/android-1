@@ -118,14 +118,7 @@ class SendGiftViewModel(
                             _initialLoadingData.value = LoadingData.Error(Failure.ServerError())
                         } else {
                             coin.let(_coinToSend::setValue)
-                            getTransferAddressUseCase(
-                                GetTransferAddressUseCase.Params(phoneNumber, coin.code),
-                                onSuccess = { address ->
-                                    toAddress = address
-                                    fetchTransactionPlan(coin, _initialLoadingData)
-                                }, onError = {
-                                    _initialLoadingData.value = LoadingData.Error(it)
-                                })
+                            fetchTransactionPlan(phoneNumber, coin, _initialLoadingData)
                         }
                     },
                     onError = {
@@ -198,6 +191,54 @@ class SendGiftViewModel(
                 return@getSignedTransactionPlanUseCase
             }
             if (coinToSend.code == LocalCoinType.XRP.name) {
+                if (toAddress == coinToSend.details.walletAddress) {
+                    if (amount < 20 + (signedTransactionPlanItem?.fee ?: 0.0)) {
+                        _cryptoAmountError.value = R.string.xrp_too_small_amount_error
+                        _sendGiftLoadingData.value = LoadingData.DismissProgress()
+                        return@getSignedTransactionPlanUseCase
+                    } else {
+                        sendGiftInternal(
+                            amount,
+                            coinToSend,
+                            phone,
+                            message,
+                            giftId,
+                            transactionPlanItem
+                        )
+                    }
+                } else {
+                    receiverAccountActivatedUseCase(
+                        ReceiverAccountActivatedUseCase.Params(toAddress, coinToSend.code),
+                        onSuccess = { activated ->
+                            if (activated) {
+                                sendGiftInternal(
+                                    amount,
+                                    coinToSend,
+                                    phone,
+                                    message,
+                                    giftId,
+                                    transactionPlanItem
+                                )
+                            } else {
+                                if (amount < 20) {
+                                    _cryptoAmountError.value = R.string.xrp_too_small_amount_error
+                                    _sendGiftLoadingData.value = LoadingData.DismissProgress()
+                                    return@receiverAccountActivatedUseCase
+                                } else {
+                                    sendGiftInternal(
+                                        amount,
+                                        coinToSend,
+                                        phone,
+                                        message,
+                                        giftId,
+                                        transactionPlanItem
+                                    )
+                                }
+                            }
+                        },
+                        onError = { _sendGiftLoadingData.value = LoadingData.Error(it) }
+                    )
+                }
                 if (amount < 20) {
                     _cryptoAmountError.value = R.string.xrp_too_small_amount_error
                     _sendGiftLoadingData.value = LoadingData.DismissProgress()
@@ -207,7 +248,14 @@ class SendGiftViewModel(
                         ReceiverAccountActivatedUseCase.Params(toAddress, coinToSend.code),
                         onSuccess = { activated ->
                             if (activated) {
-                                sendGiftInternal(amount, coinToSend, phone, message, giftId, transactionPlanItem)
+                                sendGiftInternal(
+                                    amount,
+                                    coinToSend,
+                                    phone,
+                                    message,
+                                    giftId,
+                                    transactionPlanItem
+                                )
                             } else {
                                 _cryptoAmountError.value = R.string.xrp_too_small_amount_error
                                 _sendGiftLoadingData.value = LoadingData.DismissProgress()
@@ -217,7 +265,14 @@ class SendGiftViewModel(
                     )
                 }
             } else {
-                sendGiftInternal(amount, coinToSend, phone, message, giftId, transactionPlanItem)
+                sendGiftInternal(
+                    amount,
+                    coinToSend,
+                    phone,
+                    message,
+                    giftId,
+                    transactionPlanItem
+                )
             }
         }, onError = {
             _sendGiftLoadingData.value = LoadingData.Error(it)
@@ -249,40 +304,48 @@ class SendGiftViewModel(
         )
     }
 
-    fun selectCoin(coinDataItem: CoinDataItem) {
+    fun selectCoin(phoneNumber: String, coinDataItem: CoinDataItem) {
         _coinToSend.value = coinDataItem
         _transactionPlanLiveData.value = LoadingData.Loading()
-        fetchTransactionPlan(coinDataItem, _transactionPlanLiveData)
+        fetchTransactionPlan(phoneNumber, coinDataItem, _transactionPlanLiveData)
     }
 
     private fun fetchTransactionPlan(
+        phoneNumber: String,
         coin: CoinDataItem,
         loadingLiveData: MutableLiveData<LoadingData<Unit>>
     ) {
-        getTransactionPlanUseCase(
-            coin.code,
-            onSuccess = { transactionPlan ->
-                transactionPlanItem = transactionPlan
-                getFakeSignedTransactionPlanUseCase(
-                    GetFakeSignedTransactionPlanUseCase.Params(
-                        coin.code,
-                        transactionPlan,
-                        useMaxAmount = false
-                    ),
-                    onSuccess = { signedTransactionPlan ->
-                        signedTransactionPlanItem = signedTransactionPlan
-                        _fee.value = signedTransactionPlan.fee
-                        _coinToSend.value = coin
+        getTransferAddressUseCase(
+            GetTransferAddressUseCase.Params(phoneNumber, coin.code),
+            onSuccess = { address ->
+                toAddress = address
+                getTransactionPlanUseCase(
+                    coin.code,
+                    onSuccess = { transactionPlan ->
+                        transactionPlanItem = transactionPlan
+                        getFakeSignedTransactionPlanUseCase(
+                            GetFakeSignedTransactionPlanUseCase.Params(
+                                coin.code,
+                                transactionPlan,
+                                useMaxAmount = false
+                            ),
+                            onSuccess = { signedTransactionPlan ->
+                                signedTransactionPlanItem = signedTransactionPlan
+                                _fee.value = signedTransactionPlan.fee
+                                _coinToSend.value = coin
+                                loadingLiveData.value = LoadingData.Success(Unit)
+                            }, onError = {
+                                loadingLiveData.value = LoadingData.Error(it)
+                            })
                         loadingLiveData.value = LoadingData.Success(Unit)
-                    }, onError = {
+                    },
+                    onError = {
                         loadingLiveData.value = LoadingData.Error(it)
-                    })
-                loadingLiveData.value = LoadingData.Success(Unit)
-            },
-            onError = {
-                loadingLiveData.value = LoadingData.Error(it)
-            }
-        )
+                    }
+                )
+            }, onError = {
+                _initialLoadingData.value = LoadingData.Error(it)
+            })
     }
 
     private fun isSufficientBalance(): Boolean {

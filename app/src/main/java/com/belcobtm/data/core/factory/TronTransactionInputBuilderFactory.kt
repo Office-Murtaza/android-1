@@ -26,11 +26,10 @@ class TronTransactionInputBuilderFactory(private val accountDao: AccountDao) {
         fromCoinAmount: Double,
         fromTransactionPlan: TransactionPlanItem
     ): Tron.SigningInput.Builder {
-        val coinEntity = accountDao.getItem(fromCoin.name)
+        val accountEntity = accountDao.getItem(fromCoin.name)
         val rawData = fromTransactionPlan.blockHeader?.raw_data
-        val privateKey = PrivateKey(coinEntity.privateKey.toHexByteArray())
         val cryptoToSubcoin = fromCoinAmount.toStringCoin().toDouble() * CoinType.TRON.unit()
-        val fromAddress = coinEntity.publicKey
+        val fromAddress = accountEntity.publicKey
         val parentHash = rawData?.parentHash?.let { "0x$it" }?.toHexByteArray() ?: byteArrayOf()
         val witnessAddress =
             rawData?.witness_address?.let { "0x$it" }?.toHexByteArray() ?: byteArrayOf()
@@ -59,7 +58,7 @@ class TronTransactionInputBuilderFactory(private val accountDao: AccountDao) {
         }
         return Tron.SigningInput.newBuilder().also {
             it.transaction = transaction.build()
-            it.privateKey = ByteString.copyFrom(privateKey.data())
+            it.privateKey = accountEntity.privateKey.toHexBytesInByteString()
         }
     }
 }

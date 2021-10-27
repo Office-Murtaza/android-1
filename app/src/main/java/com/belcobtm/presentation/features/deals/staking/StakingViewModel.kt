@@ -180,6 +180,6 @@ class StakingViewModel(
         if (timestamp == null) {
             return null
         }
-        return DateFormat.sdfLong.format(timestamp)
+        return DateFormat.sdfShort.format(timestamp)
     }
 }

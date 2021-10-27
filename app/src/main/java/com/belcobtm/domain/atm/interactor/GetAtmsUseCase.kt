@@ -3,7 +3,7 @@ package com.belcobtm.domain.atm.interactor
 import android.location.Location
 import com.belcobtm.data.helper.DistanceCalculator
 import com.belcobtm.data.provider.location.LocationProvider
-import com.belcobtm.data.rest.atm.response.AtmResponse
+import com.belcobtm.data.rest.atm.response.AtmAddress
 import com.belcobtm.domain.*
 import com.belcobtm.domain.atm.AtmRepository
 import com.belcobtm.presentation.core.formatter.Formatter
@@ -27,25 +27,26 @@ class GetAtmsUseCase(
             val calendar = Calendar.getInstance()
             val numOfDay = calendar.get(Calendar.DAY_OF_WEEK)
             val location = locationProvider.getCurrentLocation()
-            val atms = response.locations.map { address ->
-                val daysMap =
-                    address.days.associateByTo(HashMap(), AtmResponse.AtmAddress.OpenDay::day)
-                AtmItem(
-                    LatLng(address.latitude, address.longitude),
-                    address.name,
-                    address.address,
-                    days.values.toMutableSet().map { openDay ->
-                        OpenHoursItem(
-                            openDay,
-                            daysMap[openDay.lowercase()]?.hours.orEmpty(),
-                            openDay.equals(days[numOfDay], ignoreCase = true),
-                            daysMap[openDay.lowercase()] == null
-                        )
-                    },
-                    formatDistance(address.latitude, address.longitude, location),
-                    address.operation
-                )
-            }
+            val atms = response.filter { it.longitude != null && it.latitude != null }
+                .map { address ->
+                    val daysMap = address.days.filter { it.day != null && it.hours != null }
+                        .associateByTo(HashMap(), AtmAddress.OpenDay::day)
+                    AtmItem(
+                        LatLng(address.latitude ?: 0.0, address.longitude ?: 0.0),
+                        address.name,
+                        address.address,
+                        days.values.toMutableSet().map { openDay ->
+                            OpenHoursItem(
+                                openDay,
+                                daysMap[openDay.lowercase()]?.hours.orEmpty(),
+                                openDay.equals(days[numOfDay], ignoreCase = true),
+                                daysMap[openDay.lowercase()] == null
+                            )
+                        },
+                        formatDistance(address.latitude ?: 0.0, address.longitude ?: 0.0, location),
+                        address.type
+                    )
+                }
             AtmsInfoItem(atms, location)
         }
 

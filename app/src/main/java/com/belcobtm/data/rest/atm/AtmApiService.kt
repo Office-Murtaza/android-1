@@ -1,12 +1,12 @@
 package com.belcobtm.data.rest.atm
 
-import com.belcobtm.data.rest.atm.response.AtmResponse
+import com.belcobtm.data.rest.atm.response.AtmAddress
 import com.belcobtm.domain.Either
 import com.belcobtm.domain.Failure
 
 class AtmApiService(private val atmApi: AtmApi) {
 
-    suspend fun getAtms(): Either<Failure, AtmResponse> = try {
+    suspend fun getAtms(): Either<Failure, List<AtmAddress>> = try {
         val request = atmApi.getAtmAddress().await()
         request.body()?.let { Either.Right(it) }
             ?: Either.Left(Failure.ServerError())

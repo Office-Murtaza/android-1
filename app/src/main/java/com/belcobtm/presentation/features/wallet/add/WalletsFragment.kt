@@ -1,15 +1,9 @@
 package com.belcobtm.presentation.features.wallet.add
 
-import android.os.Bundle
 import android.view.LayoutInflater
-import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
-import androidx.activity.OnBackPressedCallback
 import androidx.core.content.ContextCompat
-import androidx.core.os.bundleOf
-import androidx.fragment.app.setFragmentResult
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import com.belcobtm.R
 import com.belcobtm.databinding.FragmentWalletsBinding

@@ -100,6 +100,10 @@ class SocketManager(
                 StompSocketRequest.UNSUBSCRIBE, mapOf(DESTINATION_HEADER to destination)
             )
             socketClient.sendMessage(serializer.serialize(request))
+            subscribers.remove(destination)
+            if(subscribers.isEmpty()) {
+                disconnect()
+            }
         }
     }
 

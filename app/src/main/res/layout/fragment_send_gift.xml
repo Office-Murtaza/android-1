@@ -103,6 +103,7 @@
 
         <TextView
             android:id="@+id/convertedLabel"
+            style="@style/Text.Regular2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
@@ -110,18 +111,17 @@
             android:alpha="0.6"
             android:text="@string/send_gift_screen_converted_label"
             android:textColor="@color/black_text_color"
-            android:textSize="12sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/sendCoinDivider" />
 
         <TextView
             android:id="@+id/amountUsdView"
+            style="@style/Text.Regular2"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/margin_main"
             android:gravity="end"
             android:textColor="@color/dark_text_color"
-            android:textSize="16sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/convertedLabel"
@@ -210,9 +210,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:gravity="start|top"
-                android:hint="@string/send_gift_screen_message"
-                android:inputType="textMultiLine"
-                android:singleLine="false"
+                android:imeOptions="actionDone"
+                android:inputType="text"
                 android:paddingStart="@dimen/margin_quarter"
                 android:paddingEnd="@dimen/margin_quarter"
                 tools:text="aglgkjalskgjalkgjalksgjajsglkajglkjglaskgjlasg" />

@@ -149,8 +149,8 @@
     <!-- Verification -->
     <string name="verification_screen_title">Verification</string>
     <string name="verification_status">Status</string>
-    <string name="verification_tx_limit">Transaction limit</string>
-    <string name="verification_daily_limit">Daily limit</string>
+    <string name="verification_tx_limit">Transaction Limit</string>
+    <string name="verification_daily_limit">Daily Limit</string>
     <string name="verification_vip_verify">VIP verify</string>
     <string name="verification_verify">Verify</string>
     <string-array name="verification_status_array">
@@ -172,7 +172,7 @@
     <string name="verification_city">City</string>
     <string name="verification_country">Country</string>
     <string name="verification_province">Province</string>
-    <string name="verification_zip_code">ZIP code</string>
+    <string name="verification_zip_code">Code</string>
     <string name="verification_send">Send</string>
     <string name="verification_select_photo_please">Select photo please</string>
     <string name="verification_alert_country_title">Please pick country</string>
@@ -316,7 +316,7 @@
     <string name="swap_screen_title">Swap</string>
     <string name="swap_screen_price">Price</string>
     <string name="swap_screen_balance_formatted">Balance %1$s %2$s\nFee %3$s %4$s</string>
-    <string name="swap_screen_rate_formatted"><![CDATA[<b>%1$s</b> %2$s <b>%3$s</b> %4$s]]></string>
+    <string name="swap_screen_rate_formatted"><![CDATA[<b>%1$s</b> %2$s ~ <b>%3$s</b> %4$s]]></string>
     <string name="swap_screen_fee_formatted"><![CDATA[Platform fee %1$s\%%, %2$s %3$s]]></string>
     <string name="swap_screen_usd_label">Converted Value</string>
     <string name="swap_screen_select_coin">Select coin please</string>
@@ -681,7 +681,7 @@
 
     <string name="you_will_get_label">You will get %s</string>
     <string name="you_will_send_label">You will send %s</string>
-    <string name="order_details_id_label">ID</string>
+    <string name="order_details_id_label">Order Id</string>
     <string name="trade_updated_message">Trade was successfully updated/cancelled</string>
     <string name="status">Status</string>
     <string name="create_order_dialog_platform_fee_format">Platform Fee %s</string>

@@ -74,8 +74,6 @@ class SwapFragment : BaseFragment<FragmentSwapBinding>() {
         setToolbarTitle(R.string.swap_screen_title)
         sendCoinInputLayout.setHint(getString(R.string.text_amount))
         receiveCoinInputLayout.setHint(getString(R.string.text_amount))
-        sendCoinInputLayout.getEditText().setHint(R.string.swap_screen_send_hint)
-        receiveCoinInputLayout.getEditText().setHint(R.string.swap_screen_receive_hint)
         sendCoinInputLayout.getEditText().setTextSilently(textWatcher.firstTextWatcher, "0")
         receiveCoinInputLayout.getEditText().setTextSilently(textWatcher.secondTextWatcher, "0")
     }

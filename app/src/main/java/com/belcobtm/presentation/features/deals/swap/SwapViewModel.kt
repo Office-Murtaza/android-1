@@ -21,6 +21,7 @@ import com.belcobtm.domain.wallet.item.isBtcCoin
 import com.belcobtm.domain.wallet.item.isEthRelatedCoin
 import com.belcobtm.presentation.core.SingleLiveData
 import com.belcobtm.presentation.core.coin.model.ValidationResult
+import com.belcobtm.presentation.core.extensions.toStringCoin
 import com.belcobtm.presentation.core.mvvm.LoadingData
 import kotlinx.coroutines.launch
 
@@ -181,7 +182,8 @@ class SwapViewModel(
 
     private fun setSendAmountInternal(sendAmount: Double, useMax: Boolean) {
         _sendCoinAmount.value = AmountItem(sendAmount, useMax = useMax)
-        _receiveCoinAmount.value = AmountItem(calcReceiveAmountFromSend(sendAmount), useMax = useMax)
+        _receiveCoinAmount.value =
+            AmountItem(calcReceiveAmountFromSend(sendAmount), useMax = useMax)
         updatePlatformFeeInfo(sendAmount)
         validateCoinsAmount()
     }
@@ -254,33 +256,36 @@ class SwapViewModel(
         }
         _swapLoadingData.value = LoadingData.Loading()
         if (receiveCoinItem.code == LocalCoinType.XRP.name) {
-            if (receiveCoinAmount < 20) {
-                _swapLoadingData.value = LoadingData.Loading()
-                receiverAccountActivatedUseCase(
-                    params = ReceiverAccountActivatedUseCase.Params(
-                        receiveCoinItem.details.walletAddress, receiveCoinItem.code
-                    ),
-                    onSuccess = { addressActivated ->
-                        if (addressActivated) {
+            _swapLoadingData.value = LoadingData.Loading()
+            receiverAccountActivatedUseCase(
+                params = ReceiverAccountActivatedUseCase.Params(
+                    receiveCoinItem.details.walletAddress, receiveCoinItem.code
+                ),
+                onSuccess = { addressActivated ->
+                    if (addressActivated) {
+                        executeSwapInternal(
+                            sendCoinAmount,
+                            receiveCoinAmount,
+                            sendCoinItem,
+                            receiveCoinItem
+                        )
+                    } else {
+                        if(receiveCoinAmount < 20 + (signedToTransactionPlanItem?.fee ?: 0.0)) {
+                            _swapLoadingData.value = LoadingData.DismissProgress()
+                            _coinToReceiveError.value =
+                                ValidationResult.InValid(R.string.xrp_too_small_amount_error)
+                        } else {
                             executeSwapInternal(
                                 sendCoinAmount,
                                 receiveCoinAmount,
                                 sendCoinItem,
                                 receiveCoinItem
                             )
-                        } else {
-                            _swapLoadingData.value = LoadingData.DismissProgress()
-                            _coinToReceiveError.value =
-                                ValidationResult.InValid(R.string.xrp_too_small_amount_error)
                         }
-                    },
-                    onError = { _swapLoadingData.value = LoadingData.Error(it) }
-                )
-            } else {
-                _swapLoadingData.value = LoadingData.DismissProgress()
-                _coinToReceiveError.value =
-                    ValidationResult.InValid(R.string.xrp_too_small_amount_error)
-            }
+                    }
+                },
+                onError = { _swapLoadingData.value = LoadingData.Error(it) }
+            )
         } else {
             executeSwapInternal(sendCoinAmount, receiveCoinAmount, sendCoinItem, receiveCoinItem)
         }
@@ -314,10 +319,10 @@ class SwapViewModel(
                         swapUseCase(
                             params = SwapUseCase.Params(
                                 _sendCoinAmount.value?.useMax ?: false,
-                                sendAmount,
-                                receiveAmount,
+                                sendAmount.toStringCoin().toDouble(),
+                                receiveAmount.toStringCoin().toDouble(),
                                 sendCoin.code,
-                                _swapFee.value?.platformFeeCoinAmount ?: 0.0,
+                                serviceInfoProvider.getServiceFee(ServiceType.SWAP),
                                 fromTransactionPlanItem,
                                 receiveCoin.code
                             ),

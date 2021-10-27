@@ -76,20 +76,21 @@ class StakingFragment : BaseFragment<FragmentStakingBinding>() {
 
     override fun FragmentStakingBinding.initViews() {
         setToolbarTitle(R.string.staking_screen_title)
-        binding.coinInputLayout.getEditText().setText("0")
+        coinInputLayout.setHint(getString(R.string.text_amount))
+        coinInputLayout.getEditText().setText("0")
     }
 
     override fun FragmentStakingBinding.initListeners() {
-        binding.coinInputLayout.setOnMaxClickListener {
-            binding.coinInputLayout.getEditText().setText(viewModel.getMaxValue().toStringCoin())
+        coinInputLayout.setOnMaxClickListener {
+            coinInputLayout.getEditText().setText(viewModel.getMaxValue().toStringCoin())
         }
         createButtonView.setOnClickListener {
-            binding.coinInputLayout.setErrorText(null, false)
+            coinInputLayout.setErrorText(null, false)
             if (isValid()) {
-                viewModel.stakeCreate(binding.coinInputLayout.getEditText().text.getDouble())
+                viewModel.stakeCreate(coinInputLayout.getEditText().text.getDouble())
             }
         }
-        binding.coinInputLayout.getEditText().actionDoneListener {
+        coinInputLayout.getEditText().actionDoneListener {
             hideKeyboard()
         }
         cancelButtonView.setOnClickListener {
@@ -102,7 +103,7 @@ class StakingFragment : BaseFragment<FragmentStakingBinding>() {
                 viewModel.unstakeCreateTransaction()
             }
         }
-        binding.coinInputLayout.getEditText()
+        coinInputLayout.getEditText()
             .addTextChangedListener(doubleTextWatcher.firstTextWatcher)
     }
 
@@ -149,7 +150,6 @@ class StakingFragment : BaseFragment<FragmentStakingBinding>() {
                         // header
                         coinInputLayout.getEditText().isEnabled = false
                         coinInputLayout.setMaxVisible(false)
-                        coinInputLayout.setHelperText2(getString(R.string.staking_screen_staked))
                         // left row
                         tvAnualPercent.show()
                         tvAnualPercentValue.show()
@@ -180,7 +180,6 @@ class StakingFragment : BaseFragment<FragmentStakingBinding>() {
                         // header
                         coinInputLayout.getEditText().isEnabled = false
                         coinInputLayout.setMaxVisible(false)
-                        coinInputLayout.setHelperText2(getString(R.string.staking_screen_staked))
                         // left row
                         tvAnualPercent.show()
                         tvAnualPercentValue.show()
@@ -211,7 +210,6 @@ class StakingFragment : BaseFragment<FragmentStakingBinding>() {
                         // header
                         coinInputLayout.getEditText().isEnabled = false
                         coinInputLayout.setMaxVisible(false)
-                        coinInputLayout.setHelperText2(getString(R.string.staking_screen_staked))
                         // left row
                         tvAnualPercent.show()
                         tvAnualPercentValue.show()
@@ -244,7 +242,6 @@ class StakingFragment : BaseFragment<FragmentStakingBinding>() {
                         // header
                         coinInputLayout.getEditText().isEnabled = false
                         coinInputLayout.setMaxVisible(false)
-                        coinInputLayout.setHelperText2(getString(R.string.staking_screen_staked))
                         // left row
                         tvAnualPercent.show()
                         tvAnualPercentValue.show()
@@ -275,7 +272,6 @@ class StakingFragment : BaseFragment<FragmentStakingBinding>() {
                         // header
                         coinInputLayout.getEditText().isEnabled = false
                         coinInputLayout.setMaxVisible(false)
-                        coinInputLayout.setHelperText2(getString(R.string.staking_screen_staked))
                         // left row
                         tvAnualPercent.show()
                         tvAnualPercentValue.show()
