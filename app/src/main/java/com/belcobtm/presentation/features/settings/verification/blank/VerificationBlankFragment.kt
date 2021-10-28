@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.appcompat.app.AlertDialog
 import androidx.core.widget.addTextChangedListener
+import androidx.navigation.fragment.navArgs
 import com.belcobtm.BuildConfig
 import com.belcobtm.R
 import com.belcobtm.databinding.FragmentVerificationBlankBinding
@@ -27,6 +28,7 @@ class VerificationBlankFragment :
     BaseFragment<FragmentVerificationBlankBinding>(),
     BottomSheetImagePicker.OnImagesSelectedListener {
     private val viewModel: VerificationBlankViewModel by viewModel()
+    private val args by navArgs<VerificationBlankFragmentArgs>()
 
     override val isHomeButtonEnabled = true
     override var isMenuEnabled = true
@@ -222,7 +224,8 @@ class VerificationBlankFragment :
                     binding.cityView.getString(),
                     binding.countryView.getString(),
                     binding.provinceView.getString(),
-                    binding.zipCodeView.getString()
+                    binding.zipCodeView.getString(),
+                    args.info
                 )
             }
         }

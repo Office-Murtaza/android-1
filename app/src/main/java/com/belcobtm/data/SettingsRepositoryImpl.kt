@@ -26,6 +26,7 @@ class SettingsRepositoryImpl(
             val responseItem = (response as Either.Right).b
             Either.Right(
                 VerificationInfoDataItem(
+                    id = responseItem.id,
                     status = VerificationStatus.getStatusByCode(responseItem.status),
                     txLimit = responseItem.txLimit,
                     dayLimit = responseItem.dailyLimit,

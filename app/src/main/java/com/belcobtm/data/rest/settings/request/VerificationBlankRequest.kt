@@ -3,6 +3,7 @@ package com.belcobtm.data.rest.settings.request
 import com.belcobtm.domain.settings.type.VerificationStatus
 
 data class VerificationBlankRequest(
+    val id: String?,
     val idCardNumberFilename: String,
     val idCardNumber: String,
     val firstName: String,

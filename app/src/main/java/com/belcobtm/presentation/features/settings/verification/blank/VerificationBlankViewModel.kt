@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import com.belcobtm.domain.settings.interactor.GetVerificationCountryListUseCase
 import com.belcobtm.domain.settings.interactor.SendVerificationBlankUseCase
 import com.belcobtm.domain.settings.item.VerificationBlankDataItem
+import com.belcobtm.domain.settings.item.VerificationInfoDataItem
 import com.belcobtm.presentation.core.mvvm.LoadingData
 
 class VerificationBlankViewModel(
@@ -25,9 +26,11 @@ class VerificationBlankViewModel(
         city: String,
         country: String,
         province: String,
-        zipCode: String
+        zipCode: String,
+        verificationDataItem: VerificationInfoDataItem
     ) {
         val blankItem = VerificationBlankDataItem(
+            verificationDataItem.id,
             file,
             idNumber,
             firstName,

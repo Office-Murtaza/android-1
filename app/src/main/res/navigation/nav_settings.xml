@@ -222,7 +222,13 @@
         android:id="@+id/verification_blank_fragment"
         android:name="com.belcobtm.presentation.features.settings.verification.blank.VerificationBlankFragment"
         android:label="VerificationBlankFragment"
-        tools:layout="@layout/fragment_verification_blank" />
+        tools:layout="@layout/fragment_verification_blank">
+
+        <argument
+            android:name="info"
+            app:argType="com.belcobtm.domain.settings.item.VerificationInfoDataItem"
+            app:nullable="false" />
+    </fragment>
 
     <fragment
         android:id="@+id/verification_vip_fragment"

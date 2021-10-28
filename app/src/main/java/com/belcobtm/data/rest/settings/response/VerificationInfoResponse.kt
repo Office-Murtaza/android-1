@@ -1,6 +1,7 @@
 package com.belcobtm.data.rest.settings.response
 
 data class VerificationInfoResponse(
+    val id: String?,
     val status: Int,
     val txLimit: Double,
     val dailyLimit: Double,

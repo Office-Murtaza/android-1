@@ -116,7 +116,7 @@
 
         <TextView
             android:id="@+id/amountUsdView"
-            style="@style/Text.Regular2"
+            style="@style/Text.Regular3"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/margin_main"

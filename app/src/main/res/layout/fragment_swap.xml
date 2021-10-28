@@ -97,13 +97,12 @@
 
         <TextView
             android:id="@+id/tvUSDConvertedValue"
-            style="@style/Text.Regular2"
+            style="@style/Text.Regular3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_quoter"
             android:layout_marginEnd="@dimen/margin_half"
             android:textColor="@android:color/black"
-            android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tvUSDConvertedLabel"
             tools:text="$ 245.66" />

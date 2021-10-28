@@ -3,6 +3,7 @@ package com.belcobtm.domain.settings.item
 import android.net.Uri
 
 data class VerificationBlankDataItem(
+    val id: String?,
     val imageUri: Uri,
     val idNumber: String,
     val firstName: String,
@@ -11,5 +12,5 @@ data class VerificationBlankDataItem(
     val city: String,
     val country: String,
     val province: String,
-    val zipCode: String
+    val zipCode: String,
 )

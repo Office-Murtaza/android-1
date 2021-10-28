@@ -3,6 +3,7 @@ package com.belcobtm.domain.settings.item
 import android.net.Uri
 
 data class VerificationVipDataItem(
+    val id: String?,
     val firstName: String,
     val lastName: String,
     val address: String,

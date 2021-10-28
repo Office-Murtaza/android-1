@@ -9,6 +9,7 @@ import com.belcobtm.domain.Either
 import com.belcobtm.domain.Failure
 import com.belcobtm.domain.settings.item.VerificationBlankDataItem
 import com.belcobtm.domain.settings.item.VerificationVipDataItem
+import com.belcobtm.domain.settings.type.VerificationStatus
 
 class SettingsApiService(private val api: SettingsApi) {
 
@@ -28,6 +29,7 @@ class SettingsApiService(private val api: SettingsApi) {
     ): Either<Failure, Unit> = try {
         val request = with(blankItem) {
             VerificationBlankRequest(
+                id,
                 fileName,
                 idNumber,
                 firstName,
@@ -52,6 +54,7 @@ class SettingsApiService(private val api: SettingsApi) {
         fileName: String
     ): Either<Failure, Unit> = try {
         val request = VipVerificationRequest(
+            dataItem.id,
             dataItem.idCardNumberFilename,
             dataItem.idCardNumber,
             dataItem.firstName,
@@ -76,9 +79,7 @@ class SettingsApiService(private val api: SettingsApi) {
         oldPassword: String,
         newPassword: String
     ): Either<Failure, Boolean> = try {
-        val request =
-            api.changePass(userId.toString(), ChangePassBody(newPassword, oldPassword)).await()
-
+        val request = api.changePass(userId, ChangePassBody(newPassword, oldPassword)).await()
         request.body()?.let { Either.Right(it.result) } ?: Either.Left(Failure.ServerError())
     } catch (failure: Failure) {
         failure.printStackTrace()
@@ -88,7 +89,7 @@ class SettingsApiService(private val api: SettingsApi) {
     suspend fun getPhone(
         userId: String
     ): Either<Failure, String> = try {
-        val request = api.getPhone(userId.toString()).await()
+        val request = api.getPhone(userId).await()
 
         request.body()?.let { Either.Right(it.phone) } ?: Either.Left(Failure.ServerError())
     } catch (failure: Failure) {
@@ -101,7 +102,7 @@ class SettingsApiService(private val api: SettingsApi) {
         newPhone: String
     ): Either<Failure, Boolean> = try {
         val request = api.updatePhone(
-            userId.toString(),
+            userId,
             UpdatePhoneParam(newPhone)
         ).await()
 
@@ -116,7 +117,7 @@ class SettingsApiService(private val api: SettingsApi) {
         newPhone: String
     ): Either<Failure, Boolean> = try {
         val request = api.verifyPhone(
-            userId.toString(),
+            userId,
             UpdatePhoneParam(newPhone)
         ).await()
 

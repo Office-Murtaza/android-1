@@ -22,6 +22,7 @@ class VerificationVipViewModel(
 
         val dataItem = with(verificationDataItem) {
             VerificationVipDataItem(
+                id = verificationDataItem.id,
                 idCardNumber = idCardNumber,
                 idCardNumberFilename = idCardNumberFilename,
                 address = address,

@@ -70,7 +70,7 @@ class VerificationInfoViewModel(
             when (item?.status) {
                 VerificationStatus.NOT_VERIFIED,
                 VerificationStatus.VERIFICATION_REJECTED ->
-                    VerificationInfoFragmentDirections.verificationInfoToVerify()
+                    VerificationInfoFragmentDirections.verificationInfoToVerify(item ?: return)
                 VerificationStatus.VERIFIED,
                 VerificationStatus.VIP_VERIFICATION_REJECTED ->
                     VerificationInfoFragmentDirections.verificationInfoToVipVerify(item ?: return)

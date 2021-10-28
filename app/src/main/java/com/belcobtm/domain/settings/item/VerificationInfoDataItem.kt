@@ -5,6 +5,7 @@ import android.os.Parcelable
 import com.belcobtm.domain.settings.type.VerificationStatus
 
 data class VerificationInfoDataItem(
+    val id: String?,
     val status: VerificationStatus,
     val txLimit: Double,
     val dayLimit: Double,
@@ -20,6 +21,7 @@ data class VerificationInfoDataItem(
     val zipCode: String,
 ) : Parcelable {
     constructor(parcel: Parcel) : this(
+        parcel.readString(),
         VerificationStatus.getStatusByCode(parcel.readInt()),
         parcel.readDouble(),
         parcel.readDouble(),
@@ -37,6 +39,7 @@ data class VerificationInfoDataItem(
     }
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
+        parcel.writeString(id)
         parcel.writeInt(status.code)
         parcel.writeDouble(txLimit)
         parcel.writeDouble(dayLimit)
