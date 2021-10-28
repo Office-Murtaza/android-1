@@ -288,12 +288,12 @@ class TransactionRepositoryImpl(
         transactionPlanItem: TransactionPlanItem,
     ): Either<Failure, Unit> {
         val coinItem = getCoinByCode(coinCode)
+        val fromAddress = coinItem.details.walletAddress
         val hash = transactionRepository.createTransactionStakeHash(
             cryptoAmount,
-            coinItem.details.walletAddress,
+            coinItem.details.contractAddress,
             transactionPlanItem
         )
-        val fromAddress = coinItem.details.walletAddress
         val toAddress = coinItem.publicKey
         return apiService.stakeCreate(
             coinCode,
@@ -312,7 +312,7 @@ class TransactionRepositoryImpl(
         val coinItem = getCoinByCode(coinCode)
         val hash = transactionRepository.createTransactionStakeCancelHash(
             0.0,
-            coinItem.details.walletAddress,
+            coinItem.details.contractAddress,
             transactionPlanItem
         )
         val fromAddress = coinItem.details.walletAddress
@@ -331,7 +331,7 @@ class TransactionRepositoryImpl(
         val coinItem = getCoinByCode(coinCode)
         val hash = transactionRepository.createTransactionUnStakeHash(
             cryptoAmount,
-            coinItem.details.walletAddress,
+            coinItem.details.contractAddress,
             transactionPlanItem
         )
         val fromAddress = coinItem.details.walletAddress
