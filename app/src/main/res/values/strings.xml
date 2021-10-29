@@ -684,7 +684,7 @@
     <string name="order_details_id_label">Order Id</string>
     <string name="trade_updated_message">Trade was successfully updated/cancelled</string>
     <string name="status">Status</string>
-    <string name="create_order_dialog_platform_fee_format">Platform Fee %s</string>
+    <string name="create_order_dialog_platform_fee_format">Platform fee %s</string>
     <string name="create_order_dialog_reserved_format">Reserved %s</string>
     <string name="create_order_dialog_crypto_amount_format">Crypto amount %s</string>
     <string name="trade_order_details_not_rated_label">Not rated yet</string>

@@ -22,8 +22,8 @@ class StakeDetailsResponse(
 
 fun StakeDetailsResponse.mapToDataItem(): StakeDetailsDataItem {
     val endTime = cancelTimestamp ?: System.currentTimeMillis()
-    val duration = (endTime - createTimestamp) / (basePeriod * 1000)
-    val rewardsPercent = duration * (annualPercent / annualPeriod / basePeriod)
+    val duration = (endTime - createTimestamp) / (basePeriod * 1000.0)
+    val rewardsPercent = duration * (annualPercent / (annualPeriod / basePeriod))
     return StakeDetailsDataItem(
         status = status,
         amount = cryptoAmount,
