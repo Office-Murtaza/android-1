@@ -1,9 +1,6 @@
 package com.belcobtm.data.core.factory
 
 import com.belcobtm.data.disk.database.account.AccountDao
-import com.belcobtm.data.rest.transaction.response.hash.TronRawDataResponse
-import com.belcobtm.domain.Either
-import com.belcobtm.domain.Failure
 import com.belcobtm.domain.transaction.item.TransactionPlanItem
 import com.belcobtm.domain.wallet.LocalCoinType
 import com.belcobtm.presentation.core.extensions.toStringCoin
@@ -11,11 +8,8 @@ import com.belcobtm.presentation.core.extensions.unit
 import com.belcobtm.presentation.core.toHexByteArray
 import com.belcobtm.presentation.core.toHexBytesInByteString
 import com.google.protobuf.ByteString
-import com.squareup.moshi.Moshi
 import wallet.core.jni.CoinType
-import wallet.core.jni.PrivateKey
 import wallet.core.jni.proto.Tron
-import java.lang.RuntimeException
 import java.util.*
 
 class TronTransactionInputBuilderFactory(private val accountDao: AccountDao) {
@@ -34,6 +28,7 @@ class TronTransactionInputBuilderFactory(private val accountDao: AccountDao) {
         val witnessAddress =
             rawData?.witness_address?.let { "0x$it" }?.toHexByteArray() ?: byteArrayOf()
         val txTrieRoot = rawData?.txTrieRoot?.let { "0x$it" }?.toHexByteArray() ?: byteArrayOf()
+        val timeStamp = Date().time
         val tronBlock = Tron.BlockHeader.newBuilder().also {
             it.number = rawData?.number ?: 0L
             it.timestamp = rawData?.timestamp ?: 0L
@@ -49,11 +44,8 @@ class TronTransactionInputBuilderFactory(private val accountDao: AccountDao) {
         }
         val transaction = Tron.Transaction.newBuilder().also {
             it.transfer = transferBuilder.build()
-            it.timestamp = Date().time
-            it.expiration = Calendar.getInstance().also { calendar ->
-                calendar.time = Date()
-                calendar.add(Calendar.HOUR, 10000)
-            }.timeInMillis
+            it.timestamp = timeStamp
+            it.expiration = it.timestamp + 36000000
             it.blockHeader = tronBlock.build()
         }
         return Tron.SigningInput.newBuilder().also {

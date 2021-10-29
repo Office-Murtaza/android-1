@@ -1,11 +1,10 @@
 package com.belcobtm.data.core.helper
 
 import com.belcobtm.data.core.factory.TronTransactionInputBuilderFactory
-import com.belcobtm.data.core.trx.Trx
 import com.belcobtm.domain.transaction.item.TransactionPlanItem
 import com.belcobtm.domain.wallet.LocalCoinType
-import com.squareup.moshi.Moshi
 import wallet.core.java.AnySigner
+import wallet.core.jni.CoinType
 import wallet.core.jni.proto.Tron
 
 class TronTransactionHelper(
@@ -22,7 +21,7 @@ class TronTransactionHelper(
             tronFactory.createInput(toAddress, fromCoin, fromCoinAmount, fromTransactionPlan)
         return AnySigner.sign(
             input.build(),
-            fromCoin.trustWalletType,
+            CoinType.TRON,
             Tron.SigningOutput.parser()
         ).json
     }
