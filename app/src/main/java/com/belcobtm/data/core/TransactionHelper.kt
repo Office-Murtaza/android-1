@@ -7,6 +7,7 @@ import com.belcobtm.domain.Failure
 import com.belcobtm.domain.transaction.item.SignedTransactionPlanItem
 import com.belcobtm.domain.transaction.item.TransactionPlanItem
 import com.belcobtm.domain.wallet.LocalCoinType
+import wallet.core.jni.EthereumAbiFunction
 
 
 class TransactionHelper(
@@ -91,32 +92,35 @@ class TransactionHelper(
         fromCoinAmount: Double,
         toAddress: String,
         fromTransactionPlan: TransactionPlanItem
-    ) = ethSubCoinTransactionHelper.getHash(
+    ) = ethSubCoinTransactionHelper.getStakingHash(
         toAddress,
         LocalCoinType.CATM,
         fromCoinAmount,
-        fromTransactionPlan
+        fromTransactionPlan,
+        EthereumAbiFunction("createStake")
     )
 
     suspend fun createTransactionStakeCancelHash(
         fromCoinAmount: Double,
         toAddress: String,
         fromTransactionPlan: TransactionPlanItem
-    ) = ethSubCoinTransactionHelper.getHash(
+    ) = ethSubCoinTransactionHelper.getStakingHash(
         toAddress,
         LocalCoinType.CATM,
         fromCoinAmount,
-        fromTransactionPlan
+        fromTransactionPlan,
+        EthereumAbiFunction("cancelStake")
     )
 
     suspend fun createTransactionUnStakeHash(
         fromCoinAmount: Double,
         toAddress: String,
         fromTransactionPlan: TransactionPlanItem
-    ) = ethSubCoinTransactionHelper.getHash(
+    ) = ethSubCoinTransactionHelper.getStakingHash(
         toAddress,
         LocalCoinType.CATM,
         fromCoinAmount,
-        fromTransactionPlan
+        fromTransactionPlan,
+        EthereumAbiFunction("withdrawStake")
     )
 }

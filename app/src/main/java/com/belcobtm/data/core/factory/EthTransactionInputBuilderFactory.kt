@@ -14,6 +14,8 @@ import com.belcobtm.presentation.core.toHexBytesInByteString
 import com.google.protobuf.ByteString
 import wallet.core.java.AnySigner
 import wallet.core.jni.CoinType
+import wallet.core.jni.EthereumAbi
+import wallet.core.jni.EthereumAbiFunction
 import wallet.core.jni.proto.Ethereum
 import java.math.BigDecimal
 
@@ -47,6 +49,33 @@ class EthTransactionInputBuilderFactory(
         return Numeric.toHexString(output.encoded.toByteArray())
     }
 
+    suspend fun createForStaking(
+        toAddress: String,
+        fromCoin: LocalCoinType,
+        fromCoinAmount: Double,
+        fromTransactionPlan: TransactionPlanItem,
+        ethereumAbiFunction: EthereumAbiFunction
+    ): String {
+        val coinItem = walletDao.getCoinByCode(fromCoin.name).toDataItem()
+        val amountMultipliedByDivider =
+            BigDecimal(fromCoinAmount.toStringCoin().toDouble() * CoinType.ETHEREUM.unit())
+        val transfer = Ethereum.Transaction.Transfer.newBuilder()
+        transfer.amount = ByteString.copyFrom(
+            "0x${amountMultipliedByDivider.toBigInteger().toString(16)}".toHexByteArray()
+        )
+        transfer.data = ByteString.copyFrom(EthereumAbi.encode(ethereumAbiFunction))
+        val transaction = Ethereum.Transaction.newBuilder()
+        transaction.setTransfer(transfer)
+
+        val input: Ethereum.SigningInput.Builder = createInput(
+            coinItem.code, toAddress, fromTransactionPlan
+        )
+        input.setTransaction(transaction)
+        val output =
+            AnySigner.sign(input.build(), CoinType.ETHEREUM, Ethereum.SigningOutput.parser())
+        return Numeric.toHexString(output.encoded.toByteArray())
+    }
+
     suspend fun createForSubEth(
         toAddress: String,
         fromCoin: LocalCoinType,
@@ -64,10 +93,8 @@ class EthTransactionInputBuilderFactory(
         erc20Transfer.amount = ByteString.copyFrom(
             "0x${amountMultipliedByDivider.toBigInteger().toString(16)}".toHexByteArray()
         )
-
         val transaction = Ethereum.Transaction.newBuilder()
         transaction.setErc20Transfer(erc20Transfer)
-
         val input =
             createInput(coinItem.code, coinItem.details.contractAddress, fromTransactionPlan)
         input.setTransaction(transaction)
