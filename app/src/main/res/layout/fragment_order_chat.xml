@@ -104,7 +104,7 @@
 
     <Button
         android:id="@+id/send_button"
-        style="@style/Button.Primary"
+        style="@style/Button.Secondary.NoOutlined"
         android:layout_width="wrap_content"
         android:layout_marginBottom="0dp"
         android:text="@string/fragment_trade_order_chat_send_button"
