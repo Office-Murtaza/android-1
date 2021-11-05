@@ -5,6 +5,7 @@ import com.belcobtm.data.cloud.storage.CloudStorage
 import com.belcobtm.data.disk.shared.preferences.SharedPreferencesHelper
 import com.belcobtm.data.websockets.chat.model.ChatMessageResponse
 import com.belcobtm.presentation.features.wallet.trade.order.chat.model.ChatMessageItem
+import com.google.firebase.crashlytics.FirebaseCrashlytics
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -23,7 +24,16 @@ class ChatMessageMapper(
         }
         return ChatMessageItem(
             message.message, dateFormat.format(Date(message.timestamp)), message.timestamp,
-            message.file?.takeIf { it.isNotEmpty() }?.let { getLink(it) },
+            message.file?.takeIf { it.isNotEmpty() }?.let {
+                try {
+                    getLink(it)
+                } catch (e: Exception) {
+                    FirebaseCrashlytics.getInstance().recordException(
+                        RuntimeException("Failed to load $it", e)
+                    )
+                    null
+                }
+            },
             isFromHistory = isFromHistory,
             type = messageType
         )

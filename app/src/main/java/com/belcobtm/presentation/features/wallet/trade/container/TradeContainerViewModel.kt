@@ -19,6 +19,8 @@ class TradeContainerViewModel(
     private val clearCacheUseCase: ClearCacheUseCase
 ) : ViewModel() {
 
+    var isArgsProcessed: Boolean = false
+
     private val _loadingData = MutableLiveData<LoadingData<Unit>>()
     val loadingData: LiveData<LoadingData<Unit>>
         get() = _loadingData

@@ -108,11 +108,21 @@ class VerificationVipFragment :
         }
     }
 
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        // NOTE: delegate the permission handling to generated method
+        onRequestPermissionsResult(requestCode, grantResults)
+    }
+
     private fun sendVip() {
         validated = true
         if (isValidFields()) {
             viewModel.fileUri?.let {
-                viewModel.sendBlank(
+                viewModel.sendVip(
                     it,
                     binding.snnView.getString(),
                     args.info

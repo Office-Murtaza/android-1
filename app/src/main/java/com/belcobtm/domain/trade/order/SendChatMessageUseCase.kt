@@ -41,7 +41,6 @@ class SendChatMessageUseCase(
                 )
                 Either.Right(chatObserver.sendMessage(messageItem))
             } catch (e: Exception) {
-                e.printStackTrace()
                 Either.Left(Failure.NetworkConnection)
             }
         } else {

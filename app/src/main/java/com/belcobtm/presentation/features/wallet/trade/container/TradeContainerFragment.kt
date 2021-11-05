@@ -112,8 +112,9 @@ class TradeContainerFragment : BaseFragment<FragmentTradeListContainerBinding>()
         viewModel.loadingData.listen(
             success = {
                 val innerDeeplink = args.innerDeeplink
-                if (!innerDeeplink.isNullOrEmpty()) {
+                if (!innerDeeplink.isNullOrEmpty() && !viewModel.isArgsProcessed) {
                     findNavController().navigate(Uri.parse(innerDeeplink))
+                    viewModel.isArgsProcessed = true
                 }
             },
             error = {

@@ -24,7 +24,7 @@ class TradeOrderRateViewModel(
     private val _rateLabel = MutableLiveData<String>()
     val rateLabel: LiveData<String> = _rateLabel
 
-    private var rateValue: Int = LOW_RATING
+    private var rateValue: Int = GOOD_RATING
 
     private val _rateLoadingData = MutableLiveData<LoadingData<Unit>>()
     val rateLoadingData: LiveData<LoadingData<Unit>> = _rateLoadingData

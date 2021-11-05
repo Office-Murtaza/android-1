@@ -14,7 +14,7 @@ class VerificationVipViewModel(
     val uploadingLiveData = MutableLiveData<LoadingData<Unit>>()
     var fileUri: Uri? = null
 
-    fun sendBlank(
+    fun sendVip(
         file: Uri,
         ssn: String,
         verificationDataItem: VerificationInfoDataItem

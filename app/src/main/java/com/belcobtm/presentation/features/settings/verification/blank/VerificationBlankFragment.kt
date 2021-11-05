@@ -12,6 +12,7 @@ import com.belcobtm.BuildConfig
 import com.belcobtm.R
 import com.belcobtm.databinding.FragmentVerificationBlankBinding
 import com.belcobtm.domain.Failure
+import com.belcobtm.domain.settings.item.VerificationCountryDataItem
 import com.belcobtm.presentation.core.extensions.*
 import com.belcobtm.presentation.core.helper.AlertHelper
 import com.belcobtm.presentation.core.mvvm.LoadingData
@@ -46,6 +47,7 @@ class VerificationBlankFragment :
 
     override fun FragmentVerificationBlankBinding.initViews() {
         setToolbarTitle(R.string.verify_label)
+        viewModel.countries.firstOrNull()?.let(::onCountrySelected)
     }
 
     @NeedsPermission(
@@ -72,6 +74,16 @@ class VerificationBlankFragment :
         AlertHelper.showToastShort(requireContext(), R.string.verification_please_on_permissions)
     }
 
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        // NOTE: delegate the permission handling to generated method
+        onRequestPermissionsResult(requestCode, grantResults)
+    }
+
     override fun FragmentVerificationBlankBinding.initListeners() {
         selectImageButtonView.setOnClickListener {
             showFilePickerWithPermissionCheck()
@@ -94,10 +106,7 @@ class VerificationBlankFragment :
             AlertDialog.Builder(requireContext())
                 .setTitle(R.string.verification_alert_country_title)
                 .setItems(countryList.map { it.name }.toTypedArray()) { dialog, which ->
-                    countryView.setText(countryList[which].name)
-                    provinceView.clearText()
-                    cityView.clearText()
-                    checkCountry()
+                    onCountrySelected(countryList[which])
                 }
                 .create().show()
         }
@@ -174,6 +183,13 @@ class VerificationBlankFragment :
                 validateZipCode()
             }
         }
+    }
+
+    private fun onCountrySelected(country: VerificationCountryDataItem) {
+        binding.countryView.setText(country.name)
+        binding.provinceView.clearText()
+        binding.cityView.clearText()
+        checkCountry()
     }
 
     override fun FragmentVerificationBlankBinding.initObservers() {

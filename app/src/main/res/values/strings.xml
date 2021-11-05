@@ -607,7 +607,7 @@
     <string name="cancel_trade_button_title">Cancel</string>
     <string name="from_hint_label">Min</string>
     <string name="to_hint_label">Max</string>
-    <string name="create_trade_success_message">Trade successfully posted</string>
+    <string name="create_trade_success_message">Trade successfully created</string>
     <string name="price_decimal_separator">.</string>
     <string name="price_grouping_separator">,</string>
     <string name="price_format">###,##0.00</string>
@@ -661,11 +661,11 @@
     <string name="trade_count_not_over_threshold_formatted"><![CDATA[<b>%d</b>]]> trades</string>
     <string name="trade_rate_done_button_title">Done</string>
     <string name="trade_rate_header">How was your trade?</string>
-    <string name="low_rating_label">Awful</string>
-    <string name="bad_rating_label">Bad</string>
-    <string name="normal_rating_label">Good</string>
-    <string name="good_rating_label">Very good</string>
-    <string name="perfect_rating_label">Awesome</string>
+    <string name="low_rating_label">Terrible</string>
+    <string name="bad_rating_label">Not good</string>
+    <string name="normal_rating_label">Okay</string>
+    <string name="good_rating_label">Good</string>
+    <string name="perfect_rating_label">Excellent!</string>
     <string name="send_message_error">Failed to send message please try again</string>
     <string name="my_score_label">My Rate</string>
     <string name="score_from_a_partner_label">Partner Rate</string>
@@ -681,8 +681,8 @@
 
     <string name="you_will_get_label">You will get %s</string>
     <string name="you_will_send_label">You will send %s</string>
-    <string name="order_details_id_label">Order Id</string>
-    <string name="trade_updated_message">Trade was successfully updated/cancelled</string>
+    <string name="order_details_id_label">ID</string>
+    <string name="trade_updated_message">Trade successfully updated</string>
     <string name="status">Status</string>
     <string name="create_order_dialog_platform_fee_format">Platform fee %s</string>
     <string name="create_order_dialog_reserved_format">Reserved %s</string>
