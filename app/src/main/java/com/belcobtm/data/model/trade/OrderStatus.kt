@@ -20,5 +20,6 @@ annotation class OrderStatus {
         const val RELEASED = 5
         const val DISPUTING = 6
         const val SOLVED = 7
+        const val DELETED = 8
     }
 }

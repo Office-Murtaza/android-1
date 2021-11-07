@@ -41,7 +41,7 @@ class TradeOrderRateBottomSheetFragment : BaseBottomSheetFragment() {
         viewModel.rateLoadingData.listen(success = {
             findNavController().popBackStack(R.id.trade_container_fragment, false)
         })
-        binding.ratingBar.rating = TradeOrderRateViewModel.LOW_RATING.toFloat()
+        binding.ratingBar.rating = TradeOrderRateViewModel.GOOD_RATING.toFloat()
         binding.ratingBar.setOnRatingBarChangeListener { _, rating, _ ->
             viewModel.onRateChanged(rating.toInt())
         }

@@ -1,5 +1,6 @@
 package com.belcobtm.domain.trade.list.mapper
 
+import com.belcobtm.data.model.trade.OrderStatus
 import com.belcobtm.data.model.trade.TradeData
 import com.belcobtm.presentation.features.wallet.trade.list.model.OrderItem
 
@@ -10,6 +11,7 @@ class TradesDataToOrderListMapper(private val orderMapper: TradeOrderDataToItemM
             .values
             .asSequence()
             .filter { it.makerId == userId || it.takerId == userId }
+            .filter { it.status != OrderStatus.DELETED }
             .mapNotNull { orderMapper.map(it, tradeData, userId) }
             .sortedWith { t, t2 -> t2.timestamp.compareTo(t.timestamp) }
             .toList()
