@@ -10,6 +10,7 @@ import com.belcobtm.domain.transaction.item.SignedTransactionPlanItem
 import com.belcobtm.domain.transaction.item.TransactionPlanItem
 import com.belcobtm.domain.wallet.LocalCoinType
 import com.belcobtm.domain.wallet.interactor.GetCoinListUseCase
+import com.belcobtm.domain.wallet.interactor.UpdateBalanceUseCase
 import com.belcobtm.domain.wallet.item.CoinDataItem
 import com.belcobtm.domain.wallet.item.isBtcCoin
 import com.belcobtm.domain.wallet.item.isEthRelatedCoin
@@ -32,7 +33,8 @@ class WithdrawViewModel(
     private val getMaxValueBySignedTransactionUseCase: GetMaxValueBySignedTransactionUseCase,
     private val stringProvider: StringProvider,
     private val receiverAccountActivatedUseCase: ReceiverAccountActivatedUseCase,
-    private val coinCodeProvider: CoinCodeProvider
+    private val coinCodeProvider: CoinCodeProvider,
+    private val updateBalanceUseCase: UpdateBalanceUseCase,
 ) : ViewModel() {
 
     val transactionLiveData: MutableLiveData<LoadingData<Unit>> = MutableLiveData()
@@ -173,7 +175,23 @@ class WithdrawViewModel(
                 _fee.value ?: 0.0,
                 transactionPlan
             ),
-            onSuccess = { transactionLiveData.value = LoadingData.Success(it) },
+            onSuccess = {
+                updateBalanceUseCase(
+                    UpdateBalanceUseCase.Params(
+                        coinCode = getCoinCode(),
+                        txAmount = coinAmount * getUsdPrice(),
+                        txCryptoAmount = coinAmount,
+                        txFee = _fee.value ?: 0.0,
+                        maxAmountUsed = amount.value?.useMax ?: false,
+                    ),
+                    onSuccess = {
+                        transactionLiveData.value = LoadingData.Success(it)
+                    },
+                    onError = {
+                        transactionLiveData.value = LoadingData.Error(it)
+                    }
+                )
+            },
             onError = { transactionLiveData.value = LoadingData.Error(it) }
         )
     }

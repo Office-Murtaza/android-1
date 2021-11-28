@@ -1,14 +1,17 @@
 package com.belcobtm.data.core.factory
 
+import com.belcobtm.R
 import com.belcobtm.data.disk.database.account.AccountDao
 import com.belcobtm.data.disk.database.wallet.WalletDao
 import com.belcobtm.data.disk.database.wallet.toDataItem
+import com.belcobtm.domain.Failure
 import com.belcobtm.domain.transaction.item.TransactionPlanItem
 import com.belcobtm.domain.wallet.LocalCoinType
 import com.belcobtm.presentation.core.Numeric
 import com.belcobtm.presentation.core.extensions.USDC_UNIT
 import com.belcobtm.presentation.core.extensions.toStringCoin
 import com.belcobtm.presentation.core.extensions.unit
+import com.belcobtm.presentation.core.provider.string.StringProvider
 import com.belcobtm.presentation.core.toHexByteArray
 import com.belcobtm.presentation.core.toHexBytesInByteString
 import com.google.protobuf.ByteString
@@ -22,6 +25,7 @@ import java.math.BigDecimal
 class EthTransactionInputBuilderFactory(
     private val walletDao: WalletDao,
     private val accountDao: AccountDao,
+    private val stringProvider: StringProvider
 ) {
 
     suspend fun createForEth(
@@ -119,6 +123,10 @@ class EthTransactionInputBuilderFactory(
         val hexNonce = "0x${nonce.toString(16)}".toHexByteArray()
         val hexGasLimit = "0x${gasLimit.toString(16)}".toHexByteArray()
         val hexGasPrice = "0x${gasPrice.toString(16)}".toHexByteArray()
+
+        if (coinEntity.publicKey == toAddress) {
+            throw Failure.MessageError(stringProvider.getString(R.string.addresses_match_singing_error))
+        }
 
         input.privateKey = privateKey.toHexBytesInByteString()
         input.toAddress = toAddress

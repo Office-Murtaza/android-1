@@ -11,10 +11,12 @@ import com.belcobtm.domain.transaction.item.SignedTransactionPlanItem
 import com.belcobtm.domain.transaction.item.TransactionPlanItem
 import com.belcobtm.domain.wallet.LocalCoinType
 import com.belcobtm.domain.wallet.interactor.GetCoinListUseCase
+import com.belcobtm.domain.wallet.interactor.UpdateBalanceUseCase
 import com.belcobtm.domain.wallet.item.CoinDataItem
 import com.belcobtm.domain.wallet.item.isBtcCoin
 import com.belcobtm.domain.wallet.item.isEthRelatedCoin
 import com.belcobtm.presentation.core.mvvm.LoadingData
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 class SendGiftViewModel(
@@ -26,7 +28,8 @@ class SendGiftViewModel(
     private val getSignedTransactionPlanUseCase: GetSignedTransactionPlanUseCase,
     private val getFakeSignedTransactionPlanUseCase: GetFakeSignedTransactionPlanUseCase,
     private val getMaxValueBySignedTransactionUseCase: GetMaxValueBySignedTransactionUseCase,
-    private val receiverAccountActivatedUseCase: ReceiverAccountActivatedUseCase
+    private val receiverAccountActivatedUseCase: ReceiverAccountActivatedUseCase,
+    private val updateBalanceUseCase: UpdateBalanceUseCase,
 ) : ViewModel() {
 
     private lateinit var coinList: List<CoinDataItem>
@@ -299,7 +302,23 @@ class SendGiftViewModel(
                 fee = _fee.value ?: 0.0,
                 transactionPlanItem = transactionPlanItem
             ),
-            onSuccess = { _sendGiftLoadingData.value = LoadingData.Success(it) },
+            onSuccess = {
+                updateBalanceUseCase(
+                    UpdateBalanceUseCase.Params(
+                        coinCode = coinToSend.code,
+                        txAmount = usdAmount.value ?: 0.0,
+                        txCryptoAmount = _amount.value?.amount ?: 0.0,
+                        txFee = _fee.value ?: 0.0,
+                        maxAmountUsed = _amount.value?.useMax ?: false,
+                    ),
+                    onSuccess = {
+                        _sendGiftLoadingData.value = LoadingData.Success(it)
+                    },
+                    onError = {
+                        _sendGiftLoadingData.value = LoadingData.Error(it)
+                    }
+                )
+            },
             onError = { _sendGiftLoadingData.value = LoadingData.Error(it) }
         )
     }

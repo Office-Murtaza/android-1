@@ -13,6 +13,8 @@ import com.belcobtm.domain.trade.create.CheckTradeCreationAvailabilityUseCase
 import com.belcobtm.domain.trade.create.CreateTradeUseCase
 import com.belcobtm.domain.trade.create.GetAvailableTradePaymentOptionsUseCase
 import com.belcobtm.domain.wallet.interactor.GetCoinListUseCase
+import com.belcobtm.domain.wallet.interactor.UpdateBalanceUseCase
+import com.belcobtm.domain.wallet.interactor.UpdateReservedBalanceUseCase
 import com.belcobtm.domain.wallet.item.CoinDataItem
 import com.belcobtm.presentation.core.extensions.toStringCoin
 import com.belcobtm.presentation.core.livedata.TripleCombinedLiveData
@@ -27,7 +29,8 @@ class CreateTradeViewModel(
     private val createTradeUseCase: CreateTradeUseCase,
     private val checkTradeCreationAvailabilityUseCase: CheckTradeCreationAvailabilityUseCase,
     private val stringProvider: StringProvider,
-    private val serviceInfoProvider: ServiceInfoProvider
+    private val serviceInfoProvider: ServiceInfoProvider,
+    private val updateReservedBalanceUseCase: UpdateReservedBalanceUseCase,
 ) : ViewModel() {
 
     private lateinit var coinList: List<CoinDataItem>
@@ -244,7 +247,22 @@ class CreateTradeViewModel(
                 fromAmount, toAmount,
                 terms, paymentOptions
             ), onSuccess = {
-                _createTradeLoadingData.value = LoadingData.Success(it)
+                val serviceFee = serviceInfoProvider.getServiceFee(ServiceType.TRADE)
+                updateReservedBalanceUseCase(
+                    params = UpdateReservedBalanceUseCase.Params(
+                        coinCode = coinCode,
+                        txCryptoAmount = toAmount / price * (1 + serviceFee / 100 / 2),
+                        txAmount = toAmount * (1 + serviceFee / 100 / 2),
+                        txFee = 0.0,
+                        maxAmountUsed = false,
+                    ),
+                    onSuccess = {
+                        _createTradeLoadingData.value = LoadingData.Success(it)
+                    },
+                    onError = {
+                        _createTradeLoadingData.value = LoadingData.Error(it)
+                    }
+                )
             }, onError = {
                 _createTradeLoadingData.value = LoadingData.Error(it)
             }

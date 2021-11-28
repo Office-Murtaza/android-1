@@ -110,7 +110,7 @@ class TransactionsViewModel(
         )
     }
 
-    private fun fetchTransactions() {
+    fun fetchTransactions() {
         transactionsUseCase.invoke(
             FetchTransactionsUseCase.Params(coinCode),
             onSuccess = {

@@ -94,15 +94,28 @@ val viewModelModule = module {
     }
     viewModel { VerificationBlankViewModel(get(), get()) }
     viewModel { VerificationVipViewModel(get()) }
-    viewModel { SwapViewModel(get(), get(), get(), get(), get(), get(), get(), get(), get()) }
+    viewModel {
+        SwapViewModel(
+            get(),
+            get(),
+            get(),
+            get(),
+            get(),
+            get(),
+            get(),
+            get(),
+            get(),
+            get()
+        )
+    }
     viewModel { WalletsViewModel(get(), get()) }
     viewModel { (coinCode: String) -> TradeRecallViewModel(coinCode, get(), get(), get(), get()) }
     viewModel { (coinCode: String) ->
         TradeReserveViewModel(
-            coinCode, get(), get(), get(), get(), get(), get(), get(), get(), get(), get()
+            coinCode, get(), get(), get(), get(), get(), get(), get(), get(), get(), get(), get()
         )
     }
-    viewModel { StakingViewModel(get(), get(), get(), get(), get(), get()) }
+    viewModel { StakingViewModel(get(), get(), get(), get(), get(), get(), get()) }
     viewModel { (phone: String) -> SmsCodeViewModel(phone, get(), get()) }
     viewModel { RecoverSeedViewModel(get()) }
     viewModel { CreateSeedViewModel(get(), get(), get()) }
@@ -117,19 +130,14 @@ val viewModelModule = module {
             txId, coinCode, get(), get(), get(named(DOUBLE_CURRENCY_PRICE_FORMATTER_QUALIFIER))
         )
     }
-    viewModel { SendGiftViewModel(get(), get(), get(), get(), get(), get(), get(), get(), get()) }
+    viewModel {
+        SendGiftViewModel(
+            get(), get(), get(), get(), get(), get(), get(), get(), get(), get()
+        )
+    }
     viewModel { (coinCode: String) ->
         WithdrawViewModel(
-            coinCode,
-            get(),
-            get(),
-            get(),
-            get(),
-            get(),
-            get(),
-            get(),
-            get(),
-            get()
+            coinCode, get(), get(), get(), get(), get(), get(), get(), get(), get(), get()
         )
     }
     viewModel { (coinCode: String) -> DepositViewModel(coinCode, get()) }
@@ -138,7 +146,7 @@ val viewModelModule = module {
     viewModel { TradeListViewModel(get(), get()) }
     viewModel { TradeUserStatisticViewModel(get()) }
     viewModel { InviteFromContactsViewModel(get(), get(), get(), get()) }
-    viewModel { MyTradeDetailsViewModel(get(), get(), get()) }
+    viewModel { MyTradeDetailsViewModel(get(), get(), get(), get(), get()) }
     viewModel { EditTradeViewModel(get(), get(), get(), get(), get(), get()) }
     viewModel { TradeOrdersViewModel(get()) }
     viewModel { MyTradesViewModel(get(), get()) }
@@ -156,7 +164,7 @@ val viewModelModule = module {
         )
     }
     viewModel {
-        CreateTradeViewModel(get(), get(), get(), get(), get(), get())
+        CreateTradeViewModel(get(), get(), get(), get(), get(), get(), get())
     }
     viewModel {
         TradeFilterViewModel(
@@ -176,7 +184,8 @@ val viewModelModule = module {
     viewModel {
         TradeCreateOrderViewModel(
             get(), get(), get(), get(), get(),
-            get(named(DOUBLE_CURRENCY_PRICE_FORMATTER_QUALIFIER))
+            get(named(DOUBLE_CURRENCY_PRICE_FORMATTER_QUALIFIER)),
+            get()
         )
     }
     viewModel { TradeOrderRateViewModel(get(), get()) }

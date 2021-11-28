@@ -13,6 +13,7 @@ import com.belcobtm.domain.transaction.item.SignedTransactionPlanItem
 import com.belcobtm.domain.transaction.item.TransactionPlanItem
 import com.belcobtm.domain.wallet.LocalCoinType
 import com.belcobtm.domain.wallet.interactor.GetCoinByCodeUseCase
+import com.belcobtm.domain.wallet.interactor.UpdateBalanceUseCase
 import com.belcobtm.domain.wallet.item.CoinDataItem
 import com.belcobtm.domain.wallet.item.isBtcCoin
 import com.belcobtm.domain.wallet.item.isEthRelatedCoin
@@ -35,7 +36,8 @@ class TradeReserveViewModel(
     private val getFakeSignedTransactionPlanUseCase: GetFakeSignedTransactionPlanUseCase,
     private val getMaxValueBySignedTransactionUseCase: GetMaxValueBySignedTransactionUseCase,
     private val stringProvider: StringProvider,
-    private val receiverAccountActivatedUseCase: ReceiverAccountActivatedUseCase
+    private val receiverAccountActivatedUseCase: ReceiverAccountActivatedUseCase,
+    private val updateBalanceUseCase: UpdateBalanceUseCase,
 ) : ViewModel() {
 
     private var transactionPlanItem: TransactionPlanItem? = null
@@ -112,7 +114,11 @@ class TradeReserveViewModel(
         val cryptoAmount = _amount.value?.amount ?: 0.0
         val useMax = _amount.value?.useMax ?: false
         getSignedTransactionPlanUseCase(GetSignedTransactionPlanUseCase.Params(
-            coinDataItem.details.walletAddress, coinCode, cryptoAmount, transactionPlanItem, useMax
+            coinDataItem.details.walletAddress,
+            coinCode,
+            cryptoAmount,
+            transactionPlanItem,
+            useMax
         ), onSuccess = {
             _fee.value = it.fee
             signedTransactionPlanItem = it
@@ -177,11 +183,25 @@ class TradeReserveViewModel(
                 transactionPlanItem
             ),
             onSuccess = {
-                // we need to add some delay as server returns 200 before writting to DB
-                viewModelScope.launch {
-                    delay(1000)
-                    _createTransactionLiveData.value = LoadingData.Success(Unit)
-                }
+                updateBalanceUseCase(
+                    UpdateBalanceUseCase.Params(
+                        coinCode = getCoinCode(),
+                        txAmount = coinDataItem.priceUsd * (_amount.value?.amount ?: 0.0),
+                        txCryptoAmount = _amount.value?.amount ?: 0.0,
+                        txFee = _fee.value ?: 0.0,
+                        maxAmountUsed = amount.value?.useMax ?: false,
+                    ),
+                    onSuccess = {
+                        // we need to add some delay as server returns 200 before writting to DB
+                        viewModelScope.launch {
+                            delay(1000)
+                            _createTransactionLiveData.value = LoadingData.Success(Unit)
+                        }
+                    },
+                    onError = {
+                        _createTransactionLiveData.value = LoadingData.Error(it)
+                    }
+                )
             },
             onError = { _createTransactionLiveData.value = LoadingData.Error(it) }
         )

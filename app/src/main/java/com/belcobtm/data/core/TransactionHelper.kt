@@ -26,23 +26,34 @@ class TransactionHelper(
         fromTransactionPlan: TransactionPlanItem,
         useMaxAmountFlag: Boolean,
         utxos: List<UtxoItemResponse>
-    ): Either<Failure, SignedTransactionPlanItem> = when (fromCoin) {
-        LocalCoinType.BTC,
-        LocalCoinType.BCH,
-        LocalCoinType.DOGE,
-        LocalCoinType.DASH,
-        LocalCoinType.LTC -> Either.Right(
-            blockTransactionHelper.getSignedTransactionPlan(
-                useMaxAmountFlag, toAddress, fromCoin, fromCoinAmount, fromTransactionPlan, utxos
-            )
-        )
-        LocalCoinType.ETH,
-        LocalCoinType.XRP,
-        LocalCoinType.BNB,
-        LocalCoinType.TRX,
-        LocalCoinType.USDC,
-        LocalCoinType.CATM -> Either.Right(SignedTransactionPlanItem(fromTransactionPlan.txFee))
-    }
+    ): Either<Failure, SignedTransactionPlanItem> =
+        try {
+            when (fromCoin) {
+                LocalCoinType.BTC,
+                LocalCoinType.BCH,
+                LocalCoinType.DOGE,
+                LocalCoinType.DASH,
+                LocalCoinType.LTC ->
+                    Either.Right(
+                        blockTransactionHelper.getSignedTransactionPlan(
+                            useMaxAmountFlag,
+                            toAddress,
+                            fromCoin,
+                            fromCoinAmount,
+                            fromTransactionPlan,
+                            utxos
+                        )
+                    )
+                LocalCoinType.ETH,
+                LocalCoinType.XRP,
+                LocalCoinType.BNB,
+                LocalCoinType.TRX,
+                LocalCoinType.USDC,
+                LocalCoinType.CATM -> Either.Right(SignedTransactionPlanItem(fromTransactionPlan.txFee))
+            }
+        } catch (e: Failure) {
+            Either.Left(e)
+        }
 
     suspend fun createTransactionHash(
         useMaxAmountFlag: Boolean,
@@ -51,76 +62,104 @@ class TransactionHelper(
         fromCoinAmount: Double,
         fromTransactionPlan: TransactionPlanItem,
         utxos: List<UtxoItemResponse>
-    ): Either<Failure, String> = when (fromCoin) {
-        LocalCoinType.BTC,
-        LocalCoinType.BCH,
-        LocalCoinType.DOGE,
-        LocalCoinType.DASH,
-        LocalCoinType.LTC -> Either.Right(
-            blockTransactionHelper.getHash(
-                useMaxAmountFlag, toAddress, fromCoin,
-                fromCoinAmount, fromTransactionPlan, utxos
-            )
-        )
-        LocalCoinType.ETH -> Either.Right(
-            ethTransactionHelper.getHash(toAddress, fromCoin, fromCoinAmount, fromTransactionPlan)
-        )
-        LocalCoinType.USDC,
-        LocalCoinType.CATM -> Either.Right(
-            ethSubCoinTransactionHelper.getHash(
-                toAddress, fromCoin, fromCoinAmount, fromTransactionPlan
-            )
-        )
-        LocalCoinType.XRP -> Either.Right(
-            rippleTransactionHelper.getHash(
-                toAddress, fromCoin, fromCoinAmount, fromTransactionPlan
-            )
-        )
-        LocalCoinType.BNB -> Either.Right(
-            binanceTransactionHelper.getHash(
-                toAddress, fromCoin, fromCoinAmount, fromTransactionPlan
-            )
-        )
-        LocalCoinType.TRX -> Either.Right(
-            tronTransactionHelper.getHash(
-                toAddress, fromCoin, fromCoinAmount, fromTransactionPlan
-            )
-        )
-    }
+    ): Either<Failure, String> =
+        try {
+            when (fromCoin) {
+                LocalCoinType.BTC,
+                LocalCoinType.BCH,
+                LocalCoinType.DOGE,
+                LocalCoinType.DASH,
+                LocalCoinType.LTC -> Either.Right(
+                    blockTransactionHelper.getHash(
+                        useMaxAmountFlag, toAddress, fromCoin,
+                        fromCoinAmount, fromTransactionPlan, utxos
+                    )
+                )
+                LocalCoinType.ETH -> Either.Right(
+                    ethTransactionHelper.getHash(
+                        toAddress,
+                        fromCoin,
+                        fromCoinAmount,
+                        fromTransactionPlan
+                    )
+                )
+                LocalCoinType.USDC,
+                LocalCoinType.CATM -> Either.Right(
+                    ethSubCoinTransactionHelper.getHash(
+                        toAddress, fromCoin, fromCoinAmount, fromTransactionPlan
+                    )
+                )
+                LocalCoinType.XRP -> Either.Right(
+                    rippleTransactionHelper.getHash(
+                        toAddress, fromCoin, fromCoinAmount, fromTransactionPlan
+                    )
+                )
+                LocalCoinType.BNB -> Either.Right(
+                    binanceTransactionHelper.getHash(
+                        toAddress, fromCoin, fromCoinAmount, fromTransactionPlan
+                    )
+                )
+                LocalCoinType.TRX -> Either.Right(
+                    tronTransactionHelper.getHash(
+                        toAddress, fromCoin, fromCoinAmount, fromTransactionPlan
+                    )
+                )
+            }
+        } catch (e: Failure) {
+            Either.Left(e)
+        }
 
     suspend fun createTransactionStakeHash(
         fromCoinAmount: Double,
         toAddress: String,
         fromTransactionPlan: TransactionPlanItem
-    ) = ethSubCoinTransactionHelper.getStakingHash(
-        toAddress,
-        LocalCoinType.CATM,
-        fromCoinAmount,
-        fromTransactionPlan,
-        EthereumAbiFunction("createStake")
-    )
+    ) = try {
+        Either.Right(
+            ethSubCoinTransactionHelper.getStakingHash(
+                toAddress,
+                LocalCoinType.CATM,
+                fromCoinAmount,
+                fromTransactionPlan,
+                EthereumAbiFunction("createStake")
+            )
+        )
+    } catch (e: Failure) {
+        Either.Left(e)
+    }
 
     suspend fun createTransactionStakeCancelHash(
         fromCoinAmount: Double,
         toAddress: String,
         fromTransactionPlan: TransactionPlanItem
-    ) = ethSubCoinTransactionHelper.getStakingHash(
-        toAddress,
-        LocalCoinType.CATM,
-        fromCoinAmount,
-        fromTransactionPlan,
-        EthereumAbiFunction("cancelStake")
-    )
+    ) = try {
+        Either.Right(
+            ethSubCoinTransactionHelper.getStakingHash(
+                toAddress,
+                LocalCoinType.CATM,
+                fromCoinAmount,
+                fromTransactionPlan,
+                EthereumAbiFunction("cancelStake")
+            )
+        )
+    } catch (e: Failure) {
+        Either.Left(e)
+    }
 
     suspend fun createTransactionUnStakeHash(
         fromCoinAmount: Double,
         toAddress: String,
         fromTransactionPlan: TransactionPlanItem
-    ) = ethSubCoinTransactionHelper.getStakingHash(
-        toAddress,
-        LocalCoinType.CATM,
-        fromCoinAmount,
-        fromTransactionPlan,
-        EthereumAbiFunction("withdrawStake")
-    )
+    ) = try {
+        Either.Right(
+            ethSubCoinTransactionHelper.getStakingHash(
+                toAddress,
+                LocalCoinType.CATM,
+                fromCoinAmount,
+                fromTransactionPlan,
+                EthereumAbiFunction("withdrawStake")
+            )
+        )
+    } catch (e: Failure) {
+        Either.Left(e)
+    }
 }

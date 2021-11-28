@@ -1,13 +1,16 @@
 package com.belcobtm.data.core.factory
 
+import com.belcobtm.R
 import com.belcobtm.data.disk.database.account.AccountDao
 import com.belcobtm.data.disk.shared.preferences.SharedPreferencesHelper
 import com.belcobtm.data.rest.transaction.response.hash.UtxoItemResponse
+import com.belcobtm.domain.Failure
 import com.belcobtm.domain.transaction.item.TransactionPlanItem
 import com.belcobtm.domain.wallet.LocalCoinType
 import com.belcobtm.presentation.core.Numeric
 import com.belcobtm.presentation.core.extensions.toStringCoin
 import com.belcobtm.presentation.core.extensions.unit
+import com.belcobtm.presentation.core.provider.string.StringProvider
 import com.belcobtm.presentation.core.toHexBytes
 import com.google.protobuf.ByteString
 import wallet.core.jni.BitcoinScript
@@ -17,7 +20,8 @@ import wallet.core.jni.proto.Bitcoin
 
 class BlockTransactionInputBuilderFactory(
     private val prefsHelper: SharedPreferencesHelper,
-    private val daoAccount: AccountDao
+    private val daoAccount: AccountDao,
+    private val stringProvider: StringProvider
 ) {
 
     suspend fun createInput(
@@ -30,6 +34,10 @@ class BlockTransactionInputBuilderFactory(
         val trustWalletCoin = fromCoin.trustWalletType
         val hdWallet = HDWallet(prefsHelper.apiSeed, "")
         val fromAddress = daoAccount.getItem(fromCoin.name).publicKey
+
+        if (fromAddress == toAddress) {
+            throw Failure.MessageError(stringProvider.getString(R.string.addresses_match_singing_error))
+        }
         val cryptoToSatoshi = fromCoinAmount.toStringCoin().toDouble() * trustWalletCoin.unit()
         val amount: Long = cryptoToSatoshi.toLong()
         val byteFee = fromTransactionPlan.byteFee

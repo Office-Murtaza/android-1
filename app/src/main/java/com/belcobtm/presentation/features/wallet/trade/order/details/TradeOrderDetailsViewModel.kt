@@ -31,7 +31,7 @@ class TradeOrderDetailsViewModel(
     private val updateOrderStatusUseCase: UpdateOrderStatusUseCase,
     private val cancelOrderUseCase: CancelOrderUseCase,
     private val stringProvider: StringProvider,
-    private val googleMapQueryFormatter: Formatter<GoogleMapsDirectionQueryFormatter.Location>
+    private val googleMapQueryFormatter: Formatter<GoogleMapsDirectionQueryFormatter.Location>,
 ) : ViewModel() {
 
     private val _initialLoadingData = MutableLiveData<LoadingData<Unit>>()
@@ -101,6 +101,8 @@ class TradeOrderDetailsViewModel(
 
     private var partnerLat: Double? = null
     private var partnerLong: Double? = null
+    private lateinit var order: OrderItem
+    private var isBuyer: Boolean = false
 
     fun fetchInitialData(orderId: String) {
         viewModelScope.launch {
@@ -224,7 +226,8 @@ class TradeOrderDetailsViewModel(
             _partnerTotalTrades.value = order.makerTotalTradesFormatted
             _openRateScreen.value = order.takerRate == null && isOrderResolved
         }
-        val isBuyer = order.mappedTradeType == TradeType.BUY
+        this.order = order
+        isBuyer = order.mappedTradeType == TradeType.BUY
         _buttonsState.value = if (isBuyer) setupBuyerButtons(order) else setupSellerButtons(order)
         _initialLoadingData.value = LoadingData.Success(Unit)
     }

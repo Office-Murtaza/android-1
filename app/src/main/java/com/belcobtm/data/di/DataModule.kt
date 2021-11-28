@@ -112,16 +112,16 @@ val dataModule = module {
     single { TradeApiService(get(), get()) }
     single { NetworkUtils(get()) }
     single { AssetsDataStore(get()) }
-    single { BlockTransactionInputBuilderFactory(get(), get()) }
+    single { BlockTransactionInputBuilderFactory(get(), get(), get()) }
     single { BlockTransactionHelper(get()) }
-    single { BinanceTransactionInputBuilderFactory(get()) }
+    single { BinanceTransactionInputBuilderFactory(get(), get()) }
     single { BinanceTransactionHelper(get()) }
-    single { RippleTransactionInputBuilderFactory(get()) }
+    single { RippleTransactionInputBuilderFactory(get(), get()) }
     single { RippleTransactionHelper(get()) }
-    single { EthTransactionInputBuilderFactory(get(), get()) }
+    single { EthTransactionInputBuilderFactory(get(), get(), get()) }
     single { EthTransactionHelper(get()) }
     single { EthSubCoinTransactionHelper(get()) }
-    single { TronTransactionInputBuilderFactory(get()) }
+    single { TronTransactionInputBuilderFactory(get(), get()) }
     single { TronTransactionHelper(get()) }
     single { TransactionHelper(get(), get(), get(), get(), get(), get()) }
     single {

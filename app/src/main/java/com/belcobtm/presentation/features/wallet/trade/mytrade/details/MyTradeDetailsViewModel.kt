@@ -5,13 +5,16 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.belcobtm.R
+import com.belcobtm.data.disk.database.service.ServiceType
 import com.belcobtm.data.model.trade.TradeStatus
 import com.belcobtm.data.model.trade.TradeType
 import com.belcobtm.domain.Either
 import com.belcobtm.domain.Failure
+import com.belcobtm.domain.service.ServiceInfoProvider
 import com.belcobtm.domain.trade.details.CancelTradeUseCase
 import com.belcobtm.domain.trade.details.ObserveTradeDetailsUseCase
 import com.belcobtm.domain.wallet.LocalCoinType
+import com.belcobtm.domain.wallet.interactor.UpdateReservedBalanceUseCase
 import com.belcobtm.presentation.core.mvvm.LoadingData
 import com.belcobtm.presentation.core.provider.string.StringProvider
 import com.belcobtm.presentation.features.wallet.trade.list.model.TradeItem
@@ -23,7 +26,9 @@ import kotlinx.coroutines.launch
 class MyTradeDetailsViewModel(
     private val observeTradeDetailsUseCase: ObserveTradeDetailsUseCase,
     private val cancelTradeUseCase: CancelTradeUseCase,
-    private val stringProvider: StringProvider
+    private val stringProvider: StringProvider,
+    private val serviceInfoProvider: ServiceInfoProvider,
+    private val updateReservedBalanceUseCase: UpdateReservedBalanceUseCase,
 ) : ViewModel() {
 
     private val _initialLoadingData = MutableLiveData<LoadingData<Unit>>()
@@ -59,6 +64,8 @@ class MyTradeDetailsViewModel(
     private val _isCancelled = MutableLiveData<Boolean>()
     val isCancelled: LiveData<Boolean> = _isCancelled
 
+    private lateinit var trade: TradeItem
+
     fun fetchTradeDetails(tradeId: String) {
         _initialLoadingData.value = LoadingData.Loading()
         viewModelScope.launch {
@@ -77,6 +84,7 @@ class MyTradeDetailsViewModel(
     }
 
     private fun updateTradeData(trade: TradeItem) {
+        this.trade = trade
         _selectedCoin.value = trade.coin
         _price.value = trade.priceFormatted
         _tradeType.value = trade.tradeType
@@ -100,8 +108,23 @@ class MyTradeDetailsViewModel(
 
     fun cancel(tradeId: String) {
         _cancelTradeLoadingData.value = LoadingData.Loading()
+        val feePercent = serviceInfoProvider.getServiceFee(ServiceType.TRADE)
         cancelTradeUseCase(tradeId, onSuccess = {
-            _cancelTradeLoadingData.value = LoadingData.Success(Unit)
+            updateReservedBalanceUseCase(
+                params = UpdateReservedBalanceUseCase.Params(
+                    coinCode = trade.coin.name,
+                    txAmount = -1 * trade.maxLimit * (1 + feePercent / 100 / 2),
+                    txCryptoAmount = -1 * trade.maxLimit / trade.price * (1 + feePercent / 100 / 2),
+                    txFee = 0.0,
+                    maxAmountUsed = false
+                ),
+                onSuccess = {
+                    _cancelTradeLoadingData.value = LoadingData.Success(Unit)
+                },
+                onError = {
+                    _cancelTradeLoadingData.value = LoadingData.Error(it)
+                }
+            )
         }, onError = {
             _cancelTradeLoadingData.value = LoadingData.Error(it)
         })

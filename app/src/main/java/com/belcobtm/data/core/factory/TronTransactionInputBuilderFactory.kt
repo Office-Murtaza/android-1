@@ -1,10 +1,13 @@
 package com.belcobtm.data.core.factory
 
+import com.belcobtm.R
 import com.belcobtm.data.disk.database.account.AccountDao
+import com.belcobtm.domain.Failure
 import com.belcobtm.domain.transaction.item.TransactionPlanItem
 import com.belcobtm.domain.wallet.LocalCoinType
 import com.belcobtm.presentation.core.extensions.toStringCoin
 import com.belcobtm.presentation.core.extensions.unit
+import com.belcobtm.presentation.core.provider.string.StringProvider
 import com.belcobtm.presentation.core.toHexByteArray
 import com.belcobtm.presentation.core.toHexBytesInByteString
 import com.google.protobuf.ByteString
@@ -12,7 +15,10 @@ import wallet.core.jni.CoinType
 import wallet.core.jni.proto.Tron
 import java.util.*
 
-class TronTransactionInputBuilderFactory(private val accountDao: AccountDao) {
+class TronTransactionInputBuilderFactory(
+    private val accountDao: AccountDao,
+    private val stringProvider: StringProvider
+) {
 
     suspend fun createInput(
         toAddress: String,
@@ -24,6 +30,9 @@ class TronTransactionInputBuilderFactory(private val accountDao: AccountDao) {
         val rawData = fromTransactionPlan.blockHeader?.raw_data
         val cryptoToSubcoin = fromCoinAmount.toStringCoin().toDouble() * CoinType.TRON.unit()
         val fromAddress = accountEntity.publicKey
+        if (fromAddress == toAddress) {
+            throw Failure.MessageError(stringProvider.getString(R.string.addresses_match_singing_error))
+        }
         val parentHash = rawData?.parentHash?.let { "0x$it" }?.toHexByteArray() ?: byteArrayOf()
         val witnessAddress =
             rawData?.witness_address?.let { "0x$it" }?.toHexByteArray() ?: byteArrayOf()

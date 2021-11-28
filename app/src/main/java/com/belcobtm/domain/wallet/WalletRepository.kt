@@ -16,4 +16,20 @@ interface WalletRepository {
         coinCode: String,
         @PriceChartPeriod period: Int
     ): Either<Failure, ChartDataItem>
+
+    suspend fun getTotalBalance(): Either<Failure, Double>
+
+    suspend fun updateBalance(
+        coinCode: String,
+        newBalance: Double,
+        newBalanceUsd: Double,
+        newTotal: Double
+    ): Either<Failure, Unit>
+
+    suspend fun updateReservedBalance(
+        coinCode: String,
+        newBalance: Double,
+        newBalanceUsd: Double,
+        newTotal: Double
+    ): Either<Failure, Unit>
 }

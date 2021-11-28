@@ -188,6 +188,8 @@ val useCaseModule = module {
     factory { TradePaymentOptionMapper() }
     factory { CoinCodeMapper() }
     factory { TradesDataToTradeListMapper(get()) }
+    factory { UpdateBalanceUseCase(get()) }
+    factory { UpdateReservedBalanceUseCase(get()) }
     factory {
         TradeToTradeItemMapper(
             get(), get(named(MILES_FORMATTER_QUALIFIER)),

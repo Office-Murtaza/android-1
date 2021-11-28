@@ -102,6 +102,9 @@ class TransactionsFragment : BaseFragment<FragmentTransactionsBinding>() {
         chartChipGroupView.setOnCheckedChangeListener { _, checkedId ->
             viewModel.changeCurrentTypePeriod(checkedId)
         }
+        refreshTransactions.setOnRefreshListener {
+            viewModel.fetchTransactions()
+        }
         fabListView.addOnMenuItemClickListener { _, _, itemId ->
             when (itemId) {
                 STAKING.id -> navigate(TransactionsFragmentDirections.toStakingFragment())
@@ -145,7 +148,9 @@ class TransactionsFragment : BaseFragment<FragmentTransactionsBinding>() {
                 binding.listView.smoothScrollToPosition(0)
             }
         }
-        viewModel.loadingData.listen()
+        viewModel.loadingData.listen(success = {
+            refreshTransactions.isRefreshing = false
+        })
         viewModel.detailsLiveData.observe(viewLifecycleOwner) {
             //important download fee
             priceUsdView.text = currencyFormatter.format(it.priceUsd)

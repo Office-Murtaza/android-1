@@ -295,14 +295,16 @@ class TransactionRepositoryImpl(
             transactionPlanItem
         )
         val toAddress = coinItem.publicKey
-        return apiService.stakeCreate(
-            coinCode,
-            fromAddress,
-            toAddress,
-            cryptoAmount,
-            transactionPlanItem.nativeTxFee,
-            hash
-        ).map { cache.update(it) }
+        return hash.flatMapSuspend {
+            apiService.stakeCreate(
+                coinCode,
+                fromAddress,
+                toAddress,
+                cryptoAmount,
+                transactionPlanItem.nativeTxFee,
+                it
+            )
+        }.map { cache.update(it) }
     }
 
     override suspend fun stakeCancel(
@@ -318,9 +320,11 @@ class TransactionRepositoryImpl(
         val fromAddress = coinItem.details.walletAddress
         val toAddress = coinItem.publicKey
         val fee = transactionPlanItem.nativeTxFee
-        return apiService.stakeCancel(
-            coinCode, fromAddress, toAddress, 0.0, fee, hash
-        ).map { cache.update(it) }
+        return hash.flatMapSuspend {
+            apiService.stakeCancel(
+                coinCode, fromAddress, toAddress, 0.0, fee, it
+            )
+        }.map { cache.update(it) }
     }
 
     override suspend fun stakeWithdraw(
@@ -337,8 +341,9 @@ class TransactionRepositoryImpl(
         val fromAddress = coinItem.details.walletAddress
         val toAddress = coinItem.publicKey
         val fee = transactionPlanItem.nativeTxFee
-        return apiService.unStake(coinCode, fromAddress, toAddress, cryptoAmount, fee, hash)
-            .map { cache.update(it) }
+        return hash.flatMapSuspend {
+            apiService.unStake(coinCode, fromAddress, toAddress, cryptoAmount, fee, it)
+        }.map { cache.update(it) }
     }
 
     override suspend fun getTransferAddress(

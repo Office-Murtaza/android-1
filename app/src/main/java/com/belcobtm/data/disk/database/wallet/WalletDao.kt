@@ -39,6 +39,44 @@ interface WalletDao {
     )
     suspend fun getCoinByCode(code: String): FullCoinEntity
 
+    @Query(
+        """
+        UPDATE coin
+        SET balance = :balance AND balance_usd = :balanceUsd
+        WHERE code = :code
+    """
+    )
+    suspend fun updateBalance(
+        code: String,
+        balanceUsd: Double,
+        balance: Double,
+    )
+
+    @Query(
+        """
+        UPDATE coin
+        SET reserved_balance = :balance AND reserved_balance_usd = :balanceUsd
+        WHERE code = :code
+    """
+    )
+    suspend fun updateReservedBalance(
+        code: String,
+        balanceUsd: Double,
+        balance: Double,
+    )
+
+    @Query("SELECT total_balance FROM wallet")
+    suspend fun getTotalBalance(): Double
+
+    @Transaction
+    suspend fun updateTotalBalance(balance: Double) {
+        clearBalance()
+        updateWallet(WalletEntity(balance))
+    }
+
+    @Query("DELETE FROM wallet")
+    suspend fun clearBalance()
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun updateCoinDetails(coinDetails: List<CoinDetailsEntity>)
 

@@ -3,6 +3,7 @@ package com.belcobtm.presentation.features.wallet.trade.order.create
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.room.Update
 import com.belcobtm.R
 import com.belcobtm.data.disk.database.service.ServiceType
 import com.belcobtm.data.model.trade.TradeType
@@ -12,6 +13,7 @@ import com.belcobtm.domain.trade.details.GetTradeDetailsUseCase
 import com.belcobtm.domain.trade.order.CreateOrderUseCase
 import com.belcobtm.domain.wallet.LocalCoinType
 import com.belcobtm.domain.wallet.interactor.GetCoinByCodeUseCase
+import com.belcobtm.domain.wallet.interactor.UpdateReservedBalanceUseCase
 import com.belcobtm.presentation.core.extensions.toStringCoin
 import com.belcobtm.presentation.core.formatter.Formatter
 import com.belcobtm.presentation.core.livedata.DoubleCombinedLiveData
@@ -27,7 +29,8 @@ class TradeCreateOrderViewModel(
     private val createOrderUseCase: CreateOrderUseCase,
     private val stringProvider: StringProvider,
     private val serviceInfoProvider: ServiceInfoProvider,
-    private val priceFormatter: Formatter<Double>
+    private val priceFormatter: Formatter<Double>,
+    private val updateReservedBalanceUseCase: UpdateReservedBalanceUseCase,
 ) : ViewModel() {
 
     private val _initialLoadingData = MutableLiveData<LoadingData<Unit>>()
@@ -140,6 +143,17 @@ class TradeCreateOrderViewModel(
             cryptoAmount.value?.cryptoAmount?.toStringCoin()?.toDouble() ?: 0.0,
             fiatAmount.value ?: 0.0
         ), onSuccess = {
+            updateReservedBalanceUseCase(
+                params = UpdateReservedBalanceUseCase.Params(
+                    coinCode = tradeData.coin.name,
+                    txCryptoAmount = includeFeeCoef * (amountWithoutFee.value?.totalValueCrypto
+                        ?: 0.0),
+                    txAmount = includeFeeCoef * (amountWithoutFee.value?.totalValueCrypto
+                        ?: 0.0) * tradeData.price,
+                    txFee = 0.0,
+                    maxAmountUsed = false
+                )
+            )
             _createTradeLoadingData.value = LoadingData.Success(it)
         }, onError = {
             if (it is Failure.ValidationError) {
