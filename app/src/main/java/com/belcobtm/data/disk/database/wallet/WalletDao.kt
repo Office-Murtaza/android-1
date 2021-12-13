@@ -42,7 +42,7 @@ interface WalletDao {
     @Query(
         """
         UPDATE coin
-        SET balance = :balance AND balance_usd = :balanceUsd
+        SET balance = :balance, balance_usd = :balanceUsd
         WHERE code = :code
     """
     )
@@ -55,7 +55,7 @@ interface WalletDao {
     @Query(
         """
         UPDATE coin
-        SET reserved_balance = :balance AND reserved_balance_usd = :balanceUsd
+        SET reserved_balance = :balance, reserved_balance_usd = :balanceUsd
         WHERE code = :code
     """
     )
