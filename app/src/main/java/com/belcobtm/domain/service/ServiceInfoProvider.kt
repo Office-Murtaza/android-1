@@ -1,5 +1,6 @@
 package com.belcobtm.domain.service
 
+import com.belcobtm.data.disk.database.service.ServiceEntity
 import com.belcobtm.data.disk.database.service.ServiceType
 
 class ServiceInfoProvider(
@@ -9,6 +10,6 @@ class ServiceInfoProvider(
     fun isAvailableService(@ServiceType serviceType: Int) =
         serviceRepository.isAvailable(serviceType)
 
-    fun getServiceFee(@ServiceType serviceType: Int) =
-        serviceRepository.getServiceFee(serviceType)
+    fun getService(@ServiceType serviceType: Int): ServiceEntity? =
+        serviceRepository.getService(serviceType)
 }

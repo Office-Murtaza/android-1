@@ -10,7 +10,6 @@ import com.belcobtm.data.disk.database.account.AccountEntity
 import com.belcobtm.data.disk.database.service.ServiceType
 import com.belcobtm.domain.Failure
 import com.belcobtm.domain.service.ServiceInfoProvider
-import com.belcobtm.domain.transaction.interactor.SellGetLimitsUseCase
 import com.belcobtm.domain.transaction.interactor.SellUseCase
 import com.belcobtm.domain.wallet.interactor.GetCoinListUseCase
 import com.belcobtm.domain.wallet.item.CoinDataItem
@@ -22,12 +21,10 @@ import com.belcobtm.presentation.core.provider.string.StringProvider
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import java.math.BigDecimal
 import kotlin.math.max
 
 class AtmSellViewModel(
     private val getCoinListUseCase: GetCoinListUseCase,
-    private val sellGetLimitsUseCase: SellGetLimitsUseCase,
     private val sellUseCase: SellUseCase,
     private val accountDao: AccountDao,
     private val serviceInfoProvider: ServiceInfoProvider,
@@ -60,7 +57,7 @@ class AtmSellViewModel(
 
     private val coinAmount: LiveData<Double> =
         DoubleCombinedLiveData(usdAmount, selectedCoin) { amount, coin ->
-            val feePercent = serviceInfoProvider.getServiceFee(ServiceType.ATM_SELL)
+            val feePercent = serviceInfoProvider.getService(ServiceType.ATM_SELL)?.feePercent ?: 0.0
             val price = coin?.priceUsd ?: 0.0
             (amount?.toDouble() ?: 0.0) / price * (100 + feePercent) / 100.0
         }
@@ -72,7 +69,7 @@ class AtmSellViewModel(
 
     val fee: LiveData<AtmSellFeeModelView> =
         DoubleCombinedLiveData(usdAmount, selectedCoin) { amount, coin ->
-            val feePercent = serviceInfoProvider.getServiceFee(ServiceType.ATM_SELL)
+            val feePercent = serviceInfoProvider.getService(ServiceType.ATM_SELL)?.feePercent ?: 0.0
             val price = coin?.priceUsd ?: 0.0
             AtmSellFeeModelView(
                 feePercent,
@@ -82,6 +79,7 @@ class AtmSellViewModel(
         }
 
     private val _todayLimit = MutableLiveData<Double>()
+    private val _txLimit = MutableLiveData<Double>()
 
     private val _todayLimitFormatted = MutableLiveData<String>()
     val todayLimitFormatted: LiveData<String> = _todayLimitFormatted
@@ -120,7 +118,8 @@ class AtmSellViewModel(
     fun setMaxSendAmount() {
         val currentCoinToSend = selectedCoin.value ?: return
         val a = (currentCoinToSend.reservedBalanceCoin * currentCoinToSend.priceUsd *
-                (100.toDouble() - serviceInfoProvider.getServiceFee(ServiceType.ATM_SELL)) / 100.0).toInt()
+                (100.toDouble() - (serviceInfoProvider.getService(ServiceType.ATM_SELL)?.feePercent
+                    ?: 0.0)) / 100.0).toInt()
         val maxAmount = max(a / 20 * 20, max(a / 50 * 50, a / 100 * 100))
         setAmount(maxAmount)
     }
@@ -141,12 +140,13 @@ class AtmSellViewModel(
         val amount = (coinAmount.value ?: return).toStringCoin().toDouble()
         val usdAmount = usdAmount.value ?: return
         val todayLimit = _todayLimit.value ?: return
-        val fee = serviceInfoProvider.getServiceFee(ServiceType.ATM_SELL)
-        if(usdAmount <= 0) {
+        val txLimit = _txLimit.value ?: return
+        val fee = serviceInfoProvider.getService(ServiceType.ATM_SELL)?.feePercent ?: 0.0
+        if (usdAmount <= 0) {
             _usdAmountError.value = stringProvider.getString(R.string.sell_amount_zero)
             return
         }
-        if(usdAmount % 50 != 0 && usdAmount % 20 != 0 && usdAmount % 100 != 0) {
+        if (usdAmount % 50 != 0 && usdAmount % 20 != 0 && usdAmount % 100 != 0) {
             _usdAmountError.value = stringProvider.getString(R.string.sell_amount_wrong_divider)
             return
         }
@@ -154,9 +154,9 @@ class AtmSellViewModel(
             _usdAmountError.value = stringProvider.getString(R.string.sell_amount_exceeds_limit)
             return
         }
-        if (usdAmount > todayLimit) {
+        if (txLimit < amount || todayLimit < amount) {
             _usdAmountError.value =
-                stringProvider.getString(R.string.sell_amount_exceeds_today_limit)
+                stringProvider.getString(R.string.limits_exceeded_validation_message)
             return
         }
         _sellLoadingData.value = LoadingData.Loading()
@@ -173,23 +173,21 @@ class AtmSellViewModel(
             1.0, coin.code, priceFormatter.format(coin.priceUsd)
         )
         _selectedCoinModel.value = AtmSellCoinPresentationModel(
-            coin.code, coin.reservedBalanceCoin,  priceFormatter.format(coin.reservedBalanceUsd), 0.0
+            coin.code, coin.reservedBalanceCoin, priceFormatter.format(coin.reservedBalanceUsd), 0.0
         )
     }
 
     private fun loadLimits(coinDataItem: CoinDataItem) {
-        sellGetLimitsUseCase(Unit,
-            onSuccess = {
-                _todayLimit.value = it.todayLimit
-                _txLimitFormatted.value = priceFormatter.format(it.txLimit)
-                _dailyLimitFormatted.value = priceFormatter.format(it.dailyLimit)
-                _todayLimitFormatted.value = priceFormatter.format(it.todayLimit)
-                updateCoin(coinDataItem)
-                _usdAmount.value = 0
-                _initLoadingData.value = LoadingData.Success(Unit)
-            },
-            onError = { _initLoadingData.value = LoadingData.Error(it) }
-        )
+        updateCoin(coinDataItem)
+        serviceInfoProvider.getService(ServiceType.ATM_SELL)?.let {
+            _todayLimit.value = it.remainLimit
+            _txLimit.value = it.txLimit
+            _txLimitFormatted.value = priceFormatter.format(it.txLimit)
+            _dailyLimitFormatted.value = priceFormatter.format(it.dailyLimit)
+            _todayLimitFormatted.value = priceFormatter.format(it.remainLimit)
+            _usdAmount.value = 0
+        }
+        _initLoadingData.value = LoadingData.Success(Unit)
     }
 }
 

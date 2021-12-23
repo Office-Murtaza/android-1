@@ -1,5 +1,6 @@
 package com.belcobtm.presentation.features.authorization.create.wallet
 
+import android.Manifest
 import android.content.Context
 import android.graphics.Color
 import android.os.Bundle
@@ -24,12 +25,18 @@ import com.belcobtm.presentation.core.ui.fragment.BaseFragment
 import com.belcobtm.presentation.features.authorization.create.seed.CreateSeedFragment
 import com.belcobtm.presentation.features.sms.code.SmsCodeFragment
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import permissions.dispatcher.NeedsPermission
+import permissions.dispatcher.OnPermissionDenied
+import permissions.dispatcher.RuntimePermissions
 
+@RuntimePermissions
 class CreateWalletFragment : BaseFragment<FragmentCreateWalletBinding>() {
     private val viewModel: CreateWalletViewModel by viewModel()
     override val isToolbarEnabled: Boolean = true
     override val isHomeButtonEnabled: Boolean = true
-    override val retryListener: View.OnClickListener = View.OnClickListener { checkCredentials() }
+    override val retryListener: View.OnClickListener = View.OnClickListener {
+        checkCredentialsWithPermissionCheck()
+    }
 
     override fun FragmentCreateWalletBinding.initViews() {
         setToolbarTitle(R.string.create_wallet_screen_title)
@@ -37,7 +44,7 @@ class CreateWalletFragment : BaseFragment<FragmentCreateWalletBinding>() {
     }
 
     override fun FragmentCreateWalletBinding.initListeners() {
-        nextButtonView.setOnClickListener { checkCredentials() }
+        nextButtonView.setOnClickListener { checkCredentialsWithPermissionCheck() }
         phoneView.editText?.afterTextChanged { updateNextButton() }
         passwordView.editText?.afterTextChanged { updateNextButton() }
         passwordConfirmView.editText?.afterTextChanged { updateNextButton() }
@@ -71,6 +78,36 @@ class CreateWalletFragment : BaseFragment<FragmentCreateWalletBinding>() {
                     viewModel.checkCredentialsLiveData.value = null
                 }
             })
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        // NOTE: delegate the permission handling to generated method
+        onRequestPermissionsResult(requestCode, grantResults)
+    }
+
+    @NeedsPermission(
+        Manifest.permission.ACCESS_FINE_LOCATION,
+        Manifest.permission.ACCESS_COARSE_LOCATION
+    )
+    fun checkCredentials() {
+        binding.phoneView.clearError()
+        binding.passwordView.clearError()
+        if (isValidFields()) {
+            viewModel.checkCredentials(getPhone(), binding.passwordView.getString())
+        }
+    }
+
+    @OnPermissionDenied(
+        Manifest.permission.ACCESS_FINE_LOCATION,
+        Manifest.permission.ACCESS_COARSE_LOCATION
+    )
+    fun showLocationRequiredErrorMessage() {
+        showSnackBar(R.string.location_required_on_recover_or_register_validation_message)
     }
 
     private fun FragmentCreateWalletBinding.initTncView() {
@@ -142,14 +179,6 @@ class CreateWalletFragment : BaseFragment<FragmentCreateWalletBinding>() {
     }
 
     private fun getPhone(): String = binding.phoneView.getString().replace("[-() ]".toRegex(), "")
-
-    private fun checkCredentials() {
-        binding.phoneView.clearError()
-        binding.passwordView.clearError()
-        if (isValidFields()) {
-            viewModel.checkCredentials(getPhone(), binding.passwordView.getString())
-        }
-    }
 
     companion object {
         private const val PASSWORD_MIN_LENGTH: Int = 6

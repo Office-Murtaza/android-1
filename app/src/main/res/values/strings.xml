@@ -721,7 +721,6 @@
     <string name="atm_sell_coin_rate"><![CDATA[<b>%1$s</b> %2$s\n ~ <b>%3$s</b>]]></string>
     <string name="sell_amount_exceeds_limit">Amount exceeds reserved balance</string>
     <string name="sell_amount_zero">Amount can\'t be zero</string>
-    <string name="sell_amount_exceeds_today_limit">Amount exceeds today limit</string>
     <string name="sell_amount_wrong_divider">Amount should be /20, /50 or /100</string>
     <string name="sell_amount_helper_text">Enter /20, /50 or /100 amount</string>
     <string name="sell_screen_balance">Reserved</string>
@@ -757,4 +756,12 @@
     <string name="about_screen_complaint_picker_title">Complaint Policy</string>
     <string name="fragment_trade_order_chat_send_button">Send</string>
     <string name="addresses_match_singing_error">Receiver can\'t be current address</string>
+
+    <string name="location_required_on_recover_or_register_validation_message">Location is required for security reasons</string>
+    <string name="services_dialog_limits_details_label">Limits Details</string>
+    <string name="services_dialog_tx_limit_label">Tx Limit</string>
+    <string name="services_dialog_daily_limit_label">Daily Limit</string>
+    <string name="services_dialog_remain_limit_label">Remain Limit</string>
+    <string name="limit_details_button_title">Limit Details</string>
+    <string name="limits_exceeded_validation_message">Converted amount exceeds limits</string>
 </resources>

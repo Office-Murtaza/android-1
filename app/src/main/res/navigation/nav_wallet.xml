@@ -78,7 +78,15 @@
         android:label="StakingFragment"
         tools:layout="@layout/fragment_staking">
 
+        <action
+            android:id="@+id/to_service_info_dialog"
+            app:destination="@id/service_info_dialog"
+            app:enterAnim="@anim/slide_from_right"
+            app:exitAnim="@anim/slide_to_left"
+            app:popEnterAnim="@anim/slide_from_left"
+            app:popExitAnim="@anim/slide_to_right" />
     </fragment>
+
 
     <fragment
         android:id="@+id/deposit_fragment"
@@ -134,5 +142,17 @@
             android:name="coin_code"
             app:argType="string" />
     </fragment>
+
+    <dialog
+        android:id="@+id/service_info_dialog"
+        android:name="com.belcobtm.presentation.features.services.ServicesInfoBottomSheetDialogFragment"
+        android:label="Chat image dialog">
+
+        <argument
+            android:name="type"
+            app:argType="integer"
+            app:nullable="false" />
+
+    </dialog>
 
 </navigation>

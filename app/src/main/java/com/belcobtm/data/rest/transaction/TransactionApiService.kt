@@ -92,6 +92,8 @@ class TransactionApiService(
         phone: String,
         message: String?,
         fee: Double? = null,
+        feePercent: Int?,
+        fiatAmount: Double,
         fromAddress: String? = null,
         toAddress: String? = null
     ): Either<Failure, TransactionDetailsResponse> = try {
@@ -103,20 +105,13 @@ class TransactionApiService(
             giftId,
             hash,
             fee,
+            feePercent,
+            fiatAmount,
             fromAddress,
             toAddress
         )
         val request = api.sendGiftAsync(prefHelper.userId, coinFrom, requestBody).await()
         request.body()?.let { Either.Right(it) } ?: Either.Left(Failure.ServerError())
-    } catch (failure: Failure) {
-        failure.printStackTrace()
-        Either.Left(failure)
-    }
-
-    suspend fun sellGetLimitsAsync(): Either<Failure, SellLimitsDataItem> = try {
-        val request = api.sellGetLimitsAsync(prefHelper.userId).await()
-        request.body()?.let { Either.Right(it.mapToDataItem()) }
-            ?: Either.Left(Failure.ServerError())
     } catch (failure: Failure) {
         failure.printStackTrace()
         Either.Left(failure)
@@ -157,7 +152,7 @@ class TransactionApiService(
             price = price,
             cryptoAmount = coinAmount,
             fiatAmount = usdAmount,
-            serviceFee = fee
+            feePercent = fee
         )
         val request = api.sellAsync(prefHelper.userId, coin, requestBody).await()
         request.body()?.let { Either.Right(it) } ?: Either.Left(Failure.ServerError())
@@ -186,7 +181,7 @@ class TransactionApiService(
             refCoin = coinTo.code,
             refCoinPrice = coinTo.priceUsd,
             refCryptoAmount = coinToAmount,
-            serviceFee = fee
+            feePercent = fee
         )
         val request = api.exchangeAsync(prefHelper.userId, coinFrom.code, requestBody).await()
         request.body()?.let { Either.Right(it) } ?: Either.Left(Failure.ServerError())
@@ -256,10 +251,15 @@ class TransactionApiService(
         toAddress: String,
         cryptoAmount: Double,
         fee: Double,
+        feePercent: Double,
+        fiatAMount: Double,
         hex: String
     ): Either<Failure, TransactionDetailsResponse> = try {
         val requestBody =
-            StakeRequest(TRANSACTION_STAKE, fromAddress, toAddress, cryptoAmount, fee, hex)
+            StakeRequest(
+                TRANSACTION_STAKE, fromAddress, toAddress, cryptoAmount,
+                fee, hex, feePercent, fiatAMount,
+            )
         val request = api.stakeOrUnStakeAsync(prefHelper.userId, coinCode, requestBody).await()
         request.body()?.let { Either.Right(it) } ?: Either.Left(Failure.ServerError())
     } catch (failure: Failure) {

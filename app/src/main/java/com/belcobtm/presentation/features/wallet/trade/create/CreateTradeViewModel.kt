@@ -13,7 +13,6 @@ import com.belcobtm.domain.trade.create.CheckTradeCreationAvailabilityUseCase
 import com.belcobtm.domain.trade.create.CreateTradeUseCase
 import com.belcobtm.domain.trade.create.GetAvailableTradePaymentOptionsUseCase
 import com.belcobtm.domain.wallet.interactor.GetCoinListUseCase
-import com.belcobtm.domain.wallet.interactor.UpdateBalanceUseCase
 import com.belcobtm.domain.wallet.interactor.UpdateReservedBalanceUseCase
 import com.belcobtm.domain.wallet.item.CoinDataItem
 import com.belcobtm.presentation.core.extensions.toStringCoin
@@ -197,11 +196,20 @@ class CreateTradeViewModel(
         if (errorCount > 0) {
             return
         }
-        val fee = serviceInfoProvider.getServiceFee(ServiceType.TRADE)
+        val fee = serviceInfoProvider.getService(ServiceType.TRADE)?.feePercent ?: 0.0
         val cryptoAmount = toAmount / price * (1 + fee / 100)
         if (type == TradeType.SELL && cryptoAmount > selectedCoin.value?.reservedBalanceCoin ?: 0.0) {
             _amountRangeError.value =
                 stringProvider.getString(R.string.create_trade_not_enough_crypto_balance)
+            return
+        }
+        val service = serviceInfoProvider.getService(ServiceType.TRADE)
+        if (service == null || service.txLimit < toAmount || service.remainLimit < toAmount) {
+            _createTradeLoadingData.value = LoadingData.Error(
+                Failure.MessageError(
+                    stringProvider.getString(R.string.limits_exceeded_validation_message)
+                )
+            )
             return
         }
         val coinCode = selectedCoin.value?.code.orEmpty()
@@ -232,7 +240,7 @@ class CreateTradeViewModel(
     }
 
     private fun createTrade(
-        type: Int,
+        @TradeType type: Int,
         coinCode: String,
         price: Double,
         fromAmount: Int,
@@ -240,29 +248,33 @@ class CreateTradeViewModel(
         terms: String,
         paymentOptions: List<@PaymentOption Int>
     ) {
+        val serviceFee = serviceInfoProvider.getService(ServiceType.TRADE)?.feePercent ?: 0.0
         _createTradeLoadingData.value = LoadingData.Loading()
         createTradeUseCase(
             CreateTradeItem(
                 type, coinCode, price.toInt(),
-                fromAmount, toAmount,
-                terms, paymentOptions
-            ), onSuccess = {
-                val serviceFee = serviceInfoProvider.getServiceFee(ServiceType.TRADE)
-                updateReservedBalanceUseCase(
-                    params = UpdateReservedBalanceUseCase.Params(
-                        coinCode = coinCode,
-                        txCryptoAmount = toAmount / price * (1 + serviceFee / 100 / 2),
-                        txAmount = toAmount * (1 + serviceFee / 100 / 2),
-                        txFee = 0.0,
-                        maxAmountUsed = false,
-                    ),
-                    onSuccess = {
-                        _createTradeLoadingData.value = LoadingData.Success(it)
-                    },
-                    onError = {
-                        _createTradeLoadingData.value = LoadingData.Error(it)
-                    }
-                )
+                fromAmount, toAmount, terms,
+                serviceFee, toAmount.toDouble(), paymentOptions
+            ), onSuccess = { createTradeResult ->
+                if (type == TradeType.SELL) {
+                    updateReservedBalanceUseCase(
+                        params = UpdateReservedBalanceUseCase.Params(
+                            coinCode = coinCode,
+                            txCryptoAmount = toAmount / price * (1 + serviceFee / 100 / 2),
+                            txAmount = toAmount * (1 + serviceFee / 100 / 2),
+                            txFee = 0.0,
+                            maxAmountUsed = false,
+                        ),
+                        onSuccess = {
+                            _createTradeLoadingData.value = LoadingData.Success(it)
+                        },
+                        onError = {
+                            _createTradeLoadingData.value = LoadingData.Error(it)
+                        }
+                    )
+                } else {
+                    _createTradeLoadingData.value = LoadingData.Success(createTradeResult)
+                }
             }, onError = {
                 _createTradeLoadingData.value = LoadingData.Error(it)
             }

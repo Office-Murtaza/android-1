@@ -54,13 +54,32 @@
         android:id="@+id/swap_fragment"
         android:name="com.belcobtm.presentation.features.deals.swap.SwapFragment"
         android:label="ExchangeFragment"
-        tools:layout="@layout/fragment_swap" />
+        tools:layout="@layout/fragment_swap">
+
+        <action
+            android:id="@+id/to_service_info_dialog"
+            app:destination="@id/service_info_dialog"
+            app:enterAnim="@anim/slide_from_right"
+            app:exitAnim="@anim/slide_to_left"
+            app:popEnterAnim="@anim/slide_from_left"
+            app:popExitAnim="@anim/slide_to_right" />
+
+    </fragment>
 
     <fragment
         android:id="@+id/staking_fragment"
         android:name="com.belcobtm.presentation.features.deals.staking.StakingFragment"
         android:label="ExchangeFragment"
-        tools:layout="@layout/fragment_swap" />
+        tools:layout="@layout/fragment_swap">
+
+        <action
+            android:id="@+id/to_service_info_dialog"
+            app:destination="@id/service_info_dialog"
+            app:enterAnim="@anim/slide_from_right"
+            app:exitAnim="@anim/slide_to_left"
+            app:popEnterAnim="@anim/slide_from_left"
+            app:popExitAnim="@anim/slide_to_right" />
+    </fragment>
 
     <fragment
         android:id="@+id/contact_list_fragment"
@@ -98,6 +117,14 @@
             android:defaultValue="@null"
             app:argType="string"
             app:nullable="true" />
+
+        <action
+            android:id="@+id/to_service_info_dialog"
+            app:destination="@id/service_info_dialog"
+            app:enterAnim="@anim/slide_from_right"
+            app:exitAnim="@anim/slide_to_left"
+            app:popEnterAnim="@anim/slide_from_left"
+            app:popExitAnim="@anim/slide_to_right" />
 
     </fragment>
 
@@ -158,9 +185,9 @@
 
         <argument
             android:name="innerDeeplink"
+            android:defaultValue="@null"
             app:argType="string"
-            app:nullable="true"
-            android:defaultValue="@null"/>
+            app:nullable="true" />
     </fragment>
 
     <dialog
@@ -173,7 +200,17 @@
         android:id="@+id/create_trade_fragment"
         android:name="com.belcobtm.presentation.features.wallet.trade.create.CreateTradeFragment"
         android:label="CreateTradeFragment"
-        tools:layout="@layout/fragment_create_trade" />
+        tools:layout="@layout/fragment_create_trade">
+
+        <action
+            android:id="@+id/to_service_info_dialog"
+            app:destination="@id/service_info_dialog"
+            app:enterAnim="@anim/slide_from_right"
+            app:exitAnim="@anim/slide_to_left"
+            app:popEnterAnim="@anim/slide_from_left"
+            app:popExitAnim="@anim/slide_to_right" />
+
+    </fragment>
 
     <fragment
         android:id="@+id/trade_details"
@@ -217,6 +254,14 @@
             app:popExitAnim="@anim/slide_to_right"
             app:popUpTo="@+id/trade_container_fragment" />
 
+        <action
+            android:id="@+id/to_service_info_dialog"
+            app:destination="@id/service_info_dialog"
+            app:enterAnim="@anim/slide_from_right"
+            app:exitAnim="@anim/slide_to_left"
+            app:popEnterAnim="@anim/slide_from_left"
+            app:popExitAnim="@anim/slide_to_right" />
+
     </dialog>
 
 
@@ -251,6 +296,14 @@
             android:name="tradeId"
             app:argType="string"
             app:nullable="false" />
+
+        <action
+            android:id="@+id/to_service_info_dialog"
+            app:destination="@id/service_info_dialog"
+            app:enterAnim="@anim/slide_from_right"
+            app:exitAnim="@anim/slide_to_left"
+            app:popEnterAnim="@anim/slide_from_left"
+            app:popExitAnim="@anim/slide_to_right" />
 
     </fragment>
 
@@ -385,5 +438,17 @@
             app:popExitAnim="@anim/slide_to_right" />
 
     </fragment>
+
+    <dialog
+        android:id="@+id/service_info_dialog"
+        android:name="com.belcobtm.presentation.features.services.ServicesInfoBottomSheetDialogFragment"
+        android:label="Chat image dialog">
+
+        <argument
+            android:name="type"
+            app:argType="integer"
+            app:nullable="false" />
+
+    </dialog>
 
 </navigation>

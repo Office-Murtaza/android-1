@@ -7,4 +7,6 @@ data class EditTradeRequest(
     val maxLimit: Int,
     val paymentMethods: String,
     val terms: String,
+    val feePercent: Double,
+    val fiatAmount: Double,
 )

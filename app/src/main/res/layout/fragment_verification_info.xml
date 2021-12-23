@@ -90,16 +90,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/status_divider" />
 
-    <View
-        android:id="@+id/limits_view_divider"
-        android:layout_width="0dp"
-        android:layout_height="@dimen/divider_size"
-        android:layout_marginTop="@dimen/margin_main"
-        android:background="@color/thin_divider"
-        app:layout_constraintEnd_toEndOf="@id/daily_limit_key_view"
-        app:layout_constraintStart_toStartOf="@id/tx_limit_key_view"
-        app:layout_constraintTop_toBottomOf="@id/daily_limit_value_view" />
-
     <TextView
         android:id="@+id/tx_limit_value_view"
         style="@style/Text.Regular2"
@@ -110,6 +100,16 @@
         app:layout_constraintStart_toStartOf="@id/tx_limit_key_view"
         app:layout_constraintTop_toBottomOf="@id/tx_limit_key_view"
         tools:text="$ 1000" />
+
+    <View
+        android:id="@+id/limits_view_divider"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/divider_size"
+        android:layout_marginTop="@dimen/margin_main"
+        android:background="@color/thin_divider"
+        app:layout_constraintEnd_toEndOf="@id/daily_limit_key_view"
+        app:layout_constraintStart_toStartOf="@id/tx_limit_key_view"
+        app:layout_constraintTop_toBottomOf="@id/daily_limit_value_view" />
 
     <TextView
         android:id="@+id/daily_limit_key_view"

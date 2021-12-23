@@ -8,6 +8,8 @@ data class SendGiftRequest(
     val image: String?,
     val hex: String?,
     val fee: Double?,
+    val feePercent: Int?,
+    val fiatAmount: Double?,
     val fromAddress: String?,
     val toAddress: String?
 )

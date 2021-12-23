@@ -201,16 +201,25 @@ class EditTradeViewModel(
         if (errorCount > 0) {
             return
         }
-        val fee = serviceInfoProvider.getServiceFee(ServiceType.TRADE)
+        val fee = serviceInfoProvider.getService(ServiceType.TRADE)?.feePercent ?: 0.0
         val cryptoAmount = toAmount / price * (1 + fee / 100)
         if (tradeType.value == TradeType.SELL && cryptoAmount > selectedCoin.value?.reservedBalanceCoin ?: 0.0) {
             _priceRangeError.value =
                 stringProvider.getString(R.string.edit_trade_not_enough_crypto_balance)
             return
         }
+        val service = serviceInfoProvider.getService(ServiceType.TRADE)
+        if (service == null || service.txLimit < toAmount || service.remainLimit < toAmount) {
+            _editTradeLoadingData.value = LoadingData.Error(
+                Failure.MessageError(
+                    stringProvider.getString(R.string.limits_exceeded_validation_message)
+                )
+            )
+            return
+        }
         _editTradeLoadingData.value = LoadingData.Loading()
         editTradeUseCase(
-            EditTradeItem(tradeId, price, fromAmount, toAmount, terms, paymentOptions),
+            EditTradeItem(tradeId, price, fromAmount, toAmount, terms, fee, toAmount.toDouble(), paymentOptions),
             onSuccess = {
                 _editTradeLoadingData.value = LoadingData.Success(it)
             },

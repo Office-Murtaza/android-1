@@ -8,5 +8,7 @@ data class EditTradeItem(
     val minAmount: Int,
     val maxAmount: Int,
     val terms: String,
+    val feePercent: Double,
+    val fiatAmount: Double,
     val paymentOptions: List<@PaymentOption Int>
 )

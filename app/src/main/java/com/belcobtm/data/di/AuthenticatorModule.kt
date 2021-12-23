@@ -26,7 +26,7 @@ val authenticatorQualified = named("auth")
  * There is a copy of OkHttClient and Retrofit provision under `dataModule`
  * */
 val authenticatorModule = module {
-    single { TokenAuthenticator(get(authenticatorQualified), get(), get(), get(), get()) }
+    single { TokenAuthenticator(get(authenticatorQualified), get(), get(), get()) }
     single(authenticatorQualified) {
         get<Retrofit>(authenticatorQualified).create(AuthApi::class.java)
     }

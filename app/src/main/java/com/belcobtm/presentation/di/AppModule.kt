@@ -82,8 +82,9 @@ val viewModelModule = module {
     viewModel { CreateWalletViewModel(get(), get<PhoneNumberValidator>()) }
     viewModel {
         PinCodeViewModel(
-            get(), get(), get(), get(), get(), get(),
-            get(), get(), get(), get(), get()
+            get(), get(), get(), get(), get(),
+            get(), get(), get(), get(), get(),
+            get(), get(), get()
         )
     }
     viewModel {
@@ -105,6 +106,7 @@ val viewModelModule = module {
             get(),
             get(),
             get(),
+            get(),
             get()
         )
     }
@@ -115,7 +117,7 @@ val viewModelModule = module {
             coinCode, get(), get(), get(), get(), get(), get(), get(), get(), get(), get(), get()
         )
     }
-    viewModel { StakingViewModel(get(), get(), get(), get(), get(), get(), get()) }
+    viewModel { StakingViewModel(get(), get(), get(), get(), get(), get(), get(), get(), get()) }
     viewModel { (phone: String) -> SmsCodeViewModel(phone, get(), get()) }
     viewModel { RecoverSeedViewModel(get()) }
     viewModel { CreateSeedViewModel(get(), get(), get()) }
@@ -132,7 +134,8 @@ val viewModelModule = module {
     }
     viewModel {
         SendGiftViewModel(
-            get(), get(), get(), get(), get(), get(), get(), get(), get(), get()
+            get(), get(), get(), get(), get(), get(),
+            get(), get(), get(), get(), get()
         )
     }
     viewModel { (coinCode: String) ->
@@ -152,7 +155,7 @@ val viewModelModule = module {
     viewModel { MyTradesViewModel(get(), get()) }
     viewModel {
         AtmSellViewModel(
-            get(), get(), get(), get(), get(), get(),
+            get(), get(), get(), get(), get(),
             get(named(DOUBLE_CURRENCY_PRICE_FORMATTER_QUALIFIER)),
         )
     }

@@ -3,7 +3,6 @@ package com.belcobtm.presentation.features.wallet.trade.order.create
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.room.Update
 import com.belcobtm.R
 import com.belcobtm.data.disk.database.service.ServiceType
 import com.belcobtm.data.model.trade.TradeType
@@ -36,8 +35,8 @@ class TradeCreateOrderViewModel(
     private val _initialLoadingData = MutableLiveData<LoadingData<Unit>>()
     val initialLoadingData: LiveData<LoadingData<Unit>> = _initialLoadingData
 
-    private val _createTradeLoadingData = MutableLiveData<LoadingData<String>>()
-    val createTradeLoadingData: LiveData<LoadingData<String>> = _createTradeLoadingData
+    private val _createTradeOrderLoadingData = MutableLiveData<LoadingData<String>>()
+    val createTradeOrderLoadingData: LiveData<LoadingData<String>> = _createTradeOrderLoadingData
 
     private val _fiatAmount = MutableLiveData<Double>(0.0)
     val fiatAmount: LiveData<Double> = _fiatAmount
@@ -94,7 +93,8 @@ class TradeCreateOrderViewModel(
         getTradeDetailsUseCase(tradeId, onSuccess = { trade ->
             getCoinByCodeUseCase(trade.coin.name, onSuccess = { coinDataItem ->
                 this.trade = trade
-                this.platformFeePercent = serviceInfoProvider.getServiceFee(ServiceType.TRADE)
+                this.platformFeePercent =
+                    serviceInfoProvider.getService(ServiceType.TRADE)?.feePercent ?: 0.0
                 this._coin.value = trade.coin
                 this.reservedBalanceUsd = coinDataItem.reservedBalanceUsd
                 _reservedBalance.value = ReservedBalance(
@@ -136,12 +136,22 @@ class TradeCreateOrderViewModel(
                 stringProvider.getString(R.string.trade_buy_sell_dialog_amount_too_big_error)
             return
         }
+        val service = serviceInfoProvider.getService(ServiceType.TRADE)
+        if (service == null || service.txLimit < amount || service.remainLimit < amount) {
+            _createTradeOrderLoadingData.value = LoadingData.Error(
+                Failure.MessageError(
+                    stringProvider.getString(R.string.limits_exceeded_validation_message)
+                )
+            )
+            return
+        }
         _fiatAmountError.value = null
-        _createTradeLoadingData.value = LoadingData.Loading()
+        _createTradeOrderLoadingData.value = LoadingData.Loading()
         createOrderUseCase(TradeOrderItem(
             tradeData.tradeId, tradeData.price,
             cryptoAmount.value?.cryptoAmount?.toStringCoin()?.toDouble() ?: 0.0,
-            fiatAmount.value ?: 0.0
+            amount,
+            platformFeePercent
         ), onSuccess = {
             updateReservedBalanceUseCase(
                 params = UpdateReservedBalanceUseCase.Params(
@@ -154,12 +164,12 @@ class TradeCreateOrderViewModel(
                     maxAmountUsed = false
                 )
             )
-            _createTradeLoadingData.value = LoadingData.Success(it)
+            _createTradeOrderLoadingData.value = LoadingData.Success(it)
         }, onError = {
             if (it is Failure.ValidationError) {
                 _fiatAmountError.value = it.message
             }
-            _createTradeLoadingData.value = LoadingData.Error(it)
+            _createTradeOrderLoadingData.value = LoadingData.Error(it)
         })
     }
 

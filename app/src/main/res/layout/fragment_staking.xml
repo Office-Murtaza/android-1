@@ -289,9 +289,22 @@
             style="@style/Button.Primary"
             android:text="@string/staking_screen_unstake"
             android:visibility="gone"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/limitDetails"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             tools:visibility="visible" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/limitDetails"
+            style="@style/Button.Secondary.NoOutlined"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:layout_marginStart="@dimen/margin_main"
+            android:layout_marginTop="@dimen/margin_main"
+            android:layout_marginBottom="@dimen/margin_main"
+            android:layout_marginEnd="@dimen/margin_main"
+            android:text="@string/limit_details_button_title"
+            app:layout_constraintBottom_toBottomOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

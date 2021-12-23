@@ -6,5 +6,7 @@ class StakeRequest(
     val toAddress: String,
     val cryptoAmount: Double,
     val fee: Double,
-    val hex: String
+    val hex: String,
+    val feePercent: Double? = null,
+    val fiatAmount: Double? = null,
 )

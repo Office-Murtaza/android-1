@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.navArgs
 import com.belcobtm.R
+import com.belcobtm.data.disk.database.service.ServiceType
 import com.belcobtm.databinding.FragmentSendGiftBinding
 import com.belcobtm.domain.Failure
 import com.belcobtm.domain.wallet.LocalCoinType
@@ -152,6 +153,9 @@ class SendGiftFragment : BaseFragment<FragmentSendGiftBinding>(),
         }
         sendCoinInputLayout.getEditText().addTextChangedListener(cryptoAmountTextWatcher)
         sendGift.setOnClickListener { sendGift() }
+        limitDetails.setOnClickListener {
+            navigate(SendGiftFragmentDirections.toServiceInfoDialog(ServiceType.TRANSFER))
+        }
     }
 
     override fun FragmentSendGiftBinding.initObservers() {
@@ -159,7 +163,7 @@ class SendGiftFragment : BaseFragment<FragmentSendGiftBinding>(),
         viewModel.transactionPlanLiveData.listen()
         viewModel.amount.observe(viewLifecycleOwner) { cryptoAmount ->
             with(sendCoinInputLayout.getEditText()) {
-                if(cryptoAmount.amount <= 0.0) {
+                if (cryptoAmount.amount <= 0.0) {
                     return@observe
                 }
                 removeTextChangedListener(cryptoAmountTextWatcher)
@@ -211,7 +215,7 @@ class SendGiftFragment : BaseFragment<FragmentSendGiftBinding>(),
                 coinBalance,
                 coinCode,
                 fee.toStringCoin(),
-                when  {
+                when {
                     coinCode.isEthRelatedCoinCode() -> LocalCoinType.ETH.name
                     coinCode == LocalCoinType.XRP.name -> getString(
                         R.string.xrp_additional_transaction_comission, LocalCoinType.XRP.name

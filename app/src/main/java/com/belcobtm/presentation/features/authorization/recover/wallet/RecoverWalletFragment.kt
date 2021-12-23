@@ -1,5 +1,6 @@
 package com.belcobtm.presentation.features.authorization.recover.wallet
 
+import android.Manifest
 import android.content.Context
 import android.os.Bundle
 import android.telephony.PhoneNumberFormattingTextWatcher
@@ -7,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
+import androidx.annotation.RequiresPermission
 import androidx.core.os.bundleOf
 import com.belcobtm.R
 import com.belcobtm.databinding.FragmentRecoverWalletBinding
@@ -15,14 +17,20 @@ import com.belcobtm.presentation.core.ui.fragment.BaseFragment
 import com.belcobtm.presentation.features.authorization.recover.seed.RecoverSeedFragment
 import com.belcobtm.presentation.features.sms.code.SmsCodeFragment
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import permissions.dispatcher.NeedsPermission
+import permissions.dispatcher.OnPermissionDenied
+import permissions.dispatcher.RuntimePermissions
 
+@RuntimePermissions
 class RecoverWalletFragment : BaseFragment<FragmentRecoverWalletBinding>() {
 
     private val viewModel: RecoverWalletViewModel by viewModel()
 
     override val isToolbarEnabled: Boolean = true
     override val isHomeButtonEnabled: Boolean = true
-    override val retryListener: View.OnClickListener = View.OnClickListener { checkCredentials() }
+    override val retryListener: View.OnClickListener = View.OnClickListener {
+        checkCredentialsWithPermissionCheck()
+    }
 
     override fun FragmentRecoverWalletBinding.initViews() {
         setToolbarTitle(R.string.recover_wallet_screen_title)
@@ -32,13 +40,13 @@ class RecoverWalletFragment : BaseFragment<FragmentRecoverWalletBinding>() {
         nextButtonView.setOnClickListener {
             phoneView.clearError()
             passwordView.clearError()
-            checkCredentials()
+            checkCredentialsWithPermissionCheck()
         }
         phoneView.editText?.afterTextChanged { updateNextButton() }
         passwordView.editText?.afterTextChanged { updateNextButton() }
         passwordView.editText?.actionDoneListener {
             hideKeyboard()
-            checkCredentials()
+            checkCredentialsWithPermissionCheck()
         }
         phoneEditView.addTextChangedListener(PhoneNumberFormattingTextWatcher())
     }
@@ -91,6 +99,38 @@ class RecoverWalletFragment : BaseFragment<FragmentRecoverWalletBinding>() {
         }
     }
 
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        // NOTE: delegate the permission handling to generated method
+        onRequestPermissionsResult(requestCode, grantResults)
+    }
+
+    @NeedsPermission(
+        Manifest.permission.ACCESS_FINE_LOCATION,
+        Manifest.permission.ACCESS_COARSE_LOCATION
+    )
+    fun checkCredentials() {
+        val phone = getPhone()
+        val password = binding.passwordView.getString()
+
+        if (isValidFields(phone, password)) {
+            viewModel.checkCredentials(phone, password)
+        }
+    }
+
+    @OnPermissionDenied(
+        Manifest.permission.ACCESS_FINE_LOCATION,
+        Manifest.permission.ACCESS_COARSE_LOCATION
+    )
+    fun showLocationRequiredErrorMessage() {
+        showSnackBar(R.string.location_required_on_recover_or_register_validation_message)
+    }
+
+
     private fun isValidFields(phone: String, password: String): Boolean {
         val isEmptyFields = phone.isEmpty() || password.isEmpty()
         if (isEmptyFields) {
@@ -98,15 +138,6 @@ class RecoverWalletFragment : BaseFragment<FragmentRecoverWalletBinding>() {
         }
 
         return !isEmptyFields
-    }
-
-    private fun checkCredentials() {
-        val phone = getPhone()
-        val password = binding.passwordView.getString()
-
-        if (isValidFields(phone, password)) {
-            viewModel.checkCredentials(phone, password)
-        }
     }
 
     private fun updateNextButton() {

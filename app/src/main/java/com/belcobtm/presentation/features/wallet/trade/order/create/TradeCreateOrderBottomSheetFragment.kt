@@ -18,6 +18,7 @@ import androidx.core.net.toUri
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.belcobtm.R
+import com.belcobtm.data.disk.database.service.ServiceType
 import com.belcobtm.databinding.FragmentTradeCreateOrderBinding
 import com.belcobtm.databinding.IncludeErrorScreenBinding
 import com.belcobtm.domain.Failure
@@ -91,7 +92,7 @@ class TradeCreateOrderBottomSheetFragment : BaseBottomSheetFragment() {
         binding.amountEditText.setText("0")
         binding.amountEditText.addTextChangedListener(amountTextWatcher)
         viewModel.initialLoadingData.listen()
-        viewModel.createTradeLoadingData.listen(success = {
+        viewModel.createTradeOrderLoadingData.listen(success = {
             findNavController().navigate(
                 TradeCreateOrderBottomSheetFragmentDirections.toOrderDetails(
                     it
@@ -197,6 +198,9 @@ class TradeCreateOrderBottomSheetFragment : BaseBottomSheetFragment() {
         }
         binding.submitButton.setOnClickListener {
             viewModel.createOrder()
+        }
+        binding.limitDetails.setOnClickListener {
+            findNavController().navigate(TradeCreateOrderBottomSheetFragmentDirections.toServiceInfoDialog(ServiceType.TRADE))
         }
         return binding.root
     }

@@ -47,11 +47,6 @@ interface TransactionApi {
         @Body body: SendGiftRequest
     ): Deferred<Response<TransactionDetailsResponse>>
 
-    @GET("user/{userId}/limits")
-    fun sellGetLimitsAsync(
-        @Path("userId") userId: String
-    ): Deferred<Response<LimitsResponse>>
-
     @POST("user/{userId}/coin/{coinCode}/pre-submit")
     fun sellPreSubmitAsync(
         @Path("userId") userId: String,

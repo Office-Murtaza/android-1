@@ -24,6 +24,8 @@ import com.belcobtm.data.websockets.order.OrdersObserver
 import com.belcobtm.data.websockets.order.WebSocketOrdersObserver
 import com.belcobtm.data.websockets.serializer.RequestSerializer
 import com.belcobtm.data.websockets.serializer.ResponseDeserializer
+import com.belcobtm.data.websockets.services.ServicesObserver
+import com.belcobtm.data.websockets.services.WebSocketServicesObserver
 import com.belcobtm.data.websockets.trade.TradesObserver
 import com.belcobtm.data.websockets.trade.WebSocketTradesObserver
 import com.belcobtm.data.websockets.transactions.TransactionsObserver
@@ -52,6 +54,9 @@ val webSocketModule = module {
     }
     single<TradesObserver> {
         WebSocketTradesObserver(get(), get(), get(), get())
+    }
+    single<ServicesObserver> {
+        WebSocketServicesObserver(get(), get(), get(), get())
     }
     single<TransactionsObserver> {
         WebSocketTransactionsObserver(get(), get(), get(), get())

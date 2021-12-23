@@ -108,23 +108,27 @@ class MyTradeDetailsViewModel(
 
     fun cancel(tradeId: String) {
         _cancelTradeLoadingData.value = LoadingData.Loading()
-        val feePercent = serviceInfoProvider.getServiceFee(ServiceType.TRADE)
+        val feePercent = serviceInfoProvider.getService(ServiceType.TRADE)?.feePercent ?: 0.0
         cancelTradeUseCase(tradeId, onSuccess = {
-            updateReservedBalanceUseCase(
-                params = UpdateReservedBalanceUseCase.Params(
-                    coinCode = trade.coin.name,
-                    txAmount = -1 * trade.maxLimit * (1 + feePercent / 100 / 2),
-                    txCryptoAmount = -1 * trade.maxLimit / trade.price * (1 + feePercent / 100 / 2),
-                    txFee = 0.0,
-                    maxAmountUsed = false
-                ),
-                onSuccess = {
-                    _cancelTradeLoadingData.value = LoadingData.Success(Unit)
-                },
-                onError = {
-                    _cancelTradeLoadingData.value = LoadingData.Error(it)
-                }
-            )
+            if (trade.type == TradeType.SELL) {
+                updateReservedBalanceUseCase(
+                    params = UpdateReservedBalanceUseCase.Params(
+                        coinCode = trade.coin.name,
+                        txAmount = -1 * trade.maxLimit * (1 + feePercent / 100 / 2),
+                        txCryptoAmount = -1 * trade.maxLimit / trade.price * (1 + feePercent / 100 / 2),
+                        txFee = 0.0,
+                        maxAmountUsed = false
+                    ),
+                    onSuccess = {
+                        _cancelTradeLoadingData.value = LoadingData.Success(Unit)
+                    },
+                    onError = {
+                        _cancelTradeLoadingData.value = LoadingData.Error(it)
+                    }
+                )
+            } else {
+                _cancelTradeLoadingData.value = LoadingData.Success(Unit)
+            }
         }, onError = {
             _cancelTradeLoadingData.value = LoadingData.Error(it)
         })

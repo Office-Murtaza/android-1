@@ -145,6 +145,8 @@ class TransactionRepositoryImpl(
         phone: String,
         message: String?,
         fee: Double,
+        feePercent: Int?,
+        fiatAmount: Double,
         toAddress: String,
         transactionPlanItem: TransactionPlanItem,
     ): Either<Failure, Unit> {
@@ -166,19 +168,27 @@ class TransactionRepositoryImpl(
                     phone,
                     message,
                     fee,
+                    feePercent,
+                    fiatAmount,
                     fromAddress,
                     toAddress
                 )
             } else {
-                apiService.sendGift(hash, coinCode, amount, giftId, phone, message)
+                apiService.sendGift(
+                    hash,
+                    coinCode,
+                    amount,
+                    giftId,
+                    phone,
+                    message,
+                    feePercent = feePercent,
+                    fiatAmount = fiatAmount
+                )
             }.map { cache.update(it) }
         } else {
             hashResponse as Either.Left
         }
     }
-
-    override suspend fun sellGetLimits(): Either<Failure, SellLimitsDataItem> =
-        apiService.sellGetLimitsAsync()
 
     override suspend fun sellPreSubmit(
         smsCode: String,
@@ -285,6 +295,8 @@ class TransactionRepositoryImpl(
     override suspend fun stakeCreate(
         coinCode: String,
         cryptoAmount: Double,
+        feePercent: Double,
+        fiatAMount: Double,
         transactionPlanItem: TransactionPlanItem,
     ): Either<Failure, Unit> {
         val coinItem = getCoinByCode(coinCode)
@@ -302,6 +314,8 @@ class TransactionRepositoryImpl(
                 toAddress,
                 cryptoAmount,
                 transactionPlanItem.nativeTxFee,
+                feePercent,
+                fiatAMount,
                 it
             )
         }.map { cache.update(it) }

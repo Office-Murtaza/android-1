@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import androidx.core.net.toUri
 import androidx.navigation.fragment.findNavController
 import com.belcobtm.R
+import com.belcobtm.data.disk.database.service.ServiceType
 import com.belcobtm.data.model.trade.TradeType
 import com.belcobtm.databinding.FragmentCreateTradeBinding
 import com.belcobtm.domain.Failure
@@ -19,6 +20,7 @@ import com.belcobtm.presentation.core.helper.AlertHelper
 import com.belcobtm.presentation.core.mvvm.LoadingData
 import com.belcobtm.presentation.core.ui.fragment.BaseFragment
 import com.belcobtm.presentation.core.views.listeners.SafeDecimalEditTextWatcher
+import com.belcobtm.presentation.features.deals.swap.SwapFragmentDirections
 import com.belcobtm.presentation.features.wallet.trade.container.TradeContainerFragment
 import com.belcobtm.presentation.features.wallet.trade.create.delegate.TradePaymentOptionDelegate
 import com.google.android.material.chip.Chip
@@ -173,20 +175,23 @@ class CreateTradeFragment : BaseFragment<FragmentCreateTradeBinding>() {
         createTradeButton.setOnClickListener {
             viewModel.createTrade(
                 when {
-                    binding.tradeTypeBuyChip.isChecked -> TradeType.BUY
-                    binding.tradeTypeSellChip.isChecked -> TradeType.SELL
+                    tradeTypeBuyChip.isChecked -> TradeType.BUY
+                    tradeTypeSellChip.isChecked -> TradeType.SELL
                     else -> -1
                 },
-                binding.termsInput.editText?.text.toString()
+                termsInput.editText?.text.toString()
             )
         }
-        binding.amountMinLimitEditText.actionDoneListener {
+        amountMinLimitEditText.actionDoneListener {
             hideKeyboard()
-            binding.amountMinLimitEditText.clearFocus()
+            amountMinLimitEditText.clearFocus()
         }
-        binding.amountMaxLimitEditText.actionDoneListener {
+        amountMaxLimitEditText.actionDoneListener {
             hideKeyboard()
-            binding.amountMaxLimitEditText.clearFocus()
+            amountMaxLimitEditText.clearFocus()
+        }
+        limitDetails.setOnClickListener {
+            navigate(CreateTradeFragmentDirections.toServiceInfoDialog(ServiceType.TRADE))
         }
     }
 

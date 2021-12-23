@@ -12,6 +12,8 @@ import com.belcobtm.domain.referral.CreateRecipientsUseCase
 import com.belcobtm.domain.referral.GetExistedPhoneNumbersUseCase
 import com.belcobtm.domain.referral.LoadReferralUseCase
 import com.belcobtm.domain.referral.SearchAvailableContactsUseCase
+import com.belcobtm.domain.service.ConnectToServicesUseCase
+import com.belcobtm.domain.service.DisconnectFromServicesUseCase
 import com.belcobtm.domain.service.ServiceInfoProvider
 import com.belcobtm.domain.settings.interactor.*
 import com.belcobtm.domain.socket.ConnectToSocketUseCase
@@ -84,7 +86,6 @@ val useCaseModule = module {
     single { SendSmsToDeviceUseCase(get()) }
     single { VerifySmsCodeUseCase(get()) }
     single { SellPreSubmitUseCase(get()) }
-    single { SellGetLimitsUseCase(get()) }
     single { SellUseCase(get()) }
     single { GetUserCoinListUseCase(get()) }
     single { UpdateUserCoinListUseCase(get()) }
@@ -185,6 +186,8 @@ val useCaseModule = module {
     single { GetMaxValueBySignedTransactionUseCase(get()) }
     single { GetTransferAddressUseCase(get()) }
     single { ReceiverAccountActivatedUseCase(get()) }
+    single { ConnectToServicesUseCase(get()) }
+    single { DisconnectFromServicesUseCase(get()) }
     factory { TradePaymentOptionMapper() }
     factory { CoinCodeMapper() }
     factory { TradesDataToTradeListMapper(get()) }

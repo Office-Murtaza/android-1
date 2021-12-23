@@ -10,5 +10,7 @@ data class CreateTradeItem(
     val minLimit: Int,
     val maxLimit: Int,
     val terms: String,
+    val feePercent: Double,
+    val fiatAmount: Double,
     val paymentOptions: List<@PaymentOption Int>
 )

@@ -192,10 +192,6 @@ class SocketManager(
         val code = response.code()
         when {
             code == HttpURLConnection.HTTP_OK && body != null -> {
-                serviceRepository.updateServices(
-                    body.user.availableServices,
-                    body.serviceFees
-                )
                 walletDao.updateBalance(body.balance)
                 preferencesHelper.processAuthResponse(body)
                 disconnect()

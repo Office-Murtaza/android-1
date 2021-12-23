@@ -133,12 +133,22 @@
         android:layout_marginStart="0dp"
         android:layout_marginTop="@dimen/margin_large"
         android:layout_marginEnd="0dp"
-        android:layout_marginBottom="32dp"
         android:text="@string/trade_buy_sell_submit_button_label"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/limit_details"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/total_crypto" />
+
+    <Button
+        android:id="@+id/limit_details"
+        style="@style/Button.Secondary.NoOutlined"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_half"
+        android:layout_marginBottom="@dimen/margin_x2"
+        android:text="@string/limit_details_button_title"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/submit_button" />
 
     <ProgressBar
         android:id="@+id/progress_view"

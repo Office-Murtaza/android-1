@@ -43,7 +43,8 @@ class TradeApiService(
             val request = with(createTradeItem) {
                 CreateTradeRequest(
                     tradeType, coinCode, price, minLimit, maxLimit,
-                    paymentOptions.joinToString(","), terms
+                    paymentOptions.joinToString(","), terms,
+                    feePercent, fiatAmount
                 )
             }
             val response = tradeApi.createTradeAsync(prefHelper.userId, request).await()
@@ -55,7 +56,8 @@ class TradeApiService(
             val request = with(editTradeItem) {
                 EditTradeRequest(
                     tradeId, price, minAmount, maxAmount,
-                    paymentOptions.joinToString(","), terms
+                    paymentOptions.joinToString(","), terms,
+                    feePercent, fiatAmount
                 )
             }
             val response = tradeApi.editTradeAsync(prefHelper.userId, request).await()
@@ -84,7 +86,7 @@ class TradeApiService(
     suspend fun createOrder(tradeOrder: TradeOrderItem): Either<Failure, TradeOrderItemResponse> =
         withErrorHandling {
             val request = with(tradeOrder) {
-                CreateOrderRequest(tradeId, price, cryptoAmount, fiatAmount)
+                CreateOrderRequest(tradeId, price, cryptoAmount, fiatAmount, feePercent)
             }
             val response = tradeApi.createOrderAsync(prefHelper.userId, request).await()
             response.body()?.let { Either.Right(it) } ?: Either.Left(Failure.ServerError())

@@ -13,12 +13,16 @@ class StakeCreateUseCase(
         transactionRepository.stakeCreate(
             params.coinCode,
             params.cryptoAmount,
+            params.feePercent,
+            params.fiatAmount,
             params.transactionPlanItem
         )
 
     data class Params(
         val coinCode: String,
         val cryptoAmount: Double,
-        val transactionPlanItem: TransactionPlanItem
+        val feePercent: Double,
+        val fiatAmount: Double,
+        val transactionPlanItem: TransactionPlanItem,
     )
 }

@@ -114,7 +114,7 @@ class AuthorizationRepositoryImpl(
             val accountList = createAccountEntityList(temporaryCoinMap, result.balance.coins)
             walletDao.updateBalance(result.balance)
             daoAccount.insertItemList(accountList)
-            serviceRepository.updateServices(result.user.availableServices, result.serviceFees)
+            serviceRepository.updateServices(result.serviceConfigs)
             prefHelper.accessToken = result.accessToken
             prefHelper.refreshToken = result.refreshToken
             prefHelper.firebaseToken = result.firebaseToken
@@ -156,7 +156,7 @@ class AuthorizationRepositoryImpl(
         return if (recoverResponse.isRight) {
             val result = (recoverResponse as Either.Right).b
             val accountList = createAccountEntityList(temporaryCoinMap, result.balance.coins)
-            serviceRepository.updateServices(result.user.availableServices, result.serviceFees)
+            serviceRepository.updateServices(result.serviceConfigs)
             walletDao.updateBalance(result.balance)
             daoAccount.insertItemList(accountList)
             prefHelper.apiSeed = seed
@@ -179,10 +179,6 @@ class AuthorizationRepositoryImpl(
         val response = apiService.authorizeByRefreshToken(prefHelper.refreshToken)
         return if (response.isRight) {
             val body = (response as Either.Right).b
-            serviceRepository.updateServices(
-                body.user.availableServices,
-                body.serviceFees
-            )
             walletDao.updateBalance(body.balance)
             prefHelper.processAuthResponse(body)
             Either.Right(Unit)

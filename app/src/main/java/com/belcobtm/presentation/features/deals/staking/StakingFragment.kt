@@ -5,6 +5,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import com.belcobtm.R
+import com.belcobtm.data.disk.database.service.ServiceType
 import com.belcobtm.data.rest.transaction.response.StakeDetailsStatus
 import com.belcobtm.databinding.FragmentStakingBinding
 import com.belcobtm.domain.wallet.LocalCoinType
@@ -14,6 +15,7 @@ import com.belcobtm.presentation.core.formatter.Formatter
 import com.belcobtm.presentation.core.mvvm.LoadingData
 import com.belcobtm.presentation.core.ui.fragment.BaseFragment
 import com.belcobtm.presentation.core.watcher.DoubleTextWatcher
+import com.belcobtm.presentation.features.wallet.trade.create.CreateTradeFragmentDirections
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.qualifier.named
@@ -103,6 +105,9 @@ class StakingFragment : BaseFragment<FragmentStakingBinding>() {
                 viewModel.unstakeCreateTransaction()
             }
         }
+        limitDetails.setOnClickListener {
+            navigate(StakingFragmentDirections.toServiceInfoDialog(ServiceType.STAKING))
+        }
         coinInputLayout.getEditText()
             .addTextChangedListener(doubleTextWatcher.firstTextWatcher)
     }
@@ -141,6 +146,7 @@ class StakingFragment : BaseFragment<FragmentStakingBinding>() {
                         thirdDivider.hide()
                         tvWithdraw.hide()
                         createButtonView.show()
+                        limitDetails.show()
                         cancelButtonView.hide()
                         withdrawButtonView.hide()
                     }
@@ -174,6 +180,7 @@ class StakingFragment : BaseFragment<FragmentStakingBinding>() {
                         createButtonView.hide()
                         cancelButtonView.hide()
                         withdrawButtonView.hide()
+                        limitDetails.hide()
                     }
                     StakeDetailsStatus.CREATED -> {
                         invalidateStakingDetails()
@@ -204,6 +211,7 @@ class StakingFragment : BaseFragment<FragmentStakingBinding>() {
                         createButtonView.hide()
                         cancelButtonView.show()
                         withdrawButtonView.hide()
+                        limitDetails.hide()
                     }
                     StakeDetailsStatus.CANCEL_PENDING -> {
                         invalidateStakingDetails()
@@ -234,6 +242,7 @@ class StakingFragment : BaseFragment<FragmentStakingBinding>() {
                         createButtonView.hide()
                         cancelButtonView.hide()
                         withdrawButtonView.hide()
+                        limitDetails.hide()
                     }
                     // WITHDRAW
                     StakeDetailsStatus.CANCEL -> {
@@ -266,6 +275,7 @@ class StakingFragment : BaseFragment<FragmentStakingBinding>() {
                         createButtonView.hide()
                         cancelButtonView.hide()
                         withdrawButtonView.toggle(showWithdrawButton)
+                        limitDetails.toggle(showWithdrawButton)
                     }
                     StakeDetailsStatus.WITHDRAW_PENDING -> {
                         invalidateStakingDetails()
@@ -296,11 +306,13 @@ class StakingFragment : BaseFragment<FragmentStakingBinding>() {
                         createButtonView.hide()
                         cancelButtonView.hide()
                         withdrawButtonView.hide()
+                        limitDetails.hide()
                     }
                     else -> {
                         createButtonView.hide()
                         cancelButtonView.hide()
                         withdrawButtonView.hide()
+                        limitDetails.hide()
                     }
                 }
             }

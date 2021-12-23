@@ -222,21 +222,33 @@
             android:layout_width="wrap_content"
             android:layout_height="0dp"
             android:layout_marginTop="@dimen/margin_main"
-            app:layout_constraintBottom_toTopOf="@+id/sendGift"
+            app:layout_constraintBottom_toTopOf="@+id/send_gift"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/verticalDivider" />
 
         <Button
-            android:id="@+id/sendGift"
+            android:id="@+id/send_gift"
             style="@style/Button.Primary"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/margin_main"
             android:layout_marginEnd="@dimen/margin_main"
             android:text="@string/send_gift_screen_submit_button_label"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/limit_details"
             app:layout_constraintTop_toBottomOf="@+id/space" />
+
+        <Button
+            android:id="@+id/limit_details"
+            style="@style/Button.Secondary.NoOutlined"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/margin_main"
+            android:layout_marginStart="@dimen/margin_main"
+            android:layout_marginEnd="@dimen/margin_main"
+            android:text="@string/limit_details_button_title"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/send_gift" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

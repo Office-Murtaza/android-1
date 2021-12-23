@@ -5,7 +5,6 @@ import com.belcobtm.data.disk.database.wallet.WalletDao
 import com.belcobtm.data.disk.shared.preferences.SharedPreferencesHelper
 import com.belcobtm.data.rest.authorization.AuthApi
 import com.belcobtm.data.rest.authorization.request.RefreshTokenRequest
-import com.belcobtm.domain.service.ServiceRepository
 import kotlinx.coroutines.runBlocking
 import okhttp3.Authenticator
 import okhttp3.Request
@@ -17,7 +16,6 @@ import java.net.HttpURLConnection
 class TokenAuthenticator(
     private val authApi: AuthApi,
     private val walletDao: WalletDao,
-    private val serviceRepository: ServiceRepository,
     private val prefsHelper: SharedPreferencesHelper,
     private val unlinkHandler: UnlinkHandler
 ) : Authenticator {
@@ -32,10 +30,6 @@ class TokenAuthenticator(
             responseCode == HttpURLConnection.HTTP_OK && responseBody != null -> {
                 val updatedToken = responseBody.accessToken
                 runBlocking {
-                    serviceRepository.updateServices(
-                        responseBody.user.availableServices,
-                        responseBody.serviceFees
-                    )
                     walletDao.updateBalance(responseBody.balance)
                 }
                 // update session

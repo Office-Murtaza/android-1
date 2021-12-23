@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.belcobtm.R
+import com.belcobtm.data.disk.database.service.ServiceType
 import com.belcobtm.databinding.FragmentSwapBinding
 import com.belcobtm.domain.Failure
 import com.belcobtm.domain.wallet.LocalCoinType
@@ -85,6 +86,9 @@ class SwapFragment : BaseFragment<FragmentSwapBinding>() {
         FragmentSwapBinding.inflate(inflater, container, false)
 
     override fun FragmentSwapBinding.initListeners() {
+        limitDetails.setOnClickListener {
+            navigate(SwapFragmentDirections.toServiceInfoDialog(ServiceType.SWAP))
+        }
         nextButtonView.setOnClickListener {
             viewModel.executeSwap()
         }

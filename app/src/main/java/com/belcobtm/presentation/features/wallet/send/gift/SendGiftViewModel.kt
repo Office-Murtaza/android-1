@@ -4,7 +4,9 @@ import androidx.annotation.StringRes
 import androidx.lifecycle.*
 import com.belcobtm.R
 import com.belcobtm.data.disk.database.account.AccountDao
+import com.belcobtm.data.disk.database.service.ServiceType
 import com.belcobtm.domain.Failure
+import com.belcobtm.domain.service.ServiceInfoProvider
 import com.belcobtm.domain.transaction.interactor.*
 import com.belcobtm.domain.transaction.item.AmountItem
 import com.belcobtm.domain.transaction.item.SignedTransactionPlanItem
@@ -30,6 +32,7 @@ class SendGiftViewModel(
     private val getMaxValueBySignedTransactionUseCase: GetMaxValueBySignedTransactionUseCase,
     private val receiverAccountActivatedUseCase: ReceiverAccountActivatedUseCase,
     private val updateBalanceUseCase: UpdateBalanceUseCase,
+    private val serviceInfoProvider: ServiceInfoProvider,
 ) : ViewModel() {
 
     private lateinit var coinList: List<CoinDataItem>
@@ -172,9 +175,15 @@ class SendGiftViewModel(
 
     fun sendGift(amount: Double, phone: String, message: String?, giftId: String?) {
         val coinToSend = coinToSend.value ?: return
+        val usdAmount = amount * coinToSend.priceUsd
         val transactionPlanItem = transactionPlanItem ?: return
+        val service = serviceInfoProvider.getService(ServiceType.TRANSFER)
         if (amount <= 0) {
             _cryptoAmountError.value = R.string.balance_amount_too_small
+            return
+        }
+        if (service == null || service.txLimit < usdAmount || service.remainLimit < usdAmount) {
+            _cryptoAmountError.value = R.string.limits_exceeded_validation_message
             return
         }
         val useMax = _amount.value?.useMax ?: false
@@ -202,6 +211,7 @@ class SendGiftViewModel(
                     } else {
                         sendGiftInternal(
                             amount,
+                            usdAmount,
                             coinToSend,
                             phone,
                             message,
@@ -216,6 +226,7 @@ class SendGiftViewModel(
                             if (activated) {
                                 sendGiftInternal(
                                     amount,
+                                    usdAmount,
                                     coinToSend,
                                     phone,
                                     message,
@@ -230,6 +241,7 @@ class SendGiftViewModel(
                                 } else {
                                     sendGiftInternal(
                                         amount,
+                                        usdAmount,
                                         coinToSend,
                                         phone,
                                         message,
@@ -253,6 +265,7 @@ class SendGiftViewModel(
                             if (activated) {
                                 sendGiftInternal(
                                     amount,
+                                    usdAmount,
                                     coinToSend,
                                     phone,
                                     message,
@@ -270,6 +283,7 @@ class SendGiftViewModel(
             } else {
                 sendGiftInternal(
                     amount,
+                    usdAmount,
                     coinToSend,
                     phone,
                     message,
@@ -284,6 +298,7 @@ class SendGiftViewModel(
 
     private fun sendGiftInternal(
         amount: Double,
+        usdAmount: Double,
         coinToSend: CoinDataItem,
         phone: String,
         message: String?,
@@ -300,13 +315,16 @@ class SendGiftViewModel(
                 giftId = giftId,
                 toAddress = toAddress,
                 fee = _fee.value ?: 0.0,
+                feePercent = serviceInfoProvider.getService(ServiceType.TRANSFER)?.feePercent
+                    ?: 0.0,
+                fiatAmount = usdAmount,
                 transactionPlanItem = transactionPlanItem
             ),
             onSuccess = {
                 updateBalanceUseCase(
                     UpdateBalanceUseCase.Params(
                         coinCode = coinToSend.code,
-                        txAmount = usdAmount.value ?: 0.0,
+                        txAmount = usdAmount,
                         txCryptoAmount = _amount.value?.amount ?: 0.0,
                         txFee = _fee.value ?: 0.0,
                         maxAmountUsed = _amount.value?.useMax ?: false,
@@ -363,7 +381,7 @@ class SendGiftViewModel(
                     }
                 )
             }, onError = {
-                _initialLoadingData.value = LoadingData.Error(it)
+                loadingLiveData.value = LoadingData.Error(it)
             })
     }
 

@@ -7,7 +7,7 @@ data class CoinToCoinExchangeRequest(
     val toAddress: String?,
     val cryptoAmount: Double,
     val price: Double,
-    val serviceFee: Double?,
+    val feePercent: Double?,
     val refCoin: String,
     val refCryptoAmount: Double,
     val refCoinPrice: Double,

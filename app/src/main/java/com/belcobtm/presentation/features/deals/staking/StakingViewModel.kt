@@ -4,6 +4,10 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.belcobtm.R
+import com.belcobtm.data.disk.database.service.ServiceType
+import com.belcobtm.domain.Failure
+import com.belcobtm.domain.service.ServiceInfoProvider
 import com.belcobtm.domain.transaction.interactor.*
 import com.belcobtm.domain.transaction.item.StakeDetailsDataItem
 import com.belcobtm.domain.transaction.item.TransactionPlanItem
@@ -14,6 +18,7 @@ import com.belcobtm.domain.wallet.item.CoinDataItem
 import com.belcobtm.presentation.core.DateFormat
 import com.belcobtm.presentation.core.SingleLiveData
 import com.belcobtm.presentation.core.mvvm.LoadingData
+import com.belcobtm.presentation.core.provider.string.StringProvider
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -25,6 +30,8 @@ class StakingViewModel(
     private val stakeDetailsUseCase: StakeDetailsGetUseCase,
     private val getTransactionPlanUseCase: GetTransactionPlanUseCase,
     private val updateBalanceUseCase: UpdateBalanceUseCase,
+    private val serviceInfoProvider: ServiceInfoProvider,
+    private val stringProvider: StringProvider,
 ) : ViewModel() {
     private var stakeDetailsDataItem: StakeDetailsDataItem? = null
     private var transactionPlanItem: TransactionPlanItem? = null
@@ -111,14 +118,28 @@ class StakingViewModel(
 
     fun stakeCreate(amount: Double) {
         val transactionPlanItem = transactionPlanItem ?: return
+        val feePercent = serviceInfoProvider.getService(ServiceType.STAKING)?.feePercent ?: 0.0
+        val usdAmount = amount * getUsdPrice()
+        val service = serviceInfoProvider.getService(ServiceType.STAKING)
+        if (service == null || service.txLimit < usdAmount || service.remainLimit < usdAmount) {
+            _transactionLiveData.value = LoadingData.Error(
+                Failure.MessageError(
+                    stringProvider.getString(R.string.limits_exceeded_validation_message)
+                )
+            )
+            return
+        }
         _transactionLiveData.value = LoadingData.Loading()
         stakeCreateUseCase.invoke(
-            params = StakeCreateUseCase.Params(coinDataItem.code, amount, transactionPlanItem),
+            params = StakeCreateUseCase.Params(
+                coinDataItem.code, amount, feePercent,
+                usdAmount, transactionPlanItem,
+            ),
             onSuccess = {
                 updateBalanceUseCase.invoke(
                     UpdateBalanceUseCase.Params(
                         coinCode = coinDataItem.code,
-                        txAmount = amount * getUsdPrice(),
+                        txAmount = usdAmount,
                         txCryptoAmount = amount,
                         txFee = transactionPlanItem.txFee,
                         maxAmountUsed = amount == getMaxValue()
@@ -166,6 +187,16 @@ class StakingViewModel(
             (stakeDetailsDataItem?.amount ?: 0.0) + (stakeDetailsDataItem?.rewardsAmount ?: 0.0)
         val transactionPlanItem = transactionPlanItem ?: return
         _transactionLiveData.value = LoadingData.Loading()
+        val usdAmount = amount * getUsdPrice()
+        val service = serviceInfoProvider.getService(ServiceType.STAKING)
+        if (service == null || service.txLimit < usdAmount || service.remainLimit < usdAmount) {
+            _transactionLiveData.value = LoadingData.Error(
+                Failure.MessageError(
+                    stringProvider.getString(R.string.limits_exceeded_validation_message)
+                )
+            )
+            return
+        }
         stakeWithdrawUseCase.invoke(
             params = StakeWithdrawUseCase.Params(coinDataItem.code, amount, transactionPlanItem),
             onSuccess = {

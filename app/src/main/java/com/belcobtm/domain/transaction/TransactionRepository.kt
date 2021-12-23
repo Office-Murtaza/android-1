@@ -52,11 +52,11 @@ interface TransactionRepository {
         phone: String,
         message: String?,
         fee: Double,
+        feePercent: Int?,
+        fiatAmount: Double,
         toAddress: String,
         transactionPlanItem: TransactionPlanItem,
     ): Either<Failure, Unit>
-
-    suspend fun sellGetLimits(): Either<Failure, SellLimitsDataItem>
 
     suspend fun sellPreSubmit(
         smsCode: String,
@@ -109,6 +109,8 @@ interface TransactionRepository {
     suspend fun stakeCreate(
         coinCode: String,
         cryptoAmount: Double,
+        feePercent: Double,
+        fiatAMount: Double,
         transactionPlanItem: TransactionPlanItem,
     ): Either<Failure, Unit>
 
