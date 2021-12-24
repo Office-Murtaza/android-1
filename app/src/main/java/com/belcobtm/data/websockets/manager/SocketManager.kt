@@ -26,7 +26,6 @@ class SocketManager(
     private val authApi: AuthApi,
     private val unlinkHandler: UnlinkHandler,
     private val preferencesHelper: SharedPreferencesHelper,
-    private val serviceRepository: ServiceRepository,
     private val walletDao: WalletDao,
     private val serializer: RequestSerializer<StompSocketRequest>,
     private val deserializer: ResponseDeserializer<StompSocketResponse>
@@ -38,7 +37,6 @@ class SocketManager(
         const val ID_HEADER = "id"
         const val AUTH_HEADER = "Authorization"
         const val DESTINATION_HEADER = "destination"
-        const val COINS_HEADER = "coins"
 
         const val ACCEPT_VERSION_HEADER = "accept-version"
         const val ACCEPT_VERSION_VALUE = "1.1"

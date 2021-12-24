@@ -17,16 +17,14 @@ data class TradeOrderItemResponse(
     val makerUsername: String,
     @TraderStatus val makerStatus: Int,
     val makerRate: Double?,
-    val makerLatitude: Double?,
-    val makerLongitude: Double?,
+    val makerLocation: LocationResponse?,
     val makerTradeTotal: Int,
     val makerTradeRate: Double?,
     val takerUserId: String,
     @TraderStatus val takerStatus: Int,
     val takerRate: Double?,
     val takerUsername: String,
-    val takerLatitude: Double?,
-    val takerLongitude: Double?,
+    val takerLocation: LocationResponse?,
     val takerTradeTotal: Int,
     val takerTradeRate: Double?
 )

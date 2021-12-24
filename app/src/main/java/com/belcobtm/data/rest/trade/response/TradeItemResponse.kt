@@ -18,8 +18,7 @@ data class TradeItemResponse(
     val makerUserId: String,
     @TraderStatus val makerStatus: Int,
     val makerUsername: String?,
-    val makerLatitude: Double?,
-    val makerLongitude: Double?,
+    val makerLocation: LocationResponse?,
     val makerTradeTotal: Int,
     val makerTradeRate: Double,
     val timestamp: Long

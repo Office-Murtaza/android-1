@@ -43,11 +43,11 @@ val WEB_SOCKET_OK_HTTP_CLIENT_QUALIFIER = named("WebSocketOkHttpClient")
 
 val webSocketModule = module {
     single<WalletConnectionHandler> {
-        WebSocketWalletObserver(get(), get(), get(), get(), get())
+        WebSocketWalletObserver(get(), get(), get(), get())
     }
     single<WebSocketManager> {
         SocketManager(
-            get(), get(authenticatorQualified), get(), get(), get(), get(),
+            get(), get(authenticatorQualified), get(), get(), get(),
             get(named(STOMP_REQUEST_SERIALIZER_QUALIFIER)),
             get(named(STOMP_RESPONSE_DESERIALIZER_QUALIFIER)),
         )

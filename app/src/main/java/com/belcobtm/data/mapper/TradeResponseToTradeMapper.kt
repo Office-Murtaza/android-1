@@ -20,7 +20,7 @@ class TradeResponseToTradeMapper {
                     ?.map(String::toInt)
                     .orEmpty(),
                 terms, makerUserId, makerUsername.orEmpty(), makerStatus,
-                makerLatitude, makerLongitude, makerTradeTotal,
+                makerLocation?.latitude, makerLocation?.longitude, makerTradeTotal,
                 makerTradeRate, TradeInMemoryCache.UNDEFINED_DISTANCE
             )
         }
