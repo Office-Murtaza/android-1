@@ -3,18 +3,10 @@ package com.belcobtm.data.websockets.services.model
 import com.belcobtm.data.disk.database.service.ServiceEntity
 import com.belcobtm.data.disk.database.service.ServiceType
 
-//{
-//    "type": "TRADE",
-//    "enabled": true,
-//    "feePercentage": 1,
-//    "txLimit": 100,
-//    "dailyLimit": 1000,
-//    "remainLimit": 800
-//},
 data class ServicesInfoResponse(
     val type: String,
     val enabled: Boolean,
-    val feePercentage: Double,
+    val feePercent: Double,
     val txLimit: Double,
     val dailyLimit: Double,
     val remainLimit: Double,
@@ -39,7 +31,7 @@ fun ServicesInfoResponse.toEntity(): ServiceEntity? {
     }
     return ServiceEntity(
         id = id,
-        feePercent = feePercentage,
+        feePercent = feePercent,
         txLimit = txLimit,
         dailyLimit = dailyLimit,
         remainLimit = remainLimit,
