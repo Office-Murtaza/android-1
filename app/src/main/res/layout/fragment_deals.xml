@@ -1,78 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.recyclerview.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/services_list"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
-
-    <com.belcobtm.presentation.core.views.SettingsItemView
-        android:id="@+id/transfer_item"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:src="@drawable/ic_transfer"
-        app:text="@string/deals_transfer"
-        app:withChevron="true" />
-
-    <View
-        android:id="@+id/transfer_item_divider"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/divider_size"
-        android:background="@color/thin_divider" />
-
-    <com.belcobtm.presentation.core.views.SettingsItemView
-        android:id="@+id/swap_item"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:src="@drawable/ic_swap"
-        app:text="@string/deals_swap"
-        app:withChevron="true" />
-
-    <View
-        android:id="@+id/swap_item_divider"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/divider_size"
-        android:background="@color/thin_divider" />
-
-    <com.belcobtm.presentation.core.views.SettingsItemView
-        android:id="@+id/staking_item"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:src="@drawable/ic_staking"
-        app:text="@string/deals_staking"
-        app:withChevron="true" />
-
-    <View
-        android:id="@+id/staking_item_divider"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/divider_size"
-        android:background="@color/thin_divider" />
-
-    <com.belcobtm.presentation.core.views.SettingsItemView
-        android:id="@+id/trade_item"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:src="@drawable/ic_trade"
-        app:text="@string/deals_trade"
-        app:withChevron="true" />
-
-    <View
-        android:id="@+id/trade_item_divider"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/divider_size"
-        android:background="@color/thin_divider" />
-
-    <com.belcobtm.presentation.core.views.SettingsItemView
-        android:id="@+id/atm_sell_item"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:src="@drawable/ic_atm_sell"
-        app:text="@string/atm_sell_title"
-        app:withChevron="true" />
-
-    <View
-        android:id="@+id/atm_sell_item_divider"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/divider_size"
-        android:background="@color/thin_divider" />
-
-</androidx.appcompat.widget.LinearLayoutCompat>
+    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+    android:orientation="vertical" />

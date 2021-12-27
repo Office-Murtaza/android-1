@@ -4,6 +4,7 @@ import com.belcobtm.data.disk.database.service.ServiceEntity
 import com.belcobtm.data.disk.database.service.ServiceType
 
 data class ServicesInfoResponse(
+    val index: Int,
     val type: String,
     val enabled: Boolean,
     val feePercent: Double,

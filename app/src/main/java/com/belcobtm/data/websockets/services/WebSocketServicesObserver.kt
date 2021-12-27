@@ -1,14 +1,14 @@
 package com.belcobtm.data.websockets.services
 
-import com.belcobtm.data.disk.database.service.ServiceDao
+import android.util.Log
 import com.belcobtm.data.disk.shared.preferences.SharedPreferencesHelper
 import com.belcobtm.data.websockets.base.model.SocketState
 import com.belcobtm.data.websockets.base.model.StompSocketRequest
 import com.belcobtm.data.websockets.manager.SocketManager
 import com.belcobtm.data.websockets.manager.WebSocketManager
 import com.belcobtm.data.websockets.services.model.ServicesInfoResponse
-import com.belcobtm.data.websockets.services.model.toEntity
 import com.belcobtm.domain.mapSuspend
+import com.belcobtm.domain.service.ServiceRepository
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.Types
 import kotlinx.coroutines.CoroutineScope
@@ -23,7 +23,7 @@ import java.lang.reflect.Type
 
 class WebSocketServicesObserver(
     private val socketManager: WebSocketManager,
-    private val serviceDao: ServiceDao,
+    private val serviceRepository: ServiceRepository,
     private val moshi: Moshi,
     private val sharedPreferencesHelper: SharedPreferencesHelper
 ) : ServicesObserver {
@@ -57,7 +57,7 @@ class WebSocketServicesObserver(
                         moshi.adapter<List<ServicesInfoResponse>>(responseType)
                             .fromJson(response.body)
                             ?.let { services ->
-                                serviceDao.updateServices(services.mapNotNull(ServicesInfoResponse::toEntity))
+                                serviceRepository.updateServices(services)
                             }
                     }
                 }

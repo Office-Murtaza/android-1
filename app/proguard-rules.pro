@@ -125,6 +125,7 @@
 -keep class com.belcobtm.data.rest.wallet.response.** { *; }
 -keep class com.belcobtm.data.rest.unlink.response.** { *; }
 -keep class com.belcobtm.data.websockets.chat.model.** { *; }
+-keep class com.belcobtm.data.websockets.services.model.** { *; }
 
 # Objects serialized over Moshi
 -keep class com.belcobtm.domain.settings.item.VerificationStateDataItem { *; }
