@@ -27,5 +27,6 @@ data class TransactionDetailsDataItem(
     val type: TransactionType,
     val statusType: TransactionStatusType,
     val cashStatusType: TransactionCashStatusType,
-    val confiramtions: Int?
+    val confiramtions: Int?,
+    val feePercent: Double?
 )

@@ -234,6 +234,8 @@
     <string name="transaction_details_to_phone">To Phone</string>
     <string name="transaction_details_swap_amount">Swap Amount</string>
     <string name="transaction_details_sell_amount">Fiat Amount</string>
+    <string name="transaction_details_fee_percent">Platform fee</string>
+    <string name="transaction_details_fee_percent_value_format">%1$s%%</string>
     <string name="transaction_details_id">ID</string>
     <string name="transaction_details_swap_id">Swap Id</string>
     <string name="transaction_details_type">Type</string>

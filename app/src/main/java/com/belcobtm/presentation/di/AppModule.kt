@@ -129,7 +129,8 @@ val viewModelModule = module {
     viewModel { AtmViewModel(get()) }
     viewModel { (txId: String, coinCode: String) ->
         TransactionDetailsViewModel(
-            txId, coinCode, get(), get(), get(named(DOUBLE_CURRENCY_PRICE_FORMATTER_QUALIFIER))
+            txId, coinCode, get(), get(),
+            get(named(DOUBLE_CURRENCY_PRICE_FORMATTER_QUALIFIER)), get()
         )
     }
     viewModel {

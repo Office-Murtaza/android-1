@@ -16,6 +16,7 @@ data class TransactionDetailsResponse(
     val cashStatus: Int,
     val cryptoAmount: Double?,
     val fiatAmount: Double?,
+    val feePercent: Double?,
     val cryptoFee: Double?,
     val timestamp: Long?,
     val fromPhone: String?,
@@ -53,6 +54,7 @@ fun TransactionDetailsResponse.mapToDataItem(coinCode: String): TransactionDetai
         refTxId = refTxId,
         refLink = refLink,
         refCoin = refCoin,
+        feePercent = feePercent,
         confiramtions = confirmations,
         type = TransactionType.values().firstOrNull { it.code == type } ?: TransactionType.UNKNOWN,
         statusType = TransactionStatusType.values().firstOrNull { it.code == status }

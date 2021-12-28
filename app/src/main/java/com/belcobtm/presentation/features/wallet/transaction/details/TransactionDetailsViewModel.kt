@@ -15,9 +15,11 @@ import com.belcobtm.domain.transaction.type.TransactionType
 import com.belcobtm.presentation.core.DateFormat
 import com.belcobtm.presentation.core.QRUtils
 import com.belcobtm.presentation.core.extensions.toStringCoin
+import com.belcobtm.presentation.core.extensions.toStringPercents
 import com.belcobtm.presentation.core.formatter.Formatter
 import com.belcobtm.presentation.core.formatter.PhoneNumberFormatter
 import com.belcobtm.presentation.core.mvvm.LoadingData
+import com.belcobtm.presentation.core.provider.string.StringProvider
 import com.belcobtm.presentation.features.wallet.transaction.details.adapter.TransactionDetailsAdapter
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.map
@@ -27,7 +29,8 @@ class TransactionDetailsViewModel(
     private val coinCode: String,
     private val phoneFormatter: PhoneNumberFormatter,
     private val transactionDetailsUseCase: ObserveTransactionDetailsUseCase,
-    private val currencyFormatter: Formatter<Double>
+    private val currencyFormatter: Formatter<Double>,
+    private val stringProvider: StringProvider,
 ) : ViewModel() {
 
     val transactionDetailsLiveData: LiveData<LoadingData<List<TransactionDetailsAdapter.Item>>>
@@ -38,7 +41,7 @@ class TransactionDetailsViewModel(
             )
         )
             .map {
-                if(it != null) {
+                if (it != null) {
                     LoadingData.Success(mapToItemList(it))
                 } else {
                     LoadingData.Error(Failure.ServerError())
@@ -156,13 +159,24 @@ class TransactionDetailsViewModel(
             )
             result.add(swapBlockItem)
         }
-        // sell amount
+        // fiat amount
         if (dataItem.fiatAmount != null) {
             val sellBlockItem = TransactionDetailsAdapter.Item.Regular(
                 R.string.transaction_details_sell_amount,
                 currencyFormatter.format(dataItem.fiatAmount)
             )
             result.add(sellBlockItem)
+        }
+        // fee percent
+        if (dataItem.feePercent != null) {
+            val feePercentBlockItem = TransactionDetailsAdapter.Item.Regular(
+                R.string.transaction_details_fee_percent,
+                stringProvider.getString(
+                    R.string.transaction_details_fee_percent_value_format,
+                    dataItem.feePercent.toStringPercents(),
+                )
+            )
+            result.add(feePercentBlockItem)
         }
         // cash status
         if (dataItem.cashStatusType != TransactionCashStatusType.UNKNOWN) {
