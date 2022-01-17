@@ -12,6 +12,7 @@ def lib = rootProject.ext.libraries
 
 android {
     compileSdkVersion 30
+    buildToolsVersion '30.0.3'
     ndkVersion "21.3.6528147"
     defaultConfig {
         applicationId "com.belcobtm"
@@ -128,22 +129,21 @@ dependencies {
     implementation 'com.yakivmospan:scytale:1.0.1'
 
     //QR code
-    implementation 'com.google.zxing:core:3.3.0'
+    implementation 'com.google.zxing:core:3.3.3'
     implementation('com.journeyapps:zxing-android-embedded:3.6.0') { transitive = false }
 
-    implementation 'com.giphy.sdk:ui:2.1.1'
+    implementation 'com.giphy.sdk:ui:2.1.14'
     implementation 'pl.droidsonroids.gif:android-gif-drawable:1.2.20'
-    implementation 'com.github.bumptech.glide:glide:4.11.0'
+    implementation 'com.github.bumptech.glide:glide:4.12.0'
 
-    //Koin
-    implementation "io.insert-koin:koin-android:3.1.2"
+    implementation "io.insert-koin:koin-android:3.1.4"
 
     //Moshi
     implementation "com.squareup.retrofit2:converter-moshi:2.9.0"
 
     //Permission dispatcher
-    implementation "org.permissionsdispatcher:permissionsdispatcher:4.6.0"
-    kapt "org.permissionsdispatcher:permissionsdispatcher-processor:4.6.0"
+    implementation "org.permissionsdispatcher:permissionsdispatcher:4.8.0"
+    kapt "org.permissionsdispatcher:permissionsdispatcher-processor:4.8.0"
 
     //Room
     implementation "androidx.room:room-ktx:2.3.0"

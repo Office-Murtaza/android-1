@@ -71,7 +71,7 @@
     <color name="color_status_3">#0073E4</color>
 
     <color name="trade_type_buy_trade_text_color">#48C583</color>
-    <color name="trade_type_sell_trade_text_color">#EDB900</color>
+    <color name="trade_type_sell_trade_text_color">#C54B61</color>
     <color name="atm_type_buy_and_sell_text_color">#48C583</color>
     <color name="atm_type_buy_only_text_color">#0073E4</color>
 
