@@ -41,6 +41,5 @@ allprojects {
                 password = "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"
             }
         }
-        maven { url "http://giphy.bintray.com/giphy-sdk" }
     }
 }
