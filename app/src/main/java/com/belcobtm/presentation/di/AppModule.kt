@@ -121,7 +121,7 @@ val viewModelModule = module {
     viewModel { (phone: String) -> SmsCodeViewModel(phone, get(), get()) }
     viewModel { RecoverSeedViewModel(get()) }
     viewModel { CreateSeedViewModel(get(), get(), get()) }
-    viewModel { SettingsViewModel() }
+    viewModel { SettingsViewModel(get()) }
     viewModel { PasswordViewModel(get(), get()) }
     viewModel { UnlinkViewModel(get()) }
     viewModel { UpdatePasswordViewModel(get()) }

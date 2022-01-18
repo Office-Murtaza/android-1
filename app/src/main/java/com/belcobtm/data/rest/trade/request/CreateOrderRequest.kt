@@ -6,4 +6,6 @@ data class CreateOrderRequest(
     val cryptoAmount: Double,
     val fiatAmount: Double,
     val feePercent: Double,
+    val longitude: Double,
+    val latitude: Double
 )

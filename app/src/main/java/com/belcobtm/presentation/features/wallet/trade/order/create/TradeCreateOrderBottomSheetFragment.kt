@@ -1,5 +1,6 @@
 package com.belcobtm.presentation.features.wallet.trade.order.create
 
+import android.Manifest
 import android.app.Dialog
 import android.content.Context
 import android.os.Bundle
@@ -31,7 +32,11 @@ import com.belcobtm.presentation.core.views.listeners.SafeDecimalEditTextWatcher
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import permissions.dispatcher.NeedsPermission
+import permissions.dispatcher.OnPermissionDenied
+import permissions.dispatcher.RuntimePermissions
 
+@RuntimePermissions
 class TradeCreateOrderBottomSheetFragment : BaseBottomSheetFragment() {
 
     private lateinit var binding: FragmentTradeCreateOrderBinding
@@ -197,7 +202,7 @@ class TradeCreateOrderBottomSheetFragment : BaseBottomSheetFragment() {
             binding.totalCrypto.text = formattedSpan
         }
         binding.submitButton.setOnClickListener {
-            viewModel.createOrder()
+            createOrder()
         }
         binding.limitDetails.setOnClickListener {
             findNavController().navigate(TradeCreateOrderBottomSheetFragmentDirections.toServiceInfoDialog(ServiceType.TRADE))
@@ -209,5 +214,21 @@ class TradeCreateOrderBottomSheetFragment : BaseBottomSheetFragment() {
         imm?.hideSoftInputFromWindow(binding.amountEditText.windowToken, 0)
         binding.amountEditText.clearFocus()
         super.onDestroyView()
+    }
+
+    @NeedsPermission(
+        Manifest.permission.ACCESS_FINE_LOCATION,
+        Manifest.permission.ACCESS_COARSE_LOCATION
+    )
+    fun createOrder() {
+        viewModel.createOrder()
+    }
+
+    @OnPermissionDenied(
+        Manifest.permission.ACCESS_FINE_LOCATION,
+        Manifest.permission.ACCESS_COARSE_LOCATION
+    )
+    fun showLocationError() {
+        viewModel.showLocationError()
     }
 }

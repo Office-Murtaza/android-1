@@ -45,7 +45,7 @@ interface TradeRepository {
 
     suspend fun sendLocation(location: Location)
 
-    suspend fun createTrade(createTradeItem: CreateTradeItem): Either<Failure, Unit>
+    suspend fun createTrade(createTradeItem: CreateTradeItem, location: Location): Either<Failure, Unit>
 
     suspend fun editTrade(editTrade: EditTradeItem): Either<Failure, Unit>
 
@@ -55,7 +55,7 @@ interface TradeRepository {
 
     suspend fun cancelOrder(orderId: String): Either<Failure, Unit>
 
-    suspend fun createOrder(tradeOrder: TradeOrderItem): Either<Failure, String>
+    suspend fun createOrder(tradeOrder: TradeOrderItem, location: Location): Either<Failure, String>
 
     suspend fun updateOrder(status: UpdateOrderStatusItem): Either<Failure, Unit>
 

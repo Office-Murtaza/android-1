@@ -38,13 +38,14 @@ class TradeApiService(
             response.body()?.let { Either.Right(it) } ?: Either.Left(Failure.ServerError())
         }
 
-    suspend fun createTrade(createTradeItem: CreateTradeItem): Either<Failure, TradeItemResponse> =
+    suspend fun createTrade(createTradeItem: CreateTradeItem, location: Location): Either<Failure, TradeItemResponse> =
         withErrorHandling {
             val request = with(createTradeItem) {
                 CreateTradeRequest(
                     tradeType, coinCode, price, minLimit, maxLimit,
                     paymentOptions.joinToString(","), terms,
-                    feePercent, fiatAmount
+                    feePercent, fiatAmount,
+                    location.longitude, location.latitude
                 )
             }
             val response = tradeApi.createTradeAsync(prefHelper.userId, request).await()
@@ -83,10 +84,10 @@ class TradeApiService(
             response.body()?.let { Either.Right(it) } ?: Either.Left(Failure.ServerError())
         }
 
-    suspend fun createOrder(tradeOrder: TradeOrderItem): Either<Failure, TradeOrderItemResponse> =
+    suspend fun createOrder(tradeOrder: TradeOrderItem, location: Location): Either<Failure, TradeOrderItemResponse> =
         withErrorHandling {
             val request = with(tradeOrder) {
-                CreateOrderRequest(tradeId, price, cryptoAmount, fiatAmount, feePercent)
+                CreateOrderRequest(tradeId, price, cryptoAmount, fiatAmount, feePercent, location.longitude, location.latitude)
             }
             val response = tradeApi.createOrderAsync(prefHelper.userId, request).await()
             response.body()?.let { Either.Right(it) } ?: Either.Left(Failure.ServerError())

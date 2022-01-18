@@ -143,6 +143,14 @@ class CreateTradeViewModel(
         _selectedCoin.value = coinDataItem
     }
 
+    fun showLocationError() {
+        _createTradeLoadingData.value = LoadingData.Error(
+            Failure.LocationError(
+                stringProvider.getString(R.string.location_required_on_trade_creation)
+            )
+        )
+    }
+
     fun createTrade(@TradeType type: Int, terms: String) {
         val paymentOptions = availablePaymentOptions.value.orEmpty()
             .asSequence()

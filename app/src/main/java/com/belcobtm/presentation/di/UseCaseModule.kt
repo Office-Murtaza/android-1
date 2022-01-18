@@ -136,7 +136,7 @@ val useCaseModule = module {
     single { ObserveOrdersUseCase(get(), get(), get()) }
     single { ObserveMyTradesUseCase(get(), get(), get()) }
     single { GetAvailableTradePaymentOptionsUseCase(get(), get()) }
-    single { CreateTradeUseCase(get()) }
+    single { CreateTradeUseCase(get(), get(), get()) }
     single { CheckTradeCreationAvailabilityUseCase(get(), get()) }
     single { LoadFilterDataUseCase(get()) }
     single { ResetFilterUseCase(get()) }
@@ -147,7 +147,7 @@ val useCaseModule = module {
     single { CancelTradeUseCase(get()) }
     single { CancelOrderUseCase(get()) }
     single { EditTradeUseCase(get()) }
-    single { CreateOrderUseCase(get()) }
+    single { CreateOrderUseCase(get(), get(), get()) }
     single { StartObserveTradeDataUseCase(get()) }
     single { StartObserveOrderDataUseCase(get()) }
     single { StopObserveTradeDataUseCase(get()) }

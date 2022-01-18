@@ -766,4 +766,9 @@
     <string name="services_dialog_remain_limit_label">Remain Limit</string>
     <string name="limit_details_button_title">Limit Details</string>
     <string name="limits_exceeded_validation_message">Converted amount exceeds limits</string>
+    <string name="location_required_on_trade_creation">Trade not created, please share your location</string>
+    <string name="settings_verify_dialog_title">Verification</string>
+    <string name="settings_verify_dialog_message">Please verify yourself to get full access to our services</string>
+    <string name="settings_verify_dialog_cancel">Cancel</string>
+    <string name="settings_verify_dialog_verify">Verify</string>
 </resources>

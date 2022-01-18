@@ -13,3 +13,7 @@ enum class VerificationStatus(val code: Int) {
         fun getStatusByCode(code: Int): VerificationStatus = values().find { it.code == code } ?: NOT_VERIFIED
     }
 }
+
+fun VerificationStatus.isVerified(): Boolean {
+    return code == VerificationStatus.VERIFIED.code || code == VerificationStatus.VIP_VERIFIED.code
+}

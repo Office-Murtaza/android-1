@@ -145,6 +145,9 @@ dependencies {
     implementation "org.permissionsdispatcher:permissionsdispatcher:4.8.0"
     kapt "org.permissionsdispatcher:permissionsdispatcher-processor:4.8.0"
 
+    //Dialogs
+    implementation 'com.afollestad.material-dialogs:core:3.3.0'
+
     //Room
     implementation "androidx.room:room-ktx:2.3.0"
     implementation "androidx.room:room-runtime:2.3.0"

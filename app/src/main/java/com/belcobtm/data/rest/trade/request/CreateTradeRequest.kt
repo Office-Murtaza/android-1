@@ -10,4 +10,6 @@ data class CreateTradeRequest(
     val terms: String,
     val feePercent: Double,
     val fiatAmount: Double,
+    val longitude: Double,
+    val latitude: Double
 )

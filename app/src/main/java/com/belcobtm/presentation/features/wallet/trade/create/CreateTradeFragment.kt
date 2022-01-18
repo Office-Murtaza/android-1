@@ -1,5 +1,6 @@
 package com.belcobtm.presentation.features.wallet.trade.create
 
+import android.Manifest
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -20,7 +21,6 @@ import com.belcobtm.presentation.core.helper.AlertHelper
 import com.belcobtm.presentation.core.mvvm.LoadingData
 import com.belcobtm.presentation.core.ui.fragment.BaseFragment
 import com.belcobtm.presentation.core.views.listeners.SafeDecimalEditTextWatcher
-import com.belcobtm.presentation.features.deals.swap.SwapFragmentDirections
 import com.belcobtm.presentation.features.wallet.trade.container.TradeContainerFragment
 import com.belcobtm.presentation.features.wallet.trade.create.delegate.TradePaymentOptionDelegate
 import com.google.android.material.chip.Chip
@@ -28,7 +28,11 @@ import com.google.android.material.snackbar.Snackbar
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.qualifier.named
+import permissions.dispatcher.NeedsPermission
+import permissions.dispatcher.OnPermissionDenied
+import permissions.dispatcher.RuntimePermissions
 
+@RuntimePermissions
 class CreateTradeFragment : BaseFragment<FragmentCreateTradeBinding>() {
 
     override val isHomeButtonEnabled: Boolean
@@ -156,6 +160,7 @@ class CreateTradeFragment : BaseFragment<FragmentCreateTradeBinding>() {
                     is Failure.ServerError -> showErrorServerError()
                     is Failure.ValidationError -> showError(it.message.orEmpty())
                     is Failure.ClientValidationError -> showContent()
+                    is Failure.LocationError -> showError(it.message.orEmpty())
                     else -> showErrorSomethingWrong()
                 }
             })
@@ -173,14 +178,7 @@ class CreateTradeFragment : BaseFragment<FragmentCreateTradeBinding>() {
             }
         }
         createTradeButton.setOnClickListener {
-            viewModel.createTrade(
-                when {
-                    tradeTypeBuyChip.isChecked -> TradeType.BUY
-                    tradeTypeSellChip.isChecked -> TradeType.SELL
-                    else -> -1
-                },
-                termsInput.editText?.text.toString()
-            )
+            createTrade()
         }
         amountMinLimitEditText.actionDoneListener {
             hideKeyboard()
@@ -193,6 +191,29 @@ class CreateTradeFragment : BaseFragment<FragmentCreateTradeBinding>() {
         limitDetails.setOnClickListener {
             navigate(CreateTradeFragmentDirections.toServiceInfoDialog(ServiceType.TRADE))
         }
+    }
+
+    @NeedsPermission(
+        Manifest.permission.ACCESS_FINE_LOCATION,
+        Manifest.permission.ACCESS_COARSE_LOCATION
+    )
+    fun createTrade() {
+        viewModel.createTrade(
+            when {
+                binding.tradeTypeBuyChip.isChecked -> TradeType.BUY
+                binding.tradeTypeSellChip.isChecked -> TradeType.SELL
+                else -> -1
+            },
+            binding.termsInput.editText?.text.toString()
+        )
+    }
+
+    @OnPermissionDenied(
+        Manifest.permission.ACCESS_FINE_LOCATION,
+        Manifest.permission.ACCESS_COARSE_LOCATION
+    )
+    fun showLocationError() {
+        viewModel.showLocationError()
     }
 
     private fun setCoinData(coin: CoinDataItem) {

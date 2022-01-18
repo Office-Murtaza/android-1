@@ -173,4 +173,12 @@ class TradeCreateOrderViewModel(
         })
     }
 
+    fun showLocationError() {
+        _createTradeOrderLoadingData.value = LoadingData.Error(
+            Failure.LocationError(
+                stringProvider.getString(R.string.location_required_on_trade_creation)
+            )
+        )
+    }
+
 }
