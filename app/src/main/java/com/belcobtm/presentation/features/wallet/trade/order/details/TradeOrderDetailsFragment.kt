@@ -94,7 +94,7 @@ class TradeOrderDetailsFragment : BaseFragment<FragmentTradeOrderDetailsBinding>
         viewModel.paymentOptions.observe(viewLifecycleOwner, adapter::update)
         viewModel.traderStatusIcon.observe(viewLifecycleOwner) {
             binding.partnerPublicId.setCompoundDrawablesWithIntrinsicBounds(
-                R.drawable.ic_account_circle, 0, it, 0
+                R.drawable.ic_account_circle, 0, 0, 0
             )
         }
         viewModel.openRateScreen.observe(viewLifecycleOwner) { showRateDialog ->

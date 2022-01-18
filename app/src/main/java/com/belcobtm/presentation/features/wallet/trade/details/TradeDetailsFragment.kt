@@ -72,9 +72,6 @@ class TradeDetailsFragment : BaseFragment<FragmentTradeDetailsBinding>() {
         viewModel.traderRate.observe(viewLifecycleOwner) {
             makerRateLabel.text = it.toString()
         }
-        viewModel.traderStatus.observe(viewLifecycleOwner) {
-            binding.makerPublicId.setCompoundDrawablesWithIntrinsicBounds(0, 0, it, 0)
-        }
         viewModel.totalTrades.observe(viewLifecycleOwner) {
             makerTradeCountLabel.text = it.toHtmlSpan()
         }

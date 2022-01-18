@@ -39,8 +39,6 @@ class TradeUserStatisticFragment : BaseFragment<FragmentTradeUserInfoBinding>() 
                 val statistic = (it as Either.Right<TradeStatistics>).b
                 accountPublicId.text = statistic.publicId
                 successRateValue.text = statistic.tradingRate.toString()
-                accountVerificationStatus.setCompoundDrawablesWithIntrinsicBounds(statistic.statusIcon, 0, 0, 0)
-                accountVerificationStatus.setText(statistic.statusLabel)
                 totalTradesValue.text = statistic.totalTrades.toString()
             } else {
                 parentViewModel.showError((it as Either.Left<Failure>).a)

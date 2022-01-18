@@ -50,7 +50,7 @@ class TradeItemViewHolder(
             binding.coinCode.text = coin.name
             binding.makerPublicId.text = makerPublicId
             binding.makerPublicId.setCompoundDrawablesWithIntrinsicBounds(
-                R.drawable.ic_account_circle, 0, makerStatusIcon, 0
+                R.drawable.ic_account_circle, 0, 0, 0
             )
             if (model.minLimit > model.maxLimit) {
                 with(binding.priceRange) {
