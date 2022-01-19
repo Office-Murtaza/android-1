@@ -128,6 +128,16 @@ class SendGiftFragment : BaseFragment<FragmentSendGiftBinding>(),
         }
     }
 
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        // NOTE: delegate the permission handling to generated method
+        onRequestPermissionsResult(requestCode, grantResults)
+    }
+
     override fun FragmentSendGiftBinding.initListeners() {
         sendCoinInputLayout.setOnMaxClickListener { viewModel.setMaxAmount() }
         addGif.setOnClickListener { openGift() }

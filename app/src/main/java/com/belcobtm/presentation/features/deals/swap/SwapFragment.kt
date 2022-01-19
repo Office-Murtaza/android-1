@@ -77,6 +77,16 @@ class SwapFragment : BaseFragment<FragmentSwapBinding>() {
         }
     }
 
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        // NOTE: delegate the permission handling to generated method
+        onRequestPermissionsResult(requestCode, grantResults)
+    }
+
     override fun FragmentSwapBinding.initViews() {
         setToolbarTitle(R.string.swap_screen_title)
         sendCoinInputLayout.setHint(getString(R.string.text_amount))

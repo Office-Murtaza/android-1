@@ -210,6 +210,16 @@ class TradeCreateOrderBottomSheetFragment : BaseBottomSheetFragment() {
         return binding.root
     }
 
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        // NOTE: delegate the permission handling to generated method
+        onRequestPermissionsResult(requestCode, grantResults)
+    }
+
     override fun onDestroyView() {
         imm?.hideSoftInputFromWindow(binding.amountEditText.windowToken, 0)
         binding.amountEditText.clearFocus()
