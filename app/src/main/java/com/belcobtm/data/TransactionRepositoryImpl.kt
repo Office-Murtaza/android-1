@@ -1,5 +1,6 @@
 package com.belcobtm.data
 
+import android.location.Location
 import com.belcobtm.data.core.TransactionHelper
 import com.belcobtm.data.disk.database.account.AccountDao
 import com.belcobtm.data.disk.database.wallet.WalletDao
@@ -149,6 +150,7 @@ class TransactionRepositoryImpl(
         fiatAmount: Double,
         toAddress: String,
         transactionPlanItem: TransactionPlanItem,
+        location: Location
     ): Either<Failure, Unit> {
         val coinType = LocalCoinType.valueOf(coinCode)
         val hashResponse = transactionRepository.createTransactionHash(
@@ -170,8 +172,9 @@ class TransactionRepositoryImpl(
                     fee,
                     feePercent,
                     fiatAmount,
+                    location,
                     fromAddress,
-                    toAddress
+                    toAddress,
                 )
             } else {
                 apiService.sendGift(
@@ -182,7 +185,8 @@ class TransactionRepositoryImpl(
                     phone,
                     message,
                     feePercent = feePercent,
-                    fiatAmount = fiatAmount
+                    fiatAmount = fiatAmount,
+                    location = location
                 )
             }.map { cache.update(it) }
         } else {
@@ -221,7 +225,8 @@ class TransactionRepositoryImpl(
         fromCoin: String,
         coinTo: String,
         fee: Double,
-        transactionPlanItem: TransactionPlanItem
+        transactionPlanItem: TransactionPlanItem,
+        location: Location
     ): Either<Failure, Unit> {
         val coinType = LocalCoinType.valueOf(fromCoin)
         val fromCoinItem = getCoinByCode(fromCoin)
@@ -242,7 +247,7 @@ class TransactionRepositoryImpl(
             apiService.exchange(
                 fromCoinAmount, toCoinAmount,
                 fromCoinItem, toCoinItem, hash,
-                fee, fromAddress, toAddressSend
+                fee, fromAddress, toAddressSend, location
             ).map { cache.update(it) }
         } else {
             hashResponse as Either.Left
@@ -298,6 +303,7 @@ class TransactionRepositoryImpl(
         feePercent: Double,
         fiatAMount: Double,
         transactionPlanItem: TransactionPlanItem,
+        location: Location
     ): Either<Failure, Unit> {
         val coinItem = getCoinByCode(coinCode)
         val fromAddress = coinItem.details.walletAddress
@@ -316,14 +322,16 @@ class TransactionRepositoryImpl(
                 transactionPlanItem.nativeTxFee,
                 feePercent,
                 fiatAMount,
-                it
+                it,
+                location
             )
         }.map { cache.update(it) }
     }
 
     override suspend fun stakeCancel(
         coinCode: String,
-        transactionPlanItem: TransactionPlanItem
+        transactionPlanItem: TransactionPlanItem,
+        location: Location
     ): Either<Failure, Unit> {
         val coinItem = getCoinByCode(coinCode)
         val hash = transactionRepository.createTransactionStakeCancelHash(
@@ -336,7 +344,7 @@ class TransactionRepositoryImpl(
         val fee = transactionPlanItem.nativeTxFee
         return hash.flatMapSuspend {
             apiService.stakeCancel(
-                coinCode, fromAddress, toAddress, 0.0, fee, it
+                coinCode, fromAddress, toAddress, 0.0, fee, it, location
             )
         }.map { cache.update(it) }
     }
@@ -344,7 +352,8 @@ class TransactionRepositoryImpl(
     override suspend fun stakeWithdraw(
         coinCode: String,
         cryptoAmount: Double,
-        transactionPlanItem: TransactionPlanItem
+        transactionPlanItem: TransactionPlanItem,
+        location: Location
     ): Either<Failure, Unit> {
         val coinItem = getCoinByCode(coinCode)
         val hash = transactionRepository.createTransactionUnStakeHash(
@@ -356,7 +365,7 @@ class TransactionRepositoryImpl(
         val toAddress = coinItem.publicKey
         val fee = transactionPlanItem.nativeTxFee
         return hash.flatMapSuspend {
-            apiService.unStake(coinCode, fromAddress, toAddress, cryptoAmount, fee, it)
+            apiService.unStake(coinCode, fromAddress, toAddress, cryptoAmount, fee, it, location)
         }.map { cache.update(it) }
     }
 

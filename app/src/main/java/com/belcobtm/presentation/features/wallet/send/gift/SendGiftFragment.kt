@@ -1,5 +1,6 @@
 package com.belcobtm.presentation.features.wallet.send.gift
 
+import android.Manifest
 import android.graphics.Rect
 import android.net.Uri
 import android.os.Bundle
@@ -10,6 +11,7 @@ import android.view.ViewGroup
 import androidx.navigation.fragment.navArgs
 import com.belcobtm.R
 import com.belcobtm.data.disk.database.service.ServiceType
+import com.belcobtm.data.model.trade.TradeType
 import com.belcobtm.databinding.FragmentSendGiftBinding
 import com.belcobtm.domain.Failure
 import com.belcobtm.domain.wallet.LocalCoinType
@@ -35,7 +37,11 @@ import com.giphy.sdk.ui.views.GiphyDialogFragment
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.qualifier.named
+import permissions.dispatcher.NeedsPermission
+import permissions.dispatcher.OnPermissionDenied
+import permissions.dispatcher.RuntimePermissions
 
+@RuntimePermissions
 class SendGiftFragment : BaseFragment<FragmentSendGiftBinding>(),
     GiphyDialogFragment.GifSelectionListener {
 
@@ -56,12 +62,7 @@ class SendGiftFragment : BaseFragment<FragmentSendGiftBinding>(),
                     viewModel.selectCoin(sendGiftArgs.phoneNumber, it)
                 }
             else -> {
-                viewModel.sendGift(
-                    binding.sendCoinInputLayout.getEditText().text.getDouble(),
-                    sendGiftArgs.phoneNumber,
-                    binding.messageView.getString(),
-                    gifMedia?.id
-                )
+                sendGiftFirstWithPermissionCheck()
             }
         }
     }
@@ -152,7 +153,7 @@ class SendGiftFragment : BaseFragment<FragmentSendGiftBinding>(),
             showKeyboard()
         }
         sendCoinInputLayout.getEditText().addTextChangedListener(cryptoAmountTextWatcher)
-        sendGift.setOnClickListener { sendGift() }
+        sendGift.setOnClickListener { sendGiftWithPermissionCheck() }
         limitDetails.setOnClickListener {
             navigate(SendGiftFragmentDirections.toServiceInfoDialog(ServiceType.TRANSFER))
         }
@@ -193,6 +194,10 @@ class SendGiftFragment : BaseFragment<FragmentSendGiftBinding>(),
             },
             error = {
                 when (it) {
+                    is Failure.LocationError ->  {
+                        showSnackBar(it.message.orEmpty())
+                        showContent()
+                    }
                     is Failure.NetworkConnection -> showErrorNoInternetConnection()
                     is Failure.MessageError -> {
                         showSnackBar(it.message.orEmpty())
@@ -250,7 +255,11 @@ class SendGiftFragment : BaseFragment<FragmentSendGiftBinding>(),
         binding.removeGifButton.show()
     }
 
-    private fun sendGift() {
+    @NeedsPermission(
+        Manifest.permission.ACCESS_FINE_LOCATION,
+        Manifest.permission.ACCESS_COARSE_LOCATION
+    )
+    fun sendGift() {
         val phone = sendGiftArgs.phoneNumber
             .replace("-", "")
             .replace("(", "")
@@ -262,6 +271,27 @@ class SendGiftFragment : BaseFragment<FragmentSendGiftBinding>(),
             binding.messageView.getString(),
             gifMedia?.id ?: ""
         )
+    }
+
+    @NeedsPermission(
+        Manifest.permission.ACCESS_FINE_LOCATION,
+        Manifest.permission.ACCESS_COARSE_LOCATION
+    )
+    fun sendGiftFirst() {
+        viewModel.sendGift(
+            binding.sendCoinInputLayout.getEditText().text.getDouble(),
+            sendGiftArgs.phoneNumber,
+            binding.messageView.getString(),
+            gifMedia?.id
+        )
+    }
+
+    @OnPermissionDenied(
+        Manifest.permission.ACCESS_FINE_LOCATION,
+        Manifest.permission.ACCESS_COARSE_LOCATION
+    )
+    fun showLocationError() {
+        viewModel.showLocationError()
     }
 
     override fun createBinding(

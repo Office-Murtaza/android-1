@@ -1,29 +1,40 @@
 package com.belcobtm.domain.transaction.interactor
 
+import com.belcobtm.R
+import com.belcobtm.data.provider.location.LocationProvider
 import com.belcobtm.domain.Either
 import com.belcobtm.domain.Failure
 import com.belcobtm.domain.UseCase
 import com.belcobtm.domain.transaction.TransactionRepository
 import com.belcobtm.domain.transaction.item.TransactionPlanItem
 import com.belcobtm.presentation.core.extensions.toStringCoin
+import com.belcobtm.presentation.core.provider.string.StringProvider
 
 class SendGiftTransactionCreateUseCase(
-    private val repository: TransactionRepository
+    private val repository: TransactionRepository,
+    private val locationProvider: LocationProvider,
+    private val stringProvider: StringProvider
 ) : UseCase<Unit, SendGiftTransactionCreateUseCase.Params>() {
 
-    override suspend fun run(params: Params): Either<Failure, Unit> = repository.sendGift(
-        useMaxAmountFlag = params.useMaxAmountFlag,
-        amount = params.amount,
-        coinCode = params.coinCode,
-        phone = params.phone,
-        message = params.message,
-        giftId = params.giftId,
-        toAddress = params.toAddress,
-        fee = params.fee,
-        feePercent = params.feePercent.toInt(),
-        fiatAmount = params.fiatAmount.toStringCoin().toDouble(),
-        transactionPlanItem = params.transactionPlanItem
-    )
+    override suspend fun run(params: Params): Either<Failure, Unit> {
+        locationProvider.getCurrentLocation()?.let {
+            return repository.sendGift(
+                useMaxAmountFlag = params.useMaxAmountFlag,
+                amount = params.amount,
+                coinCode = params.coinCode,
+                phone = params.phone,
+                message = params.message,
+                giftId = params.giftId,
+                toAddress = params.toAddress,
+                fee = params.fee,
+                feePercent = params.feePercent.toInt(),
+                fiatAmount = params.fiatAmount.toStringCoin().toDouble(),
+                transactionPlanItem = params.transactionPlanItem,
+                location = it
+            )
+        }
+        return Either.Left(Failure.LocationError(stringProvider.getString(R.string.location_required_on_trade_creation)))
+    }
 
     data class Params(
         val useMaxAmountFlag: Boolean,

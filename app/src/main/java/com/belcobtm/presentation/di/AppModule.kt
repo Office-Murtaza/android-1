@@ -136,7 +136,7 @@ val viewModelModule = module {
     viewModel {
         SendGiftViewModel(
             get(), get(), get(), get(), get(), get(),
-            get(), get(), get(), get(), get()
+            get(), get(), get(), get(), get(), get()
         )
     }
     viewModel { (coinCode: String) ->

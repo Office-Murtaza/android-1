@@ -29,6 +29,7 @@ import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.qualifier.named
 import permissions.dispatcher.NeedsPermission
+import permissions.dispatcher.OnNeverAskAgain
 import permissions.dispatcher.OnPermissionDenied
 import permissions.dispatcher.RuntimePermissions
 
@@ -178,7 +179,7 @@ class CreateTradeFragment : BaseFragment<FragmentCreateTradeBinding>() {
             }
         }
         createTradeButton.setOnClickListener {
-            createTrade()
+            createTradeWithPermissionCheck()
         }
         amountMinLimitEditText.actionDoneListener {
             hideKeyboard()

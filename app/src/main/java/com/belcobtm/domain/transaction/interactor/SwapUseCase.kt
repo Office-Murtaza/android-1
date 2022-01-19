@@ -1,24 +1,35 @@
 package com.belcobtm.domain.transaction.interactor
 
+import com.belcobtm.R
+import com.belcobtm.data.provider.location.LocationProvider
 import com.belcobtm.domain.Either
 import com.belcobtm.domain.Failure
 import com.belcobtm.domain.UseCase
 import com.belcobtm.domain.transaction.TransactionRepository
 import com.belcobtm.domain.transaction.item.TransactionPlanItem
+import com.belcobtm.presentation.core.provider.string.StringProvider
 
 class SwapUseCase(
-    private val repository: TransactionRepository
+    private val repository: TransactionRepository,
+    private val locationProvider: LocationProvider,
+    private val stringProvider: StringProvider
 ) : UseCase<Unit, SwapUseCase.Params>() {
 
-    override suspend fun run(params: Params): Either<Failure, Unit> = repository.exchange(
-        params.useMaxAmountFlag,
-        params.coinFromAmount,
-        params.coinToAmount,
-        params.coinFrom,
-        params.coinTo,
-        params.fee,
-        params.transactionPlanItem
-    )
+    override suspend fun run(params: Params): Either<Failure, Unit> {
+        locationProvider.getCurrentLocation()?.let {
+            return repository.exchange(
+                params.useMaxAmountFlag,
+                params.coinFromAmount,
+                params.coinToAmount,
+                params.coinFrom,
+                params.coinTo,
+                params.fee,
+                params.transactionPlanItem,
+                it
+            )
+        }
+        return Either.Left(Failure.LocationError(stringProvider.getString(R.string.location_required_on_trade_creation)))
+    }
 
     data class Params(
         val useMaxAmountFlag: Boolean,

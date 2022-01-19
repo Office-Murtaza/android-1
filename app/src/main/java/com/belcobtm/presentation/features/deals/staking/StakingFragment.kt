@@ -1,13 +1,16 @@
 package com.belcobtm.presentation.features.deals.staking
 
+import android.Manifest
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import com.belcobtm.R
 import com.belcobtm.data.disk.database.service.ServiceType
+import com.belcobtm.data.model.trade.TradeType
 import com.belcobtm.data.rest.transaction.response.StakeDetailsStatus
 import com.belcobtm.databinding.FragmentStakingBinding
+import com.belcobtm.domain.Failure
 import com.belcobtm.domain.wallet.LocalCoinType
 import com.belcobtm.presentation.core.extensions.*
 import com.belcobtm.presentation.core.formatter.DoubleCurrencyPriceFormatter
@@ -19,7 +22,11 @@ import com.belcobtm.presentation.features.wallet.trade.create.CreateTradeFragmen
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.qualifier.named
+import permissions.dispatcher.NeedsPermission
+import permissions.dispatcher.OnPermissionDenied
+import permissions.dispatcher.RuntimePermissions
 
+@RuntimePermissions
 class StakingFragment : BaseFragment<FragmentStakingBinding>() {
     private val viewModel: StakingViewModel by viewModel()
     private val currencyFormatter: Formatter<Double> by inject(
@@ -66,15 +73,49 @@ class StakingFragment : BaseFragment<FragmentStakingBinding>() {
     override val retryListener: View.OnClickListener = View.OnClickListener {
         when (val loadingData = viewModel.transactionLiveData.value) {
             is LoadingData.Error -> when (loadingData.data) {
-                StakingTransactionState.CREATE -> viewModel.stakeCreate(
+                StakingTransactionState.CREATE -> createStakeWithPermissionCheck(
                     binding.coinInputLayout.getEditText().text.getDouble()
                 )
-                StakingTransactionState.CANCEL -> viewModel.stakeCancel()
-                StakingTransactionState.WITHDRAW -> viewModel.unstakeCreateTransaction()
+                StakingTransactionState.CANCEL -> cancelStakeWithPermissionCheck()
+                StakingTransactionState.WITHDRAW -> unStakeWithPermissionCheck()
             }
             else -> viewModel.loadData()
         }
     }
+
+    @NeedsPermission(
+        Manifest.permission.ACCESS_FINE_LOCATION,
+        Manifest.permission.ACCESS_COARSE_LOCATION
+    )
+    fun createStake(amount: Double) {
+        viewModel.stakeCreate(amount)
+    }
+
+    @NeedsPermission(
+        Manifest.permission.ACCESS_FINE_LOCATION,
+        Manifest.permission.ACCESS_COARSE_LOCATION
+    )
+    fun cancelStake() {
+        viewModel.stakeCancel()
+    }
+
+    @NeedsPermission(
+        Manifest.permission.ACCESS_FINE_LOCATION,
+        Manifest.permission.ACCESS_COARSE_LOCATION
+    )
+    fun unStake() {
+        viewModel.unstakeCreateTransaction()
+    }
+
+
+    @OnPermissionDenied(
+        Manifest.permission.ACCESS_FINE_LOCATION,
+        Manifest.permission.ACCESS_COARSE_LOCATION
+    )
+    fun showLocationError() {
+        viewModel.showLocationError()
+    }
+
 
     override fun FragmentStakingBinding.initViews() {
         setToolbarTitle(R.string.staking_screen_title)
@@ -89,7 +130,7 @@ class StakingFragment : BaseFragment<FragmentStakingBinding>() {
         createButtonView.setOnClickListener {
             coinInputLayout.setErrorText(null, false)
             if (isValid()) {
-                viewModel.stakeCreate(coinInputLayout.getEditText().text.getDouble())
+                createStakeWithPermissionCheck(coinInputLayout.getEditText().text.getDouble())
             }
         }
         coinInputLayout.getEditText().actionDoneListener {
@@ -97,12 +138,12 @@ class StakingFragment : BaseFragment<FragmentStakingBinding>() {
         }
         cancelButtonView.setOnClickListener {
             if (isValid()) {
-                viewModel.stakeCancel()
+                cancelStakeWithPermissionCheck()
             }
         }
         withdrawButtonView.setOnClickListener {
             if (isValid()) {
-                viewModel.unstakeCreateTransaction()
+                unStakeWithPermissionCheck()
             }
         }
         limitDetails.setOnClickListener {
@@ -329,13 +370,17 @@ class StakingFragment : BaseFragment<FragmentStakingBinding>() {
                     Toast.makeText(requireContext(), stringResource, Toast.LENGTH_LONG).show()
                 }
                 is LoadingData.Error -> {
-                    val stringResource = when (data.data!!) {
-                        StakingTransactionState.CREATE -> R.string.staking_screen_fail_create
-                        StakingTransactionState.CANCEL -> R.string.staking_screen_fail_cancel
-                        StakingTransactionState.WITHDRAW -> R.string.staking_screen_fail_withdraw
+                    if (data.errorType is Failure.LocationError) {
+                        showError(data.errorType.message.orEmpty())
+                    } else {
+                        val stringResource = when (data.data!!) {
+                            StakingTransactionState.CREATE -> R.string.staking_screen_fail_create
+                            StakingTransactionState.CANCEL -> R.string.staking_screen_fail_cancel
+                            StakingTransactionState.WITHDRAW -> R.string.staking_screen_fail_withdraw
+                        }
+                        Toast.makeText(requireContext(), stringResource, Toast.LENGTH_LONG).show()
+                        showContent()
                     }
-                    Toast.makeText(requireContext(), stringResource, Toast.LENGTH_LONG).show()
-                    showContent()
                 }
             }
         })

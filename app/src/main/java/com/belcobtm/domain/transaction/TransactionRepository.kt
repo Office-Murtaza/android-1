@@ -1,5 +1,6 @@
 package com.belcobtm.domain.transaction
 
+import android.location.Location
 import com.belcobtm.data.model.transactions.TransactionsData
 import com.belcobtm.domain.Either
 import com.belcobtm.domain.Failure
@@ -56,6 +57,7 @@ interface TransactionRepository {
         fiatAmount: Double,
         toAddress: String,
         transactionPlanItem: TransactionPlanItem,
+        location: Location
     ): Either<Failure, Unit>
 
     suspend fun sellPreSubmit(
@@ -80,6 +82,7 @@ interface TransactionRepository {
         coinTo: String,
         fee: Double,
         transactionPlanItem: TransactionPlanItem,
+        location: Location
     ): Either<Failure, Unit>
 
     suspend fun tradeRecallTransactionComplete(
@@ -112,17 +115,20 @@ interface TransactionRepository {
         feePercent: Double,
         fiatAMount: Double,
         transactionPlanItem: TransactionPlanItem,
+        location: Location
     ): Either<Failure, Unit>
 
     suspend fun stakeCancel(
         coinCode: String,
         transactionPlanItem: TransactionPlanItem,
+        location: Location
     ): Either<Failure, Unit>
 
     suspend fun stakeWithdraw(
         coinCode: String,
         cryptoAmount: Double,
         transactionPlanItem: TransactionPlanItem,
+        location: Location
     ): Either<Failure, Unit>
 
     suspend fun getTransferAddress(phone: String, coinCode: String): Either<Failure, String>

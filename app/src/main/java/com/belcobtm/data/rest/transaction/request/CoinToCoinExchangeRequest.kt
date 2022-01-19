@@ -11,4 +11,6 @@ data class CoinToCoinExchangeRequest(
     val refCoin: String,
     val refCryptoAmount: Double,
     val refCoinPrice: Double,
+    val longitude: Double,
+    val latitude: Double
 )

@@ -78,9 +78,9 @@ val useCaseModule = module {
             get(named(VERIFICATION_STORAGE))
         )
     }
-    single { SwapUseCase(get()) }
+    single { SwapUseCase(get(), get(), get()) }
     single { CreateTransactionUseCase(get()) }
-    single { SendGiftTransactionCreateUseCase(get()) }
+    single { SendGiftTransactionCreateUseCase(get(), get(), get()) }
     single { OldSendSmsToDeviceUseCase(get()) }
     single { OldVerifySmsCodeUseCase(get()) }
     single { SendSmsToDeviceUseCase(get()) }
@@ -119,9 +119,9 @@ val useCaseModule = module {
     single { GetCoinListUseCase(get()) }
     single { VerifyPhoneUseCase(get()) }
     single { StakeDetailsGetUseCase(get()) }
-    single { StakeCreateUseCase(get()) }
-    single { StakeCancelUseCase(get()) }
-    single { StakeWithdrawUseCase(get()) }
+    single { StakeCreateUseCase(get(), get(), get()) }
+    single { StakeCancelUseCase(get(), get(), get()) }
+    single { StakeWithdrawUseCase(get(), get(), get()) }
     single { ConnectToWalletUseCase(get()) }
     single { DisconnectFromWalletUseCase(get()) }
     single { GetContactsUseCase(get()) }

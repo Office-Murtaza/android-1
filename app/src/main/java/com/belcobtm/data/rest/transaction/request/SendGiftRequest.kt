@@ -11,5 +11,7 @@ data class SendGiftRequest(
     val feePercent: Int?,
     val fiatAmount: Double?,
     val fromAddress: String?,
-    val toAddress: String?
+    val toAddress: String?,
+    val longitude: Double,
+    val latitude: Double
 )

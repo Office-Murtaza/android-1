@@ -84,6 +84,14 @@ class StakingViewModel(
         )
     }
 
+    fun showLocationError() {
+        _transactionLiveData.value = LoadingData.Error(
+            Failure.LocationError(
+                stringProvider.getString(R.string.location_required_on_trade_creation)
+            )
+        )
+    }
+
     private fun loadBaseData(planItem: TransactionPlanItem) {
         stakeDetailsUseCase.invoke(
             params = StakeDetailsGetUseCase.Params(coinDataItem.code),

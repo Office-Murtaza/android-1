@@ -18,6 +18,7 @@ import com.belcobtm.domain.wallet.item.CoinDataItem
 import com.belcobtm.domain.wallet.item.isBtcCoin
 import com.belcobtm.domain.wallet.item.isEthRelatedCoin
 import com.belcobtm.presentation.core.mvvm.LoadingData
+import com.belcobtm.presentation.core.provider.string.StringProvider
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -33,6 +34,7 @@ class SendGiftViewModel(
     private val receiverAccountActivatedUseCase: ReceiverAccountActivatedUseCase,
     private val updateBalanceUseCase: UpdateBalanceUseCase,
     private val serviceInfoProvider: ServiceInfoProvider,
+    private val stringProvider: StringProvider
 ) : ViewModel() {
 
     private lateinit var coinList: List<CoinDataItem>
@@ -394,6 +396,14 @@ class SendGiftViewModel(
         } else {
             amount <= coinDataItem.balanceCoin
         }
+    }
+
+    fun showLocationError() {
+        _sendGiftLoadingData.value = LoadingData.Error(
+            Failure.LocationError(
+                stringProvider.getString(R.string.location_required_on_trade_creation)
+            )
+        )
     }
 
     private fun isSufficientEth(): Boolean {

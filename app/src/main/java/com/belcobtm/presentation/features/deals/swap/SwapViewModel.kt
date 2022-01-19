@@ -160,6 +160,14 @@ class SwapViewModel(
         }
     }
 
+    fun showLocationError() {
+        _swapLoadingData.value = LoadingData.Error(
+            Failure.LocationError(
+                stringProvider.getString(R.string.location_required_on_trade_creation)
+            )
+        )
+    }
+
     fun changeCoins() {
         val coinToSend = coinToSend.value ?: return
         val coinToReceive = coinToReceive.value ?: return

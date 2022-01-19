@@ -57,7 +57,7 @@ class TradeCreateOrderBottomSheetFragment : BaseBottomSheetFragment() {
         if (viewModel.initialLoadingData.value is LoadingData.Error) {
             viewModel.fetchTradeDetails(args.tradeId)
         } else {
-            viewModel.createOrder()
+            createOrderWithPermissionCheck()
         }
     }
     private val amountTextWatcher = SafeDecimalEditTextWatcher { editable ->
@@ -202,7 +202,7 @@ class TradeCreateOrderBottomSheetFragment : BaseBottomSheetFragment() {
             binding.totalCrypto.text = formattedSpan
         }
         binding.submitButton.setOnClickListener {
-            createOrder()
+            createOrderWithPermissionCheck()
         }
         binding.limitDetails.setOnClickListener {
             findNavController().navigate(TradeCreateOrderBottomSheetFragmentDirections.toServiceInfoDialog(ServiceType.TRADE))

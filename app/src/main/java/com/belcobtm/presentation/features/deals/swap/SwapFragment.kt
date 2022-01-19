@@ -1,10 +1,12 @@
 package com.belcobtm.presentation.features.deals.swap
 
+import android.Manifest
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.belcobtm.R
 import com.belcobtm.data.disk.database.service.ServiceType
+import com.belcobtm.data.model.trade.TradeType
 import com.belcobtm.databinding.FragmentSwapBinding
 import com.belcobtm.domain.Failure
 import com.belcobtm.domain.wallet.LocalCoinType
@@ -20,7 +22,11 @@ import com.belcobtm.presentation.core.watcher.DoubleTextWatcher
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.qualifier.named
+import permissions.dispatcher.NeedsPermission
+import permissions.dispatcher.OnPermissionDenied
+import permissions.dispatcher.RuntimePermissions
 
+@RuntimePermissions
 class SwapFragment : BaseFragment<FragmentSwapBinding>() {
 
     companion object {
@@ -66,7 +72,7 @@ class SwapFragment : BaseFragment<FragmentSwapBinding>() {
                 viewModel.reFetchTransactionPlans()
             else -> {
                 // re submit swap
-                viewModel.executeSwap()
+                initSwapWithPermissionCheck()
             }
         }
     }
@@ -90,7 +96,7 @@ class SwapFragment : BaseFragment<FragmentSwapBinding>() {
             navigate(SwapFragmentDirections.toServiceInfoDialog(ServiceType.SWAP))
         }
         nextButtonView.setOnClickListener {
-            viewModel.executeSwap()
+            initSwapWithPermissionCheck()
         }
         viewCircle.setOnClickListener {
             viewModel.changeCoins()
@@ -127,10 +133,32 @@ class SwapFragment : BaseFragment<FragmentSwapBinding>() {
         receiveCoinInputLayout.getEditText().addTextChangedListener(textWatcher.secondTextWatcher)
     }
 
+    @NeedsPermission(
+        Manifest.permission.ACCESS_FINE_LOCATION,
+        Manifest.permission.ACCESS_COARSE_LOCATION
+    )
+    fun initSwap() {
+        viewModel.executeSwap()
+    }
+
+    @OnPermissionDenied(
+        Manifest.permission.ACCESS_FINE_LOCATION,
+        Manifest.permission.ACCESS_COARSE_LOCATION
+    )
+    fun showLocationError() {
+        viewModel.showLocationError()
+    }
+
+
     override fun FragmentSwapBinding.initObservers() {
         viewModel.swapLoadingData.listen(success = {
             AlertHelper.showToastShort(requireContext(), R.string.swap_screen_success_message)
             popBackStack()
+        }, error = {
+            when(it) {
+                is Failure.LocationError -> showError(it.message.orEmpty())
+                else -> showErrorSomethingWrong()
+            }
         })
         viewModel.transactionPlanLiveData.listen()
         viewModel.initLoadingData.listen(error = {

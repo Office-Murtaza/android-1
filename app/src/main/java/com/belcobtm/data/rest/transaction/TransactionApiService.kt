@@ -1,5 +1,6 @@
 package com.belcobtm.data.rest.transaction
 
+import android.location.Location
 import com.belcobtm.data.disk.shared.preferences.SharedPreferencesHelper
 import com.belcobtm.data.rest.transaction.request.*
 import com.belcobtm.data.rest.transaction.response.GetTransactionsResponse
@@ -94,6 +95,7 @@ class TransactionApiService(
         fee: Double? = null,
         feePercent: Int?,
         fiatAmount: Double,
+        location: Location,
         fromAddress: String? = null,
         toAddress: String? = null
     ): Either<Failure, TransactionDetailsResponse> = try {
@@ -108,7 +110,9 @@ class TransactionApiService(
             feePercent,
             fiatAmount,
             fromAddress,
-            toAddress
+            toAddress,
+            latitude = location.latitude,
+            longitude = location.longitude
         )
         val request = api.sendGiftAsync(prefHelper.userId, coinFrom, requestBody).await()
         request.body()?.let { Either.Right(it) } ?: Either.Left(Failure.ServerError())
@@ -169,7 +173,8 @@ class TransactionApiService(
         hash: String,
         fee: Double?,
         fromAddress: String?,
-        toAddress: String?
+        toAddress: String?,
+        location: Location
     ): Either<Failure, TransactionDetailsResponse> = try {
         val requestBody = CoinToCoinExchangeRequest(
             type = TRANSACTION_SEND_COIN_TO_COIN,
@@ -181,7 +186,9 @@ class TransactionApiService(
             refCoin = coinTo.code,
             refCoinPrice = coinTo.priceUsd,
             refCryptoAmount = coinToAmount,
-            feePercent = fee
+            feePercent = fee,
+            longitude = location.longitude,
+            latitude = location.latitude
         )
         val request = api.exchangeAsync(prefHelper.userId, coinFrom.code, requestBody).await()
         request.body()?.let { Either.Right(it) } ?: Either.Left(Failure.ServerError())
@@ -253,12 +260,15 @@ class TransactionApiService(
         fee: Double,
         feePercent: Double,
         fiatAMount: Double,
-        hex: String
+        hex: String,
+        location: Location
     ): Either<Failure, TransactionDetailsResponse> = try {
         val requestBody =
             StakeRequest(
                 TRANSACTION_STAKE, fromAddress, toAddress, cryptoAmount,
-                fee, hex, feePercent, fiatAMount,
+                fee, hex, feePercent = feePercent, fiatAmount = fiatAMount,
+                longitude = location.longitude,
+                latitude = location.latitude
             )
         val request = api.stakeOrUnStakeAsync(prefHelper.userId, coinCode, requestBody).await()
         request.body()?.let { Either.Right(it) } ?: Either.Left(Failure.ServerError())
@@ -273,10 +283,20 @@ class TransactionApiService(
         toAddress: String,
         cryptoAmount: Double,
         fee: Double,
-        hex: String
+        hex: String,
+        location: Location
     ): Either<Failure, TransactionDetailsResponse> = try {
         val requestBody =
-            StakeRequest(TRANSACTION_STAKE_CANCEL, fromAddress, toAddress, cryptoAmount, fee, hex)
+            StakeRequest(
+                TRANSACTION_STAKE_CANCEL,
+                fromAddress,
+                toAddress,
+                cryptoAmount,
+                fee,
+                hex,
+                longitude = location.longitude,
+                latitude = location.latitude
+            )
         val request = api.stakeOrUnStakeAsync(prefHelper.userId, coinCode, requestBody).await()
         request.body()?.let { Either.Right(it) } ?: Either.Left(Failure.ServerError())
     } catch (failure: Failure) {
@@ -290,7 +310,8 @@ class TransactionApiService(
         toAddress: String,
         cryptoAmount: Double,
         fee: Double,
-        hex: String
+        hex: String,
+        location: Location
     ): Either<Failure, TransactionDetailsResponse> = try {
         val requestBody = StakeRequest(
             TRANSACTION_WITHTRADW_STAKE,
@@ -298,7 +319,9 @@ class TransactionApiService(
             toAddress,
             cryptoAmount,
             fee,
-            hex
+            hex,
+            longitude = location.longitude,
+            latitude = location.latitude
         )
         val request = api.stakeOrUnStakeAsync(prefHelper.userId, coinCode, requestBody).await()
         request.body()?.let { Either.Right(it) } ?: Either.Left(Failure.ServerError())
