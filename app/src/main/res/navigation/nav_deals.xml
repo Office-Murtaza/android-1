@@ -48,6 +48,9 @@
             app:exitAnim="@anim/slide_to_left"
             app:popEnterAnim="@anim/slide_from_left"
             app:popExitAnim="@anim/slide_to_right" />
+        <action
+            android:id="@+id/to_verification_info_fragment"
+            app:destination="@id/verificationInfoFragment" />
     </fragment>
 
     <fragment
@@ -430,7 +433,7 @@
         tools:layout="@layout/fragment_atm_sell">
 
         <action
-            android:id="@+id/to_verification_info"
+            android:id="@+id/to_verification_info_fragment"
             app:destination="@id/verification_info_fragment"
             app:enterAnim="@anim/slide_from_right"
             app:exitAnim="@anim/slide_to_left"
@@ -450,5 +453,9 @@
             app:nullable="false" />
 
     </dialog>
+    <fragment
+        android:id="@+id/verificationInfoFragment"
+        android:name="com.belcobtm.presentation.features.settings.verification.info.VerificationInfoFragment"
+        android:label="VerificationInfoFragment" />
 
 </navigation>

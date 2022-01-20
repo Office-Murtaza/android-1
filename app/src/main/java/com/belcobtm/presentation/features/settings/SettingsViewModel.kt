@@ -13,62 +13,38 @@ import com.belcobtm.presentation.features.settings.SettingsFragment.Companion.SE
 import com.belcobtm.presentation.features.settings.SettingsFragment.Companion.SETTINGS_SECURITY
 
 
-class SettingsViewModel(private val getVerificationInfoUseCase: GetVerificationInfoUseCase) : ViewModel() {
+class SettingsViewModel : ViewModel() {
 
     val actionData = SingleLiveData<SettingsAction>()
-    val stateData = MutableLiveData<LoadingData<VerificationStatus>>()
-
-    init {
-        getVerificationInfoUseCase.invoke(Unit,
-            onSuccess = {
-                stateData.value = LoadingData.Success(
-                    it.status
-                )
-            },
-            onError = {
-                stateData.value = LoadingData.Error(it)
-            }
-        )
-    }
-
-    fun navigateToKYC() {
-        val dest = SettingsFragmentDirections.settingsToVerificationInfoFragment()
-        actionData.value = SettingsAction.NavigateAction(dest)
-    }
 
     fun onSectionClick(section: SettingsSections) {
-        stateData.value?.let {
-            if (it is LoadingData.Success && it.data.isVerified()) {
-                when (section) {
-                    SettingsSections.WALLETS -> {
-                        val dest = SettingsFragmentDirections.settingsToManageFragment()
-                        actionData.value = SettingsAction.NavigateAction(dest)
-                    }
-                    SettingsSections.SECURITY -> {
-                        val dest = SettingsFragmentDirections.settingsToSecurityFragment()
-                        actionData.value = SettingsAction.NavigateAction(dest)
-                    }
-                    SettingsSections.KYC -> {
-                        navigateToKYC()
-                    }
-                    SettingsSections.SUPPORT -> {
-                        val dest = SettingsFragmentDirections.settingsToSupportFragment()
-                        actionData.value = SettingsAction.NavigateAction(dest)
-                    }
-                    SettingsSections.ABOUT -> {
-                        val dest = SettingsFragmentDirections.settingsToAboutFragment()
-                        actionData.value = SettingsAction.NavigateAction(dest)
-                    }
-                    SettingsSections.NOTIFICATIONS -> {
-                        actionData.value = SettingsAction.NotificationOptions
-                    }
-                    SettingsSections.REFERRALS -> {
-                        val dest = SettingsFragmentDirections.settingsToReferralsFragment()
-                        actionData.value = SettingsAction.NavigateAction(dest)
-                    }
-                }
-            } else {
-                actionData.value = SettingsAction.ShowVerifyDialog
+        when (section) {
+            SettingsSections.WALLETS -> {
+                val dest = SettingsFragmentDirections.settingsToManageFragment()
+                actionData.value = SettingsAction.NavigateAction(dest)
+            }
+            SettingsSections.SECURITY -> {
+                val dest = SettingsFragmentDirections.settingsToSecurityFragment()
+                actionData.value = SettingsAction.NavigateAction(dest)
+            }
+            SettingsSections.KYC -> {
+                val dest = SettingsFragmentDirections.settingsToVerificationInfoFragment()
+                actionData.value = SettingsAction.NavigateAction(dest)
+            }
+            SettingsSections.SUPPORT -> {
+                val dest = SettingsFragmentDirections.settingsToSupportFragment()
+                actionData.value = SettingsAction.NavigateAction(dest)
+            }
+            SettingsSections.ABOUT -> {
+                val dest = SettingsFragmentDirections.settingsToAboutFragment()
+                actionData.value = SettingsAction.NavigateAction(dest)
+            }
+            SettingsSections.NOTIFICATIONS -> {
+                actionData.value = SettingsAction.NotificationOptions
+            }
+            SettingsSections.REFERRALS -> {
+                val dest = SettingsFragmentDirections.settingsToReferralsFragment()
+                actionData.value = SettingsAction.NavigateAction(dest)
             }
         }
     }
@@ -103,7 +79,6 @@ enum class SettingsSections {
 sealed class SettingsAction {
     object NotificationOptions : SettingsAction()
     data class NavigateAction(val navDirections: NavDirections) : SettingsAction()
-    object ShowVerifyDialog: SettingsAction()
 }
 
 

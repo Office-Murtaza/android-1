@@ -15,8 +15,6 @@ class SettingsFragment : BaseFragment<FragmentSettingsBinding>() {
     private val viewModel by viewModel<SettingsViewModel>()
     private val settingsArgs: SettingsFragmentArgs by navArgs()
 
-    private lateinit var verifyDialog: MaterialDialog
-
     override var isMenuEnabled = true
 
     companion object {
@@ -28,15 +26,6 @@ class SettingsFragment : BaseFragment<FragmentSettingsBinding>() {
     override fun FragmentSettingsBinding.initViews() {
         setToolbarTitle(R.string.settings)
         viewModel.processArgs(settingsArgs)
-        verifyDialog = MaterialDialog(requireContext()).apply {
-            cancelOnTouchOutside(false)
-            title(text = getString(R.string.settings_verify_dialog_title))
-            message(text = getString(R.string.settings_verify_dialog_message))
-            negativeButton(text = getString(R.string.settings_verify_dialog_cancel))
-            positiveButton(text = getString(R.string.settings_verify_dialog_verify)) {
-                viewModel.navigateToKYC()
-            }
-        }
     }
 
     override fun FragmentSettingsBinding.initListeners() {
@@ -57,7 +46,6 @@ class SettingsFragment : BaseFragment<FragmentSettingsBinding>() {
                 when (action) {
                     is SettingsAction.NavigateAction -> navigate(action.navDirections)
                     SettingsAction.NotificationOptions -> startNotificationsSettings()
-                    SettingsAction.ShowVerifyDialog -> showVerifyDialog()
                 }
             }
         }
@@ -65,10 +53,6 @@ class SettingsFragment : BaseFragment<FragmentSettingsBinding>() {
 
     private fun onSectionClick(section: SettingsSections) {
         viewModel.onSectionClick(section)
-    }
-
-    private fun showVerifyDialog() {
-        verifyDialog.show()
     }
 
     private fun startNotificationsSettings() {

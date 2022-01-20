@@ -24,6 +24,7 @@ import com.belcobtm.presentation.features.authorization.create.wallet.CreateWall
 import com.belcobtm.presentation.features.authorization.recover.seed.RecoverSeedViewModel
 import com.belcobtm.presentation.features.authorization.recover.wallet.RecoverWalletViewModel
 import com.belcobtm.presentation.features.contacts.ContactListViewModel
+import com.belcobtm.presentation.features.deals.DealsViewModel
 import com.belcobtm.presentation.features.deals.atm.sell.AtmSellViewModel
 import com.belcobtm.presentation.features.deals.staking.StakingViewModel
 import com.belcobtm.presentation.features.deals.swap.SwapViewModel
@@ -121,7 +122,8 @@ val viewModelModule = module {
     viewModel { (phone: String) -> SmsCodeViewModel(phone, get(), get()) }
     viewModel { RecoverSeedViewModel(get()) }
     viewModel { CreateSeedViewModel(get(), get(), get()) }
-    viewModel { SettingsViewModel(get()) }
+    viewModel { SettingsViewModel() }
+    viewModel { DealsViewModel(get()) }
     viewModel { PasswordViewModel(get(), get()) }
     viewModel { UnlinkViewModel(get()) }
     viewModel { UpdatePasswordViewModel(get()) }
