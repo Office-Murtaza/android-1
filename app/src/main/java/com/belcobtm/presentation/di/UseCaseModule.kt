@@ -193,6 +193,8 @@ val useCaseModule = module {
     factory { TradesDataToTradeListMapper(get()) }
     factory { UpdateBalanceUseCase(get()) }
     factory { UpdateReservedBalanceUseCase(get()) }
+    factory { GetNeedToShowRestrictions(get()) }
+    factory { SetNeedToShowRestrictionsUseCase(get()) }
     factory {
         TradeToTradeItemMapper(
             get(), get(named(MILES_FORMATTER_QUALIFIER)),

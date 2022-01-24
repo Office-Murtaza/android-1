@@ -42,6 +42,14 @@ class WalletFragment : BaseFragment<FragmentBalanceBinding>() {
     }
 
     override fun FragmentBalanceBinding.initObservers() {
+
+        viewModel.needToShowRestrictions.observe(viewLifecycleOwner, {
+            if (it) {
+                showSnackBar(getString(R.string.restrictions_message))
+                viewModel.restrictionsShown()
+            }
+        })
+
         viewModel.balanceLiveData.listen(
             success = {
                 balanceView.text = currencyFormatter.format(it.first)

@@ -77,7 +77,7 @@ import java.util.*
 val viewModelModule = module {
     viewModel { AboutViewModel(get()) }
     viewModel { SecurityViewModel(get(), get(), get(), get(), get()) }
-    viewModel { WalletViewModel(get(), get()) }
+    viewModel { WalletViewModel(get(), get(), get(), get()) }
     viewModel { (coinCode: String) -> TransactionsViewModel(coinCode, get(), get(), get(), get()) }
     viewModel { RecoverWalletViewModel(get(), get<PhoneNumberValidator>()) }
     viewModel { CreateWalletViewModel(get(), get<PhoneNumberValidator>()) }
@@ -120,8 +120,8 @@ val viewModelModule = module {
     }
     viewModel { StakingViewModel(get(), get(), get(), get(), get(), get(), get(), get(), get()) }
     viewModel { (phone: String) -> SmsCodeViewModel(phone, get(), get()) }
-    viewModel { RecoverSeedViewModel(get()) }
-    viewModel { CreateSeedViewModel(get(), get(), get()) }
+    viewModel { RecoverSeedViewModel(get(), get()) }
+    viewModel { CreateSeedViewModel(get(), get(), get(), get()) }
     viewModel { SettingsViewModel() }
     viewModel { DealsViewModel(get()) }
     viewModel { PasswordViewModel(get(), get()) }

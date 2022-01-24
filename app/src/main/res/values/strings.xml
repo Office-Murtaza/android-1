@@ -770,4 +770,5 @@
     <string name="settings_verify_dialog_title">Verification</string>
     <string name="settings_verify_dialog_message">Please verify yourself to get full access to our services</string>
     <string name="settings_verify_dialog_verify">Verify</string>
+    <string name="restrictions_message">Some coins and services may be not available for your location</string>
 </resources>

@@ -91,6 +91,14 @@ class SettingsRepositoryImpl(
         }
     }
 
+    override suspend fun needToShowRestrictions(): Either<Failure, Boolean> {
+        return Either.Right(prefHelper.needToShowRestrictions)
+    }
+
+    override suspend fun setNeedToShowRestrictions(boolean: Boolean) {
+        prefHelper.needToShowRestrictions = boolean
+    }
+
     override suspend fun userAllowedBioAuth(): Either<Failure, Boolean> {
         return Either.Right(prefHelper.userAllowedBioAuth)
     }

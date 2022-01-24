@@ -6,12 +6,14 @@ import com.belcobtm.R
 import com.belcobtm.domain.authorization.interactor.CreateSeedUseCase
 import com.belcobtm.domain.authorization.interactor.CreateWalletUseCase
 import com.belcobtm.domain.authorization.interactor.SaveSeedUseCase
+import com.belcobtm.domain.settings.interactor.SetNeedToShowRestrictionsUseCase
 import com.belcobtm.presentation.core.mvvm.LoadingData
 
 class CreateSeedViewModel(
     private val createPhraseUseCase: CreateSeedUseCase,
     private val saveSeedUseCase: SaveSeedUseCase,
-    private val createWalletUseCase: CreateWalletUseCase
+    private val createWalletUseCase: CreateWalletUseCase,
+    private val setNeedToShowRestrictionsUseCase: SetNeedToShowRestrictionsUseCase
 ) : ViewModel() {
 
     companion object {
@@ -62,7 +64,9 @@ class CreateSeedViewModel(
     private fun createWallet(phone: String, password: String) {
         createWalletUseCase.invoke(
             params = CreateWalletUseCase.Params(phone, password),
-            onSuccess = { createWalletLiveData.value = LoadingData.Success(it) },
+            onSuccess = {
+                setNeedToShowRestrictionsUseCase.invoke(SetNeedToShowRestrictionsUseCase.Params(true))
+                createWalletLiveData.value = LoadingData.Success(it) },
             onError = { createWalletLiveData.value = LoadingData.Error(it) }
         )
     }

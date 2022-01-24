@@ -19,4 +19,6 @@ interface SettingsRepository {
     suspend fun setUserAllowedBioAuth(allowed: Boolean)
     suspend fun userAllowedBioAuth(): Either<Failure, Boolean>
     suspend fun bioAuthSupportedByPhone(): Either<Failure, Boolean>
+    suspend fun needToShowRestrictions(): Either<Failure, Boolean>
+    suspend fun setNeedToShowRestrictions(boolean: Boolean)
 }
