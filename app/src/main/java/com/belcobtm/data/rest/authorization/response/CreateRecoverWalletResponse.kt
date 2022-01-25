@@ -18,5 +18,6 @@ data class UserDetailsResponse(
     val roles: List<String>?,
     val referralCode: String?,
     val referrals: Int?,
-    val referralEarned: Double?
+    val referralEarned: Double?,
+    val status: Int
 )

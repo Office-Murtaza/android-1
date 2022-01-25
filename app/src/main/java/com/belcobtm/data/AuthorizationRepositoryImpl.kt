@@ -27,6 +27,7 @@ import wallet.core.jni.*
 import java.text.SimpleDateFormat
 import java.util.*
 import com.belcobtm.data.provider.location.LocationProvider
+import com.belcobtm.domain.settings.type.VerificationStatus
 
 
 class AuthorizationRepositoryImpl(
@@ -59,6 +60,15 @@ class AuthorizationRepositoryImpl(
         CoroutineScope(Dispatchers.IO).launch {
             daoAccount.clearTable()
             walletDao.clear()
+        }
+    }
+
+    override fun getVerificationStatus(): Either<Failure, VerificationStatus> {
+        val status = VerificationStatus.values().find { it.code == prefHelper.userStatus }
+        return if (status != null) {
+            Either.Right(status)
+        } else {
+            Either.Left(Failure.NetworkConnection)
         }
     }
 
@@ -123,6 +133,7 @@ class AuthorizationRepositoryImpl(
             prefHelper.firebaseToken = result.firebaseToken
             prefHelper.userId = result.user.id
             prefHelper.userPhone = phone
+            prefHelper.userStatus = result.user.status
             prefHelper.referralCode = result.user.referralCode.orEmpty()
             prefHelper.referralInvites = result.user.referrals ?: 0
             prefHelper.referralEarned = result.user.referralEarned ?: 0.0
@@ -168,6 +179,7 @@ class AuthorizationRepositoryImpl(
             prefHelper.refreshToken = result.refreshToken
             prefHelper.userPhone = phone
             prefHelper.userId = result.user.id
+            prefHelper.userStatus = result.user.status
             prefHelper.referralCode = result.user.referralCode.orEmpty()
             prefHelper.referralInvites = result.user.referrals ?: 0
             prefHelper.referralEarned = result.user.referralEarned ?: 0.0

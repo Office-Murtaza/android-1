@@ -189,6 +189,7 @@ val useCaseModule = module {
     single { ConnectToServicesUseCase(get()) }
     single { DisconnectFromServicesUseCase(get()) }
     factory { TradePaymentOptionMapper() }
+    factory { GetVerificationStatusUseCase(get()) }
     factory { CoinCodeMapper() }
     factory { TradesDataToTradeListMapper(get()) }
     factory { UpdateBalanceUseCase(get()) }

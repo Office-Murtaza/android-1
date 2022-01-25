@@ -38,6 +38,10 @@ class SharedPreferencesHelper(private val sharedPreferences: SharedPreferences) 
         set(value) = sharedPreferences.set(USER_PHONE, value)
         get() = sharedPreferences[USER_PHONE] ?: ""
 
+    var userStatus: Int
+        set(value) = sharedPreferences.set(USER_STATUS, value)
+        get() = sharedPreferences[USER_STATUS] ?: 0
+
     var userAllowedBioAuth: Boolean
         set(value) = sharedPreferences.set(USER_BIO_AUTH, value)
         get() = sharedPreferences.getBoolean(USER_BIO_AUTH, true)
@@ -64,6 +68,7 @@ class SharedPreferencesHelper(private val sharedPreferences: SharedPreferences) 
             refreshToken = it.refreshToken
             firebaseToken = it.firebaseToken
             userId = it.user.id
+            userStatus = it.user.status
             referralCode = it.user.referralCode.orEmpty()
             referralInvites = it.user.referrals ?: 0
             referralEarned = it.user.referralEarned ?: 0.0
@@ -100,6 +105,7 @@ class SharedPreferencesHelper(private val sharedPreferences: SharedPreferences) 
         private const val API_SEED = "KEY_API_SEED"
         private const val FIREBASE_TOKEN = "FIREBASE_TOKEN"
         private const val USER_ID = "KEY_USER_ID"
+        private const val USER_STATUS = "KEY_USER_STATUS"
         private const val USER_PIN = "KEY_PIN"
         private const val NOTIFICATION_TOKEN = "KEY_NOTIFICATION"
         private const val USER_PHONE = "KEY_PHONE"
