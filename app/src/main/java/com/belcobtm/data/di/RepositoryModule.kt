@@ -21,6 +21,7 @@ val repositoryModule = module {
             get(),
             (get() as AppDatabase).getCoinDao(),
             get(),
+            get(),
             get()
         )
     }

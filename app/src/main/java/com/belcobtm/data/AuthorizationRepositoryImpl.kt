@@ -26,6 +26,8 @@ import org.web3j.utils.Numeric
 import wallet.core.jni.*
 import java.text.SimpleDateFormat
 import java.util.*
+import com.belcobtm.data.provider.location.LocationProvider
+
 
 class AuthorizationRepositoryImpl(
     private val application: Application,
@@ -33,7 +35,8 @@ class AuthorizationRepositoryImpl(
     private val apiService: AuthApiService,
     private val daoAccount: AccountDao,
     private val walletDao: WalletDao,
-    private val serviceRepository: ServiceRepository
+    private val serviceRepository: ServiceRepository,
+    private val locationProvider: LocationProvider
 ) : AuthorizationRepository {
     private val temporaryCoinMap: MutableMap<LocalCoinType, Pair<String, String>> by lazy {
         return@lazy mutableMapOf<LocalCoinType, Pair<String, String>>()
@@ -98,7 +101,7 @@ class AuthorizationRepositoryImpl(
         password: String,
         notificationToken: String
     ): Either<Failure, Unit> {
-        val location = getLocation()
+        val location = locationProvider.getCurrentLocation()
         val response = apiService.createWallet(
             phone = phone,
             password = password,
@@ -136,7 +139,7 @@ class AuthorizationRepositoryImpl(
         password: String,
         notificationToken: String
     ): Either<Failure, Unit> {
-        val location = getLocation()
+        val location = locationProvider.getCurrentLocation()
         val wallet = HDWallet(seed, "")
         temporaryCoinMap.clear()
         temporaryCoinMap.putAll(
