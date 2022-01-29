@@ -25,7 +25,7 @@ class WalletViewModel(
     private val setNeedToShowRestrictionsUseCase: SetNeedToShowRestrictionsUseCase
 ) : ViewModel() {
 
-    private val _balanceLiveData = MutableLiveData<LoadingData<Pair<Double, List<CoinListItem>>>>()
+    private val _balanceLiveData:  MutableLiveData<LoadingData<Pair<Double, List<CoinListItem>>>> = MutableLiveData<LoadingData<Pair<Double, List<CoinListItem>>>>(LoadingData.Loading())
     val balanceLiveData: LiveData<LoadingData<Pair<Double, List<CoinListItem>>>> = _balanceLiveData
 
     private val _needToShowRestrictions: SingleLiveData<Boolean> = SingleLiveData()
@@ -42,7 +42,7 @@ class WalletViewModel(
             walletDao.observeCoins()
                 .combine(walletDao.observeWallet()) { coins, wallet -> mapWalletBalance(coins, wallet) }
                 .combine(walletConnectionHandler.observeConnectionFailure()) { wallet, error ->
-                    error?.let { LoadingData.Error<Pair<Double, List<CoinListItem>>>(it) } ?: wallet
+                    error?.let { LoadingData.Error(it) } ?: wallet
                 }
                 .collect {
                     _balanceLiveData.value = it
@@ -61,7 +61,7 @@ class WalletViewModel(
         coins: List<FullCoinEntity>, walletEntity: WalletEntity?
     ): LoadingData<Pair<Double, List<CoinListItem>>> =
         if (coins.isEmpty()) {
-            LoadingData.Loading()
+            LoadingData.DismissProgress()
         } else {
             val coinItems = coins.filter { it.accountEntity.isEnabled }
                 .map {

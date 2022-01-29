@@ -46,6 +46,10 @@ class SharedPreferencesHelper(private val sharedPreferences: SharedPreferences) 
         set(value) = sharedPreferences.set(USER_BIO_AUTH, value)
         get() = sharedPreferences.getBoolean(USER_BIO_AUTH, true)
 
+    var isUserAuthed: Boolean
+        set(value) = sharedPreferences.set(USER_AUTH, value)
+        get() = sharedPreferences.getBoolean(USER_AUTH, false)
+
     var needToShowRestrictions: Boolean
         set(value) = sharedPreferences.set(NEED_TO_SHOW_RESTRICTIONS, value)
         get() = sharedPreferences.getBoolean(NEED_TO_SHOW_RESTRICTIONS, false)
@@ -68,6 +72,7 @@ class SharedPreferencesHelper(private val sharedPreferences: SharedPreferences) 
             refreshToken = it.refreshToken
             firebaseToken = it.firebaseToken
             userId = it.user.id
+            isUserAuthed = true
             userStatus = it.user.status
             referralCode = it.user.referralCode.orEmpty()
             referralInvites = it.user.referrals ?: 0
@@ -110,6 +115,7 @@ class SharedPreferencesHelper(private val sharedPreferences: SharedPreferences) 
         private const val NOTIFICATION_TOKEN = "KEY_NOTIFICATION"
         private const val USER_PHONE = "KEY_PHONE"
         private const val USER_BIO_AUTH = "KEY_BIO_AUTH"
+        private const val USER_AUTH = "KEY_USER_AUTH"
         private const val NEED_TO_SHOW_RESTRICTIONS = "NEED_TO_SHOW_RESTRICTIONS"
         private const val REFERRAL_CODE = "REFERRAL_CODE"
         private const val REFERRAL_INVITES = "REFERRAL_INVITES"

@@ -8,6 +8,7 @@ interface AuthorizationRepository {
     fun getAuthorizationStatus(): AuthorizationStatus
     fun getAuthorizePin(): String
     fun setAuthorizePin(pinCode: String)
+    fun setIsUserAuthed(isAuthed: Boolean)
     fun clearAppData()
     fun getVerificationStatus(): Either<Failure, VerificationStatus>
     suspend fun authorizationCheckCredentials(

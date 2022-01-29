@@ -63,6 +63,7 @@ val useCaseModule = module {
     single { GetAuthorizePinUseCase(get()) }
     single { SaveAuthorizePinUseCase(get()) }
     single { GetVerificationInfoUseCase(get()) }
+    single { SaveUserAuthedUseCase(get()) }
     single {
         SendVerificationBlankUseCase(
             get(),

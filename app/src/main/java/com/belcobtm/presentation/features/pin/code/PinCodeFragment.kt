@@ -125,6 +125,7 @@ class PinCodeFragment : BaseFragment<FragmentPinCodeBinding>() {
                 is PinCodeAction.Success -> {
                     viewModel.connectToWebSockets()
                     val deeplink = arguments?.getString(KEY_DEEPLINK)
+                    viewModel.saveUserAuthed(true)
                     if (deeplink.isNullOrEmpty()) {
                         navigate(
                             R.id.main_screen,

@@ -10,7 +10,7 @@ data class CreateRecoverWalletResponse(
     val firebaseToken: String,
     val user: UserDetailsResponse,
     val balance: BalanceResponse,
-    val serviceConfigs: List<ServicesInfoResponse>
+    val services: List<ServicesInfoResponse>
 )
 
 data class UserDetailsResponse(

@@ -9,6 +9,7 @@ import com.belcobtm.domain.UseCase
 import com.belcobtm.domain.authorization.interactor.AuthorizeUseCase
 import com.belcobtm.domain.authorization.interactor.GetAuthorizePinUseCase
 import com.belcobtm.domain.authorization.interactor.SaveAuthorizePinUseCase
+import com.belcobtm.domain.authorization.interactor.SaveUserAuthedUseCase
 import com.belcobtm.domain.service.ConnectToServicesUseCase
 import com.belcobtm.domain.service.DisconnectFromServicesUseCase
 import com.belcobtm.domain.settings.interactor.BioAuthAllowedByUserUseCase
@@ -41,7 +42,8 @@ class PinCodeViewModel(
     private val disconnectFromTransactionsUseCase: DisconnectFromTransactionsUseCase,
     private val disconnectFromServicesUseCase: DisconnectFromServicesUseCase,
     private val authorizePinUseCase: GetAuthorizePinUseCase,
-    private val savePinCodeUseCase: SaveAuthorizePinUseCase
+    private val savePinCodeUseCase: SaveAuthorizePinUseCase,
+    private val saveUserAuthedUseCase: SaveUserAuthedUseCase
 ) : ViewModel() {
 
     val stateData = MutableLiveData(PinCodeState())
@@ -73,6 +75,9 @@ class PinCodeViewModel(
 
     fun savePinCode(pinCode: String) =
         savePinCodeUseCase.invoke(SaveAuthorizePinUseCase.Params(pinCode))
+
+    fun saveUserAuthed(userAuthed: Boolean) =
+        saveUserAuthedUseCase.invoke(SaveUserAuthedUseCase.Params(userAuthed))
 
     fun getSavedPinCode(): String = authorizePinUseCase.invoke()
 

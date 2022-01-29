@@ -85,7 +85,7 @@ val viewModelModule = module {
         PinCodeViewModel(
             get(), get(), get(), get(), get(),
             get(), get(), get(), get(), get(),
-            get(), get(), get()
+            get(), get(), get(), get()
         )
     }
     viewModel {

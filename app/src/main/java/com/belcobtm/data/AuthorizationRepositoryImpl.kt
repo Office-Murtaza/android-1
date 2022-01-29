@@ -44,8 +44,7 @@ class AuthorizationRepositoryImpl(
     }
 
     override fun getAuthorizationStatus(): AuthorizationStatus {
-        val isEmptyAccountList = runBlocking { daoAccount.isTableHasItems() } == null
-        if (isEmptyAccountList && prefHelper.apiSeed.isNotEmpty()) {
+        if (!prefHelper.isUserAuthed && prefHelper.apiSeed.isNotEmpty()) {
             clearAppData()
         }
         return when {
@@ -127,7 +126,7 @@ class AuthorizationRepositoryImpl(
             val accountList = createAccountEntityList(temporaryCoinMap, result.balance.coins)
             walletDao.updateBalance(result.balance)
             daoAccount.insertItemList(accountList)
-            serviceRepository.updateServices(result.serviceConfigs)
+            serviceRepository.updateServices(result.services)
             prefHelper.accessToken = result.accessToken
             prefHelper.refreshToken = result.refreshToken
             prefHelper.firebaseToken = result.firebaseToken
@@ -170,7 +169,7 @@ class AuthorizationRepositoryImpl(
         return if (recoverResponse.isRight) {
             val result = (recoverResponse as Either.Right).b
             val accountList = createAccountEntityList(temporaryCoinMap, result.balance.coins)
-            serviceRepository.updateServices(result.serviceConfigs)
+            serviceRepository.updateServices(result.services)
             walletDao.updateBalance(result.balance)
             daoAccount.insertItemList(accountList)
             prefHelper.apiSeed = seed
@@ -206,6 +205,10 @@ class AuthorizationRepositoryImpl(
 
     override fun setAuthorizePin(pinCode: String) {
         prefHelper.userPin = pinCode
+    }
+
+    override fun setIsUserAuthed(isAuthed: Boolean) {
+        prefHelper.isUserAuthed = isAuthed
     }
 
     private fun createTemporaryAccount(
