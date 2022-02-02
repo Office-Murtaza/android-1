@@ -1,6 +1,7 @@
 package com.belcobtm.presentation.features.deals
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.asLiveData
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -26,8 +27,6 @@ class DealsFragment : BaseFragment<FragmentDealsBinding>() {
 
     private val viewModel by viewModel<DealsViewModel>()
 
-    private lateinit var verifyDialog: MaterialDialog
-
     private val adapter by lazy {
         MultiTypeAdapter().apply {
             registerDelegate(DealsItemDelegate(::onServiceClicked))
@@ -36,27 +35,24 @@ class DealsFragment : BaseFragment<FragmentDealsBinding>() {
 
     override fun FragmentDealsBinding.initObservers() {
         viewModel.apply {
-            stateData.observe(viewLifecycleOwner, {
+            stateData.observe(viewLifecycleOwner) {
                 it.commonData?.let { status ->
                     if (!status.isVerified()) {
-                        verifyDialog.show()
+                        verifyRoot.visibility = View.VISIBLE
+                    } else {
+                        verifyRoot.visibility = View.GONE
                     }
                 }
-            })
+            }
         }
     }
 
     override fun FragmentDealsBinding.initViews() {
         setToolbarTitle(R.string.deals_toolsbar_title)
-        verifyDialog = MaterialDialog(requireContext()).apply {
-            cancelOnTouchOutside(false)
-            cancelable(false)
-            title(text = getString(R.string.settings_verify_dialog_title))
-            message(text = getString(R.string.settings_verify_dialog_message))
-            positiveButton(text = getString(R.string.settings_verify_dialog_verify)) {
-                val dest = DealsFragmentDirections.toVerificationInfoFragment()
-                navigate(dest)
-            }
+
+        verify.setOnClickListener {
+            val dest = DealsFragmentDirections.toVerificationInfoFragment()
+            navigate(dest)
         }
         val dividerItemDecoration = DividerItemDecoration(
             requireContext(), DividerItemDecoration.VERTICAL,

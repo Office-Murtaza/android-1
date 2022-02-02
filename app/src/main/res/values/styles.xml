@@ -144,6 +144,18 @@
         <item name="android:textStyle">bold</item>
     </style>
 
+    <style name="Text.Regular4">
+        <item name="android:textSize">14sp</item>
+        <item name="android:letterSpacing">0.02</item>
+        <item name="android:textColor">@android:color/white</item>
+    </style>
+
+    <style name="Text.Head1">
+        <item name="android:textSize">24sp</item>
+        <item name="android:letterSpacing">0.02</item>
+        <item name="android:textColor">@android:color/white</item>
+    </style>
+
     <style name="SwapAmountTextAppearance" parent="Text.Regular1">
         <item name="android:textSize">22sp</item>
         <item name="android:textColor">@color/chip_default_text_color</item>

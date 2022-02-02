@@ -8,6 +8,7 @@
     <color name="colorText">#58585a</color>
     <color name="gray_text_color">#7c7c7c</color>
     <color name="black_text_color">#000</color>
+    <color name="black_opacity_70">#CC000000</color>
     <color name="light_gray_text_color">#c1c1c1</color>
     <color name="dark_text_color">#212121</color>
     <color name="dark_bg">#14212121</color>
