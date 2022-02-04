@@ -11,6 +11,7 @@ import com.belcobtm.data.disk.database.service.ServiceType
 import com.belcobtm.databinding.FragmentDealsBinding
 import com.belcobtm.domain.service.ServiceInfoProvider
 import com.belcobtm.domain.service.ServiceItem
+import com.belcobtm.domain.settings.type.isPending
 import com.belcobtm.domain.settings.type.isVerified
 import com.belcobtm.presentation.core.adapter.MultiTypeAdapter
 import com.belcobtm.presentation.core.ui.fragment.BaseFragment
@@ -37,7 +38,7 @@ class DealsFragment : BaseFragment<FragmentDealsBinding>() {
         viewModel.apply {
             stateData.observe(viewLifecycleOwner) {
                 it.commonData?.let { status ->
-                    if (!status.isVerified()) {
+                    if (status.isPending()) {
                         verifyRoot.visibility = View.VISIBLE
                     } else {
                         verifyRoot.visibility = View.GONE

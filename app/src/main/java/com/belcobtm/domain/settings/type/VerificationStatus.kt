@@ -17,3 +17,7 @@ enum class VerificationStatus(val code: Int) {
 fun VerificationStatus.isVerified(): Boolean {
     return code == VerificationStatus.VERIFIED.code || code == VerificationStatus.VIP_VERIFIED.code
 }
+
+fun VerificationStatus.isPending(): Boolean {
+    return code == VerificationStatus.VERIFICATION_PENDING.code
+}
