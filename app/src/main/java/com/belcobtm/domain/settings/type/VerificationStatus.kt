@@ -19,5 +19,5 @@ fun VerificationStatus.isVerified(): Boolean {
 }
 
 fun VerificationStatus.isPending(): Boolean {
-    return code == VerificationStatus.VERIFICATION_PENDING.code
+    return code == VerificationStatus.NOT_VERIFIED.code
 }
