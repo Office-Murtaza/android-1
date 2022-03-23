@@ -13,5 +13,5 @@ data class VerificationBlankRequest(
     val country: String,
     val province: String,
     val zipCode: String,
-    val status: Int = VerificationStatus.VERIFICATION_PENDING.code
+    val status: String = VerificationStatus.VERIFICATION_PENDING.stringValue
 )

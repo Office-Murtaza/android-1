@@ -27,7 +27,7 @@ class SettingsRepositoryImpl(
             Either.Right(
                 VerificationInfoDataItem(
                     id = responseItem.id,
-                    status = VerificationStatus.getStatusByCode(responseItem.status),
+                    status = VerificationStatus.fromString(responseItem.status),
                     txLimit = responseItem.txLimit,
                     dayLimit = responseItem.dailyLimit,
                     message = responseItem.message.orEmpty(),

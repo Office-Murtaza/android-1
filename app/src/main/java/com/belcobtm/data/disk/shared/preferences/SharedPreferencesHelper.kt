@@ -38,9 +38,9 @@ class SharedPreferencesHelper(private val sharedPreferences: SharedPreferences) 
         set(value) = sharedPreferences.set(USER_PHONE, value)
         get() = sharedPreferences[USER_PHONE] ?: ""
 
-    var userStatus: Int
+    var userStatus: String
         set(value) = sharedPreferences.set(USER_STATUS, value)
-        get() = sharedPreferences[USER_STATUS] ?: 0
+        get() = sharedPreferences[USER_STATUS] ?: ""
 
     var userAllowedBioAuth: Boolean
         set(value) = sharedPreferences.set(USER_BIO_AUTH, value)

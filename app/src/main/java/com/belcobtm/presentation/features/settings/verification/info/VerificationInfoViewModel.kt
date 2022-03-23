@@ -33,7 +33,7 @@ class VerificationInfoViewModel(
                         statusIcon = getStatusIcon(it.status),
                         buttonText = getButtonTextByStatus(it.status),
                         bannerIcon = getBannerIcon(it.status),
-                        statusTextCode = it.status.code,
+                        statusTextCode = it.status.stringValue,
                         txLimit = priceFormatter.format(it.txLimit),
                         dailyLimit = priceFormatter.format(it.dayLimit),
                         isButtonEnabled = isButtonEnabled(it),
@@ -127,7 +127,7 @@ class VerificationInfoViewModel(
 data class VerificationInfoState(
     val statusColor: Pair<Int, Int> = Pair(R.color.transaction_red, R.color.transaction_red),
     val buttonText: Int = R.string.verification_verify,
-    @StringRes val statusTextCode: Int = 0,
+    val statusTextCode: String = "",
     @DrawableRes val statusIcon: Int = 0,
     @DrawableRes val bannerIcon: Int = R.drawable.ic_warning_outlined,
     val txLimit: String = "",

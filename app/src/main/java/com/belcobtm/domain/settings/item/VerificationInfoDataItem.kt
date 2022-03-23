@@ -22,7 +22,7 @@ data class VerificationInfoDataItem(
 ) : Parcelable {
     constructor(parcel: Parcel) : this(
         parcel.readString(),
-        VerificationStatus.getStatusByCode(parcel.readInt()),
+        VerificationStatus.fromString(parcel.readString()),
         parcel.readDouble(),
         parcel.readDouble(),
         parcel.readString().orEmpty(),
@@ -40,7 +40,7 @@ data class VerificationInfoDataItem(
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeString(id)
-        parcel.writeInt(status.code)
+        parcel.writeString(status.stringValue)
         parcel.writeDouble(txLimit)
         parcel.writeDouble(dayLimit)
         parcel.writeString(message)

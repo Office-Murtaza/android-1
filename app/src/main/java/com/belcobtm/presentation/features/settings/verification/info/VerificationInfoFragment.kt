@@ -48,7 +48,8 @@ class VerificationInfoFragment : BaseFragment<FragmentVerificationInfoBinding>()
                     nextButton.setText(it)
                 }
                 state.statusTextCode.doIfChanged(appliedState?.commonData?.statusTextCode) {
-                    statusValueView.text = resources.getStringArray(R.array.verification_status_array)[it]
+                    //temporary fix
+                    statusValueView.text = resources.getStringArray(R.array.verification_status_array)[0]
                 }
                 state.txLimit.doIfChanged(appliedState?.commonData?.txLimit) {
                     txLimitValueView.text = it

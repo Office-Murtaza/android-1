@@ -15,5 +15,5 @@ data class VipVerificationRequest(
     val zipCode: String,
     val snn: String,
     val ssnFilename: String,
-    val staus: Int = VerificationStatus.VIP_VERIFICATION_PENDING.code
+    val staus: String = VerificationStatus.VIP_VERIFICATION_PENDING.stringValue
 )

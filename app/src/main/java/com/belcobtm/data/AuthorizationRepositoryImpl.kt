@@ -63,7 +63,7 @@ class AuthorizationRepositoryImpl(
     }
 
     override fun getVerificationStatus(): Either<Failure, VerificationStatus> {
-        val status = VerificationStatus.values().find { it.code == prefHelper.userStatus }
+        val status = VerificationStatus.values().find { it.stringValue == prefHelper.userStatus }
         return if (status != null) {
             Either.Right(status)
         } else {
