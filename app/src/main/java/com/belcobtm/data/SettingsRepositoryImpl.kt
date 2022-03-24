@@ -8,10 +8,7 @@ import com.belcobtm.data.rest.settings.SettingsApiService
 import com.belcobtm.domain.Either
 import com.belcobtm.domain.Failure
 import com.belcobtm.domain.settings.SettingsRepository
-import com.belcobtm.domain.settings.item.VerificationBlankDataItem
-import com.belcobtm.domain.settings.item.VerificationCountryDataItem
-import com.belcobtm.domain.settings.item.VerificationInfoDataItem
-import com.belcobtm.domain.settings.item.VerificationVipDataItem
+import com.belcobtm.domain.settings.item.*
 import com.belcobtm.domain.settings.type.VerificationStatus
 
 class SettingsRepositoryImpl(
@@ -20,6 +17,25 @@ class SettingsRepositoryImpl(
     private val assetsDataStore: AssetsDataStore,
     private val prefHelper: SharedPreferencesHelper
 ) : SettingsRepository {
+
+    override suspend fun getVerificationDetails(): Either<Failure, VerificationDetailsDataItem> {
+        val response = apiService.getVerificationDetails(prefHelper.userId)
+        return if (response.isRight) {
+            val responseItem = (response as Either.Right).b
+            Either.Right(
+                VerificationDetailsDataItem(
+                    identityVerification = responseItem.identityVerification,
+                    documentVerification = responseItem.documentVerification,
+                    documentVerificationComplete = responseItem.documentVerificationComplete,
+                    supportedCountries = responseItem.supportedCountries,
+                    sdkToken = responseItem.sdkToken,
+                )
+            )
+        } else {
+            response as Either.Left
+        }
+    }
+
     override suspend fun getVerificationInfo(): Either<Failure, VerificationInfoDataItem> {
         val response = apiService.getVerificationInfo(prefHelper.userId)
         return if (response.isRight) {

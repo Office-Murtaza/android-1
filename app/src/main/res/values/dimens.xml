@@ -25,6 +25,9 @@
     <dimen name="chip_create_seed_horizontal_spacing">16dp</dimen>
     <dimen name="chip_create_seed_vertical_spacing">0dp</dimen>
 
+    //
+    <dimen name="verification_step_radius">35dp</dimen>
+
     //settings
     <dimen name="settings_item_height">56dp</dimen>
 

@@ -194,7 +194,7 @@
 
     <fragment
         android:id="@+id/verification_info_fragment"
-        android:name="com.belcobtm.presentation.features.settings.verification.info.VerificationInfoFragment"
+        android:name="com.belcobtm.presentation.features.settings.verification.details.VerificationDetailsFragment"
         android:label="VerificationInfoFragment"
         tools:layout="@layout/fragment_verification_info">
 

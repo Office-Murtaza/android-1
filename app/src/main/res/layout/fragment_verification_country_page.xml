@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <com.google.android.material.textfield.TextInputLayout
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:id="@+id/country_view"
+        style="@style/VerificationBlankScreen.EditTextContainer">
+
+        <androidx.appcompat.widget.AppCompatEditText
+            style="@style/VerificationBlankScreen.EditText"
+            android:drawableEnd="@drawable/ic_arrow_drop_down"
+            android:focusableInTouchMode="false"
+            android:hint="@string/verification_country"
+            android:inputType="textPostalAddress"
+            android:nextFocusDown="@id/province_view" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

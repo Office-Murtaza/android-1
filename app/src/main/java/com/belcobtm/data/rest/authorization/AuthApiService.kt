@@ -49,7 +49,8 @@ class AuthApiService(private val authApi: AuthApi) {
             lng,
             timezone,
             notificationToken,
-            coinList
+            coinList,
+            "ANDROID"
         )
         val response = authApi.createWalletAsync(request).await()
         response.body()?.let { Either.Right(it) } ?: Either.Left(Failure.ServerError())

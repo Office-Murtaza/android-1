@@ -455,7 +455,7 @@
     </dialog>
     <fragment
         android:id="@+id/verificationInfoFragment"
-        android:name="com.belcobtm.presentation.features.settings.verification.info.VerificationInfoFragment"
+        android:name="com.belcobtm.presentation.features.settings.verification.details.VerificationDetailsFragment"
         android:label="VerificationInfoFragment" />
 
 </navigation>

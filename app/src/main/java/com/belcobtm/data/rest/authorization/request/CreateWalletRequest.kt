@@ -11,7 +11,7 @@ data class CreateWalletRequest(
     val timezone: String,
     val notificationToken: String?,
     val coins: List<CreateWalletCoinRequest>,
-    val platform: Int = 2//android
+    val platform: String//android
 )
 
 data class CreateWalletCoinRequest(

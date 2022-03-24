@@ -40,7 +40,7 @@ import com.belcobtm.presentation.features.settings.security.SecurityViewModel
 import com.belcobtm.presentation.features.settings.unlink.UnlinkViewModel
 import com.belcobtm.presentation.features.settings.update_password.UpdatePasswordViewModel
 import com.belcobtm.presentation.features.settings.verification.blank.VerificationBlankViewModel
-import com.belcobtm.presentation.features.settings.verification.info.VerificationInfoViewModel
+import com.belcobtm.presentation.features.settings.verification.details.VerificationDetailsViewModel
 import com.belcobtm.presentation.features.settings.verification.vip.VerificationVipViewModel
 import com.belcobtm.presentation.features.sms.code.SmsCodeViewModel
 import com.belcobtm.presentation.features.wallet.add.WalletsViewModel
@@ -89,7 +89,8 @@ val viewModelModule = module {
         )
     }
     viewModel {
-        VerificationInfoViewModel(
+        VerificationDetailsViewModel(
+            get(),
             get(),
             get(named(DOUBLE_CURRENCY_PRICE_FORMATTER_QUALIFIER))
         )

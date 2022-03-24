@@ -2,13 +2,11 @@ package com.belcobtm.domain.settings
 
 import com.belcobtm.domain.Either
 import com.belcobtm.domain.Failure
-import com.belcobtm.domain.settings.item.VerificationBlankDataItem
-import com.belcobtm.domain.settings.item.VerificationCountryDataItem
-import com.belcobtm.domain.settings.item.VerificationInfoDataItem
-import com.belcobtm.domain.settings.item.VerificationVipDataItem
+import com.belcobtm.domain.settings.item.*
 
 interface SettingsRepository {
     suspend fun getVerificationInfo(): Either<Failure, VerificationInfoDataItem>
+    suspend fun getVerificationDetails():Either<Failure, VerificationDetailsDataItem>
     suspend fun sendVerificationBlank(blankDataItem: VerificationBlankDataItem, fileName: String): Either<Failure, Unit>
     fun getVerificationCountries(): List<VerificationCountryDataItem>
     suspend fun sendVerificationVip(vipDataItem: VerificationVipDataItem, fileName: String): Either<Failure, Unit>

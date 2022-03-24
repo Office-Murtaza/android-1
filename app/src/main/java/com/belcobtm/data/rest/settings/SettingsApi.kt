@@ -6,6 +6,7 @@ import com.belcobtm.data.rest.settings.request.VerificationBlankRequest
 import com.belcobtm.data.rest.settings.request.VipVerificationRequest
 import com.belcobtm.data.rest.settings.response.GetPhoneResponse
 import com.belcobtm.data.rest.settings.response.UpdateResponse
+import com.belcobtm.data.rest.settings.response.VerificationDetailsResponse
 import com.belcobtm.data.rest.settings.response.VerificationInfoResponse
 import kotlinx.coroutines.Deferred
 import okhttp3.ResponseBody
@@ -20,6 +21,11 @@ interface SettingsApi {
     fun getVerificationInfoAsync(
         @Path("userId") userId: String
     ): Deferred<Response<VerificationInfoResponse>>
+
+    @GET("verification/user/{userId}/details")
+    fun getVerificationDetailsAsync(
+        @Path("userId") userId: String
+    ): Deferred<Response<VerificationDetailsResponse>>
 
     @POST("user/{userId}/verification")
     fun sendVerificationBlankAsync(
