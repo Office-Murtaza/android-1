@@ -5,6 +5,7 @@ import com.belcobtm.data.rest.settings.request.UpdatePhoneParam
 import com.belcobtm.data.rest.settings.request.VerificationBlankRequest
 import com.belcobtm.data.rest.settings.request.VipVerificationRequest
 import com.belcobtm.data.rest.settings.response.VerificationDetailsResponse
+import com.belcobtm.data.rest.settings.response.VerificationFieldsResponse
 import com.belcobtm.data.rest.settings.response.VerificationInfoResponse
 import com.belcobtm.domain.Either
 import com.belcobtm.domain.Failure
@@ -26,6 +27,15 @@ class SettingsApiService(private val api: SettingsApi) {
     suspend fun getVerificationDetails(userId:String): Either<Failure, VerificationDetailsResponse> =
         try {
             val request = api.getVerificationDetailsAsync(userId).await()
+            request.body()?.let { Either.Right(it) } ?: Either.Left(Failure.ServerError())
+        } catch (failure: Failure) {
+            failure.printStackTrace()
+            Either.Left(failure)
+        }
+
+    suspend fun getVerificationFields(countryCode:String): Either<Failure, VerificationFieldsResponse> =
+        try {
+            val request = api.getVerificationFieldsAsync(countryCode).await()
             request.body()?.let { Either.Right(it) } ?: Either.Left(Failure.ServerError())
         } catch (failure: Failure) {
             failure.printStackTrace()

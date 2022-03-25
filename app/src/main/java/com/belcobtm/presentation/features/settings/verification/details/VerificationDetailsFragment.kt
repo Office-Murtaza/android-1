@@ -63,7 +63,7 @@ class VerificationDetailsFragment : BaseFragment<FragmentVerificationBinding>() 
                 is VerificationDetailsAction.NavigateAction -> navigate(action.navDirections)
             }
         }
-        viewModel.stateData.listen(
+        viewModel.detailsStateData.listen(
             success = { state ->
                 state.doIfChanged(appliedState) {
                     showContent()

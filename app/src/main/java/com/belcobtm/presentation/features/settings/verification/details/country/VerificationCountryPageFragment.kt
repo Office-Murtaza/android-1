@@ -1,7 +1,6 @@
 package com.belcobtm.presentation.features.settings.verification.details.country
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -29,6 +28,7 @@ class VerificationCountryPageFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         initViews()
         initListeners()
+        initObservers()
     }
 
     private fun initViews() {
@@ -44,10 +44,16 @@ class VerificationCountryPageFragment : Fragment() {
                     .setTitle(R.string.verification_alert_country_title)
                     .setItems(countryList.map { it.name }.toTypedArray()) { dialog, which ->
                         binding.countryView.setText(countryList[which].name)
+                        viewModel.selectedCountry = countryList[which]
                     }
                     .create().show()
             }
         }
     }
+
+    private fun initObservers() {
+
+    }
+
 
 }

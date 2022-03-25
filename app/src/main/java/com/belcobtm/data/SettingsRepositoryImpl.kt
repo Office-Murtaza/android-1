@@ -36,6 +36,20 @@ class SettingsRepositoryImpl(
         }
     }
 
+    override suspend fun getVerificationFields(countryCode: String): Either<Failure, VerificationFieldsDataItem> {
+        val response = apiService.getVerificationFields(countryCode)
+        return if (response.isRight) {
+            val responseItem = (response as Either.Right).b
+            Either.Right(
+                VerificationFieldsDataItem(
+                    "xx"
+                )
+            )
+        } else {
+            response as Either.Left
+        }
+    }
+
     override suspend fun getVerificationInfo(): Either<Failure, VerificationInfoDataItem> {
         val response = apiService.getVerificationInfo(prefHelper.userId)
         return if (response.isRight) {

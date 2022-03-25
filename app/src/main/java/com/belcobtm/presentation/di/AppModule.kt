@@ -92,6 +92,7 @@ val viewModelModule = module {
         VerificationDetailsViewModel(
             get(),
             get(),
+            get(),
             get(named(DOUBLE_CURRENCY_PRICE_FORMATTER_QUALIFIER))
         )
     }

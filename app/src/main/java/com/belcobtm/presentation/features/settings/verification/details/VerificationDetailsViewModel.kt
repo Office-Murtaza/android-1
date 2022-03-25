@@ -7,8 +7,10 @@ import androidx.navigation.NavDirections
 import com.belcobtm.R
 import com.belcobtm.domain.settings.interactor.GetVerificationCountryListUseCase
 import com.belcobtm.domain.settings.interactor.GetVerificationDetailsUseCase
+import com.belcobtm.domain.settings.interactor.GetVerificationFieldsUseCase
 import com.belcobtm.domain.settings.item.VerificationDetailsDataItem
 import com.belcobtm.domain.settings.item.VerificationInfoDataItem
+import com.belcobtm.domain.settings.item.VerificationSupportedCountryDataItem
 import com.belcobtm.domain.settings.type.VerificationStatus
 import com.belcobtm.presentation.core.SingleLiveData
 import com.belcobtm.presentation.core.formatter.Formatter
@@ -16,49 +18,68 @@ import com.belcobtm.presentation.core.mvvm.LoadingData
 
 class VerificationDetailsViewModel(
     private val getVerificationDetailsUseCase: GetVerificationDetailsUseCase,
+    private val getVerificationFieldsUseCase: GetVerificationFieldsUseCase,
     private val countriesUseCase: GetVerificationCountryListUseCase,
     private val priceFormatter: Formatter<Double>,
 ) : ViewModel() {
-    val stateData = MutableLiveData<LoadingData<VerificationDetailsState>>()
+    val detailsStateData = MutableLiveData<LoadingData<VerificationDetailsState>>()
+    val fieldsStateData = MutableLiveData<LoadingData<VerificationFieldsState>>()
     val actionData = SingleLiveData<VerificationDetailsAction>()
     val countries = countriesUseCase.invoke()
     var currentStep = 1
+    var selectedCountry: VerificationSupportedCountryDataItem? = null
 
     var item: VerificationDetailsDataItem? = null
 
     fun getVerificationStatus() {
-        stateData.value = LoadingData.Loading()
+        detailsStateData.value = LoadingData.Loading()
         getVerificationDetailsUseCase.invoke(Unit,
             onSuccess = {
                 item = it
                 getVerificationStep(it)
-                stateData.value = LoadingData.Success(
+                detailsStateData.value = LoadingData.Success(
                     getVerificationDetailsStateByStep(currentStep)
                 )
             },
             onError = {
-                stateData.value = LoadingData.Error(it)
+                detailsStateData.value = LoadingData.Error(it)
             }
         )
     }
 
-    fun getVerificationFields(countryCode: String) {
+    fun getVerificationFields() {
+        fieldsStateData.value = LoadingData.Loading()
+        selectedCountry?.let {
+            getVerificationFieldsUseCase.invoke(GetVerificationFieldsUseCase.Params(it.code),
+                onSuccess = {
 
+                },
+                onError = {
+                    fieldsStateData.value = LoadingData.Error(it)
+                }
+            )
+        } ?: run {
 
+        }
     }
 
     fun onBackClick() {
-        currentStep--
-        stateData.value = LoadingData.Success(
-            getVerificationDetailsStateByStep(currentStep)
-        )
+        if (currentStep > 1) {
+            currentStep--
+            detailsStateData.value = LoadingData.Success(
+                getVerificationDetailsStateByStep(currentStep)
+            )
+        }
     }
 
     fun onNextClick() {
-        currentStep++
-        stateData.value = LoadingData.Success(
-            getVerificationDetailsStateByStep(currentStep)
-        )
+        if (currentStep < 3) {
+            currentStep++
+            detailsStateData.value = LoadingData.Success(
+                getVerificationDetailsStateByStep(currentStep)
+
+            )
+        }
 //        actionData.value = VerificationDetailsAction.NavigateAction(
 //            when (item?.status) {
 //                VerificationStatus.NOT_VERIFIED,
@@ -103,8 +124,8 @@ class VerificationDetailsViewModel(
 
 
     private fun getVerificationStep(verificationDetails: VerificationDetailsDataItem) {
-        if (verificationDetails.identityVerification == null)
-            currentStep = 2
+        if (verificationDetails.identityVerification != null)
+            currentStep = 3
         else
             currentStep = 1
     }
@@ -235,6 +256,9 @@ data class VerificationDetailsState(
     @DrawableRes val documentStepBackground: Int = R.drawable.gray_border_background,
     val currentStep: Int = 1
 )
+
+data class VerificationFieldsState(val currentStep: Int = 1)
+
 
 sealed class VerificationDetailsAction {
     data class NavigateAction(val navDirections: NavDirections) : VerificationDetailsAction()
