@@ -1,9 +1,6 @@
 package com.belcobtm.data.rest.settings
 
-import com.belcobtm.data.rest.settings.request.ChangePassBody
-import com.belcobtm.data.rest.settings.request.UpdatePhoneParam
-import com.belcobtm.data.rest.settings.request.VerificationBlankRequest
-import com.belcobtm.data.rest.settings.request.VipVerificationRequest
+import com.belcobtm.data.rest.settings.request.*
 import com.belcobtm.data.rest.settings.response.*
 import kotlinx.coroutines.Deferred
 import okhttp3.ResponseBody
@@ -28,6 +25,12 @@ interface SettingsApi {
     fun getVerificationFieldsAsync(
         @Path("countryCode") countryCode: String
     ): Deferred<Response<VerificationFieldsResponse>>
+
+    @POST("verification/user/{userId}/identity")
+    fun sendVerificationIdentityAsync(
+        @Path("userId") userId: String,
+        @Body request: VerificationIdentityRequest
+    ): Deferred<Response<ResponseBody>>
 
     @POST("user/{userId}/verification")
     fun sendVerificationBlankAsync(

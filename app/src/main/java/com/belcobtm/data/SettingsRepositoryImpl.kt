@@ -50,6 +50,10 @@ class SettingsRepositoryImpl(
         }
     }
 
+    override suspend fun sendVerificationIdentity(identityDataItem: VerificationIdentityDataItem): Either<Failure, Unit> =
+        apiService.sendVerificationIdentity(prefHelper.userId, identityDataItem)
+
+
     override suspend fun getVerificationInfo(): Either<Failure, VerificationInfoDataItem> {
         val response = apiService.getVerificationInfo(prefHelper.userId)
         return if (response.isRight) {

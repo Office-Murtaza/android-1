@@ -4,13 +4,153 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <TextView
+    <ScrollView
+        android:id="@+id/identity_fields_container"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/first_name_view"
+                style="@style/VerificationBlankScreen.EditTextContainer">
+
+                <androidx.appcompat.widget.AppCompatEditText
+                    style="@style/VerificationBlankScreen.EditText"
+                    android:hint="@string/verification_first_name"
+                    android:inputType="textPersonName"
+                    android:nextFocusDown="@id/last_name_view" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/last_name_view"
+                style="@style/VerificationBlankScreen.EditTextContainer">
+
+                <androidx.appcompat.widget.AppCompatEditText
+                    style="@style/VerificationBlankScreen.EditText"
+                    android:hint="@string/verification_last_name"
+                    android:inputType="textPersonName"
+                    android:nextFocusDown="@id/birth_date_view" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/birth_date_view"
+                style="@style/VerificationBlankScreen.EditTextContainer">
+
+                <androidx.appcompat.widget.AppCompatEditText
+                    style="@style/VerificationBlankScreen.EditText"
+                    android:focusableInTouchMode="false"
+                    android:hint="@string/verification_birth_date"
+                    android:inputType="date" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/province_view"
+                style="@style/VerificationBlankScreen.EditTextContainer">
+
+                <androidx.appcompat.widget.AppCompatEditText
+                    style="@style/VerificationBlankScreen.EditText"
+                    android:hint="@string/verification_province"
+                    android:inputType="textPostalAddress"
+                    android:nextFocusDown="@id/city_view" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/city_view"
+                style="@style/VerificationBlankScreen.EditTextContainer">
+
+                <androidx.appcompat.widget.AppCompatEditText
+                    style="@style/VerificationBlankScreen.EditText"
+                    android:hint="@string/verification_city"
+                    android:inputType="textPostalAddress"
+                    android:nextFocusDown="@id/street_name_view" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/street_name_view"
+                style="@style/VerificationBlankScreen.EditTextContainer">
+
+                <androidx.appcompat.widget.AppCompatEditText
+                    style="@style/VerificationBlankScreen.EditText"
+                    android:hint="@string/verification_street_name"
+                    android:inputType="textPostalAddress"
+                    android:nextFocusDown="@id/building_number_view" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/building_number_view"
+                style="@style/VerificationBlankScreen.EditTextContainer">
+
+                <androidx.appcompat.widget.AppCompatEditText
+                    style="@style/VerificationBlankScreen.EditText"
+                    android:hint="@string/verification_building_number"
+                    android:inputType="textPostalAddress"
+                    android:nextFocusDown="@id/zip_code_view" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/zip_code_view"
+                style="@style/VerificationBlankScreen.EditTextContainer">
+
+                <androidx.appcompat.widget.AppCompatEditText
+                    style="@style/VerificationBlankScreen.EditText"
+                    android:hint="@string/verification_zip_code"
+                    android:inputType="number"
+                    android:maxLength="5"
+                    android:nextFocusDown="@id/ssn_view" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/ssn_view"
+                style="@style/VerificationBlankScreen.EditTextContainer">
+
+                <androidx.appcompat.widget.AppCompatEditText
+                    style="@style/VerificationBlankScreen.EditText"
+                    android:hint="@string/verification_ssn"
+                    android:inputType="number"
+                    android:maxLength="5" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/next_button"
+                style="@style/Button.Primary"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="25dp"
+                android:text="@string/next"
+                android:textColor="#ffffff"
+                android:visibility="visible" />
+
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+    </ScrollView>
+
+    <ProgressBar
+        android:id="@+id/progress_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="IDENTITY VERIFICATION PAGE"
+        android:layout_gravity="center"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -168,11 +168,15 @@
     <string name="verification_id_number">ID Number</string>
     <string name="verification_first_name">First Name</string>
     <string name="verification_last_name">Last Name</string>
+    <string name="verification_birth_date">Birth Date</string>
     <string name="verification_address">Address</string>
+    <string name="verification_street_name">Street Name</string>
+    <string name="verification_building_number">Building Number</string>
     <string name="verification_city">City</string>
     <string name="verification_country">Country</string>
     <string name="verification_province">Province</string>
-    <string name="verification_zip_code">Code</string>
+    <string name="verification_zip_code">ZIP Code</string>
+    <string name="verification_ssn">SSN</string>
     <string name="verification_send">Send</string>
     <string name="verification_select_photo_please">Select photo please</string>
     <string name="verification_alert_country_title">Please pick country</string>
@@ -183,6 +187,7 @@
     <string name="verification_id_selfie">ID selfie</string>
     <string name="verification_snn">SNN</string>
     <string name="verification_please_on_permissions">Please on permissions in app settings</string>
+    <string name="verification_identity_footer_text">Expected processing time up to 5 seconds</string>
 
     <!--transactions-->
     <string name="deposit">Deposit</string>
@@ -512,15 +517,21 @@
     <string name="phone_is_the_same">New phone is the same as the old one</string>
 
     //verification validations
-    <string name="ssn_validation_text">SSN should be 9 digits</string>
+
     <string name="id_number_validation_text">ID number should be up to 9 numbers and letters</string>
-    <string name="first_name_validation_text">First name should be up to 255 letters</string>
-    <string name="last_name_validation_text">Last name should be up to 255 letters</string>
     <string name="address_validation_text">Address should be up to 255 letters</string>
+
+    <string name="country_validation_text">Please, provide the country</string>
+    <string name="first_name_validation_text">Please, provide the first name</string>
+    <string name="last_name_validation_text">Please, provide the last name</string>
+    <string name="birth_date_validation_text">Please, provide the birth date</string>
     <string name="city_validation_text">Please, provide the city</string>
     <string name="province_validation_text">Please, provide the province</string>
-    <string name="country_validation_text">Please, provide the country</string>
+    <string name="street_name_validation_text">Please, provide the street name</string>
+    <string name="building_number_validation_text">Please, provide the building number</string>
     <string name="zip_validation_text">Zip code should be 5 digits</string>
+    <string name="ssn_validation_text">SSN should be 9 digits</string>
+
     <string name="scan_validation_text">Please, upload ID scan image</string>
     <string name="selfie_validation_text">Please, upload ID selfie image</string>
 

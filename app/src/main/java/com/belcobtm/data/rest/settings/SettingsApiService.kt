@@ -1,17 +1,14 @@
 package com.belcobtm.data.rest.settings
 
-import com.belcobtm.data.rest.settings.request.ChangePassBody
-import com.belcobtm.data.rest.settings.request.UpdatePhoneParam
-import com.belcobtm.data.rest.settings.request.VerificationBlankRequest
-import com.belcobtm.data.rest.settings.request.VipVerificationRequest
+import com.belcobtm.data.rest.settings.request.*
 import com.belcobtm.data.rest.settings.response.VerificationDetailsResponse
 import com.belcobtm.data.rest.settings.response.VerificationFieldsResponse
 import com.belcobtm.data.rest.settings.response.VerificationInfoResponse
 import com.belcobtm.domain.Either
 import com.belcobtm.domain.Failure
 import com.belcobtm.domain.settings.item.VerificationBlankDataItem
+import com.belcobtm.domain.settings.item.VerificationIdentityDataItem
 import com.belcobtm.domain.settings.item.VerificationVipDataItem
-import com.belcobtm.domain.settings.type.VerificationStatus
 
 class SettingsApiService(private val api: SettingsApi) {
 
@@ -24,7 +21,7 @@ class SettingsApiService(private val api: SettingsApi) {
             Either.Left(failure)
         }
 
-    suspend fun getVerificationDetails(userId:String): Either<Failure, VerificationDetailsResponse> =
+    suspend fun getVerificationDetails(userId: String): Either<Failure, VerificationDetailsResponse> =
         try {
             val request = api.getVerificationDetailsAsync(userId).await()
             request.body()?.let { Either.Right(it) } ?: Either.Left(Failure.ServerError())
@@ -33,7 +30,7 @@ class SettingsApiService(private val api: SettingsApi) {
             Either.Left(failure)
         }
 
-    suspend fun getVerificationFields(countryCode:String): Either<Failure, VerificationFieldsResponse> =
+    suspend fun getVerificationFields(countryCode: String): Either<Failure, VerificationFieldsResponse> =
         try {
             val request = api.getVerificationFieldsAsync(countryCode).await()
             request.body()?.let { Either.Right(it) } ?: Either.Left(Failure.ServerError())
@@ -41,6 +38,49 @@ class SettingsApiService(private val api: SettingsApi) {
             failure.printStackTrace()
             Either.Left(failure)
         }
+
+    suspend fun sendVerificationIdentity(
+        userId: String,
+        identityDataItem: VerificationIdentityDataItem
+    ): Either<Failure, Unit> = try {
+        val request = with(identityDataItem) {
+            VerificationIdentityRequest(
+                countryCode = countryCode,
+                verificationData = VerificationData(
+                    personInfo = PersonInfo(
+                        firstGivenName = firstName,
+                        firstSurName = lastName,
+                        dayOfBirth = dayOfBirth,
+                        monthOfBirth = monthOfBirth,
+                        yearOfBirth = yearOfBirth
+                    ),
+                    location = LocationInfo(
+                        buildingNumber = buildingNumber,
+                        streetName = streetName,
+                        streetType = streetName,
+                        city = city,
+                        stateProvinceCode = province,
+                        postalCode = zipCode
+                    ),
+                    communication = CommunicationInfo(
+                        telephone = "123456"
+                    ),
+                    nationalIds = listOf<NationalId>(
+                        NationalId(
+                            number = ssn,
+                            type = "socialservice"
+                        )
+                    )
+
+                )
+            )
+        }
+        val response = api.sendVerificationIdentityAsync(userId, request).await()
+        response.body()?.let { Either.Right(Unit) } ?: Either.Left(Failure.ServerError())
+    } catch (failure: Failure) {
+        failure.printStackTrace()
+        Either.Left(failure)
+    }
 
     suspend fun sendVerificationBlank(
         userId: String,

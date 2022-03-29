@@ -8,15 +8,19 @@ import com.belcobtm.R
 import com.belcobtm.domain.settings.interactor.GetVerificationCountryListUseCase
 import com.belcobtm.domain.settings.interactor.GetVerificationDetailsUseCase
 import com.belcobtm.domain.settings.interactor.GetVerificationFieldsUseCase
+import com.belcobtm.domain.settings.interactor.SendVerificationIdentityUseCase
 import com.belcobtm.domain.settings.item.VerificationDetailsDataItem
+import com.belcobtm.domain.settings.item.VerificationIdentityDataItem
 import com.belcobtm.domain.settings.item.VerificationInfoDataItem
 import com.belcobtm.domain.settings.item.VerificationSupportedCountryDataItem
 import com.belcobtm.domain.settings.type.VerificationStatus
+import com.belcobtm.domain.settings.type.VerificationStep
 import com.belcobtm.presentation.core.SingleLiveData
 import com.belcobtm.presentation.core.formatter.Formatter
 import com.belcobtm.presentation.core.mvvm.LoadingData
 
 class VerificationDetailsViewModel(
+    private val sendVerificationIdentityUseCase: SendVerificationIdentityUseCase,
     private val getVerificationDetailsUseCase: GetVerificationDetailsUseCase,
     private val getVerificationFieldsUseCase: GetVerificationFieldsUseCase,
     private val countriesUseCase: GetVerificationCountryListUseCase,
@@ -26,7 +30,7 @@ class VerificationDetailsViewModel(
     val fieldsStateData = MutableLiveData<LoadingData<VerificationFieldsState>>()
     val actionData = SingleLiveData<VerificationDetailsAction>()
     val countries = countriesUseCase.invoke()
-    var currentStep = 1
+    var currentStep = VerificationStep.COUNTRY_VERIFICATION_STEP
     var selectedCountry: VerificationSupportedCountryDataItem? = null
 
     var item: VerificationDetailsDataItem? = null
@@ -63,23 +67,51 @@ class VerificationDetailsViewModel(
         }
     }
 
+
     fun onBackClick() {
-        if (currentStep > 1) {
-            currentStep--
+        if (currentStep != VerificationStep.COUNTRY_VERIFICATION_STEP) {
+            currentStep = when (currentStep) {
+                VerificationStep.IDENTITY_VERIFICATION_STEP -> VerificationStep.COUNTRY_VERIFICATION_STEP
+                VerificationStep.DOCUMENT_VERIFICATION_STEP -> VerificationStep.IDENTITY_VERIFICATION_STEP
+                VerificationStep.COUNTRY_VERIFICATION_STEP -> VerificationStep.COUNTRY_VERIFICATION_STEP
+            }
             detailsStateData.value = LoadingData.Success(
                 getVerificationDetailsStateByStep(currentStep)
             )
         }
     }
 
-    fun onNextClick() {
-        if (currentStep < 3) {
-            currentStep++
+    fun onIdentityVerificationNext(dataItem: VerificationIdentityDataItem) {
+        fieldsStateData.value = LoadingData.Loading()
+        sendVerificationIdentityUseCase.invoke(SendVerificationIdentityUseCase.Params(dataItem),
+            onSuccess = {
+                fieldsStateData.value=LoadingData.Success<VerificationFieldsState>(VerificationFieldsState())
+                currentStep = VerificationStep.DOCUMENT_VERIFICATION_STEP
+                detailsStateData.value = LoadingData.Success(
+                    getVerificationDetailsStateByStep(currentStep)
+                )
+            },
+            onError = {
+                fieldsStateData.value = LoadingData.Error(it)
+            }
+        )
+
+
+    }
+
+    fun onCountryVerificationNext() {
+        if (selectedCountry != null) {
+            currentStep = VerificationStep.IDENTITY_VERIFICATION_STEP
             detailsStateData.value = LoadingData.Success(
                 getVerificationDetailsStateByStep(currentStep)
-
             )
         }
+    }
+
+    fun onDocumentVerificationSubmit() {
+
+    }
+
 //        actionData.value = VerificationDetailsAction.NavigateAction(
 //            when (item?.status) {
 //                VerificationStatus.NOT_VERIFIED,
@@ -93,7 +125,6 @@ class VerificationDetailsViewModel(
 //                else -> throw IllegalStateException("Not available for verification for this state")
 //            }
 //        )
-    }
 
 
     private fun isButtonEnabled(verificationInfoDataItem: VerificationInfoDataItem): Boolean {
@@ -106,135 +137,136 @@ class VerificationDetailsViewModel(
         }
     }
 
-    private fun getVerificationDetailsStateByStep(step: Int) = VerificationDetailsState(
-        countryStepTextColor = getCountryStepTextColor(step),
-        countryStepBackground = getCountryStepBackground(step),
-        countryStepIcon = getCountryStepIcon(step),
-        countryStepIconColor = getCountryStepIconColor(step),
-        identityStepBackground = getIdentityStepBackground(step),
-        identityStepTextColor = getIdentityStepTextColor(step),
-        identityStepIcon = getIdentityStepIcon(step),
-        identityStepIconColor = getIdentityStepIconColor(step),
-        documentStepBackground = getDocumentStepBackground(step),
-        documentStepIcon = getDocumentStepIcon(step),
-        documentStepIconColor = getDocumentStepIconColor(step),
-        documentStepTextColor = getDocumentStepTextColor(step),
-        currentStep = step
-    )
+    private fun getVerificationDetailsStateByStep(step: VerificationStep) =
+        VerificationDetailsState(
+            countryStepTextColor = getCountryStepTextColor(step),
+            countryStepBackground = getCountryStepBackground(step),
+            countryStepIcon = getCountryStepIcon(step),
+            countryStepIconColor = getCountryStepIconColor(step),
+            identityStepBackground = getIdentityStepBackground(step),
+            identityStepTextColor = getIdentityStepTextColor(step),
+            identityStepIcon = getIdentityStepIcon(step),
+            identityStepIconColor = getIdentityStepIconColor(step),
+            documentStepBackground = getDocumentStepBackground(step),
+            documentStepIcon = getDocumentStepIcon(step),
+            documentStepIconColor = getDocumentStepIconColor(step),
+            documentStepTextColor = getDocumentStepTextColor(step),
+            currentStep = step
+        )
 
 
     private fun getVerificationStep(verificationDetails: VerificationDetailsDataItem) {
         if (verificationDetails.identityVerification != null)
-            currentStep = 3
+            currentStep = VerificationStep.DOCUMENT_VERIFICATION_STEP
         else
-            currentStep = 1
+            currentStep = VerificationStep.COUNTRY_VERIFICATION_STEP
     }
 
 
-    private fun getCountryStepIcon(step: Int): Int {
+    private fun getCountryStepIcon(step: VerificationStep): Int {
         return when (step) {
-            1 -> R.drawable.ic_1
-            2 -> R.drawable.ic_checked
-            3 -> R.drawable.ic_checked
+            VerificationStep.COUNTRY_VERIFICATION_STEP -> R.drawable.ic_1
+            VerificationStep.IDENTITY_VERIFICATION_STEP -> R.drawable.ic_checked
+            VerificationStep.DOCUMENT_VERIFICATION_STEP -> R.drawable.ic_checked
             else -> R.drawable.ic_1
         }
     }
 
-    private fun getIdentityStepIcon(step: Int): Int {
+    private fun getIdentityStepIcon(step: VerificationStep): Int {
         return when (step) {
-            1 -> R.drawable.ic_2
-            2 -> R.drawable.ic_2
-            3 -> R.drawable.ic_checked
+            VerificationStep.COUNTRY_VERIFICATION_STEP -> R.drawable.ic_2
+            VerificationStep.IDENTITY_VERIFICATION_STEP -> R.drawable.ic_2
+            VerificationStep.DOCUMENT_VERIFICATION_STEP -> R.drawable.ic_checked
             else -> R.drawable.ic_2
         }
     }
 
-    private fun getDocumentStepIcon(step: Int): Int {
+    private fun getDocumentStepIcon(step: VerificationStep): Int {
         return when (step) {
-            1 -> R.drawable.ic_3
-            2 -> R.drawable.ic_3
-            3 -> R.drawable.ic_3
+            VerificationStep.COUNTRY_VERIFICATION_STEP -> R.drawable.ic_3
+            VerificationStep.IDENTITY_VERIFICATION_STEP -> R.drawable.ic_3
+            VerificationStep.DOCUMENT_VERIFICATION_STEP -> R.drawable.ic_3
             else -> R.drawable.ic_3
         }
     }
 
-    private fun getCountryStepIconColor(step: Int): Int {
+    private fun getCountryStepIconColor(step: VerificationStep): Int {
         return when (step) {
-            1 -> R.color.colorWhite
-            2 -> R.color.colorWhite
-            3 -> R.color.colorWhite
+            VerificationStep.COUNTRY_VERIFICATION_STEP -> R.color.colorWhite
+            VerificationStep.IDENTITY_VERIFICATION_STEP -> R.color.colorWhite
+            VerificationStep.DOCUMENT_VERIFICATION_STEP -> R.color.colorWhite
             else -> R.color.colorWhite
         }
     }
 
-    private fun getIdentityStepIconColor(step: Int): Int {
+    private fun getIdentityStepIconColor(step: VerificationStep): Int {
         return when (step) {
-            1 -> R.color.gray_text_color
-            2 -> R.color.colorWhite
-            3 -> R.color.colorWhite
+            VerificationStep.COUNTRY_VERIFICATION_STEP -> R.color.gray_text_color
+            VerificationStep.IDENTITY_VERIFICATION_STEP -> R.color.colorWhite
+            VerificationStep.DOCUMENT_VERIFICATION_STEP -> R.color.colorWhite
             else -> R.color.colorWhite
         }
     }
 
-    private fun getDocumentStepIconColor(step: Int): Int {
+    private fun getDocumentStepIconColor(step: VerificationStep): Int {
         return when (step) {
-            1 -> R.color.gray_text_color
-            2 -> R.color.gray_text_color
-            3 -> R.color.colorWhite
+            VerificationStep.COUNTRY_VERIFICATION_STEP -> R.color.gray_text_color
+            VerificationStep.IDENTITY_VERIFICATION_STEP -> R.color.gray_text_color
+            VerificationStep.DOCUMENT_VERIFICATION_STEP -> R.color.colorWhite
             else -> R.color.colorWhite
         }
     }
 
-    private fun getCountryStepTextColor(step: Int): Int {
+    private fun getCountryStepTextColor(step: VerificationStep): Int {
         return when (step) {
-            1 -> R.color.black_text_color
-            2 -> R.color.gray_text_color
-            3 -> R.color.gray_text_color
+            VerificationStep.COUNTRY_VERIFICATION_STEP -> R.color.black_text_color
+            VerificationStep.IDENTITY_VERIFICATION_STEP -> R.color.gray_text_color
+            VerificationStep.DOCUMENT_VERIFICATION_STEP -> R.color.gray_text_color
             else -> R.color.gray_text_color
         }
     }
 
-    private fun getIdentityStepTextColor(step: Int): Int {
+    private fun getIdentityStepTextColor(step: VerificationStep): Int {
         return when (step) {
-            1 -> R.color.gray_text_color
-            2 -> R.color.black_text_color
-            3 -> R.color.gray_text_color
+            VerificationStep.COUNTRY_VERIFICATION_STEP -> R.color.gray_text_color
+            VerificationStep.IDENTITY_VERIFICATION_STEP -> R.color.black_text_color
+            VerificationStep.DOCUMENT_VERIFICATION_STEP -> R.color.gray_text_color
             else -> R.color.gray_text_color
         }
     }
 
-    private fun getDocumentStepTextColor(step: Int): Int {
+    private fun getDocumentStepTextColor(step: VerificationStep): Int {
         return when (step) {
-            1 -> R.color.gray_text_color
-            2 -> R.color.gray_text_color
-            3 -> R.color.black_text_color
+            VerificationStep.COUNTRY_VERIFICATION_STEP -> R.color.gray_text_color
+            VerificationStep.IDENTITY_VERIFICATION_STEP -> R.color.gray_text_color
+            VerificationStep.DOCUMENT_VERIFICATION_STEP -> R.color.black_text_color
             else -> R.color.gray_text_color
         }
     }
 
-    private fun getCountryStepBackground(step: Int): Int {
+    private fun getCountryStepBackground(step: VerificationStep): Int {
         return when (step) {
-            1 -> R.drawable.circular_blue_background
-            2 -> R.drawable.circular_blue_background
-            3 -> R.drawable.circular_blue_background
+            VerificationStep.COUNTRY_VERIFICATION_STEP -> R.drawable.circular_blue_background
+            VerificationStep.IDENTITY_VERIFICATION_STEP -> R.drawable.circular_blue_background
+            VerificationStep.DOCUMENT_VERIFICATION_STEP -> R.drawable.circular_blue_background
             else -> R.drawable.circular_blue_background
         }
     }
 
-    private fun getIdentityStepBackground(step: Int): Int {
+    private fun getIdentityStepBackground(step: VerificationStep): Int {
         return when (step) {
-            1 -> R.drawable.gray_border_background
-            2 -> R.drawable.circular_blue_background
-            3 -> R.drawable.circular_blue_background
+            VerificationStep.COUNTRY_VERIFICATION_STEP -> R.drawable.gray_border_background
+            VerificationStep.IDENTITY_VERIFICATION_STEP -> R.drawable.circular_blue_background
+            VerificationStep.DOCUMENT_VERIFICATION_STEP -> R.drawable.circular_blue_background
             else -> R.drawable.circular_blue_background
         }
     }
 
-    private fun getDocumentStepBackground(step: Int): Int {
+    private fun getDocumentStepBackground(step: VerificationStep): Int {
         return when (step) {
-            1 -> R.drawable.gray_border_background
-            2 -> R.drawable.gray_border_background
-            3 -> R.drawable.circular_blue_background
+            VerificationStep.COUNTRY_VERIFICATION_STEP -> R.drawable.gray_border_background
+            VerificationStep.IDENTITY_VERIFICATION_STEP -> R.drawable.gray_border_background
+            VerificationStep.DOCUMENT_VERIFICATION_STEP -> R.drawable.circular_blue_background
             else -> R.drawable.circular_blue_background
         }
     }
@@ -254,7 +286,7 @@ data class VerificationDetailsState(
     @DrawableRes val documentStepIconColor: Int = R.color.dark_text_color,
     @DrawableRes val documentStepTextColor: Int = R.color.dark_text_color,
     @DrawableRes val documentStepBackground: Int = R.drawable.gray_border_background,
-    val currentStep: Int = 1
+    val currentStep: VerificationStep = VerificationStep.COUNTRY_VERIFICATION_STEP
 )
 
 data class VerificationFieldsState(val currentStep: Int = 1)

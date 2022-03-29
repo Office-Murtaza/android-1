@@ -8,6 +8,7 @@ import androidx.core.content.ContextCompat
 import androidx.viewpager2.widget.ViewPager2
 import com.belcobtm.R
 import com.belcobtm.databinding.FragmentVerificationBinding
+import com.belcobtm.domain.settings.type.VerificationStep
 import com.belcobtm.presentation.core.mvvm.LoadingData
 import com.belcobtm.presentation.core.ui.fragment.BaseFragment
 import com.belcobtm.presentation.features.settings.verification.details.adapter.VerificationStepsAdapter
@@ -32,11 +33,14 @@ class VerificationDetailsFragment : BaseFragment<FragmentVerificationBinding>() 
         super.onCreate(savedInstanceState)
         val onBackPressedCallback = object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
-                if (viewModel.currentStep > 1) {
+                if (viewModel.currentStep != VerificationStep.COUNTRY_VERIFICATION_STEP) {
                     isEnabled = true
                     viewModel.onBackClick()
-                } else
+                } else {
                     isEnabled = false
+                    requireActivity().onBackPressed()
+                }
+
             }
         }
         requireActivity().onBackPressedDispatcher.addCallback(this, onBackPressedCallback)
@@ -52,9 +56,7 @@ class VerificationDetailsFragment : BaseFragment<FragmentVerificationBinding>() 
     }
 
     override fun FragmentVerificationBinding.initListeners() {
-        nextButton.setOnClickListener {
-            viewModel.onNextClick()
-        }
+
     }
 
     override fun FragmentVerificationBinding.initObservers() {
@@ -70,7 +72,7 @@ class VerificationDetailsFragment : BaseFragment<FragmentVerificationBinding>() 
                 }
                 state.currentStep.doIfChanged(appliedState?.commonData?.currentStep) {
                     verificationViewPager.post {
-                        verificationViewPager.setCurrentItem(it - 1, false)
+                        verificationViewPager.setCurrentItem(it.ordinal, false)
                     }
                 }
                 state.countryStepBackground.doIfChanged(appliedState?.commonData?.countryStepBackground) {
