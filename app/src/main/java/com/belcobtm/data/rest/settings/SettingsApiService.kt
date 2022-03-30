@@ -3,6 +3,7 @@ package com.belcobtm.data.rest.settings
 import com.belcobtm.data.rest.settings.request.*
 import com.belcobtm.data.rest.settings.response.VerificationDetailsResponse
 import com.belcobtm.data.rest.settings.response.VerificationFieldsResponse
+import com.belcobtm.data.rest.settings.response.VerificationIdentityResponse
 import com.belcobtm.data.rest.settings.response.VerificationInfoResponse
 import com.belcobtm.domain.Either
 import com.belcobtm.domain.Failure
@@ -42,7 +43,7 @@ class SettingsApiService(private val api: SettingsApi) {
     suspend fun sendVerificationIdentity(
         userId: String,
         identityDataItem: VerificationIdentityDataItem
-    ): Either<Failure, Unit> = try {
+    ): Either<Failure, VerificationIdentityResponse> = try {
         val request = with(identityDataItem) {
             VerificationIdentityRequest(
                 countryCode = countryCode,
@@ -76,7 +77,7 @@ class SettingsApiService(private val api: SettingsApi) {
             )
         }
         val response = api.sendVerificationIdentityAsync(userId, request).await()
-        response.body()?.let { Either.Right(Unit) } ?: Either.Left(Failure.ServerError())
+        response.body()?.let { Either.Right(it) } ?: Either.Left(Failure.ServerError())
     } catch (failure: Failure) {
         failure.printStackTrace()
         Either.Left(failure)

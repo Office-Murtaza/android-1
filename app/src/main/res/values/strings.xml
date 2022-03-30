@@ -188,6 +188,9 @@
     <string name="verification_snn">SNN</string>
     <string name="verification_please_on_permissions">Please on permissions in app settings</string>
     <string name="verification_identity_footer_text">Expected processing time up to 5 seconds</string>
+    <string name="verification_front_scan_document">FRONT SCAN DOCUMENT</string>
+    <string name="verification_back_scan_document">BACK SCAN DOCUMENT</string>
+    <string name="verification_make_a_selfie">MAKE A SELFIE</string>
 
     <!--transactions-->
     <string name="deposit">Deposit</string>

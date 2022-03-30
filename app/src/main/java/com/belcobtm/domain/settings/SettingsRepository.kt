@@ -8,7 +8,7 @@ interface SettingsRepository {
     suspend fun getVerificationInfo(): Either<Failure, VerificationInfoDataItem>
     suspend fun getVerificationDetails():Either<Failure, VerificationDetailsDataItem>
     suspend fun getVerificationFields(countryCode : String): Either<Failure, VerificationFieldsDataItem>
-    suspend fun sendVerificationIdentity(identityDataItem : VerificationIdentityDataItem): Either<Failure, Unit>
+    suspend fun sendVerificationIdentity(identityDataItem : VerificationIdentityDataItem): Either<Failure, VerificationIdentityResponseDataItem>
     suspend fun sendVerificationBlank(blankDataItem: VerificationBlankDataItem, fileName: String): Either<Failure, Unit>
     fun getVerificationCountries(): List<VerificationCountryDataItem>
     suspend fun sendVerificationVip(vipDataItem: VerificationVipDataItem, fileName: String): Either<Failure, Unit>

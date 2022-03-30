@@ -30,7 +30,7 @@ interface SettingsApi {
     fun sendVerificationIdentityAsync(
         @Path("userId") userId: String,
         @Body request: VerificationIdentityRequest
-    ): Deferred<Response<ResponseBody>>
+    ): Deferred<Response<VerificationIdentityResponse>>
 
     @POST("user/{userId}/verification")
     fun sendVerificationBlankAsync(

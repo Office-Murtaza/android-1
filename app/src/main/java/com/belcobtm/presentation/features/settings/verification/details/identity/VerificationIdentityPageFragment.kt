@@ -10,11 +10,12 @@ import androidx.fragment.app.Fragment
 import com.belcobtm.R
 import com.belcobtm.databinding.FragmentVerificationIdentityPageBinding
 import com.belcobtm.domain.settings.item.VerificationIdentityDataItem
+import com.belcobtm.domain.settings.type.RecordStatus
 import com.belcobtm.presentation.core.extensions.getString
 import com.belcobtm.presentation.core.extensions.setText
 import com.belcobtm.presentation.core.mvvm.LoadingData
 import com.belcobtm.presentation.features.settings.verification.details.VerificationDetailsViewModel
-import com.belcobtm.presentation.features.settings.verification.details.VerificationFieldsState
+import com.belcobtm.presentation.features.settings.verification.details.VerificationIdentityState
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import java.util.*
 
@@ -44,7 +45,7 @@ class VerificationIdentityPageFragment : Fragment() {
     }
 
     private fun initViews() {
-       // viewModel.getVerificationFields()
+        // viewModel.getVerificationFields()
     }
 
     private fun initListeners() {
@@ -146,13 +147,16 @@ class VerificationIdentityPageFragment : Fragment() {
     }
 
     private fun initObservers() {
-        viewModel.fieldsStateData.observe(viewLifecycleOwner) { loadingData ->
+        viewModel.identityStateData.observe(viewLifecycleOwner) { loadingData ->
             when (loadingData) {
-                is LoadingData.Loading<VerificationFieldsState> -> showLoading()
-                is LoadingData.Success<VerificationFieldsState> -> {
+                is LoadingData.Loading<VerificationIdentityState> -> showLoading()
+                is LoadingData.Success<VerificationIdentityState> -> {
                     hideLoading()
+                    if (loadingData.data.recordStatus == RecordStatus.NO_MATCH) {
+                        populateUiWithIdentityStateData(loadingData.data)
+                    }
                 }
-                is LoadingData.Error<VerificationFieldsState> -> {
+                is LoadingData.Error<VerificationIdentityState> -> {
 
                 }
                 else -> {
@@ -160,6 +164,14 @@ class VerificationIdentityPageFragment : Fragment() {
             }
 
         }
+    }
+
+    private fun populateUiWithIdentityStateData(identityState: VerificationIdentityState) {
+        with(binding) {
+            lastNameView.isErrorEnabled = true
+            lastNameView.error = getString(R.string.last_name_validation_text)
+        }
+
     }
 
     private fun isValidFields(): Boolean {

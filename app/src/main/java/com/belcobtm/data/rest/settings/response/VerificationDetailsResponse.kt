@@ -4,7 +4,7 @@ import com.belcobtm.domain.settings.item.VerificationIdentityDataItem
 import com.belcobtm.domain.settings.item.VerificationSupportedCountryDataItem
 
 data class VerificationDetailsResponse(
-    val identityVerification: VerificationIdentityDataItem?,
+    val identityVerification: VerificationIdentityResponse?,
     val documentVerification: Any?,
     val documentVerificationComplete: Boolean?,
     val supportedCountries: List<VerificationSupportedCountryDataItem>,

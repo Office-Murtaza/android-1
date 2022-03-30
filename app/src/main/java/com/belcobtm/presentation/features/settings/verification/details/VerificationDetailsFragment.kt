@@ -33,7 +33,7 @@ class VerificationDetailsFragment : BaseFragment<FragmentVerificationBinding>() 
         super.onCreate(savedInstanceState)
         val onBackPressedCallback = object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
-                if (viewModel.currentStep != VerificationStep.COUNTRY_VERIFICATION_STEP) {
+                if (viewModel.currentStep == VerificationStep.IDENTITY_VERIFICATION_STEP) {
                     isEnabled = true
                     viewModel.onBackClick()
                 } else {
@@ -49,7 +49,7 @@ class VerificationDetailsFragment : BaseFragment<FragmentVerificationBinding>() 
     override fun FragmentVerificationBinding.initViews() {
         //appliedState = null
         setToolbarTitle(R.string.settings_verify_dialog_title)
-        viewModel.getVerificationStatus()
+        viewModel.fetchVerificationStatus()
         verificationViewPager.orientation = ViewPager2.ORIENTATION_HORIZONTAL
         verificationViewPager.isUserInputEnabled = false
         verificationViewPager.adapter = createViewPagerAdapter()
