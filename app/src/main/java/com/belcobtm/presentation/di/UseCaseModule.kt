@@ -43,6 +43,7 @@ import com.belcobtm.domain.transaction.interactor.trade.TradeRecallTransactionCo
 import com.belcobtm.domain.transaction.interactor.trade.TradeReserveTransactionCompleteUseCase
 import com.belcobtm.domain.transaction.interactor.trade.TradeReserveTransactionCreateUseCase
 import com.belcobtm.domain.wallet.interactor.*
+
 import com.belcobtm.presentation.core.DateFormat.CHAT_DATE_FORMAT
 import com.belcobtm.presentation.core.formatter.DoubleCurrencyPriceFormatter.Companion.DOUBLE_CURRENCY_PRICE_FORMATTER_QUALIFIER
 import com.belcobtm.presentation.core.formatter.MilesFormatter.Companion.MILES_FORMATTER_QUALIFIER
@@ -65,6 +66,14 @@ val useCaseModule = module {
     single { GetVerificationDetailsUseCase(get()) }
     single { GetVerificationFieldsUseCase(get()) }
     single { SendVerificationIdentityUseCase(get()) }
+    single {
+        SendVerificationDocumentUseCase(
+            get(),
+            androidApplication(),
+            get(named(VERIFICATION_STORAGE)),
+            get()
+        )
+    }
     single { SaveUserAuthedUseCase(get()) }
     single {
         SendVerificationBlankUseCase(

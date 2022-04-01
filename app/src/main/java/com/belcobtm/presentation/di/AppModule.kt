@@ -1,6 +1,7 @@
 package com.belcobtm.presentation.di
 
 import android.content.Context
+import com.belcobtm.data.helper.ImageHelper
 import com.belcobtm.presentation.core.coin.CoinCodeProvider
 import com.belcobtm.presentation.core.formatter.*
 import com.belcobtm.presentation.core.formatter.DoubleCurrencyPriceFormatter.Companion.DOUBLE_CURRENCY_PRICE_FORMATTER_QUALIFIER
@@ -90,6 +91,7 @@ val viewModelModule = module {
     }
     viewModel {
         VerificationDetailsViewModel(
+            get(),
             get(),
             get(),
             get(),

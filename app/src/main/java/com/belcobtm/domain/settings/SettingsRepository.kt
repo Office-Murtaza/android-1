@@ -9,6 +9,7 @@ interface SettingsRepository {
     suspend fun getVerificationDetails():Either<Failure, VerificationDetailsDataItem>
     suspend fun getVerificationFields(countryCode : String): Either<Failure, VerificationFieldsDataItem>
     suspend fun sendVerificationIdentity(identityDataItem : VerificationIdentityDataItem): Either<Failure, VerificationIdentityResponseDataItem>
+    suspend fun sendVerificationDocument(documentDataItem : VerificationDocumentDataItem,firebaseImages: VerificationDocumentFirebaseImages): Either<Failure, VerificationDocumentResponseDataItem>
     suspend fun sendVerificationBlank(blankDataItem: VerificationBlankDataItem, fileName: String): Either<Failure, Unit>
     fun getVerificationCountries(): List<VerificationCountryDataItem>
     suspend fun sendVerificationVip(vipDataItem: VerificationVipDataItem, fileName: String): Either<Failure, Unit>

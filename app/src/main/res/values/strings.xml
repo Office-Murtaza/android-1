@@ -163,6 +163,7 @@
         <item>Vip verification rejected</item>
         <item>Vip verified</item>
     </string-array>
+    <string name="verification_document_type">Document type</string>
     <string name="verification_select">Select</string>
     <string name="verification_remove">Remove</string>
     <string name="verification_id_number">ID Number</string>
@@ -180,6 +181,7 @@
     <string name="verification_send">Send</string>
     <string name="verification_select_photo_please">Select photo please</string>
     <string name="verification_alert_country_title">Please pick country</string>
+    <string name="verification_alert_document_type_title">Please pick document type</string>
     <string name="verification_alert_state_title">Please pick province</string>
     <string name="verification_alert_city_title">Please pick city</string>
     <string name="verification_alert_please_fill_fields">Please fill all fields</string>
@@ -524,6 +526,7 @@
     <string name="id_number_validation_text">ID number should be up to 9 numbers and letters</string>
     <string name="address_validation_text">Address should be up to 255 letters</string>
 
+    <string name="document_type_validation_text">Please, select document type</string>
     <string name="country_validation_text">Please, provide the country</string>
     <string name="first_name_validation_text">Please, provide the first name</string>
     <string name="last_name_validation_text">Please, provide the last name</string>
@@ -535,8 +538,11 @@
     <string name="zip_validation_text">Zip code should be 5 digits</string>
     <string name="ssn_validation_text">SSN should be 9 digits</string>
 
+
+    <string name="front_document_scan_validation_text">Please upload front scan of document</string>
+    <string name="back_document_scan_validation_text">Please upload back scan of document</string>
+    <string name="selfie_validation_text">Please upload selfie image</string>
     <string name="scan_validation_text">Please, upload ID scan image</string>
-    <string name="selfie_validation_text">Please, upload ID selfie image</string>
 
     <!--Deals-->
     <string name="deals_toolsbar_title">Services</string>

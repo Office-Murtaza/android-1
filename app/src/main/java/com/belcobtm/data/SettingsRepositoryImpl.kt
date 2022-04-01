@@ -73,6 +73,24 @@ class SettingsRepositoryImpl(
         }
     }
 
+    override suspend fun sendVerificationDocument(
+        documentDataItem: VerificationDocumentDataItem,
+        firebaseImages: VerificationDocumentFirebaseImages
+    ): Either<Failure, VerificationDocumentResponseDataItem> {
+        val response =
+            apiService.sendVerificationDocument(prefHelper.userId, documentDataItem, firebaseImages)
+        return if (response.isRight) {
+            val responseItem = (response as Either.Right).b
+            Either.Right(
+                VerificationDocumentResponseDataItem(
+                    response = "Success"
+                )
+            )
+        } else {
+            response as Either.Left
+        }
+    }
+
     override suspend fun getVerificationInfo(): Either<Failure, VerificationInfoDataItem> {
         val response = apiService.getVerificationInfo(prefHelper.userId)
         return if (response.isRight) {

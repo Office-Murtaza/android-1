@@ -9,7 +9,11 @@ apply plugin: "androidx.navigation.safeargs.kotlin"
 apply plugin: 'com.google.firebase.appdistribution'
 
 def lib = rootProject.ext.libraries
-
+repositories {
+    maven { url 'https://maven.google.com' }
+    maven { url 'https://raw.githubusercontent.com/iProov/android/master/maven/' }
+    maven { url 'https://raw.githubusercontent.com/Acuant/AndroidSdkMaven/main/maven/' }
+}
 android {
     compileSdkVersion 30
     buildToolsVersion '30.0.3'
@@ -144,6 +148,7 @@ dependencies {
 
     //Permission dispatcher
     implementation "org.permissionsdispatcher:permissionsdispatcher:4.6.0"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     kapt "org.permissionsdispatcher:permissionsdispatcher-processor:4.6.0"
 
     //Dialogs
@@ -187,4 +192,17 @@ dependencies {
         // protobuf-lite that firebase-config and Tink depends on.
         exclude group: 'com.google.protobuf'
     })
+
+    implementation "com.acuant:acuantcommon:$acuantSDKVersion"
+    implementation "com.acuant:acuantcamera:$acuantSDKVersion"
+    implementation "com.acuant:acuantimagepreparation:$acuantSDKVersion"
+    implementation "com.acuant:acuantdocumentprocessing:$acuantSDKVersion"
+    implementation "com.acuant:acuantechipreader:$acuantSDKVersion"
+    implementation "com.acuant:acuantfacematch:$acuantSDKVersion"
+    implementation "com.acuant:acuanthgliveness:$acuantSDKVersion"
+    implementation("com.acuant:acuantipliveness:$acuantSDKVersion") {
+        transitive = true
+    }
+    implementation "com.acuant:acuantfacecapture:$acuantSDKVersion"
+    implementation "com.acuant:acuantpassiveliveness:$acuantSDKVersion"
 }

@@ -153,11 +153,11 @@ class VerificationIdentityPageFragment : Fragment() {
                 is LoadingData.Success<VerificationIdentityState> -> {
                     hideLoading()
                     if (loadingData.data.recordStatus == RecordStatus.NO_MATCH) {
-                        populateUiWithIdentityStateData(loadingData.data)
+                       // populateUiWithIdentityStateData(loadingData.data)
                     }
                 }
                 is LoadingData.Error<VerificationIdentityState> -> {
-
+                    hideLoading()
                 }
                 else -> {
                 }

@@ -1,15 +1,10 @@
 package com.belcobtm.data.rest.settings
 
 import com.belcobtm.data.rest.settings.request.*
-import com.belcobtm.data.rest.settings.response.VerificationDetailsResponse
-import com.belcobtm.data.rest.settings.response.VerificationFieldsResponse
-import com.belcobtm.data.rest.settings.response.VerificationIdentityResponse
-import com.belcobtm.data.rest.settings.response.VerificationInfoResponse
+import com.belcobtm.data.rest.settings.response.*
 import com.belcobtm.domain.Either
 import com.belcobtm.domain.Failure
-import com.belcobtm.domain.settings.item.VerificationBlankDataItem
-import com.belcobtm.domain.settings.item.VerificationIdentityDataItem
-import com.belcobtm.domain.settings.item.VerificationVipDataItem
+import com.belcobtm.domain.settings.item.*
 
 class SettingsApiService(private val api: SettingsApi) {
 
@@ -82,6 +77,34 @@ class SettingsApiService(private val api: SettingsApi) {
         failure.printStackTrace()
         Either.Left(failure)
     }
+
+    suspend fun sendVerificationDocument(
+        userId: String,
+        documentDataItem: VerificationDocumentDataItem,
+        firebaseImages: VerificationDocumentFirebaseImages
+    ): Either<Failure, VerificationDocumentResponse> = try {
+        val request =
+            VerificationDocumentRequest(
+                countryCode = documentDataItem.countryDataItem.code,
+                documentType = documentDataItem.documentType.stringValue,
+                base64 = Base64VerificationDocuments(
+                    frontImage = documentDataItem.frontScanBase64,
+                    backImage = documentDataItem.backScanBase64,
+                    selfieImage = documentDataItem.selfieBase64
+                ),
+                firebase = FirebaseVerificationDocuments(
+                    frontImage = firebaseImages.frontDocumentFileName,
+                    backImage = firebaseImages.backDocumentFileName,
+                    selfieImage = firebaseImages.selfieFileName,
+                )
+            )
+        val response = api.sendVerificationDocumentAsync(userId, request).await()
+        response.body()?.let { Either.Right(it) } ?: Either.Left(Failure.ServerError())
+    } catch (failure: Failure) {
+        failure.printStackTrace()
+        Either.Left(failure)
+    }
+
 
     suspend fun sendVerificationBlank(
         userId: String,
