@@ -29,14 +29,14 @@ interface SettingsApi {
     @POST("verification/user/{userId}/identity")
     fun sendVerificationIdentityAsync(
         @Path("userId") userId: String,
-        @Body request: VerificationIdentityRequest
-    ): Deferred<Response<VerificationIdentityResponse>>
+        @Body request: VerificationUserIdentityRequest
+    ): Deferred<Response<VerificationUserIdentityResponse>>
 
     @POST("verification/user/{userId}/document")
     fun sendVerificationDocumentAsync(
         @Path("userId") userId: String,
         @Body request: VerificationDocumentRequest
-    ): Deferred<Response<VerificationDocumentResponse>>
+    ): Deferred<Response<VerificationUserDocumentResponse>>
 
     @POST("user/{userId}/verification")
     fun sendVerificationBlankAsync(

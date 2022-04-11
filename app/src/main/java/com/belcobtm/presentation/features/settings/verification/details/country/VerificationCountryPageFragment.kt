@@ -35,7 +35,16 @@ class VerificationCountryPageFragment : Fragment() {
     }
 
     private fun initViews() {
-
+        with(binding) {
+            viewModel.selectedCountry?.let {
+                countryView.setText(it.name)
+            } ?: run {
+                viewModel.verificationDetails?.supportedCountries?.let {
+                    countryView.setText(it[0].name)
+                    viewModel.selectedCountry = it[0]
+                }
+            }
+        }
     }
 
     private fun initListeners() {
@@ -48,7 +57,7 @@ class VerificationCountryPageFragment : Fragment() {
             }
             countryView.editText?.keyListener = null
             countryView.editText?.setOnClickListener {
-                viewModel.item?.let { item ->
+                viewModel.verificationDetails?.let { item ->
                     val countryList = item.supportedCountries
                     AlertDialog.Builder(requireContext())
                         .setTitle(R.string.verification_alert_country_title)

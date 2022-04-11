@@ -11,7 +11,6 @@ interface SettingsRepository {
     suspend fun sendVerificationIdentity(identityDataItem : VerificationIdentityDataItem): Either<Failure, VerificationIdentityResponseDataItem>
     suspend fun sendVerificationDocument(documentDataItem : VerificationDocumentDataItem,firebaseImages: VerificationDocumentFirebaseImages): Either<Failure, VerificationDocumentResponseDataItem>
     suspend fun sendVerificationBlank(blankDataItem: VerificationBlankDataItem, fileName: String): Either<Failure, Unit>
-    fun getVerificationCountries(): List<VerificationCountryDataItem>
     suspend fun sendVerificationVip(vipDataItem: VerificationVipDataItem, fileName: String): Either<Failure, Unit>
     suspend fun getPhone(): Either<Failure, String>
     suspend fun changePass(oldPassword: String, newPassword: String): Either<Failure, Boolean>

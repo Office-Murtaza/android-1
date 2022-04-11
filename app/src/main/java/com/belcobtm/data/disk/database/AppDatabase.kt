@@ -23,7 +23,8 @@ import com.belcobtm.data.disk.database.wallet.WalletEntity
         WalletEntity::class,
         ServiceEntity::class
     ],
-    version = 9
+    version = 9,
+    exportSchema = false
 )
 @TypeConverters(CoinTypeConverter::class)
 abstract class AppDatabase : RoomDatabase() {

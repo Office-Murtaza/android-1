@@ -47,7 +47,7 @@ class VerificationBlankFragment :
 
     override fun FragmentVerificationBlankBinding.initViews() {
         setToolbarTitle(R.string.verify_label)
-        viewModel.countries.firstOrNull()?.let(::onCountrySelected)
+       // viewModel.countries.firstOrNull()?.let(::onCountrySelected)
     }
 
     @NeedsPermission(
@@ -101,47 +101,47 @@ class VerificationBlankFragment :
         }
 
         countryView.editText?.keyListener = null
-        countryView.editText?.setOnClickListener {
-            val countryList = viewModel.countries
-            AlertDialog.Builder(requireContext())
-                .setTitle(R.string.verification_alert_country_title)
-                .setItems(countryList.map { it.name }.toTypedArray()) { dialog, which ->
-                    onCountrySelected(countryList[which])
-                }
-                .create().show()
-        }
+//        countryView.editText?.setOnClickListener {
+//            val countryList = viewModel.countries
+//            AlertDialog.Builder(requireContext())
+//                .setTitle(R.string.verification_alert_country_title)
+//                .setItems(countryList.map { it.name }.toTypedArray()) { dialog, which ->
+//                    onCountrySelected(countryList[which])
+//                }
+//                .create().show()
+//        }
 
         provinceView.editText?.keyListener = null
-        provinceView.editText?.setOnClickListener {
-            viewModel.countries
-                .find { it.name == countryView.getString() }
-                ?.states?.let { stateList ->
-                    AlertDialog.Builder(requireContext())
-                        .setTitle(R.string.verification_alert_state_title)
-                        .setItems(stateList.map { it.name }.toTypedArray()) { _, which ->
-                            provinceView.setText(stateList[which].name)
-                            cityView.clearText()
-                            checkProvince()
-                        }
-                        .create()
-                        .show()
-                } ?: checkCountry()
-        }
+//        provinceView.editText?.setOnClickListener {
+//            viewModel.countries
+//                .find { it.name == countryView.getString() }
+//                ?.states?.let { stateList ->
+//                    AlertDialog.Builder(requireContext())
+//                        .setTitle(R.string.verification_alert_state_title)
+//                        .setItems(stateList.map { it.name }.toTypedArray()) { _, which ->
+//                            provinceView.setText(stateList[which].name)
+//                            cityView.clearText()
+//                            checkProvince()
+//                        }
+//                        .create()
+//                        .show()
+//                } ?: checkCountry()
+//        }
 
         cityView.editText?.keyListener = null
-        cityView.editText?.setOnClickListener {
-            viewModel.countries
-                .find { it.name == countryView.getString() }
-                ?.states
-                ?.find { it.name == provinceView.getString() }
-                ?.cities?.let { cities ->
-                    AlertDialog.Builder(requireContext())
-                        .setTitle(R.string.verification_alert_city_title)
-                        .setItems(cities.toTypedArray()) { _, which -> cityView.setText(cities[which]) }
-                        .create()
-                        .show()
-                } ?: checkProvince()
-        }
+//        cityView.editText?.setOnClickListener {
+//            viewModel.countries
+//                .find { it.name == countryView.getString() }
+//                ?.states
+//                ?.find { it.name == provinceView.getString() }
+//                ?.cities?.let { cities ->
+//                    AlertDialog.Builder(requireContext())
+//                        .setTitle(R.string.verification_alert_city_title)
+//                        .setItems(cities.toTypedArray()) { _, which -> cityView.setText(cities[which]) }
+//                        .create()
+//                        .show()
+//                } ?: checkProvince()
+//        }
 
         idNumberView.editText?.addTextChangedListener {
             if (validated) {

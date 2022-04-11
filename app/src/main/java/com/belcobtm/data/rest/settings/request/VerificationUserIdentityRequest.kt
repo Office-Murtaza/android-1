@@ -1,6 +1,6 @@
 package com.belcobtm.data.rest.settings.request
 
-data class VerificationIdentityRequest(
+data class VerificationUserIdentityRequest(
     val countryCode: String,
     val verificationData: VerificationData,
 )
@@ -23,7 +23,6 @@ data class PersonInfo(
 data class LocationInfo(
     val buildingNumber: String,
     val streetName: String,
-    val streetType: String,
     val city: String,
     val stateProvinceCode: String,
     val postalCode: String

@@ -16,6 +16,7 @@ import com.belcobtm.presentation.core.extensions.setText
 import com.belcobtm.presentation.core.mvvm.LoadingData
 import com.belcobtm.presentation.features.settings.verification.details.VerificationDetailsViewModel
 import com.belcobtm.presentation.features.settings.verification.details.VerificationIdentityState
+import com.google.android.material.textfield.TextInputLayout
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import java.util.*
 
@@ -45,7 +46,18 @@ class VerificationIdentityPageFragment : Fragment() {
     }
 
     private fun initViews() {
-        // viewModel.getVerificationFields()
+        with(binding)
+        {
+            firstNameView.showHelpText(getString(R.string.first_name_helper_text))
+            lastNameView.showHelpText(getString(R.string.last_name_helper_text))
+            birthDateView.showHelpText(getString(R.string.birth_date_helper_text))
+            provinceView.showHelpText(getString(R.string.province_helper_text))
+            cityView.showHelpText(getString(R.string.city_helper_text))
+            streetNameView.showHelpText(getString(R.string.street_name_helper_text))
+            buildingNumberView.showHelpText(getString(R.string.building_number_helper_text))
+            zipCodeView.showHelpText(getString(R.string.zip_code_helper_text))
+            ssnView.showHelpText(getString(R.string.ssn_helper_text))
+        }
     }
 
     private fun initListeners() {
@@ -79,12 +91,13 @@ class VerificationIdentityPageFragment : Fragment() {
             birthDateView.editText?.keyListener = null
             birthDateView.editText?.setOnClickListener {
                 val c = Calendar.getInstance()
-                val minimumYear = c.get(Calendar.YEAR) - 18
-                val month = c.get(Calendar.MONTH)
-                val day = c.get(Calendar.DAY_OF_MONTH)
+                val minimumYear = selectedYearOfBirth ?: c.get(Calendar.YEAR) - 18
+                val month = selectedMonthOfBirth?.minus(1) ?: c.get(Calendar.MONTH)
+                val day = selectedDayOfBirth ?: c.get(Calendar.DAY_OF_MONTH)
 
                 val dpd = DatePickerDialog(
                     requireActivity(),
+                    R.style.MySpinnerDatePickerStyle,
                     { view, year, monthOfYear, dayOfMonth ->
                         selectedDayOfBirth = dayOfMonth
                         selectedMonthOfBirth = monthOfYear + 1
@@ -153,7 +166,13 @@ class VerificationIdentityPageFragment : Fragment() {
                 is LoadingData.Success<VerificationIdentityState> -> {
                     hideLoading()
                     if (loadingData.data.recordStatus == RecordStatus.NO_MATCH) {
-                       // populateUiWithIdentityStateData(loadingData.data)
+                        populateUiWithIdentityStateData(loadingData.data)
+
+                        firstInvalidView?.let {
+                            binding.identityFieldsContainer.post {
+                                binding.identityFieldsContainer.smoothScrollTo(0, it.top)
+                            }
+                        }
                     }
                 }
                 is LoadingData.Error<VerificationIdentityState> -> {
@@ -166,12 +185,63 @@ class VerificationIdentityPageFragment : Fragment() {
         }
     }
 
+    private fun TextInputLayout.showErrorText(message: String) {
+        isErrorEnabled = true
+        isHelperTextEnabled = false
+        error = message
+        firstInvalidView = this
+
+    }
+
+    private fun TextInputLayout.showHelpText(message: String) {
+        isHelperTextEnabled = true
+        isErrorEnabled = false
+        helperText = message
+    }
+
     private fun populateUiWithIdentityStateData(identityState: VerificationIdentityState) {
         with(binding) {
-            lastNameView.isErrorEnabled = true
-            lastNameView.error = getString(R.string.last_name_validation_text)
+            firstNameView.setText(identityState.firstNameValue)
+            lastNameView.setText(identityState.lastNameValue)
+            selectedDayOfBirth = identityState.dayOfBirthValue
+            selectedMonthOfBirth = identityState.monthOfBirthValue
+            selectedYearOfBirth = identityState.yearOfBirthValue
+            birthDateView.setText("$selectedDayOfBirth/$selectedMonthOfBirth/$selectedYearOfBirth")
+            provinceView.setText(identityState.provinceValue)
+            cityView.setText(identityState.cityValue)
+            streetNameView.setText(identityState.streetNameValue)
+            buildingNumberView.setText(identityState.buildingNumberValue)
+            zipCodeView.setText(identityState.zipCodeValue)
+            ssnView.setText(identityState.ssnValue)
+            if (identityState.ssnValidationError) {
+                ssnView.showErrorText(getString(R.string.ssn_invalid_error_text))
+            }
+            if (identityState.zipCodeValidationError) {
+                zipCodeView.showErrorText(getString(R.string.zip_invalid_error_text))
+            }
+            if (identityState.buildingNumberValidationError) {
+                buildingNumberView.showErrorText(getString(R.string.building_number_invalid_error_text))
+            }
+            if (identityState.streetNameValidationError) {
+                streetNameView.showErrorText(getString(R.string.street_name_invalid_error_text))
+            }
+            if (identityState.cityValidationError) {
+                cityView.showErrorText(getString(R.string.city_invalid_error_text))
+            }
+            if (identityState.provinceValidationError) {
+                provinceView.showErrorText(getString(R.string.province_invalid_error_text))
+            }
+            if (identityState.birthDateValidationError) {
+                birthDateView.showErrorText(getString(R.string.birth_date_invalid_error_text))
+            }
+            if (identityState.lastNameValidationError) {
+                lastNameView.showErrorText(getString(R.string.last_name_invalid_error_text))
+            }
+            if (identityState.firstNameValidationError) {
+                firstNameView.showErrorText(getString(R.string.first_name_invalid_error_text))
+            }
+            validated = true
         }
-
     }
 
     private fun isValidFields(): Boolean {
@@ -199,108 +269,90 @@ class VerificationIdentityPageFragment : Fragment() {
 
     private fun FragmentVerificationIdentityPageBinding.validateFirstName(): Boolean {
         return if (firstNameView.getString().isEmpty()) {
-            firstNameView.isErrorEnabled = true
-            firstNameView.error = getString(R.string.first_name_validation_text)
-            firstInvalidView = firstNameView
+            firstNameView.showErrorText(getString(R.string.first_name_validation_text))
             false
         } else {
-            firstNameView.isErrorEnabled = false
+            firstNameView.showHelpText(getString(R.string.first_name_helper_text))
             true
         }
     }
 
     private fun FragmentVerificationIdentityPageBinding.validateLastName(): Boolean {
         return if (lastNameView.getString().isEmpty()) {
-            lastNameView.isErrorEnabled = true
-            lastNameView.error = getString(R.string.last_name_validation_text)
-            firstInvalidView = lastNameView
+            lastNameView.showErrorText(getString(R.string.last_name_validation_text))
             false
         } else {
-            lastNameView.isErrorEnabled = false
+            lastNameView.showHelpText(getString(R.string.last_name_helper_text))
             true
         }
     }
 
     private fun FragmentVerificationIdentityPageBinding.validateBirthDate(): Boolean {
         return if (birthDateView.getString().isEmpty()) {
-            birthDateView.isErrorEnabled = true
-            birthDateView.error = getString(R.string.birth_date_validation_text)
-            firstInvalidView = birthDateView
+            birthDateView.showErrorText(getString(R.string.birth_date_validation_text))
             false
         } else {
-            birthDateView.isErrorEnabled = false
+            birthDateView.showHelpText(getString(R.string.birth_date_helper_text))
             true
         }
     }
 
     private fun FragmentVerificationIdentityPageBinding.validateProvince(): Boolean {
         return if (provinceView.getString().isEmpty()) {
-            provinceView.isErrorEnabled = true
-            provinceView.error = getString(R.string.province_validation_text)
-            firstInvalidView = provinceView
+            provinceView.showErrorText(getString(R.string.province_validation_text))
             false
         } else {
-            provinceView.isErrorEnabled = false
+            provinceView.showHelpText(getString(R.string.province_helper_text))
             true
         }
     }
 
     private fun FragmentVerificationIdentityPageBinding.validateCity(): Boolean {
         return if (cityView.getString().isEmpty()) {
-            cityView.isErrorEnabled = true
-            cityView.error = getString(R.string.city_validation_text)
-            firstInvalidView = cityView
+            cityView.showErrorText(getString(R.string.city_validation_text))
             false
         } else {
-            cityView.isErrorEnabled = false
+            cityView.showHelpText(getString(R.string.city_helper_text))
             true
         }
     }
 
     private fun FragmentVerificationIdentityPageBinding.validateStreetName(): Boolean {
         return if (streetNameView.getString().isEmpty()) {
-            streetNameView.isErrorEnabled = true
-            streetNameView.error = getString(R.string.street_name_validation_text)
-            firstInvalidView = streetNameView
+            streetNameView.showErrorText(getString(R.string.street_name_validation_text))
             false
         } else {
-            streetNameView.isErrorEnabled = false
+            streetNameView.showHelpText(getString(R.string.street_name_helper_text))
             true
         }
     }
 
     private fun FragmentVerificationIdentityPageBinding.validateBuildingNumber(): Boolean {
         return if (buildingNumberView.getString().isEmpty()) {
-            buildingNumberView.isErrorEnabled = true
-            buildingNumberView.error = getString(R.string.building_number_validation_text)
-            firstInvalidView = buildingNumberView
+            buildingNumberView.showErrorText(getString(R.string.building_number_validation_text))
             false
         } else {
-            buildingNumberView.isErrorEnabled = false
+            buildingNumberView.showHelpText(getString(R.string.building_number_helper_text))
             true
         }
     }
 
     private fun FragmentVerificationIdentityPageBinding.validateZipCode(): Boolean {
         return if (zipCodeView.getString().isEmpty()) {
-            zipCodeView.isErrorEnabled = true
-            zipCodeView.error = getString(R.string.zip_validation_text)
-            firstInvalidView = zipCodeView
+            zipCodeView.showErrorText(getString(R.string.zip_validation_text))
             false
         } else {
-            zipCodeView.isErrorEnabled = false
+            zipCodeView.showHelpText(getString(R.string.zip_code_helper_text))
             true
         }
     }
 
     private fun FragmentVerificationIdentityPageBinding.validateSsn(): Boolean {
         return if (ssnView.getString().isEmpty()) {
-            ssnView.isErrorEnabled = true
-            ssnView.error = getString(R.string.ssn_validation_text)
-            firstInvalidView = ssnView
+            ssnView.showErrorText(getString(R.string.ssn_validation_text))
             false
         } else {
-            ssnView.isErrorEnabled = false
+            ssnView.showHelpText(getString(R.string.ssn_helper_text))
             true
         }
     }

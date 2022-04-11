@@ -8,7 +8,10 @@ import androidx.core.content.ContextCompat
 import androidx.viewpager2.widget.ViewPager2
 import com.belcobtm.R
 import com.belcobtm.databinding.FragmentVerificationBinding
+import com.belcobtm.domain.settings.type.VerificationStatus
 import com.belcobtm.domain.settings.type.VerificationStep
+import com.belcobtm.presentation.core.extensions.hide
+import com.belcobtm.presentation.core.extensions.show
 import com.belcobtm.presentation.core.mvvm.LoadingData
 import com.belcobtm.presentation.core.ui.fragment.BaseFragment
 import com.belcobtm.presentation.features.settings.verification.details.adapter.VerificationStepsAdapter
@@ -48,7 +51,7 @@ class VerificationDetailsFragment : BaseFragment<FragmentVerificationBinding>() 
 
     override fun FragmentVerificationBinding.initViews() {
         //appliedState = null
-        setToolbarTitle(R.string.settings_verify_dialog_title)
+        setToolbarTitle(R.string.kyc_label)
         viewModel.fetchVerificationStatus()
         verificationViewPager.orientation = ViewPager2.ORIENTATION_HORIZONTAL
         verificationViewPager.isUserInputEnabled = false
@@ -56,7 +59,12 @@ class VerificationDetailsFragment : BaseFragment<FragmentVerificationBinding>() 
     }
 
     override fun FragmentVerificationBinding.initListeners() {
-
+        processingOkButton.setOnClickListener {
+            popBackStack()
+        }
+        successOkButton.setOnClickListener {
+            popBackStack()
+        }
     }
 
     override fun FragmentVerificationBinding.initObservers() {
@@ -70,9 +78,29 @@ class VerificationDetailsFragment : BaseFragment<FragmentVerificationBinding>() 
                 state.doIfChanged(appliedState) {
                     showContent()
                 }
+                state.verificationStatus.doIfChanged(appliedState?.commonData?.verificationStatus) {
+                    when (it) {
+                        VerificationStatus.VERIFIED -> {
+                            verificationStepsContainer.hide()
+                            verificationSuccessContainer.show()
+                            verificationProcessingContainer.hide()
+                        }
+                        VerificationStatus.VERIFICATION_PENDING -> {
+                            verificationStepsContainer.hide()
+                            verificationSuccessContainer.hide()
+                            verificationProcessingContainer.show()
+                        }
+                        else -> {
+                            verificationStepsContainer.show()
+                            verificationSuccessContainer.hide()
+                            verificationProcessingContainer.hide()
+                        }
+                    }
+                }
                 state.currentStep.doIfChanged(appliedState?.commonData?.currentStep) {
                     verificationViewPager.post {
                         verificationViewPager.setCurrentItem(it.ordinal, false)
+                        verificationViewPager.show()
                     }
                 }
                 state.countryStepBackground.doIfChanged(appliedState?.commonData?.countryStepBackground) {

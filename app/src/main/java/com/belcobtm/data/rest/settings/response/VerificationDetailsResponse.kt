@@ -1,13 +1,16 @@
 package com.belcobtm.data.rest.settings.response
 
-import com.belcobtm.domain.settings.item.VerificationIdentityDataItem
 import com.belcobtm.domain.settings.item.VerificationSupportedCountryDataItem
 
 data class VerificationDetailsResponse(
-    val identityVerification: VerificationIdentityResponse?,
-    val documentVerification: Any?,
-    val documentVerificationComplete: Boolean?,
+    val userVerification: UserVerificationResponse?,
     val supportedCountries: List<VerificationSupportedCountryDataItem>,
     val sdkToken: String?,
+)
+
+data class UserVerificationResponse(
+    val countryCode: String?,
+    val identityVerification: VerificationIdentity?,
+    val documentVerification: VerificationDocument?,
 )
 

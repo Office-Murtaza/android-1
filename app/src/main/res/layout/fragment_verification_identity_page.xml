@@ -124,17 +124,24 @@
                     style="@style/VerificationBlankScreen.EditText"
                     android:hint="@string/verification_ssn"
                     android:inputType="number"
-                    android:maxLength="5" />
+                    android:maxLength="9" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:text="@string/verification_identity_processing_time"
+                android:textAlignment="center"
+                android:textSize="13sp" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/next_button"
                 style="@style/Button.Primary"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="25dp"
+                android:layout_marginTop="15dp"
                 android:text="@string/next"
                 android:textColor="#ffffff"
                 android:visibility="visible" />

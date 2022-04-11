@@ -3,7 +3,6 @@ package com.belcobtm.presentation.features.settings.verification.blank
 import android.net.Uri
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.belcobtm.domain.settings.interactor.GetVerificationCountryListUseCase
 import com.belcobtm.domain.settings.interactor.SendVerificationBlankUseCase
 import com.belcobtm.domain.settings.item.VerificationBlankDataItem
 import com.belcobtm.domain.settings.item.VerificationInfoDataItem
@@ -11,10 +10,8 @@ import com.belcobtm.presentation.core.mvvm.LoadingData
 
 class VerificationBlankViewModel(
     private val uploadUseCase: SendVerificationBlankUseCase,
-    private val countriesUseCase: GetVerificationCountryListUseCase
 ) : ViewModel() {
     val uploadingLiveData = MutableLiveData<LoadingData<Unit>>()
-    val countries = countriesUseCase.invoke()
     var fileUri: Uri? = null
 
     fun sendBlank(

@@ -35,7 +35,8 @@
 
     <!-- Sms code -->
     <string name="sms_code_screen_title">Verify Phone</string>
-    <string name="sms_code_screen_description">Enter the 4-digit code we sent you\nvia SMS to continue</string>
+    <string name="sms_code_hint">Verification Code</string>
+    <string name="sms_code_screen_description">Enter the SMS code to continue</string>
     <string name="sms_code_screen_did_not_get_the_code">Didn\'t get the code? </string>
     <string name="sms_code_screen_resend_code">Resend code</string>
     <string name="sms_code_screen_invalid_code">Wrong code</string>
@@ -147,7 +148,14 @@
     <string name="error_wrong_old_pin">Wrong old PIN</string>
 
     <!-- Verification -->
+    <string name="verification_country_tab_text">Resident\nCountry</string>
+    <string name="verification_identity_tab_text">Identity\nVerification</string>
+    <string name="verification_document_tab_text">Document\nVerification</string>
     <string name="verification_screen_title">Verification</string>
+    <string name="verification_processing">Processing…</string>
+    <string name="verification_processing_description">Your request is being processed, please wait…</string>
+    <string name="verification_success">Success</string>
+    <string name="verification_success_description">Congratulations! You are successfully verified!</string>
     <string name="verification_status">Status</string>
     <string name="verification_tx_limit">Transaction Limit</string>
     <string name="verification_daily_limit">Daily Limit</string>
@@ -163,7 +171,7 @@
         <item>Vip verification rejected</item>
         <item>Vip verified</item>
     </string-array>
-    <string name="verification_document_type">Document type</string>
+    <string name="verification_document_type">Document Type</string>
     <string name="verification_select">Select</string>
     <string name="verification_remove">Remove</string>
     <string name="verification_id_number">ID Number</string>
@@ -463,7 +471,7 @@
     //settings
     <string name="security_label">Security</string>
     <string name="wallets_label">Wallets</string>
-    <string name="kyc_label">AML/KYC</string>
+    <string name="kyc_label">KYC/AML</string>
     <string name="notifications_label">Notifications</string>
     <string name="about_label">About</string>
     <string name="terms_label">Terms &amp; Conditions</string>
@@ -523,25 +531,55 @@
 
     //verification validations
 
+    <string name="verification_identity_processing_time">Expected processing time up to 5 seconds</string>
+    <string name="verification_document_processing_time">Expected processing time up to 10 minutes</string>
+    <string name="verification_selfie_help_text_1">Align face &amp; Blink when</string>
+    <string name="verification_selfie_help_text_2">green oval</string>
+    <string name="verification_selfie_help_text_3">appears</string>
+
     <string name="id_number_validation_text">ID number should be up to 9 numbers and letters</string>
     <string name="address_validation_text">Address should be up to 255 letters</string>
 
-    <string name="document_type_validation_text">Please, select document type</string>
-    <string name="country_validation_text">Please, provide the country</string>
-    <string name="first_name_validation_text">Please, provide the first name</string>
-    <string name="last_name_validation_text">Please, provide the last name</string>
-    <string name="birth_date_validation_text">Please, provide the birth date</string>
-    <string name="city_validation_text">Please, provide the city</string>
-    <string name="province_validation_text">Please, provide the province</string>
-    <string name="street_name_validation_text">Please, provide the street name</string>
-    <string name="building_number_validation_text">Please, provide the building number</string>
-    <string name="zip_validation_text">Zip code should be 5 digits</string>
-    <string name="ssn_validation_text">SSN should be 9 digits</string>
+    <string name="document_type_validation_text">Document type is required</string>
+    <string name="country_validation_text">Country is required</string>
+    <string name="first_name_validation_text">First name is required</string>
+    <string name="last_name_validation_text">Last name is required</string>
+    <string name="birth_date_validation_text">Birth date is required</string>
+    <string name="city_validation_text">City is required</string>
+    <string name="province_validation_text">Province is required</string>
+    <string name="street_name_validation_text">Street name is required</string>
+    <string name="building_number_validation_text">Building number is required</string>
+    <string name="zip_validation_text">Zip code is required</string>
+    <string name="ssn_validation_text">SSN is required</string>
 
+    <string name="first_name_helper_text">e.g. Alice</string>
+    <string name="last_name_helper_text">e.g. Alison</string>
+    <string name="birth_date_helper_text">e.g. 3/15/1990</string>
+    <string name="city_helper_text">e.g. Bestville</string>
+    <string name="province_helper_text">e.g AK</string>
+    <string name="street_name_helper_text">e.g. Main Street</string>
+    <string name="building_number_helper_text">e.g. 12</string>
+    <string name="zip_code_helper_text">e.g 12345</string>
+    <string name="ssn_helper_text">e.g 123456789</string>
+
+    <string name="first_name_invalid_error_text">First name contains invalid value</string>
+    <string name="last_name_invalid_error_text">Last name contains invalid value</string>
+    <string name="birth_date_invalid_error_text">Birth date contains invalid value</string>
+    <string name="city_invalid_error_text">City contains invalid value</string>
+    <string name="province_invalid_error_text">Province contains invalid value</string>
+    <string name="street_name_invalid_error_text">Street name contains invalid value</string>
+    <string name="building_number_invalid_error_text">Building number contains invalid value</string>
+    <string name="zip_invalid_error_text">Zip code contains invalid value</string>
+    <string name="ssn_invalid_error_text">SSN contains invalid value</string>
 
     <string name="front_document_scan_validation_text">Please upload front scan of document</string>
     <string name="back_document_scan_validation_text">Please upload back scan of document</string>
     <string name="selfie_validation_text">Please upload selfie image</string>
+
+    <string name="front_document_scan_invalid_error_text">Front document contains invalid value</string>
+    <string name="back_document_scan_invalid_error_text">Back document contains invalid value</string>
+    <string name="selfie_invalid_error_text">Selfie contains invalid value</string>
+
     <string name="scan_validation_text">Please, upload ID scan image</string>
 
     <!--Deals-->

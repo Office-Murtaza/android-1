@@ -82,7 +82,6 @@ val useCaseModule = module {
             get(named(VERIFICATION_STORAGE))
         )
     }
-    single { GetVerificationCountryListUseCase(get()) }
     single {
         SendVerificationVipUseCase(
             get(),

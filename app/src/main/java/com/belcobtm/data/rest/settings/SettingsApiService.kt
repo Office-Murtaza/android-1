@@ -37,10 +37,11 @@ class SettingsApiService(private val api: SettingsApi) {
 
     suspend fun sendVerificationIdentity(
         userId: String,
+        telephone: String,
         identityDataItem: VerificationIdentityDataItem
-    ): Either<Failure, VerificationIdentityResponse> = try {
+    ): Either<Failure, VerificationUserIdentityResponse> = try {
         val request = with(identityDataItem) {
-            VerificationIdentityRequest(
+            VerificationUserIdentityRequest(
                 countryCode = countryCode,
                 verificationData = VerificationData(
                     personInfo = PersonInfo(
@@ -53,13 +54,12 @@ class SettingsApiService(private val api: SettingsApi) {
                     location = LocationInfo(
                         buildingNumber = buildingNumber,
                         streetName = streetName,
-                        streetType = streetName,
                         city = city,
                         stateProvinceCode = province,
                         postalCode = zipCode
                     ),
                     communication = CommunicationInfo(
-                        telephone = "123456"
+                        telephone = telephone
                     ),
                     nationalIds = listOf<NationalId>(
                         NationalId(
@@ -82,7 +82,7 @@ class SettingsApiService(private val api: SettingsApi) {
         userId: String,
         documentDataItem: VerificationDocumentDataItem,
         firebaseImages: VerificationDocumentFirebaseImages
-    ): Either<Failure, VerificationDocumentResponse> = try {
+    ): Either<Failure, VerificationUserDocumentResponse> = try {
         val request =
             VerificationDocumentRequest(
                 countryCode = documentDataItem.countryDataItem.code,

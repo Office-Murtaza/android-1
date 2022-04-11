@@ -26,23 +26,27 @@ class SendVerificationDocumentUseCase(
     override suspend fun run(params: Params): Either<Failure, VerificationDocumentResponseDataItem> {
 
         val frontDocumentFileName =
-            "${preferencesHelper.userId}_front_${params.documentItem.documentType.stringValue}.$FILE_EXTENSION"
+            "${preferencesHelper.userId}_front_${params.documentItem.documentType.stringValue}_${System.currentTimeMillis()}.$FILE_EXTENSION"
         cloudStorage.uploadBitmap(frontDocumentFileName, params.documentItem.frontScanBitmap)
 
-        val backDocumentFileName =
-            "${preferencesHelper.userId}_back_${params.documentItem.documentType.stringValue}.$FILE_EXTENSION"
-        cloudStorage.uploadBitmap(frontDocumentFileName, params.documentItem.frontScanBitmap)
+        val selfieFileName =
+            "${preferencesHelper.userId}_selfie_${System.currentTimeMillis()}.$FILE_EXTENSION"
+        cloudStorage.uploadBitmap(selfieFileName, params.documentItem.selfieBitmap)
 
-        val selfieFileName = "${preferencesHelper.userId}_selfie.$FILE_EXTENSION"
-        cloudStorage.uploadBitmap(frontDocumentFileName, params.documentItem.frontScanBitmap)
-
+        var backDocumentFileName: String? = null
+        params.documentItem.backScanBitmap?.let {
+            val fileName =
+                "${preferencesHelper.userId}_back_${params.documentItem.documentType.stringValue}_${System.currentTimeMillis()}.$FILE_EXTENSION"
+            cloudStorage.uploadBitmap(fileName, it)
+            backDocumentFileName = fileName
+        }
 
         return repositoryImpl.sendVerificationDocument(
             params.documentItem,
             VerificationDocumentFirebaseImages(
-                frontDocumentFileName,
-                backDocumentFileName,
-                selfieFileName
+                frontDocumentFileName = frontDocumentFileName,
+                backDocumentFileName = backDocumentFileName,
+                selfieFileName = selfieFileName
             )
         )
     }

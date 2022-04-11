@@ -4,12 +4,16 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.os.bundleOf
+import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.setFragmentResult
 import com.belcobtm.R
 import com.belcobtm.databinding.FragmentSmsCodeBinding
 import com.belcobtm.domain.Failure
 import com.belcobtm.domain.authorization.interactor.AUTH_ERROR_PHONE_NOT_SUPPORTED
-import com.belcobtm.presentation.core.extensions.*
+import com.belcobtm.presentation.core.extensions.getString
+import com.belcobtm.presentation.core.extensions.hide
+import com.belcobtm.presentation.core.extensions.setText
+import com.belcobtm.presentation.core.extensions.show
 import com.belcobtm.presentation.core.helper.AlertHelper
 import com.belcobtm.presentation.core.ui.fragment.BaseFragment
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -34,15 +38,16 @@ class SmsCodeFragment : BaseFragment<FragmentSmsCodeBinding>() {
     override fun FragmentSmsCodeBinding.initListeners() {
         resendCodeButtonView.setOnClickListener {
             isResendClicked = true
-            pinEntryView.setText("")
+            codeEntryView.setText("")
             viewModel.sendSmsToDevice()
         }
-        pinEntryView.afterTextChanged { editable ->
-            errorMessageView.invisible()
-            pinEntryView.isError = false
-            if (editable.length == SMS_CODE_LENGTH) {
-                viewModel.verifyCode(pinEntryView.text.toString())
-            }
+
+        codeEntryView.editText?.addTextChangedListener {
+            codeEntryView.isErrorEnabled = false
+        }
+        verifyButton.setOnClickListener {
+            viewModel.verifyCode(codeEntryView.getString())
+
         }
     }
 
@@ -101,9 +106,9 @@ class SmsCodeFragment : BaseFragment<FragmentSmsCodeBinding>() {
                     popBackStack()
                 }
             }
-            !correctCode && binding.pinEntryView.getString().length == SMS_CODE_LENGTH -> {
-                binding.errorMessageView.show()
-                binding.pinEntryView.isError = true
+            !correctCode -> {
+                binding.codeEntryView.isErrorEnabled = true
+                binding.codeEntryView.error = getString(R.string.sms_code_screen_invalid_code)
             }
         }
     }

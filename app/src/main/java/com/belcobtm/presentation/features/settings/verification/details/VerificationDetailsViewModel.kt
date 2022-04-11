@@ -1,62 +1,84 @@
 package com.belcobtm.presentation.features.settings.verification.details
 
 import android.graphics.Bitmap
-import android.net.Uri
 import androidx.annotation.DrawableRes
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.navigation.NavDirections
 import com.belcobtm.R
+import com.belcobtm.data.disk.shared.preferences.SharedPreferencesHelper
 import com.belcobtm.data.helper.ImageHelper
-import com.belcobtm.domain.settings.interactor.*
-import com.belcobtm.domain.settings.item.VerificationDetailsDataItem
-import com.belcobtm.domain.settings.item.VerificationDocumentDataItem
-import com.belcobtm.domain.settings.item.VerificationIdentityDataItem
-import com.belcobtm.domain.settings.item.VerificationSupportedCountryDataItem
+import com.belcobtm.domain.settings.interactor.GetVerificationDetailsUseCase
+import com.belcobtm.domain.settings.interactor.GetVerificationFieldsUseCase
+import com.belcobtm.domain.settings.interactor.SendVerificationDocumentUseCase
+import com.belcobtm.domain.settings.interactor.SendVerificationIdentityUseCase
+import com.belcobtm.domain.settings.item.*
 import com.belcobtm.domain.settings.type.DocumentType
 import com.belcobtm.domain.settings.type.RecordStatus
+import com.belcobtm.domain.settings.type.VerificationStatus
 import com.belcobtm.domain.settings.type.VerificationStep
 import com.belcobtm.presentation.core.SingleLiveData
-import com.belcobtm.presentation.core.formatter.Formatter
 import com.belcobtm.presentation.core.mvvm.LoadingData
+
 
 class VerificationDetailsViewModel(
     private val sendVerificationDocumentUseCase: SendVerificationDocumentUseCase,
     private val sendVerificationIdentityUseCase: SendVerificationIdentityUseCase,
     private val getVerificationDetailsUseCase: GetVerificationDetailsUseCase,
     private val getVerificationFieldsUseCase: GetVerificationFieldsUseCase,
-    private val countriesUseCase: GetVerificationCountryListUseCase,
-    private val priceFormatter: Formatter<Double>,
+    private val prefHelper: SharedPreferencesHelper,
 ) : ViewModel() {
     val detailsStateData = MutableLiveData<LoadingData<VerificationDetailsState>>()
     val identityStateData = MutableLiveData<LoadingData<VerificationIdentityState>>()
     val documentStateData = MutableLiveData<LoadingData<VerificationDocumentState>>()
     val actionData = SingleLiveData<VerificationDetailsAction>()
-    val countries = countriesUseCase.invoke()
     var currentStep = VerificationStep.COUNTRY_VERIFICATION_STEP
+    var verificationStatus = VerificationStatus.UNVERIFIED
     var selectedCountry: VerificationSupportedCountryDataItem? = null
     var selectedDocumentType: DocumentType? = null
     var frontScanDocument: Bitmap? = null
     var backScanDocument: Bitmap? = null
     var selfieScan: Bitmap? = null
-    var fileUri: Uri? = null
-    var item: VerificationDetailsDataItem? = null
+    var verificationDetails: VerificationDetailsDataItem? = null
     val imageHelper = ImageHelper()
 
+
     fun fetchVerificationStatus() {
-        detailsStateData.value = LoadingData.Loading()
-        getVerificationDetailsUseCase.invoke(Unit,
-            onSuccess = {
-                item = it
-                getVerificationStep(it)
-                detailsStateData.value = LoadingData.Success(
-                    getVerificationDetailsStateByStep(currentStep)
-                )
-            },
-            onError = {
-                detailsStateData.value = LoadingData.Error(it)
-            }
-        )
+
+        verificationStatus = VerificationStatus.fromString(prefHelper.userStatus)
+
+        if (verificationStatus != VerificationStatus.VERIFIED) {
+            detailsStateData.value = LoadingData.Loading()
+            getVerificationDetailsUseCase.invoke(Unit,
+                onSuccess = {
+                    verificationDetails = it
+                    getVerificationStatus(it)
+                    it.identityVerification?.let { identityResponse ->
+                        identityStateData.value = LoadingData.Success<VerificationIdentityState>(
+                            createVerificationIdentityState(identityResponse)
+                        )
+                    }
+                    it.documentVerification?.let { documentResponse ->
+                        documentStateData.value = LoadingData.Success<VerificationDocumentState>(
+                            createVerificationDocumentState(
+                                documentResponse,
+                            )
+                        )
+                    }
+                    selectedCountry = it.selectedCountry
+                    detailsStateData.value = LoadingData.Success(
+                        getVerificationDetailsState()
+                    )
+                },
+                onError = {
+                    detailsStateData.value = LoadingData.Error(it)
+                }
+            )
+        } else {
+            detailsStateData.value = LoadingData.Success(
+                getVerificationDetailsState()
+            )
+        }
     }
 
     fun onBackClick() {
@@ -67,17 +89,16 @@ class VerificationDetailsViewModel(
                 VerificationStep.COUNTRY_VERIFICATION_STEP -> VerificationStep.COUNTRY_VERIFICATION_STEP
             }
             detailsStateData.value = LoadingData.Success(
-                getVerificationDetailsStateByStep(currentStep)
+                getVerificationDetailsState()
             )
         }
     }
-
 
     fun onCountryVerificationNext() {
         if (selectedCountry != null) {
             currentStep = VerificationStep.IDENTITY_VERIFICATION_STEP
             detailsStateData.value = LoadingData.Success(
-                getVerificationDetailsStateByStep(currentStep)
+                getVerificationDetailsState()
             )
         }
     }
@@ -87,12 +108,12 @@ class VerificationDetailsViewModel(
         sendVerificationIdentityUseCase.invoke(SendVerificationIdentityUseCase.Params(dataItem),
             onSuccess = {
                 identityStateData.value = LoadingData.Success<VerificationIdentityState>(
-                    VerificationIdentityState(recordStatus = it.recordStatus)
+                    createVerificationIdentityState(it)
                 )
-                if (true || it.recordStatus == RecordStatus.MATCH) {
+                if (it.recordStatus == RecordStatus.MATCH) {
                     currentStep = VerificationStep.DOCUMENT_VERIFICATION_STEP
                     detailsStateData.value = LoadingData.Success(
-                        getVerificationDetailsStateByStep(currentStep)
+                        getVerificationDetailsState()
                     )
                 }
             },
@@ -104,36 +125,46 @@ class VerificationDetailsViewModel(
 
     }
 
-    //TODO remove harcoded data
     fun onDocumentVerificationSubmit() {
         documentStateData.value = LoadingData.Loading()
-        val x = VerificationDocumentDataItem(
-            backScanDocument!!,
-            frontScanDocument!!,
-            selfieScan!!,
-            imageHelper.convert(backScanDocument!!),
-            imageHelper.convert(frontScanDocument!!),
-            imageHelper.convert(selfieScan!!),
-            DocumentType.IDENTITY_CARD,
-            selectedCountry ?: VerificationSupportedCountryDataItem("US", "United States")
-        )
-        sendVerificationDocumentUseCase.invoke(SendVerificationDocumentUseCase.Params(x),
-            onSuccess = {
+        if (frontScanDocument != null && selfieScan != null && selectedDocumentType != null && selectedCountry != null) {
 
-                documentStateData.value = LoadingData.Success<VerificationDocumentState>(
-                    VerificationDocumentState(recordStatus = RecordStatus.MATCH)
-                )
-//                if (it.recordStatus == RecordStatus.MATCH) {
-//                    currentStep = VerificationStep.DOCUMENT_VERIFICATION_STEP
-//                    detailsStateData.value = LoadingData.Success(
-//                        getVerificationDetailsStateByStep(currentStep)
-//                    )
-//                }
-            },
-            onError = {
-                documentStateData.value = LoadingData.Error(it)
+            var backScanBase64: String? = null
+            backScanDocument?.let {
+                backScanBase64 = imageHelper.convert(it).replace("\n", "")
             }
-        )
+
+            sendVerificationDocumentUseCase.invoke(SendVerificationDocumentUseCase.Params(
+                VerificationDocumentDataItem(
+                    frontScanBitmap = frontScanDocument!!,
+                    backScanBitmap = backScanDocument,
+                    selfieBitmap = selfieScan!!,
+                    frontScanBase64 = imageHelper.convert(frontScanDocument!!).replace("\n", ""),
+                    backScanBase64 = backScanBase64,
+                    selfieBase64 = imageHelper.convert(selfieScan!!).replace("\n", ""),
+                    documentType = selectedDocumentType!!,
+                    countryDataItem = selectedCountry!!
+                )
+            ),
+                onSuccess = {
+                    documentStateData.value = LoadingData.Success<VerificationDocumentState>(
+                        createVerificationDocumentState(it)
+                    )
+                    if (it.recordStatus == RecordStatus.MATCH) {
+                        verificationStatus = VerificationStatus.VERIFIED
+                    } else if (it.transactionId == null) {
+                        verificationStatus = VerificationStatus.VERIFICATION_PENDING
+                    }
+
+                    detailsStateData.value = LoadingData.Success(
+                        getVerificationDetailsState()
+                    )
+                },
+                onError = {
+                    documentStateData.value = LoadingData.Error(it)
+                }
+            )
+        }
     }
 
 //        actionData.value = VerificationDetailsAction.NavigateAction(
@@ -150,28 +181,18 @@ class VerificationDetailsViewModel(
 //            }
 //        )
 
-    private fun getVerificationDetailsStateByStep(step: VerificationStep) =
-        VerificationDetailsState(
-            countryStepTextColor = getCountryStepTextColor(step),
-            countryStepBackground = getCountryStepBackground(step),
-            countryStepIcon = getCountryStepIcon(step),
-            countryStepIconColor = getCountryStepIconColor(step),
-            identityStepBackground = getIdentityStepBackground(step),
-            identityStepTextColor = getIdentityStepTextColor(step),
-            identityStepIcon = getIdentityStepIcon(step),
-            identityStepIconColor = getIdentityStepIconColor(step),
-            documentStepBackground = getDocumentStepBackground(step),
-            documentStepIcon = getDocumentStepIcon(step),
-            documentStepIconColor = getDocumentStepIconColor(step),
-            documentStepTextColor = getDocumentStepTextColor(step),
-            currentStep = step
-        )
 
-    private fun getVerificationStep(verificationDetails: VerificationDetailsDataItem) {
-        if (false && verificationDetails.identityVerification != null && verificationDetails.identityVerification.recordStatus == RecordStatus.MATCH)
-            currentStep = VerificationStep.DOCUMENT_VERIFICATION_STEP
-        else
+    private fun getVerificationStatus(verificationDetails: VerificationDetailsDataItem) {
+        if (verificationDetails.selectedCountry == null)
             currentStep = VerificationStep.COUNTRY_VERIFICATION_STEP
+        else {
+            selectedCountry = verificationDetails.selectedCountry
+            if (verificationDetails.identityVerification != null && verificationDetails.identityVerification.recordStatus == RecordStatus.MATCH)
+                currentStep = VerificationStep.DOCUMENT_VERIFICATION_STEP
+            else
+                currentStep = VerificationStep.IDENTITY_VERIFICATION_STEP
+        }
+        verificationStatus = VerificationStatus.UNVERIFIED
     }
 
     private fun getCountryStepIcon(step: VerificationStep): Int {
@@ -282,6 +303,23 @@ class VerificationDetailsViewModel(
         }
     }
 
+    private fun getVerificationDetailsState(
+    ) = VerificationDetailsState(
+        countryStepTextColor = getCountryStepTextColor(currentStep),
+        countryStepBackground = getCountryStepBackground(currentStep),
+        countryStepIcon = getCountryStepIcon(currentStep),
+        countryStepIconColor = getCountryStepIconColor(currentStep),
+        identityStepBackground = getIdentityStepBackground(currentStep),
+        identityStepTextColor = getIdentityStepTextColor(currentStep),
+        identityStepIcon = getIdentityStepIcon(currentStep),
+        identityStepIconColor = getIdentityStepIconColor(currentStep),
+        documentStepBackground = getDocumentStepBackground(currentStep),
+        documentStepIcon = getDocumentStepIcon(currentStep),
+        documentStepIconColor = getDocumentStepIconColor(currentStep),
+        documentStepTextColor = getDocumentStepTextColor(currentStep),
+        currentStep = currentStep,
+        verificationStatus = verificationStatus
+    )
 }
 
 data class VerificationDetailsState(
@@ -297,14 +335,82 @@ data class VerificationDetailsState(
     @DrawableRes val documentStepIconColor: Int = R.color.dark_text_color,
     @DrawableRes val documentStepTextColor: Int = R.color.dark_text_color,
     @DrawableRes val documentStepBackground: Int = R.drawable.gray_border_background,
-    val currentStep: VerificationStep = VerificationStep.COUNTRY_VERIFICATION_STEP
+    val currentStep: VerificationStep = VerificationStep.COUNTRY_VERIFICATION_STEP,
+    val verificationStatus: VerificationStatus = VerificationStatus.NOT_VERIFIED
 )
 
-data class VerificationIdentityState(val recordStatus: RecordStatus)
 
-data class VerificationDocumentState(val recordStatus: RecordStatus)
+data class VerificationIdentityState(
+    val recordStatus: RecordStatus,
+    val firstNameValue: String,
+    val lastNameValue: String,
+    val dayOfBirthValue: Int,
+    val monthOfBirthValue: Int,
+    val yearOfBirthValue: Int,
+    val provinceValue: String,
+    val cityValue: String,
+    val streetNameValue: String,
+    val buildingNumberValue: String,
+    val zipCodeValue: String,
+    val ssnValue: String,
+    val firstNameValidationError: Boolean,
+    val lastNameValidationError: Boolean,
+    val birthDateValidationError: Boolean,
+    val provinceValidationError: Boolean,
+    val cityValidationError: Boolean,
+    val streetNameValidationError: Boolean,
+    val buildingNumberValidationError: Boolean,
+    val zipCodeValidationError: Boolean,
+    val ssnValidationError: Boolean,
+)
 
-data class VerificationFieldsState(val currentStep: Int = 1)
+private fun createVerificationIdentityState(dataItem: VerificationIdentityResponseDataItem): VerificationIdentityState =
+    VerificationIdentityState(
+        recordStatus = dataItem.recordStatus,
+        firstNameValue = dataItem.firstNameValue,
+        lastNameValue = dataItem.lastNameValue,
+        dayOfBirthValue = dataItem.dayOfBirthValue,
+        monthOfBirthValue = dataItem.monthOfBirthValue,
+        yearOfBirthValue = dataItem.yearOfBirthValue,
+        provinceValue = dataItem.provinceValue,
+        cityValue = dataItem.cityValue,
+        streetNameValue = dataItem.streetNameValue,
+        buildingNumberValue = dataItem.buildingNumberValue,
+        zipCodeValue = dataItem.zipCodeValue,
+        ssnValue = dataItem.ssnValue,
+        firstNameValidationError = dataItem.firstNameValidationError,
+        lastNameValidationError = dataItem.lastNameValidationError,
+        birthDateValidationError = dataItem.birthDateValidationError,
+        provinceValidationError = dataItem.provinceValidationError,
+        cityValidationError = dataItem.cityValidationError,
+        streetNameValidationError = dataItem.streetNameValidationError,
+        buildingNumberValidationError = dataItem.buildingNumberValidationError,
+        zipCodeValidationError = dataItem.zipCodeValidationError,
+        ssnValidationError = dataItem.ssnValidationError
+    )
+
+data class VerificationDocumentState(
+    val selectedDocumentType: DocumentType?,
+    val frontImageBitmap: Bitmap?,
+    val backImageBitmap: Bitmap?,
+    val selfieImageBitmap: Bitmap?,
+    val frontImageValidationError: Boolean,
+    val backImageValidationError: Boolean,
+    val selfieImageValidationError: Boolean,
+)
+
+private fun createVerificationDocumentState(
+    dataItem: VerificationDocumentResponseDataItem,
+): VerificationDocumentState =
+    VerificationDocumentState(
+        selectedDocumentType = dataItem.documentType,
+        frontImageBitmap = dataItem.frontImageBitmap,
+        backImageBitmap = dataItem.backImageBitmap,
+        selfieImageBitmap = dataItem.selfieImageBitmap,
+        frontImageValidationError = dataItem.frontImageValidationError,
+        backImageValidationError = dataItem.backImageValidationError,
+        selfieImageValidationError = dataItem.selfieImageValidationError,
+    )
 
 
 sealed class VerificationDetailsAction {
