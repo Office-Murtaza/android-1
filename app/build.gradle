@@ -23,7 +23,7 @@ android {
         minSdkVersion 23
         targetSdkVersion 30
         versionCode rootProject.gitCommitCount
-        versionName "2.4"
+        versionName "2.5"
         vectorDrawables.useSupportLibrary = true
     }
     signingConfigs {
