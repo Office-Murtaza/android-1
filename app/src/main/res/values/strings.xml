@@ -588,6 +588,9 @@
     <string name="deals_swap">Swap</string>
     <string name="deals_trade">P2P Trade</string>
     <string name="deals_transfer">Transfer</string>
+    <string name="deals_unverified_error">Unavailable due unverified status</string>
+    <string name="deals_verify">Verify</string>
+    <string name="deals_location_error">Unavailable due location settings</string>
 
     <!-- Transfer flow -->
     <string name="transfer_screen_title">Transfer</string>

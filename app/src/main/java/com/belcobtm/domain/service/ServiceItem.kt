@@ -10,6 +10,8 @@ data class ServiceItem(
     @DrawableRes val icon: Int,
     @ServiceType val serviceType: Int,
     @StringRes val title: Int,
+    var locationEnabled: Boolean = true,
+    var verificationEnabled: Boolean = true,
 ) : ListItem {
 
     override val type: Int

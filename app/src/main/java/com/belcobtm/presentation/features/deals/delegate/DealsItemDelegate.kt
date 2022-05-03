@@ -7,7 +7,8 @@ import com.belcobtm.domain.service.ServiceItem
 import com.belcobtm.presentation.core.adapter.delegate.AdapterDelegate
 
 class DealsItemDelegate(
-    private val onServiceClicked: (ServiceItem) -> Unit
+    private val onServiceClicked: (ServiceItem) -> Unit,
+    private val onVerifyClicked : ()->Unit
 ) : AdapterDelegate<ServiceItem, DealsItemViewHolder>() {
 
     override val viewType: Int
@@ -16,6 +17,7 @@ class DealsItemDelegate(
     override fun createHolder(parent: ViewGroup, inflater: LayoutInflater): DealsItemViewHolder =
         DealsItemViewHolder(
             ItemDealsBinding.inflate(inflater, parent, false),
-            onServiceClicked
+            onServiceClicked,
+            onVerifyClicked,
         )
 }

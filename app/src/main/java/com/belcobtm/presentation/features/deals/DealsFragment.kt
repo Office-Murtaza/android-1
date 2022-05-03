@@ -5,18 +5,15 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.asLiveData
 import androidx.recyclerview.widget.DividerItemDecoration
-import com.afollestad.materialdialogs.MaterialDialog
 import com.belcobtm.R
 import com.belcobtm.data.disk.database.service.ServiceType
 import com.belcobtm.databinding.FragmentDealsBinding
 import com.belcobtm.domain.service.ServiceInfoProvider
 import com.belcobtm.domain.service.ServiceItem
 import com.belcobtm.domain.settings.type.isPending
-import com.belcobtm.domain.settings.type.isVerified
 import com.belcobtm.presentation.core.adapter.MultiTypeAdapter
 import com.belcobtm.presentation.core.ui.fragment.BaseFragment
 import com.belcobtm.presentation.features.deals.delegate.DealsItemDelegate
-import com.belcobtm.presentation.features.settings.SettingsFragmentDirections
 import kotlinx.coroutines.Dispatchers
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -30,7 +27,7 @@ class DealsFragment : BaseFragment<FragmentDealsBinding>() {
 
     private val adapter by lazy {
         MultiTypeAdapter().apply {
-            registerDelegate(DealsItemDelegate(::onServiceClicked))
+            registerDelegate(DealsItemDelegate(::onServiceClicked, ::onVerifyClicked))
         }
     }
 
@@ -38,11 +35,7 @@ class DealsFragment : BaseFragment<FragmentDealsBinding>() {
         viewModel.apply {
             stateData.observe(viewLifecycleOwner) {
                 it.commonData?.let { status ->
-                    if (status.isPending()) {
-                        verifyRoot.visibility = View.VISIBLE
-                    } else {
-                        verifyRoot.visibility = View.GONE
-                    }
+
                 }
             }
         }
@@ -51,10 +44,6 @@ class DealsFragment : BaseFragment<FragmentDealsBinding>() {
     override fun FragmentDealsBinding.initViews() {
         setToolbarTitle(R.string.deals_toolsbar_title)
 
-        verify.setOnClickListener {
-            val dest = DealsFragmentDirections.toVerificationInfoFragment()
-            navigate(dest)
-        }
         val dividerItemDecoration = DividerItemDecoration(
             requireContext(), DividerItemDecoration.VERTICAL,
         )
@@ -79,6 +68,11 @@ class DealsFragment : BaseFragment<FragmentDealsBinding>() {
                 navigate(DealsFragmentDirections.toAtmSellFragment())
         }
     }
+
+    private fun onVerifyClicked() {
+        navigate(DealsFragmentDirections.toVerificationInfoFragment())
+    }
+
 
     override fun createBinding(
         inflater: LayoutInflater,

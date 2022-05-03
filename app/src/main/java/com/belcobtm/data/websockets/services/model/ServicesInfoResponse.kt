@@ -6,7 +6,8 @@ import com.belcobtm.data.disk.database.service.ServiceType
 data class ServicesInfoResponse(
     val index: Int,
     val type: String,
-    val enabled: Boolean,
+    val locationEnabled: Boolean,
+    val verificationEnabled: Boolean,
     val feePercent: Double,
     val txLimit: Double,
     val dailyLimit: Double,
@@ -32,6 +33,8 @@ fun ServicesInfoResponse.toEntity(): ServiceEntity? {
     }
     return ServiceEntity(
         id = id,
+        locationEnabled = locationEnabled,
+        verificationEnabled = verificationEnabled,
         feePercent = feePercent,
         txLimit = txLimit,
         dailyLimit = dailyLimit,
