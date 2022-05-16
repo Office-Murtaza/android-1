@@ -2,6 +2,8 @@ package com.belcobtm.data.rest.settings.request
 
 data class VerificationUserIdentityRequest(
     val countryCode: String,
+    val sourceOfFunds: String,
+    val occupation: String,
     val verificationData: VerificationData,
 )
 

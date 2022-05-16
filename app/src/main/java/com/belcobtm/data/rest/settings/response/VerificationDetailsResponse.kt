@@ -10,6 +10,8 @@ data class VerificationDetailsResponse(
 
 data class UserVerificationResponse(
     val countryCode: String?,
+    val sourceOfFunds: String?,
+    val occupation: String?,
     val identityVerification: VerificationIdentity?,
     val documentVerification: VerificationDocument?,
 )

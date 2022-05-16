@@ -186,12 +186,15 @@
     <string name="verification_province">Province</string>
     <string name="verification_zip_code">ZIP Code</string>
     <string name="verification_ssn">SSN</string>
+    <string name="verification_source_of_funds">Source Of Funds</string>
+    <string name="verification_occupation">Occupation/Job Title</string>
     <string name="verification_send">Send</string>
     <string name="verification_select_photo_please">Select photo please</string>
     <string name="verification_alert_country_title">Please pick country</string>
     <string name="verification_alert_document_type_title">Please pick document type</string>
     <string name="verification_alert_state_title">Please pick province</string>
     <string name="verification_alert_city_title">Please pick city</string>
+    <string name="verification_alert_source_of_funds_title">Please pick source of funds</string>
     <string name="verification_alert_please_fill_fields">Please fill all fields</string>
     <string name="verification_id_scan">ID scan</string>
     <string name="verification_id_selfie">ID selfie</string>
@@ -551,6 +554,8 @@
     <string name="building_number_validation_text">Building number is required</string>
     <string name="zip_validation_text">Zip code is required</string>
     <string name="ssn_validation_text">SSN is required</string>
+    <string name="source_of_funds_validation_text">Source of funds is required</string>
+    <string name="occupation_validation_text">Occupation/Job title is required</string>
 
     <string name="first_name_helper_text">e.g. Alice</string>
     <string name="last_name_helper_text">e.g. Alison</string>
@@ -561,6 +566,8 @@
     <string name="building_number_helper_text">e.g. 12</string>
     <string name="zip_code_helper_text">e.g 12345</string>
     <string name="ssn_helper_text">e.g 123456789</string>
+    <string name="source_of_funds_helper_text">Where do you get money from?</string>
+    <string name="occupation_helper_text">What are you currently doing?</string>
 
     <string name="first_name_invalid_error_text">First name contains invalid value</string>
     <string name="last_name_invalid_error_text">Last name contains invalid value</string>
@@ -571,6 +578,8 @@
     <string name="building_number_invalid_error_text">Building number contains invalid value</string>
     <string name="zip_invalid_error_text">Zip code contains invalid value</string>
     <string name="ssn_invalid_error_text">SSN contains invalid value</string>
+    <string name="source_of_funds_error_text">Source of funds contains invalid value</string>
+    <string name="occupation_error_text">Occupation/Job title contains invalid value</string>
 
     <string name="front_document_scan_validation_text">Please upload front scan of document</string>
     <string name="back_document_scan_validation_text">Please upload back scan of document</string>

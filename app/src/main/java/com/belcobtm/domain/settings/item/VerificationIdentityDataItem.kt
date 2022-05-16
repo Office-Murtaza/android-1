@@ -13,4 +13,6 @@ data class VerificationIdentityDataItem(
     val buildingNumber: String,
     val zipCode: String,
     val ssn: String,
+    val sourceOfFunds: String,
+    val occupation: String,
 )

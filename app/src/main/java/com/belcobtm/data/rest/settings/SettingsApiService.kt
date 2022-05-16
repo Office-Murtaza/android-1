@@ -43,6 +43,8 @@ class SettingsApiService(private val api: SettingsApi) {
         val request = with(identityDataItem) {
             VerificationUserIdentityRequest(
                 countryCode = countryCode,
+                occupation = occupation,
+                sourceOfFunds = sourceOfFunds,
                 verificationData = VerificationData(
                     personInfo = PersonInfo(
                         firstGivenName = firstName,

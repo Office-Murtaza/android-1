@@ -6,6 +6,8 @@ import com.belcobtm.data.rest.settings.request.NationalId
 import com.belcobtm.data.rest.settings.request.PersonInfo
 
 data class VerificationUserIdentityResponse(
+    val sourceOfFunds: String?,
+    val occupation: String?,
     val identityVerification: VerificationIdentity
 )
 

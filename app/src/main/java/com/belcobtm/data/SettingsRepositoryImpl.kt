@@ -76,6 +76,8 @@ class SettingsRepositoryImpl(
                         provinceValue = verificationData.location.stateProvinceCode,
                         zipCodeValue = verificationData.location.postalCode,
                         ssnValue = verificationData.nationalIds.first().number,
+                        sourceOfFunds = responseItem.userVerification.sourceOfFunds ?: "",
+                        occupation = responseItem.userVerification.occupation ?: "",
                         firstNameValidationError = mapIdentityFieldsError.get(
                             VerificationIdentityFieldsType.FIRST_NAME
                         ) ?: false,
@@ -266,6 +268,8 @@ class SettingsRepositoryImpl(
                     provinceValue = verificationData.location.stateProvinceCode,
                     zipCodeValue = verificationData.location.postalCode,
                     ssnValue = verificationData.nationalIds.first().number,
+                    sourceOfFunds = responseItem.sourceOfFunds ?: "",
+                    occupation = responseItem.occupation ?: "",
                     firstNameValidationError = mapIdentityFieldsError.get(
                         VerificationIdentityFieldsType.FIRST_NAME
                     ) ?: false,
@@ -387,9 +391,8 @@ class SettingsRepositoryImpl(
         prefHelper.userId, blankDataItem, fileName
     )
 
-//todo remove this
-//    override fun getVerificationCountries(): List<VerificationCountryDataItem> =
-//        assetsDataStore.getCountries()
+    override fun getVerificationCountries(): List<VerificationCountryDataItem> =
+        assetsDataStore.getCountries()
 
     override suspend fun sendVerificationVip(
         vipDataItem: VerificationVipDataItem,

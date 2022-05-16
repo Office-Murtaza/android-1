@@ -5,12 +5,14 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AlertDialog
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import com.belcobtm.R
 import com.belcobtm.databinding.FragmentVerificationIdentityPageBinding
 import com.belcobtm.domain.settings.item.VerificationIdentityDataItem
 import com.belcobtm.domain.settings.type.RecordStatus
+import com.belcobtm.presentation.core.extensions.clearText
 import com.belcobtm.presentation.core.extensions.getString
 import com.belcobtm.presentation.core.extensions.setText
 import com.belcobtm.presentation.core.mvvm.LoadingData
@@ -51,12 +53,15 @@ class VerificationIdentityPageFragment : Fragment() {
             firstNameView.showHelpText(getString(R.string.first_name_helper_text))
             lastNameView.showHelpText(getString(R.string.last_name_helper_text))
             birthDateView.showHelpText(getString(R.string.birth_date_helper_text))
-            provinceView.showHelpText(getString(R.string.province_helper_text))
-            cityView.showHelpText(getString(R.string.city_helper_text))
             streetNameView.showHelpText(getString(R.string.street_name_helper_text))
             buildingNumberView.showHelpText(getString(R.string.building_number_helper_text))
             zipCodeView.showHelpText(getString(R.string.zip_code_helper_text))
             ssnView.showHelpText(getString(R.string.ssn_helper_text))
+            sourceOfFundView.showHelpText(getString(R.string.source_of_funds_helper_text))
+            occupationView.showHelpText(getString(R.string.occupation_helper_text))
+
+            if (provinceView.getString().isEmpty())
+                cityView.isEnabled = false
         }
     }
 
@@ -78,7 +83,9 @@ class VerificationIdentityPageFragment : Fragment() {
                             streetName = streetNameView.getString(),
                             buildingNumber = buildingNumberView.getString(),
                             zipCode = zipCodeView.getString(),
-                            ssn = ssnView.getString()
+                            ssn = ssnView.getString(),
+                            sourceOfFunds = sourceOfFundView.getString(),
+                            occupation = occupationView.getString(),
                         )
                     )
                 } else {
@@ -126,16 +133,43 @@ class VerificationIdentityPageFragment : Fragment() {
                     validateBirthDate()
                 }
             }
-            provinceView.editText?.addTextChangedListener {
-                if (validated) {
-                    validateProvince()
-                }
+
+            provinceView.editText?.keyListener = null
+            provinceView.editText?.setOnClickListener {
+                viewModel.countries
+                    .find { it.name == viewModel.selectedCountry?.name }
+                    ?.states?.let { stateList ->
+                        AlertDialog.Builder(requireContext())
+                            .setTitle(R.string.verification_alert_state_title)
+                            .setItems(stateList.map { it.name }.toTypedArray()) { _, which ->
+                                provinceView.setText(stateList[which].name)
+                                cityView.clearText()
+                                cityView.isEnabled = true
+                                validateProvince()
+                            }
+                            .create()
+                            .show()
+                    }
             }
-            cityView.editText?.addTextChangedListener {
-                if (validated) {
-                    validateCity()
-                }
+
+            cityView.editText?.keyListener = null
+            cityView.editText?.setOnClickListener {
+                viewModel.countries
+                    .find { it.name == viewModel.selectedCountry?.name }
+                    ?.states
+                    ?.find { it.name == provinceView.getString() }
+                    ?.cities?.let { cities ->
+                        AlertDialog.Builder(requireContext())
+                            .setTitle(R.string.verification_alert_city_title)
+                            .setItems(cities.toTypedArray()) { _, which ->
+                                cityView.setText(cities[which])
+                                validateCity()
+                            }
+                            .create()
+                            .show()
+                    } ?: validateProvince()
             }
+
             streetNameView.editText?.addTextChangedListener {
                 if (validated) {
                     validateStreetName()
@@ -154,6 +188,26 @@ class VerificationIdentityPageFragment : Fragment() {
             ssnView.editText?.addTextChangedListener {
                 if (validated) {
                     validateSsn()
+                }
+            }
+
+            sourceOfFundView.editText?.keyListener = null
+            sourceOfFundView.editText?.setOnClickListener {
+                val listSourceOfFunds =
+                    listOf("Loan", "Pension", "Savings", "Inheritance", "Property Sale")
+                AlertDialog.Builder(requireContext())
+                    .setTitle(R.string.verification_alert_source_of_funds_title)
+                    .setItems(listSourceOfFunds.toTypedArray()) { _, which ->
+                        sourceOfFundView.setText(listSourceOfFunds[which])
+                        validateSourceOfFunds()
+                    }
+                    .create()
+                    .show()
+            }
+
+            occupationView.editText?.addTextChangedListener {
+                if (validated) {
+                    validateOccupation()
                 }
             }
         }
@@ -213,6 +267,8 @@ class VerificationIdentityPageFragment : Fragment() {
             buildingNumberView.setText(identityState.buildingNumberValue)
             zipCodeView.setText(identityState.zipCodeValue)
             ssnView.setText(identityState.ssnValue)
+            occupationView.setText(identityState.occupation)
+            sourceOfFundView.setText(identityState.sourceOfFunds)
             if (identityState.ssnValidationError) {
                 ssnView.showErrorText(getString(R.string.ssn_invalid_error_text))
             }
@@ -240,12 +296,17 @@ class VerificationIdentityPageFragment : Fragment() {
             if (identityState.firstNameValidationError) {
                 firstNameView.showErrorText(getString(R.string.first_name_invalid_error_text))
             }
+            cityView.isEnabled = provinceView.getString().isNotEmpty()
+
             validated = true
+
         }
     }
 
     private fun isValidFields(): Boolean {
         //order this as opposed to the order they have on the scrollview ( for the firstInvalidView to work)
+        val occupation = binding.validateOccupation()
+        val sourceOfFunds = binding.validateSourceOfFunds()
         val ssn = binding.validateSsn()
         val zipCode = binding.validateZipCode()
         val buildingNumber = binding.validateBuildingNumber()
@@ -265,6 +326,8 @@ class VerificationIdentityPageFragment : Fragment() {
                 && buildingNumber
                 && zipCode
                 && ssn
+                && sourceOfFunds
+                && occupation
     }
 
     private fun FragmentVerificationIdentityPageBinding.validateFirstName(): Boolean {
@@ -299,20 +362,22 @@ class VerificationIdentityPageFragment : Fragment() {
 
     private fun FragmentVerificationIdentityPageBinding.validateProvince(): Boolean {
         return if (provinceView.getString().isEmpty()) {
+            provinceView.isErrorEnabled = true
             provinceView.showErrorText(getString(R.string.province_validation_text))
             false
         } else {
-            provinceView.showHelpText(getString(R.string.province_helper_text))
+            provinceView.isErrorEnabled = false
             true
         }
     }
 
     private fun FragmentVerificationIdentityPageBinding.validateCity(): Boolean {
         return if (cityView.getString().isEmpty()) {
+            cityView.isErrorEnabled = true
             cityView.showErrorText(getString(R.string.city_validation_text))
             false
         } else {
-            cityView.showHelpText(getString(R.string.city_helper_text))
+            cityView.isErrorEnabled = false
             true
         }
     }
@@ -353,6 +418,26 @@ class VerificationIdentityPageFragment : Fragment() {
             false
         } else {
             ssnView.showHelpText(getString(R.string.ssn_helper_text))
+            true
+        }
+    }
+
+    private fun FragmentVerificationIdentityPageBinding.validateSourceOfFunds(): Boolean {
+        return if (sourceOfFundView.getString().isEmpty()) {
+            sourceOfFundView.showErrorText(getString(R.string.source_of_funds_validation_text))
+            false
+        } else {
+            sourceOfFundView.showHelpText(getString(R.string.source_of_funds_helper_text))
+            true
+        }
+    }
+
+    private fun FragmentVerificationIdentityPageBinding.validateOccupation(): Boolean {
+        return if (occupationView.getString().isEmpty()) {
+            occupationView.showErrorText(getString(R.string.occupation_validation_text))
+            false
+        } else {
+            occupationView.showHelpText(getString(R.string.occupation_helper_text))
             true
         }
     }

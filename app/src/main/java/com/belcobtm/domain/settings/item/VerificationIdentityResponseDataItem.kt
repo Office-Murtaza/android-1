@@ -15,6 +15,8 @@ data class VerificationIdentityResponseDataItem(
     val buildingNumberValue: String,
     val zipCodeValue: String,
     val ssnValue: String,
+    val occupation:String,
+    val sourceOfFunds:String,
     val firstNameValidationError: Boolean,
     val lastNameValidationError: Boolean,
     val birthDateValidationError: Boolean,

@@ -8,10 +8,7 @@ import androidx.navigation.NavDirections
 import com.belcobtm.R
 import com.belcobtm.data.disk.shared.preferences.SharedPreferencesHelper
 import com.belcobtm.data.helper.ImageHelper
-import com.belcobtm.domain.settings.interactor.GetVerificationDetailsUseCase
-import com.belcobtm.domain.settings.interactor.GetVerificationFieldsUseCase
-import com.belcobtm.domain.settings.interactor.SendVerificationDocumentUseCase
-import com.belcobtm.domain.settings.interactor.SendVerificationIdentityUseCase
+import com.belcobtm.domain.settings.interactor.*
 import com.belcobtm.domain.settings.item.*
 import com.belcobtm.domain.settings.type.DocumentType
 import com.belcobtm.domain.settings.type.RecordStatus
@@ -26,6 +23,7 @@ class VerificationDetailsViewModel(
     private val sendVerificationIdentityUseCase: SendVerificationIdentityUseCase,
     private val getVerificationDetailsUseCase: GetVerificationDetailsUseCase,
     private val getVerificationFieldsUseCase: GetVerificationFieldsUseCase,
+    private val countriesUseCase: GetVerificationCountryListUseCase,
     private val prefHelper: SharedPreferencesHelper,
 ) : ViewModel() {
     val detailsStateData = MutableLiveData<LoadingData<VerificationDetailsState>>()
@@ -41,6 +39,7 @@ class VerificationDetailsViewModel(
     var selfieScan: Bitmap? = null
     var verificationDetails: VerificationDetailsDataItem? = null
     val imageHelper = ImageHelper()
+    val countries = countriesUseCase.invoke()
 
 
     fun fetchVerificationStatus() {
@@ -353,6 +352,8 @@ data class VerificationIdentityState(
     val buildingNumberValue: String,
     val zipCodeValue: String,
     val ssnValue: String,
+    val occupation: String,
+    val sourceOfFunds: String,
     val firstNameValidationError: Boolean,
     val lastNameValidationError: Boolean,
     val birthDateValidationError: Boolean,
@@ -378,6 +379,8 @@ private fun createVerificationIdentityState(dataItem: VerificationIdentityRespon
         buildingNumberValue = dataItem.buildingNumberValue,
         zipCodeValue = dataItem.zipCodeValue,
         ssnValue = dataItem.ssnValue,
+        occupation = dataItem.occupation,
+        sourceOfFunds = dataItem.sourceOfFunds,
         firstNameValidationError = dataItem.firstNameValidationError,
         lastNameValidationError = dataItem.lastNameValidationError,
         birthDateValidationError = dataItem.birthDateValidationError,
