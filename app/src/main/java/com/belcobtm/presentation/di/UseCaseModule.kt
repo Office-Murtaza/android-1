@@ -7,6 +7,7 @@ import com.belcobtm.domain.account.interactor.GetUserCoinListUseCase
 import com.belcobtm.domain.account.interactor.UpdateUserCoinListUseCase
 import com.belcobtm.domain.atm.interactor.GetAtmsUseCase
 import com.belcobtm.domain.authorization.interactor.*
+import com.belcobtm.domain.bank_account.interactor.*
 import com.belcobtm.domain.contacts.GetContactsUseCase
 import com.belcobtm.domain.referral.CreateRecipientsUseCase
 import com.belcobtm.domain.referral.GetExistedPhoneNumbersUseCase
@@ -62,6 +63,15 @@ val useCaseModule = module {
     single { AuthorizeUseCase(get()) }
     single { GetAuthorizePinUseCase(get()) }
     single { SaveAuthorizePinUseCase(get()) }
+    single { GetBankAccountsListUseCase(get()) }
+    single { GetBankAccountPaymentsUseCase(get()) }
+    single { ObserveBankAccountDetailsUseCase(get()) }
+    single { ObserveBankAccountsListUseCase(get()) }
+    single { ObservePaymentsUseCase(get()) }
+    single { GetLinkTokenUseCase(get()) }
+    single { CreateBankAccountUseCase(get()) }
+    single { CreateBankAccountPaymentUseCase(get()) }
+    single { LinkBankAccountUseCase(get()) }
     single { GetVerificationInfoUseCase(get()) }
     single { GetVerificationDetailsUseCase(get()) }
     single { GetVerificationFieldsUseCase(get()) }
@@ -92,6 +102,7 @@ val useCaseModule = module {
     }
     single { SwapUseCase(get(), get(), get()) }
     single { CreateTransactionUseCase(get()) }
+    single { CreateTransactionToAddressUseCase(get()) }
     single { SendGiftTransactionCreateUseCase(get(), get(), get()) }
     single { OldSendSmsToDeviceUseCase(get()) }
     single { OldVerifySmsCodeUseCase(get()) }
@@ -186,6 +197,10 @@ val useCaseModule = module {
     single { ObserveTransactionsUseCase(get()) }
     single { ConnectToTransactionsUseCase(get()) }
     single { DisconnectFromTransactionsUseCase(get()) }
+    single { ConnectToBankAccountsUseCase(get()) }
+    single { DisconnectFromBankAccountsUseCase(get()) }
+    single { ConnectToPaymentsUseCase(get()) }
+    single { DisconnectFromPaymentsUseCase(get()) }
     single { ConnectToSocketUseCase(get()) }
     single { DisconnectFromSocketUseCase(get()) }
     single { LoadReferralUseCase(get()) }

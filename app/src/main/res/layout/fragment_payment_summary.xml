@@ -1,0 +1,667 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/payment_info_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/margin_main"
+            android:background="@drawable/button_blue"
+            android:padding="@dimen/margin_main"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvAmountLabel"
+                style="@style/Text.Regular1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/payment_details_amount"
+                android:textColor="@color/colorWhiteWithTransparency"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/exchange_value_from_view"
+                style="@style/TextAppearance.MaterialComponents.Subtitle1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:textAlignment="textEnd"
+                android:textColor="@color/white"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tvAmountLabel"
+                tools:text="$10,232.00" />
+
+            <ImageView
+                android:id="@+id/exchange_iv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:src="@drawable/ic_arrow_exchange"
+                app:layout_constraintBottom_toBottomOf="@id/exchange_value_from_view"
+                app:layout_constraintEnd_toStartOf="@id/exchange_value_to_view"
+                app:layout_constraintStart_toEndOf="@id/exchange_value_from_view"
+                app:layout_constraintTop_toTopOf="@id/exchange_value_from_view"
+                app:tint="@color/white" />
+
+            <TextView
+                android:id="@+id/exchange_value_to_view"
+                style="@style/TextAppearance.MaterialComponents.Subtitle1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:textAlignment="textEnd"
+                android:textColor="@color/white"
+                android:textStyle="bold"
+                app:layout_constraintBaseline_toBaselineOf="@id/exchange_value_from_view"
+                app:layout_constraintStart_toEndOf="@id/exchange_iv"
+                tools:text="$10,232.00" />
+
+            <View
+                android:id="@+id/first_separator"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="@dimen/margin_main"
+                android:background="@color/colorWhiteWithTransparency"
+                app:layout_constraintTop_toBottomOf="@id/exchange_value_from_view" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvPaymentTypeLabel"
+                style="@style/Text.Regular1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_main"
+                android:text="@string/payment_details_payment_type"
+                android:textColor="@color/colorWhiteWithTransparency"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/first_separator" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/paymentTypeChip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="5dp"
+                android:text="@string/buy"
+                android:textColor="@color/chip_ach_text_color"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:chipBackgroundColor="@color/white"
+                app:chipStrokeColor="@color/chip_ach_text_color"
+                app:chipStrokeWidth="0.2dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tvPaymentTypeLabel" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvAccountTypeLabel"
+                style="@style/Text.Regular1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_main"
+                android:text="@string/payment_details_account_type"
+                android:textColor="@color/colorWhiteWithTransparency"
+                app:layout_constraintBaseline_toBaselineOf="@id/tvPaymentTypeLabel"
+                app:layout_constraintEnd_toEndOf="parent" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/accountTypeChip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="5dp"
+                android:text="@string/ach_tag"
+                android:textColor="@color/chip_ach_text_color"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:chipBackgroundColor="@color/white"
+                app:chipStrokeColor="@color/chip_ach_text_color"
+                app:chipStrokeWidth="0.2dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tvAccountTypeLabel" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvNetworkFee"
+            style="@style/Text.Regular2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:text="@string/payment_details_network_fee"
+            android:textSize="12sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/payment_info_container" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvNetworkFeeValue"
+            style="@style/Text.Regular3"
+            android:textStyle="normal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="2dp"
+            android:textSize="14sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvNetworkFee"
+            tools:text="0.0001 ETH" />
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="0dp"
+            android:background="@color/dark_bg"
+            app:layout_constraintBottom_toBottomOf="@id/tvNetworkFeeValue"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/tvNetworkFee" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvRegularityOfPayment"
+            style="@style/Text.Regular2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:text="@string/payment_details_regularity_of_payment"
+            android:textSize="12sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/payment_info_container" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvRegularityOfPaymentValue"
+            style="@style/Text.Regular3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:layout_marginEnd="16dp"
+            android:text="@string/payment_details_one_time_payment"
+            android:textSize="14sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvRegularityOfPayment" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvPlatformFee"
+            style="@style/Text.Regular2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:text="@string/payment_details_platform_fee"
+            android:textSize="12sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvNetworkFeeValue" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvPlatformFeeValue"
+            style="@style/Text.Regular3"
+            android:textStyle="normal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="2dp"
+            android:textSize="14sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvPlatformFee"
+            tools:text="1% -> 15.25 USDC" />
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="0dp"
+            android:background="@color/dark_bg"
+            app:layout_constraintBottom_toBottomOf="@id/tvPlatformFeeValue"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/tvPlatformFee" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvProcessingTime"
+            style="@style/Text.Regular2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:text="@string/payment_details_processing_time"
+            android:textSize="12sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvRegularityOfPaymentValue" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvProcessingTimeValue"
+            style="@style/Text.Regular3"
+            android:textStyle="normal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:layout_marginEnd="16dp"
+            android:textSize="14sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvProcessingTime"
+            tools:text="2-4 Days" />
+
+        <View
+            android:id="@+id/second_separator"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginHorizontal="@dimen/margin_main"
+            android:layout_marginTop="@dimen/margin_main"
+            android:background="@color/dark_bg"
+            app:layout_constraintTop_toBottomOf="@id/tvPlatformFeeValue" />
+
+
+        <LinearLayout
+            android:id="@+id/wire_instructions_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="@dimen/margin_main"
+            android:visibility="visible"
+            app:layout_constraintTop_toBottomOf="@id/second_separator">
+
+            <TextView
+                style="@style/Text.Regular3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:text="@string/payment_wire_instructions"
+                android:textStyle="normal" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:layout_marginTop="8dp"
+                android:background="@color/thin_divider" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/margin_half"
+                android:orientation="vertical"
+                tools:visibility="visible">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvTrackingRef"
+                    style="@style/Text.Regular2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:text="@string/payment_details_tracking_ref"
+                    android:textSize="12sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/second_separator" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvTrackingRefValue"
+                    style="@style/Text.Regular3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="2dp"
+                    android:drawableEnd="@drawable/ic_copy"
+                    android:drawablePadding="10dp"
+                    android:textSize="14sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tvTrackingRef"
+                    tools:text="CIR3PJMNHME" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvTrackingRefDisclaimer"
+                    style="@style/Text.Regular2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_half"
+                    android:text="@string/payment_details_tracking_ref_disclaimer"
+                    android:textColor="@color/colorError"
+                    android:textSize="12sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tvTrackingRefValue" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="8dp"
+                    android:background="@color/thin_divider" />
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:id="@+id/beneficiary_details_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/margin_half"
+                android:orientation="vertical"
+                tools:visibility="visible">
+
+                <TextView
+                    style="@style/Text.Regular3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="24dp"
+                    android:text="@string/account_details_title"
+                    android:textSize="14sp"
+                    android:textStyle="normal" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="2dp"
+                    android:layout_marginTop="8dp"
+                    android:background="@color/thin_divider" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        style="@style/Text.Regular1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/billing_details_name_field" />
+
+                    <TextView
+                        android:id="@+id/wire_instructions_beneficiary_name"
+                        style="@style/Text.Regular4"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="2dp"
+                        android:textColor="@color/black"
+                        tools:text="Alberta Bobbeth Charleson" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        style="@style/Text.Regular1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/bank_address_1" />
+
+                    <TextView
+                        android:id="@+id/wire_instructions_beneficiary_address_1"
+                        style="@style/Text.Regular4"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="2dp"
+                        android:textColor="@color/black"
+                        tools:text="Alberta Bobbeth Charleson" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        style="@style/Text.Regular1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/bank_address_2" />
+
+                    <TextView
+                        android:id="@+id/wire_instructions_beneficiary_address_2"
+                        style="@style/Text.Regular4"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="2dp"
+                        android:textColor="@color/black"
+                        tools:text="Alberta Bobbeth Charleson" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="8dp"
+                    android:background="@color/thin_divider" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/beneficiary_bank_details_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/margin_half"
+                android:orientation="vertical">
+
+                <TextView
+                    style="@style/Text.Regular3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="24dp"
+                    android:text="@string/payment_beneficiary_bank_title"
+                    android:textSize="14sp"
+                    android:textStyle="normal" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="2dp"
+                    android:layout_marginTop="8dp"
+                    android:background="@color/thin_divider" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        style="@style/Text.Regular1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/billing_details_name_field" />
+
+                    <TextView
+                        android:id="@+id/wire_instructions_beneficiary_bank_name"
+                        style="@style/Text.Regular4"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="2dp"
+                        android:textColor="@color/black"
+                        tools:text="Alberta Bobbeth Charleson" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        style="@style/Text.Regular1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/bank_account_field_address_hint_text" />
+
+                    <TextView
+                        android:id="@+id/wire_instructions_beneficiary_bank_address"
+                        style="@style/Text.Regular4"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="2dp"
+                        android:textColor="@color/black"
+                        tools:text="Alberta Bobbeth Charleson" />
+                </LinearLayout>
+
+                <LinearLayout
+
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        style="@style/Text.Regular1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/billing_details_city_field" />
+
+                    <TextView
+                        android:id="@+id/wire_instructions_beneficiary_bank_city"
+                        style="@style/Text.Regular4"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="2dp"
+                        android:textColor="@color/black"
+                        tools:text="Alberta Bobbeth Charleson" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        style="@style/Text.Regular1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/billing_details_postal_code_field" />
+
+                    <TextView
+                        android:id="@+id/wire_instructions_beneficiary_bank_postal_code"
+                        style="@style/Text.Regular4"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="2dp"
+                        android:textColor="@color/black"
+                        tools:text="Alberta Bobbeth Charleson" />
+                </LinearLayout>
+
+                <LinearLayout
+
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        style="@style/Text.Regular1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/billing_details_country_field" />
+
+                    <TextView
+                        android:id="@+id/wire_instructions_beneficiary_bank_country"
+                        style="@style/Text.Regular4"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="2dp"
+                        android:textColor="@color/black"
+                        tools:text="Alberta Bobbeth Charleson" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        style="@style/Text.Regular1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/billing_details_swift_code_field" />
+
+                    <TextView
+                        android:id="@+id/wire_instructions_beneficiary_bank_swift_code"
+                        style="@style/Text.Regular4"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="2dp"
+                        android:textColor="@color/black"
+                        tools:text="Alberta Bobbeth Charleson" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        style="@style/Text.Regular1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/account_details_routing_number_field" />
+
+                    <TextView
+                        android:id="@+id/wire_instructions_beneficiary_bank_routing_number"
+                        style="@style/Text.Regular4"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="2dp"
+                        android:textColor="@color/black"
+                        tools:text="Alberta Bobbeth Charleson" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        style="@style/Text.Regular1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/account_details_account_number_field" />
+
+                    <TextView
+                        android:id="@+id/wire_instructions_beneficiary_bank_account_number"
+                        style="@style/Text.Regular4"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="2dp"
+                        android:textColor="@color/black"
+                        tools:text="Alberta Bobbeth Charleson" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="8dp"
+                    android:background="@color/thin_divider" />
+            </LinearLayout>
+        </LinearLayout>
+
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/confirmButtonView"
+            style="@style/Button.Primary"
+            android:text="@string/payment_details_confirm"
+            app:layout_constraintBottom_toTopOf="@id/cancelButtonView"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/wire_instructions_container" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/cancelButtonView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:layout_marginBottom="@dimen/margin_x2"
+            android:letterSpacing="0.135"
+            android:text="@string/payment_details_cancel"
+            android:textColor="@color/blue_color"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/confirmButtonView" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

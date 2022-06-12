@@ -51,7 +51,7 @@ class VerificationDetailsFragment : BaseFragment<FragmentVerificationBinding>() 
 
     override fun FragmentVerificationBinding.initViews() {
         //appliedState = null
-        setToolbarTitle(R.string.kyc_label)
+        setToolbarTitle(R.string.verification_label)
         viewModel.fetchVerificationStatus()
         verificationViewPager.orientation = ViewPager2.ORIENTATION_HORIZONTAL
         verificationViewPager.isUserInputEnabled = false

@@ -10,10 +10,16 @@ import com.belcobtm.data.inmemory.transactions.TransactionsInMemoryCache
 import com.belcobtm.data.model.transactions.TransactionsData
 import com.belcobtm.data.rest.transaction.TransactionApiService
 import com.belcobtm.data.rest.transaction.response.hash.UtxoItemResponse
-import com.belcobtm.domain.*
+import com.belcobtm.domain.Either
+import com.belcobtm.domain.Failure
+import com.belcobtm.domain.flatMapSuspend
+import com.belcobtm.domain.map
 import com.belcobtm.domain.tools.ToolsRepository
 import com.belcobtm.domain.transaction.TransactionRepository
-import com.belcobtm.domain.transaction.item.*
+import com.belcobtm.domain.transaction.item.SellPreSubmitDataItem
+import com.belcobtm.domain.transaction.item.SignedTransactionPlanItem
+import com.belcobtm.domain.transaction.item.StakeDetailsDataItem
+import com.belcobtm.domain.transaction.item.TransactionPlanItem
 import com.belcobtm.domain.wallet.LocalCoinType
 import com.belcobtm.domain.wallet.item.CoinDataItem
 import com.belcobtm.domain.wallet.item.isBtcCoin
@@ -100,6 +106,22 @@ class TransactionRepositoryImpl(
             !isNeedSendSms && hashResponse.isRight -> hashResponse as Either.Right
             else -> hashResponse as Either.Left
         }
+    }
+
+    override suspend fun createTransactionToAddress(
+        useMaxAmountFlag: Boolean,
+        fromCoin: String,
+        fromCoinAmount: Double,
+        fromTransactionPlan: TransactionPlanItem,
+        toAddress: String
+    ): Either<Failure, String> {
+        val coinType = LocalCoinType.valueOf(fromCoin)
+        val hashResponse =
+            transactionRepository.createTransactionHash(
+                useMaxAmountFlag, toAddress, coinType, fromCoinAmount,
+                fromTransactionPlan, utxosPerCoint[fromCoin].orEmpty()
+            )
+        return if (hashResponse.isRight) hashResponse as Either.Right else hashResponse as Either.Left
     }
 
     override suspend fun receiverAccountActivated(

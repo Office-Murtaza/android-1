@@ -6,6 +6,8 @@
 
     <include app:graph="@navigation/nav_wallet" />
 
+    <include app:graph="@navigation/nav_buy_sell" />
+
     <include app:graph="@navigation/nav_deals" />
 
     <include app:graph="@navigation/nav_atm" />

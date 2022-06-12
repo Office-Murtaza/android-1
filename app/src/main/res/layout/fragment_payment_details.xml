@@ -1,0 +1,886 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/margin_main">
+
+        <TextView
+            android:id="@+id/id_label"
+            style="@style/Text.Regular1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/payment_details_id"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/id_view"
+            style="@style/Text.Regular4"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:layout_marginEnd="10dp"
+            android:textColor="@color/blue_color"
+            app:layout_constraintEnd_toStartOf="@id/first_separator"
+            app:layout_constraintStart_toStartOf="@id/id_label"
+            app:layout_constraintTop_toBottomOf="@id/id_label"
+            tools:text="d75b7ade-9c53-4efb-a507-e5bb97f85b7d" />
+
+        <View
+            android:id="@+id/first_separator"
+            android:layout_width="1dp"
+            android:layout_height="0dp"
+            android:layout_marginEnd="18dp"
+            android:background="@color/thin_divider"
+            app:layout_constraintBottom_toBottomOf="@id/id_view"
+            app:layout_constraintEnd_toStartOf="@id/copy_id_iv"
+            app:layout_constraintTop_toTopOf="@id/id_label" />
+
+        <ImageView
+            android:id="@+id/copy_id_iv"
+            android:layout_width="19dp"
+            android:layout_height="22dp"
+            android:src="@drawable/ic_copy"
+            app:layout_constraintBottom_toBottomOf="@id/id_view"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/id_label" />
+
+        <View
+            android:id="@+id/second_separator"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="16dp"
+            android:background="@color/thin_divider"
+            app:layout_constraintTop_toBottomOf="@id/id_view" />
+
+        <TextView
+            android:id="@+id/payment_type_label"
+            style="@style/Text.Regular2"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_main"
+            android:text="@string/payment_details_payment_type"
+            android:textSize="14sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/second_separator" />
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/payment_type_chip"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="2dp"
+            android:clickable="false"
+            android:text="@string/ach_tag"
+            android:textColor="@color/chip_ach_text_color"
+            android:textSize="12sp"
+            app:chipBackgroundColor="@color/trade_payment_option_background"
+            app:layout_constraintBaseline_toBaselineOf="@id/payment_type_label"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <View
+            android:id="@+id/third_separator"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="20dp"
+            android:background="@color/thin_divider"
+            app:layout_constraintTop_toBottomOf="@id/payment_type_label" />
+
+        <TextView
+            android:id="@+id/account_type_label"
+            style="@style/Text.Regular2"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_main"
+            android:text="@string/payment_details_account_type"
+            android:textSize="14sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/third_separator" />
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/account_type_chip"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="2dp"
+            android:clickable="false"
+            android:text="@string/ach_tag"
+            android:textColor="@color/chip_ach_text_color"
+            android:textSize="12sp"
+            app:chipBackgroundColor="@color/trade_payment_option_background"
+            app:layout_constraintBaseline_toBaselineOf="@id/account_type_label"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <View
+            android:id="@+id/fourth_separator"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="20dp"
+            android:background="@color/thin_divider"
+            app:layout_constraintTop_toBottomOf="@id/account_type_label" />
+
+        <TextView
+            android:id="@+id/regularity_payment_view"
+            style="@style/Text.Regular2"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_main"
+            android:textSize="14sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/fourth_separator"
+            android:text="ONE TIME PAYMENT" />
+
+        <View
+            android:id="@+id/fifth_separator"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="20dp"
+            android:background="@color/thin_divider"
+            app:layout_constraintTop_toBottomOf="@id/regularity_payment_view" />
+
+        <TextView
+            android:id="@+id/amount_label"
+            style="@style/Text.Regular1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_main"
+            android:text="@string/payment_details_amount"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/fifth_separator" />
+
+        <TextView
+            android:id="@+id/amount_first_value_view"
+            style="@style/Text.Regular4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:layout_marginEnd="10dp"
+            android:textColor="@color/black"
+            app:layout_constraintStart_toStartOf="@id/id_label"
+            app:layout_constraintTop_toBottomOf="@id/amount_label"
+            tools:text="$1,000.25" />
+
+        <ImageView
+            android:id="@+id/exchange_iv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:src="@drawable/ic_arrow_exchange"
+            app:layout_constraintBottom_toBottomOf="@id/amount_first_value_view"
+            app:layout_constraintEnd_toStartOf="@id/amount_second_value_view"
+            app:layout_constraintStart_toEndOf="@id/amount_first_value_view"
+            app:layout_constraintTop_toTopOf="@id/amount_second_value_view" />
+
+        <TextView
+            android:id="@+id/amount_second_value_view"
+            style="@style/Text.Regular4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="2dp"
+            android:textColor="@color/black"
+            app:layout_constraintBaseline_toBaselineOf="@id/amount_first_value_view"
+            app:layout_constraintStart_toEndOf="@id/exchange_iv"
+            tools:text="$1,000.25" />
+
+        <View
+            android:id="@+id/sixth_separator"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="20dp"
+            android:background="@color/thin_divider"
+            app:layout_constraintTop_toBottomOf="@id/amount_first_value_view" />
+
+        <TextView
+            android:id="@+id/fee_label"
+            style="@style/Text.Regular1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_main"
+            android:text="@string/payment_details_fee"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/sixth_separator" />
+
+        <TextView
+            android:id="@+id/fee_view"
+            style="@style/Text.Regular4"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:layout_marginEnd="10dp"
+            android:textColor="@color/black"
+            app:layout_constraintEnd_toStartOf="@id/first_separator"
+            app:layout_constraintStart_toStartOf="@id/fee_label"
+            app:layout_constraintTop_toBottomOf="@id/fee_label"
+            tools:text="0,00001 ETH" />
+
+
+        <View
+            android:id="@+id/seventh_separator"
+            android:layout_width="1dp"
+            android:layout_height="0dp"
+            android:background="@color/thin_divider"
+            app:layout_constraintBottom_toBottomOf="@id/fee_view"
+            app:layout_constraintEnd_toEndOf="@id/platform_fee_label"
+            app:layout_constraintStart_toStartOf="@id/fee_label"
+            app:layout_constraintTop_toTopOf="@id/fee_label" />
+
+        <TextView
+            android:id="@+id/platform_fee_label"
+            style="@style/Text.Regular1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_main"
+            android:text="@string/payment_details_platform_fee"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/sixth_separator" />
+
+        <TextView
+            android:id="@+id/platform_fee_view"
+            style="@style/Text.Regular4"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:textColor="@color/black"
+            app:layout_constraintEnd_toEndOf="@id/platform_fee_label"
+            app:layout_constraintTop_toBottomOf="@id/fee_label"
+            tools:text="0,00001 ETH" />
+
+        <View
+            android:id="@+id/eight_separator"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="20dp"
+            android:background="@color/thin_divider"
+            app:layout_constraintTop_toBottomOf="@id/fee_view" />
+
+
+
+        <TextView
+            android:id="@+id/steps_label"
+            style="@style/Text.Regular4"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_x2"
+            android:layout_marginEnd="10dp"
+            android:text="Steps"
+            android:textColor="@color/black"
+            app:layout_constraintStart_toStartOf="@id/eleventh_separator"
+            app:layout_constraintTop_toBottomOf="@id/eight_separator" />
+
+        <View
+            android:id="@+id/eleventh_separator"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="@dimen/margin_half"
+            android:background="@color/thin_divider"
+            app:layout_constraintTop_toBottomOf="@id/steps_label" />
+
+        <TextView
+            android:id="@+id/first_step_value"
+            style="@style/Text.Regular4"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="10dp"
+            android:layout_marginTop="@dimen/margin_main"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            app:layout_constraintStart_toEndOf="@id/iv_first_step"
+            app:layout_constraintTop_toBottomOf="@id/eleventh_separator"
+            tools:text="USD Payment" />
+
+        <TextView
+            android:id="@+id/step_1_hash_label"
+            style="@style/Text.Regular1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_half"
+            android:text="@string/payment_details_hash"
+            app:layout_constraintStart_toStartOf="@id/first_step_value"
+            app:layout_constraintTop_toBottomOf="@id/first_step_value" />
+
+        <TextView
+            android:id="@+id/step_1_hash_view"
+            style="@style/Text.Regular4"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:layout_marginEnd="10dp"
+            android:textColor="@color/blue_color"
+            app:layout_constraintEnd_toStartOf="@id/step_1_copy_iv_separator"
+            app:layout_constraintStart_toStartOf="@id/step_1_hash_label"
+            app:layout_constraintTop_toBottomOf="@id/step_1_hash_label"
+            tools:text="d75b7ade-9c53-4efb-a507-e5bb97f85b7d" />
+
+        <View
+            android:id="@+id/step_1_copy_iv_separator"
+            android:layout_width="1dp"
+            android:layout_height="0dp"
+            android:layout_marginEnd="18dp"
+            android:background="@color/thin_divider"
+            app:layout_constraintBottom_toBottomOf="@id/step_1_hash_view"
+            app:layout_constraintEnd_toStartOf="@id/step_1_copy_hash_iv"
+            app:layout_constraintTop_toTopOf="@id/step_1_hash_label" />
+
+        <ImageView
+            android:id="@+id/step_1_copy_hash_iv"
+            android:layout_width="19dp"
+            android:layout_height="22dp"
+            android:src="@drawable/ic_copy"
+            app:layout_constraintBottom_toBottomOf="@id/step_1_hash_view"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/step_1_hash_label" />
+
+        <ImageView
+            android:id="@+id/iv_first_step"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="@id/first_step_value"
+            app:layout_constraintEnd_toStartOf="@id/first_step_value"
+            app:layout_constraintTop_toTopOf="@id/first_step_value"
+            tools:ignore="ContentDescription"
+            tools:src="@drawable/ic_step_1_completed" />
+
+        <TextView
+            android:id="@+id/first_step_status_label"
+            style="@style/Text.Regular1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_half"
+            android:text="@string/status"
+            app:layout_constraintStart_toStartOf="@id/first_step_value"
+            app:layout_constraintTop_toBottomOf="@id/step_1_hash_view" />
+
+        <TextView
+            android:id="@+id/first_step_status_value"
+            style="@style/TextAppearance.MaterialComponents.Subtitle2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:drawablePadding="3dp"
+            app:layout_constraintStart_toStartOf="@id/first_step_status_label"
+            app:layout_constraintTop_toBottomOf="@id/first_step_status_label"
+            tools:drawableRightCompat="@drawable/ic_pending_status"
+            tools:text="Pending" />
+
+        <View
+            android:id="@+id/twelfth_separator"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_marginTop="@dimen/margin_x2"
+            android:background="@color/thin_divider"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@id/first_step_status_label"
+            app:layout_constraintTop_toBottomOf="@id/first_step_status_value" />
+
+        <TextView
+            android:id="@+id/second_step_value"
+            style="@style/Text.Regular4"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="10dp"
+            android:layout_marginTop="@dimen/margin_main"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            app:layout_constraintStart_toEndOf="@id/iv_second_step"
+            app:layout_constraintTop_toBottomOf="@id/twelfth_separator"
+            tools:text="USDC Transfer" />
+
+        <ImageView
+            android:id="@+id/iv_second_step"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="@id/second_step_value"
+            app:layout_constraintEnd_toStartOf="@id/second_step_value"
+            app:layout_constraintTop_toTopOf="@id/second_step_value"
+            tools:ignore="ContentDescription"
+            tools:src="@drawable/ic_step_2" />
+
+        <View
+            android:id="@+id/step_link_view"
+            android:layout_width="1dp"
+            android:layout_height="0dp"
+            android:layout_marginVertical="8dp"
+            android:background="@color/thin_divider"
+            app:layout_constraintBottom_toTopOf="@id/iv_second_step"
+            app:layout_constraintEnd_toEndOf="@id/iv_first_step"
+            app:layout_constraintStart_toStartOf="@id/iv_first_step"
+            app:layout_constraintTop_toBottomOf="@id/iv_first_step" />
+
+        <TextView
+            android:id="@+id/step_2_hash_label"
+            style="@style/Text.Regular1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_half"
+            android:text="@string/payment_details_hash"
+            app:layout_constraintStart_toStartOf="@id/second_step_value"
+            app:layout_constraintTop_toBottomOf="@id/second_step_value" />
+
+        <TextView
+            android:id="@+id/step_2_hash_view"
+            style="@style/Text.Regular4"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:layout_marginEnd="10dp"
+            android:textColor="@color/blue_color"
+            app:layout_constraintEnd_toStartOf="@id/step_2_copy_iv_separator"
+            app:layout_constraintStart_toStartOf="@id/step_2_hash_label"
+            app:layout_constraintTop_toBottomOf="@id/step_2_hash_label"
+            tools:text="d75b7ade-9c53-4efb-a507-e5bb97f85b7d" />
+
+        <View
+            android:id="@+id/step_2_copy_iv_separator"
+            android:layout_width="1dp"
+            android:layout_height="0dp"
+            android:layout_marginEnd="18dp"
+            android:background="@color/thin_divider"
+            app:layout_constraintBottom_toBottomOf="@id/step_2_hash_view"
+            app:layout_constraintEnd_toStartOf="@id/step_2_copy_hash_iv"
+            app:layout_constraintTop_toTopOf="@id/step_2_hash_label" />
+
+        <ImageView
+            android:id="@+id/step_2_copy_hash_iv"
+            android:layout_width="19dp"
+            android:layout_height="22dp"
+            android:src="@drawable/ic_copy"
+            app:layout_constraintBottom_toBottomOf="@id/step_2_hash_view"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/step_2_hash_label" />
+
+        <TextView
+            android:id="@+id/second_step_status_label"
+            style="@style/Text.Regular1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_half"
+            android:text="@string/status"
+            app:layout_constraintStart_toStartOf="@id/second_step_value"
+            app:layout_constraintTop_toBottomOf="@id/step_2_hash_view" />
+
+        <TextView
+            android:id="@+id/second_step_status_value"
+            style="@style/TextAppearance.MaterialComponents.Subtitle2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:drawablePadding="3dp"
+            app:layout_constraintStart_toStartOf="@id/second_step_status_label"
+            app:layout_constraintTop_toBottomOf="@id/second_step_status_label"
+            tools:drawableRightCompat="@drawable/ic_pending_status"
+            tools:text="Pending" />
+
+        <View
+            android:id="@+id/fifteenth_separator"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="@dimen/margin_x2"
+            android:background="@color/thin_divider"
+            app:layout_constraintTop_toBottomOf="@id/second_step_status_value" />
+
+        <TextView
+            android:id="@+id/date_label"
+            style="@style/Text.Regular1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_x2"
+            android:text="@string/bank_account_details_date_field"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/fifteenth_separator" />
+
+        <TextView
+            android:id="@+id/date_view"
+            style="@style/Text.Regular4"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:textColor="@color/black"
+            app:layout_constraintStart_toStartOf="@id/date_label"
+            app:layout_constraintTop_toBottomOf="@id/date_label"
+            tools:text="29 March 2022 7:21 PM" />
+
+        <LinearLayout
+            android:id="@+id/wire_instructions_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:visibility="visible"
+            app:layout_constraintTop_toBottomOf="@id/date_view">
+
+            <TextView
+                style="@style/Text.Regular3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:text="@string/payment_wire_instructions"
+                android:textStyle="normal" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:layout_marginTop="8dp"
+                android:background="@color/thin_divider" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/margin_half"
+                android:orientation="vertical"
+                tools:visibility="visible">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvTrackingRef"
+                    style="@style/Text.Regular2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:text="@string/payment_details_tracking_ref"
+                    android:textSize="12sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/second_separator" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvTrackingRefValue"
+                    style="@style/Text.Regular3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="2dp"
+                    android:drawableEnd="@drawable/ic_copy"
+                    android:drawablePadding="10dp"
+                    android:textSize="14sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tvTrackingRef"
+                    tools:text="CIR3PJMNHME" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvTrackingRefDisclaimer"
+                    style="@style/Text.Regular2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_half"
+                    android:text="@string/payment_details_tracking_ref_disclaimer"
+                    android:textColor="@color/colorError"
+                    android:textSize="12sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tvTrackingRefValue" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="8dp"
+                    android:background="@color/thin_divider" />
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:id="@+id/beneficiary_details_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/margin_half"
+                android:orientation="vertical"
+                tools:visibility="visible">
+
+                <TextView
+                    style="@style/Text.Regular3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="24dp"
+                    android:text="@string/account_details_title"
+                    android:textSize="14sp"
+                    android:textStyle="normal" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="2dp"
+                    android:layout_marginTop="8dp"
+                    android:background="@color/thin_divider" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        style="@style/Text.Regular1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/billing_details_name_field" />
+
+                    <TextView
+                        android:id="@+id/wire_instructions_beneficiary_name"
+                        style="@style/Text.Regular4"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="2dp"
+                        android:textColor="@color/black"
+                        tools:text="Alberta Bobbeth Charleson" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        style="@style/Text.Regular1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/bank_address_1" />
+
+                    <TextView
+                        android:id="@+id/wire_instructions_beneficiary_address_1"
+                        style="@style/Text.Regular4"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="2dp"
+                        android:textColor="@color/black"
+                        tools:text="Alberta Bobbeth Charleson" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        style="@style/Text.Regular1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/bank_address_2" />
+
+                    <TextView
+                        android:id="@+id/wire_instructions_beneficiary_address_2"
+                        style="@style/Text.Regular4"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="2dp"
+                        android:textColor="@color/black"
+                        tools:text="Alberta Bobbeth Charleson" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="8dp"
+                    android:background="@color/thin_divider" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/beneficiary_bank_details_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/margin_half"
+                android:orientation="vertical">
+
+                <TextView
+                    style="@style/Text.Regular3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="24dp"
+                    android:text="@string/payment_beneficiary_bank_title"
+                    android:textSize="14sp"
+                    android:textStyle="normal" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="2dp"
+                    android:layout_marginTop="8dp"
+                    android:background="@color/thin_divider" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        style="@style/Text.Regular1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/billing_details_name_field" />
+
+                    <TextView
+                        android:id="@+id/wire_instructions_beneficiary_bank_name"
+                        style="@style/Text.Regular4"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="2dp"
+                        android:textColor="@color/black"
+                        tools:text="Alberta Bobbeth Charleson" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        style="@style/Text.Regular1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/bank_account_field_address_hint_text" />
+
+                    <TextView
+                        android:id="@+id/wire_instructions_beneficiary_bank_address"
+                        style="@style/Text.Regular4"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="2dp"
+                        android:textColor="@color/black"
+                        tools:text="Alberta Bobbeth Charleson" />
+                </LinearLayout>
+
+                <LinearLayout
+
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        style="@style/Text.Regular1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/billing_details_city_field" />
+
+                    <TextView
+                        android:id="@+id/wire_instructions_beneficiary_bank_city"
+                        style="@style/Text.Regular4"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="2dp"
+                        android:textColor="@color/black"
+                        tools:text="Alberta Bobbeth Charleson" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        style="@style/Text.Regular1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/billing_details_postal_code_field" />
+
+                    <TextView
+                        android:id="@+id/wire_instructions_beneficiary_bank_postal_code"
+                        style="@style/Text.Regular4"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="2dp"
+                        android:textColor="@color/black"
+                        tools:text="Alberta Bobbeth Charleson" />
+                </LinearLayout>
+
+                <LinearLayout
+
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        style="@style/Text.Regular1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/billing_details_country_field" />
+
+                    <TextView
+                        android:id="@+id/wire_instructions_beneficiary_bank_country"
+                        style="@style/Text.Regular4"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="2dp"
+                        android:textColor="@color/black"
+                        tools:text="Alberta Bobbeth Charleson" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        style="@style/Text.Regular1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/billing_details_swift_code_field" />
+
+                    <TextView
+                        android:id="@+id/wire_instructions_beneficiary_bank_swift_code"
+                        style="@style/Text.Regular4"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="2dp"
+                        android:textColor="@color/black"
+                        tools:text="Alberta Bobbeth Charleson" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        style="@style/Text.Regular1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/account_details_routing_number_field" />
+
+                    <TextView
+                        android:id="@+id/wire_instructions_beneficiary_bank_routing_number"
+                        style="@style/Text.Regular4"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="2dp"
+                        android:textColor="@color/black"
+                        tools:text="Alberta Bobbeth Charleson" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        style="@style/Text.Regular1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/account_details_account_number_field" />
+
+                    <TextView
+                        android:id="@+id/wire_instructions_beneficiary_bank_account_number"
+                        style="@style/Text.Regular4"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="2dp"
+                        android:textColor="@color/black"
+                        tools:text="Alberta Bobbeth Charleson" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="8dp"
+                    android:background="@color/thin_divider" />
+            </LinearLayout>
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

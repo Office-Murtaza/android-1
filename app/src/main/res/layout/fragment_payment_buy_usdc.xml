@@ -1,0 +1,283 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/amount_layout"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:background="@color/lighter_gray"
+        android:paddingTop="@dimen/margin_half"
+        android:paddingBottom="@dimen/margin_main"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/tvAccountType"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_main"
+            android:layout_marginTop="@dimen/margin_half"
+            android:layout_marginEnd="@dimen/margin_half"
+            android:letterSpacing="0.01"
+            android:text="@string/payment_details_account_type"
+            android:textColor="@color/black"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="15dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvAccountType">
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/ach_type_chip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="5dp"
+                android:text="@string/ach_tag"
+                android:textColor="@color/chip_ach_text_color"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                app:chipBackgroundColor="@color/white"
+                app:chipStrokeColor="@color/chip_ach_text_color"
+                app:chipStrokeWidth="0.2dp" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/wire_type_chip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/wire_tag"
+                android:textColor="@color/chip_wire_text_color"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                app:chipBackgroundColor="@color/white"
+                app:chipStrokeColor="@color/chip_wire_text_color"
+                app:chipStrokeWidth="0.2dp" />
+        </LinearLayout>
+
+
+        <com.belcobtm.presentation.core.views.CustomTextInputLayout
+            android:id="@+id/amountInputLayout"
+            style="@style/Widget.Design.TextInputLayout"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_x2"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            app:hintTextColor="@color/gray_text_color"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/tvAccountType"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_chainStyle="packed">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/amountInputEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@android:color/transparent"
+                android:digits="1234567890."
+                android:gravity="end"
+                android:hint="Amount, $"
+                android:imeOptions="actionDone"
+                android:inputType="numberDecimal"
+                android:paddingStart="@dimen/margin_main"
+                android:paddingTop="@dimen/margin_half"
+                android:paddingEnd="@dimen/margin_main"
+                android:paddingBottom="@dimen/margin_half"
+                android:singleLine="true"
+                android:textAppearance="@style/SwapAmountTextAppearance" />
+
+
+        </com.belcobtm.presentation.core.views.CustomTextInputLayout>
+
+        <TextView
+            android:id="@+id/tvMax"
+            style="@style/EditText.TextLink"
+            android:layout_margin="12dp"
+            android:text="@string/max"
+            android:textSize="16sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/amountInputLayout"
+
+            />
+
+        <TextView
+            android:id="@+id/tvNetworkFeeValue"
+            style="@style/Text.Regular2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="16dp"
+            android:textSize="12sp"
+            android:visibility="invisible"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvMax"
+            tools:text="0.00001 ETH"
+            tools:visibility="visible" />
+
+        <TextView
+            android:id="@+id/tvNetworkFeeLabel"
+            style="@style/Text.Regular2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="3dp"
+            android:text="Network Fee"
+            android:textSize="12sp"
+            android:visibility="invisible"
+            app:layout_constraintBaseline_toBaselineOf="@id/tvNetworkFeeValue"
+            app:layout_constraintEnd_toStartOf="@id/tvNetworkFeeValue"
+            tools:visibility="visible" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tvExchangeRate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_main"
+        android:background="@drawable/bg_white_rect_with_gray_stroke"
+        android:drawableStart="@drawable/ic_local_offer"
+        android:drawablePadding="@dimen/margin_half"
+        android:paddingStart="@dimen/margin_normal"
+        android:paddingTop="@dimen/margin_half"
+        android:paddingEnd="@dimen/margin_normal"
+        android:paddingBottom="@dimen/margin_half"
+
+        android:textAppearance="@style/Text.Regular2"
+        android:textColor="@android:color/black"
+        app:layout_constraintBottom_toBottomOf="@id/amount_layout"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/amount_layout"
+        tools:text="1 USDC = $0.99" />
+
+    <View
+        android:layout_width="1dp"
+        android:layout_height="45dp"
+        android:background="@color/dark_bg"
+        app:layout_constraintBottom_toBottomOf="@id/tvBalanceValue"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/tvBalance" />
+
+
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tvBalance"
+        style="@style/Text.Regular2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:text="@string/transactions_screen_balance"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvExchangeRate" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tvBalanceValue"
+        style="@style/Text.Regular3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="2dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvBalance"
+        tools:text="$15,000.25" />
+
+
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tvConvertedValueLabel"
+        style="@style/Text.Regular2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:text="@string/transactions_screen_converted_value"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvExchangeRate" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tvConvertedValue"
+        style="@style/Text.Regular3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="2dp"
+        android:layout_marginEnd="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvConvertedValueLabel"
+        tools:text="0.00 USDC" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tvTransactionLimit"
+        style="@style/Text.Regular2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="24dp"
+        android:text="@string/transaction_limit_label"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvConvertedValue" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tvTransactionLimitValue"
+        style="@style/Text.Regular3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="2dp"
+        android:text="N/A"
+        android:textColor="@color/gray_text_color"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvTransactionLimit" />
+
+    <TextView
+        android:id="@+id/tvPlatformFeeLabel"
+        style="@style/Text.Regular2"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="3dp"
+        android:gravity="end"
+        android:text="Platform fee"
+        android:textSize="12sp"
+        app:layout_constraintEnd_toStartOf="@id/tvPlatformFeeValue"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvTransactionLimitValue" />
+
+    <TextView
+        android:id="@+id/tvPlatformFeeValue"
+        style="@style/Text.Regular2"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="3dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="16dp"
+        android:textSize="12sp"
+        app:layout_constraintBaseline_toBaselineOf="@id/tvPlatformFeeLabel"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/tvPlatformFeeLabel"
+        tools:text="1%->$15.25" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/submitButtonView"
+        style="@style/Button.Primary"
+        android:text="@string/submit"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvPlatformFeeLabel" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

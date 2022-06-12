@@ -10,3 +10,4 @@ fun String.toHtmlSpan(): Spanned = if (Build.VERSION.SDK_INT >= Build.VERSION_CO
     @Suppress("DEPRECATION")
     Html.fromHtml(this)
 }
+

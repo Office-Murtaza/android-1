@@ -2,7 +2,6 @@ package com.belcobtm.presentation.core.ui.fragment
 
 import android.content.ComponentCallbacks
 import android.content.Context
-import android.graphics.Color
 import android.graphics.Rect
 import android.os.Bundle
 import android.view.*

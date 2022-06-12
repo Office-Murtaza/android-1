@@ -30,6 +30,8 @@ import com.belcobtm.data.disk.database.AppDatabase.Companion.MIGRATION_7_8
 import com.belcobtm.data.disk.database.AppDatabase.Companion.MIGRATION_8_9
 import com.belcobtm.data.disk.shared.preferences.SharedPreferencesHelper
 import com.belcobtm.data.helper.DistanceCalculator
+import com.belcobtm.data.inmemory.bank_accounts.BankAccountsInMemoryCache
+import com.belcobtm.data.inmemory.payments.PaymentsInMemoryCache
 import com.belcobtm.data.inmemory.trade.TradeInMemoryCache
 import com.belcobtm.data.inmemory.transactions.TransactionsInMemoryCache
 import com.belcobtm.data.mapper.OrderResponseToOrderMapper
@@ -42,6 +44,8 @@ import com.belcobtm.data.rest.atm.AtmApi
 import com.belcobtm.data.rest.atm.AtmApiService
 import com.belcobtm.data.rest.authorization.AuthApi
 import com.belcobtm.data.rest.authorization.AuthApiService
+import com.belcobtm.data.rest.bank_account.BankAccountApi
+import com.belcobtm.data.rest.bank_account.BankAccountApiService
 import com.belcobtm.data.rest.interceptor.BaseInterceptor
 import com.belcobtm.data.rest.interceptor.NoConnectionInterceptor
 import com.belcobtm.data.rest.interceptor.ResponseInterceptor
@@ -106,6 +110,7 @@ val dataModule = module {
     }
     single { AuthApiService(get()) }
     single { SettingsApiService(get()) }
+    single { BankAccountApiService(get()) }
     single { WalletApiService(get(), get()) }
     single { TransactionApiService(get(), get()) }
     single { ToolsApiService(get(), get()) }
@@ -164,6 +169,7 @@ val dataModule = module {
     single { get<Retrofit>().create(ToolsApi::class.java) }
     single { get<Retrofit>().create(WalletApi::class.java) }
     single { get<Retrofit>().create(SettingsApi::class.java) }
+    single { get<Retrofit>().create(BankAccountApi::class.java) }
     single { get<Retrofit>().create(TransactionApi::class.java) }
     single { get<Retrofit>().create(TradeApi::class.java) }
     single<NotificationTokenRepository> { NotificationTokenRepositoryImpl(get()) }
@@ -171,7 +177,7 @@ val dataModule = module {
     single<ReferralRepository> { ReferralRepositoryImpl(get(), get(), get()) }
     single { get<Retrofit>().create(ReferralApi::class.java) }
     single { ReferralApiService(get()) }
-    single { Firebase.storage("gs://belco-test.appspot.com") }
+    single { Firebase.storage("gs://belco-wallet.appspot.com") }
     single<CloudStorage>(named(CHAT_STORAGE)) {
         AuthFirebaseCloudStorage(
             get(), get(),
@@ -201,6 +207,8 @@ val dataModule = module {
     }
     single<ServiceRepository> { ServiceRepositoryImpl(get(), CoroutineScope(Dispatchers.IO)) }
     single { TransactionsInMemoryCache() }
+    single { BankAccountsInMemoryCache() }
+    single { PaymentsInMemoryCache() }
     single { UnlinkHandler(get(), get(), get(), get(), get(authenticatorQualified)) }
     factory { TradesResponseToTradeDataMapper(get(), get(), get()) }
     factory { OrderResponseToOrderMapper() }

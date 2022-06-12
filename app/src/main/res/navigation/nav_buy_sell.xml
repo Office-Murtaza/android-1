@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_buy_sell"
+    app:startDestination="@id/bank_accounts_fragment">
+    <fragment
+        android:id="@+id/bank_accounts_fragment"
+        android:name="com.belcobtm.presentation.features.bank_accounts.BankAccountsFragment"
+        android:label="BankAccountsFragment"
+        tools:layout="@layout/fragment_bank_accounts">
+        <action
+            android:id="@+id/to_verification_details_fragment"
+            app:destination="@id/verification_details_fragment"
+            app:enterAnim="@anim/slide_from_right"
+            app:exitAnim="@anim/slide_to_left"
+            app:popEnterAnim="@anim/slide_from_left"
+            app:popExitAnim="@anim/slide_to_right" />
+        <action
+            android:id="@+id/to_bank_account_select_type_fragment"
+            app:destination="@id/bank_account_select_type_fragment"
+            app:enterAnim="@anim/slide_from_right"
+            app:exitAnim="@anim/slide_to_left"
+            app:popEnterAnim="@anim/slide_from_left"
+            app:popExitAnim="@anim/slide_to_right" />
+        <action
+            android:id="@+id/to_bank_account_details_fragment"
+            app:destination="@id/bank_account_details_fragment"
+            app:enterAnim="@anim/slide_from_right"
+            app:exitAnim="@anim/slide_to_left"
+            app:popEnterAnim="@anim/slide_from_left"
+            app:popExitAnim="@anim/slide_to_right" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/bank_account_select_type_fragment"
+        android:name="com.belcobtm.presentation.features.bank_accounts.create.BankAccountSelectTypeFragment"
+        android:label="BankAccountSelectTypeFragment"
+        tools:layout="@layout/fragment_bank_account_select_type">
+        <action
+            android:id="@+id/to_bank_account_create_fragment"
+            app:destination="@id/bank_account_create_fragment"
+            app:enterAnim="@anim/slide_from_right"
+            app:exitAnim="@anim/slide_to_left"
+            app:popEnterAnim="@anim/slide_from_left"
+            app:popExitAnim="@anim/slide_to_right" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/bank_account_create_fragment"
+        android:name="com.belcobtm.presentation.features.bank_accounts.create.BankAccountCreateFragment"
+        android:label="BankAccountCreateFragment"
+        tools:layout="@layout/fragment_bank_account_create">
+        <argument
+            android:name="createBankAccountType"
+            android:defaultValue="NONE"
+            app:argType="com.belcobtm.domain.bank_account.type.CreateBankAccountType" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/bank_account_details_fragment"
+        android:name="com.belcobtm.presentation.features.bank_accounts.details.BankAccountDetailsFragment"
+        android:label="BankAccountDetailsFragment"
+        tools:layout="@layout/fragment_bank_account_details">
+        <argument
+            android:name="bankAccountId"
+            app:argType="string" />
+        <action
+            android:id="@+id/to_payment_details_fragment"
+            app:destination="@id/payment_details_fragment"
+            app:enterAnim="@anim/slide_from_right"
+            app:exitAnim="@anim/slide_to_left"
+            app:popEnterAnim="@anim/slide_from_left"
+            app:popExitAnim="@anim/slide_to_right" />
+        <action
+            android:id="@+id/to_buy_usdc_fragment"
+            app:destination="@id/buy_usdc_fragment"
+            app:enterAnim="@anim/slide_from_right"
+            app:exitAnim="@anim/slide_to_left"
+            app:popEnterAnim="@anim/slide_from_left"
+            app:popExitAnim="@anim/slide_to_right" />
+        <action
+            android:id="@+id/to_sell_usdc_fragment"
+            app:destination="@id/sell_usdc_fragment"
+            app:enterAnim="@anim/slide_from_right"
+            app:exitAnim="@anim/slide_to_left"
+            app:popEnterAnim="@anim/slide_from_left"
+            app:popExitAnim="@anim/slide_to_right" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/verification_details_fragment"
+        android:name="com.belcobtm.presentation.features.settings.verification.details.VerificationDetailsFragment"
+        android:label="VerificationDetailsFragment"
+        tools:layout="@layout/fragment_verification" />
+
+    <fragment
+        android:id="@+id/payment_details_fragment"
+        android:name="com.belcobtm.presentation.features.bank_accounts.payments.PaymentDetailsFragment"
+        android:label="PaymentDetailsFragment"
+        tools:layout="@layout/fragment_payment_details">
+        <argument
+            android:name="bankAccountPaymentListItem"
+            app:argType="com.belcobtm.domain.bank_account.item.BankAccountPaymentListItem" />
+        <argument
+            android:name="paymentInstructions"
+            app:argType="com.belcobtm.domain.bank_account.item.PaymentInstructionsDataItem"
+            app:nullable="true" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/buy_usdc_fragment"
+        android:name="com.belcobtm.presentation.features.bank_accounts.payments.PaymentBuyUsdcFragment"
+        android:label="BuyUsdcFragment"
+        tools:layout="@layout/fragment_payment_buy_usdc">
+        <argument
+            android:name="bankAccountDataItem"
+            app:argType="com.belcobtm.domain.bank_account.item.BankAccountDataItem" />
+        <argument
+            android:name="bankAccountInfo"
+            app:argType="com.belcobtm.domain.bank_account.item.BankAccountInfoDataItem" />
+        <action
+            android:id="@+id/to_payment_summary_fragment"
+            app:destination="@id/payment_summary_fragment"
+            app:enterAnim="@anim/slide_from_right"
+            app:exitAnim="@anim/slide_to_left"
+            app:popEnterAnim="@anim/slide_from_left"
+            app:popExitAnim="@anim/slide_to_right" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/sell_usdc_fragment"
+        android:name="com.belcobtm.presentation.features.bank_accounts.payments.PaymentSellUsdcFragment"
+        android:label="SellUsdcFragment"
+        tools:layout="@layout/fragment_payment_sell_usdc">
+        <argument
+            android:name="bankAccountDataItem"
+            app:argType="com.belcobtm.domain.bank_account.item.BankAccountDataItem" />
+        <argument
+            android:name="bankAccountInfo"
+            app:argType="com.belcobtm.domain.bank_account.item.BankAccountInfoDataItem" />
+        <action
+            android:id="@+id/to_payment_summary_fragment"
+            app:destination="@id/payment_summary_fragment"
+            app:enterAnim="@anim/slide_from_right"
+            app:exitAnim="@anim/slide_to_left"
+            app:popEnterAnim="@anim/slide_from_left"
+            app:popExitAnim="@anim/slide_to_right" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/payment_summary_fragment"
+        android:name="com.belcobtm.presentation.features.bank_accounts.payments.PaymentSummaryFragment"
+        android:label="PaymentSummaryFragment"
+        tools:layout="@layout/fragment_payment_summary">
+        <argument
+            android:name="paymentSummaryItem"
+            app:argType="com.belcobtm.domain.bank_account.item.PaymentSummaryDataItem" />
+        <action
+            android:id="@+id/to_payment_details_fragment"
+            app:destination="@id/payment_details_fragment"
+            app:enterAnim="@anim/slide_from_right"
+            app:exitAnim="@anim/slide_to_left"
+            app:popEnterAnim="@anim/slide_from_left"
+            app:popExitAnim="@anim/slide_to_right" />
+    </fragment>
+
+</navigation>

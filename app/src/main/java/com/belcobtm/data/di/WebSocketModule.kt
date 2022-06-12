@@ -3,6 +3,8 @@ package com.belcobtm.data.di
 import com.belcobtm.data.rest.interceptor.BaseInterceptor
 import com.belcobtm.data.rest.interceptor.NoConnectionInterceptor
 import com.belcobtm.data.rest.interceptor.ResponseInterceptor
+import com.belcobtm.data.websockets.bank_account.BankAccountObserver
+import com.belcobtm.data.websockets.bank_account.WebSocketBankAccountObserver
 import com.belcobtm.data.websockets.base.OkHttpSocketClient
 import com.belcobtm.data.websockets.base.SocketClient
 import com.belcobtm.data.websockets.base.model.StompSocketRequest
@@ -22,6 +24,8 @@ import com.belcobtm.data.websockets.manager.SocketManager
 import com.belcobtm.data.websockets.manager.WebSocketManager
 import com.belcobtm.data.websockets.order.OrdersObserver
 import com.belcobtm.data.websockets.order.WebSocketOrdersObserver
+import com.belcobtm.data.websockets.payments.PaymentsObserver
+import com.belcobtm.data.websockets.payments.WebSocketPaymentsObserver
 import com.belcobtm.data.websockets.serializer.RequestSerializer
 import com.belcobtm.data.websockets.serializer.ResponseDeserializer
 import com.belcobtm.data.websockets.services.ServicesObserver
@@ -51,6 +55,12 @@ val webSocketModule = module {
             get(named(STOMP_REQUEST_SERIALIZER_QUALIFIER)),
             get(named(STOMP_RESPONSE_DESERIALIZER_QUALIFIER)),
         )
+    }
+    single<BankAccountObserver> {
+        WebSocketBankAccountObserver(get(), get(), get(), get())
+    }
+    single<PaymentsObserver> {
+        WebSocketPaymentsObserver(get(), get(), get(), get())
     }
     single<TradesObserver> {
         WebSocketTradesObserver(get(), get(), get(), get())

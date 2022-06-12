@@ -291,6 +291,28 @@
         <item name="android:lines">1</item>
     </style>
 
+    <style name="BankAccountScreen"/>
+    <style name="BankAccountScreen.EditTextContainer" parent="@style/TextInputLayoutOutline">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginStart">16dp</item>
+        <item name="android:layout_marginTop">12dp</item>
+        <item name="android:layout_marginEnd">16dp</item>
+    </style>
+    <style name="BankAccountScreen.EditText">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColorHint">#8d8d8d</item>
+        <item name="android:lines">1</item>
+    </style>
+    <style name="BankAccountScreen.CategoryContainer">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginStart">16dp</item>
+        <item name="android:layout_marginTop">24dp</item>
+        <item name="android:layout_marginEnd">16dp</item>
+    </style>
+
 
     <style name="TransactionsScreen.Chip" parent="Widget.MaterialComponents.Chip.Choice">
         <item name="android:layout_width">wrap_content</item>

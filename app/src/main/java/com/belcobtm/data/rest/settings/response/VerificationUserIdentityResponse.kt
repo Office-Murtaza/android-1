@@ -20,7 +20,7 @@ data class VerificationIdentityRequest(
     val personInfo: PersonInfo,
     val location: LocationInfo,
     val communication: CommunicationInfo,
-    val nationalIds: List<NationalId>
+    val nationalIds: List<NationalId>?
 )
 
 data class VerificationIdentityResponse(

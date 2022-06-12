@@ -31,6 +31,14 @@ interface TransactionRepository {
         isNeedSendSms: Boolean
     ): Either<Failure, String>
 
+    suspend fun createTransactionToAddress(
+        useMaxAmountFlag: Boolean,
+        fromCoin: String,
+        fromCoinAmount: Double,
+        fromTransactionPlan: TransactionPlanItem,
+        toAddress:String,
+    ): Either<Failure, String>
+
     suspend fun receiverAccountActivated(
         fromCoin: String,
         toAddress: String

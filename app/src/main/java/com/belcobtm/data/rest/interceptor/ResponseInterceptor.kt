@@ -54,7 +54,11 @@ class ResponseInterceptor : Interceptor {
                 } catch (e: Exception) {
                     null
                 }
-                throw Failure.MessageError(message, code)
+                if (errorJsonObject.isNull(ERROR_DETAILS)) {
+                    throw Failure.MessageError(message, code)
+                } else {
+                    response
+                }
             }
             else -> response
         }
@@ -71,5 +75,6 @@ class ResponseInterceptor : Interceptor {
         private const val ERROR_FIELD = "error"
         private const val ERROR_SUB_FIELD = "message"
         private const val ERROR_SUB_FIELD_CODE = "code"
+        private const val ERROR_DETAILS = "details"
     }
 }

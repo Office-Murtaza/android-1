@@ -23,6 +23,12 @@ import com.belcobtm.presentation.features.authorization.create.seed.CreateSeedVi
 import com.belcobtm.presentation.features.authorization.create.wallet.CreateWalletViewModel
 import com.belcobtm.presentation.features.authorization.recover.seed.RecoverSeedViewModel
 import com.belcobtm.presentation.features.authorization.recover.wallet.RecoverWalletViewModel
+import com.belcobtm.presentation.features.bank_accounts.BankAccountsViewModel
+import com.belcobtm.presentation.features.bank_accounts.create.BankAccountCreateViewModel
+import com.belcobtm.presentation.features.bank_accounts.details.BankAccountDetailsViewModel
+import com.belcobtm.presentation.features.bank_accounts.payments.PaymentBuyUsdcViewModel
+import com.belcobtm.presentation.features.bank_accounts.payments.PaymentSellUsdcViewModel
+import com.belcobtm.presentation.features.bank_accounts.payments.PaymentSummaryViewModel
 import com.belcobtm.presentation.features.contacts.ContactListViewModel
 import com.belcobtm.presentation.features.deals.DealsViewModel
 import com.belcobtm.presentation.features.deals.atm.sell.AtmSellViewModel
@@ -75,6 +81,19 @@ import org.koin.dsl.module
 import java.util.*
 
 val viewModelModule = module {
+    viewModel { BankAccountCreateViewModel(get()) }
+    viewModel { BankAccountsViewModel(get(), get(), get(), get()) }
+    viewModel { (bankAccountId: String) ->
+        BankAccountDetailsViewModel(
+            bankAccountId,
+            get(),
+            get(),
+            get(),
+        )
+    }
+    viewModel { PaymentSellUsdcViewModel(get(), get()) }
+    viewModel { PaymentBuyUsdcViewModel(get(), get()) }
+    viewModel { PaymentSummaryViewModel(get(), get(), get(), get()) }
     viewModel { AboutViewModel(get()) }
     viewModel { SecurityViewModel(get(), get(), get(), get(), get()) }
     viewModel { WalletViewModel(get(), get(), get(), get()) }
@@ -85,7 +104,8 @@ val viewModelModule = module {
         PinCodeViewModel(
             get(), get(), get(), get(), get(),
             get(), get(), get(), get(), get(),
-            get(), get(), get(), get()
+            get(), get(), get(), get(), get(),
+            get(), get(), get()
         )
     }
     viewModel {

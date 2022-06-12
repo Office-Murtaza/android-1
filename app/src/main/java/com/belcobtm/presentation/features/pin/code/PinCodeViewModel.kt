@@ -10,6 +10,10 @@ import com.belcobtm.domain.authorization.interactor.AuthorizeUseCase
 import com.belcobtm.domain.authorization.interactor.GetAuthorizePinUseCase
 import com.belcobtm.domain.authorization.interactor.SaveAuthorizePinUseCase
 import com.belcobtm.domain.authorization.interactor.SaveUserAuthedUseCase
+import com.belcobtm.domain.bank_account.interactor.ConnectToBankAccountsUseCase
+import com.belcobtm.domain.bank_account.interactor.ConnectToPaymentsUseCase
+import com.belcobtm.domain.bank_account.interactor.DisconnectFromBankAccountsUseCase
+import com.belcobtm.domain.bank_account.interactor.DisconnectFromPaymentsUseCase
 import com.belcobtm.domain.service.ConnectToServicesUseCase
 import com.belcobtm.domain.service.DisconnectFromServicesUseCase
 import com.belcobtm.domain.settings.interactor.BioAuthAllowedByUserUseCase
@@ -36,11 +40,15 @@ class PinCodeViewModel(
     private val bioAuthAllowedByUserUseCase: BioAuthAllowedByUserUseCase,
     private val connectToSocketUseCase: ConnectToSocketUseCase,
     private val connectToWalletUseCase: ConnectToWalletUseCase,
+    private val connectToBankAccountsUseCase: ConnectToBankAccountsUseCase,
+    private val connectToPaymentsUseCase: ConnectToPaymentsUseCase,
     private val connectToTransactionsUseCase: ConnectToTransactionsUseCase,
     private val connectToServicesUseCase: ConnectToServicesUseCase,
     private val disconnectFromWalletUseCase: DisconnectFromWalletUseCase,
     private val disconnectFromTransactionsUseCase: DisconnectFromTransactionsUseCase,
     private val disconnectFromServicesUseCase: DisconnectFromServicesUseCase,
+    private val disconnectFromBankAccountsUseCase: DisconnectFromBankAccountsUseCase,
+    private val disconnectFromPaymentsUseCase: DisconnectFromPaymentsUseCase,
     private val authorizePinUseCase: GetAuthorizePinUseCase,
     private val savePinCodeUseCase: SaveAuthorizePinUseCase,
     private val saveUserAuthedUseCase: SaveUserAuthedUseCase
@@ -64,6 +72,8 @@ class PinCodeViewModel(
             connectToWalletUseCase(Unit)
             connectToTransactionsUseCase(Unit)
             connectToServicesUseCase(Unit)
+            connectToBankAccountsUseCase(Unit)
+            connectToPaymentsUseCase(Unit)
         })
     }
 
@@ -71,6 +81,8 @@ class PinCodeViewModel(
         disconnectFromWalletUseCase(Unit)
         disconnectFromTransactionsUseCase(Unit)
         disconnectFromServicesUseCase(Unit)
+        disconnectFromBankAccountsUseCase(Unit)
+        disconnectFromPaymentsUseCase(Unit)
     }
 
     fun savePinCode(pinCode: String) =

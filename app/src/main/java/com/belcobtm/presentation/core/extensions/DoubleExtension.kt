@@ -30,6 +30,18 @@ private fun Double.formatWith(df: DecimalFormat): String {
     }
 }
 
+fun Double.formatBalanceValue(balanceCurrency: String?): String {
+    return when (balanceCurrency) {
+        "USD" -> "$${this.toStringPercents()}"
+        "USDC" -> {
+            "${this.toStringCoin()} ${balanceCurrency}"
+        }
+        else -> {
+            "${this.toStringCoin()} ${balanceCurrency ?: ""}"
+        }
+    }
+}
+
 fun Double.withScale(scale: Int): Double {
     return BigDecimal(this).setScale(scale, RoundingMode.DOWN).toDouble()
 }

@@ -1,0 +1,574 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="15dp">
+
+    <LinearLayout
+        android:id="@+id/billing_details_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:visibility="visible">
+
+        <TextView
+            style="@style/Text.Regular3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/billing_details_title"
+            android:textStyle="normal" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:layout_marginTop="8dp"
+            android:background="@color/thin_divider" />
+
+        <LinearLayout
+            android:id="@+id/billing_details_name_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:orientation="vertical">
+
+            <TextView
+                style="@style/Text.Regular1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/billing_details_name_field" />
+
+            <TextView
+                android:id="@+id/billing_details_name"
+                style="@style/Text.Regular4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:textColor="@color/black"
+                tools:text="Alberta Bobbeth Charleson" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/billing_details_email_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:orientation="vertical">
+
+            <TextView
+                style="@style/Text.Regular1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/billing_details_email_field" />
+
+            <TextView
+                android:id="@+id/billing_details_email"
+                style="@style/Text.Regular4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:textColor="@color/black"
+                tools:text="Alberta Bobbeth Charleson" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/billing_details_phone_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:orientation="vertical">
+
+            <TextView
+                style="@style/Text.Regular1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/billing_details_phone_field" />
+
+            <TextView
+                android:id="@+id/billing_details_phone"
+                style="@style/Text.Regular4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:textColor="@color/black"
+                tools:text="Alberta Bobbeth Charleson" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/billing_details_country_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:orientation="vertical">
+
+            <TextView
+                style="@style/Text.Regular1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/billing_details_country_field" />
+
+            <TextView
+                android:id="@+id/billing_details_country"
+                style="@style/Text.Regular4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:textColor="@color/black"
+                tools:text="Alberta Bobbeth Charleson" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/billing_details_region_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:orientation="vertical">
+
+            <TextView
+                style="@style/Text.Regular1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/billing_details_region_field" />
+
+            <TextView
+                android:id="@+id/billing_details_region"
+                style="@style/Text.Regular4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:textColor="@color/black"
+                tools:text="Alberta Bobbeth Charleson" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/billing_details_city_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:orientation="vertical">
+
+            <TextView
+                style="@style/Text.Regular1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/billing_details_city_field" />
+
+            <TextView
+                android:id="@+id/billing_details_city"
+                style="@style/Text.Regular4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:textColor="@color/black"
+                tools:text="Alberta Bobbeth Charleson" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/billing_details_street_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:orientation="vertical">
+
+            <TextView
+                style="@style/Text.Regular1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/billing_details_street_field" />
+
+            <TextView
+                android:id="@+id/billing_details_street"
+                style="@style/Text.Regular4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:textColor="@color/black"
+                tools:text="Alberta Bobbeth Charleson" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/billing_details_postal_code_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:orientation="vertical">
+
+            <TextView
+                style="@style/Text.Regular1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/billing_details_postal_code_field" />
+
+            <TextView
+                android:id="@+id/billing_details_postal_code"
+                style="@style/Text.Regular4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:textColor="@color/black"
+                tools:text="Alberta Bobbeth Charleson" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="8dp"
+            android:background="@color/thin_divider" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/account_details_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            style="@style/Text.Regular3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:text="@string/account_details_title"
+            android:textStyle="normal" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:layout_marginTop="8dp"
+            android:background="@color/thin_divider" />
+
+        <LinearLayout
+            android:id="@+id/account_details_account_number_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:orientation="vertical">
+
+            <TextView
+                style="@style/Text.Regular1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/account_details_account_number_field" />
+
+            <TextView
+                android:id="@+id/account_details_account_number"
+                style="@style/Text.Regular4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:textColor="@color/black"
+                tools:text="Alberta Bobbeth Charleson" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/account_details_routing_number_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:orientation="vertical">
+
+            <TextView
+                style="@style/Text.Regular1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/account_details_routing_number_field" />
+
+            <TextView
+                android:id="@+id/account_details_routing_number"
+                style="@style/Text.Regular4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:textColor="@color/black"
+                tools:text="Alberta Bobbeth Charleson" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/account_details_iban_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:orientation="vertical">
+
+            <TextView
+                style="@style/Text.Regular1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/account_details_iban_field" />
+
+            <TextView
+                android:id="@+id/account_details_iban"
+                style="@style/Text.Regular4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:textColor="@color/black"
+                tools:text="Alberta Bobbeth Charleson" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="8dp"
+            android:background="@color/thin_divider" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/plaid_details_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <TextView
+            style="@style/Text.Regular3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:text="@string/plaid_details_title" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:layout_marginTop="8dp"
+            android:background="@color/thin_divider" />
+
+        <LinearLayout
+            android:id="@+id/plaid_details_account_id_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:orientation="vertical">
+
+            <TextView
+                style="@style/Text.Regular1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/plaid_details_account_id_field" />
+
+            <TextView
+                android:id="@+id/plaid_details_account_id"
+                style="@style/Text.Regular4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:textColor="@color/black"
+                tools:text="Alberta Bobbeth Charleson" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/plaid_details_type_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:orientation="vertical">
+
+            <TextView
+                style="@style/Text.Regular1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/plaid_details_type_field" />
+
+            <TextView
+                android:id="@+id/plaid_details_type"
+                style="@style/Text.Regular4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:textColor="@color/black"
+                tools:text="Alberta Bobbeth Charleson" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/plaid_details_subtype_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:orientation="vertical">
+
+            <TextView
+                style="@style/Text.Regular1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/plaid_details_subtype_field" />
+
+            <TextView
+                android:id="@+id/plaid_details_subtype"
+                style="@style/Text.Regular4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:textColor="@color/black"
+                tools:text="Alberta Bobbeth Charleson" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/plaid_details_ach_number_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:orientation="vertical">
+
+            <TextView
+                style="@style/Text.Regular1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/plaid_details_ach_number_field" />
+
+            <TextView
+                android:id="@+id/plaid_details_ach_number"
+                style="@style/Text.Regular4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:textColor="@color/black"
+                tools:text="Alberta Bobbeth Charleson" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/plaid_details_routing_number_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:orientation="vertical">
+
+            <TextView
+                style="@style/Text.Regular1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/plaid_details_routing_number_field" />
+
+            <TextView
+                android:id="@+id/plaid_details_routing_number"
+                style="@style/Text.Regular4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:textColor="@color/black"
+                tools:text="Alberta Bobbeth Charleson" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/plaid_details_wire_routing_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:orientation="vertical">
+
+            <TextView
+                style="@style/Text.Regular1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/plaid_details_wire_routing_field" />
+
+            <TextView
+                android:id="@+id/plaid_details_wire_routing"
+                style="@style/Text.Regular4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:textColor="@color/black"
+                tools:text="Alberta Bobbeth Charleson" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="8dp"
+            android:background="@color/thin_divider" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/circle_details_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <TextView
+            style="@style/Text.Regular3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:text="@string/circle_details_title" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:layout_marginTop="8dp"
+            android:background="@color/thin_divider" />
+
+        <LinearLayout
+            android:id="@+id/circle_details_ach_account_id_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:orientation="vertical">
+
+            <TextView
+                style="@style/Text.Regular1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/circle_details_ach_account_id_field" />
+
+            <TextView
+                android:id="@+id/circle_details_ach_account_id"
+                style="@style/Text.Regular4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:textColor="@color/black"
+                tools:text="Alberta Bobbeth Charleson" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/circle_details_wire_account_id_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:orientation="vertical">
+
+            <TextView
+                style="@style/Text.Regular1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/circle_details_wire_account_id_field" />
+
+            <TextView
+                android:id="@+id/circle_details_wire_account_id"
+                style="@style/Text.Regular4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:textColor="@color/black"
+                tools:text="Alberta Bobbeth Charleson" />
+
+        </LinearLayout>
+
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="8dp"
+            android:background="@color/thin_divider" />
+    </LinearLayout>
+
+    <TextView
+        style="@style/Text.Regular1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:text="@string/bank_account_details_date_field" />
+
+    <TextView
+        android:id="@+id/bank_account_details_date"
+        style="@style/Text.Regular4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="2dp"
+        android:textColor="@color/black"
+        tools:text="18 May 2022, 3:45PM" />
+
+
+</LinearLayout>

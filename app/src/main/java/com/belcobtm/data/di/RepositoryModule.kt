@@ -6,6 +6,7 @@ import com.belcobtm.data.disk.database.AppDatabase
 import com.belcobtm.domain.account.AccountRepository
 import com.belcobtm.domain.atm.AtmRepository
 import com.belcobtm.domain.authorization.AuthorizationRepository
+import com.belcobtm.domain.bank_account.BankAccountRepository
 import com.belcobtm.domain.settings.SettingsRepository
 import com.belcobtm.domain.tools.ToolsRepository
 import com.belcobtm.domain.trade.TradeRepository
@@ -25,6 +26,15 @@ val repositoryModule = module {
             get(),
             get(),
             get()
+        )
+    }
+    single<BankAccountRepository> {
+        BankAccountRepositoryImpl(
+            get(),
+            get(),
+            get(),
+            get(),
+            get(),
         )
     }
     single<SettingsRepository> {

@@ -5,9 +5,11 @@
     <color name="colorAccent">#0074e5</color>
     <color name="colorStatusBar">#f4f4f4</color>
     <color name="colorWhite">#FFFFFF</color>
+    <color name="colorWhiteWithTransparency">#99FFFFFF</color>
 
     <color name="colorText">#58585a</color>
     <color name="gray_text_color">#7c7c7c</color>
+    <color name="disabled_text_color">#D3D3D3</color>
     <color name="black_text_color">#000</color>
     <color name="black_opacity_70">#CC000000</color>
     <color name="light_gray_text_color">#c1c1c1</color>
@@ -29,6 +31,8 @@
 
     <color name="bt_gray">#afb0ab</color>
     <color name="bt_orange">#ffcd4c</color>
+    <color name="bt_green">#48C583</color>
+    <color name="bt_red">#EA6666</color>
     <color name="blue_color">#0073e4</color>
 
     <color name="transaction_green">#48be53</color>
@@ -54,6 +58,12 @@
 
     <color name="chip_default_text_color">#DE000000</color>
     <color name="chip_default_icon_background_color">#517FA4</color>
+    <color name="chip_wire_text_color">#8E5BF9</color>
+    <color name="chip_ach_text_color">#F7931A</color>
+    <color name="buy_text_color">#48C583</color>
+    <color name="sell_text_color">#EA6666</color>
+
+
 
     <color name="thin_divider">#11000000</color>
 
