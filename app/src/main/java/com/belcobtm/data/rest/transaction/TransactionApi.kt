@@ -1,103 +1,120 @@
 package com.belcobtm.data.rest.transaction
 
-import com.belcobtm.data.rest.transaction.request.*
-import com.belcobtm.data.rest.transaction.response.*
+import com.belcobtm.data.rest.transaction.request.CoinToCoinExchangeRequest
+import com.belcobtm.data.rest.transaction.request.SellPreSubmitRequest
+import com.belcobtm.data.rest.transaction.request.SellRequest
+import com.belcobtm.data.rest.transaction.request.SendGiftRequest
+import com.belcobtm.data.rest.transaction.request.StakeRequest
+import com.belcobtm.data.rest.transaction.request.TradeRecallRequest
+import com.belcobtm.data.rest.transaction.request.TradeReserveRequest
+import com.belcobtm.data.rest.transaction.request.WithdrawRequest
+import com.belcobtm.data.rest.transaction.response.GetGiftAddressResponse
+import com.belcobtm.data.rest.transaction.response.GetTransactionsResponse
+import com.belcobtm.data.rest.transaction.response.ReceiverAccountActivatedResponse
+import com.belcobtm.data.rest.transaction.response.SellPreSubmitResponse
+import com.belcobtm.data.rest.transaction.response.StakeDetailsResponse
+import com.belcobtm.data.rest.transaction.response.TransactionDetailsResponse
+import com.belcobtm.data.rest.transaction.response.TransactionPlanResponse
 import com.belcobtm.data.rest.transaction.response.hash.UtxoListResponse
-import kotlinx.coroutines.Deferred
 import retrofit2.Response
-import retrofit2.http.*
+import retrofit2.http.Body
+import retrofit2.http.GET
+import retrofit2.http.POST
+import retrofit2.http.Path
+import retrofit2.http.Query
 
 interface TransactionApi {
 
     @GET("user/{userId}/coin/{coinCode}/transaction-plan")
-    fun getTransactionPlanAsync(
+    suspend fun getTransactionPlanAsync(
         @Path("userId") userId: String,
         @Path("coinCode") coinCode: String
-    ): Deferred<Response<TransactionPlanResponse>>
+    ): Response<TransactionPlanResponse>
 
     @GET("user/{userId}/coin/{coinCode}/transaction-history")
-    fun getTransactionsAsync(
+    suspend fun getTransactionsAsync(
         @Path("userId") userId: String,
         @Path("coinCode") coinCode: String
-    ): Deferred<Response<GetTransactionsResponse>>
+    ): Response<GetTransactionsResponse>
 
     @GET("coin/{coinCode}/receiver-account-activated")
-    fun receiverAccountActivatedAsync(
+    suspend fun receiverAccountActivatedAsync(
         @Path("coinCode") coinCode: String,
         @Query("toAddress") toAddress: String
-    ): Deferred<Response<ReceiverAccountActivatedResponse>>
+    ): Response<ReceiverAccountActivatedResponse>
 
     @POST("user/{userId}/coin/{coinCode}/submit")
-    fun withdrawAsync(
+    suspend fun withdrawAsync(
         @Path("userId") userId: String,
         @Path("coinCode") coinCode: String,
         @Body body: WithdrawRequest
-    ): Deferred<Response<TransactionDetailsResponse>>
+    ): Response<TransactionDetailsResponse>
 
     @GET("coin/{coinCode}/transfer-address")
-    fun getGiftAddressAsync(
+    suspend fun getGiftAddressAsync(
         @Path("coinCode") coinCode: String,
         @Query("phone") phone: String?
-    ): Deferred<Response<GetGiftAddressResponse>>
+    ): Response<GetGiftAddressResponse>
 
     @POST("user/{userId}/coin/{coinCode}/submit")
-    fun sendGiftAsync(
+    suspend fun sendGiftAsync(
         @Path("userId") userId: String,
         @Path("coinCode") coinCode: String,
         @Body body: SendGiftRequest
-    ): Deferred<Response<TransactionDetailsResponse>>
+    ): Response<TransactionDetailsResponse>
 
     @POST("user/{userId}/coin/{coinCode}/pre-submit")
-    fun sellPreSubmitAsync(
+    suspend fun sellPreSubmitAsync(
         @Path("userId") userId: String,
         @Path("coinCode") coinCode: String,
         @Body body: SellPreSubmitRequest
-    ): Deferred<Response<SellPreSubmitResponse>>
+    ): Response<SellPreSubmitResponse>
 
     @POST("user/{userId}/coin/{coinCode}/submit")
-    fun sellAsync(
+    suspend fun sellAsync(
         @Path("userId") userId: String,
         @Path("coinCode") coinCode: String,
         @Body body: SellRequest
-    ): Deferred<Response<TransactionDetailsResponse>>
+    ): Response<TransactionDetailsResponse>
 
     @POST("user/{userId}/coin/{coinCode}/submit")
-    fun exchangeAsync(
+    suspend fun exchangeAsync(
         @Path("userId") userId: String,
         @Path("coinCode") coinFrom: String,
         @Body request: CoinToCoinExchangeRequest
-    ): Deferred<Response<TransactionDetailsResponse>>
+    ): Response<TransactionDetailsResponse>
 
     @GET("coin/{coinCode}/utxo")
-    fun getUtxoListAsync(
+    suspend fun getUtxoListAsync(
         @Path("coinCode") coinCode: String,
         @Query("xpub") extendedPublicKey: String
-    ): Deferred<Response<UtxoListResponse>>
+    ): Response<UtxoListResponse>
 
     @POST("user/{userId}/coin/{coinCode}/submit")
-    fun submitRecallAsync(
+    suspend fun submitRecallAsync(
         @Path("userId") userId: String,
         @Path("coinCode") coinCode: String,
         @Body body: TradeRecallRequest
-    ): Deferred<Response<TransactionDetailsResponse>>
+    ): Response<TransactionDetailsResponse>
 
     @POST("user/{userId}/coin/{coinCode}/submit")
-    fun submitReserveAsync(
+    suspend fun submitReserveAsync(
         @Path("userId") userId: String,
         @Path("coinCode") coinCode: String,
         @Body body: TradeReserveRequest
-    ): Deferred<Response<TransactionDetailsResponse>>
+    ): Response<TransactionDetailsResponse>
 
     @GET("user/{userId}/coin/{coinCode}/staking-details")
-    fun stakeDetailsAsync(
+    suspend fun stakeDetailsAsync(
         @Path("userId") userId: String,
         @Path("coinCode") coinCode: String
-    ): Deferred<Response<StakeDetailsResponse>>
+    ): Response<StakeDetailsResponse>
 
     @POST("user/{userId}/coin/{coinCode}/submit")
-    fun stakeOrUnStakeAsync(
+    suspend fun stakeOrUnStakeAsync(
         @Path("userId") userId: String,
         @Path("coinCode") coinCode: String,
         @Body body: StakeRequest
-    ): Deferred<Response<TransactionDetailsResponse>>
+    ): Response<TransactionDetailsResponse>
+
 }

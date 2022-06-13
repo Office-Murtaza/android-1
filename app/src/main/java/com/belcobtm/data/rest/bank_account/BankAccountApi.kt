@@ -3,44 +3,53 @@ package com.belcobtm.data.rest.bank_account
 import com.belcobtm.data.rest.bank_account.request.CreateBankAccountPaymentRequest
 import com.belcobtm.data.rest.bank_account.request.CreateBankAccountRequest
 import com.belcobtm.data.rest.bank_account.request.LinkBankAccountRequest
-import com.belcobtm.data.rest.bank_account.response.*
-import kotlinx.coroutines.Deferred
+import com.belcobtm.data.rest.bank_account.response.BankAccountPayment
+import com.belcobtm.data.rest.bank_account.response.BankAccountPaymentsResponse
+import com.belcobtm.data.rest.bank_account.response.BankAccountResponse
+import com.belcobtm.data.rest.bank_account.response.CreateBankAccountResponse
+import com.belcobtm.data.rest.bank_account.response.LinkTokenResponse
 import retrofit2.Response
-import retrofit2.http.*
+import retrofit2.http.Body
+import retrofit2.http.GET
+import retrofit2.http.POST
+import retrofit2.http.Path
+import retrofit2.http.Query
 
 interface BankAccountApi {
+
     @GET("payment/user/{userId}/bankAccounts")
-    fun getBankAccountsListAsync(
+    suspend fun getBankAccountsListAsync(
         @Path("userId") userId: String
-    ): Deferred<Response<List<BankAccountResponse>>>
+    ): Response<List<BankAccountResponse>>
 
     @POST("payment/user/{userId}/bankAccount")
-    fun createBankAccountAsync(
+    suspend fun createBankAccountAsync(
         @Path("userId") userId: String,
         @Body request: CreateBankAccountRequest
-    ): Deferred<Response<CreateBankAccountResponse>>
+    ): Response<CreateBankAccountResponse>
 
     @POST("payment/plaid/user/{userId}/link/accounts")
-    fun linkBankAccountAsync(
+    suspend fun linkBankAccountAsync(
         @Path("userId") userId: String,
         @Body request: LinkBankAccountRequest
-    ): Deferred<Response<List<BankAccountResponse>>>
+    ): Response<List<BankAccountResponse>>
 
     @POST("payment/plaid/user/{userId}/link/token")
-    fun getLinkTokenAsync(
+    suspend fun getLinkTokenAsync(
         @Path("userId") userId: String,
         @Query("platform") platform: String,
-    ): Deferred<Response<LinkTokenResponse>>
+    ): Response<LinkTokenResponse>
 
     @GET("payment/user/{userId}/payment")
-    fun getBankAccountPaymentsAsync(
+    suspend fun getBankAccountPaymentsAsync(
         @Path("userId") userId: String,
         @Query("bankAccountId") accountId: String,
-    ): Deferred<Response<BankAccountPaymentsResponse>>
+    ): Response<BankAccountPaymentsResponse>
 
     @POST("payment/user/{userId}/payment")
-    fun createBankAccountPaymentAsync(
+    suspend fun createBankAccountPaymentAsync(
         @Path("userId") userId: String,
         @Body request: CreateBankAccountPaymentRequest
-    ): Deferred<Response<BankAccountPayment>>
+    ): Response<BankAccountPayment>
+
 }

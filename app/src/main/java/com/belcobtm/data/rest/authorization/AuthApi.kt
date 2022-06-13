@@ -1,11 +1,14 @@
 package com.belcobtm.data.rest.authorization
 
-import com.belcobtm.data.rest.authorization.request.*
+import com.belcobtm.data.rest.authorization.request.CheckCredentialsRequest
+import com.belcobtm.data.rest.authorization.request.CheckPassRequest
+import com.belcobtm.data.rest.authorization.request.CreateWalletRequest
+import com.belcobtm.data.rest.authorization.request.RecoverWalletRequest
+import com.belcobtm.data.rest.authorization.request.RefreshTokenRequest
 import com.belcobtm.data.rest.authorization.response.AuthorizationResponse
 import com.belcobtm.data.rest.authorization.response.CheckCredentialsResponse
 import com.belcobtm.data.rest.authorization.response.CheckPassResponse
 import com.belcobtm.data.rest.authorization.response.CreateRecoverWalletResponse
-import kotlinx.coroutines.Deferred
 import retrofit2.Call
 import retrofit2.Response
 import retrofit2.http.Body
@@ -13,32 +16,36 @@ import retrofit2.http.POST
 import retrofit2.http.Path
 
 interface AuthApi {
+
     @POST("check")
-    fun authorizationCheckCredentialsAsync(
+    suspend fun authorizationCheckCredentialsAsync(
         @Body request: CheckCredentialsRequest
-    ): Deferred<Response<CheckCredentialsResponse>>
+    ): Response<CheckCredentialsResponse>
 
     @POST("register")
-    fun createWalletAsync(
+    suspend fun createWalletAsync(
         @Body request: CreateWalletRequest
-    ): Deferred<Response<CreateRecoverWalletResponse>>
+    ): Response<CreateRecoverWalletResponse>
 
     @POST("recover")
-    fun recoverWalletAsync(
+    suspend fun recoverWalletAsync(
         @Body request: RecoverWalletRequest
-    ): Deferred<Response<CreateRecoverWalletResponse>>
+    ): Response<CreateRecoverWalletResponse>
 
     @POST("refresh")
-    fun signInByRefreshTokenAsync(
+    suspend fun signInByRefreshTokenAsync(
         @Body request: RefreshTokenRequest
-    ): Deferred<Response<AuthorizationResponse>>
+    ): Response<AuthorizationResponse>
 
     @POST("user/{userId}/password-verify")
-    fun checkPass(
+    suspend fun checkPass(
         @Path("userId") userId: String,
         @Body checkPassParam: CheckPassRequest
-    ): Deferred<Response<CheckPassResponse>>
+    ): Response<CheckPassResponse>
 
     @POST("refresh")
-    fun refereshToken(@Body request: RefreshTokenRequest): Call<AuthorizationResponse>
+    fun refereshToken(
+        @Body request: RefreshTokenRequest
+    ): Call<AuthorizationResponse>
+
 }

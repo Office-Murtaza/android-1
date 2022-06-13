@@ -4,11 +4,11 @@ import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.navigation.fragment.navArgs
-import com.afollestad.materialdialogs.MaterialDialog
 import com.belcobtm.R
 import com.belcobtm.databinding.FragmentSettingsBinding
 import com.belcobtm.presentation.core.ui.fragment.BaseFragment
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import zendesk.android.Zendesk
 
 class SettingsFragment : BaseFragment<FragmentSettingsBinding>() {
 
@@ -18,6 +18,7 @@ class SettingsFragment : BaseFragment<FragmentSettingsBinding>() {
     override var isMenuEnabled = true
 
     companion object {
+
         const val SETTINGS_MAIN = 0
         const val SETTINGS_SECURITY = 1
         const val SETTINGS_ABOUT = 2
@@ -26,10 +27,19 @@ class SettingsFragment : BaseFragment<FragmentSettingsBinding>() {
     override fun FragmentSettingsBinding.initViews() {
         setToolbarTitle(R.string.settings)
         viewModel.processArgs(settingsArgs)
+        setUnreadSupportMessages()
+    }
+
+    private fun setUnreadSupportMessages() {
+        binding.supportItem.setValue(
+            Zendesk.instance.messaging
+                .getUnreadMessageCount()
+                .takeIf { it > 0 }
+                ?.toString() ?: ""
+        )
     }
 
     override fun FragmentSettingsBinding.initListeners() {
-        //sections listener
         walletsItem.setOnClickListener { onSectionClick(SettingsSections.WALLETS) }
         securityItem.setOnClickListener { onSectionClick(SettingsSections.SECURITY) }
         kycItem.setOnClickListener { onSectionClick(SettingsSections.KYC) }
@@ -46,9 +56,14 @@ class SettingsFragment : BaseFragment<FragmentSettingsBinding>() {
                 when (action) {
                     is SettingsAction.NavigateAction -> navigate(action.navDirections)
                     SettingsAction.NotificationOptions -> startNotificationsSettings()
+                    SettingsAction.SupportChat -> openSupportChat()
                 }
             }
         }
+    }
+
+    private fun openSupportChat() {
+        Zendesk.instance.messaging.showMessaging(requireActivity())
     }
 
     private fun onSectionClick(section: SettingsSections) {
@@ -69,4 +84,5 @@ class SettingsFragment : BaseFragment<FragmentSettingsBinding>() {
         container: ViewGroup?
     ): FragmentSettingsBinding =
         FragmentSettingsBinding.inflate(inflater, container, false)
+
 }

@@ -1,6 +1,5 @@
 package com.belcobtm.data
 
-import android.util.Log
 import com.belcobtm.data.disk.database.service.ServiceDao
 import com.belcobtm.data.disk.database.service.ServiceEntity
 import com.belcobtm.data.websockets.services.model.ServicesInfoResponse
@@ -11,7 +10,6 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
-import java.lang.Exception
 
 class ServiceRepositoryImpl(
     private val serviceDao: ServiceDao,

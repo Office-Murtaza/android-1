@@ -1,37 +1,33 @@
 package com.belcobtm.data
 
-import android.Manifest
-import android.app.Application
-import android.content.Context
-import android.content.pm.PackageManager
-import android.location.Location
-import android.location.LocationManager
 import com.belcobtm.data.disk.database.account.AccountDao
 import com.belcobtm.data.disk.database.account.AccountEntity
 import com.belcobtm.data.disk.database.wallet.WalletDao
 import com.belcobtm.data.disk.shared.preferences.SharedPreferencesHelper
+import com.belcobtm.data.provider.location.LocationProvider
 import com.belcobtm.data.rest.authorization.AuthApiService
+import com.belcobtm.data.rest.authorization.response.CreateRecoverWalletResponse
 import com.belcobtm.data.rest.wallet.response.CoinResponse
 import com.belcobtm.domain.Either
 import com.belcobtm.domain.Failure
 import com.belcobtm.domain.authorization.AuthorizationRepository
 import com.belcobtm.domain.authorization.AuthorizationStatus
 import com.belcobtm.domain.service.ServiceRepository
+import com.belcobtm.domain.settings.type.VerificationStatus
 import com.belcobtm.domain.wallet.LocalCoinType
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 import org.web3j.utils.Numeric
-import wallet.core.jni.*
+import wallet.core.jni.BitcoinAddress
+import wallet.core.jni.HDVersion
+import wallet.core.jni.HDWallet
+import wallet.core.jni.PrivateKey
+import wallet.core.jni.Purpose
 import java.text.SimpleDateFormat
-import java.util.*
-import com.belcobtm.data.provider.location.LocationProvider
-import com.belcobtm.domain.settings.type.VerificationStatus
-
+import java.util.Locale
 
 class AuthorizationRepositoryImpl(
-    private val application: Application,
     private val prefHelper: SharedPreferencesHelper,
     private val apiService: AuthApiService,
     private val daoAccount: AccountDao,
@@ -39,6 +35,7 @@ class AuthorizationRepositoryImpl(
     private val serviceRepository: ServiceRepository,
     private val locationProvider: LocationProvider
 ) : AuthorizationRepository {
+
     private val temporaryCoinMap: MutableMap<LocalCoinType, Pair<String, String>> by lazy {
         return@lazy mutableMapOf<LocalCoinType, Pair<String, String>>()
     }
@@ -88,7 +85,7 @@ class AuthorizationRepositoryImpl(
         val wallet = HDWallet(128, "")
         temporaryCoinMap.clear()
         temporaryCoinMap.putAll(
-            LocalCoinType.values().map { Pair(it, createTemporaryAccount(it, wallet)) }.toMap()
+            LocalCoinType.values().associate { Pair(it, createTemporaryAccount(it, wallet)) }
         )
         prefHelper.apiSeed = wallet.mnemonic()
         return Either.Right(prefHelper.apiSeed)
@@ -99,7 +96,7 @@ class AuthorizationRepositoryImpl(
         val wallet = HDWallet(formattedSeed, "")
         temporaryCoinMap.clear()
         temporaryCoinMap.putAll(
-            LocalCoinType.values().map { Pair(it, createTemporaryAccount(it, wallet)) }.toMap()
+            LocalCoinType.values().associate { Pair(it, createTemporaryAccount(it, wallet)) }
         )
         prefHelper.apiSeed = formattedSeed
         return Either.Right(Unit)
@@ -111,7 +108,7 @@ class AuthorizationRepositoryImpl(
         notificationToken: String
     ): Either<Failure, Unit> {
         val location = locationProvider.getCurrentLocation()
-        val response = apiService.createWallet(
+        return apiService.createWallet(
             phone = phone,
             password = password,
             timezone = getDeviceTimezone(),
@@ -119,27 +116,8 @@ class AuthorizationRepositoryImpl(
             lng = location?.longitude,
             notificationToken = notificationToken,
             coinMap = temporaryCoinMap.map { it.key.name to it.value.first }.toMap()
-        )
-
-        return if (response.isRight) {
-            val result = (response as Either.Right).b
-            val accountList = createAccountEntityList(temporaryCoinMap, result.balance.coins)
-            walletDao.updateBalance(result.balance)
-            daoAccount.insertItemList(accountList)
-            serviceRepository.updateServices(result.services)
-            prefHelper.accessToken = result.accessToken
-            prefHelper.refreshToken = result.refreshToken
-            prefHelper.firebaseToken = result.firebaseToken
-            prefHelper.userId = result.user.id
-            prefHelper.userPhone = phone
-            prefHelper.userStatus = result.user.status
-            prefHelper.referralCode = result.user.referralCode.orEmpty()
-            prefHelper.referralInvites = result.user.referrals ?: 0
-            prefHelper.referralEarned = result.user.referralEarned ?: 0.0
-            temporaryCoinMap.clear()
-            Either.Right(Unit)
-        } else {
-            response as Either.Left
+        ).let {
+            handleCreateRecoverResponse(it, phone)
         }
     }
 
@@ -153,52 +131,54 @@ class AuthorizationRepositoryImpl(
         val wallet = HDWallet(seed, "")
         temporaryCoinMap.clear()
         temporaryCoinMap.putAll(
-            LocalCoinType.values().map { Pair(it, createTemporaryAccount(it, wallet)) }.toMap()
+            LocalCoinType.values().associate { Pair(it, createTemporaryAccount(it, wallet)) }
         )
-        val recoverResponse =
-            apiService.recoverWallet(
-                phone,
-                password,
-                location?.latitude,
-                location?.longitude,
-                getDeviceTimezone(),
-                notificationToken,
-                temporaryCoinMap.map { it.key.name to it.value.first }.toMap()
-            )
-
-        return if (recoverResponse.isRight) {
-            val result = (recoverResponse as Either.Right).b
-            val accountList = createAccountEntityList(temporaryCoinMap, result.balance.coins)
-            serviceRepository.updateServices(result.services)
-            walletDao.updateBalance(result.balance)
-            daoAccount.insertItemList(accountList)
+        return apiService.recoverWallet(
+            phone,
+            password,
+            location?.latitude,
+            location?.longitude,
+            getDeviceTimezone(),
+            notificationToken,
+            temporaryCoinMap.map { it.key.name to it.value.first }.toMap()
+        ).let {
             prefHelper.apiSeed = seed
-            prefHelper.firebaseToken = result.firebaseToken
-            prefHelper.accessToken = result.accessToken
-            prefHelper.refreshToken = result.refreshToken
-            prefHelper.userPhone = phone
-            prefHelper.userId = result.user.id
-            prefHelper.userStatus = result.user.status
-            prefHelper.referralCode = result.user.referralCode.orEmpty()
-            prefHelper.referralInvites = result.user.referrals ?: 0
-            prefHelper.referralEarned = result.user.referralEarned ?: 0.0
-            temporaryCoinMap.clear()
-            Either.Right(Unit)
-        } else {
-            recoverResponse as Either.Left
+            handleCreateRecoverResponse(it, phone)
         }
     }
 
+    private suspend fun handleCreateRecoverResponse(
+        response: Either<Failure, CreateRecoverWalletResponse>,
+        phone: String,
+    ) = response.takeIf { it.isRight }?.let {
+        with((response as Either.Right).b) {
+            val accountList = createAccountEntityList(temporaryCoinMap, balance.coins)
+            serviceRepository.updateServices(services)
+            walletDao.updateBalance(balance)
+            daoAccount.insertItemList(accountList)
+            prefHelper.firebaseToken = firebaseToken
+            prefHelper.accessToken = accessToken
+            prefHelper.refreshToken = refreshToken
+            prefHelper.userId = user.id
+            prefHelper.userStatus = user.status
+            prefHelper.referralCode = user.referralCode.orEmpty()
+            prefHelper.referralInvites = user.referrals ?: 0
+            prefHelper.referralEarned = user.referralEarned ?: 0.0
+            prefHelper.zendeskToken = zendeskToken
+            prefHelper.userPhone = phone
+            temporaryCoinMap.clear()
+            Either.Right(Unit)
+        }
+    } ?: response as Either.Left
+
     override suspend fun authorize(): Either<Failure, Unit> {
         val response = apiService.authorizeByRefreshToken(prefHelper.refreshToken)
-        return if (response.isRight) {
+        return response.takeIf { it.isRight }?.let {
             val body = (response as Either.Right).b
             walletDao.updateBalance(body.balance)
             prefHelper.processAuthResponse(body)
             Either.Right(Unit)
-        } else {
-            response as Either.Left
-        }
+        } ?: response as Either.Left
     }
 
     override fun getAuthorizePin(): String = prefHelper.userPin
@@ -282,22 +262,4 @@ class AuthorizationRepositoryImpl(
             .format(currentTimeMs)
     }
 
-    private fun getLocation(): Location? {
-        val pm = application.packageManager
-        val pn = application.packageName
-        val fineLocation = pm.checkPermission(Manifest.permission.ACCESS_FINE_LOCATION, pn)
-        val coarseLocation = pm.checkPermission(Manifest.permission.ACCESS_COARSE_LOCATION, pn)
-        if (pm.hasSystemFeature(PackageManager.FEATURE_LOCATION)
-            && (fineLocation == PackageManager.PERMISSION_GRANTED
-                    || coarseLocation == PackageManager.PERMISSION_GRANTED)
-        ) {
-            val locManager = application.getSystemService(Context.LOCATION_SERVICE)
-            if (locManager is LocationManager) {
-                val netLocation = locManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER)
-                val gpsLocation = locManager.getLastKnownLocation(LocationManager.GPS_PROVIDER)
-                return gpsLocation ?: netLocation
-            }
-        }
-        return null
-    }
 }

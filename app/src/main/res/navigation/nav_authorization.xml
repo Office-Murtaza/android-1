@@ -11,13 +11,7 @@
         android:name="com.belcobtm.presentation.features.authorization.welcome.WelcomeFragment"
         android:label="WelcomeFragment"
         tools:layout="@layout/fragment_welcome">
-        <action
-            android:id="@+id/to_support_fragment"
-            app:destination="@id/support_fragment"
-            app:enterAnim="@anim/slide_from_right"
-            app:exitAnim="@anim/slide_to_left"
-            app:popEnterAnim="@anim/slide_from_left"
-            app:popExitAnim="@anim/slide_to_right" />
+
         <action
             android:id="@+id/to_recover_wallet_fragment"
             app:destination="@id/recover_wallet_fragment"
@@ -25,6 +19,7 @@
             app:exitAnim="@anim/slide_to_left"
             app:popEnterAnim="@anim/slide_from_left"
             app:popExitAnim="@anim/slide_to_right" />
+
         <action
             android:id="@+id/to_create_wallet_fragment"
             app:destination="@id/create_wallet_fragment"
@@ -32,6 +27,7 @@
             app:exitAnim="@anim/slide_to_left"
             app:popEnterAnim="@anim/slide_from_left"
             app:popExitAnim="@anim/slide_to_right" />
+
     </fragment>
 
     <fragment
@@ -39,6 +35,7 @@
         android:name="com.belcobtm.presentation.features.authorization.recover.wallet.RecoverWalletFragment"
         android:label="RecoverWalletFragment"
         tools:layout="@layout/fragment_recover_wallet">
+
         <action
             android:id="@+id/to_sms_code_fragment"
             app:destination="@id/sms_code_fragment"
@@ -46,6 +43,7 @@
             app:exitAnim="@anim/slide_to_left"
             app:popEnterAnim="@anim/slide_from_left"
             app:popExitAnim="@anim/slide_to_right" />
+
     </fragment>
 
     <fragment
@@ -53,6 +51,7 @@
         android:name="com.belcobtm.presentation.features.authorization.recover.seed.RecoverSeedFragment"
         android:label="RecoverSeedFragment"
         tools:layout="@layout/fragment_recover_seed">
+
         <action
             android:id="@+id/to_pin_code_fragment"
             app:destination="@id/pin_code_fragment"
@@ -60,6 +59,7 @@
             app:exitAnim="@anim/slide_to_left"
             app:popEnterAnim="@anim/slide_from_left"
             app:popExitAnim="@anim/slide_to_right" />
+
     </fragment>
 
     <fragment
@@ -67,6 +67,7 @@
         android:name="com.belcobtm.presentation.features.sms.code.SmsCodeFragment"
         android:label="SmsCodeFragment"
         tools:layout="@layout/fragment_sms_code">
+
         <action
             android:id="@+id/to_recover_seed_fragment"
             app:destination="@id/recover_seed_fragment"
@@ -74,6 +75,7 @@
             app:exitAnim="@anim/slide_to_left"
             app:popEnterAnim="@anim/slide_from_left"
             app:popExitAnim="@anim/slide_to_right" />
+
         <action
             android:id="@+id/to_create_seed_fragment"
             app:destination="@id/create_seed_fragment"
@@ -81,6 +83,7 @@
             app:exitAnim="@anim/slide_to_left"
             app:popEnterAnim="@anim/slide_from_left"
             app:popExitAnim="@anim/slide_to_right" />
+
     </fragment>
 
     <fragment
@@ -88,6 +91,7 @@
         android:name="com.belcobtm.presentation.features.authorization.create.wallet.CreateWalletFragment"
         android:label="CreateWalletFragment"
         tools:layout="@layout/fragment_create_wallet">
+
         <action
             android:id="@+id/to_sms_code_fragment"
             app:destination="@id/sms_code_fragment"
@@ -95,6 +99,7 @@
             app:exitAnim="@anim/slide_to_left"
             app:popEnterAnim="@anim/slide_from_left"
             app:popExitAnim="@anim/slide_to_right" />
+
     </fragment>
 
     <fragment
@@ -121,8 +126,8 @@
         <argument
             android:name="seed"
             android:defaultValue="@null"
-            app:nullable="true"
-            app:argType="string" />
+            app:argType="string"
+            app:nullable="true" />
 
         <action
             android:id="@+id/to_pin_code_fragment"
@@ -131,6 +136,7 @@
             app:exitAnim="@anim/slide_to_left"
             app:popEnterAnim="@anim/slide_from_left"
             app:popExitAnim="@anim/slide_to_right" />
+
     </fragment>
 
     <fragment
@@ -144,17 +150,12 @@
         android:name="com.belcobtm.presentation.features.settings.SettingsFragment"
         android:label="SettingsFragment"
         tools:layout="@layout/fragment_settings">
+
         <argument
             android:name="view_flipper_value"
             android:defaultValue="0"
             app:argType="integer" />
 
     </fragment>
-
-    <fragment
-        android:id="@+id/support_fragment"
-        android:name="com.belcobtm.presentation.features.settings.support.SupportFragment"
-        android:label="SupportFragment"
-        tools:layout="@layout/fragment_support"/>
 
 </navigation>

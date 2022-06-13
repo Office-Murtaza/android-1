@@ -425,7 +425,7 @@ class SwipeRevealLayout : ViewGroup {
         }
         mDragHelper = ViewDragHelper.create(this, 1.0f, mDragHelperCallback)
         mDragHelper.setEdgeTrackingEnabled(ViewDragHelper.EDGE_ALL)
-        mGestureDetector = GestureDetectorCompat(context, mGestureListener)
+        context?.let { mGestureDetector = GestureDetectorCompat(it, mGestureListener) }
     }
 
     private val mGestureListener: GestureDetector.OnGestureListener =

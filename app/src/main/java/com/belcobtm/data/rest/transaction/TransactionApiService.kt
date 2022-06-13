@@ -2,7 +2,14 @@ package com.belcobtm.data.rest.transaction
 
 import android.location.Location
 import com.belcobtm.data.disk.shared.preferences.SharedPreferencesHelper
-import com.belcobtm.data.rest.transaction.request.*
+import com.belcobtm.data.rest.transaction.request.CoinToCoinExchangeRequest
+import com.belcobtm.data.rest.transaction.request.SellPreSubmitRequest
+import com.belcobtm.data.rest.transaction.request.SellRequest
+import com.belcobtm.data.rest.transaction.request.SendGiftRequest
+import com.belcobtm.data.rest.transaction.request.StakeRequest
+import com.belcobtm.data.rest.transaction.request.TradeRecallRequest
+import com.belcobtm.data.rest.transaction.request.TradeReserveRequest
+import com.belcobtm.data.rest.transaction.request.WithdrawRequest
 import com.belcobtm.data.rest.transaction.response.GetTransactionsResponse
 import com.belcobtm.data.rest.transaction.response.ReceiverAccountActivatedResponse
 import com.belcobtm.data.rest.transaction.response.TransactionDetailsResponse
@@ -10,7 +17,6 @@ import com.belcobtm.data.rest.transaction.response.hash.UtxoItemResponse
 import com.belcobtm.data.rest.transaction.response.mapToDataItem
 import com.belcobtm.domain.Either
 import com.belcobtm.domain.Failure
-import com.belcobtm.domain.transaction.item.SellLimitsDataItem
 import com.belcobtm.domain.transaction.item.SellPreSubmitDataItem
 import com.belcobtm.domain.transaction.item.StakeDetailsDataItem
 import com.belcobtm.domain.transaction.item.TransactionPlanItem
@@ -23,7 +29,7 @@ class TransactionApiService(
 
     suspend fun getTransactionPlan(coinCode: String): Either<Failure, TransactionPlanItem> =
         try {
-            val request = api.getTransactionPlanAsync(prefHelper.userId, coinCode).await()
+            val request = api.getTransactionPlanAsync(prefHelper.userId, coinCode)
             request.body()?.let { body -> Either.Right(body.mapToDataItem(coinCode)) }
                 ?: Either.Left(Failure.ServerError())
         } catch (failure: Failure) {
@@ -33,7 +39,7 @@ class TransactionApiService(
 
     suspend fun fetchTransactions(coinCode: String): Either<Failure, GetTransactionsResponse> =
         try {
-            val request = api.getTransactionsAsync(prefHelper.userId, coinCode).await()
+            val request = api.getTransactionsAsync(prefHelper.userId, coinCode)
             request.body()?.let { body -> Either.Right(body) } ?: Either.Left(Failure.ServerError())
         } catch (failure: Failure) {
             failure.printStackTrace()
@@ -44,7 +50,7 @@ class TransactionApiService(
         coinCode: String, toAddress: String
     ): Either<Failure, ReceiverAccountActivatedResponse> =
         try {
-            val request = api.receiverAccountActivatedAsync(coinCode, toAddress).await()
+            val request = api.receiverAccountActivatedAsync(coinCode, toAddress)
             request.body()?.let { body -> Either.Right(body) } ?: Either.Left(Failure.ServerError())
         } catch (failure: Failure) {
             failure.printStackTrace()
@@ -67,7 +73,7 @@ class TransactionApiService(
             fromAddress = fromAddress,
             toAddress = toAddress
         )
-        val request = api.withdrawAsync(prefHelper.userId, coinFrom, requestBody).await()
+        val request = api.withdrawAsync(prefHelper.userId, coinFrom, requestBody)
         request.body()?.let { Either.Right(it) } ?: Either.Left(Failure.ServerError())
     } catch (failure: Failure) {
         failure.printStackTrace()
@@ -78,7 +84,7 @@ class TransactionApiService(
         coinFrom: String,
         phone: String
     ): Either<Failure, String> = try {
-        val request = api.getGiftAddressAsync(coinFrom, phone).await()
+        val request = api.getGiftAddressAsync(coinFrom, phone)
         request.body()?.let { Either.Right(it.address ?: "") } ?: Either.Left(Failure.ServerError())
     } catch (failure: Failure) {
         failure.printStackTrace()
@@ -114,7 +120,7 @@ class TransactionApiService(
             latitude = location.latitude,
             longitude = location.longitude
         )
-        val request = api.sendGiftAsync(prefHelper.userId, coinFrom, requestBody).await()
+        val request = api.sendGiftAsync(prefHelper.userId, coinFrom, requestBody)
         request.body()?.let { Either.Right(it) } ?: Either.Left(Failure.ServerError())
     } catch (failure: Failure) {
         failure.printStackTrace()
@@ -135,7 +141,7 @@ class TransactionApiService(
             prefHelper.userId,
             coinFrom,
             requestBody
-        ).await()
+        )
 
         request.body()?.let { Either.Right(it.mapToDataItem()) }
             ?: Either.Left(Failure.ServerError())
@@ -158,7 +164,7 @@ class TransactionApiService(
             fiatAmount = usdAmount,
             feePercent = fee
         )
-        val request = api.sellAsync(prefHelper.userId, coin, requestBody).await()
+        val request = api.sellAsync(prefHelper.userId, coin, requestBody)
         request.body()?.let { Either.Right(it) } ?: Either.Left(Failure.ServerError())
     } catch (failure: Failure) {
         failure.printStackTrace()
@@ -190,7 +196,7 @@ class TransactionApiService(
             longitude = location.longitude,
             latitude = location.latitude
         )
-        val request = api.exchangeAsync(prefHelper.userId, coinFrom.code, requestBody).await()
+        val request = api.exchangeAsync(prefHelper.userId, coinFrom.code, requestBody)
         request.body()?.let { Either.Right(it) } ?: Either.Left(Failure.ServerError())
     } catch (failure: Failure) {
         failure.printStackTrace()
@@ -201,7 +207,7 @@ class TransactionApiService(
         coinId: String,
         publicKey: String
     ): Either<Failure, List<UtxoItemResponse>> = try {
-        val request = api.getUtxoListAsync(coinId, publicKey).await()
+        val request = api.getUtxoListAsync(coinId, publicKey)
         request.body()?.utxos?.let { Either.Right(it) } ?: Either.Left(Failure.ServerError())
     } catch (failure: Failure) {
         failure.printStackTrace()
@@ -214,7 +220,7 @@ class TransactionApiService(
     ): Either<Failure, TransactionDetailsResponse> =
         try {
             val requestBody = TradeRecallRequest(TRANSACTION_TRADE_RECALL, cryptoAmount)
-            val request = api.submitRecallAsync(prefHelper.userId, coinCode, requestBody).await()
+            val request = api.submitRecallAsync(prefHelper.userId, coinCode, requestBody)
             request.body()?.let { Either.Right(it) } ?: Either.Left(Failure.ServerError())
         } catch (failure: Failure) {
             failure.printStackTrace()
@@ -236,7 +242,7 @@ class TransactionApiService(
             fee,
             hex
         )
-        val request = api.submitReserveAsync(prefHelper.userId, coinCode, requestBody).await()
+        val request = api.submitReserveAsync(prefHelper.userId, coinCode, requestBody)
         request.body()?.let { Either.Right(it) } ?: Either.Left(Failure.ServerError())
     } catch (failure: Failure) {
         failure.printStackTrace()
@@ -244,7 +250,7 @@ class TransactionApiService(
     }
 
     suspend fun stakeDetails(coinCode: String): Either<Failure, StakeDetailsDataItem> = try {
-        val request = api.stakeDetailsAsync(prefHelper.userId, coinCode).await()
+        val request = api.stakeDetailsAsync(prefHelper.userId, coinCode)
         request.body()?.let { Either.Right(it.mapToDataItem()) }
             ?: Either.Left(Failure.ServerError())
     } catch (failure: Failure) {
@@ -270,7 +276,7 @@ class TransactionApiService(
                 longitude = location.longitude,
                 latitude = location.latitude
             )
-        val request = api.stakeOrUnStakeAsync(prefHelper.userId, coinCode, requestBody).await()
+        val request = api.stakeOrUnStakeAsync(prefHelper.userId, coinCode, requestBody)
         request.body()?.let { Either.Right(it) } ?: Either.Left(Failure.ServerError())
     } catch (failure: Failure) {
         failure.printStackTrace()
@@ -297,7 +303,7 @@ class TransactionApiService(
                 longitude = location.longitude,
                 latitude = location.latitude
             )
-        val request = api.stakeOrUnStakeAsync(prefHelper.userId, coinCode, requestBody).await()
+        val request = api.stakeOrUnStakeAsync(prefHelper.userId, coinCode, requestBody)
         request.body()?.let { Either.Right(it) } ?: Either.Left(Failure.ServerError())
     } catch (failure: Failure) {
         failure.printStackTrace()
@@ -323,7 +329,7 @@ class TransactionApiService(
             longitude = location.longitude,
             latitude = location.latitude
         )
-        val request = api.stakeOrUnStakeAsync(prefHelper.userId, coinCode, requestBody).await()
+        val request = api.stakeOrUnStakeAsync(prefHelper.userId, coinCode, requestBody)
         request.body()?.let { Either.Right(it) } ?: Either.Left(Failure.ServerError())
     } catch (failure: Failure) {
         failure.printStackTrace()
@@ -331,6 +337,7 @@ class TransactionApiService(
     }
 
     companion object {
+
         const val TRANSACTION_WITHDRAW = 2
         const val TRANSACTION_SEND_GIFT = 3
         const val TRANSACTION_SELL = 6
@@ -343,4 +350,5 @@ class TransactionApiService(
         const val TRANSACTION_TRADE_RESERVE = 10
         const val UNIT_USD = "USD"
     }
+
 }

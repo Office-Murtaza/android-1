@@ -2,12 +2,17 @@ package com.belcobtm.presentation.di
 
 import android.content.Context
 import com.belcobtm.presentation.core.coin.CoinCodeProvider
-import com.belcobtm.presentation.core.formatter.*
+import com.belcobtm.presentation.core.formatter.DoubleCurrencyPriceFormatter
 import com.belcobtm.presentation.core.formatter.DoubleCurrencyPriceFormatter.Companion.DOUBLE_CURRENCY_PRICE_FORMATTER_QUALIFIER
 import com.belcobtm.presentation.core.formatter.Formatter
+import com.belcobtm.presentation.core.formatter.GoogleMapsDirectionQueryFormatter
 import com.belcobtm.presentation.core.formatter.GoogleMapsDirectionQueryFormatter.Companion.GOOGLE_MAPS_DIRECTIONS_QUERY_FORMATTER
+import com.belcobtm.presentation.core.formatter.IntCurrencyPriceFormatter
 import com.belcobtm.presentation.core.formatter.IntCurrencyPriceFormatter.Companion.INT_CURRENCY_PRICE_FORMATTER_QUALIFIER
+import com.belcobtm.presentation.core.formatter.MilesFormatter
 import com.belcobtm.presentation.core.formatter.MilesFormatter.Companion.MILES_FORMATTER_QUALIFIER
+import com.belcobtm.presentation.core.formatter.PhoneNumberFormatter
+import com.belcobtm.presentation.core.formatter.TradeCountFormatter
 import com.belcobtm.presentation.core.helper.ClipBoardHelper
 import com.belcobtm.presentation.core.parser.DistanceParser
 import com.belcobtm.presentation.core.parser.DistanceParser.Companion.DISTANCE_INT_PARSER_QUALIFIER
@@ -78,7 +83,7 @@ import org.koin.android.ext.koin.androidApplication
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
-import java.util.*
+import java.util.Locale
 
 val viewModelModule = module {
     viewModel { BankAccountCreateViewModel(get()) }
@@ -102,10 +107,25 @@ val viewModelModule = module {
     viewModel { CreateWalletViewModel(get(), get<PhoneNumberValidator>()) }
     viewModel {
         PinCodeViewModel(
-            get(), get(), get(), get(), get(),
-            get(), get(), get(), get(), get(),
-            get(), get(), get(), get(), get(),
-            get(), get(), get()
+            authorizeUseCase = get(),
+            unlinkUseCase = get(),
+            bioAuthSupportedByPhoneUseCase = get(),
+            bioAuthAllowedByUserUseCase = get(),
+            connectToSocketUseCase = get(),
+            connectToWalletUseCase = get(),
+            connectToBankAccountsUseCase = get(),
+            connectToPaymentsUseCase = get(),
+            connectToTransactionsUseCase = get(),
+            connectToServicesUseCase = get(),
+            disconnectFromWalletUseCase = get(),
+            disconnectFromTransactionsUseCase = get(),
+            disconnectFromServicesUseCase = get(),
+            disconnectFromBankAccountsUseCase = get(),
+            disconnectFromPaymentsUseCase = get(),
+            authorizePinUseCase = get(),
+            savePinCodeUseCase = get(),
+            saveUserAuthedUseCase = get(),
+            supportChatInteractor = get()
         )
     }
     viewModel {
@@ -262,4 +282,5 @@ val helperModule = module {
     factory<StringParser<Double>>(named(PRICE_DOUBLE_PARSER_QUALIFIER)) { PriceDoubleParser() }
     factory<StringParser<Int>>(named(DISTANCE_INT_PARSER_QUALIFIER)) { DistanceParser() }
     single<StringProvider> { ResourceStringProvider(androidApplication().resources) }
+
 }

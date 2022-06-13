@@ -1,22 +1,28 @@
-apply plugin: 'com.android.application'
-apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-kapt'
-apply plugin: 'kotlin-parcelize'
-apply plugin: 'com.google.gms.google-services'
-apply plugin: 'com.google.firebase.crashlytics'
-apply plugin: 'com.google.firebase.firebase-perf'
-apply plugin: "androidx.navigation.safeargs.kotlin"
-apply plugin: 'com.google.firebase.appdistribution'
+plugins {
+    id "com.android.application"
+
+    id "kotlin-android"
+    id "kotlin-kapt"
+    id "kotlin-parcelize"
+
+    id "androidx.navigation.safeargs.kotlin"
+
+    id "com.google.gms.google-services"
+
+    id "com.google.firebase.crashlytics"
+    id "com.google.firebase.firebase-perf"
+    id "com.google.firebase.appdistribution"
+}
 
 def lib = rootProject.ext.libraries
 repositories {
-    maven { url 'https://maven.google.com' }
-    maven { url 'https://raw.githubusercontent.com/iProov/android/master/maven/' }
-    maven { url 'https://raw.githubusercontent.com/Acuant/AndroidSdkMaven/main/maven/' }
+    maven { url "https://maven.google.com" }
+    maven { url "https://raw.githubusercontent.com/iProov/android/master/maven/" }
+    maven { url "https://raw.githubusercontent.com/Acuant/AndroidSdkMaven/main/maven/" }
 }
 android {
     compileSdkVersion 31
-    buildToolsVersion '30.0.3'
+    buildToolsVersion "30.0.3"
     ndkVersion "21.3.6528147"
     defaultConfig {
         applicationId "com.belcobtm"
@@ -43,7 +49,7 @@ android {
                 groups = "testers"
             }
             signingConfig signingConfigs.release
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            proguardFiles getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro"
         }
     }
 
@@ -61,17 +67,17 @@ android {
     productFlavors {
         prod {
             dimension "version"
-            buildConfigField 'String', 'BASE_URL', "\"https://prod.belcobtm.com\""
-            buildConfigField 'String', 'REFERRAL_URL', "\"https://belcobtm.com/r/\""
-            buildConfigField 'String', 'BASE_SOCKET_URL', "\"ws://prod.belcobtm.com\""
-            buildConfigField 'String', 'API_VERSION', "\"1\""
+            buildConfigField "String", "BASE_URL", "\"https://prod.belcobtm.com\""
+            buildConfigField "String", "REFERRAL_URL", "\"https://belcobtm.com/r/\""
+            buildConfigField "String", "BASE_SOCKET_URL", "\"ws://prod.belcobtm.com\""
+            buildConfigField "String", "API_VERSION", "\"1\""
         }
         dev {
             dimension "version"
-            buildConfigField 'String', 'BASE_URL', "\"https://test.belcobtm.com\""
-            buildConfigField 'String', 'REFERRAL_URL', "\"https://belcobtm.com/r/\""
-            buildConfigField 'String', 'BASE_SOCKET_URL', "\"ws://test.belcobtm.com\""
-            buildConfigField 'String', 'API_VERSION', "\"1\""
+            buildConfigField "String", "BASE_URL", "\"https://test.belcowallet.com\""
+            buildConfigField "String", "REFERRAL_URL", "\"https://belcowallet.com/r/\""
+            buildConfigField "String", "BASE_SOCKET_URL", "\"ws://test.belcowallet.com\""
+            buildConfigField "String", "API_VERSION", "\"1\""
         }
     }
     buildFeatures {
@@ -81,8 +87,8 @@ android {
         c ->
             c.resolutionStrategy.dependencySubstitution {
                 all { DependencySubstitution dependency ->
-                    if (dependency.requested.group == 'org.bouncycastle') {
-                        dependency.useTarget 'org.bouncycastle:bcprov-jdk15to18:1.68'
+                    if (dependency.requested.group == "org.bouncycastle") {
+                        dependency.useTarget "org.bouncycastle:bcprov-jdk15to18:1.68"
                     }
                 }
             }
@@ -90,110 +96,83 @@ android {
 }
 
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation 'androidx.appcompat:appcompat:1.3.1'
-    implementation 'com.google.android.material:material:1.4.0'
-    implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
-    implementation 'com.google.android.gms:play-services-maps:17.0.1'
-    implementation "com.google.android.gms:play-services-location:19.0.1"
-    implementation 'com.google.android.gms:play-services-vision:15.0.2'
-    implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
-    implementation "androidx.fragment:fragment-ktx:1.3.6"
 
-    implementation 'androidx.core:core-ktx:1.6.0'
+    // Core
+    implementation "androidx.core:core-ktx:1.8.0"
+    implementation "io.insert-koin:koin-android:3.1.4" // DI
 
-    implementation "androidx.security:security-crypto:1.0.0"
+    // UI
+    implementation "androidx.appcompat:appcompat:1.4.2"
+    implementation "androidx.fragment:fragment-ktx:1.4.1"
+    implementation "androidx.constraintlayout:constraintlayout:2.1.4"
+    implementation "androidx.viewpager2:viewpager2:1.0.0"
+    implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.1.0"
+    implementation "com.google.android.material:material:1.4.0"
+    implementation "com.google.android.flexbox:flexbox:3.0.0" // flexbox layout manager
+    implementation "me.relex:circleindicator:2.1.4"
+    implementation("com.alimuzaffar.lib:pinentryedittext:2.0.6") { // sms code edit text
+        // Exclude is only needed if you already have
+        // androidx.appcompat as a dependency in your app.
+        exclude group: "androidx.appcompat", module: "appcompat"
+    }
+    implementation "com.kroegerama:bottomsheet-imagepicker:1.1.2"
+    implementation "com.afollestad.material-dialogs:core:3.3.0"
 
-    // Android biometric
-    implementation "androidx.biometric:biometric-ktx:1.2.0-alpha02"
-
-    // Lifecycle
-    implementation "androidx.lifecycle:lifecycle-livedata-ktx:2.3.1"
-
-    //navigation
+    // Navigation
     implementation "androidx.navigation:navigation-fragment-ktx:2.3.5"
     implementation "androidx.navigation:navigation-ui-ktx:2.3.5"
 
-    implementation 'me.relex:circleindicator:2.1.4'
+    // Lifecycle
+    implementation "androidx.lifecycle:lifecycle-extensions:2.2.0"
+    implementation "androidx.lifecycle:lifecycle-livedata-ktx:2.3.1"
 
-    //swipe refresh layout
-    implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.1.0"
-
-    implementation "com.trustwallet:wallet-core:2.6.29"
-
-    // Etherium client
-    implementation "org.web3j:core:3.0.1-android"
-    implementation "org.web3j:utils:3.0.1-android"
-    implementation "org.web3j:abi:3.0.1-android"
-
-    implementation "org.ethereum:geth:1.8.11"
-
-    // Http client
+    // Rest api
     implementation "com.squareup.retrofit2:retrofit:2.9.0"
-    implementation "com.jakewharton.retrofit:retrofit2-kotlin-coroutines-adapter:0.9.2"
+    implementation "com.squareup.retrofit2:converter-moshi:2.9.0"
+    implementation "com.squareup.moshi:moshi-kotlin:1.12.0" // 1.13.0 causes "Records requires ASM8" issue
+    kapt "com.squareup.moshi:moshi-kotlin-codegen:1.12.0"
     implementation "com.squareup.okhttp3:okhttp:4.9.1"
     implementation "com.squareup.okhttp3:logging-interceptor:4.9.1"
 
-    //sms code edit text
-    implementation('com.alimuzaffar.lib:pinentryedittext:2.0.6') {
-        // Exclude is only needed if you already have
-        // androidx.appcompat as a dependency in your app.
-        exclude group: 'androidx.appcompat', module: 'appcompat'
-    }
-
-    //cryptography
-    implementation 'com.yakivmospan:scytale:1.0.1'
-
-    //QR code
-    implementation 'com.google.zxing:core:3.3.3'
-    implementation('com.journeyapps:zxing-android-embedded:3.6.0') { transitive = false }
-
-    implementation 'com.giphy.sdk:ui:2.1.14'
-    implementation 'pl.droidsonroids.gif:android-gif-drawable:1.2.20'
-    implementation 'com.github.bumptech.glide:glide:4.12.0'
-
-    implementation "io.insert-koin:koin-android:3.1.4"
-
-    //Moshi
-    implementation "com.squareup.retrofit2:converter-moshi:2.9.0"
-
-    //Permission dispatcher
-    implementation "org.permissionsdispatcher:permissionsdispatcher:4.6.0"
-    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
-    kapt "org.permissionsdispatcher:permissionsdispatcher-processor:4.6.0"
-
-    //Dialogs
-    implementation 'com.afollestad.material-dialogs:core:3.3.0'
-
-    //Room
+    // Room
     implementation "androidx.room:room-ktx:2.3.0"
     implementation "androidx.room:room-runtime:2.3.0"
     kapt "androidx.room:room-compiler:2.3.0"
 
-    //Image picker
-    implementation 'com.kroegerama:bottomsheet-imagepicker:1.1.2'
+    // Cryptocurrency
+    implementation "com.trustwallet:wallet-core:2.6.29"
+    implementation "org.web3j:core:3.0.1-android" // etherium client
+    implementation "org.web3j:utils:3.0.1-android"
+    implementation "org.web3j:abi:3.0.1-android"
+    implementation "org.ethereum:geth:1.8.11"
 
-    //Charts
-    implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
+    // Security
+    implementation "androidx.biometric:biometric-ktx:1.2.0-alpha02"
+    implementation "androidx.security:security-crypto:1.0.0"
+    implementation "com.yakivmospan:scytale:1.0.1" // cryptography
 
-    //fab list
-    implementation 'com.github.kobakei:MaterialFabSpeedDial:2.0.0'
+    // QR code
+    implementation "com.google.zxing:core:3.3.3"
+    implementation("com.journeyapps:zxing-android-embedded:3.6.0") { transitive = false }
 
-    //old fab list - for remove
-    implementation 'com.github.clans:fab:1.6.4'
+    // Images and Gifs
+    implementation "com.github.bumptech.glide:glide:4.13.0"
+    implementation "com.giphy.sdk:ui:2.1.18"
+    implementation "pl.droidsonroids.gif:android-gif-drawable:1.2.20"
 
-    //conflict 2020, need remove in future
-    implementation 'com.google.guava:listenablefuture:9999.0-empty-to-avoid-conflict-with-guava'
+    // Permission dispatcher
+    implementation "org.permissionsdispatcher:permissionsdispatcher:4.6.0"
+    kapt "org.permissionsdispatcher:permissionsdispatcher-processor:4.6.0"
 
-    //number validation
-    implementation 'io.michaelrocks:libphonenumber-android:8.12.7'
+    // Charts
+    implementation "com.github.PhilJay:MPAndroidChart:v3.1.0"
 
-    // ViewPager 2
-    implementation "androidx.viewpager2:viewpager2:1.0.0"
+    // GMS
+    implementation "com.google.android.gms:play-services-maps:17.0.1"
+    implementation "com.google.android.gms:play-services-location:19.0.1"
+    implementation "com.google.android.gms:play-services-vision:15.0.2"
 
-    implementation 'com.google.android:flexbox:2.0.1'
-
-    //firebase
+    // Firebase
     implementation "com.google.firebase:firebase-messaging:$lib.firebaseMessaging"
     implementation "com.google.firebase:firebase-crashlytics:$lib.crashlytics"
     implementation "com.google.firebase:firebase-analytics-ktx:$lib.firebaseAnalytics"
@@ -201,9 +180,10 @@ dependencies {
     implementation "com.google.firebase:firebase-storage-ktx:$lib.cloudStorage"
     implementation("com.google.firebase:firebase-perf:$lib.performance", {
         // protobuf-lite that firebase-config and Tink depends on.
-        exclude group: 'com.google.protobuf'
+        exclude group: "com.google.protobuf"
     })
-    // protobuf 'com.google.protobuf:protobuf-java:3.7.1'
+
+    // Documents scanner
     implementation "com.acuant:acuantcommon:$acuantSDKVersion"
     implementation "com.acuant:acuantcamera:$acuantSDKVersion"
     implementation "com.acuant:acuantimagepreparation:$acuantSDKVersion"
@@ -217,10 +197,19 @@ dependencies {
     implementation "com.acuant:acuantfacecapture:$acuantSDKVersion"
     implementation "com.acuant:acuantpassiveliveness:$acuantSDKVersion"
 
-    //plaid
+    // Plaid
     implementation("com.plaid.link:sdk-core:$plaidSDKVersion", {
         // protobuf-lite that firebase-config and Tink depends on.
-        exclude group: 'com.google.protobuf'
+        exclude group: "com.google.protobuf"
     })
+
+    // Support chat
+    implementation "zendesk.messaging:messaging-android:2.4.0"
+
+    // Unsorted
+    implementation "com.github.kobakei:MaterialFabSpeedDial:2.0.0" //fab list
+    implementation "com.github.clans:fab:1.6.4"     // TODO:: old fab list - for remove
+    implementation "com.google.guava:listenablefuture:9999.0-empty-to-avoid-conflict-with-guava" //conflict 2020, need remove in future
+    implementation "io.michaelrocks:libphonenumber-android:8.12.7" //number validation
 
 }

@@ -7,9 +7,8 @@ import com.belcobtm.data.disk.database.account.AccountDao
 import com.belcobtm.data.disk.database.wallet.WalletDao
 import com.belcobtm.data.disk.shared.preferences.SharedPreferencesHelper
 import com.belcobtm.data.rest.unlink.UnlinkApi
-import com.belcobtm.data.websockets.manager.WebSocketManager
 import com.belcobtm.data.websockets.wallet.WalletConnectionHandler
-import com.belcobtm.domain.socket.DisconnectFromSocketUseCase
+import com.belcobtm.domain.support.SupportChatHelper
 import com.belcobtm.presentation.features.HostActivity
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
@@ -20,7 +19,8 @@ class UnlinkHandler(
     private val daoAccount: AccountDao,
     private val walletDao: WalletDao,
     private val context: Context,
-    private val unlinkApi: UnlinkApi
+    private val unlinkApi: UnlinkApi,
+    private val supportChatHelper: SupportChatHelper
 ) : KoinComponent {
 
     private val connectionHandler: WalletConnectionHandler by inject()
@@ -31,6 +31,7 @@ class UnlinkHandler(
         unlink()
         prefsHelper.clearData()
         connectionHandler.disconnect()
+        supportChatHelper.reset()
         if (openInitialScreen) {
             context.startActivity(Intent(context, HostActivity::class.java).apply {
                 flags = Intent.FLAG_ACTIVITY_CLEAR_TASK.or(Intent.FLAG_ACTIVITY_NEW_TASK)
@@ -44,7 +45,7 @@ class UnlinkHandler(
     private suspend fun unlink() {
         try {
             if(prefsHelper.userId.isNotEmpty()) {
-                unlinkApi.unlinkAsync(prefsHelper.userId).await()
+                unlinkApi.unlinkAsync(prefsHelper.userId)
             }
         } catch (e: Exception) {
         }

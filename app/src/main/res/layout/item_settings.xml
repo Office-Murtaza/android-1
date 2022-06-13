@@ -17,6 +17,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:tint="@color/colorPrimary"
         tools:ignore="ContentDescription"
+        tools:src="@drawable/ic_support"
         tools:visibility="visible" />
 
     <TextView
@@ -28,6 +29,7 @@
         android:layout_marginTop="@dimen/margin_main"
         android:layout_marginEnd="@dimen/margin_main"
         android:layout_marginBottom="@dimen/margin_main"
+        tools:text="@string/support_label"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/value_text"
         app:layout_constraintStart_toEndOf="@id/image_view"
@@ -38,6 +40,9 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="@dimen/margin_main"
+        tools:text="5"
+        android:textStyle="bold"
+        android:textColor="@color/red"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/iv_chevron"
         app:layout_constraintTop_toTopOf="parent" />

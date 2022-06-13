@@ -4,8 +4,15 @@ import android.location.Location
 import com.belcobtm.data.disk.shared.preferences.SharedPreferencesHelper
 import com.belcobtm.data.model.trade.OrderStatus
 import com.belcobtm.data.model.trade.TradeStatus
-import com.belcobtm.data.rest.trade.request.*
-import com.belcobtm.data.rest.trade.response.*
+import com.belcobtm.data.rest.trade.request.CancelTradeRequest
+import com.belcobtm.data.rest.trade.request.CreateOrderRequest
+import com.belcobtm.data.rest.trade.request.CreateTradeRequest
+import com.belcobtm.data.rest.trade.request.EditTradeRequest
+import com.belcobtm.data.rest.trade.request.UpdateOrderRequest
+import com.belcobtm.data.rest.trade.request.UserLocationRequest
+import com.belcobtm.data.rest.trade.response.TradeItemResponse
+import com.belcobtm.data.rest.trade.response.TradeOrderItemResponse
+import com.belcobtm.data.rest.trade.response.TradesResponse
 import com.belcobtm.domain.Either
 import com.belcobtm.domain.Failure
 import com.belcobtm.presentation.features.wallet.trade.create.model.CreateTradeItem
@@ -18,15 +25,15 @@ class TradeApiService(
 ) {
 
     private companion object {
+
         const val VALIDATION_ERROR_REASON = 2
     }
 
     suspend fun loadTrades(): Either<Failure, TradesResponse> =
         withErrorHandling {
-            val response = tradeApi.getTradesAsync(prefHelper.userId).await()
+            val response = tradeApi.getTradesAsync(prefHelper.userId)
             response.body()?.let { Either.Right(it) } ?: Either.Left(Failure.ServerError())
         }
-
 
     suspend fun sendLocation(location: Location): Either<Failure, Unit> =
         withErrorHandling {
@@ -34,7 +41,7 @@ class TradeApiService(
                 tradeApi.sendLocationAsync(
                     prefHelper.userId,
                     UserLocationRequest(location.latitude, location.longitude)
-                ).await()
+                )
             response.body()?.let { Either.Right(it) } ?: Either.Left(Failure.ServerError())
         }
 
@@ -48,7 +55,7 @@ class TradeApiService(
                     location.longitude, location.latitude
                 )
             }
-            val response = tradeApi.createTradeAsync(prefHelper.userId, request).await()
+            val response = tradeApi.createTradeAsync(prefHelper.userId, request)
             response.body()?.let { Either.Right(it) } ?: Either.Left(Failure.ServerError())
         }
 
@@ -61,26 +68,26 @@ class TradeApiService(
                     feePercent, fiatAmount
                 )
             }
-            val response = tradeApi.editTradeAsync(prefHelper.userId, request).await()
+            val response = tradeApi.editTradeAsync(prefHelper.userId, request)
             response.body()?.let { Either.Right(it) } ?: Either.Left(Failure.ServerError())
         }
 
     suspend fun deleteTrade(tradeId: String): Either<Failure, TradeItemResponse> =
         withErrorHandling {
-            val response = tradeApi.deleteTradeAsync(prefHelper.userId, tradeId).await()
+            val response = tradeApi.deleteTradeAsync(prefHelper.userId, tradeId)
             response.body()?.let { Either.Right(it) } ?: Either.Left(Failure.ServerError())
         }
 
     suspend fun cancelTrade(tradeId: String): Either<Failure, TradeItemResponse> =
         withErrorHandling {
             val request = CancelTradeRequest(tradeId, TradeStatus.CANCELLED)
-            val response = tradeApi.cancelTradeAsync(prefHelper.userId, request).await()
+            val response = tradeApi.cancelTradeAsync(prefHelper.userId, request)
             response.body()?.let { Either.Right(it) } ?: Either.Left(Failure.ServerError())
         }
 
     suspend fun deleteOrder(orderId: String): Either<Failure, TradeOrderItemResponse> =
         withErrorHandling {
-            val response = tradeApi.deleteOrderAsync(prefHelper.userId, orderId).await()
+            val response = tradeApi.deleteOrderAsync(prefHelper.userId, orderId)
             response.body()?.let { Either.Right(it) } ?: Either.Left(Failure.ServerError())
         }
 
@@ -89,7 +96,7 @@ class TradeApiService(
             val request = with(tradeOrder) {
                 CreateOrderRequest(tradeId, price, cryptoAmount, fiatAmount, feePercent, location.longitude, location.latitude)
             }
-            val response = tradeApi.createOrderAsync(prefHelper.userId, request).await()
+            val response = tradeApi.createOrderAsync(prefHelper.userId, request)
             response.body()?.let { Either.Right(it) } ?: Either.Left(Failure.ServerError())
         }
 
@@ -100,7 +107,7 @@ class TradeApiService(
     ): Either<Failure, TradeOrderItemResponse> =
         withErrorHandling {
             val request = UpdateOrderRequest(orderId, status, rate)
-            val response = tradeApi.updateOrderAsync(prefHelper.userId, request).await()
+            val response = tradeApi.updateOrderAsync(prefHelper.userId, request)
             response.body()?.let { Either.Right(it) } ?: Either.Left(Failure.ServerError())
         }
 
@@ -117,4 +124,5 @@ class TradeApiService(
     } catch (failure: Failure) {
         Either.Left(failure)
     }
+
 }

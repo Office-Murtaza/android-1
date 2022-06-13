@@ -17,8 +17,17 @@ import com.belcobtm.data.cloud.storage.FirebaseCloudStorage.Companion.VERIFICATI
 import com.belcobtm.data.core.NetworkUtils
 import com.belcobtm.data.core.TransactionHelper
 import com.belcobtm.data.core.UnlinkHandler
-import com.belcobtm.data.core.factory.*
-import com.belcobtm.data.core.helper.*
+import com.belcobtm.data.core.factory.BinanceTransactionInputBuilderFactory
+import com.belcobtm.data.core.factory.BlockTransactionInputBuilderFactory
+import com.belcobtm.data.core.factory.EthTransactionInputBuilderFactory
+import com.belcobtm.data.core.factory.RippleTransactionInputBuilderFactory
+import com.belcobtm.data.core.factory.TronTransactionInputBuilderFactory
+import com.belcobtm.data.core.helper.BinanceTransactionHelper
+import com.belcobtm.data.core.helper.BlockTransactionHelper
+import com.belcobtm.data.core.helper.EthSubCoinTransactionHelper
+import com.belcobtm.data.core.helper.EthTransactionHelper
+import com.belcobtm.data.core.helper.RippleTransactionHelper
+import com.belcobtm.data.core.helper.TronTransactionHelper
 import com.belcobtm.data.disk.AssetsDataStore
 import com.belcobtm.data.disk.database.AppDatabase
 import com.belcobtm.data.disk.database.AppDatabase.Companion.MIGRATION_2_3
@@ -62,17 +71,19 @@ import com.belcobtm.data.rest.transaction.TransactionApi
 import com.belcobtm.data.rest.transaction.TransactionApiService
 import com.belcobtm.data.rest.wallet.WalletApi
 import com.belcobtm.data.rest.wallet.WalletApiService
+import com.belcobtm.data.support.SupportChatHelperImpl
 import com.belcobtm.domain.contacts.ContactsRepository
 import com.belcobtm.domain.notification.NotificationTokenRepository
 import com.belcobtm.domain.referral.ReferralRepository
 import com.belcobtm.domain.service.ServiceRepository
+import com.belcobtm.domain.support.SupportChatHelper
 import com.belcobtm.presentation.core.Endpoint
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.ktx.storage
-import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import com.squareup.moshi.Moshi
+import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -86,7 +97,6 @@ import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import java.util.concurrent.Executors
 import java.util.concurrent.TimeUnit
-
 
 val dataModule = module {
     single {
@@ -117,7 +127,12 @@ val dataModule = module {
     single { AtmApiService(get()) }
     single { TradeApiService(get(), get()) }
     single { NetworkUtils(get()) }
-    single { AssetsDataStore(get()) }
+    single {
+        AssetsDataStore(
+            moshi = get(),
+            context = get()
+        )
+    }
     single { BlockTransactionInputBuilderFactory(get(), get(), get()) }
     single { BlockTransactionHelper(get()) }
     single { BinanceTransactionInputBuilderFactory(get(), get()) }
@@ -141,7 +156,7 @@ val dataModule = module {
             .addMigrations(MIGRATION_8_9)
             .build()
     }
-    single { Moshi.Builder().build() }
+    single { Moshi.Builder().add(KotlinJsonAdapterFactory()).build() }
     single { get<AppDatabase>().getCoinDao() }
     single { get<AppDatabase>().getWalletDao() }
     single { get<AppDatabase>().getServiceDao() }
@@ -159,8 +174,11 @@ val dataModule = module {
     single {
         Retrofit.Builder()
             .baseUrl(Endpoint.SERVER_URL)
-            .addConverterFactory(MoshiConverterFactory.create())
-            .addCallAdapterFactory(CoroutineCallAdapterFactory())
+            .addConverterFactory(
+                MoshiConverterFactory.create(
+                    get()
+                )
+            )
             .client(get())
             .build()
     }
@@ -209,8 +227,25 @@ val dataModule = module {
     single { TransactionsInMemoryCache() }
     single { BankAccountsInMemoryCache() }
     single { PaymentsInMemoryCache() }
-    single { UnlinkHandler(get(), get(), get(), get(), get(authenticatorQualified)) }
+    single {
+        UnlinkHandler(
+            prefsHelper = get(),
+            daoAccount = get(),
+            walletDao = get(),
+            context = get(),
+            unlinkApi = get(authenticatorQualified),
+            supportChatHelper = get()
+        )
+    }
     factory { TradesResponseToTradeDataMapper(get(), get(), get()) }
     factory { OrderResponseToOrderMapper() }
     factory { TradeResponseToTradeMapper() }
+
+    single<SupportChatHelper> {
+        SupportChatHelperImpl(
+            context = get(),
+            prefHelper = get()
+        )
+    }
+
 }

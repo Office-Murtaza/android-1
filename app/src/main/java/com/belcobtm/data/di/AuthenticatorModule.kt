@@ -8,7 +8,6 @@ import com.belcobtm.data.rest.interceptor.TokenAuthenticator
 import com.belcobtm.data.rest.settings.SettingsApi
 import com.belcobtm.data.rest.unlink.UnlinkApi
 import com.belcobtm.presentation.core.Endpoint
-import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import org.koin.core.qualifier.named
@@ -50,7 +49,6 @@ val authenticatorModule = module {
         Retrofit.Builder()
             .baseUrl(Endpoint.SERVER_URL)
             .addConverterFactory(MoshiConverterFactory.create())
-            .addCallAdapterFactory(CoroutineCallAdapterFactory())
             .client(get(authenticatorQualified))
             .build()
     }

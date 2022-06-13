@@ -1,61 +1,76 @@
 package com.belcobtm.data.rest.trade
 
-import com.belcobtm.data.rest.trade.request.*
-import com.belcobtm.data.rest.trade.response.*
-import kotlinx.coroutines.Deferred
+import com.belcobtm.data.rest.trade.request.CancelTradeRequest
+import com.belcobtm.data.rest.trade.request.CreateOrderRequest
+import com.belcobtm.data.rest.trade.request.CreateTradeRequest
+import com.belcobtm.data.rest.trade.request.EditTradeRequest
+import com.belcobtm.data.rest.trade.request.UpdateOrderRequest
+import com.belcobtm.data.rest.trade.request.UserLocationRequest
+import com.belcobtm.data.rest.trade.response.TradeItemResponse
+import com.belcobtm.data.rest.trade.response.TradeOrderItemResponse
+import com.belcobtm.data.rest.trade.response.TradesResponse
 import retrofit2.Response
-import retrofit2.http.*
+import retrofit2.http.Body
+import retrofit2.http.DELETE
+import retrofit2.http.GET
+import retrofit2.http.POST
+import retrofit2.http.PUT
+import retrofit2.http.Path
+import retrofit2.http.Query
 
 interface TradeApi {
 
     @GET("user/{userId}/trade-history")
-    fun getTradesAsync(@Path("userId") userId: String): Deferred<Response<TradesResponse>>
+    suspend fun getTradesAsync(
+        @Path("userId") userId: String
+    ): Response<TradesResponse>
 
     @POST("user/{userId}/location")
-    fun sendLocationAsync(
+    suspend fun sendLocationAsync(
         @Path("userId") userId: String,
         @Body body: UserLocationRequest
-    ): Deferred<Response<Unit>>
+    ): Response<Unit>
 
     @POST("user/{userId}/trade")
-    fun createTradeAsync(
+    suspend fun createTradeAsync(
         @Path("userId") userId: String,
         @Body createTrade: CreateTradeRequest
-    ): Deferred<Response<TradeItemResponse>>
+    ): Response<TradeItemResponse>
 
     @PUT("user/{userId}/trade")
-    fun editTradeAsync(
+    suspend fun editTradeAsync(
         @Path("userId") userId: String,
         @Body editTrade: EditTradeRequest
-    ): Deferred<Response<TradeItemResponse>>
+    ): Response<TradeItemResponse>
 
     @PUT("user/{userId}/trade")
-    fun cancelTradeAsync(
+    suspend fun cancelTradeAsync(
         @Path("userId") userId: String,
         @Body cancelTrade: CancelTradeRequest
-    ): Deferred<Response<TradeItemResponse>>
+    ): Response<TradeItemResponse>
 
     @DELETE("user/{userId}/trade")
-    fun deleteTradeAsync(
+    suspend fun deleteTradeAsync(
         @Path("userId") userId: String,
         @Query("id") tradeId: String
-    ): Deferred<Response<TradeItemResponse>>
+    ): Response<TradeItemResponse>
 
     @POST("user/{userId}/order")
-    fun createOrderAsync(
+    suspend fun createOrderAsync(
         @Path("userId") userId: String,
         @Body tradeOrder: CreateOrderRequest
-    ): Deferred<Response<TradeOrderItemResponse>>
+    ): Response<TradeOrderItemResponse>
 
     @PUT("user/{userId}/order")
-    fun updateOrderAsync(
+    suspend fun updateOrderAsync(
         @Path("userId") userId: String,
         @Body orderStatus: UpdateOrderRequest
-    ): Deferred<Response<TradeOrderItemResponse>>
+    ): Response<TradeOrderItemResponse>
 
     @DELETE("user/{userId}/order")
-    fun deleteOrderAsync(
+    suspend fun deleteOrderAsync(
         @Path("userId") userId: String,
         @Query("id") orderId: String
-    ): Deferred<Response<TradeOrderItemResponse>>
+    ): Response<TradeOrderItemResponse>
+
 }

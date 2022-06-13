@@ -6,9 +6,12 @@ import com.squareup.moshi.Moshi
 import com.squareup.moshi.Types
 import java.lang.reflect.Type
 
-class AssetsDataStore(private val context: Context) {
+class AssetsDataStore(
+    moshi: Moshi,
+    private val context: Context
+    ) {
     private val type: Type = Types.newParameterizedType(List::class.java, VerificationCountryDataItem::class.java)
-    private val countryAdapter = Moshi.Builder().build().adapter<List<VerificationCountryDataItem>>(type)
+    private val countryAdapter = moshi.adapter<List<VerificationCountryDataItem>>(type)
 
     fun getCountries(): List<VerificationCountryDataItem> {
         val fileInString: String = context.assets.open(COUNTRIES_FILENAME).bufferedReader().use { it.readText() }

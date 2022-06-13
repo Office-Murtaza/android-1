@@ -15,7 +15,7 @@ class WalletApiService(
 ) {
 
     suspend fun getBalance(enabledCoinList: List<String>): Either<Failure, BalanceDataItem> = try {
-        val request = api.getBalanceAsync(prefHelper.userId, enabledCoinList).await()
+        val request = api.getBalanceAsync(prefHelper.userId, enabledCoinList)
         request.body()?.let { Either.Right(it.mapToDataItem()) }
             ?: Either.Left(Failure.ServerError())
     } catch (failure: Failure) {
@@ -27,7 +27,7 @@ class WalletApiService(
         coinCode: String,
         @PriceChartPeriod period: Int
     ): Either<Failure, ChartDataItem> = try {
-        val request = api.getChartAsync(coinCode, period).await()
+        val request = api.getChartAsync(coinCode, period)
         request.body()?.let { Either.Right(it.mapToDataItem()) }
             ?: Either.Left(Failure.ServerError())
     } catch (failure: Failure) {
@@ -39,7 +39,7 @@ class WalletApiService(
         coinCode: String,
         enabled: Boolean
     ): Either<Failure, Unit> = try {
-        val request = api.toggleCoinStateAsync(prefHelper.userId, coinCode, enabled).await()
+        val request = api.toggleCoinStateAsync(prefHelper.userId, coinCode, enabled)
         request.takeIf { it.code() == HttpURLConnection.HTTP_OK }
             ?.let { Either.Right(Unit) }
             ?: Either.Left(Failure.ServerError())
@@ -47,4 +47,5 @@ class WalletApiService(
         failure.printStackTrace()
         Either.Left(failure)
     }
+
 }

@@ -8,6 +8,7 @@ data class CreateRecoverWalletResponse(
     val expires: Long,
     val refreshToken: String,
     val firebaseToken: String,
+    val zendeskToken: String,
     val user: UserDetailsResponse,
     val balance: BalanceResponse,
     val services: List<ServicesInfoResponse>

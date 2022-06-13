@@ -9,11 +9,12 @@ class ReferralApiService(
 ) {
 
     suspend fun getExistedPhones(allContacts: List<String>): Either<Failure, List<String>> = try {
-        val request = api.getExistedPhonesAsync(GetExistedPhonesRequest(allContacts)).await()
+        val request = api.getExistedPhonesAsync(GetExistedPhonesRequest(allContacts))
         request.body()?.let { response ->
             Either.Right(response.existingPhones)
         } ?: Either.Left(Failure.ServerError())
     } catch (failure: Failure) {
         Either.Left(failure)
     }
+
 }

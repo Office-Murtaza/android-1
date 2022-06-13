@@ -7,7 +7,7 @@ import com.belcobtm.domain.Failure
 class AtmApiService(private val atmApi: AtmApi) {
 
     suspend fun getAtms(): Either<Failure, List<AtmAddress>> = try {
-        val request = atmApi.getAtmAddress().await()
+        val request = atmApi.getAtmAddress()
         request.body()?.let { Either.Right(it) }
             ?: Either.Left(Failure.ServerError())
     } catch (failure: Failure) {

@@ -1,17 +1,11 @@
 package com.belcobtm.presentation.features.settings
 
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.navigation.NavDirections
-import com.belcobtm.domain.settings.interactor.GetVerificationInfoUseCase
-import com.belcobtm.domain.settings.type.VerificationStatus
-import com.belcobtm.domain.settings.type.isVerified
 import com.belcobtm.presentation.core.SingleLiveData
-import com.belcobtm.presentation.core.mvvm.LoadingData
 import com.belcobtm.presentation.features.settings.SettingsFragment.Companion.SETTINGS_ABOUT
 import com.belcobtm.presentation.features.settings.SettingsFragment.Companion.SETTINGS_MAIN
 import com.belcobtm.presentation.features.settings.SettingsFragment.Companion.SETTINGS_SECURITY
-
 
 class SettingsViewModel : ViewModel() {
 
@@ -32,8 +26,7 @@ class SettingsViewModel : ViewModel() {
                 actionData.value = SettingsAction.NavigateAction(dest)
             }
             SettingsSections.SUPPORT -> {
-                val dest = SettingsFragmentDirections.settingsToSupportFragment()
-                actionData.value = SettingsAction.NavigateAction(dest)
+                actionData.value = SettingsAction.SupportChat
             }
             SettingsSections.ABOUT -> {
                 val dest = SettingsFragmentDirections.settingsToAboutFragment()
@@ -79,6 +72,5 @@ enum class SettingsSections {
 sealed class SettingsAction {
     object NotificationOptions : SettingsAction()
     data class NavigateAction(val navDirections: NavDirections) : SettingsAction()
+    object SupportChat : SettingsAction()
 }
-
-

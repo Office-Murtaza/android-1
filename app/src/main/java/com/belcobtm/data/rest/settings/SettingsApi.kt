@@ -1,8 +1,18 @@
 package com.belcobtm.data.rest.settings
 
-import com.belcobtm.data.rest.settings.request.*
-import com.belcobtm.data.rest.settings.response.*
-import kotlinx.coroutines.Deferred
+import com.belcobtm.data.rest.settings.request.ChangePassBody
+import com.belcobtm.data.rest.settings.request.UpdatePhoneParam
+import com.belcobtm.data.rest.settings.request.VerificationBlankRequest
+import com.belcobtm.data.rest.settings.request.VerificationDocumentRequest
+import com.belcobtm.data.rest.settings.request.VerificationUserIdentityRequest
+import com.belcobtm.data.rest.settings.request.VipVerificationRequest
+import com.belcobtm.data.rest.settings.response.GetPhoneResponse
+import com.belcobtm.data.rest.settings.response.UpdateResponse
+import com.belcobtm.data.rest.settings.response.VerificationDetailsResponse
+import com.belcobtm.data.rest.settings.response.VerificationFieldsResponse
+import com.belcobtm.data.rest.settings.response.VerificationInfoResponse
+import com.belcobtm.data.rest.settings.response.VerificationUserDocumentResponse
+import com.belcobtm.data.rest.settings.response.VerificationUserIdentityResponse
 import okhttp3.ResponseBody
 import retrofit2.Response
 import retrofit2.http.Body
@@ -11,63 +21,67 @@ import retrofit2.http.POST
 import retrofit2.http.Path
 
 interface SettingsApi {
+
     @GET("user/{userId}/verification")
-    fun getVerificationInfoAsync(
+    suspend fun getVerificationInfoAsync(
         @Path("userId") userId: String
-    ): Deferred<Response<VerificationInfoResponse>>
+    ): Response<VerificationInfoResponse>
 
     @GET("verification/user/{userId}/details")
-    fun getVerificationDetailsAsync(
+    suspend fun getVerificationDetailsAsync(
         @Path("userId") userId: String
-    ): Deferred<Response<VerificationDetailsResponse>>
+    ): Response<VerificationDetailsResponse>
 
     @GET("verification/{countryCode}/fields")
-    fun getVerificationFieldsAsync(
+    suspend fun getVerificationFieldsAsync(
         @Path("countryCode") countryCode: String
-    ): Deferred<Response<VerificationFieldsResponse>>
+    ): Response<VerificationFieldsResponse>
 
     @POST("verification/user/{userId}/identity")
-    fun sendVerificationIdentityAsync(
+    suspend fun sendVerificationIdentityAsync(
         @Path("userId") userId: String,
         @Body request: VerificationUserIdentityRequest
-    ): Deferred<Response<VerificationUserIdentityResponse>>
+    ): Response<VerificationUserIdentityResponse>
 
     @POST("verification/user/{userId}/document")
-    fun sendVerificationDocumentAsync(
+    suspend fun sendVerificationDocumentAsync(
         @Path("userId") userId: String,
         @Body request: VerificationDocumentRequest
-    ): Deferred<Response<VerificationUserDocumentResponse>>
+    ): Response<VerificationUserDocumentResponse>
 
     @POST("user/{userId}/verification")
-    fun sendVerificationBlankAsync(
+    suspend fun sendVerificationBlankAsync(
         @Path("userId") userId: String,
         @Body request: VerificationBlankRequest
-    ): Deferred<Response<ResponseBody>>
+    ): Response<ResponseBody>
 
     @POST("user/{userId}/verification")
-    fun sendVerificationVipAsync(
+    suspend fun sendVerificationVipAsync(
         @Path("userId") userId: String,
         @Body request: VipVerificationRequest
-    ): Deferred<Response<ResponseBody>>
+    ): Response<ResponseBody>
 
     @POST("user/{userId}/password")
-    fun changePass(
+    suspend fun changePass(
         @Path("userId") userId: String,
         @Body changePassParam: ChangePassBody
-    ): Deferred<Response<UpdateResponse>>
+    ): Response<UpdateResponse>
 
     @GET("user/{userId}/phone")
-    fun getPhone(@Path("userId") userId: String): Deferred<Response<GetPhoneResponse>>
+    suspend fun getPhone(
+        @Path("userId") userId: String
+    ): Response<GetPhoneResponse>
 
     @POST("user/{userId}/phone")
-    fun updatePhone(
+    suspend fun updatePhone(
         @Path("userId") userId: String,
         @Body updatePhoneParam: UpdatePhoneParam
-    ): Deferred<Response<UpdateResponse>>
+    ): Response<UpdateResponse>
 
     @POST("user/{userId}/phone-verify")
-    fun verifyPhone(
+    suspend fun verifyPhone(
         @Path("userId") userId: String,
         @Body updatePhoneParam: UpdatePhoneParam
-    ): Deferred<Response<UpdateResponse>>
+    ): Response<UpdateResponse>
+
 }

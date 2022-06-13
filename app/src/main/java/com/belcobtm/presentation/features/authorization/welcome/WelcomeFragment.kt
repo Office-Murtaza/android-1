@@ -1,9 +1,7 @@
 package com.belcobtm.presentation.features.authorization.welcome
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.belcobtm.R
 import com.belcobtm.databinding.FragmentWelcomeBinding
@@ -23,7 +21,6 @@ class WelcomeFragment : BaseFragment<FragmentWelcomeBinding>() {
     }
 
     override fun FragmentWelcomeBinding.initListeners() {
-        contactSupportButtonView.setOnClickListener { startSupportFragment() }
         createNewWalletButtonView.setOnClickListener { navigate(R.id.to_create_wallet_fragment) }
         recoverWalletButtonView.setOnClickListener { navigate(R.id.to_recover_wallet_fragment) }
     }
@@ -31,8 +28,4 @@ class WelcomeFragment : BaseFragment<FragmentWelcomeBinding>() {
     override fun createBinding(inflater: LayoutInflater, container: ViewGroup?): FragmentWelcomeBinding =
         FragmentWelcomeBinding.inflate(inflater, container, false)
 
-    private fun startSupportFragment() {
-        val direction = WelcomeFragmentDirections.toSupportFragment()
-        findNavController().navigate(direction)
-    }
 }

@@ -13,7 +13,7 @@ class ToolsApiService(
 ) {
 
     suspend fun sendSms(phone: String): Either<Failure, Boolean> = try {
-        val request = api.sendSmsAsync(VerifyPhoneRequest(phone)).await()
+        val request = api.sendSmsAsync(VerifyPhoneRequest(phone))
         request.body()?.let { Either.Right(it.result) }
             ?: Either.Left(Failure.ServerError())
     } catch (failure: Failure) {
@@ -21,7 +21,7 @@ class ToolsApiService(
     }
 
     suspend fun sendToDeviceSmsCode(): Either<Failure, Unit> = try {
-        val request = api.sendSmsCodeAsync(prefHelper.userId).await()
+        val request = api.sendSmsCodeAsync(prefHelper.userId)
         request.body()?.let {
             if (request.isSuccessful) {
                 Either.Right(Unit)
@@ -36,7 +36,7 @@ class ToolsApiService(
 
     suspend fun verifySmsCodeOld(smsCode: String): Either<Failure, Unit> = try {
         val request =
-            api.verifySmsCodeAsyncOld(prefHelper.userId, VerifySmsCodeRequestOld(smsCode)).await()
+            api.verifySmsCodeAsyncOld(prefHelper.userId, VerifySmsCodeRequestOld(smsCode))
         request.body()?.let { Either.Right(Unit) } ?: Either.Left(Failure.ServerError())
     } catch (failure: Failure) {
         failure.printStackTrace()
@@ -45,10 +45,11 @@ class ToolsApiService(
 
     suspend fun verifySmsCode(phone: String, smsCode: String): Either<Failure, Boolean> =
         try {
-            val request = api.verifySmsCodeAsync(VerifySmsCodeRequest(phone, smsCode)).await()
+            val request = api.verifySmsCodeAsync(VerifySmsCodeRequest(phone, smsCode))
             request.body()?.let { Either.Right(it.result) } ?: Either.Left(Failure.ServerError())
         } catch (failure: Failure) {
             failure.printStackTrace()
             Either.Left(failure)
         }
+
 }

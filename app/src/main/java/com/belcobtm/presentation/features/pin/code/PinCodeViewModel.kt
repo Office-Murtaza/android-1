@@ -20,6 +20,7 @@ import com.belcobtm.domain.settings.interactor.BioAuthAllowedByUserUseCase
 import com.belcobtm.domain.settings.interactor.BioAuthSupportedByPhoneUseCase
 import com.belcobtm.domain.settings.interactor.UnlinkUseCase
 import com.belcobtm.domain.socket.ConnectToSocketUseCase
+import com.belcobtm.domain.support.SupportChatInteractor
 import com.belcobtm.domain.transaction.interactor.ConnectToTransactionsUseCase
 import com.belcobtm.domain.transaction.interactor.DisconnectFromTransactionsUseCase
 import com.belcobtm.domain.wallet.interactor.ConnectToWalletUseCase
@@ -51,7 +52,8 @@ class PinCodeViewModel(
     private val disconnectFromPaymentsUseCase: DisconnectFromPaymentsUseCase,
     private val authorizePinUseCase: GetAuthorizePinUseCase,
     private val savePinCodeUseCase: SaveAuthorizePinUseCase,
-    private val saveUserAuthedUseCase: SaveUserAuthedUseCase
+    private val saveUserAuthedUseCase: SaveUserAuthedUseCase,
+    private val supportChatInteractor: SupportChatInteractor
 ) : ViewModel() {
 
     val stateData = MutableLiveData(PinCodeState())
@@ -66,6 +68,10 @@ class PinCodeViewModel(
     private var step = STEP_CREATE
     private var currentPin = ""
     private var isError = false
+
+    init {
+        supportChatInteractor.init()
+    }
 
     fun connectToWebSockets() {
         connectToSocketUseCase(Unit, onSuccess = {

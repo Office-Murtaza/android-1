@@ -3,7 +3,28 @@ package com.belcobtm.data.rest.bank_account
 import com.belcobtm.data.rest.bank_account.request.CreateBankAccountPaymentRequest
 import com.belcobtm.data.rest.bank_account.request.CreateBankAccountRequest
 import com.belcobtm.data.rest.bank_account.request.LinkBankAccountRequest
-import com.belcobtm.data.rest.bank_account.response.*
+import com.belcobtm.data.rest.bank_account.response.AccountDetails
+import com.belcobtm.data.rest.bank_account.response.BankAccountPayment
+import com.belcobtm.data.rest.bank_account.response.BankAccountPaymentsResponse
+import com.belcobtm.data.rest.bank_account.response.BankAccountResponse
+import com.belcobtm.data.rest.bank_account.response.BankAddress
+import com.belcobtm.data.rest.bank_account.response.BillingDetails
+import com.belcobtm.data.rest.bank_account.response.CreateBankAccountResponse
+import com.belcobtm.data.rest.bank_account.response.InstructionsBeneficiary
+import com.belcobtm.data.rest.bank_account.response.InstructionsBeneficiaryBank
+import com.belcobtm.data.rest.bank_account.response.LinkTokenResponse
+import com.belcobtm.data.rest.bank_account.response.Payment
+import com.belcobtm.data.rest.bank_account.response.PaymentInstructions
+import com.belcobtm.data.rest.bank_account.response.PaymentRequest
+import com.belcobtm.data.rest.bank_account.response.PaymentRequestAmount
+import com.belcobtm.data.rest.bank_account.response.PaymentRequestDestination
+import com.belcobtm.data.rest.bank_account.response.PaymentRequestMetadata
+import com.belcobtm.data.rest.bank_account.response.PaymentRequestSource
+import com.belcobtm.data.rest.bank_account.response.PaymentTransfer
+import com.belcobtm.data.rest.bank_account.response.PaymentTransferRequest
+import com.belcobtm.data.rest.bank_account.response.PaymentTransferRequestAmount
+import com.belcobtm.data.rest.bank_account.response.PaymentTransferRequestDestination
+import com.belcobtm.data.rest.bank_account.response.PaymentTransferRequestSource
 import com.belcobtm.domain.Either
 import com.belcobtm.domain.Failure
 import com.belcobtm.domain.bank_account.item.BankAccountCreateDataItem
@@ -13,14 +34,14 @@ import com.belcobtm.domain.bank_account.type.BankAccountPaymentType
 import com.belcobtm.domain.bank_account.type.BankAccountType
 import com.belcobtm.presentation.core.extensions.toStringCoin
 import com.belcobtm.presentation.core.extensions.toStringPercents
-import java.util.*
-
+import java.util.UUID
 
 class BankAccountApiService(private val api: BankAccountApi) {
+
     // test userId "624f09650d76a408d7215e90"
     suspend fun getBankAccountsList(userId: String): Either<Failure, List<BankAccountResponse>> =
         try {
-            val request = api.getBankAccountsListAsync(userId).await()
+            val request = api.getBankAccountsListAsync(userId)
             request.body()?.let { Either.Right(it) } ?: Either.Left(Failure.ServerError())
         } catch (failure: Failure) {
             failure.printStackTrace()
@@ -32,7 +53,7 @@ class BankAccountApiService(private val api: BankAccountApi) {
         accountId: String
     ): Either<Failure, BankAccountPaymentsResponse> =
         try {
-            val request = api.getBankAccountPaymentsAsync(userId, accountId).await()
+            val request = api.getBankAccountPaymentsAsync(userId, accountId)
             request.body()?.let { Either.Right(it) } ?: Either.Left(Failure.ServerError())
         } catch (failure: Failure) {
             failure.printStackTrace()
@@ -67,7 +88,7 @@ class BankAccountApiService(private val api: BankAccountApi) {
                 )
             )
         }
-        val response = api.createBankAccountAsync(userId, request).await()
+        val response = api.createBankAccountAsync(userId, request)
         response.body()?.let { Either.Right(it) } ?: Either.Left(Failure.ServerError())
     } catch (failure: Failure) {
         failure.printStackTrace()
@@ -85,7 +106,7 @@ class BankAccountApiService(private val api: BankAccountApi) {
                 bankName = bankName
             )
         }
-        val response = api.linkBankAccountAsync(userId, request).await()
+        val response = api.linkBankAccountAsync(userId, request)
         response.body()?.let { Either.Right(it) } ?: Either.Left(Failure.ServerError())
     } catch (failure: Failure) {
         failure.printStackTrace()
@@ -95,13 +116,12 @@ class BankAccountApiService(private val api: BankAccountApi) {
     suspend fun getLinkToken(
         userId: String,
     ): Either<Failure, LinkTokenResponse> = try {
-        val response = api.getLinkTokenAsync(userId, "ANDROID").await()
+        val response = api.getLinkTokenAsync(userId, "ANDROID")
         response.body()?.let { Either.Right(it) } ?: Either.Left(Failure.ServerError())
     } catch (failure: Failure) {
         failure.printStackTrace()
         Either.Left(failure)
     }
-
 
     suspend fun createBankAccountPayment(
         userId: String,
@@ -317,10 +337,11 @@ class BankAccountApiService(private val api: BankAccountApi) {
                 }
             }
         }
-        val response = api.createBankAccountPaymentAsync(userId, request).await()
+        val response = api.createBankAccountPaymentAsync(userId, request)
         response.body()?.let { Either.Right(it) } ?: Either.Left(Failure.ServerError())
     } catch (failure: Failure) {
         failure.printStackTrace()
         Either.Left(failure)
     }
+
 }

@@ -1,6 +1,14 @@
 package com.belcobtm.data.di
 
-import com.belcobtm.data.*
+import com.belcobtm.data.AccountRepositoryImpl
+import com.belcobtm.data.AtmRepositoryImpl
+import com.belcobtm.data.AuthorizationRepositoryImpl
+import com.belcobtm.data.BankAccountRepositoryImpl
+import com.belcobtm.data.SettingsRepositoryImpl
+import com.belcobtm.data.ToolsRepositoryImpl
+import com.belcobtm.data.TradeRepositoryImpl
+import com.belcobtm.data.TransactionRepositoryImpl
+import com.belcobtm.data.WalletRepositoryImpl
 import com.belcobtm.data.cloud.storage.FirebaseCloudStorage
 import com.belcobtm.data.disk.database.AppDatabase
 import com.belcobtm.domain.account.AccountRepository
@@ -19,13 +27,12 @@ import org.koin.dsl.module
 val repositoryModule = module {
     single<AuthorizationRepository> {
         AuthorizationRepositoryImpl(
-            androidApplication(),
-            get(),
-            get(),
-            (get() as AppDatabase).getCoinDao(),
-            get(),
-            get(),
-            get()
+            prefHelper = get(),
+            apiService = get(),
+            daoAccount = (get() as AppDatabase).getCoinDao(),
+            walletDao = get(),
+            serviceRepository = get(),
+            locationProvider = get()
         )
     }
     single<BankAccountRepository> {
@@ -70,4 +77,5 @@ val repositoryModule = module {
             get()
         )
     }
+
 }

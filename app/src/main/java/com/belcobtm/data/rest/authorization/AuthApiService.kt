@@ -2,7 +2,13 @@ package com.belcobtm.data.rest.authorization
 
 import android.os.Build
 import com.belcobtm.BuildConfig
-import com.belcobtm.data.rest.authorization.request.*
+import com.belcobtm.data.rest.authorization.request.CheckCredentialsRequest
+import com.belcobtm.data.rest.authorization.request.CheckPassRequest
+import com.belcobtm.data.rest.authorization.request.CreateWalletCoinRequest
+import com.belcobtm.data.rest.authorization.request.CreateWalletRequest
+import com.belcobtm.data.rest.authorization.request.RecoverWalletCoinRequest
+import com.belcobtm.data.rest.authorization.request.RecoverWalletRequest
+import com.belcobtm.data.rest.authorization.request.RefreshTokenRequest
 import com.belcobtm.data.rest.authorization.response.AuthorizationResponse
 import com.belcobtm.data.rest.authorization.response.CheckPassResponse
 import com.belcobtm.data.rest.authorization.response.CreateRecoverWalletResponse
@@ -13,6 +19,7 @@ import java.net.HttpURLConnection
 class AuthApiService(private val authApi: AuthApi) {
 
     companion object {
+
         private val deviceOS = Build.VERSION.RELEASE
         private val deviceModel = Build.MODEL
         private const val appVersion = BuildConfig.VERSION_NAME
@@ -22,9 +29,7 @@ class AuthApiService(private val authApi: AuthApi) {
         phone: String,
         password: String
     ): Either<Failure, Pair<Boolean, Boolean>> = try {
-        val request =
-            authApi.authorizationCheckCredentialsAsync(CheckCredentialsRequest(phone, password))
-                .await()
+        val request = authApi.authorizationCheckCredentialsAsync(CheckCredentialsRequest(phone, password))
         request.body()?.let { Either.Right(Pair(it.phoneExists, it.passwordsMatch)) }
             ?: Either.Left(Failure.ServerError())
     } catch (failure: Failure) {
@@ -56,7 +61,7 @@ class AuthApiService(private val authApi: AuthApi) {
             coinList,
             "ANDROID"
         )
-        val response = authApi.createWalletAsync(request).await()
+        val response = authApi.createWalletAsync(request)
         response.body()?.let { Either.Right(it) } ?: Either.Left(Failure.ServerError())
     } catch (failure: Failure) {
         failure.printStackTrace()
@@ -87,7 +92,7 @@ class AuthApiService(private val authApi: AuthApi) {
             notificationToken,
             coinList
         )
-        val response = authApi.recoverWalletAsync(request).await()
+        val response = authApi.recoverWalletAsync(request)
         response.body()?.let { Either.Right(it) } ?: Either.Left(Failure.ServerError())
     } catch (failure: Failure) {
         failure.printStackTrace()
@@ -99,7 +104,7 @@ class AuthApiService(private val authApi: AuthApi) {
     }
 
     suspend fun authorizeByRefreshToken(refreshToken: String): Either<Failure, AuthorizationResponse> = try {
-        val request = authApi.signInByRefreshTokenAsync(RefreshTokenRequest(refreshToken)).await()
+        val request = authApi.signInByRefreshTokenAsync(RefreshTokenRequest(refreshToken))
         request.body()?.let { Either.Right(it) } ?: when (request.code()) {
             HttpURLConnection.HTTP_UNAUTHORIZED,
             HttpURLConnection.HTTP_FORBIDDEN -> Either.Left(Failure.TokenError)
@@ -112,11 +117,11 @@ class AuthApiService(private val authApi: AuthApi) {
 
     suspend fun checkPass(userId: String, password: String): Either<Failure, CheckPassResponse> =
         try {
-            val request = authApi.checkPass(userId, CheckPassRequest(password)).await()
+            val request = authApi.checkPass(userId, CheckPassRequest(password))
             request.body()?.let { Either.Right(it) } ?: Either.Left(Failure.ServerError())
         } catch (failure: Failure) {
             failure.printStackTrace()
             Either.Left(failure)
         }
-}
 
+}

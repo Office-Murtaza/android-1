@@ -6,7 +6,6 @@ import com.belcobtm.data.rest.transaction.request.VerifySmsCodeRequest
 import com.belcobtm.data.rest.transaction.request.VerifySmsCodeRequestOld
 import com.belcobtm.data.rest.transaction.response.SendSmsCodeResponse
 import com.belcobtm.data.rest.transaction.response.VerifySmsCodeResponse
-import kotlinx.coroutines.Deferred
 import okhttp3.ResponseBody
 import retrofit2.Response
 import retrofit2.http.Body
@@ -15,24 +14,26 @@ import retrofit2.http.POST
 import retrofit2.http.Path
 
 interface ToolsApi {
+
     @POST("send-code")
-    fun sendSmsAsync(
+    suspend fun sendSmsAsync(
         @Body request: VerifyPhoneRequest
-    ): Deferred<Response<VerifyPhoneResponse>>
+    ): Response<VerifyPhoneResponse>
 
     @GET("user/{userId}/code/send")
-    fun sendSmsCodeAsync(
+    suspend fun sendSmsCodeAsync(
         @Path("userId") userId: String
-    ): Deferred<Response<SendSmsCodeResponse>>
+    ): Response<SendSmsCodeResponse>
 
     @POST("user/{userId}/code/verify")
-    fun verifySmsCodeAsyncOld(
+    suspend fun verifySmsCodeAsyncOld(
         @Path("userId") userId: String,
         @Body verifySmsParamOld: VerifySmsCodeRequestOld
-    ): Deferred<Response<ResponseBody>>
+    ): Response<ResponseBody>
 
     @POST("check-code")
-    fun verifySmsCodeAsync(
+    suspend fun verifySmsCodeAsync(
         @Body verifySmsParam: VerifySmsCodeRequest
-    ): Deferred<Response<VerifySmsCodeResponse>>
+    ): Response<VerifySmsCodeResponse>
+
 }

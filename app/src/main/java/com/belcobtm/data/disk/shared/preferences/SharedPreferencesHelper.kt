@@ -66,6 +66,10 @@ class SharedPreferencesHelper(private val sharedPreferences: SharedPreferences) 
         set(value) = sharedPreferences.set(REFERRAL_EARNED, value)
         get() = sharedPreferences[REFERRAL_EARNED] ?: 0.0
 
+    var zendeskToken: String
+        set(value) = sharedPreferences.set(ZENDESK_TOKEN, value)
+        get() = sharedPreferences[ZENDESK_TOKEN] ?: ""
+
     fun processAuthResponse(authorizationResponse: AuthorizationResponse) {
         authorizationResponse.let {
             accessToken = it.accessToken
@@ -103,7 +107,7 @@ class SharedPreferencesHelper(private val sharedPreferences: SharedPreferences) 
     }
 
     companion object {
-        const val ACCESS_TOKEN = "KEY_API_SESSION_TOKEN"
+
         private const val ACCESS_TOKEN_BEARER = "Bearer "
 
         private const val REFRESH_TOKEN = "KEY_API_REFRESH_TOKEN"
@@ -120,5 +124,7 @@ class SharedPreferencesHelper(private val sharedPreferences: SharedPreferences) 
         private const val REFERRAL_CODE = "REFERRAL_CODE"
         private const val REFERRAL_INVITES = "REFERRAL_INVITES"
         private const val REFERRAL_EARNED = "REFERRAL_EARNED"
+        private const val ZENDESK_TOKEN = "ZENDESK_TOKEN"
     }
+
 }
