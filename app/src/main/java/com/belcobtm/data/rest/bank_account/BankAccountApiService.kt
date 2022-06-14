@@ -275,7 +275,7 @@ class BankAccountApiService(private val api: BankAccountApi) {
                 BankAccountPaymentType.SELL ->
                     //SELL ACH and WIRE
                     CreateBankAccountPaymentRequest(
-                        type = type.stringValue.lowercase(),
+                        type = type.stringValue,
                         accountType = paymentDestinationType?.stringValue,
                         bankAccountId = bankAccountId,
                         cryptoFee = cryptoFee,

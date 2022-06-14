@@ -83,7 +83,7 @@ fun BankAccountResponse.mapToDataItem(): BankAccountDataItem =
                 ?: "",
             virtualAccountEnabled = false,
         ),
-        date = DateFormat.sdfLong.format(createdAt),
+        date = DateFormat.sdfLong.format(createdAt ?: 0),
         createdAt = createdAt ?: 0,
     )
 
