@@ -169,7 +169,7 @@ data class PaymentRequestDestination(
 )
 
 data class PaymentResponse(
-    val data: PaymentResponseData,
+    val data: PaymentResponseData?,
 )
 
 data class PaymentResponseData(
