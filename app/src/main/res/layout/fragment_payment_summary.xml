@@ -640,7 +640,7 @@
         <com.google.android.material.button.MaterialButton
             android:id="@+id/confirmButtonView"
             style="@style/Button.Primary"
-            android:text="@string/payment_details_confirm"
+            android:text="@string/confirm"
             app:layout_constraintBottom_toTopOf="@id/cancelButtonView"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

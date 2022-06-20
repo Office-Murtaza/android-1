@@ -6,6 +6,7 @@ import android.util.AttributeSet
 import android.util.TypedValue
 import android.view.LayoutInflater
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.content.ContextCompat
 import com.belcobtm.R
 import com.belcobtm.databinding.ItemSettingsBinding
 import com.belcobtm.presentation.core.extensions.toggle
@@ -16,11 +17,9 @@ class SettingsItemView @JvmOverloads constructor(
     defStyleAttr: Int = 0
 ) : ConstraintLayout(context, attrs, defStyleAttr) {
 
-    private val binding: ItemSettingsBinding
+    private val binding: ItemSettingsBinding = ItemSettingsBinding.inflate(LayoutInflater.from(context), this)
 
     init {
-        binding = ItemSettingsBinding.inflate(LayoutInflater.from(context), this)
-
         val typedArray =
             context
                 .theme
@@ -43,6 +42,7 @@ class SettingsItemView @JvmOverloads constructor(
             setImage(typedArray.getDrawable(R.styleable.SettingsItemView_src))
             setLabel(typedArray.getString(R.styleable.SettingsItemView_text))
             setValue(typedArray.getString(R.styleable.SettingsItemView_value))
+            setValueColor(typedArray.getColor(R.styleable.SettingsItemView_valueColor, ContextCompat.getColor(context, R.color.gray_text_color)))
             showChevron(typedArray.getBoolean(R.styleable.SettingsItemView_withChevron, false))
             showSwitch(typedArray.getBoolean(R.styleable.SettingsItemView_withSwitch, false))
         } finally {
@@ -50,14 +50,14 @@ class SettingsItemView @JvmOverloads constructor(
         }
     }
 
-    fun setImage(imageRes: Drawable?) {
+    private fun setImage(imageRes: Drawable?) {
         imageRes?.let {
             binding.imageView.setImageDrawable(it)
             binding.imageView.toggle(true)
         }
     }
 
-    fun setLabel(label: CharSequence?) {
+    private fun setLabel(label: CharSequence?) {
         binding.labelText.text = label ?: ""
     }
 
@@ -65,11 +65,15 @@ class SettingsItemView @JvmOverloads constructor(
         binding.valueText.text = value ?: ""
     }
 
-    fun showChevron(show: Boolean) {
+    private fun setValueColor(color: Int) {
+        binding.valueText.setTextColor(color)
+    }
+
+    private fun showChevron(show: Boolean) {
         binding.ivChevron.toggle(show)
     }
 
-    fun showSwitch(show: Boolean) {
+    private fun showSwitch(show: Boolean) {
         binding.commonSwitch.toggle(show)
     }
 

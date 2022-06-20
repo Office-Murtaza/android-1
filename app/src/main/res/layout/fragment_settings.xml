@@ -58,7 +58,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:src="@drawable/ic_support"
-        app:text="@string/support_label" />
+        app:text="@string/support_label"
+        app:valueColor="@color/red" />
 
     <View
         android:layout_width="match_parent"

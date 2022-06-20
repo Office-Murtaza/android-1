@@ -29,6 +29,7 @@ import com.belcobtm.presentation.features.authorization.create.wallet.CreateWall
 import com.belcobtm.presentation.features.authorization.recover.seed.RecoverSeedViewModel
 import com.belcobtm.presentation.features.authorization.recover.wallet.RecoverWalletViewModel
 import com.belcobtm.presentation.features.bank_accounts.BankAccountsViewModel
+import com.belcobtm.presentation.features.bank_accounts.ach.BankAchViewModel
 import com.belcobtm.presentation.features.bank_accounts.create.BankAccountCreateViewModel
 import com.belcobtm.presentation.features.bank_accounts.details.BankAccountDetailsViewModel
 import com.belcobtm.presentation.features.bank_accounts.payments.PaymentBuyUsdcViewModel
@@ -87,13 +88,19 @@ import java.util.Locale
 
 val viewModelModule = module {
     viewModel { BankAccountCreateViewModel(get()) }
-    viewModel { BankAccountsViewModel(get(), get(), get(), get()) }
+    viewModel { BankAccountsViewModel(get(), get()) }
     viewModel { (bankAccountId: String) ->
         BankAccountDetailsViewModel(
             bankAccountId,
             get(),
             get(),
             get(),
+        )
+    }
+    viewModel {
+        BankAchViewModel(
+            getLinkTokenUseCase = get(),
+            linkBankAccountUseCase = get()
         )
     }
     viewModel { PaymentSellUsdcViewModel(get(), get()) }

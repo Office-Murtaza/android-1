@@ -94,4 +94,3 @@ data class CircleDetailsDataItem(
     val wireAccountId: String,
     val trackingRef: String,
 ) : Parcelable
-

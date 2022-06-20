@@ -8,11 +8,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
-import androidx.annotation.RequiresPermission
 import androidx.core.os.bundleOf
 import com.belcobtm.R
 import com.belcobtm.databinding.FragmentRecoverWalletBinding
-import com.belcobtm.presentation.core.extensions.*
+import com.belcobtm.presentation.core.extensions.actionDoneListener
+import com.belcobtm.presentation.core.extensions.afterTextChanged
+import com.belcobtm.presentation.core.extensions.clearError
+import com.belcobtm.presentation.core.extensions.clearText
+import com.belcobtm.presentation.core.extensions.getString
+import com.belcobtm.presentation.core.extensions.showError
 import com.belcobtm.presentation.core.ui.fragment.BaseFragment
 import com.belcobtm.presentation.features.authorization.recover.seed.RecoverSeedFragment
 import com.belcobtm.presentation.features.sms.code.SmsCodeFragment
@@ -39,11 +43,14 @@ class RecoverWalletFragment : BaseFragment<FragmentRecoverWalletBinding>() {
     override fun FragmentRecoverWalletBinding.initListeners() {
         nextButtonView.setOnClickListener {
             phoneView.clearError()
+            emailView.clearError()
             passwordView.clearError()
             checkCredentialsWithPermissionCheck()
         }
         phoneView.editText?.afterTextChanged { updateNextButton() }
+        emailView.editText?.afterTextChanged { updateNextButton() }
         passwordView.editText?.afterTextChanged { updateNextButton() }
+
         passwordView.editText?.actionDoneListener {
             hideKeyboard()
             checkCredentialsWithPermissionCheck()
@@ -70,6 +77,13 @@ class RecoverWalletFragment : BaseFragment<FragmentRecoverWalletBinding>() {
                 passwordView.showError(R.string.recover_wallet_incorrect_password)
             } else {
                 binding.passwordView.clearError()
+            }
+
+            if (!it.third) {
+                isValid = false
+                emailView.showError(R.string.recover_wallet_incorrect_email)
+            } else {
+                binding.emailView.clearError()
             }
 
             if (isValid) {
@@ -116,9 +130,10 @@ class RecoverWalletFragment : BaseFragment<FragmentRecoverWalletBinding>() {
     fun checkCredentials() {
         val phone = getPhone()
         val password = binding.passwordView.getString()
+        val email = binding.emailView.getString()
 
         if (isValidFields(phone, password)) {
-            viewModel.checkCredentials(phone, password)
+            viewModel.checkCredentials(phone, password, email)
         }
     }
 
@@ -129,7 +144,6 @@ class RecoverWalletFragment : BaseFragment<FragmentRecoverWalletBinding>() {
     fun showLocationRequiredErrorMessage() {
         showSnackBar(R.string.location_required_on_recover_or_register_validation_message)
     }
-
 
     private fun isValidFields(phone: String, password: String): Boolean {
         val isEmptyFields = phone.isEmpty() || password.isEmpty()
@@ -142,9 +156,11 @@ class RecoverWalletFragment : BaseFragment<FragmentRecoverWalletBinding>() {
 
     private fun updateNextButton() {
         binding.nextButtonView.isEnabled = binding.phoneView.getString().isNotEmpty()
-                && viewModel.isValidMobileNumber(binding.phoneView.getString())
-                && binding.passwordView.getString().isNotEmpty()
+            && viewModel.isValidMobileNumber(binding.phoneView.getString())
+            && binding.emailView.getString().isNotEmpty()
+            && binding.passwordView.getString().isNotEmpty()
     }
 
     private fun getPhone(): String = binding.phoneView.getString().replace("[-() ]".toRegex(), "")
+
 }

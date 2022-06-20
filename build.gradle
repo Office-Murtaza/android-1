@@ -22,10 +22,12 @@ buildscript {
     }
 }
 
+static def gitVersionCode() {
+    return "git rev-list --count HEAD".execute().text.trim().toInteger()
+}
+
 ext {
-    // query git for the commit count to automate versioning.
-    gitCommitCount =
-            Integer.parseInt('git rev-list --count HEAD'.execute([], project.rootDir).text.trim())
+    gitCommitCount = gitVersionCode()
 }
 
 allprojects {

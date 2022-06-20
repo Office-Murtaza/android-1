@@ -1,8 +1,12 @@
-<resources xmlns:tools="http://schemas.android.com/tools">
+<resources>
     <string name="google_maps_key">AIzaSyDIL4Hzibi1iAtBmbh6TNwXYifbB0Pbikk</string>
     <string name="chip_ellipsis">&#8230;</string>
 
     <string name="app_name">Belco Wallet</string>
+
+    <!-- General -->
+
+    <string name="confirm">CONFIRM</string>
 
     <!-- Bottom navigation -->
     <string name="bottom_menu_locations">Locations</string>
@@ -45,19 +49,23 @@
 
     <!-- Welcome -->
     <string name="welcome_screen_please_accept_tnc">Please, accept our Terms &amp; Conditions</string>
-    <string name="welcome_screen_contact_support">Contact support</string>
     <string name="welcome_screen_create_new_wallet">Create Wallet</string>
     <string name="welcome_screen_recover_old_wallet">Recover Wallet</string>
     <string name="welcome_screen_accept_terms_and_conditions">Accept Terms &amp; Conditions</string>
     <string name="welcome_screen_terms_and_conditions">Terms &amp; Conditions</string>
-    <string name="welcome_screen_all_assets_in_one_place">All assets in one place</string>
-    <string name="welcome_screen_private_and_secure">Private and secure</string>
-    <string name="welcome_screen_buy_sell_and_trade_assets">Buy, sell and trade assets</string>
-    <string name="welcome_screen_support_title" tools:ignore="TypographyDashes">+1 (888) 776-6969\nsupport@belcobtm.com</string>
-    <string name="welcome_screen_support_call">Call</string>
-    <string name="welcome_screen_support_send_email">Send Email</string>
-    <string name="welcome_screen_support_phone" tools:ignore="TypographyDashes">+1 (888) 776-6969</string>
-    <string name="welcome_screen_support_email">support@belcobtm.com</string>
+    <string name="welcome_screen_privacy_title">Private &amp; Secure</string>
+    <string name="welcome_screen_privacy_description">Private keys are stored only on your device</string>
+    <string name="welcome_screen_transfer_title">Transfer</string>
+    <string name="welcome_screen_transfer_description">Send crypto to phone number</string>
+    <string name="welcome_screen_swap_title">Swap</string>
+    <string name="welcome_screen_swap_description">Instantly exchange one crypto with another one</string>
+    <string name="welcome_screen_p2p_title">P2P Trade</string>
+    <string name="welcome_screen_p2p_description">Trade crypto with people near you. Cash supported!</string>
+    <string name="welcome_screen_bank_title">Bank Accounts</string>
+    <string name="welcome_screen_bank_description">Buy/Sell USDC from your bank account</string>
+    <string name="welcome_screen_nft_title">NFT</string>
+    <string name="welcome_screen_nft_description">Coming soon!</string>
+
 
     <!-- Balance -->
     <string name="balance_screen_empty_balance">$…</string>
@@ -69,18 +77,21 @@
     <string name="recover_wallet_password">Password</string>
     <string name="recover_wallet_incorrect_login">Phone doesn\'t exist</string>
     <string name="recover_wallet_incorrect_password">Incorrect password</string>
+    <string name="recover_wallet_incorrect_email">Incorrect email</string>
     <string name="recover_wallet_password_min_max_length">Password must be between 6 and 20 characters</string>
     <string name="recover_wallet_error_all_fields_required">All fields are required</string>
 
-    <!--create wallet screen-->
+    <!-- Create wallet screen -->
     <string name="verify_sms_code">Enter SMS code</string>
     <string name="phone_number">201-555-0123</string>
     <string name="create_wallet_screen_title">Create Wallet</string>
     <string name="create_wallet_screen_phone">Phone</string>
+    <string name="create_wallet_email">Email</string>
     <string name="create_wallet_screen_password">Password</string>
     <string name="create_wallet_screen_confirm_password">Confirm Password</string>
     <string name="create_wallet_error_all_fields_required">All fields are required</string>
     <string name="create_wallet_error_confirm_pass">Passwords do not match</string>
+    <string name="create_wallet_error_email">Incorrect email</string>
     <string name="error_short_pin">PIN should contain 6 digits</string>
     <string name="error_confirm_pin">PIN do not match</string>
     <string name="create_wallet_error_short_pass">Password length should be from 6 to 15</string>
@@ -185,8 +196,13 @@
     <string name="bank_account_field_bank_city_helper_text">e.g. Kiev</string>
     <string name="bank_account_field_bank_city_error_text">City is required</string>
 
-    <string name="bank_account_circle_usdc_terms_disclaimer">By click "Submit" you agree to the</string>
-    <string name="bank_account_circle_usdc_terms_label">Circle USDC Terms</string>
+    <string name="bank_create_usdc_terms_text">By click \"Submit\" you agree to the </string>
+
+    <string name="bank_ach_title">ACH Authorization</string>
+    <string name="bank_ach_main_text">I (we), %1$s authorize Belco Wallet LLC(\"%2$s\") to electronically debit my (our) Depository account for a one-time electronic funds transfer (EFT) payment for the amount and on the date identified. I (we) also authorize %3$s to debit or credit my (our) account to correct any errors or process any refunds, if necessary.</string>
+    <string name="bank_ach_usdc_terms_text">By clicking \"Confirm\" I consent to sign this authorization\nelectronically and I agree with ACH authorization rules and\n</string>
+
+    <string name="bank_usdc_terms_clickable">Circle USDC Terms</string>
 
     <string name="step_1_usd_payment">Step 1: USD Payment</string>
     <string name="step_2_usd_payment">Step 2: USD Payment</string>
@@ -254,7 +270,6 @@
     <string name="payment_details_regularity_of_payment">Regularity Of Payment</string>
     <string name="payment_details_one_time_payment">ONE TIME PAYMENT!</string>
     <string name="payment_details_account_type">Account Type</string>
-    <string name="payment_details_confirm">CONFIRM</string>
     <string name="payment_beneficiary_title">Beneficiary</string>
     <string name="payment_beneficiary_bank_title">Beneficiary Bank</string>
     <string name="payment_details_cancel">CANCEL</string>
@@ -984,4 +999,5 @@
     <string name="settings_verify_dialog_message">Please verify yourself to get full access to our services</string>
     <string name="settings_verify_dialog_verify">Verify</string>
     <string name="restrictions_message">Some coins and services may be not available for your location</string>
+
 </resources>

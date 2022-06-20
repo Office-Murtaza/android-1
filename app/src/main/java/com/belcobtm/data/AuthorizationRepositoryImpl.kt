@@ -70,12 +70,13 @@ class AuthorizationRepositoryImpl(
 
     override suspend fun authorizationCheckCredentials(
         phone: String,
-        password: String
-    ): Either<Failure, Pair<Boolean, Boolean>> {
-        val response = apiService.authorizationCheckCredentials(phone, password)
+        password: String,
+        email: String
+    ): Either<Failure, Triple<Boolean, Boolean, Boolean>> {
+        val response = apiService.authorizationCheckCredentials(phone, password, email)
         return if (response.isRight) {
             val body = (response as Either.Right).b
-            Either.Right(Pair(body.first, body.second))
+            Either.Right(body)
         } else {
             response as Either.Left
         }
@@ -105,12 +106,14 @@ class AuthorizationRepositoryImpl(
     override suspend fun createWallet(
         phone: String,
         password: String,
+        email: String,
         notificationToken: String
     ): Either<Failure, Unit> {
         val location = locationProvider.getCurrentLocation()
         return apiService.createWallet(
             phone = phone,
             password = password,
+            email = email,
             timezone = getDeviceTimezone(),
             lat = location?.latitude,
             lng = location?.longitude,

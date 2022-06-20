@@ -5,6 +5,7 @@ import com.belcobtm.domain.Failure
 import com.belcobtm.domain.settings.type.VerificationStatus
 
 interface AuthorizationRepository {
+
     fun getAuthorizationStatus(): AuthorizationStatus
     fun getAuthorizePin(): String
     fun setAuthorizePin(pinCode: String)
@@ -13,8 +14,9 @@ interface AuthorizationRepository {
     fun getVerificationStatus(): Either<Failure, VerificationStatus>
     suspend fun authorizationCheckCredentials(
         phone: String,
-        password: String
-    ): Either<Failure, Pair<Boolean, Boolean>>
+        password: String,
+        email: String
+    ): Either<Failure, Triple<Boolean, Boolean, Boolean>>
 
     suspend fun createSeedPhrase(): Either<Failure, String>
 
@@ -23,6 +25,7 @@ interface AuthorizationRepository {
     suspend fun createWallet(
         phone: String,
         password: String,
+        email: String,
         notificationToken: String
     ): Either<Failure, Unit>
 

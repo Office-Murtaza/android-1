@@ -47,7 +47,6 @@ class SmsCodeFragment : BaseFragment<FragmentSmsCodeBinding>() {
         }
         verifyButton.setOnClickListener {
             viewModel.verifyCode(codeEntryView.getString())
-
         }
     }
 
@@ -136,4 +135,5 @@ class SmsCodeFragment : BaseFragment<FragmentSmsCodeBinding>() {
         container: ViewGroup?
     ): FragmentSmsCodeBinding =
         FragmentSmsCodeBinding.inflate(inflater, container, false)
+
 }

@@ -2,6 +2,12 @@ package com.belcobtm.presentation.features.bank_accounts.create
 
 import android.content.Intent
 import android.net.Uri
+import android.provider.Browser
+import android.text.Spannable
+import android.text.SpannableStringBuilder
+import android.text.TextPaint
+import android.text.method.LinkMovementMethod
+import android.text.style.ClickableSpan
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -23,7 +29,6 @@ import com.belcobtm.presentation.core.ui.fragment.BaseFragment
 import com.google.android.material.textfield.TextInputLayout
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-
 class BankAccountCreateFragment : BaseFragment<FragmentBankAccountCreateBinding>() {
 
     private val args by navArgs<BankAccountCreateFragmentArgs>()
@@ -37,9 +42,7 @@ class BankAccountCreateFragment : BaseFragment<FragmentBankAccountCreateBinding>
     ): FragmentBankAccountCreateBinding =
         FragmentBankAccountCreateBinding.inflate(inflater, container, false)
 
-
     override fun FragmentBankAccountCreateBinding.initViews() {
-
         showBackButton(true)
         if (args.createBankAccountType != CreateBankAccountType.NONE) {
             viewModel.selectedCreateBankAccountType = args.createBankAccountType
@@ -98,8 +101,43 @@ class BankAccountCreateFragment : BaseFragment<FragmentBankAccountCreateBinding>
             else -> {
             }
         }
+        setUsdcTermsTextView()
+    }
 
+    private fun setUsdcTermsTextView() {
+        val mainText = getString(R.string.bank_create_usdc_terms_text)
+        val clickableText = getString(R.string.bank_usdc_terms_clickable)
 
+        binding.termsTextView.apply {
+            movementMethod = LinkMovementMethod.getInstance()
+            text = SpannableStringBuilder()
+                .append(mainText)
+                .append(clickableText).apply {
+                    setSpan(
+                        object : ClickableSpan() {
+                            override fun onClick(widget: View) {
+                                openUsdcTermsLink()
+                            }
+
+                            override fun updateDrawState(ds: TextPaint) {
+                                ds.isUnderlineText = false
+                                ds.color = ContextCompat.getColor(requireContext(), R.color.colorPrimary)
+                            }
+                        },
+                        mainText.length,
+                        mainText.length + clickableText.length,
+                        Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+                    )
+                }
+        }
+    }
+
+    private fun openUsdcTermsLink() {
+        runCatching {
+            activity?.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(USDC_TERMS_LINK)).apply {
+                putExtra(Browser.EXTRA_APPLICATION_ID, requireActivity().packageName)
+            })
+        }
     }
 
     override fun FragmentBankAccountCreateBinding.initListeners() {
@@ -214,18 +252,6 @@ class BankAccountCreateFragment : BaseFragment<FragmentBankAccountCreateBinding>
                 validateBankCity()
             }
         }
-
-        circleTermsView.setOnClickListener {
-            startActivity(
-                Intent(
-                    Intent.ACTION_VIEW,
-                    Uri.parse(
-                        CIRCLE_USDC_TERMS_URL
-                    )
-                )
-            )
-
-        }
     }
 
     override fun FragmentBankAccountCreateBinding.initObservers() {
@@ -308,17 +334,17 @@ class BankAccountCreateFragment : BaseFragment<FragmentBankAccountCreateBinding>
 
 
         return bankCity
-                && bankCountry
-                && bankName
-                && zipCode
-                && address
-                && city
-                && province
-                && country
-                && name
-                && iban
-                && routingNumber
-                && accountNumber
+            && bankCountry
+            && bankName
+            && zipCode
+            && address
+            && city
+            && province
+            && country
+            && name
+            && iban
+            && routingNumber
+            && accountNumber
     }
 
     private fun FragmentBankAccountCreateBinding.validateAccountNo(): Boolean {
@@ -441,7 +467,6 @@ class BankAccountCreateFragment : BaseFragment<FragmentBankAccountCreateBinding>
         }
     }
 
-
     private fun TextInputLayout.showErrorText(message: String) {
         isErrorEnabled = true
         isHelperTextEnabled = false
@@ -461,7 +486,8 @@ class BankAccountCreateFragment : BaseFragment<FragmentBankAccountCreateBinding>
     }
 
     companion object {
-        const val CIRCLE_USDC_TERMS_URL = "https://www.circle.com/en/legal/usdc-terms"
+
+        private const val USDC_TERMS_LINK = "https://www.circle.com/en/legal/usdc-terms"
     }
 
 }

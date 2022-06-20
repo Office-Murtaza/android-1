@@ -17,6 +17,7 @@ class CreateSeedViewModel(
 ) : ViewModel() {
 
     companion object {
+
         const val SEED_PHRASE_SIZE = 12
     }
 
@@ -38,22 +39,32 @@ class CreateSeedViewModel(
         )
     }
 
-    fun createWallet(seed: String, phone: String, password: String) {
+    fun createWallet(
+        seed: String,
+        phone: String,
+        password: String,
+        email: String
+    ) {
         invalidSeedErrorMessage.value = null
         if (isValidSeed(seed)) {
             createWalletLiveData.value = LoadingData.Loading()
-            saveSeedAndCreateWallet(seed, phone, password)
+            saveSeedAndCreateWallet(seed, phone, password, email)
         } else {
             invalidSeedErrorMessage.value = R.string.seed_pharse_paste_error_message
         }
     }
 
-    private fun saveSeedAndCreateWallet(seed: String, phone: String, password: String) {
+    private fun saveSeedAndCreateWallet(
+        seed: String,
+        phone: String,
+        password: String,
+        email: String
+    ) {
         saveSeedUseCase.invoke(
             params = seed,
             onSuccess = {
                 seedLiveData.value = seed
-                createWallet(phone, password)
+                createWallet(phone, password, email)
             },
             onError = {
                 createWalletLiveData.value = LoadingData.Error(it)
@@ -61,12 +72,17 @@ class CreateSeedViewModel(
         )
     }
 
-    private fun createWallet(phone: String, password: String) {
+    private fun createWallet(
+        phone: String,
+        password: String,
+        email: String
+    ) {
         createWalletUseCase.invoke(
-            params = CreateWalletUseCase.Params(phone, password),
+            params = CreateWalletUseCase.Params(phone, password, email),
             onSuccess = {
                 setNeedToShowRestrictionsUseCase.invoke(SetNeedToShowRestrictionsUseCase.Params(true))
-                createWalletLiveData.value = LoadingData.Success(it) },
+                createWalletLiveData.value = LoadingData.Success(it)
+            },
             onError = { createWalletLiveData.value = LoadingData.Error(it) }
         )
     }

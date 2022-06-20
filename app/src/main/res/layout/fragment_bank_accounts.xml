@@ -19,6 +19,7 @@
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintBottom_toTopOf="@id/create_bank_account_button"
             app:layout_constraintTop_toTopOf="parent"
+            tools:listitem="@layout/item_bank_account"
             tools:visibility="visible" />
 
         <LinearLayout

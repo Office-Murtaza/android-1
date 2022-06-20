@@ -22,6 +22,7 @@ import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class CreateSeedFragment : BaseFragment<FragmentCreateSeedBinding>() {
+
     private val viewModel: CreateSeedViewModel by viewModel()
     private val args: CreateSeedFragmentArgs by navArgs()
     private val clipBoardHelper: ClipBoardHelper by inject()
@@ -159,15 +160,19 @@ class CreateSeedFragment : BaseFragment<FragmentCreateSeedBinding>() {
         viewModel.createWallet(
             binding.seedView.text.toString(),
             requireArguments().getString(SmsCodeFragment.TAG_PHONE, ""),
-            requireArguments().getString(TAG_PASSWORD, "")
+            requireArguments().getString(TAG_PASSWORD, ""),
+            requireArguments().getString(TAG_EMAIL, "")
         )
     }
 
     companion object {
+
         const val MODE_SETTINGS = 1
         const val MODE_DEFAULT = -1
         const val TAG_PASSWORD = "tag_create_seed_password"
+        const val TAG_EMAIL = "tag_create_seed_email"
         const val CHAR_NEXT_LINE: String = "\n"
         const val CHAR_SPACE: String = " "
     }
+
 }

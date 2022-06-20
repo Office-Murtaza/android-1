@@ -27,10 +27,11 @@ class AuthApiService(private val authApi: AuthApi) {
 
     suspend fun authorizationCheckCredentials(
         phone: String,
-        password: String
-    ): Either<Failure, Pair<Boolean, Boolean>> = try {
-        val request = authApi.authorizationCheckCredentialsAsync(CheckCredentialsRequest(phone, password))
-        request.body()?.let { Either.Right(Pair(it.phoneExists, it.passwordsMatch)) }
+        password: String,
+        email: String
+    ): Either<Failure, Triple<Boolean, Boolean, Boolean>> = try {
+        val request = authApi.authorizationCheckCredentialsAsync(CheckCredentialsRequest(phone, password, email))
+        request.body()?.let { Either.Right(Triple(it.phoneExists, it.passwordsMatch, it.emailExists)) }
             ?: Either.Left(Failure.ServerError())
     } catch (failure: Failure) {
         Either.Left(failure)
@@ -39,6 +40,7 @@ class AuthApiService(private val authApi: AuthApi) {
     suspend fun createWallet(
         phone: String,
         password: String,
+        email: String,
         lat: Double?,
         lng: Double?,
         timezone: String,
@@ -49,6 +51,7 @@ class AuthApiService(private val authApi: AuthApi) {
         val request = CreateWalletRequest(
             phone,
             password,
+            email,
             deviceModel,
             deviceOS,
             appVersion,

@@ -30,6 +30,14 @@
             app:exitAnim="@anim/slide_to_left"
             app:popEnterAnim="@anim/slide_from_left"
             app:popExitAnim="@anim/slide_to_right" />
+        <action
+            android:id="@+id/to_ach_fragment"
+            app:destination="@id/bank_ach_fragment"
+            app:enterAnim="@anim/slide_from_right"
+            app:exitAnim="@anim/slide_to_left"
+            app:popEnterAnim="@anim/slide_from_left"
+            app:popExitAnim="@anim/slide_to_right" />
+
     </fragment>
 
     <fragment
@@ -56,6 +64,12 @@
             android:defaultValue="NONE"
             app:argType="com.belcobtm.domain.bank_account.type.CreateBankAccountType" />
     </fragment>
+
+    <fragment
+        android:id="@+id/bank_ach_fragment"
+        android:name="com.belcobtm.presentation.features.bank_accounts.ach.BankAchFragment"
+        android:label="BankAchFragment"
+        tools:layout="@layout/fragment_bank_ach" />
 
     <fragment
         android:id="@+id/bank_account_details_fragment"

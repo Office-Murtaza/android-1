@@ -19,7 +19,12 @@ import com.belcobtm.R
 import com.belcobtm.databinding.FragmentCreateWalletBinding
 import com.belcobtm.domain.tools.openViewActivity
 import com.belcobtm.presentation.core.Const
-import com.belcobtm.presentation.core.extensions.*
+import com.belcobtm.presentation.core.extensions.afterTextChanged
+import com.belcobtm.presentation.core.extensions.clearError
+import com.belcobtm.presentation.core.extensions.clearText
+import com.belcobtm.presentation.core.extensions.getString
+import com.belcobtm.presentation.core.extensions.isEmail
+import com.belcobtm.presentation.core.extensions.showError
 import com.belcobtm.presentation.core.helper.SimpleClickableSpan
 import com.belcobtm.presentation.core.ui.fragment.BaseFragment
 import com.belcobtm.presentation.features.authorization.create.seed.CreateSeedFragment
@@ -31,6 +36,7 @@ import permissions.dispatcher.RuntimePermissions
 
 @RuntimePermissions
 class CreateWalletFragment : BaseFragment<FragmentCreateWalletBinding>() {
+
     private val viewModel: CreateWalletViewModel by viewModel()
     override val isToolbarEnabled: Boolean = true
     override val isHomeButtonEnabled: Boolean = true
@@ -47,6 +53,7 @@ class CreateWalletFragment : BaseFragment<FragmentCreateWalletBinding>() {
         nextButtonView.setOnClickListener { checkCredentialsWithPermissionCheck() }
         phoneView.editText?.afterTextChanged { updateNextButton() }
         passwordView.editText?.afterTextChanged { updateNextButton() }
+        emailView.editText?.afterTextChanged { updateNextButton() }
         passwordConfirmView.editText?.afterTextChanged { updateNextButton() }
         tncCheckBoxView.setOnCheckedChangeListener { _, _ -> updateNextButton() }
         phoneEditView.addTextChangedListener(PhoneNumberFormattingTextWatcher())
@@ -69,11 +76,13 @@ class CreateWalletFragment : BaseFragment<FragmentCreateWalletBinding>() {
                         bundleOf(
                             SmsCodeFragment.TAG_PHONE to getPhone(),
                             CreateSeedFragment.TAG_PASSWORD to passwordView.getString(),
+                            CreateSeedFragment.TAG_EMAIL to emailView.getString(),
                             SmsCodeFragment.TAG_NEXT_FRAGMENT_ID to R.id.to_create_seed_fragment
                         )
                     )
                     tncCheckBoxView.isChecked = false
                     passwordView.clearText()
+                    emailView.clearText()
                     passwordConfirmView.clearError()
                     viewModel.checkCredentialsLiveData.value = null
                 }
@@ -97,8 +106,13 @@ class CreateWalletFragment : BaseFragment<FragmentCreateWalletBinding>() {
     fun checkCredentials() {
         binding.phoneView.clearError()
         binding.passwordView.clearError()
+        binding.emailView.clearError()
         if (isValidFields()) {
-            viewModel.checkCredentials(getPhone(), binding.passwordView.getString())
+            viewModel.checkCredentials(
+                getPhone(),
+                binding.passwordView.getString(),
+                binding.emailView.getString()
+            )
         }
     }
 
@@ -146,6 +160,10 @@ class CreateWalletFragment : BaseFragment<FragmentCreateWalletBinding>() {
     private fun isValidFields(): Boolean {
         binding.passwordConfirmView.clearError()
         return when {
+            isEmailInvalid() -> {
+                binding.emailView.showError(R.string.recover_wallet_incorrect_email)
+                false
+            }
             binding.passwordView.getString().length < PASSWORD_MIN_LENGTH || binding.passwordView.getString().length > PASSWORD_MAX_LENGTH -> {
                 binding.passwordConfirmView.showError(R.string.create_wallet_error_short_pass)
                 false
@@ -157,6 +175,8 @@ class CreateWalletFragment : BaseFragment<FragmentCreateWalletBinding>() {
             else -> true
         }
     }
+
+    private fun isEmailInvalid(): Boolean = binding.emailView.getString().isEmail().not()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -172,16 +192,19 @@ class CreateWalletFragment : BaseFragment<FragmentCreateWalletBinding>() {
 
     private fun updateNextButton() {
         binding.nextButtonView.isEnabled = binding.phoneView.getString().isNotEmpty()
-                && viewModel.isValidMobileNumber(binding.phoneView.getString())
-                && binding.passwordView.getString().isNotEmpty()
-                && binding.passwordConfirmView.getString().isNotEmpty()
-                && binding.tncCheckBoxView.isChecked
+            && viewModel.isValidMobileNumber(binding.phoneView.getString())
+            && binding.emailView.getString().isNotEmpty()
+            && binding.passwordView.getString().isNotEmpty()
+            && binding.passwordConfirmView.getString().isNotEmpty()
+            && binding.tncCheckBoxView.isChecked
     }
 
     private fun getPhone(): String = binding.phoneView.getString().replace("[-() ]".toRegex(), "")
 
     companion object {
+
         private const val PASSWORD_MIN_LENGTH: Int = 6
         private const val PASSWORD_MAX_LENGTH: Int = 20
     }
+
 }

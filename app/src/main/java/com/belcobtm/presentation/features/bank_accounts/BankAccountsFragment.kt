@@ -1,23 +1,28 @@
 package com.belcobtm.presentation.features.bank_accounts
 
 import BankAccountItemDelegate
-import android.util.Log
+import android.content.Intent
+import android.net.Uri
+import android.provider.Browser
+import android.text.Spannable
+import android.text.SpannableStringBuilder
+import android.text.TextPaint
+import android.text.method.LinkMovementMethod
+import android.text.style.ClickableSpan
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import com.belcobtm.R
 import com.belcobtm.databinding.FragmentBankAccountsBinding
-import com.belcobtm.domain.bank_account.item.BankAccountLinkDataItem
 import com.belcobtm.domain.bank_account.item.BankAccountListItem
 import com.belcobtm.presentation.core.adapter.MultiTypeAdapter
 import com.belcobtm.presentation.core.extensions.hide
 import com.belcobtm.presentation.core.extensions.show
 import com.belcobtm.presentation.core.mvvm.LoadingData
 import com.belcobtm.presentation.core.ui.fragment.BaseFragment
-import com.plaid.link.OpenPlaidLink
-import com.plaid.link.linkTokenConfiguration
-import com.plaid.link.result.LinkExit
-import com.plaid.link.result.LinkSuccess
+import com.belcobtm.presentation.features.bank_accounts.ach.BankAchFragment
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class BankAccountsFragment : BaseFragment<FragmentBankAccountsBinding>() {
@@ -29,24 +34,6 @@ class BankAccountsFragment : BaseFragment<FragmentBankAccountsBinding>() {
         }
     }
 
-    private val linkAccountToPlaid =
-        registerForActivityResult(OpenPlaidLink()) {
-            when (it) {
-                is LinkSuccess -> {
-                    viewModel.linkBankAccounts(
-                        BankAccountLinkDataItem(
-                            bankName = it.metadata.institution?.name ?: "",
-                            accountsId = it.metadata.accounts.map { linkAccount -> linkAccount.id },
-                            publicToken = it.publicToken
-                        )
-                    )
-                }/* handle LinkSuccess */
-                is LinkExit -> {
-                    Log.i("Plaid", "User has canceled Plaid")
-                }/* handle LinkExit */
-            }
-        }
-
     override fun createBinding(
         inflater: LayoutInflater,
         container: ViewGroup?
@@ -56,7 +43,6 @@ class BankAccountsFragment : BaseFragment<FragmentBankAccountsBinding>() {
     override fun FragmentBankAccountsBinding.initViews() {
         setToolbarTitle(R.string.bank_accounts_screen_title)
         bankAccountsRecycleView.adapter = adapter
-
     }
 
     override fun FragmentBankAccountsBinding.initListeners() {
@@ -101,23 +87,6 @@ class BankAccountsFragment : BaseFragment<FragmentBankAccountsBinding>() {
         }
 
         viewModel.observeBankAccountsLiveData.listen(success = {}, error = {})
-
-        viewModel.linkToken.observe(viewLifecycleOwner) { loadingData ->
-            when (loadingData) {
-                is LoadingData.Loading<String> -> {
-                }
-                is LoadingData.Success<String> -> {
-                    initPlaidSdk(loadingData.data)
-                }
-                is LoadingData.Error<String> -> {
-                    Toast.makeText(requireContext(), "ERROR", Toast.LENGTH_LONG).show()
-                }
-                else -> {
-                }
-            }
-
-        }
-
     }
 
     private fun onBankAccountClicked(item: BankAccountListItem) {
@@ -127,14 +96,7 @@ class BankAccountsFragment : BaseFragment<FragmentBankAccountsBinding>() {
     }
 
     private fun onLinkBankAccountClicked() {
-        viewModel.getLinkToken()
-    }
-
-    private fun initPlaidSdk(linkToken: String) {
-        val linkTokenConfiguration = linkTokenConfiguration {
-            token = linkToken
-        }
-        linkAccountToPlaid.launch(linkTokenConfiguration)
+        navigate(BankAccountsFragmentDirections.toAchFragment())
     }
 
     override fun showLoading() {

@@ -32,13 +32,35 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/password_view"
+        android:id="@+id/emailView"
         style="@style/TextInputLayoutOutline"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="@id/phone_view"
         app:layout_constraintStart_toStartOf="@id/phone_view"
-        app:layout_constraintTop_toBottomOf="@id/phone_view"
+        app:layout_constraintTop_toBottomOf="@id/phone_view">
+
+        <com.belcobtm.presentation.core.ui.view.EditTextNoAutoFill
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:drawableEnd="@drawable/ic_email"
+            android:drawableTint="@color/colorPrimary"
+            android:hint="@string/create_wallet_email"
+            android:importantForAutofill="no"
+            android:inputType="textEmailAddress"
+            android:lines="1"
+            android:nextFocusDown="@id/password_view" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/password_view"
+        style="@style/TextInputLayoutOutline"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="@id/emailView"
+        app:layout_constraintStart_toStartOf="@id/emailView"
+        app:layout_constraintTop_toBottomOf="@id/emailView"
         app:passwordToggleEnabled="true"
         app:passwordToggleTint="@color/colorPrimary">
 
