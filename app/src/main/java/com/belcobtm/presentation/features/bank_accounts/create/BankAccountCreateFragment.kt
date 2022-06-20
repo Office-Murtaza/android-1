@@ -1,5 +1,7 @@
 package com.belcobtm.presentation.features.bank_accounts.create
 
+import android.content.Intent
+import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -37,7 +39,7 @@ class BankAccountCreateFragment : BaseFragment<FragmentBankAccountCreateBinding>
 
 
     override fun FragmentBankAccountCreateBinding.initViews() {
-        setToolbarTitle(getString(R.string.bank_accounts_create_screen_title))
+
         showBackButton(true)
         if (args.createBankAccountType != CreateBankAccountType.NONE) {
             viewModel.selectedCreateBankAccountType = args.createBankAccountType
@@ -64,13 +66,14 @@ class BankAccountCreateFragment : BaseFragment<FragmentBankAccountCreateBinding>
 
         when (viewModel.selectedCreateBankAccountType) {
             CreateBankAccountType.US -> {
+                setToolbarTitle(getString(R.string.bank_account_select_type_screen_us_type))
                 ibanView.hide()
                 //  countryView.hide()
                 bankNameView.hide()
                 bankCityView.hide()
                 countryView.setText("US")
                 countryView.hideHelpText()
-                countryView.isEnabled = false
+                countryView.hide()
                 bankCountryView.setText("US")
                 bankCountryView.hideHelpText()
                 bankCountryView.isEnabled = false
@@ -83,11 +86,13 @@ class BankAccountCreateFragment : BaseFragment<FragmentBankAccountCreateBinding>
                 )
             }
             CreateBankAccountType.NON_US_IBAN -> {
+                setToolbarTitle(getString(R.string.bank_account_select_type_screen_non_us_iban_type))
                 accountNumberView.hide()
                 routingNumberView.hide()
                 bankNameView.hide()
             }
             CreateBankAccountType.NON_US_NON_IBAN -> {
+                setToolbarTitle(getString(R.string.bank_account_select_type_screen_non_us_non_iban_type))
                 ibanView.hide()
             }
             else -> {
@@ -208,6 +213,18 @@ class BankAccountCreateFragment : BaseFragment<FragmentBankAccountCreateBinding>
             if (validated) {
                 validateBankCity()
             }
+        }
+
+        circleTermsView.setOnClickListener {
+            startActivity(
+                Intent(
+                    Intent.ACTION_VIEW,
+                    Uri.parse(
+                        CIRCLE_USDC_TERMS_URL
+                    )
+                )
+            )
+
         }
     }
 
@@ -441,6 +458,10 @@ class BankAccountCreateFragment : BaseFragment<FragmentBankAccountCreateBinding>
 
     private fun TextInputLayout.hideHelpText() {
         isHelperTextEnabled = false
+    }
+
+    companion object {
+        const val CIRCLE_USDC_TERMS_URL = "https://www.circle.com/en/legal/usdc-terms"
     }
 
 }

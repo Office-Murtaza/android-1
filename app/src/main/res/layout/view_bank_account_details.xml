@@ -5,12 +5,107 @@
     android:layout_height="wrap_content"
     android:orientation="vertical"
     android:padding="15dp">
+    <LinearLayout
+        android:id="@+id/account_details_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:orientation="vertical">
 
+        <TextView
+            style="@style/Text.Regular3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/account_details_title"
+            android:textStyle="normal" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:layout_marginTop="8dp"
+            android:background="@color/thin_divider" />
+
+        <LinearLayout
+            android:id="@+id/account_details_account_number_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:orientation="vertical">
+
+            <TextView
+                style="@style/Text.Regular1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/account_details_account_number_field" />
+
+            <TextView
+                android:id="@+id/account_details_account_number"
+                style="@style/Text.Regular4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:textColor="@color/black"
+                tools:text="Alberta Bobbeth Charleson" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/account_details_routing_number_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:orientation="vertical">
+
+            <TextView
+                style="@style/Text.Regular1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/account_details_routing_number_field" />
+
+            <TextView
+                android:id="@+id/account_details_routing_number"
+                style="@style/Text.Regular4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:textColor="@color/black"
+                tools:text="Alberta Bobbeth Charleson" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/account_details_iban_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:orientation="vertical">
+
+            <TextView
+                style="@style/Text.Regular1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/account_details_iban_field" />
+
+            <TextView
+                android:id="@+id/account_details_iban"
+                style="@style/Text.Regular4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:textColor="@color/black"
+                tools:text="Alberta Bobbeth Charleson" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="8dp"
+            android:background="@color/thin_divider" />
+    </LinearLayout>
     <LinearLayout
         android:id="@+id/billing_details_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
+        android:layout_marginTop="24dp"
         android:visibility="visible">
 
         <TextView
@@ -217,101 +312,7 @@
             android:background="@color/thin_divider" />
     </LinearLayout>
 
-    <LinearLayout
-        android:id="@+id/account_details_container"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
 
-        <TextView
-            style="@style/Text.Regular3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
-            android:text="@string/account_details_title"
-            android:textStyle="normal" />
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="2dp"
-            android:layout_marginTop="8dp"
-            android:background="@color/thin_divider" />
-
-        <LinearLayout
-            android:id="@+id/account_details_account_number_container"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:orientation="vertical">
-
-            <TextView
-                style="@style/Text.Regular1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/account_details_account_number_field" />
-
-            <TextView
-                android:id="@+id/account_details_account_number"
-                style="@style/Text.Regular4"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="2dp"
-                android:textColor="@color/black"
-                tools:text="Alberta Bobbeth Charleson" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/account_details_routing_number_container"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:orientation="vertical">
-
-            <TextView
-                style="@style/Text.Regular1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/account_details_routing_number_field" />
-
-            <TextView
-                android:id="@+id/account_details_routing_number"
-                style="@style/Text.Regular4"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="2dp"
-                android:textColor="@color/black"
-                tools:text="Alberta Bobbeth Charleson" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/account_details_iban_container"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:orientation="vertical">
-
-            <TextView
-                style="@style/Text.Regular1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/account_details_iban_field" />
-
-            <TextView
-                android:id="@+id/account_details_iban"
-                style="@style/Text.Regular4"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="2dp"
-                android:textColor="@color/black"
-                tools:text="Alberta Bobbeth Charleson" />
-        </LinearLayout>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginTop="8dp"
-            android:background="@color/thin_divider" />
-    </LinearLayout>
 
     <LinearLayout
         android:id="@+id/plaid_details_container"

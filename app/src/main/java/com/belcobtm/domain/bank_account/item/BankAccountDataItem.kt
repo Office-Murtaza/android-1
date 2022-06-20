@@ -20,7 +20,7 @@ data class BankAccountDataItem(
     val plaidDetails: PlaidDetailsDataItem,
     val circleDetails: CircleDetailsDataItem,
     val date: String,
-    val createdAt: Long,
+    val timestamp: Long,
     val paymentInstructions: PaymentInstructionsDataItem,
 ) : Parcelable
 
@@ -55,7 +55,7 @@ fun BankAccountDataItem.toListItem(): BankAccountListItem =
         circleDetails = circleDetails,
         accountDetails = accountDetails,
         date = date,
-        createdAt = createdAt
+        timestamp = timestamp
     )
 
 

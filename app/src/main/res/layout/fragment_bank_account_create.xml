@@ -195,12 +195,40 @@
             </com.google.android.material.textfield.TextInputLayout>
 
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    style="@style/Text.Regular2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/bank_account_circle_usdc_terms_disclaimer"
+                    android:textSize="12sp" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/circle_terms_view"
+                    style="@style/Text.Regular2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="4dp"
+                    android:clickable="true"
+                    android:paddingVertical="7dp"
+                    android:text="@string/bank_account_circle_usdc_terms_label"
+                    android:textColor="@color/blue_color"
+                    android:textSize="12sp" />
+
+            </LinearLayout>
+
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/submit_button"
                 style="@style/Button.Primary"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
+                android:layout_marginTop="6dp"
                 android:text="@string/submit"
                 android:textColor="#ffffff"
                 android:visibility="visible" />

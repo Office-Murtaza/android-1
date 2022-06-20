@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/margin_main"
         android:textStyle="bold"
-        app:layout_constraintEnd_toStartOf="@id/center_guideline"
+        app:layout_constraintEnd_toStartOf="@id/balance_value_view"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="Bank of America" />
@@ -20,13 +20,13 @@
     <TextView
         android:id="@+id/balance_value_view"
         style="@style/TextAppearance.MaterialComponents.Subtitle1"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/margin_main"
         android:textAlignment="textEnd"
         android:textStyle="bold"
         app:layout_constraintEnd_toStartOf="@id/iv_chevron"
-        app:layout_constraintStart_toStartOf="@id/center_guideline"
+        app:layout_constraintStart_toEndOf="@id/bank_name_view"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="$10,232.00" />
 
@@ -38,7 +38,7 @@
         android:layout_marginHorizontal="@dimen/margin_main"
         android:layout_marginVertical="@dimen/margin_half"
         android:textSize="14sp"
-        app:layout_constraintEnd_toStartOf="@id/center_guideline"
+        app:layout_constraintEnd_toStartOf="@id/iv_chevron"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/bank_name_view"
         tools:text="Account name" />
@@ -98,12 +98,6 @@
         app:layout_constraintTop_toTopOf="parent"
         app:tint="@color/black" />
 
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/center_guideline"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.58" />
 
     <View
         android:layout_width="match_parent"

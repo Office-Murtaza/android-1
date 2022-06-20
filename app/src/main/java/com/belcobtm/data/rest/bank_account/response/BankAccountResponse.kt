@@ -19,7 +19,7 @@ data class BankAccountResponse(
     val bankAddress: BankAddress?,
     val billingDetails: BillingDetails?,
     val circle: CircleDetails?,
-    val createdAt: Long?,
+    val timestamp: Long?,
 )
 
 fun BankAccountResponse.mapToDataItem(): BankAccountDataItem =
@@ -83,8 +83,8 @@ fun BankAccountResponse.mapToDataItem(): BankAccountDataItem =
                 ?: "",
             virtualAccountEnabled = false,
         ),
-        date = DateFormat.sdfLong.format(createdAt ?: 0),
-        createdAt = createdAt ?: 0,
+        date = DateFormat.sdfLong.format(timestamp ?: 0),
+        timestamp = timestamp ?: 0,
     )
 
 data class CircleDetails(

@@ -19,7 +19,7 @@ data class CreateBankAccountResponse(
     val bankAddress: BankAddress?,
     val billingDetails: BillingDetails?,
     val circle: CircleDetails?,
-    val createdAt: Long?,
+    val timestamp: Long?,
     val error: CreateBankAccountError?
 )
 
@@ -85,8 +85,8 @@ fun CreateBankAccountResponse.toDataItem(): BankAccountCreateResponseDataItem =
                     ?: "",
                 virtualAccountEnabled = false,
             ),
-            date = DateFormat.sdfLong.format(createdAt),
-            createdAt = createdAt ?: 0
+            date = DateFormat.sdfLong.format(timestamp),
+            timestamp = timestamp ?: 0
         )
     )
 
@@ -106,7 +106,7 @@ fun CreateBankAccountResponse.toBankAccountResponse(): BankAccountResponse =
         bankAddress = bankAddress,
         billingDetails = billingDetails,
         circle = circle,
-        createdAt = createdAt
+        timestamp = timestamp
     )
 
 data class CreateBankAccountError(

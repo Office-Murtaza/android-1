@@ -20,7 +20,7 @@ data class BankAccountListItem(
     val accountDetails: AccountDetailsDataItem,
     val circleDetails: CircleDetailsDataItem,
     val date: String,
-    val createdAt: Long,
+    val timestamp: Long,
 ) : ListItem, Parcelable {
 
     override val type: Int

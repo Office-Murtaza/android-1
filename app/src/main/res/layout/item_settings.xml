@@ -42,7 +42,7 @@
         android:layout_marginEnd="@dimen/margin_main"
         tools:text="5"
         android:textStyle="bold"
-        android:textColor="@color/red"
+        android:textColor="@color/gray_text_color"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/iv_chevron"
         app:layout_constraintTop_toTopOf="parent" />

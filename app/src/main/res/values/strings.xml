@@ -185,6 +185,9 @@
     <string name="bank_account_field_bank_city_helper_text">e.g. Kiev</string>
     <string name="bank_account_field_bank_city_error_text">City is required</string>
 
+    <string name="bank_account_circle_usdc_terms_disclaimer">By click "Submit" you agree to the</string>
+    <string name="bank_account_circle_usdc_terms_label">Circle USDC Terms</string>
+
     <string name="step_1_usd_payment">Step 1: USD Payment</string>
     <string name="step_2_usd_payment">Step 2: USD Payment</string>
     <string name="step_1_usdc_transfer">Step 1: USDC Transfer</string>

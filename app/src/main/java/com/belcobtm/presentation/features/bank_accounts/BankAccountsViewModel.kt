@@ -9,7 +9,6 @@ import com.belcobtm.domain.bank_account.interactor.GetBankAccountsListUseCase
 import com.belcobtm.domain.bank_account.interactor.GetLinkTokenUseCase
 import com.belcobtm.domain.bank_account.interactor.LinkBankAccountUseCase
 import com.belcobtm.domain.bank_account.interactor.ObserveBankAccountsListUseCase
-import com.belcobtm.domain.bank_account.item.BankAccountDataItem
 import com.belcobtm.domain.bank_account.item.BankAccountLinkDataItem
 import com.belcobtm.domain.bank_account.item.BankAccountListItem
 import com.belcobtm.domain.bank_account.item.toListItem
@@ -38,7 +37,7 @@ class BankAccountsViewModel(
             .map {
                 if (it != null) {
                     val bankAccounts =
-                        it.map { bankAccount -> bankAccount.toListItem() }.sortedBy { it.createdAt }
+                        it.map { bankAccount -> bankAccount.toListItem() }.sortedBy { it.timestamp }
                             .reversed()
                     _bankAccountsLiveData.postValue(LoadingData.Success(bankAccounts))
                     LoadingData.Success(bankAccounts)
