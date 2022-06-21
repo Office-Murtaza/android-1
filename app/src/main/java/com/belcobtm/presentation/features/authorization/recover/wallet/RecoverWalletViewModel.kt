@@ -13,10 +13,10 @@ class RecoverWalletViewModel(
 
     val checkCredentialsLiveData: MutableLiveData<LoadingData<Triple<Boolean, Boolean, Boolean>>> = MutableLiveData()
 
-    fun checkCredentials(phone: String, password: String, email: String) {
+    fun checkCredentials(phone: String, password: String) {
         checkCredentialsLiveData.value = LoadingData.Loading()
         checkCredentialsUseCase(
-            AuthorizationCheckCredentialsUseCase.Params(phone, password, email),
+            AuthorizationCheckCredentialsUseCase.Params(phone, password),
             onSuccess = { checkCredentialsLiveData.value = LoadingData.Success(it) },
             onError = { checkCredentialsLiveData.value = LoadingData.Error(it) }
         )

@@ -60,7 +60,7 @@ class BankAchFragment : BaseFragment<FragmentBankAchBinding>() {
     }
 
     private fun setMainTextView() {
-        binding.mainTextView.text = getString(R.string.bank_ach_main_text, "User", "Comp", "Comp")
+        binding.mainTextView.text = getString(R.string.bank_ach_main_text, "CONSUMER NAME", "COMPANY", "COMPANY")
     }
 
     private fun setUsdcTermsTextView() {

@@ -43,12 +43,10 @@ class RecoverWalletFragment : BaseFragment<FragmentRecoverWalletBinding>() {
     override fun FragmentRecoverWalletBinding.initListeners() {
         nextButtonView.setOnClickListener {
             phoneView.clearError()
-            emailView.clearError()
             passwordView.clearError()
             checkCredentialsWithPermissionCheck()
         }
         phoneView.editText?.afterTextChanged { updateNextButton() }
-        emailView.editText?.afterTextChanged { updateNextButton() }
         passwordView.editText?.afterTextChanged { updateNextButton() }
 
         passwordView.editText?.actionDoneListener {
@@ -77,13 +75,6 @@ class RecoverWalletFragment : BaseFragment<FragmentRecoverWalletBinding>() {
                 passwordView.showError(R.string.recover_wallet_incorrect_password)
             } else {
                 binding.passwordView.clearError()
-            }
-
-            if (!it.third) {
-                isValid = false
-                emailView.showError(R.string.recover_wallet_incorrect_email)
-            } else {
-                binding.emailView.clearError()
             }
 
             if (isValid) {
@@ -130,10 +121,9 @@ class RecoverWalletFragment : BaseFragment<FragmentRecoverWalletBinding>() {
     fun checkCredentials() {
         val phone = getPhone()
         val password = binding.passwordView.getString()
-        val email = binding.emailView.getString()
 
         if (isValidFields(phone, password)) {
-            viewModel.checkCredentials(phone, password, email)
+            viewModel.checkCredentials(phone, password)
         }
     }
 
@@ -157,7 +147,6 @@ class RecoverWalletFragment : BaseFragment<FragmentRecoverWalletBinding>() {
     private fun updateNextButton() {
         binding.nextButtonView.isEnabled = binding.phoneView.getString().isNotEmpty()
             && viewModel.isValidMobileNumber(binding.phoneView.getString())
-            && binding.emailView.getString().isNotEmpty()
             && binding.passwordView.getString().isNotEmpty()
     }
 

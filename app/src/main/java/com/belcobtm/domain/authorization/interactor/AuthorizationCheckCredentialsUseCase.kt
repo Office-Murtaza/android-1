@@ -15,6 +15,6 @@ class AuthorizationCheckCredentialsUseCase(
     override suspend fun run(params: Params): Either<Failure, Triple<Boolean, Boolean, Boolean>> =
         repository.authorizationCheckCredentials(params.phone, params.password, params.email)
 
-    data class Params(val phone: String, val password: String, val email: String)
+    data class Params(val phone: String, val password: String, val email: String = "")
 
 }

@@ -49,8 +49,8 @@
 
     <!-- Welcome -->
     <string name="welcome_screen_please_accept_tnc">Please, accept our Terms &amp; Conditions</string>
-    <string name="welcome_screen_create_new_wallet">Create Wallet</string>
-    <string name="welcome_screen_recover_old_wallet">Recover Wallet</string>
+    <string name="welcome_screen_create_new_wallet">CREATE NEW WALLET</string>
+    <string name="welcome_screen_recover_old_wallet">RECOVER OLD WALLET</string>
     <string name="welcome_screen_accept_terms_and_conditions">Accept Terms &amp; Conditions</string>
     <string name="welcome_screen_terms_and_conditions">Terms &amp; Conditions</string>
     <string name="welcome_screen_privacy_title">Private &amp; Secure</string>
