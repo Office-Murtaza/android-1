@@ -19,20 +19,7 @@ object CoinTypeExtension {
     }
 }
 
-val USDC_UNIT = 1_000_000L
-
-fun CoinType.verboseValue(): String = when (this) {
-    CoinType.BITCOIN -> "Bitcoin"
-    CoinType.ETHEREUM -> "Ethereum"
-    CoinType.BITCOINCASH -> "Bitcoin Cash"
-    CoinType.LITECOIN -> "Litecoin"
-    CoinType.BINANCE -> "Binance"
-    CoinType.TRON -> "Tron"
-    CoinType.XRP -> "Ripple"
-    CoinType.DOGECOIN -> "Dogecoin"
-    CoinType.DASH -> "Dash"
-    else -> ""
-}
+const val USDC_UNIT = 1_000_000L
 
 fun CoinType.code(): String = when (this) {
     CoinType.BITCOIN -> "BTC"

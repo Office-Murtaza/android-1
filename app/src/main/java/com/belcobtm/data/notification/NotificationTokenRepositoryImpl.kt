@@ -2,7 +2,7 @@ package com.belcobtm.data.notification
 
 import com.belcobtm.data.disk.shared.preferences.SharedPreferencesHelper
 import com.belcobtm.domain.notification.NotificationTokenRepository
-import com.google.firebase.iid.FirebaseInstanceId
+import com.google.firebase.messaging.FirebaseMessaging
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
 
@@ -20,11 +20,12 @@ class NotificationTokenRepositoryImpl(
     }
 
     private suspend fun loadNotificationToken(): String = suspendCoroutine { continuation ->
-        FirebaseInstanceId.getInstance().instanceId
+        FirebaseMessaging.getInstance().token
             .addOnSuccessListener {
-                continuation.resume(it.token)
+                continuation.resume(it)
             }.addOnFailureListener {
                 continuation.resume("")
             }
     }
+
 }

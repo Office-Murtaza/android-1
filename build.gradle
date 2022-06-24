@@ -1,24 +1,20 @@
-apply from: 'config.gradle'
-
+// Top-level build file where you can add configuration options common to all sub-projects/modules.
 buildscript {
-    ext.kotlin_version = '1.5.30'
-    ext.acuantSDKVersion = '11.4.12'
-    ext.plaidSDKVersion = '3.8.0'
+    apply from: file("gradle/dependencies.gradle")
+
     repositories {
         google()
         mavenCentral()
     }
+
     dependencies {
-        classpath 'com.android.tools.build:gradle:4.2.2'
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
-        // navigation component safe arguments + generated directions
-        classpath 'androidx.navigation:navigation-safe-args-gradle-plugin:2.3.5'
+        classpath plugs.androidGradlePlugin
+        classpath plugs.kotlinGradlePlugin
 
-        classpath 'com.google.gms:google-services:4.3.8'
+        classpath plugs.googleServicesGradlePlugin
+        classpath plugs.firebase.values()
 
-        classpath 'com.google.firebase:firebase-crashlytics-gradle:2.7.1'
-        classpath 'com.google.firebase:perf-plugin:1.4.0'
-        classpath 'com.google.firebase:firebase-appdistribution-gradle:2.1.3'
+        classpath plugs.safeArgsGradlePlugin
     }
 }
 
@@ -33,10 +29,8 @@ ext {
 allprojects {
     repositories {
         google()
-        jcenter() // is used by some old libs
         mavenCentral()
-        maven { url 'https://jitpack.io' }
-        maven { url "https://oss.sonatype.org/content/repositories/snapshots" }
+        maven { url "https://jitpack.io" }
         maven {
             name = "GitHubPackages"
             url = uri("https://maven.pkg.github.com/trustwallet/wallet-core")
@@ -45,7 +39,15 @@ allprojects {
                 password = "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"
             }
         }
-        maven { url "https://zendesk.jfrog.io/artifactory/repo" }
-        group = 'com.acuant'
+        maven { url "https://zendesk.jfrog.io/artifactory/repo" } // zendesk.messaging
+
+        jcenter() // com.acuant still contains com.gemalto.jp2:jp2-android:1.0 dependency from jcenter
+        maven { url "https://maven.google.com" } // com.acuant
+        maven { url "https://raw.githubusercontent.com/iProov/android/master/maven/" } // com.acuant
+        maven { url "https://raw.githubusercontent.com/Acuant/AndroidSdkMaven/main/maven/" } // com.acuant
     }
+}
+
+task clean(type: Delete) {
+    delete rootProject.buildDir
 }

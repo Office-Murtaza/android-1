@@ -263,13 +263,13 @@ class FacialLivenessActivity : AppCompatActivity(), LiveFaceListener {
     }
 
     companion object {
-        private val TAG = "GooglyEyes"
+        private const val TAG = "GooglyEyes"
 
-        private val RC_HANDLE_GMS = 9001
+        private const val RC_HANDLE_GMS = 9001
 
         // permission request codes need to be < 256
-        private val RC_HANDLE_CAMERA_PERM = 2
+        private const val RC_HANDLE_CAMERA_PERM = 2
 
-        val RESPONSE_SUCCESS_CODE = 2
+        const val RESPONSE_SUCCESS_CODE = 2
     }
 }
