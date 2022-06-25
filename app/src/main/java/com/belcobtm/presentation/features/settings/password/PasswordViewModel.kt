@@ -13,8 +13,8 @@ import com.belcobtm.presentation.core.mvvm.LoadingData
 import com.belcobtm.presentation.features.authorization.create.seed.CreateSeedFragment
 
 class PasswordViewModel(
-    val checkPassUseCase: CheckPassUseCase,
-    val prefsHelper: SharedPreferencesHelper
+    private val checkPassUseCase: CheckPassUseCase,
+    private val prefsHelper: SharedPreferencesHelper
 ) : ViewModel() {
 
     val stateData =
@@ -29,10 +29,10 @@ class PasswordViewModel(
 
     fun onNextClick(pass: String) {
         stateData.value = LoadingData.Loading(data = stateData.value?.commonData)
-        checkPassUseCase.invoke(CheckPassUseCase.Params(prefsHelper.userId.toString(), pass),
+        checkPassUseCase.invoke(CheckPassUseCase.Params(prefsHelper.userId, pass),
             onSuccess = {
                 if (it) {
-                    actionData.value = PasswordAction.NavigateAction(getDireciton())
+                    actionData.value = PasswordAction.NavigateAction(getDirection())
                 } else {
                     stateData.value = LoadingData.Error(data = stateData.value?.commonData)
                 }
@@ -51,13 +51,12 @@ class PasswordViewModel(
             )
     }
 
-    private fun getDireciton(): NavDirections {
+    private fun getDirection(): NavDirections {
         return when (arguments.destination) {
             R.id.password_to_create_seed_fragment -> PasswordFragmentDirections.passwordToCreateSeedFragment(
                 mode = CreateSeedFragment.MODE_SETTINGS,
                 seed = prefsHelper.apiSeed
             )
-            R.id.password_to_change_phone_fragment -> PasswordFragmentDirections.passwordToChangePhoneFragment()
             else -> throw IllegalArgumentException("wrong direction passed")
         }
     }
@@ -66,8 +65,6 @@ class PasswordViewModel(
         when (arguments.destination) {
             R.id.password_to_create_seed_fragment -> actionData.value =
                 PasswordAction.PopToSecurityAction
-            R.id.password_to_change_phone_fragment -> actionData.value =
-                PasswordAction.BackStackAction
             else -> throw IllegalArgumentException("wrong direction passed")
         }
     }

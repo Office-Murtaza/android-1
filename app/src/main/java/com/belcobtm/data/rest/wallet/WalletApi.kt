@@ -10,16 +10,10 @@ import retrofit2.http.Query
 
 interface WalletApi {
 
-    @GET("user/{userId}/balance")
-    suspend fun getBalanceAsync(
-        @Path("userId") userId: String,
-        @Query("coins") coins: List<String>
-    ): Response<BalanceResponse>
-
     @GET("coin/{coinId}/price-chart")
     suspend fun getChartAsync(
         @Path("coinId") coinCode: String,
-        @Query("period") @PriceChartPeriod period: Int
+        @Query("period") period: PriceChartPeriod
     ): Response<ChartResponse>
 
     @GET("user/{userId}/coin/{coinId}/switch")

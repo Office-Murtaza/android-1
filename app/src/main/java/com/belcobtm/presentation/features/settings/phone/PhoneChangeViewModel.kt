@@ -1,13 +1,10 @@
 package com.belcobtm.presentation.features.settings.phone
 
-import android.content.Context
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.navigation.NavDirections
 import com.belcobtm.data.disk.shared.preferences.SharedPreferencesHelper
 import com.belcobtm.domain.Failure
-import com.belcobtm.domain.settings.interactor.ERROR_UPDATE_PHONE_IS_SAME
-import com.belcobtm.domain.settings.interactor.ERROR_UPDATE_PHONE_IS_USED
 import com.belcobtm.domain.settings.interactor.VerifyPhoneUseCase
 import com.belcobtm.presentation.core.SingleLiveData
 import com.belcobtm.presentation.core.mvvm.LoadingData
@@ -15,10 +12,10 @@ import com.belcobtm.presentation.core.validator.Validator
 
 class PhoneChangeViewModel(
     private val verifyPhoneUseCase: VerifyPhoneUseCase,
-    private val appContext: Context,
     private val prefsHelper: SharedPreferencesHelper,
     private val phoneNumberValidator: Validator<String>
 ) : ViewModel() {
+
     val stateData =
         MutableLiveData<LoadingData<PhoneChangeState>>(LoadingData.Success(PhoneChangeState()))
     val actionData = SingleLiveData<PhoneChangeAction>()
@@ -60,6 +57,13 @@ class PhoneChangeViewModel(
 
     private fun isValidMobileNumber(phone: String): Boolean =
         phoneNumberValidator.isValid(phone)
+
+    companion object {
+
+        const val ERROR_UPDATE_PHONE_IS_USED = 2
+        const val ERROR_UPDATE_PHONE_IS_SAME = 3
+    }
+
 }
 
 data class PhoneChangeState(

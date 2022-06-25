@@ -21,6 +21,8 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class AtmSellFragment : BaseFragment<FragmentAtmSellBinding>() {
 
+    private val viewModel by viewModel<AtmSellViewModel>()
+
     override var isHomeButtonEnabled: Boolean = true
 
     override val retryListener: View.OnClickListener = View.OnClickListener {
@@ -31,8 +33,6 @@ class AtmSellFragment : BaseFragment<FragmentAtmSellBinding>() {
             viewModel.sell()
         }
     }
-
-    private val viewModel by viewModel<AtmSellViewModel>()
 
     private val textWatcher = SafeDecimalEditTextWatcher { editable ->
         val parsedAmount = editable.getDouble().toInt()
@@ -153,4 +153,5 @@ class AtmSellFragment : BaseFragment<FragmentAtmSellBinding>() {
         coinInputLayout.getEditText().addTextChangedListener(textWatcher)
         sellButton.setOnClickListener { viewModel.sell() }
     }
+
 }

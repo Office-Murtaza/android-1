@@ -13,23 +13,43 @@
 
         <action
             android:id="@+id/settings_to_verification_info_fragment"
-            app:destination="@id/verification_info_fragment" />
+            app:destination="@id/verification_info_fragment"
+            app:enterAnim="@anim/slide_from_right"
+            app:exitAnim="@anim/slide_to_left"
+            app:popEnterAnim="@anim/slide_from_left"
+            app:popExitAnim="@anim/slide_to_right" />
 
         <action
             android:id="@+id/settings_to_about_fragment"
-            app:destination="@id/about_fragment" />
+            app:destination="@id/about_fragment"
+            app:enterAnim="@anim/slide_from_right"
+            app:exitAnim="@anim/slide_to_left"
+            app:popEnterAnim="@anim/slide_from_left"
+            app:popExitAnim="@anim/slide_to_right" />
 
         <action
             android:id="@+id/settings_to_manage_fragment"
-            app:destination="@id/manage_wallets_fragment" />
+            app:destination="@id/manage_wallets_fragment"
+            app:enterAnim="@anim/slide_from_right"
+            app:exitAnim="@anim/slide_to_left"
+            app:popEnterAnim="@anim/slide_from_left"
+            app:popExitAnim="@anim/slide_to_right" />
 
         <action
             android:id="@+id/settings_to_security_fragment"
-            app:destination="@id/security_fragment" />
+            app:destination="@id/security_fragment"
+            app:enterAnim="@anim/slide_from_right"
+            app:exitAnim="@anim/slide_to_left"
+            app:popEnterAnim="@anim/slide_from_left"
+            app:popExitAnim="@anim/slide_to_right" />
 
         <action
             android:id="@+id/settings_to_referrals_fragment"
-            app:destination="@id/referrals_fragment" />
+            app:destination="@id/referrals_fragment"
+            app:enterAnim="@anim/slide_from_right"
+            app:exitAnim="@anim/slide_to_left"
+            app:popEnterAnim="@anim/slide_from_left"
+            app:popExitAnim="@anim/slide_to_right" />
 
         <argument
             android:name="view_flipper_value"
@@ -47,14 +67,6 @@
         <action
             android:id="@+id/password_to_create_seed_fragment"
             app:destination="@id/create_seed_fragment"
-            app:enterAnim="@anim/slide_from_right"
-            app:exitAnim="@anim/slide_to_left"
-            app:popEnterAnim="@anim/slide_from_left"
-            app:popExitAnim="@anim/slide_to_right" />
-
-        <action
-            android:id="@+id/password_to_change_phone_fragment"
-            app:destination="@id/change_phone_fragment"
             app:enterAnim="@anim/slide_from_right"
             app:exitAnim="@anim/slide_to_left"
             app:popEnterAnim="@anim/slide_from_left"
@@ -151,6 +163,14 @@
         <action
             android:id="@+id/to_unlink"
             app:destination="@id/unlink_fragment"
+            app:enterAnim="@anim/slide_from_right"
+            app:exitAnim="@anim/slide_to_left"
+            app:popEnterAnim="@anim/slide_from_left"
+            app:popExitAnim="@anim/slide_to_right" />
+
+        <action
+            android:id="@+id/to_change_phone_fragment"
+            app:destination="@id/change_phone_fragment"
             app:enterAnim="@anim/slide_from_right"
             app:exitAnim="@anim/slide_to_left"
             app:popEnterAnim="@anim/slide_from_left"

@@ -8,7 +8,7 @@ fun LocalCoinType.resIcon(): Int = when (this) {
     LocalCoinType.ETH -> R.drawable.ic_coin_ethereum
     LocalCoinType.BCH -> R.drawable.ic_coin_bitcoin_cash
     LocalCoinType.LTC -> R.drawable.ic_coin_litecoin
-    LocalCoinType.BNB -> R.drawable.ic_coin_binance
+    LocalCoinType.BNB -> R.drawable.ic_coin_bnb
     LocalCoinType.TRX -> R.drawable.ic_coin_tron
     LocalCoinType.XRP -> R.drawable.ic_coin_ripple
     LocalCoinType.CATM -> R.drawable.ic_coin_catm

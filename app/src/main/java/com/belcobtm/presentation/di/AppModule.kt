@@ -178,7 +178,7 @@ val viewModelModule = module {
     viewModel { PasswordViewModel(get(), get()) }
     viewModel { UnlinkViewModel(get()) }
     viewModel { UpdatePasswordViewModel(get()) }
-    viewModel { PhoneChangeViewModel(get(), get(), get(), get<PhoneNumberValidator>()) }
+    viewModel { PhoneChangeViewModel(get(), get(), get<PhoneNumberValidator>()) }
     viewModel { AtmViewModel(get()) }
     viewModel { (txId: String, coinCode: String) ->
         TransactionDetailsViewModel(

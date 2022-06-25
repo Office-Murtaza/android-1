@@ -26,17 +26,17 @@ class SecurityFragment : BaseFragment<FragmentSecurityBinding>() {
 
     private fun observeData() {
         viewModel.userPhone.listen(success = { binding.updatePhoneItem.setValue(it) })
-        viewModel.actionData.observe(viewLifecycleOwner, { action ->
+        viewModel.actionData.observe(viewLifecycleOwner) { action ->
             when (action) {
                 is SecurityAction.NavigateAction -> navigate(action.navDirections)
             }
-        })
-        viewModel.bioOption.observe(viewLifecycleOwner, { bioOtion ->
+        }
+        viewModel.bioOption.observe(viewLifecycleOwner) { bioOtion ->
             with(binding.switchBioAuthItem) {
                 toggle(bioOtion.supported)
                 setSwitchState(bioOtion.allowed)
             }
-        })
+        }
     }
 
     private fun setClickListeners() {

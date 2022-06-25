@@ -56,7 +56,6 @@ import com.belcobtm.domain.settings.interactor.SendVerificationVipUseCase
 import com.belcobtm.domain.settings.interactor.SetBioAuthStateAllowedUseCase
 import com.belcobtm.domain.settings.interactor.SetNeedToShowRestrictionsUseCase
 import com.belcobtm.domain.settings.interactor.UnlinkUseCase
-import com.belcobtm.domain.settings.interactor.UpdatePhoneUseCase
 import com.belcobtm.domain.settings.interactor.VerifyPhoneUseCase
 import com.belcobtm.domain.socket.ConnectToSocketUseCase
 import com.belcobtm.domain.socket.DisconnectFromSocketUseCase
@@ -220,7 +219,6 @@ val useCaseModule = module {
     single { UnlinkUseCase(get()) }
     single { ChangePassUseCase(get()) }
     single { GetPhoneUseCase(get()) }
-    single { UpdatePhoneUseCase(get()) }
     single { ServiceInfoProvider(get()) }
     single {
         GetAtmsUseCase(

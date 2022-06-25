@@ -22,7 +22,11 @@ import com.belcobtm.presentation.core.formatter.DoubleCurrencyPriceFormatter
 import com.belcobtm.presentation.core.formatter.Formatter
 import com.belcobtm.presentation.core.mvvm.LoadingData
 import com.belcobtm.presentation.core.ui.fragment.BaseFragment
-import com.belcobtm.presentation.features.wallet.transactions.TransactionsFABType.*
+import com.belcobtm.presentation.features.wallet.transactions.TransactionsFABType.DEPOSIT
+import com.belcobtm.presentation.features.wallet.transactions.TransactionsFABType.RECALL
+import com.belcobtm.presentation.features.wallet.transactions.TransactionsFABType.RESERVE
+import com.belcobtm.presentation.features.wallet.transactions.TransactionsFABType.STAKING
+import com.belcobtm.presentation.features.wallet.transactions.TransactionsFABType.WITHDRAW
 import com.belcobtm.presentation.features.wallet.transactions.adapter.TransactionsAdapter
 import com.belcobtm.presentation.features.wallet.transactions.item.CurrentChartInfo
 import com.github.mikephil.charting.data.LineData
@@ -34,12 +38,13 @@ import org.koin.core.parameter.parametersOf
 import org.koin.core.qualifier.named
 
 class TransactionsFragment : BaseFragment<FragmentTransactionsBinding>() {
+
     private val viewModel: TransactionsViewModel by viewModel {
         parametersOf(TransactionsFragmentArgs.fromBundle(requireArguments()).coinCode)
     }
 
     private val adapter: TransactionsAdapter = TransactionsAdapter {
-        val transactionId = if (it.id.isBlank()) it.dbId else it.id
+        val transactionId = it.id.ifBlank { it.dbId }
         navigate(
             TransactionsFragmentDirections.toTransactionDetailsFragment(
                 viewModel.coinCode,
@@ -72,7 +77,6 @@ class TransactionsFragment : BaseFragment<FragmentTransactionsBinding>() {
         addButtonToMenu(menu, RESERVE)
         binding.fabListView.setMenu(menu)
     }
-
 
     override fun initToolbar() {
         baseBinding.toolbarView.hide()
@@ -140,6 +144,8 @@ class TransactionsFragment : BaseFragment<FragmentTransactionsBinding>() {
                     changesView.setCompoundDrawables(null, null, null, null)
                     changesView.text = ""
                     chartProgressView.toggle(false)
+                }
+                else -> {
                 }
             }
         }
@@ -241,15 +247,15 @@ class TransactionsFragment : BaseFragment<FragmentTransactionsBinding>() {
     }
 
     private fun FragmentTransactionsBinding.setChart(
-        @PriceChartPeriod chartType: Int,
+        chartType: PriceChartPeriod,
         chartInfo: ChartDataItem
     ) {
         when (chartType) {
-            PriceChartPeriod.PERIOD_DAY -> chartChipGroupView.check(R.id.one_day_chip_view)
-            PriceChartPeriod.PERIOD_WEEK -> chartChipGroupView.check(R.id.one_week_chip_view)
-            PriceChartPeriod.PERIOD_MONTH -> chartChipGroupView.check(R.id.one_month_chip_view)
-            PriceChartPeriod.PERIOD_QUARTER -> chartChipGroupView.check(R.id.three_month_chip_view)
-            PriceChartPeriod.PERIOD_YEAR -> chartChipGroupView.check(R.id.one_year_chip_view)
+            PriceChartPeriod.DAY -> chartChipGroupView.check(R.id.one_day_chip_view)
+            PriceChartPeriod.WEEK -> chartChipGroupView.check(R.id.one_week_chip_view)
+            PriceChartPeriod.MONTH -> chartChipGroupView.check(R.id.one_month_chip_view)
+            PriceChartPeriod.MONTH_3 -> chartChipGroupView.check(R.id.three_month_chip_view)
+            PriceChartPeriod.YEAR -> chartChipGroupView.check(R.id.one_year_chip_view)
         }
         val dataSet: LineDataSet
         val circleDataSet: LineDataSet
@@ -283,6 +289,8 @@ class TransactionsFragment : BaseFragment<FragmentTransactionsBinding>() {
     }
 
     companion object {
+
         private const val CHART_MARGIN_END_DP = 15F
     }
+
 }

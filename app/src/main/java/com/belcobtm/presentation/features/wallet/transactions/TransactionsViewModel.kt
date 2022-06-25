@@ -1,6 +1,10 @@
 package com.belcobtm.presentation.features.wallet.transactions
 
-import androidx.lifecycle.*
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.asLiveData
+import androidx.lifecycle.viewModelScope
 import com.belcobtm.R
 import com.belcobtm.data.disk.database.wallet.WalletDao
 import com.belcobtm.data.disk.database.wallet.toDataItem
@@ -36,7 +40,7 @@ class TransactionsViewModel(
 
     val transactionListLiveData: LiveData<List<TransactionsAdapterItem>>
         get() = observeTransactionsUseCase.invoke(coinCode).asLiveData()
-    private val chartInfo = HashMap<@PriceChartPeriod Int, ChartDataItem>()
+    private val chartInfo = HashMap<PriceChartPeriod, ChartDataItem>()
 
     private val _detailsLiveData = MutableLiveData<TransactionsScreenItem>()
     val detailsLiveData: LiveData<TransactionsScreenItem> = _detailsLiveData
@@ -46,6 +50,7 @@ class TransactionsViewModel(
         get() = _loadingLiveData
 
     companion object {
+
         const val CATM_PRICE = 0.1
         const val CATM_CHANGES = 0.0
     }
@@ -57,17 +62,17 @@ class TransactionsViewModel(
     }
 
     fun updateData() {
-        loadChartData(PriceChartPeriod.PERIOD_DAY)
+        loadChartData(PriceChartPeriod.DAY)
         fetchTransactions()
     }
 
     fun changeCurrentTypePeriod(selectedPeriod: Int) {
         val period = when (selectedPeriod) {
-            R.id.one_week_chip_view -> PriceChartPeriod.PERIOD_WEEK
-            R.id.one_month_chip_view -> PriceChartPeriod.PERIOD_MONTH
-            R.id.three_month_chip_view -> PriceChartPeriod.PERIOD_QUARTER
-            R.id.one_year_chip_view -> PriceChartPeriod.PERIOD_YEAR
-            R.id.one_day_chip_view -> PriceChartPeriod.PERIOD_DAY
+            R.id.one_day_chip_view -> PriceChartPeriod.DAY
+            R.id.one_week_chip_view -> PriceChartPeriod.WEEK
+            R.id.one_month_chip_view -> PriceChartPeriod.MONTH
+            R.id.three_month_chip_view -> PriceChartPeriod.MONTH_3
+            R.id.one_year_chip_view -> PriceChartPeriod.YEAR
             else -> return
         }
         chartInfo[period]?.let {
@@ -75,7 +80,7 @@ class TransactionsViewModel(
         } ?: loadChartData(period)
     }
 
-    private fun loadChartData(@PriceChartPeriod period: Int) {
+    private fun loadChartData(period: PriceChartPeriod) {
         if (coinCode == LocalCoinType.CATM.name) {
             val catmChartStubEnd = BarEntry(10.0f, CATM_PRICE.toFloat())
             val catmChartStubStart = BarEntry(0.0f, CATM_PRICE.toFloat())
@@ -142,4 +147,5 @@ class TransactionsViewModel(
                 .collect()
         }
     }
+
 }

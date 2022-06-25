@@ -14,5 +14,5 @@ class GetChartsUseCase(
     override suspend fun run(params: Params): Either<Failure, ChartDataItem> =
         repository.getChart(params.coinCode, params.period)
 
-    data class Params(val coinCode: String, @PriceChartPeriod val period: Int)
+    data class Params(val coinCode: String, val period: PriceChartPeriod)
 }
