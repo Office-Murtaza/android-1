@@ -4,6 +4,6 @@ import com.belcobtm.data.rest.wallet.request.PriceChartPeriod
 import com.belcobtm.domain.wallet.item.ChartDataItem
 
 data class CurrentChartInfo(
-    @PriceChartPeriod val period: Int,
+    val period: PriceChartPeriod,
     val chartInfo: ChartDataItem
 )

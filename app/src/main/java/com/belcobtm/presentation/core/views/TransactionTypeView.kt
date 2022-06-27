@@ -12,6 +12,7 @@ import android.view.View
 import androidx.core.content.ContextCompat
 import com.belcobtm.R
 import com.belcobtm.domain.transaction.type.TransactionType
+import com.belcobtm.presentation.core.extensions.getResText
 import kotlin.math.min
 
 class TransactionTypeView @JvmOverloads constructor(
@@ -79,41 +80,26 @@ class TransactionTypeView @JvmOverloads constructor(
     }
 
     fun setTransactionType(type: TransactionType) {
-        val textRes = when (type) {
-            TransactionType.UNKNOWN -> R.string.transaction_type_unknown
-            TransactionType.DEPOSIT -> R.string.transaction_type_deposit
-            TransactionType.WITHDRAW -> R.string.transaction_type_withdraw
-            TransactionType.SEND_TRANSFER -> R.string.transaction_type_send_transfer
-            TransactionType.RECEIVE_TRANSFER -> R.string.transaction_type_receive_transfer
-            TransactionType.BUY -> R.string.transaction_type_buy
-            TransactionType.SELL -> R.string.transaction_type_sell
-            TransactionType.MOVE -> R.string.transaction_type_move
-            TransactionType.SWAP_SEND -> R.string.transaction_type_send_exchange
-            TransactionType.SWAP_RECEIVE -> R.string.transaction_type_receive_exchange
-            TransactionType.RESERVE -> R.string.transaction_type_reserve
-            TransactionType.RECALL -> R.string.transaction_type_recall
-            TransactionType.SELF -> R.string.transaction_type_self
-            TransactionType.STAKE_CREATE -> R.string.transaction_type_stake_create
-            TransactionType.STAKE_CANCEL -> R.string.transaction_type_stake_cancel
-            TransactionType.STAKE_WITHDRAW -> R.string.transaction_type_stake_withdraw
-        }
+        val textRes = type.getResText()
+
         val mainColorRes = when (type) {
             TransactionType.UNKNOWN,
             TransactionType.DEPOSIT,
             TransactionType.RECEIVE_TRANSFER,
-            TransactionType.BUY,
-            TransactionType.SWAP_RECEIVE,
+            TransactionType.ATM_SELL,
+            TransactionType.RECEIVE_SWAP,
             TransactionType.RECALL,
-            TransactionType.STAKE_WITHDRAW -> R.color.color_status_1
+            TransactionType.WITHDRAW_STAKE -> R.color.color_status_1
             TransactionType.WITHDRAW,
             TransactionType.SEND_TRANSFER,
-            TransactionType.SELL,
-            TransactionType.SWAP_SEND,
+            TransactionType.ATM_BUY,
+            TransactionType.SEND_SWAP,
             TransactionType.RESERVE,
-            TransactionType.STAKE_CREATE -> R.color.color_status_2
+            TransactionType.CREATE_STAKE -> R.color.color_status_2
             TransactionType.MOVE,
             TransactionType.SELF,
-            TransactionType.STAKE_CANCEL -> R.color.color_status_3
+            TransactionType.CANCEL_STAKE -> R.color.color_status_3
+            else -> R.color.color_status_1
         }
         mainColor = ContextCompat.getColor(context, mainColorRes)
         text = resources.getString(textRes)

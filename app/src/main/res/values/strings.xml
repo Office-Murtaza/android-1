@@ -84,7 +84,7 @@
     <!-- Create wallet screen -->
     <string name="verify_sms_code">Enter SMS code</string>
     <string name="phone_number">201-555-0123</string>
-    <string name="create_wallet_screen_title">Create Wallet</string>
+    <string name="create_wallet_screen_title">Create New Wallet</string>
     <string name="create_wallet_screen_phone">Phone</string>
     <string name="create_wallet_email">Email</string>
     <string name="create_wallet_screen_password">Password</string>
@@ -677,7 +677,7 @@
     <string name="wallet_unlinked">Wallet deleted from current device</string>
 
     //unlink
-    <string name="unlink_text_top">Please, make sure you have stored your credentials and seed phrase before unlinking the wallet. Otherwise, you may lose all assets</string>
+    <string name="unlink_text_top">Make sure you have stored your credentials and seed phrase. In case you lose the seed phrase you will not be able to recover your wallet!</string>
 
     //verification
     <string name="verify_label">Verify</string>

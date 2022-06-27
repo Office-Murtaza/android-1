@@ -14,18 +14,9 @@ class WalletApiService(
     private val prefHelper: SharedPreferencesHelper
 ) {
 
-    suspend fun getBalance(enabledCoinList: List<String>): Either<Failure, BalanceDataItem> = try {
-        val request = api.getBalanceAsync(prefHelper.userId, enabledCoinList)
-        request.body()?.let { Either.Right(it.mapToDataItem()) }
-            ?: Either.Left(Failure.ServerError())
-    } catch (failure: Failure) {
-        failure.printStackTrace()
-        Either.Left(failure)
-    }
-
     suspend fun getChart(
         coinCode: String,
-        @PriceChartPeriod period: Int
+        period: PriceChartPeriod
     ): Either<Failure, ChartDataItem> = try {
         val request = api.getChartAsync(coinCode, period)
         request.body()?.let { Either.Right(it.mapToDataItem()) }

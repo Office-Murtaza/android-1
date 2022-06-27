@@ -6,14 +6,14 @@ import com.belcobtm.domain.transaction.type.TransactionStatusType
 import com.belcobtm.domain.transaction.type.TransactionType
 
 data class TransactionDetailsResponse(
-    val txId: String?,
+    val id: String?,
     val txDBId: String?,
     val link: String?,
     val coin: String?,
-    val userId: String,
-    val type: Int?,
-    val status: Int,
-    val cashStatus: Int,
+    val userId: String?,
+    val type: TransactionType?,
+    val status: TransactionStatusType?,
+    val cashStatus: TransactionCashStatusType?,
     val cryptoAmount: Double?,
     val fiatAmount: Double?,
     val feePercent: Double?,
@@ -40,7 +40,7 @@ fun TransactionDetailsResponse.mapToDataItem(coinCode: String): TransactionDetai
         fiatAmount = fiatAmount,
         cryptoFee = cryptoFee,
         refCryptoAmount = refCryptoAmount,
-        txId = txId,
+        txId = id,
         txDbId = txDBId.orEmpty(),
         link = link,
         timestamp = timestamp,
@@ -56,9 +56,7 @@ fun TransactionDetailsResponse.mapToDataItem(coinCode: String): TransactionDetai
         refCoin = refCoin,
         feePercent = feePercent,
         confiramtions = confirmations,
-        type = TransactionType.values().firstOrNull { it.code == type } ?: TransactionType.UNKNOWN,
-        statusType = TransactionStatusType.values().firstOrNull { it.code == status }
-            ?: TransactionStatusType.UNKNOWN,
-        cashStatusType = TransactionCashStatusType.values().firstOrNull { it.code == cashStatus }
-            ?: TransactionCashStatusType.UNKNOWN
+        type = type ?: TransactionType.UNKNOWN,
+        statusType = status ?: TransactionStatusType.UNKNOWN,
+        cashStatusType = cashStatus ?: TransactionCashStatusType.UNKNOWN
     )

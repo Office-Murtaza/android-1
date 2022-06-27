@@ -9,16 +9,19 @@
     android:clickable="true"
     android:focusable="true"
     android:gravity="center_vertical"
-    android:orientation="horizontal">
+    android:orientation="horizontal"
+    android:paddingTop="16dp">
 
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/imageView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginVertical="2dp"
+        android:layout_marginStart="16dp"
+        app:layout_constraintBottom_toBottomOf="@id/priceView"
+        app:layout_constraintDimensionRatio="1:1"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toTopOf="@id/nameView"
         app:srcCompat="@drawable/ic_coin_bitcoin" />
 
     <TextView
@@ -26,8 +29,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16sp"
-        android:layout_marginTop="16dp"
         android:gravity="center_vertical"
+        android:maxLines="1"
         android:textSize="16sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@id/priceView"
@@ -42,6 +45,7 @@
         android:layout_gravity="bottom"
         android:layout_marginBottom="16dp"
         android:gravity="center_vertical"
+        android:maxLines="1"
         android:textColor="#8d8d8d"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="@id/nameView"
@@ -52,23 +56,20 @@
         android:id="@+id/balanceCryptoView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
         android:textSize="16sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@id/balanceFiatView"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toTopOf="@id/nameView"
         tools:text="12.4124 BTC" />
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/balanceFiatView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
         android:textColor="@color/colorPrimary"
         android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@id/balanceCryptoView"
         app:layout_constraintTop_toBottomOf="@id/balanceCryptoView"
         tools:text="48.64 $" />

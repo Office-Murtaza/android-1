@@ -39,15 +39,13 @@ class TransactionDetailsViewModel(
                 txId,
                 coinCode
             )
-        )
-            .map {
-                if (it != null) {
-                    LoadingData.Success(mapToItemList(it))
-                } else {
-                    LoadingData.Error(Failure.ServerError())
-                }
+        ).map {
+            if (it != null) {
+                LoadingData.Success(mapToItemList(it))
+            } else {
+                LoadingData.Error(Failure.ServerError())
             }
-            .asLiveData(Dispatchers.Default)
+        }.asLiveData(Dispatchers.Default)
 
     private fun mapToItemList(
         dataItem: TransactionDetailsDataItem
@@ -142,7 +140,7 @@ class TransactionDetailsViewModel(
         }
         // swap id
         val isSwap =
-            dataItem.type == TransactionType.SWAP_SEND || dataItem.type == TransactionType.SWAP_RECEIVE
+            dataItem.type == TransactionType.SEND_SWAP || dataItem.type == TransactionType.RECEIVE_SWAP
         if (isSwap && dataItem.refTxId != null && dataItem.refLink != null) {
             val swapBlockItem = TransactionDetailsAdapter.Item.Id(
                 R.string.transaction_details_swap_id,
@@ -210,40 +208,41 @@ class TransactionDetailsViewModel(
     @DrawableRes
     private fun getImageResFromTransactionStatus(status: TransactionStatusType): Int {
         return when (status) {
-            TransactionStatusType.UNKNOWN -> throw IllegalArgumentException()
             TransactionStatusType.PENDING -> R.drawable.ic_blue_dots
             TransactionStatusType.COMPLETE -> R.drawable.ic_check_green
-            TransactionStatusType.FAIL -> R.drawable.ic_red_cross
+            else -> R.drawable.ic_red_cross
         }
     }
 
     @StringRes
     private fun getTextResFromTransactionStatus(status: TransactionStatusType): Int {
         return when (status) {
-            TransactionStatusType.UNKNOWN -> throw IllegalArgumentException()
             TransactionStatusType.PENDING -> R.string.transaction_status_pending
             TransactionStatusType.COMPLETE -> R.string.transaction_status_complete
             TransactionStatusType.FAIL -> R.string.transaction_status_fail
+            else -> R.string.base_screen_server_error_title
+
         }
     }
 
     @DrawableRes
     private fun getImageResFromTransactionCashStatus(status: TransactionCashStatusType): Int {
         return when (status) {
-            TransactionCashStatusType.UNKNOWN -> throw IllegalArgumentException()
             TransactionCashStatusType.PENDING -> R.drawable.ic_dots
             TransactionCashStatusType.AVAILABLE -> R.drawable.ic_ring
             TransactionCashStatusType.WITHDRAWN -> R.drawable.ic_arrow_down
+            else -> R.drawable.ic_red_cross
         }
     }
 
     @StringRes
     private fun getTextResFromTransactionCashStatus(status: TransactionCashStatusType): Int {
         return when (status) {
-            TransactionCashStatusType.UNKNOWN -> throw IllegalArgumentException()
             TransactionCashStatusType.PENDING -> R.string.transition_details_screen_pending
             TransactionCashStatusType.AVAILABLE -> R.string.transition_details_screen_available
             TransactionCashStatusType.WITHDRAWN -> R.string.transition_details_screen_withdrawn
+            else -> R.string.base_screen_server_error_title
         }
     }
+
 }

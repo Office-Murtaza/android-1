@@ -81,7 +81,8 @@ class AtmFragment : BaseFragment<FragmentAtmBinding>(),
         mapFragment?.getMapAsync(this)
     }
 
-    override fun onInfoWindowClick(marker: Marker?) {
+    override fun onInfoWindowClick(marker: Marker) {
+        // Does nothing
     }
 
     override fun FragmentAtmBinding.initObservers() {
@@ -250,4 +251,5 @@ class AtmFragment : BaseFragment<FragmentAtmBinding>(),
         vectorDrawable.draw(canvas)
         return BitmapDescriptorFactory.fromBitmap(bitmap)
     }
+
 }

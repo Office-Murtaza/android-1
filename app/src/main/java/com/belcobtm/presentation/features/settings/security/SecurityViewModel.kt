@@ -48,35 +48,19 @@ class SecurityViewModel(
     }
 
     fun handleItemClick(securityItem: SecurityItem) {
-        when (securityItem) {
-            SecurityItem.PHONE -> {
-                val direction = SecurityFragmentDirections.toPassword(
-                    R.id.password_to_change_phone_fragment,
-                    R.string.update_phone_label
-                )
-                _actionData.value = SecurityAction.NavigateAction(direction)
-            }
-            SecurityItem.PASS -> {
-                val direction = SecurityFragmentDirections.toUpdatePassword()
-                _actionData.value = SecurityAction.NavigateAction(direction)
-            }
-            SecurityItem.PIN -> {
-                val direction = SecurityFragmentDirections.toPinCode()
-                _actionData.value = SecurityAction.NavigateAction(direction)
-            }
-            SecurityItem.SEED -> {
-                val direction = SecurityFragmentDirections.toPassword(
+        _actionData.value = SecurityAction.NavigateAction(
+            when (securityItem) {
+                SecurityItem.PHONE -> SecurityFragmentDirections.toChangePhoneFragment()
+                SecurityItem.PASS -> SecurityFragmentDirections.toUpdatePassword()
+                SecurityItem.PIN -> SecurityFragmentDirections.toPinCode()
+                SecurityItem.SEED -> SecurityFragmentDirections.toPassword(
                     R.id.password_to_create_seed_fragment,
                     R.string.seed_phrase_label,
                     CreateSeedFragment.MODE_SETTINGS
                 )
-                _actionData.value = SecurityAction.NavigateAction(direction)
+                SecurityItem.UNLINK -> SecurityFragmentDirections.toUnlink()
             }
-            SecurityItem.UNLINK -> {
-                val direction = SecurityFragmentDirections.toUnlink()
-                _actionData.value = SecurityAction.NavigateAction(direction)
-            }
-        }
+        )
     }
 
     private fun fetchUserPhone() {
@@ -86,7 +70,7 @@ class SecurityViewModel(
             onSuccess = {
                 val formattedNumber = phoneNumberFormatter.format(it)
                 _userPhone.value = LoadingData.Success(formattedNumber)
-                        },
+            },
             onError = { _userPhone.value = LoadingData.Error(it) }
         )
     }

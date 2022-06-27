@@ -13,8 +13,11 @@ import com.belcobtm.presentation.core.ui.fragment.BaseFragment
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class PasswordFragment : BaseFragment<FragmentPasswordBinding>() {
+
     private val viewModel by viewModel<PasswordViewModel>()
+
     private val args: PasswordFragmentArgs by navArgs()
+
     private var appliedState: LoadingData<PasswordState>? = null
     override val retryListener = View.OnClickListener {
         viewModel.onNextClick(binding.passwordView.text?.toString().orEmpty())
@@ -41,10 +44,10 @@ class PasswordFragment : BaseFragment<FragmentPasswordBinding>() {
     override fun FragmentPasswordBinding.initObservers() {
         viewModel.stateData.listen(
             success = { state ->
-                state.doIfChanged(appliedState, {
+                state.doIfChanged(appliedState) {
                     showContent()
                     passwordContainerView.isErrorEnabled = false
-                })
+                }
                 state.isButtonEnabled.doIfChanged(appliedState?.commonData?.isButtonEnabled) {
                     nextButton.isEnabled = it
                 }

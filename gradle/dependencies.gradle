@@ -1,0 +1,166 @@
+ext.versions = [
+
+        kotlin        : "1.6.0",
+
+        navigation    : "2.4.2",
+
+        lifecycle     : "2.4.1",
+
+        retrofit      : "2.9.0",
+
+        moshi         : "1.12.0",  // 1.13.0 causes "Records requires ASM8" issue
+
+        okhttp3       : "5.0.0-alpha.2",
+
+        room          : "2.4.2",
+
+        etheriumClient: "3.0.1-android",
+
+        acuant        : "11.4.16",
+
+        permissions   : "4.9.2"
+]
+
+
+ext.plugs = [
+        androidGradlePlugin       : "com.android.tools.build:gradle:7.0.4",
+        kotlinGradlePlugin        : "org.jetbrains.kotlin:kotlin-gradle-plugin:$versions.kotlin",
+        googleServicesGradlePlugin: "com.google.gms:google-services:4.3.10",
+        firebase                  : [
+                crashlytics    : "com.google.firebase:firebase-crashlytics-gradle:2.9.0",
+                appDistribution: "com.google.firebase:firebase-appdistribution-gradle:3.0.2",
+                performance    : "com.google.firebase:perf-plugin:1.4.1"
+        ],
+        safeArgsGradlePlugin      : "androidx.navigation:navigation-safe-args-gradle-plugin:$versions.navigation"
+]
+
+ext.libs = [
+
+        androidX    : [
+                core    : "androidx.core:core-ktx:1.8.0",
+                ui      : [
+                        appСompat       : "androidx.appcompat:appcompat:1.4.2",
+                        fragmentKtx     : "androidx.fragment:fragment-ktx:1.4.1",
+                        constraintLayout: "androidx.constraintlayout:constraintlayout:2.1.4",
+                        viewPager2      : "androidx.viewpager2:viewpager2:1.0.0",
+                        swipe           : "androidx.swiperefreshlayout:swiperefreshlayout:1.1.0",
+                        legacy          : "androidx.legacy:legacy-support-v4:1.0.0",
+                ],
+                security: [
+                        biometric: "androidx.biometric:biometric:1.2.0-alpha04",
+                        crypto   : "androidx.security:security-crypto:1.0.0"
+                ]
+        ],
+
+        ui          : [
+                material        : "com.google.android.material:material:1.6.1",
+                thirdParty      : [
+                        materialFabSpeedDial: "com.github.kobakei:MaterialFabSpeedDial:2.0.0", //fab list
+                        clanFab             : "com.github.clans:fab:1.6.4",
+                        flexbox             : "com.google.android.flexbox:flexbox:3.0.0", // flexbox layout manager
+                        imagepicker         : "com.kroegerama:bottomsheet-imagepicker:1.1.2",
+                        libphonenumber      : "io.michaelrocks:libphonenumber-android:8.12.50", //number validation
+                        charts              : "com.github.PhilJay:MPAndroidChart:v3.1.0" // charts
+                ],
+                pinEntryEditText: "com.alimuzaffar.lib:pinentryedittext:2.0.6" // 3d-party sms code edit text, but needs exclude
+
+        ],
+
+        navigation  : [
+                fragmentKtx: "androidx.navigation:navigation-fragment-ktx:$versions.navigation",
+                uiKtx      : "androidx.navigation:navigation-ui-ktx:$versions.navigation"
+        ],
+
+        koin        : "io.insert-koin:koin-android:3.1.4",  // DI
+
+        lifecycle   : [
+                viewmodel  : "androidx.lifecycle:lifecycle-viewmodel-ktx:$versions.lifecycle",
+                livedataKtx: "androidx.lifecycle:lifecycle-livedata-ktx:$versions.lifecycle",
+                process    : "androidx.lifecycle:lifecycle-process:$versions.lifecycle",
+                common     : "androidx.lifecycle:lifecycle-common-java8:$versions.lifecycle",
+                extensions : "androidx.lifecycle:lifecycle-extensions:2.2.0",
+        ],
+
+        retrofit    : [
+                retrofit      : "com.squareup.retrofit2:retrofit:$versions.retrofit",
+                moshiConventer: "com.squareup.retrofit2:converter-moshi:$versions.retrofit"
+        ],
+
+        moshi       : [
+                moshi       : "com.squareup.moshi:moshi-kotlin:$versions.moshi",
+                moshiCodegen: "com.squareup.moshi:moshi-kotlin-codegen:$versions.moshi"
+        ],
+
+        okhttp3     : [
+                okhttp3: "com.squareup.okhttp3:okhttp:$versions.okhttp3",
+                logging: "com.squareup.okhttp3:logging-interceptor:$versions.okhttp3"
+        ],
+
+        room        : [
+                ktx     : "androidx.room:room-ktx:$versions.room",
+                runtime : "androidx.room:room-runtime:$versions.room",
+                compiler: "androidx.room:room-compiler:$versions.room",
+        ],
+
+        crypto      : [
+                trustwallet : "com.trustwallet:wallet-core:2.6.29",
+                web3jCore   : "org.web3j:core:$versions.etheriumClient",
+                web3jUtils  : "org.web3j:utils:$versions.etheriumClient",
+                web3jAbi    : "org.web3j:abi:$versions.etheriumClient",
+                ethereumGeth: "org.ethereum:geth:1.8.11"
+        ],
+
+        cryptography: "com.yakivmospan:scytale:1.0.1",
+
+        glide       : "com.github.bumptech.glide:glide:4.13.0",
+
+        gifs        : [
+                giphy      : "com.giphy.sdk:ui:2.1.18",
+                gifDrawable: "pl.droidsonroids.gif:android-gif-drawable:1.2.20"
+        ],
+
+        permissions : [
+                dispatcher: "com.github.permissions-dispatcher:permissionsdispatcher:$versions.permissions",
+                processor : "com.github.permissions-dispatcher:permissionsdispatcher-processor:$versions.permissions"
+        ],
+
+        googlePlay  : [
+                maps    : "com.google.android.gms:play-services-maps:18.0.2",
+                location: "com.google.android.gms:play-services-location:20.0.0",
+                vision  : "com.google.android.gms:play-services-vision:20.1.3"
+        ],
+
+        firebase    : [
+                main       : [
+                        crashlytics: "com.google.firebase:firebase-crashlytics:18.2.11",
+                        analytics  : "com.google.firebase:firebase-analytics-ktx:21.0.0",
+                        messaging  : "com.google.firebase:firebase-messaging:23.0.5",
+                        auth       : "com.google.firebase:firebase-auth-ktx:21.0.5",
+                        storage    : "com.google.firebase:firebase-storage-ktx:20.0.1"
+                ],
+                performance: "com.google.firebase:firebase-perf:20.0.1" // using exclusion
+        ],
+
+        acuant      : [
+                common         : "com.acuant:acuantcommon:$versions.acuant",
+                camera         : "com.acuant:acuantcamera:$versions.acuant",
+                image          : "com.acuant:acuantimagepreparation:$versions.acuant",
+                document       : "com.acuant:acuantdocumentprocessing:$versions.acuant",
+                chipReader     : "com.acuant:acuantechipreader:$versions.acuant",
+                pLiveness      : "com.acuant:acuantipliveness:$versions.acuant",
+                faceMatch      : "com.acuant:acuantfacematch:$versions.acuant",
+                faceCapture    : "com.acuant:acuantfacecapture:$versions.acuant",
+                hgLiveness     : "com.acuant:acuanthgliveness:$versions.acuant",
+                passiveLiveness: "com.acuant:acuantpassiveliveness:$versions.acuant"
+        ],
+
+        zxing       : [
+                core    : "com.google.zxing:core:3.4.0",
+                embedded: "com.journeyapps:zxing-android-embedded:4.2.0",
+        ],
+
+        plaid       : "com.plaid.link:sdk-core:3.8.0",
+
+        zendesk     : "zendesk.messaging:messaging-android:2.4.0"
+
+]

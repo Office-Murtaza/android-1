@@ -7,13 +7,14 @@ import androidx.core.widget.addTextChangedListener
 import com.belcobtm.R
 import com.belcobtm.databinding.FragmentChangePhoneBinding
 import com.belcobtm.domain.Failure
-import com.belcobtm.domain.settings.interactor.ERROR_UPDATE_PHONE_IS_SAME
-import com.belcobtm.domain.settings.interactor.ERROR_UPDATE_PHONE_IS_USED
 import com.belcobtm.presentation.core.mvvm.LoadingData
 import com.belcobtm.presentation.core.ui.fragment.BaseFragment
+import com.belcobtm.presentation.features.settings.phone.PhoneChangeViewModel.Companion.ERROR_UPDATE_PHONE_IS_SAME
+import com.belcobtm.presentation.features.settings.phone.PhoneChangeViewModel.Companion.ERROR_UPDATE_PHONE_IS_USED
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class PhoneChangeFragment : BaseFragment<FragmentChangePhoneBinding>() {
+
     val viewModel by viewModel<PhoneChangeViewModel>()
     private var appliedState: LoadingData<PhoneChangeState>? = null
     override val isHomeButtonEnabled = true
@@ -81,4 +82,5 @@ class PhoneChangeFragment : BaseFragment<FragmentChangePhoneBinding>() {
 
     override fun createBinding(inflater: LayoutInflater, container: ViewGroup?): FragmentChangePhoneBinding =
         FragmentChangePhoneBinding.inflate(inflater, container, false)
+
 }

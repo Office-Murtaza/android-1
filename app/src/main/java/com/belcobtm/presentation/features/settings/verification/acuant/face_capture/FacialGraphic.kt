@@ -65,7 +65,4 @@ internal class FacialGraphic
         }
     }
 
-    companion object {
-        private val EYE_RADIUS_PROPORTION = 0.45f
-    }
 }

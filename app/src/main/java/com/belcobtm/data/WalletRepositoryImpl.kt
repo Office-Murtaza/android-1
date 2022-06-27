@@ -26,7 +26,7 @@ class WalletRepositoryImpl(
 
     override suspend fun getChart(
         coinCode: String,
-        @PriceChartPeriod period: Int
+        period: PriceChartPeriod
     ): Either<Failure, ChartDataItem> = apiService.getChart(coinCode, period)
 
     override suspend fun getTotalBalance(): Either<Failure, Double> =

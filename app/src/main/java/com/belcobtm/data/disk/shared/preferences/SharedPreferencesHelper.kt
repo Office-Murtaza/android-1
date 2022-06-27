@@ -94,10 +94,6 @@ class SharedPreferencesHelper(private val sharedPreferences: SharedPreferences) 
         return ACCESS_TOKEN_BEARER.plus(token)
     }
 
-    fun clearValue(key: String) {
-        sharedPreferences[key] = null
-    }
-
     fun clearData() {
         val token = notificationToken
         sharedPreferences.edit()
