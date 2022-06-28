@@ -181,7 +181,6 @@ class CreateWalletFragment : BaseFragment<FragmentCreateWalletBinding>() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.root.post {
-            binding.phoneEditView.requestFocus()
             binding.phoneEditView.setSelection(
                 binding.phoneEditView.length()
             )

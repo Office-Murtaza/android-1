@@ -1,75 +1,66 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:fillViewport="true"
-    android:isScrollContainer="true"
-    android:overScrollMode="never"
-    android:scrollbars="none">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
-    <androidx.appcompat.widget.LinearLayoutCompat
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/title_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:focusable="true"
-        android:orientation="vertical">
+        android:layout_margin="16dp"
+        android:background="@drawable/bg_rounded_blue"
+        android:drawableTop="@drawable/ic_warning"
+        android:drawablePadding="8dp"
+        android:drawableTint="@color/colorPrimary"
+        android:gravity="center"
+        android:lineSpacingExtra="4dp"
+        android:padding="16dp"
+        android:text="@string/recover_seed_screen_description"
+        android:textColor="@color/colorPrimary"
+        android:textSize="16sp"
+        app:layout_constraintTop_toTopOf="parent" />
 
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/title_view"
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/seed_container_view"
+        style="@style/TextInputLayoutOutline"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="@dimen/margin_half"
+        android:layout_marginEnd="16dp"
+        app:layout_constraintTop_toBottomOf="@id/title_view">
+
+        <com.belcobtm.presentation.core.ui.view.EditTextNoAutoFill
+            android:id="@+id/seed_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="16dp"
-            android:background="@drawable/bg_rounded"
-            android:backgroundTint="#ebf4fd"
-            android:drawableTop="@drawable/ic_warning"
-            android:drawablePadding="8dp"
-            android:drawableTint="@color/colorPrimary"
-            android:gravity="center"
-            android:padding="16dp"
-            android:text="@string/recover_seed_screen_description"
-            android:textColor="@color/colorPrimary"
-            android:textSize="16sp" />
+            android:gravity="top"
+            android:importantForAutofill="no"
+            android:inputType="textMultiLine|textNoSuggestions"
+            android:minHeight="128dp" />
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/seed_container_view"
-            style="@style/TextInputLayoutOutline"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp">
+    </com.google.android.material.textfield.TextInputLayout>
 
-            <com.belcobtm.presentation.core.ui.view.EditTextNoAutoFill
-                android:id="@+id/seed_view"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="top"
-                android:importantForAutofill="no"
-                android:inputType="textMultiLine|textNoSuggestions"
-                android:minHeight="150dp" />
-        </com.google.android.material.textfield.TextInputLayout>
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/paste_button_view"
+        style="@style/Button.Secondary.NoOutlined"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="@string/paste"
+        app:icon="@drawable/ic_paste"
+        app:iconTint="@color/colorPrimary"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/seed_container_view" />
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/paste_button_view"
-            style="@style/Button.Secondary"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="16dp"
-            app:icon="@drawable/ic_paste"
-            app:iconTint="@color/colorPrimary"
-            android:text="@string/paste" />
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/next_button_view"
+        style="@style/Button.Primary"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/next"
+        app:layout_constraintBottom_toBottomOf="parent" />
 
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1" />
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/next_button_view"
-            style="@style/Button.Primary"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/next" />
-
-    </androidx.appcompat.widget.LinearLayoutCompat>
-</ScrollView>
+</androidx.constraintlayout.widget.ConstraintLayout>

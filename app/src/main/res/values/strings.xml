@@ -60,7 +60,7 @@
     <string name="welcome_screen_swap_title">Swap</string>
     <string name="welcome_screen_swap_description">Instantly exchange one crypto with another one</string>
     <string name="welcome_screen_p2p_title">P2P Trade</string>
-    <string name="welcome_screen_p2p_description">Trade crypto with people near you. Cash supported!</string>
+    <string name="welcome_screen_p2p_description">Trade crypto with people near you.\nCash supported!</string>
     <string name="welcome_screen_bank_title">Bank Accounts</string>
     <string name="welcome_screen_bank_description">Buy/Sell USDC from your bank account</string>
     <string name="welcome_screen_nft_title">NFT</string>
@@ -102,26 +102,24 @@
 
     <!--seed phrase-->
     <string name="seed_phrase">Seed Phrase</string>
-    <string name="seed_info">If you lost your seed phrase you would not be able to recover your wallet</string>
     <string name="seed_clipboard">Seed phrase copied to clipboard</string>
     <string name="seed_phrase_screen_copy">Copy</string>
     <string name="seed_phrase_screen_done">Done</string>
     <string name="seed_pharse_paste_error_message">Seed phrase should contain 12 words separated by space. Please rechecked seed phrase and paste it again</string>
 
     <!--  Show seed phrase screen  -->
-    <string name="show_seed_screen_title">Show seed phrase</string>
-    <string name="show_seed_screen_description">If you lost your seed phrase you would not be able to recover your wallet</string>
+    <string name="show_seed_screen_title">Seed Phrase</string>
+    <string name="show_seed_screen_description">This is your wallet seed phrase. Keep it\nin a secure place and don’t share it with\nanyone. In case you lose the seed\nphrase you will not be able to recover\nyour wallet!</string>
 
     <!-- Recover Seed Screen -->
     <string name="recover_seed_screen_title">Seed Phrase</string>
-    <string name="recover_seed_screen_description">Enter your secret 12-word phrase\nhere to restore your wallet</string>
+    <string name="recover_seed_screen_description">Enter your 12-word seed phrase here\nto restore your wallet.</string>
     <string name="recover_seed_screen_error_length">Seed phrase must be 12 words</string>
     <string name="recover_seed_screen_incorrect_phrase">Seed phrase you entered is invalid. Please try again</string>
 
-
     <!-- Create Seed Screen-->
-    <string name="create_seed_screen_title">Create Seed Phrase</string>
-    <string name="create_seed_screen_description">Create a new seed phrase or use your own. In case you lost seed phrase you will not be able to recover your wallet</string>
+    <string name="create_seed_screen_title">Seed Phrase</string>
+    <string name="create_seed_screen_description">Generate a new seed phrase or paste your own. In case you lose the seed phrase you will not be able to recover your wallet!</string>
     <string name="create_seed_screen_seed_phrase_copied">Seed phrase copied</string>
     <!--    <string name="create_seed_screen_"></string>-->
 
@@ -652,7 +650,7 @@
     <string name="support_label">Support</string>
     <string name="version_label">Version</string>
     <string name="update_phone_label">Update Phone</string>
-    <string name="update_phone_hint">New phone</string>
+    <string name="update_phone_hint">New Phone Number</string>
     <string name="update_pass_label">Update Password</string>
     <string name="update_pin_label">Update PIN</string>
     <string name="bio_auth_label">Use Bio Auth</string>
@@ -664,9 +662,9 @@
     <string name="password_hint">Password</string>
     <string name="password_doesnt_match">Wrong password</string>
     <string name="password_confirm_not_match">Passwords don\'t match</string>
-    <string name="old_pass_hint">Old password</string>
-    <string name="new_pass_hint">New password</string>
-    <string name="new_pass_confirm_hint">Confirm new password</string>
+    <string name="old_pass_hint">Old Password</string>
+    <string name="new_pass_hint">New Password</string>
+    <string name="new_pass_confirm_hint">Confirm New Password</string>
     <string name="update_pass_action">Update</string>
     <string name="same_password">New password is the same as the old one</string>
 

@@ -5,6 +5,7 @@ import android.content.res.ColorStateList;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.RectF;
@@ -99,7 +100,7 @@ public class ChipSpan extends ImageSpan implements Chip {
 
         mEllipsis = context.getString(R.string.chip_ellipsis);
 
-        mDefaultBackgroundColor = ContextCompat.getColorStateList(context, R.color.chip_material_background);
+        mDefaultBackgroundColor = ContextCompat.getColorStateList(context, R.color.light_gray_stroke);
         mBackgroundColor = mDefaultBackgroundColor;
 
         mTextColor = ContextCompat.getColor(context, R.color.chip_default_text_color);
@@ -416,11 +417,16 @@ public class ChipSpan extends ImageSpan implements Chip {
 
     private void drawBackground(Canvas canvas, float x, int top, int bottom, Paint paint) {
         int backgroundColor = mBackgroundColor.getColorForState(mStateSet, mBackgroundColor.getDefaultColor());
-        paint.setColor(backgroundColor);
+        Paint strokePaint = new Paint();
+        strokePaint.setStyle(Paint.Style.STROKE);
+        strokePaint.setColor(backgroundColor);
+        strokePaint.setStrokeWidth(2);
+        strokePaint.setStrokeCap(Paint.Cap.ROUND);
         int height = calculateChipHeight(top, bottom);
         RectF rect = new RectF(x, top, x + mChipWidth, bottom);
         int cornerRadius = (mCornerRadius != -1) ? mCornerRadius : height / 2;
-        canvas.drawRoundRect(rect, cornerRadius, cornerRadius, paint);
+        canvas.drawRoundRect(rect, cornerRadius, cornerRadius, strokePaint);
+        
         paint.setColor(mTextColor);
     }
 

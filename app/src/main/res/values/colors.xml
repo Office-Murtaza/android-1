@@ -25,9 +25,10 @@
     <color name="toast_background">#80000000</color>
     <color name="toast_text">#FFFFFF</color>
 
-    <color name="gray_progress">#90000000</color>
+    <color name="light_gray_stroke">#e0e0e0</color>
 
     <color name="bg_color">#f3f3f3</color>
+    <color name="bg_blue">#EAF3FE</color>
 
     <color name="bt_gray">#afb0ab</color>
     <color name="bt_orange">#ffcd4c</color>

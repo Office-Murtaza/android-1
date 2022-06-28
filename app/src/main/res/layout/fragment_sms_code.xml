@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/rootView"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fillViewport="true"
@@ -36,7 +35,6 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/image_view" />
-
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/code_entry_view"
@@ -110,12 +108,14 @@
             android:id="@+id/resendCodeButtonView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/sms_code_screen_resend_code"
             android:layout_marginStart="4dp"
+            android:text="@string/sms_code_screen_resend_code"
             android:textColor="@color/colorPrimary"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/resendCodeTitleView"
             app:layout_constraintTop_toTopOf="@id/resendCodeTitleView" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
+
 </ScrollView>
