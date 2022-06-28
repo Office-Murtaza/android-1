@@ -5,9 +5,9 @@ import com.belcobtm.domain.transaction.type.TransactionStatusType
 import com.belcobtm.domain.transaction.type.TransactionType
 
 data class TransactionDetailsDataItem(
-    val txId: String?,
+    val hash: String?,
+    val gbId: String,
     val coinCode: String,
-    val txDbId: String,
     val cryptoAmount: Double?,
     val fiatAmount: Double?,
     val cryptoFee: Double?,

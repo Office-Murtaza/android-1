@@ -24,7 +24,9 @@ class WebSocketPaymentsObserver(
     private val paymentsInMemoryCache: PaymentsInMemoryCache,
     private val sharedPreferencesHelper: SharedPreferencesHelper
 ) : PaymentsObserver {
+
     private companion object {
+
         const val DESTINATION_VALUE = "/user/queue/bank-account-payment"
     }
 
@@ -55,14 +57,4 @@ class WebSocketPaymentsObserver(
         }
     }
 
-    override fun disconnect() {
-        if (subscribeJob == null) {
-            return
-        }
-        ioScope.launch {
-            subscribeJob?.cancel()
-            subscribeJob = null
-            socketManager.unsubscribe(DESTINATION_VALUE)
-        }
-    }
 }

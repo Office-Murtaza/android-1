@@ -27,6 +27,7 @@ class WebSocketTransactionsObserver(
 ) : TransactionsObserver {
 
     private companion object {
+
         const val DESTINATION_VALUE = "/user/queue/transaction"
     }
 
@@ -58,14 +59,4 @@ class WebSocketTransactionsObserver(
         }
     }
 
-    override fun disconnect() {
-        if(subscribeJob == null) {
-            return
-        }
-        ioScope.launch {
-            subscribeJob?.cancel()
-            subscribeJob = null
-            socketManager.unsubscribe(DESTINATION_VALUE)
-        }
-    }
 }

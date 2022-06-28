@@ -7,12 +7,9 @@ import com.belcobtm.data.disk.database.account.AccountDao
 import com.belcobtm.data.disk.database.wallet.WalletDao
 import com.belcobtm.data.disk.shared.preferences.SharedPreferencesHelper
 import com.belcobtm.data.rest.unlink.UnlinkApi
-import com.belcobtm.data.websockets.wallet.WalletConnectionHandler
 import com.belcobtm.domain.support.SupportChatHelper
 import com.belcobtm.presentation.features.HostActivity
 import org.koin.core.component.KoinComponent
-import org.koin.core.component.inject
-import java.lang.Exception
 
 class UnlinkHandler(
     private val prefsHelper: SharedPreferencesHelper,
@@ -23,14 +20,11 @@ class UnlinkHandler(
     private val supportChatHelper: SupportChatHelper
 ) : KoinComponent {
 
-    private val connectionHandler: WalletConnectionHandler by inject()
-
     suspend fun performUnlink(openInitialScreen: Boolean = true) {
         daoAccount.clearTable()
         walletDao.clear()
         unlink()
         prefsHelper.clearData()
-        connectionHandler.disconnect()
         supportChatHelper.reset()
         if (openInitialScreen) {
             context.startActivity(Intent(context, HostActivity::class.java).apply {
@@ -44,10 +38,11 @@ class UnlinkHandler(
 
     private suspend fun unlink() {
         try {
-            if(prefsHelper.userId.isNotEmpty()) {
+            if (prefsHelper.userId.isNotEmpty()) {
                 unlinkApi.unlinkAsync(prefsHelper.userId)
             }
         } catch (e: Exception) {
         }
     }
+
 }

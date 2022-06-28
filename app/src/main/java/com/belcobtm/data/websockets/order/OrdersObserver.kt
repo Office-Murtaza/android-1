@@ -4,5 +4,4 @@ interface OrdersObserver {
 
     fun connect()
 
-    fun disconnect()
 }

@@ -44,7 +44,7 @@ interface AuthApi {
     ): Response<CheckPassResponse>
 
     @POST("refresh")
-    fun refereshToken(
+    fun refreshToken(
         @Body request: RefreshTokenRequest
     ): Call<AuthorizationResponse>
 

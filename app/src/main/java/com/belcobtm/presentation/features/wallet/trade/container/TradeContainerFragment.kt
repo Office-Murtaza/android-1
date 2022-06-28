@@ -62,13 +62,6 @@ class TradeContainerFragment : BaseFragment<FragmentTradeListContainerBinding>()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         loadWithDistanceCalculationWithPermissionCheck()
-        viewModel.subscribeOnUpdates()
-    }
-
-
-    override fun onDestroy() {
-        super.onDestroy()
-        viewModel.unsubscribeFromUpdates()
     }
 
     override fun onRequestPermissionsResult(

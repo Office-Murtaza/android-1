@@ -4,5 +4,4 @@ interface ServicesObserver {
 
     fun connect()
 
-    fun disconnect()
 }

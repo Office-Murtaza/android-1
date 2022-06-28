@@ -75,16 +75,6 @@ class TradeOrderDetailsFragment : BaseFragment<FragmentTradeOrderDetailsBinding>
         paymentOptions.adapter = adapter
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        viewModel.connectToChat()
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        viewModel.disconnectFromChat()
-    }
-
     @SuppressLint("UnsafeExperimentalUsageError", "UnsafeOptInUsageError")
     override fun FragmentTradeOrderDetailsBinding.initObservers() {
         viewModel.initialLoadingData.listen()

@@ -12,19 +12,17 @@ import com.belcobtm.domain.authorization.interactor.SaveAuthorizePinUseCase
 import com.belcobtm.domain.authorization.interactor.SaveUserAuthedUseCase
 import com.belcobtm.domain.bank_account.interactor.ConnectToBankAccountsUseCase
 import com.belcobtm.domain.bank_account.interactor.ConnectToPaymentsUseCase
-import com.belcobtm.domain.bank_account.interactor.DisconnectFromBankAccountsUseCase
-import com.belcobtm.domain.bank_account.interactor.DisconnectFromPaymentsUseCase
 import com.belcobtm.domain.service.ConnectToServicesUseCase
-import com.belcobtm.domain.service.DisconnectFromServicesUseCase
 import com.belcobtm.domain.settings.interactor.BioAuthAllowedByUserUseCase
 import com.belcobtm.domain.settings.interactor.BioAuthSupportedByPhoneUseCase
 import com.belcobtm.domain.settings.interactor.UnlinkUseCase
 import com.belcobtm.domain.socket.ConnectToSocketUseCase
 import com.belcobtm.domain.support.SupportChatInteractor
+import com.belcobtm.domain.trade.list.ConnectToOrdersDataUseCase
+import com.belcobtm.domain.trade.list.ConnectToTradesDataUseCase
+import com.belcobtm.domain.trade.order.ConnectToChatUseCase
 import com.belcobtm.domain.transaction.interactor.ConnectToTransactionsUseCase
-import com.belcobtm.domain.transaction.interactor.DisconnectFromTransactionsUseCase
 import com.belcobtm.domain.wallet.interactor.ConnectToWalletUseCase
-import com.belcobtm.domain.wallet.interactor.DisconnectFromWalletUseCase
 import com.belcobtm.presentation.core.SingleLiveData
 import com.belcobtm.presentation.features.pin.code.PinCodeFragment.Companion.KEY_PIN_MODE_CHANGE
 import com.belcobtm.presentation.features.pin.code.PinCodeFragment.Companion.KEY_PIN_MODE_CREATE
@@ -45,15 +43,13 @@ class PinCodeViewModel(
     private val connectToPaymentsUseCase: ConnectToPaymentsUseCase,
     private val connectToTransactionsUseCase: ConnectToTransactionsUseCase,
     private val connectToServicesUseCase: ConnectToServicesUseCase,
-    private val disconnectFromWalletUseCase: DisconnectFromWalletUseCase,
-    private val disconnectFromTransactionsUseCase: DisconnectFromTransactionsUseCase,
-    private val disconnectFromServicesUseCase: DisconnectFromServicesUseCase,
-    private val disconnectFromBankAccountsUseCase: DisconnectFromBankAccountsUseCase,
-    private val disconnectFromPaymentsUseCase: DisconnectFromPaymentsUseCase,
+    private val connectToTradesDataUseCase: ConnectToTradesDataUseCase,
+    private val connectToOrdersDataUseCase: ConnectToOrdersDataUseCase,
+    private val connectToChatUseCase: ConnectToChatUseCase,
     private val authorizePinUseCase: GetAuthorizePinUseCase,
     private val savePinCodeUseCase: SaveAuthorizePinUseCase,
     private val saveUserAuthedUseCase: SaveUserAuthedUseCase,
-    private val supportChatInteractor: SupportChatInteractor
+    supportChatInteractor: SupportChatInteractor
 ) : ViewModel() {
 
     val stateData = MutableLiveData(PinCodeState())
@@ -80,24 +76,19 @@ class PinCodeViewModel(
             connectToServicesUseCase(Unit)
             connectToBankAccountsUseCase(Unit)
             connectToPaymentsUseCase(Unit)
+            connectToTradesDataUseCase(Unit)
+            connectToOrdersDataUseCase(Unit)
+            connectToChatUseCase(Unit)
         })
     }
 
-    fun unsubscribe() {
-        disconnectFromWalletUseCase(Unit)
-        disconnectFromTransactionsUseCase(Unit)
-        disconnectFromServicesUseCase(Unit)
-        disconnectFromBankAccountsUseCase(Unit)
-        disconnectFromPaymentsUseCase(Unit)
-    }
-
-    fun savePinCode(pinCode: String) =
+    private fun savePinCode(pinCode: String) =
         savePinCodeUseCase.invoke(SaveAuthorizePinUseCase.Params(pinCode))
 
     fun saveUserAuthed(userAuthed: Boolean) =
         saveUserAuthedUseCase.invoke(SaveUserAuthedUseCase.Params(userAuthed))
 
-    fun getSavedPinCode(): String = authorizePinUseCase.invoke()
+    private fun getSavedPinCode(): String = authorizePinUseCase.invoke()
 
     fun authorize() {
         stateData.value = stateData.value!!.copy(isLoading = true)
@@ -154,7 +145,7 @@ class PinCodeViewModel(
         }
     }
 
-    fun onPinEntered() {
+    private fun onPinEntered() {
         when {
             mode == KEY_PIN_MODE_ENTER -> validateUsualPinEnter()
             step == STEP_CREATE -> saveFirstPinVersion()
@@ -286,6 +277,7 @@ class PinCodeViewModel(
             onError = {},
         )
     }
+
 }
 
 data class PinCodeState(

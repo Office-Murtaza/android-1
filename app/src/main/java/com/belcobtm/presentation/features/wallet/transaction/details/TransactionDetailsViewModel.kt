@@ -52,10 +52,10 @@ class TransactionDetailsViewModel(
     ): List<TransactionDetailsAdapter.Item> {
         val result = mutableListOf<TransactionDetailsAdapter.Item>()
         // id block
-        if (dataItem.txId != null && dataItem.link != null) {
+        if (dataItem.hash != null && dataItem.link != null) {
             val idBlockItem = TransactionDetailsAdapter.Item.Id(
                 R.string.transaction_details_id,
-                dataItem.txId,
+                dataItem.hash,
                 dataItem.link
             )
             result.add(idBlockItem)

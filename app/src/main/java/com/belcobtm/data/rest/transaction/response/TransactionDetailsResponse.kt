@@ -6,8 +6,8 @@ import com.belcobtm.domain.transaction.type.TransactionStatusType
 import com.belcobtm.domain.transaction.type.TransactionType
 
 data class TransactionDetailsResponse(
-    val id: String?,
-    val txDBId: String?,
+    val hash: String?,
+    val gbId: String?,
     val link: String?,
     val coin: String?,
     val userId: String?,
@@ -33,30 +33,29 @@ data class TransactionDetailsResponse(
     val confirmations: Int?
 )
 
-fun TransactionDetailsResponse.mapToDataItem(coinCode: String): TransactionDetailsDataItem =
-    TransactionDetailsDataItem(
-        coinCode = coinCode,
-        cryptoAmount = cryptoAmount,
-        fiatAmount = fiatAmount,
-        cryptoFee = cryptoFee,
-        refCryptoAmount = refCryptoAmount,
-        txId = id,
-        txDbId = txDBId.orEmpty(),
-        link = link,
-        timestamp = timestamp,
-        fromPhone = fromPhone,
-        toPhone = toPhone,
-        fromAddress = fromAddress,
-        toAddress = toAddress,
-        imageId = image,
-        message = message,
-        sellInfo = sellInfo,
-        refTxId = refTxId,
-        refLink = refLink,
-        refCoin = refCoin,
-        feePercent = feePercent,
-        confiramtions = confirmations,
-        type = type ?: TransactionType.UNKNOWN,
-        statusType = status ?: TransactionStatusType.UNKNOWN,
-        cashStatusType = cashStatus ?: TransactionCashStatusType.UNKNOWN
-    )
+fun TransactionDetailsResponse.mapToDataItem(coinCode: String): TransactionDetailsDataItem = TransactionDetailsDataItem(
+    coinCode = coinCode,
+    cryptoAmount = cryptoAmount,
+    fiatAmount = fiatAmount,
+    cryptoFee = cryptoFee,
+    refCryptoAmount = refCryptoAmount,
+    hash = hash,
+    gbId = gbId.orEmpty(),
+    link = link,
+    timestamp = timestamp,
+    fromPhone = fromPhone,
+    toPhone = toPhone,
+    fromAddress = fromAddress,
+    toAddress = toAddress,
+    imageId = image,
+    message = message,
+    sellInfo = sellInfo,
+    refTxId = refTxId,
+    refLink = refLink,
+    refCoin = refCoin,
+    feePercent = feePercent,
+    confiramtions = confirmations,
+    type = type ?: TransactionType.UNKNOWN,
+    statusType = status ?: TransactionStatusType.UNKNOWN,
+    cashStatusType = cashStatus ?: TransactionCashStatusType.UNKNOWN
+)

@@ -4,5 +4,4 @@ interface TransactionsObserver {
 
     fun connect()
 
-    fun disconnect()
 }

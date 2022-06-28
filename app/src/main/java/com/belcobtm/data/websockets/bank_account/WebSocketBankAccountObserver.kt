@@ -24,7 +24,9 @@ class WebSocketBankAccountObserver(
     private val bankAccountsInMemoryCache: BankAccountsInMemoryCache,
     private val sharedPreferencesHelper: SharedPreferencesHelper
 ) : BankAccountObserver {
+
     private companion object {
+
         const val DESTINATION_VALUE = "/user/queue/bank-account"
     }
 
@@ -55,14 +57,4 @@ class WebSocketBankAccountObserver(
         }
     }
 
-    override fun disconnect() {
-        if (subscribeJob == null) {
-            return
-        }
-        ioScope.launch {
-            subscribeJob?.cancel()
-            subscribeJob = null
-            socketManager.unsubscribe(DESTINATION_VALUE)
-        }
-    }
 }

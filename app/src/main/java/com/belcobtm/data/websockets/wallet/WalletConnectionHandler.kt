@@ -7,8 +7,6 @@ interface WalletConnectionHandler {
 
     fun connect()
 
-    fun disconnect()
-
     fun observeConnectionFailure(): Flow<Failure?>
 
 }

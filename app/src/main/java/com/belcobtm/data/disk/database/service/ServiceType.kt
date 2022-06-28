@@ -11,7 +11,9 @@ import androidx.annotation.IntDef
 )
 @Retention(AnnotationRetention.SOURCE)
 annotation class ServiceType {
+
     companion object {
+
         const val TRANSFER = 1
         const val SWAP = 2
         const val STAKING = 3

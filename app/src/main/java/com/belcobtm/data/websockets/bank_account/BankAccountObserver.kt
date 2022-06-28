@@ -4,5 +4,4 @@ interface BankAccountObserver {
 
     fun connect()
 
-    fun disconnect()
 }

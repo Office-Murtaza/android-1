@@ -30,6 +30,7 @@ class WebSocketChatObserver(
 ) : ChatObserver {
 
     private companion object {
+
         const val DESTINATION_VALUE = "/user/queue/chat"
         const val DESTINATION_SEND_VALUE = "/app/chat"
     }
@@ -58,17 +59,6 @@ class WebSocketChatObserver(
         }
     }
 
-    override fun disconnect() {
-        if(subscribeJob == null) {
-            return
-        }
-        ioScope.launch {
-            subscribeJob?.cancel()
-            subscribeJob = null
-            socketManager.unsubscribe(DESTINATION_VALUE)
-        }
-    }
-
     override fun sendMessage(messageItem: NewMessageItem) {
         ioScope.launch {
             tradeInMemoryCache.updateChat(
@@ -90,4 +80,5 @@ class WebSocketChatObserver(
             )
         }
     }
+
 }

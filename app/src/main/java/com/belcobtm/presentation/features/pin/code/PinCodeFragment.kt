@@ -56,7 +56,6 @@ class PinCodeFragment : BaseFragment<FragmentPinCodeBinding>() {
             }
         }
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, callback)
-        viewModel.unsubscribe()
         return root
     }
 

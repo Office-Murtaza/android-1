@@ -1,13 +1,20 @@
 package com.belcobtm.presentation.features.wallet.trade.order.details
 
 import androidx.annotation.DrawableRes
-import androidx.lifecycle.*
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.asLiveData
+import androidx.lifecycle.viewModelScope
 import com.belcobtm.R
 import com.belcobtm.data.model.trade.OrderStatus
 import com.belcobtm.data.model.trade.TradeType
 import com.belcobtm.domain.Either
 import com.belcobtm.domain.Failure
-import com.belcobtm.domain.trade.order.*
+import com.belcobtm.domain.trade.order.CancelOrderUseCase
+import com.belcobtm.domain.trade.order.ObserveMissedMessageCountUseCase
+import com.belcobtm.domain.trade.order.ObserveOrderDetailsUseCase
+import com.belcobtm.domain.trade.order.UpdateOrderStatusUseCase
 import com.belcobtm.domain.wallet.LocalCoinType
 import com.belcobtm.presentation.core.extensions.toStringCoin
 import com.belcobtm.presentation.core.formatter.Formatter
@@ -24,8 +31,6 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 class TradeOrderDetailsViewModel(
-    private val connectToChatUseCase: ConnectToChatUseCase,
-    private val disconnectFromChatUseCase: DisconnectFromChatUseCase,
     private val observeMissedMessageCountUseCase: ObserveMissedMessageCountUseCase,
     private val observeOrderDetailsUseCase: ObserveOrderDetailsUseCase,
     private val updateOrderStatusUseCase: UpdateOrderStatusUseCase,
@@ -125,14 +130,6 @@ class TradeOrderDetailsViewModel(
     fun observeMissedMessageCount(orderId: String) =
         observeMissedMessageCountUseCase(orderId)
             .asLiveData(Dispatchers.Default)
-
-    fun connectToChat() {
-        connectToChatUseCase.invoke(Unit)
-    }
-
-    fun disconnectFromChat() {
-        disconnectFromChatUseCase.invoke(Unit)
-    }
 
     fun updateOrderPrimaryAction(orderId: String) {
         val newStatus = buttonsState.value?.primaryStatusId ?: return

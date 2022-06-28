@@ -1,6 +1,5 @@
 package com.belcobtm.data.websockets.services
 
-import android.util.Log
 import com.belcobtm.data.disk.shared.preferences.SharedPreferencesHelper
 import com.belcobtm.data.websockets.base.model.SocketState
 import com.belcobtm.data.websockets.base.model.StompSocketRequest
@@ -29,6 +28,7 @@ class WebSocketServicesObserver(
 ) : ServicesObserver {
 
     private companion object {
+
         const val DESTINATION_VALUE = "/user/queue/service"
     }
 
@@ -61,17 +61,6 @@ class WebSocketServicesObserver(
                             }
                     }
                 }
-        }
-    }
-
-    override fun disconnect() {
-        if (subscribeJob == null) {
-            return
-        }
-        ioScope.launch {
-            subscribeJob?.cancel()
-            subscribeJob = null
-            socketManager.unsubscribe(DESTINATION_VALUE)
         }
     }
 

@@ -8,13 +8,12 @@ data class StompSocketRequest(
     val body: String = ""
 ) {
     companion object {
-        @StringDef(CONNECT, SUBSCRIBE, UNSUBSCRIBE, MESSAGE)
+        @StringDef(CONNECT, SUBSCRIBE, MESSAGE)
         @Retention(AnnotationRetention.SOURCE)
         annotation class Command
 
         const val CONNECT = "CONNECT"
         const val SUBSCRIBE = "SUBSCRIBE"
-        const val UNSUBSCRIBE = "UNSUBSCRIBE"
         const val MESSAGE = "MESSAGE"
     }
 }

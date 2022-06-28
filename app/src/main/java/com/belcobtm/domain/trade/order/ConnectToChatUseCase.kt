@@ -13,4 +13,5 @@ class ConnectToChatUseCase(
         chatObserver.connect()
         return Either.Right(Unit)
     }
+
 }

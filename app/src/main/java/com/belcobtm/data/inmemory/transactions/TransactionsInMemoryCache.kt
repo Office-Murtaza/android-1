@@ -15,7 +15,7 @@ class TransactionsInMemoryCache {
 
     fun init(coinCode: String, response: List<TransactionDetailsResponse>) {
         val transactions = response.associateByTo(
-            HashMap(), { (it.id ?: it.txDBId).orEmpty() }) { it.mapToDataItem(coinCode) }
+            HashMap(), { (it.hash ?: it.gbId).orEmpty() }) { it.mapToDataItem(coinCode) }
         cache.value = TransactionsData(
             cache.value.transactions.toMutableMap().apply {
                 putAll(transactions)
@@ -25,10 +25,11 @@ class TransactionsInMemoryCache {
 
     fun update(response: TransactionDetailsResponse) {
         val transactions = HashMap(cache.value.transactions)
-        val id = response.id ?: response.txDBId
+        val id = response.hash ?: response.gbId
         id?.let {
             transactions[id] = response.mapToDataItem(response.coin.orEmpty())
             cache.value = cache.value.copy(transactions = transactions)
         }
     }
+
 }

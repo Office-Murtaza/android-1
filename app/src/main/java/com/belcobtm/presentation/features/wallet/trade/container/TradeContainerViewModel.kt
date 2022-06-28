@@ -6,16 +6,12 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.belcobtm.domain.Failure
 import com.belcobtm.domain.trade.ClearCacheUseCase
-import com.belcobtm.domain.trade.list.*
+import com.belcobtm.domain.trade.list.FetchTradesUseCase
 import com.belcobtm.presentation.core.mvvm.LoadingData
 import kotlinx.coroutines.launch
 
 class TradeContainerViewModel(
     private val fetchTradesUseCase: FetchTradesUseCase,
-    private val startObserveTradeDataUseCase: StartObserveTradeDataUseCase,
-    private val startObserveOrderDataUseCase: StartObserveOrderDataUseCase,
-    private val stopObserveTradeDataUseCase: StopObserveTradeDataUseCase,
-    private val stopObserveOrderDataUseCase: StopObserveOrderDataUseCase,
     private val clearCacheUseCase: ClearCacheUseCase
 ) : ViewModel() {
 
@@ -50,14 +46,8 @@ class TradeContainerViewModel(
         }
     }
 
-    fun subscribeOnUpdates() {
-        startObserveTradeDataUseCase(Unit)
-        startObserveOrderDataUseCase(Unit)
-    }
-
     fun unsubscribeFromUpdates() {
-        stopObserveTradeDataUseCase(Unit)
-        stopObserveOrderDataUseCase(Unit)
         clearCacheUseCase(Unit)
     }
+
 }

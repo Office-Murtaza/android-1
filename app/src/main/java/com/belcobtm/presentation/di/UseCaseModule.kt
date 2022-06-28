@@ -23,8 +23,6 @@ import com.belcobtm.domain.bank_account.interactor.ConnectToBankAccountsUseCase
 import com.belcobtm.domain.bank_account.interactor.ConnectToPaymentsUseCase
 import com.belcobtm.domain.bank_account.interactor.CreateBankAccountPaymentUseCase
 import com.belcobtm.domain.bank_account.interactor.CreateBankAccountUseCase
-import com.belcobtm.domain.bank_account.interactor.DisconnectFromBankAccountsUseCase
-import com.belcobtm.domain.bank_account.interactor.DisconnectFromPaymentsUseCase
 import com.belcobtm.domain.bank_account.interactor.GetBankAccountPaymentsUseCase
 import com.belcobtm.domain.bank_account.interactor.GetBankAccountsListUseCase
 import com.belcobtm.domain.bank_account.interactor.GetLinkTokenUseCase
@@ -38,7 +36,6 @@ import com.belcobtm.domain.referral.GetExistedPhoneNumbersUseCase
 import com.belcobtm.domain.referral.LoadReferralUseCase
 import com.belcobtm.domain.referral.SearchAvailableContactsUseCase
 import com.belcobtm.domain.service.ConnectToServicesUseCase
-import com.belcobtm.domain.service.DisconnectFromServicesUseCase
 import com.belcobtm.domain.service.ServiceInfoProvider
 import com.belcobtm.domain.settings.interactor.BioAuthAllowedByUserUseCase
 import com.belcobtm.domain.settings.interactor.BioAuthSupportedByPhoneUseCase
@@ -74,15 +71,13 @@ import com.belcobtm.domain.trade.details.DeleteTradeUseCase
 import com.belcobtm.domain.trade.details.EditTradeUseCase
 import com.belcobtm.domain.trade.details.GetTradeDetailsUseCase
 import com.belcobtm.domain.trade.details.ObserveTradeDetailsUseCase
+import com.belcobtm.domain.trade.list.ConnectToOrdersDataUseCase
+import com.belcobtm.domain.trade.list.ConnectToTradesDataUseCase
 import com.belcobtm.domain.trade.list.FetchTradesUseCase
 import com.belcobtm.domain.trade.list.ObserveMyTradesUseCase
 import com.belcobtm.domain.trade.list.ObserveOrdersUseCase
 import com.belcobtm.domain.trade.list.ObserveTradesUseCase
 import com.belcobtm.domain.trade.list.ObserveUserTradeStatisticUseCase
-import com.belcobtm.domain.trade.list.StartObserveOrderDataUseCase
-import com.belcobtm.domain.trade.list.StartObserveTradeDataUseCase
-import com.belcobtm.domain.trade.list.StopObserveOrderDataUseCase
-import com.belcobtm.domain.trade.list.StopObserveTradeDataUseCase
 import com.belcobtm.domain.trade.list.filter.ApplyFilterUseCase
 import com.belcobtm.domain.trade.list.filter.LoadFilterDataUseCase
 import com.belcobtm.domain.trade.list.filter.ResetFilterUseCase
@@ -100,7 +95,6 @@ import com.belcobtm.domain.trade.list.mapper.TradesDataToTradeListMapper
 import com.belcobtm.domain.trade.order.CancelOrderUseCase
 import com.belcobtm.domain.trade.order.ConnectToChatUseCase
 import com.belcobtm.domain.trade.order.CreateOrderUseCase
-import com.belcobtm.domain.trade.order.DisconnectFromChatUseCase
 import com.belcobtm.domain.trade.order.GetChatHistoryUseCase
 import com.belcobtm.domain.trade.order.ObserveChatMessagesUseCase
 import com.belcobtm.domain.trade.order.ObserveMissedMessageCountUseCase
@@ -113,7 +107,6 @@ import com.belcobtm.domain.trade.order.mapper.ChatMessageMapper
 import com.belcobtm.domain.transaction.interactor.ConnectToTransactionsUseCase
 import com.belcobtm.domain.transaction.interactor.CreateTransactionToAddressUseCase
 import com.belcobtm.domain.transaction.interactor.CreateTransactionUseCase
-import com.belcobtm.domain.transaction.interactor.DisconnectFromTransactionsUseCase
 import com.belcobtm.domain.transaction.interactor.FetchTransactionsUseCase
 import com.belcobtm.domain.transaction.interactor.GetFakeSignedTransactionPlanUseCase
 import com.belcobtm.domain.transaction.interactor.GetMaxValueBySignedTransactionUseCase
@@ -136,7 +129,6 @@ import com.belcobtm.domain.transaction.interactor.trade.TradeRecallTransactionCo
 import com.belcobtm.domain.transaction.interactor.trade.TradeReserveTransactionCompleteUseCase
 import com.belcobtm.domain.transaction.interactor.trade.TradeReserveTransactionCreateUseCase
 import com.belcobtm.domain.wallet.interactor.ConnectToWalletUseCase
-import com.belcobtm.domain.wallet.interactor.DisconnectFromWalletUseCase
 import com.belcobtm.domain.wallet.interactor.GetChartsUseCase
 import com.belcobtm.domain.wallet.interactor.GetCoinByCodeUseCase
 import com.belcobtm.domain.wallet.interactor.GetCoinListUseCase
@@ -242,7 +234,6 @@ val useCaseModule = module {
     single { StakeCancelUseCase(get(), get(), get()) }
     single { StakeWithdrawUseCase(get(), get(), get()) }
     single { ConnectToWalletUseCase(get()) }
-    single { DisconnectFromWalletUseCase(get()) }
     single { GetContactsUseCase(get()) }
     single { SaveSeedUseCase(get()) }
     single { BioAuthSupportedByPhoneUseCase(get()) }
@@ -267,10 +258,8 @@ val useCaseModule = module {
     single { CancelOrderUseCase(get()) }
     single { EditTradeUseCase(get()) }
     single { CreateOrderUseCase(get(), get(), get()) }
-    single { StartObserveTradeDataUseCase(get()) }
-    single { StartObserveOrderDataUseCase(get()) }
-    single { StopObserveTradeDataUseCase(get()) }
-    single { StopObserveOrderDataUseCase(get()) }
+    single { ConnectToTradesDataUseCase(get()) }
+    single { ConnectToOrdersDataUseCase(get()) }
     single { ObserveOrderDetailsUseCase(get(), get(), get()) }
     single { UpdateOrderStatusUseCase(get()) }
     single { ClearCacheUseCase(get()) }
@@ -284,7 +273,6 @@ val useCaseModule = module {
     }
     single { ObserveChatMessagesUseCase(get()) }
     single { ConnectToChatUseCase(get()) }
-    single { DisconnectFromChatUseCase(get()) }
     single { GetChatHistoryUseCase(get()) }
     single { TradeReserveTransactionCompleteUseCase(get()) }
     single { TradeReserveTransactionCreateUseCase(get()) }
@@ -292,11 +280,8 @@ val useCaseModule = module {
     single { UpdateLastSeenMessageTimeStampUseCase(get()) }
     single { ObserveTransactionsUseCase(get()) }
     single { ConnectToTransactionsUseCase(get()) }
-    single { DisconnectFromTransactionsUseCase(get()) }
     single { ConnectToBankAccountsUseCase(get()) }
-    single { DisconnectFromBankAccountsUseCase(get()) }
     single { ConnectToPaymentsUseCase(get()) }
-    single { DisconnectFromPaymentsUseCase(get()) }
     single { ConnectToSocketUseCase(get()) }
     single { DisconnectFromSocketUseCase(get()) }
     single { LoadReferralUseCase(get()) }
@@ -310,7 +295,6 @@ val useCaseModule = module {
     single { GetTransferAddressUseCase(get()) }
     single { ReceiverAccountActivatedUseCase(get()) }
     single { ConnectToServicesUseCase(get()) }
-    single { DisconnectFromServicesUseCase(get()) }
     factory { TradePaymentOptionMapper() }
     factory { GetVerificationStatusUseCase(get()) }
     factory { CoinCodeMapper() }

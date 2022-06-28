@@ -17,8 +17,8 @@ data class TransactionsAdapterItem(
 
 fun TransactionDetailsDataItem.mapToUiItem(): TransactionsAdapterItem =
     TransactionsAdapterItem(
-        id = txId.orEmpty(),
-        dbId = txDbId,
+        id = hash.orEmpty(),
+        dbId = gbId,
         date = DateFormat.sdfShort.format(timestamp),
         cryptoAmount = cryptoAmount ?: 0.0,
         type = type,

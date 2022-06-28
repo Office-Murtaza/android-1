@@ -1,5 +1,6 @@
 package com.belcobtm.data.websockets.manager
 
+import android.util.Log
 import com.belcobtm.data.core.UnlinkHandler
 import com.belcobtm.data.disk.database.wallet.WalletDao
 import com.belcobtm.data.disk.shared.preferences.SharedPreferencesHelper
@@ -14,10 +15,15 @@ import com.belcobtm.data.websockets.serializer.RequestSerializer
 import com.belcobtm.data.websockets.serializer.ResponseDeserializer
 import com.belcobtm.domain.Either
 import com.belcobtm.domain.Failure
-import com.belcobtm.domain.service.ServiceRepository
 import com.belcobtm.presentation.core.Endpoint
-import kotlinx.coroutines.*
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.net.HttpURLConnection
 import java.util.concurrent.ConcurrentHashMap
 
@@ -32,6 +38,7 @@ class SocketManager(
 ) : WebSocketManager {
 
     companion object {
+
         private const val MAX_RECONNECT_AMOUNT = 5
 
         const val ID_HEADER = "id"
@@ -89,20 +96,8 @@ class SocketManager(
         withContext(ioScope.coroutineContext) {
             socketClient.sendMessage(serializer.serialize(request))
         }
+        Log.d("WEB_SOCKET", "SUBSCRIBE____$destination")
         return flow
-    }
-
-    override suspend fun unsubscribe(destination: String) {
-        withContext(ioScope.coroutineContext) {
-            val request = StompSocketRequest(
-                StompSocketRequest.UNSUBSCRIBE, mapOf(DESTINATION_HEADER to destination)
-            )
-            socketClient.sendMessage(serializer.serialize(request))
-            subscribers.remove(destination)
-            if(subscribers.isEmpty()) {
-                disconnect()
-            }
-        }
     }
 
     override suspend fun sendMessage(request: StompSocketRequest) {
@@ -117,24 +112,14 @@ class SocketManager(
         withContext(ioScope.coroutineContext) {
             reconnectCounter = 0
             socketClient.connect(Endpoint.SOCKET_URL)
+            Log.d("WEB_SOCKET", "CONNECT)")
         }
     }
 
     override suspend fun disconnect() {
         withContext(ioScope.coroutineContext) {
-            clearSubscribers()
             socketClient.close(1000)
-        }
-    }
-
-    private fun clearSubscribers() {
-        val currentDestinations = subscribers.keys.toCollection(ArrayList())
-        subscribers.clear()
-        currentDestinations.forEach { destination ->
-            val request = StompSocketRequest(
-                StompSocketRequest.UNSUBSCRIBE, mapOf(DESTINATION_HEADER to destination)
-            )
-            socketClient.sendMessage(serializer.serialize(request))
+            Log.d("WEB_SOCKET", "DDDDDISCONNECT)")
         }
     }
 
@@ -176,29 +161,25 @@ class SocketManager(
     }
 
     private suspend fun processErrorMessage(socketResponse: StompSocketResponse) {
-        val isTokenExpired = socketResponse.headers[HEADER_MESSAGE_KEY]
-            .orEmpty()
-            .contains(AUTH_ERROR_MESSAGE)
-        if (!isTokenExpired) {
-            processError(socketResponse.headers[DESTINATION_HEADER], Failure.ServerError())
-            return
-        }
-        clearSubscribers()
-        val request = RefreshTokenRequest(preferencesHelper.refreshToken)
-        val response = authApi.refereshToken(request).execute()
-        val body = response.body()
-        val code = response.code()
-        when {
-            code == HttpURLConnection.HTTP_OK && body != null -> {
-                walletDao.updateBalance(body.balance)
-                preferencesHelper.processAuthResponse(body)
-                disconnect()
-                connect()
+        socketResponse.headers[HEADER_MESSAGE_KEY].takeIf { message ->
+            message.orEmpty().contains(AUTH_ERROR_MESSAGE)
+        }?.let { // for expired token
+            val request = RefreshTokenRequest(preferencesHelper.refreshToken)
+            val response = authApi.refreshToken(request).execute()
+            val body = response.body()
+            val code = response.code()
+            when {
+                code == HttpURLConnection.HTTP_OK && body != null -> {
+                    walletDao.updateBalance(body.balance)
+                    preferencesHelper.processAuthResponse(body)
+                    connect()
+                }
+                code == HttpURLConnection.HTTP_FORBIDDEN || code == HttpURLConnection.HTTP_UNAUTHORIZED -> {
+                    unlinkHandler.performUnlink()
+                    disconnect()
+                }
             }
-            code == HttpURLConnection.HTTP_FORBIDDEN || code == HttpURLConnection.HTTP_UNAUTHORIZED -> {
-                unlinkHandler.performUnlink()
-                disconnect()
-            }
-        }
+        } ?: processError(socketResponse.headers[DESTINATION_HEADER], Failure.ServerError())
     }
+
 }

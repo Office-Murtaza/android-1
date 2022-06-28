@@ -2,9 +2,7 @@ package com.belcobtm.data.disk.database.account
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
-import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
-import com.belcobtm.data.disk.database.wallet.CoinEntity
 import com.belcobtm.domain.wallet.LocalCoinType
 import com.belcobtm.domain.wallet.item.AccountDataItem
 

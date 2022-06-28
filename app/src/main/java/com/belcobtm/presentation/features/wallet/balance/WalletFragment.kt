@@ -30,6 +30,12 @@ class WalletFragment : BaseFragment<FragmentBalanceBinding>() {
     override val retryListener: View.OnClickListener =
         View.OnClickListener { viewModel.reconnectToWallet() }
 
+    override fun createBinding(
+        inflater: LayoutInflater,
+        container: ViewGroup?
+    ): FragmentBalanceBinding =
+        FragmentBalanceBinding.inflate(inflater, container, false)
+
     override fun FragmentBalanceBinding.initViews() {
         requireActivity().window.statusBarColor = ContextCompat.getColor(
             requireContext(),
@@ -43,12 +49,12 @@ class WalletFragment : BaseFragment<FragmentBalanceBinding>() {
 
     override fun FragmentBalanceBinding.initObservers() {
 
-        viewModel.needToShowRestrictions.observe(viewLifecycleOwner, {
+        viewModel.needToShowRestrictions.observe(viewLifecycleOwner) {
             if (it) {
                 showSnackBar(getString(R.string.restrictions_message))
                 viewModel.restrictionsShown()
             }
-        })
+        }
 
         viewModel.balanceLiveData.listen(
             success = {
@@ -69,9 +75,4 @@ class WalletFragment : BaseFragment<FragmentBalanceBinding>() {
         )
     }
 
-    override fun createBinding(
-        inflater: LayoutInflater,
-        container: ViewGroup?
-    ): FragmentBalanceBinding =
-        FragmentBalanceBinding.inflate(inflater, container, false)
 }

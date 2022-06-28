@@ -10,8 +10,14 @@ import com.belcobtm.data.websockets.manager.SocketManager.Companion.ID_HEADER
 import com.belcobtm.data.websockets.manager.WebSocketManager
 import com.belcobtm.domain.mapSuspend
 import com.squareup.moshi.Moshi
-import kotlinx.coroutines.*
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.filterIsInstance
+import kotlinx.coroutines.flow.filterNotNull
+import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.launch
 
 class WebSocketTradesObserver(
     private val socketManager: WebSocketManager,
@@ -21,6 +27,7 @@ class WebSocketTradesObserver(
 ) : TradesObserver {
 
     private companion object {
+
         const val DESTINATION_VALUE = "/topic/trade"
     }
 
@@ -52,14 +59,4 @@ class WebSocketTradesObserver(
         }
     }
 
-    override fun disconnect() {
-        if(subscribeJob == null) {
-            return
-        }
-        ioScope.launch {
-            subscribeJob?.cancel()
-            subscribeJob = null
-            socketManager.unsubscribe(DESTINATION_VALUE)
-        }
-    }
 }

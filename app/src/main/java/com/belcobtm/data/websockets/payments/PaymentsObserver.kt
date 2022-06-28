@@ -4,5 +4,4 @@ interface PaymentsObserver {
 
     fun connect()
 
-    fun disconnect()
 }

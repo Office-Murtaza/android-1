@@ -5,12 +5,12 @@ import com.belcobtm.domain.Either
 import com.belcobtm.domain.Failure
 import com.belcobtm.domain.UseCase
 
-class StopObserveTradeDataUseCase(
+class ConnectToTradesDataUseCase(
     private val tradesObserver: TradesObserver
 ) : UseCase<Unit, Unit>() {
 
     override suspend fun run(params: Unit): Either<Failure, Unit> {
-        tradesObserver.disconnect()
+        tradesObserver.connect()
         return Either.Right(Unit)
     }
 }

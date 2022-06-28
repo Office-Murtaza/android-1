@@ -8,5 +8,4 @@ interface ChatObserver {
 
     fun sendMessage(messageItem: NewMessageItem)
 
-    fun disconnect()
 }

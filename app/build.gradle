@@ -28,7 +28,7 @@ android {
     }
     signingConfigs {
         release {
-            storeFile file("$rootDir/signing/keystore.jks")
+            storeFile file("$rootDir/signing/keystore.jks") // to sign applications put the keys to the root folder
             storePassword "com.app.belcobtm"
             keyAlias "belcobtm"
             keyPassword "com.app.belcobtm"

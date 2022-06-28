@@ -16,11 +16,10 @@ interface WebSocketManager {
         request: StompSocketRequest
     ): Flow<Either<Failure, StompSocketResponse>?>
 
-    suspend fun unsubscribe(destination: String)
-
     suspend fun sendMessage(request: StompSocketRequest)
 
     suspend fun connect()
 
     suspend fun disconnect()
+
 }

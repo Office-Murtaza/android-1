@@ -124,11 +124,9 @@ val viewModelModule = module {
             connectToPaymentsUseCase = get(),
             connectToTransactionsUseCase = get(),
             connectToServicesUseCase = get(),
-            disconnectFromWalletUseCase = get(),
-            disconnectFromTransactionsUseCase = get(),
-            disconnectFromServicesUseCase = get(),
-            disconnectFromBankAccountsUseCase = get(),
-            disconnectFromPaymentsUseCase = get(),
+            connectToTradesDataUseCase = get(),
+            connectToOrdersDataUseCase = get(),
+            connectToChatUseCase = get(),
             authorizePinUseCase = get(),
             savePinCodeUseCase = get(),
             saveUserAuthedUseCase = get(),
@@ -176,7 +174,7 @@ val viewModelModule = module {
     viewModel { SettingsViewModel() }
     viewModel { DealsViewModel(get()) }
     viewModel { PasswordViewModel(get(), get()) }
-    viewModel { UnlinkViewModel(get()) }
+    viewModel { UnlinkViewModel(get(), get()) }
     viewModel { UpdatePasswordViewModel(get()) }
     viewModel { PhoneChangeViewModel(get(), get(), get<PhoneNumberValidator>()) }
     viewModel { AtmViewModel(get()) }
@@ -199,7 +197,7 @@ val viewModelModule = module {
     }
     viewModel { (coinCode: String) -> DepositViewModel(coinCode, get()) }
     viewModel { ContactListViewModel(get(), get<PhoneNumberValidator>(), get()) }
-    viewModel { TradeContainerViewModel(get(), get(), get(), get(), get(), get()) }
+    viewModel { TradeContainerViewModel(get(), get()) }
     viewModel { TradeListViewModel(get(), get()) }
     viewModel { TradeUserStatisticViewModel(get()) }
     viewModel { InviteFromContactsViewModel(get(), get(), get(), get()) }
@@ -234,8 +232,12 @@ val viewModelModule = module {
     }
     viewModel {
         TradeOrderDetailsViewModel(
-            get(), get(), get(), get(), get(), get(), get(),
-            get(named(GOOGLE_MAPS_DIRECTIONS_QUERY_FORMATTER))
+            observeMissedMessageCountUseCase = get(),
+            observeOrderDetailsUseCase = get(),
+            updateOrderStatusUseCase = get(),
+            cancelOrderUseCase = get(),
+            stringProvider = get(),
+            googleMapQueryFormatter = get(named(GOOGLE_MAPS_DIRECTIONS_QUERY_FORMATTER))
         )
     }
     viewModel {
