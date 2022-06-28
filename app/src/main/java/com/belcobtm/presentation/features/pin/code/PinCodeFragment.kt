@@ -27,6 +27,7 @@ import com.belcobtm.presentation.features.MainFragment
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class PinCodeFragment : BaseFragment<FragmentPinCodeBinding>() {
+
     private val viewModel: PinCodeViewModel by viewModel()
 
     private val pinMode: String by lazy {
@@ -122,7 +123,6 @@ class PinCodeFragment : BaseFragment<FragmentPinCodeBinding>() {
         viewModel.actionData.observe(viewLifecycleOwner) { action ->
             when (action) {
                 is PinCodeAction.Success -> {
-                    viewModel.connectToWebSockets()
                     val deeplink = arguments?.getString(KEY_DEEPLINK)
                     viewModel.saveUserAuthed(true)
                     if (deeplink.isNullOrEmpty()) {
@@ -219,6 +219,7 @@ class PinCodeFragment : BaseFragment<FragmentPinCodeBinding>() {
     }
 
     companion object {
+
         const val TAG_PIN_MODE = "tag_pin_mode"
         const val KEY_PIN_MODE_CREATE = "key_pin_mode_create"
         const val KEY_PIN_MODE_CHANGE = "key_pin_mode_change"
@@ -237,4 +238,5 @@ class PinCodeFragment : BaseFragment<FragmentPinCodeBinding>() {
         container: ViewGroup?
     ): FragmentPinCodeBinding =
         FragmentPinCodeBinding.inflate(inflater, container, false)
+
 }

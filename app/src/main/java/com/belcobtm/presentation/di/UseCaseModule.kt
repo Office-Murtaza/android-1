@@ -37,6 +37,7 @@ import com.belcobtm.domain.referral.LoadReferralUseCase
 import com.belcobtm.domain.referral.SearchAvailableContactsUseCase
 import com.belcobtm.domain.service.ConnectToServicesUseCase
 import com.belcobtm.domain.service.ServiceInfoProvider
+import com.belcobtm.domain.settings.UpdatePhoneUseCase
 import com.belcobtm.domain.settings.interactor.BioAuthAllowedByUserUseCase
 import com.belcobtm.domain.settings.interactor.BioAuthSupportedByPhoneUseCase
 import com.belcobtm.domain.settings.interactor.ChangePassUseCase
@@ -228,7 +229,8 @@ val useCaseModule = module {
     }
     single { ObserveTransactionDetailsUseCase(get()) }
     single { GetCoinListUseCase(get()) }
-    single { VerifyPhoneUseCase(get()) }
+    factory { VerifyPhoneUseCase(get()) }
+    factory { UpdatePhoneUseCase(get()) }
     single { StakeDetailsGetUseCase(get()) }
     single { StakeCreateUseCase(get(), get(), get()) }
     single { StakeCancelUseCase(get(), get(), get()) }

@@ -2,8 +2,8 @@ package com.belcobtm.presentation.features.wallet.add
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.belcobtm.domain.account.interactor.UpdateUserCoinListUseCase
 import com.belcobtm.domain.account.interactor.GetUserCoinListUseCase
+import com.belcobtm.domain.account.interactor.UpdateUserCoinListUseCase
 import com.belcobtm.domain.wallet.item.AccountDataItem
 import com.belcobtm.presentation.core.mvvm.LoadingData
 import com.belcobtm.presentation.features.wallet.add.adapter.AddWalletCoinItem
@@ -12,6 +12,7 @@ class WalletsViewModel(
     coinListUseCase: GetUserCoinListUseCase,
     private val updateUserCoinListUseCase: UpdateUserCoinListUseCase
 ) : ViewModel() {
+
     val coinListLiveData: MutableLiveData<LoadingData<List<AddWalletCoinItem>>> = MutableLiveData()
     private val accountDataList: MutableList<AccountDataItem> = mutableListOf()
 
@@ -45,7 +46,6 @@ class WalletsViewModel(
         }
         lastAction()
     }
-
 
     private fun updateCoinList() {
         coinListLiveData.value = LoadingData.Success(accountDataList.map {

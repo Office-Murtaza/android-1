@@ -407,7 +407,7 @@
     <string name="transaction_type_stake_withdraw">Withdraw stake</string>
 
     <!-- Transaction Details -->
-    <string name="transaction_details_screen_title">Transaction details</string>
+    <string name="transaction_details_screen_title">Transaction Details</string>
     <string name="transaction_details">Transaction details %1$s</string>
     <string name="transaction_details_amount">Amount</string>
     <string name="transaction_details_fee">Fee</string>
@@ -421,7 +421,7 @@
     <string name="transaction_details_sell_amount">Fiat Amount</string>
     <string name="transaction_details_fee_percent">Platform fee</string>
     <string name="transaction_details_fee_percent_value_format">%1$s%%</string>
-    <string name="transaction_details_id">ID</string>
+    <string name="transaction_details_hash">Hash</string>
     <string name="transaction_details_swap_id">Swap Id</string>
     <string name="transaction_details_type">Type</string>
     <string name="transaction_details_status">Status</string>

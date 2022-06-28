@@ -1,7 +1,6 @@
 package com.belcobtm.data.rest.wallet
 
 import com.belcobtm.data.rest.wallet.request.PriceChartPeriod
-import com.belcobtm.data.rest.wallet.response.BalanceResponse
 import com.belcobtm.data.rest.wallet.response.ChartResponse
 import retrofit2.Response
 import retrofit2.http.GET

@@ -84,8 +84,7 @@ class SocketManager(
         }
     }
 
-    override fun observeSocketState(): Flow<SocketState> =
-        socketState
+    override fun observeSocketState(): Flow<SocketState> = socketState
 
     override suspend fun subscribe(
         destination: String,
@@ -119,7 +118,7 @@ class SocketManager(
     override suspend fun disconnect() {
         withContext(ioScope.coroutineContext) {
             socketClient.close(1000)
-            Log.d("WEB_SOCKET", "DDDDDISCONNECT)")
+            Log.d("WEB_SOCKET", "DISCONNECT)")
         }
     }
 
@@ -150,6 +149,7 @@ class SocketManager(
     }
 
     private fun onOpened() {
+        Log.d("WEB_SOCKET", "onOpened)")
         val request = StompSocketRequest(
             StompSocketRequest.CONNECT, mapOf(
                 ACCEPT_VERSION_HEADER to ACCEPT_VERSION_VALUE,

@@ -23,6 +23,7 @@ import com.belcobtm.presentation.core.provider.string.ResourceStringProvider
 import com.belcobtm.presentation.core.provider.string.StringProvider
 import com.belcobtm.presentation.core.validator.PhoneNumberValidator
 import com.belcobtm.presentation.features.HostViewModel
+import com.belcobtm.presentation.features.MainViewModel
 import com.belcobtm.presentation.features.atm.AtmViewModel
 import com.belcobtm.presentation.features.authorization.create.seed.CreateSeedViewModel
 import com.belcobtm.presentation.features.authorization.create.wallet.CreateWalletViewModel
@@ -87,6 +88,19 @@ import org.koin.dsl.module
 import java.util.Locale
 
 val viewModelModule = module {
+    viewModel {
+        MainViewModel(
+            connectToSocketUseCase = get(),
+            connectToWalletUseCase = get(),
+            connectToBankAccountsUseCase = get(),
+            connectToPaymentsUseCase = get(),
+            connectToTransactionsUseCase = get(),
+            connectToServicesUseCase = get(),
+            connectToTradesDataUseCase = get(),
+            connectToOrdersDataUseCase = get(),
+            connectToChatUseCase = get(),
+        )
+    }
     viewModel { BankAccountCreateViewModel(get()) }
     viewModel { BankAccountsViewModel(get(), get()) }
     viewModel { (bankAccountId: String) ->
@@ -118,15 +132,6 @@ val viewModelModule = module {
             unlinkUseCase = get(),
             bioAuthSupportedByPhoneUseCase = get(),
             bioAuthAllowedByUserUseCase = get(),
-            connectToSocketUseCase = get(),
-            connectToWalletUseCase = get(),
-            connectToBankAccountsUseCase = get(),
-            connectToPaymentsUseCase = get(),
-            connectToTransactionsUseCase = get(),
-            connectToServicesUseCase = get(),
-            connectToTradesDataUseCase = get(),
-            connectToOrdersDataUseCase = get(),
-            connectToChatUseCase = get(),
             authorizePinUseCase = get(),
             savePinCodeUseCase = get(),
             saveUserAuthedUseCase = get(),
@@ -176,7 +181,7 @@ val viewModelModule = module {
     viewModel { PasswordViewModel(get(), get()) }
     viewModel { UnlinkViewModel(get(), get()) }
     viewModel { UpdatePasswordViewModel(get()) }
-    viewModel { PhoneChangeViewModel(get(), get(), get<PhoneNumberValidator>()) }
+    viewModel { PhoneChangeViewModel(get(), get(), get(), get<PhoneNumberValidator>()) }
     viewModel { AtmViewModel(get()) }
     viewModel { (txId: String, coinCode: String) ->
         TransactionDetailsViewModel(

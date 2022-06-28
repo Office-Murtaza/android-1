@@ -1,9 +1,9 @@
 package com.belcobtm.presentation.features.wallet.balance
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
+import androidx.core.view.WindowInsetsControllerCompat
 import com.belcobtm.R
 import com.belcobtm.databinding.FragmentBalanceBinding
 import com.belcobtm.domain.Failure
@@ -27,8 +27,6 @@ class WalletFragment : BaseFragment<FragmentBalanceBinding>() {
     override val isToolbarEnabled: Boolean = false
     override var isMenuEnabled: Boolean = true
     override val isFirstShowContent: Boolean = false
-    override val retryListener: View.OnClickListener =
-        View.OnClickListener { viewModel.reconnectToWallet() }
 
     override fun createBinding(
         inflater: LayoutInflater,
@@ -37,18 +35,21 @@ class WalletFragment : BaseFragment<FragmentBalanceBinding>() {
         FragmentBalanceBinding.inflate(inflater, container, false)
 
     override fun FragmentBalanceBinding.initViews() {
-        requireActivity().window.statusBarColor = ContextCompat.getColor(
-            requireContext(),
-            R.color.colorPrimary
-        )
+        updateStatusBar()
         adapter = CoinsAdapter(currencyFormatter) {
             navigate(WalletFragmentDirections.toTransactionsFragment(it.code))
         }
         listView.adapter = adapter
     }
 
-    override fun FragmentBalanceBinding.initObservers() {
+    private fun updateStatusBar() {
+        with(requireActivity().window) {
+            statusBarColor = ContextCompat.getColor(requireContext(), R.color.colorPrimary)
+            WindowInsetsControllerCompat(this, decorView).isAppearanceLightStatusBars = false
+        }
+    }
 
+    override fun FragmentBalanceBinding.initObservers() {
         viewModel.needToShowRestrictions.observe(viewLifecycleOwner) {
             if (it) {
                 showSnackBar(getString(R.string.restrictions_message))

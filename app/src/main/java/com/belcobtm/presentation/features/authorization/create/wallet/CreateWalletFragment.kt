@@ -51,11 +51,11 @@ class CreateWalletFragment : BaseFragment<FragmentCreateWalletBinding>() {
 
     override fun FragmentCreateWalletBinding.initListeners() {
         nextButtonView.setOnClickListener { checkCredentialsWithPermissionCheck() }
-        phoneView.editText?.afterTextChanged { updateNextButton() }
         passwordView.editText?.afterTextChanged { updateNextButton() }
         emailView.editText?.afterTextChanged { updateNextButton() }
         passwordConfirmView.editText?.afterTextChanged { updateNextButton() }
         tncCheckBoxView.setOnCheckedChangeListener { _, _ -> updateNextButton() }
+        phoneView.editText?.afterTextChanged { updateNextButton() }
         phoneEditView.addTextChangedListener(PhoneNumberFormattingTextWatcher())
     }
 
@@ -177,17 +177,6 @@ class CreateWalletFragment : BaseFragment<FragmentCreateWalletBinding>() {
     }
 
     private fun isEmailInvalid(): Boolean = binding.emailView.getString().isEmail().not()
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        binding.root.post {
-            binding.phoneEditView.setSelection(
-                binding.phoneEditView.length()
-            )
-            (requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager)
-                ?.showSoftInput(binding.phoneEditView, 0)
-        }
-    }
 
     private fun updateNextButton() {
         binding.nextButtonView.isEnabled = binding.phoneView.getString().isNotEmpty()

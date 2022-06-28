@@ -11,8 +11,22 @@ import com.belcobtm.data.rest.settings.SettingsApiService
 import com.belcobtm.domain.Either
 import com.belcobtm.domain.Failure
 import com.belcobtm.domain.settings.SettingsRepository
-import com.belcobtm.domain.settings.item.*
-import com.belcobtm.domain.settings.type.*
+import com.belcobtm.domain.settings.item.VerificationBlankDataItem
+import com.belcobtm.domain.settings.item.VerificationCountryDataItem
+import com.belcobtm.domain.settings.item.VerificationDetailsDataItem
+import com.belcobtm.domain.settings.item.VerificationDocumentDataItem
+import com.belcobtm.domain.settings.item.VerificationDocumentFirebaseImages
+import com.belcobtm.domain.settings.item.VerificationDocumentResponseDataItem
+import com.belcobtm.domain.settings.item.VerificationFieldsDataItem
+import com.belcobtm.domain.settings.item.VerificationIdentityDataItem
+import com.belcobtm.domain.settings.item.VerificationIdentityResponseDataItem
+import com.belcobtm.domain.settings.item.VerificationInfoDataItem
+import com.belcobtm.domain.settings.item.VerificationVipDataItem
+import com.belcobtm.domain.settings.type.DocumentType
+import com.belcobtm.domain.settings.type.RecordStatus
+import com.belcobtm.domain.settings.type.VerificationDocumentFieldsType
+import com.belcobtm.domain.settings.type.VerificationIdentityFieldsType
+import com.belcobtm.domain.settings.type.VerificationStatus
 import java.net.URL
 
 class SettingsRepositoryImpl(
@@ -262,11 +276,11 @@ class SettingsRepositoryImpl(
                     dayOfBirthValue = verificationData.personInfo.dayOfBirth,
                     monthOfBirthValue = verificationData.personInfo.monthOfBirth,
                     yearOfBirthValue = verificationData.personInfo.yearOfBirth,
-                    buildingNumberValue = verificationData.location.buildingNumber?:"",
-                    streetNameValue = verificationData.location.streetName?:"",
-                    cityValue = verificationData.location.city?:"",
-                    provinceValue = verificationData.location.stateProvinceCode?:"",
-                    zipCodeValue = verificationData.location.postalCode?:"",
+                    buildingNumberValue = verificationData.location.buildingNumber ?: "",
+                    streetNameValue = verificationData.location.streetName ?: "",
+                    cityValue = verificationData.location.city ?: "",
+                    provinceValue = verificationData.location.stateProvinceCode ?: "",
+                    zipCodeValue = verificationData.location.postalCode ?: "",
                     ssnValue = verificationData.nationalIds?.first()?.number ?: "",
                     sourceOfFunds = responseItem.sourceOfFunds ?: "",
                     occupation = responseItem.occupation ?: "",

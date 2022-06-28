@@ -54,7 +54,7 @@ class TransactionDetailsViewModel(
         // id block
         if (dataItem.hash != null && dataItem.link != null) {
             val idBlockItem = TransactionDetailsAdapter.Item.Id(
-                R.string.transaction_details_id,
+                R.string.transaction_details_hash,
                 dataItem.hash,
                 dataItem.link
             )

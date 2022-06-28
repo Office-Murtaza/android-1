@@ -47,25 +47,23 @@ class UpdatePasswordFragment : BaseFragment<FragmentUpdatePasswordBinding>() {
                 state.doIfChanged(appliedState) {
                     showContent()
                 }
-                state.isOldPasswordError.doIfChanged(appliedState?.commonData?.isOldPasswordError, {
+                state.isOldPasswordError.doIfChanged(appliedState?.commonData?.isOldPasswordError) {
                     with(oldPasswordContainerView) {
-                        isErrorEnabled = it
                         if (it) {
                             error = getString(R.string.password_doesnt_match)
                         }
                     }
-                })
-                state.isNewPasswordMatches.doIfChanged(appliedState?.commonData?.isNewPasswordMatches, {
-                    with (newPasswordConfirmContainerView) {
-                        isErrorEnabled = !it
+                }
+                state.isNewPasswordMatches.doIfChanged(appliedState?.commonData?.isNewPasswordMatches) {
+                    with(newPasswordConfirmContainerView) {
                         if (!it) {
                             error = getString(R.string.password_confirm_not_match)
                         }
                     }
-                })
-                state.isNextButtonEnabled.doIfChanged(appliedState?.commonData?.isNextButtonEnabled, {
+                }
+                state.isNextButtonEnabled.doIfChanged(appliedState?.commonData?.isNextButtonEnabled) {
                     nextButton.isEnabled = it
-                })
+                }
             },
             error = {
                 when ((it as? Failure.MessageError)?.code) {

@@ -1,13 +1,10 @@
 package com.belcobtm.presentation.features.authorization.recover.wallet
 
 import android.Manifest
-import android.content.Context
-import android.os.Bundle
 import android.telephony.PhoneNumberFormattingTextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.inputmethod.InputMethodManager
 import androidx.core.os.bundleOf
 import com.belcobtm.R
 import com.belcobtm.databinding.FragmentRecoverWalletBinding
@@ -90,17 +87,6 @@ class RecoverWalletFragment : BaseFragment<FragmentRecoverWalletBinding>() {
                 viewModel.checkCredentialsLiveData.value = null
             }
         })
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        binding.root.post {
-            binding.phoneEditView.setSelection(
-                binding.phoneEditView.length()
-            )
-            (requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager)
-                ?.showSoftInput(binding.phoneEditView, 0)
-        }
     }
 
     override fun onRequestPermissionsResult(

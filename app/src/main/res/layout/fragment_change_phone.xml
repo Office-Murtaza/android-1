@@ -20,7 +20,8 @@
             android:layout_gravity="center"
             android:drawableEnd="@drawable/ic_phone"
             android:drawableTint="@color/colorPrimary"
-            android:inputType="phone"
+            android:inputType="phone|textNoSuggestions"
+            android:lines="1"
             android:text="@string/phone_number_country_code" />
     </com.google.android.material.textfield.TextInputLayout>
 

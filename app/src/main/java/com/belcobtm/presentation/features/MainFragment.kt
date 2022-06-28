@@ -10,11 +10,14 @@ import androidx.navigation.ui.setupWithNavController
 import com.belcobtm.R
 import com.belcobtm.databinding.FragmentNavigationBinding
 import com.belcobtm.presentation.core.ui.fragment.BaseFragment
-
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MainFragment : BaseFragment<FragmentNavigationBinding>() {
 
+    private val viewModel: MainViewModel by viewModel()
+
     companion object {
+
         const val KEY_DEEPLINK = "key_deeplink"
     }
 
@@ -29,6 +32,7 @@ class MainFragment : BaseFragment<FragmentNavigationBinding>() {
         arguments?.getString(KEY_DEEPLINK)?.let { deeplink ->
             navHostFragment.navController.navigate(Uri.parse(deeplink))
         }
+        viewModel.connectToWebSockets()
     }
 
     override fun createBinding(

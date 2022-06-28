@@ -1,5 +1,6 @@
 package com.belcobtm.presentation.features.settings.phone
 
+import android.telephony.PhoneNumberFormattingTextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -32,9 +33,10 @@ class PhoneChangeFragment : BaseFragment<FragmentChangePhoneBinding>() {
         nextButton.setOnClickListener {
             viewModel.onNextClick()
         }
-        phoneView.addTextChangedListener {
+        phoneContainerView.editText?.addTextChangedListener {
             viewModel.onPhoneInput(it?.toString().orEmpty())
         }
+        phoneView.addTextChangedListener(PhoneNumberFormattingTextWatcher())
     }
 
     override fun FragmentChangePhoneBinding.initObservers() {

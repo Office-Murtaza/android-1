@@ -31,12 +31,6 @@ class WalletViewModel(
     private val _needToShowRestrictions: SingleLiveData<Boolean> = SingleLiveData()
     val needToShowRestrictions: LiveData<Boolean> = _needToShowRestrictions
 
-    fun reconnectToWallet() {
-        viewModelScope.launch {
-            walletConnectionHandler.connect()
-        }
-    }
-
     init {
         viewModelScope.launch {
             walletDao.observeCoins()
