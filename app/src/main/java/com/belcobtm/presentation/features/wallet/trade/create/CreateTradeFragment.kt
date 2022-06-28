@@ -29,14 +29,13 @@ import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.qualifier.named
 import permissions.dispatcher.NeedsPermission
-import permissions.dispatcher.OnNeverAskAgain
 import permissions.dispatcher.OnPermissionDenied
 import permissions.dispatcher.RuntimePermissions
 
 @RuntimePermissions
 class CreateTradeFragment : BaseFragment<FragmentCreateTradeBinding>() {
 
-    override val isHomeButtonEnabled: Boolean
+    override val isBackButtonEnabled: Boolean
         get() = true
     override val isToolbarEnabled: Boolean
         get() = true
@@ -155,7 +154,7 @@ class CreateTradeFragment : BaseFragment<FragmentCreateTradeBinding>() {
                 when (it) {
                     is Failure.NetworkConnection -> showErrorNoInternetConnection()
                     is Failure.MessageError -> {
-                        showSnackBar(it.message.orEmpty())
+                        showToast(it.message.orEmpty())
                         showContent()
                     }
                     is Failure.ServerError -> showErrorServerError()

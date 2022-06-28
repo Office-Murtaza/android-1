@@ -44,7 +44,6 @@ import permissions.dispatcher.NeedsPermission
 import permissions.dispatcher.OnNeverAskAgain
 import permissions.dispatcher.RuntimePermissions
 
-
 @RuntimePermissions
 class AtmFragment : BaseFragment<FragmentAtmBinding>(),
     GoogleMap.OnInfoWindowClickListener,

@@ -27,8 +27,7 @@ class RecoverWalletFragment : BaseFragment<FragmentRecoverWalletBinding>() {
 
     private val viewModel: RecoverWalletViewModel by viewModel()
 
-    override val isToolbarEnabled: Boolean = true
-    override val isHomeButtonEnabled: Boolean = true
+    override val isBackButtonEnabled: Boolean = true
     override val retryListener: View.OnClickListener = View.OnClickListener {
         checkCredentialsWithPermissionCheck()
     }
@@ -117,13 +116,13 @@ class RecoverWalletFragment : BaseFragment<FragmentRecoverWalletBinding>() {
         Manifest.permission.ACCESS_COARSE_LOCATION
     )
     fun showLocationRequiredErrorMessage() {
-        showSnackBar(R.string.location_required_on_recover_or_register_validation_message)
+        showToast(R.string.location_required_on_recover_or_register_validation_message)
     }
 
     private fun isValidFields(phone: String, password: String): Boolean {
         val isEmptyFields = phone.isEmpty() || password.isEmpty()
         if (isEmptyFields) {
-            showSnackBar(R.string.recover_wallet_error_all_fields_required)
+            showToast(R.string.recover_wallet_error_all_fields_required)
         }
 
         return !isEmptyFields

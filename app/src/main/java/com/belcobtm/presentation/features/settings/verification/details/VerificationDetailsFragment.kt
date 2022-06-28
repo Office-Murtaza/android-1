@@ -23,7 +23,7 @@ import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
 class VerificationDetailsFragment : BaseFragment<FragmentVerificationBinding>() {
     val viewModel by sharedViewModel<VerificationDetailsViewModel>()
-    override val isHomeButtonEnabled = true
+    override val isBackButtonEnabled = true
     override var isMenuEnabled = true
     private var appliedState: LoadingData<VerificationDetailsState>? = null
 

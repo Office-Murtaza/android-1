@@ -22,7 +22,6 @@ import com.belcobtm.presentation.core.helper.AlertHelper
 import com.belcobtm.presentation.core.mvvm.LoadingData
 import com.belcobtm.presentation.core.ui.fragment.BaseFragment
 import com.belcobtm.presentation.core.views.listeners.SafeDecimalEditTextWatcher
-import com.belcobtm.presentation.features.wallet.trade.create.CreateTradeFragmentDirections
 import com.belcobtm.presentation.features.wallet.trade.create.delegate.TradePaymentOptionDelegate
 import com.google.android.material.chip.Chip
 import com.google.android.material.snackbar.Snackbar
@@ -32,8 +31,7 @@ import org.koin.core.qualifier.named
 
 class EditTradeFragment : BaseFragment<FragmentEditTradeBinding>() {
 
-    override var isHomeButtonEnabled: Boolean = true
-    override val isToolbarEnabled: Boolean = true
+    override var isBackButtonEnabled: Boolean = true
 
     private val args by navArgs<EditTradeFragmentArgs>()
     private val viewModel by viewModel<EditTradeViewModel>()
@@ -157,7 +155,7 @@ class EditTradeFragment : BaseFragment<FragmentEditTradeBinding>() {
                 when (it) {
                     is Failure.NetworkConnection -> showErrorNoInternetConnection()
                     is Failure.MessageError -> {
-                        showSnackBar(it.message.orEmpty())
+                        showToast(it.message.orEmpty())
                         showContent()
                     }
                     is Failure.ServerError -> showErrorServerError()

@@ -36,6 +36,8 @@ class BankAccountCreateFragment : BaseFragment<FragmentBankAccountCreateBinding>
     private var firstInvalidView: View? = null
     private var validated = false
 
+    override val isBackButtonEnabled: Boolean = true
+
     override fun createBinding(
         inflater: LayoutInflater,
         container: ViewGroup?
@@ -43,7 +45,6 @@ class BankAccountCreateFragment : BaseFragment<FragmentBankAccountCreateBinding>
         FragmentBankAccountCreateBinding.inflate(inflater, container, false)
 
     override fun FragmentBankAccountCreateBinding.initViews() {
-        showBackButton(true)
         if (args.createBankAccountType != CreateBankAccountType.NONE) {
             viewModel.selectedCreateBankAccountType = args.createBankAccountType
         }

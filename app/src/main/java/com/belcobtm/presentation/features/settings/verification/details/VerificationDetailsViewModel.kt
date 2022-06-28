@@ -8,8 +8,16 @@ import androidx.navigation.NavDirections
 import com.belcobtm.R
 import com.belcobtm.data.disk.shared.preferences.SharedPreferencesHelper
 import com.belcobtm.data.helper.ImageHelper
-import com.belcobtm.domain.settings.interactor.*
-import com.belcobtm.domain.settings.item.*
+import com.belcobtm.domain.settings.interactor.GetVerificationCountryListUseCase
+import com.belcobtm.domain.settings.interactor.GetVerificationDetailsUseCase
+import com.belcobtm.domain.settings.interactor.SendVerificationDocumentUseCase
+import com.belcobtm.domain.settings.interactor.SendVerificationIdentityUseCase
+import com.belcobtm.domain.settings.item.VerificationDetailsDataItem
+import com.belcobtm.domain.settings.item.VerificationDocumentDataItem
+import com.belcobtm.domain.settings.item.VerificationDocumentResponseDataItem
+import com.belcobtm.domain.settings.item.VerificationIdentityDataItem
+import com.belcobtm.domain.settings.item.VerificationIdentityResponseDataItem
+import com.belcobtm.domain.settings.item.VerificationSupportedCountryDataItem
 import com.belcobtm.domain.settings.type.DocumentType
 import com.belcobtm.domain.settings.type.RecordStatus
 import com.belcobtm.domain.settings.type.VerificationStatus
@@ -17,15 +25,14 @@ import com.belcobtm.domain.settings.type.VerificationStep
 import com.belcobtm.presentation.core.SingleLiveData
 import com.belcobtm.presentation.core.mvvm.LoadingData
 
-
 class VerificationDetailsViewModel(
     private val sendVerificationDocumentUseCase: SendVerificationDocumentUseCase,
     private val sendVerificationIdentityUseCase: SendVerificationIdentityUseCase,
     private val getVerificationDetailsUseCase: GetVerificationDetailsUseCase,
-    private val getVerificationFieldsUseCase: GetVerificationFieldsUseCase,
-    private val countriesUseCase: GetVerificationCountryListUseCase,
+    countriesUseCase: GetVerificationCountryListUseCase,
     private val prefHelper: SharedPreferencesHelper,
 ) : ViewModel() {
+
     val detailsStateData = MutableLiveData<LoadingData<VerificationDetailsState>>()
     val identityStateData = MutableLiveData<LoadingData<VerificationIdentityState>>()
     val documentStateData = MutableLiveData<LoadingData<VerificationDocumentState>>()
@@ -40,7 +47,6 @@ class VerificationDetailsViewModel(
     var verificationDetails: VerificationDetailsDataItem? = null
     val imageHelper = ImageHelper()
     val countries = countriesUseCase.invoke()
-
 
     fun fetchVerificationStatus() {
 
@@ -121,7 +127,6 @@ class VerificationDetailsViewModel(
             }
         )
 
-
     }
 
     fun onDocumentVerificationSubmit() {
@@ -179,7 +184,6 @@ class VerificationDetailsViewModel(
 //                else -> throw IllegalStateException("Not available for verification for this state")
 //            }
 //        )
-
 
     private fun getVerificationStatus(verificationDetails: VerificationDetailsDataItem) {
         if (verificationDetails.selectedCountry == null)
@@ -338,7 +342,6 @@ data class VerificationDetailsState(
     val verificationStatus: VerificationStatus = VerificationStatus.NOT_VERIFIED
 )
 
-
 data class VerificationIdentityState(
     val recordStatus: RecordStatus,
     val firstNameValue: String,
@@ -414,7 +417,6 @@ private fun createVerificationDocumentState(
         backImageValidationError = dataItem.backImageValidationError,
         selfieImageValidationError = dataItem.selfieImageValidationError,
     )
-
 
 sealed class VerificationDetailsAction {
     data class NavigateAction(val navDirections: NavDirections) : VerificationDetailsAction()

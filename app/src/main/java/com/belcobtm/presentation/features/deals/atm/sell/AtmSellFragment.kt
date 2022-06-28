@@ -23,7 +23,7 @@ class AtmSellFragment : BaseFragment<FragmentAtmSellBinding>() {
 
     private val viewModel by viewModel<AtmSellViewModel>()
 
-    override var isHomeButtonEnabled: Boolean = true
+    override var isBackButtonEnabled: Boolean = true
 
     override val retryListener: View.OnClickListener = View.OnClickListener {
         val initialLoading = viewModel.initLoadingData.value

@@ -2,12 +2,15 @@ package com.belcobtm.presentation.features.settings
 
 import androidx.lifecycle.ViewModel
 import androidx.navigation.NavDirections
+import com.belcobtm.domain.settings.interactor.UpdatePhoneUseCase
 import com.belcobtm.presentation.core.SingleLiveData
 import com.belcobtm.presentation.features.settings.SettingsFragment.Companion.SETTINGS_ABOUT
 import com.belcobtm.presentation.features.settings.SettingsFragment.Companion.SETTINGS_MAIN
 import com.belcobtm.presentation.features.settings.SettingsFragment.Companion.SETTINGS_SECURITY
 
-class SettingsViewModel : ViewModel() {
+class SettingsViewModel(
+    private val updatePhoneUseCase: UpdatePhoneUseCase
+) : ViewModel() {
 
     val actionData = SingleLiveData<SettingsAction>()
 
@@ -57,6 +60,17 @@ class SettingsViewModel : ViewModel() {
             }
         }
     }
+
+    fun updatePhone() {
+        updatePhoneUseCase.invoke(
+            Unit,
+            onSuccess = {
+                actionData.value = SettingsAction.PhoneSuccessfullyUpdated
+            },
+            onError = {
+                actionData.value = SettingsAction.PhoneUpdateFailed
+            })
+    }
 }
 
 enum class SettingsSections {
@@ -73,4 +87,6 @@ sealed class SettingsAction {
     object NotificationOptions : SettingsAction()
     data class NavigateAction(val navDirections: NavDirections) : SettingsAction()
     object SupportChat : SettingsAction()
+    object PhoneSuccessfullyUpdated : SettingsAction()
+    object PhoneUpdateFailed : SettingsAction()
 }

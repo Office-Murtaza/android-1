@@ -28,7 +28,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class TradeOrderDetailsFragment : BaseFragment<FragmentTradeOrderDetailsBinding>() {
 
-    override val isHomeButtonEnabled: Boolean
+    override val isBackButtonEnabled: Boolean
         get() = true
 
     override val retryListener: View.OnClickListener = View.OnClickListener {

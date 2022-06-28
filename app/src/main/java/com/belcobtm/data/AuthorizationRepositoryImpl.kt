@@ -7,7 +7,7 @@ import com.belcobtm.data.disk.shared.preferences.SharedPreferencesHelper
 import com.belcobtm.data.provider.location.LocationProvider
 import com.belcobtm.data.rest.authorization.AuthApiService
 import com.belcobtm.data.rest.authorization.response.CreateRecoverWalletResponse
-import com.belcobtm.data.rest.wallet.response.CoinResponse
+import com.belcobtm.data.rest.wallet.response.BalanceResponse
 import com.belcobtm.domain.Either
 import com.belcobtm.domain.Failure
 import com.belcobtm.domain.authorization.AuthorizationRepository
@@ -155,7 +155,7 @@ class AuthorizationRepositoryImpl(
         phone: String,
     ) = response.takeIf { it.isRight }?.let {
         with((response as Either.Right).b) {
-            val accountList = createAccountEntityList(temporaryCoinMap, balance.coins)
+            val accountList = createAccountEntityList(temporaryCoinMap, balance)
             serviceRepository.updateServices(services)
             walletDao.updateBalance(balance)
             daoAccount.insertItemList(accountList)
@@ -169,6 +169,8 @@ class AuthorizationRepositoryImpl(
             prefHelper.referralEarned = user.referralEarned ?: 0.0
             prefHelper.zendeskToken = zendeskToken
             prefHelper.userPhone = phone
+            prefHelper.userFirstName = user.firstName.orEmpty()
+            prefHelper.userLastName = user.lastName.orEmpty()
             temporaryCoinMap.clear()
             Either.Right(Unit)
         }
@@ -225,19 +227,20 @@ class AuthorizationRepositoryImpl(
 
     private fun createAccountEntityList(
         temporaryCoinMap: Map<LocalCoinType, Pair<String, String>>,
-        responseCoinList: List<CoinResponse>
+        balance: BalanceResponse
     ): List<AccountEntity> {
         val entityList: MutableList<AccountEntity> = mutableListOf()
+        val balanceCoins = balance.coins.map { it.coin }
         temporaryCoinMap.forEach { (localCoinType, value) ->
             val publicKey: String = value.first
             val privateKey: String = value.second
-            responseCoinList.find { it.coin == localCoinType.name }?.let {
+            balance.availableCoins.find { it == localCoinType.name }?.let {
                 entityList.add(
                     AccountEntity(
                         localCoinType.name,
                         publicKey,
                         privateKey,
-                        true
+                        balanceCoins.contains(it)
                     )
                 )
             }

@@ -13,12 +13,3 @@ data class CreateRecoverWalletResponse(
     val balance: BalanceResponse,
     val services: List<ServicesInfoResponse>
 )
-
-data class UserDetailsResponse(
-    val id: String,
-    val roles: List<String>?,
-    val referralCode: String?,
-    val referrals: Int?,
-    val referralEarned: Double?,
-    val status: String
-)

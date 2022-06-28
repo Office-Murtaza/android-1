@@ -19,6 +19,7 @@ import com.belcobtm.databinding.FragmentBankAchBinding
 import com.belcobtm.domain.bank_account.item.BankAccountLinkDataItem
 import com.belcobtm.presentation.core.mvvm.LoadingData
 import com.belcobtm.presentation.core.ui.fragment.BaseFragment
+import com.belcobtm.presentation.features.bank_accounts.ach.BankAchViewModel.Companion.USDC_TERMS_LINK
 import com.plaid.link.OpenPlaidLink
 import com.plaid.link.linkTokenConfiguration
 import com.plaid.link.result.LinkExit
@@ -28,6 +29,8 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 class BankAchFragment : BaseFragment<FragmentBankAchBinding>() {
 
     private val viewModel by viewModel<BankAchViewModel>()
+
+    override val isBackButtonEnabled: Boolean = true
 
     private val linkAccountToPlaid =
         registerForActivityResult(OpenPlaidLink()) {
@@ -55,12 +58,7 @@ class BankAchFragment : BaseFragment<FragmentBankAchBinding>() {
 
     override fun FragmentBankAchBinding.initViews() {
         setToolbarTitle(R.string.bank_ach_title)
-        setMainTextView()
         setUsdcTermsTextView()
-    }
-
-    private fun setMainTextView() {
-        binding.mainTextView.text = getString(R.string.bank_ach_main_text, "CONSUMER NAME", "COMPANY", "COMPANY")
     }
 
     private fun setUsdcTermsTextView() {
@@ -110,21 +108,25 @@ class BankAchFragment : BaseFragment<FragmentBankAchBinding>() {
     }
 
     override fun FragmentBankAchBinding.initObservers() {
-        viewModel.linkToken.observe(viewLifecycleOwner) { loadingData ->
-            when (loadingData) {
-                is LoadingData.Loading<String> -> {
-                }
-                is LoadingData.Success<String> -> {
-                    initPlaidSdk(loadingData.data)
-                }
-                is LoadingData.Error<String> -> {
-                    Toast.makeText(requireContext(), "ERROR", Toast.LENGTH_LONG).show()
-                }
-                else -> {
+        with(viewModel) {
+            linkToken.observe(viewLifecycleOwner) { loadingData ->
+                when (loadingData) {
+                    is LoadingData.Loading<String> -> {
+                    }
+                    is LoadingData.Success<String> -> {
+                        initPlaidSdk(loadingData.data)
+                    }
+                    is LoadingData.Error<String> -> {
+                        Toast.makeText(requireContext(), "ERROR", Toast.LENGTH_LONG).show()
+                    }
+                    else -> {
+                    }
                 }
             }
+            consumerName.observe(viewLifecycleOwner) {
+                setMainTextView(it)
+            }
         }
-
     }
 
     private fun initPlaidSdk(linkToken: String) {
@@ -134,9 +136,8 @@ class BankAchFragment : BaseFragment<FragmentBankAchBinding>() {
         linkAccountToPlaid.launch(linkTokenConfiguration)
     }
 
-    companion object {
-
-        private const val USDC_TERMS_LINK = "https://www.circle.com/en/legal/usdc-terms"
+    private fun setMainTextView(consumerName: String) {
+        binding.mainTextView.text = getString(R.string.bank_ach_main_text, consumerName)
     }
 
 }

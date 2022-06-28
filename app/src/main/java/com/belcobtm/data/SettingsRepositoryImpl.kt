@@ -423,11 +423,15 @@ class SettingsRepositoryImpl(
     override suspend fun getPhone(): Either<Failure, String> =
         apiService.getPhone(prefHelper.userId)
 
-    override suspend fun updatePhone(phone: String): Either<Failure, Boolean> =
-        apiService.updatePhone(prefHelper.userId, phone)
+    private var phoneCache = "" // stores phone for update after successful phone verification
+
+    override suspend fun updatePhone(): Either<Failure, Boolean> =
+        apiService.updatePhone(prefHelper.userId, phoneCache)
 
     override suspend fun verifyPhone(phone: String): Either<Failure, Boolean> =
-        apiService.verifyPhone(prefHelper.userId, phone)
+        apiService.verifyPhone(prefHelper.userId, phone).also {
+            phoneCache = phone
+        }
 
     override suspend fun setUserAllowedBioAuth(allowed: Boolean) {
         prefHelper.userAllowedBioAuth = allowed

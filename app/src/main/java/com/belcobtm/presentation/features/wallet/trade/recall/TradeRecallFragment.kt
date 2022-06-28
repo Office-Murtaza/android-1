@@ -23,8 +23,7 @@ import org.koin.core.qualifier.named
 
 class TradeRecallFragment : BaseFragment<FragmentTradeRecallBinding>() {
     override var isMenuEnabled: Boolean = true
-    override val isToolbarEnabled: Boolean = true
-    override val isHomeButtonEnabled: Boolean = true
+    override val isBackButtonEnabled: Boolean = true
     override val retryListener: View.OnClickListener = View.OnClickListener {
         val initValue = viewModel.initialLoadLiveData.value
         if (initValue == null || initValue is LoadingData.Success) {

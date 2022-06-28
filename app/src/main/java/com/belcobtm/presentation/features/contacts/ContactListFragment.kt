@@ -24,7 +24,7 @@ import permissions.dispatcher.RuntimePermissions
 class ContactListFragment : BaseFragment<FragmentContactListBinding>() {
 
     override var isMenuEnabled: Boolean = true
-    override val isHomeButtonEnabled: Boolean = true
+    override val isBackButtonEnabled: Boolean = true
 
     private val viewModel: ContactListViewModel by viewModel()
     private val adapter: MultiTypeAdapter by lazy {

@@ -12,7 +12,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class UnlinkFragment : BaseFragment<FragmentUnlinkBinding>() {
     val viewModel by viewModel<UnlinkViewModel>()
-    override val isHomeButtonEnabled = true
+    override val isBackButtonEnabled = true
     override var isMenuEnabled = true
     override val retryListener = View.OnClickListener {
         viewModel.unlink()
@@ -31,7 +31,7 @@ class UnlinkFragment : BaseFragment<FragmentUnlinkBinding>() {
     override fun FragmentUnlinkBinding.initObservers() {
         viewModel.actionData.listen(
             success = {
-                showSnackBar(R.string.wallet_unlinked)
+                showToast(R.string.wallet_unlinked)
                 (requireActivity() as? HostActivity)?.showAuthorizationScreen()
             }
         )

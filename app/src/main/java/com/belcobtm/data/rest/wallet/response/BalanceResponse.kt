@@ -4,6 +4,7 @@ import com.belcobtm.domain.wallet.item.BalanceDataItem
 import com.belcobtm.domain.wallet.item.CoinDataItem
 
 data class BalanceResponse(
+    val availableCoins: List<String>, // the same format as coin inside CoinResponse
     val coins: List<CoinResponse>,
     val totalBalance: Double
 )
@@ -18,6 +19,7 @@ data class CoinResponse(
     val fiatReserved: Double,
     val details: Details
 ) {
+
     data class Details(
         val index: Int,
         val serverAddress: String,

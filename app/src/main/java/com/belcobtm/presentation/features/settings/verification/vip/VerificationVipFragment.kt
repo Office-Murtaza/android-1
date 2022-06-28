@@ -30,7 +30,7 @@ class VerificationVipFragment :
 
     private val viewModel: VerificationVipViewModel by viewModel()
     private val args by navArgs<VerificationVipFragmentArgs>()
-    override val isHomeButtonEnabled = true
+    override val isBackButtonEnabled = true
     override var isMenuEnabled = true
     private var validated = false
 

@@ -4,7 +4,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.belcobtm.domain.tools.interactor.SendSmsToDeviceUseCase
 import com.belcobtm.domain.tools.interactor.VerifySmsCodeUseCase
-import com.belcobtm.presentation.core.SingleLiveData
 import com.belcobtm.presentation.core.mvvm.LoadingData
 
 class SmsCodeViewModel(
@@ -12,9 +11,9 @@ class SmsCodeViewModel(
     private val smsCodeUseCase: SendSmsToDeviceUseCase,
     private val verifySmsCodeUseCase: VerifySmsCodeUseCase
 ) : ViewModel() {
+
     val smsLiveData: MutableLiveData<LoadingData<Boolean>> = MutableLiveData()
     val smsVerifyLiveData: MutableLiveData<LoadingData<Boolean>> = MutableLiveData()
-
     init {
         sendSmsToDevice()
     }
@@ -36,4 +35,5 @@ class SmsCodeViewModel(
             onError = { smsVerifyLiveData.value = LoadingData.Error(it) }
         )
     }
+
 }

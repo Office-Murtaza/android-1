@@ -197,7 +197,7 @@
     <string name="bank_create_usdc_terms_text">By click \"Submit\" you agree to the </string>
 
     <string name="bank_ach_title">ACH Authorization</string>
-    <string name="bank_ach_main_text">I (we), %1$s authorize Belco Wallet LLC(\"%2$s\") to electronically debit my (our) Depository account for a one-time electronic funds transfer (EFT) payment for the amount and on the date identified. I (we) also authorize %3$s to debit or credit my (our) account to correct any errors or process any refunds, if necessary.</string>
+    <string name="bank_ach_main_text">I (we), %1$s authorize Belco Wallet LLC(COMPANY) to electronically debit my (our) Depository account for a one-time electronic funds transfer (EFT) payment for the amount and on the date identified. I (we) also authorize COMPANY to debit or credit my (our) account to correct any errors or process any refunds, if necessary.</string>
     <string name="bank_ach_usdc_terms_text">By clicking \"Confirm\" I consent to sign this authorization\nelectronically and I agree with ACH authorization rules and\n</string>
 
     <string name="bank_usdc_terms_clickable">Circle USDC Terms</string>
@@ -650,6 +650,8 @@
     <string name="support_label">Support</string>
     <string name="version_label">Version</string>
     <string name="update_phone_label">Update Phone</string>
+    <string name="update_phone_success">Phone was successfully updated</string>
+    <string name="update_phone_fail">Error: phone was not updated</string>
     <string name="update_phone_hint">New Phone Number</string>
     <string name="update_pass_label">Update Password</string>
     <string name="update_pin_label">Update PIN</string>

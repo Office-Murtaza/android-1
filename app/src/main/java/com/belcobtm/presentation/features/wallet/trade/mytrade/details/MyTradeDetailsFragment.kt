@@ -12,7 +12,6 @@ import com.belcobtm.data.model.trade.TradeType
 import com.belcobtm.databinding.FragmentMyTradeDetailsBinding
 import com.belcobtm.domain.Failure
 import com.belcobtm.presentation.core.adapter.MultiTypeAdapter
-import com.belcobtm.presentation.core.extensions.hide
 import com.belcobtm.presentation.core.extensions.resIcon
 import com.belcobtm.presentation.core.extensions.setDrawableStart
 import com.belcobtm.presentation.core.extensions.toggle
@@ -24,7 +23,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MyTradeDetailsFragment : BaseFragment<FragmentMyTradeDetailsBinding>() {
 
-    override var isHomeButtonEnabled: Boolean = true
+    override var isBackButtonEnabled: Boolean = true
 
     private val args by navArgs<MyTradeDetailsFragmentArgs>()
     private val viewModel by viewModel<MyTradeDetailsViewModel>()
@@ -139,7 +138,7 @@ class MyTradeDetailsFragment : BaseFragment<FragmentMyTradeDetailsBinding>() {
                 when (it) {
                     is Failure.NetworkConnection -> showErrorNoInternetConnection()
                     is Failure.MessageError -> {
-                        showSnackBar(it.message.orEmpty())
+                        showToast(it.message.orEmpty())
                         showContent()
                     }
                     is Failure.ServerError -> showErrorServerError()

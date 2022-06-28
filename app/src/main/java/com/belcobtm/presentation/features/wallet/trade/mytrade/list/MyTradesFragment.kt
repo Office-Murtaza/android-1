@@ -25,7 +25,7 @@ class MyTradesFragment : BaseFragment<FragmentMyTradesBinding>() {
     override val isToolbarEnabled: Boolean
         get() = false
 
-    override val isHomeButtonEnabled: Boolean
+    override val isBackButtonEnabled: Boolean
         get() = false
 
     override var isMenuEnabled: Boolean = false

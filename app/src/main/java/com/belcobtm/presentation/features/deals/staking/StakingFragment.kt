@@ -69,7 +69,7 @@ class StakingFragment : BaseFragment<FragmentStakingBinding>() {
         }
     )
     override var isMenuEnabled = true
-    override val isHomeButtonEnabled = true
+    override val isBackButtonEnabled = true
     override val retryListener: View.OnClickListener = View.OnClickListener {
         when (val loadingData = viewModel.transactionLiveData.value) {
             is LoadingData.Error -> when (loadingData.data) {

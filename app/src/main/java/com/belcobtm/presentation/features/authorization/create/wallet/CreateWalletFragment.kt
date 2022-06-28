@@ -1,9 +1,7 @@
 package com.belcobtm.presentation.features.authorization.create.wallet
 
 import android.Manifest
-import android.content.Context
 import android.graphics.Color
-import android.os.Bundle
 import android.telephony.PhoneNumberFormattingTextWatcher
 import android.text.SpannableStringBuilder
 import android.text.Spanned
@@ -12,7 +10,6 @@ import android.text.method.LinkMovementMethod
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.inputmethod.InputMethodManager
 import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
 import com.belcobtm.R
@@ -38,8 +35,9 @@ import permissions.dispatcher.RuntimePermissions
 class CreateWalletFragment : BaseFragment<FragmentCreateWalletBinding>() {
 
     private val viewModel: CreateWalletViewModel by viewModel()
-    override val isToolbarEnabled: Boolean = true
-    override val isHomeButtonEnabled: Boolean = true
+
+    override val isBackButtonEnabled: Boolean = true
+
     override val retryListener: View.OnClickListener = View.OnClickListener {
         checkCredentialsWithPermissionCheck()
     }
@@ -121,7 +119,7 @@ class CreateWalletFragment : BaseFragment<FragmentCreateWalletBinding>() {
         Manifest.permission.ACCESS_COARSE_LOCATION
     )
     fun showLocationRequiredErrorMessage() {
-        showSnackBar(R.string.location_required_on_recover_or_register_validation_message)
+        showToast(R.string.location_required_on_recover_or_register_validation_message)
     }
 
     private fun FragmentCreateWalletBinding.initTncView() {

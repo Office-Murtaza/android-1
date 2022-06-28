@@ -16,7 +16,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class HistoryChatFragment : BaseFragment<FragmentHistoryChatBinding>() {
 
-    override var isHomeButtonEnabled: Boolean = true
+    override var isBackButtonEnabled: Boolean = true
     private val args by navArgs<HistoryChatFragmentArgs>()
     private val viewModel by viewModel<HistoryChatViewModel>()
     private val parentViewModel by lazy {

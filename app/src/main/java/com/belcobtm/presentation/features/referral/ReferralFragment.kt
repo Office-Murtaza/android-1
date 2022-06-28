@@ -21,8 +21,7 @@ import org.koin.core.qualifier.named
 
 class ReferralFragment : BaseFragment<FragmentReferralsBinding>() {
 
-    override val isToolbarEnabled: Boolean = true
-    override val isHomeButtonEnabled: Boolean = true
+    override val isBackButtonEnabled: Boolean = true
 
     private val viewModel by viewModel<ReferralViewModel>()
     private val clipBoardHelper: ClipBoardHelper by inject()

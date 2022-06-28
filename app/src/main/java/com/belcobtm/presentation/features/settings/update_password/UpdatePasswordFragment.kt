@@ -18,7 +18,7 @@ class UpdatePasswordFragment : BaseFragment<FragmentUpdatePasswordBinding>() {
         viewModel.onNextClick()
     }
 
-    override val isHomeButtonEnabled = true
+    override val isBackButtonEnabled = true
     override var isMenuEnabled = true
 
     override fun FragmentUpdatePasswordBinding.initViews() {
@@ -81,7 +81,7 @@ class UpdatePasswordFragment : BaseFragment<FragmentUpdatePasswordBinding>() {
         viewModel.actionData.observe(viewLifecycleOwner) { action ->
             when (action) {
                 is UpdatePasswordAction.Success -> {
-                    showSnackBar(R.string.password_changed)
+                    showToast(R.string.password_changed)
                     popBackStack()
                 }
             }

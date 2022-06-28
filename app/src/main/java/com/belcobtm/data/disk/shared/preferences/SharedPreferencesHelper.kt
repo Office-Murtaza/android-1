@@ -38,6 +38,14 @@ class SharedPreferencesHelper(private val sharedPreferences: SharedPreferences) 
         set(value) = sharedPreferences.set(USER_PHONE, value)
         get() = sharedPreferences[USER_PHONE] ?: ""
 
+    var userFirstName: String
+        set(value) = sharedPreferences.set(USER_FIRST_NAME, value)
+        get() = sharedPreferences[USER_FIRST_NAME] ?: ""
+
+    var userLastName: String
+        set(value) = sharedPreferences.set(USER_LAST_NAME, value)
+        get() = sharedPreferences[USER_LAST_NAME] ?: ""
+
     var userStatus: String
         set(value) = sharedPreferences.set(USER_STATUS, value)
         get() = sharedPreferences[USER_STATUS] ?: ""
@@ -81,6 +89,8 @@ class SharedPreferencesHelper(private val sharedPreferences: SharedPreferences) 
             referralCode = it.user.referralCode.orEmpty()
             referralInvites = it.user.referrals ?: 0
             referralEarned = it.user.referralEarned ?: 0.0
+            userFirstName = it.user.firstName.orEmpty()
+            userLastName = it.user.lastName.orEmpty()
         }
     }
 
@@ -115,6 +125,8 @@ class SharedPreferencesHelper(private val sharedPreferences: SharedPreferences) 
         private const val NOTIFICATION_TOKEN = "KEY_NOTIFICATION"
         private const val USER_PHONE = "KEY_PHONE"
         private const val USER_BIO_AUTH = "KEY_BIO_AUTH"
+        private const val USER_FIRST_NAME = "ZENDESK_TOKEN"
+        private const val USER_LAST_NAME = "ZENDESK_TOKEN"
         private const val USER_AUTH = "KEY_USER_AUTH"
         private const val NEED_TO_SHOW_RESTRICTIONS = "NEED_TO_SHOW_RESTRICTIONS"
         private const val REFERRAL_CODE = "REFERRAL_CODE"

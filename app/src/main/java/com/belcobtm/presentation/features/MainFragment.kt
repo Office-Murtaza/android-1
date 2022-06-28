@@ -21,8 +21,7 @@ class MainFragment : BaseFragment<FragmentNavigationBinding>() {
         const val KEY_DEEPLINK = "key_deeplink"
     }
 
-    override val isToolbarEnabled: Boolean
-        get() = false
+    override val isToolbarEnabled = false
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

@@ -26,7 +26,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class OrderChatFragment : BaseFragment<FragmentOrderChatBinding>() {
 
-    override var isHomeButtonEnabled: Boolean = true
+    override var isBackButtonEnabled: Boolean = true
     private val viewModel by viewModel<OrderChatViewModel>()
     private val args by navArgs<OrderChatFragmentArgs>()
     private val imagePicker = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->

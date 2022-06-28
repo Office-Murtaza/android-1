@@ -26,8 +26,7 @@ class CreateSeedFragment : BaseFragment<FragmentCreateSeedBinding>() {
     private val viewModel: CreateSeedViewModel by viewModel()
     private val args: CreateSeedFragmentArgs by navArgs()
     private val clipBoardHelper: ClipBoardHelper by inject()
-    override val isToolbarEnabled: Boolean = true
-    override val isHomeButtonEnabled: Boolean = true
+    override val isBackButtonEnabled: Boolean = true
     override val retryListener: View.OnClickListener = View.OnClickListener { createWallet() }
 
     override fun FragmentCreateSeedBinding.initViews() {
@@ -70,7 +69,7 @@ class CreateSeedFragment : BaseFragment<FragmentCreateSeedBinding>() {
                 seedView.setText("")
                 viewModel.saveSeed(seed)
             } else {
-                showSnackBar(R.string.seed_pharse_paste_error_message)
+                showToast(R.string.seed_pharse_paste_error_message)
             }
         }
     }
@@ -89,7 +88,7 @@ class CreateSeedFragment : BaseFragment<FragmentCreateSeedBinding>() {
         })
         viewModel.invalidSeedErrorMessage.observe(viewLifecycleOwner) { messageRes ->
             messageRes?.let {
-                showSnackBar(it)
+                showToast(it)
             }
         }
     }

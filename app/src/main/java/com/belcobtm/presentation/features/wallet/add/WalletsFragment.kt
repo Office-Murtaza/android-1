@@ -17,8 +17,7 @@ class WalletsFragment : BaseFragment<FragmentWalletsBinding>() {
     private val adapter: AddWalletCoinsAdapter = AddWalletCoinsAdapter { position, isChecked ->
         viewModel.changeCoinState(position, isChecked)
     }
-    override val isToolbarEnabled: Boolean = true
-    override val isHomeButtonEnabled: Boolean = true
+    override val isBackButtonEnabled: Boolean = true
     override var isMenuEnabled: Boolean = true
     override val retryListener: View.OnClickListener = View.OnClickListener { viewModel.retry() }
 
@@ -29,7 +28,7 @@ class WalletsFragment : BaseFragment<FragmentWalletsBinding>() {
                 when (it) {
                     is Failure.NetworkConnection -> showErrorNoInternetConnection()
                     is Failure.MessageError -> {
-                        showSnackBar(it.message ?: "")
+                        showToast(it.message ?: "")
                         showContent()
                     }
                     is Failure.ServerError -> showErrorServerError()

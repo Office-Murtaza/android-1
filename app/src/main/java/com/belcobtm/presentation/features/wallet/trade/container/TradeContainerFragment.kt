@@ -29,7 +29,7 @@ class TradeContainerFragment : BaseFragment<FragmentTradeListContainerBinding>()
         const val CREATE_TRADE_KEY = "create_trade_key"
     }
 
-    override var isHomeButtonEnabled: Boolean = true
+    override var isBackButtonEnabled: Boolean = true
 
     override val retryListener: View.OnClickListener = View.OnClickListener {
         viewModel.retry()
@@ -114,7 +114,7 @@ class TradeContainerFragment : BaseFragment<FragmentTradeListContainerBinding>()
             when (it) {
                 is Failure.NetworkConnection -> showErrorNoInternetConnection()
                 is Failure.MessageError -> {
-                    showSnackBar(it.message.orEmpty())
+                    showToast(it.message.orEmpty())
                     showContent()
                 }
                 is Failure.ServerError -> showErrorServerError()

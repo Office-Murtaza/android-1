@@ -18,8 +18,7 @@ class DepositFragment : BaseFragment<FragmentDepositBinding>() {
         parametersOf(DepositFragmentArgs.fromBundle(requireArguments()).coinCode)
     }
     private val clipBoardHelper: ClipBoardHelper by inject()
-    override val isToolbarEnabled: Boolean = true
-    override val isHomeButtonEnabled: Boolean = true
+    override val isBackButtonEnabled: Boolean = true
     override var isMenuEnabled: Boolean = true
 
     override fun FragmentDepositBinding.initViews() {

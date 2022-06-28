@@ -14,7 +14,7 @@ class TradeInfoContainerFragment : BaseFragment<FragmentTradeInfoContainerBindin
     override val isToolbarEnabled: Boolean
         get() = false
 
-    override val isHomeButtonEnabled: Boolean
+    override val isBackButtonEnabled: Boolean
         get() = false
 
     override fun createBinding(inflater: LayoutInflater, container: ViewGroup?): FragmentTradeInfoContainerBinding =

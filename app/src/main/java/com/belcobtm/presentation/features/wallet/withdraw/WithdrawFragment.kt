@@ -9,7 +9,6 @@ import com.belcobtm.databinding.FragmentWithdrawBinding
 import com.belcobtm.domain.Failure
 import com.belcobtm.domain.wallet.LocalCoinType
 import com.belcobtm.domain.wallet.item.isEthRelatedCoinCode
-import com.belcobtm.presentation.core.coin.CoinCodeProvider
 import com.belcobtm.presentation.core.extensions.*
 import com.belcobtm.presentation.core.formatter.DoubleCurrencyPriceFormatter
 import com.belcobtm.presentation.core.formatter.Formatter
@@ -38,8 +37,7 @@ class WithdrawFragment : BaseFragment<FragmentWithdrawBinding>() {
         }
     )
 
-    override val isToolbarEnabled: Boolean = true
-    override val isHomeButtonEnabled: Boolean = true
+    override val isBackButtonEnabled: Boolean = true
     override var isMenuEnabled: Boolean = true
     override val retryListener: View.OnClickListener =
         View.OnClickListener { binding.validateAndSubmit() }
@@ -105,7 +103,7 @@ class WithdrawFragment : BaseFragment<FragmentWithdrawBinding>() {
                 when (it) {
                     is Failure.NetworkConnection -> showErrorNoInternetConnection()
                     is Failure.MessageError -> {
-                        showSnackBar(it.message ?: "")
+                        showToast(it.message ?: "")
                         showContent()
                     }
                     is Failure.ServerError -> showErrorServerError()

@@ -20,12 +20,12 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 
 class SmsCodeFragment : BaseFragment<FragmentSmsCodeBinding>() {
+
     private val viewModel: SmsCodeViewModel by viewModel {
         parametersOf(requireArguments().getString(TAG_PHONE))
     }
     private var isResendClicked: Boolean = false
-    override val isToolbarEnabled: Boolean = true
-    override val isHomeButtonEnabled: Boolean = true
+    override val isBackButtonEnabled: Boolean = true
     override val retryListener: View.OnClickListener =
         View.OnClickListener { viewModel.sendSmsToDevice() }
 
@@ -75,7 +75,7 @@ class SmsCodeFragment : BaseFragment<FragmentSmsCodeBinding>() {
                     binding.errorTextView.text = it.message ?: ""
                     binding.errorTextView.show()
                 } else {
-                    showSnackBar(it.message ?: "")
+                    showToast(it.message ?: "")
                     showContent()
                 }
             }
@@ -84,7 +84,7 @@ class SmsCodeFragment : BaseFragment<FragmentSmsCodeBinding>() {
                     true
                 )
             ) {
-                showSnackBar("Incorrect phone number")
+                showToast("Incorrect phone number")
                 showContent()
                 popBackStack()
             } else {
@@ -95,22 +95,30 @@ class SmsCodeFragment : BaseFragment<FragmentSmsCodeBinding>() {
     }
 
     private fun openNextScreen(correctCode: Boolean) {
-        when {
-            correctCode -> {
-                val nextScreenId = requireArguments().getInt(TAG_NEXT_FRAGMENT_ID, -1)
-                if (nextScreenId >= 0) {
-                    navigate(requireArguments().getInt(TAG_NEXT_FRAGMENT_ID), requireArguments())
-                } else {
-                    setFragmentResult(REQUEST_KEY, bundleOf(REQUEST_TAG_IS_SUCCESS to true))
-                    popBackStack()
-                }
+        if (correctCode) {
+            if (checkVerificationTarget()) return
+            val nextScreenId = requireArguments().getInt(TAG_NEXT_FRAGMENT_ID, -1)
+            if (nextScreenId >= 0) {
+                navigate(requireArguments().getInt(TAG_NEXT_FRAGMENT_ID), requireArguments())
+            } else {
+                setFragmentResult(REQUEST_KEY, bundleOf(REQUEST_TAG_IS_SUCCESS to true))
+                popBackStack()
             }
-            !correctCode -> {
-                binding.codeEntryView.isErrorEnabled = true
-                binding.codeEntryView.error = getString(R.string.sms_code_screen_invalid_code)
-            }
+        } else {
+            binding.codeEntryView.isErrorEnabled = true
+            binding.codeEntryView.error = getString(R.string.sms_code_screen_invalid_code)
         }
     }
+
+    private fun checkVerificationTarget(): Boolean =
+        when (requireArguments().getString(TAG_VERIFICATION_TARGET)) {
+            PHONE_UPDATE_VERIFICATION -> {
+                setFragmentResult(REQUEST_KEY, bundleOf(BUNDLE_KEY_PHONE_UPDATE_VERIFICATION to true))
+                popBackStack(R.id.settings_fragment, false)
+                true
+            }
+            else -> false
+        }
 
     private fun showResendDialog() {
         isResendClicked = false
@@ -122,12 +130,17 @@ class SmsCodeFragment : BaseFragment<FragmentSmsCodeBinding>() {
     }
 
     companion object {
-        private const val SMS_CODE_LENGTH: Int = 4
+
         const val TAG_PHONE: String = "sms_code_screen_phone"
         const val TAG_NEXT_FRAGMENT_ID: String = "sms_code_screen_next_fragment_id"
+        const val TAG_VERIFICATION_TARGET = "sms_code_screen_phone_update_verification"
 
         const val REQUEST_KEY = "sms_code_request_key"
         const val REQUEST_TAG_IS_SUCCESS = "sms_code_is_success"
+        const val BUNDLE_KEY_PHONE_UPDATE_VERIFICATION = "phone_update_verification_success"
+
+
+        const val PHONE_UPDATE_VERIFICATION = "phone_update_verification"
     }
 
     override fun createBinding(

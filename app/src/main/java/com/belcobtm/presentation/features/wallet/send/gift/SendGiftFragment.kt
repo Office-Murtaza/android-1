@@ -11,7 +11,6 @@ import android.view.ViewGroup
 import androidx.navigation.fragment.navArgs
 import com.belcobtm.R
 import com.belcobtm.data.disk.database.service.ServiceType
-import com.belcobtm.data.model.trade.TradeType
 import com.belcobtm.databinding.FragmentSendGiftBinding
 import com.belcobtm.domain.Failure
 import com.belcobtm.domain.wallet.LocalCoinType
@@ -50,8 +49,7 @@ class SendGiftFragment : BaseFragment<FragmentSendGiftBinding>(),
     private lateinit var gifsDialog: GiphyDialogFragment
     private var gifMedia: Media? = null
 
-    override val isToolbarEnabled: Boolean = true
-    override val isHomeButtonEnabled: Boolean = true
+    override val isBackButtonEnabled: Boolean = true
     override var isMenuEnabled: Boolean = true
     override val retryListener: View.OnClickListener = View.OnClickListener {
         when {
@@ -205,12 +203,12 @@ class SendGiftFragment : BaseFragment<FragmentSendGiftBinding>(),
             error = {
                 when (it) {
                     is Failure.LocationError ->  {
-                        showSnackBar(it.message.orEmpty())
+                        showToast(it.message.orEmpty())
                         showContent()
                     }
                     is Failure.NetworkConnection -> showErrorNoInternetConnection()
                     is Failure.MessageError -> {
-                        showSnackBar(it.message.orEmpty())
+                        showToast(it.message.orEmpty())
                         showContent()
                     }
                     is Failure.ServerError -> showErrorServerError()

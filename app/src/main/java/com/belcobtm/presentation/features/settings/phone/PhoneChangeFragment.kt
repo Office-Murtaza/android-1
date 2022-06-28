@@ -4,6 +4,7 @@ import android.telephony.PhoneNumberFormattingTextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
 import androidx.core.widget.addTextChangedListener
 import com.belcobtm.R
 import com.belcobtm.databinding.FragmentChangePhoneBinding
@@ -12,13 +13,14 @@ import com.belcobtm.presentation.core.mvvm.LoadingData
 import com.belcobtm.presentation.core.ui.fragment.BaseFragment
 import com.belcobtm.presentation.features.settings.phone.PhoneChangeViewModel.Companion.ERROR_UPDATE_PHONE_IS_SAME
 import com.belcobtm.presentation.features.settings.phone.PhoneChangeViewModel.Companion.ERROR_UPDATE_PHONE_IS_USED
+import com.belcobtm.presentation.features.sms.code.SmsCodeFragment
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class PhoneChangeFragment : BaseFragment<FragmentChangePhoneBinding>() {
 
     val viewModel by viewModel<PhoneChangeViewModel>()
     private var appliedState: LoadingData<PhoneChangeState>? = null
-    override val isHomeButtonEnabled = true
+    override val isBackButtonEnabled = true
     override var isMenuEnabled = true
     override val retryListener = View.OnClickListener {
         viewModel.onNextClick()
@@ -72,11 +74,14 @@ class PhoneChangeFragment : BaseFragment<FragmentChangePhoneBinding>() {
         )
         viewModel.actionData.observe(viewLifecycleOwner) { action ->
             when (action) {
-                is PhoneChangeAction.NavigateAction -> {
-                    navigate(action.navDirections)
-                }
-                PhoneChangeAction.PopBackStackToSecurity -> {
-                    popBackStack(R.id.security_fragment, false)
+                is PhoneChangeAction.GoToSmsVerification -> {
+                    navigate(
+                        R.id.phone_change_to_sms_fragment,
+                        bundleOf(
+                            SmsCodeFragment.TAG_PHONE to action.phone,
+                            SmsCodeFragment.TAG_VERIFICATION_TARGET to SmsCodeFragment.PHONE_UPDATE_VERIFICATION
+                        )
+                    )
                 }
             }
         }

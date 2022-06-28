@@ -26,7 +26,7 @@ import permissions.dispatcher.RuntimePermissions
 class InviteFromContactsFragment : BaseFragment<FragmentInviteFromContactsBinding>() {
 
     override var isMenuEnabled: Boolean = true
-    override val isHomeButtonEnabled: Boolean = true
+    override val isBackButtonEnabled: Boolean = true
 
     val args by navArgs<InviteFromContactsFragmentArgs>()
 

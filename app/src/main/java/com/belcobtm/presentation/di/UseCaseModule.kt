@@ -37,7 +37,7 @@ import com.belcobtm.domain.referral.LoadReferralUseCase
 import com.belcobtm.domain.referral.SearchAvailableContactsUseCase
 import com.belcobtm.domain.service.ConnectToServicesUseCase
 import com.belcobtm.domain.service.ServiceInfoProvider
-import com.belcobtm.domain.settings.UpdatePhoneUseCase
+import com.belcobtm.domain.settings.interactor.UpdatePhoneUseCase
 import com.belcobtm.domain.settings.interactor.BioAuthAllowedByUserUseCase
 import com.belcobtm.domain.settings.interactor.BioAuthSupportedByPhoneUseCase
 import com.belcobtm.domain.settings.interactor.ChangePassUseCase

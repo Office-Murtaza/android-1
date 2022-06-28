@@ -22,8 +22,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class TradeDetailsFragment : BaseFragment<FragmentTradeDetailsBinding>() {
 
-    override val isToolbarEnabled: Boolean = true
-    override val isHomeButtonEnabled: Boolean = true
+    override val isBackButtonEnabled: Boolean = true
 
     private val args by navArgs<TradeDetailsFragmentArgs>()
     private val viewModel by viewModel<TradeDetailsViewModel>()

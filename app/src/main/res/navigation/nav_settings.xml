@@ -122,7 +122,7 @@
 
         <action
             android:id="@+id/phone_change_to_sms_fragment"
-            app:destination="@id/sms_code_fragment"
+            app:destination="@id/settings_sms_code_fragment"
             app:enterAnim="@anim/slide_from_right"
             app:exitAnim="@anim/slide_to_left"
             app:popEnterAnim="@anim/slide_from_left"
@@ -179,10 +179,12 @@
     </fragment>
 
     <fragment
-        android:id="@+id/sms_code_fragment"
+        android:id="@+id/settings_sms_code_fragment"
         android:name="com.belcobtm.presentation.features.sms.code.SmsCodeFragment"
         android:label="SmsCodeFragment"
-        tools:layout="@layout/fragment_sms_code" />
+        tools:layout="@layout/fragment_sms_code">
+
+    </fragment>
 
     <fragment
         android:id="@+id/unlink_fragment"

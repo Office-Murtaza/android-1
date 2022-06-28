@@ -2,10 +2,8 @@ package com.belcobtm.presentation.features.settings.phone
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.navigation.NavDirections
 import com.belcobtm.data.disk.shared.preferences.SharedPreferencesHelper
 import com.belcobtm.domain.Failure
-import com.belcobtm.domain.settings.UpdatePhoneUseCase
 import com.belcobtm.domain.settings.interactor.VerifyPhoneUseCase
 import com.belcobtm.presentation.core.SingleLiveData
 import com.belcobtm.presentation.core.mvvm.LoadingData
@@ -13,7 +11,6 @@ import com.belcobtm.presentation.core.validator.Validator
 
 class PhoneChangeViewModel(
     private val verifyPhoneUseCase: VerifyPhoneUseCase,
-    private val updatePhoneUseCase: UpdatePhoneUseCase,
     private val prefsHelper: SharedPreferencesHelper,
     private val phoneNumberValidator: Validator<String>
 ) : ViewModel() {
@@ -52,7 +49,7 @@ class PhoneChangeViewModel(
                         )
                     )
                 } else {
-                    updatePhone()
+                    goToSmsVerification()
                 }
             },
             onError = {
@@ -61,15 +58,8 @@ class PhoneChangeViewModel(
             })
     }
 
-    private fun updatePhone() {
-        updatePhoneUseCase.invoke(UpdatePhoneUseCase.Params(phone),
-            onSuccess = {
-                actionData.value = PhoneChangeAction.PopBackStackToSecurity
-            },
-            onError = {
-                stateData.value =
-                    LoadingData.Error(data = stateData.value?.commonData, errorType = it)
-            })
+    private fun goToSmsVerification() {
+        actionData.value = PhoneChangeAction.GoToSmsVerification(phone)
     }
 
     private fun isValidMobileNumber(phone: String): Boolean =
@@ -89,6 +79,5 @@ data class PhoneChangeState(
 )
 
 sealed class PhoneChangeAction {
-    object PopBackStackToSecurity : PhoneChangeAction()
-    class NavigateAction(val navDirections: NavDirections) : PhoneChangeAction()
+    data class GoToSmsVerification(val phone: String) : PhoneChangeAction()
 }

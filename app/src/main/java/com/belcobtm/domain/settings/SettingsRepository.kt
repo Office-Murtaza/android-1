@@ -15,7 +15,7 @@ interface SettingsRepository {
     suspend fun sendVerificationVip(vipDataItem: VerificationVipDataItem, fileName: String): Either<Failure, Unit>
     suspend fun getPhone(): Either<Failure, String>
     suspend fun changePass(oldPassword: String, newPassword: String): Either<Failure, Boolean>
-    suspend fun updatePhone(phone: String): Either<Failure, Boolean>
+    suspend fun updatePhone(): Either<Failure, Boolean>
     suspend fun verifyPhone(phone: String): Either<Failure, Boolean>
     suspend fun setUserAllowedBioAuth(allowed: Boolean)
     suspend fun userAllowedBioAuth(): Either<Failure, Boolean>

@@ -54,8 +54,7 @@ class SwapFragment : BaseFragment<FragmentSwapBinding>() {
         }
     )
 
-    override val isToolbarEnabled: Boolean = true
-    override val isHomeButtonEnabled: Boolean = true
+    override val isBackButtonEnabled: Boolean = true
     override var isMenuEnabled: Boolean = true
     override val retryListener: View.OnClickListener = View.OnClickListener {
         val initialLoading = viewModel.initLoadingData.value

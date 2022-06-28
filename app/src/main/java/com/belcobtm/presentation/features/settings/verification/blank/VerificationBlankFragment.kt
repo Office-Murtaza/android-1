@@ -31,7 +31,7 @@ class VerificationBlankFragment :
     private val viewModel: VerificationBlankViewModel by viewModel()
     private val args by navArgs<VerificationBlankFragmentArgs>()
 
-    override val isHomeButtonEnabled = true
+    override val isBackButtonEnabled = true
     override var isMenuEnabled = true
 
     private var validated = false

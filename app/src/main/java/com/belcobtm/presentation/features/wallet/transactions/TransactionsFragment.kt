@@ -52,8 +52,7 @@ class TransactionsFragment : BaseFragment<FragmentTransactionsBinding>() {
             )
         )
     }
-    override val isToolbarEnabled: Boolean = true
-    override val isHomeButtonEnabled: Boolean = true
+    override val isBackButtonEnabled: Boolean = true
     override var isMenuEnabled: Boolean = true
     override val isFirstShowContent: Boolean = false
     override val retryListener: View.OnClickListener = View.OnClickListener {

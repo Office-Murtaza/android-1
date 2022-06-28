@@ -52,7 +52,7 @@ class WalletFragment : BaseFragment<FragmentBalanceBinding>() {
     override fun FragmentBalanceBinding.initObservers() {
         viewModel.needToShowRestrictions.observe(viewLifecycleOwner) {
             if (it) {
-                showSnackBar(getString(R.string.restrictions_message))
+                showToast(getString(R.string.restrictions_message))
                 viewModel.restrictionsShown()
             }
         }
@@ -66,7 +66,7 @@ class WalletFragment : BaseFragment<FragmentBalanceBinding>() {
                 when (it) {
                     is Failure.NetworkConnection -> showErrorNoInternetConnection()
                     is Failure.MessageError -> {
-                        showSnackBar(it.message ?: "")
+                        showToast(it.message ?: "")
                         showContent()
                     }
                     is Failure.ServerError -> showErrorServerError()

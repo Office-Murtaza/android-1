@@ -11,6 +11,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.view.WindowInsetsControllerCompat
@@ -30,7 +31,6 @@ import com.belcobtm.presentation.core.extensions.toggle
 import com.belcobtm.presentation.core.mvvm.LoadingData
 import com.belcobtm.presentation.core.views.InterceptableFrameLayout
 import com.belcobtm.presentation.features.HostActivity
-import com.google.android.material.snackbar.Snackbar
 import org.koin.android.ext.android.get
 import org.koin.core.parameter.parametersOf
 
@@ -39,14 +39,14 @@ abstract class BaseFragment<V : ViewBinding> : Fragment(),
 
     private var cachedToolbarTitle: String = ""
     protected open val isToolbarEnabled: Boolean = true
-    protected open val isHomeButtonEnabled: Boolean = false
     protected open var isMenuEnabled: Boolean = false
+    protected open val isBackButtonEnabled: Boolean = false
+
     protected open val homeButtonDrawable: Int = R.drawable.ic_arrow_back
     protected open val retryListener: View.OnClickListener? = null
     protected open val isFirstShowContent: Boolean = true
 
-    //field used for dynamic setting of back button because we handle it on resume
-    protected open var isBackButtonEnabled: Boolean = false
+
     protected lateinit var binding: V
         private set
     protected lateinit var baseBinding: FragmentBaseBinding
@@ -56,7 +56,7 @@ abstract class BaseFragment<V : ViewBinding> : Fragment(),
         when (error) {
             is Failure.NetworkConnection -> showErrorNoInternetConnection()
             is Failure.MessageError -> {
-                showSnackBar(error.message ?: "")
+                showToast(error.message ?: "")
                 showContent()
             }
             is Failure.ServerError -> showErrorServerError()
@@ -182,20 +182,13 @@ abstract class BaseFragment<V : ViewBinding> : Fragment(),
         (requireActivity() as AppCompatActivity).supportActionBar?.setDisplayHomeAsUpEnabled(show)
     }
 
-    protected fun showSnackBar(resMessage: Int) = Snackbar.make(
-        requireActivity().findViewById<ViewGroup>(android.R.id.content),
-        resMessage,
-        Snackbar.LENGTH_SHORT
-    ).show()
+    protected fun showToast(resMessage: Int) = showToast(getString(resMessage))
 
-    protected fun showSnackBar(message: String?): Unit = Snackbar.make(
-        requireActivity().findViewById<ViewGroup>(android.R.id.content),
-        message ?: "",
-        Snackbar.LENGTH_SHORT
-    ).show()
+    protected fun showToast(message: String?): Unit =
+        Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
 
     private fun fillToolbarTitle() = (activity as? HostActivity)?.let {
-        it.supportActionBar?.title = if (cachedToolbarTitle.isBlank()) "" else cachedToolbarTitle
+        it.supportActionBar?.title = cachedToolbarTitle.ifBlank { "" }
     }
 
     protected fun hideKeyboard() = activity?.currentFocus?.let { focus ->
@@ -222,13 +215,13 @@ abstract class BaseFragment<V : ViewBinding> : Fragment(),
     protected open fun showError(message: String) {
         baseBinding.contentContainerView.show()
         baseBinding.progressView.hide()
-        showSnackBar(message)
+        showToast(message)
     }
 
     protected open fun showError(resMessage: Int) {
         baseBinding.contentContainerView.show()
         baseBinding.progressView.hide()
-        showSnackBar(resMessage)
+        showToast(resMessage)
     }
 
     protected open fun showErrorNoInternetConnection() {
@@ -323,7 +316,7 @@ abstract class BaseFragment<V : ViewBinding> : Fragment(),
                 }
             }
 
-            showBackButton(isBackButtonEnabled || (isToolbarEnabled && isHomeButtonEnabled))
+            showBackButton(isBackButtonEnabled || isToolbarEnabled)
             fillToolbarTitle()
         }
         activity.invalidateOptionsMenu()

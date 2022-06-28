@@ -21,8 +21,7 @@ import org.koin.core.parameter.parametersOf
 import org.koin.core.qualifier.named
 
 class TradeReserveFragment : BaseFragment<FragmentTradeReserveBinding>() {
-    override val isToolbarEnabled: Boolean = true
-    override val isHomeButtonEnabled: Boolean = true
+    override val isBackButtonEnabled: Boolean = true
     override var isMenuEnabled: Boolean = true
     override val retryListener: View.OnClickListener = View.OnClickListener {
         val initValue = viewModel.initialLoadLiveData.value

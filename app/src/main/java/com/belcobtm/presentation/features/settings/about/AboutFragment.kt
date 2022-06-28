@@ -15,7 +15,7 @@ class AboutFragment : BaseFragment<FragmentAboutBinding>() {
     private val viewModel by viewModel<AboutViewModel>()
 
 
-    override val isHomeButtonEnabled: Boolean = true
+    override val isBackButtonEnabled: Boolean = true
     override var isMenuEnabled: Boolean = true
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

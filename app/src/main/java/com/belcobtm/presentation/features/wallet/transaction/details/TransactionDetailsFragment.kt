@@ -23,8 +23,7 @@ class TransactionDetailsFragment :
         val args = TransactionDetailsFragmentArgs.fromBundle(requireArguments())
         parametersOf(args.txId, args.coinCode)
     }
-    override val isToolbarEnabled: Boolean = true
-    override val isHomeButtonEnabled: Boolean = true
+    override val isBackButtonEnabled: Boolean = true
     override var isMenuEnabled: Boolean = true
 
     override fun FragmentTransactionDetailsBinding.initViews() {

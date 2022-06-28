@@ -23,7 +23,7 @@ class PasswordFragment : BaseFragment<FragmentPasswordBinding>() {
         viewModel.onNextClick(binding.passwordView.text?.toString().orEmpty())
     }
 
-    override val isHomeButtonEnabled = true
+    override val isBackButtonEnabled = true
     override var isMenuEnabled = true
 
     override fun FragmentPasswordBinding.initViews() {

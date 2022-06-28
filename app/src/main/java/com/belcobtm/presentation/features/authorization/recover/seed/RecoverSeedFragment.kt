@@ -27,8 +27,7 @@ class RecoverSeedFragment : BaseFragment<FragmentRecoverSeedBinding>() {
     private val viewModel: RecoverSeedViewModel by viewModel()
     private var watcher: SeedWatcher? = null
     private val clipBoardHelper: ClipBoardHelper by inject()
-    override val isToolbarEnabled: Boolean = true
-    override val isHomeButtonEnabled: Boolean = true
+    override val isBackButtonEnabled: Boolean = true
     override val retryListener: View.OnClickListener = View.OnClickListener { recoverWallet() }
 
     override fun onCreateView(

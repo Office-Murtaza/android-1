@@ -176,12 +176,12 @@ val viewModelModule = module {
     viewModel { (phone: String) -> SmsCodeViewModel(phone, get(), get()) }
     viewModel { RecoverSeedViewModel(get(), get()) }
     viewModel { CreateSeedViewModel(get(), get(), get(), get()) }
-    viewModel { SettingsViewModel() }
+    viewModel { SettingsViewModel(get()) }
     viewModel { DealsViewModel(get()) }
     viewModel { PasswordViewModel(get(), get()) }
     viewModel { UnlinkViewModel(get(), get()) }
     viewModel { UpdatePasswordViewModel(get()) }
-    viewModel { PhoneChangeViewModel(get(), get(), get(), get<PhoneNumberValidator>()) }
+    viewModel { PhoneChangeViewModel(get(), get(), get<PhoneNumberValidator>()) }
     viewModel { AtmViewModel(get()) }
     viewModel { (txId: String, coinCode: String) ->
         TransactionDetailsViewModel(

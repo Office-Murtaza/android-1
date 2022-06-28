@@ -143,7 +143,7 @@ class PinCodeFragment : BaseFragment<FragmentPinCodeBinding>() {
                     }
                 }
                 is PinCodeAction.ChangedPin -> {
-                    showSnackBar(R.string.pin_updated)
+                    showToast(R.string.pin_updated)
                     popBackStack(R.id.security_fragment, false)
                 }
                 is PinCodeAction.Vibrate -> vibrate(action.duration)
@@ -153,7 +153,7 @@ class PinCodeFragment : BaseFragment<FragmentPinCodeBinding>() {
                 is PinCodeAction.AuthorizeError -> when (action.failure) {
                     is Failure.NetworkConnection -> showErrorNoInternetConnection()
                     is Failure.MessageError -> {
-                        showSnackBar(action.failure.message ?: "")
+                        showToast(action.failure.message ?: "")
                         showContent()
                     }
                     is Failure.ServerError -> showErrorServerError()
