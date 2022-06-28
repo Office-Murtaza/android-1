@@ -114,7 +114,8 @@ val viewModelModule = module {
     viewModel {
         BankAchViewModel(
             getLinkTokenUseCase = get(),
-            linkBankAccountUseCase = get()
+            linkBankAccountUseCase = get(),
+            prefHelper = get()
         )
     }
     viewModel { PaymentSellUsdcViewModel(get(), get()) }
@@ -140,29 +141,28 @@ val viewModelModule = module {
     }
     viewModel {
         VerificationDetailsViewModel(
-            get(),
-            get(),
-            get(),
-            get(),
-            get(),
-            get(),
+            sendVerificationDocumentUseCase = get(),
+            sendVerificationIdentityUseCase = get(),
+            getVerificationDetailsUseCase = get(),
+            countriesUseCase = get(),
+            prefHelper = get(),
         )
     }
     viewModel { VerificationBlankViewModel(get()) }
     viewModel { VerificationVipViewModel(get()) }
     viewModel {
         SwapViewModel(
-            get(),
-            get(),
-            get(),
-            get(),
-            get(),
-            get(),
-            get(),
-            get(),
-            get(),
-            get(),
-            get()
+            accountDao = get(),
+            getCoinListUseCase = get(),
+            swapUseCase = get(),
+            serviceInfoProvider = get(),
+            getTransactionPlanUseCase = get(),
+            getSignedTransactionPlanUseCase = get(),
+            receiverAccountActivatedUseCase = get(),
+            getFakeSignedTransactionPlanUseCase = get(),
+            getMaxValueBySignedTransactionUseCase = get(),
+            updateBalanceUseCase = get(),
+            stringProvider = get()
         )
     }
     viewModel { WalletsViewModel(get(), get()) }
