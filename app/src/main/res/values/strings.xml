@@ -762,7 +762,7 @@
     <string name="transfer_screen_title">Transfer</string>
     <string name="transfer_contact_search_hint">Phone Number/Contact Name</string>
     <string name="transfer_phone_number_invalid">Enter a valid phone number or contact name</string>
-    <string name="empty_amount">0.00 $</string>
+    <string name="empty_amount">$0</string>
     <string name="phone_number_country_code">+1</string>
 
     <!-- New trade screen -->

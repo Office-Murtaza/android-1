@@ -51,9 +51,13 @@ val webSocketModule = module {
     }
     single<WebSocketManager> {
         SocketManager(
-            get(), get(authenticatorQualified), get(), get(), get(),
-            get(named(STOMP_REQUEST_SERIALIZER_QUALIFIER)),
-            get(named(STOMP_RESPONSE_DESERIALIZER_QUALIFIER)),
+            socketClient = get(),
+            authApi = get(authenticatorQualified),
+            unlinkHandler = get(),
+            preferencesHelper = get(),
+            walletDao = get(),
+            serializer = get(named(STOMP_REQUEST_SERIALIZER_QUALIFIER)),
+            deserializer = get(named(STOMP_RESPONSE_DESERIALIZER_QUALIFIER)),
         )
     }
     single<BankAccountObserver> {
@@ -81,9 +85,10 @@ val webSocketModule = module {
             get(named(CHAT_RESPONSE_DESERIALIZER_QUALIFIER))
         )
     }
-    factory<SocketClient> { OkHttpSocketClient(get(WEB_SOCKET_OK_HTTP_CLIENT_QUALIFIER)) }
-    single<OkHttpClient>(WEB_SOCKET_OK_HTTP_CLIENT_QUALIFIER) {
+    single<SocketClient> { OkHttpSocketClient(get(WEB_SOCKET_OK_HTTP_CLIENT_QUALIFIER)) }
+    single(WEB_SOCKET_OK_HTTP_CLIENT_QUALIFIER) {
         OkHttpClient().newBuilder()
+            .pingInterval(10, TimeUnit.SECONDS)
             .connectTimeout(60, TimeUnit.SECONDS)
             .readTimeout(60, TimeUnit.SECONDS)
             .addInterceptor(get<NoConnectionInterceptor>())

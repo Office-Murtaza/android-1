@@ -112,6 +112,7 @@
         style="@style/EditText.TextLink"
         android:padding="@dimen/margin_half"
         android:text="@string/max"
+        android:textStyle="bold"
         app:layout_constraintBaseline_toBaselineOf="@id/tvHelperText"
         app:layout_constraintBottom_toTopOf="@id/tvError"
         app:layout_constraintEnd_toEndOf="parent"

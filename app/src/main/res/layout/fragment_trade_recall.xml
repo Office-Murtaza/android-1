@@ -119,10 +119,10 @@
             <com.google.android.material.textfield.TextInputEditText
                 style="@style/EditText.InputWithMax"
                 android:digits="1234567890."
+                android:hint="@string/text_amount"
                 android:imeOptions="actionDone"
                 android:inputType="numberDecimal"
                 android:nextFocusDown="@id/amountUsdView"
-                android:hint="@string/text_amount"
                 tools:ignore="RtlSymmetry" />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -144,7 +144,6 @@
             android:text="@string/empty_amount"
             android:textColor="@color/colorPrimary"
             android:textSize="16sp"
-            android:textStyle="bold"
             app:layout_constraintBottom_toTopOf="@id/space_view"
             app:layout_constraintEnd_toEndOf="@id/amount_crypto_view"
             app:layout_constraintStart_toStartOf="@id/amount_crypto_view"

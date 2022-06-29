@@ -48,4 +48,5 @@ class ReferralViewModel(
     fun getReferralLink(): String =
         (initialLoadingData.value as? LoadingData.Success<Pair<ReferralDataItem, Double>>)?.data
             ?.first?.link.orEmpty()
+
 }

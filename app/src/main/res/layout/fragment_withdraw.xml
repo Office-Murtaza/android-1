@@ -71,7 +71,7 @@
             app:layout_constraintBottom_toBottomOf="@id/exchange_view"
             app:layout_constraintStart_toEndOf="@id/exchange_view"
             app:layout_constraintTop_toTopOf="@id/exchange_view"
-            tools:text="8.90 USD" />
+            tools:text="$8.90" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/reserved_title_view"
@@ -106,7 +106,7 @@
             app:layout_constraintBottom_toBottomOf="@id/reserved_exchange_view"
             app:layout_constraintStart_toEndOf="@id/reserved_exchange_view"
             app:layout_constraintTop_toTopOf="@id/reserved_exchange_view"
-            tools:text="8.90 USD" />
+            tools:text="$8.90" />
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/address_view"
@@ -168,10 +168,10 @@
             <com.google.android.material.textfield.TextInputEditText
                 style="@style/EditText.InputWithMax"
                 android:digits="1234567890."
+                android:hint="@string/text_amount"
                 android:imeOptions="actionDone"
                 android:inputType="numberDecimal"
                 android:nextFocusDown="@id/amountUsdView"
-                android:hint="@string/text_amount"
                 tools:ignore="RtlSymmetry" />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -193,27 +193,16 @@
             android:text="@string/empty_amount"
             android:textColor="@color/colorPrimary"
             android:textSize="16sp"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toTopOf="@id/space_view"
             app:layout_constraintEnd_toEndOf="@id/amount_crypto_view"
             app:layout_constraintStart_toStartOf="@id/amount_crypto_view"
             app:layout_constraintTop_toBottomOf="@id/amount_crypto_view" />
 
-        <Space
-            android:id="@+id/space_view"
-            android:layout_width="wrap_content"
-            android:layout_height="0dp"
-            app:layout_constraintBottom_toTopOf="@id/next_button_view"
-            app:layout_constraintTop_toBottomOf="@id/amount_usd_view" />
-
         <com.google.android.material.button.MaterialButton
             android:id="@+id/next_button_view"
             style="@style/Button.Primary"
+            android:layout_width="match_parent"
             android:text="@string/submit"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/space_view" />
+            app:layout_constraintBottom_toBottomOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>
