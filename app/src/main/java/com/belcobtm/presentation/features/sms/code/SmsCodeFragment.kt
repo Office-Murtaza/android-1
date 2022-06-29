@@ -114,7 +114,7 @@ class SmsCodeFragment : BaseFragment<FragmentSmsCodeBinding>() {
         when (requireArguments().getString(TAG_VERIFICATION_TARGET)) {
             PHONE_UPDATE_VERIFICATION -> {
                 setFragmentResult(REQUEST_KEY, bundleOf(BUNDLE_KEY_PHONE_UPDATE_VERIFICATION to true))
-                popBackStack(R.id.settings_fragment, false)
+                popBackStack(R.id.security_fragment, false)
                 true
             }
             else -> false
@@ -138,7 +138,6 @@ class SmsCodeFragment : BaseFragment<FragmentSmsCodeBinding>() {
         const val REQUEST_KEY = "sms_code_request_key"
         const val REQUEST_TAG_IS_SUCCESS = "sms_code_is_success"
         const val BUNDLE_KEY_PHONE_UPDATE_VERIFICATION = "phone_update_verification_success"
-
 
         const val PHONE_UPDATE_VERIFICATION = "phone_update_verification"
     }

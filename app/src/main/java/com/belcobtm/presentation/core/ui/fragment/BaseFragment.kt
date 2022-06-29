@@ -46,7 +46,6 @@ abstract class BaseFragment<V : ViewBinding> : Fragment(),
     protected open val retryListener: View.OnClickListener? = null
     protected open val isFirstShowContent: Boolean = true
 
-
     protected lateinit var binding: V
         private set
     protected lateinit var baseBinding: FragmentBaseBinding

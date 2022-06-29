@@ -10,6 +10,7 @@ import com.belcobtm.domain.settings.interactor.BioAuthAllowedByUserUseCase
 import com.belcobtm.domain.settings.interactor.BioAuthSupportedByPhoneUseCase
 import com.belcobtm.domain.settings.interactor.GetPhoneUseCase
 import com.belcobtm.domain.settings.interactor.SetBioAuthStateAllowedUseCase
+import com.belcobtm.domain.settings.interactor.UpdatePhoneUseCase
 import com.belcobtm.presentation.core.SingleLiveData
 import com.belcobtm.presentation.core.formatter.PhoneNumberFormatter
 import com.belcobtm.presentation.core.mvvm.LoadingData
@@ -20,7 +21,8 @@ class SecurityViewModel(
     private val phoneNumberFormatter: PhoneNumberFormatter,
     private val setBioAuthStateAllowedUseCase: SetBioAuthStateAllowedUseCase,
     private val bioAuthAllowedByUserUseCase: BioAuthAllowedByUserUseCase,
-    private val bioAuthSupportedByPhoneUseCase: BioAuthSupportedByPhoneUseCase
+    private val bioAuthSupportedByPhoneUseCase: BioAuthSupportedByPhoneUseCase,
+    private val updatePhoneUseCase: UpdatePhoneUseCase
 ) : ViewModel() {
 
     private val _actionData = SingleLiveData<SecurityAction>()
@@ -94,6 +96,19 @@ class SecurityViewModel(
             onError = {}
         )
     }
+
+    fun updatePhone() {
+        updatePhoneUseCase.invoke(
+            Unit,
+            onSuccess = {
+                fetchUserPhone()
+                _actionData.value = SecurityAction.PhoneSuccessfullyUpdated
+            },
+            onError = {
+                _actionData.value = SecurityAction.PhoneUpdateFailed
+            })
+    }
+
 }
 
 enum class SecurityItem {
@@ -106,6 +121,8 @@ enum class SecurityItem {
 
 sealed class SecurityAction {
     data class NavigateAction(val navDirections: NavDirections) : SecurityAction()
+    object PhoneSuccessfullyUpdated : SecurityAction()
+    object PhoneUpdateFailed : SecurityAction()
 }
 
 data class BioOptionSwitch(val supported: Boolean, val allowed: Boolean)

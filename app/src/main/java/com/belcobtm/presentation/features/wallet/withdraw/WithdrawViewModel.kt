@@ -1,10 +1,16 @@
 package com.belcobtm.presentation.features.wallet.withdraw
 
+import android.text.Editable
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.belcobtm.R
-import com.belcobtm.domain.transaction.interactor.*
+import com.belcobtm.domain.transaction.interactor.GetFakeSignedTransactionPlanUseCase
+import com.belcobtm.domain.transaction.interactor.GetMaxValueBySignedTransactionUseCase
+import com.belcobtm.domain.transaction.interactor.GetSignedTransactionPlanUseCase
+import com.belcobtm.domain.transaction.interactor.GetTransactionPlanUseCase
+import com.belcobtm.domain.transaction.interactor.ReceiverAccountActivatedUseCase
+import com.belcobtm.domain.transaction.interactor.WithdrawUseCase
 import com.belcobtm.domain.transaction.item.AmountItem
 import com.belcobtm.domain.transaction.item.SignedTransactionPlanItem
 import com.belcobtm.domain.transaction.item.TransactionPlanItem
@@ -16,12 +22,8 @@ import com.belcobtm.domain.wallet.item.isBtcCoin
 import com.belcobtm.domain.wallet.item.isEthRelatedCoin
 import com.belcobtm.presentation.core.coin.CoinCodeProvider
 import com.belcobtm.presentation.core.extensions.CoinTypeExtension
-import com.belcobtm.presentation.core.extensions.getDouble
-import com.belcobtm.presentation.core.extensions.getString
-import com.belcobtm.presentation.core.extensions.showError
 import com.belcobtm.presentation.core.mvvm.LoadingData
 import com.belcobtm.presentation.core.provider.string.StringProvider
-import org.koin.android.ext.android.inject
 
 class WithdrawViewModel(
     private val coinCode: String,
@@ -64,6 +66,12 @@ class WithdrawViewModel(
 
     private var transactionPlan: TransactionPlanItem? = null
     private var signedTransactionPlanItem: SignedTransactionPlanItem? = null
+
+    private val _isNextButtonEnabled = MutableLiveData<Boolean>()
+    val isNextButtonEnabled: LiveData<Boolean> = _isNextButtonEnabled
+
+    private var isAddressNotEmpty = false
+    private var isAmountNotEmpty = false
 
     init {
         fetchInitialData()
@@ -265,4 +273,15 @@ class WithdrawViewModel(
         val coinType = CoinTypeExtension.getTypeByCode(coinCode)
         return coinType?.validate(address) ?: false
     }
+
+    fun checkAddressInput(editable: Editable?) {
+        isAddressNotEmpty = editable.isNullOrEmpty().not()
+        _isNextButtonEnabled.value = isAddressNotEmpty && isAmountNotEmpty
+    }
+
+    fun checkAmountInput(editable: Editable?) {
+        isAmountNotEmpty = editable.isNullOrEmpty().not()
+        _isNextButtonEnabled.value = isAddressNotEmpty && isAmountNotEmpty
+    }
+
 }

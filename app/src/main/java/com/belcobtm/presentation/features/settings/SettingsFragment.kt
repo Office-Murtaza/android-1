@@ -1,15 +1,12 @@
 package com.belcobtm.presentation.features.settings
 
 import android.content.Intent
-import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.fragment.app.setFragmentResultListener
 import androidx.navigation.fragment.navArgs
 import com.belcobtm.R
 import com.belcobtm.databinding.FragmentSettingsBinding
 import com.belcobtm.presentation.core.ui.fragment.BaseFragment
-import com.belcobtm.presentation.features.sms.code.SmsCodeFragment
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import zendesk.android.Zendesk
 
@@ -25,15 +22,6 @@ class SettingsFragment : BaseFragment<FragmentSettingsBinding>() {
         const val SETTINGS_MAIN = 0
         const val SETTINGS_SECURITY = 1
         const val SETTINGS_ABOUT = 2
-    }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setFragmentResultListener(SmsCodeFragment.REQUEST_KEY) { requestKey, bundle ->
-            if (bundle.getBoolean(SmsCodeFragment.BUNDLE_KEY_PHONE_UPDATE_VERIFICATION)) {
-                viewModel.updatePhone()
-            }
-        }
     }
 
     override fun FragmentSettingsBinding.initViews() {
@@ -69,8 +57,6 @@ class SettingsFragment : BaseFragment<FragmentSettingsBinding>() {
                     is SettingsAction.NavigateAction -> navigate(action.navDirections)
                     SettingsAction.NotificationOptions -> startNotificationsSettings()
                     SettingsAction.SupportChat -> openSupportChat()
-                    SettingsAction.PhoneSuccessfullyUpdated -> showPhoneUpdatedSuccess()
-                    SettingsAction.PhoneUpdateFailed -> showPhoneUpdatedFail()
                 }
             }
         }
@@ -91,14 +77,6 @@ class SettingsFragment : BaseFragment<FragmentSettingsBinding>() {
 
     private fun openSupportChat() {
         Zendesk.instance.messaging.showMessaging(requireActivity())
-    }
-
-    private fun showPhoneUpdatedSuccess() {
-        showToast(getString(R.string.update_phone_success))
-    }
-
-    private fun showPhoneUpdatedFail() {
-        showToast(getString(R.string.update_phone_fail))
     }
 
     override fun createBinding(

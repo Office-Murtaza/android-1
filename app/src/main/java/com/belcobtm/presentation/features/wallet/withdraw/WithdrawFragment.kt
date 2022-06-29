@@ -4,12 +4,19 @@ import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.widget.addTextChangedListener
 import com.belcobtm.R
 import com.belcobtm.databinding.FragmentWithdrawBinding
 import com.belcobtm.domain.Failure
 import com.belcobtm.domain.wallet.LocalCoinType
 import com.belcobtm.domain.wallet.item.isEthRelatedCoinCode
-import com.belcobtm.presentation.core.extensions.*
+import com.belcobtm.presentation.core.extensions.actionDoneListener
+import com.belcobtm.presentation.core.extensions.clearError
+import com.belcobtm.presentation.core.extensions.getDouble
+import com.belcobtm.presentation.core.extensions.getString
+import com.belcobtm.presentation.core.extensions.setText
+import com.belcobtm.presentation.core.extensions.setTextSilently
+import com.belcobtm.presentation.core.extensions.toStringCoin
 import com.belcobtm.presentation.core.formatter.DoubleCurrencyPriceFormatter
 import com.belcobtm.presentation.core.formatter.Formatter
 import com.belcobtm.presentation.core.helper.AlertHelper
@@ -23,6 +30,7 @@ import org.koin.core.parameter.parametersOf
 import org.koin.core.qualifier.named
 
 class WithdrawFragment : BaseFragment<FragmentWithdrawBinding>() {
+
     private val viewModel: WithdrawViewModel by viewModel {
         parametersOf(WithdrawFragmentArgs.fromBundle(requireArguments()).coinCode)
     }
@@ -39,10 +47,14 @@ class WithdrawFragment : BaseFragment<FragmentWithdrawBinding>() {
 
     override val isBackButtonEnabled: Boolean = true
     override var isMenuEnabled: Boolean = true
+
     override val retryListener: View.OnClickListener =
         View.OnClickListener { binding.validateAndSubmit() }
 
     override fun FragmentWithdrawBinding.initListeners() {
+        addressEditText.addTextChangedListener {
+            viewModel.checkAddressInput(it)
+        }
         addressScanView.setOnClickListener {
             IntentIntegrator.forSupportFragment(this@WithdrawFragment).initiateScan()
         }
@@ -55,62 +67,70 @@ class WithdrawFragment : BaseFragment<FragmentWithdrawBinding>() {
             viewModel.setMaxAmount()
         }
         amountCryptoView.editText?.addTextChangedListener(doubleTextWatcher.firstTextWatcher)
+        amountEditText.addTextChangedListener {
+            viewModel.checkAmountInput(it)
+        }
     }
 
     override fun FragmentWithdrawBinding.initObservers() {
-        viewModel.loadingLiveData.listen({
-            initScreen()
-        })
-        viewModel.amount.observe(viewLifecycleOwner) {
-            binding.amountUsdView.text = if (it.amount > 0) {
-                currencyFormatter.format(it.amount * viewModel.getUsdPrice())
-            } else {
-                currencyFormatter.format(0.0)
-            }
-            if(it.amount == amountCryptoView.editText?.text?.getDouble()) {
-                return@observe
-            }
-            val formattedCoin = it.amount.toStringCoin()
-            amountCryptoView.editText?.setTextSilently(
-                doubleTextWatcher.firstTextWatcher,
-                formattedCoin, formattedCoin.length
-            )
-        }
-        viewModel.fee.observe(viewLifecycleOwner) { fee ->
-            amountCryptoView.helperText = getString(
-                R.string.transaction_helper_text_commission,
-                fee.toStringCoin(),
-                when  {
-                    viewModel.getCoinCode().isEthRelatedCoinCode() -> LocalCoinType.ETH.name
-                    viewModel.getCoinCode() == LocalCoinType.XRP.name -> getString(
-                        R.string.xrp_additional_transaction_comission, LocalCoinType.XRP.name
-                    )
-                    else -> viewModel.getCoinCode()
+        with(viewModel) {
+            loadingLiveData.listen({
+                initScreen()
+            })
+            amount.observe(viewLifecycleOwner) {
+                binding.amountUsdView.text = if (it.amount > 0) {
+                    currencyFormatter.format(it.amount * getUsdPrice())
+                } else {
+                    currencyFormatter.format(0.0)
                 }
-            )
-        }
-        viewModel.cryptoAmountError.observe(viewLifecycleOwner, amountCryptoView::setError)
-        viewModel.addressError.observe(viewLifecycleOwner, addressView::setError)
-        viewModel.transactionLiveData.listen(
-            success = {
-                AlertHelper.showToastShort(
-                    requireContext(),
-                    R.string.transactions_screen_transaction_created
+                if (it.amount == amountCryptoView.editText?.text?.getDouble()) {
+                    return@observe
+                }
+                val formattedCoin = it.amount.toStringCoin()
+                amountCryptoView.editText?.setTextSilently(
+                    doubleTextWatcher.firstTextWatcher,
+                    formattedCoin, formattedCoin.length
                 )
-                popBackStack()
-            },
-            error = {
-                when (it) {
-                    is Failure.NetworkConnection -> showErrorNoInternetConnection()
-                    is Failure.MessageError -> {
-                        showToast(it.message ?: "")
-                        showContent()
-                    }
-                    is Failure.ServerError -> showErrorServerError()
-                    else -> showErrorSomethingWrong()
-                }
             }
-        )
+            fee.observe(viewLifecycleOwner) { fee ->
+                amountCryptoView.helperText = getString(
+                    R.string.transaction_helper_text_commission,
+                    fee.toStringCoin(),
+                    when {
+                        getCoinCode().isEthRelatedCoinCode() -> LocalCoinType.ETH.name
+                        getCoinCode() == LocalCoinType.XRP.name -> getString(
+                            R.string.xrp_additional_transaction_comission, LocalCoinType.XRP.name
+                        )
+                        else -> getCoinCode()
+                    }
+                )
+            }
+            cryptoAmountError.observe(viewLifecycleOwner, amountCryptoView::setError)
+            addressError.observe(viewLifecycleOwner, addressView::setError)
+            transactionLiveData.listen(
+                success = {
+                    AlertHelper.showToastShort(
+                        requireContext(),
+                        R.string.transactions_screen_transaction_created
+                    )
+                    popBackStack()
+                },
+                error = {
+                    when (it) {
+                        is Failure.NetworkConnection -> showErrorNoInternetConnection()
+                        is Failure.MessageError -> {
+                            showToast(it.message ?: "")
+                            showContent()
+                        }
+                        is Failure.ServerError -> showErrorServerError()
+                        else -> showErrorSomethingWrong()
+                    }
+                }
+            )
+            isNextButtonEnabled.observe(viewLifecycleOwner) {
+                binding.nextButtonView.isEnabled = it
+            }
+        }
     }
 
     override fun createBinding(

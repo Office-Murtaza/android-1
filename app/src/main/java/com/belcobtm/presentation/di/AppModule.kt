@@ -122,7 +122,16 @@ val viewModelModule = module {
     viewModel { PaymentBuyUsdcViewModel(get(), get()) }
     viewModel { PaymentSummaryViewModel(get(), get(), get(), get()) }
     viewModel { AboutViewModel(get()) }
-    viewModel { SecurityViewModel(get(), get(), get(), get(), get()) }
+    viewModel {
+        SecurityViewModel(
+            getPhoneUseCase = get(),
+            phoneNumberFormatter = get(),
+            setBioAuthStateAllowedUseCase = get(),
+            bioAuthAllowedByUserUseCase = get(),
+            bioAuthSupportedByPhoneUseCase = get(),
+            updatePhoneUseCase = get()
+        )
+    }
     viewModel { WalletViewModel(get(), get(), get(), get()) }
     viewModel { (coinCode: String) -> TransactionsViewModel(coinCode, get(), get(), get(), get()) }
     viewModel { RecoverWalletViewModel(get(), get<PhoneNumberValidator>()) }
@@ -176,7 +185,7 @@ val viewModelModule = module {
     viewModel { (phone: String) -> SmsCodeViewModel(phone, get(), get()) }
     viewModel { RecoverSeedViewModel(get(), get()) }
     viewModel { CreateSeedViewModel(get(), get(), get(), get()) }
-    viewModel { SettingsViewModel(get()) }
+    viewModel { SettingsViewModel() }
     viewModel { DealsViewModel(get()) }
     viewModel { PasswordViewModel(get(), get()) }
     viewModel { UnlinkViewModel(get(), get()) }
