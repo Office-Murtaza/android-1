@@ -90,6 +90,8 @@
 
     <color name="lighter_gray">#198d8d8d</color>
     <color name="light_gray">#8d8d8d</color>
+    <color name="divider_gray">#eeeeee</color>
     <color name="light_text_color">#FEFEFE</color>
     <color name="atm_location_label_text_color">#99000000</color>
+
 </resources>
