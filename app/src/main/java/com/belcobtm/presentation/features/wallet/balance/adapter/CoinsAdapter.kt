@@ -7,9 +7,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.belcobtm.R
 import com.belcobtm.databinding.ItemBalanceCoinBinding
 import com.belcobtm.domain.wallet.LocalCoinType
-import com.belcobtm.presentation.core.extensions.resIcon
-import com.belcobtm.presentation.core.extensions.toStringCoin
-import com.belcobtm.presentation.core.formatter.Formatter
+import com.belcobtm.presentation.tools.extensions.resIcon
+import com.belcobtm.presentation.tools.extensions.toStringCoin
+import com.belcobtm.presentation.tools.formatter.Formatter
 
 class CoinsAdapter(
     private val priceFormatter: Formatter<Double>,

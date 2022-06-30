@@ -9,10 +9,10 @@ import android.widget.Toast
 import androidx.navigation.fragment.findNavController
 import com.belcobtm.R
 import com.belcobtm.databinding.FragmentReferralsBinding
-import com.belcobtm.presentation.core.extensions.toHtmlSpan
-import com.belcobtm.presentation.core.extensions.toStringCoin
-import com.belcobtm.presentation.core.formatter.DoubleCurrencyPriceFormatter
-import com.belcobtm.presentation.core.formatter.Formatter
+import com.belcobtm.presentation.tools.extensions.toHtmlSpan
+import com.belcobtm.presentation.tools.extensions.toStringCoin
+import com.belcobtm.presentation.tools.formatter.DoubleCurrencyPriceFormatter
+import com.belcobtm.presentation.tools.formatter.Formatter
 import com.belcobtm.presentation.core.helper.ClipBoardHelper
 import com.belcobtm.presentation.core.ui.fragment.BaseFragment
 import org.koin.android.ext.android.inject

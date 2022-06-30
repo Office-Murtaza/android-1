@@ -6,8 +6,8 @@ import androidx.lifecycle.ViewModel
 import com.belcobtm.domain.contacts.GetContactsUseCase
 import com.belcobtm.domain.contacts.item.Contact
 import com.belcobtm.presentation.core.adapter.model.ListItem
-import com.belcobtm.presentation.core.formatter.PhoneNumberFormatter
-import com.belcobtm.presentation.core.validator.Validator
+import com.belcobtm.presentation.tools.formatter.PhoneNumberFormatter
+import com.belcobtm.presentation.tools.validator.Validator
 
 class ContactListViewModel(
     private val getContactsUseCase: GetContactsUseCase,

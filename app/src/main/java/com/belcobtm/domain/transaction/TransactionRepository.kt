@@ -4,7 +4,10 @@ import android.location.Location
 import com.belcobtm.data.model.transactions.TransactionsData
 import com.belcobtm.domain.Either
 import com.belcobtm.domain.Failure
-import com.belcobtm.domain.transaction.item.*
+import com.belcobtm.domain.transaction.item.SellPreSubmitDataItem
+import com.belcobtm.domain.transaction.item.SignedTransactionPlanItem
+import com.belcobtm.domain.transaction.item.StakeDetailsDataItem
+import com.belcobtm.domain.transaction.item.TransactionPlanItem
 import kotlinx.coroutines.flow.Flow
 
 interface TransactionRepository {
@@ -36,7 +39,7 @@ interface TransactionRepository {
         fromCoin: String,
         fromCoinAmount: Double,
         fromTransactionPlan: TransactionPlanItem,
-        toAddress:String,
+        toAddress: String,
     ): Either<Failure, String>
 
     suspend fun receiverAccountActivated(
@@ -140,4 +143,5 @@ interface TransactionRepository {
     ): Either<Failure, Unit>
 
     suspend fun getTransferAddress(phone: String, coinCode: String): Either<Failure, String>
+
 }

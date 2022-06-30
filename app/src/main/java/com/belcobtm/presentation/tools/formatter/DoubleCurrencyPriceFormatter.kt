@@ -1,4 +1,4 @@
-package com.belcobtm.presentation.core.formatter
+package com.belcobtm.presentation.tools.formatter
 
 import java.text.NumberFormat
 import java.util.Locale

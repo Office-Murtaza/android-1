@@ -5,7 +5,12 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.navigation.fragment.navArgs
 import com.belcobtm.databinding.FragmentBankAccountDetailsBinding
-import com.belcobtm.domain.bank_account.item.*
+import com.belcobtm.domain.bank_account.item.BankAccountDataItem
+import com.belcobtm.domain.bank_account.item.BankAccountDetailsListItem
+import com.belcobtm.domain.bank_account.item.BankAccountInfoDataItem
+import com.belcobtm.domain.bank_account.item.BankAccountNoPaymentsListItem
+import com.belcobtm.domain.bank_account.item.BankAccountPaymentListItem
+import com.belcobtm.domain.bank_account.item.toDetailsListItem
 import com.belcobtm.presentation.core.adapter.MultiTypeAdapter
 import com.belcobtm.presentation.core.adapter.model.ListItem
 import com.belcobtm.presentation.core.mvvm.LoadingData

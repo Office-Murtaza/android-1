@@ -23,9 +23,9 @@ import com.belcobtm.data.disk.database.service.ServiceType
 import com.belcobtm.databinding.FragmentTradeCreateOrderBinding
 import com.belcobtm.databinding.IncludeErrorScreenBinding
 import com.belcobtm.domain.Failure
-import com.belcobtm.presentation.core.extensions.getDouble
-import com.belcobtm.presentation.core.extensions.toStringCoin
-import com.belcobtm.presentation.core.extensions.toggle
+import com.belcobtm.presentation.tools.extensions.getDouble
+import com.belcobtm.presentation.tools.extensions.toStringCoin
+import com.belcobtm.presentation.tools.extensions.toggle
 import com.belcobtm.presentation.core.mvvm.LoadingData
 import com.belcobtm.presentation.core.ui.fragment.BaseBottomSheetFragment
 import com.belcobtm.presentation.core.views.listeners.SafeDecimalEditTextWatcher

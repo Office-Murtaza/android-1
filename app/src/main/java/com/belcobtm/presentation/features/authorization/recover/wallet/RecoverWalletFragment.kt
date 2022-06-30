@@ -8,15 +8,16 @@ import android.view.ViewGroup
 import androidx.core.os.bundleOf
 import com.belcobtm.R
 import com.belcobtm.databinding.FragmentRecoverWalletBinding
-import com.belcobtm.presentation.core.extensions.actionDoneListener
-import com.belcobtm.presentation.core.extensions.afterTextChanged
-import com.belcobtm.presentation.core.extensions.clearError
-import com.belcobtm.presentation.core.extensions.clearText
-import com.belcobtm.presentation.core.extensions.getString
-import com.belcobtm.presentation.core.extensions.showError
 import com.belcobtm.presentation.core.ui.fragment.BaseFragment
 import com.belcobtm.presentation.features.authorization.recover.seed.RecoverSeedFragment
 import com.belcobtm.presentation.features.sms.code.SmsCodeFragment
+import com.belcobtm.presentation.tools.extensions.actionDoneListener
+import com.belcobtm.presentation.tools.extensions.afterTextChanged
+import com.belcobtm.presentation.tools.extensions.clearError
+import com.belcobtm.presentation.tools.extensions.clearText
+import com.belcobtm.presentation.tools.extensions.getPhoneForRequest
+import com.belcobtm.presentation.tools.extensions.getString
+import com.belcobtm.presentation.tools.extensions.showError
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import permissions.dispatcher.NeedsPermission
 import permissions.dispatcher.OnPermissionDenied
@@ -134,6 +135,6 @@ class RecoverWalletFragment : BaseFragment<FragmentRecoverWalletBinding>() {
             && binding.passwordView.getString().isNotEmpty()
     }
 
-    private fun getPhone(): String = binding.phoneView.getString().replace("[-() ]".toRegex(), "")
+    private fun getPhone(): String = binding.phoneView.getString().getPhoneForRequest()
 
 }

@@ -13,7 +13,7 @@ import com.belcobtm.domain.trade.details.EditTradeUseCase
 import com.belcobtm.domain.trade.details.GetTradeDetailsUseCase
 import com.belcobtm.domain.wallet.interactor.GetCoinListUseCase
 import com.belcobtm.domain.wallet.item.CoinDataItem
-import com.belcobtm.presentation.core.extensions.toStringCoin
+import com.belcobtm.presentation.tools.extensions.toStringCoin
 import com.belcobtm.presentation.core.livedata.TripleCombinedLiveData
 import com.belcobtm.presentation.core.mvvm.LoadingData
 import com.belcobtm.presentation.core.provider.string.StringProvider

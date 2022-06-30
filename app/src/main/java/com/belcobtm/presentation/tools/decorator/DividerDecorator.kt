@@ -1,4 +1,4 @@
-package com.belcobtm.presentation.core.decorator
+package com.belcobtm.presentation.tools.decorator
 
 import android.graphics.Canvas
 import android.graphics.drawable.Drawable
@@ -23,4 +23,5 @@ class DividerDecorator(
             divider.draw(c)
         }
     }
+
 }

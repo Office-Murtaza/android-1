@@ -7,7 +7,8 @@ import com.belcobtm.domain.Failure
 import com.belcobtm.domain.settings.interactor.VerifyPhoneUseCase
 import com.belcobtm.presentation.core.SingleLiveData
 import com.belcobtm.presentation.core.mvvm.LoadingData
-import com.belcobtm.presentation.core.validator.Validator
+import com.belcobtm.presentation.tools.extensions.getPhoneForRequest
+import com.belcobtm.presentation.tools.validator.Validator
 
 class PhoneChangeViewModel(
     private val verifyPhoneUseCase: VerifyPhoneUseCase,
@@ -21,7 +22,7 @@ class PhoneChangeViewModel(
     private var phone = ""
 
     fun onPhoneInput(text: String) {
-        phone = text
+        phone = text.getPhoneForRequest()
         stateData.value = LoadingData.Success(PhoneChangeState(isValidMobileNumber(phone)))
     }
 

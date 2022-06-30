@@ -7,7 +7,7 @@ import com.belcobtm.data.websockets.chat.model.ChatMessageResponse
 import com.belcobtm.presentation.features.wallet.trade.order.chat.model.ChatMessageItem
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import java.text.SimpleDateFormat
-import java.util.*
+import java.util.Date
 
 class ChatMessageMapper(
     private val sharedPreferencesHelper: SharedPreferencesHelper,
@@ -45,4 +45,5 @@ class ChatMessageMapper(
         }
         return cloudStorage.getLink(filename)
     }
+
 }

@@ -2,7 +2,7 @@ package com.belcobtm.domain.trade.list.mapper
 
 import com.belcobtm.data.model.trade.Trade
 import com.belcobtm.domain.wallet.LocalCoinType
-import com.belcobtm.presentation.core.formatter.Formatter
+import com.belcobtm.presentation.tools.formatter.Formatter
 import com.belcobtm.presentation.features.wallet.trade.list.model.TradeItem
 
 class TradeToTradeItemMapper(

@@ -15,8 +15,8 @@ import com.belcobtm.domain.transaction.item.TransactionPlanItem
 import com.belcobtm.domain.wallet.LocalCoinType
 import com.belcobtm.domain.wallet.interactor.GetCoinByCodeUseCase
 import com.belcobtm.domain.wallet.item.CoinDataItem
-import com.belcobtm.presentation.core.extensions.code
 import com.belcobtm.presentation.core.mvvm.LoadingData
+import com.belcobtm.presentation.tools.extensions.code
 import wallet.core.jni.CoinType
 
 class PaymentSummaryViewModel(
@@ -25,6 +25,7 @@ class PaymentSummaryViewModel(
     private val getTransactionPlanUseCase: GetTransactionPlanUseCase,
     private val getCoinByCodeUseCase: GetCoinByCodeUseCase,
 ) : ViewModel() {
+
     private lateinit var _usdcDataItem: CoinDataItem
     private lateinit var _usdcTransactionPlanItem: TransactionPlanItem
 
@@ -132,4 +133,5 @@ class PaymentSummaryViewModel(
         }, onError = {
         })
     }
+
 }

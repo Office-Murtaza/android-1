@@ -12,9 +12,9 @@ import com.belcobtm.data.model.trade.TradeType
 import com.belcobtm.databinding.FragmentMyTradeDetailsBinding
 import com.belcobtm.domain.Failure
 import com.belcobtm.presentation.core.adapter.MultiTypeAdapter
-import com.belcobtm.presentation.core.extensions.resIcon
-import com.belcobtm.presentation.core.extensions.setDrawableStart
-import com.belcobtm.presentation.core.extensions.toggle
+import com.belcobtm.presentation.tools.extensions.resIcon
+import com.belcobtm.presentation.tools.extensions.setDrawableStart
+import com.belcobtm.presentation.tools.extensions.toggle
 import com.belcobtm.presentation.core.helper.AlertHelper
 import com.belcobtm.presentation.core.mvvm.LoadingData
 import com.belcobtm.presentation.core.ui.fragment.BaseFragment

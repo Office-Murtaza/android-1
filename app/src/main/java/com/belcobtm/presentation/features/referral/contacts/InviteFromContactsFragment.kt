@@ -11,8 +11,8 @@ import androidx.navigation.fragment.navArgs
 import com.belcobtm.R
 import com.belcobtm.databinding.FragmentInviteFromContactsBinding
 import com.belcobtm.presentation.core.adapter.MultiTypeAdapter
-import com.belcobtm.presentation.core.extensions.actionDoneListener
-import com.belcobtm.presentation.core.extensions.toHtmlSpan
+import com.belcobtm.presentation.tools.extensions.actionDoneListener
+import com.belcobtm.presentation.tools.extensions.toHtmlSpan
 import com.belcobtm.presentation.core.ui.fragment.BaseFragment
 import com.belcobtm.presentation.core.views.listeners.SafeDecimalEditTextWatcher
 import com.belcobtm.presentation.features.contacts.adapter.delegate.ContactHeaderDelegate

@@ -1,4 +1,4 @@
-package com.belcobtm.presentation.core.extensions
+package com.belcobtm.presentation.tools.extensions
 
 import com.belcobtm.R
 import com.belcobtm.domain.transaction.type.TransactionType

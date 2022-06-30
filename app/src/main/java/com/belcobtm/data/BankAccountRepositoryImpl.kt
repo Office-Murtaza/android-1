@@ -14,7 +14,15 @@ import com.belcobtm.data.rest.bank_account.response.toDataItem
 import com.belcobtm.domain.Either
 import com.belcobtm.domain.Failure
 import com.belcobtm.domain.bank_account.BankAccountRepository
-import com.belcobtm.domain.bank_account.item.*
+import com.belcobtm.domain.bank_account.item.BankAccountCreateDataItem
+import com.belcobtm.domain.bank_account.item.BankAccountCreatePaymentDataItem
+import com.belcobtm.domain.bank_account.item.BankAccountCreateResponseDataItem
+import com.belcobtm.domain.bank_account.item.BankAccountDataItem
+import com.belcobtm.domain.bank_account.item.BankAccountLimitDataItem
+import com.belcobtm.domain.bank_account.item.BankAccountLinkDataItem
+import com.belcobtm.domain.bank_account.item.BankAccountPaymentDataItem
+import com.belcobtm.domain.bank_account.item.BankAccountPaymentListItem
+import com.belcobtm.domain.bank_account.item.BankAccountValidationErrorDataItem
 import kotlinx.coroutines.flow.Flow
 
 class BankAccountRepositoryImpl(
@@ -214,6 +222,7 @@ class BankAccountRepositoryImpl(
     }
 
     companion object {
+
         const val ACCOUNT_NUMBER = "accountNumber"
         const val ROUTING_NUMBER = "routingNumber"
         const val IBAN = "iban"
@@ -234,4 +243,5 @@ class BankAccountRepositoryImpl(
             ) ?: ""
         }
     }
+
 }

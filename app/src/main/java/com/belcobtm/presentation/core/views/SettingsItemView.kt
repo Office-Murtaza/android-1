@@ -9,7 +9,7 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import com.belcobtm.R
 import com.belcobtm.databinding.ItemSettingsBinding
-import com.belcobtm.presentation.core.extensions.toggle
+import com.belcobtm.presentation.tools.extensions.toggle
 
 class SettingsItemView @JvmOverloads constructor(
     context: Context,

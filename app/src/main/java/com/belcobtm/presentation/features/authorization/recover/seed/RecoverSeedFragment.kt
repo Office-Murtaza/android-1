@@ -12,18 +12,23 @@ import androidx.navigation.fragment.findNavController
 import com.belcobtm.R
 import com.belcobtm.databinding.FragmentRecoverSeedBinding
 import com.belcobtm.domain.Failure
-import com.belcobtm.domain.authorization.interactor.*
-import com.belcobtm.presentation.core.extensions.clearError
-import com.belcobtm.presentation.core.extensions.getString
-import com.belcobtm.presentation.core.extensions.showError
+import com.belcobtm.domain.authorization.interactor.RECOVER_ERROR_EMPTY_COINS
+import com.belcobtm.domain.authorization.interactor.RECOVER_ERROR_INCORRECT_PASSWORD
+import com.belcobtm.domain.authorization.interactor.RECOVER_ERROR_MISSED_COINS
+import com.belcobtm.domain.authorization.interactor.RECOVER_ERROR_PHONE_DOESNT_EXISTS
+import com.belcobtm.domain.authorization.interactor.RECOVER_ERROR_SEED_PHRASE
 import com.belcobtm.presentation.core.helper.ClipBoardHelper
 import com.belcobtm.presentation.core.ui.fragment.BaseFragment
 import com.belcobtm.presentation.features.pin.code.PinCodeFragment
 import com.belcobtm.presentation.features.sms.code.SmsCodeFragment
+import com.belcobtm.presentation.tools.extensions.clearError
+import com.belcobtm.presentation.tools.extensions.getString
+import com.belcobtm.presentation.tools.extensions.showError
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class RecoverSeedFragment : BaseFragment<FragmentRecoverSeedBinding>() {
+
     private val viewModel: RecoverSeedViewModel by viewModel()
     private var watcher: SeedWatcher? = null
     private val clipBoardHelper: ClipBoardHelper by inject()
@@ -124,6 +129,7 @@ class RecoverSeedFragment : BaseFragment<FragmentRecoverSeedBinding>() {
     }
 
     companion object {
+
         const val TAG_PASSWORD = "tag_recover_seed_password"
         const val SEED_PHRASE_WORDS_SIZE = 12
     }
@@ -133,4 +139,5 @@ class RecoverSeedFragment : BaseFragment<FragmentRecoverSeedBinding>() {
         container: ViewGroup?
     ): FragmentRecoverSeedBinding =
         FragmentRecoverSeedBinding.inflate(inflater, container, false)
+
 }

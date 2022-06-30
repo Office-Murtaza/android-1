@@ -30,10 +30,10 @@ import com.belcobtm.R
 import com.belcobtm.databinding.FragmentVerificationDocumentPageBinding
 import com.belcobtm.domain.settings.type.DocumentCaptureType
 import com.belcobtm.domain.settings.type.DocumentType
-import com.belcobtm.presentation.core.extensions.getString
-import com.belcobtm.presentation.core.extensions.hide
-import com.belcobtm.presentation.core.extensions.setText
-import com.belcobtm.presentation.core.extensions.show
+import com.belcobtm.presentation.tools.extensions.getString
+import com.belcobtm.presentation.tools.extensions.hide
+import com.belcobtm.presentation.tools.extensions.setText
+import com.belcobtm.presentation.tools.extensions.show
 import com.belcobtm.presentation.core.mvvm.LoadingData
 import com.belcobtm.presentation.features.settings.verification.acuant.FacialLivenessActivity
 import com.belcobtm.presentation.features.settings.verification.details.VerificationDetailsViewModel

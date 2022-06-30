@@ -14,6 +14,7 @@ class SmsCodeViewModel(
 
     val smsLiveData: MutableLiveData<LoadingData<Boolean>> = MutableLiveData()
     val smsVerifyLiveData: MutableLiveData<LoadingData<Boolean>> = MutableLiveData()
+
     init {
         sendSmsToDevice()
     }

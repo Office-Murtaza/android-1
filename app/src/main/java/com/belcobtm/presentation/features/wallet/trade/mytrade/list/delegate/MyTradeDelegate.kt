@@ -1,9 +1,7 @@
 package com.belcobtm.presentation.features.wallet.trade.mytrade.list.delegate
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.view.animation.AlphaAnimation
 import androidx.core.content.ContextCompat
 import androidx.core.view.children
 import com.belcobtm.R
@@ -13,7 +11,7 @@ import com.belcobtm.databinding.ItemMyTradeBinding
 import com.belcobtm.presentation.core.adapter.MultiTypeAdapter
 import com.belcobtm.presentation.core.adapter.delegate.AdapterDelegate
 import com.belcobtm.presentation.core.adapter.holder.MultiTypeViewHolder
-import com.belcobtm.presentation.core.extensions.resIcon
+import com.belcobtm.presentation.tools.extensions.resIcon
 import com.belcobtm.presentation.features.wallet.trade.list.delegate.TradePaymentOptionDelegate
 import com.belcobtm.presentation.features.wallet.trade.list.model.TradeItem
 

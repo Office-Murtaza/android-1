@@ -12,17 +12,18 @@ import com.belcobtm.R
 import com.belcobtm.databinding.FragmentVerificationIdentityPageBinding
 import com.belcobtm.domain.settings.item.VerificationIdentityDataItem
 import com.belcobtm.domain.settings.type.RecordStatus
-import com.belcobtm.presentation.core.extensions.clearText
-import com.belcobtm.presentation.core.extensions.getString
-import com.belcobtm.presentation.core.extensions.setText
 import com.belcobtm.presentation.core.mvvm.LoadingData
 import com.belcobtm.presentation.features.settings.verification.details.VerificationDetailsViewModel
 import com.belcobtm.presentation.features.settings.verification.details.VerificationIdentityState
+import com.belcobtm.presentation.tools.extensions.clearText
+import com.belcobtm.presentation.tools.extensions.getString
+import com.belcobtm.presentation.tools.extensions.setText
 import com.google.android.material.textfield.TextInputLayout
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
-import java.util.*
+import java.util.Calendar
 
 class VerificationIdentityPageFragment : Fragment() {
+
     val viewModel by sharedViewModel<VerificationDetailsViewModel>()
     lateinit var binding: FragmentVerificationIdentityPageBinding
     private var selectedDayOfBirth: Int? = null
@@ -318,16 +319,16 @@ class VerificationIdentityPageFragment : Fragment() {
         val firstName = binding.validateFirstName()
 
         return firstName
-                && lastName
-                && birthDate
-                && province
-                && city
-                && streetName
-                && buildingNumber
-                && zipCode
-                && ssn
-                && sourceOfFunds
-                && occupation
+            && lastName
+            && birthDate
+            && province
+            && city
+            && streetName
+            && buildingNumber
+            && zipCode
+            && ssn
+            && sourceOfFunds
+            && occupation
     }
 
     private fun FragmentVerificationIdentityPageBinding.validateFirstName(): Boolean {
@@ -451,4 +452,5 @@ class VerificationIdentityPageFragment : Fragment() {
         binding.progressView.visibility = View.GONE
         binding.identityFieldsContainer.visibility = View.VISIBLE
     }
+
 }

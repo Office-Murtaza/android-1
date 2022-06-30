@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.setFragmentResultListener
 import com.belcobtm.R
 import com.belcobtm.databinding.FragmentSecurityBinding
-import com.belcobtm.presentation.core.extensions.toggle
+import com.belcobtm.presentation.tools.extensions.toggle
 import com.belcobtm.presentation.core.ui.fragment.BaseFragment
 import com.belcobtm.presentation.features.sms.code.SmsCodeFragment
 import org.koin.androidx.viewmodel.ext.android.viewModel

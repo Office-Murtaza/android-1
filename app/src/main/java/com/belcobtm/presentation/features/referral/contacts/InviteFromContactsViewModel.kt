@@ -8,7 +8,7 @@ import com.belcobtm.domain.referral.GetExistedPhoneNumbersUseCase
 import com.belcobtm.domain.referral.SearchAvailableContactsUseCase
 import com.belcobtm.domain.referral.item.SelectableContact
 import com.belcobtm.presentation.core.adapter.model.ListItem
-import com.belcobtm.presentation.core.formatter.PhoneNumberFormatter
+import com.belcobtm.presentation.tools.formatter.PhoneNumberFormatter
 import com.belcobtm.presentation.core.mvvm.LoadingData
 
 class InviteFromContactsViewModel(

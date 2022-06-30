@@ -9,7 +9,7 @@ import com.belcobtm.R
 import com.belcobtm.databinding.ItemCoinToCoinBinding
 import com.belcobtm.domain.wallet.LocalCoinType
 import com.belcobtm.domain.wallet.item.CoinDataItem
-import com.belcobtm.presentation.core.extensions.resIcon
+import com.belcobtm.presentation.tools.extensions.resIcon
 
 class CoinDialogAdapter(
     context: Context,

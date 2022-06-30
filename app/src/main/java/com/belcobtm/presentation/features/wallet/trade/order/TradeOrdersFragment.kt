@@ -8,7 +8,7 @@ import com.belcobtm.domain.Either
 import com.belcobtm.domain.Failure
 import com.belcobtm.presentation.core.adapter.MultiTypeAdapter
 import com.belcobtm.presentation.core.adapter.model.ListItem
-import com.belcobtm.presentation.core.extensions.hide
+import com.belcobtm.presentation.tools.extensions.hide
 import com.belcobtm.presentation.core.ui.fragment.BaseFragment
 import com.belcobtm.presentation.features.wallet.trade.container.TradeContainerFragmentDirections
 import com.belcobtm.presentation.features.wallet.trade.container.TradeContainerViewModel

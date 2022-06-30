@@ -2,17 +2,17 @@ package com.belcobtm.presentation.di
 
 import android.content.Context
 import com.belcobtm.presentation.core.coin.CoinCodeProvider
-import com.belcobtm.presentation.core.formatter.DoubleCurrencyPriceFormatter
-import com.belcobtm.presentation.core.formatter.DoubleCurrencyPriceFormatter.Companion.DOUBLE_CURRENCY_PRICE_FORMATTER_QUALIFIER
-import com.belcobtm.presentation.core.formatter.Formatter
-import com.belcobtm.presentation.core.formatter.GoogleMapsDirectionQueryFormatter
-import com.belcobtm.presentation.core.formatter.GoogleMapsDirectionQueryFormatter.Companion.GOOGLE_MAPS_DIRECTIONS_QUERY_FORMATTER
-import com.belcobtm.presentation.core.formatter.IntCurrencyPriceFormatter
-import com.belcobtm.presentation.core.formatter.IntCurrencyPriceFormatter.Companion.INT_CURRENCY_PRICE_FORMATTER_QUALIFIER
-import com.belcobtm.presentation.core.formatter.MilesFormatter
-import com.belcobtm.presentation.core.formatter.MilesFormatter.Companion.MILES_FORMATTER_QUALIFIER
-import com.belcobtm.presentation.core.formatter.PhoneNumberFormatter
-import com.belcobtm.presentation.core.formatter.TradeCountFormatter
+import com.belcobtm.presentation.tools.formatter.DoubleCurrencyPriceFormatter
+import com.belcobtm.presentation.tools.formatter.DoubleCurrencyPriceFormatter.Companion.DOUBLE_CURRENCY_PRICE_FORMATTER_QUALIFIER
+import com.belcobtm.presentation.tools.formatter.Formatter
+import com.belcobtm.presentation.tools.formatter.GoogleMapsDirectionQueryFormatter
+import com.belcobtm.presentation.tools.formatter.GoogleMapsDirectionQueryFormatter.Companion.GOOGLE_MAPS_DIRECTIONS_QUERY_FORMATTER
+import com.belcobtm.presentation.tools.formatter.IntCurrencyPriceFormatter
+import com.belcobtm.presentation.tools.formatter.IntCurrencyPriceFormatter.Companion.INT_CURRENCY_PRICE_FORMATTER_QUALIFIER
+import com.belcobtm.presentation.tools.formatter.MilesFormatter
+import com.belcobtm.presentation.tools.formatter.MilesFormatter.Companion.MILES_FORMATTER_QUALIFIER
+import com.belcobtm.presentation.tools.formatter.PhoneNumberFormatter
+import com.belcobtm.presentation.tools.formatter.TradeCountFormatter
 import com.belcobtm.presentation.core.helper.ClipBoardHelper
 import com.belcobtm.presentation.core.parser.DistanceParser
 import com.belcobtm.presentation.core.parser.DistanceParser.Companion.DISTANCE_INT_PARSER_QUALIFIER
@@ -21,7 +21,7 @@ import com.belcobtm.presentation.core.parser.PriceDoubleParser.Companion.PRICE_D
 import com.belcobtm.presentation.core.parser.StringParser
 import com.belcobtm.presentation.core.provider.string.ResourceStringProvider
 import com.belcobtm.presentation.core.provider.string.StringProvider
-import com.belcobtm.presentation.core.validator.PhoneNumberValidator
+import com.belcobtm.presentation.tools.validator.PhoneNumberValidator
 import com.belcobtm.presentation.features.HostViewModel
 import com.belcobtm.presentation.features.MainViewModel
 import com.belcobtm.presentation.features.atm.AtmViewModel

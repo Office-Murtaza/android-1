@@ -11,8 +11,8 @@ import com.belcobtm.databinding.ItemTradeBinding
 import com.belcobtm.presentation.core.adapter.MultiTypeAdapter
 import com.belcobtm.presentation.core.adapter.delegate.AdapterDelegate
 import com.belcobtm.presentation.core.adapter.holder.MultiTypeViewHolder
-import com.belcobtm.presentation.core.extensions.resIcon
-import com.belcobtm.presentation.core.extensions.toHtmlSpan
+import com.belcobtm.presentation.tools.extensions.resIcon
+import com.belcobtm.presentation.tools.extensions.toHtmlSpan
 import com.belcobtm.presentation.features.wallet.trade.list.model.TradeItem
 
 class TradeItemDelegate(

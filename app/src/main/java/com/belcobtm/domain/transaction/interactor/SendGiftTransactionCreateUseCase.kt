@@ -7,7 +7,7 @@ import com.belcobtm.domain.Failure
 import com.belcobtm.domain.UseCase
 import com.belcobtm.domain.transaction.TransactionRepository
 import com.belcobtm.domain.transaction.item.TransactionPlanItem
-import com.belcobtm.presentation.core.extensions.toStringCoin
+import com.belcobtm.presentation.tools.extensions.toStringCoin
 import com.belcobtm.presentation.core.provider.string.StringProvider
 
 class SendGiftTransactionCreateUseCase(

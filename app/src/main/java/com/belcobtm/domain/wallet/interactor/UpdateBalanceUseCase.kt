@@ -1,6 +1,9 @@
 package com.belcobtm.domain.wallet.interactor
 
-import com.belcobtm.domain.*
+import com.belcobtm.domain.Either
+import com.belcobtm.domain.Failure
+import com.belcobtm.domain.UseCase
+import com.belcobtm.domain.mapSuspend
 import com.belcobtm.domain.wallet.WalletRepository
 
 class UpdateBalanceUseCase(
@@ -36,4 +39,5 @@ class UpdateBalanceUseCase(
         val txFee: Double,
         val maxAmountUsed: Boolean,
     )
+
 }

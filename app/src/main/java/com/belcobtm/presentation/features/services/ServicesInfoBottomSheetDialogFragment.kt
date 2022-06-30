@@ -7,8 +7,8 @@ import android.view.ViewGroup
 import androidx.navigation.fragment.navArgs
 import com.belcobtm.databinding.FragmentServicesInfoBinding
 import com.belcobtm.domain.service.ServiceInfoProvider
-import com.belcobtm.presentation.core.formatter.DoubleCurrencyPriceFormatter
-import com.belcobtm.presentation.core.formatter.Formatter
+import com.belcobtm.presentation.tools.formatter.DoubleCurrencyPriceFormatter
+import com.belcobtm.presentation.tools.formatter.Formatter
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import org.koin.android.ext.android.inject
 import org.koin.core.qualifier.named

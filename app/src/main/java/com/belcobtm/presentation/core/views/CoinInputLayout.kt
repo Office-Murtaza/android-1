@@ -18,7 +18,11 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import com.belcobtm.R
 import com.belcobtm.databinding.ViewCoinInputLayoutBinding
-import com.belcobtm.presentation.core.extensions.*
+import com.belcobtm.presentation.tools.extensions.actionDoneListener
+import com.belcobtm.presentation.tools.extensions.invisible
+import com.belcobtm.presentation.tools.extensions.setDrawableEnd
+import com.belcobtm.presentation.tools.extensions.show
+import com.belcobtm.presentation.tools.extensions.toggle
 
 class CoinInputLayout @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
@@ -134,4 +138,5 @@ class CoinInputLayout @JvmOverloads constructor(
         }
         binding.tvError.text = text
     }
+
 }

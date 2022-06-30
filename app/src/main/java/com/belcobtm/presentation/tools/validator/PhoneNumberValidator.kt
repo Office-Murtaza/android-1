@@ -1,4 +1,4 @@
-package com.belcobtm.presentation.core.validator
+package com.belcobtm.presentation.tools.validator
 
 import io.michaelrocks.libphonenumber.android.NumberParseException
 import io.michaelrocks.libphonenumber.android.PhoneNumberUtil

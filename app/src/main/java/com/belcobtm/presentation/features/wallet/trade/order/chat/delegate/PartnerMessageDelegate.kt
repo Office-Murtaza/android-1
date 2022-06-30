@@ -5,8 +5,8 @@ import android.view.ViewGroup
 import com.belcobtm.databinding.ItemPartnerMessageBinding
 import com.belcobtm.presentation.core.adapter.delegate.AdapterDelegate
 import com.belcobtm.presentation.core.adapter.holder.MultiTypeViewHolder
-import com.belcobtm.presentation.core.extensions.hide
-import com.belcobtm.presentation.core.extensions.show
+import com.belcobtm.presentation.tools.extensions.hide
+import com.belcobtm.presentation.tools.extensions.show
 import com.belcobtm.presentation.features.wallet.trade.order.chat.model.ChatMessageItem
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions

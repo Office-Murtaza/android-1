@@ -7,10 +7,10 @@ import com.belcobtm.domain.bank_account.item.BankAccountDetailsListItem
 import com.belcobtm.domain.bank_account.type.BankAccountStatusType
 import com.belcobtm.domain.bank_account.type.BankAccountType
 import com.belcobtm.presentation.core.adapter.holder.MultiTypeViewHolder
-import com.belcobtm.presentation.core.extensions.formatBalanceValue
-import com.belcobtm.presentation.core.extensions.hide
-import com.belcobtm.presentation.core.extensions.show
-import com.belcobtm.presentation.core.extensions.toggle
+import com.belcobtm.presentation.tools.extensions.formatBalanceValue
+import com.belcobtm.presentation.tools.extensions.hide
+import com.belcobtm.presentation.tools.extensions.show
+import com.belcobtm.presentation.tools.extensions.toggle
 
 class BankAccountDetailsItemViewHolder(
     private val binding: ItemBankAccountDetailsBuySellBinding,

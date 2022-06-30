@@ -6,7 +6,7 @@ import com.belcobtm.domain.transaction.item.SignedTransactionPlanItem
 import com.belcobtm.domain.transaction.item.TransactionPlanItem
 import com.belcobtm.domain.wallet.LocalCoinType
 import com.belcobtm.presentation.core.Numeric
-import com.belcobtm.presentation.core.extensions.unit
+import com.belcobtm.presentation.tools.extensions.unit
 import wallet.core.java.AnySigner
 import wallet.core.jni.proto.Bitcoin
 

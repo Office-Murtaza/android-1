@@ -5,7 +5,11 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.belcobtm.R
-import com.belcobtm.domain.transaction.interactor.*
+import com.belcobtm.domain.transaction.interactor.GetFakeSignedTransactionPlanUseCase
+import com.belcobtm.domain.transaction.interactor.GetMaxValueBySignedTransactionUseCase
+import com.belcobtm.domain.transaction.interactor.GetSignedTransactionPlanUseCase
+import com.belcobtm.domain.transaction.interactor.GetTransactionPlanUseCase
+import com.belcobtm.domain.transaction.interactor.ReceiverAccountActivatedUseCase
 import com.belcobtm.domain.transaction.interactor.trade.TradeReserveTransactionCompleteUseCase
 import com.belcobtm.domain.transaction.interactor.trade.TradeReserveTransactionCreateUseCase
 import com.belcobtm.domain.transaction.item.AmountItem
@@ -287,4 +291,5 @@ class TradeReserveViewModel(
         val ethBalance = etheriumCoinDataItem?.balanceCoin ?: 0.0
         return !coinDataItem.isEthRelatedCoin() || ethBalance >= (transactionPlanItem?.txFee ?: 0.0)
     }
+
 }

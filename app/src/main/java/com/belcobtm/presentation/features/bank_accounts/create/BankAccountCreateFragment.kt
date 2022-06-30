@@ -21,9 +21,9 @@ import com.belcobtm.domain.Failure
 import com.belcobtm.domain.bank_account.item.BankAccountCreateDataItem
 import com.belcobtm.domain.bank_account.item.BankAccountValidationErrorDataItem
 import com.belcobtm.domain.bank_account.type.CreateBankAccountType
-import com.belcobtm.presentation.core.extensions.getString
-import com.belcobtm.presentation.core.extensions.hide
-import com.belcobtm.presentation.core.extensions.setText
+import com.belcobtm.presentation.tools.extensions.getString
+import com.belcobtm.presentation.tools.extensions.hide
+import com.belcobtm.presentation.tools.extensions.setText
 import com.belcobtm.presentation.core.mvvm.LoadingData
 import com.belcobtm.presentation.core.ui.fragment.BaseFragment
 import com.google.android.material.textfield.TextInputLayout

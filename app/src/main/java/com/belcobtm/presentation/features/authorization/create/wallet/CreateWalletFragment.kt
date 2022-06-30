@@ -16,16 +16,17 @@ import com.belcobtm.R
 import com.belcobtm.databinding.FragmentCreateWalletBinding
 import com.belcobtm.domain.tools.openViewActivity
 import com.belcobtm.presentation.core.Const
-import com.belcobtm.presentation.core.extensions.afterTextChanged
-import com.belcobtm.presentation.core.extensions.clearError
-import com.belcobtm.presentation.core.extensions.clearText
-import com.belcobtm.presentation.core.extensions.getString
-import com.belcobtm.presentation.core.extensions.isEmail
-import com.belcobtm.presentation.core.extensions.showError
 import com.belcobtm.presentation.core.helper.SimpleClickableSpan
 import com.belcobtm.presentation.core.ui.fragment.BaseFragment
 import com.belcobtm.presentation.features.authorization.create.seed.CreateSeedFragment
 import com.belcobtm.presentation.features.sms.code.SmsCodeFragment
+import com.belcobtm.presentation.tools.extensions.afterTextChanged
+import com.belcobtm.presentation.tools.extensions.clearError
+import com.belcobtm.presentation.tools.extensions.clearText
+import com.belcobtm.presentation.tools.extensions.getPhoneForRequest
+import com.belcobtm.presentation.tools.extensions.getString
+import com.belcobtm.presentation.tools.extensions.isEmail
+import com.belcobtm.presentation.tools.extensions.showError
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import permissions.dispatcher.NeedsPermission
 import permissions.dispatcher.OnPermissionDenied
@@ -185,7 +186,7 @@ class CreateWalletFragment : BaseFragment<FragmentCreateWalletBinding>() {
             && binding.tncCheckBoxView.isChecked
     }
 
-    private fun getPhone(): String = binding.phoneView.getString().replace("[-() ]".toRegex(), "")
+    private fun getPhone(): String = binding.phoneView.getString().getPhoneForRequest()
 
     companion object {
 

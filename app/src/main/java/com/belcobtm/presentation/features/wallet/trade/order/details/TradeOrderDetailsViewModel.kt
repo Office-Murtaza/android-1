@@ -16,9 +16,9 @@ import com.belcobtm.domain.trade.order.ObserveMissedMessageCountUseCase
 import com.belcobtm.domain.trade.order.ObserveOrderDetailsUseCase
 import com.belcobtm.domain.trade.order.UpdateOrderStatusUseCase
 import com.belcobtm.domain.wallet.LocalCoinType
-import com.belcobtm.presentation.core.extensions.toStringCoin
-import com.belcobtm.presentation.core.formatter.Formatter
-import com.belcobtm.presentation.core.formatter.GoogleMapsDirectionQueryFormatter
+import com.belcobtm.presentation.tools.extensions.toStringCoin
+import com.belcobtm.presentation.tools.formatter.Formatter
+import com.belcobtm.presentation.tools.formatter.GoogleMapsDirectionQueryFormatter
 import com.belcobtm.presentation.core.mvvm.LoadingData
 import com.belcobtm.presentation.core.provider.string.StringProvider
 import com.belcobtm.presentation.features.wallet.trade.list.model.OrderItem

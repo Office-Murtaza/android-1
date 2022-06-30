@@ -10,8 +10,15 @@ import com.belcobtm.domain.bank_account.item.BankAccountDataItem
 import com.belcobtm.domain.bank_account.item.PaymentSummaryDataItem
 import com.belcobtm.domain.bank_account.type.BankAccountPaymentType
 import com.belcobtm.domain.bank_account.type.BankAccountType
-import com.belcobtm.presentation.core.extensions.*
 import com.belcobtm.presentation.core.ui.fragment.BaseFragment
+import com.belcobtm.presentation.tools.extensions.formatBalanceValue
+import com.belcobtm.presentation.tools.extensions.getString
+import com.belcobtm.presentation.tools.extensions.invisible
+import com.belcobtm.presentation.tools.extensions.onTextChanged
+import com.belcobtm.presentation.tools.extensions.setText
+import com.belcobtm.presentation.tools.extensions.show
+import com.belcobtm.presentation.tools.extensions.toStringPercents
+import com.belcobtm.presentation.tools.extensions.toggle
 import com.google.android.material.textfield.TextInputLayout
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -48,7 +55,6 @@ class PaymentBuyUsdcFragment : BaseFragment<FragmentPaymentBuyUsdcBinding>() {
         wireTypeChip.toggle(bankAccount.bankAccountTypes.indexOf(BankAccountType.WIRE) != -1)
         achTypeChip.toggle(bankAccount.bankAccountTypes.indexOf(BankAccountType.ACH) != -1)
         selectAccountType(bankAccount.bankAccountTypes.get(0))
-
 
     }
 
@@ -192,7 +198,7 @@ class PaymentBuyUsdcFragment : BaseFragment<FragmentPaymentBuyUsdcBinding>() {
                 achTypeChip.chipStrokeWidth = 0.50f
                 wireTypeChip.chipStrokeWidth = 7.00f
                 args.bankAccountInfo.limit.wireLimit?.let {
-                    tvTransactionLimitValue.text =  it.toDouble().formatBalanceValue(getString(R.string.usd_currency))
+                    tvTransactionLimitValue.text = it.toDouble().formatBalanceValue(getString(R.string.usd_currency))
                     tvTransactionLimitValue.setTextColor(
                         ContextCompat.getColor(
                             requireContext(),
@@ -219,4 +225,5 @@ class PaymentBuyUsdcFragment : BaseFragment<FragmentPaymentBuyUsdcBinding>() {
         isHelperTextEnabled = false
         error = message
     }
+
 }

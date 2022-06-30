@@ -7,14 +7,26 @@ import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
-import com.belcobtm.databinding.*
+import com.belcobtm.databinding.ItemTransactionGifBinding
+import com.belcobtm.databinding.ItemTransactionIdBinding
+import com.belcobtm.databinding.ItemTransactionQrBinding
+import com.belcobtm.databinding.ItemTransactionRegularBinding
+import com.belcobtm.databinding.ItemTransactionStatusBinding
+import com.belcobtm.databinding.ItemTransactionTypeBinding
 import com.belcobtm.domain.transaction.type.TransactionType
-import com.belcobtm.presentation.features.wallet.transaction.details.adapter.viewholder.*
+import com.belcobtm.presentation.features.wallet.transaction.details.adapter.viewholder.BaseTransactionViewHolder
+import com.belcobtm.presentation.features.wallet.transaction.details.adapter.viewholder.TransactionGIFViewHolder
+import com.belcobtm.presentation.features.wallet.transaction.details.adapter.viewholder.TransactionIdViewHolder
+import com.belcobtm.presentation.features.wallet.transaction.details.adapter.viewholder.TransactionQRViewHolder
+import com.belcobtm.presentation.features.wallet.transaction.details.adapter.viewholder.TransactionRegularViewHolder
+import com.belcobtm.presentation.features.wallet.transaction.details.adapter.viewholder.TransactionStatusViewHolder
+import com.belcobtm.presentation.features.wallet.transaction.details.adapter.viewholder.TransactionTypeViewHolder
 
 class TransactionDetailsAdapter(private val linkClickListener: IOnLinkClickListener) :
     ListAdapter<TransactionDetailsAdapter.Item, BaseTransactionViewHolder>(DiffHelper()) {
 
     companion object {
+
         private const val ITEM_TYPE_REGULAR = 1
         private const val ITEM_TYPE_TRANSACTION_TYPE = 2
         private const val ITEM_TYPE_TRANSACTION_STATUS = 3
@@ -32,6 +44,7 @@ class TransactionDetailsAdapter(private val linkClickListener: IOnLinkClickListe
      * Base class for a single elemet representation on UI
      * */
     sealed class Item {
+
         data class Type(val type: TransactionType) : Item()
         data class Regular(@StringRes val key: Int, val value: String) : Item()
         data class Id(@StringRes val key: Int, val value: String, val link: String) : Item()
@@ -89,6 +102,7 @@ class TransactionDetailsAdapter(private val linkClickListener: IOnLinkClickListe
     }
 
     private class DiffHelper : DiffUtil.ItemCallback<Item>() {
+
         override fun areItemsTheSame(oldItem: Item, newItem: Item): Boolean {
             return oldItem::class == newItem::class
         }
@@ -97,4 +111,5 @@ class TransactionDetailsAdapter(private val linkClickListener: IOnLinkClickListe
             return oldItem == newItem
         }
     }
+
 }

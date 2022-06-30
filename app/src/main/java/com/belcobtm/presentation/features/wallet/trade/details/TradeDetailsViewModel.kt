@@ -7,14 +7,13 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.belcobtm.R
 import com.belcobtm.data.inmemory.trade.TradeInMemoryCache.Companion.UNDEFINED_DISTANCE
-import com.belcobtm.data.model.trade.TradeStatus
 import com.belcobtm.data.model.trade.TradeType
 import com.belcobtm.domain.Either
 import com.belcobtm.domain.Failure
 import com.belcobtm.domain.trade.details.ObserveTradeDetailsUseCase
 import com.belcobtm.domain.wallet.LocalCoinType
-import com.belcobtm.presentation.core.formatter.Formatter
-import com.belcobtm.presentation.core.formatter.GoogleMapsDirectionQueryFormatter
+import com.belcobtm.presentation.tools.formatter.Formatter
+import com.belcobtm.presentation.tools.formatter.GoogleMapsDirectionQueryFormatter
 import com.belcobtm.presentation.core.mvvm.LoadingData
 import com.belcobtm.presentation.core.provider.string.StringProvider
 import com.belcobtm.presentation.features.wallet.trade.list.model.TradeItem

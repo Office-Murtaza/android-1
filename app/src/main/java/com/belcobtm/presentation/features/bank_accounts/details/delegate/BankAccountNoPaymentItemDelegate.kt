@@ -8,8 +8,7 @@ import com.belcobtm.presentation.core.adapter.delegate.AdapterDelegate
 import com.belcobtm.presentation.core.adapter.model.ListItem
 import com.belcobtm.presentation.features.bank_accounts.details.BankAccountDetailsFragment
 
-class BankAccountNoPaymentItemDelegate(
-) : AdapterDelegate<BankAccountNoPaymentsListItem, BankAccountNoPaymentItemViewHolder>() {
+class BankAccountNoPaymentItemDelegate : AdapterDelegate<BankAccountNoPaymentsListItem, BankAccountNoPaymentItemViewHolder>() {
 
     override val viewType: Int
         get() = BankAccountNoPaymentsListItem.BANK_ACCOUNT_NO_PAYMENTS_ITEM_TYPE

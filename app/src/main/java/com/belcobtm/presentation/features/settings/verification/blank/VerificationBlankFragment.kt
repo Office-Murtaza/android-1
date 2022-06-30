@@ -5,7 +5,6 @@ import android.net.Uri
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.ImageView
-import androidx.appcompat.app.AlertDialog
 import androidx.core.widget.addTextChangedListener
 import androidx.navigation.fragment.navArgs
 import com.belcobtm.BuildConfig
@@ -13,10 +12,15 @@ import com.belcobtm.R
 import com.belcobtm.databinding.FragmentVerificationBlankBinding
 import com.belcobtm.domain.Failure
 import com.belcobtm.domain.settings.item.VerificationCountryDataItem
-import com.belcobtm.presentation.core.extensions.*
 import com.belcobtm.presentation.core.helper.AlertHelper
 import com.belcobtm.presentation.core.mvvm.LoadingData
 import com.belcobtm.presentation.core.ui.fragment.BaseFragment
+import com.belcobtm.presentation.tools.extensions.clearText
+import com.belcobtm.presentation.tools.extensions.getString
+import com.belcobtm.presentation.tools.extensions.hide
+import com.belcobtm.presentation.tools.extensions.setText
+import com.belcobtm.presentation.tools.extensions.show
+import com.belcobtm.presentation.tools.extensions.toggle
 import com.kroegerama.imgpicker.BottomSheetImagePicker
 import com.kroegerama.imgpicker.ButtonType
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -28,6 +32,7 @@ import permissions.dispatcher.RuntimePermissions
 class VerificationBlankFragment :
     BaseFragment<FragmentVerificationBlankBinding>(),
     BottomSheetImagePicker.OnImagesSelectedListener {
+
     private val viewModel: VerificationBlankViewModel by viewModel()
     private val args by navArgs<VerificationBlankFragmentArgs>()
 
@@ -47,7 +52,7 @@ class VerificationBlankFragment :
 
     override fun FragmentVerificationBlankBinding.initViews() {
         setToolbarTitle(R.string.verify_label)
-       // viewModel.countries.firstOrNull()?.let(::onCountrySelected)
+        // viewModel.countries.firstOrNull()?.let(::onCountrySelected)
     }
 
     @NeedsPermission(
@@ -258,14 +263,14 @@ class VerificationBlankFragment :
         val province = binding.validateProvince()
         val zip = binding.validateZipCode()
         return photo
-                && idNumber
-                && firstName
-                && lastName
-                && address
-                && city
-                && country
-                && province
-                && zip
+            && idNumber
+            && firstName
+            && lastName
+            && address
+            && city
+            && country
+            && province
+            && zip
     }
 
     private fun validatePhoto(): Boolean =
@@ -366,4 +371,5 @@ class VerificationBlankFragment :
             false
         }
     }
+
 }

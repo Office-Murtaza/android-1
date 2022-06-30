@@ -13,14 +13,18 @@ import com.belcobtm.domain.trade.order.CreateOrderUseCase
 import com.belcobtm.domain.wallet.LocalCoinType
 import com.belcobtm.domain.wallet.interactor.GetCoinByCodeUseCase
 import com.belcobtm.domain.wallet.interactor.UpdateReservedBalanceUseCase
-import com.belcobtm.presentation.core.extensions.toStringCoin
-import com.belcobtm.presentation.core.formatter.Formatter
 import com.belcobtm.presentation.core.livedata.DoubleCombinedLiveData
 import com.belcobtm.presentation.core.livedata.TripleCombinedLiveData
 import com.belcobtm.presentation.core.mvvm.LoadingData
 import com.belcobtm.presentation.core.provider.string.StringProvider
 import com.belcobtm.presentation.features.wallet.trade.list.model.TradeItem
-import com.belcobtm.presentation.features.wallet.trade.order.create.model.*
+import com.belcobtm.presentation.features.wallet.trade.order.create.model.ReservedBalance
+import com.belcobtm.presentation.features.wallet.trade.order.create.model.TotalValue
+import com.belcobtm.presentation.features.wallet.trade.order.create.model.TradeCryptoAmount
+import com.belcobtm.presentation.features.wallet.trade.order.create.model.TradeFee
+import com.belcobtm.presentation.features.wallet.trade.order.create.model.TradeOrderItem
+import com.belcobtm.presentation.tools.extensions.toStringCoin
+import com.belcobtm.presentation.tools.formatter.Formatter
 
 class TradeCreateOrderViewModel(
     private val getTradeDetailsUseCase: GetTradeDetailsUseCase,
@@ -113,7 +117,6 @@ class TradeCreateOrderViewModel(
             }, onError = { _initialLoadingData.value = LoadingData.Error(it) })
         }, onError = { _initialLoadingData.value = LoadingData.Error(it) })
     }
-
 
     fun createOrder() {
         val tradeData = trade ?: return

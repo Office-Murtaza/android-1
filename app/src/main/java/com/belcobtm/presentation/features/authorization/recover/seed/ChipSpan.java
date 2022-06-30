@@ -55,7 +55,7 @@ public class ChipSpan extends ImageSpan implements Chip {
 
     private int[] mStateSet = new int[]{};
 
-    private String mEllipsis;
+    private final String mEllipsis;
 
     private ColorStateList mDefaultBackgroundColor;
     private ColorStateList mBackgroundColor;
@@ -70,10 +70,10 @@ public class ChipSpan extends ImageSpan implements Chip {
     private int mRightMarginPx;
     private int mMaxAvailableWidth = -1;
 
-    private CharSequence mText;
+    private final CharSequence mText;
     private String mTextToDraw;
 
-    private Drawable mIcon;
+    private final Drawable mIcon;
     private boolean mShowIconOnLeft = ICON_ON_LEFT_DEFAULT;
 
     private int mChipVerticalSpacing = 0;
@@ -83,7 +83,7 @@ public class ChipSpan extends ImageSpan implements Chip {
 
     private int mCachedSize = -1;
 
-    private Object mData;
+    private final Object mData;
 
     /**
      * Constructs a new ChipSpan.

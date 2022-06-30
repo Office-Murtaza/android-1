@@ -10,8 +10,8 @@ import androidx.core.os.bundleOf
 import androidx.navigation.fragment.navArgs
 import com.belcobtm.R
 import com.belcobtm.databinding.FragmentCreateSeedBinding
-import com.belcobtm.presentation.core.extensions.hide
-import com.belcobtm.presentation.core.extensions.show
+import com.belcobtm.presentation.tools.extensions.hide
+import com.belcobtm.presentation.tools.extensions.show
 import com.belcobtm.presentation.core.helper.AlertHelper
 import com.belcobtm.presentation.core.helper.ClipBoardHelper
 import com.belcobtm.presentation.core.ui.fragment.BaseFragment

@@ -1,4 +1,4 @@
-package com.belcobtm.presentation.core.extensions
+package com.belcobtm.presentation.tools.extensions
 
 import android.text.Editable
 

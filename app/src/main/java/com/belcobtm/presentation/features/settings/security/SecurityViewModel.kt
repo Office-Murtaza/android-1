@@ -12,7 +12,7 @@ import com.belcobtm.domain.settings.interactor.GetPhoneUseCase
 import com.belcobtm.domain.settings.interactor.SetBioAuthStateAllowedUseCase
 import com.belcobtm.domain.settings.interactor.UpdatePhoneUseCase
 import com.belcobtm.presentation.core.SingleLiveData
-import com.belcobtm.presentation.core.formatter.PhoneNumberFormatter
+import com.belcobtm.presentation.tools.formatter.PhoneNumberFormatter
 import com.belcobtm.presentation.core.mvvm.LoadingData
 import com.belcobtm.presentation.features.authorization.create.seed.CreateSeedFragment
 

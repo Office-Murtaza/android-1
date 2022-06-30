@@ -13,16 +13,16 @@ import com.belcobtm.databinding.FragmentPaymentDetailsBinding
 import com.belcobtm.domain.bank_account.item.PaymentInstructionsDataItem
 import com.belcobtm.domain.bank_account.type.BankAccountPaymentType
 import com.belcobtm.domain.bank_account.type.BankAccountType
-import com.belcobtm.presentation.core.extensions.formatBalanceValue
-import com.belcobtm.presentation.core.extensions.hide
-import com.belcobtm.presentation.core.extensions.toStringCoin
-import com.belcobtm.presentation.core.extensions.toStringPercents
 import com.belcobtm.presentation.core.helper.AlertHelper
 import com.belcobtm.presentation.core.helper.ClipBoardHelper
 import com.belcobtm.presentation.core.ui.fragment.BaseFragment
+import com.belcobtm.presentation.tools.extensions.formatBalanceValue
+import com.belcobtm.presentation.tools.extensions.hide
+import com.belcobtm.presentation.tools.extensions.toStringCoin
 import org.koin.android.ext.android.inject
 
 class PaymentDetailsFragment : BaseFragment<FragmentPaymentDetailsBinding>() {
+
     private val args by navArgs<PaymentDetailsFragmentArgs>()
     private val clipBoardHelper: ClipBoardHelper by inject()
     override fun createBinding(
@@ -125,11 +125,11 @@ class PaymentDetailsFragment : BaseFragment<FragmentPaymentDetailsBinding>() {
                         R.color.sell_text_color
                     )
                 )
-                amountSecondValueView.text =  getString(R.string.usd_value_format, payment.usdAmount)
+                amountSecondValueView.text = getString(R.string.usd_value_format, payment.usdAmount)
                 amountFirstValueView.text =
                     getString(R.string.usdc_value_format, payment.usdcAmount)
 
-                platformFeeView.text =payment.platformFee?.formatBalanceValue(getString(R.string.usdc_currency))
+                platformFeeView.text = payment.platformFee?.formatBalanceValue(getString(R.string.usdc_currency))
 
                 //   tvNetworkFeeValue.text = paymentSummary.networkFee.toStringCoin() + " ETH"
                 firstStepStatusValue.text = payment.usdcTransferStatus.stringValue
@@ -163,7 +163,7 @@ class PaymentDetailsFragment : BaseFragment<FragmentPaymentDetailsBinding>() {
         }
         when (payment.accountType) {
             BankAccountType.ACH -> {
-                accountTypeChip.setText(BankAccountType.ACH.stringValue)
+                accountTypeChip.text = BankAccountType.ACH.stringValue
                 accountTypeChip.setTextColor(
                     ContextCompat.getColor(
                         requireContext(),
@@ -173,7 +173,7 @@ class PaymentDetailsFragment : BaseFragment<FragmentPaymentDetailsBinding>() {
                 wireInstructionsContainer.hide()
             }
             BankAccountType.WIRE -> {
-                accountTypeChip.setText(BankAccountType.WIRE.stringValue)
+                accountTypeChip.text = BankAccountType.WIRE.stringValue
                 accountTypeChip.setTextColor(
                     ContextCompat.getColor(
                         requireContext(),
@@ -239,6 +239,5 @@ class PaymentDetailsFragment : BaseFragment<FragmentPaymentDetailsBinding>() {
         clipBoardHelper.setTextToClipboard(copiedText)
         AlertHelper.showToastShort(requireContext(), R.string.copied)
     }
-
 
 }

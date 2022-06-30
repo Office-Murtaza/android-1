@@ -16,7 +16,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.belcobtm.R
 import com.belcobtm.databinding.FragmentOrderChatBinding
 import com.belcobtm.presentation.core.adapter.MultiTypeAdapter
-import com.belcobtm.presentation.core.extensions.toggle
+import com.belcobtm.presentation.tools.extensions.toggle
 import com.belcobtm.presentation.core.ui.fragment.BaseFragment
 import com.belcobtm.presentation.features.wallet.trade.order.chat.delegate.MyMessageDelegate
 import com.belcobtm.presentation.features.wallet.trade.order.chat.delegate.PartnerMessageDelegate

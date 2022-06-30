@@ -5,8 +5,8 @@ import com.belcobtm.R
 import com.belcobtm.databinding.ItemDealsBinding
 import com.belcobtm.domain.service.ServiceItem
 import com.belcobtm.presentation.core.adapter.holder.MultiTypeViewHolder
-import com.belcobtm.presentation.core.extensions.invisible
-import com.belcobtm.presentation.core.extensions.show
+import com.belcobtm.presentation.tools.extensions.invisible
+import com.belcobtm.presentation.tools.extensions.show
 
 class DealsItemViewHolder(
     private val binding: ItemDealsBinding,

@@ -7,18 +7,24 @@ import android.view.ViewGroup
 import android.widget.Toast
 import com.belcobtm.R
 import com.belcobtm.data.disk.database.service.ServiceType
-import com.belcobtm.data.model.trade.TradeType
 import com.belcobtm.data.rest.transaction.response.StakeDetailsStatus
 import com.belcobtm.databinding.FragmentStakingBinding
 import com.belcobtm.domain.Failure
 import com.belcobtm.domain.wallet.LocalCoinType
-import com.belcobtm.presentation.core.extensions.*
-import com.belcobtm.presentation.core.formatter.DoubleCurrencyPriceFormatter
-import com.belcobtm.presentation.core.formatter.Formatter
 import com.belcobtm.presentation.core.mvvm.LoadingData
 import com.belcobtm.presentation.core.ui.fragment.BaseFragment
 import com.belcobtm.presentation.core.watcher.DoubleTextWatcher
-import com.belcobtm.presentation.features.wallet.trade.create.CreateTradeFragmentDirections
+import com.belcobtm.presentation.tools.extensions.actionDoneListener
+import com.belcobtm.presentation.tools.extensions.getDouble
+import com.belcobtm.presentation.tools.extensions.hide
+import com.belcobtm.presentation.tools.extensions.resIcon
+import com.belcobtm.presentation.tools.extensions.show
+import com.belcobtm.presentation.tools.extensions.toHtmlSpan
+import com.belcobtm.presentation.tools.extensions.toStringCoin
+import com.belcobtm.presentation.tools.extensions.toStringPercents
+import com.belcobtm.presentation.tools.extensions.toggle
+import com.belcobtm.presentation.tools.formatter.DoubleCurrencyPriceFormatter
+import com.belcobtm.presentation.tools.formatter.Formatter
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.qualifier.named
@@ -28,6 +34,7 @@ import permissions.dispatcher.RuntimePermissions
 
 @RuntimePermissions
 class StakingFragment : BaseFragment<FragmentStakingBinding>() {
+
     private val viewModel: StakingViewModel by viewModel()
     private val currencyFormatter: Formatter<Double> by inject(
         named(DoubleCurrencyPriceFormatter.DOUBLE_CURRENCY_PRICE_FORMATTER_QUALIFIER)
@@ -59,7 +66,7 @@ class StakingFragment : BaseFragment<FragmentStakingBinding>() {
                 )
                 binding.createButtonView.isEnabled =
                     binding.coinInputLayout.getEditText().text.isNotBlank() &&
-                            binding.coinInputLayout.getEditText().text.getDouble() > 0
+                        binding.coinInputLayout.getEditText().text.getDouble() > 0
                 if (cryptoAmount > 0) {
                     val text = cryptoAmount.toStringCoin()
                     binding.coinInputLayout.getEditText().setText(text)
@@ -117,7 +124,6 @@ class StakingFragment : BaseFragment<FragmentStakingBinding>() {
         viewModel.unstakeCreateTransaction()
     }
 
-
     @OnPermissionDenied(
         Manifest.permission.ACCESS_FINE_LOCATION,
         Manifest.permission.ACCESS_COARSE_LOCATION
@@ -125,7 +131,6 @@ class StakingFragment : BaseFragment<FragmentStakingBinding>() {
     fun showLocationError() {
         viewModel.showLocationError()
     }
-
 
     override fun FragmentStakingBinding.initViews() {
         setToolbarTitle(R.string.staking_screen_title)
@@ -368,7 +373,7 @@ class StakingFragment : BaseFragment<FragmentStakingBinding>() {
                 }
             }
         })
-        viewModel.transactionLiveData.observe(viewLifecycleOwner, { data ->
+        viewModel.transactionLiveData.observe(viewLifecycleOwner) { data ->
             when (data) {
                 is LoadingData.Loading -> showLoading()
                 is LoadingData.Success -> {
@@ -393,7 +398,7 @@ class StakingFragment : BaseFragment<FragmentStakingBinding>() {
                     }
                 }
             }
-        })
+        }
     }
 
     private fun StakingScreenItem.invalidateStakingDetails() {
@@ -507,4 +512,5 @@ class StakingFragment : BaseFragment<FragmentStakingBinding>() {
         container: ViewGroup?
     ): FragmentStakingBinding =
         FragmentStakingBinding.inflate(inflater, container, false)
+
 }

@@ -13,11 +13,11 @@ import com.belcobtm.domain.service.ServiceInfoProvider
 import com.belcobtm.domain.transaction.interactor.SellUseCase
 import com.belcobtm.domain.wallet.interactor.GetCoinListUseCase
 import com.belcobtm.domain.wallet.item.CoinDataItem
-import com.belcobtm.presentation.core.extensions.toStringCoin
-import com.belcobtm.presentation.core.formatter.Formatter
 import com.belcobtm.presentation.core.livedata.DoubleCombinedLiveData
 import com.belcobtm.presentation.core.mvvm.LoadingData
 import com.belcobtm.presentation.core.provider.string.StringProvider
+import com.belcobtm.presentation.tools.extensions.toStringCoin
+import com.belcobtm.presentation.tools.formatter.Formatter
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -118,8 +118,8 @@ class AtmSellViewModel(
     fun setMaxSendAmount() {
         val currentCoinToSend = selectedCoin.value ?: return
         val a = (currentCoinToSend.reservedBalanceCoin * currentCoinToSend.priceUsd *
-                (100.toDouble() - (serviceInfoProvider.getService(ServiceType.ATM_SELL)?.feePercent
-                    ?: 0.0)) / 100.0).toInt()
+            (100.toDouble() - (serviceInfoProvider.getService(ServiceType.ATM_SELL)?.feePercent
+                ?: 0.0)) / 100.0).toInt()
         val maxAmount = max(a / 20 * 20, max(a / 50 * 50, a / 100 * 100))
         setAmount(maxAmount)
     }
@@ -189,6 +189,7 @@ class AtmSellViewModel(
         }
         _initLoadingData.value = LoadingData.Success(Unit)
     }
+
 }
 
 data class AtmSellFeeModelView(

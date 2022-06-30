@@ -11,7 +11,7 @@ import com.belcobtm.domain.wallet.interactor.GetCoinByCodeUseCase
 import com.belcobtm.domain.wallet.item.CoinDataItem
 import com.belcobtm.domain.wallet.item.isEthRelatedCoin
 import com.belcobtm.presentation.core.coin.CoinCodeProvider
-import com.belcobtm.presentation.core.extensions.withScale
+import com.belcobtm.presentation.tools.extensions.withScale
 import com.belcobtm.presentation.core.item.CoinScreenItem
 import com.belcobtm.presentation.core.item.mapToScreenItem
 import com.belcobtm.presentation.core.mvvm.LoadingData

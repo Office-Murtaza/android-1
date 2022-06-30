@@ -3,7 +3,12 @@ package com.belcobtm.presentation.features.wallet.trade.container
 import android.Manifest
 import android.net.Uri
 import android.os.Bundle
-import android.view.*
+import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
+import android.view.View
+import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.belcobtm.R
@@ -26,6 +31,7 @@ import permissions.dispatcher.RuntimePermissions
 class TradeContainerFragment : BaseFragment<FragmentTradeListContainerBinding>() {
 
     companion object {
+
         const val CREATE_TRADE_KEY = "create_trade_key"
     }
 
@@ -111,16 +117,16 @@ class TradeContainerFragment : BaseFragment<FragmentTradeListContainerBinding>()
                 }
             },
             error = {
-            when (it) {
-                is Failure.NetworkConnection -> showErrorNoInternetConnection()
-                is Failure.MessageError -> {
-                    showToast(it.message.orEmpty())
-                    showContent()
+                when (it) {
+                    is Failure.NetworkConnection -> showErrorNoInternetConnection()
+                    is Failure.MessageError -> {
+                        showToast(it.message.orEmpty())
+                        showContent()
+                    }
+                    is Failure.ServerError -> showErrorServerError()
+                    else -> showErrorSomethingWrong()
                 }
-                is Failure.ServerError -> showErrorServerError()
-                else -> showErrorSomethingWrong()
-            }
-        })
+            })
     }
 
     @NeedsPermission(
@@ -138,4 +144,5 @@ class TradeContainerFragment : BaseFragment<FragmentTradeListContainerBinding>()
     fun loadWithoutDistanceCalculation() {
         viewModel.fetchTrades(calculateDistanceEnabled = false)
     }
+
 }

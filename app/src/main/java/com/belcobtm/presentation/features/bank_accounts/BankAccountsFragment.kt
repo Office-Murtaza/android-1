@@ -1,28 +1,17 @@
 package com.belcobtm.presentation.features.bank_accounts
 
 import BankAccountItemDelegate
-import android.content.Intent
-import android.net.Uri
-import android.provider.Browser
-import android.text.Spannable
-import android.text.SpannableStringBuilder
-import android.text.TextPaint
-import android.text.method.LinkMovementMethod
-import android.text.style.ClickableSpan
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.core.content.ContextCompat
 import com.belcobtm.R
 import com.belcobtm.databinding.FragmentBankAccountsBinding
 import com.belcobtm.domain.bank_account.item.BankAccountListItem
 import com.belcobtm.presentation.core.adapter.MultiTypeAdapter
-import com.belcobtm.presentation.core.extensions.hide
-import com.belcobtm.presentation.core.extensions.show
+import com.belcobtm.presentation.tools.extensions.hide
+import com.belcobtm.presentation.tools.extensions.show
 import com.belcobtm.presentation.core.mvvm.LoadingData
 import com.belcobtm.presentation.core.ui.fragment.BaseFragment
-import com.belcobtm.presentation.features.bank_accounts.ach.BankAchFragment
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class BankAccountsFragment : BaseFragment<FragmentBankAccountsBinding>() {

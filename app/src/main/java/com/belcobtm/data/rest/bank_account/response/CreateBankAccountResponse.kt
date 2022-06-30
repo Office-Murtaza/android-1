@@ -1,6 +1,12 @@
 package com.belcobtm.data.rest.bank_account.response
 
-import com.belcobtm.domain.bank_account.item.*
+import com.belcobtm.domain.bank_account.item.AccountDetailsDataItem
+import com.belcobtm.domain.bank_account.item.BankAccountCreateResponseDataItem
+import com.belcobtm.domain.bank_account.item.BankAccountDataItem
+import com.belcobtm.domain.bank_account.item.BillingDetailsDataItem
+import com.belcobtm.domain.bank_account.item.CircleDetailsDataItem
+import com.belcobtm.domain.bank_account.item.PaymentInstructionsDataItem
+import com.belcobtm.domain.bank_account.item.PlaidDetailsDataItem
 import com.belcobtm.domain.bank_account.type.BankAccountStatusType
 import com.belcobtm.domain.bank_account.type.BankAccountType
 import com.belcobtm.presentation.core.DateFormat
@@ -89,7 +95,6 @@ fun CreateBankAccountResponse.toDataItem(): BankAccountCreateResponseDataItem =
             timestamp = timestamp ?: 0
         )
     )
-
 
 fun CreateBankAccountResponse.toBankAccountResponse(): BankAccountResponse =
     BankAccountResponse(

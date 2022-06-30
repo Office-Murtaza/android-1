@@ -17,14 +17,14 @@ class GetContactsUseCase(
     private fun populateHeaders(contacts: List<Contact>): List<ListItem> {
         val list = ArrayList<ListItem>()
         for (i in contacts.indices) {
-            val firstLetterCurrentContact = contacts[i].displayName.firstOrNull()?.toLowerCase()
-            val firstLatterNextContact = contacts.getOrNull(i + 1)?.displayName?.firstOrNull()?.toLowerCase()
+            val firstLetterCurrentContact = contacts[i].displayName.firstOrNull()?.lowercaseChar()
+            val firstLatterNextContact = contacts.getOrNull(i + 1)?.displayName?.firstOrNull()?.lowercaseChar()
             if (i == 0 && firstLetterCurrentContact != null) {
-                list.add(ContactHeader(firstLetterCurrentContact.toUpperCase().toString()))
+                list.add(ContactHeader(firstLetterCurrentContact.uppercaseChar().toString()))
             }
             list.add(contacts[i])
             if (firstLetterCurrentContact != firstLatterNextContact && firstLatterNextContact != null) {
-                list.add(ContactHeader(firstLatterNextContact.toUpperCase().toString()))
+                list.add(ContactHeader(firstLatterNextContact.uppercaseChar().toString()))
             }
         }
         return list

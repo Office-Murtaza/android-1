@@ -32,7 +32,6 @@
 -keepattributes Exceptions
 
 # OkHttp
-
 -dontwarn okhttp3.**
 -dontwarn okio.**
 -dontwarn javax.annotation.**
@@ -58,7 +57,6 @@
 
 # Gson specific classes
 -dontwarn sun.misc.**
-#-keep class com.google.gson.stream.** { *; }
 
 # Room
 -keep class * extends androidx.room.RoomDatabase
@@ -131,7 +129,7 @@
 -keep class com.belcobtm.domain.settings.item.VerificationStateDataItem { *; }
 -keep class com.belcobtm.domain.settings.item.VerificationCountryDataItem { *; }
 
--keep class com.belcobtm.presentation.core.extensions.** { *; }
+-keep class com.belcobtm.presentation.tools.extensions.** { *; }
 -keep class com.belcobtm.domain.settings.item.** { *; }
 
 # Wallet Core library

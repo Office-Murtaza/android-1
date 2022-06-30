@@ -5,7 +5,7 @@ import android.view.ViewGroup
 import com.belcobtm.databinding.FragmentTradeUserInfoBinding
 import com.belcobtm.domain.Either
 import com.belcobtm.domain.Failure
-import com.belcobtm.presentation.core.extensions.hide
+import com.belcobtm.presentation.tools.extensions.hide
 import com.belcobtm.presentation.core.ui.fragment.BaseFragment
 import com.belcobtm.presentation.features.wallet.trade.container.TradeContainerViewModel
 import com.belcobtm.presentation.features.wallet.trade.list.model.TradeStatistics

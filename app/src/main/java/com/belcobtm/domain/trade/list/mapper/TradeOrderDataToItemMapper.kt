@@ -9,7 +9,7 @@ import com.belcobtm.data.model.trade.OrderStatus
 import com.belcobtm.data.model.trade.TradeData
 import com.belcobtm.data.model.trade.TradeType
 import com.belcobtm.domain.wallet.LocalCoinType
-import com.belcobtm.presentation.core.formatter.Formatter
+import com.belcobtm.presentation.tools.formatter.Formatter
 import com.belcobtm.presentation.features.wallet.trade.list.model.OrderItem
 import com.belcobtm.presentation.features.wallet.trade.list.model.OrderStatusItem
 import com.belcobtm.presentation.features.wallet.trade.list.model.TradeItem

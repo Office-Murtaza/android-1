@@ -10,8 +10,15 @@ import com.belcobtm.domain.bank_account.item.BankAccountDataItem
 import com.belcobtm.domain.bank_account.item.PaymentSummaryDataItem
 import com.belcobtm.domain.bank_account.type.BankAccountPaymentType
 import com.belcobtm.domain.bank_account.type.BankAccountType
-import com.belcobtm.presentation.core.extensions.*
 import com.belcobtm.presentation.core.ui.fragment.BaseFragment
+import com.belcobtm.presentation.tools.extensions.code
+import com.belcobtm.presentation.tools.extensions.formatBalanceValue
+import com.belcobtm.presentation.tools.extensions.getString
+import com.belcobtm.presentation.tools.extensions.onTextChanged
+import com.belcobtm.presentation.tools.extensions.setText
+import com.belcobtm.presentation.tools.extensions.show
+import com.belcobtm.presentation.tools.extensions.toStringCoin
+import com.belcobtm.presentation.tools.extensions.toggle
 import com.google.android.material.textfield.TextInputLayout
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import wallet.core.jni.CoinType
@@ -44,7 +51,6 @@ class PaymentSellUsdcFragment : BaseFragment<FragmentPaymentSellUsdcBinding>() {
         wireTypeChip.toggle(bankAccount.bankAccountTypes.indexOf(BankAccountType.WIRE) != -1)
         achTypeChip.toggle(bankAccount.bankAccountTypes.indexOf(BankAccountType.ACH) != -1)
         selectAccountType(bankAccount.bankAccountTypes.get(0))
-
 
     }
 
@@ -101,7 +107,6 @@ class PaymentSellUsdcFragment : BaseFragment<FragmentPaymentSellUsdcBinding>() {
             }
         }
     }
-
 
     override fun FragmentPaymentSellUsdcBinding.initObservers() {
         viewModel.convertedValued.observe(viewLifecycleOwner) { convertedValue ->
@@ -214,4 +219,5 @@ class PaymentSellUsdcFragment : BaseFragment<FragmentPaymentSellUsdcBinding>() {
         isHelperTextEnabled = false
         error = message
     }
+
 }

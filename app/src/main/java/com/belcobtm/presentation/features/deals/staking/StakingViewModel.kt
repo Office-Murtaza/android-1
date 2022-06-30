@@ -8,7 +8,11 @@ import com.belcobtm.R
 import com.belcobtm.data.disk.database.service.ServiceType
 import com.belcobtm.domain.Failure
 import com.belcobtm.domain.service.ServiceInfoProvider
-import com.belcobtm.domain.transaction.interactor.*
+import com.belcobtm.domain.transaction.interactor.GetTransactionPlanUseCase
+import com.belcobtm.domain.transaction.interactor.StakeCancelUseCase
+import com.belcobtm.domain.transaction.interactor.StakeCreateUseCase
+import com.belcobtm.domain.transaction.interactor.StakeDetailsGetUseCase
+import com.belcobtm.domain.transaction.interactor.StakeWithdrawUseCase
 import com.belcobtm.domain.transaction.item.StakeDetailsDataItem
 import com.belcobtm.domain.transaction.item.TransactionPlanItem
 import com.belcobtm.domain.wallet.LocalCoinType
@@ -33,6 +37,7 @@ class StakingViewModel(
     private val serviceInfoProvider: ServiceInfoProvider,
     private val stringProvider: StringProvider,
 ) : ViewModel() {
+
     private var stakeDetailsDataItem: StakeDetailsDataItem? = null
     private var transactionPlanItem: TransactionPlanItem? = null
 
@@ -239,4 +244,5 @@ class StakingViewModel(
         }
         return DateFormat.sdfShort.format(timestamp)
     }
+
 }

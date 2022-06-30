@@ -10,7 +10,12 @@ import com.belcobtm.data.disk.database.account.AccountEntity
 import com.belcobtm.data.disk.database.service.ServiceType
 import com.belcobtm.domain.Failure
 import com.belcobtm.domain.service.ServiceInfoProvider
-import com.belcobtm.domain.transaction.interactor.*
+import com.belcobtm.domain.transaction.interactor.GetFakeSignedTransactionPlanUseCase
+import com.belcobtm.domain.transaction.interactor.GetMaxValueBySignedTransactionUseCase
+import com.belcobtm.domain.transaction.interactor.GetSignedTransactionPlanUseCase
+import com.belcobtm.domain.transaction.interactor.GetTransactionPlanUseCase
+import com.belcobtm.domain.transaction.interactor.ReceiverAccountActivatedUseCase
+import com.belcobtm.domain.transaction.interactor.SwapUseCase
 import com.belcobtm.domain.transaction.item.AmountItem
 import com.belcobtm.domain.transaction.item.SignedTransactionPlanItem
 import com.belcobtm.domain.transaction.item.TransactionPlanItem
@@ -21,9 +26,9 @@ import com.belcobtm.domain.wallet.item.CoinDataItem
 import com.belcobtm.domain.wallet.item.isBtcCoin
 import com.belcobtm.presentation.core.SingleLiveData
 import com.belcobtm.presentation.core.coin.model.ValidationResult
-import com.belcobtm.presentation.core.extensions.toStringCoin
 import com.belcobtm.presentation.core.mvvm.LoadingData
 import com.belcobtm.presentation.core.provider.string.StringProvider
+import com.belcobtm.presentation.tools.extensions.toStringCoin
 import kotlinx.coroutines.launch
 
 class SwapViewModel(

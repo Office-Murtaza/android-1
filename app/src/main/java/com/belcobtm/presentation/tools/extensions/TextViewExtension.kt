@@ -1,4 +1,4 @@
-package com.belcobtm.presentation.core.extensions
+package com.belcobtm.presentation.tools.extensions
 
 import android.graphics.drawable.Drawable
 import android.widget.TextView

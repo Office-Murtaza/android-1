@@ -19,11 +19,15 @@ import com.belcobtm.domain.flatMap
 import com.belcobtm.domain.map
 import com.belcobtm.domain.trade.order.mapper.ChatMessageMapper
 import com.belcobtm.presentation.features.wallet.trade.list.filter.model.TradeFilterItem
-import kotlinx.coroutines.*
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import java.util.concurrent.Executors
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class TradeInMemoryCache(
     private val tradesMapper: TradesResponseToTradeDataMapper,
@@ -38,6 +42,7 @@ class TradeInMemoryCache(
 ) {
 
     companion object {
+
         /**
          * Max value is set because of sorting option.
          * Trades without distance provided should be set to the bottom for distance sorting
@@ -181,4 +186,5 @@ class TradeInMemoryCache(
     fun initCoins(enabledCoins: List<AccountEntity>) {
         this.enabledCoins = enabledCoins
     }
+
 }

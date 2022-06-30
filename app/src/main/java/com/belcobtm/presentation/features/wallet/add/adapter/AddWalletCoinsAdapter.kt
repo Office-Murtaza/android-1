@@ -5,8 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.belcobtm.databinding.ItemCoinVisibleBinding
 import com.belcobtm.domain.wallet.LocalCoinType
-import com.belcobtm.presentation.core.extensions.resIcon
-
+import com.belcobtm.presentation.tools.extensions.resIcon
 
 class AddWalletCoinsAdapter(
     private val listener: (position: Int, isChecked: Boolean) -> Unit
@@ -47,5 +46,7 @@ class AddWalletCoinsAdapter(
                 listener.invoke(adapterPosition, binding.switchView.isChecked)
             }
         }
+
     }
+
 }

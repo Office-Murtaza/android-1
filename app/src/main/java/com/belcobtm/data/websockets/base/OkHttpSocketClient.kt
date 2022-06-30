@@ -5,7 +5,11 @@ import com.belcobtm.domain.Failure
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.filterNotNull
-import okhttp3.*
+import okhttp3.OkHttpClient
+import okhttp3.Request
+import okhttp3.Response
+import okhttp3.WebSocket
+import okhttp3.WebSocketListener
 import java.io.EOFException
 import java.net.SocketException
 
@@ -17,6 +21,7 @@ class OkHttpSocketClient(
     private val messages = MutableStateFlow<SocketResponse?>(null)
 
     companion object {
+
         const val NO_INTERNET_MESSAGE = "connection abort"
     }
 
@@ -67,4 +72,5 @@ class OkHttpSocketClient(
         this.webSocket = null
         messages.value = SocketResponse.Disconnected
     }
+
 }

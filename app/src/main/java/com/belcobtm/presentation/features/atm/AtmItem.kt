@@ -22,8 +22,7 @@ data class AtmItem(
         parcel.createTypedArrayList(OpenHoursItem).orEmpty(),
         parcel.readString().orEmpty(),
         parcel.readInt()
-    ) {
-    }
+    )
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeParcelable(latLng, flags)

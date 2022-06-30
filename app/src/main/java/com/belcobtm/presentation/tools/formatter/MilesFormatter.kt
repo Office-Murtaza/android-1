@@ -1,17 +1,18 @@
-package com.belcobtm.presentation.core.formatter
+package com.belcobtm.presentation.tools.formatter
 
 import com.belcobtm.R
 import com.belcobtm.data.inmemory.trade.TradeInMemoryCache.Companion.UNDEFINED_DISTANCE
 import com.belcobtm.presentation.core.provider.string.StringProvider
 import java.text.DecimalFormat
 import java.text.DecimalFormatSymbols
-import java.util.*
+import java.util.Locale
 
 class MilesFormatter(private val stringProvider: StringProvider) : Formatter<Double> {
 
     private val formatter: DecimalFormat
 
     companion object {
+
         const val MILES_FORMATTER_QUALIFIER = "MilesFormatter"
     }
 
@@ -27,4 +28,5 @@ class MilesFormatter(private val stringProvider: StringProvider) : Formatter<Dou
         input.takeIf { it != UNDEFINED_DISTANCE }
             ?.let { stringProvider.getString(R.string.distance_label_formatted, formatter.format(it)) }
             .orEmpty()
+
 }

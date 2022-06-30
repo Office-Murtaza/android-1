@@ -24,8 +24,8 @@ import com.belcobtm.domain.wallet.LocalCoinType
 import com.belcobtm.domain.wallet.item.CoinDataItem
 import com.belcobtm.domain.wallet.item.isBtcCoin
 import com.belcobtm.domain.wallet.item.isEthRelatedCoinCode
-import com.belcobtm.presentation.core.extensions.customPurpose
-import com.belcobtm.presentation.core.extensions.customXpubVersion
+import com.belcobtm.presentation.tools.extensions.customPurpose
+import com.belcobtm.presentation.tools.extensions.customXpubVersion
 import kotlinx.coroutines.flow.Flow
 import wallet.core.jni.HDWallet
 

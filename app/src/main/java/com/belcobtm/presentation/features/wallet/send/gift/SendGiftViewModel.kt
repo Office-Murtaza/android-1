@@ -1,13 +1,23 @@
 package com.belcobtm.presentation.features.wallet.send.gift
 
 import androidx.annotation.StringRes
-import androidx.lifecycle.*
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MediatorLiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.belcobtm.R
 import com.belcobtm.data.disk.database.account.AccountDao
 import com.belcobtm.data.disk.database.service.ServiceType
 import com.belcobtm.domain.Failure
 import com.belcobtm.domain.service.ServiceInfoProvider
-import com.belcobtm.domain.transaction.interactor.*
+import com.belcobtm.domain.transaction.interactor.GetFakeSignedTransactionPlanUseCase
+import com.belcobtm.domain.transaction.interactor.GetMaxValueBySignedTransactionUseCase
+import com.belcobtm.domain.transaction.interactor.GetSignedTransactionPlanUseCase
+import com.belcobtm.domain.transaction.interactor.GetTransactionPlanUseCase
+import com.belcobtm.domain.transaction.interactor.GetTransferAddressUseCase
+import com.belcobtm.domain.transaction.interactor.ReceiverAccountActivatedUseCase
+import com.belcobtm.domain.transaction.interactor.SendGiftTransactionCreateUseCase
 import com.belcobtm.domain.transaction.item.AmountItem
 import com.belcobtm.domain.transaction.item.SignedTransactionPlanItem
 import com.belcobtm.domain.transaction.item.TransactionPlanItem
@@ -19,7 +29,6 @@ import com.belcobtm.domain.wallet.item.isBtcCoin
 import com.belcobtm.domain.wallet.item.isEthRelatedCoin
 import com.belcobtm.presentation.core.mvvm.LoadingData
 import com.belcobtm.presentation.core.provider.string.StringProvider
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 class SendGiftViewModel(
@@ -413,4 +422,5 @@ class SendGiftViewModel(
         }?.balanceCoin ?: 0.0
         return !coinDataItem.isEthRelatedCoin() || ethBalance >= (transactionPlanItem?.txFee ?: 0.0)
     }
+
 }

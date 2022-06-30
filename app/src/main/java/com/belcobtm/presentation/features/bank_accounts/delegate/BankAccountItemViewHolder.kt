@@ -5,8 +5,8 @@ import com.belcobtm.databinding.ItemBankAccountBinding
 import com.belcobtm.domain.bank_account.item.BankAccountListItem
 import com.belcobtm.domain.bank_account.type.BankAccountType
 import com.belcobtm.presentation.core.adapter.holder.MultiTypeViewHolder
-import com.belcobtm.presentation.core.extensions.formatBalanceValue
-import com.belcobtm.presentation.core.extensions.toggle
+import com.belcobtm.presentation.tools.extensions.formatBalanceValue
+import com.belcobtm.presentation.tools.extensions.toggle
 
 class BankAccountItemViewHolder(
     private val binding: ItemBankAccountBinding,

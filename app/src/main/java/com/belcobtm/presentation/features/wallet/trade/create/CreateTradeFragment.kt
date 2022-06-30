@@ -14,15 +14,20 @@ import com.belcobtm.domain.Failure
 import com.belcobtm.domain.wallet.LocalCoinType
 import com.belcobtm.domain.wallet.item.CoinDataItem
 import com.belcobtm.presentation.core.adapter.MultiTypeAdapter
-import com.belcobtm.presentation.core.extensions.*
-import com.belcobtm.presentation.core.formatter.DoubleCurrencyPriceFormatter
-import com.belcobtm.presentation.core.formatter.Formatter
 import com.belcobtm.presentation.core.helper.AlertHelper
 import com.belcobtm.presentation.core.mvvm.LoadingData
 import com.belcobtm.presentation.core.ui.fragment.BaseFragment
 import com.belcobtm.presentation.core.views.listeners.SafeDecimalEditTextWatcher
 import com.belcobtm.presentation.features.wallet.trade.container.TradeContainerFragment
 import com.belcobtm.presentation.features.wallet.trade.create.delegate.TradePaymentOptionDelegate
+import com.belcobtm.presentation.tools.extensions.actionDoneListener
+import com.belcobtm.presentation.tools.extensions.getDouble
+import com.belcobtm.presentation.tools.extensions.getInt
+import com.belcobtm.presentation.tools.extensions.resIcon
+import com.belcobtm.presentation.tools.extensions.toStringCoin
+import com.belcobtm.presentation.tools.extensions.toggle
+import com.belcobtm.presentation.tools.formatter.DoubleCurrencyPriceFormatter
+import com.belcobtm.presentation.tools.formatter.Formatter
 import com.google.android.material.chip.Chip
 import com.google.android.material.snackbar.Snackbar
 import org.koin.android.ext.android.inject
@@ -255,4 +260,5 @@ class CreateTradeFragment : BaseFragment<FragmentCreateTradeBinding>() {
             }
         }
     }
+
 }

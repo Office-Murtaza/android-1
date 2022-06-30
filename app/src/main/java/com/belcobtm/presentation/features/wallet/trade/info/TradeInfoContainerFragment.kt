@@ -4,7 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.belcobtm.R
 import com.belcobtm.databinding.FragmentTradeInfoContainerBinding
-import com.belcobtm.presentation.core.extensions.hide
+import com.belcobtm.presentation.tools.extensions.hide
 import com.belcobtm.presentation.core.ui.fragment.BaseFragment
 import com.belcobtm.presentation.features.wallet.trade.info.adapter.TradeInfoContainerViewPagerAdapter
 import com.google.android.material.tabs.TabLayoutMediator

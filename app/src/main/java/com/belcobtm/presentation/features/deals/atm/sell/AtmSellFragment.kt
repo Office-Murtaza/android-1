@@ -7,16 +7,18 @@ import android.view.ViewGroup
 import androidx.core.net.toUri
 import androidx.navigation.fragment.findNavController
 import com.belcobtm.R
-import com.belcobtm.data.disk.database.service.ServiceType
 import com.belcobtm.databinding.FragmentAtmSellBinding
 import com.belcobtm.domain.wallet.LocalCoinType
-import com.belcobtm.presentation.core.extensions.*
 import com.belcobtm.presentation.core.helper.AlertHelper
 import com.belcobtm.presentation.core.mvvm.LoadingData
 import com.belcobtm.presentation.core.ui.fragment.BaseFragment
 import com.belcobtm.presentation.core.views.listeners.SafeDecimalEditTextWatcher
 import com.belcobtm.presentation.features.deals.swap.SwapFragment
-import com.belcobtm.presentation.features.deals.swap.SwapFragmentDirections
+import com.belcobtm.presentation.tools.extensions.getDouble
+import com.belcobtm.presentation.tools.extensions.resIcon
+import com.belcobtm.presentation.tools.extensions.setTextSilently
+import com.belcobtm.presentation.tools.extensions.toHtmlSpan
+import com.belcobtm.presentation.tools.extensions.toStringCoin
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class AtmSellFragment : BaseFragment<FragmentAtmSellBinding>() {

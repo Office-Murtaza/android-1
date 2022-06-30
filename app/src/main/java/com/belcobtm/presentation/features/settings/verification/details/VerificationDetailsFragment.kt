@@ -10,8 +10,8 @@ import com.belcobtm.R
 import com.belcobtm.databinding.FragmentVerificationBinding
 import com.belcobtm.domain.settings.type.VerificationStatus
 import com.belcobtm.domain.settings.type.VerificationStep
-import com.belcobtm.presentation.core.extensions.hide
-import com.belcobtm.presentation.core.extensions.show
+import com.belcobtm.presentation.tools.extensions.hide
+import com.belcobtm.presentation.tools.extensions.show
 import com.belcobtm.presentation.core.mvvm.LoadingData
 import com.belcobtm.presentation.core.ui.fragment.BaseFragment
 import com.belcobtm.presentation.features.settings.verification.details.adapter.VerificationStepsAdapter

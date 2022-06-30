@@ -16,13 +16,20 @@ import com.belcobtm.domain.Failure
 import com.belcobtm.domain.wallet.LocalCoinType
 import com.belcobtm.domain.wallet.item.CoinDataItem
 import com.belcobtm.domain.wallet.item.isEthRelatedCoinCode
-import com.belcobtm.presentation.core.extensions.*
-import com.belcobtm.presentation.core.formatter.DoubleCurrencyPriceFormatter
-import com.belcobtm.presentation.core.formatter.Formatter
 import com.belcobtm.presentation.core.helper.AlertHelper
 import com.belcobtm.presentation.core.mvvm.LoadingData
 import com.belcobtm.presentation.core.ui.fragment.BaseFragment
 import com.belcobtm.presentation.core.views.listeners.SafeDecimalEditTextWatcher
+import com.belcobtm.presentation.tools.extensions.actionDoneListener
+import com.belcobtm.presentation.tools.extensions.getDouble
+import com.belcobtm.presentation.tools.extensions.getString
+import com.belcobtm.presentation.tools.extensions.hide
+import com.belcobtm.presentation.tools.extensions.resIcon
+import com.belcobtm.presentation.tools.extensions.show
+import com.belcobtm.presentation.tools.extensions.toStringCoin
+import com.belcobtm.presentation.tools.extensions.toggle
+import com.belcobtm.presentation.tools.formatter.DoubleCurrencyPriceFormatter
+import com.belcobtm.presentation.tools.formatter.Formatter
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CircleCrop
 import com.bumptech.glide.request.RequestOptions
@@ -202,7 +209,7 @@ class SendGiftFragment : BaseFragment<FragmentSendGiftBinding>(),
             },
             error = {
                 when (it) {
-                    is Failure.LocationError ->  {
+                    is Failure.LocationError -> {
                         showToast(it.message.orEmpty())
                         showContent()
                     }
@@ -307,4 +314,5 @@ class SendGiftFragment : BaseFragment<FragmentSendGiftBinding>(),
         container: ViewGroup?
     ): FragmentSendGiftBinding =
         FragmentSendGiftBinding.inflate(inflater, container, false)
+
 }

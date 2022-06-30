@@ -7,8 +7,7 @@ import com.google.zxing.BarcodeFormat
 import com.google.zxing.EncodeHintType
 import com.google.zxing.MultiFormatWriter
 import com.google.zxing.WriterException
-import java.util.*
-
+import java.util.EnumMap
 
 fun ByteArray.toHex(): String {
     return Numeric.toHexString(this)
@@ -40,15 +39,16 @@ fun Long.toByteArray(): ByteArray {
     return result
 }
 
-class QRUtils{
-    companion object{
+class QRUtils {
+    companion object {
 
-        fun getSpacelessQR(text:String,h:Int,w:Int): Bitmap? {
+        fun getSpacelessQR(text: String, h: Int, w: Int): Bitmap? {
             try {
                 /**
                  * Allow the zxing engine use the default argument for the margin variable
                  */
                 val MARGIN_AUTOMATIC = -1
+
                 /**
                  * Set no margin to be added to the QR code by the zxing engine
                  */
@@ -81,4 +81,5 @@ class QRUtils{
             }
         }
     }
+
 }

@@ -20,7 +20,7 @@ import com.belcobtm.App
 import com.belcobtm.R
 import com.belcobtm.databinding.FragmentPinCodeBinding
 import com.belcobtm.domain.Failure
-import com.belcobtm.presentation.core.extensions.toggle
+import com.belcobtm.presentation.tools.extensions.toggle
 import com.belcobtm.presentation.core.ui.fragment.BaseFragment
 import com.belcobtm.presentation.features.HostActivity
 import com.belcobtm.presentation.features.MainFragment

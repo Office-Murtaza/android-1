@@ -9,8 +9,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.belcobtm.R
 import com.belcobtm.databinding.ItemTransactionBinding
 import com.belcobtm.domain.transaction.type.TransactionStatusType
-import com.belcobtm.presentation.core.extensions.getResText
-import com.belcobtm.presentation.core.extensions.toStringCoin
+import com.belcobtm.presentation.tools.extensions.getResText
+import com.belcobtm.presentation.tools.extensions.toStringCoin
 import com.belcobtm.presentation.features.wallet.transactions.item.TransactionsAdapterItem
 import com.belcobtm.presentation.features.wallet.transactions.item.TransactionsAdapterItemCallback
 

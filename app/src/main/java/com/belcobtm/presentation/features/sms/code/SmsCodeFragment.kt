@@ -10,10 +10,10 @@ import com.belcobtm.R
 import com.belcobtm.databinding.FragmentSmsCodeBinding
 import com.belcobtm.domain.Failure
 import com.belcobtm.domain.authorization.interactor.AUTH_ERROR_PHONE_NOT_SUPPORTED
-import com.belcobtm.presentation.core.extensions.getString
-import com.belcobtm.presentation.core.extensions.hide
-import com.belcobtm.presentation.core.extensions.setText
-import com.belcobtm.presentation.core.extensions.show
+import com.belcobtm.presentation.tools.extensions.getString
+import com.belcobtm.presentation.tools.extensions.hide
+import com.belcobtm.presentation.tools.extensions.setText
+import com.belcobtm.presentation.tools.extensions.show
 import com.belcobtm.presentation.core.helper.AlertHelper
 import com.belcobtm.presentation.core.ui.fragment.BaseFragment
 import org.koin.androidx.viewmodel.ext.android.viewModel

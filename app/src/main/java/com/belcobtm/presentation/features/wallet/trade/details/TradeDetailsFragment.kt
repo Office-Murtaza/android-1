@@ -13,9 +13,9 @@ import com.belcobtm.R
 import com.belcobtm.data.model.trade.TradeType
 import com.belcobtm.databinding.FragmentTradeDetailsBinding
 import com.belcobtm.presentation.core.adapter.MultiTypeAdapter
-import com.belcobtm.presentation.core.extensions.resIcon
-import com.belcobtm.presentation.core.extensions.toHtmlSpan
-import com.belcobtm.presentation.core.extensions.toggle
+import com.belcobtm.presentation.tools.extensions.resIcon
+import com.belcobtm.presentation.tools.extensions.toHtmlSpan
+import com.belcobtm.presentation.tools.extensions.toggle
 import com.belcobtm.presentation.core.ui.fragment.BaseFragment
 import com.belcobtm.presentation.features.wallet.trade.list.delegate.TradePaymentOptionDelegate
 import org.koin.androidx.viewmodel.ext.android.viewModel

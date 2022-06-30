@@ -14,10 +14,10 @@ import com.belcobtm.domain.transaction.type.TransactionStatusType
 import com.belcobtm.domain.transaction.type.TransactionType
 import com.belcobtm.presentation.core.DateFormat
 import com.belcobtm.presentation.core.QRUtils
-import com.belcobtm.presentation.core.extensions.toStringCoin
-import com.belcobtm.presentation.core.extensions.toStringPercents
-import com.belcobtm.presentation.core.formatter.Formatter
-import com.belcobtm.presentation.core.formatter.PhoneNumberFormatter
+import com.belcobtm.presentation.tools.extensions.toStringCoin
+import com.belcobtm.presentation.tools.extensions.toStringPercents
+import com.belcobtm.presentation.tools.formatter.Formatter
+import com.belcobtm.presentation.tools.formatter.PhoneNumberFormatter
 import com.belcobtm.presentation.core.mvvm.LoadingData
 import com.belcobtm.presentation.core.provider.string.StringProvider
 import com.belcobtm.presentation.features.wallet.transaction.details.adapter.TransactionDetailsAdapter

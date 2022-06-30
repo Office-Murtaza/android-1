@@ -9,10 +9,10 @@ import com.belcobtm.databinding.ItemOpenOrderBinding
 import com.belcobtm.presentation.core.adapter.MultiTypeAdapter
 import com.belcobtm.presentation.core.adapter.delegate.AdapterDelegate
 import com.belcobtm.presentation.core.adapter.holder.MultiTypeViewHolder
-import com.belcobtm.presentation.core.extensions.resIcon
-import com.belcobtm.presentation.core.extensions.setDrawableEnd
-import com.belcobtm.presentation.core.extensions.setDrawableStart
-import com.belcobtm.presentation.core.extensions.toStringCoin
+import com.belcobtm.presentation.tools.extensions.resIcon
+import com.belcobtm.presentation.tools.extensions.setDrawableEnd
+import com.belcobtm.presentation.tools.extensions.setDrawableStart
+import com.belcobtm.presentation.tools.extensions.toStringCoin
 import com.belcobtm.presentation.features.wallet.trade.list.delegate.TradePaymentOptionDelegate
 import com.belcobtm.presentation.features.wallet.trade.list.model.OrderItem
 

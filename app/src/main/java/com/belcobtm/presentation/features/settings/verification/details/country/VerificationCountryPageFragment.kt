@@ -9,8 +9,8 @@ import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import com.belcobtm.R
 import com.belcobtm.databinding.FragmentVerificationCountryPageBinding
-import com.belcobtm.presentation.core.extensions.getString
-import com.belcobtm.presentation.core.extensions.setText
+import com.belcobtm.presentation.tools.extensions.getString
+import com.belcobtm.presentation.tools.extensions.setText
 import com.belcobtm.presentation.features.settings.verification.details.VerificationDetailsViewModel
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 

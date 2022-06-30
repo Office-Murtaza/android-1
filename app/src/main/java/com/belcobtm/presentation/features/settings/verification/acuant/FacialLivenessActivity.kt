@@ -180,14 +180,7 @@ class FacialLivenessActivity : AppCompatActivity(), LiveFaceListener {
     // UI
     //==============================================================================================
 
-    /**
-     * Saves the camera facing mode, so that it can be restored after the device is rotated.
-     */
-
-    override fun onSaveInstanceState(outState: Bundle, outPersistentState: PersistableBundle) {
-        super.onSaveInstanceState(outState, outPersistentState)
-    }
-//==============================================================================================
+    //==============================================================================================
     // Camera Source
     //==============================================================================================
 
@@ -249,7 +242,7 @@ class FacialLivenessActivity : AppCompatActivity(), LiveFaceListener {
             if (liveFaceDetails.isLiveFace) {
                 if (selfieCaptured == false) {
                     selfieCaptured = true
-                    thread() {
+                    thread {
                         FaceCapturedImage.setImage(liveFaceDetails.image)
                         val result = Intent()
                         this@FacialLivenessActivity.setResult(RESPONSE_SUCCESS_CODE, result)

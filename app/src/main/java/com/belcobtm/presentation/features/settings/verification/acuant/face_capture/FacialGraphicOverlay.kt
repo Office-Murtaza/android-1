@@ -1,12 +1,19 @@
 package com.belcobtm.presentation.features.settings.verification.acuant.face_capture
+
 import android.content.Context
-import android.graphics.*
+import android.graphics.Canvas
+import android.graphics.Color
+import android.graphics.Paint
+import android.graphics.Path
+import android.graphics.Rect
+import android.graphics.RectF
+import android.graphics.Typeface
 import android.util.AttributeSet
 import android.view.View
 import com.google.android.gms.vision.CameraSource
-import java.util.*
 
 class FacialGraphicOverlay(context: Context, attrs: AttributeSet) : View(context, attrs) {
+
     private val mLock = Any()
     private var mPreviewWidth: Int = 0
     private var mWidthScaleFactor = 1.0f
@@ -208,13 +215,12 @@ class FacialGraphicOverlay(context: Context, attrs: AttributeSet) : View(context
         textPaint!!.getTextBounds(inst1, 0, inst1.length, textRect)
         x = x + textRect.width()
         textPaint!!.color = Color.GREEN
-       // canvas.drawText(inst2, x, y, textPaint!!)
+        // canvas.drawText(inst2, x, y, textPaint!!)
 
         textPaint!!.getTextBounds(inst2, 0, inst2.length, textRect)
         x = x + textRect.width()
         textPaint!!.color = Color.WHITE
-      //  canvas.drawText(inst3, x, y, textPaint!!)
-
+        //  canvas.drawText(inst3, x, y, textPaint!!)
 
         //Watermark text
         textPaint!!.getTextBounds(watermarkText, 0, watermarkText.length, textRect)
@@ -222,4 +228,5 @@ class FacialGraphicOverlay(context: Context, attrs: AttributeSet) : View(context
         y = height * 0.95f
         canvas.drawText(watermarkText, x, y, textPaint!!)
     }
+
 }

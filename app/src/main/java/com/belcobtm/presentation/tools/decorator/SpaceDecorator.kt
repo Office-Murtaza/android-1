@@ -1,4 +1,4 @@
-package com.belcobtm.presentation.core.decorator
+package com.belcobtm.presentation.tools.decorator
 
 import android.graphics.Rect
 import android.view.View
@@ -22,4 +22,5 @@ class SpaceDecorator(
         outRect.top = marginTop
         outRect.bottom = marginBottom
     }
+
 }

@@ -9,10 +9,10 @@ import androidx.lifecycle.LiveData
 import com.belcobtm.R
 import com.belcobtm.databinding.IncludeErrorScreenBinding
 import com.belcobtm.domain.Failure
-import com.belcobtm.presentation.core.extensions.hide
-import com.belcobtm.presentation.core.extensions.invisible
-import com.belcobtm.presentation.core.extensions.show
-import com.belcobtm.presentation.core.extensions.toggle
+import com.belcobtm.presentation.tools.extensions.hide
+import com.belcobtm.presentation.tools.extensions.invisible
+import com.belcobtm.presentation.tools.extensions.show
+import com.belcobtm.presentation.tools.extensions.toggle
 import com.belcobtm.presentation.core.mvvm.LoadingData
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 

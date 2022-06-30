@@ -6,19 +6,22 @@ import android.view.View
 import android.view.ViewGroup
 import com.belcobtm.R
 import com.belcobtm.data.disk.database.service.ServiceType
-import com.belcobtm.data.model.trade.TradeType
 import com.belcobtm.databinding.FragmentSwapBinding
 import com.belcobtm.domain.Failure
 import com.belcobtm.domain.wallet.LocalCoinType
 import com.belcobtm.domain.wallet.item.isEthRelatedCoinCode
 import com.belcobtm.presentation.core.coin.model.ValidationResult
-import com.belcobtm.presentation.core.extensions.*
-import com.belcobtm.presentation.core.formatter.DoubleCurrencyPriceFormatter
-import com.belcobtm.presentation.core.formatter.Formatter
 import com.belcobtm.presentation.core.helper.AlertHelper
 import com.belcobtm.presentation.core.mvvm.LoadingData
 import com.belcobtm.presentation.core.ui.fragment.BaseFragment
 import com.belcobtm.presentation.core.watcher.DoubleTextWatcher
+import com.belcobtm.presentation.tools.extensions.getDouble
+import com.belcobtm.presentation.tools.extensions.resIcon
+import com.belcobtm.presentation.tools.extensions.setTextSilently
+import com.belcobtm.presentation.tools.extensions.toHtmlSpan
+import com.belcobtm.presentation.tools.extensions.toStringCoin
+import com.belcobtm.presentation.tools.formatter.DoubleCurrencyPriceFormatter
+import com.belcobtm.presentation.tools.formatter.Formatter
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.qualifier.named
@@ -30,6 +33,7 @@ import permissions.dispatcher.RuntimePermissions
 class SwapFragment : BaseFragment<FragmentSwapBinding>() {
 
     companion object {
+
         const val MIN_COINS_TO_ENABLE_DIALOG_PICKER = 2
     }
 
@@ -158,13 +162,12 @@ class SwapFragment : BaseFragment<FragmentSwapBinding>() {
         viewModel.showLocationError()
     }
 
-
     override fun FragmentSwapBinding.initObservers() {
         viewModel.swapLoadingData.listen(success = {
             AlertHelper.showToastShort(requireContext(), R.string.swap_screen_success_message)
             popBackStack()
         }, error = {
-            when(it) {
+            when (it) {
                 is Failure.LocationError -> showError(it.message.orEmpty())
                 else -> showErrorSomethingWrong()
             }
@@ -192,7 +195,7 @@ class SwapFragment : BaseFragment<FragmentSwapBinding>() {
             val coinFee = coin.coinFee.toStringCoin()
             val coinBalance = coin.coinBalance.toStringCoin()
             val localType = LocalCoinType.valueOf(coinCode)
-            val coinCodeFee = when  {
+            val coinCodeFee = when {
                 coinCode.isEthRelatedCoinCode() -> LocalCoinType.ETH.name
                 coinCode == LocalCoinType.XRP.name -> getString(
                     R.string.xrp_additional_transaction_comission, LocalCoinType.XRP.name
@@ -294,4 +297,5 @@ class SwapFragment : BaseFragment<FragmentSwapBinding>() {
             tvUSDConvertedValue.text = currencyFormatter.format(usdAmount)
         }
     }
+
 }

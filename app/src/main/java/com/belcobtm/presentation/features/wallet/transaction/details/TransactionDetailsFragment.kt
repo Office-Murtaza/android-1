@@ -8,8 +8,8 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.belcobtm.R
 import com.belcobtm.databinding.FragmentTransactionDetailsBinding
-import com.belcobtm.presentation.core.decorator.DividerDecorator
-import com.belcobtm.presentation.core.decorator.SpaceDecorator
+import com.belcobtm.presentation.tools.decorator.DividerDecorator
+import com.belcobtm.presentation.tools.decorator.SpaceDecorator
 import com.belcobtm.presentation.core.ui.fragment.BaseFragment
 import com.belcobtm.presentation.features.wallet.transaction.details.adapter.TransactionDetailsAdapter
 import org.koin.androidx.viewmodel.ext.android.viewModel

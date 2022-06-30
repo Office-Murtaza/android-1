@@ -13,9 +13,9 @@ import com.belcobtm.R
 import com.belcobtm.data.model.trade.filter.SortOption
 import com.belcobtm.databinding.FragmentTradeFilterBinding
 import com.belcobtm.presentation.core.adapter.MultiTypeAdapter
-import com.belcobtm.presentation.core.extensions.actionDoneListener
-import com.belcobtm.presentation.core.extensions.setTextSilently
-import com.belcobtm.presentation.core.extensions.toggle
+import com.belcobtm.presentation.tools.extensions.actionDoneListener
+import com.belcobtm.presentation.tools.extensions.setTextSilently
+import com.belcobtm.presentation.tools.extensions.toggle
 import com.belcobtm.presentation.core.views.listeners.SafeDecimalEditTextWatcher
 import com.belcobtm.presentation.features.wallet.trade.create.delegate.TradePaymentOptionDelegate
 import com.belcobtm.presentation.features.wallet.trade.list.filter.delegate.ItemTradeFilterCoinCodeDelegate

@@ -22,19 +22,23 @@ import com.belcobtm.data.rest.atm.response.OperationType
 import com.belcobtm.databinding.AtmInfoBottomSheetBinding
 import com.belcobtm.databinding.FragmentAtmBinding
 import com.belcobtm.presentation.core.adapter.MultiTypeAdapter
-import com.belcobtm.presentation.core.extensions.setDrawableEnd
-import com.belcobtm.presentation.core.extensions.setDrawableStart
-import com.belcobtm.presentation.core.extensions.toggle
-import com.belcobtm.presentation.core.formatter.Formatter
-import com.belcobtm.presentation.core.formatter.GoogleMapsDirectionQueryFormatter
 import com.belcobtm.presentation.core.helper.AlertHelper
 import com.belcobtm.presentation.core.mvvm.LoadingData
 import com.belcobtm.presentation.core.ui.fragment.BaseFragment
+import com.belcobtm.presentation.tools.extensions.setDrawableEnd
+import com.belcobtm.presentation.tools.extensions.setDrawableStart
+import com.belcobtm.presentation.tools.extensions.toggle
+import com.belcobtm.presentation.tools.formatter.Formatter
+import com.belcobtm.presentation.tools.formatter.GoogleMapsDirectionQueryFormatter
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
-import com.google.android.gms.maps.model.*
+import com.google.android.gms.maps.model.BitmapDescriptor
+import com.google.android.gms.maps.model.BitmapDescriptorFactory
+import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.Marker
+import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.transition.MaterialFade
 import org.koin.android.ext.android.inject
@@ -48,6 +52,7 @@ import permissions.dispatcher.RuntimePermissions
 class AtmFragment : BaseFragment<FragmentAtmBinding>(),
     GoogleMap.OnInfoWindowClickListener,
     OnMapReadyCallback {
+
     private val viewModel by viewModel<AtmViewModel>()
 
     override var isMenuEnabled = true

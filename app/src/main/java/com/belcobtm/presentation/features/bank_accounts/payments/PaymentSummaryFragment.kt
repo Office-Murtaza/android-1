@@ -12,17 +12,22 @@ import com.belcobtm.domain.bank_account.item.BankAccountPaymentListItem
 import com.belcobtm.domain.bank_account.item.PaymentInstructionsDataItem
 import com.belcobtm.domain.bank_account.type.BankAccountPaymentType
 import com.belcobtm.domain.bank_account.type.BankAccountType
-import com.belcobtm.presentation.core.extensions.*
 import com.belcobtm.presentation.core.helper.AlertHelper
 import com.belcobtm.presentation.core.helper.ClipBoardHelper
 import com.belcobtm.presentation.core.mvvm.LoadingData
 import com.belcobtm.presentation.core.ui.fragment.BaseFragment
 import com.belcobtm.presentation.features.bank_accounts.details.BankAccountDetailsFragmentDirections
+import com.belcobtm.presentation.tools.extensions.code
+import com.belcobtm.presentation.tools.extensions.formatBalanceValue
+import com.belcobtm.presentation.tools.extensions.hide
+import com.belcobtm.presentation.tools.extensions.toStringCoin
+import com.belcobtm.presentation.tools.extensions.toStringPercents
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import wallet.core.jni.CoinType
 
 class PaymentSummaryFragment : BaseFragment<FragmentPaymentSummaryBinding>() {
+
     private val args by navArgs<PaymentSummaryFragmentArgs>()
     private val viewModel by viewModel<PaymentSummaryViewModel>()
     private val clipBoardHelper: ClipBoardHelper by inject()
@@ -31,7 +36,6 @@ class PaymentSummaryFragment : BaseFragment<FragmentPaymentSummaryBinding>() {
         container: ViewGroup?
     ): FragmentPaymentSummaryBinding =
         FragmentPaymentSummaryBinding.inflate(inflater, container, false)
-
 
     override fun FragmentPaymentSummaryBinding.initListeners() {
         confirmButtonView.setOnClickListener {
@@ -92,7 +96,6 @@ class PaymentSummaryFragment : BaseFragment<FragmentPaymentSummaryBinding>() {
     @SuppressLint("SetTextI18n")
     override fun FragmentPaymentSummaryBinding.initViews() {
 
-
         val paymentSummary = args.paymentSummaryItem
         showBackButton(true)
         setToolbarTitle(getString(R.string.payment_summary_title))
@@ -139,7 +142,7 @@ class PaymentSummaryFragment : BaseFragment<FragmentPaymentSummaryBinding>() {
         }
         when (paymentSummary.bankAccountType) {
             BankAccountType.ACH -> {
-                accountTypeChip.setText(BankAccountType.ACH.stringValue)
+                accountTypeChip.text = BankAccountType.ACH.stringValue
                 accountTypeChip.setTextColor(
                     ContextCompat.getColor(
                         requireContext(),
@@ -149,7 +152,7 @@ class PaymentSummaryFragment : BaseFragment<FragmentPaymentSummaryBinding>() {
                 wireInstructionsContainer.hide()
             }
             BankAccountType.WIRE -> {
-                accountTypeChip.setText(BankAccountType.WIRE.stringValue)
+                accountTypeChip.text = BankAccountType.WIRE.stringValue
                 accountTypeChip.setTextColor(
                     ContextCompat.getColor(
                         requireContext(),
@@ -187,4 +190,5 @@ class PaymentSummaryFragment : BaseFragment<FragmentPaymentSummaryBinding>() {
         clipBoardHelper.setTextToClipboard(copiedText)
         AlertHelper.showToastShort(requireContext(), R.string.copied)
     }
+
 }

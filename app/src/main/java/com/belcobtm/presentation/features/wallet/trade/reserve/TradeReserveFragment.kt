@@ -8,19 +8,24 @@ import com.belcobtm.R
 import com.belcobtm.databinding.FragmentTradeReserveBinding
 import com.belcobtm.domain.wallet.LocalCoinType
 import com.belcobtm.domain.wallet.item.isEthRelatedCoinCode
-import com.belcobtm.presentation.core.extensions.*
-import com.belcobtm.presentation.core.formatter.DoubleCurrencyPriceFormatter
-import com.belcobtm.presentation.core.formatter.Formatter
 import com.belcobtm.presentation.core.helper.AlertHelper
 import com.belcobtm.presentation.core.mvvm.LoadingData
 import com.belcobtm.presentation.core.ui.fragment.BaseFragment
 import com.belcobtm.presentation.core.views.listeners.SafeDecimalEditTextWatcher
+import com.belcobtm.presentation.tools.extensions.actionDoneListener
+import com.belcobtm.presentation.tools.extensions.clearError
+import com.belcobtm.presentation.tools.extensions.getDouble
+import com.belcobtm.presentation.tools.extensions.setTextSilently
+import com.belcobtm.presentation.tools.extensions.toStringCoin
+import com.belcobtm.presentation.tools.formatter.DoubleCurrencyPriceFormatter
+import com.belcobtm.presentation.tools.formatter.Formatter
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 import org.koin.core.qualifier.named
 
 class TradeReserveFragment : BaseFragment<FragmentTradeReserveBinding>() {
+
     override val isBackButtonEnabled: Boolean = true
     override var isMenuEnabled: Boolean = true
     override val retryListener: View.OnClickListener = View.OnClickListener {
@@ -77,7 +82,7 @@ class TradeReserveFragment : BaseFragment<FragmentTradeReserveBinding>() {
             amountCryptoView.helperText = getString(
                 R.string.transaction_helper_text_commission,
                 fee.toStringCoin(),
-                when  {
+                when {
                     viewModel.getCoinCode().isEthRelatedCoinCode() -> LocalCoinType.ETH.name
                     viewModel.getCoinCode() == LocalCoinType.XRP.name -> getString(
                         R.string.xrp_additional_transaction_comission, LocalCoinType.XRP.name
@@ -93,7 +98,7 @@ class TradeReserveFragment : BaseFragment<FragmentTradeReserveBinding>() {
             } else {
                 currencyFormatter.format(0.0)
             }
-            if(it.amount == amountCryptoView.editText?.text?.getDouble()) {
+            if (it.amount == amountCryptoView.editText?.text?.getDouble()) {
                 return@observe
             }
             val formattedCoin = it.amount.toStringCoin()
@@ -132,4 +137,6 @@ class TradeReserveFragment : BaseFragment<FragmentTradeReserveBinding>() {
         container: ViewGroup?
     ): FragmentTradeReserveBinding =
         FragmentTradeReserveBinding.inflate(inflater, container, false)
+
 }
+

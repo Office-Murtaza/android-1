@@ -1,4 +1,4 @@
-package com.belcobtm.presentation.core.formatter
+package com.belcobtm.presentation.tools.formatter
 
 import com.belcobtm.R
 import com.belcobtm.presentation.core.provider.string.StringProvider

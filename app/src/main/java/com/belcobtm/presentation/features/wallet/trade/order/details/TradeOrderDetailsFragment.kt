@@ -6,7 +6,12 @@ import android.content.ClipboardManager
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.view.*
+import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
+import android.view.View
+import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.navigation.fragment.findNavController
@@ -16,11 +21,15 @@ import com.belcobtm.data.model.trade.OrderStatus
 import com.belcobtm.data.model.trade.TradeType
 import com.belcobtm.databinding.FragmentTradeOrderDetailsBinding
 import com.belcobtm.presentation.core.adapter.MultiTypeAdapter
-import com.belcobtm.presentation.core.extensions.*
 import com.belcobtm.presentation.core.helper.AlertHelper
 import com.belcobtm.presentation.core.mvvm.LoadingData
 import com.belcobtm.presentation.core.ui.fragment.BaseFragment
 import com.belcobtm.presentation.features.wallet.trade.list.delegate.TradePaymentOptionDelegate
+import com.belcobtm.presentation.tools.extensions.resIcon
+import com.belcobtm.presentation.tools.extensions.setDrawableEnd
+import com.belcobtm.presentation.tools.extensions.setDrawableStart
+import com.belcobtm.presentation.tools.extensions.toHtmlSpan
+import com.belcobtm.presentation.tools.extensions.toggle
 import com.google.android.material.badge.BadgeDrawable
 import com.google.android.material.badge.BadgeDrawable.TOP_END
 import com.google.android.material.badge.BadgeUtils
@@ -234,4 +243,5 @@ class TradeOrderDetailsFragment : BaseFragment<FragmentTradeOrderDetailsBinding>
         }
         else -> super.onOptionsItemSelected(item)
     }
+
 }

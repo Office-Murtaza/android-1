@@ -4,7 +4,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.belcobtm.domain.authorization.interactor.AuthorizationCheckCredentialsUseCase
 import com.belcobtm.presentation.core.mvvm.LoadingData
-import com.belcobtm.presentation.core.validator.Validator
+import com.belcobtm.presentation.tools.validator.Validator
 
 class CreateWalletViewModel(
     private val checkCredentialsUseCase: AuthorizationCheckCredentialsUseCase,
