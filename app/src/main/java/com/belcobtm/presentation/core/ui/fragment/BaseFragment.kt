@@ -30,7 +30,7 @@ import com.belcobtm.presentation.tools.extensions.show
 import com.belcobtm.presentation.tools.extensions.toggle
 import com.belcobtm.presentation.core.mvvm.LoadingData
 import com.belcobtm.presentation.core.views.InterceptableFrameLayout
-import com.belcobtm.presentation.features.HostActivity
+import com.belcobtm.presentation.screens.HostActivity
 import org.koin.android.ext.android.get
 import org.koin.core.parameter.parametersOf
 

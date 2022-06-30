@@ -7,7 +7,7 @@ import com.belcobtm.data.model.trade.UserTradeStatistics
 import com.belcobtm.data.rest.trade.response.TradesResponse
 import com.belcobtm.data.websockets.chat.model.ChatMessageResponse
 import com.belcobtm.domain.trade.order.mapper.ChatMessageMapper
-import com.belcobtm.presentation.features.wallet.trade.order.chat.model.ChatMessageItem
+import com.belcobtm.presentation.screens.wallet.trade.order.chat.model.ChatMessageItem
 
 class TradesResponseToTradeDataMapper(
     private val orderMapper: OrderResponseToOrderMapper,

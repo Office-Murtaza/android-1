@@ -5,8 +5,6 @@ import com.belcobtm.data.rest.settings.request.UpdatePhoneParam
 import com.belcobtm.data.rest.settings.request.VerificationBlankRequest
 import com.belcobtm.data.rest.settings.request.VerificationDocumentRequest
 import com.belcobtm.data.rest.settings.request.VerificationUserIdentityRequest
-import com.belcobtm.data.rest.settings.request.VipVerificationRequest
-import com.belcobtm.data.rest.settings.response.GetPhoneResponse
 import com.belcobtm.data.rest.settings.response.UpdateResponse
 import com.belcobtm.data.rest.settings.response.VerificationDetailsResponse
 import com.belcobtm.data.rest.settings.response.VerificationFieldsResponse
@@ -53,12 +51,6 @@ interface SettingsApi {
     suspend fun sendVerificationBlankAsync(
         @Path("userId") userId: String,
         @Body request: VerificationBlankRequest
-    ): Response<ResponseBody>
-
-    @POST("user/{userId}/verification")
-    suspend fun sendVerificationVipAsync(
-        @Path("userId") userId: String,
-        @Body request: VipVerificationRequest
     ): Response<ResponseBody>
 
     @POST("user/{userId}/password")

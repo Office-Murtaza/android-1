@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/fragment_deals"
-        android:name="com.belcobtm.presentation.features.deals.DealsFragment"
+        android:name="com.belcobtm.presentation.screens.deals.DealsFragment"
         tools:layout="@layout/fragment_deals">
         <action
             android:id="@+id/to_swap_fragment"
@@ -55,7 +55,7 @@
 
     <fragment
         android:id="@+id/swap_fragment"
-        android:name="com.belcobtm.presentation.features.deals.swap.SwapFragment"
+        android:name="com.belcobtm.presentation.screens.deals.swap.SwapFragment"
         android:label="ExchangeFragment"
         tools:layout="@layout/fragment_swap">
 
@@ -71,7 +71,7 @@
 
     <fragment
         android:id="@+id/staking_fragment"
-        android:name="com.belcobtm.presentation.features.deals.staking.StakingFragment"
+        android:name="com.belcobtm.presentation.screens.deals.staking.StakingFragment"
         android:label="ExchangeFragment"
         tools:layout="@layout/fragment_swap">
 
@@ -86,7 +86,7 @@
 
     <fragment
         android:id="@+id/contact_list_fragment"
-        android:name="com.belcobtm.presentation.features.contacts.ContactListFragment"
+        android:name="com.belcobtm.presentation.screens.contacts.ContactListFragment"
         android:label="ContactListFragment"
         tools:layout="@layout/fragment_contact_list">
 
@@ -101,7 +101,7 @@
 
     <fragment
         android:id="@+id/send_gif_fragment"
-        android:name="com.belcobtm.presentation.features.wallet.send.gift.SendGiftFragment"
+        android:name="com.belcobtm.presentation.screens.wallet.send.gift.SendGiftFragment"
         android:label="TransferDetailsFragment"
         tools:layout="@layout/fragment_send_gift">
 
@@ -133,7 +133,7 @@
 
     <fragment
         android:id="@+id/trade_container_fragment"
-        android:name="com.belcobtm.presentation.features.wallet.trade.container.TradeContainerFragment"
+        android:name="com.belcobtm.presentation.screens.wallet.trade.container.TradeContainerFragment"
         android:label="TradeListContainerFragment"
         tools:layout="@layout/fragment_trade_list_container">
         <deepLink app:uri="@string/trade_container_deeplink" />
@@ -195,13 +195,13 @@
 
     <dialog
         android:id="@+id/filter_trade_fragment"
-        android:name="com.belcobtm.presentation.features.wallet.trade.list.filter.TradeFilterBottomSheetDialogFragment"
+        android:name="com.belcobtm.presentation.screens.wallet.trade.list.filter.TradeFilterBottomSheetDialogFragment"
         android:label="FilterFragmen"
         tools:layout="@layout/fragment_trade_filter" />
 
     <fragment
         android:id="@+id/create_trade_fragment"
-        android:name="com.belcobtm.presentation.features.wallet.trade.create.CreateTradeFragment"
+        android:name="com.belcobtm.presentation.screens.wallet.trade.create.CreateTradeFragment"
         android:label="CreateTradeFragment"
         tools:layout="@layout/fragment_create_trade">
 
@@ -217,7 +217,7 @@
 
     <fragment
         android:id="@+id/trade_details"
-        android:name="com.belcobtm.presentation.features.wallet.trade.details.TradeDetailsFragment"
+        android:name="com.belcobtm.presentation.screens.wallet.trade.details.TradeDetailsFragment"
         android:label="DetailsTradeFragment"
         tools:layout="@layout/fragment_trade_details">
 
@@ -239,7 +239,7 @@
 
     <dialog
         android:id="@+id/trade_details_buy_sell"
-        android:name="com.belcobtm.presentation.features.wallet.trade.order.create.TradeCreateOrderBottomSheetFragment"
+        android:name="com.belcobtm.presentation.screens.wallet.trade.order.create.TradeCreateOrderBottomSheetFragment"
         android:label="BuySellTradeFragment"
         tools:layout="@layout/fragment_trade_create_order">
 
@@ -270,7 +270,7 @@
 
     <fragment
         android:id="@+id/my_trade_details_fragment"
-        android:name="com.belcobtm.presentation.features.wallet.trade.mytrade.details.MyTradeDetailsFragment"
+        android:name="com.belcobtm.presentation.screens.wallet.trade.mytrade.details.MyTradeDetailsFragment"
         android:label="MyTradeDetailsFragment"
         tools:layout="@layout/fragment_my_trade_details">
 
@@ -291,7 +291,7 @@
 
     <fragment
         android:id="@+id/edit_trade_fragment"
-        android:name="com.belcobtm.presentation.features.wallet.trade.edit.EditTradeFragment"
+        android:name="com.belcobtm.presentation.screens.wallet.trade.edit.EditTradeFragment"
         android:label="CreateTradeFragment"
         tools:layout="@layout/fragment_edit_trade">
 
@@ -312,7 +312,7 @@
 
     <fragment
         android:id="@+id/trade_order_details_fragment"
-        android:name="com.belcobtm.presentation.features.wallet.trade.order.details.TradeOrderDetailsFragment"
+        android:name="com.belcobtm.presentation.screens.wallet.trade.order.details.TradeOrderDetailsFragment"
         android:label="OrderDetailsFragment"
         tools:layout="@layout/fragment_trade_order_details">
 
@@ -351,7 +351,7 @@
 
     <dialog
         android:id="@+id/rate_order_fragment"
-        android:name="com.belcobtm.presentation.features.wallet.trade.order.rate.TradeOrderRateBottomSheetFragment"
+        android:name="com.belcobtm.presentation.screens.wallet.trade.order.rate.TradeOrderRateBottomSheetFragment"
         android:label="OrderDetailsFragment"
         tools:layout="@layout/fragment_trade_rate">
 
@@ -369,7 +369,7 @@
 
     <fragment
         android:id="@+id/order_chat_fragment"
-        android:name="com.belcobtm.presentation.features.wallet.trade.order.chat.OrderChatFragment"
+        android:name="com.belcobtm.presentation.screens.wallet.trade.order.chat.OrderChatFragment"
         android:label="OrderChatFragment"
         tools:layout="@layout/fragment_order_chat">
 
@@ -391,7 +391,7 @@
 
     <fragment
         android:id="@+id/order_history_chat_fragment"
-        android:name="com.belcobtm.presentation.features.wallet.trade.order.historychat.HistoryChatFragment"
+        android:name="com.belcobtm.presentation.screens.wallet.trade.order.historychat.HistoryChatFragment"
         android:label="OrderHistoryChat"
         tools:layout="@layout/fragment_history_chat">
 
@@ -416,7 +416,7 @@
 
     <dialog
         android:id="@+id/chat_image_dialog"
-        android:name="com.belcobtm.presentation.features.wallet.trade.order.chat.dialog.ChatImageDialogFragment"
+        android:name="com.belcobtm.presentation.screens.wallet.trade.order.chat.dialog.ChatImageDialogFragment"
         android:label="Chat image dialog">
 
         <argument
@@ -428,7 +428,7 @@
 
     <fragment
         android:id="@+id/atm_sell_fragment"
-        android:name="com.belcobtm.presentation.features.deals.atm.sell.AtmSellFragment"
+        android:name="com.belcobtm.presentation.screens.deals.atm.sell.AtmSellFragment"
         android:label="AtmSellFragment"
         tools:layout="@layout/fragment_atm_sell">
 
@@ -444,7 +444,7 @@
 
     <dialog
         android:id="@+id/service_info_dialog"
-        android:name="com.belcobtm.presentation.features.services.ServicesInfoBottomSheetDialogFragment"
+        android:name="com.belcobtm.presentation.screens.services.ServicesInfoBottomSheetDialogFragment"
         android:label="Chat image dialog">
 
         <argument
@@ -455,7 +455,7 @@
     </dialog>
     <fragment
         android:id="@+id/verificationInfoFragment"
-        android:name="com.belcobtm.presentation.features.settings.verification.details.VerificationDetailsFragment"
+        android:name="com.belcobtm.presentation.screens.settings.verification.details.VerificationDetailsFragment"
         android:label="VerificationInfoFragment" />
 
 </navigation>

@@ -9,9 +9,9 @@ import com.belcobtm.domain.Failure
 import com.belcobtm.domain.UseCase
 import com.belcobtm.domain.atm.AtmRepository
 import com.belcobtm.domain.mapSuspend
-import com.belcobtm.presentation.features.atm.AtmItem
-import com.belcobtm.presentation.features.atm.AtmsInfoItem
-import com.belcobtm.presentation.features.atm.OpenHoursItem
+import com.belcobtm.presentation.screens.atm.AtmItem
+import com.belcobtm.presentation.screens.atm.AtmsInfoItem
+import com.belcobtm.presentation.screens.atm.OpenHoursItem
 import com.belcobtm.presentation.tools.formatter.Formatter
 import com.google.android.gms.maps.model.LatLng
 import java.util.Calendar

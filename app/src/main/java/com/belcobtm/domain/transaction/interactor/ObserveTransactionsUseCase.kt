@@ -2,8 +2,8 @@ package com.belcobtm.domain.transaction.interactor
 
 import com.belcobtm.domain.transaction.TransactionRepository
 import com.belcobtm.domain.transaction.item.TransactionDetailsDataItem
-import com.belcobtm.presentation.features.wallet.transactions.item.TransactionsAdapterItem
-import com.belcobtm.presentation.features.wallet.transactions.item.mapToUiItem
+import com.belcobtm.presentation.screens.wallet.transactions.item.TransactionsAdapterItem
+import com.belcobtm.presentation.screens.wallet.transactions.item.mapToUiItem
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOn

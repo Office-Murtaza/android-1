@@ -3,7 +3,7 @@ package com.belcobtm.domain.trade.list.mapper
 import com.belcobtm.data.model.trade.Trade
 import com.belcobtm.domain.wallet.LocalCoinType
 import com.belcobtm.presentation.tools.formatter.Formatter
-import com.belcobtm.presentation.features.wallet.trade.list.model.TradeItem
+import com.belcobtm.presentation.screens.wallet.trade.list.model.TradeItem
 
 class TradeToTradeItemMapper(
     private val paymentOptionMapper: TradePaymentOptionMapper,

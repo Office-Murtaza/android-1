@@ -2,7 +2,7 @@ package com.belcobtm.domain.trade.list.mapper
 
 import com.belcobtm.data.model.trade.OrderStatus
 import com.belcobtm.data.model.trade.TradeData
-import com.belcobtm.presentation.features.wallet.trade.list.model.OrderItem
+import com.belcobtm.presentation.screens.wallet.trade.list.model.OrderItem
 
 class TradesDataToOrderListMapper(private val orderMapper: TradeOrderDataToItemMapper) {
 

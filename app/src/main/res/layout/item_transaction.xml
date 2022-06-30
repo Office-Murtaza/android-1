@@ -26,7 +26,7 @@
         android:layout_weight="1.5"
         android:gravity="center"
         android:lines="1"
-        android:textColor="#8d8d8d"
+        android:textColor="@color/light_gray"
         android:textSize="13sp"
         tools:text="Deposit" />
 
@@ -52,7 +52,7 @@
         android:ellipsize="end"
         android:gravity="end|center_vertical"
         android:lines="1"
-        android:textColor="#8d8d8d"
+        android:textColor="@color/light_gray"
         android:textSize="13sp"
         tools:text="123.871264165" />
 

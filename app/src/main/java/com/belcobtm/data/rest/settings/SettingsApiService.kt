@@ -12,7 +12,6 @@ import com.belcobtm.data.rest.settings.request.VerificationBlankRequest
 import com.belcobtm.data.rest.settings.request.VerificationData
 import com.belcobtm.data.rest.settings.request.VerificationDocumentRequest
 import com.belcobtm.data.rest.settings.request.VerificationUserIdentityRequest
-import com.belcobtm.data.rest.settings.request.VipVerificationRequest
 import com.belcobtm.data.rest.settings.response.VerificationDetailsResponse
 import com.belcobtm.data.rest.settings.response.VerificationFieldsResponse
 import com.belcobtm.data.rest.settings.response.VerificationInfoResponse
@@ -146,32 +145,6 @@ class SettingsApiService(private val api: SettingsApi) {
             )
         }
         val response = api.sendVerificationBlankAsync(userId, request)
-        response.body()?.let { Either.Right(Unit) } ?: Either.Left(Failure.ServerError())
-    } catch (failure: Failure) {
-        failure.printStackTrace()
-        Either.Left(failure)
-    }
-
-    suspend fun sendVerificationVip(
-        userId: String,
-        dataItem: VerificationVipDataItem,
-        fileName: String
-    ): Either<Failure, Unit> = try {
-        val request = VipVerificationRequest(
-            dataItem.id,
-            dataItem.idCardNumberFilename,
-            dataItem.idCardNumber,
-            dataItem.firstName,
-            dataItem.lastName,
-            dataItem.address,
-            dataItem.city,
-            dataItem.country,
-            dataItem.province,
-            dataItem.zipCode,
-            dataItem.ssn.toString(),
-            fileName
-        )
-        val response = api.sendVerificationVipAsync(userId, request)
         response.body()?.let { Either.Right(Unit) } ?: Either.Left(Failure.ServerError())
     } catch (failure: Failure) {
         failure.printStackTrace()

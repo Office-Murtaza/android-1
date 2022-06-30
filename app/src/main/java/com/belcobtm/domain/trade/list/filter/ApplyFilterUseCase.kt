@@ -5,7 +5,7 @@ import com.belcobtm.domain.Failure
 import com.belcobtm.domain.UseCase
 import com.belcobtm.domain.trade.TradeRepository
 import com.belcobtm.domain.trade.list.filter.mapper.TradeFilterMapper
-import com.belcobtm.presentation.features.wallet.trade.list.filter.model.TradeFilterItem
+import com.belcobtm.presentation.screens.wallet.trade.list.filter.model.TradeFilterItem
 
 class ApplyFilterUseCase(
     private val tradeRepository: TradeRepository,

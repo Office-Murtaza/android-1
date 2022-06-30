@@ -8,7 +8,7 @@ import com.belcobtm.data.disk.database.wallet.WalletDao
 import com.belcobtm.data.disk.shared.preferences.SharedPreferencesHelper
 import com.belcobtm.data.rest.unlink.UnlinkApi
 import com.belcobtm.domain.support.SupportChatHelper
-import com.belcobtm.presentation.features.HostActivity
+import com.belcobtm.presentation.screens.HostActivity
 import org.koin.core.component.KoinComponent
 
 class UnlinkHandler(

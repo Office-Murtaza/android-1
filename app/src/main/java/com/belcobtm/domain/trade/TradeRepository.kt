@@ -8,11 +8,11 @@ import com.belcobtm.data.model.trade.TradeData
 import com.belcobtm.data.model.trade.filter.TradeFilter
 import com.belcobtm.domain.Either
 import com.belcobtm.domain.Failure
-import com.belcobtm.presentation.features.wallet.trade.create.model.CreateTradeItem
-import com.belcobtm.presentation.features.wallet.trade.edit.EditTradeItem
-import com.belcobtm.presentation.features.wallet.trade.list.filter.model.TradeFilterItem
-import com.belcobtm.presentation.features.wallet.trade.order.create.model.TradeOrderItem
-import com.belcobtm.presentation.features.wallet.trade.order.details.model.UpdateOrderStatusItem
+import com.belcobtm.presentation.screens.wallet.trade.create.model.CreateTradeItem
+import com.belcobtm.presentation.screens.wallet.trade.edit.EditTradeItem
+import com.belcobtm.presentation.screens.wallet.trade.list.filter.model.TradeFilterItem
+import com.belcobtm.presentation.screens.wallet.trade.order.create.model.TradeOrderItem
+import com.belcobtm.presentation.screens.wallet.trade.order.details.model.UpdateOrderStatusItem
 import kotlinx.coroutines.flow.Flow
 
 interface TradeRepository {

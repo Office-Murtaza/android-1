@@ -7,7 +7,7 @@ import com.belcobtm.data.model.trade.TradeType
 import com.belcobtm.data.model.trade.filter.SortOption
 import com.belcobtm.data.model.trade.filter.TradeFilter
 import com.belcobtm.domain.trade.list.ObserveTradesUseCase
-import com.belcobtm.presentation.features.wallet.trade.list.model.TradeItem
+import com.belcobtm.presentation.screens.wallet.trade.list.model.TradeItem
 
 class TradesDataToTradeListMapper(
     private val tradeMapper: TradeToTradeItemMapper

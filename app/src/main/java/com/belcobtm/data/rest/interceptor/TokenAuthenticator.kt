@@ -1,5 +1,6 @@
 package com.belcobtm.data.rest.interceptor
 
+import android.util.Log
 import com.belcobtm.data.core.UnlinkHandler
 import com.belcobtm.data.disk.database.wallet.WalletDao
 import com.belcobtm.data.disk.shared.preferences.SharedPreferencesHelper
@@ -24,6 +25,7 @@ class TokenAuthenticator(
     override fun authenticate(route: Route?, response: Response): Request? {
         val refreshToken = prefsHelper.refreshToken
         val refereshBody = RefreshTokenRequest(refreshToken)
+        Log.d("REFRESH", "From TokenAuthenticator")
         val authResponse = authApi.refreshToken(refereshBody).execute()
         val responseBody = authResponse.body()
         val responseCode = authResponse.code()

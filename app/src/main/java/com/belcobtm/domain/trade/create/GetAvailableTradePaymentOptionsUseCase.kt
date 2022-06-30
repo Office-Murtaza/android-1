@@ -5,7 +5,7 @@ import com.belcobtm.domain.Failure
 import com.belcobtm.domain.UseCase
 import com.belcobtm.domain.trade.TradeRepository
 import com.belcobtm.domain.trade.create.mapper.PaymentIdToAvailablePaymentOptionMapper
-import com.belcobtm.presentation.features.wallet.trade.create.model.AvailableTradePaymentOption
+import com.belcobtm.presentation.screens.wallet.trade.create.model.AvailableTradePaymentOption
 
 class GetAvailableTradePaymentOptionsUseCase(
     private val repository: TradeRepository,

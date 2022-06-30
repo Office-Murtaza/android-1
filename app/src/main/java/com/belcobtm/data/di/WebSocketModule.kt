@@ -36,7 +36,7 @@ import com.belcobtm.data.websockets.transactions.TransactionsObserver
 import com.belcobtm.data.websockets.transactions.WebSocketTransactionsObserver
 import com.belcobtm.data.websockets.wallet.WalletConnectionHandler
 import com.belcobtm.data.websockets.wallet.WebSocketWalletObserver
-import com.belcobtm.presentation.features.wallet.trade.order.chat.NewMessageItem
+import com.belcobtm.presentation.screens.wallet.trade.order.chat.NewMessageItem
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import org.koin.core.qualifier.named

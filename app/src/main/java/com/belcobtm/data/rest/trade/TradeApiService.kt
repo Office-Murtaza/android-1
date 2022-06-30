@@ -15,9 +15,9 @@ import com.belcobtm.data.rest.trade.response.TradeOrderItemResponse
 import com.belcobtm.data.rest.trade.response.TradesResponse
 import com.belcobtm.domain.Either
 import com.belcobtm.domain.Failure
-import com.belcobtm.presentation.features.wallet.trade.create.model.CreateTradeItem
-import com.belcobtm.presentation.features.wallet.trade.edit.EditTradeItem
-import com.belcobtm.presentation.features.wallet.trade.order.create.model.TradeOrderItem
+import com.belcobtm.presentation.screens.wallet.trade.create.model.CreateTradeItem
+import com.belcobtm.presentation.screens.wallet.trade.edit.EditTradeItem
+import com.belcobtm.presentation.screens.wallet.trade.order.create.model.TradeOrderItem
 
 class TradeApiService(
     private val tradeApi: TradeApi,

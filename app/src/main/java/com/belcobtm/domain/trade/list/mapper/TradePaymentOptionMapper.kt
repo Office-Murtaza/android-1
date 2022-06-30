@@ -2,7 +2,7 @@ package com.belcobtm.domain.trade.list.mapper
 
 import com.belcobtm.R
 import com.belcobtm.data.model.trade.PaymentOption
-import com.belcobtm.presentation.features.wallet.trade.list.model.TradePayment
+import com.belcobtm.presentation.screens.wallet.trade.list.model.TradePayment
 
 class TradePaymentOptionMapper {
 

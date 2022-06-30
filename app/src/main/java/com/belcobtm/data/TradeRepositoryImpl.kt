@@ -19,13 +19,12 @@ import com.belcobtm.domain.mapSuspend
 import com.belcobtm.domain.trade.TradeRepository
 import com.belcobtm.domain.trade.list.filter.mapper.TradeFilterItemMapper
 import com.belcobtm.domain.wallet.LocalCoinType
-import com.belcobtm.presentation.features.wallet.trade.create.model.CreateTradeItem
-import com.belcobtm.presentation.features.wallet.trade.edit.EditTradeItem
-import com.belcobtm.presentation.features.wallet.trade.list.filter.model.TradeFilterItem
-import com.belcobtm.presentation.features.wallet.trade.order.create.model.TradeOrderItem
-import com.belcobtm.presentation.features.wallet.trade.order.details.model.UpdateOrderStatusItem
+import com.belcobtm.presentation.screens.wallet.trade.create.model.CreateTradeItem
+import com.belcobtm.presentation.screens.wallet.trade.edit.EditTradeItem
+import com.belcobtm.presentation.screens.wallet.trade.list.filter.model.TradeFilterItem
+import com.belcobtm.presentation.screens.wallet.trade.order.create.model.TradeOrderItem
+import com.belcobtm.presentation.screens.wallet.trade.order.details.model.UpdateOrderStatusItem
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.onEach
 
 class TradeRepositoryImpl(
     private val tradeApiService: TradeApiService,

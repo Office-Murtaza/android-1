@@ -165,6 +165,7 @@ class SocketManager(
             message.orEmpty().contains(AUTH_ERROR_MESSAGE)
         }?.let { // for expired token
             val request = RefreshTokenRequest(preferencesHelper.refreshToken)
+            Log.d("REFRESH", "From SocketManager")
             val response = authApi.refreshToken(request).execute()
             val body = response.body()
             val code = response.code()

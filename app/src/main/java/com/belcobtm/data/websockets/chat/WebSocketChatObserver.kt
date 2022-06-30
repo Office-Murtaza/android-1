@@ -11,7 +11,7 @@ import com.belcobtm.data.websockets.manager.WebSocketManager
 import com.belcobtm.data.websockets.serializer.RequestSerializer
 import com.belcobtm.data.websockets.serializer.ResponseDeserializer
 import com.belcobtm.domain.mapSuspend
-import com.belcobtm.presentation.features.wallet.trade.order.chat.NewMessageItem
+import com.belcobtm.presentation.screens.wallet.trade.order.chat.NewMessageItem
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job

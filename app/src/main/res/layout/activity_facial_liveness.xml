@@ -8,17 +8,17 @@
     android:orientation="horizontal">
 
 
-    <com.belcobtm.presentation.features.settings.verification.acuant.face_capture.CameraSourcePreview
+    <com.belcobtm.presentation.screens.settings.verification.acuant.face_capture.CameraSourcePreview
         android:id="@+id/preview"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <com.belcobtm.presentation.features.settings.verification.acuant.face_capture.FacialGraphicOverlay
+        <com.belcobtm.presentation.screens.settings.verification.acuant.face_capture.FacialGraphicOverlay
             android:id="@+id/faceOverlay"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
 
-    </com.belcobtm.presentation.features.settings.verification.acuant.face_capture.CameraSourcePreview>
+    </com.belcobtm.presentation.screens.settings.verification.acuant.face_capture.CameraSourcePreview>
 
     <LinearLayout
         android:id="@+id/selfie_help_container"

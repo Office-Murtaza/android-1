@@ -7,7 +7,7 @@ import com.belcobtm.domain.Failure
 import com.belcobtm.domain.UseCase
 import com.belcobtm.domain.trade.TradeRepository
 import com.belcobtm.presentation.core.provider.string.StringProvider
-import com.belcobtm.presentation.features.wallet.trade.create.model.CreateTradeItem
+import com.belcobtm.presentation.screens.wallet.trade.create.model.CreateTradeItem
 
 class CreateTradeUseCase(
     private val tradeRepository: TradeRepository,

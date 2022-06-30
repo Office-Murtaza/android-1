@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/wallet_fragment"
-        android:name="com.belcobtm.presentation.features.wallet.balance.WalletFragment"
+        android:name="com.belcobtm.presentation.screens.wallet.balance.WalletFragment"
         android:label="WalletFragment"
         tools:layout="@layout/fragment_balance">
         <action
@@ -21,7 +21,7 @@
 
     <fragment
         android:id="@+id/transactions_fragment"
-        android:name="com.belcobtm.presentation.features.wallet.transactions.TransactionsFragment"
+        android:name="com.belcobtm.presentation.screens.wallet.transactions.TransactionsFragment"
         android:label="TransactionsFragment"
         tools:layout="@layout/fragment_transactions">
         <argument
@@ -74,7 +74,7 @@
 
     <fragment
         android:id="@+id/staking_fragment"
-        android:name="com.belcobtm.presentation.features.deals.staking.StakingFragment"
+        android:name="com.belcobtm.presentation.screens.deals.staking.StakingFragment"
         android:label="StakingFragment"
         tools:layout="@layout/fragment_staking">
 
@@ -90,7 +90,7 @@
 
     <fragment
         android:id="@+id/deposit_fragment"
-        android:name="com.belcobtm.presentation.features.wallet.deposit.DepositFragment"
+        android:name="com.belcobtm.presentation.screens.wallet.deposit.DepositFragment"
         android:label="DepositFragment"
         tools:layout="@layout/fragment_deposit">
         <argument
@@ -100,7 +100,7 @@
 
     <fragment
         android:id="@+id/transaction_details_fragment"
-        android:name="com.belcobtm.presentation.features.wallet.transaction.details.TransactionDetailsFragment"
+        android:name="com.belcobtm.presentation.screens.wallet.transaction.details.TransactionDetailsFragment"
         android:label="DetailsTransactionFragment"
         tools:layout="@layout/fragment_transaction_details">
         <argument
@@ -113,7 +113,7 @@
 
     <fragment
         android:id="@+id/withdraw_fragment"
-        android:name="com.belcobtm.presentation.features.wallet.withdraw.WithdrawFragment"
+        android:name="com.belcobtm.presentation.screens.wallet.withdraw.WithdrawFragment"
         android:label="WithdrawFragment"
         tools:layout="@layout/fragment_withdraw">
         <argument
@@ -123,7 +123,7 @@
 
     <fragment
         android:id="@+id/reserve_fragment"
-        android:name="com.belcobtm.presentation.features.wallet.trade.reserve.TradeReserveFragment"
+        android:name="com.belcobtm.presentation.screens.wallet.trade.reserve.TradeReserveFragment"
         android:label="ReserveFragment"
         tools:layout="@layout/fragment_trade_reserve">
         <argument
@@ -135,7 +135,7 @@
 
     <fragment
         android:id="@+id/recall_fragment"
-        android:name="com.belcobtm.presentation.features.wallet.trade.recall.TradeRecallFragment"
+        android:name="com.belcobtm.presentation.screens.wallet.trade.recall.TradeRecallFragment"
         android:label="RecallFragment"
         tools:layout="@layout/fragment_trade_recall">
         <argument
@@ -145,7 +145,7 @@
 
     <dialog
         android:id="@+id/service_info_dialog"
-        android:name="com.belcobtm.presentation.features.services.ServicesInfoBottomSheetDialogFragment"
+        android:name="com.belcobtm.presentation.screens.services.ServicesInfoBottomSheetDialogFragment"
         android:label="Chat image dialog">
 
         <argument

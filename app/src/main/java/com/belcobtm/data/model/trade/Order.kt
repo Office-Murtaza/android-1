@@ -1,6 +1,6 @@
 package com.belcobtm.data.model.trade
 
-import com.belcobtm.presentation.features.wallet.trade.order.chat.model.ChatMessageItem
+import com.belcobtm.presentation.screens.wallet.trade.order.chat.model.ChatMessageItem
 
 data class Order(
     val id: String,

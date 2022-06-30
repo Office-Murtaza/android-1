@@ -379,6 +379,7 @@
     <string name="transaction_changes_percent">%1$s %%</string>
     <string name="transaction_helper_text_commission">Fee %1$s %2$s</string>
     <string name="xrp_additional_transaction_comission">%1$s, locked amount 20 XRP</string>
+    <string name="transactions_no_transactions">Your transactions will appear here</string>
 
     <!--transaction status-->
     <string name="transaction_status_unknown">Unknown</string>

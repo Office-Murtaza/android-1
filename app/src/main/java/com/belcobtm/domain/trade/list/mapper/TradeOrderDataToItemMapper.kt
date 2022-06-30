@@ -10,9 +10,9 @@ import com.belcobtm.data.model.trade.TradeData
 import com.belcobtm.data.model.trade.TradeType
 import com.belcobtm.domain.wallet.LocalCoinType
 import com.belcobtm.presentation.tools.formatter.Formatter
-import com.belcobtm.presentation.features.wallet.trade.list.model.OrderItem
-import com.belcobtm.presentation.features.wallet.trade.list.model.OrderStatusItem
-import com.belcobtm.presentation.features.wallet.trade.list.model.TradeItem
+import com.belcobtm.presentation.screens.wallet.trade.list.model.OrderItem
+import com.belcobtm.presentation.screens.wallet.trade.list.model.OrderStatusItem
+import com.belcobtm.presentation.screens.wallet.trade.list.model.TradeItem
 
 class TradeOrderDataToItemMapper(
     private val tradeItemMapper: TradeToTradeItemMapper,

@@ -4,7 +4,7 @@ import com.belcobtm.domain.Either
 import com.belcobtm.domain.Failure
 import com.belcobtm.domain.UseCase
 import com.belcobtm.domain.trade.TradeRepository
-import com.belcobtm.presentation.features.wallet.trade.edit.EditTradeItem
+import com.belcobtm.presentation.screens.wallet.trade.edit.EditTradeItem
 
 class EditTradeUseCase(
     private val tradeRepository: TradeRepository

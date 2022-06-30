@@ -5,7 +5,7 @@ import com.belcobtm.domain.Either
 import com.belcobtm.domain.Failure
 import com.belcobtm.domain.trade.TradeRepository
 import com.belcobtm.domain.trade.list.mapper.TradeToTradeItemMapper
-import com.belcobtm.presentation.features.wallet.trade.list.model.TradeItem
+import com.belcobtm.presentation.screens.wallet.trade.list.model.TradeItem
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOn

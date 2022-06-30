@@ -3,6 +3,7 @@ package com.belcobtm.presentation.di
 import com.belcobtm.data.cloud.storage.FirebaseCloudStorage
 import com.belcobtm.data.cloud.storage.FirebaseCloudStorage.Companion.VERIFICATION_STORAGE
 import com.belcobtm.data.core.RandomStringGenerator
+import com.belcobtm.domain.PreferencesInteractor
 import com.belcobtm.domain.account.interactor.GetUserCoinListUseCase
 import com.belcobtm.domain.account.interactor.UpdateUserCoinListUseCase
 import com.belcobtm.domain.atm.interactor.GetAtmsUseCase
@@ -45,15 +46,14 @@ import com.belcobtm.domain.settings.interactor.GetVerificationCountryListUseCase
 import com.belcobtm.domain.settings.interactor.GetVerificationDetailsUseCase
 import com.belcobtm.domain.settings.interactor.GetVerificationFieldsUseCase
 import com.belcobtm.domain.settings.interactor.GetVerificationInfoUseCase
+import com.belcobtm.domain.settings.interactor.IsPhoneUsedUseCase
 import com.belcobtm.domain.settings.interactor.SendVerificationBlankUseCase
 import com.belcobtm.domain.settings.interactor.SendVerificationDocumentUseCase
 import com.belcobtm.domain.settings.interactor.SendVerificationIdentityUseCase
-import com.belcobtm.domain.settings.interactor.SendVerificationVipUseCase
 import com.belcobtm.domain.settings.interactor.SetBioAuthStateAllowedUseCase
 import com.belcobtm.domain.settings.interactor.SetNeedToShowRestrictionsUseCase
 import com.belcobtm.domain.settings.interactor.UnlinkUseCase
 import com.belcobtm.domain.settings.interactor.UpdatePhoneUseCase
-import com.belcobtm.domain.settings.interactor.IsPhoneUsedUseCase
 import com.belcobtm.domain.socket.ConnectToSocketUseCase
 import com.belcobtm.domain.socket.DisconnectFromSocketUseCase
 import com.belcobtm.domain.support.SupportChatInteractor
@@ -143,6 +143,7 @@ import org.koin.core.qualifier.named
 import org.koin.dsl.module
 import java.text.SimpleDateFormat
 import java.util.Calendar
+import java.util.Locale
 
 val useCaseModule = module {
     single { AuthorizationStatusGetUseCase(get()) }
@@ -169,7 +170,6 @@ val useCaseModule = module {
     single {
         SendVerificationDocumentUseCase(
             get(),
-            androidApplication(),
             get(named(VERIFICATION_STORAGE)),
             get()
         )
@@ -177,13 +177,6 @@ val useCaseModule = module {
     single { SaveUserAuthedUseCase(get()) }
     single {
         SendVerificationBlankUseCase(
-            get(),
-            androidApplication(),
-            get(named(VERIFICATION_STORAGE))
-        )
-    }
-    single {
-        SendVerificationVipUseCase(
             get(),
             androidApplication(),
             get(named(VERIFICATION_STORAGE))
@@ -331,12 +324,17 @@ val useCaseModule = module {
             get(),
             get(named(FirebaseCloudStorage.CHAT_STORAGE)),
             get(),
-            SimpleDateFormat(CHAT_DATE_FORMAT)
+            SimpleDateFormat(CHAT_DATE_FORMAT, Locale.getDefault())
         )
     }
     factory {
         SupportChatInteractor(
             supportChatHelper = get()
+        )
+    }
+    factory {
+        PreferencesInteractor(
+            prefHelper = get()
         )
     }
 

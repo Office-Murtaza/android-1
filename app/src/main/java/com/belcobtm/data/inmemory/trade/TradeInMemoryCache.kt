@@ -18,7 +18,7 @@ import com.belcobtm.domain.Failure
 import com.belcobtm.domain.flatMap
 import com.belcobtm.domain.map
 import com.belcobtm.domain.trade.order.mapper.ChatMessageMapper
-import com.belcobtm.presentation.features.wallet.trade.list.filter.model.TradeFilterItem
+import com.belcobtm.presentation.screens.wallet.trade.list.filter.model.TradeFilterItem
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers

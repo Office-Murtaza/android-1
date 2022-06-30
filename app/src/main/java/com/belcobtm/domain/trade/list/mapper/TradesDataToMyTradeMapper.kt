@@ -3,7 +3,7 @@ package com.belcobtm.domain.trade.list.mapper
 import com.belcobtm.data.model.trade.TradeData
 import com.belcobtm.data.model.trade.TradeStatus
 import com.belcobtm.presentation.core.adapter.model.ListItem
-import com.belcobtm.presentation.features.wallet.trade.mytrade.list.model.NoTradesCreatedItem
+import com.belcobtm.presentation.screens.wallet.trade.mytrade.list.model.NoTradesCreatedItem
 
 class TradesDataToMyTradeMapper(private val tradeMapper: TradeToTradeItemMapper) {
 

@@ -3,7 +3,7 @@ package com.belcobtm.domain.trade.list.mapper
 import com.belcobtm.R
 import com.belcobtm.data.model.trade.TradeData
 import com.belcobtm.data.model.trade.TraderStatus
-import com.belcobtm.presentation.features.wallet.trade.list.model.TradeStatistics
+import com.belcobtm.presentation.screens.wallet.trade.list.model.TradeStatistics
 
 class TradesDataToStatisticsMapper(
     private val statusMapper: TraderStatusToIconMapper

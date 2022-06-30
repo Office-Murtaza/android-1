@@ -7,4 +7,5 @@ class AuthorizationStatusGetUseCase(private val repository: AuthorizationReposit
 
     operator fun invoke(): AuthorizationStatus =
         repository.getAuthorizationStatus()
+
 }

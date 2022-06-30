@@ -1,5 +1,6 @@
 package com.belcobtm.data
 
+import android.util.Log
 import com.belcobtm.data.disk.database.account.AccountDao
 import com.belcobtm.data.disk.database.account.AccountEntity
 import com.belcobtm.data.disk.database.wallet.WalletDao
@@ -36,9 +37,7 @@ class AuthorizationRepositoryImpl(
     private val locationProvider: LocationProvider
 ) : AuthorizationRepository {
 
-    private val temporaryCoinMap: MutableMap<LocalCoinType, Pair<String, String>> by lazy {
-        return@lazy mutableMapOf<LocalCoinType, Pair<String, String>>()
-    }
+    private val temporaryCoinMap: MutableMap<LocalCoinType, Pair<String, String>> by lazy { mutableMapOf() }
 
     override fun getAuthorizationStatus(): AuthorizationStatus {
         if (!prefHelper.isUserAuthed && prefHelper.apiSeed.isNotEmpty()) {
