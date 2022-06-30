@@ -37,6 +37,7 @@ class VerificationDetailsViewModel(
     val identityStateData = MutableLiveData<LoadingData<VerificationIdentityState>>()
     val documentStateData = MutableLiveData<LoadingData<VerificationDocumentState>>()
     val actionData = SingleLiveData<VerificationDetailsAction>()
+
     var currentStep = VerificationStep.COUNTRY_VERIFICATION_STEP
     var verificationStatus = VerificationStatus.UNVERIFIED
     var selectedCountry: VerificationSupportedCountryDataItem? = null
@@ -45,7 +46,7 @@ class VerificationDetailsViewModel(
     var backScanDocument: Bitmap? = null
     var selfieScan: Bitmap? = null
     var verificationDetails: VerificationDetailsDataItem? = null
-    val imageHelper = ImageHelper()
+    private val imageHelper = ImageHelper()
     val countries = countriesUseCase.invoke()
 
     fun fetchVerificationStatus() {
@@ -59,12 +60,12 @@ class VerificationDetailsViewModel(
                     verificationDetails = it
                     getVerificationStatus(it)
                     it.identityVerification?.let { identityResponse ->
-                        identityStateData.value = LoadingData.Success<VerificationIdentityState>(
+                        identityStateData.value = LoadingData.Success(
                             createVerificationIdentityState(identityResponse)
                         )
                     }
                     it.documentVerification?.let { documentResponse ->
-                        documentStateData.value = LoadingData.Success<VerificationDocumentState>(
+                        documentStateData.value = LoadingData.Success(
                             createVerificationDocumentState(
                                 documentResponse,
                             )
@@ -112,7 +113,7 @@ class VerificationDetailsViewModel(
         identityStateData.value = LoadingData.Loading()
         sendVerificationIdentityUseCase.invoke(SendVerificationIdentityUseCase.Params(dataItem),
             onSuccess = {
-                identityStateData.value = LoadingData.Success<VerificationIdentityState>(
+                identityStateData.value = LoadingData.Success(
                     createVerificationIdentityState(it)
                 )
                 if (it.recordStatus == RecordStatus.MATCH) {
@@ -151,7 +152,7 @@ class VerificationDetailsViewModel(
                 )
             ),
                 onSuccess = {
-                    documentStateData.value = LoadingData.Success<VerificationDocumentState>(
+                    documentStateData.value = LoadingData.Success(
                         createVerificationDocumentState(it)
                     )
                     if (it.recordStatus == RecordStatus.MATCH) {
@@ -171,139 +172,90 @@ class VerificationDetailsViewModel(
         }
     }
 
-//        actionData.value = VerificationDetailsAction.NavigateAction(
-//            when (item?.status) {
-//                VerificationStatus.NOT_VERIFIED,
-//                VerificationStatus.VERIFICATION_REJECTED ->
-//                    VerificationDetailsFragmentDirections.verificationInfoToVerify(item ?: return)
-//                VerificationStatus.VERIFIED,
-//                VerificationStatus.VIP_VERIFICATION_REJECTED ->
-//                    VerificationDetailsFragmentDirections.verificationInfoToVipVerify(
-//                        item ?: return
-//                    )
-//                else -> throw IllegalStateException("Not available for verification for this state")
-//            }
-//        )
-
     private fun getVerificationStatus(verificationDetails: VerificationDetailsDataItem) {
         if (verificationDetails.selectedCountry == null)
             currentStep = VerificationStep.COUNTRY_VERIFICATION_STEP
         else {
             selectedCountry = verificationDetails.selectedCountry
-            if (verificationDetails.identityVerification != null && verificationDetails.identityVerification.recordStatus == RecordStatus.MATCH)
-                currentStep = VerificationStep.DOCUMENT_VERIFICATION_STEP
-            else
-                currentStep = VerificationStep.IDENTITY_VERIFICATION_STEP
+            currentStep =
+                if (verificationDetails.identityVerification != null && verificationDetails.identityVerification.recordStatus == RecordStatus.MATCH)
+                    VerificationStep.DOCUMENT_VERIFICATION_STEP
+                else
+                    VerificationStep.IDENTITY_VERIFICATION_STEP
         }
         verificationStatus = VerificationStatus.UNVERIFIED
     }
 
-    private fun getCountryStepIcon(step: VerificationStep): Int {
-        return when (step) {
-            VerificationStep.COUNTRY_VERIFICATION_STEP -> R.drawable.ic_1
-            VerificationStep.IDENTITY_VERIFICATION_STEP -> R.drawable.ic_checked
-            VerificationStep.DOCUMENT_VERIFICATION_STEP -> R.drawable.ic_checked
-            else -> R.drawable.ic_1
-        }
+    private fun getCountryStepIcon(step: VerificationStep): Int = when (step) {
+        VerificationStep.COUNTRY_VERIFICATION_STEP -> R.drawable.ic_1
+        VerificationStep.IDENTITY_VERIFICATION_STEP -> R.drawable.ic_checked
+        VerificationStep.DOCUMENT_VERIFICATION_STEP -> R.drawable.ic_checked
     }
 
-    private fun getIdentityStepIcon(step: VerificationStep): Int {
-        return when (step) {
-            VerificationStep.COUNTRY_VERIFICATION_STEP -> R.drawable.ic_2
-            VerificationStep.IDENTITY_VERIFICATION_STEP -> R.drawable.ic_2
-            VerificationStep.DOCUMENT_VERIFICATION_STEP -> R.drawable.ic_checked
-            else -> R.drawable.ic_2
-        }
+    private fun getIdentityStepIcon(step: VerificationStep): Int = when (step) {
+        VerificationStep.COUNTRY_VERIFICATION_STEP -> R.drawable.ic_2
+        VerificationStep.IDENTITY_VERIFICATION_STEP -> R.drawable.ic_2
+        VerificationStep.DOCUMENT_VERIFICATION_STEP -> R.drawable.ic_checked
     }
 
-    private fun getDocumentStepIcon(step: VerificationStep): Int {
-        return when (step) {
-            VerificationStep.COUNTRY_VERIFICATION_STEP -> R.drawable.ic_3
-            VerificationStep.IDENTITY_VERIFICATION_STEP -> R.drawable.ic_3
-            VerificationStep.DOCUMENT_VERIFICATION_STEP -> R.drawable.ic_3
-            else -> R.drawable.ic_3
-        }
+    private fun getDocumentStepIcon(step: VerificationStep): Int = when (step) {
+        VerificationStep.COUNTRY_VERIFICATION_STEP -> R.drawable.ic_3
+        VerificationStep.IDENTITY_VERIFICATION_STEP -> R.drawable.ic_3
+        VerificationStep.DOCUMENT_VERIFICATION_STEP -> R.drawable.ic_3
     }
 
-    private fun getCountryStepIconColor(step: VerificationStep): Int {
-        return when (step) {
-            VerificationStep.COUNTRY_VERIFICATION_STEP -> R.color.colorWhite
-            VerificationStep.IDENTITY_VERIFICATION_STEP -> R.color.colorWhite
-            VerificationStep.DOCUMENT_VERIFICATION_STEP -> R.color.colorWhite
-            else -> R.color.colorWhite
-        }
+    private fun getCountryStepIconColor(step: VerificationStep): Int = when (step) {
+        VerificationStep.COUNTRY_VERIFICATION_STEP -> R.color.colorWhite
+        VerificationStep.IDENTITY_VERIFICATION_STEP -> R.color.colorWhite
+        VerificationStep.DOCUMENT_VERIFICATION_STEP -> R.color.colorWhite
     }
 
-    private fun getIdentityStepIconColor(step: VerificationStep): Int {
-        return when (step) {
-            VerificationStep.COUNTRY_VERIFICATION_STEP -> R.color.gray_text_color
-            VerificationStep.IDENTITY_VERIFICATION_STEP -> R.color.colorWhite
-            VerificationStep.DOCUMENT_VERIFICATION_STEP -> R.color.colorWhite
-            else -> R.color.colorWhite
-        }
+    private fun getIdentityStepIconColor(step: VerificationStep): Int = when (step) {
+        VerificationStep.COUNTRY_VERIFICATION_STEP -> R.color.gray_text_color
+        VerificationStep.IDENTITY_VERIFICATION_STEP -> R.color.colorWhite
+        VerificationStep.DOCUMENT_VERIFICATION_STEP -> R.color.colorWhite
     }
 
-    private fun getDocumentStepIconColor(step: VerificationStep): Int {
-        return when (step) {
-            VerificationStep.COUNTRY_VERIFICATION_STEP -> R.color.gray_text_color
-            VerificationStep.IDENTITY_VERIFICATION_STEP -> R.color.gray_text_color
-            VerificationStep.DOCUMENT_VERIFICATION_STEP -> R.color.colorWhite
-            else -> R.color.colorWhite
-        }
+    private fun getDocumentStepIconColor(step: VerificationStep): Int = when (step) {
+        VerificationStep.COUNTRY_VERIFICATION_STEP -> R.color.gray_text_color
+        VerificationStep.IDENTITY_VERIFICATION_STEP -> R.color.gray_text_color
+        VerificationStep.DOCUMENT_VERIFICATION_STEP -> R.color.colorWhite
     }
 
-    private fun getCountryStepTextColor(step: VerificationStep): Int {
-        return when (step) {
-            VerificationStep.COUNTRY_VERIFICATION_STEP -> R.color.black_text_color
-            VerificationStep.IDENTITY_VERIFICATION_STEP -> R.color.gray_text_color
-            VerificationStep.DOCUMENT_VERIFICATION_STEP -> R.color.gray_text_color
-            else -> R.color.gray_text_color
-        }
+    private fun getCountryStepTextColor(step: VerificationStep): Int = when (step) {
+        VerificationStep.COUNTRY_VERIFICATION_STEP -> R.color.black_text_color
+        VerificationStep.IDENTITY_VERIFICATION_STEP -> R.color.gray_text_color
+        VerificationStep.DOCUMENT_VERIFICATION_STEP -> R.color.gray_text_color
     }
 
-    private fun getIdentityStepTextColor(step: VerificationStep): Int {
-        return when (step) {
-            VerificationStep.COUNTRY_VERIFICATION_STEP -> R.color.gray_text_color
-            VerificationStep.IDENTITY_VERIFICATION_STEP -> R.color.black_text_color
-            VerificationStep.DOCUMENT_VERIFICATION_STEP -> R.color.gray_text_color
-            else -> R.color.gray_text_color
-        }
+    private fun getIdentityStepTextColor(step: VerificationStep): Int = when (step) {
+        VerificationStep.COUNTRY_VERIFICATION_STEP -> R.color.gray_text_color
+        VerificationStep.IDENTITY_VERIFICATION_STEP -> R.color.black_text_color
+        VerificationStep.DOCUMENT_VERIFICATION_STEP -> R.color.gray_text_color
     }
 
-    private fun getDocumentStepTextColor(step: VerificationStep): Int {
-        return when (step) {
-            VerificationStep.COUNTRY_VERIFICATION_STEP -> R.color.gray_text_color
-            VerificationStep.IDENTITY_VERIFICATION_STEP -> R.color.gray_text_color
-            VerificationStep.DOCUMENT_VERIFICATION_STEP -> R.color.black_text_color
-            else -> R.color.gray_text_color
-        }
+    private fun getDocumentStepTextColor(step: VerificationStep): Int = when (step) {
+        VerificationStep.COUNTRY_VERIFICATION_STEP -> R.color.gray_text_color
+        VerificationStep.IDENTITY_VERIFICATION_STEP -> R.color.gray_text_color
+        VerificationStep.DOCUMENT_VERIFICATION_STEP -> R.color.black_text_color
     }
 
-    private fun getCountryStepBackground(step: VerificationStep): Int {
-        return when (step) {
-            VerificationStep.COUNTRY_VERIFICATION_STEP -> R.drawable.circular_blue_background
-            VerificationStep.IDENTITY_VERIFICATION_STEP -> R.drawable.circular_blue_background
-            VerificationStep.DOCUMENT_VERIFICATION_STEP -> R.drawable.circular_blue_background
-            else -> R.drawable.circular_blue_background
-        }
+    private fun getCountryStepBackground(step: VerificationStep): Int = when (step) {
+        VerificationStep.COUNTRY_VERIFICATION_STEP -> R.drawable.circular_blue_background
+        VerificationStep.IDENTITY_VERIFICATION_STEP -> R.drawable.circular_blue_background
+        VerificationStep.DOCUMENT_VERIFICATION_STEP -> R.drawable.circular_blue_background
     }
 
-    private fun getIdentityStepBackground(step: VerificationStep): Int {
-        return when (step) {
-            VerificationStep.COUNTRY_VERIFICATION_STEP -> R.drawable.gray_border_background
-            VerificationStep.IDENTITY_VERIFICATION_STEP -> R.drawable.circular_blue_background
-            VerificationStep.DOCUMENT_VERIFICATION_STEP -> R.drawable.circular_blue_background
-            else -> R.drawable.circular_blue_background
-        }
+    private fun getIdentityStepBackground(step: VerificationStep): Int = when (step) {
+        VerificationStep.COUNTRY_VERIFICATION_STEP -> R.drawable.gray_border_background
+        VerificationStep.IDENTITY_VERIFICATION_STEP -> R.drawable.circular_blue_background
+        VerificationStep.DOCUMENT_VERIFICATION_STEP -> R.drawable.circular_blue_background
     }
 
-    private fun getDocumentStepBackground(step: VerificationStep): Int {
-        return when (step) {
-            VerificationStep.COUNTRY_VERIFICATION_STEP -> R.drawable.gray_border_background
-            VerificationStep.IDENTITY_VERIFICATION_STEP -> R.drawable.gray_border_background
-            VerificationStep.DOCUMENT_VERIFICATION_STEP -> R.drawable.circular_blue_background
-            else -> R.drawable.circular_blue_background
-        }
+    private fun getDocumentStepBackground(step: VerificationStep): Int = when (step) {
+        VerificationStep.COUNTRY_VERIFICATION_STEP -> R.drawable.gray_border_background
+        VerificationStep.IDENTITY_VERIFICATION_STEP -> R.drawable.gray_border_background
+        VerificationStep.DOCUMENT_VERIFICATION_STEP -> R.drawable.circular_blue_background
     }
 
     private fun getVerificationDetailsState(
@@ -323,6 +275,7 @@ class VerificationDetailsViewModel(
         currentStep = currentStep,
         verificationStatus = verificationStatus
     )
+
 }
 
 data class VerificationDetailsState(

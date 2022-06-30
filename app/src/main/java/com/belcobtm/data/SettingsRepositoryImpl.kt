@@ -420,18 +420,24 @@ class SettingsRepositoryImpl(
         newPassword: String
     ): Either<Failure, Boolean> = apiService.changePass(prefHelper.userId, oldPassword, newPassword)
 
-    override suspend fun getPhone(): Either<Failure, String> =
-        apiService.getPhone(prefHelper.userId)
+    override suspend fun updatePhone(): Either<Failure, Boolean> {
+        val result = apiService.updatePhone(prefHelper.userId, phoneCache)
+        if (result.isRight && (result as Either.Right).b) {
+            prefHelper.userPhone = phoneCache
+            phoneCache = ""
+        }
+        return result
+    }
 
     private var phoneCache = "" // stores phone for update after successful phone verification
 
-    override suspend fun updatePhone(): Either<Failure, Boolean> =
-        apiService.updatePhone(prefHelper.userId, phoneCache)
-
-    override suspend fun verifyPhone(phone: String): Either<Failure, Boolean> =
-        apiService.verifyPhone(prefHelper.userId, phone).also {
+    override suspend fun isPhoneUsed(phone: String): Either<Failure, Boolean> {
+        val result = apiService.verifyPhone(prefHelper.userId, phone)
+        if (result.isRight && (result as Either.Right).b.not()) { // needed response contains false value for phone updating later
             phoneCache = phone
         }
+        return result
+    }
 
     override suspend fun setUserAllowedBioAuth(allowed: Boolean) {
         prefHelper.userAllowedBioAuth = allowed
@@ -457,4 +463,5 @@ class SettingsRepositoryImpl(
     override suspend fun userAllowedBioAuth(): Either<Failure, Boolean> {
         return Either.Right(prefHelper.userAllowedBioAuth)
     }
+
 }

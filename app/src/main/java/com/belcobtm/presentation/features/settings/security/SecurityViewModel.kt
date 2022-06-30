@@ -5,31 +5,30 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.navigation.NavDirections
 import com.belcobtm.R
+import com.belcobtm.data.disk.shared.preferences.SharedPreferencesHelper
 import com.belcobtm.domain.UseCase
 import com.belcobtm.domain.settings.interactor.BioAuthAllowedByUserUseCase
 import com.belcobtm.domain.settings.interactor.BioAuthSupportedByPhoneUseCase
-import com.belcobtm.domain.settings.interactor.GetPhoneUseCase
 import com.belcobtm.domain.settings.interactor.SetBioAuthStateAllowedUseCase
 import com.belcobtm.domain.settings.interactor.UpdatePhoneUseCase
 import com.belcobtm.presentation.core.SingleLiveData
-import com.belcobtm.presentation.tools.formatter.PhoneNumberFormatter
-import com.belcobtm.presentation.core.mvvm.LoadingData
 import com.belcobtm.presentation.features.authorization.create.seed.CreateSeedFragment
+import com.belcobtm.presentation.tools.formatter.PhoneNumberFormatter
 
 class SecurityViewModel(
-    private val getPhoneUseCase: GetPhoneUseCase,
     private val phoneNumberFormatter: PhoneNumberFormatter,
     private val setBioAuthStateAllowedUseCase: SetBioAuthStateAllowedUseCase,
     private val bioAuthAllowedByUserUseCase: BioAuthAllowedByUserUseCase,
     private val bioAuthSupportedByPhoneUseCase: BioAuthSupportedByPhoneUseCase,
-    private val updatePhoneUseCase: UpdatePhoneUseCase
+    private val updatePhoneUseCase: UpdatePhoneUseCase,
+    private val prefsHelper: SharedPreferencesHelper
 ) : ViewModel() {
 
     private val _actionData = SingleLiveData<SecurityAction>()
     val actionData: LiveData<SecurityAction> = _actionData
 
-    private val _userPhone = MutableLiveData<LoadingData<String>>()
-    val userPhone: LiveData<LoadingData<String>> = _userPhone
+    private val _userPhone = MutableLiveData<String>()
+    val userPhone: LiveData<String> = _userPhone
 
     private val _bioOption = MutableLiveData<BioOptionSwitch>()
     val bioOption: LiveData<BioOptionSwitch> = _bioOption
@@ -66,15 +65,7 @@ class SecurityViewModel(
     }
 
     private fun fetchUserPhone() {
-        _userPhone.value = LoadingData.Loading()
-        getPhoneUseCase(
-            UseCase.None(),
-            onSuccess = {
-                val formattedNumber = phoneNumberFormatter.format(it)
-                _userPhone.value = LoadingData.Success(formattedNumber)
-            },
-            onError = { _userPhone.value = LoadingData.Error(it) }
-        )
+        _userPhone.value = phoneNumberFormatter.format(prefsHelper.userPhone)
     }
 
     private fun checkAndSetBioState() {

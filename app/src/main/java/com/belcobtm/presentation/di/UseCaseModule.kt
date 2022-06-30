@@ -37,12 +37,10 @@ import com.belcobtm.domain.referral.LoadReferralUseCase
 import com.belcobtm.domain.referral.SearchAvailableContactsUseCase
 import com.belcobtm.domain.service.ConnectToServicesUseCase
 import com.belcobtm.domain.service.ServiceInfoProvider
-import com.belcobtm.domain.settings.interactor.UpdatePhoneUseCase
 import com.belcobtm.domain.settings.interactor.BioAuthAllowedByUserUseCase
 import com.belcobtm.domain.settings.interactor.BioAuthSupportedByPhoneUseCase
 import com.belcobtm.domain.settings.interactor.ChangePassUseCase
 import com.belcobtm.domain.settings.interactor.GetNeedToShowRestrictions
-import com.belcobtm.domain.settings.interactor.GetPhoneUseCase
 import com.belcobtm.domain.settings.interactor.GetVerificationCountryListUseCase
 import com.belcobtm.domain.settings.interactor.GetVerificationDetailsUseCase
 import com.belcobtm.domain.settings.interactor.GetVerificationFieldsUseCase
@@ -54,7 +52,8 @@ import com.belcobtm.domain.settings.interactor.SendVerificationVipUseCase
 import com.belcobtm.domain.settings.interactor.SetBioAuthStateAllowedUseCase
 import com.belcobtm.domain.settings.interactor.SetNeedToShowRestrictionsUseCase
 import com.belcobtm.domain.settings.interactor.UnlinkUseCase
-import com.belcobtm.domain.settings.interactor.VerifyPhoneUseCase
+import com.belcobtm.domain.settings.interactor.UpdatePhoneUseCase
+import com.belcobtm.domain.settings.interactor.IsPhoneUsedUseCase
 import com.belcobtm.domain.socket.ConnectToSocketUseCase
 import com.belcobtm.domain.socket.DisconnectFromSocketUseCase
 import com.belcobtm.domain.support.SupportChatInteractor
@@ -211,7 +210,6 @@ val useCaseModule = module {
     single { CheckPassUseCase(get()) }
     single { UnlinkUseCase(get()) }
     single { ChangePassUseCase(get()) }
-    single { GetPhoneUseCase(get()) }
     single { ServiceInfoProvider(get()) }
     single {
         GetAtmsUseCase(
@@ -229,7 +227,7 @@ val useCaseModule = module {
     }
     single { ObserveTransactionDetailsUseCase(get()) }
     single { GetCoinListUseCase(get()) }
-    factory { VerifyPhoneUseCase(get()) }
+    factory { IsPhoneUsedUseCase(get()) }
     factory { UpdatePhoneUseCase(get()) }
     single { StakeDetailsGetUseCase(get()) }
     single { StakeCreateUseCase(get(), get(), get()) }

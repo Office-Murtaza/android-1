@@ -155,10 +155,12 @@ class AuthorizationRepositoryImpl(
         phone: String,
     ) = response.takeIf { it.isRight }?.let {
         with((response as Either.Right).b) {
-            val accountList = createAccountEntityList(temporaryCoinMap, balance)
             serviceRepository.updateServices(services)
             walletDao.updateBalance(balance)
+
+            val accountList = createAccountEntityList(temporaryCoinMap, balance)
             daoAccount.insertItemList(accountList)
+
             prefHelper.firebaseToken = firebaseToken
             prefHelper.accessToken = accessToken
             prefHelper.refreshToken = refreshToken
@@ -181,9 +183,17 @@ class AuthorizationRepositoryImpl(
         return response.takeIf { it.isRight }?.let {
             val body = (response as Either.Right).b
             walletDao.updateBalance(body.balance)
+            updateAccountEntityList(body.balance)
             prefHelper.processAuthResponse(body)
             Either.Right(Unit)
         } ?: response as Either.Left
+    }
+
+    private suspend fun updateAccountEntityList(balance: BalanceResponse) {
+        val balanceCoins = balance.coins.map { it.coin }
+        balance.availableCoins.forEach {
+            daoAccount.updateIsEnabledByName(it, balanceCoins.contains(it))
+        }
     }
 
     override fun getAuthorizePin(): String = prefHelper.userPin

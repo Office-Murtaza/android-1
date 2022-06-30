@@ -4,14 +4,14 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.belcobtm.data.disk.shared.preferences.SharedPreferencesHelper
 import com.belcobtm.domain.Failure
-import com.belcobtm.domain.settings.interactor.VerifyPhoneUseCase
+import com.belcobtm.domain.settings.interactor.IsPhoneUsedUseCase
 import com.belcobtm.presentation.core.SingleLiveData
 import com.belcobtm.presentation.core.mvvm.LoadingData
 import com.belcobtm.presentation.tools.extensions.getPhoneForRequest
 import com.belcobtm.presentation.tools.validator.Validator
 
 class PhoneChangeViewModel(
-    private val verifyPhoneUseCase: VerifyPhoneUseCase,
+    private val isPhoneUsedUseCase: IsPhoneUsedUseCase,
     private val prefsHelper: SharedPreferencesHelper,
     private val phoneNumberValidator: Validator<String>
 ) : ViewModel() {
@@ -38,8 +38,8 @@ class PhoneChangeViewModel(
     }
 
     private fun verifyPhone() {
-        verifyPhoneUseCase.invoke(
-            VerifyPhoneUseCase.Params(phone),
+        isPhoneUsedUseCase.invoke(
+            IsPhoneUsedUseCase.Params(phone),
             onSuccess = {
                 if (it) {
                     stateData.value = LoadingData.Error(

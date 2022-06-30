@@ -67,11 +67,6 @@ interface SettingsApi {
         @Body changePassParam: ChangePassBody
     ): Response<UpdateResponse>
 
-    @GET("user/{userId}/phone")
-    suspend fun getPhone(
-        @Path("userId") userId: String
-    ): Response<GetPhoneResponse>
-
     @POST("user/{userId}/phone")
     suspend fun updatePhone(
         @Path("userId") userId: String,

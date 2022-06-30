@@ -190,17 +190,6 @@ class SettingsApiService(private val api: SettingsApi) {
         Either.Left(failure)
     }
 
-    suspend fun getPhone(
-        userId: String
-    ): Either<Failure, String> = try {
-        val request = api.getPhone(userId)
-
-        request.body()?.let { Either.Right(it.phone) } ?: Either.Left(Failure.ServerError())
-    } catch (failure: Failure) {
-        failure.printStackTrace()
-        Either.Left(failure)
-    }
-
     suspend fun updatePhone(
         userId: String,
         newPhone: String
@@ -220,11 +209,7 @@ class SettingsApiService(private val api: SettingsApi) {
         userId: String,
         newPhone: String
     ): Either<Failure, Boolean> = try {
-        val request = api.verifyPhone(
-            userId,
-            UpdatePhoneParam(newPhone)
-        )
-
+        val request = api.verifyPhone(userId, UpdatePhoneParam(newPhone))
         request.body()?.let { Either.Right(it.result) } ?: Either.Left(Failure.ServerError())
     } catch (failure: Failure) {
         failure.printStackTrace()

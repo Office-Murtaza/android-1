@@ -7,9 +7,9 @@ import android.view.ViewGroup
 import androidx.fragment.app.setFragmentResultListener
 import com.belcobtm.R
 import com.belcobtm.databinding.FragmentSecurityBinding
-import com.belcobtm.presentation.tools.extensions.toggle
 import com.belcobtm.presentation.core.ui.fragment.BaseFragment
 import com.belcobtm.presentation.features.sms.code.SmsCodeFragment
+import com.belcobtm.presentation.tools.extensions.toggle
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class SecurityFragment : BaseFragment<FragmentSecurityBinding>() {
@@ -21,7 +21,7 @@ class SecurityFragment : BaseFragment<FragmentSecurityBinding>() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setFragmentResultListener(SmsCodeFragment.REQUEST_KEY) { requestKey, bundle ->
+        setFragmentResultListener(SmsCodeFragment.REQUEST_KEY) { _, bundle ->
             if (bundle.getBoolean(SmsCodeFragment.BUNDLE_KEY_PHONE_UPDATE_VERIFICATION)) {
                 viewModel.updatePhone()
             }
@@ -51,7 +51,9 @@ class SecurityFragment : BaseFragment<FragmentSecurityBinding>() {
     }
 
     private fun observeData() {
-        viewModel.userPhone.listen(success = { binding.updatePhoneItem.setValue(it) })
+        viewModel.userPhone.observe(viewLifecycleOwner) {
+            binding.updatePhoneItem.setValue(it)
+        }
         viewModel.actionData.observe(viewLifecycleOwner) { action ->
             when (action) {
                 is SecurityAction.NavigateAction -> navigate(action.navDirections)

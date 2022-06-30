@@ -29,4 +29,8 @@ interface AccountDao {
 
     @Query("SELECT * FROM account_entity LIMIT 1")
     suspend fun isTableHasItems(): AccountEntity?
+
+    @Query("UPDATE account_entity SET is_enabled=:isEnabled WHERE coin_name = :name")
+    suspend fun updateIsEnabledByName(name: String, isEnabled: Boolean)
+
 }

@@ -21,6 +21,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 class PhoneChangeFragment : BaseFragment<FragmentChangePhoneBinding>() {
 
     val viewModel by viewModel<PhoneChangeViewModel>()
+
     private var appliedState: LoadingData<PhoneChangeState>? = null
     override val isBackButtonEnabled = true
     override var isMenuEnabled = true

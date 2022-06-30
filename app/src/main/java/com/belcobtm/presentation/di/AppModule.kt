@@ -2,17 +2,6 @@ package com.belcobtm.presentation.di
 
 import android.content.Context
 import com.belcobtm.presentation.core.coin.CoinCodeProvider
-import com.belcobtm.presentation.tools.formatter.DoubleCurrencyPriceFormatter
-import com.belcobtm.presentation.tools.formatter.DoubleCurrencyPriceFormatter.Companion.DOUBLE_CURRENCY_PRICE_FORMATTER_QUALIFIER
-import com.belcobtm.presentation.tools.formatter.Formatter
-import com.belcobtm.presentation.tools.formatter.GoogleMapsDirectionQueryFormatter
-import com.belcobtm.presentation.tools.formatter.GoogleMapsDirectionQueryFormatter.Companion.GOOGLE_MAPS_DIRECTIONS_QUERY_FORMATTER
-import com.belcobtm.presentation.tools.formatter.IntCurrencyPriceFormatter
-import com.belcobtm.presentation.tools.formatter.IntCurrencyPriceFormatter.Companion.INT_CURRENCY_PRICE_FORMATTER_QUALIFIER
-import com.belcobtm.presentation.tools.formatter.MilesFormatter
-import com.belcobtm.presentation.tools.formatter.MilesFormatter.Companion.MILES_FORMATTER_QUALIFIER
-import com.belcobtm.presentation.tools.formatter.PhoneNumberFormatter
-import com.belcobtm.presentation.tools.formatter.TradeCountFormatter
 import com.belcobtm.presentation.core.helper.ClipBoardHelper
 import com.belcobtm.presentation.core.parser.DistanceParser
 import com.belcobtm.presentation.core.parser.DistanceParser.Companion.DISTANCE_INT_PARSER_QUALIFIER
@@ -21,7 +10,6 @@ import com.belcobtm.presentation.core.parser.PriceDoubleParser.Companion.PRICE_D
 import com.belcobtm.presentation.core.parser.StringParser
 import com.belcobtm.presentation.core.provider.string.ResourceStringProvider
 import com.belcobtm.presentation.core.provider.string.StringProvider
-import com.belcobtm.presentation.tools.validator.PhoneNumberValidator
 import com.belcobtm.presentation.features.HostViewModel
 import com.belcobtm.presentation.features.MainViewModel
 import com.belcobtm.presentation.features.atm.AtmViewModel
@@ -80,6 +68,18 @@ import com.belcobtm.presentation.features.wallet.trade.statistic.TradeUserStatis
 import com.belcobtm.presentation.features.wallet.transaction.details.TransactionDetailsViewModel
 import com.belcobtm.presentation.features.wallet.transactions.TransactionsViewModel
 import com.belcobtm.presentation.features.wallet.withdraw.WithdrawViewModel
+import com.belcobtm.presentation.tools.formatter.DoubleCurrencyPriceFormatter
+import com.belcobtm.presentation.tools.formatter.DoubleCurrencyPriceFormatter.Companion.DOUBLE_CURRENCY_PRICE_FORMATTER_QUALIFIER
+import com.belcobtm.presentation.tools.formatter.Formatter
+import com.belcobtm.presentation.tools.formatter.GoogleMapsDirectionQueryFormatter
+import com.belcobtm.presentation.tools.formatter.GoogleMapsDirectionQueryFormatter.Companion.GOOGLE_MAPS_DIRECTIONS_QUERY_FORMATTER
+import com.belcobtm.presentation.tools.formatter.IntCurrencyPriceFormatter
+import com.belcobtm.presentation.tools.formatter.IntCurrencyPriceFormatter.Companion.INT_CURRENCY_PRICE_FORMATTER_QUALIFIER
+import com.belcobtm.presentation.tools.formatter.MilesFormatter
+import com.belcobtm.presentation.tools.formatter.MilesFormatter.Companion.MILES_FORMATTER_QUALIFIER
+import com.belcobtm.presentation.tools.formatter.PhoneNumberFormatter
+import com.belcobtm.presentation.tools.formatter.TradeCountFormatter
+import com.belcobtm.presentation.tools.validator.PhoneNumberValidator
 import io.michaelrocks.libphonenumber.android.PhoneNumberUtil
 import org.koin.android.ext.koin.androidApplication
 import org.koin.androidx.viewmodel.dsl.viewModel
@@ -124,12 +124,12 @@ val viewModelModule = module {
     viewModel { AboutViewModel(get()) }
     viewModel {
         SecurityViewModel(
-            getPhoneUseCase = get(),
             phoneNumberFormatter = get(),
             setBioAuthStateAllowedUseCase = get(),
             bioAuthAllowedByUserUseCase = get(),
             bioAuthSupportedByPhoneUseCase = get(),
-            updatePhoneUseCase = get()
+            updatePhoneUseCase = get(),
+            prefsHelper = get()
         )
     }
     viewModel { WalletViewModel(get(), get(), get(), get()) }
