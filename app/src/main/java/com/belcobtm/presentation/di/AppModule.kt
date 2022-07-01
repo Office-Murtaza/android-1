@@ -25,10 +25,10 @@ import com.belcobtm.presentation.screens.bank_accounts.payments.PaymentBuyUsdcVi
 import com.belcobtm.presentation.screens.bank_accounts.payments.PaymentSellUsdcViewModel
 import com.belcobtm.presentation.screens.bank_accounts.payments.PaymentSummaryViewModel
 import com.belcobtm.presentation.screens.contacts.ContactListViewModel
-import com.belcobtm.presentation.screens.deals.DealsViewModel
-import com.belcobtm.presentation.screens.deals.atm.sell.AtmSellViewModel
-import com.belcobtm.presentation.screens.deals.staking.StakingViewModel
-import com.belcobtm.presentation.screens.deals.swap.SwapViewModel
+import com.belcobtm.presentation.screens.services.ServicesViewModel
+import com.belcobtm.presentation.screens.services.atm.sell.AtmSellViewModel
+import com.belcobtm.presentation.screens.services.staking.StakingViewModel
+import com.belcobtm.presentation.screens.services.swap.SwapViewModel
 import com.belcobtm.presentation.screens.notification.NotificationHelper
 import com.belcobtm.presentation.screens.pin.code.PinCodeViewModel
 import com.belcobtm.presentation.screens.settings.SettingsViewModel
@@ -190,7 +190,7 @@ val viewModelModule = module {
     viewModel { RecoverSeedViewModel(get(), get()) }
     viewModel { CreateSeedViewModel(get(), get(), get(), get()) }
     viewModel { SettingsViewModel() }
-    viewModel { DealsViewModel(get()) }
+    viewModel { ServicesViewModel(get()) }
     viewModel { PasswordViewModel(get(), get()) }
     viewModel { UnlinkViewModel(get(), get()) }
     viewModel { UpdatePasswordViewModel(get()) }

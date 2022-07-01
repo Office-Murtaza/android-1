@@ -3,6 +3,7 @@ package com.belcobtm.presentation.screens.wallet.trade.recall
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.widget.addTextChangedListener
 import androidx.navigation.fragment.navArgs
 import com.belcobtm.R
 import com.belcobtm.databinding.FragmentTradeRecallBinding
@@ -27,6 +28,10 @@ import org.koin.core.qualifier.named
 
 class TradeRecallFragment : BaseFragment<FragmentTradeRecallBinding>() {
 
+    private val viewModel: TradeRecallViewModel by viewModel {
+        parametersOf(args.coinCode)
+    }
+
     override var isMenuEnabled: Boolean = true
     override val isBackButtonEnabled: Boolean = true
     override val retryListener: View.OnClickListener = View.OnClickListener {
@@ -41,9 +46,6 @@ class TradeRecallFragment : BaseFragment<FragmentTradeRecallBinding>() {
     private val currencyFormatter: Formatter<Double> by inject(
         named(DoubleCurrencyPriceFormatter.DOUBLE_CURRENCY_PRICE_FORMATTER_QUALIFIER)
     )
-    private val viewModel: TradeRecallViewModel by viewModel {
-        parametersOf(args.coinCode)
-    }
     private val cryptoAmountTextWatcher by lazy {
         SafeDecimalEditTextWatcher { editable ->
             val cryptoAmount = editable.getDouble()
@@ -62,58 +64,70 @@ class TradeRecallFragment : BaseFragment<FragmentTradeRecallBinding>() {
                 viewModel.getMaxValue().toStringCoin()
             )
         }
+        amountCryptoEditText.addTextChangedListener {
+            viewModel.checkAmountInput(it)
+        }
         amountCryptoView.editText?.addTextChangedListener(cryptoAmountTextWatcher)
-        recallButtonView.setOnClickListener { viewModel.performTransaction() }
+        submitButton.setOnClickListener { viewModel.performTransaction() }
     }
 
     override fun FragmentTradeRecallBinding.initObservers() {
-        viewModel.initialLoadLiveData.listen(success = {
-            priceUsdView.text = currencyFormatter.format(viewModel.coinItem.priceUsd)
-            balanceCryptoView.text = getString(
-                R.string.text_text,
-                viewModel.coinItem.balanceCoin.toStringCoin(),
-                viewModel.coinItem.code
-            )
-            balanceUsdView.text = currencyFormatter.format(viewModel.coinItem.balanceUsd)
-            reservedCryptoView.text = getString(
-                R.string.text_text,
-                viewModel.coinItem.reservedBalanceCoin.toStringCoin(),
-                when (viewModel.getCoinCode().isEthRelatedCoinCode()) {
-                    true -> LocalCoinType.ETH.name
-                    false -> viewModel.getCoinCode()
+        with(viewModel) {
+            initialLoadLiveData.listen(success = {
+                initScreen()
+            })
+            fee.observe(viewLifecycleOwner) { fee ->
+                amountCryptoView.helperText = getString(
+                    R.string.transaction_helper_text_commission,
+                    fee.toStringCoin(),
+                    viewModel.getCoinCode()
+                )
+            }
+            transactionLiveData.listen(
+                success = {
+                    AlertHelper.showToastShort(
+                        requireContext(), R.string.trade_recall_screen_success_message
+                    )
+                    popBackStack()
                 }
             )
-            reservedUsdView.text = currencyFormatter.format(viewModel.coinItem.reservedBalanceUsd)
-        })
-        viewModel.fee.observe(viewLifecycleOwner) { fee ->
-            amountCryptoView.helperText = getString(
-                R.string.transaction_helper_text_commission,
-                fee.toStringCoin(),
-                viewModel.getCoinCode()
-            )
+            cryptoFieldState.observe(viewLifecycleOwner) { fieldState ->
+                when (fieldState) {
+                    InputFieldState.Valid -> amountCryptoView.clearError()
+                    InputFieldState.LessThanNeedError -> amountCryptoView.error =
+                        getString(R.string.trade_recall_screen_min_error)
+                    InputFieldState.MoreThanNeedError -> amountCryptoView.error =
+                        getString(R.string.trade_recall_screen_max_error)
+                    InputFieldState.NotEnoughETHError -> amountCryptoView.error =
+                        getString(R.string.trade_recall_screen_not_enough_eth)
+                }
+            }
+            amountCryptoView.editText?.actionDoneListener {
+                hideKeyboard()
+            }
+            isSubmitButtonEnabled.observe(viewLifecycleOwner) {
+                binding.submitButton.isEnabled = it
+            }
         }
-        viewModel.transactionLiveData.listen(
-            success = {
-                AlertHelper.showToastShort(
-                    requireContext(), R.string.trade_recall_screen_success_message
-                )
-                popBackStack()
+    }
+
+    private fun FragmentTradeRecallBinding.initScreen() {
+        priceUsdView.text = currencyFormatter.format(viewModel.coinItem.priceUsd)
+        balanceCryptoView.text = getString(
+            R.string.text_text,
+            viewModel.coinItem.balanceCoin.toStringCoin(),
+            viewModel.coinItem.code
+        )
+        balanceUsdView.text = currencyFormatter.format(viewModel.coinItem.balanceUsd)
+        reservedCryptoView.text = getString(
+            R.string.text_text,
+            viewModel.coinItem.reservedBalanceCoin.toStringCoin(),
+            when (viewModel.getCoinCode().isEthRelatedCoinCode()) {
+                true -> LocalCoinType.ETH.name
+                false -> viewModel.getCoinCode()
             }
         )
-        viewModel.cryptoFieldState.observe(viewLifecycleOwner) { fieldState ->
-            when (fieldState) {
-                InputFieldState.Valid -> amountCryptoView.clearError()
-                InputFieldState.LessThanNeedError -> amountCryptoView.error =
-                    getString(R.string.trade_recall_screen_min_error)
-                InputFieldState.MoreThanNeedError -> amountCryptoView.error =
-                    getString(R.string.trade_recall_screen_max_error)
-                InputFieldState.NotEnoughETHError -> amountCryptoView.error =
-                    getString(R.string.trade_recall_screen_not_enough_eth)
-            }
-        }
-        amountCryptoView.editText?.actionDoneListener {
-            hideKeyboard()
-        }
+        reservedUsdView.text = currencyFormatter.format(viewModel.coinItem.reservedBalanceUsd)
     }
 
     override fun FragmentTradeRecallBinding.initViews() {

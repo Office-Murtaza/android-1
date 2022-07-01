@@ -18,6 +18,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 class BankAccountsFragment : BaseFragment<FragmentBankAccountsBinding>() {
 
     private val viewModel by viewModel<BankAccountsViewModel>()
+
     private val adapter by lazy {
         MultiTypeAdapter().apply {
             registerDelegate(BankAccountItemDelegate(::onBankAccountClicked))

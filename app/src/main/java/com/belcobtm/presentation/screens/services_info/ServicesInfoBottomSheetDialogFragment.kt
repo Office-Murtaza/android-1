@@ -1,4 +1,4 @@
-package com.belcobtm.presentation.screens.services
+package com.belcobtm.presentation.screens.services_info
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -35,4 +35,5 @@ class ServicesInfoBottomSheetDialogFragment : BottomSheetDialogFragment() {
         binding.remainLimitValueView.text = currencyFormatter.format(service?.remainLimit ?: 0.0)
         return binding.root
     }
+
 }

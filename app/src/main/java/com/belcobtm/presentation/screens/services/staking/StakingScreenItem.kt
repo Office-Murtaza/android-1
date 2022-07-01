@@ -1,4 +1,4 @@
-package com.belcobtm.presentation.screens.deals.staking
+package com.belcobtm.presentation.screens.services.staking
 
 import com.belcobtm.data.rest.transaction.response.StakeDetailsStatus
 

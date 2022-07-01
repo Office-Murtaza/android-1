@@ -74,7 +74,7 @@
 
     <fragment
         android:id="@+id/staking_fragment"
-        android:name="com.belcobtm.presentation.screens.deals.staking.StakingFragment"
+        android:name="com.belcobtm.presentation.screens.services.staking.StakingFragment"
         android:label="StakingFragment"
         tools:layout="@layout/fragment_staking">
 
@@ -145,7 +145,7 @@
 
     <dialog
         android:id="@+id/service_info_dialog"
-        android:name="com.belcobtm.presentation.screens.services.ServicesInfoBottomSheetDialogFragment"
+        android:name="com.belcobtm.presentation.screens.services_info.ServicesInfoBottomSheetDialogFragment"
         android:label="Chat image dialog">
 
         <argument

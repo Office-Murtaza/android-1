@@ -72,7 +72,7 @@ class MyTradeViewHolder(
                     setTextColor(
                         ContextCompat.getColor(
                             context,
-                            R.color.trade_type_buy_trade_text_color
+                            R.color.secondaryGreen
                         )
                     )
                 } else {

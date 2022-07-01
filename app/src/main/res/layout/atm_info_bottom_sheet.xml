@@ -63,7 +63,7 @@
         tools:background="@drawable/trade_type_buy_background"
         tools:drawableStart="@drawable/ic_atm_type_buy_and_sell"
         tools:text="Buy &amp; Sell"
-        tools:textColor="@color/trade_type_buy_trade_text_color" />
+        tools:textColor="@color/secondaryGreen" />
 
     <TextView
         android:id="@+id/atm_distance"

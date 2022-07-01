@@ -14,64 +14,68 @@
             android:id="@+id/bank_accounts_recycle_view"
             android:layout_width="match_parent"
             android:layout_height="0dp"
+            android:layout_marginBottom="8dp"
             android:visibility="visible"
-            android:layout_marginBottom="15dp"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintBottom_toTopOf="@id/create_bank_account_button"
             app:layout_constraintTop_toTopOf="parent"
             tools:listitem="@layout/item_bank_account"
             tools:visibility="visible" />
 
-        <LinearLayout
-            android:id="@+id/no_bank_accounts_added_error"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:gravity="center"
-            android:orientation="vertical"
-            android:visibility="gone"
-            app:layout_constraintBottom_toTopOf="@id/create_bank_account_button"
+        <ImageView
+            android:id="@+id/noAccountsIcon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_about_info"
+            app:layout_constraintBottom_toTopOf="@id/noAccountsTitle"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:ignore="UseCompoundDrawables">
+            app:layout_constraintVertical_chainStyle="packed"
+            tools:ignore="ContentDescription" />
 
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="15dp"
-                android:src="@drawable/ic_about_info"
-                tools:ignore="ContentDescription" />
+        <TextView
+            android:id="@+id/noAccountsTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:gravity="center"
+            android:text="@string/bank_accounts_screen_no_accounts_added"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toTopOf="@id/create_bank_account_button"
+            app:layout_constraintTop_toBottomOf="@id/noAccountsIcon"
+            app:layout_constraintVertical_chainStyle="packed" />
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="20dp"
-                android:text="@string/bank_accounts_screen_no_accounts_added"
-                android:textAlignment="center"
-                android:textColor="@color/black"
-                android:textSize="16sp" />
-
-        </LinearLayout>
+        <androidx.constraintlayout.widget.Group
+            android:id="@+id/no_bank_accounts_added_error"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            app:constraint_referenced_ids="noAccountsIcon, noAccountsTitle"
+            tools:visibility="gone" />
 
         <ProgressBar
             android:id="@+id/progress_view"
             android:layout_width="wrap_content"
             android:layout_height="0dp"
             android:layout_gravity="center"
-            android:visibility="gone"
-            tools:visibility="visible"
             android:layout_marginBottom="15dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
+            android:visibility="gone"
             app:layout_constraintBottom_toTopOf="@id/create_bank_account_button"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:visibility="gone" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/create_bank_account_button"
             style="@style/Button.Primary"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="5dp"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginBottom="8dp"
             android:text="@string/bank_accounts_screen_create_button"
-            android:textColor="#ffffff"
             android:visibility="visible"
             app:layout_constraintBottom_toTopOf="@id/link_bank_account_button" />
 
@@ -80,70 +84,68 @@
             style="@style/Button.Primary"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="5dp"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginBottom="48dp"
             android:text="@string/bank_accounts_screen_link_button"
-            android:textColor="#ffffff"
             android:visibility="visible"
-            app:layout_constraintBottom_toTopOf="@id/disclaimer_text" />
+            app:layout_constraintBottom_toBottomOf="parent" />
 
         <TextView
             android:id="@+id/disclaimer_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="40dp"
             android:text="@string/bank_accounts_screen_bottom_disclaimer"
             android:textAlignment="center"
-            android:textSize="13sp"
-            app:layout_constraintBottom_toBottomOf="parent" />
+            android:textSize="12sp"
+            app:layout_constraintTop_toBottomOf="@id/link_bank_account_button"
+            tools:layout_editor_absoluteX="0dp" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/verification_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/black_opacity_70"
+        android:alpha=".89"
+        android:background="@color/black"
         android:visibility="gone"
         tools:visibility="gone">
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/verify_button"
-            style="@style/Button.Primary"
-            android:layout_width="0dp"
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/title_verification"
+            style="@style/Text.Head1"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="40dp"
-            android:layout_marginStart="40dp"
-            android:layout_marginTop="64dp"
-            android:layout_marginEnd="40dp"
-            android:text="@string/verification_dialog_button_text"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:gravity="center"
+            android:text="@string/verification_dialog_title"
+            app:layout_constraintBottom_toTopOf="@id/subtitle_verification"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_chainStyle="packed" />
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/subtitle_verification"
             style="@style/Text.Regular4"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="40dp"
-            android:layout_marginEnd="40dp"
-            android:layout_marginBottom="40dp"
+            android:layout_marginTop="16dp"
+            android:gravity="center"
             android:text="@string/verification_dialog_text"
-            android:textAlignment="center"
             app:layout_constraintBottom_toTopOf="@id/verify_button"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintTop_toBottomOf="@id/title_verification"
+            app:layout_constraintVertical_chainStyle="packed" />
 
-        <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/title_verification"
-            style="@style/Text.Head1"
-            android:layout_width="wrap_content"
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/verify_button"
+            style="@style/Button.Primary"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="12dp"
-            android:text="@string/verification_dialog_title"
-            app:layout_constraintBottom_toTopOf="@id/subtitle_verification"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            android:layout_marginHorizontal="40dp"
+            android:layout_marginTop="40dp"
+            android:text="@string/verification_dialog_button_text"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/subtitle_verification"
+            app:layout_constraintVertical_chainStyle="packed" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

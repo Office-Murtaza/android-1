@@ -1,4 +1,4 @@
-package com.belcobtm.presentation.screens.deals.atm.sell
+package com.belcobtm.presentation.screens.services.atm.sell
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

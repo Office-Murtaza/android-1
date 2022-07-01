@@ -132,7 +132,7 @@ class AtmFragment : BaseFragment<FragmentAtmBinding>(),
             )
             atmType.setTextColor(
                 ContextCompat.getColor(
-                    requireContext(), R.color.atm_type_buy_and_sell_text_color
+                    requireContext(), R.color.secondaryGreen
                 )
             )
             atmType.setDrawableStart(R.drawable.ic_atm_type_buy_and_sell)
@@ -143,7 +143,7 @@ class AtmFragment : BaseFragment<FragmentAtmBinding>(),
             )
             atmType.setTextColor(
                 ContextCompat.getColor(
-                    requireContext(), R.color.atm_type_buy_only_text_color
+                    requireContext(), R.color.colorPrimary
                 )
             )
             atmType.setDrawableStart(R.drawable.ic_atm_type_buy_only)

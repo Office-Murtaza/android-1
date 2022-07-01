@@ -25,7 +25,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:text="@string/scan_validation_text"
-                android:textColor="#e02d2d"
+                android:textColor="@color/mainRed"
                 android:visibility="gone" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -214,7 +214,9 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/messageView" />
+
         </androidx.appcompat.widget.LinearLayoutCompat>
+
     </ScrollView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

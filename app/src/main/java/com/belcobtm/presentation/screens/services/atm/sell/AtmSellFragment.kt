@@ -1,4 +1,4 @@
-package com.belcobtm.presentation.screens.deals.atm.sell
+package com.belcobtm.presentation.screens.services.atm.sell
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -13,7 +13,7 @@ import com.belcobtm.presentation.core.helper.AlertHelper
 import com.belcobtm.presentation.core.mvvm.LoadingData
 import com.belcobtm.presentation.core.ui.fragment.BaseFragment
 import com.belcobtm.presentation.core.views.listeners.SafeDecimalEditTextWatcher
-import com.belcobtm.presentation.screens.deals.swap.SwapFragment
+import com.belcobtm.presentation.screens.services.swap.SwapFragment
 import com.belcobtm.presentation.tools.extensions.getDouble
 import com.belcobtm.presentation.tools.extensions.resIcon
 import com.belcobtm.presentation.tools.extensions.setTextSilently

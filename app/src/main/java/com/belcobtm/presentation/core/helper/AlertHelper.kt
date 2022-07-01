@@ -4,7 +4,7 @@ import android.content.Context
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import com.belcobtm.domain.wallet.item.CoinDataItem
-import com.belcobtm.presentation.screens.deals.swap.adapter.CoinDialogAdapter
+import com.belcobtm.presentation.screens.services.swap.adapter.CoinDialogAdapter
 
 object AlertHelper {
     fun showToastShort(context: Context, resText: Int) =

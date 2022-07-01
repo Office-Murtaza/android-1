@@ -11,24 +11,24 @@
         android:layout_marginStart="@dimen/margin_main"
         android:layout_marginTop="@dimen/margin_x2"
         android:layout_marginEnd="@dimen/margin_main"
-        android:paddingBottom="@dimen/margin_large"
         android:background="@drawable/message_view_round_bg"
-        app:layout_constraintHeight_default="wrap"
         android:gravity="center_horizontal"
         android:orientation="vertical"
-        app:layout_constraintVertical_bias="0"
+        android:paddingBottom="@dimen/margin_large"
         app:layout_constraintBottom_toTopOf="@id/nextButton"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHeight_default="wrap"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0">
 
         <ImageView
             android:id="@+id/warning"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_main"
-            app:tint="@color/colorPrimary"
-            android:src="@drawable/ic_warning" />
+            android:src="@drawable/ic_warning"
+            app:tint="@color/colorPrimary" />
 
         <TextView
             android:layout_width="match_parent"
@@ -45,7 +45,8 @@
         style="@style/Button.Primary"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/margin_main"
+        android:layout_margin="16dp"
         android:text="@string/unlink_wallet_label"
         app:layout_constraintBottom_toBottomOf="parent" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

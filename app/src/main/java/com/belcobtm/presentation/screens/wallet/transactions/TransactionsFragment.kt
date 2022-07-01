@@ -202,13 +202,13 @@ class TransactionsFragment : BaseFragment<FragmentTransactionsBinding>() {
                     binding.changesView,
                     ContextCompat.getColorStateList(
                         binding.changesView.context,
-                        R.color.chart_changes_down
+                        R.color.mainRed
                     )
                 )
                 binding.changesView.setTextColor(
                     ContextCompat.getColor(
                         binding.changesView.context,
-                        R.color.chart_changes_down
+                        R.color.mainRed
                     )
                 )
             }
@@ -218,13 +218,13 @@ class TransactionsFragment : BaseFragment<FragmentTransactionsBinding>() {
                     binding.changesView,
                     ContextCompat.getColorStateList(
                         binding.changesView.context,
-                        R.color.chart_changes_up
+                        R.color.mainGreen
                     )
                 )
                 binding.changesView.setTextColor(
                     ContextCompat.getColor(
                         binding.changesView.context,
-                        R.color.chart_changes_up
+                        R.color.mainGreen
                     )
                 )
             }
@@ -249,7 +249,7 @@ class TransactionsFragment : BaseFragment<FragmentTransactionsBinding>() {
             resources.getString(
                 R.string.transaction_changes_percent,
                 String.format("%.2f", changes)
-            )
+            ).replace("-", "")
     }
 
     private fun FragmentTransactionsBinding.setChart(

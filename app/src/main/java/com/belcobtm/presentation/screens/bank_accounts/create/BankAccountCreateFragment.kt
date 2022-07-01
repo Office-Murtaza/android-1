@@ -45,68 +45,75 @@ class BankAccountCreateFragment : BaseFragment<FragmentBankAccountCreateBinding>
         FragmentBankAccountCreateBinding.inflate(inflater, container, false)
 
     override fun FragmentBankAccountCreateBinding.initViews() {
-        if (args.createBankAccountType != CreateBankAccountType.NONE) {
-            viewModel.selectedCreateBankAccountType = args.createBankAccountType
-        }
+        viewModel.selectedCreateBankAccountType = args.createBankAccountType
 
-        accountNumberView.showHelpText(getString(R.string.bank_account_field_account_no_helper_text))
-        routingNumberView.showHelpText(getString(R.string.bank_account_field_routing_no_helper_text))
+        setUpQuestionnaireViews()
+        setUsdcTermsTextView()
+    }
+
+    private fun FragmentBankAccountCreateBinding.setUpQuestionnaireViews() {
         ibanView.showHelpText(getString(R.string.bank_account_field_iban_helper_text))
         nameView.showHelpText(getString(R.string.bank_account_field_name_helper_text))
         countryView.showHelpText(getString(R.string.bank_account_field_country_helper_text))
-        provinceView.showHelpText(getString(R.string.bank_account_field_province_helper_text))
-        cityView.showHelpText(getString(R.string.bank_account_field_city_helper_text))
-        addressView.showHelpText(getString(R.string.bank_account_field_address_helper_text))
         zipCodeView.showHelpText(getString(R.string.bank_account_field_zip_code_helper_text))
         bankNameView.showHelpText(getString(R.string.bank_account_field_bank_name_helper_text))
         bankCountryView.showHelpText(getString(R.string.bank_account_field_bank_country_helper_text))
         bankCityView.showHelpText(getString(R.string.bank_account_field_bank_city_helper_text))
+
+        when (viewModel.selectedCreateBankAccountType) {
+            CreateBankAccountType.US -> setUpUsa()
+            CreateBankAccountType.NON_US_IBAN -> setUpNonUsa()
+            CreateBankAccountType.NON_US_NON_IBAN -> setUpNonUsaNonIban()
+        }
+    }
+
+    private fun FragmentBankAccountCreateBinding.setUpUsa() {
+        setToolbarTitle(getString(R.string.bank_account_select_type_screen_us_type))
+        accountNumberView.showHelpText(getString(R.string.bank_account_field_account_no_helper_text))
+        routingNumberEditText.hint = getString(R.string.bank_account_field_routing_no_hint_text)
+        routingNumberView.showHelpText(getString(R.string.bank_account_field_routing_no_helper_text))
+        ibanView.hide()
+        countryView.setText("US")
+        countryView.hide()
+        provinceView.showHelpText(getString(R.string.bank_account_field_province_helper_text))
+        cityView.showHelpText(getString(R.string.bank_account_field_city_helper_text))
+        addressView.showHelpText(getString(R.string.bank_account_field_address_helper_text))
+        bankCountryView.setText("US")
+        bankCountryView.hideHelpText()
+        bankCountryView.isEnabled = false
         bankAddressTitle.setTextColor(
             ContextCompat.getColor(
                 requireContext(),
-                R.color.black_text_color
+                R.color.disabled_text_color
             )
         )
+        bankNameView.hide()
+        bankCityView.hide()
+    }
 
-        when (viewModel.selectedCreateBankAccountType) {
-            CreateBankAccountType.US -> {
-                setToolbarTitle(getString(R.string.bank_account_select_type_screen_us_type))
-                ibanView.hide()
-                //  countryView.hide()
-                bankNameView.hide()
-                bankCityView.hide()
-                countryView.setText("US")
-                countryView.hideHelpText()
-                countryView.hide()
-                bankCountryView.setText("US")
-                bankCountryView.hideHelpText()
-                bankCountryView.isEnabled = false
+    private fun FragmentBankAccountCreateBinding.setUpNonUsa() {
+        setToolbarTitle(getString(R.string.bank_account_select_type_screen_non_us_iban_type))
+        accountNumberView.hide()
+        routingNumberView.hide()
+        provinceView.hide()
+        cityView.showHelpText(getString(R.string.bank_account_field_city_helper_text_not_usa))
+        addressView.showHelpText(getString(R.string.bank_account_field_address_helper_text_not_usa))
+        bankNameView.hide()
+    }
 
-                bankAddressTitle.setTextColor(
-                    ContextCompat.getColor(
-                        requireContext(),
-                        R.color.disabled_text_color
-                    )
-                )
-            }
-            CreateBankAccountType.NON_US_IBAN -> {
-                setToolbarTitle(getString(R.string.bank_account_select_type_screen_non_us_iban_type))
-                accountNumberView.hide()
-                routingNumberView.hide()
-                bankNameView.hide()
-            }
-            CreateBankAccountType.NON_US_NON_IBAN -> {
-                setToolbarTitle(getString(R.string.bank_account_select_type_screen_non_us_non_iban_type))
-                ibanView.hide()
-            }
-            else -> {
-            }
-        }
-        setUsdcTermsTextView()
+    private fun FragmentBankAccountCreateBinding.setUpNonUsaNonIban() {
+        setToolbarTitle(getString(R.string.bank_account_select_type_screen_non_us_non_iban_type))
+        accountNumberView.showHelpText(getString(R.string.bank_account_field_account_no_helper_text_non_iban))
+        routingNumberEditText.hint = getString(R.string.bank_account_field_routing_no_hint_text_non_iban)
+        routingNumberView.showHelpText(getString(R.string.bank_account_field_routing_no_helper_text_non_iban))
+        ibanView.hide()
+        provinceView.showHelpText(getString(R.string.bank_account_field_province_helper_text_non_iban))
+        cityView.showHelpText(getString(R.string.bank_account_field_city_helper_text_not_usa))
+        addressView.showHelpText(getString(R.string.bank_account_field_address_helper_text_not_usa))
     }
 
     private fun setUsdcTermsTextView() {
-        val mainText = getString(R.string.bank_create_usdc_terms_text)
+        val mainText = getString(R.string.bank_create_usdc_terms_text) + " "
         val clickableText = getString(R.string.bank_usdc_terms_clickable)
 
         binding.termsTextView.apply {
@@ -147,42 +154,18 @@ class BankAccountCreateFragment : BaseFragment<FragmentBankAccountCreateBinding>
             if (isValidFields()) {
                 viewModel.onCreateBankAccountSubmit(
                     BankAccountCreateDataItem(
-                        accountNumber = if (accountNumberView.getString()
-                                .isNotEmpty()
-                        ) accountNumberView.getString() else null,
-                        routingNumber = if (routingNumberView.getString()
-                                .isNotEmpty()
-                        ) routingNumberView.getString() else null,
-                        iban = if (ibanView.getString()
-                                .isNotEmpty()
-                        ) ibanView.getString() else null,
-                        name = if (nameView.getString()
-                                .isNotEmpty()
-                        ) nameView.getString() else null,
-                        country = if (countryView.getString()
-                                .isNotEmpty()
-                        ) countryView.getString() else null,
-                        province = if (provinceView.getString()
-                                .isNotEmpty()
-                        ) provinceView.getString() else null,
-                        city = if (cityView.getString()
-                                .isNotEmpty()
-                        ) cityView.getString() else null,
-                        address = if (addressView.getString()
-                                .isNotEmpty()
-                        ) addressView.getString() else null,
-                        zipCode = if (zipCodeView.getString()
-                                .isNotEmpty()
-                        ) zipCodeView.getString() else null,
-                        bankName = if (bankNameView.getString()
-                                .isNotEmpty()
-                        ) bankNameView.getString() else null,
-                        bankCountry = if (bankCountryView.getString()
-                                .isNotEmpty()
-                        ) bankCountryView.getString() else null,
-                        bankCity = if (bankCityView.getString()
-                                .isNotEmpty()
-                        ) bankCityView.getString() else null,
+                        accountNumber = accountNumberView.getString().ifEmpty { null },
+                        routingNumber = routingNumberView.getString().ifEmpty { null },
+                        iban = ibanView.getString().ifEmpty { null },
+                        name = nameView.getString().ifEmpty { null },
+                        country = countryView.getString().ifEmpty { null },
+                        province = provinceView.getString().ifEmpty { null },
+                        city = cityView.getString().ifEmpty { null },
+                        address = addressView.getString().ifEmpty { null },
+                        zipCode = zipCodeView.getString().ifEmpty { null },
+                        bankName = bankNameView.getString().ifEmpty { null },
+                        bankCountry = bankCountryView.getString().ifEmpty { null },
+                        bankCity = bankCityView.getString().ifEmpty { null },
                     )
                 )
 
@@ -283,6 +266,8 @@ class BankAccountCreateFragment : BaseFragment<FragmentBankAccountCreateBinding>
                         else -> showError(R.string.error_something_went_wrong)
                     }
                 }
+                else -> {
+                }
             }
         }
     }
@@ -333,7 +318,6 @@ class BankAccountCreateFragment : BaseFragment<FragmentBankAccountCreateBinding>
         val routingNumber = binding.validateRoutingNo()
         val accountNumber = binding.validateAccountNo()
 
-
         return bankCity
             && bankCountry
             && bankName
@@ -348,125 +332,119 @@ class BankAccountCreateFragment : BaseFragment<FragmentBankAccountCreateBinding>
             && accountNumber
     }
 
-    private fun FragmentBankAccountCreateBinding.validateAccountNo(): Boolean {
-        return if (accountNumberView.getString().isEmpty() && accountNumberView.isVisible) {
+    private fun FragmentBankAccountCreateBinding.validateAccountNo(): Boolean =
+        if (accountNumberView.getString().isEmpty() && accountNumberView.isVisible) {
             accountNumberView.showErrorText(getString(R.string.bank_account_field_account_no_error_text))
             false
         } else {
             accountNumberView.showHelpText(getString(R.string.bank_account_field_account_no_helper_text))
             true
         }
-    }
 
-    private fun FragmentBankAccountCreateBinding.validateRoutingNo(): Boolean {
-        return if (routingNumberView.getString().isEmpty() && routingNumberView.isVisible) {
-            routingNumberView.showErrorText(getString(R.string.bank_account_field_routing_no_error_text))
+    private fun FragmentBankAccountCreateBinding.validateRoutingNo(): Boolean =
+        if (routingNumberView.getString().isEmpty() && routingNumberView.isVisible) {
+            routingNumberView.showErrorText(
+                getString(
+                    if (viewModel.selectedCreateBankAccountType == CreateBankAccountType.US)
+                        R.string.bank_account_field_routing_no_error_text
+                    else R.string.bank_account_field_routing_no_error_text_non_iban
+                )
+            )
             false
         } else {
             routingNumberView.showHelpText(getString(R.string.bank_account_field_routing_no_helper_text))
             true
         }
-    }
 
-    private fun FragmentBankAccountCreateBinding.validateIban(): Boolean {
-        return if (ibanView.getString().isEmpty() && ibanView.isVisible) {
+    private fun FragmentBankAccountCreateBinding.validateIban(): Boolean =
+        if (ibanView.getString().isEmpty() && ibanView.isVisible) {
             ibanView.showErrorText(getString(R.string.bank_account_field_iban_error_text))
             false
         } else {
             ibanView.showHelpText(getString(R.string.bank_account_field_iban_helper_text))
             true
         }
-    }
 
-    private fun FragmentBankAccountCreateBinding.validateName(): Boolean {
-        return if (nameView.getString().isEmpty() && nameView.isVisible) {
+    private fun FragmentBankAccountCreateBinding.validateName(): Boolean =
+        if (nameView.getString().isEmpty() && nameView.isVisible) {
             nameView.showErrorText(getString(R.string.bank_account_field_name_error_text))
             false
         } else {
             nameView.showHelpText(getString(R.string.bank_account_field_name_helper_text))
             true
         }
-    }
 
-    private fun FragmentBankAccountCreateBinding.validateCountry(): Boolean {
-        return if (countryView.getString().isEmpty() && countryView.isVisible) {
+    private fun FragmentBankAccountCreateBinding.validateCountry(): Boolean =
+        if (countryView.getString().isEmpty() && countryView.isVisible) {
             countryView.showErrorText(getString(R.string.bank_account_field_country_error_text))
             false
         } else {
             countryView.showHelpText(getString(R.string.bank_account_field_country_helper_text))
             true
         }
-    }
 
-    private fun FragmentBankAccountCreateBinding.validateProvince(): Boolean {
-        return if (provinceView.getString().isEmpty() && provinceView.isVisible) {
+    private fun FragmentBankAccountCreateBinding.validateProvince(): Boolean =
+        if (provinceView.getString().isEmpty() && provinceView.isVisible) {
             provinceView.showErrorText(getString(R.string.bank_account_field_province_error_text))
             false
         } else {
             provinceView.showHelpText(getString(R.string.bank_account_field_province_helper_text))
             true
         }
-    }
 
-    private fun FragmentBankAccountCreateBinding.validateCity(): Boolean {
-        return if (cityView.getString().isEmpty() && cityView.isVisible) {
+    private fun FragmentBankAccountCreateBinding.validateCity(): Boolean =
+        if (cityView.getString().isEmpty() && cityView.isVisible) {
             cityView.showErrorText(getString(R.string.bank_account_field_city_error_text))
             false
         } else {
             cityView.showHelpText(getString(R.string.bank_account_field_city_helper_text))
             true
         }
-    }
 
-    private fun FragmentBankAccountCreateBinding.validateAddress(): Boolean {
-        return if (addressView.getString().isEmpty() && addressView.isVisible) {
+    private fun FragmentBankAccountCreateBinding.validateAddress(): Boolean =
+        if (addressView.getString().isEmpty() && addressView.isVisible) {
             addressView.showErrorText(getString(R.string.bank_account_field_address_error_text))
             false
         } else {
             addressView.showHelpText(getString(R.string.bank_account_field_address_helper_text))
             true
         }
-    }
 
-    private fun FragmentBankAccountCreateBinding.validateZipCode(): Boolean {
-        return if (zipCodeView.getString().isEmpty() && zipCodeView.isVisible) {
+    private fun FragmentBankAccountCreateBinding.validateZipCode(): Boolean =
+        if (zipCodeView.getString().isEmpty() && zipCodeView.isVisible) {
             zipCodeView.showErrorText(getString(R.string.bank_account_field_zip_code_error_text))
             false
         } else {
             zipCodeView.showHelpText(getString(R.string.bank_account_field_zip_code_helper_text))
             true
         }
-    }
 
-    private fun FragmentBankAccountCreateBinding.validateBankName(): Boolean {
-        return if (bankNameView.getString().isEmpty() && bankNameView.isVisible) {
+    private fun FragmentBankAccountCreateBinding.validateBankName(): Boolean =
+        if (bankNameView.getString().isEmpty() && bankNameView.isVisible) {
             bankNameView.showErrorText(getString(R.string.bank_account_field_bank_name_error_text))
             false
         } else {
             bankNameView.showHelpText(getString(R.string.bank_account_field_bank_name_helper_text))
             true
         }
-    }
 
-    private fun FragmentBankAccountCreateBinding.validateBankCountry(): Boolean {
-        return if (bankCountryView.getString().isEmpty() && bankCountryView.isVisible) {
+    private fun FragmentBankAccountCreateBinding.validateBankCountry(): Boolean =
+        if (bankCountryView.getString().isEmpty() && bankCountryView.isVisible) {
             bankCountryView.showErrorText(getString(R.string.bank_account_field_bank_country_error_text))
             false
         } else if (bankCountryView.isEnabled) {
             bankCountryView.showHelpText(getString(R.string.bank_account_field_country_helper_text))
             true
         } else true
-    }
 
-    private fun FragmentBankAccountCreateBinding.validateBankCity(): Boolean {
-        return if (bankCityView.getString().isEmpty() && bankCityView.isVisible) {
+    private fun FragmentBankAccountCreateBinding.validateBankCity(): Boolean =
+        if (bankCityView.getString().isEmpty() && bankCityView.isVisible) {
             bankCityView.showErrorText(getString(R.string.bank_account_field_bank_city_error_text))
             false
         } else {
             bankCityView.showHelpText(getString(R.string.bank_account_field_bank_city_helper_text))
             true
         }
-    }
 
     private fun TextInputLayout.showErrorText(message: String) {
         isErrorEnabled = true

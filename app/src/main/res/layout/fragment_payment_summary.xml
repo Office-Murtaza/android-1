@@ -145,12 +145,12 @@
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tvNetworkFeeValue"
             style="@style/Text.Regular3"
-            android:textStyle="normal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="2dp"
             android:textSize="14sp"
+            android:textStyle="normal"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tvNetworkFee"
             tools:text="0.0001 ETH" />
@@ -203,12 +203,12 @@
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tvPlatformFeeValue"
             style="@style/Text.Regular3"
-            android:textStyle="normal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="2dp"
             android:textSize="14sp"
+            android:textStyle="normal"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tvPlatformFee"
             tools:text="1% -> 15.25 USDC" />
@@ -237,12 +237,12 @@
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tvProcessingTimeValue"
             style="@style/Text.Regular3"
-            android:textStyle="normal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="2dp"
             android:layout_marginEnd="16dp"
             android:textSize="14sp"
+            android:textStyle="normal"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tvProcessingTime"
             tools:text="2-4 Days" />
@@ -641,6 +641,7 @@
             android:id="@+id/confirmButtonView"
             style="@style/Button.Primary"
             android:text="@string/confirm"
+            android:layout_margin="16dp"
             app:layout_constraintBottom_toTopOf="@id/cancelButtonView"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -654,7 +655,7 @@
             android:layout_marginBottom="@dimen/margin_x2"
             android:letterSpacing="0.135"
             android:text="@string/payment_details_cancel"
-            android:textColor="@color/blue_color"
+            android:textColor="@color/colorPrimary"
             android:textSize="14sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -662,6 +663,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/confirmButtonView" />
 
-
     </androidx.constraintlayout.widget.ConstraintLayout>
+
 </ScrollView>

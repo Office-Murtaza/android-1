@@ -44,7 +44,6 @@
         <item name="android:layout_height">wrap_content</item>
         <item name="android:padding">16dp</item>
         <item name="android:textColor">@android:color/white</item>
-        <item name="android:layout_margin">16dp</item>
     </style>
 
     <style name="Button.Secondary" parent="Widget.MaterialComponents.Button.OutlinedButton">
@@ -98,7 +97,7 @@
         <item name="android:textSize">11sp</item>
         <item name="android:textStyle">bold</item>
         <item name="android:background">@drawable/bg_status_complete</item>
-        <item name="android:textColor">@color/colorStatusComplete</item>
+        <item name="android:textColor">@color/mainGreen</item>
     </style>
 
     <style name="Text.Bold1">
@@ -273,26 +272,25 @@
         <item name="android:lines">1</item>
     </style>
 
-    <style name="BankAccountScreen"/>
+    <style name="BankAccountScreen" />
+
     <style name="BankAccountScreen.EditTextContainer" parent="@style/TextInputLayoutOutline">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_marginStart">16dp</item>
-        <item name="android:layout_marginTop">12dp</item>
-        <item name="android:layout_marginEnd">16dp</item>
+        <item name="android:layout_marginTop">8dp</item>
     </style>
+
     <style name="BankAccountScreen.EditText">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:textColorHint">@color/light_gray</item>
         <item name="android:lines">1</item>
     </style>
+
     <style name="BankAccountScreen.CategoryContainer">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_marginStart">16dp</item>
-        <item name="android:layout_marginTop">24dp</item>
-        <item name="android:layout_marginEnd">16dp</item>
+        <item name="android:layout_marginTop">16dp</item>
     </style>
 
 
@@ -307,16 +305,16 @@
     <style name="TransactionsScreen.FloatingActionButtonChild" parent="Widget.MaterialComponents.Chip.Choice">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="fab_colorNormal">@color/blue_color</item>
-        <item name="fab_colorPressed">@color/blue_color</item>
+        <item name="fab_colorNormal">@color/colorPrimary</item>
+        <item name="fab_colorPressed">@color/colorPrimary</item>
         <item name="fab_size">mini</item>
     </style>
 
     <style name="TradeScreen.FloatingActionButtonChild" parent="Widget.MaterialComponents.FloatingActionButton">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="fab_colorNormal">@color/blue_color</item>
-        <item name="fab_colorPressed">@color/blue_color</item>
+        <item name="fab_colorNormal">@color/colorPrimary</item>
+        <item name="fab_colorPressed">@color/colorPrimary</item>
         <item name="fab_size">normal</item>
     </style>
 

@@ -11,7 +11,8 @@ import com.belcobtm.presentation.core.mvvm.LoadingData
 class BankAccountCreateViewModel(
     private val createBankAccountUseCase: CreateBankAccountUseCase
 ) : ViewModel() {
-    var selectedCreateBankAccountType: CreateBankAccountType? = null
+
+    var selectedCreateBankAccountType: CreateBankAccountType = CreateBankAccountType.US
     val createBankAccountLiveData = MutableLiveData<LoadingData<BankAccountCreateResponseDataItem>>()
 
     fun onCreateBankAccountSubmit(dataItem: BankAccountCreateDataItem) {
@@ -22,6 +23,5 @@ class BankAccountCreateViewModel(
             onError = { createBankAccountLiveData.value = LoadingData.Error(it) }
         )
     }
-
 
 }

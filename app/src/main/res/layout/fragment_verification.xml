@@ -210,12 +210,10 @@
             style="@style/Button.Primary"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="50dp"
+            android:layout_margin="16dp"
             android:text="@string/ok"
             android:textColor="#ffffff"
-            app:layout_constraintBottom_toBottomOf="parent"
-
-            />
+            app:layout_constraintBottom_toBottomOf="parent" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
@@ -261,16 +259,12 @@
             style="@style/Button.Primary"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="50dp"
+            android:layout_margin="16dp"
             android:text="@string/ok"
             android:textColor="#ffffff"
             android:visibility="visible"
-            app:layout_constraintBottom_toBottomOf="parent"
-
-            />
-
+            app:layout_constraintBottom_toBottomOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

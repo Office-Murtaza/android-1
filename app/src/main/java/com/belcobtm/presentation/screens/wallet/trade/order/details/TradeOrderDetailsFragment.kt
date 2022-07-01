@@ -166,7 +166,7 @@ class TradeOrderDetailsFragment : BaseFragment<FragmentTradeOrderDetailsBinding>
                     setTextColor(
                         ContextCompat.getColor(
                             binding.root.context,
-                            R.color.trade_type_buy_trade_text_color
+                            R.color.secondaryGreen
                         )
                     )
                 } else {

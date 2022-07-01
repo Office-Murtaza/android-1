@@ -112,7 +112,7 @@
         android:gravity="center"
         android:letterSpacing="0.125"
         android:text="@string/bank_account_details_button_text"
-        android:textColor="@color/blue_color"
+        android:textColor="@color/colorPrimary"
         android:textStyle="bold"
         app:drawableEndCompat="@drawable/ic_chevron_down"
         app:layout_constraintBottom_toTopOf="@id/buy_button"

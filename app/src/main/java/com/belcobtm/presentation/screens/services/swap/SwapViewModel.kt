@@ -1,4 +1,4 @@
-package com.belcobtm.presentation.screens.deals.swap
+package com.belcobtm.presentation.screens.services.swap
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

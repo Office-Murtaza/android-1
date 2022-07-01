@@ -8,6 +8,7 @@ import com.belcobtm.domain.bank_account.type.CreateBankAccountType
 import com.belcobtm.presentation.core.ui.fragment.BaseFragment
 
 class BankAccountSelectTypeFragment : BaseFragment<FragmentBankAccountSelectTypeBinding>() {
+
     override fun createBinding(
         inflater: LayoutInflater,
         container: ViewGroup?
@@ -34,11 +35,4 @@ class BankAccountSelectTypeFragment : BaseFragment<FragmentBankAccountSelectType
         }
     }
 
-    override fun FragmentBankAccountSelectTypeBinding.initListeners() {
-
-    }
-
-    override fun FragmentBankAccountSelectTypeBinding.initObservers() {
-
-    }
 }

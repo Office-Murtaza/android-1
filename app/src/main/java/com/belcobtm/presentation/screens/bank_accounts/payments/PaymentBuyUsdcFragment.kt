@@ -3,6 +3,7 @@ package com.belcobtm.presentation.screens.bank_accounts.payments
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
+import androidx.core.view.isInvisible
 import androidx.navigation.fragment.navArgs
 import com.belcobtm.R
 import com.belcobtm.databinding.FragmentPaymentBuyUsdcBinding
@@ -13,7 +14,6 @@ import com.belcobtm.domain.bank_account.type.BankAccountType
 import com.belcobtm.presentation.core.ui.fragment.BaseFragment
 import com.belcobtm.presentation.tools.extensions.formatBalanceValue
 import com.belcobtm.presentation.tools.extensions.getString
-import com.belcobtm.presentation.tools.extensions.invisible
 import com.belcobtm.presentation.tools.extensions.onTextChanged
 import com.belcobtm.presentation.tools.extensions.setText
 import com.belcobtm.presentation.tools.extensions.show
@@ -47,7 +47,7 @@ class PaymentBuyUsdcFragment : BaseFragment<FragmentPaymentBuyUsdcBinding>() {
             tvMax.show()
         } ?: run {
             tvBalanceValue.text = "-"
-            tvMax.invisible()
+            tvMax.isInvisible = true
         }
 
 

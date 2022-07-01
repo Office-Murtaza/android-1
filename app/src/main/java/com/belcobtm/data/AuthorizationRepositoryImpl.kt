@@ -1,6 +1,5 @@
 package com.belcobtm.data
 
-import android.util.Log
 import com.belcobtm.data.disk.database.account.AccountDao
 import com.belcobtm.data.disk.database.account.AccountEntity
 import com.belcobtm.data.disk.database.wallet.WalletDao

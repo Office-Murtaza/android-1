@@ -3,6 +3,7 @@ package com.belcobtm.presentation.screens.wallet.trade.reserve
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.widget.addTextChangedListener
 import androidx.navigation.fragment.navArgs
 import com.belcobtm.R
 import com.belcobtm.databinding.FragmentTradeReserveBinding
@@ -26,6 +27,10 @@ import org.koin.core.qualifier.named
 
 class TradeReserveFragment : BaseFragment<FragmentTradeReserveBinding>() {
 
+    private val viewModel: TradeReserveViewModel by viewModel {
+        parametersOf(args.coinCode)
+    }
+
     override val isBackButtonEnabled: Boolean = true
     override var isMenuEnabled: Boolean = true
     override val retryListener: View.OnClickListener = View.OnClickListener {
@@ -37,9 +42,6 @@ class TradeReserveFragment : BaseFragment<FragmentTradeReserveBinding>() {
         }
     }
     private val args by navArgs<TradeReserveFragmentArgs>()
-    private val viewModel: TradeReserveViewModel by viewModel {
-        parametersOf(args.coinCode)
-    }
     private val currencyFormatter: Formatter<Double> by inject(
         named(DoubleCurrencyPriceFormatter.DOUBLE_CURRENCY_PRICE_FORMATTER_QUALIFIER)
     )
@@ -58,74 +60,86 @@ class TradeReserveFragment : BaseFragment<FragmentTradeReserveBinding>() {
         amountCryptoView.editText?.actionDoneListener {
             hideKeyboard()
         }
+        amountCryptoEditText.addTextChangedListener {
+            viewModel.checkAmountInput(it)
+        }
         amountCryptoView.editText?.addTextChangedListener(cryptoAmountTextWatcher)
-        reserveButtonView.setOnClickListener { viewModel.createTransaction() }
+        submitButton.setOnClickListener { viewModel.createTransaction() }
     }
 
     override fun FragmentTradeReserveBinding.initObservers() {
-        viewModel.initialLoadLiveData.listen(success = {
-            priceUsdView.text = currencyFormatter.format(viewModel.coinItem.priceUsd)
-            balanceCryptoView.text = getString(
-                R.string.text_text,
-                viewModel.coinItem.balanceCoin.toStringCoin(),
-                viewModel.coinItem.code
-            )
-            balanceUsdView.text = currencyFormatter.format(viewModel.coinItem.balanceUsd)
-            reservedCryptoView.text = getString(
-                R.string.text_text,
-                viewModel.coinItem.reservedBalanceCoin.toStringCoin(),
-                viewModel.coinItem.code
-            )
-            reservedUsdView.text = currencyFormatter.format(viewModel.coinItem.reservedBalanceUsd)
-        })
-        viewModel.fee.observe(viewLifecycleOwner) { fee ->
-            amountCryptoView.helperText = getString(
-                R.string.transaction_helper_text_commission,
-                fee.toStringCoin(),
-                when {
-                    viewModel.getCoinCode().isEthRelatedCoinCode() -> LocalCoinType.ETH.name
-                    viewModel.getCoinCode() == LocalCoinType.XRP.name -> getString(
-                        R.string.xrp_additional_transaction_comission, LocalCoinType.XRP.name
+        with(viewModel) {
+            initialLoadLiveData.listen(success = {
+                initScreen()
+            })
+            fee.observe(viewLifecycleOwner) { fee ->
+                amountCryptoView.helperText = getString(
+                    R.string.transaction_helper_text_commission,
+                    fee.toStringCoin(),
+                    when {
+                        viewModel.getCoinCode().isEthRelatedCoinCode() -> LocalCoinType.ETH.name
+                        viewModel.getCoinCode() == LocalCoinType.XRP.name -> getString(
+                            R.string.xrp_additional_transaction_comission, LocalCoinType.XRP.name
+                        )
+                        else -> viewModel.getCoinCode()
+                    }
+                )
+            }
+            cryptoAmountError.observe(viewLifecycleOwner, amountCryptoView::setError)
+            amount.observe(viewLifecycleOwner) {
+                binding.amountUsdView.text = if (it.amount > 0) {
+                    currencyFormatter.format(it.amount * viewModel.coinItem.priceUsd)
+                } else {
+                    currencyFormatter.format(0.0)
+                }
+                if (it.amount == amountCryptoView.editText?.text?.getDouble()) {
+                    return@observe
+                }
+                val formattedCoin = it.amount.toStringCoin()
+                amountCryptoView.editText?.setTextSilently(
+                    cryptoAmountTextWatcher,
+                    formattedCoin, formattedCoin.length
+                )
+            }
+            createTransactionLiveData.listen(
+                success = {
+                    AlertHelper.showToastShort(
+                        requireContext(), R.string.trade_reserve_screen_success_message
                     )
-                    else -> viewModel.getCoinCode()
+                    popBackStack()
                 }
             )
+            cryptoFieldState.observe(viewLifecycleOwner) { fieldState ->
+                when (fieldState) {
+                    InputFieldState.Valid -> amountCryptoView.clearError()
+                    InputFieldState.LessThanNeedError -> amountCryptoView.error =
+                        getString(R.string.trade_reserve_screen_min_error)
+                    InputFieldState.MoreThanNeedError -> amountCryptoView.error =
+                        getString(R.string.trade_reserve_screen_max_error)
+                    InputFieldState.NotEnoughETHError -> amountCryptoView.error =
+                        getString(R.string.trade_reserve_screen_not_enough_eth)
+                }
+            }
+            isSubmitButtonEnabled.observe(viewLifecycleOwner) {
+                binding.submitButton.isEnabled = it
+            }
         }
-        viewModel.cryptoAmountError.observe(viewLifecycleOwner, amountCryptoView::setError)
-        viewModel.amount.observe(viewLifecycleOwner) {
-            binding.amountUsdView.text = if (it.amount > 0) {
-                currencyFormatter.format(it.amount * viewModel.coinItem.priceUsd)
-            } else {
-                currencyFormatter.format(0.0)
-            }
-            if (it.amount == amountCryptoView.editText?.text?.getDouble()) {
-                return@observe
-            }
-            val formattedCoin = it.amount.toStringCoin()
-            amountCryptoView.editText?.setTextSilently(
-                cryptoAmountTextWatcher,
-                formattedCoin, formattedCoin.length
-            )
-        }
-        viewModel.createTransactionLiveData.listen(
-            success = {
-                AlertHelper.showToastShort(
-                    requireContext(), R.string.trade_reserve_screen_success_message
-                )
-                popBackStack()
-            }
+    }
+
+    private fun FragmentTradeReserveBinding.initScreen() {
+        priceUsdView.text = currencyFormatter.format(viewModel.coinItem.priceUsd)
+        balanceCryptoView.text = getString(
+            R.string.text_text,
+            viewModel.coinItem.balanceCoin.toStringCoin(),
+            viewModel.coinItem.code
         )
-        viewModel.cryptoFieldState.observe(viewLifecycleOwner) { fieldState ->
-            when (fieldState) {
-                InputFieldState.Valid -> amountCryptoView.clearError()
-                InputFieldState.LessThanNeedError -> amountCryptoView.error =
-                    getString(R.string.trade_reserve_screen_min_error)
-                InputFieldState.MoreThanNeedError -> amountCryptoView.error =
-                    getString(R.string.trade_reserve_screen_max_error)
-                InputFieldState.NotEnoughETHError -> amountCryptoView.error =
-                    getString(R.string.trade_reserve_screen_not_enough_eth)
-            }
-        }
+        balanceUsdView.text = currencyFormatter.format(viewModel.coinItem.balanceUsd)
+        reservedCryptoView.text = getString(
+            R.string.text_text,
+            viewModel.coinItem.reservedBalanceCoin.toStringCoin(),
+            viewModel.coinItem.code
+        )
+        reservedUsdView.text = currencyFormatter.format(viewModel.coinItem.reservedBalanceUsd)
     }
 
     override fun FragmentTradeReserveBinding.initViews() {
@@ -139,4 +153,3 @@ class TradeReserveFragment : BaseFragment<FragmentTradeReserveBinding>() {
         FragmentTradeReserveBinding.inflate(inflater, container, false)
 
 }
-

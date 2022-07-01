@@ -1,4 +1,4 @@
-package com.belcobtm.presentation.screens.deals.staking
+package com.belcobtm.presentation.screens.services.staking
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

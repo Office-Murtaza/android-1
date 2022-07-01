@@ -10,9 +10,10 @@
         android:id="@+id/image_view"
         android:layout_width="@dimen/margin_large"
         android:layout_height="@dimen/margin_large"
+        android:layout_marginVertical="22dp"
         android:layout_marginStart="@dimen/margin_main"
         android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/divider"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:tint="@color/colorPrimary"
@@ -26,26 +27,24 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/margin_main"
-        android:layout_marginTop="@dimen/margin_main"
         android:layout_marginEnd="@dimen/margin_main"
-        android:layout_marginBottom="@dimen/margin_main"
-        tools:text="@string/support_label"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/divider"
         app:layout_constraintEnd_toStartOf="@id/value_text"
         app:layout_constraintStart_toEndOf="@id/image_view"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="@string/support_label" />
 
     <TextView
         android:id="@+id/value_text"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="@dimen/margin_main"
-        tools:text="5"
-        android:textStyle="bold"
         android:textColor="@color/gray_text_color"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@id/divider"
         app:layout_constraintEnd_toStartOf="@id/iv_chevron"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="5" />
 
     <ImageView
         android:id="@+id/iv_chevron"
@@ -55,7 +54,7 @@
         android:contentDescription="@null"
         android:src="@drawable/ic_chevron_right"
         android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/divider"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -67,8 +66,15 @@
         android:clickable="false"
         android:longClickable="false"
         android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/divider"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <View
+        android:id="@+id/divider"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/divider_size"
+        android:background="@color/thin_divider"
+        app:layout_constraintBottom_toBottomOf="parent" />
 
 </merge>

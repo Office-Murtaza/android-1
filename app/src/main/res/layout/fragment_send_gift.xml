@@ -243,9 +243,7 @@
             style="@style/Button.Secondary.NoOutlined"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/margin_main"
-            android:layout_marginStart="@dimen/margin_main"
-            android:layout_marginEnd="@dimen/margin_main"
+            android:layout_margin="16dp"
             android:text="@string/limit_details_button_title"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/send_gift" />

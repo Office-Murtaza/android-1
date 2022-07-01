@@ -108,7 +108,7 @@ class PaymentSummaryFragment : BaseFragment<FragmentPaymentSummaryBinding>() {
                 paymentTypeChip.setTextColor(
                     ContextCompat.getColor(
                         requireContext(),
-                        R.color.buy_text_color
+                        R.color.secondaryGreen
                     )
                 )
                 exchangeValueFromView.text =
@@ -125,7 +125,7 @@ class PaymentSummaryFragment : BaseFragment<FragmentPaymentSummaryBinding>() {
                 paymentTypeChip.setTextColor(
                     ContextCompat.getColor(
                         requireContext(),
-                        R.color.sell_text_color
+                        R.color.secondaryRed
                     )
                 )
                 exchangeValueToView.text =

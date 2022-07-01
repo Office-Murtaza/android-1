@@ -59,10 +59,13 @@
         android:name="com.belcobtm.presentation.screens.bank_accounts.create.BankAccountCreateFragment"
         android:label="BankAccountCreateFragment"
         tools:layout="@layout/fragment_bank_account_create">
+
         <argument
             android:name="createBankAccountType"
-            android:defaultValue="NONE"
-            app:argType="com.belcobtm.domain.bank_account.type.CreateBankAccountType" />
+            android:defaultValue="US"
+            app:argType="com.belcobtm.domain.bank_account.type.CreateBankAccountType"
+            app:nullable="false" />
+
     </fragment>
 
     <fragment

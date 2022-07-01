@@ -130,7 +130,7 @@
     <string name="wallet">Wallet</string>
 
     <!-- Buy/Sell Screen-->
-    <string name="verification_dialog_text">Please verify yourself to get full access to our services</string>
+    <string name="verification_dialog_text">Please verify yourself to get full access\nto our services</string>
     <string name="verification_dialog_title">Buy/Sell USDC</string>
     <string name="verification_dialog_button_text">VERIFY</string>
     <string name="bank_accounts_screen_title">Bank Accounts</string>
@@ -151,12 +151,16 @@
     <string name="bank_account_field_iban_error_text">IBAN is required</string>
 
     <string name="bank_account_field_account_no_hint_text">Account No</string>
-    <string name="bank_account_field_account_no_helper_text">e.g. 1001001234</string>
+    <string name="bank_account_field_account_no_helper_text">e.g. 12340010</string>
+    <string name="bank_account_field_account_no_helper_text_non_iban">e.g. 1001001234</string>
     <string name="bank_account_field_account_no_error_text">Account No is required</string>
 
-    <string name="bank_account_field_routing_no_hint_text">Routing no (SWIFT/BIC)</string>
-    <string name="bank_account_field_routing_no_helper_text">e.g. WESTGBAV</string>
-    <string name="bank_account_field_routing_no_error_text">Routing no (SWIFT/BIC) is required</string>
+    <string name="bank_account_field_routing_no_hint_text">Routing No</string>
+    <string name="bank_account_field_routing_no_helper_text">e.g. 121000248</string>
+    <string name="bank_account_field_routing_no_error_text">Routing No is required</string>
+    <string name="bank_account_field_routing_no_hint_text_non_iban">Routing No (SWIFT/BIC)</string>
+    <string name="bank_account_field_routing_no_helper_text_non_iban">e.g. WESTGBAV</string>
+    <string name="bank_account_field_routing_no_error_text_non_iban">Routing No (SWIFT/BIC) is required</string>
 
     <string name="bank_account_field_name_hint_text">Name</string>
     <string name="bank_account_field_name_helper_text">e.g. Satoshi Nakamoto</string>
@@ -168,14 +172,17 @@
 
     <string name="bank_account_field_province_hint_text">Province</string>
     <string name="bank_account_field_province_helper_text">e.g. MA</string>
+    <string name="bank_account_field_province_helper_text_non_iban">e.g. AA</string>
     <string name="bank_account_field_province_error_text">Province is required</string>
 
     <string name="bank_account_field_city_hint_text">City</string>
-    <string name="bank_account_field_city_helper_text">e.g. Kiev</string>
+    <string name="bank_account_field_city_helper_text">e.g. Boston</string>
+    <string name="bank_account_field_city_helper_text_not_usa">e.g. Kyiv</string>
     <string name="bank_account_field_city_error_text">City is required</string>
 
     <string name="bank_account_field_address_hint_text">Address</string>
     <string name="bank_account_field_address_helper_text">e.g. 100 Money Street</string>
+    <string name="bank_account_field_address_helper_text_not_usa">e.g. 32 Khreschatyk St</string>
     <string name="bank_account_field_address_error_text">Address is required</string>
 
     <string name="bank_account_field_zip_code_hint_text">ZIP Code</string>
@@ -191,16 +198,16 @@
     <string name="bank_account_field_bank_country_error_text">Country is required</string>
 
     <string name="bank_account_field_bank_city_hint_text">City</string>
-    <string name="bank_account_field_bank_city_helper_text">e.g. Kiev</string>
+    <string name="bank_account_field_bank_city_helper_text">e.g. Kyiv</string>
     <string name="bank_account_field_bank_city_error_text">City is required</string>
 
-    <string name="bank_create_usdc_terms_text">By click \"Submit\" you agree to the </string>
+    <string name="bank_create_usdc_terms_text">By click \"Submit\" you agree to the</string>
 
     <string name="bank_ach_title">ACH Authorization</string>
     <string name="bank_ach_main_text">I (we), %1$s authorize Belco Wallet LLC(COMPANY) to electronically debit my (our) Depository account for a one-time electronic funds transfer (EFT) payment for the amount and on the date identified. I (we) also authorize COMPANY to debit or credit my (our) account to correct any errors or process any refunds, if necessary.</string>
     <string name="bank_ach_usdc_terms_text">By clicking \"Confirm\" I consent to sign this authorization\nelectronically and I agree with ACH authorization rules and\n</string>
 
-    <string name="bank_usdc_terms_clickable">Circle USDC Terms</string>
+    <string name="bank_usdc_terms_clickable"> Circle USDC Terms</string>
 
     <string name="step_1_usd_payment">Step 1: USD Payment</string>
     <string name="step_2_usd_payment">Step 2: USD Payment</string>

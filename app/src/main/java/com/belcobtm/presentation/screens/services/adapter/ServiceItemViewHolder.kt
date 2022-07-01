@@ -1,15 +1,15 @@
-package com.belcobtm.presentation.screens.deals.delegate
+package com.belcobtm.presentation.screens.services.adapter
 
 import androidx.core.content.ContextCompat
+import androidx.core.view.isInvisible
+import androidx.core.view.isVisible
 import com.belcobtm.R
-import com.belcobtm.databinding.ItemDealsBinding
+import com.belcobtm.databinding.ItemServiceBinding
 import com.belcobtm.domain.service.ServiceItem
 import com.belcobtm.presentation.core.adapter.holder.MultiTypeViewHolder
-import com.belcobtm.presentation.tools.extensions.invisible
-import com.belcobtm.presentation.tools.extensions.show
 
-class DealsItemViewHolder(
-    private val binding: ItemDealsBinding,
+class ServiceItemViewHolder(
+    private val binding: ItemServiceBinding,
     onServiceClicked: (ServiceItem) -> Unit,
     onVerifyClicked: () -> Unit,
 ) : MultiTypeViewHolder<ServiceItem>(binding.root) {
@@ -48,15 +48,10 @@ class DealsItemViewHolder(
                 android.graphics.PorterDuff.Mode.SRC_IN
             )
 
-            if (!model.locationEnabled) {
-                binding.locationError.show()
-            }
-            if (!model.verificationEnabled) {
-                binding.locationError.invisible()
-                binding.verificationError.show()
-            }
+            binding.locationError.isVisible = model.locationEnabled.not()
+            binding.locationError.isInvisible = model.verificationEnabled
+            binding.verificationError.isVisible = model.verificationEnabled.not()
         }
-
 
     }
 

@@ -1,4 +1,4 @@
-package com.belcobtm.presentation.screens.deals.swap
+package com.belcobtm.presentation.screens.services.swap
 
 import android.Manifest
 import android.view.LayoutInflater

@@ -271,10 +271,10 @@
     <com.google.android.material.button.MaterialButton
         android:id="@+id/submitButtonView"
         style="@style/Button.Primary"
+        android:layout_margin="16dp"
         android:text="@string/submit"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tvPlatformFeeLabel" />
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

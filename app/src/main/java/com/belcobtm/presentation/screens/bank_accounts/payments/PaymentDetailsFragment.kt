@@ -78,7 +78,7 @@ class PaymentDetailsFragment : BaseFragment<FragmentPaymentDetailsBinding>() {
                 paymentTypeChip.setTextColor(
                     ContextCompat.getColor(
                         requireContext(),
-                        R.color.buy_text_color
+                        R.color.secondaryGreen
                     )
                 )
                 amountFirstValueView.text = getString(R.string.usd_value_format, payment.usdAmount)
@@ -122,7 +122,7 @@ class PaymentDetailsFragment : BaseFragment<FragmentPaymentDetailsBinding>() {
                 paymentTypeChip.setTextColor(
                     ContextCompat.getColor(
                         requireContext(),
-                        R.color.sell_text_color
+                        R.color.secondaryRed
                     )
                 )
                 amountSecondValueView.text = getString(R.string.usd_value_format, payment.usdAmount)

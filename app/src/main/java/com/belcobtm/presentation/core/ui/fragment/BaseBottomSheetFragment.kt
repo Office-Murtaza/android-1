@@ -5,14 +5,12 @@ import android.os.Bundle
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
+import androidx.core.view.isInvisible
+import androidx.core.view.isVisible
 import androidx.lifecycle.LiveData
 import com.belcobtm.R
 import com.belcobtm.databinding.IncludeErrorScreenBinding
 import com.belcobtm.domain.Failure
-import com.belcobtm.presentation.tools.extensions.hide
-import com.belcobtm.presentation.tools.extensions.invisible
-import com.belcobtm.presentation.tools.extensions.show
-import com.belcobtm.presentation.tools.extensions.toggle
 import com.belcobtm.presentation.core.mvvm.LoadingData
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
@@ -54,15 +52,9 @@ abstract class BaseBottomSheetFragment : BottomSheetDialogFragment() {
         updateContentContainer(isContentVisible = true)
     }
 
-    protected open fun showError(resMessage: Int) {
-        contentView.show()
-        progressView.hide()
-        showToast(resMessage)
-    }
-
     protected open fun showError(message: String) {
-        contentView.show()
-        progressView.hide()
+        contentView.isVisible = true
+        progressView.isVisible = false
         showToast(message)
     }
 
@@ -122,8 +114,9 @@ abstract class BaseBottomSheetFragment : BottomSheetDialogFragment() {
         isProgressVisible: Boolean = false,
         isErrorVisible: Boolean = false
     ) {
-        if (isContentVisible) contentView.toggle(true) else contentView.invisible()
-        progressView.toggle(isProgressVisible)
-        errorBinding.errorContainerView.toggle(isErrorVisible)
+        contentView.isInvisible = isContentVisible.not()
+        progressView.isVisible = isProgressVisible
+        errorBinding.errorContainerView.isVisible = isErrorVisible
     }
+
 }

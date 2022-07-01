@@ -1,4 +1,4 @@
-package com.belcobtm.presentation.screens.deals
+package com.belcobtm.presentation.screens.services
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -11,21 +11,22 @@ import com.belcobtm.domain.service.ServiceInfoProvider
 import com.belcobtm.domain.service.ServiceItem
 import com.belcobtm.presentation.core.adapter.MultiTypeAdapter
 import com.belcobtm.presentation.core.ui.fragment.BaseFragment
-import com.belcobtm.presentation.screens.deals.delegate.DealsItemDelegate
+import com.belcobtm.presentation.screens.services.adapter.ServicesItemDelegate
 import kotlinx.coroutines.Dispatchers
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class DealsFragment : BaseFragment<FragmentDealsBinding>() {
+class ServicesFragment : BaseFragment<FragmentDealsBinding>() {
+
     override var isMenuEnabled: Boolean = true
 
     private val availabilityProvider by inject<ServiceInfoProvider>()
 
-    private val viewModel by viewModel<DealsViewModel>()
+    private val viewModel by viewModel<ServicesViewModel>()
 
     private val adapter by lazy {
         MultiTypeAdapter().apply {
-            registerDelegate(DealsItemDelegate(::onServiceClicked, ::onVerifyClicked))
+            registerDelegate(ServicesItemDelegate(::onServiceClicked, ::onVerifyClicked))
         }
     }
 
@@ -55,22 +56,21 @@ class DealsFragment : BaseFragment<FragmentDealsBinding>() {
     private fun onServiceClicked(item: ServiceItem) {
         when (item.serviceType) {
             ServiceType.TRANSFER ->
-                navigate(DealsFragmentDirections.toContactListFragment())
+                navigate(ServicesFragmentDirections.toContactListFragment())
             ServiceType.TRADE ->
-                navigate(DealsFragmentDirections.toTradeContainerFragment())
+                navigate(ServicesFragmentDirections.toTradeContainerFragment())
             ServiceType.SWAP ->
-                navigate(DealsFragmentDirections.toSwapFragment())
+                navigate(ServicesFragmentDirections.toSwapFragment())
             ServiceType.STAKING ->
-                navigate(DealsFragmentDirections.toStakingFragment())
+                navigate(ServicesFragmentDirections.toStakingFragment())
             ServiceType.ATM_SELL ->
-                navigate(DealsFragmentDirections.toAtmSellFragment())
+                navigate(ServicesFragmentDirections.toAtmSellFragment())
         }
     }
 
     private fun onVerifyClicked() {
-        navigate(DealsFragmentDirections.toVerificationInfoFragment())
+        navigate(ServicesFragmentDirections.toVerificationInfoFragment())
     }
-
 
     override fun createBinding(
         inflater: LayoutInflater,

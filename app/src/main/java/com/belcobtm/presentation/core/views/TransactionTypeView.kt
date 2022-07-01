@@ -89,7 +89,7 @@ class TransactionTypeView @JvmOverloads constructor(
             TransactionType.ATM_SELL,
             TransactionType.RECEIVE_SWAP,
             TransactionType.RECALL,
-            TransactionType.WITHDRAW_STAKE -> R.color.color_status_1
+            TransactionType.WITHDRAW_STAKE -> R.color.secondaryGreen
             TransactionType.WITHDRAW,
             TransactionType.SEND_TRANSFER,
             TransactionType.ATM_BUY,
@@ -98,8 +98,8 @@ class TransactionTypeView @JvmOverloads constructor(
             TransactionType.CREATE_STAKE -> R.color.color_status_2
             TransactionType.MOVE,
             TransactionType.SELF,
-            TransactionType.CANCEL_STAKE -> R.color.color_status_3
-            else -> R.color.color_status_1
+            TransactionType.CANCEL_STAKE -> R.color.colorPrimary
+            else -> R.color.secondaryGreen
         }
         mainColor = ContextCompat.getColor(context, mainColorRes)
         text = resources.getString(textRes)

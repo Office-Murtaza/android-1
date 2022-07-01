@@ -41,7 +41,7 @@
             android:layout_marginStart="4dp"
             android:maxLines="1"
             android:text="@string/verification_selfie_help_text_2"
-            android:textColor="@color/transaction_green"
+            android:textColor="@color/mainGreen"
             android:textSize="16sp"
 
             />

@@ -48,14 +48,14 @@ class TransactionsAdapter(
                 resTextColor = R.color.colorStatusPending
             }
             TransactionStatusType.COMPLETE -> {
-                resTextColor = R.color.colorStatusComplete
+                resTextColor = R.color.mainGreen
                 resBackground = R.drawable.bg_status_complete
                 resText = R.string.transaction_status_complete
             }
             TransactionStatusType.FAIL -> {
                 resText = R.string.transaction_status_fail
                 resBackground = R.drawable.bg_status_fail
-                resTextColor = R.color.colorStatusFail
+                resTextColor = R.color.mainRed
             }
             else -> {
                 resText = R.string.transaction_status_unknown

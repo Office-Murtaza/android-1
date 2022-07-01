@@ -58,7 +58,7 @@ class OpenOrdersViewHolder(
                 binding.tradeType.setDrawableStart(R.drawable.ic_trade_type_buy)
                 binding.tradeType.setText(R.string.trade_type_buy_label)
                 binding.tradeType.setTextColor(
-                    ContextCompat.getColor(binding.root.context, R.color.trade_type_buy_trade_text_color)
+                    ContextCompat.getColor(binding.root.context, R.color.secondaryGreen)
                 )
             } else {
                 binding.tradeType.setBackgroundResource(R.drawable.trade_type_sell_background)

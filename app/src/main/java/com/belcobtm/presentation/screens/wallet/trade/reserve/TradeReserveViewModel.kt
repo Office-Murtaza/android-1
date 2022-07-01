@@ -1,5 +1,6 @@
 package com.belcobtm.presentation.screens.wallet.trade.reserve
 
+import android.text.Editable
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -71,6 +72,9 @@ class TradeReserveViewModel(
     val cryptoAmountError: LiveData<String?>
         get() = _cryptoAmountError
 
+    private val _isSubmitButtonEnabled = MutableLiveData<Boolean>()
+    val isSubmitButtonEnabled: LiveData<Boolean> = _isSubmitButtonEnabled
+
     private var etheriumCoinDataItem: CoinDataItem? = null
     private lateinit var coinDataItem: CoinDataItem
     lateinit var coinItem: CoinScreenItem
@@ -99,8 +103,6 @@ class TradeReserveViewModel(
                         if (coinItem.isEthRelatedCoin()) {
                             // for CATM amount calculation we need ETH coin
                             fetchEtherium()
-                        } else {
-                            _initialLoadLiveData.value = LoadingData.Success(Unit)
                         }
                     }, onError = {
                         _initialLoadLiveData.value = LoadingData.Error(it)
@@ -108,6 +110,7 @@ class TradeReserveViewModel(
             }, onError = {
                 _initialLoadLiveData.value = LoadingData.Error(it)
             })
+            _initialLoadLiveData.value = LoadingData.Success(Unit)
         }, onError = {
             _initialLoadLiveData.value = LoadingData.Error(it)
         })
@@ -150,7 +153,9 @@ class TradeReserveViewModel(
                                 _createTransactionLiveData.value = LoadingData.DismissProgress()
                             }
                         },
-                        onError = { _createTransactionLiveData.value = LoadingData.Error(it) }
+                        onError = { error ->
+                            _createTransactionLiveData.value = LoadingData.Error(error)
+                        }
                     )
                 }
             } else {
@@ -271,7 +276,6 @@ class TradeReserveViewModel(
             params = LocalCoinType.ETH.name,
             onSuccess = {
                 etheriumCoinDataItem = it
-                _initialLoadLiveData.value = LoadingData.Success(Unit)
             },
             onError = { _initialLoadLiveData.value = LoadingData.Error(it) }
         )
@@ -290,6 +294,10 @@ class TradeReserveViewModel(
     private fun isSufficientEth(): Boolean {
         val ethBalance = etheriumCoinDataItem?.balanceCoin ?: 0.0
         return !coinDataItem.isEthRelatedCoin() || ethBalance >= (transactionPlanItem?.txFee ?: 0.0)
+    }
+
+    fun checkAmountInput(editable: Editable?) {
+        _isSubmitButtonEnabled.value = editable.isNullOrEmpty().not()
     }
 
 }

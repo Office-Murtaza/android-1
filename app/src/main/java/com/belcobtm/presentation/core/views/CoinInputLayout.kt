@@ -16,12 +16,11 @@ import androidx.annotation.DrawableRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
+import androidx.core.view.isInvisible
 import com.belcobtm.R
 import com.belcobtm.databinding.ViewCoinInputLayoutBinding
 import com.belcobtm.presentation.tools.extensions.actionDoneListener
-import com.belcobtm.presentation.tools.extensions.invisible
 import com.belcobtm.presentation.tools.extensions.setDrawableEnd
-import com.belcobtm.presentation.tools.extensions.show
 import com.belcobtm.presentation.tools.extensions.toggle
 
 class CoinInputLayout @JvmOverloads constructor(
@@ -99,13 +98,8 @@ class CoinInputLayout @JvmOverloads constructor(
     }
 
     fun setMaxVisible(visible: Boolean) {
-        if (visible) {
-            binding.tvMax.isEnabled = true
-            binding.tvMax.show()
-        } else {
-            binding.tvMax.isEnabled = false
-            binding.tvMax.invisible()
-        }
+        binding.tvMax.isEnabled = visible
+        binding.tvMax.isInvisible = visible.not()
     }
 
     fun setHelperText2(charSequence: CharSequence?) {

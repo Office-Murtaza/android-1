@@ -1,5 +1,6 @@
 package com.belcobtm.presentation.screens.wallet.trade.recall
 
+import android.text.Editable
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -11,11 +12,11 @@ import com.belcobtm.domain.wallet.interactor.GetCoinByCodeUseCase
 import com.belcobtm.domain.wallet.item.CoinDataItem
 import com.belcobtm.domain.wallet.item.isEthRelatedCoin
 import com.belcobtm.presentation.core.coin.CoinCodeProvider
-import com.belcobtm.presentation.tools.extensions.withScale
 import com.belcobtm.presentation.core.item.CoinScreenItem
 import com.belcobtm.presentation.core.item.mapToScreenItem
 import com.belcobtm.presentation.core.mvvm.LoadingData
 import com.belcobtm.presentation.screens.wallet.trade.reserve.InputFieldState
+import com.belcobtm.presentation.tools.extensions.withScale
 
 class TradeRecallViewModel(
     private val coinCode: String,
@@ -40,6 +41,9 @@ class TradeRecallViewModel(
     val fee: LiveData<Double>
         get() = _fee
 
+    private val _isSubmitButtonEnabled = MutableLiveData<Boolean>()
+    val isSubmitButtonEnabled: LiveData<Boolean> = _isSubmitButtonEnabled
+
     private var etheriumCoinDataItem: CoinDataItem? = null
     private lateinit var coinDataItem: CoinDataItem
     lateinit var coinItem: CoinScreenItem
@@ -62,12 +66,11 @@ class TradeRecallViewModel(
                 if (coinItem.isEthRelatedCoin()) {
                     // for CATM amount calculation we need ETH coin
                     fetchEtherium()
-                } else {
-                    _initialLoadLiveData.value = LoadingData.Success(Unit)
                 }
             }, onError = {
                 _initialLoadLiveData.value = LoadingData.Error(it)
             })
+            _initialLoadLiveData.value = LoadingData.Success(Unit)
         }, onError = {
             _initialLoadLiveData.value = LoadingData.Error(it)
         })
@@ -132,9 +135,13 @@ class TradeRecallViewModel(
             params = LocalCoinType.ETH.name,
             onSuccess = {
                 etheriumCoinDataItem = it
-                _initialLoadLiveData.value = LoadingData.Success(Unit)
             },
             onError = { _initialLoadLiveData.value = LoadingData.Error(it) }
         )
     }
+
+    fun checkAmountInput(editable: Editable?) {
+        _isSubmitButtonEnabled.value = editable.isNullOrEmpty().not()
+    }
+
 }
