@@ -4,7 +4,11 @@ import com.belcobtm.domain.wallet.item.BalanceDataItem
 import com.belcobtm.domain.wallet.item.CoinDataItem
 
 data class BalanceResponse(
-    val availableCoins: List<String>, // the same format as coin inside CoinResponse
+    // coins available for user according to the region.
+    // values have the same format as coin inside CoinResponse
+    val availableCoins: List<String>,
+    // coins enabled by user in settings.
+    // for create/recover it always equals initial coins set
     val coins: List<CoinResponse>,
     val totalBalance: Double
 )

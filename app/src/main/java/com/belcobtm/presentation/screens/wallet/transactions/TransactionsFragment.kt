@@ -28,7 +28,8 @@ import com.belcobtm.presentation.tools.extensions.hide
 import com.belcobtm.presentation.tools.extensions.setDrawableStart
 import com.belcobtm.presentation.tools.extensions.toStringCoin
 import com.belcobtm.presentation.tools.extensions.toggle
-import com.belcobtm.presentation.tools.formatter.DoubleCurrencyPriceFormatter
+import com.belcobtm.presentation.tools.formatter.CryptoPriceFormatter
+import com.belcobtm.presentation.tools.formatter.CurrencyPriceFormatter
 import com.belcobtm.presentation.tools.formatter.Formatter
 import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
@@ -60,7 +61,10 @@ class TransactionsFragment : BaseFragment<FragmentTransactionsBinding>() {
         viewModel.updateData()
     }
     private val currencyFormatter: Formatter<Double> by inject(
-        named(DoubleCurrencyPriceFormatter.DOUBLE_CURRENCY_PRICE_FORMATTER_QUALIFIER)
+        named(CurrencyPriceFormatter.CURRENCY_PRICE_FORMATTER_QUALIFIER)
+    )
+    private val cryptoPriceFormatter: Formatter<Double> by inject(
+        named(CryptoPriceFormatter.CRYPTO_PRICE_FORMATTER_QUALIFIER)
     )
 
     override fun createBinding(
@@ -165,7 +169,7 @@ class TransactionsFragment : BaseFragment<FragmentTransactionsBinding>() {
         })
         viewModel.detailsLiveData.observe(viewLifecycleOwner) {
             //important download fee
-            priceUsdView.text = currencyFormatter.format(it.priceUsd)
+            priceUsdView.text = cryptoPriceFormatter.format(it.priceUsd)
             balanceCryptoView.text =
                 getString(R.string.text_text, it.balance.toStringCoin(), viewModel.coinCode)
             balanceUsdView.text = currencyFormatter.format(it.balance * it.priceUsd)

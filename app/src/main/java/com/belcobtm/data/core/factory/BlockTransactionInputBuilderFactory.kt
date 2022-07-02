@@ -32,7 +32,7 @@ class BlockTransactionInputBuilderFactory(
     ): Bitcoin.SigningInput.Builder {
         val trustWalletCoin = fromCoin.trustWalletType
         val hdWallet = HDWallet(prefsHelper.apiSeed, "")
-        val fromAddress = daoAccount.getItem(fromCoin.name).publicKey
+        val fromAddress = daoAccount.getAccountByName(fromCoin.name).publicKey
 
         if (fromAddress == toAddress) {
             throw Failure.MessageError(stringProvider.getString(R.string.addresses_match_singing_error))

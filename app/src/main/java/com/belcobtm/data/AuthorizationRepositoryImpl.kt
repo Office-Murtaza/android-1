@@ -30,7 +30,7 @@ import java.util.Locale
 class AuthorizationRepositoryImpl(
     private val prefHelper: SharedPreferencesHelper,
     private val apiService: AuthApiService,
-    private val daoAccount: AccountDao,
+    private val accountDao: AccountDao,
     private val walletDao: WalletDao,
     private val serviceRepository: ServiceRepository,
     private val locationProvider: LocationProvider
@@ -52,7 +52,7 @@ class AuthorizationRepositoryImpl(
     override fun clearAppData() {
         prefHelper.clearData()
         CoroutineScope(Dispatchers.IO).launch {
-            daoAccount.clearTable()
+            accountDao.clearTable()
             walletDao.clear()
         }
     }
@@ -155,9 +155,8 @@ class AuthorizationRepositoryImpl(
         with((response as Either.Right).b) {
             serviceRepository.updateServices(services)
             walletDao.updateBalance(balance)
-
             val accountList = createAccountEntityList(temporaryCoinMap, balance)
-            daoAccount.insertItemList(accountList)
+            accountDao.insertItemList(accountList)
 
             prefHelper.firebaseToken = firebaseToken
             prefHelper.accessToken = accessToken
@@ -176,22 +175,38 @@ class AuthorizationRepositoryImpl(
         }
     } ?: response as Either.Left
 
+    private fun createAccountEntityList(
+        temporaryCoinMap: Map<LocalCoinType, Pair<String, String>>,
+        balance: BalanceResponse
+    ): List<AccountEntity> {
+        val entityList: MutableList<AccountEntity> = mutableListOf()
+        val enabledCoins = balance.coins.map { it.coin }
+        temporaryCoinMap.forEach { (localCoinType, value) ->
+            val coin = localCoinType.name
+            val publicKey: String = value.first
+            val privateKey: String = value.second
+            entityList.add(
+                AccountEntity(
+                    coinName = coin,
+                    publicKey = publicKey,
+                    privateKey = privateKey,
+                    isAvailable = balance.availableCoins.contains(coin),
+                    isEnabled = enabledCoins.contains(coin)
+                )
+            )
+        }
+        return entityList
+    }
+
     override suspend fun authorize(): Either<Failure, Unit> {
         val response = apiService.authorizeByRefreshToken(prefHelper.refreshToken)
         return response.takeIf { it.isRight }?.let {
             val body = (response as Either.Right).b
             walletDao.updateBalance(body.balance)
-            updateAccountEntityList(body.balance)
+            accountDao.updateAccountEntityList(body.balance)
             prefHelper.processAuthResponse(body)
             Either.Right(Unit)
         } ?: response as Either.Left
-    }
-
-    private suspend fun updateAccountEntityList(balance: BalanceResponse) {
-        val balanceCoins = balance.coins.map { it.coin }
-        balance.availableCoins.forEach {
-            daoAccount.updateIsEnabledByName(it, balanceCoins.contains(it))
-        }
     }
 
     override fun getAuthorizePin(): String = prefHelper.userPin
@@ -231,29 +246,6 @@ class AuthorizationRepositoryImpl(
             else -> coinType.trustWalletType.deriveAddress(privateKey)
         }
         return Pair(publicKey, Numeric.toHexStringNoPrefix(privateKey.data()))
-    }
-
-    private fun createAccountEntityList(
-        temporaryCoinMap: Map<LocalCoinType, Pair<String, String>>,
-        balance: BalanceResponse
-    ): List<AccountEntity> {
-        val entityList: MutableList<AccountEntity> = mutableListOf()
-        val balanceCoins = balance.coins.map { it.coin }
-        temporaryCoinMap.forEach { (localCoinType, value) ->
-            val publicKey: String = value.first
-            val privateKey: String = value.second
-            balance.availableCoins.find { it == localCoinType.name }?.let {
-                entityList.add(
-                    AccountEntity(
-                        localCoinType.name,
-                        publicKey,
-                        privateKey,
-                        balanceCoins.contains(it)
-                    )
-                )
-            }
-        }
-        return entityList
     }
 
     override suspend fun checkPass(userId: String, password: String): Either<Failure, Boolean> {

@@ -111,7 +111,7 @@ class SwapViewModel(
     fun fetchInitialData() {
         viewModelScope.launch {
             _initLoadingData.value = LoadingData.Loading(Unit)
-            val allCoins = accountDao.getItemList().orEmpty()
+            val allCoins = accountDao.getAvailableAccounts().orEmpty()
                 .filter(AccountEntity::isEnabled)
                 .associateBy { it.type.name }
             getCoinListUseCase(

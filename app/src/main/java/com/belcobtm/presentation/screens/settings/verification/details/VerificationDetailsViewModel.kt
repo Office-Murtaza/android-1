@@ -59,22 +59,32 @@ class VerificationDetailsViewModel(
                 onSuccess = {
                     verificationDetails = it
                     getVerificationStatus(it)
-                    it.identityVerification?.let { identityResponse ->
-                        identityStateData.value = LoadingData.Success(
-                            createVerificationIdentityState(identityResponse)
-                        )
-                    }
-                    it.documentVerification?.let { documentResponse ->
-                        documentStateData.value = LoadingData.Success(
-                            createVerificationDocumentState(
-                                documentResponse,
+                    when(verificationStatus) {
+                        VerificationStatus.VERIFIED,
+                        VerificationStatus.PENDING -> {
+                            detailsStateData.value = LoadingData.Success(
+                                getVerificationDetailsState()
                             )
-                        )
+                        }
+                        VerificationStatus.UNVERIFIED -> {
+                            it.identityVerification?.let { identityResponse ->
+                                identityStateData.value = LoadingData.Success(
+                                    createVerificationIdentityState(identityResponse)
+                                )
+                            }
+                            it.documentVerification?.let { documentResponse ->
+                                documentStateData.value = LoadingData.Success(
+                                    createVerificationDocumentState(
+                                        documentResponse,
+                                    )
+                                )
+                            }
+                            selectedCountry = it.selectedCountry
+                            detailsStateData.value = LoadingData.Success(
+                                getVerificationDetailsState()
+                            )
+                        }
                     }
-                    selectedCountry = it.selectedCountry
-                    detailsStateData.value = LoadingData.Success(
-                        getVerificationDetailsState()
-                    )
                 },
                 onError = {
                     detailsStateData.value = LoadingData.Error(it)
@@ -84,6 +94,22 @@ class VerificationDetailsViewModel(
             detailsStateData.value = LoadingData.Success(
                 getVerificationDetailsState()
             )
+        }
+    }
+
+    private fun getVerificationStatus(data: VerificationDetailsDataItem) {
+        if (data.selectedCountry == null) {
+            currentStep = VerificationStep.COUNTRY_VERIFICATION_STEP
+            verificationStatus = VerificationStatus.UNVERIFIED
+        } else {
+            selectedCountry = data.selectedCountry
+            if (data.identityVerification != null && data.identityVerification.recordStatus == RecordStatus.MATCH) {
+                data.documentVerification?.let { checkSuccessOrPending(it) }
+                currentStep = VerificationStep.DOCUMENT_VERIFICATION_STEP
+            } else {
+                verificationStatus = VerificationStatus.UNVERIFIED
+                currentStep = VerificationStep.IDENTITY_VERIFICATION_STEP
+            }
         }
     }
 
@@ -155,13 +181,7 @@ class VerificationDetailsViewModel(
                     documentStateData.value = LoadingData.Success(
                         createVerificationDocumentState(it)
                     )
-                    if (it.recordStatus == RecordStatus.MATCH) {
-                        verificationStatus = VerificationStatus.VERIFIED
-                        preferences.userStatus = verificationStatus.stringValue
-                    } else if (it.transactionId == null) {
-                        verificationStatus = VerificationStatus.PENDING
-                    }
-
+                    checkSuccessOrPending(it)
                     detailsStateData.value = LoadingData.Success(
                         getVerificationDetailsState()
                     )
@@ -173,18 +193,17 @@ class VerificationDetailsViewModel(
         }
     }
 
-    private fun getVerificationStatus(verificationDetails: VerificationDetailsDataItem) {
-        if (verificationDetails.selectedCountry == null)
-            currentStep = VerificationStep.COUNTRY_VERIFICATION_STEP
-        else {
-            selectedCountry = verificationDetails.selectedCountry
-            currentStep =
-                if (verificationDetails.identityVerification != null && verificationDetails.identityVerification.recordStatus == RecordStatus.MATCH)
-                    VerificationStep.DOCUMENT_VERIFICATION_STEP
-                else
-                    VerificationStep.IDENTITY_VERIFICATION_STEP
+    private fun checkSuccessOrPending(data: VerificationDocumentResponseDataItem) {
+        when {
+            data.transactionId == null -> {
+                verificationStatus = VerificationStatus.PENDING
+                preferences.userStatus = verificationStatus.stringValue
+            }
+            data.recordStatus == RecordStatus.MATCH -> {
+                verificationStatus = VerificationStatus.VERIFIED
+                preferences.userStatus = verificationStatus.stringValue
+            }
         }
-        verificationStatus = VerificationStatus.UNVERIFIED
     }
 
     private fun getCountryStepIcon(step: VerificationStep): Int = when (step) {

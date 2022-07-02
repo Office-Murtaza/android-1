@@ -124,7 +124,7 @@ class SendGiftViewModel(
     fun fetchInitialData(phoneNumber: String) {
         viewModelScope.launch {
             _initialLoadingData.value = LoadingData.Loading(Unit)
-            val allCoins = accountDao.getItemList().orEmpty()
+            val allCoins = accountDao.getAvailableAccounts().orEmpty()
             if (allCoins.isNotEmpty()) {
                 getCoinListUseCase(
                     params = Unit,

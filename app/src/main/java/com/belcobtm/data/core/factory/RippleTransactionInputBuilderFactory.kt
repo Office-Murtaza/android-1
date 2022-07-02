@@ -25,7 +25,7 @@ class RippleTransactionInputBuilderFactory(
         fromCoinAmount: Double,
         fromTransactionPlan: TransactionPlanItem
     ): Ripple.SigningInput.Builder {
-        val coinEntity = accountDao.getItem(fromCoin.name)
+        val coinEntity = accountDao.getAccountByName(fromCoin.name)
         val privateKey = PrivateKey(coinEntity.privateKey.toHexByteArray())
         if (coinEntity.publicKey == toAddress) {
             throw Failure.MessageError(stringProvider.getString(R.string.addresses_match_singing_error))

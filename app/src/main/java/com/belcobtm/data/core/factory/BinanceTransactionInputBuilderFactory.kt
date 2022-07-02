@@ -27,7 +27,7 @@ class BinanceTransactionInputBuilderFactory(
         fromCoinAmount: Double,
         fromTransactionPlan: TransactionPlanItem
     ): Binance.SigningInput.Builder {
-        val coinEntity = accountDao.getItem(fromCoin.name)
+        val coinEntity = accountDao.getAccountByName(fromCoin.name)
         val privateKey = PrivateKey(coinEntity.privateKey.toHexByteArray())
         val fromAddress = privateKey.getPublicKeySecp256k1(true)
 

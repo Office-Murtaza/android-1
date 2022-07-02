@@ -2,6 +2,7 @@ package com.belcobtm.data.rest.interceptor
 
 import android.util.Log
 import com.belcobtm.data.core.UnlinkHandler
+import com.belcobtm.data.disk.database.account.AccountDao
 import com.belcobtm.data.disk.database.wallet.WalletDao
 import com.belcobtm.data.disk.shared.preferences.SharedPreferencesHelper
 import com.belcobtm.data.rest.authorization.AuthApi
@@ -17,6 +18,7 @@ import java.net.HttpURLConnection
 class TokenAuthenticator(
     private val authApi: AuthApi,
     private val walletDao: WalletDao,
+    private val accountDao: AccountDao,
     private val prefsHelper: SharedPreferencesHelper,
     private val unlinkHandler: UnlinkHandler,
     private val webSocketManager: WebSocketManager
@@ -34,6 +36,7 @@ class TokenAuthenticator(
                 val updatedToken = responseBody.accessToken
                 runBlocking {
                     walletDao.updateBalance(responseBody.balance)
+                    accountDao.updateAccountEntityList(responseBody.balance)
                 }
                 prefsHelper.processAuthResponse(responseBody) // update session
                 runBlocking {

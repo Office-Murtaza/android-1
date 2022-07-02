@@ -94,7 +94,7 @@ class AtmSellViewModel(
         viewModelScope.launch {
             _initLoadingData.value = LoadingData.Loading()
             val allCoins = withContext(Dispatchers.IO) {
-                accountDao.getItemList().orEmpty()
+                accountDao.getAvailableAccounts().orEmpty()
                     .filter(AccountEntity::isEnabled)
                     .associateBy { it.type.name }
             }

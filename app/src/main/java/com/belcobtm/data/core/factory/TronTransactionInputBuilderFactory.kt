@@ -26,7 +26,7 @@ class TronTransactionInputBuilderFactory(
         fromCoinAmount: Double,
         fromTransactionPlan: TransactionPlanItem
     ): Tron.SigningInput.Builder {
-        val accountEntity = accountDao.getItem(fromCoin.name)
+        val accountEntity = accountDao.getAccountByName(fromCoin.name)
         val rawData = fromTransactionPlan.blockHeader?.raw_data
         val cryptoToSubcoin = fromCoinAmount.toStringCoin().toDouble() * CoinType.TRON.unit()
         val fromAddress = accountEntity.publicKey

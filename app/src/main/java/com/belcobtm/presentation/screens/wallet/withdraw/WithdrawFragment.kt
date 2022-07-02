@@ -21,7 +21,8 @@ import com.belcobtm.presentation.tools.extensions.getString
 import com.belcobtm.presentation.tools.extensions.setText
 import com.belcobtm.presentation.tools.extensions.setTextSilently
 import com.belcobtm.presentation.tools.extensions.toStringCoin
-import com.belcobtm.presentation.tools.formatter.DoubleCurrencyPriceFormatter
+import com.belcobtm.presentation.tools.formatter.CryptoPriceFormatter
+import com.belcobtm.presentation.tools.formatter.CurrencyPriceFormatter
 import com.belcobtm.presentation.tools.formatter.Formatter
 import com.google.zxing.integration.android.IntentIntegrator
 import org.koin.android.ext.android.inject
@@ -36,8 +37,12 @@ class WithdrawFragment : BaseFragment<FragmentWithdrawBinding>() {
     }
     private val clipBoardHelper: ClipBoardHelper by inject()
     private val currencyFormatter: Formatter<Double> by inject(
-        named(DoubleCurrencyPriceFormatter.DOUBLE_CURRENCY_PRICE_FORMATTER_QUALIFIER)
+        named(CurrencyPriceFormatter.CURRENCY_PRICE_FORMATTER_QUALIFIER)
     )
+    private val cryptoPriceFormatter: Formatter<Double> by inject(
+        named(CryptoPriceFormatter.CRYPTO_PRICE_FORMATTER_QUALIFIER)
+    )
+
     private val doubleTextWatcher: DoubleTextWatcher = DoubleTextWatcher(
         firstTextWatcher = { editable ->
             val cryptoAmount: Double = editable.getDouble()
@@ -163,7 +168,7 @@ class WithdrawFragment : BaseFragment<FragmentWithdrawBinding>() {
     }
 
     private fun FragmentWithdrawBinding.initScreen() {
-        priceUsdView.text = currencyFormatter.format(viewModel.getUsdPrice())
+        priceUsdView.text = cryptoPriceFormatter.format(viewModel.getUsdPrice())
         balanceCryptoView.text =
             getString(
                 R.string.text_text,

@@ -86,7 +86,7 @@ class TradeRepositoryImpl(
 
     override suspend fun fetchTrades(calculateDistance: Boolean) {
         val result = tradeApiService.loadTrades()
-        val enabledCoins = accountDao.getItemList()?.filter(AccountEntity::isEnabled).orEmpty()
+        val enabledCoins = accountDao.getAvailableAccounts()?.filter(AccountEntity::isEnabled).orEmpty()
         tradeInMemoryCache.initCoins(enabledCoins)
         val filter = createInitialFilter(tradeInMemoryCache.enabledCoins, calculateDistance)
         tradeInMemoryCache.updateFilter(filter, createTradeFilterItem(filter))

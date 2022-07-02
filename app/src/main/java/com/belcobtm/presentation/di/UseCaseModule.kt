@@ -135,7 +135,7 @@ import com.belcobtm.domain.wallet.interactor.GetCoinListUseCase
 import com.belcobtm.domain.wallet.interactor.UpdateBalanceUseCase
 import com.belcobtm.domain.wallet.interactor.UpdateReservedBalanceUseCase
 import com.belcobtm.presentation.core.DateFormat.CHAT_DATE_FORMAT
-import com.belcobtm.presentation.tools.formatter.DoubleCurrencyPriceFormatter.Companion.DOUBLE_CURRENCY_PRICE_FORMATTER_QUALIFIER
+import com.belcobtm.presentation.tools.formatter.CurrencyPriceFormatter.Companion.CURRENCY_PRICE_FORMATTER_QUALIFIER
 import com.belcobtm.presentation.tools.formatter.MilesFormatter.Companion.MILES_FORMATTER_QUALIFIER
 import com.belcobtm.presentation.tools.formatter.TradeCountFormatter.Companion.TRADE_COUNT_FORMATTER_QUALIFIER
 import org.koin.android.ext.koin.androidApplication
@@ -299,7 +299,7 @@ val useCaseModule = module {
     factory {
         TradeToTradeItemMapper(
             get(), get(named(MILES_FORMATTER_QUALIFIER)),
-            get(named(DOUBLE_CURRENCY_PRICE_FORMATTER_QUALIFIER)),
+            get(named(CURRENCY_PRICE_FORMATTER_QUALIFIER)),
             get(named(TRADE_COUNT_FORMATTER_QUALIFIER)),
             get()
         )
@@ -308,7 +308,7 @@ val useCaseModule = module {
     factory { TradesDataToStatisticsMapper(get()) }
     factory {
         TradeOrderDataToItemMapper(
-            get(), get(named(DOUBLE_CURRENCY_PRICE_FORMATTER_QUALIFIER)),
+            get(), get(named(CURRENCY_PRICE_FORMATTER_QUALIFIER)),
             get(named(TRADE_COUNT_FORMATTER_QUALIFIER)), get(), get(),
             get(named(MILES_FORMATTER_QUALIFIER))
         )

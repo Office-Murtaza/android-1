@@ -29,7 +29,7 @@ val repositoryModule = module {
         AuthorizationRepositoryImpl(
             prefHelper = get(),
             apiService = get(),
-            daoAccount = (get() as AppDatabase).getCoinDao(),
+            accountDao = (get() as AppDatabase).getCoinDao(),
             walletDao = get(),
             serviceRepository = get(),
             locationProvider = get()

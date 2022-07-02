@@ -18,7 +18,8 @@ import com.belcobtm.presentation.tools.extensions.clearError
 import com.belcobtm.presentation.tools.extensions.getDouble
 import com.belcobtm.presentation.tools.extensions.setTextSilently
 import com.belcobtm.presentation.tools.extensions.toStringCoin
-import com.belcobtm.presentation.tools.formatter.DoubleCurrencyPriceFormatter
+import com.belcobtm.presentation.tools.formatter.CryptoPriceFormatter
+import com.belcobtm.presentation.tools.formatter.CurrencyPriceFormatter
 import com.belcobtm.presentation.tools.formatter.Formatter
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -43,7 +44,10 @@ class TradeReserveFragment : BaseFragment<FragmentTradeReserveBinding>() {
     }
     private val args by navArgs<TradeReserveFragmentArgs>()
     private val currencyFormatter: Formatter<Double> by inject(
-        named(DoubleCurrencyPriceFormatter.DOUBLE_CURRENCY_PRICE_FORMATTER_QUALIFIER)
+        named(CurrencyPriceFormatter.CURRENCY_PRICE_FORMATTER_QUALIFIER)
+    )
+    private val cryptoPriceFormatter: Formatter<Double> by inject(
+        named(CryptoPriceFormatter.CRYPTO_PRICE_FORMATTER_QUALIFIER)
     )
 
     private val cryptoAmountTextWatcher by lazy {
@@ -127,7 +131,7 @@ class TradeReserveFragment : BaseFragment<FragmentTradeReserveBinding>() {
     }
 
     private fun FragmentTradeReserveBinding.initScreen() {
-        priceUsdView.text = currencyFormatter.format(viewModel.coinItem.priceUsd)
+        priceUsdView.text = cryptoPriceFormatter.format(viewModel.coinItem.priceUsd)
         balanceCryptoView.text = getString(
             R.string.text_text,
             viewModel.coinItem.balanceCoin.toStringCoin(),

@@ -14,6 +14,7 @@
     <color name="light_gray_text_color">#c1c1c1</color>
     <color name="dark_text_color">#212121</color>
     <color name="dark_bg">#14212121</color>
+    <color name="almostBlackBg">#DE000000</color>
 
     <color name="colorError">#B00020</color>
 

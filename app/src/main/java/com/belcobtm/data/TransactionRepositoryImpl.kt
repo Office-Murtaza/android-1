@@ -146,7 +146,7 @@ class TransactionRepositoryImpl(
                 utxosPerCoint[fromCoin].orEmpty()
             )
         return if (hashResponse.isRight) {
-            val fromAddress = daoAccount.getItem(fromCoin).publicKey
+            val fromAddress = daoAccount.getAccountByName(fromCoin).publicKey
             apiService.withdraw(
                 (hashResponse as Either.Right).b,
                 fromCoin,
@@ -180,7 +180,7 @@ class TransactionRepositoryImpl(
             transactionPlanItem, utxosPerCoint[coinCode].orEmpty()
         )
         return if (hashResponse.isRight) {
-            val item = daoAccount.getItem(coinCode)
+            val item = daoAccount.getAccountByName(coinCode)
             val fromAddress = item.publicKey
             val hash = (hashResponse as Either.Right).b
             if (coinCode == LocalCoinType.ETH.name || coinCode.isEthRelatedCoinCode()) {
@@ -264,7 +264,7 @@ class TransactionRepositoryImpl(
         )
         return if (hashResponse.isRight) {
             val toAddressSend = fromCoinItem.details.walletAddress
-            val fromAddress = daoAccount.getItem(fromCoin).publicKey
+            val fromAddress = daoAccount.getAccountByName(fromCoin).publicKey
             val hash = (hashResponse as Either.Right).b
             apiService.exchange(
                 fromCoinAmount, toCoinAmount,

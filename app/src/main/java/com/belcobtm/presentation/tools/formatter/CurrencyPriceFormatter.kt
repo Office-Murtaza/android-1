@@ -3,7 +3,7 @@ package com.belcobtm.presentation.tools.formatter
 import java.text.NumberFormat
 import java.util.Locale
 
-class DoubleCurrencyPriceFormatter(locale: Locale) : Formatter<Double> {
+class CurrencyPriceFormatter(locale: Locale) : Formatter<Double> {
 
     private val numberFormat: NumberFormat = NumberFormat.getCurrencyInstance(locale)
 
@@ -13,7 +13,7 @@ class DoubleCurrencyPriceFormatter(locale: Locale) : Formatter<Double> {
 
     companion object {
 
-        const val DOUBLE_CURRENCY_PRICE_FORMATTER_QUALIFIER = "DoubleCurrencyPriceFormatter"
+        const val CURRENCY_PRICE_FORMATTER_QUALIFIER = "CurrencyPriceFormatter"
     }
 
 }

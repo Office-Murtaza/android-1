@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import androidx.navigation.fragment.navArgs
 import com.belcobtm.databinding.FragmentServicesInfoBinding
 import com.belcobtm.domain.service.ServiceInfoProvider
-import com.belcobtm.presentation.tools.formatter.DoubleCurrencyPriceFormatter
+import com.belcobtm.presentation.tools.formatter.CurrencyPriceFormatter
 import com.belcobtm.presentation.tools.formatter.Formatter
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import org.koin.android.ext.android.inject
@@ -20,7 +20,7 @@ class ServicesInfoBottomSheetDialogFragment : BottomSheetDialogFragment() {
     private val serviceInfoProvider: ServiceInfoProvider by inject()
     private val args by navArgs<ServicesInfoBottomSheetDialogFragmentArgs>()
     private val currencyFormatter: Formatter<Double> by inject(
-        named(DoubleCurrencyPriceFormatter.DOUBLE_CURRENCY_PRICE_FORMATTER_QUALIFIER)
+        named(CurrencyPriceFormatter.CURRENCY_PRICE_FORMATTER_QUALIFIER)
     )
 
     override fun onCreateView(

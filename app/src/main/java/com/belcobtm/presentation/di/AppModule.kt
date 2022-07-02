@@ -25,12 +25,12 @@ import com.belcobtm.presentation.screens.bank_accounts.payments.PaymentBuyUsdcVi
 import com.belcobtm.presentation.screens.bank_accounts.payments.PaymentSellUsdcViewModel
 import com.belcobtm.presentation.screens.bank_accounts.payments.PaymentSummaryViewModel
 import com.belcobtm.presentation.screens.contacts.ContactListViewModel
+import com.belcobtm.presentation.screens.notification.NotificationHelper
+import com.belcobtm.presentation.screens.pin.code.PinCodeViewModel
 import com.belcobtm.presentation.screens.services.ServicesViewModel
 import com.belcobtm.presentation.screens.services.atm.sell.AtmSellViewModel
 import com.belcobtm.presentation.screens.services.staking.StakingViewModel
 import com.belcobtm.presentation.screens.services.swap.SwapViewModel
-import com.belcobtm.presentation.screens.notification.NotificationHelper
-import com.belcobtm.presentation.screens.pin.code.PinCodeViewModel
 import com.belcobtm.presentation.screens.settings.SettingsViewModel
 import com.belcobtm.presentation.screens.settings.about.AboutViewModel
 import com.belcobtm.presentation.screens.settings.referral.ReferralViewModel
@@ -67,8 +67,10 @@ import com.belcobtm.presentation.screens.wallet.trade.statistic.TradeUserStatist
 import com.belcobtm.presentation.screens.wallet.transaction.details.TransactionDetailsViewModel
 import com.belcobtm.presentation.screens.wallet.transactions.TransactionsViewModel
 import com.belcobtm.presentation.screens.wallet.withdraw.WithdrawViewModel
-import com.belcobtm.presentation.tools.formatter.DoubleCurrencyPriceFormatter
-import com.belcobtm.presentation.tools.formatter.DoubleCurrencyPriceFormatter.Companion.DOUBLE_CURRENCY_PRICE_FORMATTER_QUALIFIER
+import com.belcobtm.presentation.tools.formatter.CryptoPriceFormatter
+import com.belcobtm.presentation.tools.formatter.CryptoPriceFormatter.Companion.CRYPTO_PRICE_FORMATTER_QUALIFIER
+import com.belcobtm.presentation.tools.formatter.CurrencyPriceFormatter
+import com.belcobtm.presentation.tools.formatter.CurrencyPriceFormatter.Companion.CURRENCY_PRICE_FORMATTER_QUALIFIER
 import com.belcobtm.presentation.tools.formatter.Formatter
 import com.belcobtm.presentation.tools.formatter.GoogleMapsDirectionQueryFormatter
 import com.belcobtm.presentation.tools.formatter.GoogleMapsDirectionQueryFormatter.Companion.GOOGLE_MAPS_DIRECTIONS_QUERY_FORMATTER
@@ -199,7 +201,7 @@ val viewModelModule = module {
     viewModel { (txId: String, coinCode: String) ->
         TransactionDetailsViewModel(
             txId, coinCode, get(), get(),
-            get(named(DOUBLE_CURRENCY_PRICE_FORMATTER_QUALIFIER)), get()
+            get(named(CURRENCY_PRICE_FORMATTER_QUALIFIER)), get()
         )
     }
     viewModel {
@@ -226,13 +228,13 @@ val viewModelModule = module {
     viewModel {
         AtmSellViewModel(
             get(), get(), get(), get(), get(),
-            get(named(DOUBLE_CURRENCY_PRICE_FORMATTER_QUALIFIER)),
+            get(named(CURRENCY_PRICE_FORMATTER_QUALIFIER)),
         )
     }
     viewModel {
         TradeDetailsViewModel(
             get(), get(),
-            get(named(DOUBLE_CURRENCY_PRICE_FORMATTER_QUALIFIER)),
+            get(named(CURRENCY_PRICE_FORMATTER_QUALIFIER)),
             get(named(GOOGLE_MAPS_DIRECTIONS_QUERY_FORMATTER))
         )
     }
@@ -261,7 +263,7 @@ val viewModelModule = module {
     viewModel {
         TradeCreateOrderViewModel(
             get(), get(), get(), get(), get(),
-            get(named(DOUBLE_CURRENCY_PRICE_FORMATTER_QUALIFIER)),
+            get(named(CURRENCY_PRICE_FORMATTER_QUALIFIER)),
             get()
         )
     }
@@ -283,8 +285,13 @@ val helperModule = module {
     factory { NotificationHelper(get(), get()) }
     single { ClipBoardHelper(androidApplication()) }
     single<Locale> { Locale.US }
-    factory<Formatter<Double>>(named(DOUBLE_CURRENCY_PRICE_FORMATTER_QUALIFIER)) {
-        DoubleCurrencyPriceFormatter(
+    factory<Formatter<Double>>(named(CURRENCY_PRICE_FORMATTER_QUALIFIER)) {
+        CurrencyPriceFormatter(
+            get()
+        )
+    }
+    factory<Formatter<Double>>(named(CRYPTO_PRICE_FORMATTER_QUALIFIER)) {
+        CryptoPriceFormatter(
             get()
         )
     }

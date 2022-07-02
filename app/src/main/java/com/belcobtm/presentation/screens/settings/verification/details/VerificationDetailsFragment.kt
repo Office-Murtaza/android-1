@@ -5,13 +5,12 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.activity.OnBackPressedCallback
 import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
 import androidx.viewpager2.widget.ViewPager2
 import com.belcobtm.R
 import com.belcobtm.databinding.FragmentVerificationBinding
 import com.belcobtm.domain.settings.type.VerificationStatus
 import com.belcobtm.domain.settings.type.VerificationStep
-import com.belcobtm.presentation.tools.extensions.hide
-import com.belcobtm.presentation.tools.extensions.show
 import com.belcobtm.presentation.core.mvvm.LoadingData
 import com.belcobtm.presentation.core.ui.fragment.BaseFragment
 import com.belcobtm.presentation.screens.settings.verification.details.adapter.VerificationStepsAdapter
@@ -20,8 +19,8 @@ import com.belcobtm.presentation.screens.settings.verification.details.document.
 import com.belcobtm.presentation.screens.settings.verification.details.identity.VerificationIdentityPageFragment
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
-
 class VerificationDetailsFragment : BaseFragment<FragmentVerificationBinding>() {
+
     val viewModel by sharedViewModel<VerificationDetailsViewModel>()
     override val isBackButtonEnabled = true
     override var isMenuEnabled = true
@@ -50,7 +49,6 @@ class VerificationDetailsFragment : BaseFragment<FragmentVerificationBinding>() 
     }
 
     override fun FragmentVerificationBinding.initViews() {
-        //appliedState = null
         setToolbarTitle(R.string.verification_label)
         viewModel.fetchVerificationStatus()
         verificationViewPager.orientation = ViewPager2.ORIENTATION_HORIZONTAL
@@ -81,92 +79,22 @@ class VerificationDetailsFragment : BaseFragment<FragmentVerificationBinding>() 
                 state.verificationStatus.doIfChanged(appliedState?.commonData?.verificationStatus) {
                     when (it) {
                         VerificationStatus.VERIFIED -> {
-                            verificationStepsContainer.hide()
-                            verificationSuccessContainer.show()
-                            verificationProcessingContainer.hide()
+                            verificationStepsContainer.isVisible = false
+                            verificationSuccessContainer.isVisible = true
+                            verificationProcessingContainer.isVisible = false
                         }
                         VerificationStatus.PENDING -> {
-                            verificationStepsContainer.hide()
-                            verificationSuccessContainer.hide()
-                            verificationProcessingContainer.show()
+                            verificationStepsContainer.isVisible = false
+                            verificationSuccessContainer.isVisible = false
+                            verificationProcessingContainer.isVisible = true
                         }
                         else -> {
-                            verificationStepsContainer.show()
-                            verificationSuccessContainer.hide()
-                            verificationProcessingContainer.hide()
+                            verificationStepsContainer.isVisible = true
+                            updateScreenState(state)
+                            verificationSuccessContainer.isVisible = false
+                            verificationProcessingContainer.isVisible = false
                         }
                     }
-                }
-                state.currentStep.doIfChanged(appliedState?.commonData?.currentStep) {
-                    verificationViewPager.post {
-                        verificationViewPager.setCurrentItem(it.ordinal, false)
-                        verificationViewPager.show()
-                    }
-                }
-                state.countryStepBackground.doIfChanged(appliedState?.commonData?.countryStepBackground) {
-                    countryStepContainer.background =
-                        ContextCompat.getDrawable(requireContext(), it)
-                }
-                state.countryStepIcon.doIfChanged(appliedState?.commonData?.countryStepIcon) {
-                    countryStepImage.setImageDrawable(
-                        ContextCompat.getDrawable(
-                            requireContext(),
-                            it
-                        )
-                    )
-                }
-                state.countryStepIconColor.doIfChanged(appliedState?.commonData?.countryStepIconColor) {
-                    countryStepImage.setColorFilter(
-                        ContextCompat.getColor(requireContext(), it),
-                        android.graphics.PorterDuff.Mode.SRC_IN
-                    )
-                }
-                state.countryStepTextColor.doIfChanged(appliedState?.commonData?.countryStepTextColor) {
-                    countryStepText.setTextColor(ContextCompat.getColor(requireContext(), it))
-
-                }
-                state.identityStepBackground.doIfChanged(appliedState?.commonData?.identityStepBackground) {
-                    identityStepContainer.background =
-                        ContextCompat.getDrawable(requireContext(), it)
-                }
-                state.identityStepIcon.doIfChanged(appliedState?.commonData?.identityStepIcon) {
-                    identityStepImage.setImageDrawable(
-                        ContextCompat.getDrawable(
-                            requireContext(),
-                            it
-                        )
-                    )
-                }
-                state.identityStepIconColor.doIfChanged(appliedState?.commonData?.identityStepIconColor) {
-                    identityStepImage.setColorFilter(
-                        ContextCompat.getColor(requireContext(), it),
-                        android.graphics.PorterDuff.Mode.SRC_IN
-                    )
-                }
-                state.identityStepTextColor.doIfChanged(appliedState?.commonData?.identityStepTextColor) {
-                    identityStepText.setTextColor(ContextCompat.getColor(requireContext(), it))
-
-                }
-                state.documentStepBackground.doIfChanged(appliedState?.commonData?.documentStepBackground) {
-                    documentStepContainer.background =
-                        ContextCompat.getDrawable(requireContext(), it)
-                }
-                state.documentStepIcon.doIfChanged(appliedState?.commonData?.documentStepIcon) {
-                    documentStepImage.setImageDrawable(
-                        ContextCompat.getDrawable(
-                            requireContext(),
-                            it
-                        )
-                    )
-                }
-                state.documentStepIconColor.doIfChanged(appliedState?.commonData?.documentStepIconColor) {
-                    documentStepImage.setColorFilter(
-                        ContextCompat.getColor(requireContext(), it),
-                        android.graphics.PorterDuff.Mode.SRC_IN
-                    )
-                }
-                state.documentStepTextColor.doIfChanged(appliedState?.commonData?.documentStepTextColor) {
-                    documentStepText.setTextColor(ContextCompat.getColor(requireContext(), it))
                 }
             },
             error = {
@@ -176,6 +104,80 @@ class VerificationDetailsFragment : BaseFragment<FragmentVerificationBinding>() 
                 appliedState = it
             }
         )
+    }
+
+    private fun FragmentVerificationBinding.updateScreenState(state: VerificationDetailsState) {
+        state.currentStep.doIfChanged(appliedState?.commonData?.currentStep) {
+            verificationViewPager.post {
+                verificationViewPager.setCurrentItem(it.ordinal, false)
+                verificationViewPager.isVisible = true
+            }
+        }
+        state.countryStepBackground.doIfChanged(appliedState?.commonData?.countryStepBackground) {
+            countryStepContainer.background =
+                ContextCompat.getDrawable(requireContext(), it)
+        }
+        state.countryStepIcon.doIfChanged(appliedState?.commonData?.countryStepIcon) {
+            countryStepImage.setImageDrawable(
+                ContextCompat.getDrawable(
+                    requireContext(),
+                    it
+                )
+            )
+        }
+        state.countryStepIconColor.doIfChanged(appliedState?.commonData?.countryStepIconColor) {
+            countryStepImage.setColorFilter(
+                ContextCompat.getColor(requireContext(), it),
+                android.graphics.PorterDuff.Mode.SRC_IN
+            )
+        }
+        state.countryStepTextColor.doIfChanged(appliedState?.commonData?.countryStepTextColor) {
+            countryStepText.setTextColor(ContextCompat.getColor(requireContext(), it))
+
+        }
+        state.identityStepBackground.doIfChanged(appliedState?.commonData?.identityStepBackground) {
+            identityStepContainer.background =
+                ContextCompat.getDrawable(requireContext(), it)
+        }
+        state.identityStepIcon.doIfChanged(appliedState?.commonData?.identityStepIcon) {
+            identityStepImage.setImageDrawable(
+                ContextCompat.getDrawable(
+                    requireContext(),
+                    it
+                )
+            )
+        }
+        state.identityStepIconColor.doIfChanged(appliedState?.commonData?.identityStepIconColor) {
+            identityStepImage.setColorFilter(
+                ContextCompat.getColor(requireContext(), it),
+                android.graphics.PorterDuff.Mode.SRC_IN
+            )
+        }
+        state.identityStepTextColor.doIfChanged(appliedState?.commonData?.identityStepTextColor) {
+            identityStepText.setTextColor(ContextCompat.getColor(requireContext(), it))
+
+        }
+        state.documentStepBackground.doIfChanged(appliedState?.commonData?.documentStepBackground) {
+            documentStepContainer.background =
+                ContextCompat.getDrawable(requireContext(), it)
+        }
+        state.documentStepIcon.doIfChanged(appliedState?.commonData?.documentStepIcon) {
+            documentStepImage.setImageDrawable(
+                ContextCompat.getDrawable(
+                    requireContext(),
+                    it
+                )
+            )
+        }
+        state.documentStepIconColor.doIfChanged(appliedState?.commonData?.documentStepIconColor) {
+            documentStepImage.setColorFilter(
+                ContextCompat.getColor(requireContext(), it),
+                android.graphics.PorterDuff.Mode.SRC_IN
+            )
+        }
+        state.documentStepTextColor.doIfChanged(appliedState?.commonData?.documentStepTextColor) {
+            documentStepText.setTextColor(ContextCompat.getColor(requireContext(), it))
+        }
     }
 
     private fun createViewPagerAdapter(): VerificationStepsAdapter {
@@ -194,5 +196,5 @@ class VerificationDetailsFragment : BaseFragment<FragmentVerificationBinding>() 
         container: ViewGroup?
     ): FragmentVerificationBinding =
         FragmentVerificationBinding.inflate(inflater, container, false)
-}
 
+}

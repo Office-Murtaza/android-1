@@ -13,6 +13,7 @@ import com.belcobtm.presentation.tools.formatter.Formatter
 
 class CoinsAdapter(
     private val priceFormatter: Formatter<Double>,
+    private val cryptoPriceFormatter: Formatter<Double>,
     private val listener: (item: CoinListItem) -> Unit
 ) : RecyclerView.Adapter<CoinsAdapter.Holder>() {
 
@@ -40,7 +41,7 @@ class CoinsAdapter(
                     item.code
                 )
             balanceFiatView.text = priceFormatter.format(item.balanceFiat)
-            priceView.text = priceFormatter.format(item.priceUsd)
+            priceView.text = cryptoPriceFormatter.format(item.priceUsd)
         }
     }
 
@@ -66,4 +67,5 @@ class CoinsAdapter(
             }
         }
     }
+
 }

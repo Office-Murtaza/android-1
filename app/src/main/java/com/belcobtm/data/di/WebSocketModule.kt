@@ -56,6 +56,7 @@ val webSocketModule = module {
             unlinkHandler = get(),
             preferencesHelper = get(),
             walletDao = get(),
+            accountDao = get(),
             serializer = get(named(STOMP_REQUEST_SERIALIZER_QUALIFIER)),
             deserializer = get(named(STOMP_RESPONSE_DESERIALIZER_QUALIFIER)),
         )

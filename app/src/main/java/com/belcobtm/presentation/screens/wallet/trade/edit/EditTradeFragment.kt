@@ -27,7 +27,7 @@ import com.belcobtm.presentation.tools.extensions.resIcon
 import com.belcobtm.presentation.tools.extensions.setTextSilently
 import com.belcobtm.presentation.tools.extensions.toStringCoin
 import com.belcobtm.presentation.tools.extensions.toggle
-import com.belcobtm.presentation.tools.formatter.DoubleCurrencyPriceFormatter
+import com.belcobtm.presentation.tools.formatter.CurrencyPriceFormatter
 import com.belcobtm.presentation.tools.formatter.Formatter
 import com.google.android.material.chip.Chip
 import com.google.android.material.snackbar.Snackbar
@@ -42,7 +42,7 @@ class EditTradeFragment : BaseFragment<FragmentEditTradeBinding>() {
     private val args by navArgs<EditTradeFragmentArgs>()
     private val viewModel by viewModel<EditTradeViewModel>()
     private val priceFormatter by inject<Formatter<Double>>(
-        named(DoubleCurrencyPriceFormatter.DOUBLE_CURRENCY_PRICE_FORMATTER_QUALIFIER)
+        named(CurrencyPriceFormatter.CURRENCY_PRICE_FORMATTER_QUALIFIER)
     )
 
     override val retryListener: View.OnClickListener

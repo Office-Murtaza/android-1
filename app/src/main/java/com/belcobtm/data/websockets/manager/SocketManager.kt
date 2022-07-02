@@ -2,6 +2,7 @@ package com.belcobtm.data.websockets.manager
 
 import android.util.Log
 import com.belcobtm.data.core.UnlinkHandler
+import com.belcobtm.data.disk.database.account.AccountDao
 import com.belcobtm.data.disk.database.wallet.WalletDao
 import com.belcobtm.data.disk.shared.preferences.SharedPreferencesHelper
 import com.belcobtm.data.rest.authorization.AuthApi
@@ -33,6 +34,7 @@ class SocketManager(
     private val unlinkHandler: UnlinkHandler,
     private val preferencesHelper: SharedPreferencesHelper,
     private val walletDao: WalletDao,
+    private val accountDao: AccountDao,
     private val serializer: RequestSerializer<StompSocketRequest>,
     private val deserializer: ResponseDeserializer<StompSocketResponse>
 ) : WebSocketManager {
@@ -172,6 +174,7 @@ class SocketManager(
             when {
                 code == HttpURLConnection.HTTP_OK && body != null -> {
                     walletDao.updateBalance(body.balance)
+                    accountDao.updateAccountEntityList(body.balance)
                     preferencesHelper.processAuthResponse(body)
                     connect()
                 }

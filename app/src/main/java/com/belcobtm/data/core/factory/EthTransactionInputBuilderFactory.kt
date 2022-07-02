@@ -114,7 +114,7 @@ class EthTransactionInputBuilderFactory(
         toAddress: String,
         transactionPlanItem: TransactionPlanItem
     ): Ethereum.SigningInput.Builder {
-        val coinEntity = accountDao.getItem(coinCode)
+        val coinEntity = accountDao.getAccountByName(coinCode)
         val privateKey = coinEntity.privateKey
         val input = Ethereum.SigningInput.newBuilder()
         val nonce = transactionPlanItem.nonce

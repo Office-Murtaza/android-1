@@ -11,7 +11,7 @@ import com.belcobtm.R
 import com.belcobtm.databinding.FragmentReferralsBinding
 import com.belcobtm.presentation.tools.extensions.toHtmlSpan
 import com.belcobtm.presentation.tools.extensions.toStringCoin
-import com.belcobtm.presentation.tools.formatter.DoubleCurrencyPriceFormatter
+import com.belcobtm.presentation.tools.formatter.CurrencyPriceFormatter
 import com.belcobtm.presentation.tools.formatter.Formatter
 import com.belcobtm.presentation.core.helper.ClipBoardHelper
 import com.belcobtm.presentation.core.ui.fragment.BaseFragment
@@ -26,7 +26,7 @@ class ReferralFragment : BaseFragment<FragmentReferralsBinding>() {
     private val viewModel by viewModel<ReferralViewModel>()
     private val clipBoardHelper: ClipBoardHelper by inject()
     private val currencyFormatter: Formatter<Double> by inject(
-        named(DoubleCurrencyPriceFormatter.DOUBLE_CURRENCY_PRICE_FORMATTER_QUALIFIER)
+        named(CurrencyPriceFormatter.CURRENCY_PRICE_FORMATTER_QUALIFIER)
     )
 
     override fun createBinding(

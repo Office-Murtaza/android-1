@@ -7,10 +7,11 @@ import androidx.core.view.WindowInsetsControllerCompat
 import com.belcobtm.R
 import com.belcobtm.databinding.FragmentBalanceBinding
 import com.belcobtm.domain.Failure
-import com.belcobtm.presentation.tools.formatter.DoubleCurrencyPriceFormatter
+import com.belcobtm.presentation.tools.formatter.CurrencyPriceFormatter
 import com.belcobtm.presentation.tools.formatter.Formatter
 import com.belcobtm.presentation.core.ui.fragment.BaseFragment
 import com.belcobtm.presentation.screens.wallet.balance.adapter.CoinsAdapter
+import com.belcobtm.presentation.tools.formatter.CryptoPriceFormatter
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -22,7 +23,10 @@ class WalletFragment : BaseFragment<FragmentBalanceBinding>() {
     private val viewModel: WalletViewModel by viewModel()
     private lateinit var adapter: CoinsAdapter
     private val currencyFormatter: Formatter<Double> by inject(
-        named(DoubleCurrencyPriceFormatter.DOUBLE_CURRENCY_PRICE_FORMATTER_QUALIFIER)
+        named(CurrencyPriceFormatter.CURRENCY_PRICE_FORMATTER_QUALIFIER)
+    )
+    private val cryptoPriceFormatter: Formatter<Double> by inject(
+        named(CryptoPriceFormatter.CRYPTO_PRICE_FORMATTER_QUALIFIER)
     )
     override val isToolbarEnabled: Boolean = false
     override var isMenuEnabled: Boolean = true
@@ -36,7 +40,7 @@ class WalletFragment : BaseFragment<FragmentBalanceBinding>() {
 
     override fun FragmentBalanceBinding.initViews() {
         updateStatusBar()
-        adapter = CoinsAdapter(currencyFormatter) {
+        adapter = CoinsAdapter(currencyFormatter, cryptoPriceFormatter) {
             navigate(WalletFragmentDirections.toTransactionsFragment(it.code))
         }
         listView.adapter = adapter

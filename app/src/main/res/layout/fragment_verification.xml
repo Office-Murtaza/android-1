@@ -9,6 +9,7 @@
         android:id="@+id/verification_steps_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:visibility="gone"
         tools:visibility="visible">
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -173,6 +174,7 @@
         android:id="@+id/verification_success_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:visibility="gone"
         tools:visibility="gone">
 
         <LinearLayout
@@ -222,6 +224,7 @@
         android:id="@+id/verification_processing_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:visibility="gone"
         tools:visibility="gone">
 
         <LinearLayout
