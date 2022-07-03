@@ -248,15 +248,6 @@ class AuthorizationRepositoryImpl(
         return Pair(publicKey, Numeric.toHexStringNoPrefix(privateKey.data()))
     }
 
-    override suspend fun checkPass(userId: String, password: String): Either<Failure, Boolean> {
-        val response = apiService.checkPass(userId, password)
-        return if (response.isRight) {
-            Either.Right((response as Either.Right).b.result)
-        } else {
-            response as Either.Left
-        }
-    }
-
     /**
      * Should return formatted GMT timezone
      * e.g GMT+02:00

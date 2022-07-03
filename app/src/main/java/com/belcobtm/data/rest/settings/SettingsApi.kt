@@ -1,5 +1,7 @@
 package com.belcobtm.data.rest.settings
 
+import com.belcobtm.data.rest.authorization.request.CheckPassRequest
+import com.belcobtm.data.rest.authorization.response.CheckPassResponse
 import com.belcobtm.data.rest.settings.request.ChangePassBody
 import com.belcobtm.data.rest.settings.request.UpdatePhoneParam
 import com.belcobtm.data.rest.settings.request.VerificationBlankRequest
@@ -52,6 +54,12 @@ interface SettingsApi {
         @Path("userId") userId: String,
         @Body request: VerificationBlankRequest
     ): Response<ResponseBody>
+
+    @POST("user/{userId}/password-verify")
+    suspend fun checkPass(
+        @Path("userId") userId: String,
+        @Body checkPassParam: CheckPassRequest
+    ): Response<CheckPassResponse>
 
     @POST("user/{userId}/password")
     suspend fun changePass(

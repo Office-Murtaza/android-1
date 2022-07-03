@@ -27,6 +27,8 @@ interface SettingsRepository {
     ): Either<Failure, VerificationDocumentResponseDataItem>
 
     suspend fun sendVerificationBlank(blankDataItem: VerificationBlankDataItem, fileName: String): Either<Failure, Unit>
+
+    suspend fun checkPass(userId: String, password: String): Either<Failure, Boolean>
     suspend fun changePass(oldPassword: String, newPassword: String): Either<Failure, Boolean>
     suspend fun updatePhone(): Either<Failure, Boolean>
     suspend fun isPhoneUsed(phone: String): Either<Failure, Boolean>

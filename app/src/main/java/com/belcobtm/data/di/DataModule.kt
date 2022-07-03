@@ -51,7 +51,6 @@ import com.belcobtm.data.provider.location.LocationProvider
 import com.belcobtm.data.provider.location.ServiceLocationProvider
 import com.belcobtm.data.rest.atm.AtmApi
 import com.belcobtm.data.rest.atm.AtmApiService
-import com.belcobtm.data.rest.authorization.AuthApi
 import com.belcobtm.data.rest.authorization.AuthApiService
 import com.belcobtm.data.rest.bank_account.BankAccountApi
 import com.belcobtm.data.rest.bank_account.BankAccountApiService
@@ -118,7 +117,11 @@ val dataModule = module {
             level = HttpLoggingInterceptor.Level.BODY
         }
     }
-    single { AuthApiService(get()) }
+    single {
+        AuthApiService(
+            authApi = get(authenticatorQualified)
+        )
+    }
     single { SettingsApiService(get()) }
     single { BankAccountApiService(get()) }
     single { WalletApiService(get(), get()) }
@@ -183,7 +186,6 @@ val dataModule = module {
             .build()
     }
     single { get<Retrofit>().create(AtmApi::class.java) }
-    single { get<Retrofit>().create(AuthApi::class.java) }
     single { get<Retrofit>().create(ToolsApi::class.java) }
     single { get<Retrofit>().create(WalletApi::class.java) }
     single { get<Retrofit>().create(SettingsApi::class.java) }

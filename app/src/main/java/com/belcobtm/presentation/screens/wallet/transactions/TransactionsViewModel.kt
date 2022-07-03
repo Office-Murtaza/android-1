@@ -62,8 +62,10 @@ class TransactionsViewModel(
     }
 
     fun updateData() {
-        loadChartData(PriceChartPeriod.DAY)
-        fetchTransactions()
+        loadChartData(
+            period = PriceChartPeriod.DAY,
+            isInit = true
+        )
     }
 
     fun changeCurrentTypePeriod(selectedPeriod: Int) {
@@ -80,7 +82,7 @@ class TransactionsViewModel(
         } ?: loadChartData(period)
     }
 
-    private fun loadChartData(period: PriceChartPeriod) {
+    private fun loadChartData(period: PriceChartPeriod, isInit: Boolean = false) {
         if (coinCode == LocalCoinType.CATM.name) {
             val catmChartStubEnd = BarEntry(10.0f, CATM_PRICE.toFloat())
             val catmChartStubStart = BarEntry(0.0f, CATM_PRICE.toFloat())
@@ -101,6 +103,8 @@ class TransactionsViewModel(
             onSuccess = { dataItem ->
                 chartInfo[period] = dataItem
                 chartLiveData.value = LoadingData.Success(CurrentChartInfo(period, dataItem))
+
+                if (isInit) fetchTransactions()
             },
             onError = { failure ->
                 chartLiveData.value = LoadingData.Error(

@@ -360,6 +360,15 @@ class SettingsRepositoryImpl(
     override fun getVerificationCountries(): List<VerificationCountryDataItem> =
         assetsDataStore.getCountries()
 
+    override suspend fun checkPass(userId: String, password: String): Either<Failure, Boolean> {
+        val response = apiService.checkPass(userId, password)
+        return if (response.isRight) {
+            Either.Right((response as Either.Right).b.result)
+        } else {
+            response as Either.Left
+        }
+    }
+
     override suspend fun changePass(
         oldPassword: String,
         newPassword: String
