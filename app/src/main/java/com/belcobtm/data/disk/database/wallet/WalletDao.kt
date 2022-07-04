@@ -37,8 +37,8 @@ interface WalletDao {
     @Query(
         """
         SELECT * 
-        FROM coin_detail INNER JOIN coin INNER JOIN account_entity
-        WHERE coin_detail.c_code = coin.code AND coin.code = account_entity.coin_name AND coin.code = :code
+        FROM account_entity INNER JOIN  coin_detail INNER JOIN coin
+        WHERE account_entity.coin_name = coin.code AND coin_detail.c_code = coin.code  AND account_entity.coin_name = :code
     """
     )
     suspend fun getCoinByCode(code: String): FullCoinEntity
@@ -131,4 +131,5 @@ interface WalletDao {
         clearCoin()
         clearWallet()
     }
+
 }

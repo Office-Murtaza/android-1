@@ -4,10 +4,12 @@ import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
 import com.belcobtm.R
 import com.belcobtm.databinding.FragmentWithdrawBinding
 import com.belcobtm.domain.Failure
+import com.belcobtm.domain.isTransactionValidationError
 import com.belcobtm.domain.wallet.LocalCoinType
 import com.belcobtm.domain.wallet.item.isEthRelatedCoinCode
 import com.belcobtm.presentation.core.helper.AlertHelper
@@ -124,6 +126,7 @@ class WithdrawFragment : BaseFragment<FragmentWithdrawBinding>() {
             addressError.observe(viewLifecycleOwner, addressView::setError)
             transactionLiveData.listen(
                 success = {
+                    binding.errorTextView.isVisible = false
                     AlertHelper.showToastShort(
                         requireContext(),
                         R.string.transactions_screen_transaction_created
@@ -131,10 +134,14 @@ class WithdrawFragment : BaseFragment<FragmentWithdrawBinding>() {
                     popBackStack()
                 },
                 error = {
+                    binding.errorTextView.isVisible = false
                     when (it) {
                         is Failure.NetworkConnection -> showErrorNoInternetConnection()
                         is Failure.MessageError -> {
-                            showToast(it.message ?: "")
+                            if (it.isTransactionValidationError()) {
+                                binding.errorTextView.text = it.message.orEmpty()
+                                binding.errorTextView.isVisible = true
+                            } else showToast(it.message.orEmpty())
                             showContent()
                         }
                         is Failure.ServerError -> showErrorServerError()

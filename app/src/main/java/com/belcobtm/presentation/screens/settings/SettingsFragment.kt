@@ -46,7 +46,8 @@ class SettingsFragment : BaseFragment<FragmentSettingsBinding>() {
         notificationsItem.setOnClickListener { onSectionClick(SettingsSections.NOTIFICATIONS) }
         supportItem.setOnClickListener { onSectionClick(SettingsSections.SUPPORT) }
         aboutItem.setOnClickListener { onSectionClick(SettingsSections.ABOUT) }
-        referralsItems.setOnClickListener { onSectionClick(SettingsSections.REFERRALS) }
+//        TODO:: rework or fix Referral feature
+//        referralsItems.setOnClickListener { onSectionClick(SettingsSections.REFERRALS) }
     }
 
     override fun FragmentSettingsBinding.initObservers() {

@@ -192,6 +192,18 @@
         app:layout_constraintStart_toStartOf="@id/amount_crypto_view"
         app:layout_constraintTop_toBottomOf="@id/amount_crypto_view" />
 
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/errorTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="32dp"
+        android:layout_marginBottom="8dp"
+        android:gravity="center"
+        android:textColor="@color/mainRed"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toTopOf="@id/next_button_view"
+        tools:text="Receiver address has a high risk score, transaction not allowed" />
+
     <com.google.android.material.button.MaterialButton
         android:id="@+id/next_button_view"
         style="@style/Button.Primary"

@@ -54,6 +54,7 @@ interface TransactionRepository {
         fromCoinAmount: Double,
         fee: Double,
         fromTransactionPlan: TransactionPlanItem,
+        price: Double
     ): Either<Failure, Unit>
 
     suspend fun sendGift(

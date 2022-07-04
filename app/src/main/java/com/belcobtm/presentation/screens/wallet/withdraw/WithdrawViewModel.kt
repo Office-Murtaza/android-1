@@ -176,12 +176,13 @@ class WithdrawViewModel(
     ) {
         withdrawUseCase.invoke(
             params = WithdrawUseCase.Params(
-                _amount.value?.useMax ?: false,
-                getCoinCode(),
-                coinAmount,
-                toAddress,
-                _fee.value ?: 0.0,
-                transactionPlan
+                useMaxAmountFlag = _amount.value?.useMax ?: false,
+                fromCoin = getCoinCode(),
+                fromCoinAmount = coinAmount,
+                toAddress = toAddress,
+                fee = _fee.value ?: 0.0,
+                transactionPlanItem = transactionPlan,
+                price = getUsdPrice()
             ),
             onSuccess = {
                 updateBalanceUseCase(

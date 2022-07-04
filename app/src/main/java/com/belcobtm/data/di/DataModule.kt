@@ -125,7 +125,7 @@ val dataModule = module {
     single { SettingsApiService(get()) }
     single { BankAccountApiService(get()) }
     single { WalletApiService(get(), get()) }
-    single { TransactionApiService(get(), get()) }
+    single { TransactionApiService(get(), get(), get()) }
     single { ToolsApiService(get(), get()) }
     single { AtmApiService(get()) }
     single { TradeApiService(get(), get()) }

@@ -1,10 +1,20 @@
 package com.belcobtm.data.rest.transaction.request
 
 data class WithdrawRequest(
-    val type: Int,
-    val cryptoAmount: Double,
+    val type: String = TYPE,
     val hex: String,
-    val fee: Double?,
     val fromAddress: String?,
     val toAddress: String?,
-)
+    val cryptoAmount: Double,
+    val price: Double,
+    val fee: Double?,
+    val latitude: Double?,
+    val longitude: Double?,
+) {
+
+    companion object {
+
+        private const val TYPE = "WITHDRAW"
+    }
+
+}

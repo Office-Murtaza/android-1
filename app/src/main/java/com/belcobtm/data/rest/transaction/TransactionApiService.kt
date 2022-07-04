@@ -2,6 +2,7 @@ package com.belcobtm.data.rest.transaction
 
 import android.location.Location
 import com.belcobtm.data.disk.shared.preferences.SharedPreferencesHelper
+import com.belcobtm.data.provider.location.LocationProvider
 import com.belcobtm.data.rest.transaction.request.CoinToCoinExchangeRequest
 import com.belcobtm.data.rest.transaction.request.SellPreSubmitRequest
 import com.belcobtm.data.rest.transaction.request.SellRequest
@@ -24,7 +25,8 @@ import com.belcobtm.domain.wallet.item.CoinDataItem
 
 class TransactionApiService(
     private val api: TransactionApi,
-    private val prefHelper: SharedPreferencesHelper
+    private val prefHelper: SharedPreferencesHelper,
+    private val locationProvider: LocationProvider
 ) {
 
     suspend fun getTransactionPlan(coinCode: String): Either<Failure, TransactionPlanItem> =
@@ -63,15 +65,19 @@ class TransactionApiService(
         coinFromAmount: Double,
         fee: Double?,
         fromAddress: String?,
-        toAddress: String?
+        toAddress: String?,
+        price: Double
     ): Either<Failure, TransactionDetailsResponse> = try {
+        val location = locationProvider.getCurrentLocation()
         val requestBody = WithdrawRequest(
-            type = TRANSACTION_WITHDRAW,
-            cryptoAmount = coinFromAmount,
             hex = hash,
-            fee = fee,
             fromAddress = fromAddress,
-            toAddress = toAddress
+            toAddress = toAddress,
+            cryptoAmount = coinFromAmount,
+            price = price,
+            fee = fee,
+            latitude = location?.latitude,
+            longitude = location?.longitude
         )
         val request = api.withdrawAsync(prefHelper.userId, coinFrom, requestBody)
         request.body()?.let { Either.Right(it) } ?: Either.Left(Failure.ServerError())
@@ -338,7 +344,6 @@ class TransactionApiService(
 
     companion object {
 
-        const val TRANSACTION_WITHDRAW = 2
         const val TRANSACTION_SEND_GIFT = 3
         const val TRANSACTION_SELL = 6
         const val TRANSACTION_SEND_COIN_TO_COIN = 8

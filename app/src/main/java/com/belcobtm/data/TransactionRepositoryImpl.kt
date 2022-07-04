@@ -137,23 +137,28 @@ class TransactionRepositoryImpl(
         fromCoinAmount: Double,
         fee: Double,
         fromTransactionPlan: TransactionPlanItem,
+        price: Double
     ): Either<Failure, Unit> {
         val coinType = LocalCoinType.valueOf(fromCoin)
         val hashResponse =
             transactionRepository.createTransactionHash(
-                useMaxAmountFlag, toAddress, coinType,
-                fromCoinAmount, fromTransactionPlan,
-                utxosPerCoint[fromCoin].orEmpty()
+                useMaxAmountFlag = useMaxAmountFlag,
+                toAddress = toAddress,
+                fromCoin = coinType,
+                fromCoinAmount = fromCoinAmount,
+                fromTransactionPlan = fromTransactionPlan,
+                utxos = utxosPerCoint[fromCoin].orEmpty()
             )
         return if (hashResponse.isRight) {
             val fromAddress = daoAccount.getAccountByName(fromCoin).publicKey
             apiService.withdraw(
-                (hashResponse as Either.Right).b,
-                fromCoin,
-                fromCoinAmount,
-                fee,
-                fromAddress,
-                toAddress
+                hash = (hashResponse as Either.Right).b,
+                coinFrom = fromCoin,
+                coinFromAmount = fromCoinAmount,
+                fee = fee,
+                fromAddress = fromAddress,
+                toAddress = toAddress,
+                price = price
             ).map { cache.update(it) }
         } else {
             hashResponse as Either.Left
