@@ -45,4 +45,5 @@ open class MultiTypeAdapter(
 
     override fun getItemViewType(position: Int): Int =
         content[position].type
+
 }

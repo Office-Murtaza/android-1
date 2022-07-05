@@ -8,7 +8,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.belcobtm.R
 import com.belcobtm.data.disk.database.account.AccountDao
-import com.belcobtm.data.disk.database.service.ServiceType
+import com.belcobtm.domain.service.ServiceType
 import com.belcobtm.domain.Failure
 import com.belcobtm.domain.service.ServiceInfoProvider
 import com.belcobtm.domain.transaction.interactor.GetFakeSignedTransactionPlanUseCase

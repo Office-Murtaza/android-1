@@ -6,7 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import com.belcobtm.R
-import com.belcobtm.data.disk.database.service.ServiceType
+import com.belcobtm.domain.service.ServiceType
 import com.belcobtm.data.rest.transaction.response.StakeDetailsStatus
 import com.belcobtm.databinding.FragmentStakingBinding
 import com.belcobtm.domain.Failure
@@ -23,7 +23,6 @@ import com.belcobtm.presentation.tools.extensions.toHtmlSpan
 import com.belcobtm.presentation.tools.extensions.toStringCoin
 import com.belcobtm.presentation.tools.extensions.toStringPercents
 import com.belcobtm.presentation.tools.extensions.toggle
-import com.belcobtm.presentation.tools.formatter.CryptoPriceFormatter
 import com.belcobtm.presentation.tools.formatter.CurrencyPriceFormatter
 import com.belcobtm.presentation.tools.formatter.Formatter
 import org.koin.android.ext.android.inject

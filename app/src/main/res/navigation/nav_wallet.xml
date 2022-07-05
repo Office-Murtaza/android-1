@@ -150,7 +150,7 @@
 
         <argument
             android:name="type"
-            app:argType="integer"
+            app:argType="com.belcobtm.domain.service.ServiceType"
             app:nullable="false" />
 
     </dialog>

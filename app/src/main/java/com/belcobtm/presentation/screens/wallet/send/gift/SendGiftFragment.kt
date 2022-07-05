@@ -10,7 +10,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.navArgs
 import com.belcobtm.R
-import com.belcobtm.data.disk.database.service.ServiceType
+import com.belcobtm.domain.service.ServiceType
 import com.belcobtm.databinding.FragmentSendGiftBinding
 import com.belcobtm.domain.Failure
 import com.belcobtm.domain.wallet.LocalCoinType

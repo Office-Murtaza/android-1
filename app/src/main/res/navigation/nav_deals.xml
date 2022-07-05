@@ -449,10 +449,11 @@
 
         <argument
             android:name="type"
-            app:argType="integer"
+            app:argType="com.belcobtm.domain.service.ServiceType"
             app:nullable="false" />
 
     </dialog>
+
     <fragment
         android:id="@+id/verificationInfoFragment"
         android:name="com.belcobtm.presentation.screens.settings.verification.details.VerificationDetailsFragment"

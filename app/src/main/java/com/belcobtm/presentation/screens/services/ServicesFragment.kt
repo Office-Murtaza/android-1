@@ -2,25 +2,19 @@ package com.belcobtm.presentation.screens.services
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.lifecycle.asLiveData
 import androidx.recyclerview.widget.DividerItemDecoration
 import com.belcobtm.R
-import com.belcobtm.data.disk.database.service.ServiceType
+import com.belcobtm.domain.service.ServiceType
 import com.belcobtm.databinding.FragmentDealsBinding
-import com.belcobtm.domain.service.ServiceInfoProvider
 import com.belcobtm.domain.service.ServiceItem
 import com.belcobtm.presentation.core.adapter.MultiTypeAdapter
 import com.belcobtm.presentation.core.ui.fragment.BaseFragment
 import com.belcobtm.presentation.screens.services.adapter.ServicesItemDelegate
-import kotlinx.coroutines.Dispatchers
-import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class ServicesFragment : BaseFragment<FragmentDealsBinding>() {
 
     override var isMenuEnabled: Boolean = true
-
-    private val availabilityProvider by inject<ServiceInfoProvider>()
 
     private val viewModel by viewModel<ServicesViewModel>()
 
@@ -32,11 +26,7 @@ class ServicesFragment : BaseFragment<FragmentDealsBinding>() {
 
     override fun FragmentDealsBinding.initObservers() {
         viewModel.apply {
-            stateData.observe(viewLifecycleOwner) {
-                it.commonData?.let { status ->
-
-                }
-            }
+            servicesLiveData.observe(viewLifecycleOwner, adapter::update)
         }
     }
 
@@ -48,24 +38,23 @@ class ServicesFragment : BaseFragment<FragmentDealsBinding>() {
         )
         servicesList.adapter = adapter
         servicesList.addItemDecoration(dividerItemDecoration)
-        availabilityProvider.observeServices()
-            .asLiveData(Dispatchers.IO)
-            .observe(viewLifecycleOwner, adapter::update)
     }
 
     private fun onServiceClicked(item: ServiceItem) {
-        when (item.serviceType) {
-            ServiceType.TRANSFER ->
-                navigate(ServicesFragmentDirections.toContactListFragment())
-            ServiceType.TRADE ->
-                navigate(ServicesFragmentDirections.toTradeContainerFragment())
-            ServiceType.SWAP ->
-                navigate(ServicesFragmentDirections.toSwapFragment())
-            ServiceType.STAKING ->
-                navigate(ServicesFragmentDirections.toStakingFragment())
-            ServiceType.ATM_SELL ->
-                navigate(ServicesFragmentDirections.toAtmSellFragment())
-        }
+        navigate(
+            when (item.serviceType) {
+                ServiceType.TRANSFER ->
+                    ServicesFragmentDirections.toContactListFragment()
+                ServiceType.TRADE ->
+                    ServicesFragmentDirections.toTradeContainerFragment()
+                ServiceType.SWAP ->
+                    ServicesFragmentDirections.toSwapFragment()
+                ServiceType.STAKING ->
+                    ServicesFragmentDirections.toStakingFragment()
+                ServiceType.ATM_SELL ->
+                    ServicesFragmentDirections.toAtmSellFragment()
+            }
+        )
     }
 
     private fun onVerifyClicked() {

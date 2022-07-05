@@ -8,7 +8,7 @@ import androidx.core.net.toUri
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.belcobtm.R
-import com.belcobtm.data.disk.database.service.ServiceType
+import com.belcobtm.domain.service.ServiceType
 import com.belcobtm.data.model.trade.TradeType
 import com.belcobtm.databinding.FragmentEditTradeBinding
 import com.belcobtm.domain.Failure

@@ -16,7 +16,7 @@ interface AccountDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertItemList(itemList: List<AccountEntity>)
 
-    @Query("SELECT * FROM account_entity WHERE coin_name ==:code")
+    @Query("SELECT * FROM account_entity WHERE coin_name = :code")
     suspend fun getAccountByName(code: String): AccountEntity
 
     @Query("SELECT * FROM account_entity")

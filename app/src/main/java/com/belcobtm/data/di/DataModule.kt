@@ -83,8 +83,6 @@ import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.ktx.storage
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.asCoroutineDispatcher
 import okhttp3.OkHttpClient
@@ -225,7 +223,7 @@ val dataModule = module {
             androidApplication(), Executors.newSingleThreadExecutor()
         )
     }
-    single<ServiceRepository> { ServiceRepositoryImpl(get(), CoroutineScope(Dispatchers.IO)) }
+    single<ServiceRepository> { ServiceRepositoryImpl(get()) }
     single { TransactionsInMemoryCache() }
     single { BankAccountsInMemoryCache() }
     single { PaymentsInMemoryCache() }

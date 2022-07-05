@@ -1,25 +1,25 @@
 package com.belcobtm.presentation.screens.services
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.belcobtm.domain.authorization.interactor.GetVerificationStatusUseCase
-import com.belcobtm.domain.settings.type.VerificationStatus
-import com.belcobtm.presentation.core.mvvm.LoadingData
+import androidx.lifecycle.viewModelScope
+import com.belcobtm.domain.service.ServiceInfoProvider
+import com.belcobtm.domain.service.ServiceItem
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 
 class ServicesViewModel(
-    getVerificationInfoUseCase: GetVerificationStatusUseCase
+    availabilityProvider: ServiceInfoProvider
 ) : ViewModel() {
 
-    val stateData = MutableLiveData<LoadingData<VerificationStatus>>()
+    private val _servicesLiveData = MutableLiveData<List<ServiceItem>>()
+    val servicesLiveData: LiveData<List<ServiceItem>> = _servicesLiveData
 
     init {
-        getVerificationInfoUseCase.invoke(Unit, onSuccess = {
-            stateData.value = LoadingData.Success(
-                it
-            )
-        }, onError = {
-
-        })
+        availabilityProvider.observeServices().onEach {
+            _servicesLiveData.value = it
+        }.launchIn(viewModelScope)
     }
 
 }
