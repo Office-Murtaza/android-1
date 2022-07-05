@@ -3,15 +3,15 @@ package com.belcobtm.data.core.factory
 import com.belcobtm.R
 import com.belcobtm.data.disk.database.account.AccountDao
 import com.belcobtm.data.disk.shared.preferences.SharedPreferencesHelper
-import com.belcobtm.data.rest.transaction.response.hash.UtxoItemResponse
+import com.belcobtm.data.rest.transaction.response.hash.UtxoItemData
 import com.belcobtm.domain.Failure
 import com.belcobtm.domain.transaction.item.TransactionPlanItem
 import com.belcobtm.domain.wallet.LocalCoinType
 import com.belcobtm.presentation.core.Numeric
-import com.belcobtm.presentation.tools.extensions.toStringCoin
-import com.belcobtm.presentation.tools.extensions.unit
 import com.belcobtm.presentation.core.provider.string.StringProvider
 import com.belcobtm.presentation.core.toHexBytes
+import com.belcobtm.presentation.tools.extensions.toStringCoin
+import com.belcobtm.presentation.tools.extensions.unit
 import com.google.protobuf.ByteString
 import wallet.core.jni.BitcoinScript
 import wallet.core.jni.HDWallet
@@ -24,7 +24,7 @@ class BlockTransactionInputBuilderFactory(
 ) {
 
     suspend fun createInput(
-        utxos: List<UtxoItemResponse>,
+        utxos: List<UtxoItemData>,
         toAddress: String,
         fromCoin: LocalCoinType,
         fromCoinAmount: Double,
@@ -92,7 +92,7 @@ class BlockTransactionInputBuilderFactory(
 
             input.addUtxo(utxo0)
         }
-
         return input
     }
+
 }

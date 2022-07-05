@@ -1,6 +1,7 @@
 package com.belcobtm.presentation.screens.wallet.withdraw
 
 import android.text.Editable
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -16,7 +17,6 @@ import com.belcobtm.domain.transaction.item.SignedTransactionPlanItem
 import com.belcobtm.domain.transaction.item.TransactionPlanItem
 import com.belcobtm.domain.wallet.LocalCoinType
 import com.belcobtm.domain.wallet.interactor.GetCoinListUseCase
-import com.belcobtm.domain.wallet.interactor.UpdateBalanceUseCase
 import com.belcobtm.domain.wallet.item.CoinDataItem
 import com.belcobtm.domain.wallet.item.isBtcCoin
 import com.belcobtm.domain.wallet.item.isEthRelatedCoin
@@ -36,7 +36,6 @@ class WithdrawViewModel(
     private val stringProvider: StringProvider,
     private val receiverAccountActivatedUseCase: ReceiverAccountActivatedUseCase,
     private val coinCodeProvider: CoinCodeProvider,
-    private val updateBalanceUseCase: UpdateBalanceUseCase,
 ) : ViewModel() {
 
     val transactionLiveData: MutableLiveData<LoadingData<Unit>> = MutableLiveData()
@@ -79,33 +78,39 @@ class WithdrawViewModel(
 
     fun fetchInitialData() {
         _loadingLiveData.value = LoadingData.Loading()
-        getCoinListUseCase.invoke(Unit, onSuccess = { coins ->
-            coinDataItemList = coins
-            fromCoinDataItem = coinDataItemList.find { it.code == coinCode }
-                ?: throw IllegalStateException("Invalid coin code that is not presented in a list $coinCode")
-            getTransactionPlanUseCase(
-                fromCoinDataItem.code,
-                onSuccess = { transactionPlan ->
-                    this.transactionPlan = transactionPlan
-                    getFakeSignedTransactionPlanUseCase(
-                        GetFakeSignedTransactionPlanUseCase.Params(
-                            fromCoinDataItem.code,
-                            transactionPlan,
-                            useMaxAmount = false
-                        ),
-                        onSuccess = { signedTransactionPlan ->
-                            signedTransactionPlanItem = signedTransactionPlan
-                            _fee.value = signedTransactionPlan.fee
-                        }, onError = {
-                            _fee.value = 0.0
-                        })
-                }, onError = {
-                    _loadingLiveData.value = LoadingData.Error(it)
-                })
-            _loadingLiveData.value = LoadingData.Success(Unit)
-        }, onError = {
-            _loadingLiveData.value = LoadingData.Error(it)
-        })
+        // Kostya had some non-reproducible exception here (4 July 22)
+        // Possibly https://console.firebase.google.com/project/belco-wallet/crashlytics/app/android:com.belcobtm/issues/aaf18b3400e3d9f3a297ada401ef8587?time=last-twenty-four-hours
+        try {
+            getCoinListUseCase.invoke(Unit, onSuccess = { coins ->
+                coinDataItemList = coins
+                fromCoinDataItem = coinDataItemList.find { it.code == coinCode }
+                    ?: throw IllegalStateException("Invalid coin code that is not presented in a list $coinCode")
+                getTransactionPlanUseCase(
+                    fromCoinDataItem.code,
+                    onSuccess = { transactionPlan ->
+                        this.transactionPlan = transactionPlan
+                        getFakeSignedTransactionPlanUseCase(
+                            GetFakeSignedTransactionPlanUseCase.Params(
+                                fromCoinDataItem.code,
+                                transactionPlan,
+                                useMaxAmount = false
+                            ),
+                            onSuccess = { signedTransactionPlan ->
+                                signedTransactionPlanItem = signedTransactionPlan
+                                _fee.value = signedTransactionPlan.fee
+                            }, onError = {
+                                _fee.value = 0.0
+                            })
+                    }, onError = {
+                        _loadingLiveData.value = LoadingData.Error(it)
+                    })
+                _loadingLiveData.value = LoadingData.Success(Unit)
+            }, onError = {
+                _loadingLiveData.value = LoadingData.Error(it)
+            })
+        } catch (e: Exception) {
+            Log.e("WITHDRAW exception", e.message.orEmpty())
+        }
     }
 
     fun withdraw(toAddress: String) {
@@ -185,21 +190,7 @@ class WithdrawViewModel(
                 price = getUsdPrice()
             ),
             onSuccess = {
-                updateBalanceUseCase(
-                    UpdateBalanceUseCase.Params(
-                        coinCode = getCoinCode(),
-                        txAmount = coinAmount * getUsdPrice(),
-                        txCryptoAmount = coinAmount,
-                        txFee = _fee.value ?: 0.0,
-                        maxAmountUsed = amount.value?.useMax ?: false,
-                    ),
-                    onSuccess = {
-                        transactionLiveData.value = LoadingData.Success(it)
-                    },
-                    onError = {
-                        transactionLiveData.value = LoadingData.Error(it)
-                    }
-                )
+                transactionLiveData.value = LoadingData.Success(it)
             },
             onError = { transactionLiveData.value = LoadingData.Error(it) }
         )

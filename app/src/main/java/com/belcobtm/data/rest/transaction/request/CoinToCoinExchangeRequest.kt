@@ -1,7 +1,9 @@
 package com.belcobtm.data.rest.transaction.request
 
+import com.belcobtm.domain.transaction.type.TransactionType
+
 data class CoinToCoinExchangeRequest(
-    val type: Int,
+    val type: String = TransactionType.SEND_SWAP.toString(),
     val hex: String,
     val fromAddress: String?,
     val toAddress: String?,

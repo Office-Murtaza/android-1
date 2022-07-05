@@ -13,7 +13,7 @@ data class TransactionDetailsDataItem(
     val cryptoFee: Double?,
     val refCryptoAmount: Double?,
     val link: String?,
-    val timestamp: Long?,
+    val timestamp: Long,
     val fromPhone: String?,
     val toPhone: String?,
     val fromAddress: String?,

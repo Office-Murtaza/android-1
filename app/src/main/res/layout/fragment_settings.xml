@@ -39,15 +39,15 @@
         android:layout_height="wrap_content"
         app:src="@drawable/ic_support"
         app:text="@string/support_label"
-        app:valueColor="@color/red" />
+        app:valueColor="@color/mainRed" />
 
     <!--   TODO:: rework or fix Referral feature   -->
-<!--    <com.belcobtm.presentation.core.views.SettingsItemView-->
-<!--        android:id="@+id/referrals_items"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        app:src="@drawable/ic_referrals"-->
-<!--        app:text="@string/referrals_label" />-->
+    <!--    <com.belcobtm.presentation.core.views.SettingsItemView-->
+    <!--        android:id="@+id/referrals_items"-->
+    <!--        android:layout_width="match_parent"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        app:src="@drawable/ic_referrals"-->
+    <!--        app:text="@string/referrals_label" />-->
 
     <com.belcobtm.presentation.core.views.SettingsItemView
         android:id="@+id/about_item"

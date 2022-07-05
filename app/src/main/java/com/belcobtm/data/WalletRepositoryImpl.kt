@@ -32,25 +32,4 @@ class WalletRepositoryImpl(
     override suspend fun getTotalBalance(): Either<Failure, Double> =
         Either.Right(walletDao.getTotalBalance())
 
-    override suspend fun updateBalance(
-        coinCode: String,
-        newBalance: Double,
-        newBalanceUsd: Double,
-        newTotal: Double
-    ): Either<Failure, Unit> {
-        walletDao.updateBalance(coinCode, newBalanceUsd, newBalance)
-        walletDao.updateTotalBalance(newTotal)
-        return Either.Right(Unit)
-    }
-
-    override suspend fun updateReservedBalance(
-        coinCode: String,
-        newBalance: Double,
-        newBalanceUsd: Double,
-        newTotal: Double
-    ): Either<Failure, Unit> {
-        walletDao.updateReservedBalance(coinCode, newBalanceUsd, newBalance)
-        walletDao.updateTotalBalance(newTotal)
-        return Either.Right(Unit)
-    }
 }

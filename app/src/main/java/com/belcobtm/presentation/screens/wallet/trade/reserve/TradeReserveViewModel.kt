@@ -4,7 +4,6 @@ import android.text.Editable
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import com.belcobtm.R
 import com.belcobtm.domain.transaction.interactor.GetFakeSignedTransactionPlanUseCase
 import com.belcobtm.domain.transaction.interactor.GetMaxValueBySignedTransactionUseCase
@@ -18,7 +17,6 @@ import com.belcobtm.domain.transaction.item.SignedTransactionPlanItem
 import com.belcobtm.domain.transaction.item.TransactionPlanItem
 import com.belcobtm.domain.wallet.LocalCoinType
 import com.belcobtm.domain.wallet.interactor.GetCoinByCodeUseCase
-import com.belcobtm.domain.wallet.interactor.UpdateBalanceUseCase
 import com.belcobtm.domain.wallet.item.CoinDataItem
 import com.belcobtm.domain.wallet.item.isBtcCoin
 import com.belcobtm.domain.wallet.item.isEthRelatedCoin
@@ -27,8 +25,6 @@ import com.belcobtm.presentation.core.item.CoinScreenItem
 import com.belcobtm.presentation.core.item.mapToScreenItem
 import com.belcobtm.presentation.core.mvvm.LoadingData
 import com.belcobtm.presentation.core.provider.string.StringProvider
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 
 class TradeReserveViewModel(
     private val coinCode: String,
@@ -42,7 +38,6 @@ class TradeReserveViewModel(
     private val getMaxValueBySignedTransactionUseCase: GetMaxValueBySignedTransactionUseCase,
     private val stringProvider: StringProvider,
     private val receiverAccountActivatedUseCase: ReceiverAccountActivatedUseCase,
-    private val updateBalanceUseCase: UpdateBalanceUseCase,
 ) : ViewModel() {
 
     private var transactionPlanItem: TransactionPlanItem? = null
@@ -172,8 +167,10 @@ class TradeReserveViewModel(
     ) {
         createTransactionUseCase.invoke(
             params = TradeReserveTransactionCreateUseCase.Params(
-                _amount.value?.useMax ?: false,
-                coinDataItem.code, cryptoAmount, transactionPlanItem
+                useMaxAmountFlag = _amount.value?.useMax ?: false,
+                coinCode = coinDataItem.code,
+                cryptoAmount = cryptoAmount,
+                transactionPlanItem = transactionPlanItem
             ),
             onSuccess = { completeTransaction(it) },
             onError = { _createTransactionLiveData.value = LoadingData.Error(it) }
@@ -189,28 +186,11 @@ class TradeReserveViewModel(
                 _amount.value?.amount ?: 0.0,
                 hash,
                 _fee.value ?: 0.0,
-                transactionPlanItem
+                transactionPlanItem,
+                price = coinDataItem.priceUsd
             ),
             onSuccess = {
-                updateBalanceUseCase(
-                    UpdateBalanceUseCase.Params(
-                        coinCode = getCoinCode(),
-                        txAmount = coinDataItem.priceUsd * (_amount.value?.amount ?: 0.0),
-                        txCryptoAmount = _amount.value?.amount ?: 0.0,
-                        txFee = _fee.value ?: 0.0,
-                        maxAmountUsed = amount.value?.useMax ?: false,
-                    ),
-                    onSuccess = {
-                        // we need to add some delay as server returns 200 before writting to DB
-                        viewModelScope.launch {
-                            delay(1000)
-                            _createTransactionLiveData.value = LoadingData.Success(Unit)
-                        }
-                    },
-                    onError = {
-                        _createTransactionLiveData.value = LoadingData.Error(it)
-                    }
-                )
+                _createTransactionLiveData.value = LoadingData.Success(Unit)
             },
             onError = { _createTransactionLiveData.value = LoadingData.Error(it) }
         )

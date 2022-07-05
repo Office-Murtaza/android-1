@@ -132,8 +132,6 @@ import com.belcobtm.domain.wallet.interactor.ConnectToWalletUseCase
 import com.belcobtm.domain.wallet.interactor.GetChartsUseCase
 import com.belcobtm.domain.wallet.interactor.GetCoinByCodeUseCase
 import com.belcobtm.domain.wallet.interactor.GetCoinListUseCase
-import com.belcobtm.domain.wallet.interactor.UpdateBalanceUseCase
-import com.belcobtm.domain.wallet.interactor.UpdateReservedBalanceUseCase
 import com.belcobtm.presentation.core.DateFormat.CHAT_DATE_FORMAT
 import com.belcobtm.presentation.tools.formatter.CurrencyPriceFormatter.Companion.CURRENCY_PRICE_FORMATTER_QUALIFIER
 import com.belcobtm.presentation.tools.formatter.MilesFormatter.Companion.MILES_FORMATTER_QUALIFIER
@@ -271,7 +269,7 @@ val useCaseModule = module {
     single { TradeReserveTransactionCreateUseCase(get()) }
     single { ObserveMissedMessageCountUseCase(get()) }
     single { UpdateLastSeenMessageTimeStampUseCase(get()) }
-    single { ObserveTransactionsUseCase(get()) }
+    factory { ObserveTransactionsUseCase(get()) }
     single { ConnectToTransactionsUseCase(get()) }
     single { ConnectToBankAccountsUseCase(get()) }
     single { ConnectToPaymentsUseCase(get()) }
@@ -292,8 +290,6 @@ val useCaseModule = module {
     factory { GetVerificationStatusUseCase(get()) }
     factory { CoinCodeMapper() }
     factory { TradesDataToTradeListMapper(get()) }
-    factory { UpdateBalanceUseCase(get()) }
-    factory { UpdateReservedBalanceUseCase(get()) }
     factory { GetNeedToShowRestrictions(get()) }
     factory { SetNeedToShowRestrictionsUseCase(get()) }
     factory {

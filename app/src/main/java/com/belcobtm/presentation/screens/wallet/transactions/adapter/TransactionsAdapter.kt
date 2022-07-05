@@ -4,19 +4,19 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.core.content.ContextCompat
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.belcobtm.R
 import com.belcobtm.databinding.ItemTransactionBinding
 import com.belcobtm.domain.transaction.type.TransactionStatusType
+import com.belcobtm.presentation.screens.wallet.transactions.item.TransactionsAdapterItem
 import com.belcobtm.presentation.tools.extensions.getResText
 import com.belcobtm.presentation.tools.extensions.toStringCoin
-import com.belcobtm.presentation.screens.wallet.transactions.item.TransactionsAdapterItem
-import com.belcobtm.presentation.screens.wallet.transactions.item.TransactionsAdapterItemCallback
 
 class TransactionsAdapter(
     private val itemClickListener: (item: TransactionsAdapterItem) -> Unit
-) : ListAdapter<TransactionsAdapterItem, TransactionsAdapter.Holder>(TransactionsAdapterItemCallback()) {
+) : ListAdapter<TransactionsAdapterItem, TransactionsAdapter.Holder>(getTransactionsAdapterItemCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {
         val binding = ItemTransactionBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -65,10 +65,27 @@ class TransactionsAdapter(
         }
 
         textView.setTextColor(ContextCompat.getColor(textView.context, resTextColor))
-        textView.setBackgroundDrawable(ContextCompat.getDrawable(textView.context, resBackground))
+        textView.background = ContextCompat.getDrawable(textView.context, resBackground)
         textView.setText(resText)
     }
 
     class Holder(val binding: ItemTransactionBinding) : RecyclerView.ViewHolder(binding.root)
+
+    companion object {
+
+        private fun getTransactionsAdapterItemCallback() = object : DiffUtil.ItemCallback<TransactionsAdapterItem>() {
+
+            override fun areItemsTheSame(
+                oldItem: TransactionsAdapterItem,
+                newItem: TransactionsAdapterItem
+            ): Boolean = oldItem.id == newItem.id
+
+            override fun areContentsTheSame(
+                oldItem: TransactionsAdapterItem,
+                newItem: TransactionsAdapterItem
+            ): Boolean = oldItem == newItem
+
+        }
+    }
 
 }

@@ -9,7 +9,10 @@ import com.belcobtm.data.disk.database.account.AccountDao
 import com.belcobtm.data.disk.database.account.AccountEntity
 import com.belcobtm.data.disk.database.service.ServiceType
 import com.belcobtm.domain.Failure
+import com.belcobtm.domain.PreferencesInteractor
 import com.belcobtm.domain.service.ServiceInfoProvider
+import com.belcobtm.domain.settings.type.VerificationStatus
+import com.belcobtm.domain.settings.type.isVerified
 import com.belcobtm.domain.transaction.interactor.SellUseCase
 import com.belcobtm.domain.wallet.interactor.GetCoinListUseCase
 import com.belcobtm.domain.wallet.item.CoinDataItem
@@ -29,7 +32,8 @@ class AtmSellViewModel(
     private val accountDao: AccountDao,
     private val serviceInfoProvider: ServiceInfoProvider,
     private val stringProvider: StringProvider,
-    private val priceFormatter: Formatter<Double>
+    private val priceFormatter: Formatter<Double>,
+    preferences: PreferencesInteractor
 ) : ViewModel() {
 
     val originCoinsData = mutableListOf<CoinDataItem>()
@@ -54,6 +58,9 @@ class AtmSellViewModel(
 
     private val _rate = MutableLiveData<AtmSellRateModelView>()
     val rate: LiveData<AtmSellRateModelView> = _rate
+
+    private val _isLimitsButtonVisible = MutableLiveData<Boolean>()
+    val isLimitsButtonVisible: LiveData<Boolean> = _isLimitsButtonVisible
 
     private val coinAmount: LiveData<Double> =
         DoubleCombinedLiveData(usdAmount, selectedCoin) { amount, coin ->
@@ -89,6 +96,10 @@ class AtmSellViewModel(
 
     private val _dailyLimitFormatted = MutableLiveData<String>()
     val dailyLimitFormatted: LiveData<String> = _dailyLimitFormatted
+
+    init {
+        _isLimitsButtonVisible.value = VerificationStatus.fromString(preferences.userStatus).isVerified().not()
+    }
 
     fun loadInitialData() {
         viewModelScope.launch {

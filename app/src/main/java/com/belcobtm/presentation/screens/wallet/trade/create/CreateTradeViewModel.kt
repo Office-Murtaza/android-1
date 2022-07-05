@@ -13,14 +13,13 @@ import com.belcobtm.domain.trade.create.CheckTradeCreationAvailabilityUseCase
 import com.belcobtm.domain.trade.create.CreateTradeUseCase
 import com.belcobtm.domain.trade.create.GetAvailableTradePaymentOptionsUseCase
 import com.belcobtm.domain.wallet.interactor.GetCoinListUseCase
-import com.belcobtm.domain.wallet.interactor.UpdateReservedBalanceUseCase
 import com.belcobtm.domain.wallet.item.CoinDataItem
-import com.belcobtm.presentation.tools.extensions.toStringCoin
 import com.belcobtm.presentation.core.livedata.TripleCombinedLiveData
 import com.belcobtm.presentation.core.mvvm.LoadingData
 import com.belcobtm.presentation.core.provider.string.StringProvider
 import com.belcobtm.presentation.screens.wallet.trade.create.model.AvailableTradePaymentOption
 import com.belcobtm.presentation.screens.wallet.trade.create.model.CreateTradeItem
+import com.belcobtm.presentation.tools.extensions.toStringCoin
 
 class CreateTradeViewModel(
     private val getAvailableTradePaymentOptionsUseCase: GetAvailableTradePaymentOptionsUseCase,
@@ -28,8 +27,7 @@ class CreateTradeViewModel(
     private val createTradeUseCase: CreateTradeUseCase,
     private val checkTradeCreationAvailabilityUseCase: CheckTradeCreationAvailabilityUseCase,
     private val stringProvider: StringProvider,
-    private val serviceInfoProvider: ServiceInfoProvider,
-    private val updateReservedBalanceUseCase: UpdateReservedBalanceUseCase,
+    private val serviceInfoProvider: ServiceInfoProvider
 ) : ViewModel() {
 
     private lateinit var coinList: List<CoinDataItem>
@@ -264,28 +262,11 @@ class CreateTradeViewModel(
                 fromAmount, toAmount, terms,
                 serviceFee, toAmount.toDouble(), paymentOptions
             ), onSuccess = { createTradeResult ->
-                if (type == TradeType.SELL) {
-                    updateReservedBalanceUseCase(
-                        params = UpdateReservedBalanceUseCase.Params(
-                            coinCode = coinCode,
-                            txCryptoAmount = toAmount / price * (1 + serviceFee / 100 / 2),
-                            txAmount = toAmount * (1 + serviceFee / 100 / 2),
-                            txFee = 0.0,
-                            maxAmountUsed = false,
-                        ),
-                        onSuccess = {
-                            _createTradeLoadingData.value = LoadingData.Success(it)
-                        },
-                        onError = {
-                            _createTradeLoadingData.value = LoadingData.Error(it)
-                        }
-                    )
-                } else {
-                    _createTradeLoadingData.value = LoadingData.Success(createTradeResult)
-                }
+                _createTradeLoadingData.value = LoadingData.Success(createTradeResult)
             }, onError = {
                 _createTradeLoadingData.value = LoadingData.Error(it)
             }
         )
     }
+
 }

@@ -1,7 +1,9 @@
 package com.belcobtm.data.rest.transaction.request
 
+import com.belcobtm.domain.transaction.type.TransactionType
+
 data class SendGiftRequest(
-    val type: Int?,
+    val type: String = TransactionType.SEND_TRANSFER.toString(),
     val cryptoAmount: Double?,
     val phone: String?,
     val message: String?,

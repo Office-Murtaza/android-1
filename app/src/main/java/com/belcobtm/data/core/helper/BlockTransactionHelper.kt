@@ -1,6 +1,7 @@
 package com.belcobtm.data.core.helper
 
 import com.belcobtm.data.core.factory.BlockTransactionInputBuilderFactory
+import com.belcobtm.data.rest.transaction.response.hash.UtxoItemData
 import com.belcobtm.data.rest.transaction.response.hash.UtxoItemResponse
 import com.belcobtm.domain.transaction.item.SignedTransactionPlanItem
 import com.belcobtm.domain.transaction.item.TransactionPlanItem
@@ -19,7 +20,7 @@ class BlockTransactionHelper(private val blockFactory: BlockTransactionInputBuil
         fromCoin: LocalCoinType,
         fromCoinAmount: Double,
         fromTransactionPlan: TransactionPlanItem,
-        utxos: List<UtxoItemResponse>
+        utxos: List<UtxoItemData>
     ): SignedTransactionPlanItem {
         val input = blockFactory.createInput(
             utxos, toAddress, fromCoin,
@@ -42,11 +43,14 @@ class BlockTransactionHelper(private val blockFactory: BlockTransactionInputBuil
         fromCoin: LocalCoinType,
         fromCoinAmount: Double,
         fromTransactionPlan: TransactionPlanItem,
-        utxos: List<UtxoItemResponse>
+        utxos: List<UtxoItemData>
     ): String {
         val input = blockFactory.createInput(
-            utxos, toAddress, fromCoin,
-            fromCoinAmount, fromTransactionPlan
+            utxos,
+            toAddress,
+            fromCoin,
+            fromCoinAmount,
+            fromTransactionPlan
         )
         input.useMaxAmount = useMaxAmountFlag
         val plan = AnySigner.plan(

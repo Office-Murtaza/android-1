@@ -12,7 +12,6 @@ import com.belcobtm.domain.trade.details.GetTradeDetailsUseCase
 import com.belcobtm.domain.trade.order.CreateOrderUseCase
 import com.belcobtm.domain.wallet.LocalCoinType
 import com.belcobtm.domain.wallet.interactor.GetCoinByCodeUseCase
-import com.belcobtm.domain.wallet.interactor.UpdateReservedBalanceUseCase
 import com.belcobtm.presentation.core.livedata.DoubleCombinedLiveData
 import com.belcobtm.presentation.core.livedata.TripleCombinedLiveData
 import com.belcobtm.presentation.core.mvvm.LoadingData
@@ -32,8 +31,7 @@ class TradeCreateOrderViewModel(
     private val createOrderUseCase: CreateOrderUseCase,
     private val stringProvider: StringProvider,
     private val serviceInfoProvider: ServiceInfoProvider,
-    private val priceFormatter: Formatter<Double>,
-    private val updateReservedBalanceUseCase: UpdateReservedBalanceUseCase,
+    private val priceFormatter: Formatter<Double>
 ) : ViewModel() {
 
     private val _initialLoadingData = MutableLiveData<LoadingData<Unit>>()
@@ -42,7 +40,7 @@ class TradeCreateOrderViewModel(
     private val _createTradeOrderLoadingData = MutableLiveData<LoadingData<String>>()
     val createTradeOrderLoadingData: LiveData<LoadingData<String>> = _createTradeOrderLoadingData
 
-    private val _fiatAmount = MutableLiveData<Double>(0.0)
+    private val _fiatAmount = MutableLiveData(0.0)
     val fiatAmount: LiveData<Double> = _fiatAmount
 
     private val _fiatAmountError = MutableLiveData<String?>()
@@ -156,17 +154,6 @@ class TradeCreateOrderViewModel(
             amount,
             platformFeePercent
         ), onSuccess = {
-            updateReservedBalanceUseCase(
-                params = UpdateReservedBalanceUseCase.Params(
-                    coinCode = tradeData.coin.name,
-                    txCryptoAmount = includeFeeCoef * (amountWithoutFee.value?.totalValueCrypto
-                        ?: 0.0),
-                    txAmount = includeFeeCoef * (amountWithoutFee.value?.totalValueCrypto
-                        ?: 0.0) * tradeData.price,
-                    txFee = 0.0,
-                    maxAmountUsed = false
-                )
-            )
             _createTradeOrderLoadingData.value = LoadingData.Success(it)
         }, onError = {
             if (it is Failure.ValidationError) {

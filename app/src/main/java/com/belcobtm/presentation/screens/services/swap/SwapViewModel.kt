@@ -21,7 +21,6 @@ import com.belcobtm.domain.transaction.item.SignedTransactionPlanItem
 import com.belcobtm.domain.transaction.item.TransactionPlanItem
 import com.belcobtm.domain.wallet.LocalCoinType
 import com.belcobtm.domain.wallet.interactor.GetCoinListUseCase
-import com.belcobtm.domain.wallet.interactor.UpdateBalanceUseCase
 import com.belcobtm.domain.wallet.item.CoinDataItem
 import com.belcobtm.domain.wallet.item.isBtcCoin
 import com.belcobtm.presentation.core.SingleLiveData
@@ -41,7 +40,6 @@ class SwapViewModel(
     private val receiverAccountActivatedUseCase: ReceiverAccountActivatedUseCase,
     private val getFakeSignedTransactionPlanUseCase: GetFakeSignedTransactionPlanUseCase,
     private val getMaxValueBySignedTransactionUseCase: GetMaxValueBySignedTransactionUseCase,
-    private val updateBalanceUseCase: UpdateBalanceUseCase,
     private val stringProvider: StringProvider,
 ) : ViewModel() {
 
@@ -357,21 +355,7 @@ class SwapViewModel(
                                 receiveCoin.code
                             ),
                             onSuccess = {
-                                updateBalanceUseCase(
-                                    UpdateBalanceUseCase.Params(
-                                        coinCode = sendCoin.code,
-                                        txAmount = sendAmount,
-                                        txCryptoAmount = sendCoinAmount.value?.amount ?: 0.0,
-                                        txFee = sendSignedPlan.fee,
-                                        maxAmountUsed = sendCoinAmount.value?.useMax ?: false,
-                                    ),
-                                    onSuccess = {
-                                        _swapLoadingData.value = LoadingData.Success(it)
-                                    },
-                                    onError = {
-                                        _swapLoadingData.value = LoadingData.Error(it)
-                                    }
-                                )
+                                _swapLoadingData.value = LoadingData.Success(it)
                             },
                             onError = { _swapLoadingData.value = LoadingData.Error(it) }
                         )

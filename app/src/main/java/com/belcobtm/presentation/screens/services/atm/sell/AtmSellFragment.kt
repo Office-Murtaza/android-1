@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.net.toUri
+import androidx.core.view.isVisible
 import androidx.navigation.fragment.findNavController
 import com.belcobtm.R
 import com.belcobtm.databinding.FragmentAtmSellBinding
@@ -134,6 +135,9 @@ class AtmSellFragment : BaseFragment<FragmentAtmSellBinding>() {
                 it.coinAmount.toStringCoin(),
                 it.coinCode, it.usdAmount
             ).toHtmlSpan()
+        }
+        viewModel.isLimitsButtonVisible.observe(viewLifecycleOwner) {
+            updateLimitsButton.isVisible = it
         }
     }
 

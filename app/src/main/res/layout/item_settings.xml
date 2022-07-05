@@ -38,11 +38,12 @@
         android:id="@+id/value_text"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="@dimen/margin_main"
+        android:layout_marginEnd="24dp"
         android:textColor="@color/gray_text_color"
         android:textStyle="bold"
+        android:visibility="gone"
         app:layout_constraintBottom_toTopOf="@id/divider"
-        app:layout_constraintEnd_toStartOf="@id/iv_chevron"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="5" />
 
@@ -53,7 +54,6 @@
         android:layout_marginEnd="@dimen/margin_main"
         android:contentDescription="@null"
         android:src="@drawable/ic_chevron_right"
-        android:visibility="gone"
         app:layout_constraintBottom_toTopOf="@id/divider"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

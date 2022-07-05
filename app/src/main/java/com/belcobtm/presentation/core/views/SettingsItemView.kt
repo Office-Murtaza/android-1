@@ -7,6 +7,7 @@ import android.util.TypedValue
 import android.view.LayoutInflater
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
 import com.belcobtm.R
 import com.belcobtm.databinding.ItemSettingsBinding
 import com.belcobtm.presentation.tools.extensions.toggle
@@ -62,22 +63,28 @@ class SettingsItemView @JvmOverloads constructor(
     }
 
     fun setValue(value: CharSequence?) {
-        binding.valueText.text = value ?: ""
+        if (value.isNullOrEmpty().not()) {
+            showChevron(false)
+            binding.valueText.text = value
+        }
     }
 
     private fun setValueColor(color: Int) {
         binding.valueText.setTextColor(color)
     }
 
-    private fun showChevron(show: Boolean) {
-        binding.ivChevron.toggle(show)
+    private fun showChevron(toShow: Boolean) {
+        binding.valueText.isVisible = toShow.not()
+        binding.ivChevron.isVisible = toShow
     }
 
-    private fun showSwitch(show: Boolean) {
-        binding.commonSwitch.toggle(show)
+    private fun showSwitch(toShow: Boolean) {
+        showChevron(toShow.not())
+        binding.commonSwitch.isVisible = toShow
     }
 
-    fun setSwitchState(swithed: Boolean) {
-        binding.commonSwitch.isChecked = swithed
+    fun setSwitchState(isSwitched: Boolean) {
+        binding.commonSwitch.isChecked = isSwitched
     }
+
 }

@@ -176,7 +176,6 @@ val viewModelModule = module {
             receiverAccountActivatedUseCase = get(),
             getFakeSignedTransactionPlanUseCase = get(),
             getMaxValueBySignedTransactionUseCase = get(),
-            updateBalanceUseCase = get(),
             stringProvider = get()
         )
     }
@@ -184,10 +183,10 @@ val viewModelModule = module {
     viewModel { (coinCode: String) -> TradeRecallViewModel(coinCode, get(), get(), get(), get()) }
     viewModel { (coinCode: String) ->
         TradeReserveViewModel(
-            coinCode, get(), get(), get(), get(), get(), get(), get(), get(), get(), get(), get()
+            coinCode, get(), get(), get(), get(), get(), get(), get(), get(), get(), get()
         )
     }
-    viewModel { StakingViewModel(get(), get(), get(), get(), get(), get(), get(), get(), get()) }
+    viewModel { StakingViewModel(get(), get(), get(), get(), get(), get(), get(), get()) }
     viewModel { (phone: String) -> SmsCodeViewModel(phone, get(), get()) }
     viewModel { RecoverSeedViewModel(get(), get()) }
     viewModel { CreateSeedViewModel(get(), get(), get(), get()) }
@@ -207,12 +206,12 @@ val viewModelModule = module {
     viewModel {
         SendGiftViewModel(
             get(), get(), get(), get(), get(), get(),
-            get(), get(), get(), get(), get(), get()
+            get(), get(), get(), get(), get()
         )
     }
     viewModel { (coinCode: String) ->
         WithdrawViewModel(
-            coinCode, get(), get(), get(), get(), get(), get(), get(), get(), get(), get()
+            coinCode, get(), get(), get(), get(), get(), get(), get(), get(), get()
         )
     }
     viewModel { (coinCode: String) -> DepositViewModel(coinCode, get()) }
@@ -221,33 +220,39 @@ val viewModelModule = module {
     viewModel { TradeListViewModel(get(), get()) }
     viewModel { TradeUserStatisticViewModel(get()) }
     viewModel { InviteFromContactsViewModel(get(), get(), get(), get()) }
-    viewModel { MyTradeDetailsViewModel(get(), get(), get(), get(), get()) }
+    viewModel { MyTradeDetailsViewModel(get(), get(), get()) }
     viewModel { EditTradeViewModel(get(), get(), get(), get(), get(), get()) }
     viewModel { TradeOrdersViewModel(get()) }
     viewModel { MyTradesViewModel(get(), get()) }
     viewModel {
         AtmSellViewModel(
-            get(), get(), get(), get(), get(),
-            get(named(CURRENCY_PRICE_FORMATTER_QUALIFIER)),
+            getCoinListUseCase = get(),
+            sellUseCase = get(),
+            accountDao = get(),
+            serviceInfoProvider = get(),
+            stringProvider = get(),
+            priceFormatter = get(named(CURRENCY_PRICE_FORMATTER_QUALIFIER)),
+            preferences = get()
         )
     }
     viewModel {
         TradeDetailsViewModel(
-            get(), get(),
-            get(named(CURRENCY_PRICE_FORMATTER_QUALIFIER)),
-            get(named(GOOGLE_MAPS_DIRECTIONS_QUERY_FORMATTER))
+            observeTradeDetailsUseCase = get(),
+            stringProvider = get(),
+            priceFormatter = get(named(CURRENCY_PRICE_FORMATTER_QUALIFIER)),
+            googleMapQueryFormatter = get(named(GOOGLE_MAPS_DIRECTIONS_QUERY_FORMATTER))
         )
     }
     viewModel {
-        CreateTradeViewModel(get(), get(), get(), get(), get(), get(), get())
+        CreateTradeViewModel(get(), get(), get(), get(), get(), get())
     }
     viewModel {
         TradeFilterViewModel(
-            get(),
-            get(),
-            get(),
-            get(),
-            get(named(DISTANCE_INT_PARSER_QUALIFIER))
+            loadFilterDataUseCase = get(),
+            resetFilterUseCase = get(),
+            applyFilterUseCase = get(),
+            stringProvider = get(),
+            distanceParser = get(named(DISTANCE_INT_PARSER_QUALIFIER))
         )
     }
     viewModel {
@@ -262,9 +267,12 @@ val viewModelModule = module {
     }
     viewModel {
         TradeCreateOrderViewModel(
-            get(), get(), get(), get(), get(),
-            get(named(CURRENCY_PRICE_FORMATTER_QUALIFIER)),
-            get()
+            getTradeDetailsUseCase = get(),
+            getCoinByCodeUseCase = get(),
+            createOrderUseCase = get(),
+            stringProvider = get(),
+            serviceInfoProvider = get(),
+            priceFormatter = get(named(CURRENCY_PRICE_FORMATTER_QUALIFIER))
         )
     }
     viewModel { TradeOrderRateViewModel(get(), get()) }

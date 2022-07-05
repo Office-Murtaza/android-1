@@ -12,11 +12,12 @@ class TradeReserveTransactionCompleteUseCase(
 
     override suspend fun run(params: Params): Either<Failure, Unit> =
         repository.tradeReserveTransactionComplete(
-            params.coinCode,
-            params.cryptoAmount,
-            params.hash,
-            params.fee,
-            params.transactionPlanItem
+            coinCode = params.coinCode,
+            cryptoAmount = params.cryptoAmount,
+            hash = params.hash,
+            fee = params.fee,
+            transactionPlanItem = params.transactionPlanItem,
+            price = params.price
         )
 
     data class Params(
@@ -24,6 +25,8 @@ class TradeReserveTransactionCompleteUseCase(
         val cryptoAmount: Double,
         val hash: String,
         val fee: Double,
-        val transactionPlanItem: TransactionPlanItem
+        val transactionPlanItem: TransactionPlanItem,
+        val price: Double
     )
+
 }

@@ -4,6 +4,7 @@ import com.belcobtm.domain.transaction.item.TransactionDetailsDataItem
 import com.belcobtm.domain.transaction.type.TransactionCashStatusType
 import com.belcobtm.domain.transaction.type.TransactionStatusType
 import com.belcobtm.domain.transaction.type.TransactionType
+import java.util.Calendar
 
 data class TransactionDetailsResponse(
     val hash: String?,
@@ -11,7 +12,7 @@ data class TransactionDetailsResponse(
     val link: String?,
     val coin: String?,
     val userId: String?,
-    val type: TransactionType?,
+    val type: String?,
     val status: TransactionStatusType?,
     val cashStatus: TransactionCashStatusType?,
     val cryptoAmount: Double?,
@@ -42,7 +43,7 @@ fun TransactionDetailsResponse.mapToDataItem(coinCode: String): TransactionDetai
     hash = hash,
     gbId = gbId.orEmpty(),
     link = link,
-    timestamp = timestamp,
+    timestamp = timestamp?.takeIf { it > 0 } ?: Calendar.getInstance().timeInMillis, // it's always just sent transaction
     fromPhone = fromPhone,
     toPhone = toPhone,
     fromAddress = fromAddress,
@@ -55,7 +56,7 @@ fun TransactionDetailsResponse.mapToDataItem(coinCode: String): TransactionDetai
     refCoin = refCoin,
     feePercent = feePercent,
     confiramtions = confirmations,
-    type = type ?: TransactionType.UNKNOWN,
+    type = TransactionType.values().firstOrNull { it.name == type } ?: TransactionType.UNKNOWN,
     statusType = status ?: TransactionStatusType.UNKNOWN,
     cashStatusType = cashStatus ?: TransactionCashStatusType.UNKNOWN
 )

@@ -201,8 +201,10 @@
         android:gravity="center"
         android:textColor="@color/mainRed"
         android:textSize="16sp"
+        android:visibility="gone"
         app:layout_constraintBottom_toTopOf="@id/next_button_view"
-        tools:text="Receiver address has a high risk score, transaction not allowed" />
+        tools:text="Receiver address has a high risk score, transaction not allowed"
+        tools:visibility="visible" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/next_button_view"

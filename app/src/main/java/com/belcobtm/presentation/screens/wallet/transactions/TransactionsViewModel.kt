@@ -3,7 +3,6 @@ package com.belcobtm.presentation.screens.wallet.transactions
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.belcobtm.R
 import com.belcobtm.data.disk.database.wallet.WalletDao
@@ -21,6 +20,7 @@ import com.belcobtm.presentation.screens.wallet.transactions.item.TransactionsAd
 import com.belcobtm.presentation.screens.wallet.transactions.item.TransactionsScreenItem
 import com.github.mikephil.charting.data.BarEntry
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.mapNotNull
 import kotlinx.coroutines.flow.onEach
@@ -38,8 +38,9 @@ class TransactionsViewModel(
     val chartLiveData: MutableLiveData<LoadingData<CurrentChartInfo>> =
         MutableLiveData(LoadingData.Loading())
 
-    val transactionListLiveData: LiveData<List<TransactionsAdapterItem>>
-        get() = observeTransactionsUseCase.invoke(coinCode).asLiveData()
+    private val _transactionListLiveData = MutableLiveData<List<TransactionsAdapterItem>>()
+    val transactionListLiveData: LiveData<List<TransactionsAdapterItem>> = _transactionListLiveData
+
     private val chartInfo = HashMap<PriceChartPeriod, ChartDataItem>()
 
     private val _detailsLiveData = MutableLiveData<TransactionsScreenItem>()
@@ -58,7 +59,14 @@ class TransactionsViewModel(
     init {
         _loadingLiveData.value = LoadingData.Loading()
         subscribeToCoinDataItem(coinCode)
+        subscribeOnTransactions()
         updateData()
+    }
+
+    private fun subscribeOnTransactions() {
+        observeTransactionsUseCase.invoke(coinCode).onEach {
+            _transactionListLiveData.value = it
+        }.launchIn(viewModelScope)
     }
 
     fun updateData() {

@@ -23,7 +23,6 @@ import com.belcobtm.domain.transaction.item.SignedTransactionPlanItem
 import com.belcobtm.domain.transaction.item.TransactionPlanItem
 import com.belcobtm.domain.wallet.LocalCoinType
 import com.belcobtm.domain.wallet.interactor.GetCoinListUseCase
-import com.belcobtm.domain.wallet.interactor.UpdateBalanceUseCase
 import com.belcobtm.domain.wallet.item.CoinDataItem
 import com.belcobtm.domain.wallet.item.isBtcCoin
 import com.belcobtm.domain.wallet.item.isEthRelatedCoin
@@ -41,7 +40,6 @@ class SendGiftViewModel(
     private val getFakeSignedTransactionPlanUseCase: GetFakeSignedTransactionPlanUseCase,
     private val getMaxValueBySignedTransactionUseCase: GetMaxValueBySignedTransactionUseCase,
     private val receiverAccountActivatedUseCase: ReceiverAccountActivatedUseCase,
-    private val updateBalanceUseCase: UpdateBalanceUseCase,
     private val serviceInfoProvider: ServiceInfoProvider,
     private val stringProvider: StringProvider
 ) : ViewModel() {
@@ -262,7 +260,7 @@ class SendGiftViewModel(
                                 }
                             }
                         },
-                        onError = { _sendGiftLoadingData.value = LoadingData.Error(it) }
+                        onError = { error -> _sendGiftLoadingData.value = LoadingData.Error(error) }
                     )
                 }
                 if (amount < 20) {
@@ -288,7 +286,7 @@ class SendGiftViewModel(
                                 _sendGiftLoadingData.value = LoadingData.DismissProgress()
                             }
                         },
-                        onError = { _sendGiftLoadingData.value = LoadingData.Error(it) }
+                        onError = { error -> _sendGiftLoadingData.value = LoadingData.Error(error) }
                     )
                 }
             } else {
@@ -332,21 +330,7 @@ class SendGiftViewModel(
                 transactionPlanItem = transactionPlanItem
             ),
             onSuccess = {
-                updateBalanceUseCase(
-                    UpdateBalanceUseCase.Params(
-                        coinCode = coinToSend.code,
-                        txAmount = usdAmount,
-                        txCryptoAmount = _amount.value?.amount ?: 0.0,
-                        txFee = _fee.value ?: 0.0,
-                        maxAmountUsed = _amount.value?.useMax ?: false,
-                    ),
-                    onSuccess = {
-                        _sendGiftLoadingData.value = LoadingData.Success(it)
-                    },
-                    onError = {
-                        _sendGiftLoadingData.value = LoadingData.Error(it)
-                    }
-                )
+                _sendGiftLoadingData.value = LoadingData.Success(it)
             },
             onError = { _sendGiftLoadingData.value = LoadingData.Error(it) }
         )

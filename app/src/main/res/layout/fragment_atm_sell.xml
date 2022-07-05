@@ -193,35 +193,38 @@
             android:id="@+id/platform_fee_text_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="@dimen/margin_main"
-            android:layout_marginBottom="@dimen/margin_half"
             android:textAppearance="@style/Text.Regular1"
-            app:layout_constraintBottom_toTopOf="@id/sell_button"
+            app:layout_constraintBottom_toTopOf="@id/buttonsContainer"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             tools:text="3% ~ 0.25673 LTC" />
 
-        <Button
-            android:id="@+id/sell_button"
-            style="@style/Button.Primary"
-            android:layout_marginBottom="0dp"
-            android:text="@string/submit"
-            android:layout_margin="16dp"
-            app:layout_constraintBottom_toTopOf="@id/update_limits_button"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
-
-        <Button
-            android:id="@+id/update_limits_button"
-            style="@style/Button.Secondary.NoOutlined"
-            android:layout_marginStart="@dimen/margin_main"
-            android:layout_marginEnd="@dimen/margin_main"
+        <!-- To save the same bottom padding if update_limits_button is Gone -->
+        <LinearLayout
+            android:id="@+id/buttonsContainer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="16dp"
             android:layout_marginBottom="@dimen/margin_main"
-            android:text="@string/update_limits_button_label"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            tools:visibility="visible" />
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="parent">
+
+            <Button
+                android:id="@+id/sell_button"
+                style="@style/Button.Primary"
+                android:layout_width="match_parent"
+                android:layout_marginBottom="4dp"
+                android:text="@string/submit" />
+
+            <Button
+                android:id="@+id/update_limits_button"
+                style="@style/Button.Secondary.NoOutlined"
+                android:layout_width="match_parent"
+                android:layout_marginTop="4dp"
+                android:text="@string/update_limits_button_label"
+                tools:visibility="visible" />
+
+        </LinearLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

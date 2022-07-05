@@ -17,7 +17,6 @@ import com.belcobtm.domain.transaction.item.StakeDetailsDataItem
 import com.belcobtm.domain.transaction.item.TransactionPlanItem
 import com.belcobtm.domain.wallet.LocalCoinType
 import com.belcobtm.domain.wallet.interactor.GetCoinByCodeUseCase
-import com.belcobtm.domain.wallet.interactor.UpdateBalanceUseCase
 import com.belcobtm.domain.wallet.item.CoinDataItem
 import com.belcobtm.presentation.core.DateFormat
 import com.belcobtm.presentation.core.SingleLiveData
@@ -33,7 +32,6 @@ class StakingViewModel(
     private val stakeWithdrawUseCase: StakeWithdrawUseCase,
     private val stakeDetailsUseCase: StakeDetailsGetUseCase,
     private val getTransactionPlanUseCase: GetTransactionPlanUseCase,
-    private val updateBalanceUseCase: UpdateBalanceUseCase,
     private val serviceInfoProvider: ServiceInfoProvider,
     private val stringProvider: StringProvider,
 ) : ViewModel() {
@@ -149,27 +147,13 @@ class StakingViewModel(
                 usdAmount, transactionPlanItem,
             ),
             onSuccess = {
-                updateBalanceUseCase.invoke(
-                    UpdateBalanceUseCase.Params(
-                        coinCode = coinDataItem.code,
-                        txAmount = usdAmount,
-                        txCryptoAmount = amount,
-                        txFee = transactionPlanItem.txFee,
-                        maxAmountUsed = amount == getMaxValue()
-                    ),
-                    onSuccess = {
-                        viewModelScope.launch {
-                            delay(1000L)
-                            loadData()
-                            _transactionLiveData.value =
-                                LoadingData.Success(StakingTransactionState.CREATE)
-                        }
-                    },
-                    onError = {
-                        _transactionLiveData.value =
-                            LoadingData.Error(it, StakingTransactionState.CREATE)
-                    }
-                )
+                viewModelScope.launch {
+                    delay(1000L)
+                    loadData()
+                    _transactionLiveData.value =
+                        LoadingData.Success(StakingTransactionState.CREATE)
+                }
+
             },
             onError = {
                 _transactionLiveData.value = LoadingData.Error(it, StakingTransactionState.CREATE)

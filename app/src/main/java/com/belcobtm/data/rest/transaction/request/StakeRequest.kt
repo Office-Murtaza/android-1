@@ -1,7 +1,7 @@
 package com.belcobtm.data.rest.transaction.request
 
 data class StakeRequest(
-    val type: Int,
+    val type: String,
     val fromAddress: String,
     val toAddress: String,
     val cryptoAmount: Double,

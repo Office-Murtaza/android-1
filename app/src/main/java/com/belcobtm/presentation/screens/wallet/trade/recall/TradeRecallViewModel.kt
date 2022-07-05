@@ -83,8 +83,9 @@ class TradeRecallViewModel(
         _transactionLiveData.value = LoadingData.Loading()
         completeTransactionUseCase.invoke(
             params = TradeRecallTransactionCompleteUseCase.Params(
-                coinDataItem.code,
-                selectedAmount
+                coinCode = coinDataItem.code,
+                cryptoAmount = selectedAmount,
+                price = coinDataItem.priceUsd
             ),
             onSuccess = {
                 // we need to add some delay as server returns 200 before writting to DB
