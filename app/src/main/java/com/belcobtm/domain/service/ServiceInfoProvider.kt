@@ -9,7 +9,7 @@ class ServiceInfoProvider(
     fun observeServices(): Flow<List<ServiceItem>> =
         serviceRepository.observeServices()
 
-    fun getService(serviceType: ServiceType): ServiceItem? =
+    suspend fun getService(serviceType: ServiceType): ServiceItem? =
         serviceRepository.getService(serviceType)
 
 }

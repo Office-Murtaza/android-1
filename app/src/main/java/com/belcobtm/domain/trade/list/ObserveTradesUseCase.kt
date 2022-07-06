@@ -1,7 +1,7 @@
 package com.belcobtm.domain.trade.list
 
-import com.belcobtm.data.model.trade.TradeData
-import com.belcobtm.data.model.trade.TradeType
+import com.belcobtm.domain.trade.model.TradeHistoryDomainModel
+import com.belcobtm.domain.trade.model.trade.TradeType
 import com.belcobtm.domain.Either
 import com.belcobtm.domain.Failure
 import com.belcobtm.domain.PreferencesInteractor
@@ -24,7 +24,7 @@ class ObserveTradesUseCase(
                 tradeData.isRight ->
                     Either.Right(
                         mapper.map(
-                            (tradeData as Either.Right<TradeData>).b,
+                            (tradeData as Either.Right<TradeHistoryDomainModel>).b,
                             params, filter,
                             preferences.userId
                         )
@@ -34,6 +34,6 @@ class ObserveTradesUseCase(
             }
         }.flowOn(Dispatchers.Default)
 
-    data class Params(val numbersToLoad: Int, @TradeType val tradeType: Int)
+    data class Params(val numbersToLoad: Int, val tradeType: TradeType)
 
 }

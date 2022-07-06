@@ -3,12 +3,13 @@ package com.belcobtm.presentation.screens.wallet.trade.order.create
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.belcobtm.R
-import com.belcobtm.domain.service.ServiceType
-import com.belcobtm.data.model.trade.TradeType
 import com.belcobtm.domain.Failure
 import com.belcobtm.domain.service.ServiceInfoProvider
+import com.belcobtm.domain.service.ServiceType
 import com.belcobtm.domain.trade.details.GetTradeDetailsUseCase
+import com.belcobtm.domain.trade.model.trade.TradeType
 import com.belcobtm.domain.trade.order.CreateOrderUseCase
 import com.belcobtm.domain.wallet.LocalCoinType
 import com.belcobtm.domain.wallet.interactor.GetCoinByCodeUseCase
@@ -24,6 +25,7 @@ import com.belcobtm.presentation.screens.wallet.trade.order.create.model.TradeFe
 import com.belcobtm.presentation.screens.wallet.trade.order.create.model.TradeOrderItem
 import com.belcobtm.presentation.tools.extensions.toStringCoin
 import com.belcobtm.presentation.tools.formatter.Formatter
+import kotlinx.coroutines.launch
 
 class TradeCreateOrderViewModel(
     private val getTradeDetailsUseCase: GetTradeDetailsUseCase,
@@ -95,8 +97,10 @@ class TradeCreateOrderViewModel(
         getTradeDetailsUseCase(tradeId, onSuccess = { trade ->
             getCoinByCodeUseCase(trade.coin.name, onSuccess = { coinDataItem ->
                 this.trade = trade
-                this.platformFeePercent =
-                    serviceInfoProvider.getService(ServiceType.TRADE)?.feePercent ?: 0.0
+                viewModelScope.launch {
+                    platformFeePercent =
+                        serviceInfoProvider.getService(ServiceType.TRADE)?.feePercent ?: 0.0
+                }
                 this._coin.value = trade.coin
                 this.reservedBalanceUsd = coinDataItem.reservedBalanceUsd
                 _reservedBalance.value = ReservedBalance(
@@ -116,8 +120,8 @@ class TradeCreateOrderViewModel(
         }, onError = { _initialLoadingData.value = LoadingData.Error(it) })
     }
 
-    fun createOrder() {
-        val tradeData = trade ?: return
+    fun createOrder() = viewModelScope.launch {
+        val tradeData = trade ?: return@launch
         val amount = fiatAmount.value ?: 0.0
         val takerActionType =
             if (tradeData.tradeType == TradeType.BUY) TradeType.SELL else TradeType.BUY
@@ -125,17 +129,17 @@ class TradeCreateOrderViewModel(
         if (amount == 0.0) {
             _fiatAmountError.value =
                 stringProvider.getString(R.string.trade_buy_sell_dialog_amount_zero_error)
-            return
+            return@launch
         }
         if (takerActionType == TradeType.BUY && amount !in tradeAmountRange) {
             _fiatAmountError.value =
                 stringProvider.getString(R.string.trade_buy_sell_dialog_amount_not_in_range_error)
-            return
+            return@launch
         }
         if (takerActionType == TradeType.SELL && amount > reservedBalanceUsd) {
             _fiatAmountError.value =
                 stringProvider.getString(R.string.trade_buy_sell_dialog_amount_too_big_error)
-            return
+            return@launch
         }
         val service = serviceInfoProvider.getService(ServiceType.TRADE)
         if (service == null || service.txLimit < amount || service.remainLimit < amount) {
@@ -144,15 +148,17 @@ class TradeCreateOrderViewModel(
                     stringProvider.getString(R.string.limits_exceeded_validation_message)
                 )
             )
-            return
+            return@launch
         }
         _fiatAmountError.value = null
         _createTradeOrderLoadingData.value = LoadingData.Loading()
         createOrderUseCase(TradeOrderItem(
-            tradeData.tradeId, tradeData.price,
-            cryptoAmount.value?.cryptoAmount?.toStringCoin()?.toDouble() ?: 0.0,
-            amount,
-            platformFeePercent
+            tradeId = tradeData.tradeId,
+            price = tradeData.price,
+            cryptoAmount = cryptoAmount.value?.cryptoAmount?.toStringCoin()?.toDouble() ?: 0.0,
+            fiatAmount = amount,
+            feePercent = platformFeePercent,
+            coin = tradeData.coin
         ), onSuccess = {
             _createTradeOrderLoadingData.value = LoadingData.Success(it)
         }, onError = {

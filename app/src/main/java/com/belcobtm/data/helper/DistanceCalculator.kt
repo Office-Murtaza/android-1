@@ -1,6 +1,6 @@
 package com.belcobtm.data.helper
 
-import com.belcobtm.data.model.trade.Trade
+import com.belcobtm.domain.trade.model.trade.TradeDomainModel
 import com.belcobtm.data.provider.location.LocationProvider
 import kotlin.math.atan2
 import kotlin.math.cos
@@ -16,7 +16,7 @@ class DistanceCalculator(
         const val KM_TO_MILES_MULTIPLIER = 0.62137
     }
 
-    suspend fun updateDistanceToTrades(trades: MutableMap<String, Trade>): MutableMap<String, Trade> {
+    suspend fun updateDistanceToTrades(trades: MutableMap<String, TradeDomainModel>): MutableMap<String, TradeDomainModel> {
         val currentLocation = locationProvider.getCurrentLocation() ?: return trades
         val currentLat = currentLocation.latitude
         val currentLong = currentLocation.longitude

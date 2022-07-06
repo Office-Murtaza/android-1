@@ -6,18 +6,19 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import com.belcobtm.R
-import com.belcobtm.data.inmemory.trade.TradeInMemoryCache.Companion.UNDEFINED_DISTANCE
 import com.belcobtm.databinding.ItemTradeBinding
+import com.belcobtm.domain.trade.model.trade.TradeDomainModel.Companion.UNDEFINED_DISTANCE
 import com.belcobtm.presentation.core.adapter.MultiTypeAdapter
 import com.belcobtm.presentation.core.adapter.delegate.AdapterDelegate
 import com.belcobtm.presentation.core.adapter.holder.MultiTypeViewHolder
+import com.belcobtm.presentation.screens.wallet.trade.list.model.TradeItem
 import com.belcobtm.presentation.tools.extensions.resIcon
 import com.belcobtm.presentation.tools.extensions.toHtmlSpan
-import com.belcobtm.presentation.screens.wallet.trade.list.model.TradeItem
 
 class TradeItemDelegate(
     private val onTradeClickListener: (TradeItem) -> Unit
 ) : AdapterDelegate<TradeItem, TradeItemViewHolder>() {
+
     override val viewType: Int
         get() = TradeItem.TRADE_ITEM_LIST_TYPE
 

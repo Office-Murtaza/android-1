@@ -1,6 +1,6 @@
 package com.belcobtm.presentation.screens.wallet.trade.edit
 
-import com.belcobtm.data.model.trade.PaymentOption
+import com.belcobtm.domain.trade.model.PaymentMethodType
 
 data class EditTradeItem(
     val tradeId: String,
@@ -10,5 +10,5 @@ data class EditTradeItem(
     val terms: String,
     val feePercent: Double,
     val fiatAmount: Double,
-    val paymentOptions: List<@PaymentOption Int>
+    val paymentOptions: List<PaymentMethodType>
 )

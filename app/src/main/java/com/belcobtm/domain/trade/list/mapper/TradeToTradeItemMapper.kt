@@ -1,30 +1,43 @@
 package com.belcobtm.domain.trade.list.mapper
 
-import com.belcobtm.data.model.trade.Trade
-import com.belcobtm.domain.wallet.LocalCoinType
-import com.belcobtm.presentation.tools.formatter.Formatter
+import com.belcobtm.domain.trade.model.trade.TradeDomainModel
 import com.belcobtm.presentation.screens.wallet.trade.list.model.TradeItem
+import com.belcobtm.presentation.tools.formatter.Formatter
 
 class TradeToTradeItemMapper(
     private val paymentOptionMapper: TradePaymentOptionMapper,
     private val milesFormatter: Formatter<Double>,
     private val priceFormatter: Formatter<Double>,
-    private val tradeCountFormatter: Formatter<Int>,
-    private val statusMapper: TraderStatusToIconMapper
+    private val tradeCountFormatter: Formatter<Int>
 ) {
 
-    fun map(trade: Trade): TradeItem =
+    fun map(trade: TradeDomainModel): TradeItem =
         with(trade) {
             TradeItem(
-                id, type, LocalCoinType.valueOf(coinCode),
-                status, price, timestamp, priceFormatter.format(price),
-                minLimit, priceFormatter.format(minLimit),
-                maxLimit, priceFormatter.format(maxLimit),
-                ordersCount, paymentMethods.map(paymentOptionMapper::map),
-                terms, makerId, statusMapper.map(makerStatus),
-                makerUsername, makerTotalTrades, tradeCountFormatter.format(makerTotalTrades),
-                makerTradingRate, makerLatitude, makerLongitude, distance,
-                milesFormatter.format(distance)
+                tradeId = id,
+                tradeType = type,
+                coin = coin,
+                status = status,
+                price = price,
+                timestamp = timestamp,
+                priceFormatted = priceFormatter.format(price),
+                minLimit = minLimit,
+                minLimitFormatted = priceFormatter.format(minLimit),
+                maxLimit = maxLimit,
+                maxLimitFormatted = priceFormatter.format(maxLimit),
+                ordersCount = ordersCount,
+                paymentMethods = paymentMethods.map(paymentOptionMapper::map),
+                terms = terms,
+                makerId = makerId,
+                makerPublicId = makerUsername,
+                makerTotalTrades = makerTotalTrades,
+                makerTotalTradesFormatted = tradeCountFormatter.format(makerTotalTrades),
+                makerTradingRate = makerTradingRate,
+                makerLatitude = makerLatitude,
+                makerLongitude = makerLongitude,
+                distance = distance,
+                distanceFormatted = milesFormatter.format(distance)
             )
         }
+
 }

@@ -14,7 +14,7 @@ class AccountRepositoryImpl(
 ) : AccountRepository {
 
     override suspend fun getAvailableAccounts(): List<AccountDataItem> {
-        return (daoAccount.getAvailableAccounts() ?: emptyList()).map { it.mapToDataItem() }
+        return daoAccount.getAvailableAccounts().orEmpty().map { it.mapToDataItem() }
     }
 
     override suspend fun updateAccountCoinsList(

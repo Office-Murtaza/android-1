@@ -18,14 +18,15 @@ class SwapUseCase(
     override suspend fun run(params: Params): Either<Failure, Unit> {
         locationProvider.getCurrentLocation()?.let {
             return repository.exchange(
-                params.useMaxAmountFlag,
-                params.coinFromAmount,
-                params.coinToAmount,
-                params.coinFrom,
-                params.coinTo,
-                params.fee,
-                params.transactionPlanItem,
-                it
+                useMaxAmountFlag = params.useMaxAmountFlag,
+                fromCoinAmount = params.coinFromAmount,
+                toCoinAmount = params.coinToAmount,
+                fromCoin = params.coinFrom,
+                coinTo = params.coinTo,
+                fee = params.fee,
+                fiatAmount = params.fiatAmount,
+                transactionPlanItem = params.transactionPlanItem,
+                location = it
             )
         }
         return Either.Left(Failure.LocationError(stringProvider.getString(R.string.location_required_on_trade_creation)))
@@ -37,6 +38,7 @@ class SwapUseCase(
         val coinToAmount: Double,
         val coinFrom: String,
         val fee: Double,
+        val fiatAmount: Double,
         val transactionPlanItem: TransactionPlanItem,
         val coinTo: String
     )

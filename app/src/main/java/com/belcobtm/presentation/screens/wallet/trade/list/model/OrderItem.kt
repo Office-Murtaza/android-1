@@ -1,7 +1,7 @@
 package com.belcobtm.presentation.screens.wallet.trade.list.model
 
 import androidx.annotation.DrawableRes
-import com.belcobtm.data.model.trade.TraderStatus
+import com.belcobtm.domain.trade.model.trade.TradeType
 import com.belcobtm.domain.wallet.LocalCoinType
 import com.belcobtm.presentation.core.adapter.model.ListItem
 
@@ -9,7 +9,7 @@ data class OrderItem(
     val orderId: String,
     val trade: TradeItem,
     val myTradeId: String,
-    val mappedTradeType: Int,
+    val mappedTradeType: TradeType,
     val coin: LocalCoinType,
     val orderStatus: OrderStatusItem,
     val timestamp: Long,
@@ -21,9 +21,7 @@ data class OrderItem(
     val paymentOptions: List<TradePayment>,
     val terms: String,
     val makerId: String,
-    @TraderStatus val makerStatusId: Int,
-    @DrawableRes val makerStatusIconRes: Int,
-    val makerRate: Double?,
+    val makerRate: Int,
     val makerPublicId: String,
     val makerLatitude: Double?,
     val makerLongitude: Double?,
@@ -31,9 +29,7 @@ data class OrderItem(
     val makerTotalTradesFormatted: String,
     val makerTradingRate: Double?,
     val takerId: String,
-    @TraderStatus val takerStatusId: Int,
-    @DrawableRes val takerStatusIconRes: Int,
-    val takerRate: Double?,
+    val takerRate: Int,
     val takerPublicId: String,
     val takerLatitude: Double?,
     val takerLongitude: Double?,

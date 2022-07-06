@@ -7,9 +7,9 @@ import androidx.lifecycle.viewModelScope
 import com.belcobtm.R
 import com.belcobtm.data.disk.database.account.AccountDao
 import com.belcobtm.data.disk.database.account.AccountEntity
-import com.belcobtm.domain.service.ServiceType
 import com.belcobtm.domain.Failure
 import com.belcobtm.domain.service.ServiceInfoProvider
+import com.belcobtm.domain.service.ServiceType
 import com.belcobtm.domain.transaction.interactor.GetFakeSignedTransactionPlanUseCase
 import com.belcobtm.domain.transaction.interactor.GetMaxValueBySignedTransactionUseCase
 import com.belcobtm.domain.transaction.interactor.GetSignedTransactionPlanUseCase
@@ -198,7 +198,7 @@ class SwapViewModel(
         setSendAmountInternal(sendAmount, useMax = false)
     }
 
-    private fun setSendAmountInternal(sendAmount: Double, useMax: Boolean) {
+    private fun setSendAmountInternal(sendAmount: Double, useMax: Boolean) = viewModelScope.launch {
         _sendCoinAmount.value = AmountItem(sendAmount, useMax = useMax)
         _receiveCoinAmount.value =
             AmountItem(calcReceiveAmountFromSend(sendAmount), useMax = useMax)
@@ -225,7 +225,7 @@ class SwapViewModel(
         setReceiveAmountInternal(receiveAmount, useMax = false)
     }
 
-    private fun setReceiveAmountInternal(receiveAmount: Double, useMax: Boolean) {
+    private fun setReceiveAmountInternal(receiveAmount: Double, useMax: Boolean) = viewModelScope.launch {
         val sendAmount = calcSendAmountFromReceive(receiveAmount)
         _sendCoinAmount.value = AmountItem(sendAmount, useMax = useMax)
         _receiveCoinAmount.value = AmountItem(receiveAmount, useMax = useMax)
@@ -263,14 +263,14 @@ class SwapViewModel(
         )
     }
 
-    fun executeSwap() {
-        val sendCoinItem = coinToSend.value ?: return
-        val receiveCoinItem = coinToReceive.value ?: return
-        val sendCoinAmount = sendCoinAmount.value?.amount ?: return
-        val receiveCoinAmount = receiveCoinAmount.value?.amount ?: return
+    fun executeSwap() = viewModelScope.launch {
+        val sendCoinItem = coinToSend.value ?: return@launch
+        val receiveCoinItem = coinToReceive.value ?: return@launch
+        val sendCoinAmount = sendCoinAmount.value?.amount ?: return@launch
+        val receiveCoinAmount = receiveCoinAmount.value?.amount ?: return@launch
         _coinToReceiveError.value = ValidationResult.Valid
         if (!validateCoinToSendAmount(sendCoinAmount) || !validateCoinsAmount()) {
-            return
+            return@launch
         }
         val convertedValue = usdReceiveAmount.value ?: 0.0
         val service = serviceInfoProvider.getService(ServiceType.SWAP)
@@ -280,7 +280,7 @@ class SwapViewModel(
                     stringProvider.getString(R.string.limits_exceeded_validation_message)
                 )
             )
-            return
+            return@launch
         }
         _swapLoadingData.value = LoadingData.Loading()
         if (receiveCoinItem.code == LocalCoinType.XRP.name) {
@@ -342,23 +342,26 @@ class SwapViewModel(
                         receiveAmount, fromTransactionPlanItem, receiveUseMax
                     ),
                     onSuccess = { receiveSignedPlan ->
-                        signedToTransactionPlanItem = receiveSignedPlan
-                        _receiveFeeAmount.value = sendSignedPlan.fee
-                        swapUseCase(
-                            params = SwapUseCase.Params(
-                                _sendCoinAmount.value?.useMax ?: false,
-                                sendAmount.toStringCoin().toDouble(),
-                                receiveAmount.toStringCoin().toDouble(),
-                                sendCoin.code,
-                                serviceInfoProvider.getService(ServiceType.SWAP)?.feePercent ?: 0.0,
-                                fromTransactionPlanItem,
-                                receiveCoin.code
-                            ),
-                            onSuccess = {
-                                _swapLoadingData.value = LoadingData.Success(it)
-                            },
-                            onError = { _swapLoadingData.value = LoadingData.Error(it) }
-                        )
+                        viewModelScope.launch {
+                            signedToTransactionPlanItem = receiveSignedPlan
+                            _receiveFeeAmount.value = sendSignedPlan.fee
+                            swapUseCase(
+                                params = SwapUseCase.Params(
+                                    useMaxAmountFlag = _sendCoinAmount.value?.useMax ?: false,
+                                    coinFromAmount = sendAmount.toStringCoin().toDouble(),
+                                    coinToAmount = receiveAmount.toStringCoin().toDouble(),
+                                    coinFrom = sendCoin.code,
+                                    fee = serviceInfoProvider.getService(ServiceType.SWAP)?.feePercent ?: 0.0,
+                                    fiatAmount = sendAmount * sendCoin.priceUsd,
+                                    transactionPlanItem = fromTransactionPlanItem,
+                                    coinTo = receiveCoin.code
+                                ),
+                                onSuccess = {
+                                    _swapLoadingData.value = LoadingData.Success(it)
+                                },
+                                onError = { _swapLoadingData.value = LoadingData.Error(it) }
+                            )
+                        }
                     },
                     onError = { _swapLoadingData.value = LoadingData.Error(it) }
                 )
@@ -485,7 +488,7 @@ class SwapViewModel(
         return amountsArePositive.also { _submitEnabled.value = it }
     }
 
-    private fun calcReceiveAmountFromSend(sendAmount: Double): Double {
+    private suspend fun calcReceiveAmountFromSend(sendAmount: Double): Double {
         val currentCoinToSend = coinToSend.value ?: return 0.0
         val currentCoinToReceive = coinToReceive.value ?: return 0.0
         return calcSwapAmountFromSend(
@@ -495,7 +498,7 @@ class SwapViewModel(
         )
     }
 
-    private fun calcSendAmountFromReceive(receiveAmount: Double): Double {
+    private suspend fun calcSendAmountFromReceive(receiveAmount: Double): Double {
         val currentCoinToSend = coinToSend.value ?: return 0.0
         val currentCoinToReceive = coinToReceive.value ?: return 0.0
         return calcSwapAmountFromReceive(
@@ -505,7 +508,7 @@ class SwapViewModel(
         )
     }
 
-    private fun calcSwapAmountFromSend(
+    private suspend fun calcSwapAmountFromSend(
         sendCoin: CoinDataItem,
         receiveCoin: CoinDataItem,
         sendAmount: Double
@@ -520,7 +523,7 @@ class SwapViewModel(
         return 0.0.coerceAtLeast(result)
     }
 
-    private fun calcSwapAmountFromReceive(
+    private suspend fun calcSwapAmountFromReceive(
         sendCoin: CoinDataItem,
         receiveCoin: CoinDataItem,
         receiveAmount: Double
@@ -542,7 +545,7 @@ class SwapViewModel(
         return toPlanItem.fee
     }
 
-    private fun getCoinFeeActual(): Double {
+    private suspend fun getCoinFeeActual(): Double {
         return 1 - (serviceInfoProvider.getService(ServiceType.SWAP)?.feePercent ?: 0.0) / 100
     }
 
@@ -550,9 +553,9 @@ class SwapViewModel(
         return coin1.priceUsd / coin2.priceUsd
     }
 
-    private fun updatePlatformFeeInfo(sendAmount: Double) {
-        val coinToSend = coinToSend.value ?: return
-        val coinToReceive = coinToReceive.value ?: return
+    private fun updatePlatformFeeInfo(sendAmount: Double) = viewModelScope.launch {
+        val coinToSend = coinToSend.value ?: return@launch
+        val coinToReceive = coinToReceive.value ?: return@launch
         // Platform fee(B) = amount(A) x price(A) / price(B) x (swapProfitPercent / 100)
         val receiveRawAmount = sendAmount * calcCoinsRatio(coinToSend, coinToReceive)
         val platformFeeActual = serviceInfoProvider.getService(ServiceType.SWAP)?.feePercent ?: 0.0

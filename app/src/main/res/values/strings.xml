@@ -823,11 +823,14 @@
     <string name="create_trade_button_title">Submit</string>
     <string name="create_trade_price_input_hint">Price, $</string>
     <string name="trade_create_terms_hint">Type your terms or comments</string>
+
     <string name="create_trade_cash_label">Cash</string>
     <string name="create_trade_paypal_label">PayPal</string>
     <string name="create_trade_venmo_label">Venmo</string>
     <string name="create_trade_cash_app_label">Cash App</string>
     <string name="create_trade_payoneer_label">Payoneer</string>
+    <string name="create_trade_other_label">Other</string>
+
     <string name="min_price_value_label">$0</string>
     <string name="max_price_value_label">$10000</string>
     <string name="create_trade_price_zero_error">Price cannot be zero</string>

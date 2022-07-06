@@ -13,7 +13,7 @@ interface ServiceDao {
     fun getServicesFlow(): Flow<List<ServiceEntity>>
 
     @Query("SELECT * FROM service WHERE id = :type")
-    fun getServiceByType(type: Int): ServiceEntity?
+    suspend fun getServiceByType(type: Int): ServiceEntity?
 
     @Query("DELETE FROM service")
     fun clear()
@@ -26,4 +26,5 @@ interface ServiceDao {
         clear()
         insert(services)
     }
+
 }

@@ -1,23 +1,22 @@
 package com.belcobtm.presentation.screens.wallet.trade.details
 
-import androidx.annotation.DrawableRes
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.belcobtm.R
-import com.belcobtm.data.inmemory.trade.TradeInMemoryCache.Companion.UNDEFINED_DISTANCE
-import com.belcobtm.data.model.trade.TradeType
 import com.belcobtm.domain.Either
 import com.belcobtm.domain.Failure
 import com.belcobtm.domain.trade.details.ObserveTradeDetailsUseCase
+import com.belcobtm.domain.trade.model.trade.TradeDomainModel.Companion.UNDEFINED_DISTANCE
+import com.belcobtm.domain.trade.model.trade.TradeType
 import com.belcobtm.domain.wallet.LocalCoinType
-import com.belcobtm.presentation.tools.formatter.Formatter
-import com.belcobtm.presentation.tools.formatter.GoogleMapsDirectionQueryFormatter
 import com.belcobtm.presentation.core.mvvm.LoadingData
 import com.belcobtm.presentation.core.provider.string.StringProvider
 import com.belcobtm.presentation.screens.wallet.trade.list.model.TradeItem
 import com.belcobtm.presentation.screens.wallet.trade.list.model.TradePayment
+import com.belcobtm.presentation.tools.formatter.Formatter
+import com.belcobtm.presentation.tools.formatter.GoogleMapsDirectionQueryFormatter
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.launch
@@ -35,17 +34,14 @@ class TradeDetailsViewModel(
     private val _selectedCoin = MutableLiveData<LocalCoinType>()
     val selectedCoin: LiveData<LocalCoinType> = _selectedCoin
 
-    private val _tradeType = MutableLiveData<Pair<@TradeType Int, Boolean>>()
-    val tradeType: LiveData<Pair<@TradeType Int, Boolean>> = _tradeType
+    private val _tradeType = MutableLiveData<Pair<TradeType, Boolean>>()
+    val tradeType: LiveData<Pair<TradeType, Boolean>> = _tradeType
 
     private val _price = MutableLiveData<String>()
     val price: LiveData<String> = _price
 
     private val _publicId = MutableLiveData<String>()
     val publicId: LiveData<String> = _publicId
-
-    private val _traderStatus = MutableLiveData<@DrawableRes Int>()
-    val traderStatus: LiveData<Int> = _traderStatus
 
     private val _traderRate = MutableLiveData<Double>()
     val traderRate: LiveData<Double> = _traderRate
@@ -106,7 +102,6 @@ class TradeDetailsViewModel(
         _traderRate.value = tradeItem.makerTradingRate
         _totalTrades.value = tradeItem.makerTotalTradesFormatted
         _publicId.value = tradeItem.makerPublicId
-        _traderStatus.value = tradeItem.makerStatusIcon
         _tradeType.value = tradeItem.tradeType to !isOutOfStock
         _terms.value = tradeItem.terms
         if (tradeItem.distance != UNDEFINED_DISTANCE) {
@@ -127,4 +122,5 @@ class TradeDetailsViewModel(
             )
         )
     }
+
 }

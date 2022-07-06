@@ -25,7 +25,7 @@ class ServiceRepositoryImpl(
             .let(serviceDao::updateServices)
     }
 
-    override fun getService(serviceType: ServiceType): ServiceItem? =
+    override suspend fun getService(serviceType: ServiceType): ServiceItem? =
         serviceDao.getServiceByType(serviceType.value)?.mapToData()
 
     private fun mapServiceToItem(entity: List<ServiceEntity>): List<ServiceItem> = entity.mapNotNull { it.mapToData() }

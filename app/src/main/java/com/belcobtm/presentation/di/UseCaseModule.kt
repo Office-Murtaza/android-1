@@ -87,7 +87,6 @@ import com.belcobtm.domain.trade.list.filter.mapper.TradeFilterMapper
 import com.belcobtm.domain.trade.list.mapper.TradeOrderDataToItemMapper
 import com.belcobtm.domain.trade.list.mapper.TradePaymentOptionMapper
 import com.belcobtm.domain.trade.list.mapper.TradeToTradeItemMapper
-import com.belcobtm.domain.trade.list.mapper.TraderStatusToIconMapper
 import com.belcobtm.domain.trade.list.mapper.TradesDataToMyTradeMapper
 import com.belcobtm.domain.trade.list.mapper.TradesDataToOrderListMapper
 import com.belcobtm.domain.trade.list.mapper.TradesDataToStatisticsMapper
@@ -294,19 +293,20 @@ val useCaseModule = module {
     factory { SetNeedToShowRestrictionsUseCase(get()) }
     factory {
         TradeToTradeItemMapper(
-            get(), get(named(MILES_FORMATTER_QUALIFIER)),
-            get(named(CURRENCY_PRICE_FORMATTER_QUALIFIER)),
-            get(named(TRADE_COUNT_FORMATTER_QUALIFIER)),
-            get()
+            paymentOptionMapper = get(),
+            milesFormatter = get(named(MILES_FORMATTER_QUALIFIER)),
+            priceFormatter = get(named(CURRENCY_PRICE_FORMATTER_QUALIFIER)),
+            tradeCountFormatter = get(named(TRADE_COUNT_FORMATTER_QUALIFIER))
         )
     }
-    factory { TraderStatusToIconMapper() }
-    factory { TradesDataToStatisticsMapper(get()) }
+    factory { TradesDataToStatisticsMapper() }
     factory {
         TradeOrderDataToItemMapper(
-            get(), get(named(CURRENCY_PRICE_FORMATTER_QUALIFIER)),
-            get(named(TRADE_COUNT_FORMATTER_QUALIFIER)), get(), get(),
-            get(named(MILES_FORMATTER_QUALIFIER))
+            tradeItemMapper = get(),
+            priceFormatter = get(named(CURRENCY_PRICE_FORMATTER_QUALIFIER)),
+            tradeCountFormatter = get(named(TRADE_COUNT_FORMATTER_QUALIFIER)),
+            distanceCalculator = get(),
+            milesFormatter = get(named(MILES_FORMATTER_QUALIFIER))
         )
     }
     factory { TradesDataToOrderListMapper(get()) }

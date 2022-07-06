@@ -7,18 +7,15 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.belcobtm.R
-import com.belcobtm.data.model.trade.OrderStatus
-import com.belcobtm.data.model.trade.TradeType
 import com.belcobtm.domain.Either
 import com.belcobtm.domain.Failure
+import com.belcobtm.domain.trade.model.order.OrderStatus
+import com.belcobtm.domain.trade.model.trade.TradeType
 import com.belcobtm.domain.trade.order.CancelOrderUseCase
 import com.belcobtm.domain.trade.order.ObserveMissedMessageCountUseCase
 import com.belcobtm.domain.trade.order.ObserveOrderDetailsUseCase
 import com.belcobtm.domain.trade.order.UpdateOrderStatusUseCase
 import com.belcobtm.domain.wallet.LocalCoinType
-import com.belcobtm.presentation.tools.extensions.toStringCoin
-import com.belcobtm.presentation.tools.formatter.Formatter
-import com.belcobtm.presentation.tools.formatter.GoogleMapsDirectionQueryFormatter
 import com.belcobtm.presentation.core.mvvm.LoadingData
 import com.belcobtm.presentation.core.provider.string.StringProvider
 import com.belcobtm.presentation.screens.wallet.trade.list.model.OrderItem
@@ -26,6 +23,9 @@ import com.belcobtm.presentation.screens.wallet.trade.list.model.OrderStatusItem
 import com.belcobtm.presentation.screens.wallet.trade.list.model.TradePayment
 import com.belcobtm.presentation.screens.wallet.trade.order.details.model.OrderActionButtonsState
 import com.belcobtm.presentation.screens.wallet.trade.order.details.model.UpdateOrderStatusItem
+import com.belcobtm.presentation.tools.extensions.toStringCoin
+import com.belcobtm.presentation.tools.formatter.Formatter
+import com.belcobtm.presentation.tools.formatter.GoogleMapsDirectionQueryFormatter
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
@@ -53,8 +53,8 @@ class TradeOrderDetailsViewModel(
     private val _coin = MutableLiveData<LocalCoinType>()
     val coin: LiveData<LocalCoinType> = _coin
 
-    private val _tradeType = MutableLiveData<@TradeType Int>()
-    val tradeType: LiveData<@TradeType Int> = _tradeType
+    private val _tradeType = MutableLiveData<TradeType>()
+    val tradeType: LiveData<TradeType> = _tradeType
 
     private val _price = MutableLiveData<String>()
     val price: LiveData<String> = _price
@@ -83,11 +83,11 @@ class TradeOrderDetailsViewModel(
     private val _orderId = MutableLiveData<String>()
     val orderId: LiveData<String> = _orderId
 
-    private val _myScore = MutableLiveData<Double?>()
-    val myScore: LiveData<Double?> = _myScore
+    private val _myScore = MutableLiveData<Int>()
+    val myScore: LiveData<Int> = _myScore
 
-    private val _partnerScore = MutableLiveData<Double?>()
-    val partnerScore: LiveData<Double?> = _partnerScore
+    private val _partnerScore = MutableLiveData<Int>()
+    val partnerScore: LiveData<Int> = _partnerScore
 
     private val _partnerPublicId = MutableLiveData<String>()
     val partnerPublicId: LiveData<String> = this._partnerPublicId
@@ -132,15 +132,15 @@ class TradeOrderDetailsViewModel(
             .asLiveData(Dispatchers.Default)
 
     fun updateOrderPrimaryAction(orderId: String) {
-        val newStatus = buttonsState.value?.primaryStatusId ?: return
-        if (newStatus != OrderStatus.UNDEFINED) {
+        val newStatus = buttonsState.value?.primaryStatus ?: return
+        if (newStatus != OrderStatus.UNKNOWN) {
             updateStatus(orderId, newStatus, _primaryActionUpdateLoadingData)
         }
     }
 
     fun updateOrderSecondaryAction(orderId: String) {
-        val newStatus = buttonsState.value?.secondaryStatusId ?: return
-        if (newStatus != OrderStatus.UNDEFINED) {
+        val newStatus = buttonsState.value?.secondaryStatus ?: return
+        if (newStatus != OrderStatus.UNKNOWN) {
             updateStatus(orderId, newStatus, _secondaryActionUpdateLoadingData)
         }
     }
@@ -163,11 +163,11 @@ class TradeOrderDetailsViewModel(
 
     private fun updateStatus(
         orderId: String,
-        @OrderStatus status: Int,
+        status: OrderStatus,
         loadingData: MutableLiveData<LoadingData<Unit>>
     ) {
         loadingData.value = LoadingData.Loading()
-        if (status == OrderStatus.CANCELLED) {
+        if (status == OrderStatus.CANCELED) {
             cancelOrderUseCase(orderId, onSuccess = {
                 loadingData.value = LoadingData.Success(Unit)
             }, onError = {
@@ -237,8 +237,8 @@ class TradeOrderDetailsViewModel(
                     secondaryButtonTitleRes = R.string.trade_order_details_screen_update_cancel_button_title,
                     showPrimaryButton = true,
                     showSecondaryButton = true,
-                    primaryStatusId = OrderStatus.DOING,
-                    secondaryStatusId = OrderStatus.CANCELLED
+                    primaryStatus = OrderStatus.DOING,
+                    secondaryStatus = OrderStatus.CANCELED
                 )
             OrderStatus.DOING ->
                 OrderActionButtonsState(
@@ -246,15 +246,15 @@ class TradeOrderDetailsViewModel(
                     secondaryButtonTitleRes = R.string.trade_order_details_screen_update_cancel_button_title,
                     showPrimaryButton = true,
                     showSecondaryButton = false,
-                    primaryStatusId = OrderStatus.PAID,
-                    secondaryStatusId = OrderStatus.CANCELLED
+                    primaryStatus = OrderStatus.PAID,
+                    secondaryStatus = OrderStatus.CANCELED
                 )
             OrderStatus.PAID ->
                 OrderActionButtonsState(
                     primaryButtonTitleRes = R.string.trade_order_details_screen_update_dispute_button_title,
                     showPrimaryButton = true,
                     showSecondaryButton = false,
-                    primaryStatusId = OrderStatus.DISPUTING
+                    primaryStatus = OrderStatus.DISPUTING
                 )
             else -> OrderActionButtonsState()
         }
@@ -266,7 +266,7 @@ class TradeOrderDetailsViewModel(
                     secondaryButtonTitleRes = R.string.trade_order_details_screen_update_cancel_button_title,
                     showPrimaryButton = false,
                     showSecondaryButton = true,
-                    secondaryStatusId = OrderStatus.CANCELLED
+                    secondaryStatus = OrderStatus.CANCELED
                 )
             OrderStatus.DOING ->
                 OrderActionButtonsState(
@@ -279,8 +279,8 @@ class TradeOrderDetailsViewModel(
                     secondaryButtonTitleRes = R.string.trade_order_details_screen_update_dispute_button_title,
                     showPrimaryButton = true,
                     showSecondaryButton = true,
-                    primaryStatusId = OrderStatus.RELEASED,
-                    secondaryStatusId = OrderStatus.DISPUTING
+                    primaryStatus = OrderStatus.RELEASED,
+                    secondaryStatus = OrderStatus.DISPUTING
                 )
             else -> OrderActionButtonsState()
         }

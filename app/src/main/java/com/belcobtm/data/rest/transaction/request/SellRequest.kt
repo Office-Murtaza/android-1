@@ -7,5 +7,7 @@ data class SellRequest(
     val cryptoAmount: Double,
     val price: Double,
     val fiatAmount: Int,
-    val feePercent: Double
+    val feePercent: Double,
+    val latitude: Double?,
+    val longitude: Double?
 )

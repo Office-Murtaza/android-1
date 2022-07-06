@@ -9,6 +9,6 @@ interface ServiceRepository {
 
     suspend fun updateServices(services: List<ServicesInfoResponse>)
 
-    fun getService(serviceType: ServiceType): ServiceItem?
+    suspend fun getService(serviceType: ServiceType): ServiceItem?
 
 }

@@ -7,10 +7,10 @@ import androidx.lifecycle.viewModelScope
 import com.belcobtm.R
 import com.belcobtm.data.disk.database.account.AccountDao
 import com.belcobtm.data.disk.database.account.AccountEntity
-import com.belcobtm.domain.service.ServiceType
 import com.belcobtm.domain.Failure
 import com.belcobtm.domain.PreferencesInteractor
 import com.belcobtm.domain.service.ServiceInfoProvider
+import com.belcobtm.domain.service.ServiceType
 import com.belcobtm.domain.settings.type.VerificationStatus
 import com.belcobtm.domain.settings.type.isVerified
 import com.belcobtm.domain.transaction.interactor.SellUseCase
@@ -62,11 +62,12 @@ class AtmSellViewModel(
     private val _isLimitsButtonVisible = MutableLiveData<Boolean>()
     val isLimitsButtonVisible: LiveData<Boolean> = _isLimitsButtonVisible
 
+    private val feePercent = MutableLiveData(0.0)
+
     private val coinAmount: LiveData<Double> =
         DoubleCombinedLiveData(usdAmount, selectedCoin) { amount, coin ->
-            val feePercent = serviceInfoProvider.getService(ServiceType.ATM_SELL)?.feePercent ?: 0.0
             val price = coin?.priceUsd ?: 0.0
-            (amount?.toDouble() ?: 0.0) / price * (100 + feePercent) / 100.0
+            (amount?.toDouble() ?: 0.0) / price * (100 + (feePercent.value ?: 0.0)) / 100.0
         }
 
     val formattedCoinAmount: LiveData<String> =
@@ -76,12 +77,11 @@ class AtmSellViewModel(
 
     val fee: LiveData<AtmSellFeeModelView> =
         DoubleCombinedLiveData(usdAmount, selectedCoin) { amount, coin ->
-            val feePercent = serviceInfoProvider.getService(ServiceType.ATM_SELL)?.feePercent ?: 0.0
             val price = coin?.priceUsd ?: 0.0
             AtmSellFeeModelView(
-                feePercent,
-                (amount?.toDouble() ?: 0.0) / price * (feePercent / 100.0),
-                coin?.code.orEmpty()
+                platformFeePercent = feePercent.value ?: 0.0,
+                platformFeeCoinAmount = (amount?.toDouble() ?: 0.0) / price * (feePercent.value ?: 0.0 / 100.0),
+                swapCoinCode = coin?.code.orEmpty()
             )
         }
 
@@ -99,6 +99,9 @@ class AtmSellViewModel(
 
     init {
         _isLimitsButtonVisible.value = VerificationStatus.fromString(preferences.userStatus).isVerified().not()
+        viewModelScope.launch {
+            feePercent.value = serviceInfoProvider.getService(ServiceType.ATM_SELL)?.feePercent ?: 0.0
+        }
     }
 
     fun loadInitialData() {
@@ -126,8 +129,8 @@ class AtmSellViewModel(
         }
     }
 
-    fun setMaxSendAmount() {
-        val currentCoinToSend = selectedCoin.value ?: return
+    fun setMaxSendAmount() = viewModelScope.launch {
+        val currentCoinToSend = selectedCoin.value ?: return@launch
         val a = (currentCoinToSend.reservedBalanceCoin * currentCoinToSend.priceUsd *
             (100.toDouble() - (serviceInfoProvider.getService(ServiceType.ATM_SELL)?.feePercent
                 ?: 0.0)) / 100.0).toInt()
@@ -146,29 +149,29 @@ class AtmSellViewModel(
         _usdAmountError.value = null
     }
 
-    fun sell() {
-        val coin = _selectedCoin.value ?: return
-        val amount = (coinAmount.value ?: return).toStringCoin().toDouble()
-        val usdAmount = usdAmount.value ?: return
-        val todayLimit = _todayLimit.value ?: return
-        val txLimit = _txLimit.value ?: return
+    fun sell() = viewModelScope.launch {
+        val coin = _selectedCoin.value ?: return@launch
+        val amount = (coinAmount.value ?: return@launch).toStringCoin().toDouble()
+        val usdAmount = usdAmount.value ?: return@launch
+        val todayLimit = _todayLimit.value ?: return@launch
+        val txLimit = _txLimit.value ?: return@launch
         val fee = serviceInfoProvider.getService(ServiceType.ATM_SELL)?.feePercent ?: 0.0
         if (usdAmount <= 0) {
             _usdAmountError.value = stringProvider.getString(R.string.sell_amount_zero)
-            return
+            return@launch
         }
         if (usdAmount % 50 != 0 && usdAmount % 20 != 0 && usdAmount % 100 != 0) {
             _usdAmountError.value = stringProvider.getString(R.string.sell_amount_wrong_divider)
-            return
+            return@launch
         }
         if (amount > coin.reservedBalanceCoin) {
             _usdAmountError.value = stringProvider.getString(R.string.sell_amount_exceeds_limit)
-            return
+            return@launch
         }
         if (txLimit < amount || todayLimit < amount) {
             _usdAmountError.value =
                 stringProvider.getString(R.string.limits_exceeded_validation_message)
-            return
+            return@launch
         }
         _sellLoadingData.value = LoadingData.Loading()
         sellUseCase(
@@ -188,7 +191,7 @@ class AtmSellViewModel(
         )
     }
 
-    private fun loadLimits(coinDataItem: CoinDataItem) {
+    private fun loadLimits(coinDataItem: CoinDataItem) = viewModelScope.launch {
         updateCoin(coinDataItem)
         serviceInfoProvider.getService(ServiceType.ATM_SELL)?.let {
             _todayLimit.value = it.remainLimit

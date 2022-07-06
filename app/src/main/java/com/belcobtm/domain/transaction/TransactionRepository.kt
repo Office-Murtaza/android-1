@@ -54,6 +54,7 @@ interface TransactionRepository {
         fromCoin: String,
         fromCoinAmount: Double,
         fee: Double,
+        fiatAmount: Double,
         fromTransactionPlan: TransactionPlanItem,
         price: Double
     ): Either<Failure, Unit>
@@ -94,6 +95,7 @@ interface TransactionRepository {
         fromCoin: String,
         coinTo: String,
         fee: Double,
+        fiatAmount: Double,
         transactionPlanItem: TransactionPlanItem,
         location: Location
     ): Either<Failure, Unit>

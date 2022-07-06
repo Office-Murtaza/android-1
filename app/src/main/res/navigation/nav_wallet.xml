@@ -145,7 +145,7 @@
 
     <dialog
         android:id="@+id/service_info_dialog"
-        android:name="com.belcobtm.presentation.screens.services_info.ServicesInfoBottomSheetDialogFragment"
+        android:name="com.belcobtm.presentation.screens.services_info.ServicesInfoDialog"
         android:label="Chat image dialog">
 
         <argument

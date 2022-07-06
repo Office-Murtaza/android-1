@@ -1,6 +1,6 @@
 package com.belcobtm.domain.trade.details
 
-import com.belcobtm.data.model.trade.TradeData
+import com.belcobtm.domain.trade.model.TradeHistoryDomainModel
 import com.belcobtm.domain.Either
 import com.belcobtm.domain.Failure
 import com.belcobtm.domain.trade.TradeRepository
@@ -22,7 +22,7 @@ class ObserveTradeDetailsUseCase(
                 when {
                     tradeData == null -> null
                     tradeData.isRight -> {
-                        val trade = (tradeData as Either.Right<TradeData>).b.trades[params]
+                        val trade = (tradeData as Either.Right<TradeHistoryDomainModel>).b.trades[params]
                         trade?.let {
                             Either.Right(mapper.map(it))
                         }

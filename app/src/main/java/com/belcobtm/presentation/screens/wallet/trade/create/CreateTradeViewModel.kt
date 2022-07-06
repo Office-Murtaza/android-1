@@ -3,15 +3,16 @@ package com.belcobtm.presentation.screens.wallet.trade.create
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.belcobtm.R
-import com.belcobtm.domain.service.ServiceType
-import com.belcobtm.data.model.trade.PaymentOption
-import com.belcobtm.data.model.trade.TradeType
 import com.belcobtm.domain.Failure
 import com.belcobtm.domain.service.ServiceInfoProvider
+import com.belcobtm.domain.service.ServiceType
 import com.belcobtm.domain.trade.create.CheckTradeCreationAvailabilityUseCase
 import com.belcobtm.domain.trade.create.CreateTradeUseCase
 import com.belcobtm.domain.trade.create.GetAvailableTradePaymentOptionsUseCase
+import com.belcobtm.domain.trade.model.PaymentMethodType
+import com.belcobtm.domain.trade.model.trade.TradeType
 import com.belcobtm.domain.wallet.interactor.GetCoinListUseCase
 import com.belcobtm.domain.wallet.item.CoinDataItem
 import com.belcobtm.presentation.core.livedata.TripleCombinedLiveData
@@ -20,6 +21,7 @@ import com.belcobtm.presentation.core.provider.string.StringProvider
 import com.belcobtm.presentation.screens.wallet.trade.create.model.AvailableTradePaymentOption
 import com.belcobtm.presentation.screens.wallet.trade.create.model.CreateTradeItem
 import com.belcobtm.presentation.tools.extensions.toStringCoin
+import kotlinx.coroutines.launch
 
 class CreateTradeViewModel(
     private val getAvailableTradePaymentOptionsUseCase: GetAvailableTradePaymentOptionsUseCase,
@@ -149,14 +151,14 @@ class CreateTradeViewModel(
         )
     }
 
-    fun createTrade(@TradeType type: Int, terms: String) {
+    fun createTrade(type: TradeType, terms: String) = viewModelScope.launch {
         val paymentOptions = availablePaymentOptions.value.orEmpty()
             .asSequence()
             .filter(AvailableTradePaymentOption::selected)
             .map { it.payment.paymentId }
             .toList()
         var errorCount = 0
-        if (type == -1) {
+        if (type == TradeType.UNKNOWN) {
             _tradeTypeError.value =
                 stringProvider.getString(R.string.trade_type_not_selected_error_message)
             errorCount++
@@ -200,14 +202,14 @@ class CreateTradeViewModel(
             _termsError.value = null
         }
         if (errorCount > 0) {
-            return
+            return@launch
         }
         val fee = serviceInfoProvider.getService(ServiceType.TRADE)?.feePercent ?: 0.0
         val cryptoAmount = toAmount / price * (1 + fee / 100)
         if (type == TradeType.SELL && cryptoAmount > selectedCoin.value?.reservedBalanceCoin ?: 0.0) {
             _amountRangeError.value =
                 stringProvider.getString(R.string.create_trade_not_enough_crypto_balance)
-            return
+            return@launch
         }
         val service = serviceInfoProvider.getService(ServiceType.TRADE)
         if (service == null || service.txLimit < toAmount || service.remainLimit < toAmount) {
@@ -216,7 +218,7 @@ class CreateTradeViewModel(
                     stringProvider.getString(R.string.limits_exceeded_validation_message)
                 )
             )
-            return
+            return@launch
         }
         val coinCode = selectedCoin.value?.code.orEmpty()
         checkTradeCreationAvailabilityUseCase(
@@ -246,21 +248,27 @@ class CreateTradeViewModel(
     }
 
     private fun createTrade(
-        @TradeType type: Int,
+        type: TradeType,
         coinCode: String,
         price: Double,
         fromAmount: Int,
         toAmount: Int,
         terms: String,
-        paymentOptions: List<@PaymentOption Int>
-    ) {
+        paymentOptions: List<PaymentMethodType>
+    ) = viewModelScope.launch {
         val serviceFee = serviceInfoProvider.getService(ServiceType.TRADE)?.feePercent ?: 0.0
         _createTradeLoadingData.value = LoadingData.Loading()
         createTradeUseCase(
             CreateTradeItem(
-                type, coinCode, price.toInt(),
-                fromAmount, toAmount, terms,
-                serviceFee, toAmount.toDouble(), paymentOptions
+                tradeType = type,
+                coinCode = coinCode,
+                price = price.toInt(),
+                minLimit = fromAmount,
+                maxLimit = toAmount,
+                terms = terms,
+                feePercent = serviceFee,
+                fiatAmount = toAmount.toDouble(),
+                paymentOptions = paymentOptions
             ), onSuccess = { createTradeResult ->
                 _createTradeLoadingData.value = LoadingData.Success(createTradeResult)
             }, onError = {

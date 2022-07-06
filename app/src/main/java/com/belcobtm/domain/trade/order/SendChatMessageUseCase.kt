@@ -3,7 +3,7 @@ package com.belcobtm.domain.trade.order
 import android.graphics.Bitmap
 import com.belcobtm.data.cloud.auth.CloudAuth
 import com.belcobtm.data.cloud.storage.CloudStorage
-import com.belcobtm.data.model.trade.Order
+import com.belcobtm.domain.trade.model.order.OrderDomainModel
 import com.belcobtm.data.websockets.chat.ChatObserver
 import com.belcobtm.domain.Either
 import com.belcobtm.domain.Failure
@@ -26,7 +26,7 @@ class SendChatMessageUseCase(
         if (order.isLeft) {
             return order.map {}
         }
-        val orderData = (order as Either.Right<Order>).b
+        val orderData = (order as Either.Right<OrderDomainModel>).b
         val myId = preferences.userId
         return if (params.attachment != null && params.attachmentName != null) {
             try {
@@ -51,8 +51,8 @@ class SendChatMessageUseCase(
         }
     }
 
-    private fun resolveToId(myId: String, orderData: Order): String =
-        if (myId == orderData.makerId) orderData.takerId else orderData.makerId
+    private fun resolveToId(myId: String, orderData: OrderDomainModel): String =
+        if (myId == orderData.makerUserId) orderData.takerUserId else orderData.makerUserId
 
     data class Params(
         val orderId: String,

@@ -19,7 +19,8 @@ class WithdrawUseCase(
             fromCoinAmount = params.fromCoinAmount,
             fee = params.fee,
             fromTransactionPlan = params.transactionPlanItem,
-            price = params.price
+            price = params.price,
+            fiatAmount = params.fiatAmount
         )
 
     data class Params(
@@ -29,7 +30,8 @@ class WithdrawUseCase(
         val toAddress: String,
         val fee: Double,
         val transactionPlanItem: TransactionPlanItem,
-        val price: Double
+        val price: Double,
+        val fiatAmount: Double,
     )
 
 }

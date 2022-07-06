@@ -31,6 +31,7 @@ import com.belcobtm.presentation.screens.services.ServicesViewModel
 import com.belcobtm.presentation.screens.services.atm.sell.AtmSellViewModel
 import com.belcobtm.presentation.screens.services.staking.StakingViewModel
 import com.belcobtm.presentation.screens.services.swap.SwapViewModel
+import com.belcobtm.presentation.screens.services_info.ServicesInfoViewModel
 import com.belcobtm.presentation.screens.settings.SettingsViewModel
 import com.belcobtm.presentation.screens.settings.about.AboutViewModel
 import com.belcobtm.presentation.screens.settings.referral.ReferralViewModel
@@ -280,6 +281,8 @@ val viewModelModule = module {
     viewModel { HistoryChatViewModel(get()) }
     viewModel { HostViewModel(get()) }
     viewModel { ReferralViewModel(get(), get()) }
+
+    viewModel { ServicesInfoViewModel(get()) }
 }
 
 val viewModelHelperModule = module {

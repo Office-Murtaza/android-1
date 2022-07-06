@@ -4,7 +4,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Lifecycle
 import androidx.viewpager2.adapter.FragmentStateAdapter
-import com.belcobtm.data.model.trade.TradeType
+import com.belcobtm.domain.trade.model.trade.TradeType
 import com.belcobtm.presentation.screens.wallet.trade.info.TradeInfoContainerFragment
 import com.belcobtm.presentation.screens.wallet.trade.list.TradeListFragment
 

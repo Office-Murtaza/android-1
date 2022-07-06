@@ -5,9 +5,9 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.belcobtm.R
-import com.belcobtm.domain.service.ServiceType
 import com.belcobtm.domain.Failure
 import com.belcobtm.domain.service.ServiceInfoProvider
+import com.belcobtm.domain.service.ServiceType
 import com.belcobtm.domain.transaction.interactor.GetTransactionPlanUseCase
 import com.belcobtm.domain.transaction.interactor.StakeCancelUseCase
 import com.belcobtm.domain.transaction.interactor.StakeCreateUseCase
@@ -127,8 +127,8 @@ class StakingViewModel(
         )
     }
 
-    fun stakeCreate(amount: Double) {
-        val transactionPlanItem = transactionPlanItem ?: return
+    fun stakeCreate(amount: Double) = viewModelScope.launch {
+        val transactionPlanItem = transactionPlanItem ?: return@launch
         val feePercent = serviceInfoProvider.getService(ServiceType.STAKING)?.feePercent ?: 0.0
         val usdAmount = amount * getUsdPrice()
         val service = serviceInfoProvider.getService(ServiceType.STAKING)
@@ -138,7 +138,7 @@ class StakingViewModel(
                     stringProvider.getString(R.string.limits_exceeded_validation_message)
                 )
             )
-            return
+            return@launch
         }
         _transactionLiveData.value = LoadingData.Loading()
         stakeCreateUseCase.invoke(
@@ -153,7 +153,6 @@ class StakingViewModel(
                     _transactionLiveData.value =
                         LoadingData.Success(StakingTransactionState.CREATE)
                 }
-
             },
             onError = {
                 _transactionLiveData.value = LoadingData.Error(it, StakingTransactionState.CREATE)
@@ -179,10 +178,10 @@ class StakingViewModel(
         )
     }
 
-    fun unstakeCreateTransaction() {
+    fun unstakeCreateTransaction() = viewModelScope.launch {
         val amount =
             (stakeDetailsDataItem?.amount ?: 0.0) + (stakeDetailsDataItem?.rewardsAmount ?: 0.0)
-        val transactionPlanItem = transactionPlanItem ?: return
+        val transactionPlanItem = transactionPlanItem ?: return@launch
         _transactionLiveData.value = LoadingData.Loading()
         val usdAmount = amount * getUsdPrice()
         val service = serviceInfoProvider.getService(ServiceType.STAKING)
@@ -192,7 +191,7 @@ class StakingViewModel(
                     stringProvider.getString(R.string.limits_exceeded_validation_message)
                 )
             )
-            return
+            return@launch
         }
         stakeWithdrawUseCase.invoke(
             params = StakeWithdrawUseCase.Params(coinDataItem.code, amount, transactionPlanItem),

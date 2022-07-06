@@ -95,7 +95,7 @@ class TransactionApiService(
         Either.Left(failure)
     }
 
-    suspend fun sendGift(
+    suspend fun sendTransfer(
         hash: String,
         coinFrom: String,
         coinFromAmount: Double,
@@ -153,18 +153,21 @@ class TransactionApiService(
         Either.Left(failure)
     }
 
-    suspend fun sell(
+    suspend fun atmSell(
         coin: String,
         coinAmount: Double,
         usdAmount: Int,
         price: Double,
         fee: Double
     ): Either<Failure, TransactionDetailsResponse> = try {
+        val location = locationProvider.getCurrentLocation()
         val requestBody = SellRequest(
             price = price,
             cryptoAmount = coinAmount,
             fiatAmount = usdAmount,
-            feePercent = fee
+            feePercent = fee,
+            latitude = location?.latitude,
+            longitude = location?.longitude
         )
         val request = api.sellAsync(prefHelper.userId, coin, requestBody)
         request.body()?.let { Either.Right(it) } ?: Either.Left(Failure.ServerError())
@@ -173,15 +176,16 @@ class TransactionApiService(
         Either.Left(failure)
     }
 
-    suspend fun exchange(
+    suspend fun swap(
         coinFromAmount: Double,
         coinToAmount: Double,
         coinFrom: CoinDataItem,
         coinTo: CoinDataItem,
         hash: String,
-        fee: Double?,
-        fromAddress: String?,
-        toAddress: String?,
+        fee: Double,
+        fiatAmount: Double,
+        fromAddress: String,
+        toAddress: String,
         location: Location
     ): Either<Failure, TransactionDetailsResponse> = try {
         val requestBody = CoinToCoinExchangeRequest(
@@ -194,6 +198,7 @@ class TransactionApiService(
             refCoinPrice = coinTo.priceUsd,
             refCryptoAmount = coinToAmount,
             feePercent = fee,
+            fiatAmount = fiatAmount,
             longitude = location.longitude,
             latitude = location.latitude
         )

@@ -10,7 +10,7 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.FrameLayout
 import androidx.navigation.fragment.findNavController
 import com.belcobtm.R
-import com.belcobtm.data.model.trade.filter.SortOption
+import com.belcobtm.domain.trade.model.filter.SortOption
 import com.belcobtm.databinding.FragmentTradeFilterBinding
 import com.belcobtm.presentation.core.adapter.MultiTypeAdapter
 import com.belcobtm.presentation.tools.extensions.actionDoneListener

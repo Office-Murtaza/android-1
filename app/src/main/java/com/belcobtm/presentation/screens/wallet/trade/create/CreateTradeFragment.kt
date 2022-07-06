@@ -7,10 +7,10 @@ import android.view.ViewGroup
 import androidx.core.net.toUri
 import androidx.navigation.fragment.findNavController
 import com.belcobtm.R
-import com.belcobtm.domain.service.ServiceType
-import com.belcobtm.data.model.trade.TradeType
 import com.belcobtm.databinding.FragmentCreateTradeBinding
 import com.belcobtm.domain.Failure
+import com.belcobtm.domain.service.ServiceType
+import com.belcobtm.domain.trade.model.trade.TradeType
 import com.belcobtm.domain.wallet.LocalCoinType
 import com.belcobtm.domain.wallet.item.CoinDataItem
 import com.belcobtm.presentation.core.adapter.MultiTypeAdapter
@@ -59,7 +59,7 @@ class CreateTradeFragment : BaseFragment<FragmentCreateTradeBinding>() {
                     when {
                         binding.tradeTypeBuyChip.isChecked -> TradeType.BUY
                         binding.tradeTypeSellChip.isChecked -> TradeType.SELL
-                        else -> -1
+                        else -> TradeType.UNKNOWN
                     }, binding.termsInput.editText?.text.toString()
                 )
             }
@@ -207,7 +207,7 @@ class CreateTradeFragment : BaseFragment<FragmentCreateTradeBinding>() {
             when {
                 binding.tradeTypeBuyChip.isChecked -> TradeType.BUY
                 binding.tradeTypeSellChip.isChecked -> TradeType.SELL
-                else -> -1
+                else -> TradeType.UNKNOWN
             },
             binding.termsInput.editText?.text.toString()
         )

@@ -8,9 +8,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.belcobtm.R
 import com.belcobtm.data.disk.database.account.AccountDao
-import com.belcobtm.domain.service.ServiceType
 import com.belcobtm.domain.Failure
 import com.belcobtm.domain.service.ServiceInfoProvider
+import com.belcobtm.domain.service.ServiceType
 import com.belcobtm.domain.transaction.interactor.GetFakeSignedTransactionPlanUseCase
 import com.belcobtm.domain.transaction.interactor.GetMaxValueBySignedTransactionUseCase
 import com.belcobtm.domain.transaction.interactor.GetSignedTransactionPlanUseCase
@@ -182,18 +182,18 @@ class SendGiftViewModel(
         )
     }
 
-    fun sendGift(amount: Double, phone: String, message: String?, giftId: String?) {
-        val coinToSend = coinToSend.value ?: return
+    fun sendGift(amount: Double, phone: String, message: String?, giftId: String?) = viewModelScope.launch {
+        val coinToSend = coinToSend.value ?: return@launch
         val usdAmount = amount * coinToSend.priceUsd
-        val transactionPlanItem = transactionPlanItem ?: return
+        val transactionPlanItem = transactionPlanItem ?: return@launch
         val service = serviceInfoProvider.getService(ServiceType.TRANSFER)
         if (amount <= 0) {
             _cryptoAmountError.value = R.string.balance_amount_too_small
-            return
+            return@launch
         }
         if (service == null || service.txLimit < usdAmount || service.remainLimit < usdAmount) {
             _cryptoAmountError.value = R.string.limits_exceeded_validation_message
-            return
+            return@launch
         }
         val useMax = _amount.value?.useMax ?: false
         _cryptoAmountError.value = null
@@ -313,7 +313,7 @@ class SendGiftViewModel(
         message: String?,
         giftId: String?,
         transactionPlanItem: TransactionPlanItem
-    ) {
+    ) = viewModelScope.launch {
         transactionCreateUseCase.invoke(
             params = SendGiftTransactionCreateUseCase.Params(
                 useMaxAmountFlag = _amount.value?.useMax ?: false,

@@ -186,6 +186,7 @@ class WithdrawViewModel(
                 fromCoinAmount = coinAmount,
                 toAddress = toAddress,
                 fee = _fee.value ?: 0.0,
+                fiatAmount = coinAmount * getUsdPrice(),
                 transactionPlanItem = transactionPlan,
                 price = getUsdPrice()
             ),

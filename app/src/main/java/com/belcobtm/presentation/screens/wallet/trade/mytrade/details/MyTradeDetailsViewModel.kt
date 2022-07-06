@@ -5,12 +5,12 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.belcobtm.R
-import com.belcobtm.data.model.trade.TradeStatus
-import com.belcobtm.data.model.trade.TradeType
 import com.belcobtm.domain.Either
 import com.belcobtm.domain.Failure
 import com.belcobtm.domain.trade.details.CancelTradeUseCase
 import com.belcobtm.domain.trade.details.ObserveTradeDetailsUseCase
+import com.belcobtm.domain.trade.model.trade.TradeStatus
+import com.belcobtm.domain.trade.model.trade.TradeType
 import com.belcobtm.domain.wallet.LocalCoinType
 import com.belcobtm.presentation.core.mvvm.LoadingData
 import com.belcobtm.presentation.core.provider.string.StringProvider
@@ -35,8 +35,8 @@ class MyTradeDetailsViewModel(
     private val _selectedCoin = MutableLiveData<LocalCoinType>()
     val selectedCoin: LiveData<LocalCoinType> = _selectedCoin
 
-    private val _tradeType = MutableLiveData<@TradeType Int>()
-    val tradeType: LiveData<@TradeType Int> = _tradeType
+    private val _tradeType = MutableLiveData<TradeType>()
+    val tradeType: LiveData<TradeType> = _tradeType
 
     private val _price = MutableLiveData<String>()
     val price: LiveData<String> = _price
@@ -97,7 +97,7 @@ class MyTradeDetailsViewModel(
         _paymentOptions.value = trade.paymentMethods
         _ordersCount.value = trade.ordersCount
         _terms.value = trade.terms
-        _isCancelled.value = trade.status == TradeStatus.CANCELLED
+        _isCancelled.value = trade.status == TradeStatus.CANCELED
         _initialLoadingData.value = LoadingData.Success(Unit)
     }
 

@@ -4,11 +4,11 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
-import com.belcobtm.data.model.trade.TradeType
 import com.belcobtm.domain.Either
 import com.belcobtm.domain.Failure
 import com.belcobtm.domain.trade.list.ObserveTradesUseCase
 import com.belcobtm.domain.trade.list.filter.ResetFilterUseCase
+import com.belcobtm.domain.trade.model.trade.TradeType
 import com.belcobtm.presentation.screens.wallet.trade.list.model.TradeItem
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -21,12 +21,13 @@ class TradeListViewModel(
 ) : ViewModel() {
 
     companion object {
+
         private const val PAGE_SIZE = 10
     }
 
     val lastVisibleItem = MutableStateFlow(0)
 
-    fun observeTrades(@TradeType tradeType: Int): LiveData<Either<Failure, List<TradeItem>>?> =
+    fun observeTrades(tradeType: TradeType): LiveData<Either<Failure, List<TradeItem>>?> =
         lastVisibleItem.flatMapLatest { lastItem ->
             val numbersToLoad = lastItem + PAGE_SIZE
             observeTradesUseCase.invoke(ObserveTradesUseCase.Params(numbersToLoad, tradeType))
@@ -39,4 +40,5 @@ class TradeListViewModel(
     fun resetFilters() {
         resetFilterUseCase.invoke(Unit)
     }
+
 }

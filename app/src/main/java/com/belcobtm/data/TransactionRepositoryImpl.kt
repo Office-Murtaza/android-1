@@ -7,10 +7,8 @@ import com.belcobtm.data.disk.database.wallet.WalletDao
 import com.belcobtm.data.disk.database.wallet.toDataItem
 import com.belcobtm.data.disk.shared.preferences.SharedPreferencesHelper
 import com.belcobtm.data.inmemory.transactions.TransactionsInMemoryCache
-import com.belcobtm.data.model.transactions.TransactionsData
 import com.belcobtm.data.rest.transaction.TransactionApiService
 import com.belcobtm.data.rest.transaction.response.hash.UtxoItemData
-import com.belcobtm.data.rest.transaction.response.hash.UtxoItemResponse
 import com.belcobtm.domain.Either
 import com.belcobtm.domain.Failure
 import com.belcobtm.domain.flatMapSuspend
@@ -142,6 +140,7 @@ class TransactionRepositoryImpl(
         fromCoin: String,
         fromCoinAmount: Double,
         fee: Double,
+        fiatAmount: Double,
         fromTransactionPlan: TransactionPlanItem,
         price: Double
     ): Either<Failure, Unit> {
@@ -200,7 +199,7 @@ class TransactionRepositoryImpl(
             val hash = (hashResponse as Either.Right).b
             val transaction =
                 if (coinCode == LocalCoinType.ETH.name || coinCode.isEthRelatedCoinCode()) {
-                    apiService.sendGift(
+                    apiService.sendTransfer(
                         hash = hash,
                         coinFrom = coinCode,
                         coinFromAmount = amount,
@@ -215,7 +214,7 @@ class TransactionRepositoryImpl(
                         toAddress = toAddress,
                     )
                 } else {
-                    apiService.sendGift(
+                    apiService.sendTransfer(
                         hash = hash,
                         coinFrom = coinCode,
                         coinFromAmount = amount,
@@ -260,7 +259,7 @@ class TransactionRepositoryImpl(
         usdAmount: Int,
         fee: Double
     ): Either<Failure, Unit> {
-        val transaction = apiService.sell(
+        val transaction = apiService.atmSell(
             coin = coin,
             coinAmount = coinAmount,
             usdAmount = usdAmount,
@@ -280,6 +279,7 @@ class TransactionRepositoryImpl(
         fromCoin: String,
         coinTo: String,
         fee: Double,
+        fiatAmount: Double,
         transactionPlanItem: TransactionPlanItem,
         location: Location
     ): Either<Failure, Unit> {
@@ -303,13 +303,14 @@ class TransactionRepositoryImpl(
             val toAddressSend = fromCoinItem.details.walletAddress
             val fromAddress = daoAccount.getAccountByName(fromCoin).publicKey
             val hash = (hashResponse as Either.Right).b
-            val transaction = apiService.exchange(
+            val transaction = apiService.swap(
                 coinFromAmount = fromCoinAmount,
                 coinToAmount = toCoinAmount,
                 coinFrom = fromCoinItem,
                 coinTo = toCoinItem,
                 hash = hash,
                 fee = fee,
+                fiatAmount = fiatAmount,
                 fromAddress = fromAddress,
                 toAddress = toAddressSend,
                 location = location

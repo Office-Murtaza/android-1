@@ -3,21 +3,23 @@ package com.belcobtm.presentation.screens.wallet.trade.edit
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.belcobtm.R
-import com.belcobtm.domain.service.ServiceType
-import com.belcobtm.data.model.trade.TradeType
 import com.belcobtm.domain.Failure
 import com.belcobtm.domain.service.ServiceInfoProvider
+import com.belcobtm.domain.service.ServiceType
 import com.belcobtm.domain.trade.create.GetAvailableTradePaymentOptionsUseCase
 import com.belcobtm.domain.trade.details.EditTradeUseCase
 import com.belcobtm.domain.trade.details.GetTradeDetailsUseCase
+import com.belcobtm.domain.trade.model.trade.TradeType
 import com.belcobtm.domain.wallet.interactor.GetCoinListUseCase
 import com.belcobtm.domain.wallet.item.CoinDataItem
-import com.belcobtm.presentation.tools.extensions.toStringCoin
 import com.belcobtm.presentation.core.livedata.TripleCombinedLiveData
 import com.belcobtm.presentation.core.mvvm.LoadingData
 import com.belcobtm.presentation.core.provider.string.StringProvider
 import com.belcobtm.presentation.screens.wallet.trade.create.model.AvailableTradePaymentOption
+import com.belcobtm.presentation.tools.extensions.toStringCoin
+import kotlinx.coroutines.launch
 
 class EditTradeViewModel(
     private val getTradeDetailsUseCase: GetTradeDetailsUseCase,
@@ -75,8 +77,8 @@ class EditTradeViewModel(
     private val _termsError = MutableLiveData<String?>()
     val termsError: LiveData<String?> = _termsError
 
-    private val _tradeType = MutableLiveData<@TradeType Int>()
-    val tradeType: LiveData<@TradeType Int> = _tradeType
+    private val _tradeType = MutableLiveData<TradeType>()
+    val tradeType: LiveData<TradeType> = _tradeType
 
     private val _initialTerms = MutableLiveData<String>()
     val initialTerms: LiveData<String> = _initialTerms
@@ -155,7 +157,7 @@ class EditTradeViewModel(
         _amountMaxLimit.value = amount
     }
 
-    fun editTrade(tradeId: String, terms: String) {
+    fun editTrade(tradeId: String, terms: String) = viewModelScope.launch {
         val paymentOptions = availablePaymentOptions.value.orEmpty()
             .asSequence()
             .filter(AvailableTradePaymentOption::selected)
@@ -199,14 +201,14 @@ class EditTradeViewModel(
             _termsError.value = null
         }
         if (errorCount > 0) {
-            return
+            return@launch
         }
         val fee = serviceInfoProvider.getService(ServiceType.TRADE)?.feePercent ?: 0.0
         val cryptoAmount = toAmount / price * (1 + fee / 100)
         if (tradeType.value == TradeType.SELL && cryptoAmount > selectedCoin.value?.reservedBalanceCoin ?: 0.0) {
             _priceRangeError.value =
                 stringProvider.getString(R.string.edit_trade_not_enough_crypto_balance)
-            return
+            return@launch
         }
         val service = serviceInfoProvider.getService(ServiceType.TRADE)
         if (service == null || service.txLimit < toAmount || service.remainLimit < toAmount) {
@@ -215,7 +217,7 @@ class EditTradeViewModel(
                     stringProvider.getString(R.string.limits_exceeded_validation_message)
                 )
             )
-            return
+            return@launch
         }
         _editTradeLoadingData.value = LoadingData.Loading()
         editTradeUseCase(
@@ -228,4 +230,5 @@ class EditTradeViewModel(
             }
         )
     }
+
 }

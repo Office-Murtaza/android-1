@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.belcobtm.R
-import com.belcobtm.data.model.trade.filter.SortOption
+import com.belcobtm.domain.trade.model.filter.SortOption
 import com.belcobtm.domain.trade.list.filter.ApplyFilterUseCase
 import com.belcobtm.domain.trade.list.filter.LoadFilterDataUseCase
 import com.belcobtm.domain.trade.list.filter.ResetFilterUseCase

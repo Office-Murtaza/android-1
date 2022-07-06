@@ -1,13 +1,13 @@
 package com.belcobtm.domain.trade.list.mapper
 
-import com.belcobtm.data.model.trade.TradeData
-import com.belcobtm.data.model.trade.TradeStatus
+import com.belcobtm.domain.trade.model.TradeHistoryDomainModel
+import com.belcobtm.domain.trade.model.trade.TradeStatus
 import com.belcobtm.presentation.core.adapter.model.ListItem
 import com.belcobtm.presentation.screens.wallet.trade.mytrade.list.model.NoTradesCreatedItem
 
 class TradesDataToMyTradeMapper(private val tradeMapper: TradeToTradeItemMapper) {
 
-    fun map(tradeData: TradeData, userId: String): List<ListItem> =
+    fun map(tradeData: TradeHistoryDomainModel, userId: String): List<ListItem> =
         tradeData.trades
             .values
             .asSequence()

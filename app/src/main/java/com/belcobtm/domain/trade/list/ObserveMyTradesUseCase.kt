@@ -1,6 +1,6 @@
 package com.belcobtm.domain.trade.list
 
-import com.belcobtm.data.model.trade.TradeData
+import com.belcobtm.domain.trade.model.TradeHistoryDomainModel
 import com.belcobtm.domain.Either
 import com.belcobtm.domain.Failure
 import com.belcobtm.domain.PreferencesInteractor
@@ -24,7 +24,7 @@ class ObserveMyTradesUseCase(
                 when {
                     it == null -> null
                     it.isRight ->
-                        Either.Right(mapper.map((it as Either.Right<TradeData>).b, preferences.userId))
+                        Either.Right(mapper.map((it as Either.Right<TradeHistoryDomainModel>).b, preferences.userId))
                     else ->
                         it as Either.Left<Failure>
                 }

@@ -5,8 +5,8 @@ import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.core.view.children
 import com.belcobtm.R
-import com.belcobtm.data.model.trade.TradeStatus
-import com.belcobtm.data.model.trade.TradeType
+import com.belcobtm.domain.trade.model.trade.TradeStatus
+import com.belcobtm.domain.trade.model.trade.TradeType
 import com.belcobtm.databinding.ItemMyTradeBinding
 import com.belcobtm.presentation.core.adapter.MultiTypeAdapter
 import com.belcobtm.presentation.core.adapter.delegate.AdapterDelegate
@@ -87,7 +87,7 @@ class MyTradeViewHolder(
                     )
                 }
             }
-            if(model.status == TradeStatus.CANCELLED) {
+            if(model.status == TradeStatus.CANCELED) {
                 binding.myTradeRoot.children.forEach {
                     it.alpha = 0.5f
                 }

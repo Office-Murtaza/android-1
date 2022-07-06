@@ -6,13 +6,12 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.belcobtm.data.model.trade.TradeType
 import com.belcobtm.databinding.FragmentTradeListBinding
 import com.belcobtm.domain.Either
 import com.belcobtm.domain.Failure
+import com.belcobtm.domain.trade.model.trade.TradeType
 import com.belcobtm.presentation.core.adapter.MultiTypeAdapter
 import com.belcobtm.presentation.core.adapter.model.ListItem
-import com.belcobtm.presentation.tools.extensions.hide
 import com.belcobtm.presentation.core.ui.fragment.BaseFragment
 import com.belcobtm.presentation.screens.wallet.trade.container.TradeContainerFragmentDirections
 import com.belcobtm.presentation.screens.wallet.trade.container.TradeContainerViewModel
@@ -20,17 +19,19 @@ import com.belcobtm.presentation.screens.wallet.trade.list.delegate.NoTradesDele
 import com.belcobtm.presentation.screens.wallet.trade.list.delegate.TradeItemDelegate
 import com.belcobtm.presentation.screens.wallet.trade.list.model.NoTrades
 import com.belcobtm.presentation.screens.wallet.trade.list.model.TradeItem
+import com.belcobtm.presentation.tools.extensions.hide
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class TradeListFragment : BaseFragment<FragmentTradeListBinding>() {
 
     companion object {
+
         private const val TRADE_TYPE_BUNDLE_KEY = "trade.type.key"
 
-        fun newInstance(@TradeType tradeType: Int) =
+        fun newInstance(tradeType: TradeType) =
             TradeListFragment().apply {
                 arguments = Bundle().apply {
-                    putInt(TRADE_TYPE_BUNDLE_KEY, tradeType)
+                    putString(TRADE_TYPE_BUNDLE_KEY, tradeType.name)
                 }
             }
     }
@@ -85,7 +86,11 @@ class TradeListFragment : BaseFragment<FragmentTradeListBinding>() {
     }
 
     override fun FragmentTradeListBinding.initObservers() {
-        viewModel.observeTrades(requireArguments().getInt(TRADE_TYPE_BUNDLE_KEY))
+        viewModel.observeTrades(
+            TradeType.valueOf(
+                requireArguments().getString(TRADE_TYPE_BUNDLE_KEY).orEmpty()
+            )
+        )
             .observe(viewLifecycleOwner) {
                 if (it == null) {
                     return@observe
@@ -98,4 +103,5 @@ class TradeListFragment : BaseFragment<FragmentTradeListBinding>() {
                 }
             }
     }
+
 }

@@ -1,16 +1,15 @@
 package com.belcobtm.presentation.screens.wallet.trade.list.model
 
-import androidx.annotation.DrawableRes
-import com.belcobtm.data.model.trade.TradeStatus
-import com.belcobtm.data.model.trade.TradeType
+import com.belcobtm.domain.trade.model.trade.TradeStatus
+import com.belcobtm.domain.trade.model.trade.TradeType
 import com.belcobtm.domain.wallet.LocalCoinType
 import com.belcobtm.presentation.core.adapter.model.ListItem
 
 data class TradeItem(
     val tradeId: String,
-    @TradeType val tradeType: Int,
+    val tradeType: TradeType,
     val coin: LocalCoinType,
-    @TradeStatus val status: Int,
+    val status: TradeStatus,
     val price: Double,
     val timestamp: Long,
     val priceFormatted: String,
@@ -22,7 +21,6 @@ data class TradeItem(
     val paymentMethods: List<TradePayment>,
     val terms: String,
     val makerId: String,
-    @DrawableRes val makerStatusIcon: Int,
     val makerPublicId: String,
     val makerTotalTrades: Int,
     val makerTotalTradesFormatted: String,
@@ -34,11 +32,12 @@ data class TradeItem(
 ) : ListItem {
 
     companion object {
+
         const val TRADE_ITEM_LIST_TYPE = 1
     }
 
     override val id: String
-        get() = tradeId.toString()
+        get() = tradeId
 
     override val type: Int
         get() = TRADE_ITEM_LIST_TYPE

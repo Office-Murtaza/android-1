@@ -9,7 +9,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.belcobtm.R
 import com.belcobtm.domain.service.ServiceType
-import com.belcobtm.data.model.trade.TradeType
+import com.belcobtm.domain.trade.model.trade.TradeType
 import com.belcobtm.databinding.FragmentEditTradeBinding
 import com.belcobtm.domain.Failure
 import com.belcobtm.domain.wallet.LocalCoinType

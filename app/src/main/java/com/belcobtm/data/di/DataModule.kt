@@ -43,9 +43,6 @@ import com.belcobtm.data.inmemory.bank_accounts.BankAccountsInMemoryCache
 import com.belcobtm.data.inmemory.payments.PaymentsInMemoryCache
 import com.belcobtm.data.inmemory.trade.TradeInMemoryCache
 import com.belcobtm.data.inmemory.transactions.TransactionsInMemoryCache
-import com.belcobtm.data.mapper.OrderResponseToOrderMapper
-import com.belcobtm.data.mapper.TradeResponseToTradeMapper
-import com.belcobtm.data.mapper.TradesResponseToTradeDataMapper
 import com.belcobtm.data.notification.NotificationTokenRepositoryImpl
 import com.belcobtm.data.provider.location.LocationProvider
 import com.belcobtm.data.provider.location.ServiceLocationProvider
@@ -211,10 +208,12 @@ val dataModule = module {
     single<CloudAuth> { FirebaseCloudAuth(Firebase.auth) }
     single {
         TradeInMemoryCache(
-            get(), get(), GlobalScope, get(), get(), get(),
-            Executors.newSingleThreadExecutor().asCoroutineDispatcher(),
-            Executors.newSingleThreadExecutor().asCoroutineDispatcher(),
-            Executors.newSingleThreadExecutor().asCoroutineDispatcher(),
+            distanceCalculator = get(),
+            distanceCalculatorScope = GlobalScope,
+            chatMessageMapper = get(),
+            cacheDispatcher = Executors.newSingleThreadExecutor().asCoroutineDispatcher(),
+            filterDispatcher = Executors.newSingleThreadExecutor().asCoroutineDispatcher(),
+            chatDispatcher = Executors.newSingleThreadExecutor().asCoroutineDispatcher()
         )
     }
     single { DistanceCalculator(get()) }
@@ -237,9 +236,6 @@ val dataModule = module {
             supportChatHelper = get()
         )
     }
-    factory { TradesResponseToTradeDataMapper(get(), get(), get()) }
-    factory { OrderResponseToOrderMapper() }
-    factory { TradeResponseToTradeMapper() }
 
     single<SupportChatHelper> {
         SupportChatHelperImpl(

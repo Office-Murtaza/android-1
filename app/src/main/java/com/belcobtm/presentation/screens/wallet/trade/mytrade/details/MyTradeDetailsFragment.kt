@@ -8,7 +8,7 @@ import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.navigation.fragment.navArgs
 import com.belcobtm.R
-import com.belcobtm.data.model.trade.TradeType
+import com.belcobtm.domain.trade.model.trade.TradeType
 import com.belcobtm.databinding.FragmentMyTradeDetailsBinding
 import com.belcobtm.domain.Failure
 import com.belcobtm.presentation.core.adapter.MultiTypeAdapter

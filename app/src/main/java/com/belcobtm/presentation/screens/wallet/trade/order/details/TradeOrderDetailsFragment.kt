@@ -17,9 +17,9 @@ import androidx.core.content.ContextCompat
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.belcobtm.R
-import com.belcobtm.data.model.trade.OrderStatus
-import com.belcobtm.data.model.trade.TradeType
 import com.belcobtm.databinding.FragmentTradeOrderDetailsBinding
+import com.belcobtm.domain.trade.model.order.OrderStatus
+import com.belcobtm.domain.trade.model.trade.TradeType
 import com.belcobtm.presentation.core.adapter.MultiTypeAdapter
 import com.belcobtm.presentation.core.helper.AlertHelper
 import com.belcobtm.presentation.core.mvvm.LoadingData
@@ -119,7 +119,7 @@ class TradeOrderDetailsFragment : BaseFragment<FragmentTradeOrderDetailsBinding>
             ratingGroup.toggle(it.statusId == OrderStatus.RELEASED || it.statusId == OrderStatus.SOLVED)
         }
         viewModel.partnerScore.observe(viewLifecycleOwner) {
-            if (it == null) {
+            if (it == 0) {
                 partnerScoreValue.setText(R.string.trade_order_details_not_rated_label)
                 partnerScoreValue.setDrawableStart(0)
             } else {
@@ -128,7 +128,7 @@ class TradeOrderDetailsFragment : BaseFragment<FragmentTradeOrderDetailsBinding>
             }
         }
         viewModel.myScore.observe(viewLifecycleOwner) {
-            if (it == null) {
+            if (it == 0) {
                 myScoreValue.setText(R.string.trade_order_details_not_rated_label)
                 myScoreValue.setDrawableStart(0)
             } else {

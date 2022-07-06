@@ -7,6 +7,7 @@ import com.belcobtm.domain.PreferencesInteractor
 import com.belcobtm.presentation.screens.wallet.trade.order.chat.model.ChatMessageItem
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import java.text.SimpleDateFormat
+import java.util.Calendar
 import java.util.Date
 
 class ChatMessageMapper(
@@ -23,8 +24,10 @@ class ChatMessageMapper(
             ChatMessageItem.PARTNER_MESSAGE_TYPE
         }
         return ChatMessageItem(
-            message.message, dateFormat.format(Date(message.timestamp)), message.timestamp,
-            message.file?.takeIf { it.isNotEmpty() }?.let {
+            text = message.message ?: "",
+            time = dateFormat.format(Date(message.timestamp ?: Calendar.getInstance().timeInMillis)),
+            timestamp = message.timestamp ?: 0L,
+            imageUrl = message.file?.takeIf { it.isNotEmpty() }?.let {
                 try {
                     getLink(it)
                 } catch (e: Exception) {
