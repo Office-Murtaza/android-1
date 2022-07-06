@@ -14,8 +14,9 @@ class ObserveTransactionDetailsUseCase(
     fun invoke(params: Params): Flow<TransactionDetailsDataItem?> =
         transactionRepository.observeTransactions()
             .map { data ->
-                data.transactions[params.txId]
+                data[params.txId]
             }.flowOn(Dispatchers.Default)
 
     data class Params(val txId: String, val coinCode: String)
+
 }

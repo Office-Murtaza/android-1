@@ -46,7 +46,7 @@
         android:layout_marginBottom="16dp"
         android:gravity="center_vertical"
         android:maxLines="1"
-        android:textColor="#8d8d8d"
+        android:textColor="@color/light_gray"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="@id/nameView"
         app:layout_constraintTop_toBottomOf="@id/nameView"

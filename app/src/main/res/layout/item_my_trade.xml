@@ -69,7 +69,7 @@
             tools:background="@drawable/trade_type_buy_background"
             tools:drawableStart="@drawable/ic_trade_type_buy"
             tools:text="Buy"
-            tools:textColor="@color/trade_type_buy_trade_text_color" />
+            tools:textColor="@color/secondaryGreen" />
 
         <TextView
             android:id="@+id/price_label"

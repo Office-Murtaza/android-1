@@ -2,7 +2,7 @@ package com.belcobtm.data.websockets.order
 
 import com.belcobtm.data.disk.shared.preferences.SharedPreferencesHelper
 import com.belcobtm.data.inmemory.trade.TradeInMemoryCache
-import com.belcobtm.data.rest.trade.response.TradeOrderItemResponse
+import com.belcobtm.data.rest.trade.response.TradeOrderResponse
 import com.belcobtm.data.websockets.base.model.SocketState
 import com.belcobtm.data.websockets.base.model.StompSocketRequest
 import com.belcobtm.data.websockets.manager.SocketManager.Companion.DESTINATION_HEADER
@@ -49,7 +49,7 @@ class WebSocketOrdersObserver(
                 }.filterNotNull()
                 .collectLatest { response ->
                     response.mapSuspend { response ->
-                        moshi.adapter(TradeOrderItemResponse::class.java)
+                        moshi.adapter(TradeOrderResponse::class.java)
                             .fromJson(response.body)
                             ?.let {
                                 tradeInMemoryCache.updateOrders(it)

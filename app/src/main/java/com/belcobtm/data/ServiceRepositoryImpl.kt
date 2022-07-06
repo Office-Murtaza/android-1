@@ -1,32 +1,23 @@
 package com.belcobtm.data
 
+import com.belcobtm.R
 import com.belcobtm.data.disk.database.service.ServiceDao
 import com.belcobtm.data.disk.database.service.ServiceEntity
 import com.belcobtm.data.websockets.services.model.ServicesInfoResponse
-import com.belcobtm.data.websockets.services.model.toEntity
+import com.belcobtm.domain.service.ServiceItem
 import com.belcobtm.domain.service.ServiceRepository
-import kotlinx.coroutines.CoroutineScope
+import com.belcobtm.domain.service.ServiceType
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.flow.map
 
 class ServiceRepositoryImpl(
-    private val serviceDao: ServiceDao,
-    private val serviceScope: CoroutineScope
+    private val serviceDao: ServiceDao
 ) : ServiceRepository {
 
-    private val serviceInMemoryCache = MutableStateFlow<List<ServiceEntity>>(emptyList())
-
-    override fun prefetchServices() {
-        serviceScope.launch {
-            serviceDao.observeAvailable()
-                .collect(serviceInMemoryCache::emit)
+    override fun observeServices(): Flow<List<ServiceItem>> =
+        serviceDao.getServicesFlow().map {
+            mapServiceToItem(it)
         }
-    }
-
-    override fun observeServices(): Flow<List<ServiceEntity>> =
-        serviceInMemoryCache
 
     override suspend fun updateServices(services: List<ServicesInfoResponse>) {
         services.sortedBy(ServicesInfoResponse::index)
@@ -34,10 +25,44 @@ class ServiceRepositoryImpl(
             .let(serviceDao::updateServices)
     }
 
-    override fun isAvailable(serviceType: Int): Boolean =
-        serviceInMemoryCache.value.find { it.id == serviceType } != null
+    override suspend fun getService(serviceType: ServiceType): ServiceItem? =
+        serviceDao.getServiceByType(serviceType.value)?.mapToData()
 
-    override fun getService(serviceType: Int): ServiceEntity? =
-        serviceInMemoryCache.value.find { it.id == serviceType }
+    private fun mapServiceToItem(entity: List<ServiceEntity>): List<ServiceItem> = entity.mapNotNull { it.mapToData() }
+
+    private fun ServiceEntity.mapToData(): ServiceItem? {
+        return ServiceType.values().firstOrNull { type ->
+            type.value == id
+        }?.let { type ->
+            ServiceItem(
+                id = id.toString(),
+                icon = getServiceIcon(type),
+                serviceType = type,
+                title = getServiceTitle(type),
+                locationEnabled = locationEnabled,
+                verificationEnabled = verificationEnabled,
+                feePercent = feePercent,
+                txLimit = txLimit,
+                dailyLimit = dailyLimit,
+                remainLimit = remainLimit
+            )
+        }
+    }
+
+    private fun getServiceIcon(type: ServiceType) = when (type) {
+        ServiceType.TRANSFER -> R.drawable.ic_transfer
+        ServiceType.SWAP -> R.drawable.ic_swap
+        ServiceType.STAKING -> R.drawable.ic_staking
+        ServiceType.TRADE -> R.drawable.ic_trade
+        ServiceType.ATM_SELL -> R.drawable.ic_atm_sell
+    }
+
+    private fun getServiceTitle(type: ServiceType) = when (type) {
+        ServiceType.TRANSFER -> R.string.deals_transfer
+        ServiceType.SWAP -> R.string.deals_swap
+        ServiceType.STAKING -> R.string.deals_staking
+        ServiceType.TRADE -> R.string.deals_trade
+        ServiceType.ATM_SELL -> R.string.atm_sell_title
+    }
 
 }

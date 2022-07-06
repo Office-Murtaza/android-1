@@ -1,5 +1,7 @@
 package com.belcobtm.data.rest.settings
 
+import com.belcobtm.data.rest.authorization.request.CheckPassRequest
+import com.belcobtm.data.rest.authorization.response.CheckPassResponse
 import com.belcobtm.data.rest.settings.request.Base64VerificationDocuments
 import com.belcobtm.data.rest.settings.request.ChangePassBody
 import com.belcobtm.data.rest.settings.request.CommunicationInfo
@@ -12,7 +14,6 @@ import com.belcobtm.data.rest.settings.request.VerificationBlankRequest
 import com.belcobtm.data.rest.settings.request.VerificationData
 import com.belcobtm.data.rest.settings.request.VerificationDocumentRequest
 import com.belcobtm.data.rest.settings.request.VerificationUserIdentityRequest
-import com.belcobtm.data.rest.settings.request.VipVerificationRequest
 import com.belcobtm.data.rest.settings.response.VerificationDetailsResponse
 import com.belcobtm.data.rest.settings.response.VerificationFieldsResponse
 import com.belcobtm.data.rest.settings.response.VerificationInfoResponse
@@ -24,7 +25,6 @@ import com.belcobtm.domain.settings.item.VerificationBlankDataItem
 import com.belcobtm.domain.settings.item.VerificationDocumentDataItem
 import com.belcobtm.domain.settings.item.VerificationDocumentFirebaseImages
 import com.belcobtm.domain.settings.item.VerificationIdentityDataItem
-import com.belcobtm.domain.settings.item.VerificationVipDataItem
 
 class SettingsApiService(private val api: SettingsApi) {
 
@@ -152,27 +152,9 @@ class SettingsApiService(private val api: SettingsApi) {
         Either.Left(failure)
     }
 
-    suspend fun sendVerificationVip(
-        userId: String,
-        dataItem: VerificationVipDataItem,
-        fileName: String
-    ): Either<Failure, Unit> = try {
-        val request = VipVerificationRequest(
-            dataItem.id,
-            dataItem.idCardNumberFilename,
-            dataItem.idCardNumber,
-            dataItem.firstName,
-            dataItem.lastName,
-            dataItem.address,
-            dataItem.city,
-            dataItem.country,
-            dataItem.province,
-            dataItem.zipCode,
-            dataItem.ssn.toString(),
-            fileName
-        )
-        val response = api.sendVerificationVipAsync(userId, request)
-        response.body()?.let { Either.Right(Unit) } ?: Either.Left(Failure.ServerError())
+    suspend fun checkPass(userId: String, password: String): Either<Failure, CheckPassResponse> = try {
+        val request = api.checkPass(userId, CheckPassRequest(password))
+        request.body()?.let { Either.Right(it) } ?: Either.Left(Failure.ServerError())
     } catch (failure: Failure) {
         failure.printStackTrace()
         Either.Left(failure)
@@ -190,17 +172,6 @@ class SettingsApiService(private val api: SettingsApi) {
         Either.Left(failure)
     }
 
-    suspend fun getPhone(
-        userId: String
-    ): Either<Failure, String> = try {
-        val request = api.getPhone(userId)
-
-        request.body()?.let { Either.Right(it.phone) } ?: Either.Left(Failure.ServerError())
-    } catch (failure: Failure) {
-        failure.printStackTrace()
-        Either.Left(failure)
-    }
-
     suspend fun updatePhone(
         userId: String,
         newPhone: String
@@ -209,7 +180,6 @@ class SettingsApiService(private val api: SettingsApi) {
             userId,
             UpdatePhoneParam(newPhone)
         )
-
         request.body()?.let { Either.Right(it.result) } ?: Either.Left(Failure.ServerError())
     } catch (failure: Failure) {
         failure.printStackTrace()
@@ -220,11 +190,7 @@ class SettingsApiService(private val api: SettingsApi) {
         userId: String,
         newPhone: String
     ): Either<Failure, Boolean> = try {
-        val request = api.verifyPhone(
-            userId,
-            UpdatePhoneParam(newPhone)
-        )
-
+        val request = api.verifyPhone(userId, UpdatePhoneParam(newPhone))
         request.body()?.let { Either.Right(it.result) } ?: Either.Left(Failure.ServerError())
     } catch (failure: Failure) {
         failure.printStackTrace()

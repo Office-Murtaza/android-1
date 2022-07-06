@@ -16,9 +16,12 @@ import androidx.annotation.DrawableRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
+import androidx.core.view.isInvisible
 import com.belcobtm.R
 import com.belcobtm.databinding.ViewCoinInputLayoutBinding
-import com.belcobtm.presentation.core.extensions.*
+import com.belcobtm.presentation.tools.extensions.actionDoneListener
+import com.belcobtm.presentation.tools.extensions.setDrawableEnd
+import com.belcobtm.presentation.tools.extensions.toggle
 
 class CoinInputLayout @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
@@ -26,7 +29,7 @@ class CoinInputLayout @JvmOverloads constructor(
 
     private val textColorOrigin: Int
     private val textColorError = ContextCompat.getColor(context, R.color.colorError)
-    private val binding = ViewCoinInputLayoutBinding.inflate(LayoutInflater.from(context), this)
+    private val binding = ViewCoinInputLayoutBinding.inflate(LayoutInflater.from(context), this, true)
 
     init {
         textColorOrigin = binding.coinInputEditText.textColors.defaultColor
@@ -95,13 +98,8 @@ class CoinInputLayout @JvmOverloads constructor(
     }
 
     fun setMaxVisible(visible: Boolean) {
-        if (visible) {
-            binding.tvMax.isEnabled = true
-            binding.tvMax.show()
-        } else {
-            binding.tvMax.isEnabled = false
-            binding.tvMax.invisible()
-        }
+        binding.tvMax.isEnabled = visible
+        binding.tvMax.isInvisible = visible.not()
     }
 
     fun setHelperText2(charSequence: CharSequence?) {
@@ -134,4 +132,5 @@ class CoinInputLayout @JvmOverloads constructor(
         }
         binding.tvError.text = text
     }
+
 }

@@ -3,20 +3,20 @@ package com.belcobtm.data.rest.authorization
 import android.os.Build
 import com.belcobtm.BuildConfig
 import com.belcobtm.data.rest.authorization.request.CheckCredentialsRequest
-import com.belcobtm.data.rest.authorization.request.CheckPassRequest
 import com.belcobtm.data.rest.authorization.request.CreateWalletCoinRequest
 import com.belcobtm.data.rest.authorization.request.CreateWalletRequest
 import com.belcobtm.data.rest.authorization.request.RecoverWalletCoinRequest
 import com.belcobtm.data.rest.authorization.request.RecoverWalletRequest
 import com.belcobtm.data.rest.authorization.request.RefreshTokenRequest
 import com.belcobtm.data.rest.authorization.response.AuthorizationResponse
-import com.belcobtm.data.rest.authorization.response.CheckPassResponse
 import com.belcobtm.data.rest.authorization.response.CreateRecoverWalletResponse
 import com.belcobtm.domain.Either
 import com.belcobtm.domain.Failure
 import java.net.HttpURLConnection
 
-class AuthApiService(private val authApi: AuthApi) {
+class AuthApiService(
+    private val authApi: AuthApi
+) {
 
     companion object {
 
@@ -117,14 +117,5 @@ class AuthApiService(private val authApi: AuthApi) {
         failure.printStackTrace()
         Either.Left(failure)
     }
-
-    suspend fun checkPass(userId: String, password: String): Either<Failure, CheckPassResponse> =
-        try {
-            val request = authApi.checkPass(userId, CheckPassRequest(password))
-            request.body()?.let { Either.Right(it) } ?: Either.Left(Failure.ServerError())
-        } catch (failure: Failure) {
-            failure.printStackTrace()
-            Either.Left(failure)
-        }
 
 }

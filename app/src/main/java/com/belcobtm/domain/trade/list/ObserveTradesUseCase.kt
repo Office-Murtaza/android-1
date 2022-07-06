@@ -1,10 +1,10 @@
 package com.belcobtm.domain.trade.list
 
-import com.belcobtm.data.disk.shared.preferences.SharedPreferencesHelper
-import com.belcobtm.data.model.trade.TradeData
-import com.belcobtm.data.model.trade.TradeType
+import com.belcobtm.domain.trade.model.TradeHistoryDomainModel
+import com.belcobtm.domain.trade.model.trade.TradeType
 import com.belcobtm.domain.Either
 import com.belcobtm.domain.Failure
+import com.belcobtm.domain.PreferencesInteractor
 import com.belcobtm.domain.trade.TradeRepository
 import com.belcobtm.domain.trade.list.mapper.TradesDataToTradeListMapper
 import kotlinx.coroutines.Dispatchers
@@ -14,7 +14,7 @@ import kotlinx.coroutines.flow.flowOn
 class ObserveTradesUseCase(
     private val tradeRepository: TradeRepository,
     private val mapper: TradesDataToTradeListMapper,
-    private val sharedPreferencesHelper: SharedPreferencesHelper
+    private val preferences: PreferencesInteractor
 ) {
 
     operator fun invoke(params: Params) =
@@ -24,9 +24,9 @@ class ObserveTradesUseCase(
                 tradeData.isRight ->
                     Either.Right(
                         mapper.map(
-                            (tradeData as Either.Right<TradeData>).b,
+                            (tradeData as Either.Right<TradeHistoryDomainModel>).b,
                             params, filter,
-                            sharedPreferencesHelper.userId
+                            preferences.userId
                         )
                     )
                 else ->
@@ -34,5 +34,6 @@ class ObserveTradesUseCase(
             }
         }.flowOn(Dispatchers.Default)
 
-    data class Params(val numbersToLoad: Int, @TradeType val tradeType: Int)
+    data class Params(val numbersToLoad: Int, val tradeType: TradeType)
+
 }

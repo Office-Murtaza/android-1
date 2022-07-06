@@ -12,12 +12,7 @@
         android:layout_height="wrap_content"
         app:src="@drawable/ic_add_call"
         app:text="@string/update_phone_label"
-        tools:value="@string/support_phone" />
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@color/thin_divider" />
+        tools:value="+380 50 8881 8815" />
 
     <com.belcobtm.presentation.core.views.SettingsItemView
         android:id="@+id/update_pass_item"
@@ -26,22 +21,12 @@
         app:src="@drawable/ic_lock"
         app:text="@string/update_pass_label" />
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@color/thin_divider" />
-
     <com.belcobtm.presentation.core.views.SettingsItemView
         android:id="@+id/update_pin_item"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:src="@drawable/ic_security_pin"
         app:text="@string/update_pin_label" />
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@color/thin_divider" />
 
     <com.belcobtm.presentation.core.views.SettingsItemView
         android:id="@+id/switch_bio_auth_item"
@@ -53,22 +38,12 @@
         app:withSwitch="true"
         tools:visibility="visible" />
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@color/thin_divider" />
-
     <com.belcobtm.presentation.core.views.SettingsItemView
         android:id="@+id/seed_phrase_item"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:src="@drawable/ic_seed"
         app:text="@string/seed_phrase_label" />
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@color/thin_divider" />
 
     <com.belcobtm.presentation.core.views.SettingsItemView
         android:id="@+id/unlink_item"

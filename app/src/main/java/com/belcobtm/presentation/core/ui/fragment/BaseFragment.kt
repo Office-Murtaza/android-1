@@ -25,12 +25,12 @@ import androidx.viewbinding.ViewBinding
 import com.belcobtm.R
 import com.belcobtm.databinding.FragmentBaseBinding
 import com.belcobtm.domain.Failure
-import com.belcobtm.presentation.core.extensions.hide
-import com.belcobtm.presentation.core.extensions.show
-import com.belcobtm.presentation.core.extensions.toggle
+import com.belcobtm.presentation.tools.extensions.hide
+import com.belcobtm.presentation.tools.extensions.show
+import com.belcobtm.presentation.tools.extensions.toggle
 import com.belcobtm.presentation.core.mvvm.LoadingData
 import com.belcobtm.presentation.core.views.InterceptableFrameLayout
-import com.belcobtm.presentation.features.HostActivity
+import com.belcobtm.presentation.screens.HostActivity
 import org.koin.android.ext.android.get
 import org.koin.core.parameter.parametersOf
 

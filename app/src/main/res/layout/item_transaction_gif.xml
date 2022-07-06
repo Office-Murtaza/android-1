@@ -33,7 +33,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/margin_main"
-        android:textColor="#8d8d8d"
+        android:textColor="@color/light_gray"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/gifContainer"
         app:layout_constraintTop_toTopOf="@id/gifContainer"

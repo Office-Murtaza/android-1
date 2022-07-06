@@ -15,7 +15,7 @@ class AssetsDataStore(
 
     fun getCountries(): List<VerificationCountryDataItem> {
         val fileInString: String = context.assets.open(COUNTRIES_FILENAME).bufferedReader().use { it.readText() }
-        return countryAdapter.fromJson(fileInString) ?: emptyList()
+        return countryAdapter.fromJson(fileInString).orEmpty()
     }
 
     companion object {

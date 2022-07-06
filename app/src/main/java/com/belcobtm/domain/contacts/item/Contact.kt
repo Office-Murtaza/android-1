@@ -1,7 +1,7 @@
 package com.belcobtm.domain.contacts.item
 
 import com.belcobtm.presentation.core.adapter.model.ListItem
-import com.belcobtm.presentation.features.contacts.adapter.delegate.ContactDelegate
+import com.belcobtm.presentation.screens.contacts.adapter.delegate.ContactDelegate
 
 data class Contact(
     override val id: String,

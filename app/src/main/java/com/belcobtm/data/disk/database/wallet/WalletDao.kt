@@ -37,46 +37,14 @@ interface WalletDao {
     @Query(
         """
         SELECT * 
-        FROM coin_detail INNER JOIN coin INNER JOIN account_entity
-        WHERE coin_detail.c_code = coin.code AND coin.code = account_entity.coin_name AND coin.code = :code
+        FROM account_entity INNER JOIN  coin_detail INNER JOIN coin
+        WHERE account_entity.coin_name = coin.code AND coin_detail.c_code = coin.code  AND account_entity.coin_name = :code
     """
     )
     suspend fun getCoinByCode(code: String): FullCoinEntity
 
-    @Query(
-        """
-        UPDATE coin
-        SET balance = :balance, balance_usd = :balanceUsd
-        WHERE code = :code
-    """
-    )
-    suspend fun updateBalance(
-        code: String,
-        balanceUsd: Double,
-        balance: Double,
-    )
-
-    @Query(
-        """
-        UPDATE coin
-        SET reserved_balance = :balance, reserved_balance_usd = :balanceUsd
-        WHERE code = :code
-    """
-    )
-    suspend fun updateReservedBalance(
-        code: String,
-        balanceUsd: Double,
-        balance: Double,
-    )
-
     @Query("SELECT total_balance FROM wallet")
     suspend fun getTotalBalance(): Double
-
-    @Transaction
-    suspend fun updateTotalBalance(balance: Double) {
-        clearBalance()
-        updateWallet(WalletEntity(balance))
-    }
 
     @Query("DELETE FROM wallet")
     suspend fun clearBalance()
@@ -131,4 +99,5 @@ interface WalletDao {
         clearCoin()
         clearWallet()
     }
+
 }

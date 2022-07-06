@@ -3,6 +3,7 @@ package com.belcobtm.presentation.di
 import com.belcobtm.data.cloud.storage.FirebaseCloudStorage
 import com.belcobtm.data.cloud.storage.FirebaseCloudStorage.Companion.VERIFICATION_STORAGE
 import com.belcobtm.data.core.RandomStringGenerator
+import com.belcobtm.domain.PreferencesInteractor
 import com.belcobtm.domain.account.interactor.GetUserCoinListUseCase
 import com.belcobtm.domain.account.interactor.UpdateUserCoinListUseCase
 import com.belcobtm.domain.atm.interactor.GetAtmsUseCase
@@ -37,24 +38,22 @@ import com.belcobtm.domain.referral.LoadReferralUseCase
 import com.belcobtm.domain.referral.SearchAvailableContactsUseCase
 import com.belcobtm.domain.service.ConnectToServicesUseCase
 import com.belcobtm.domain.service.ServiceInfoProvider
-import com.belcobtm.domain.settings.interactor.UpdatePhoneUseCase
 import com.belcobtm.domain.settings.interactor.BioAuthAllowedByUserUseCase
 import com.belcobtm.domain.settings.interactor.BioAuthSupportedByPhoneUseCase
 import com.belcobtm.domain.settings.interactor.ChangePassUseCase
 import com.belcobtm.domain.settings.interactor.GetNeedToShowRestrictions
-import com.belcobtm.domain.settings.interactor.GetPhoneUseCase
 import com.belcobtm.domain.settings.interactor.GetVerificationCountryListUseCase
 import com.belcobtm.domain.settings.interactor.GetVerificationDetailsUseCase
 import com.belcobtm.domain.settings.interactor.GetVerificationFieldsUseCase
 import com.belcobtm.domain.settings.interactor.GetVerificationInfoUseCase
+import com.belcobtm.domain.settings.interactor.IsPhoneUsedUseCase
 import com.belcobtm.domain.settings.interactor.SendVerificationBlankUseCase
 import com.belcobtm.domain.settings.interactor.SendVerificationDocumentUseCase
 import com.belcobtm.domain.settings.interactor.SendVerificationIdentityUseCase
-import com.belcobtm.domain.settings.interactor.SendVerificationVipUseCase
 import com.belcobtm.domain.settings.interactor.SetBioAuthStateAllowedUseCase
 import com.belcobtm.domain.settings.interactor.SetNeedToShowRestrictionsUseCase
 import com.belcobtm.domain.settings.interactor.UnlinkUseCase
-import com.belcobtm.domain.settings.interactor.VerifyPhoneUseCase
+import com.belcobtm.domain.settings.interactor.UpdatePhoneUseCase
 import com.belcobtm.domain.socket.ConnectToSocketUseCase
 import com.belcobtm.domain.socket.DisconnectFromSocketUseCase
 import com.belcobtm.domain.support.SupportChatInteractor
@@ -88,7 +87,6 @@ import com.belcobtm.domain.trade.list.filter.mapper.TradeFilterMapper
 import com.belcobtm.domain.trade.list.mapper.TradeOrderDataToItemMapper
 import com.belcobtm.domain.trade.list.mapper.TradePaymentOptionMapper
 import com.belcobtm.domain.trade.list.mapper.TradeToTradeItemMapper
-import com.belcobtm.domain.trade.list.mapper.TraderStatusToIconMapper
 import com.belcobtm.domain.trade.list.mapper.TradesDataToMyTradeMapper
 import com.belcobtm.domain.trade.list.mapper.TradesDataToOrderListMapper
 import com.belcobtm.domain.trade.list.mapper.TradesDataToStatisticsMapper
@@ -133,17 +131,16 @@ import com.belcobtm.domain.wallet.interactor.ConnectToWalletUseCase
 import com.belcobtm.domain.wallet.interactor.GetChartsUseCase
 import com.belcobtm.domain.wallet.interactor.GetCoinByCodeUseCase
 import com.belcobtm.domain.wallet.interactor.GetCoinListUseCase
-import com.belcobtm.domain.wallet.interactor.UpdateBalanceUseCase
-import com.belcobtm.domain.wallet.interactor.UpdateReservedBalanceUseCase
 import com.belcobtm.presentation.core.DateFormat.CHAT_DATE_FORMAT
-import com.belcobtm.presentation.core.formatter.DoubleCurrencyPriceFormatter.Companion.DOUBLE_CURRENCY_PRICE_FORMATTER_QUALIFIER
-import com.belcobtm.presentation.core.formatter.MilesFormatter.Companion.MILES_FORMATTER_QUALIFIER
-import com.belcobtm.presentation.core.formatter.TradeCountFormatter.Companion.TRADE_COUNT_FORMATTER_QUALIFIER
+import com.belcobtm.presentation.tools.formatter.CurrencyPriceFormatter.Companion.CURRENCY_PRICE_FORMATTER_QUALIFIER
+import com.belcobtm.presentation.tools.formatter.MilesFormatter.Companion.MILES_FORMATTER_QUALIFIER
+import com.belcobtm.presentation.tools.formatter.TradeCountFormatter.Companion.TRADE_COUNT_FORMATTER_QUALIFIER
 import org.koin.android.ext.koin.androidApplication
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
 import java.text.SimpleDateFormat
 import java.util.Calendar
+import java.util.Locale
 
 val useCaseModule = module {
     single { AuthorizationStatusGetUseCase(get()) }
@@ -170,7 +167,6 @@ val useCaseModule = module {
     single {
         SendVerificationDocumentUseCase(
             get(),
-            androidApplication(),
             get(named(VERIFICATION_STORAGE)),
             get()
         )
@@ -178,13 +174,6 @@ val useCaseModule = module {
     single { SaveUserAuthedUseCase(get()) }
     single {
         SendVerificationBlankUseCase(
-            get(),
-            androidApplication(),
-            get(named(VERIFICATION_STORAGE))
-        )
-    }
-    single {
-        SendVerificationVipUseCase(
             get(),
             androidApplication(),
             get(named(VERIFICATION_STORAGE))
@@ -211,7 +200,6 @@ val useCaseModule = module {
     single { CheckPassUseCase(get()) }
     single { UnlinkUseCase(get()) }
     single { ChangePassUseCase(get()) }
-    single { GetPhoneUseCase(get()) }
     single { ServiceInfoProvider(get()) }
     single {
         GetAtmsUseCase(
@@ -229,7 +217,7 @@ val useCaseModule = module {
     }
     single { ObserveTransactionDetailsUseCase(get()) }
     single { GetCoinListUseCase(get()) }
-    factory { VerifyPhoneUseCase(get()) }
+    factory { IsPhoneUsedUseCase(get()) }
     factory { UpdatePhoneUseCase(get()) }
     single { StakeDetailsGetUseCase(get()) }
     single { StakeCreateUseCase(get(), get(), get()) }
@@ -280,7 +268,7 @@ val useCaseModule = module {
     single { TradeReserveTransactionCreateUseCase(get()) }
     single { ObserveMissedMessageCountUseCase(get()) }
     single { UpdateLastSeenMessageTimeStampUseCase(get()) }
-    single { ObserveTransactionsUseCase(get()) }
+    factory { ObserveTransactionsUseCase(get()) }
     single { ConnectToTransactionsUseCase(get()) }
     single { ConnectToBankAccountsUseCase(get()) }
     single { ConnectToPaymentsUseCase(get()) }
@@ -301,25 +289,24 @@ val useCaseModule = module {
     factory { GetVerificationStatusUseCase(get()) }
     factory { CoinCodeMapper() }
     factory { TradesDataToTradeListMapper(get()) }
-    factory { UpdateBalanceUseCase(get()) }
-    factory { UpdateReservedBalanceUseCase(get()) }
     factory { GetNeedToShowRestrictions(get()) }
     factory { SetNeedToShowRestrictionsUseCase(get()) }
     factory {
         TradeToTradeItemMapper(
-            get(), get(named(MILES_FORMATTER_QUALIFIER)),
-            get(named(DOUBLE_CURRENCY_PRICE_FORMATTER_QUALIFIER)),
-            get(named(TRADE_COUNT_FORMATTER_QUALIFIER)),
-            get()
+            paymentOptionMapper = get(),
+            milesFormatter = get(named(MILES_FORMATTER_QUALIFIER)),
+            priceFormatter = get(named(CURRENCY_PRICE_FORMATTER_QUALIFIER)),
+            tradeCountFormatter = get(named(TRADE_COUNT_FORMATTER_QUALIFIER))
         )
     }
-    factory { TraderStatusToIconMapper() }
-    factory { TradesDataToStatisticsMapper(get()) }
+    factory { TradesDataToStatisticsMapper() }
     factory {
         TradeOrderDataToItemMapper(
-            get(), get(named(DOUBLE_CURRENCY_PRICE_FORMATTER_QUALIFIER)),
-            get(named(TRADE_COUNT_FORMATTER_QUALIFIER)), get(), get(),
-            get(named(MILES_FORMATTER_QUALIFIER))
+            tradeItemMapper = get(),
+            priceFormatter = get(named(CURRENCY_PRICE_FORMATTER_QUALIFIER)),
+            tradeCountFormatter = get(named(TRADE_COUNT_FORMATTER_QUALIFIER)),
+            distanceCalculator = get(),
+            milesFormatter = get(named(MILES_FORMATTER_QUALIFIER))
         )
     }
     factory { TradesDataToOrderListMapper(get()) }
@@ -333,12 +320,17 @@ val useCaseModule = module {
             get(),
             get(named(FirebaseCloudStorage.CHAT_STORAGE)),
             get(),
-            SimpleDateFormat(CHAT_DATE_FORMAT)
+            SimpleDateFormat(CHAT_DATE_FORMAT, Locale.getDefault())
         )
     }
     factory {
         SupportChatInteractor(
             supportChatHelper = get()
+        )
+    }
+    factory {
+        PreferencesInteractor(
+            prefHelper = get()
         )
     }
 

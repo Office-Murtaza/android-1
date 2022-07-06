@@ -10,7 +10,7 @@ import kotlinx.coroutines.launch
 class GetUserCoinListUseCase(private val repository: AccountRepository) {
 
     operator fun invoke(onResult: (List<AccountDataItem>) -> Unit) {
-        val job = CoroutineScope(Dispatchers.IO).async { repository.getAccountCoinsList() }
+        val job = CoroutineScope(Dispatchers.IO).async { repository.getAvailableAccounts() }
         CoroutineScope(Dispatchers.Main).launch { onResult(job.await()) }
     }
 }

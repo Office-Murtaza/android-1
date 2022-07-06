@@ -1,7 +1,7 @@
 package com.belcobtm.domain.contacts.item
 
 import com.belcobtm.presentation.core.adapter.model.ListItem
-import com.belcobtm.presentation.features.contacts.adapter.delegate.ContactHeaderDelegate.Companion.CONTACT_HEADER_VIEW_TYPE
+import com.belcobtm.presentation.screens.contacts.adapter.delegate.ContactHeaderDelegate.Companion.CONTACT_HEADER_VIEW_TYPE
 
 data class ContactHeader(val title: String) : ListItem {
 

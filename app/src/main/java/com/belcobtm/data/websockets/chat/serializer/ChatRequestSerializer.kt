@@ -2,7 +2,7 @@ package com.belcobtm.data.websockets.chat.serializer
 
 import com.belcobtm.data.websockets.chat.model.SendMessageRequest
 import com.belcobtm.data.websockets.serializer.RequestSerializer
-import com.belcobtm.presentation.features.wallet.trade.order.chat.NewMessageItem
+import com.belcobtm.presentation.screens.wallet.trade.order.chat.NewMessageItem
 import com.squareup.moshi.Moshi
 
 class ChatRequestSerializer(

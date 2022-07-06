@@ -2,17 +2,6 @@ package com.belcobtm.presentation.di
 
 import android.content.Context
 import com.belcobtm.presentation.core.coin.CoinCodeProvider
-import com.belcobtm.presentation.core.formatter.DoubleCurrencyPriceFormatter
-import com.belcobtm.presentation.core.formatter.DoubleCurrencyPriceFormatter.Companion.DOUBLE_CURRENCY_PRICE_FORMATTER_QUALIFIER
-import com.belcobtm.presentation.core.formatter.Formatter
-import com.belcobtm.presentation.core.formatter.GoogleMapsDirectionQueryFormatter
-import com.belcobtm.presentation.core.formatter.GoogleMapsDirectionQueryFormatter.Companion.GOOGLE_MAPS_DIRECTIONS_QUERY_FORMATTER
-import com.belcobtm.presentation.core.formatter.IntCurrencyPriceFormatter
-import com.belcobtm.presentation.core.formatter.IntCurrencyPriceFormatter.Companion.INT_CURRENCY_PRICE_FORMATTER_QUALIFIER
-import com.belcobtm.presentation.core.formatter.MilesFormatter
-import com.belcobtm.presentation.core.formatter.MilesFormatter.Companion.MILES_FORMATTER_QUALIFIER
-import com.belcobtm.presentation.core.formatter.PhoneNumberFormatter
-import com.belcobtm.presentation.core.formatter.TradeCountFormatter
 import com.belcobtm.presentation.core.helper.ClipBoardHelper
 import com.belcobtm.presentation.core.parser.DistanceParser
 import com.belcobtm.presentation.core.parser.DistanceParser.Companion.DISTANCE_INT_PARSER_QUALIFIER
@@ -21,65 +10,78 @@ import com.belcobtm.presentation.core.parser.PriceDoubleParser.Companion.PRICE_D
 import com.belcobtm.presentation.core.parser.StringParser
 import com.belcobtm.presentation.core.provider.string.ResourceStringProvider
 import com.belcobtm.presentation.core.provider.string.StringProvider
-import com.belcobtm.presentation.core.validator.PhoneNumberValidator
-import com.belcobtm.presentation.features.HostViewModel
-import com.belcobtm.presentation.features.MainViewModel
-import com.belcobtm.presentation.features.atm.AtmViewModel
-import com.belcobtm.presentation.features.authorization.create.seed.CreateSeedViewModel
-import com.belcobtm.presentation.features.authorization.create.wallet.CreateWalletViewModel
-import com.belcobtm.presentation.features.authorization.recover.seed.RecoverSeedViewModel
-import com.belcobtm.presentation.features.authorization.recover.wallet.RecoverWalletViewModel
-import com.belcobtm.presentation.features.bank_accounts.BankAccountsViewModel
-import com.belcobtm.presentation.features.bank_accounts.ach.BankAchViewModel
-import com.belcobtm.presentation.features.bank_accounts.create.BankAccountCreateViewModel
-import com.belcobtm.presentation.features.bank_accounts.details.BankAccountDetailsViewModel
-import com.belcobtm.presentation.features.bank_accounts.payments.PaymentBuyUsdcViewModel
-import com.belcobtm.presentation.features.bank_accounts.payments.PaymentSellUsdcViewModel
-import com.belcobtm.presentation.features.bank_accounts.payments.PaymentSummaryViewModel
-import com.belcobtm.presentation.features.contacts.ContactListViewModel
-import com.belcobtm.presentation.features.deals.DealsViewModel
-import com.belcobtm.presentation.features.deals.atm.sell.AtmSellViewModel
-import com.belcobtm.presentation.features.deals.staking.StakingViewModel
-import com.belcobtm.presentation.features.deals.swap.SwapViewModel
-import com.belcobtm.presentation.features.notification.NotificationHelper
-import com.belcobtm.presentation.features.pin.code.PinCodeViewModel
-import com.belcobtm.presentation.features.referral.ReferralViewModel
-import com.belcobtm.presentation.features.referral.contacts.InviteFromContactsViewModel
-import com.belcobtm.presentation.features.settings.SettingsViewModel
-import com.belcobtm.presentation.features.settings.about.AboutViewModel
-import com.belcobtm.presentation.features.settings.password.PasswordViewModel
-import com.belcobtm.presentation.features.settings.phone.PhoneChangeViewModel
-import com.belcobtm.presentation.features.settings.security.SecurityViewModel
-import com.belcobtm.presentation.features.settings.unlink.UnlinkViewModel
-import com.belcobtm.presentation.features.settings.update_password.UpdatePasswordViewModel
-import com.belcobtm.presentation.features.settings.verification.blank.VerificationBlankViewModel
-import com.belcobtm.presentation.features.settings.verification.details.VerificationDetailsViewModel
-import com.belcobtm.presentation.features.settings.verification.vip.VerificationVipViewModel
-import com.belcobtm.presentation.features.sms.code.SmsCodeViewModel
-import com.belcobtm.presentation.features.wallet.add.WalletsViewModel
-import com.belcobtm.presentation.features.wallet.balance.WalletViewModel
-import com.belcobtm.presentation.features.wallet.deposit.DepositViewModel
-import com.belcobtm.presentation.features.wallet.send.gift.SendGiftViewModel
-import com.belcobtm.presentation.features.wallet.trade.container.TradeContainerViewModel
-import com.belcobtm.presentation.features.wallet.trade.create.CreateTradeViewModel
-import com.belcobtm.presentation.features.wallet.trade.details.TradeDetailsViewModel
-import com.belcobtm.presentation.features.wallet.trade.edit.EditTradeViewModel
-import com.belcobtm.presentation.features.wallet.trade.list.TradeListViewModel
-import com.belcobtm.presentation.features.wallet.trade.list.filter.TradeFilterViewModel
-import com.belcobtm.presentation.features.wallet.trade.mytrade.details.MyTradeDetailsViewModel
-import com.belcobtm.presentation.features.wallet.trade.mytrade.list.MyTradesViewModel
-import com.belcobtm.presentation.features.wallet.trade.order.TradeOrdersViewModel
-import com.belcobtm.presentation.features.wallet.trade.order.chat.OrderChatViewModel
-import com.belcobtm.presentation.features.wallet.trade.order.create.TradeCreateOrderViewModel
-import com.belcobtm.presentation.features.wallet.trade.order.details.TradeOrderDetailsViewModel
-import com.belcobtm.presentation.features.wallet.trade.order.historychat.HistoryChatViewModel
-import com.belcobtm.presentation.features.wallet.trade.order.rate.TradeOrderRateViewModel
-import com.belcobtm.presentation.features.wallet.trade.recall.TradeRecallViewModel
-import com.belcobtm.presentation.features.wallet.trade.reserve.TradeReserveViewModel
-import com.belcobtm.presentation.features.wallet.trade.statistic.TradeUserStatisticViewModel
-import com.belcobtm.presentation.features.wallet.transaction.details.TransactionDetailsViewModel
-import com.belcobtm.presentation.features.wallet.transactions.TransactionsViewModel
-import com.belcobtm.presentation.features.wallet.withdraw.WithdrawViewModel
+import com.belcobtm.presentation.screens.HostViewModel
+import com.belcobtm.presentation.screens.MainViewModel
+import com.belcobtm.presentation.screens.atm.AtmViewModel
+import com.belcobtm.presentation.screens.authorization.create.seed.CreateSeedViewModel
+import com.belcobtm.presentation.screens.authorization.create.wallet.CreateWalletViewModel
+import com.belcobtm.presentation.screens.authorization.recover.seed.RecoverSeedViewModel
+import com.belcobtm.presentation.screens.authorization.recover.wallet.RecoverWalletViewModel
+import com.belcobtm.presentation.screens.bank_accounts.BankAccountsViewModel
+import com.belcobtm.presentation.screens.bank_accounts.ach.BankAchViewModel
+import com.belcobtm.presentation.screens.bank_accounts.create.BankAccountCreateViewModel
+import com.belcobtm.presentation.screens.bank_accounts.details.BankAccountDetailsViewModel
+import com.belcobtm.presentation.screens.bank_accounts.payments.PaymentBuyUsdcViewModel
+import com.belcobtm.presentation.screens.bank_accounts.payments.PaymentSellUsdcViewModel
+import com.belcobtm.presentation.screens.bank_accounts.payments.PaymentSummaryViewModel
+import com.belcobtm.presentation.screens.contacts.ContactListViewModel
+import com.belcobtm.presentation.screens.notification.NotificationHelper
+import com.belcobtm.presentation.screens.pin.code.PinCodeViewModel
+import com.belcobtm.presentation.screens.services.ServicesViewModel
+import com.belcobtm.presentation.screens.services.atm.sell.AtmSellViewModel
+import com.belcobtm.presentation.screens.services.staking.StakingViewModel
+import com.belcobtm.presentation.screens.services.swap.SwapViewModel
+import com.belcobtm.presentation.screens.services_info.ServicesInfoViewModel
+import com.belcobtm.presentation.screens.settings.SettingsViewModel
+import com.belcobtm.presentation.screens.settings.about.AboutViewModel
+import com.belcobtm.presentation.screens.settings.referral.ReferralViewModel
+import com.belcobtm.presentation.screens.settings.referral.contacts.InviteFromContactsViewModel
+import com.belcobtm.presentation.screens.settings.security.SecurityViewModel
+import com.belcobtm.presentation.screens.settings.security.password.PasswordViewModel
+import com.belcobtm.presentation.screens.settings.security.phone.PhoneChangeViewModel
+import com.belcobtm.presentation.screens.settings.security.unlink.UnlinkViewModel
+import com.belcobtm.presentation.screens.settings.security.update_password.UpdatePasswordViewModel
+import com.belcobtm.presentation.screens.settings.verification.blank.VerificationBlankViewModel
+import com.belcobtm.presentation.screens.settings.verification.details.VerificationDetailsViewModel
+import com.belcobtm.presentation.screens.settings.wallets.WalletsViewModel
+import com.belcobtm.presentation.screens.sms.code.SmsCodeViewModel
+import com.belcobtm.presentation.screens.wallet.balance.WalletViewModel
+import com.belcobtm.presentation.screens.wallet.deposit.DepositViewModel
+import com.belcobtm.presentation.screens.wallet.send.gift.SendGiftViewModel
+import com.belcobtm.presentation.screens.wallet.trade.container.TradeContainerViewModel
+import com.belcobtm.presentation.screens.wallet.trade.create.CreateTradeViewModel
+import com.belcobtm.presentation.screens.wallet.trade.details.TradeDetailsViewModel
+import com.belcobtm.presentation.screens.wallet.trade.edit.EditTradeViewModel
+import com.belcobtm.presentation.screens.wallet.trade.list.TradeListViewModel
+import com.belcobtm.presentation.screens.wallet.trade.list.filter.TradeFilterViewModel
+import com.belcobtm.presentation.screens.wallet.trade.mytrade.details.MyTradeDetailsViewModel
+import com.belcobtm.presentation.screens.wallet.trade.mytrade.list.MyTradesViewModel
+import com.belcobtm.presentation.screens.wallet.trade.order.TradeOrdersViewModel
+import com.belcobtm.presentation.screens.wallet.trade.order.chat.OrderChatViewModel
+import com.belcobtm.presentation.screens.wallet.trade.order.create.TradeCreateOrderViewModel
+import com.belcobtm.presentation.screens.wallet.trade.order.details.TradeOrderDetailsViewModel
+import com.belcobtm.presentation.screens.wallet.trade.order.historychat.HistoryChatViewModel
+import com.belcobtm.presentation.screens.wallet.trade.order.rate.TradeOrderRateViewModel
+import com.belcobtm.presentation.screens.wallet.trade.recall.TradeRecallViewModel
+import com.belcobtm.presentation.screens.wallet.trade.reserve.TradeReserveViewModel
+import com.belcobtm.presentation.screens.wallet.trade.statistic.TradeUserStatisticViewModel
+import com.belcobtm.presentation.screens.wallet.transaction.details.TransactionDetailsViewModel
+import com.belcobtm.presentation.screens.wallet.transactions.TransactionsViewModel
+import com.belcobtm.presentation.screens.wallet.withdraw.WithdrawViewModel
+import com.belcobtm.presentation.tools.formatter.CryptoPriceFormatter
+import com.belcobtm.presentation.tools.formatter.CryptoPriceFormatter.Companion.CRYPTO_PRICE_FORMATTER_QUALIFIER
+import com.belcobtm.presentation.tools.formatter.CurrencyPriceFormatter
+import com.belcobtm.presentation.tools.formatter.CurrencyPriceFormatter.Companion.CURRENCY_PRICE_FORMATTER_QUALIFIER
+import com.belcobtm.presentation.tools.formatter.Formatter
+import com.belcobtm.presentation.tools.formatter.GoogleMapsDirectionQueryFormatter
+import com.belcobtm.presentation.tools.formatter.GoogleMapsDirectionQueryFormatter.Companion.GOOGLE_MAPS_DIRECTIONS_QUERY_FORMATTER
+import com.belcobtm.presentation.tools.formatter.IntCurrencyPriceFormatter
+import com.belcobtm.presentation.tools.formatter.IntCurrencyPriceFormatter.Companion.INT_CURRENCY_PRICE_FORMATTER_QUALIFIER
+import com.belcobtm.presentation.tools.formatter.MilesFormatter
+import com.belcobtm.presentation.tools.formatter.MilesFormatter.Companion.MILES_FORMATTER_QUALIFIER
+import com.belcobtm.presentation.tools.formatter.PhoneNumberFormatter
+import com.belcobtm.presentation.tools.formatter.TradeCountFormatter
+import com.belcobtm.presentation.tools.validator.PhoneNumberValidator
 import io.michaelrocks.libphonenumber.android.PhoneNumberUtil
 import org.koin.android.ext.koin.androidApplication
 import org.koin.androidx.viewmodel.dsl.viewModel
@@ -102,7 +104,13 @@ val viewModelModule = module {
         )
     }
     viewModel { BankAccountCreateViewModel(get()) }
-    viewModel { BankAccountsViewModel(get(), get()) }
+    viewModel {
+        BankAccountsViewModel(
+            getBankAccountsListUseCase = get(),
+            observeBankAccountsListUseCase = get(),
+            preferences = get()
+        )
+    }
     viewModel { (bankAccountId: String) ->
         BankAccountDetailsViewModel(
             bankAccountId,
@@ -115,7 +123,7 @@ val viewModelModule = module {
         BankAchViewModel(
             getLinkTokenUseCase = get(),
             linkBankAccountUseCase = get(),
-            prefHelper = get()
+            preferences = get()
         )
     }
     viewModel { PaymentSellUsdcViewModel(get(), get()) }
@@ -124,12 +132,12 @@ val viewModelModule = module {
     viewModel { AboutViewModel(get()) }
     viewModel {
         SecurityViewModel(
-            getPhoneUseCase = get(),
             phoneNumberFormatter = get(),
             setBioAuthStateAllowedUseCase = get(),
             bioAuthAllowedByUserUseCase = get(),
             bioAuthSupportedByPhoneUseCase = get(),
-            updatePhoneUseCase = get()
+            updatePhoneUseCase = get(),
+            preferences = get()
         )
     }
     viewModel { WalletViewModel(get(), get(), get(), get()) }
@@ -154,11 +162,10 @@ val viewModelModule = module {
             sendVerificationIdentityUseCase = get(),
             getVerificationDetailsUseCase = get(),
             countriesUseCase = get(),
-            prefHelper = get(),
+            preferences = get(),
         )
     }
     viewModel { VerificationBlankViewModel(get()) }
-    viewModel { VerificationVipViewModel(get()) }
     viewModel {
         SwapViewModel(
             accountDao = get(),
@@ -170,7 +177,6 @@ val viewModelModule = module {
             receiverAccountActivatedUseCase = get(),
             getFakeSignedTransactionPlanUseCase = get(),
             getMaxValueBySignedTransactionUseCase = get(),
-            updateBalanceUseCase = get(),
             stringProvider = get()
         )
     }
@@ -178,15 +184,15 @@ val viewModelModule = module {
     viewModel { (coinCode: String) -> TradeRecallViewModel(coinCode, get(), get(), get(), get()) }
     viewModel { (coinCode: String) ->
         TradeReserveViewModel(
-            coinCode, get(), get(), get(), get(), get(), get(), get(), get(), get(), get(), get()
+            coinCode, get(), get(), get(), get(), get(), get(), get(), get(), get(), get()
         )
     }
-    viewModel { StakingViewModel(get(), get(), get(), get(), get(), get(), get(), get(), get()) }
+    viewModel { StakingViewModel(get(), get(), get(), get(), get(), get(), get(), get()) }
     viewModel { (phone: String) -> SmsCodeViewModel(phone, get(), get()) }
     viewModel { RecoverSeedViewModel(get(), get()) }
     viewModel { CreateSeedViewModel(get(), get(), get(), get()) }
     viewModel { SettingsViewModel() }
-    viewModel { DealsViewModel(get()) }
+    viewModel { ServicesViewModel(get()) }
     viewModel { PasswordViewModel(get(), get()) }
     viewModel { UnlinkViewModel(get(), get()) }
     viewModel { UpdatePasswordViewModel(get()) }
@@ -195,18 +201,18 @@ val viewModelModule = module {
     viewModel { (txId: String, coinCode: String) ->
         TransactionDetailsViewModel(
             txId, coinCode, get(), get(),
-            get(named(DOUBLE_CURRENCY_PRICE_FORMATTER_QUALIFIER)), get()
+            get(named(CURRENCY_PRICE_FORMATTER_QUALIFIER)), get()
         )
     }
     viewModel {
         SendGiftViewModel(
             get(), get(), get(), get(), get(), get(),
-            get(), get(), get(), get(), get(), get()
+            get(), get(), get(), get(), get()
         )
     }
     viewModel { (coinCode: String) ->
         WithdrawViewModel(
-            coinCode, get(), get(), get(), get(), get(), get(), get(), get(), get(), get()
+            coinCode, get(), get(), get(), get(), get(), get(), get(), get(), get()
         )
     }
     viewModel { (coinCode: String) -> DepositViewModel(coinCode, get()) }
@@ -215,33 +221,39 @@ val viewModelModule = module {
     viewModel { TradeListViewModel(get(), get()) }
     viewModel { TradeUserStatisticViewModel(get()) }
     viewModel { InviteFromContactsViewModel(get(), get(), get(), get()) }
-    viewModel { MyTradeDetailsViewModel(get(), get(), get(), get(), get()) }
+    viewModel { MyTradeDetailsViewModel(get(), get(), get()) }
     viewModel { EditTradeViewModel(get(), get(), get(), get(), get(), get()) }
     viewModel { TradeOrdersViewModel(get()) }
     viewModel { MyTradesViewModel(get(), get()) }
     viewModel {
         AtmSellViewModel(
-            get(), get(), get(), get(), get(),
-            get(named(DOUBLE_CURRENCY_PRICE_FORMATTER_QUALIFIER)),
+            getCoinListUseCase = get(),
+            sellUseCase = get(),
+            accountDao = get(),
+            serviceInfoProvider = get(),
+            stringProvider = get(),
+            priceFormatter = get(named(CURRENCY_PRICE_FORMATTER_QUALIFIER)),
+            preferences = get()
         )
     }
     viewModel {
         TradeDetailsViewModel(
-            get(), get(),
-            get(named(DOUBLE_CURRENCY_PRICE_FORMATTER_QUALIFIER)),
-            get(named(GOOGLE_MAPS_DIRECTIONS_QUERY_FORMATTER))
+            observeTradeDetailsUseCase = get(),
+            stringProvider = get(),
+            priceFormatter = get(named(CURRENCY_PRICE_FORMATTER_QUALIFIER)),
+            googleMapQueryFormatter = get(named(GOOGLE_MAPS_DIRECTIONS_QUERY_FORMATTER))
         )
     }
     viewModel {
-        CreateTradeViewModel(get(), get(), get(), get(), get(), get(), get())
+        CreateTradeViewModel(get(), get(), get(), get(), get(), get())
     }
     viewModel {
         TradeFilterViewModel(
-            get(),
-            get(),
-            get(),
-            get(),
-            get(named(DISTANCE_INT_PARSER_QUALIFIER))
+            loadFilterDataUseCase = get(),
+            resetFilterUseCase = get(),
+            applyFilterUseCase = get(),
+            stringProvider = get(),
+            distanceParser = get(named(DISTANCE_INT_PARSER_QUALIFIER))
         )
     }
     viewModel {
@@ -256,9 +268,12 @@ val viewModelModule = module {
     }
     viewModel {
         TradeCreateOrderViewModel(
-            get(), get(), get(), get(), get(),
-            get(named(DOUBLE_CURRENCY_PRICE_FORMATTER_QUALIFIER)),
-            get()
+            getTradeDetailsUseCase = get(),
+            getCoinByCodeUseCase = get(),
+            createOrderUseCase = get(),
+            stringProvider = get(),
+            serviceInfoProvider = get(),
+            priceFormatter = get(named(CURRENCY_PRICE_FORMATTER_QUALIFIER))
         )
     }
     viewModel { TradeOrderRateViewModel(get(), get()) }
@@ -266,6 +281,8 @@ val viewModelModule = module {
     viewModel { HistoryChatViewModel(get()) }
     viewModel { HostViewModel(get()) }
     viewModel { ReferralViewModel(get(), get()) }
+
+    viewModel { ServicesInfoViewModel(get()) }
 }
 
 val viewModelHelperModule = module {
@@ -279,8 +296,13 @@ val helperModule = module {
     factory { NotificationHelper(get(), get()) }
     single { ClipBoardHelper(androidApplication()) }
     single<Locale> { Locale.US }
-    factory<Formatter<Double>>(named(DOUBLE_CURRENCY_PRICE_FORMATTER_QUALIFIER)) {
-        DoubleCurrencyPriceFormatter(
+    factory<Formatter<Double>>(named(CURRENCY_PRICE_FORMATTER_QUALIFIER)) {
+        CurrencyPriceFormatter(
+            get()
+        )
+    }
+    factory<Formatter<Double>>(named(CRYPTO_PRICE_FORMATTER_QUALIFIER)) {
+        CryptoPriceFormatter(
             get()
         )
     }

@@ -3,8 +3,8 @@ package com.belcobtm.domain.trade.order
 import com.belcobtm.domain.Either
 import com.belcobtm.domain.map
 import com.belcobtm.domain.trade.TradeRepository
-import com.belcobtm.presentation.features.wallet.trade.order.chat.model.ChatMessageItem
-import com.belcobtm.presentation.features.wallet.trade.order.chat.model.ChatMessageItem.Companion.PARTNER_MESSAGE_TYPE
+import com.belcobtm.presentation.screens.wallet.trade.order.chat.model.ChatMessageItem
+import com.belcobtm.presentation.screens.wallet.trade.order.chat.model.ChatMessageItem.Companion.PARTNER_MESSAGE_TYPE
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.map

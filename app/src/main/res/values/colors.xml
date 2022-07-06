@@ -1,26 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#0073e4</color>
+    <color name="colorPrimary">#0073E4</color>
     <color name="colorPrimaryDark">#004ba0</color>
     <color name="colorAccent">#0074e5</color>
     <color name="colorStatusBar">#FFFFFF</color>
     <color name="colorWhite">#FFFFFF</color>
     <color name="colorWhiteWithTransparency">#99FFFFFF</color>
+    <color name="primaryTextColor">#DE000000</color>
 
     <color name="colorText">#58585a</color>
     <color name="gray_text_color">#7c7c7c</color>
     <color name="disabled_text_color">#D3D3D3</color>
     <color name="black_text_color">#000</color>
-    <color name="black_opacity_70">#CC000000</color>
     <color name="light_gray_text_color">#c1c1c1</color>
     <color name="dark_text_color">#212121</color>
     <color name="dark_bg">#14212121</color>
+    <color name="almostBlackBg">#DE000000</color>
 
-    <color name="colorLightGray">#F3F3F3</color>
-    <color name="colorLightGray2">#DADADA</color>
     <color name="colorError">#B00020</color>
 
-    <color name="edit_text_drawable_tint">#c6c6c6</color>
+    <color name="mainGreen">#48BE53</color>
+    <color name="mainRed">#E02D2D</color>
+
+    <color name="secondaryGreen">#48C583</color>
+    <color name="secondaryRed">#EA6666</color>
 
     <color name="toast_background">#80000000</color>
     <color name="toast_text">#FFFFFF</color>
@@ -32,16 +35,8 @@
 
     <color name="bt_gray">#afb0ab</color>
     <color name="bt_orange">#ffcd4c</color>
-    <color name="bt_green">#48C583</color>
-    <color name="bt_red">#EA6666</color>
-    <color name="blue_color">#0073e4</color>
 
-    <color name="transaction_green">#48be53</color>
-    <color name="transaction_red">#e02d2d</color>
-
-    <color name="colorStatusComplete">#48be53</color>
     <color name="colorStatusPending">#ffcd4c</color>
-    <color name="colorStatusFail">#e02d2d</color>
     <color name="colorStatusUnknown">#afb0ab</color>
 
     //staking
@@ -50,46 +45,35 @@
     <color name="colorStatusWithdrawPending">#9fd256</color>
     <color name="colorStatusWithdrawn">#8033FF</color>
 
-
     <color name="chart_line">#a2c6fd</color>
     <color name="chart_point">#84b4fd</color>
     <color name="chart_no_highlight">#000</color>
-    <color name="chart_changes_up">#48be53</color>
-    <color name="chart_changes_down">#e02d2d</color>
 
-    <color name="chip_default_text_color">#DE000000</color>
     <color name="chip_default_icon_background_color">#517FA4</color>
     <color name="chip_wire_text_color">#8E5BF9</color>
     <color name="chip_ach_text_color">#F7931A</color>
-    <color name="buy_text_color">#48C583</color>
-    <color name="sell_text_color">#EA6666</color>
-
-
 
     <color name="thin_divider">#11000000</color>
 
-    <color name="vip_verified_background">#effff0</color>
-    <color name="vip_verified_border">#48be53</color>
     <color name="verified_background">#f8ffed</color>
     <color name="verified_border">#9fd256</color>
     <color name="pending_border">#ffcd4c</color>
     <color name="pending_background">#fffcf3</color>
     <color name="rejected_background">#fff2f2</color>
-    <color name="rejected_border">#e02d2d</color>
     <color name="not_verified_background">#f3f3f3</color>
     <color name="not_verified_border">#ababab</color>
 
-    <color name="color_status_1">#48C583</color>
     <color name="color_status_2">#EDB900</color>
-    <color name="color_status_3">#0073E4</color>
 
-    <color name="trade_type_buy_trade_text_color">#48C583</color>
     <color name="trade_type_sell_trade_text_color">#C54B61</color>
-    <color name="atm_type_buy_and_sell_text_color">#48C583</color>
-    <color name="atm_type_buy_only_text_color">#0073E4</color>
 
     <color name="lighter_gray">#198d8d8d</color>
     <color name="light_gray">#8d8d8d</color>
+    <color name="divider_gray">#eeeeee</color>
     <color name="light_text_color">#FEFEFE</color>
+    <color name="colorLightGray">#F3F3F3</color>
+    <color name="colorLightGray2">#DADADA</color>
+    <color name="edit_text_drawable_tint">#c6c6c6</color>
     <color name="atm_location_label_text_color">#99000000</color>
+
 </resources>

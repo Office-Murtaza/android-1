@@ -10,7 +10,10 @@ import kotlinx.coroutines.flow.Flow
 interface ServiceDao {
 
     @Query("SELECT * FROM service")
-    fun observeAvailable(): Flow<List<ServiceEntity>>
+    fun getServicesFlow(): Flow<List<ServiceEntity>>
+
+    @Query("SELECT * FROM service WHERE id = :type")
+    suspend fun getServiceByType(type: Int): ServiceEntity?
 
     @Query("DELETE FROM service")
     fun clear()
@@ -23,4 +26,5 @@ interface ServiceDao {
         clear()
         insert(services)
     }
+
 }

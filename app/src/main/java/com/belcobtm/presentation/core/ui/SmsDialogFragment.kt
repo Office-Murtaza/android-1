@@ -7,8 +7,8 @@ import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
 import com.belcobtm.R
 import com.belcobtm.databinding.FragmentDialogSmsCodeBinding
-import com.belcobtm.presentation.core.extensions.getString
-import com.belcobtm.presentation.core.extensions.showError
+import com.belcobtm.presentation.tools.extensions.getString
+import com.belcobtm.presentation.tools.extensions.showError
 
 class SmsDialogFragment : DialogFragment() {
     private var listener: ((smsCode: String) -> Unit)? = null

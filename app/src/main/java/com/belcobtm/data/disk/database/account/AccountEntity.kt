@@ -11,7 +11,8 @@ data class AccountEntity(
     @ColumnInfo(name = "coin_name") @PrimaryKey val coinName: String,
     @ColumnInfo(name = "public_key") val publicKey: String,
     @ColumnInfo(name = "private_key") val privateKey: String,
-    @ColumnInfo(name = "is_enabled") val isEnabled: Boolean = true
+    @ColumnInfo(name = "is_enabled") val isEnabled: Boolean,
+    @ColumnInfo(name = "is_available") val isAvailable: Boolean
 ) {
 
     val type: LocalCoinType
@@ -22,13 +23,7 @@ data class AccountEntity(
 fun AccountEntity.mapToDataItem(): AccountDataItem = AccountDataItem(
     type = type,
     publicKey = publicKey,
-    privateKey = privateKey
-).also { it.isEnabled = isEnabled }
-
-fun AccountDataItem.mapToEntity(): AccountEntity =
-    AccountEntity(
-        coinName = type.name,
-        publicKey = publicKey,
-        privateKey = privateKey,
-        isEnabled = isEnabled
-    )
+    privateKey = privateKey,
+    isAvailable = isAvailable,
+    isEnabled = isEnabled
+)

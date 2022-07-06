@@ -6,7 +6,6 @@ import com.belcobtm.domain.Failure
 import okhttp3.Interceptor
 import okhttp3.Response
 import java.io.IOException
-import kotlin.jvm.Throws
 
 class BaseInterceptor(
     private val prefHelper: SharedPreferencesHelper,
@@ -34,6 +33,7 @@ class BaseInterceptor(
     }
 
     companion object {
+
         private const val HEADER_CONTENT_TYPE_KEY = "Content-Type"
         private const val HEADER_CONTENT_TYPE_VALUE = "application/json"
         private const val HEADER_X_REQUESTED_WITH_KEY = "X-Requested-With"
@@ -42,4 +42,5 @@ class BaseInterceptor(
         private const val HEADER_ACCEPT_VALUE = "application/json"
         const val HEADER_AUTHORIZATION_KEY = "Authorization"
     }
+
 }

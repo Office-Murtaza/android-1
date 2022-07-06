@@ -25,7 +25,7 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintWidth_percent=".33" />
 
-        <com.belcobtm.presentation.features.authorization.welcome.WelcomeItemView
+        <com.belcobtm.presentation.screens.authorization.welcome.WelcomeItemView
             android:id="@+id/privacyWelcomeItem"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -35,7 +35,7 @@
             app:welcomeItemSrc="@drawable/ic_privacy"
             app:welcomeItemTitle="@string/welcome_screen_privacy_title" />
 
-        <com.belcobtm.presentation.features.authorization.welcome.WelcomeItemView
+        <com.belcobtm.presentation.screens.authorization.welcome.WelcomeItemView
             android:id="@+id/transferWelcomeItem"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -45,7 +45,7 @@
             app:welcomeItemSrc="@drawable/ic_transfer"
             app:welcomeItemTitle="@string/welcome_screen_transfer_title" />
 
-        <com.belcobtm.presentation.features.authorization.welcome.WelcomeItemView
+        <com.belcobtm.presentation.screens.authorization.welcome.WelcomeItemView
             android:id="@+id/swapWelcomeItem"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -55,7 +55,7 @@
             app:welcomeItemSrc="@drawable/ic_swap"
             app:welcomeItemTitle="@string/welcome_screen_swap_title" />
 
-        <com.belcobtm.presentation.features.authorization.welcome.WelcomeItemView
+        <com.belcobtm.presentation.screens.authorization.welcome.WelcomeItemView
             android:id="@+id/p2prWelcomeItem"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -65,7 +65,7 @@
             app:welcomeItemSrc="@drawable/ic_trade"
             app:welcomeItemTitle="@string/welcome_screen_p2p_title" />
 
-        <com.belcobtm.presentation.features.authorization.welcome.WelcomeItemView
+        <com.belcobtm.presentation.screens.authorization.welcome.WelcomeItemView
             android:id="@+id/bankWelcomeItem"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -75,7 +75,7 @@
             app:welcomeItemSrc="@drawable/ic_bank"
             app:welcomeItemTitle="@string/welcome_screen_bank_title" />
 
-        <com.belcobtm.presentation.features.authorization.welcome.WelcomeItemView
+        <com.belcobtm.presentation.screens.authorization.welcome.WelcomeItemView
             android:id="@+id/nftWelcomeItem"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

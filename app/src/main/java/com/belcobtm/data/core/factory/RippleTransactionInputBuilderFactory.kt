@@ -2,19 +2,17 @@ package com.belcobtm.data.core.factory
 
 import com.belcobtm.R
 import com.belcobtm.data.disk.database.account.AccountDao
-import com.belcobtm.domain.Either
 import com.belcobtm.domain.Failure
 import com.belcobtm.domain.transaction.item.TransactionPlanItem
 import com.belcobtm.domain.wallet.LocalCoinType
-import com.belcobtm.presentation.core.extensions.toStringCoin
-import com.belcobtm.presentation.core.extensions.unit
+import com.belcobtm.presentation.tools.extensions.toStringCoin
+import com.belcobtm.presentation.tools.extensions.unit
 import com.belcobtm.presentation.core.provider.string.StringProvider
 import com.belcobtm.presentation.core.toHexByteArray
 import com.google.protobuf.ByteString
 import wallet.core.jni.CoinType
 import wallet.core.jni.PrivateKey
 import wallet.core.jni.proto.Ripple
-import java.math.BigDecimal
 
 class RippleTransactionInputBuilderFactory(
     private val accountDao: AccountDao,
@@ -27,7 +25,7 @@ class RippleTransactionInputBuilderFactory(
         fromCoinAmount: Double,
         fromTransactionPlan: TransactionPlanItem
     ): Ripple.SigningInput.Builder {
-        val coinEntity = accountDao.getItem(fromCoin.name)
+        val coinEntity = accountDao.getAccountByName(fromCoin.name)
         val privateKey = PrivateKey(coinEntity.privateKey.toHexByteArray())
         if (coinEntity.publicKey == toAddress) {
             throw Failure.MessageError(stringProvider.getString(R.string.addresses_match_singing_error))

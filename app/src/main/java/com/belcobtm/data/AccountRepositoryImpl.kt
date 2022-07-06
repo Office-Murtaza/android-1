@@ -2,7 +2,6 @@ package com.belcobtm.data
 
 import com.belcobtm.data.disk.database.account.AccountDao
 import com.belcobtm.data.disk.database.account.mapToDataItem
-import com.belcobtm.data.disk.database.account.mapToEntity
 import com.belcobtm.data.rest.wallet.WalletApiService
 import com.belcobtm.domain.Either
 import com.belcobtm.domain.Failure
@@ -14,8 +13,8 @@ class AccountRepositoryImpl(
     private val apiService: WalletApiService
 ) : AccountRepository {
 
-    override suspend fun getAccountCoinsList(): List<AccountDataItem> {
-        return (daoAccount.getItemList() ?: emptyList()).map { it.mapToDataItem() }
+    override suspend fun getAvailableAccounts(): List<AccountDataItem> {
+        return daoAccount.getAvailableAccounts().orEmpty().map { it.mapToDataItem() }
     }
 
     override suspend fun updateAccountCoinsList(
@@ -26,10 +25,11 @@ class AccountRepositoryImpl(
             accountDataItem.isEnabled
         )
         return if (toggleCoinStateResult.isRight) {
-            daoAccount.updateItem(accountDataItem.mapToEntity())
+            daoAccount.updateIsEnabledByName(accountDataItem.type.name, accountDataItem.isEnabled)
             Either.Right(Unit)
         } else {
             toggleCoinStateResult
         }
     }
+
 }

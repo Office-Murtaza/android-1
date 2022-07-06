@@ -30,15 +30,13 @@ import java.util.Locale
 class AuthorizationRepositoryImpl(
     private val prefHelper: SharedPreferencesHelper,
     private val apiService: AuthApiService,
-    private val daoAccount: AccountDao,
+    private val accountDao: AccountDao,
     private val walletDao: WalletDao,
     private val serviceRepository: ServiceRepository,
     private val locationProvider: LocationProvider
 ) : AuthorizationRepository {
 
-    private val temporaryCoinMap: MutableMap<LocalCoinType, Pair<String, String>> by lazy {
-        return@lazy mutableMapOf<LocalCoinType, Pair<String, String>>()
-    }
+    private val temporaryCoinMap: MutableMap<LocalCoinType, Pair<String, String>> by lazy { mutableMapOf() }
 
     override fun getAuthorizationStatus(): AuthorizationStatus {
         if (!prefHelper.isUserAuthed && prefHelper.apiSeed.isNotEmpty()) {
@@ -54,7 +52,7 @@ class AuthorizationRepositoryImpl(
     override fun clearAppData() {
         prefHelper.clearData()
         CoroutineScope(Dispatchers.IO).launch {
-            daoAccount.clearTable()
+            accountDao.clearTable()
             walletDao.clear()
         }
     }
@@ -155,10 +153,11 @@ class AuthorizationRepositoryImpl(
         phone: String,
     ) = response.takeIf { it.isRight }?.let {
         with((response as Either.Right).b) {
-            val accountList = createAccountEntityList(temporaryCoinMap, balance)
             serviceRepository.updateServices(services)
             walletDao.updateBalance(balance)
-            daoAccount.insertItemList(accountList)
+            val accountList = createAccountEntityList(temporaryCoinMap, balance)
+            accountDao.insertItemList(accountList)
+
             prefHelper.firebaseToken = firebaseToken
             prefHelper.accessToken = accessToken
             prefHelper.refreshToken = refreshToken
@@ -176,11 +175,35 @@ class AuthorizationRepositoryImpl(
         }
     } ?: response as Either.Left
 
+    private fun createAccountEntityList(
+        temporaryCoinMap: Map<LocalCoinType, Pair<String, String>>,
+        balance: BalanceResponse
+    ): List<AccountEntity> {
+        val entityList: MutableList<AccountEntity> = mutableListOf()
+        val enabledCoins = balance.coins.map { it.coin }
+        temporaryCoinMap.forEach { (localCoinType, value) ->
+            val coin = localCoinType.name
+            val publicKey: String = value.first
+            val privateKey: String = value.second
+            entityList.add(
+                AccountEntity(
+                    coinName = coin,
+                    publicKey = publicKey,
+                    privateKey = privateKey,
+                    isAvailable = balance.availableCoins.contains(coin),
+                    isEnabled = enabledCoins.contains(coin)
+                )
+            )
+        }
+        return entityList
+    }
+
     override suspend fun authorize(): Either<Failure, Unit> {
         val response = apiService.authorizeByRefreshToken(prefHelper.refreshToken)
         return response.takeIf { it.isRight }?.let {
             val body = (response as Either.Right).b
             walletDao.updateBalance(body.balance)
+            accountDao.updateAccountEntityList(body.balance)
             prefHelper.processAuthResponse(body)
             Either.Right(Unit)
         } ?: response as Either.Left
@@ -223,38 +246,6 @@ class AuthorizationRepositoryImpl(
             else -> coinType.trustWalletType.deriveAddress(privateKey)
         }
         return Pair(publicKey, Numeric.toHexStringNoPrefix(privateKey.data()))
-    }
-
-    private fun createAccountEntityList(
-        temporaryCoinMap: Map<LocalCoinType, Pair<String, String>>,
-        balance: BalanceResponse
-    ): List<AccountEntity> {
-        val entityList: MutableList<AccountEntity> = mutableListOf()
-        val balanceCoins = balance.coins.map { it.coin }
-        temporaryCoinMap.forEach { (localCoinType, value) ->
-            val publicKey: String = value.first
-            val privateKey: String = value.second
-            balance.availableCoins.find { it == localCoinType.name }?.let {
-                entityList.add(
-                    AccountEntity(
-                        localCoinType.name,
-                        publicKey,
-                        privateKey,
-                        balanceCoins.contains(it)
-                    )
-                )
-            }
-        }
-        return entityList
-    }
-
-    override suspend fun checkPass(userId: String, password: String): Either<Failure, Boolean> {
-        val response = apiService.checkPass(userId, password)
-        return if (response.isRight) {
-            Either.Right((response as Either.Right).b.result)
-        } else {
-            response as Either.Left
-        }
     }
 
     /**

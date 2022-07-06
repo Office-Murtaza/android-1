@@ -6,26 +6,25 @@ import com.belcobtm.R
 import com.belcobtm.data.disk.database.account.AccountDao
 import com.belcobtm.data.disk.database.account.AccountEntity
 import com.belcobtm.data.inmemory.trade.TradeInMemoryCache
-import com.belcobtm.data.model.trade.Order
-import com.belcobtm.data.model.trade.PaymentOption
-import com.belcobtm.data.model.trade.Trade
-import com.belcobtm.data.model.trade.TradeData
-import com.belcobtm.data.model.trade.filter.SortOption
-import com.belcobtm.data.model.trade.filter.TradeFilter
 import com.belcobtm.data.rest.trade.TradeApiService
 import com.belcobtm.domain.Either
 import com.belcobtm.domain.Failure
 import com.belcobtm.domain.mapSuspend
 import com.belcobtm.domain.trade.TradeRepository
 import com.belcobtm.domain.trade.list.filter.mapper.TradeFilterItemMapper
+import com.belcobtm.domain.trade.model.PaymentMethodType
+import com.belcobtm.domain.trade.model.TradeHistoryDomainModel
+import com.belcobtm.domain.trade.model.filter.SortOption
+import com.belcobtm.domain.trade.model.filter.TradeFilter
+import com.belcobtm.domain.trade.model.order.OrderDomainModel
+import com.belcobtm.domain.trade.model.trade.TradeDomainModel
 import com.belcobtm.domain.wallet.LocalCoinType
-import com.belcobtm.presentation.features.wallet.trade.create.model.CreateTradeItem
-import com.belcobtm.presentation.features.wallet.trade.edit.EditTradeItem
-import com.belcobtm.presentation.features.wallet.trade.list.filter.model.TradeFilterItem
-import com.belcobtm.presentation.features.wallet.trade.order.create.model.TradeOrderItem
-import com.belcobtm.presentation.features.wallet.trade.order.details.model.UpdateOrderStatusItem
+import com.belcobtm.presentation.screens.wallet.trade.create.model.CreateTradeItem
+import com.belcobtm.presentation.screens.wallet.trade.edit.EditTradeItem
+import com.belcobtm.presentation.screens.wallet.trade.list.filter.model.TradeFilterItem
+import com.belcobtm.presentation.screens.wallet.trade.order.create.model.TradeOrderItem
+import com.belcobtm.presentation.screens.wallet.trade.order.details.model.UpdateOrderStatusItem
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.onEach
 
 class TradeRepositoryImpl(
     private val tradeApiService: TradeApiService,
@@ -35,16 +34,15 @@ class TradeRepositoryImpl(
     private val mapper: TradeFilterItemMapper
 ) : TradeRepository {
 
-    override fun getAvailablePaymentOptions(): List<@PaymentOption Int> =
-        listOf(
-            PaymentOption.CASH,
-            PaymentOption.PAYPAL,
-            PaymentOption.VENMO,
-            PaymentOption.CASH_APP,
-            PaymentOption.PAYONEER
-        )
+    override fun getAvailablePaymentOptions(): List<PaymentMethodType> = listOf(
+        PaymentMethodType.CASH,
+        PaymentMethodType.PAYPAL,
+        PaymentMethodType.VENMO,
+        PaymentMethodType.CASHAPP,
+        PaymentMethodType.PAYONEER
+    )
 
-    override fun observeTradeData(): Flow<Either<Failure, TradeData>?> =
+    override fun observeTradeData(): Flow<Either<Failure, TradeHistoryDomainModel>?> =
         tradeInMemoryCache.observableData
 
     override fun observeFilter(): Flow<TradeFilter?> =
@@ -57,13 +55,13 @@ class TradeRepositoryImpl(
         tradeInMemoryCache.updateLastSeenMessageTimestamp()
     }
 
-    override fun getTradeData(): Either<Failure, TradeData>? =
+    override fun getTradeData(): Either<Failure, TradeHistoryDomainModel>? =
         tradeInMemoryCache.data
 
-    override fun getTrade(tradeId: String): Either<Failure, Trade> =
+    override fun getTrade(tradeId: String): Either<Failure, TradeDomainModel> =
         tradeInMemoryCache.findTrade(tradeId)
 
-    override fun getOrder(orderId: String): Either<Failure, Order> =
+    override fun getOrder(orderId: String): Either<Failure, OrderDomainModel> =
         tradeInMemoryCache.findOrder(orderId)
 
     override fun getFilterItem(): TradeFilterItem =
@@ -87,7 +85,7 @@ class TradeRepositoryImpl(
 
     override suspend fun fetchTrades(calculateDistance: Boolean) {
         val result = tradeApiService.loadTrades()
-        val enabledCoins = accountDao.getItemList()?.filter(AccountEntity::isEnabled).orEmpty()
+        val enabledCoins = accountDao.getAvailableAccounts()?.filter(AccountEntity::isEnabled).orEmpty()
         tradeInMemoryCache.initCoins(enabledCoins)
         val filter = createInitialFilter(tradeInMemoryCache.enabledCoins, calculateDistance)
         tradeInMemoryCache.updateFilter(filter, createTradeFilterItem(filter))
@@ -112,36 +110,48 @@ class TradeRepositoryImpl(
         }
     }
 
-    override suspend fun deleteTrade(tradeId: String): Either<Failure, Unit> {
-        val response = tradeApiService.deleteTrade(tradeId)
-        return response.mapSuspend { tradeInMemoryCache.updateTrades(it) }
-    }
-
     override suspend fun cancelTrade(tradeId: String): Either<Failure, Unit> {
         val response = tradeApiService.cancelTrade(tradeId)
-        return response.mapSuspend { tradeInMemoryCache.updateTrades(it) }
+        return response.mapSuspend {
+            tradeInMemoryCache.updateTrades(it)
+        }
     }
 
-    override suspend fun cancelOrder(orderId: String): Either<Failure, Unit> =
-        tradeApiService.deleteOrder(orderId).mapSuspend { tradeInMemoryCache.updateOrders(it) }
+    override suspend fun deleteTrade(tradeId: String): Either<Failure, Unit> {
+        val response = tradeApiService.deleteTrade(tradeId)
+        return response.mapSuspend {
+            tradeInMemoryCache.updateTrades(it)
+        }
+    }
 
     override suspend fun createOrder(tradeOrder: TradeOrderItem, location: Location): Either<Failure, String> {
         val response = tradeApiService.createOrder(tradeOrder, location)
-        return response.mapSuspend {
-            tradeInMemoryCache.updateOrders(it)
-            it.id
-        }
+        return (response as Either.Right).b.id?.let { orderId ->
+            response.mapSuspend {
+                tradeInMemoryCache.updateOrders(it)
+                orderId
+            }
+        } ?: response as Either.Left
     }
 
     override suspend fun updateOrder(status: UpdateOrderStatusItem): Either<Failure, Unit> {
         val response = tradeApiService.updateOrder(status.orderId, status = status.newStatus)
-        return response.mapSuspend { tradeInMemoryCache.updateOrders(it) }
+        return response.mapSuspend {
+            tradeInMemoryCache.updateOrders(it)
+        }
     }
 
     override suspend fun rateOrder(orderId: String, rate: Int): Either<Failure, Unit> {
         val response = tradeApiService.updateOrder(orderId, rate = rate)
-        return response.mapSuspend { tradeInMemoryCache.updateOrders(it) }
+        return response.mapSuspend {
+            tradeInMemoryCache.updateOrders(it)
+        }
     }
+
+    override suspend fun cancelOrder(orderId: String): Either<Failure, Unit> =
+        tradeApiService.deleteOrder(orderId).mapSuspend {
+            tradeInMemoryCache.updateOrders(it)
+        }
 
     private fun createInitialFilter(
         enabledCoins: List<AccountEntity>,
@@ -166,4 +176,5 @@ class TradeRepositoryImpl(
             filter
         )
     }
+
 }

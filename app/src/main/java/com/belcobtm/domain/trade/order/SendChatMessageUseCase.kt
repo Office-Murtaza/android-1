@@ -3,21 +3,21 @@ package com.belcobtm.domain.trade.order
 import android.graphics.Bitmap
 import com.belcobtm.data.cloud.auth.CloudAuth
 import com.belcobtm.data.cloud.storage.CloudStorage
-import com.belcobtm.data.disk.shared.preferences.SharedPreferencesHelper
-import com.belcobtm.data.model.trade.Order
+import com.belcobtm.domain.trade.model.order.OrderDomainModel
 import com.belcobtm.data.websockets.chat.ChatObserver
 import com.belcobtm.domain.Either
 import com.belcobtm.domain.Failure
+import com.belcobtm.domain.PreferencesInteractor
 import com.belcobtm.domain.UseCase
 import com.belcobtm.domain.map
 import com.belcobtm.domain.trade.TradeRepository
-import com.belcobtm.presentation.features.wallet.trade.order.chat.NewMessageItem
+import com.belcobtm.presentation.screens.wallet.trade.order.chat.NewMessageItem
 
 class SendChatMessageUseCase(
     private val chatObserver: ChatObserver,
     private val cloudAuth: CloudAuth,
     private val cloudStorage: CloudStorage,
-    private val sharedPreferencesHelper: SharedPreferencesHelper,
+    private val preferences: PreferencesInteractor,
     private val tradeRepository: TradeRepository,
 ) : UseCase<Unit, SendChatMessageUseCase.Params>() {
 
@@ -26,13 +26,13 @@ class SendChatMessageUseCase(
         if (order.isLeft) {
             return order.map {}
         }
-        val orderData = (order as Either.Right<Order>).b
-        val myId = sharedPreferencesHelper.userId
+        val orderData = (order as Either.Right<OrderDomainModel>).b
+        val myId = preferences.userId
         return if (params.attachment != null && params.attachmentName != null) {
             try {
                 val isLoggedIn = cloudAuth.currentUserExists()
                 if (!isLoggedIn) {
-                    cloudAuth.authWithToken(sharedPreferencesHelper.firebaseToken)
+                    cloudAuth.authWithToken(preferences.firebaseToken)
                 }
                 cloudStorage.uploadBitmap(params.attachmentName, params.attachment)
                 val messageItem = NewMessageItem(
@@ -51,8 +51,8 @@ class SendChatMessageUseCase(
         }
     }
 
-    private fun resolveToId(myId: String, orderData: Order): String =
-        if (myId == orderData.makerId) orderData.takerId else orderData.makerId
+    private fun resolveToId(myId: String, orderData: OrderDomainModel): String =
+        if (myId == orderData.makerUserId) orderData.takerUserId else orderData.makerUserId
 
     data class Params(
         val orderId: String,
@@ -60,4 +60,5 @@ class SendChatMessageUseCase(
         val attachmentName: String?,
         val attachment: Bitmap?
     )
+
 }

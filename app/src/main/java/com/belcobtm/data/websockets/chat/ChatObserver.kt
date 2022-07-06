@@ -1,6 +1,6 @@
 package com.belcobtm.data.websockets.chat
 
-import com.belcobtm.presentation.features.wallet.trade.order.chat.NewMessageItem
+import com.belcobtm.presentation.screens.wallet.trade.order.chat.NewMessageItem
 
 interface ChatObserver {
 

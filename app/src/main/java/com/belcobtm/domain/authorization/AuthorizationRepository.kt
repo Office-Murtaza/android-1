@@ -37,5 +37,5 @@ interface AuthorizationRepository {
     ): Either<Failure, Unit>
 
     suspend fun authorize(): Either<Failure, Unit>
-    suspend fun checkPass(userId: String, password: String): Either<Failure, Boolean>
+
 }

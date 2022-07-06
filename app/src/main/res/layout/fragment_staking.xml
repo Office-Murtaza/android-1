@@ -265,6 +265,7 @@
         <com.google.android.material.button.MaterialButton
             android:id="@+id/createButtonView"
             style="@style/Button.Primary"
+            android:layout_margin="16dp"
             android:enabled="false"
             android:text="@string/staking_screen_stake"
             android:visibility="gone"
@@ -277,6 +278,7 @@
         <com.google.android.material.button.MaterialButton
             android:id="@+id/cancelButtonView"
             style="@style/Button.Primary"
+            android:layout_margin="16dp"
             android:text="@string/staking_screen_stake_cancel"
             android:visibility="gone"
             app:layout_constraintBottom_toTopOf="@id/withdrawButtonView"
@@ -287,6 +289,7 @@
         <com.google.android.material.button.MaterialButton
             android:id="@+id/withdrawButtonView"
             style="@style/Button.Primary"
+            android:layout_margin="16dp"
             android:text="@string/staking_screen_unstake"
             android:visibility="gone"
             app:layout_constraintBottom_toTopOf="@+id/limitDetails"
@@ -299,12 +302,14 @@
             style="@style/Button.Secondary.NoOutlined"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:visibility="gone"
             android:layout_marginStart="@dimen/margin_main"
             android:layout_marginTop="@dimen/margin_main"
-            android:layout_marginBottom="@dimen/margin_main"
             android:layout_marginEnd="@dimen/margin_main"
+            android:layout_marginBottom="@dimen/margin_main"
             android:text="@string/limit_details_button_title"
+            android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
+
 </ScrollView>

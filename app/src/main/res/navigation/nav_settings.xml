@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/settings_fragment"
-        android:name="com.belcobtm.presentation.features.settings.SettingsFragment"
+        android:name="com.belcobtm.presentation.screens.settings.SettingsFragment"
         android:label="SettingsFragment"
         tools:layout="@layout/fragment_settings">
 
@@ -60,7 +60,7 @@
 
     <fragment
         android:id="@+id/password_fragment"
-        android:name="com.belcobtm.presentation.features.settings.password.PasswordFragment"
+        android:name="com.belcobtm.presentation.screens.settings.security.password.PasswordFragment"
         android:label="PasswordFragment"
         tools:layout="@layout/fragment_password">
 
@@ -90,7 +90,7 @@
 
     <fragment
         android:id="@+id/create_seed_fragment"
-        android:name="com.belcobtm.presentation.features.authorization.create.seed.CreateSeedFragment"
+        android:name="com.belcobtm.presentation.screens.authorization.create.seed.CreateSeedFragment"
         android:label="CreateSeedFragment"
         tools:layout="@layout/fragment_create_seed">
 
@@ -116,7 +116,7 @@
 
     <fragment
         android:id="@+id/change_phone_fragment"
-        android:name="com.belcobtm.presentation.features.settings.phone.PhoneChangeFragment"
+        android:name="com.belcobtm.presentation.screens.settings.security.phone.PhoneChangeFragment"
         android:label="ChangePhoneFragment"
         tools:layout="@layout/fragment_change_phone">
 
@@ -132,7 +132,7 @@
 
     <fragment
         android:id="@+id/security_fragment"
-        android:name="com.belcobtm.presentation.features.settings.security.SecurityFragment"
+        android:name="com.belcobtm.presentation.screens.settings.security.SecurityFragment"
         android:label="SecurityFragment"
         tools:layout="@layout/fragment_security">
 
@@ -180,7 +180,7 @@
 
     <fragment
         android:id="@+id/settings_sms_code_fragment"
-        android:name="com.belcobtm.presentation.features.sms.code.SmsCodeFragment"
+        android:name="com.belcobtm.presentation.screens.sms.code.SmsCodeFragment"
         android:label="SmsCodeFragment"
         tools:layout="@layout/fragment_sms_code">
 
@@ -188,13 +188,13 @@
 
     <fragment
         android:id="@+id/unlink_fragment"
-        android:name="com.belcobtm.presentation.features.settings.unlink.UnlinkFragment"
+        android:name="com.belcobtm.presentation.screens.settings.security.unlink.UnlinkFragment"
         android:label="UnlinkFragment"
         tools:layout="@layout/fragment_unlink" />
 
     <fragment
         android:id="@+id/pin_code_fragment"
-        android:name="com.belcobtm.presentation.features.pin.code.PinCodeFragment"
+        android:name="com.belcobtm.presentation.screens.pin.code.PinCodeFragment"
         android:label="PinCodeFragment"
         tools:layout="@layout/fragment_pin_code">
 
@@ -206,13 +206,13 @@
 
     <fragment
         android:id="@+id/update_password_fragment"
-        android:name="com.belcobtm.presentation.features.settings.update_password.UpdatePasswordFragment"
+        android:name="com.belcobtm.presentation.screens.settings.security.update_password.UpdatePasswordFragment"
         android:label="UpdatePasswordFragment"
         tools:layout="@layout/fragment_update_password" />
 
     <fragment
         android:id="@+id/verification_info_fragment"
-        android:name="com.belcobtm.presentation.features.settings.verification.details.VerificationDetailsFragment"
+        android:name="com.belcobtm.presentation.screens.settings.verification.details.VerificationDetailsFragment"
         android:label="VerificationInfoFragment"
         tools:layout="@layout/fragment_verification_info">
 
@@ -238,7 +238,7 @@
 
     <fragment
         android:id="@+id/verification_blank_fragment"
-        android:name="com.belcobtm.presentation.features.settings.verification.blank.VerificationBlankFragment"
+        android:name="com.belcobtm.presentation.screens.settings.verification.blank.VerificationBlankFragment"
         android:label="VerificationBlankFragment"
         tools:layout="@layout/fragment_verification_blank">
 
@@ -250,7 +250,7 @@
 
     <fragment
         android:id="@+id/verification_vip_fragment"
-        android:name="com.belcobtm.presentation.features.settings.verification.vip.VerificationVipFragment"
+        android:name="com.belcobtm.presentation.screens.settings.verification.vip.VerificationVipFragment"
         android:label="VerificationVipFragment"
         tools:layout="@layout/fragment_verification_vip">
 
@@ -262,19 +262,19 @@
 
     <fragment
         android:id="@+id/about_fragment"
-        android:name="com.belcobtm.presentation.features.settings.about.AboutFragment"
+        android:name="com.belcobtm.presentation.screens.settings.about.AboutFragment"
         android:label="AboutFragment"
         tools:layout="@layout/fragment_about" />
 
     <fragment
         android:id="@+id/manage_wallets_fragment"
-        android:name="com.belcobtm.presentation.features.wallet.add.WalletsFragment"
+        android:name="com.belcobtm.presentation.screens.settings.wallets.WalletsFragment"
         android:label="ManageWalletFragment"
         tools:layout="@layout/fragment_wallets" />
 
     <fragment
         android:id="@+id/referrals_fragment"
-        android:name="com.belcobtm.presentation.features.referral.ReferralFragment"
+        android:name="com.belcobtm.presentation.screens.settings.referral.ReferralFragment"
         android:label="ReferralsFragment"
         tools:layout="@layout/fragment_referrals">
 
@@ -286,7 +286,7 @@
 
     <fragment
         android:id="@+id/invite_from_contacts_fragment"
-        android:name="com.belcobtm.presentation.features.referral.contacts.InviteFromContactsFragment"
+        android:name="com.belcobtm.presentation.screens.settings.referral.contacts.InviteFromContactsFragment"
         android:label="InviteFromContactsFragment"
         tools:layout="@layout/fragment_invite_from_contacts">
         <argument

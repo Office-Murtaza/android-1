@@ -6,7 +6,7 @@
     app:startDestination="@id/bank_accounts_fragment">
     <fragment
         android:id="@+id/bank_accounts_fragment"
-        android:name="com.belcobtm.presentation.features.bank_accounts.BankAccountsFragment"
+        android:name="com.belcobtm.presentation.screens.bank_accounts.BankAccountsFragment"
         android:label="BankAccountsFragment"
         tools:layout="@layout/fragment_bank_accounts">
         <action
@@ -42,7 +42,7 @@
 
     <fragment
         android:id="@+id/bank_account_select_type_fragment"
-        android:name="com.belcobtm.presentation.features.bank_accounts.create.BankAccountSelectTypeFragment"
+        android:name="com.belcobtm.presentation.screens.bank_accounts.create.BankAccountSelectTypeFragment"
         android:label="BankAccountSelectTypeFragment"
         tools:layout="@layout/fragment_bank_account_select_type">
         <action
@@ -56,24 +56,27 @@
 
     <fragment
         android:id="@+id/bank_account_create_fragment"
-        android:name="com.belcobtm.presentation.features.bank_accounts.create.BankAccountCreateFragment"
+        android:name="com.belcobtm.presentation.screens.bank_accounts.create.BankAccountCreateFragment"
         android:label="BankAccountCreateFragment"
         tools:layout="@layout/fragment_bank_account_create">
+
         <argument
             android:name="createBankAccountType"
-            android:defaultValue="NONE"
-            app:argType="com.belcobtm.domain.bank_account.type.CreateBankAccountType" />
+            android:defaultValue="US"
+            app:argType="com.belcobtm.domain.bank_account.type.CreateBankAccountType"
+            app:nullable="false" />
+
     </fragment>
 
     <fragment
         android:id="@+id/bank_ach_fragment"
-        android:name="com.belcobtm.presentation.features.bank_accounts.ach.BankAchFragment"
+        android:name="com.belcobtm.presentation.screens.bank_accounts.ach.BankAchFragment"
         android:label="BankAchFragment"
         tools:layout="@layout/fragment_bank_ach" />
 
     <fragment
         android:id="@+id/bank_account_details_fragment"
-        android:name="com.belcobtm.presentation.features.bank_accounts.details.BankAccountDetailsFragment"
+        android:name="com.belcobtm.presentation.screens.bank_accounts.details.BankAccountDetailsFragment"
         android:label="BankAccountDetailsFragment"
         tools:layout="@layout/fragment_bank_account_details">
         <argument
@@ -104,13 +107,13 @@
 
     <fragment
         android:id="@+id/verification_details_fragment"
-        android:name="com.belcobtm.presentation.features.settings.verification.details.VerificationDetailsFragment"
+        android:name="com.belcobtm.presentation.screens.settings.verification.details.VerificationDetailsFragment"
         android:label="VerificationDetailsFragment"
         tools:layout="@layout/fragment_verification" />
 
     <fragment
         android:id="@+id/payment_details_fragment"
-        android:name="com.belcobtm.presentation.features.bank_accounts.payments.PaymentDetailsFragment"
+        android:name="com.belcobtm.presentation.screens.bank_accounts.payments.PaymentDetailsFragment"
         android:label="PaymentDetailsFragment"
         tools:layout="@layout/fragment_payment_details">
         <argument
@@ -124,7 +127,7 @@
 
     <fragment
         android:id="@+id/buy_usdc_fragment"
-        android:name="com.belcobtm.presentation.features.bank_accounts.payments.PaymentBuyUsdcFragment"
+        android:name="com.belcobtm.presentation.screens.bank_accounts.payments.PaymentBuyUsdcFragment"
         android:label="BuyUsdcFragment"
         tools:layout="@layout/fragment_payment_buy_usdc">
         <argument
@@ -144,7 +147,7 @@
 
     <fragment
         android:id="@+id/sell_usdc_fragment"
-        android:name="com.belcobtm.presentation.features.bank_accounts.payments.PaymentSellUsdcFragment"
+        android:name="com.belcobtm.presentation.screens.bank_accounts.payments.PaymentSellUsdcFragment"
         android:label="SellUsdcFragment"
         tools:layout="@layout/fragment_payment_sell_usdc">
         <argument
@@ -164,7 +167,7 @@
 
     <fragment
         android:id="@+id/payment_summary_fragment"
-        android:name="com.belcobtm.presentation.features.bank_accounts.payments.PaymentSummaryFragment"
+        android:name="com.belcobtm.presentation.screens.bank_accounts.payments.PaymentSummaryFragment"
         android:label="PaymentSummaryFragment"
         tools:layout="@layout/fragment_payment_summary">
         <argument

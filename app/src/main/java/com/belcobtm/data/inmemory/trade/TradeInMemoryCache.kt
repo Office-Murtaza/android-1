@@ -2,60 +2,51 @@ package com.belcobtm.data.inmemory.trade
 
 import com.belcobtm.data.disk.database.account.AccountEntity
 import com.belcobtm.data.helper.DistanceCalculator
-import com.belcobtm.data.mapper.OrderResponseToOrderMapper
-import com.belcobtm.data.mapper.TradeResponseToTradeMapper
-import com.belcobtm.data.mapper.TradesResponseToTradeDataMapper
-import com.belcobtm.data.model.trade.Order
-import com.belcobtm.data.model.trade.Trade
-import com.belcobtm.data.model.trade.TradeData
-import com.belcobtm.data.model.trade.filter.TradeFilter
-import com.belcobtm.data.rest.trade.response.TradeItemResponse
-import com.belcobtm.data.rest.trade.response.TradeOrderItemResponse
-import com.belcobtm.data.rest.trade.response.TradesResponse
+import com.belcobtm.data.rest.trade.response.TradeHistoryResponse
+import com.belcobtm.data.rest.trade.response.TradeOrderResponse
+import com.belcobtm.data.rest.trade.response.TradeResponse
 import com.belcobtm.data.websockets.chat.model.ChatMessageResponse
 import com.belcobtm.domain.Either
 import com.belcobtm.domain.Failure
 import com.belcobtm.domain.flatMap
 import com.belcobtm.domain.map
+import com.belcobtm.domain.trade.model.TradeHistoryDomainModel
+import com.belcobtm.domain.trade.model.filter.TradeFilter
+import com.belcobtm.domain.trade.model.order.OrderDomainModel
+import com.belcobtm.domain.trade.model.trade.TradeDomainModel
 import com.belcobtm.domain.trade.order.mapper.ChatMessageMapper
-import com.belcobtm.presentation.features.wallet.trade.list.filter.model.TradeFilterItem
-import kotlinx.coroutines.*
+import com.belcobtm.domain.wallet.LocalCoinType
+import com.belcobtm.presentation.screens.wallet.trade.list.filter.model.TradeFilterItem
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import java.util.concurrent.Executors
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class TradeInMemoryCache(
-    private val tradesMapper: TradesResponseToTradeDataMapper,
     private val distanceCalculator: DistanceCalculator,
     private val distanceCalculatorScope: CoroutineScope,
-    private val orderMapper: OrderResponseToOrderMapper,
-    private val tradeMapper: TradeResponseToTradeMapper,
     private val chatMessageMapper: ChatMessageMapper,
     private val cacheDispatcher: CoroutineDispatcher,
     private val filterDispatcher: CoroutineDispatcher,
     private val chatDispatcher: CoroutineDispatcher,
 ) {
 
-    companion object {
-        /**
-         * Max value is set because of sorting option.
-         * Trades without distance provided should be set to the bottom for distance sorting
-         */
-        val UNDEFINED_DISTANCE = Double.MAX_VALUE
-    }
-
-    private val cache = MutableStateFlow<Either<Failure, TradeData>?>(null)
+    private val cache = MutableStateFlow<Either<Failure, TradeHistoryDomainModel>?>(null)
     private val tradeFilter = MutableStateFlow<TradeFilter?>(null)
     private val lastSeenMessageTimestamp = MutableStateFlow<Long>(0)
 
-    val observableData: StateFlow<Either<Failure, TradeData>?>
+    val observableData: StateFlow<Either<Failure, TradeHistoryDomainModel>?>
         get() = cache
 
     val observableLastSeenMessageTimestamp: StateFlow<Long>
         get() = lastSeenMessageTimestamp
 
-    val data: Either<Failure, TradeData>?
+    val data: Either<Failure, TradeHistoryDomainModel>?
         get() = cache.value
 
     val observableFilter: Flow<TradeFilter?>
@@ -76,7 +67,7 @@ class TradeInMemoryCache(
 
     suspend fun updateCache(
         needCalculateDistance: Boolean,
-        response: Either<Failure, TradesResponse>
+        response: Either<Failure, TradeHistoryResponse>
     ) {
         withContext(cacheDispatcher) {
             calculateDistance = needCalculateDistance
@@ -84,7 +75,10 @@ class TradeInMemoryCache(
                 cache.value = response as Either.Left<Failure>
             } else {
                 cache.value =
-                    Either.Right(tradesMapper.map((response as Either.Right<TradesResponse>).b))
+                    Either.Right(
+                        (response as Either.Right<TradeHistoryResponse>).b
+                            .mapToDomain(chatMessageMapper)
+                    )
                 startDistanceCalculation()
             }
         }
@@ -97,7 +91,7 @@ class TradeInMemoryCache(
         }
     }
 
-    fun findTrade(tradeId: String): Either<Failure, Trade> {
+    fun findTrade(tradeId: String): Either<Failure, TradeDomainModel> {
         val currentCache = cache.value ?: return Either.Left(Failure.ServerError())
         return currentCache.flatMap { tradeData ->
             tradeData.trades[tradeId]?.let { Either.Right(it) }
@@ -105,7 +99,7 @@ class TradeInMemoryCache(
         }
     }
 
-    fun findOrder(orderId: String): Either<Failure, Order> {
+    fun findOrder(orderId: String): Either<Failure, OrderDomainModel> {
         val currentCache = cache.value ?: return Either.Left(Failure.ServerError())
         return currentCache.flatMap { tradeData ->
             tradeData.orders[orderId]?.let { Either.Right(it) }
@@ -113,10 +107,10 @@ class TradeInMemoryCache(
         }
     }
 
-    suspend fun updateTrades(trade: TradeItemResponse) {
+    suspend fun updateTrades(trade: TradeResponse) {
         withContext(cacheDispatcher) {
             cache.value?.map {
-                val mappedTrade = tradeMapper.map(trade)
+                val mappedTrade = trade.mapToDomain()
                 val trades = HashMap(it.trades)
                 trades[mappedTrade.id] = mappedTrade
                 cache.value = Either.Right(it.copy(trades = trades))
@@ -125,13 +119,16 @@ class TradeInMemoryCache(
         }
     }
 
-    suspend fun updateOrders(order: TradeOrderItemResponse) {
+    suspend fun updateOrders(order: TradeOrderResponse) {
         withContext(cacheDispatcher) {
-            cache.value?.map {
-                val mappedOrder = orderMapper.map(order, it.orders[order.id]?.chatHistory.orEmpty())
-                val orders = HashMap(it.orders)
+            cache.value?.map { history ->
+                val mappedOrder = order.mapToDomain(
+                    order.tradeId?.let { history.trades[it]?.coin } ?: LocalCoinType.CATM, // nothing else to make default
+                    history.orders[order.id]?.chatHistory.orEmpty()
+                )
+                val orders = HashMap(history.orders)
                 orders[mappedOrder.id] = mappedOrder
-                cache.value = Either.Right(it.copy(orders = orders))
+                cache.value = Either.Right(history.copy(orders = orders))
             }
         }
     }
@@ -155,7 +152,7 @@ class TradeInMemoryCache(
         }
         distanceCalculationJob = distanceCalculatorScope.launch(Dispatchers.Default) {
             val currentCache = cache.value ?: return@launch
-            if (currentCache is Either.Right<TradeData>) {
+            if (currentCache is Either.Right<TradeHistoryDomainModel>) {
                 val tradeData = currentCache.b
                 val tradesWithDistance = distanceCalculator.updateDistanceToTrades(tradeData.trades)
                 withContext(cacheDispatcher) {
@@ -169,7 +166,7 @@ class TradeInMemoryCache(
         withContext(chatDispatcher) {
             val mappedMessage = chatMessageMapper.map(response, isFromHistory = false)
             cache.value?.map {
-                val chatOrder = it.orders.getValue(response.orderId)
+                val chatOrder = it.orders.getValue(response.orderId.orEmpty())
                 val orders = HashMap(it.orders)
                 orders[chatOrder.id] =
                     chatOrder.copy(chatHistory = chatOrder.chatHistory + mappedMessage)
@@ -181,4 +178,5 @@ class TradeInMemoryCache(
     fun initCoins(enabledCoins: List<AccountEntity>) {
         this.enabledCoins = enabledCoins
     }
+
 }

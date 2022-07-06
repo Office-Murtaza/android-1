@@ -10,12 +10,12 @@
 
     <fragment
         android:id="@+id/main_screen"
-        android:name="com.belcobtm.presentation.features.MainFragment"
+        android:name="com.belcobtm.presentation.screens.MainFragment"
         android:label="MainScreen" />
 
     <fragment
         android:id="@+id/splash_screen"
-        android:name="com.belcobtm.presentation.features.splash.SplashFragment"
+        android:name="com.belcobtm.presentation.screens.splash.SplashFragment"
         android:label="SplashScreen" />
 
 </navigation>

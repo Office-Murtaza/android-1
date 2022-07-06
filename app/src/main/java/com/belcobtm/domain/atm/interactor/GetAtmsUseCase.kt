@@ -4,15 +4,17 @@ import android.location.Location
 import com.belcobtm.data.helper.DistanceCalculator
 import com.belcobtm.data.provider.location.LocationProvider
 import com.belcobtm.data.rest.atm.response.AtmAddress
-import com.belcobtm.domain.*
+import com.belcobtm.domain.Either
+import com.belcobtm.domain.Failure
+import com.belcobtm.domain.UseCase
 import com.belcobtm.domain.atm.AtmRepository
-import com.belcobtm.presentation.core.formatter.Formatter
-import com.belcobtm.presentation.features.atm.AtmItem
-import com.belcobtm.presentation.features.atm.AtmsInfoItem
-import com.belcobtm.presentation.features.atm.OpenHoursItem
+import com.belcobtm.domain.mapSuspend
+import com.belcobtm.presentation.screens.atm.AtmItem
+import com.belcobtm.presentation.screens.atm.AtmsInfoItem
+import com.belcobtm.presentation.screens.atm.OpenHoursItem
+import com.belcobtm.presentation.tools.formatter.Formatter
 import com.google.android.gms.maps.model.LatLng
-import java.util.*
-import kotlin.collections.HashMap
+import java.util.Calendar
 
 class GetAtmsUseCase(
     private val atmRepository: AtmRepository,
@@ -58,4 +60,5 @@ class GetAtmsUseCase(
                 )
             )
         }.orEmpty()
+
 }

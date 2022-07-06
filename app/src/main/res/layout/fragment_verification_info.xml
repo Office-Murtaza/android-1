@@ -70,7 +70,7 @@
         android:layout_marginTop="24dp"
         android:layout_marginEnd="@dimen/margin_main"
         android:drawablePadding="@dimen/margin_quarter"
-        android:textColor="@color/chip_default_text_color"
+        android:textColor="@color/primaryTextColor"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/message_view"
@@ -140,14 +140,12 @@
         style="@style/Button.Primary"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/margin_main"
-        android:layout_marginTop="16dp"
+        android:layout_margin="16dp"
         android:text="@string/verification_verify"
         android:textColor="#ffffff"
         android:visibility="visible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/limits_view_divider" />
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

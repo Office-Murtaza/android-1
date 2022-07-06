@@ -1,10 +1,15 @@
 package com.belcobtm.data.rest.transaction.request
 
+import com.belcobtm.domain.transaction.type.TransactionType
+
 data class WithdrawRequest(
-    val type: Int,
-    val cryptoAmount: Double,
+    val type: String = TransactionType.WITHDRAW.toString(),
     val hex: String,
-    val fee: Double?,
     val fromAddress: String?,
     val toAddress: String?,
+    val cryptoAmount: Double,
+    val fee: Double?,
+    val price: Double,
+    val latitude: Double?,
+    val longitude: Double?
 )

@@ -26,8 +26,6 @@
             android:id="@+id/send_coin_input_layout"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:paddingTop="@dimen/margin_half"
-            android:paddingBottom="@dimen/margin_x2"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/top_divider" />
@@ -55,17 +53,17 @@
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/rate_text_view"
+            style="@style/Text.Bold1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_main"
             android:layout_marginEnd="@dimen/margin_main"
             android:background="@drawable/bg_white_rect_with_gray_stroke"
-            android:drawableStart="@drawable/ic_vector"
+            android:drawableStart="@drawable/ic_atm_sell_rate"
             android:drawablePadding="@dimen/margin_half"
-            android:paddingStart="@dimen/margin_normal"
-            android:paddingTop="@dimen/margin_half"
-            android:paddingEnd="@dimen/margin_normal"
-            android:paddingBottom="@dimen/margin_half"
-            android:textAppearance="@style/Text.Regular2"
+            android:paddingHorizontal="@dimen/margin_normal"
+            android:paddingVertical="@dimen/margin_half"
+            android:textSize="16sp"
             app:layout_constraintBottom_toTopOf="@id/receive_coin_Input_layout"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/send_coin_input_layout"
@@ -107,23 +105,11 @@
             app:layout_constraintTop_toBottomOf="@id/tvUSDConvertedLabel"
             tools:text="$ 245.66" />
 
-        <Space
-            android:id="@+id/spaceView"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_marginTop="16dp"
-            app:layout_constraintBottom_toTopOf="@id/platform_fee_text_view"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tvUSDConvertedValue" />
-
         <TextView
             android:id="@+id/platform_fee_text_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="4dp"
-            android:layout_marginEnd="@dimen/margin_main"
-            android:layout_marginBottom="@dimen/margin_half"
+            android:layout_marginBottom="4dp"
             android:textAppearance="@style/Text.Regular1"
             app:layout_constraintBottom_toTopOf="@id/next_button_view"
             app:layout_constraintEnd_toEndOf="parent"
@@ -133,23 +119,27 @@
         <com.google.android.material.button.MaterialButton
             android:id="@+id/next_button_view"
             style="@style/Button.Primary"
+            android:layout_marginHorizontal="16dp"
             android:text="@string/submit"
             app:layout_constraintBottom_toTopOf="@id/limit_details"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
 
-        <com.google.android.material.button.MaterialButton
+        <TextView
             android:id="@+id/limit_details"
-            style="@style/Button.Secondary.NoOutlined"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/margin_main"
-            android:layout_marginStart="@dimen/margin_main"
-            android:layout_marginEnd="@dimen/margin_main"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginBottom="16dp"
+            android:gravity="center"
+            android:padding="16dp"
             android:text="@string/limit_details_button_title"
+            android:textColor="@color/colorPrimary"
+            android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+
 </ScrollView>

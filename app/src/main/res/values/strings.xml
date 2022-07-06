@@ -130,7 +130,7 @@
     <string name="wallet">Wallet</string>
 
     <!-- Buy/Sell Screen-->
-    <string name="verification_dialog_text">Please verify yourself to get full access to our services</string>
+    <string name="verification_dialog_text">Please verify yourself to get full access\nto our services</string>
     <string name="verification_dialog_title">Buy/Sell USDC</string>
     <string name="verification_dialog_button_text">VERIFY</string>
     <string name="bank_accounts_screen_title">Bank Accounts</string>
@@ -151,12 +151,16 @@
     <string name="bank_account_field_iban_error_text">IBAN is required</string>
 
     <string name="bank_account_field_account_no_hint_text">Account No</string>
-    <string name="bank_account_field_account_no_helper_text">e.g. 1001001234</string>
+    <string name="bank_account_field_account_no_helper_text">e.g. 12340010</string>
+    <string name="bank_account_field_account_no_helper_text_non_iban">e.g. 1001001234</string>
     <string name="bank_account_field_account_no_error_text">Account No is required</string>
 
-    <string name="bank_account_field_routing_no_hint_text">Routing no (SWIFT/BIC)</string>
-    <string name="bank_account_field_routing_no_helper_text">e.g. WESTGBAV</string>
-    <string name="bank_account_field_routing_no_error_text">Routing no (SWIFT/BIC) is required</string>
+    <string name="bank_account_field_routing_no_hint_text">Routing No</string>
+    <string name="bank_account_field_routing_no_helper_text">e.g. 121000248</string>
+    <string name="bank_account_field_routing_no_error_text">Routing No is required</string>
+    <string name="bank_account_field_routing_no_hint_text_non_iban">Routing No (SWIFT/BIC)</string>
+    <string name="bank_account_field_routing_no_helper_text_non_iban">e.g. WESTGBAV</string>
+    <string name="bank_account_field_routing_no_error_text_non_iban">Routing No (SWIFT/BIC) is required</string>
 
     <string name="bank_account_field_name_hint_text">Name</string>
     <string name="bank_account_field_name_helper_text">e.g. Satoshi Nakamoto</string>
@@ -168,14 +172,17 @@
 
     <string name="bank_account_field_province_hint_text">Province</string>
     <string name="bank_account_field_province_helper_text">e.g. MA</string>
+    <string name="bank_account_field_province_helper_text_non_iban">e.g. AA</string>
     <string name="bank_account_field_province_error_text">Province is required</string>
 
     <string name="bank_account_field_city_hint_text">City</string>
-    <string name="bank_account_field_city_helper_text">e.g. Kiev</string>
+    <string name="bank_account_field_city_helper_text">e.g. Boston</string>
+    <string name="bank_account_field_city_helper_text_not_usa">e.g. Kyiv</string>
     <string name="bank_account_field_city_error_text">City is required</string>
 
     <string name="bank_account_field_address_hint_text">Address</string>
     <string name="bank_account_field_address_helper_text">e.g. 100 Money Street</string>
+    <string name="bank_account_field_address_helper_text_not_usa">e.g. 32 Khreschatyk St</string>
     <string name="bank_account_field_address_error_text">Address is required</string>
 
     <string name="bank_account_field_zip_code_hint_text">ZIP Code</string>
@@ -191,16 +198,16 @@
     <string name="bank_account_field_bank_country_error_text">Country is required</string>
 
     <string name="bank_account_field_bank_city_hint_text">City</string>
-    <string name="bank_account_field_bank_city_helper_text">e.g. Kiev</string>
+    <string name="bank_account_field_bank_city_helper_text">e.g. Kyiv</string>
     <string name="bank_account_field_bank_city_error_text">City is required</string>
 
-    <string name="bank_create_usdc_terms_text">By click \"Submit\" you agree to the </string>
+    <string name="bank_create_usdc_terms_text">By click \"Submit\" you agree to the</string>
 
     <string name="bank_ach_title">ACH Authorization</string>
     <string name="bank_ach_main_text">I (we), %1$s authorize Belco Wallet LLC(COMPANY) to electronically debit my (our) Depository account for a one-time electronic funds transfer (EFT) payment for the amount and on the date identified. I (we) also authorize COMPANY to debit or credit my (our) account to correct any errors or process any refunds, if necessary.</string>
     <string name="bank_ach_usdc_terms_text">By clicking \"Confirm\" I consent to sign this authorization\nelectronically and I agree with ACH authorization rules and\n</string>
 
-    <string name="bank_usdc_terms_clickable">Circle USDC Terms</string>
+    <string name="bank_usdc_terms_clickable"> Circle USDC Terms</string>
 
     <string name="step_1_usd_payment">Step 1: USD Payment</string>
     <string name="step_2_usd_payment">Step 2: USD Payment</string>
@@ -379,6 +386,7 @@
     <string name="transaction_changes_percent">%1$s %%</string>
     <string name="transaction_helper_text_commission">Fee %1$s %2$s</string>
     <string name="xrp_additional_transaction_comission">%1$s, locked amount 20 XRP</string>
+    <string name="transactions_no_transactions">Your transactions will appear here</string>
 
     <!--transaction status-->
     <string name="transaction_status_unknown">Unknown</string>
@@ -815,11 +823,14 @@
     <string name="create_trade_button_title">Submit</string>
     <string name="create_trade_price_input_hint">Price, $</string>
     <string name="trade_create_terms_hint">Type your terms or comments</string>
+
     <string name="create_trade_cash_label">Cash</string>
     <string name="create_trade_paypal_label">PayPal</string>
     <string name="create_trade_venmo_label">Venmo</string>
     <string name="create_trade_cash_app_label">Cash App</string>
     <string name="create_trade_payoneer_label">Payoneer</string>
+    <string name="create_trade_other_label">Other</string>
+
     <string name="min_price_value_label">$0</string>
     <string name="max_price_value_label">$10000</string>
     <string name="create_trade_price_zero_error">Price cannot be zero</string>
@@ -942,7 +953,7 @@
     <string name="invite_from_contacts_screen_title">Invite from contacts</string>
     <string name="create_trade_terms_validation_error">Terms cannot be empty</string>
     <string name="atm_sell_title">ATM Sell</string>
-    <string name="update_limits_button_label">Increase limits</string>
+    <string name="update_limits_button_label">INCREASE LIMITS</string>
     <string name="daily_limit_label">Daily Limit</string>
     <string name="transaction_limit_label">Transaction Limit</string>
     <string name="today_limit_label">Today Limit</string>
@@ -992,7 +1003,7 @@
     <string name="services_dialog_tx_limit_label">Tx Limit</string>
     <string name="services_dialog_daily_limit_label">Daily Limit</string>
     <string name="services_dialog_remain_limit_label">Remain Limit</string>
-    <string name="limit_details_button_title">Limit Details</string>
+    <string name="limit_details_button_title">LIMIT DETAILS</string>
     <string name="limits_exceeded_validation_message">Converted amount exceeds limits</string>
     <string name="location_required_on_trade_creation">Trade not created, please share your location</string>
     <string name="settings_verify_dialog_title">Verification</string>

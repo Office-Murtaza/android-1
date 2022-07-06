@@ -6,7 +6,7 @@ import com.belcobtm.domain.wallet.item.AccountDataItem
 
 interface AccountRepository {
 
-    suspend fun getAccountCoinsList(): List<AccountDataItem>
+    suspend fun getAvailableAccounts(): List<AccountDataItem>
 
     suspend fun updateAccountCoinsList(accountDataItem: AccountDataItem): Either<Failure, Unit>
 }

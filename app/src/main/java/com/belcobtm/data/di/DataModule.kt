@@ -43,15 +43,11 @@ import com.belcobtm.data.inmemory.bank_accounts.BankAccountsInMemoryCache
 import com.belcobtm.data.inmemory.payments.PaymentsInMemoryCache
 import com.belcobtm.data.inmemory.trade.TradeInMemoryCache
 import com.belcobtm.data.inmemory.transactions.TransactionsInMemoryCache
-import com.belcobtm.data.mapper.OrderResponseToOrderMapper
-import com.belcobtm.data.mapper.TradeResponseToTradeMapper
-import com.belcobtm.data.mapper.TradesResponseToTradeDataMapper
 import com.belcobtm.data.notification.NotificationTokenRepositoryImpl
 import com.belcobtm.data.provider.location.LocationProvider
 import com.belcobtm.data.provider.location.ServiceLocationProvider
 import com.belcobtm.data.rest.atm.AtmApi
 import com.belcobtm.data.rest.atm.AtmApiService
-import com.belcobtm.data.rest.authorization.AuthApi
 import com.belcobtm.data.rest.authorization.AuthApiService
 import com.belcobtm.data.rest.bank_account.BankAccountApi
 import com.belcobtm.data.rest.bank_account.BankAccountApiService
@@ -84,8 +80,6 @@ import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.ktx.storage
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.asCoroutineDispatcher
 import okhttp3.OkHttpClient
@@ -118,11 +112,15 @@ val dataModule = module {
             level = HttpLoggingInterceptor.Level.BODY
         }
     }
-    single { AuthApiService(get()) }
+    single {
+        AuthApiService(
+            authApi = get(authenticatorQualified)
+        )
+    }
     single { SettingsApiService(get()) }
     single { BankAccountApiService(get()) }
     single { WalletApiService(get(), get()) }
-    single { TransactionApiService(get(), get()) }
+    single { TransactionApiService(get(), get(), get()) }
     single { ToolsApiService(get(), get()) }
     single { AtmApiService(get()) }
     single { TradeApiService(get(), get()) }
@@ -183,7 +181,6 @@ val dataModule = module {
             .build()
     }
     single { get<Retrofit>().create(AtmApi::class.java) }
-    single { get<Retrofit>().create(AuthApi::class.java) }
     single { get<Retrofit>().create(ToolsApi::class.java) }
     single { get<Retrofit>().create(WalletApi::class.java) }
     single { get<Retrofit>().create(SettingsApi::class.java) }
@@ -211,10 +208,12 @@ val dataModule = module {
     single<CloudAuth> { FirebaseCloudAuth(Firebase.auth) }
     single {
         TradeInMemoryCache(
-            get(), get(), GlobalScope, get(), get(), get(),
-            Executors.newSingleThreadExecutor().asCoroutineDispatcher(),
-            Executors.newSingleThreadExecutor().asCoroutineDispatcher(),
-            Executors.newSingleThreadExecutor().asCoroutineDispatcher(),
+            distanceCalculator = get(),
+            distanceCalculatorScope = GlobalScope,
+            chatMessageMapper = get(),
+            cacheDispatcher = Executors.newSingleThreadExecutor().asCoroutineDispatcher(),
+            filterDispatcher = Executors.newSingleThreadExecutor().asCoroutineDispatcher(),
+            chatDispatcher = Executors.newSingleThreadExecutor().asCoroutineDispatcher()
         )
     }
     single { DistanceCalculator(get()) }
@@ -223,7 +222,7 @@ val dataModule = module {
             androidApplication(), Executors.newSingleThreadExecutor()
         )
     }
-    single<ServiceRepository> { ServiceRepositoryImpl(get(), CoroutineScope(Dispatchers.IO)) }
+    single<ServiceRepository> { ServiceRepositoryImpl(get()) }
     single { TransactionsInMemoryCache() }
     single { BankAccountsInMemoryCache() }
     single { PaymentsInMemoryCache() }
@@ -237,9 +236,6 @@ val dataModule = module {
             supportChatHelper = get()
         )
     }
-    factory { TradesResponseToTradeDataMapper(get(), get(), get()) }
-    factory { OrderResponseToOrderMapper() }
-    factory { TradeResponseToTradeMapper() }
 
     single<SupportChatHelper> {
         SupportChatHelperImpl(

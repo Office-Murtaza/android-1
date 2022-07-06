@@ -1,12 +1,12 @@
 package com.belcobtm.data.rest.settings
 
+import com.belcobtm.data.rest.authorization.request.CheckPassRequest
+import com.belcobtm.data.rest.authorization.response.CheckPassResponse
 import com.belcobtm.data.rest.settings.request.ChangePassBody
 import com.belcobtm.data.rest.settings.request.UpdatePhoneParam
 import com.belcobtm.data.rest.settings.request.VerificationBlankRequest
 import com.belcobtm.data.rest.settings.request.VerificationDocumentRequest
 import com.belcobtm.data.rest.settings.request.VerificationUserIdentityRequest
-import com.belcobtm.data.rest.settings.request.VipVerificationRequest
-import com.belcobtm.data.rest.settings.response.GetPhoneResponse
 import com.belcobtm.data.rest.settings.response.UpdateResponse
 import com.belcobtm.data.rest.settings.response.VerificationDetailsResponse
 import com.belcobtm.data.rest.settings.response.VerificationFieldsResponse
@@ -55,22 +55,17 @@ interface SettingsApi {
         @Body request: VerificationBlankRequest
     ): Response<ResponseBody>
 
-    @POST("user/{userId}/verification")
-    suspend fun sendVerificationVipAsync(
+    @POST("user/{userId}/password-verify")
+    suspend fun checkPass(
         @Path("userId") userId: String,
-        @Body request: VipVerificationRequest
-    ): Response<ResponseBody>
+        @Body checkPassParam: CheckPassRequest
+    ): Response<CheckPassResponse>
 
     @POST("user/{userId}/password")
     suspend fun changePass(
         @Path("userId") userId: String,
         @Body changePassParam: ChangePassBody
     ): Response<UpdateResponse>
-
-    @GET("user/{userId}/phone")
-    suspend fun getPhone(
-        @Path("userId") userId: String
-    ): Response<GetPhoneResponse>
 
     @POST("user/{userId}/phone")
     suspend fun updatePhone(

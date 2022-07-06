@@ -1,8 +1,8 @@
 package com.belcobtm.domain.trade.list.filter.mapper
 
-import com.belcobtm.data.model.trade.filter.TradeFilter
-import com.belcobtm.presentation.features.wallet.trade.create.model.AvailableTradePaymentOption
-import com.belcobtm.presentation.features.wallet.trade.list.filter.model.TradeFilterItem
+import com.belcobtm.domain.trade.model.filter.TradeFilter
+import com.belcobtm.presentation.screens.wallet.trade.create.model.AvailableTradePaymentOption
+import com.belcobtm.presentation.screens.wallet.trade.list.filter.model.TradeFilterItem
 
 class TradeFilterMapper {
 

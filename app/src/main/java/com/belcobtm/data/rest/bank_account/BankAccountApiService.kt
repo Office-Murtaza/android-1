@@ -32,8 +32,8 @@ import com.belcobtm.domain.bank_account.item.BankAccountCreatePaymentDataItem
 import com.belcobtm.domain.bank_account.item.BankAccountLinkDataItem
 import com.belcobtm.domain.bank_account.type.BankAccountPaymentType
 import com.belcobtm.domain.bank_account.type.BankAccountType
-import com.belcobtm.presentation.core.extensions.toStringCoin
-import com.belcobtm.presentation.core.extensions.toStringPercents
+import com.belcobtm.presentation.tools.extensions.toStringCoin
+import com.belcobtm.presentation.tools.extensions.toStringPercents
 import java.util.UUID
 
 class BankAccountApiService(private val api: BankAccountApi) {

@@ -8,17 +8,17 @@
     android:orientation="horizontal">
 
 
-    <com.belcobtm.presentation.features.settings.verification.acuant.face_capture.CameraSourcePreview
+    <com.belcobtm.presentation.screens.settings.verification.acuant.face_capture.CameraSourcePreview
         android:id="@+id/preview"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <com.belcobtm.presentation.features.settings.verification.acuant.face_capture.FacialGraphicOverlay
+        <com.belcobtm.presentation.screens.settings.verification.acuant.face_capture.FacialGraphicOverlay
             android:id="@+id/faceOverlay"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
 
-    </com.belcobtm.presentation.features.settings.verification.acuant.face_capture.CameraSourcePreview>
+    </com.belcobtm.presentation.screens.settings.verification.acuant.face_capture.CameraSourcePreview>
 
     <LinearLayout
         android:id="@+id/selfie_help_container"
@@ -41,7 +41,7 @@
             android:layout_marginStart="4dp"
             android:maxLines="1"
             android:text="@string/verification_selfie_help_text_2"
-            android:textColor="@color/transaction_green"
+            android:textColor="@color/mainGreen"
             android:textSize="16sp"
 
             />

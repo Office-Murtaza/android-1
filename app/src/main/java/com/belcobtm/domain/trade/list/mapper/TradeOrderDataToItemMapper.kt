@@ -4,72 +4,82 @@ import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import com.belcobtm.R
 import com.belcobtm.data.helper.DistanceCalculator
-import com.belcobtm.data.model.trade.Order
-import com.belcobtm.data.model.trade.OrderStatus
-import com.belcobtm.data.model.trade.TradeData
-import com.belcobtm.data.model.trade.TradeType
-import com.belcobtm.domain.wallet.LocalCoinType
-import com.belcobtm.presentation.core.formatter.Formatter
-import com.belcobtm.presentation.features.wallet.trade.list.model.OrderItem
-import com.belcobtm.presentation.features.wallet.trade.list.model.OrderStatusItem
-import com.belcobtm.presentation.features.wallet.trade.list.model.TradeItem
+import com.belcobtm.domain.trade.model.TradeHistoryDomainModel
+import com.belcobtm.domain.trade.model.order.OrderDomainModel
+import com.belcobtm.domain.trade.model.order.OrderStatus
+import com.belcobtm.domain.trade.model.trade.TradeType
+import com.belcobtm.presentation.screens.wallet.trade.list.model.OrderItem
+import com.belcobtm.presentation.screens.wallet.trade.list.model.OrderStatusItem
+import com.belcobtm.presentation.screens.wallet.trade.list.model.TradeItem
+import com.belcobtm.presentation.tools.formatter.Formatter
 
 class TradeOrderDataToItemMapper(
     private val tradeItemMapper: TradeToTradeItemMapper,
     private val priceFormatter: Formatter<Double>,
     private val tradeCountFormatter: Formatter<Int>,
-    private val statusMapper: TraderStatusToIconMapper,
     private val distanceCalculator: DistanceCalculator,
     private val milesFormatter: Formatter<Double>,
 ) {
 
-    fun map(order: Order?, tradeData: TradeData, myId: String): OrderItem? =
+    fun map(order: OrderDomainModel?, tradeData: TradeHistoryDomainModel, myId: String): OrderItem? =
         with(order) {
             this ?: return null
             val cachedTrade = tradeData.trades[tradeId] ?: return@with null
             val trade = tradeItemMapper.map(cachedTrade)
             OrderItem(
-                id, trade, myId, resolveTradeType(this, trade, myId),
-                LocalCoinType.valueOf(coinCode),
-                OrderStatusItem(status, getStatusLabel(status), getStatusDrawable(status)),
-                timestamp, price, priceFormatter.format(price),
-                cryptoAmount, fiatAmount, priceFormatter.format(fiatAmount),
-                trade.paymentMethods, terms, makerId, makerStatusId,
-                statusMapper.map(makerStatusId),
-                makerRate, makerUsername, makerLatitude, makerLongitude, makerTotalTrades,
-                tradeCountFormatter.format(makerTotalTrades), makerTradingRate,
-                takerId, takerStatusId, statusMapper.map(takerStatusId), takerRate, takerUsername,
-                takerLatitude, takerLongitude, takerTotalTrades,
-                tradeCountFormatter.format(takerTotalTrades), takerTradingRate,
-                formatDistance()
+                orderId = id,
+                trade = trade,
+                myTradeId = myId,
+                mappedTradeType = resolveTradeType(this, trade, myId),
+                coin = coin,
+                orderStatus = OrderStatusItem(status, getStatusLabel(status), getStatusDrawable(status)),
+                timestamp = timestamp,
+                price = price,
+                priceFormatted = priceFormatter.format(price),
+                cryptoAmount = cryptoAmount,
+                fiatAmount = fiatAmount,
+                fiatAmountFormatted = priceFormatter.format(fiatAmount),
+                paymentOptions = trade.paymentMethods,
+                terms = terms,
+                makerId = makerUserId,
+                makerRate = makerRate,
+                makerPublicId = makerUsername,
+                makerLatitude = makerLatitude,
+                makerLongitude = makerLongitude,
+                makerTotalTrades = makerTradeTotal,
+                makerTotalTradesFormatted = tradeCountFormatter.format(makerTradeTotal), makerTradingRate = makerTradeRate,
+                takerId = takerUserId,
+                takerRate = takerRate,
+                takerPublicId = takerUsername,
+                takerLatitude = takerLatitude,
+                takerLongitude = takerLongitude,
+                takerTotalTrades = takerTradeTotal,
+                takerTotalTradesFormatted = tradeCountFormatter.format(takerTradeTotal),
+                takerTradingRate = takerTradeRate,
+                distanceFormatted = formatDistance()
             )
         }
 
-    private fun Order.formatDistance(): String? {
-        takerLatitude ?: return null
-        takerLongitude ?: return null
-        makerLatitude ?: return null
-        makerLongitude ?: return null
-        return milesFormatter.format(
-            distanceCalculator.calculateDistance(
-                takerLatitude, takerLongitude, makerLatitude, makerLongitude
-            )
-        )
-    }
+    private fun OrderDomainModel.formatDistance(): String? =
+        if (takerLatitude > 0 && takerLongitude > 0 && makerLatitude > 0 && makerLongitude > 0)
+            milesFormatter.format(
+                distanceCalculator.calculateDistance(
+                    takerLatitude, takerLongitude, makerLatitude, makerLongitude
+                )
+            ) else null
 
-
-    private fun resolveTradeType(order: Order, trade: TradeItem, myId: String): Int =
+    private fun resolveTradeType(order: OrderDomainModel, trade: TradeItem, myId: String): TradeType =
         when {
-            order.makerId == myId -> trade.tradeType
+            order.makerUserId == myId -> trade.tradeType
             trade.tradeType == TradeType.BUY -> TradeType.SELL
             else -> TradeType.BUY
         }
 
     @DrawableRes
-    private fun getStatusDrawable(@OrderStatus status: Int): Int =
+    private fun getStatusDrawable(status: OrderStatus): Int =
         when (status) {
             OrderStatus.NEW -> R.drawable.ic_order_status_new
-            OrderStatus.CANCELLED -> R.drawable.ic_order_status_canceled
+            OrderStatus.CANCELED -> R.drawable.ic_order_status_canceled
             OrderStatus.DOING -> R.drawable.ic_order_status_doing
             OrderStatus.PAID -> R.drawable.ic_order_status_paid
             OrderStatus.RELEASED -> R.drawable.ic_order_status_released
@@ -79,10 +89,10 @@ class TradeOrderDataToItemMapper(
         }
 
     @StringRes
-    private fun getStatusLabel(@OrderStatus status: Int): Int =
+    private fun getStatusLabel(status: OrderStatus): Int =
         when (status) {
             OrderStatus.NEW -> R.string.order_status_new_label
-            OrderStatus.CANCELLED -> R.string.order_status_cancelled_label
+            OrderStatus.CANCELED -> R.string.order_status_cancelled_label
             OrderStatus.DOING -> R.string.order_status_doing_label
             OrderStatus.PAID -> R.string.order_status_paid_label
             OrderStatus.RELEASED -> R.string.order_status_released_label
@@ -90,4 +100,5 @@ class TradeOrderDataToItemMapper(
             OrderStatus.SOLVED -> R.string.order_status_solved_label
             else -> throw RuntimeException("Unknown order status $status")
         }
+
 }

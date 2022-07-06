@@ -6,7 +6,7 @@ import androidx.room.PrimaryKey
 
 @Entity(tableName = "service")
 data class ServiceEntity(
-    @ServiceType @PrimaryKey val id: Int,
+    @PrimaryKey val id: Int,
     @ColumnInfo(name = "location_enabled") val locationEnabled: Boolean,
     @ColumnInfo(name = "verification_enabled") val verificationEnabled: Boolean,
     @ColumnInfo(name = "fee_percent") val feePercent: Double,

@@ -5,15 +5,15 @@ import com.belcobtm.data.disk.database.account.AccountDao
 import com.belcobtm.domain.Failure
 import com.belcobtm.domain.transaction.item.TransactionPlanItem
 import com.belcobtm.domain.wallet.LocalCoinType
-import com.belcobtm.presentation.core.extensions.toStringCoin
-import com.belcobtm.presentation.core.extensions.unit
 import com.belcobtm.presentation.core.provider.string.StringProvider
 import com.belcobtm.presentation.core.toHexByteArray
 import com.belcobtm.presentation.core.toHexBytesInByteString
+import com.belcobtm.presentation.tools.extensions.toStringCoin
+import com.belcobtm.presentation.tools.extensions.unit
 import com.google.protobuf.ByteString
 import wallet.core.jni.CoinType
 import wallet.core.jni.proto.Tron
-import java.util.*
+import java.util.Date
 
 class TronTransactionInputBuilderFactory(
     private val accountDao: AccountDao,
@@ -26,7 +26,7 @@ class TronTransactionInputBuilderFactory(
         fromCoinAmount: Double,
         fromTransactionPlan: TransactionPlanItem
     ): Tron.SigningInput.Builder {
-        val accountEntity = accountDao.getItem(fromCoin.name)
+        val accountEntity = accountDao.getAccountByName(fromCoin.name)
         val rawData = fromTransactionPlan.blockHeader?.raw_data
         val cryptoToSubcoin = fromCoinAmount.toStringCoin().toDouble() * CoinType.TRON.unit()
         val fromAddress = accountEntity.publicKey
@@ -62,4 +62,5 @@ class TronTransactionInputBuilderFactory(
             it.privateKey = accountEntity.privateKey.toHexBytesInByteString()
         }
     }
+
 }

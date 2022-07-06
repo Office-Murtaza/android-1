@@ -21,7 +21,6 @@ import com.belcobtm.domain.settings.item.VerificationFieldsDataItem
 import com.belcobtm.domain.settings.item.VerificationIdentityDataItem
 import com.belcobtm.domain.settings.item.VerificationIdentityResponseDataItem
 import com.belcobtm.domain.settings.item.VerificationInfoDataItem
-import com.belcobtm.domain.settings.item.VerificationVipDataItem
 import com.belcobtm.domain.settings.type.DocumentType
 import com.belcobtm.domain.settings.type.RecordStatus
 import com.belcobtm.domain.settings.type.VerificationDocumentFieldsType
@@ -92,37 +91,17 @@ class SettingsRepositoryImpl(
                         ssnValue = verificationData.nationalIds?.first()?.number ?: "",
                         sourceOfFunds = responseItem.userVerification.sourceOfFunds ?: "",
                         occupation = responseItem.userVerification.occupation ?: "",
-                        firstNameValidationError = mapIdentityFieldsError.get(
-                            VerificationIdentityFieldsType.FIRST_NAME
-                        ) ?: false,
-                        lastNameValidationError = mapIdentityFieldsError.get(
-                            VerificationIdentityFieldsType.LAST_NAME
-                        ) ?: false,
-                        birthDateValidationError = mapIdentityFieldsError.get(
-                            VerificationIdentityFieldsType.DAY_OF_BIRTH
-                        ) ?: false || mapIdentityFieldsError.get(VerificationIdentityFieldsType.MONTH_OF_BIRTH) ?: false || mapIdentityFieldsError.get(
-                            VerificationIdentityFieldsType.YEAR_OF_BIRTH
-                        ) ?: false,
-                        provinceValidationError = mapIdentityFieldsError.get(
-                            VerificationIdentityFieldsType.PROVINCE
-                        ) ?: false,
-                        cityValidationError = mapIdentityFieldsError.get(
-                            VerificationIdentityFieldsType.CITY
-                        )
-                            ?: false,
-                        streetNameValidationError = mapIdentityFieldsError.get(
-                            VerificationIdentityFieldsType.STREET_NAME
-                        ) ?: false,
-                        buildingNumberValidationError = mapIdentityFieldsError.get(
-                            VerificationIdentityFieldsType.BUILDING_NUMBER
-                        ) ?: false,
-                        zipCodeValidationError = mapIdentityFieldsError.get(
-                            VerificationIdentityFieldsType.ZIP_CODE
-                        ) ?: false,
-                        ssnValidationError = mapIdentityFieldsError.get(
-                            VerificationIdentityFieldsType.SSN
-                        )
-                            ?: false,
+                        firstNameValidationError = mapIdentityFieldsError[VerificationIdentityFieldsType.FIRST_NAME] ?: false,
+                        lastNameValidationError = mapIdentityFieldsError[VerificationIdentityFieldsType.LAST_NAME] ?: false,
+                        birthDateValidationError = mapIdentityFieldsError[VerificationIdentityFieldsType.DAY_OF_BIRTH] ?: false
+                            || mapIdentityFieldsError[VerificationIdentityFieldsType.MONTH_OF_BIRTH] ?: false
+                            || mapIdentityFieldsError[VerificationIdentityFieldsType.YEAR_OF_BIRTH] ?: false,
+                        provinceValidationError = mapIdentityFieldsError[VerificationIdentityFieldsType.PROVINCE] ?: false,
+                        cityValidationError = mapIdentityFieldsError[VerificationIdentityFieldsType.CITY] ?: false,
+                        streetNameValidationError = mapIdentityFieldsError[VerificationIdentityFieldsType.STREET_NAME] ?: false,
+                        buildingNumberValidationError = mapIdentityFieldsError[VerificationIdentityFieldsType.BUILDING_NUMBER] ?: false,
+                        zipCodeValidationError = mapIdentityFieldsError[VerificationIdentityFieldsType.ZIP_CODE] ?: false,
+                        ssnValidationError = mapIdentityFieldsError[VerificationIdentityFieldsType.SSN] ?: false,
                     )
                 }
             }
@@ -189,15 +168,10 @@ class SettingsRepositoryImpl(
                         frontImageBitmap = frontImageBitmap,
                         backImageBitmap = backImageBitmap,
                         selfieImageBitmap = selfieImageBitmap,
-                        frontImageValidationError = mapDocumentFieldsError.get(
-                            VerificationDocumentFieldsType.FRONT_SCAN
-                        ) ?: documentsOverrideInvalidFields,
-                        backImageValidationError = mapDocumentFieldsError.get(
-                            VerificationDocumentFieldsType.BACK_SCAN
-                        ) ?: documentsOverrideInvalidFields,
-                        selfieImageValidationError = mapDocumentFieldsError.get(
-                            VerificationDocumentFieldsType.SELFIE
-                        ) ?: documentsOverrideInvalidFields,
+                        frontImageValidationError = mapDocumentFieldsError[VerificationDocumentFieldsType.FRONT_SCAN]
+                            ?: documentsOverrideInvalidFields,
+                        backImageValidationError = mapDocumentFieldsError[VerificationDocumentFieldsType.BACK_SCAN] ?: documentsOverrideInvalidFields,
+                        selfieImageValidationError = mapDocumentFieldsError[VerificationDocumentFieldsType.SELFIE] ?: documentsOverrideInvalidFields,
                     )
                 }
             }
@@ -284,33 +258,17 @@ class SettingsRepositoryImpl(
                     ssnValue = verificationData.nationalIds?.first()?.number ?: "",
                     sourceOfFunds = responseItem.sourceOfFunds ?: "",
                     occupation = responseItem.occupation ?: "",
-                    firstNameValidationError = mapIdentityFieldsError.get(
-                        VerificationIdentityFieldsType.FIRST_NAME
-                    ) ?: false,
-                    lastNameValidationError = mapIdentityFieldsError.get(
-                        VerificationIdentityFieldsType.LAST_NAME
-                    ) ?: false,
-                    birthDateValidationError = mapIdentityFieldsError.get(
-                        VerificationIdentityFieldsType.DAY_OF_BIRTH
-                    ) ?: false || mapIdentityFieldsError.get(VerificationIdentityFieldsType.MONTH_OF_BIRTH) ?: false || mapIdentityFieldsError.get(
-                        VerificationIdentityFieldsType.YEAR_OF_BIRTH
-                    ) ?: false,
-                    provinceValidationError = mapIdentityFieldsError.get(
-                        VerificationIdentityFieldsType.PROVINCE
-                    ) ?: false,
-                    cityValidationError = mapIdentityFieldsError.get(VerificationIdentityFieldsType.CITY)
-                        ?: false,
-                    streetNameValidationError = mapIdentityFieldsError.get(
-                        VerificationIdentityFieldsType.STREET_NAME
-                    ) ?: false,
-                    buildingNumberValidationError = mapIdentityFieldsError.get(
-                        VerificationIdentityFieldsType.BUILDING_NUMBER
-                    ) ?: false,
-                    zipCodeValidationError = mapIdentityFieldsError.get(
-                        VerificationIdentityFieldsType.ZIP_CODE
-                    ) ?: false,
-                    ssnValidationError = mapIdentityFieldsError.get(VerificationIdentityFieldsType.SSN)
-                        ?: false,
+                    firstNameValidationError = mapIdentityFieldsError[VerificationIdentityFieldsType.FIRST_NAME] ?: false,
+                    lastNameValidationError = mapIdentityFieldsError[VerificationIdentityFieldsType.LAST_NAME] ?: false,
+                    birthDateValidationError = mapIdentityFieldsError[VerificationIdentityFieldsType.DAY_OF_BIRTH] ?: false
+                        || mapIdentityFieldsError[VerificationIdentityFieldsType.MONTH_OF_BIRTH] ?: false
+                        || mapIdentityFieldsError[VerificationIdentityFieldsType.YEAR_OF_BIRTH] ?: false,
+                    provinceValidationError = mapIdentityFieldsError[VerificationIdentityFieldsType.PROVINCE] ?: false,
+                    cityValidationError = mapIdentityFieldsError[VerificationIdentityFieldsType.CITY] ?: false,
+                    streetNameValidationError = mapIdentityFieldsError[VerificationIdentityFieldsType.STREET_NAME] ?: false,
+                    buildingNumberValidationError = mapIdentityFieldsError[VerificationIdentityFieldsType.BUILDING_NUMBER] ?: false,
+                    zipCodeValidationError = mapIdentityFieldsError[VerificationIdentityFieldsType.ZIP_CODE] ?: false,
+                    ssnValidationError = mapIdentityFieldsError[VerificationIdentityFieldsType.SSN] ?: false,
                 )
             )
         } else {
@@ -355,15 +313,9 @@ class SettingsRepositoryImpl(
                     frontImageBitmap = null,
                     backImageBitmap = null,
                     selfieImageBitmap = null,
-                    frontImageValidationError = mapDocumentFieldsError.get(
-                        VerificationDocumentFieldsType.FRONT_SCAN
-                    ) ?: overrideInvalidFields,
-                    backImageValidationError = mapDocumentFieldsError.get(
-                        VerificationDocumentFieldsType.BACK_SCAN
-                    ) ?: overrideInvalidFields,
-                    selfieImageValidationError = mapDocumentFieldsError.get(
-                        VerificationDocumentFieldsType.SELFIE
-                    ) ?: overrideInvalidFields,
+                    frontImageValidationError = mapDocumentFieldsError[VerificationDocumentFieldsType.FRONT_SCAN] ?: overrideInvalidFields,
+                    backImageValidationError = mapDocumentFieldsError[VerificationDocumentFieldsType.BACK_SCAN] ?: overrideInvalidFields,
+                    selfieImageValidationError = mapDocumentFieldsError[VerificationDocumentFieldsType.SELFIE] ?: overrideInvalidFields,
                 )
             )
         } else {
@@ -408,30 +360,38 @@ class SettingsRepositoryImpl(
     override fun getVerificationCountries(): List<VerificationCountryDataItem> =
         assetsDataStore.getCountries()
 
-    override suspend fun sendVerificationVip(
-        vipDataItem: VerificationVipDataItem,
-        fileName: String
-    ): Either<Failure, Unit> = apiService.sendVerificationVip(
-        prefHelper.userId, vipDataItem, fileName
-    )
+    override suspend fun checkPass(userId: String, password: String): Either<Failure, Boolean> {
+        val response = apiService.checkPass(userId, password)
+        return if (response.isRight) {
+            Either.Right((response as Either.Right).b.result)
+        } else {
+            response as Either.Left
+        }
+    }
 
     override suspend fun changePass(
         oldPassword: String,
         newPassword: String
     ): Either<Failure, Boolean> = apiService.changePass(prefHelper.userId, oldPassword, newPassword)
 
-    override suspend fun getPhone(): Either<Failure, String> =
-        apiService.getPhone(prefHelper.userId)
+    override suspend fun updatePhone(): Either<Failure, Boolean> {
+        val result = apiService.updatePhone(prefHelper.userId, phoneCache)
+        if (result.isRight && (result as Either.Right).b) {
+            prefHelper.userPhone = phoneCache
+            phoneCache = ""
+        }
+        return result
+    }
 
     private var phoneCache = "" // stores phone for update after successful phone verification
 
-    override suspend fun updatePhone(): Either<Failure, Boolean> =
-        apiService.updatePhone(prefHelper.userId, phoneCache)
-
-    override suspend fun verifyPhone(phone: String): Either<Failure, Boolean> =
-        apiService.verifyPhone(prefHelper.userId, phone).also {
+    override suspend fun isPhoneUsed(phone: String): Either<Failure, Boolean> {
+        val result = apiService.verifyPhone(prefHelper.userId, phone)
+        if (result.isRight && (result as Either.Right).b.not()) { // needed response contains false value for phone updating later
             phoneCache = phone
         }
+        return result
+    }
 
     override suspend fun setUserAllowedBioAuth(allowed: Boolean) {
         prefHelper.userAllowedBioAuth = allowed
@@ -457,4 +417,5 @@ class SettingsRepositoryImpl(
     override suspend fun userAllowedBioAuth(): Either<Failure, Boolean> {
         return Either.Right(prefHelper.userAllowedBioAuth)
     }
+
 }
