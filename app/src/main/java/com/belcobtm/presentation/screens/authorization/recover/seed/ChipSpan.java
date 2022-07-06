@@ -102,7 +102,7 @@ public class ChipSpan extends ImageSpan implements Chip {
         mDefaultBackgroundColor = ContextCompat.getColorStateList(context, R.color.light_gray_stroke);
         mBackgroundColor = mDefaultBackgroundColor;
 
-        mTextColor = ContextCompat.getColor(context, R.color.chip_default_text_color);
+        mTextColor = ContextCompat.getColor(context, R.color.primaryTextColor);
         mIconBackgroundColor = ContextCompat.getColor(context, R.color.chip_default_icon_background_color);
 
         Resources resources = context.getResources();

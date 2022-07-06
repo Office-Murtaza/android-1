@@ -26,8 +26,10 @@ import com.belcobtm.domain.wallet.interactor.GetCoinListUseCase
 import com.belcobtm.domain.wallet.item.CoinDataItem
 import com.belcobtm.domain.wallet.item.isBtcCoin
 import com.belcobtm.domain.wallet.item.isEthRelatedCoin
+import com.belcobtm.presentation.core.livedata.DoubleCombinedLiveData
 import com.belcobtm.presentation.core.mvvm.LoadingData
 import com.belcobtm.presentation.core.provider.string.StringProvider
+import com.belcobtm.presentation.screens.services.atm.sell.AtmSellFeeModelView
 import kotlinx.coroutines.launch
 
 class SendGiftViewModel(
@@ -61,8 +63,7 @@ class SendGiftViewModel(
     private val _coinToSend = MutableLiveData<CoinDataItem>()
     val coinToSend: LiveData<CoinDataItem> = _coinToSend
 
-    private val _fee = MutableLiveData(0.0)
-    val fee: LiveData<Double> = _fee
+    private val feeLiveData = MutableLiveData(0.0)
 
     private val _amount = MutableLiveData<AmountItem>()
     val amount: LiveData<AmountItem> = _amount
@@ -92,10 +93,22 @@ class SendGiftViewModel(
                 coin = it
                 processAmountWIthFee(coin, fee)
             }
-            addSource(_fee) {
+            addSource(feeLiveData) {
                 fee = it
                 processAmountWIthFee(coin, fee)
             }
+        }
+
+    private val feePercent = MutableLiveData(0.0)
+
+    val giftFee: LiveData<AtmSellFeeModelView> =
+        DoubleCombinedLiveData(usdAmount, coinToSend) { amount, coin ->
+            val price = coin?.priceUsd ?: 0.0
+            AtmSellFeeModelView(
+                platformFeePercent = feePercent.value ?: 0.0,
+                platformFeeCoinAmount = (amount?.toDouble() ?: 0.0) / price * (feePercent.value ?: 0.0 / 100.0),
+                swapCoinCode = coin?.code.orEmpty()
+            )
         }
 
     private fun MediatorLiveData<Pair<CoinDataItem, Double>>.processAmountWIthFee(
@@ -113,6 +126,12 @@ class SendGiftViewModel(
     ) {
         if (cryptoAmount != null && coinData != null) {
             value = cryptoAmount * coinData.priceUsd
+        }
+    }
+
+    init {
+        viewModelScope.launch {
+            feePercent.value = serviceInfoProvider.getService(ServiceType.TRANSFER)?.feePercent ?: 0.0
         }
     }
 
@@ -154,11 +173,14 @@ class SendGiftViewModel(
             transactionPlanItem?.let { plan ->
                 getFakeSignedTransactionPlanUseCase(
                     GetFakeSignedTransactionPlanUseCase.Params(
-                        coin.code, plan, useMaxAmount = false, amount = amount
+                        coin.code,
+                        plan,
+                        useMaxAmount = false,
+                        amount = amount
                     ),
                     onSuccess = { signedTransactionPlan ->
                         signedTransactionPlanItem = signedTransactionPlan
-                        _fee.value = signedTransactionPlan.fee
+                        feeLiveData.value = signedTransactionPlan.fee
                     },
                     onError = { /* Failure impossible */ }
                 )
@@ -176,7 +198,7 @@ class SendGiftViewModel(
         getMaxValueBySignedTransactionUseCase(
             GetMaxValueBySignedTransactionUseCase.Params(transactionPlan, coin),
             onSuccess = {
-                _fee.value = it.fee
+                feeLiveData.value = it.fee
                 _amount.value = AmountItem(it.amount, useMax = true)
             }, onError = { /* error impossible */ }
         )
@@ -202,7 +224,7 @@ class SendGiftViewModel(
             toAddress, coinToSend.code, amount, transactionPlanItem, useMax
         ), onSuccess = {
             signedTransactionPlanItem = it
-            _fee.value = it.fee
+            feeLiveData.value = it.fee
             if (!isSufficientBalance()) {
                 _cryptoAmountError.value = R.string.insufficient_balance
                 return@getSignedTransactionPlanUseCase
@@ -323,7 +345,7 @@ class SendGiftViewModel(
                 message = message,
                 giftId = giftId,
                 toAddress = toAddress,
-                fee = _fee.value ?: 0.0,
+                fee = feeLiveData.value ?: 0.0,
                 feePercent = serviceInfoProvider.getService(ServiceType.TRANSFER)?.feePercent
                     ?: 0.0,
                 fiatAmount = usdAmount,
@@ -337,6 +359,7 @@ class SendGiftViewModel(
     }
 
     fun selectCoin(phoneNumber: String, coinDataItem: CoinDataItem) {
+        _amount.value = AmountItem(0.0, false)
         _coinToSend.value = coinDataItem
         _transactionPlanLiveData.value = LoadingData.Loading()
         fetchTransactionPlan(phoneNumber, coinDataItem, _transactionPlanLiveData)
@@ -363,7 +386,7 @@ class SendGiftViewModel(
                             ),
                             onSuccess = { signedTransactionPlan ->
                                 signedTransactionPlanItem = signedTransactionPlan
-                                _fee.value = signedTransactionPlan.fee
+                                feeLiveData.value = signedTransactionPlan.fee
                                 _coinToSend.value = coin
                                 loadingLiveData.value = LoadingData.Success(Unit)
                             }, onError = {
@@ -382,7 +405,7 @@ class SendGiftViewModel(
 
     private fun isSufficientBalance(): Boolean {
         val amount = _amount.value?.amount ?: 0.0
-        val fee = _fee.value ?: 0.0
+        val fee = feeLiveData.value ?: 0.0
         val coinDataItem = _coinToSend.value ?: return false
         return if (coinDataItem.isBtcCoin()) {
             amount + fee <= signedTransactionPlanItem?.availableAmount ?: 0.0
@@ -408,3 +431,9 @@ class SendGiftViewModel(
     }
 
 }
+
+data class GiftFeeModelView(
+    val platformFeePercents: Double,
+    val platformFeeCoinAmount: Double,
+    val swapCoinCode: String
+)

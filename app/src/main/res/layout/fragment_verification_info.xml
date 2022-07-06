@@ -70,7 +70,7 @@
         android:layout_marginTop="24dp"
         android:layout_marginEnd="@dimen/margin_main"
         android:drawablePadding="@dimen/margin_quarter"
-        android:textColor="@color/chip_default_text_color"
+        android:textColor="@color/primaryTextColor"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/message_view"

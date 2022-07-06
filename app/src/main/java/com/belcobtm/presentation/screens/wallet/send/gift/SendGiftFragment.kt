@@ -10,9 +10,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.navArgs
 import com.belcobtm.R
-import com.belcobtm.domain.service.ServiceType
 import com.belcobtm.databinding.FragmentSendGiftBinding
 import com.belcobtm.domain.Failure
+import com.belcobtm.domain.service.ServiceType
 import com.belcobtm.domain.wallet.LocalCoinType
 import com.belcobtm.domain.wallet.item.CoinDataItem
 import com.belcobtm.domain.wallet.item.isEthRelatedCoinCode
@@ -26,6 +26,7 @@ import com.belcobtm.presentation.tools.extensions.getString
 import com.belcobtm.presentation.tools.extensions.hide
 import com.belcobtm.presentation.tools.extensions.resIcon
 import com.belcobtm.presentation.tools.extensions.show
+import com.belcobtm.presentation.tools.extensions.toHtmlSpan
 import com.belcobtm.presentation.tools.extensions.toStringCoin
 import com.belcobtm.presentation.tools.extensions.toggle
 import com.belcobtm.presentation.tools.formatter.CurrencyPriceFormatter
@@ -118,6 +119,7 @@ class SendGiftFragment : BaseFragment<FragmentSendGiftBinding>(),
             .apply(RequestOptions().override(contactImage.width, contactImage.height))
             .into(contactImage)
         sendCoinInputLayout.getEditText().setText("0")
+        amountUsdView.text = currencyFormatter.format(0.0)
     }
 
     override fun onTouchIntercented(ev: MotionEvent) {
@@ -179,7 +181,7 @@ class SendGiftFragment : BaseFragment<FragmentSendGiftBinding>(),
         viewModel.transactionPlanLiveData.listen()
         viewModel.amount.observe(viewLifecycleOwner) { cryptoAmount ->
             with(sendCoinInputLayout.getEditText()) {
-                if (cryptoAmount.amount <= 0.0) {
+                if (cryptoAmount.amount < 0.0) {
                     return@observe
                 }
                 removeTextChangedListener(cryptoAmountTextWatcher)
@@ -222,6 +224,14 @@ class SendGiftFragment : BaseFragment<FragmentSendGiftBinding>(),
                     else -> showErrorSomethingWrong()
                 }
             })
+        viewModel.giftFee.observe(viewLifecycleOwner) { fee ->
+            platformFeeTextView.text = getString(
+                R.string.sell_screen_fee_formatted,
+                fee.platformFeePercent.toStringCoin(),
+                fee.platformFeeCoinAmount.toStringCoin(),
+                fee.swapCoinCode
+            ).toHtmlSpan()
+        }
     }
 
     private fun setCoinData(coin: CoinDataItem, fee: Double) {

@@ -95,8 +95,7 @@
                 android:paddingEnd="@dimen/margin_main"
                 android:paddingBottom="@dimen/margin_half"
                 android:singleLine="true"
-                android:textAppearance="@style/SwapAmountTextAppearance" />
-
+                style="@style/SwapAmountTextAppearance" />
 
         </com.belcobtm.presentation.core.views.CustomTextInputLayout>
 

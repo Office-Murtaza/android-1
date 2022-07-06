@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<merge xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    tools:parentTag="androidx.constraintlayout.widget.ConstraintLayout">
+    android:animateLayoutChanges="true"
+    android:paddingVertical="16dp">
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/coinInputLayout"
@@ -12,7 +13,6 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/margin_x2"
-        android:layout_marginTop="@dimen/margin_main"
         app:hintTextColor="@color/gray_text_color"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/coinButton"
@@ -21,6 +21,7 @@
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/coinInputEditText"
+            style="@style/SwapAmountTextAppearance"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@android:color/transparent"
@@ -33,15 +34,15 @@
             android:paddingEnd="@dimen/margin_main"
             android:paddingBottom="@dimen/margin_half"
             android:singleLine="true"
-            android:textAppearance="@style/SwapAmountTextAppearance"
-            tools:hint="Coin amount" />
+            tools:hint="Coin amount"
+            tools:text="100" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
     <LinearLayout
         android:id="@+id/coinButton"
         android:layout_width="wrap_content"
-        android:layout_height="50dp"
+        android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/margin_main"
         android:gravity="center"
         android:orientation="horizontal"
@@ -58,11 +59,11 @@
 
         <TextView
             android:id="@+id/tvCoinName"
+            style="@style/Text.Bold1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/margin_half"
             android:layout_marginEnd="@dimen/margin_half"
-            android:textAppearance="@style/Text.Bold1"
             tools:text="BTC" />
 
         <ImageView
@@ -118,12 +119,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/coin_barrier" />
 
-    <androidx.constraintlayout.widget.Barrier
-        android:id="@+id/helper_barrier"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:barrierDirection="bottom"
-        app:constraint_referenced_ids="tvHelperText2,tvMax,tvHelperText" />
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/tvError"
@@ -131,14 +126,16 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/margin_main"
-        android:layout_marginTop="@dimen/margin_half"
+        android:layout_marginTop="4dp"
         android:layout_marginEnd="@dimen/margin_main"
         android:drawableStart="@drawable/ic_error"
         android:drawablePadding="@dimen/margin_half"
         android:textColor="@color/colorError"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/helper_barrier"
-        tools:text="Error message here" />
+        app:layout_constraintTop_toBottomOf="@id/tvHelperText2"
+        tools:text="Error message here"
+        tools:visibility="visible" />
 
-</merge>
+</androidx.constraintlayout.widget.ConstraintLayout>

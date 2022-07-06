@@ -953,7 +953,7 @@
     <string name="invite_from_contacts_screen_title">Invite from contacts</string>
     <string name="create_trade_terms_validation_error">Terms cannot be empty</string>
     <string name="atm_sell_title">ATM Sell</string>
-    <string name="update_limits_button_label">Increase limits</string>
+    <string name="update_limits_button_label">INCREASE LIMITS</string>
     <string name="daily_limit_label">Daily Limit</string>
     <string name="transaction_limit_label">Transaction Limit</string>
     <string name="today_limit_label">Today Limit</string>
@@ -1003,7 +1003,7 @@
     <string name="services_dialog_tx_limit_label">Tx Limit</string>
     <string name="services_dialog_daily_limit_label">Daily Limit</string>
     <string name="services_dialog_remain_limit_label">Remain Limit</string>
-    <string name="limit_details_button_title">Limit Details</string>
+    <string name="limit_details_button_title">LIMIT DETAILS</string>
     <string name="limits_exceeded_validation_message">Converted amount exceeds limits</string>
     <string name="location_required_on_trade_creation">Trade not created, please share your location</string>
     <string name="settings_verify_dialog_title">Verification</string>

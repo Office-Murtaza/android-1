@@ -24,17 +24,14 @@
 
         <com.belcobtm.presentation.core.views.CoinInputLayout
             android:id="@+id/coin_input_layout"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/colorLightGray"
-            android:paddingTop="@dimen/margin_half"
-            android:paddingBottom="@dimen/margin_x2"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/rate_text_view"
+            style="@style/Text.Bold1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/margin_main"
@@ -42,11 +39,9 @@
             android:background="@drawable/bg_white_rect_with_gray_stroke"
             android:drawableStart="@drawable/ic_atm_sell_rate"
             android:drawablePadding="@dimen/margin_half"
-            android:paddingStart="@dimen/margin_normal"
-            android:paddingTop="@dimen/margin_half"
-            android:paddingEnd="@dimen/margin_normal"
-            android:paddingBottom="@dimen/margin_half"
-            android:textAppearance="@style/Text.Regular2"
+            android:paddingHorizontal="@dimen/margin_normal"
+            android:paddingVertical="@dimen/margin_half"
+            android:textSize="16sp"
             app:layout_constraintBottom_toBottomOf="@id/coin_input_layout"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/coin_input_layout"
@@ -61,6 +56,7 @@
             android:layout_marginTop="@dimen/margin_large"
             android:layout_marginEnd="@dimen/margin_half"
             android:text="@string/daily_limit_label"
+            android:textSize="12sp"
             app:layout_constraintEnd_toStartOf="@id/day_limit_divider"
             app:layout_constraintHorizontal_bias="0"
             app:layout_constraintStart_toStartOf="parent"
@@ -84,6 +80,7 @@
             android:layout_width="@dimen/divider_size"
             android:layout_height="44dp"
             android:layout_marginTop="@dimen/margin_large"
+            android:background="@color/divider_gray"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/rate_text_view" />
@@ -96,6 +93,7 @@
             android:layout_marginStart="@dimen/margin_main"
             android:layout_marginEnd="@dimen/margin_half"
             android:text="@string/today_limit_label"
+            android:textSize="12sp"
             app:layout_constraintBottom_toTopOf="@id/today_limit_value"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="1"
@@ -123,6 +121,7 @@
             android:layout_marginStart="@dimen/margin_main"
             android:layout_marginEnd="@dimen/margin_half"
             android:text="@string/tx_limit_label"
+            android:textSize="12sp"
             app:layout_constraintBottom_toTopOf="@id/tx_limit_value"
             app:layout_constraintEnd_toStartOf="@id/tx_limit_divider"
             app:layout_constraintHorizontal_bias="0"
@@ -148,6 +147,7 @@
             android:layout_width="@dimen/divider_size"
             android:layout_height="44dp"
             android:layout_marginTop="@dimen/margin_large"
+            android:background="@color/divider_gray"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/day_limit_divider" />
@@ -160,6 +160,7 @@
             android:layout_marginStart="@dimen/margin_main"
             android:layout_marginEnd="@dimen/margin_half"
             android:text="@string/converted_value_label"
+            android:textSize="12sp"
             app:layout_constraintBottom_toTopOf="@id/converted_value_value"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="1"
@@ -193,6 +194,7 @@
             android:id="@+id/platform_fee_text_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="4dp"
             android:textAppearance="@style/Text.Regular1"
             app:layout_constraintBottom_toTopOf="@id/buttonsContainer"
             app:layout_constraintEnd_toEndOf="parent"
@@ -213,15 +215,17 @@
                 android:id="@+id/sell_button"
                 style="@style/Button.Primary"
                 android:layout_width="match_parent"
-                android:layout_marginBottom="4dp"
                 android:text="@string/submit" />
 
-            <Button
+            <TextView
                 android:id="@+id/update_limits_button"
-                style="@style/Button.Secondary.NoOutlined"
                 android:layout_width="match_parent"
-                android:layout_marginTop="4dp"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:padding="16dp"
                 android:text="@string/update_limits_button_label"
+                android:textColor="@color/colorPrimary"
+                android:textStyle="bold"
                 tools:visibility="visible" />
 
         </LinearLayout>

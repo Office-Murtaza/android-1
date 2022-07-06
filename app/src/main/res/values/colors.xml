@@ -6,6 +6,7 @@
     <color name="colorStatusBar">#FFFFFF</color>
     <color name="colorWhite">#FFFFFF</color>
     <color name="colorWhiteWithTransparency">#99FFFFFF</color>
+    <color name="primaryTextColor">#DE000000</color>
 
     <color name="colorText">#58585a</color>
     <color name="gray_text_color">#7c7c7c</color>
@@ -48,7 +49,6 @@
     <color name="chart_point">#84b4fd</color>
     <color name="chart_no_highlight">#000</color>
 
-    <color name="chip_default_text_color">#DE000000</color>
     <color name="chip_default_icon_background_color">#517FA4</color>
     <color name="chip_wire_text_color">#8E5BF9</color>
     <color name="chip_ach_text_color">#F7931A</color>

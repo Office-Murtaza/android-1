@@ -105,9 +105,9 @@ class AtmSellFragment : BaseFragment<FragmentAtmSellBinding>() {
                 findNavController().navigate(uri)
             }
         }
-        viewModel.todayLimitFormatted.observe(viewLifecycleOwner, txLimitValue::setText)
+        viewModel.todayLimitFormatted.observe(viewLifecycleOwner, todayLimitValue::setText)
         viewModel.dailyLimitFormatted.observe(viewLifecycleOwner, dayLimitValue::setText)
-        viewModel.txLimitFormatted.observe(viewLifecycleOwner, todayLimitValue::setText)
+        viewModel.txLimitFormatted.observe(viewLifecycleOwner, txLimitValue::setText)
         viewModel.formattedCoinAmount.observe(viewLifecycleOwner, convertedValueValue::setText)
         viewModel.fee.observe(viewLifecycleOwner) { fee ->
             platformFeeTextView.text = getString(

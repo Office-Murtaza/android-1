@@ -29,7 +29,7 @@ class CoinInputLayout @JvmOverloads constructor(
 
     private val textColorOrigin: Int
     private val textColorError = ContextCompat.getColor(context, R.color.colorError)
-    private val binding = ViewCoinInputLayoutBinding.inflate(LayoutInflater.from(context), this)
+    private val binding = ViewCoinInputLayoutBinding.inflate(LayoutInflater.from(context), this, true)
 
     init {
         textColorOrigin = binding.coinInputEditText.textColors.defaultColor
