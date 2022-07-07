@@ -129,30 +129,23 @@ class TradeReserveViewModel(
             }
             _createTransactionLiveData.value = LoadingData.Loading()
             if (coinDataItem.code == LocalCoinType.XRP.name) {
-                if (cryptoAmount < 20) {
-                    _cryptoAmountError.value =
-                        stringProvider.getString(R.string.xrp_too_small_amount_error)
-                    _createTransactionLiveData.value = LoadingData.DismissProgress()
-                    return@getSignedTransactionPlanUseCase
-                } else {
-                    receiverAccountActivatedUseCase(
-                        ReceiverAccountActivatedUseCase.Params(
-                            coinDataItem.details.walletAddress, coinCode
-                        ),
-                        onSuccess = { activated ->
-                            if (activated) {
-                                createTransactionInternal(cryptoAmount, transactionPlanItem)
-                            } else {
-                                _cryptoAmountError.value =
-                                    stringProvider.getString(R.string.xrp_too_small_amount_error)
-                                _createTransactionLiveData.value = LoadingData.DismissProgress()
-                            }
-                        },
-                        onError = { error ->
-                            _createTransactionLiveData.value = LoadingData.Error(error)
+                receiverAccountActivatedUseCase(
+                    ReceiverAccountActivatedUseCase.Params(
+                        coinDataItem.details.walletAddress, coinCode
+                    ),
+                    onSuccess = { activated ->
+                        if (activated || cryptoAmount >= 20) {
+                            createTransactionInternal(cryptoAmount, transactionPlanItem)
+                        } else {
+                            _cryptoAmountError.value =
+                                stringProvider.getString(R.string.xrp_too_small_amount_error)
+                            _createTransactionLiveData.value = LoadingData.DismissProgress()
                         }
-                    )
-                }
+                    },
+                    onError = { error ->
+                        _createTransactionLiveData.value = LoadingData.Error(error)
+                    }
+                )
             } else {
                 createTransactionInternal(cryptoAmount, transactionPlanItem)
             }
