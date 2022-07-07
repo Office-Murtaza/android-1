@@ -64,7 +64,8 @@ class TransactionApiService(
         fee: Double?,
         fromAddress: String?,
         toAddress: String?,
-        price: Double
+        price: Double,
+        fiatAmount: Double,
     ): Either<Failure, TransactionDetailsResponse> = try {
         val location = locationProvider.getCurrentLocation()
         val requestBody = WithdrawRequest(
@@ -75,7 +76,8 @@ class TransactionApiService(
             fee = fee,
             price = price,
             latitude = location?.latitude,
-            longitude = location?.longitude
+            longitude = location?.longitude,
+            fiatAmount = fiatAmount
         )
         val response = api.withdrawAsync(prefHelper.userId, coinFrom, requestBody)
         response.body()?.let { Either.Right(it) } ?: Either.Left(Failure.ServerError())

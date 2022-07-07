@@ -16,7 +16,7 @@ interface TransactionRepository {
 
     suspend fun fetchTransactionList(coinCode: String): Either<Failure, Unit>
 
-    fun observeTransactions(): Flow<List<TransactionDomainModel>>
+    fun observeTransactions(): Flow<Map<String, TransactionDomainModel>>
 
     suspend fun getSignedPlan(
         fromCoin: String,

@@ -10,10 +10,11 @@ import kotlinx.coroutines.flow.map
 class ObserveTransactionsUseCase(private val repository: TransactionRepository) {
 
     fun invoke(coinCode: String): Flow<List<TransactionsAdapterItem>> =
-        repository.observeTransactions()
-            .map { transactions ->
-                transactions.filter { it.coinCode == coinCode }
-                    .map(TransactionDomainModel::mapToUiItem)
-            }
+        repository.observeTransactions().map { map ->
+            map.values
+                .filter { it.coinCode == coinCode }
+                .reversed()
+                .map(TransactionDomainModel::mapToUiItem)
+        }
 
 }

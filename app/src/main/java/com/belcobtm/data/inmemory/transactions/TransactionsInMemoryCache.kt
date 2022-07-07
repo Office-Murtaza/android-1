@@ -2,34 +2,42 @@ package com.belcobtm.data.inmemory.transactions
 
 import com.belcobtm.data.rest.transaction.response.TransactionDetailsResponse
 import com.belcobtm.domain.transaction.item.TransactionDomainModel
-import com.belcobtm.domain.wallet.LocalCoinType
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 
 class TransactionsInMemoryCache {
 
     /**
-     * We need to pass @see [LocalCoinType.TRX] transactions in the order
-     * they are given from the Node through the backend
+     * We need to show transactions in the order they are given from the Node through the backend,
+     * but all new transactions have to be added to the beginning.
+     * Thus, I fill @see[LinkedHashMap] in reverse order of ResponseList.
+     * To add then new created transactions to the top of LinkedHashMap.
+     * And show them to user in again reversed order.
+     *
+     * I minimize Kotlin sugar here to preserve max optimization
      */
-    private val cache = MutableStateFlow(emptyList<TransactionDomainModel>())
-    val observableData: Flow<List<TransactionDomainModel>> = cache
 
-    fun init(coinCode: String, response: List<TransactionDetailsResponse>) {
-        cache.value = response.map { it.mapToDomainModel(coinCode) }
+    private val cache = MutableStateFlow(emptyMap<String, TransactionDomainModel>())
+    val observableData: Flow<Map<String, TransactionDomainModel>> = cache
+
+    fun init(
+        coinCode: String,
+        response: List<TransactionDetailsResponse>
+    ) {
+        val map = LinkedHashMap<String, TransactionDomainModel>()
+        for (i in response.lastIndex downTo 0) {
+            val id = response[i].hash ?: response[i].gbId.orEmpty()
+            map[id] = response[i].mapToDomainModel(coinCode)
+        }
+        cache.value = map
     }
 
     fun update(response: TransactionDetailsResponse) {
-        val transaction = response.mapToDomainModel(response.coin.orEmpty())
-        val list = ArrayList<TransactionDomainModel>().apply {
-            addAll(cache.value)
+        val transactions = LinkedHashMap(cache.value)
+        (response.hash ?: response.gbId)?.let { id ->
+            transactions[id] = response.mapToDomainModel(response.coin.orEmpty())
+            cache.value = transactions
         }
-        val existingTransactionIndex =
-            list.indexOfFirst { it.hash == response.hash || it.gbId == response.gbId }
-        existingTransactionIndex.takeIf { it > -1 }?.let { index ->
-            list[index] = transaction
-        } ?: list.add(0, transaction)
-        cache.value = list
     }
 
 }

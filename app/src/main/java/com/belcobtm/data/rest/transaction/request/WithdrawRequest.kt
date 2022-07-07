@@ -11,5 +11,6 @@ data class WithdrawRequest(
     val fee: Double?,
     val price: Double,
     val latitude: Double?,
-    val longitude: Double?
+    val longitude: Double?,
+    val fiatAmount: Double
 )

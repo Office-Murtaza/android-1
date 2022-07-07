@@ -62,7 +62,7 @@ class TransactionRepositoryImpl(
             cache.init(coinCode, it.transactions)
         }
 
-    override fun observeTransactions(): Flow<List<TransactionDomainModel>> =
+    override fun observeTransactions(): Flow<Map<String, TransactionDomainModel>> =
         cache.observableData
 
     override suspend fun getSignedPlan(
@@ -163,7 +163,8 @@ class TransactionRepositoryImpl(
                 fee = fee,
                 fromAddress = fromAddress,
                 toAddress = toAddress,
-                price = price
+                price = price,
+                fiatAmount = fiatAmount
             )
             if (transaction.isRight) {
                 cache.update((transaction as Either.Right).b)
