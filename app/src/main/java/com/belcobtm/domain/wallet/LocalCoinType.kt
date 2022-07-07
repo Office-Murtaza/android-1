@@ -15,3 +15,5 @@ enum class LocalCoinType(val fullName: String, val trustWalletType: CoinType) {
     DOGE("Dogecoin", CoinType.DOGECOIN),
     CATM("Crypto ATM", CoinType.ETHEREUM) // // sometimes is used as default value
 }
+
+fun String?.isTrx(): Boolean = this == LocalCoinType.TRX.name

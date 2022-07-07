@@ -18,7 +18,7 @@ data class TransactionPlanResponse(
     val chainId: String?
 )
 
-fun TransactionPlanResponse.mapToDataItem(coinCode: String): TransactionPlanItem =
+fun TransactionPlanResponse.mapToDomainModel(coinCode: String): TransactionPlanItem =
     TransactionPlanItem(
         coinCode = coinCode,
         byteFee = byteFee ?: 0L,

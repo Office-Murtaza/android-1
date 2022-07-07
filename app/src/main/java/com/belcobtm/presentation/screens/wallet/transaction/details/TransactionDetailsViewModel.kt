@@ -5,27 +5,27 @@ import androidx.annotation.StringRes
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
+import androidx.lifecycle.viewModelScope
 import com.belcobtm.R
 import com.belcobtm.domain.Failure
 import com.belcobtm.domain.transaction.interactor.ObserveTransactionDetailsUseCase
-import com.belcobtm.domain.transaction.item.TransactionDetailsDataItem
+import com.belcobtm.domain.transaction.item.TransactionDomainModel
 import com.belcobtm.domain.transaction.type.TransactionCashStatusType
 import com.belcobtm.domain.transaction.type.TransactionStatusType
 import com.belcobtm.domain.transaction.type.TransactionType
 import com.belcobtm.presentation.core.DateFormat
 import com.belcobtm.presentation.core.QRUtils
+import com.belcobtm.presentation.core.mvvm.LoadingData
+import com.belcobtm.presentation.core.provider.string.StringProvider
+import com.belcobtm.presentation.screens.wallet.transaction.details.adapter.TransactionDetailsAdapter
 import com.belcobtm.presentation.tools.extensions.toStringCoin
 import com.belcobtm.presentation.tools.extensions.toStringPercents
 import com.belcobtm.presentation.tools.formatter.Formatter
 import com.belcobtm.presentation.tools.formatter.PhoneNumberFormatter
-import com.belcobtm.presentation.core.mvvm.LoadingData
-import com.belcobtm.presentation.core.provider.string.StringProvider
-import com.belcobtm.presentation.screens.wallet.transaction.details.adapter.TransactionDetailsAdapter
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.map
 
 class TransactionDetailsViewModel(
-    private val txId: String,
+    private val transactionId: String,
     private val coinCode: String,
     private val phoneFormatter: PhoneNumberFormatter,
     private val transactionDetailsUseCase: ObserveTransactionDetailsUseCase,
@@ -36,7 +36,7 @@ class TransactionDetailsViewModel(
     val transactionDetailsLiveData: LiveData<LoadingData<List<TransactionDetailsAdapter.Item>>>
         get() = transactionDetailsUseCase.invoke(
             ObserveTransactionDetailsUseCase.Params(
-                txId,
+                transactionId,
                 coinCode
             )
         ).map {
@@ -45,10 +45,10 @@ class TransactionDetailsViewModel(
             } else {
                 LoadingData.Error(Failure.ServerError())
             }
-        }.asLiveData(Dispatchers.Default)
+        }.asLiveData(viewModelScope.coroutineContext)
 
     private fun mapToItemList(
-        dataItem: TransactionDetailsDataItem
+        dataItem: TransactionDomainModel
     ): List<TransactionDetailsAdapter.Item> {
         val result = mutableListOf<TransactionDetailsAdapter.Item>()
         // id block
@@ -194,13 +194,11 @@ class TransactionDetailsViewModel(
             }
         }
         // date block
-        if (dataItem.timestamp != null) {
-            val dateBlockItem = TransactionDetailsAdapter.Item.Regular(
-                R.string.transaction_details_date,
-                DateFormat.sdfLong.format(dataItem.timestamp)
-            )
-            result.add(dateBlockItem)
-        }
+        val dateBlockItem = TransactionDetailsAdapter.Item.Regular(
+            R.string.transaction_details_date,
+            DateFormat.sdfLong.format(dataItem.timestamp)
+        )
+        result.add(dateBlockItem)
         // to prevent any modifications outside
         return result.toList()
     }

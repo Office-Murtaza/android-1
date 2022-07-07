@@ -1,6 +1,6 @@
 package com.belcobtm.presentation.screens.wallet.transactions.item
 
-import com.belcobtm.domain.transaction.item.TransactionDetailsDataItem
+import com.belcobtm.domain.transaction.item.TransactionDomainModel
 import com.belcobtm.domain.transaction.type.TransactionStatusType
 import com.belcobtm.domain.transaction.type.TransactionType
 import com.belcobtm.presentation.core.DateFormat
@@ -14,9 +14,9 @@ data class TransactionsAdapterItem(
     val type: TransactionType
 )
 
-fun TransactionDetailsDataItem.mapToUiItem(): TransactionsAdapterItem =
+fun TransactionDomainModel.mapToUiItem(): TransactionsAdapterItem =
     TransactionsAdapterItem(
-        id = hash.orEmpty(),
+        id = hash ?: gbId,
         dbId = gbId,
         date = formatDate(timestamp),
         cryptoAmount = cryptoAmount ?: 0.0,

@@ -1,7 +1,8 @@
 package com.belcobtm.domain.transaction.interactor
 
 import com.belcobtm.domain.transaction.TransactionRepository
-import com.belcobtm.domain.transaction.item.TransactionDetailsDataItem
+import com.belcobtm.domain.transaction.item.TransactionDomainModel
+import com.belcobtm.domain.wallet.isTrx
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOn
@@ -11,12 +12,16 @@ class ObserveTransactionDetailsUseCase(
     private val transactionRepository: TransactionRepository
 ) {
 
-    fun invoke(params: Params): Flow<TransactionDetailsDataItem?> =
+    fun invoke(params: Params): Flow<TransactionDomainModel?> =
         transactionRepository.observeTransactions()
             .map { data ->
-                data[params.txId]
+                if (params.coinCode.isTrx())
+                    data.trxTransactions.firstOrNull {
+                        it.hash == params.transactionId || it.gbId == params.transactionId
+                    }
+                else data.transactionsMap[params.transactionId]
             }.flowOn(Dispatchers.Default)
 
-    data class Params(val txId: String, val coinCode: String)
+    data class Params(val transactionId: String, val coinCode: String)
 
 }

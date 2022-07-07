@@ -198,9 +198,9 @@ val viewModelModule = module {
     viewModel { UpdatePasswordViewModel(get()) }
     viewModel { PhoneChangeViewModel(get(), get(), get<PhoneNumberValidator>()) }
     viewModel { AtmViewModel(get()) }
-    viewModel { (txId: String, coinCode: String) ->
+    viewModel { (transactionId: String, coinCode: String) ->
         TransactionDetailsViewModel(
-            txId, coinCode, get(), get(),
+            transactionId, coinCode, get(), get(),
             get(named(CURRENCY_PRICE_FORMATTER_QUALIFIER)), get()
         )
     }

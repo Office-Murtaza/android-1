@@ -15,7 +15,7 @@ import com.belcobtm.data.rest.transaction.response.GetTransactionsResponse
 import com.belcobtm.data.rest.transaction.response.ReceiverAccountActivatedResponse
 import com.belcobtm.data.rest.transaction.response.TransactionDetailsResponse
 import com.belcobtm.data.rest.transaction.response.hash.UtxoItemData
-import com.belcobtm.data.rest.transaction.response.mapToDataItem
+import com.belcobtm.data.rest.transaction.response.mapToDomainModel
 import com.belcobtm.domain.Either
 import com.belcobtm.domain.Failure
 import com.belcobtm.domain.transaction.item.SellPreSubmitDataItem
@@ -32,7 +32,7 @@ class TransactionApiService(
 
     suspend fun getTransactionPlan(coinCode: String): Either<Failure, TransactionPlanItem> = try {
         val request = api.getTransactionPlanAsync(prefHelper.userId, coinCode)
-        request.body()?.let { body -> Either.Right(body.mapToDataItem(coinCode)) }
+        request.body()?.let { body -> Either.Right(body.mapToDomainModel(coinCode)) }
             ?: Either.Left(Failure.ServerError())
     } catch (failure: Failure) {
         failure.printStackTrace()
@@ -146,7 +146,7 @@ class TransactionApiService(
             requestBody
         )
 
-        request.body()?.let { Either.Right(it.mapToDataItem()) }
+        request.body()?.let { Either.Right(it.mapToDomainModel()) }
             ?: Either.Left(Failure.ServerError())
     } catch (failure: Failure) {
         failure.printStackTrace()
@@ -269,7 +269,7 @@ class TransactionApiService(
 
     suspend fun stakeDetails(coinCode: String): Either<Failure, StakeDetailsDataItem> = try {
         val request = api.stakeDetailsAsync(prefHelper.userId, coinCode)
-        request.body()?.let { Either.Right(it.mapToDataItem()) }
+        request.body()?.let { Either.Right(it.mapToDomainModel()) }
             ?: Either.Left(Failure.ServerError())
     } catch (failure: Failure) {
         failure.printStackTrace()

@@ -4,7 +4,7 @@ import com.belcobtm.domain.transaction.type.TransactionCashStatusType
 import com.belcobtm.domain.transaction.type.TransactionStatusType
 import com.belcobtm.domain.transaction.type.TransactionType
 
-data class TransactionDetailsDataItem(
+data class TransactionDomainModel(
     val hash: String?,
     val gbId: String,
     val coinCode: String,

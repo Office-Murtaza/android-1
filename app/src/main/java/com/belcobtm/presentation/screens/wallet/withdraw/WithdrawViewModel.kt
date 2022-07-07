@@ -123,55 +123,54 @@ class WithdrawViewModel(
         ), onSuccess = { signedTransactionPlan ->
             _fee.value = signedTransactionPlan.fee
             signedTransactionPlanItem = signedTransactionPlan
-            if (coinAmount <= 0) {
-                _cryptoAmountError.value =
-                    stringProvider.getString(R.string.balance_amount_too_small)
-                return@getSignedTransactionPlanUseCase
-            }
-
-            if (!isSufficientBalance()) {
-                _cryptoAmountError.value =
-                    stringProvider.getString(R.string.balance_amount_exceeded)
-                return@getSignedTransactionPlanUseCase
-            }
-
-            if (!isSufficientEth()) {
-                _cryptoAmountError.value =
-                    stringProvider.getString(R.string.withdraw_screen_where_money_libovski)
-                return@getSignedTransactionPlanUseCase
-            }
-            if (!isValidAddress(toAddress, coinCode)) {
-                _addressError.value = stringProvider.getString(R.string.address_invalid)
-                return@getSignedTransactionPlanUseCase
-            }
-            transactionLiveData.value = LoadingData.Loading()
-            if (fromCoinDataItem.code == LocalCoinType.XRP.name) {
-                if (coinAmount < 20) {
+            when {
+                coinAmount <= 0 -> {
                     _cryptoAmountError.value =
-                        stringProvider.getString(R.string.xrp_too_small_amount_error)
-                    transactionLiveData.value = LoadingData.DismissProgress()
-                    return@getSignedTransactionPlanUseCase
-                } else {
-                    receiverAccountActivatedUseCase(
-                        ReceiverAccountActivatedUseCase.Params(toAddress, coinCode),
-                        onSuccess = { activated ->
-                            if (activated) {
-                                withdrawInternal(coinAmount, toAddress, transactionPlan)
-                            } else {
-                                _cryptoAmountError.value =
-                                    stringProvider.getString(R.string.xrp_too_small_amount_error)
-                                transactionLiveData.value = LoadingData.DismissProgress()
-                            }
-                        },
-                        onError = { transactionLiveData.value = LoadingData.Error(it) }
-                    )
+                        stringProvider.getString(R.string.balance_amount_too_small)
                 }
-            } else {
-                withdrawInternal(coinAmount, toAddress, transactionPlan)
+                !isSufficientBalance() -> {
+                    _cryptoAmountError.value =
+                        stringProvider.getString(R.string.balance_amount_exceeded)
+                }
+                !isSufficientEth() -> {
+                    _cryptoAmountError.value =
+                        stringProvider.getString(R.string.withdraw_screen_where_money_libovski)
+                }
+                isValidAddress(toAddress, coinCode).not() -> {
+                    _addressError.value = stringProvider.getString(R.string.address_invalid)
+                }
+                fromCoinDataItem.code == LocalCoinType.XRP.name -> {
+                    withdrawXrp(coinAmount, toAddress, transactionPlan)
+                }
+                else -> {
+                    transactionLiveData.value = LoadingData.Loading()
+                    withdrawInternal(coinAmount, toAddress, transactionPlan)
+                }
             }
         }, onError = {
             transactionLiveData.value = LoadingData.Error(it)
         })
+    }
+
+    private fun withdrawXrp(
+        coinAmount: Double,
+        toAddress: String,
+        transactionPlan: TransactionPlanItem
+    ) {
+        transactionLiveData.value = LoadingData.Loading()
+        receiverAccountActivatedUseCase(
+            ReceiverAccountActivatedUseCase.Params(toAddress, coinCode),
+            onSuccess = { activated ->
+                if (activated || coinAmount >= 20) {
+                    withdrawInternal(coinAmount, toAddress, transactionPlan)
+                } else {
+                    _cryptoAmountError.value =
+                        stringProvider.getString(R.string.xrp_too_small_amount_error)
+                    transactionLiveData.value = LoadingData.DismissProgress()
+                }
+            },
+            onError = { transactionLiveData.value = LoadingData.Error(it) }
+        )
     }
 
     private fun withdrawInternal(

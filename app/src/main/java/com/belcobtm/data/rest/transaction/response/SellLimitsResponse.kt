@@ -9,7 +9,7 @@ data class LimitsResponse(
     val todayLimit: Double?
 )
 
-fun LimitsResponse.mapToDataItem(): SellLimitsDataItem = SellLimitsDataItem(
+fun LimitsResponse.mapToDomainModel(): SellLimitsDataItem = SellLimitsDataItem(
     dailyLimit = dailyLimit ?: 0.0,
     txLimit = txLimit ?: 0.0,
     todayLimit = todayLimit ?: 0.0

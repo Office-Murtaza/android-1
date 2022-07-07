@@ -21,14 +21,14 @@ class TransactionDetailsFragment :
 
     private val viewModel: TransactionDetailsViewModel by viewModel {
         val args = TransactionDetailsFragmentArgs.fromBundle(requireArguments())
-        parametersOf(args.txId, args.coinCode)
+        parametersOf(args.transactionId, args.coinCode)
     }
     override val isBackButtonEnabled: Boolean = true
     override var isMenuEnabled: Boolean = true
 
     override fun FragmentTransactionDetailsBinding.initViews() {
         setToolbarTitle(getString(R.string.transaction_details_screen_title))
-        initTransationDetailsRecyclerView()
+        initTransactionDetailsRecyclerView()
     }
 
     override fun FragmentTransactionDetailsBinding.initObservers() {
@@ -44,7 +44,7 @@ class TransactionDetailsFragment :
     ): FragmentTransactionDetailsBinding =
         FragmentTransactionDetailsBinding.inflate(inflater, container, false)
 
-    private fun initTransationDetailsRecyclerView() {
+    private fun initTransactionDetailsRecyclerView() {
         val divider = ContextCompat.getDrawable(requireContext(), R.drawable.divider_transactions)
         val hSpace = resources.getDimensionPixelOffset(R.dimen.margin_main)
         val spaceDecoration = SpaceDecorator(0, 0, hSpace, hSpace)

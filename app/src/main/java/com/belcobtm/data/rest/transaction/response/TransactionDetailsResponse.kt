@@ -1,6 +1,6 @@
 package com.belcobtm.data.rest.transaction.response
 
-import com.belcobtm.domain.transaction.item.TransactionDetailsDataItem
+import com.belcobtm.domain.transaction.item.TransactionDomainModel
 import com.belcobtm.domain.transaction.type.TransactionCashStatusType
 import com.belcobtm.domain.transaction.type.TransactionStatusType
 import com.belcobtm.domain.transaction.type.TransactionType
@@ -32,31 +32,33 @@ data class TransactionDetailsResponse(
     val refCoin: String?,
     val refCryptoAmount: Double?,
     val confirmations: Int?
-)
+) {
 
-fun TransactionDetailsResponse.mapToDataItem(coinCode: String): TransactionDetailsDataItem = TransactionDetailsDataItem(
-    coinCode = coinCode,
-    cryptoAmount = cryptoAmount,
-    fiatAmount = fiatAmount,
-    cryptoFee = cryptoFee,
-    refCryptoAmount = refCryptoAmount,
-    hash = hash,
-    gbId = gbId.orEmpty(),
-    link = link,
-    timestamp = timestamp?.takeIf { it > 0 } ?: Calendar.getInstance().timeInMillis, // it's always just sent transaction
-    fromPhone = fromPhone,
-    toPhone = toPhone,
-    fromAddress = fromAddress,
-    toAddress = toAddress,
-    imageId = image,
-    message = message,
-    sellInfo = sellInfo,
-    refTxId = refTxId,
-    refLink = refLink,
-    refCoin = refCoin,
-    feePercent = feePercent,
-    confiramtions = confirmations,
-    type = TransactionType.values().firstOrNull { it.name == type } ?: TransactionType.UNKNOWN,
-    statusType = status ?: TransactionStatusType.UNKNOWN,
-    cashStatusType = cashStatus ?: TransactionCashStatusType.UNKNOWN
-)
+    fun mapToDomainModel(coinCode: String): TransactionDomainModel = TransactionDomainModel(
+        coinCode = coinCode,
+        cryptoAmount = cryptoAmount,
+        fiatAmount = fiatAmount,
+        cryptoFee = cryptoFee,
+        refCryptoAmount = refCryptoAmount,
+        hash = hash,
+        gbId = gbId.orEmpty(),
+        link = link,
+        timestamp = timestamp?.takeIf { it > 0 } ?: Calendar.getInstance().timeInMillis, // it's always just sent transaction
+        fromPhone = fromPhone,
+        toPhone = toPhone,
+        fromAddress = fromAddress,
+        toAddress = toAddress,
+        imageId = image,
+        message = message,
+        sellInfo = sellInfo,
+        refTxId = refTxId,
+        refLink = refLink,
+        refCoin = refCoin,
+        feePercent = feePercent,
+        confiramtions = confirmations,
+        type = TransactionType.values().firstOrNull { it.name == type } ?: TransactionType.UNKNOWN,
+        statusType = status ?: TransactionStatusType.UNKNOWN,
+        cashStatusType = cashStatus ?: TransactionCashStatusType.UNKNOWN
+    )
+
+}

@@ -20,7 +20,7 @@ class StakeDetailsResponse(
     val withdrawTimestamp: Long?
 )
 
-fun StakeDetailsResponse.mapToDataItem(): StakeDetailsDataItem {
+fun StakeDetailsResponse.mapToDomainModel(): StakeDetailsDataItem {
     val endTime = cancelTimestamp ?: System.currentTimeMillis()
     val duration = (endTime - createTimestamp) / (basePeriod * 1000.0)
     val rewardsPercent = duration * (annualPercent / (annualPeriod / basePeriod))

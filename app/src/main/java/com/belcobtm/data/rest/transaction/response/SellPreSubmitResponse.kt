@@ -7,7 +7,7 @@ data class SellPreSubmitResponse(
     var address: String?
 )
 
-fun SellPreSubmitResponse.mapToDataItem(): SellPreSubmitDataItem = SellPreSubmitDataItem(
+fun SellPreSubmitResponse.mapToDomainModel(): SellPreSubmitDataItem = SellPreSubmitDataItem(
     fromCoinAmount = cryptoAmount ?: 0.0,
     address = address ?: ""
 )

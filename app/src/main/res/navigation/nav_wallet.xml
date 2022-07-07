@@ -107,7 +107,7 @@
             android:name="coin_code"
             app:argType="string" />
         <argument
-            android:name="tx_id"
+            android:name="transactionId"
             app:argType="string" />
     </fragment>
 
