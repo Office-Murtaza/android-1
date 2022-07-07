@@ -65,6 +65,7 @@ interface TransactionRepository {
         giftId: String?,
         phone: String,
         message: String?,
+        price: Double,
         fee: Double,
         feePercent: Int?,
         fiatAmount: Double,

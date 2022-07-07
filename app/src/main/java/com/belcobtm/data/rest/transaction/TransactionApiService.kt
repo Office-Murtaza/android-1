@@ -104,12 +104,13 @@ class TransactionApiService(
         giftId: String?,
         phone: String,
         message: String?,
+        price: Double,
         fee: Double? = null,
         feePercent: Int?,
         fiatAmount: Double,
         location: Location,
-        fromAddress: String? = null,
-        toAddress: String? = null
+        fromAddress: String,
+        toAddress: String
     ): Either<Failure, TransactionDetailsResponse> = try {
         val requestBody = SendGiftRequest(
             cryptoAmount = coinFromAmount,
@@ -117,6 +118,7 @@ class TransactionApiService(
             message = message,
             image = giftId,
             hex = hash,
+            price = price,
             fee = fee,
             feePercent = feePercent,
             fiatAmount = fiatAmount,

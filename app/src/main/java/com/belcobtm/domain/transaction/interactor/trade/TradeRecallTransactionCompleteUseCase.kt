@@ -4,6 +4,7 @@ import com.belcobtm.domain.Either
 import com.belcobtm.domain.Failure
 import com.belcobtm.domain.UseCase
 import com.belcobtm.domain.transaction.TransactionRepository
+import com.belcobtm.presentation.tools.extensions.withScale
 
 class TradeRecallTransactionCompleteUseCase(private val repository: TransactionRepository) :
     UseCase<Unit, TradeRecallTransactionCompleteUseCase.Params>() {
@@ -13,7 +14,7 @@ class TradeRecallTransactionCompleteUseCase(private val repository: TransactionR
             coinCode = params.coinCode,
             cryptoAmount = params.cryptoAmount,
             price = params.price,
-            fiatAmount = params.fiatAmount
+            fiatAmount = params.fiatAmount.withScale()
         )
 
     data class Params(

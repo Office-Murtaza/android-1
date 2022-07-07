@@ -234,83 +234,27 @@ class SendGiftViewModel(
                 return@getSignedTransactionPlanUseCase
             }
             if (coinToSend.code == LocalCoinType.XRP.name) {
-                if (toAddress == coinToSend.details.walletAddress) {
-                    if (amount < 20 + (signedTransactionPlanItem?.fee ?: 0.0)) {
-                        _cryptoAmountError.value = R.string.xrp_too_small_amount_error
-                        _sendGiftLoadingData.value = LoadingData.DismissProgress()
-                        return@getSignedTransactionPlanUseCase
-                    } else {
-                        sendGiftInternal(
-                            amount,
-                            usdAmount,
-                            coinToSend,
-                            phone,
-                            message,
-                            giftId,
-                            transactionPlanItem
-                        )
-                    }
-                } else {
-                    receiverAccountActivatedUseCase(
-                        ReceiverAccountActivatedUseCase.Params(toAddress, coinToSend.code),
-                        onSuccess = { activated ->
-                            if (activated) {
-                                sendGiftInternal(
-                                    amount,
-                                    usdAmount,
-                                    coinToSend,
-                                    phone,
-                                    message,
-                                    giftId,
-                                    transactionPlanItem
-                                )
-                            } else {
-                                if (amount < 20) {
-                                    _cryptoAmountError.value = R.string.xrp_too_small_amount_error
-                                    _sendGiftLoadingData.value = LoadingData.DismissProgress()
-                                    return@receiverAccountActivatedUseCase
-                                } else {
-                                    sendGiftInternal(
-                                        amount,
-                                        usdAmount,
-                                        coinToSend,
-                                        phone,
-                                        message,
-                                        giftId,
-                                        transactionPlanItem
-                                    )
-                                }
-                            }
-                        },
-                        onError = { error -> _sendGiftLoadingData.value = LoadingData.Error(error) }
-                    )
-                }
-                if (amount < 20) {
-                    _cryptoAmountError.value = R.string.xrp_too_small_amount_error
-                    _sendGiftLoadingData.value = LoadingData.DismissProgress()
-                    return@getSignedTransactionPlanUseCase
-                } else {
-                    receiverAccountActivatedUseCase(
-                        ReceiverAccountActivatedUseCase.Params(toAddress, coinToSend.code),
-                        onSuccess = { activated ->
-                            if (activated) {
-                                sendGiftInternal(
-                                    amount,
-                                    usdAmount,
-                                    coinToSend,
-                                    phone,
-                                    message,
-                                    giftId,
-                                    transactionPlanItem
-                                )
-                            } else {
-                                _cryptoAmountError.value = R.string.xrp_too_small_amount_error
-                                _sendGiftLoadingData.value = LoadingData.DismissProgress()
-                            }
-                        },
-                        onError = { error -> _sendGiftLoadingData.value = LoadingData.Error(error) }
-                    )
-                }
+                receiverAccountActivatedUseCase(
+                    ReceiverAccountActivatedUseCase.Params(toAddress, coinToSend.code),
+                    onSuccess = { activated ->
+                        if (activated || amount > 20) {
+                            sendGiftInternal(
+                                amount,
+                                usdAmount,
+                                coinToSend,
+                                phone,
+                                message,
+                                giftId,
+                                transactionPlanItem
+                            )
+                        } else {
+                            _cryptoAmountError.value = R.string.xrp_too_small_amount_error
+                            _sendGiftLoadingData.value = LoadingData.DismissProgress()
+                            return@receiverAccountActivatedUseCase
+                        }
+                    },
+                    onError = { error -> _sendGiftLoadingData.value = LoadingData.Error(error) }
+                )
             } else {
                 sendGiftInternal(
                     amount,
@@ -345,6 +289,7 @@ class SendGiftViewModel(
                 message = message,
                 giftId = giftId,
                 toAddress = toAddress,
+                price = coinToSend.priceUsd,
                 fee = feeLiveData.value ?: 0.0,
                 feePercent = serviceInfoProvider.getService(ServiceType.TRANSFER)?.feePercent
                     ?: 0.0,

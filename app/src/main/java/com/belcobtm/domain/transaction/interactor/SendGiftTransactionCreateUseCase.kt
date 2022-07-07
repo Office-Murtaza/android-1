@@ -7,8 +7,8 @@ import com.belcobtm.domain.Failure
 import com.belcobtm.domain.UseCase
 import com.belcobtm.domain.transaction.TransactionRepository
 import com.belcobtm.domain.transaction.item.TransactionPlanItem
-import com.belcobtm.presentation.tools.extensions.toStringCoin
 import com.belcobtm.presentation.core.provider.string.StringProvider
+import com.belcobtm.presentation.tools.extensions.withScale
 
 class SendGiftTransactionCreateUseCase(
     private val repository: TransactionRepository,
@@ -26,9 +26,10 @@ class SendGiftTransactionCreateUseCase(
                 message = params.message,
                 giftId = params.giftId,
                 toAddress = params.toAddress,
+                price = params.price,
                 fee = params.fee,
                 feePercent = params.feePercent.toInt(),
-                fiatAmount = params.fiatAmount.toStringCoin().toDouble(),
+                fiatAmount = params.fiatAmount.withScale(),
                 transactionPlanItem = params.transactionPlanItem,
                 location = it
             )
@@ -44,9 +45,11 @@ class SendGiftTransactionCreateUseCase(
         val message: String?,
         val giftId: String?,
         val toAddress: String,
+        val price: Double,
         val fee: Double,
         val feePercent: Double,
         val fiatAmount: Double,
-        val transactionPlanItem: TransactionPlanItem,
+        val transactionPlanItem: TransactionPlanItem
     )
+
 }

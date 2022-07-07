@@ -5,6 +5,7 @@ import com.belcobtm.domain.Failure
 import com.belcobtm.domain.UseCase
 import com.belcobtm.domain.transaction.TransactionRepository
 import com.belcobtm.domain.transaction.item.TransactionPlanItem
+import com.belcobtm.presentation.tools.extensions.withScale
 
 class WithdrawUseCase(
     private val repository: TransactionRepository
@@ -20,7 +21,7 @@ class WithdrawUseCase(
             fee = params.fee,
             fromTransactionPlan = params.transactionPlanItem,
             price = params.price,
-            fiatAmount = params.fiatAmount
+            fiatAmount = params.fiatAmount.withScale()
         )
 
     data class Params(

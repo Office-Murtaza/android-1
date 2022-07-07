@@ -42,6 +42,7 @@ fun Double.formatBalanceValue(balanceCurrency: String?): String {
     }
 }
 
-fun Double.withScale(scale: Int): Double {
+private const val DEFAULT_DECIMAL_SCALE = 6
+fun Double.withScale(scale: Int = DEFAULT_DECIMAL_SCALE): Double {
     return BigDecimal(this).setScale(scale, RoundingMode.DOWN).toDouble()
 }

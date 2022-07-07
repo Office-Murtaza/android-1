@@ -8,6 +8,7 @@ import com.belcobtm.domain.UseCase
 import com.belcobtm.domain.transaction.TransactionRepository
 import com.belcobtm.domain.transaction.item.TransactionPlanItem
 import com.belcobtm.presentation.core.provider.string.StringProvider
+import com.belcobtm.presentation.tools.extensions.withScale
 
 class SwapUseCase(
     private val repository: TransactionRepository,
@@ -24,7 +25,7 @@ class SwapUseCase(
                 fromCoin = params.coinFrom,
                 coinTo = params.coinTo,
                 fee = params.fee,
-                fiatAmount = params.fiatAmount,
+                fiatAmount = params.fiatAmount.withScale(),
                 transactionPlanItem = params.transactionPlanItem,
                 location = it
             )

@@ -182,6 +182,7 @@ class TransactionRepositoryImpl(
         giftId: String?,
         phone: String,
         message: String?,
+        price: Double,
         fee: Double,
         feePercent: Int?,
         fiatAmount: Double,
@@ -198,35 +199,21 @@ class TransactionRepositoryImpl(
             val item = daoAccount.getAccountByName(coinCode)
             val fromAddress = item.publicKey
             val hash = (hashResponse as Either.Right).b
-            val transaction =
-                if (coinCode == LocalCoinType.ETH.name || coinCode.isEthRelatedCoinCode()) {
-                    apiService.sendTransfer(
-                        hash = hash,
-                        coinFrom = coinCode,
-                        coinFromAmount = amount,
-                        giftId = giftId,
-                        phone = phone,
-                        message = message,
-                        fee = fee,
-                        feePercent = feePercent,
-                        fiatAmount = fiatAmount,
-                        location = location,
-                        fromAddress = fromAddress,
-                        toAddress = toAddress,
-                    )
-                } else {
-                    apiService.sendTransfer(
-                        hash = hash,
-                        coinFrom = coinCode,
-                        coinFromAmount = amount,
-                        giftId = giftId,
-                        phone = phone,
-                        message = message,
-                        feePercent = feePercent,
-                        fiatAmount = fiatAmount,
-                        location = location
-                    )
-                }
+            val transaction = apiService.sendTransfer(
+                hash = hash,
+                coinFrom = coinCode,
+                coinFromAmount = amount,
+                giftId = giftId,
+                phone = phone,
+                message = message,
+                price = price,
+                fee = fee,
+                feePercent = feePercent,
+                fiatAmount = fiatAmount,
+                location = location,
+                fromAddress = fromAddress,
+                toAddress = toAddress,
+            )
             if (transaction.isRight) {
                 cache.update((transaction as Either.Right).b)
                 Either.Right(Unit)
