@@ -85,7 +85,8 @@ class TradeRecallViewModel(
             params = TradeRecallTransactionCompleteUseCase.Params(
                 coinCode = coinDataItem.code,
                 cryptoAmount = selectedAmount,
-                price = coinDataItem.priceUsd
+                price = coinDataItem.priceUsd,
+                fiatAmount = selectedAmount * coinDataItem.priceUsd
             ),
             onSuccess = {
                 // we need to add some delay as server returns 200 before writting to DB

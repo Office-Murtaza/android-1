@@ -12,13 +12,15 @@ class TradeRecallTransactionCompleteUseCase(private val repository: TransactionR
         repository.tradeRecallTransactionComplete(
             coinCode = params.coinCode,
             cryptoAmount = params.cryptoAmount,
-            price = params.price
+            price = params.price,
+            fiatAmount = params.fiatAmount
         )
 
     data class Params(
         val coinCode: String,
         val cryptoAmount: Double,
-        val price: Double
+        val price: Double,
+        val fiatAmount: Double
     )
 
 }

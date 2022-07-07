@@ -328,12 +328,14 @@ class TransactionRepositoryImpl(
     override suspend fun tradeRecallTransactionComplete(
         coinCode: String,
         cryptoAmount: Double,
-        price: Double
+        price: Double,
+        fiatAmount: Double,
     ): Either<Failure, Unit> {
         val transaction = apiService.submitRecall(
             coinCode = coinCode,
             cryptoAmount = cryptoAmount,
-            price = price
+            price = price,
+            fiatAmount = fiatAmount,
         )
         return if (transaction.isRight) {
             cache.update((transaction as Either.Right).b)
@@ -369,7 +371,8 @@ class TransactionRepositoryImpl(
         hash: String,
         fee: Double,
         transactionPlanItem: TransactionPlanItem,
-        price: Double
+        price: Double,
+        fiatAmount: Double,
     ): Either<Failure, Unit> {
         val coinItem = getCoinByCode(coinCode)
         val toAddress = coinItem.details.walletAddress
@@ -381,7 +384,8 @@ class TransactionRepositoryImpl(
             cryptoAmount = cryptoAmount,
             fee = fee,
             hex = hash,
-            price = price
+            price = price,
+            fiatAmount = fiatAmount
         )
         return if (transaction.isRight) {
             cache.update((transaction as Either.Right).b)

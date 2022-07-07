@@ -17,7 +17,8 @@ class TradeReserveTransactionCompleteUseCase(
             hash = params.hash,
             fee = params.fee,
             transactionPlanItem = params.transactionPlanItem,
-            price = params.price
+            price = params.price,
+            fiatAmount = params.fiatAmount
         )
 
     data class Params(
@@ -26,7 +27,8 @@ class TradeReserveTransactionCompleteUseCase(
         val hash: String,
         val fee: Double,
         val transactionPlanItem: TransactionPlanItem,
-        val price: Double
+        val price: Double,
+        val fiatAmount: Double
     )
 
 }

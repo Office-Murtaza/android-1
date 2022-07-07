@@ -227,12 +227,14 @@ class TransactionApiService(
     suspend fun submitRecall(
         coinCode: String,
         cryptoAmount: Double,
-        price: Double
+        price: Double,
+        fiatAmount: Double,
     ): Either<Failure, TransactionDetailsResponse> = try {
         val location = locationProvider.getCurrentLocation()
         val request = TradeRecallRequest(
             cryptoAmount = cryptoAmount,
             price = price,
+            fiatAmount = fiatAmount,
             latitude = location?.latitude,
             longitude = location?.longitude
         )
@@ -249,7 +251,8 @@ class TransactionApiService(
         cryptoAmount: Double,
         fee: Double,
         hex: String,
-        price: Double
+        price: Double,
+        fiatAmount: Double,
     ): Either<Failure, TransactionDetailsResponse> = try {
         val location = locationProvider.getCurrentLocation()
         val request = TradeReserveRequest(
@@ -259,6 +262,7 @@ class TransactionApiService(
             fee = fee,
             hex = hex,
             price = price,
+            fiatAmount = fiatAmount,
             latitude = location?.latitude,
             longitude = location?.longitude
         )

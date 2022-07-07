@@ -182,12 +182,13 @@ class TradeReserveViewModel(
         _createTransactionLiveData.value = LoadingData.Loading()
         completeTransactionUseCase.invoke(
             params = TradeReserveTransactionCompleteUseCase.Params(
-                coinDataItem.code,
-                _amount.value?.amount ?: 0.0,
-                hash,
-                _fee.value ?: 0.0,
-                transactionPlanItem,
-                price = coinDataItem.priceUsd
+                coinCode = coinDataItem.code,
+                cryptoAmount = _amount.value?.amount ?: 0.0,
+                hash = hash,
+                fee = _fee.value ?: 0.0,
+                transactionPlanItem = transactionPlanItem,
+                price = coinDataItem.priceUsd,
+                fiatAmount = (_amount.value?.amount ?: 0.0) * coinDataItem.priceUsd
             ),
             onSuccess = {
                 _createTransactionLiveData.value = LoadingData.Success(Unit)

@@ -10,6 +10,7 @@ data class TradeReserveRequest(
     val fee: Double,
     val hex: String,
     val price: Double,
+    val fiatAmount: Double,
     val latitude: Double?,
     val longitude: Double?
 )

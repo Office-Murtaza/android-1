@@ -102,14 +102,15 @@ interface TransactionRepository {
     suspend fun tradeRecallTransactionComplete(
         coinCode: String,
         cryptoAmount: Double,
-        price: Double
+        price: Double,
+        fiatAmount: Double,
     ): Either<Failure, Unit>
 
     suspend fun tradeReserveTransactionCreate(
         useMaxAmountFlag: Boolean,
         coinCode: String,
         cryptoAmount: Double,
-        transactionPlanItem: TransactionPlanItem,
+        transactionPlanItem: TransactionPlanItem
     ): Either<Failure, String>
 
     suspend fun tradeReserveTransactionComplete(
@@ -118,7 +119,8 @@ interface TransactionRepository {
         hash: String,
         fee: Double,
         transactionPlanItem: TransactionPlanItem,
-        price: Double
+        price: Double,
+        fiatAmount: Double,
     ): Either<Failure, Unit>
 
     suspend fun stakeDetails(
