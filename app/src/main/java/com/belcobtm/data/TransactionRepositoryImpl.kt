@@ -15,10 +15,10 @@ import com.belcobtm.domain.flatMapSuspend
 import com.belcobtm.domain.map
 import com.belcobtm.domain.tools.ToolsRepository
 import com.belcobtm.domain.transaction.TransactionRepository
-import com.belcobtm.domain.transaction.TransactionsCacheModel
 import com.belcobtm.domain.transaction.item.SellPreSubmitDataItem
 import com.belcobtm.domain.transaction.item.SignedTransactionPlanItem
 import com.belcobtm.domain.transaction.item.StakeDetailsDataItem
+import com.belcobtm.domain.transaction.item.TransactionDomainModel
 import com.belcobtm.domain.transaction.item.TransactionPlanItem
 import com.belcobtm.domain.wallet.LocalCoinType
 import com.belcobtm.domain.wallet.item.CoinDataItem
@@ -62,7 +62,7 @@ class TransactionRepositoryImpl(
             cache.init(coinCode, it.transactions)
         }
 
-    override fun observeTransactions(): Flow<TransactionsCacheModel> =
+    override fun observeTransactions(): Flow<List<TransactionDomainModel>> =
         cache.observableData
 
     override suspend fun getSignedPlan(

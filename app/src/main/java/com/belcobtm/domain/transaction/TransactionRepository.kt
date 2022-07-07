@@ -6,6 +6,7 @@ import com.belcobtm.domain.Failure
 import com.belcobtm.domain.transaction.item.SellPreSubmitDataItem
 import com.belcobtm.domain.transaction.item.SignedTransactionPlanItem
 import com.belcobtm.domain.transaction.item.StakeDetailsDataItem
+import com.belcobtm.domain.transaction.item.TransactionDomainModel
 import com.belcobtm.domain.transaction.item.TransactionPlanItem
 import kotlinx.coroutines.flow.Flow
 
@@ -15,7 +16,7 @@ interface TransactionRepository {
 
     suspend fun fetchTransactionList(coinCode: String): Either<Failure, Unit>
 
-    fun observeTransactions(): Flow<TransactionsCacheModel>
+    fun observeTransactions(): Flow<List<TransactionDomainModel>>
 
     suspend fun getSignedPlan(
         fromCoin: String,
