@@ -4,8 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingTop="@dimen/margin_main"
-    android:paddingBottom="@dimen/margin_main">
+    android:paddingTop="@dimen/defaultMargin"
+    android:paddingBottom="@dimen/defaultMargin">
 
     <TextView
         android:id="@+id/tvIdKey"

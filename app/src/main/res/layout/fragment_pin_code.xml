@@ -84,7 +84,7 @@
     <TableLayout
         android:id="@+id/keyboard_view"
         android:layout_width="match_parent"
-        android:paddingBottom="@dimen/margin_main"
+        android:paddingBottom="@dimen/defaultMargin"
         android:layout_height="240dp"
         android:background="#f5f5f5"
         app:layout_constraintBottom_toBottomOf="parent"

@@ -83,7 +83,7 @@
             android:id="@+id/error_text_view"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/margin_main"
+            android:layout_margin="@dimen/defaultMargin"
             android:gravity="center"
             android:text="@string/not_supported_phone"
             android:textColor="@color/mainRed"

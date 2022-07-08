@@ -8,7 +8,7 @@ import com.belcobtm.domain.trade.model.TradeHistoryDomainModel
 import com.belcobtm.domain.trade.model.filter.TradeFilter
 import com.belcobtm.domain.trade.model.order.OrderDomainModel
 import com.belcobtm.domain.trade.model.trade.TradeDomainModel
-import com.belcobtm.presentation.screens.wallet.trade.create.model.CreateTradeItem
+import com.belcobtm.domain.trade.model.CreateTradeDomainModel
 import com.belcobtm.presentation.screens.wallet.trade.edit.EditTradeItem
 import com.belcobtm.presentation.screens.wallet.trade.list.filter.model.TradeFilterItem
 import com.belcobtm.presentation.screens.wallet.trade.order.create.model.TradeOrderItem
@@ -45,7 +45,7 @@ interface TradeRepository {
 
     suspend fun sendLocation(location: Location)
 
-    suspend fun createTrade(createTradeItem: CreateTradeItem, location: Location): Either<Failure, Unit>
+    suspend fun createTrade(createTradeItem: CreateTradeDomainModel, location: Location): Either<Failure, Unit>
 
     suspend fun editTrade(editTrade: EditTradeItem): Either<Failure, Unit>
 

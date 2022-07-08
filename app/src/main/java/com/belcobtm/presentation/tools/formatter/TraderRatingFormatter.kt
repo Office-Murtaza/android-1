@@ -5,12 +5,14 @@ import java.util.Locale
 
 class TraderRatingFormatter(locale: Locale) : Formatter<Double> {
 
-    private val numberFormat: NumberFormat = NumberFormat.getCurrencyInstance(locale)
+    private val numberFormat: NumberFormat = NumberFormat.getNumberInstance(locale)
 
-    override fun format(input: Double): String = numberFormat.format(input)
-        .replace("[.]00".toRegex(), "")
-        .removeSuffix("0")
-        .removeSuffix(".0")
+    override fun format(input: Double): String =
+        if (input > 0) numberFormat.format(input)
+            .replace("[.]00".toRegex(), "")
+            .removeSuffix("0")
+            .removeSuffix(".0")
+        else "0"
 
     companion object {
 

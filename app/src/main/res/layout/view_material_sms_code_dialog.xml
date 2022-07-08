@@ -10,8 +10,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:paddingStart="@dimen/margin_main"
-        android:paddingEnd="@dimen/margin_main">
+        android:paddingStart="@dimen/defaultMargin"
+        android:paddingEnd="@dimen/defaultMargin">
 
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"

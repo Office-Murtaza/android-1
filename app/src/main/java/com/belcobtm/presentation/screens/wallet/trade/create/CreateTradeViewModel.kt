@@ -19,7 +19,7 @@ import com.belcobtm.presentation.core.livedata.TripleCombinedLiveData
 import com.belcobtm.presentation.core.mvvm.LoadingData
 import com.belcobtm.presentation.core.provider.string.StringProvider
 import com.belcobtm.presentation.screens.wallet.trade.create.model.AvailableTradePaymentOption
-import com.belcobtm.presentation.screens.wallet.trade.create.model.CreateTradeItem
+import com.belcobtm.domain.trade.model.CreateTradeDomainModel
 import com.belcobtm.presentation.tools.extensions.toStringCoin
 import kotlinx.coroutines.launch
 
@@ -259,7 +259,7 @@ class CreateTradeViewModel(
         val serviceFee = serviceInfoProvider.getService(ServiceType.TRADE)?.feePercent ?: 0.0
         _createTradeLoadingData.value = LoadingData.Loading()
         createTradeUseCase(
-            CreateTradeItem(
+            CreateTradeDomainModel(
                 tradeType = type,
                 coinCode = coinCode,
                 price = price.toInt(),

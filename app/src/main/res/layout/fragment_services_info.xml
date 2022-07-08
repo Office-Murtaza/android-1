@@ -4,9 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingStart="@dimen/margin_main"
+    android:paddingStart="@dimen/defaultMargin"
     android:paddingTop="@dimen/margin_x2"
-    android:paddingEnd="@dimen/margin_main"
+    android:paddingEnd="@dimen/defaultMargin"
     android:paddingBottom="@dimen/margin_x2">
 
     <TextView
@@ -34,7 +34,7 @@
         style="@style/Text.Regular2"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/margin_main"
+        android:layout_marginTop="@dimen/defaultMargin"
         android:layout_marginEnd="@dimen/margin_quarter"
         android:alpha="0.6"
         android:gravity="start"
@@ -73,7 +73,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/margin_quarter"
-        android:layout_marginTop="@dimen/margin_main"
+        android:layout_marginTop="@dimen/defaultMargin"
         android:layout_marginEnd="@dimen/margin_quarter"
         android:alpha="0.6"
         android:gravity="start"
@@ -112,7 +112,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/margin_quarter"
-        android:layout_marginTop="@dimen/margin_main"
+        android:layout_marginTop="@dimen/defaultMargin"
         android:alpha="0.6"
         android:gravity="start"
         android:text="@string/services_dialog_remain_limit_label"

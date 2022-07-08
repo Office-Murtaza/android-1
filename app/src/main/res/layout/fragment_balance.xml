@@ -20,7 +20,7 @@
         android:id="@+id/logo_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/margin_main"
+        android:layout_marginStart="@dimen/defaultMargin"
         android:layout_marginTop="@dimen/margin_half"
         android:elevation="2dp"
         app:layout_constraintBottom_toTopOf="@id/list_view"
@@ -32,8 +32,8 @@
         android:id="@+id/balance_view"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/margin_main"
-        android:layout_marginEnd="@dimen/margin_main"
+        android:layout_marginStart="@dimen/defaultMargin"
+        android:layout_marginEnd="@dimen/defaultMargin"
         android:elevation="2dp"
         android:gravity="end"
         android:text="@string/balance_screen_empty_balance"
@@ -48,7 +48,7 @@
     <Space
         android:id="@+id/header_space"
         android:layout_width="wrap_content"
-        android:layout_height="@dimen/margin_main"
+        android:layout_height="@dimen/defaultMargin"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/logo_view" />
 

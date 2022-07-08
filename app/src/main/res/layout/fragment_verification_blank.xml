@@ -33,9 +33,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="128dp"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginStart="@dimen/margin_main"
+                android:layout_marginStart="@dimen/defaultMargin"
                 android:layout_marginTop="@dimen/margin_large"
-                android:layout_marginEnd="@dimen/margin_main"
+                android:layout_marginEnd="@dimen/defaultMargin"
                 android:background="@drawable/attach_scan_bg"
                 tools:visibility="gone">
 
@@ -65,9 +65,9 @@
                 android:id="@+id/image_wrapper"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/margin_main"
+                android:layout_marginStart="@dimen/defaultMargin"
                 android:layout_marginTop="@dimen/margin_half"
-                android:layout_marginEnd="@dimen/margin_main"
+                android:layout_marginEnd="@dimen/defaultMargin"
                 android:visibility="gone"
                 tools:visibility="visible">
 

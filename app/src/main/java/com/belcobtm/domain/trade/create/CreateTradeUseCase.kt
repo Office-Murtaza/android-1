@@ -7,15 +7,15 @@ import com.belcobtm.domain.Failure
 import com.belcobtm.domain.UseCase
 import com.belcobtm.domain.trade.TradeRepository
 import com.belcobtm.presentation.core.provider.string.StringProvider
-import com.belcobtm.presentation.screens.wallet.trade.create.model.CreateTradeItem
+import com.belcobtm.domain.trade.model.CreateTradeDomainModel
 
 class CreateTradeUseCase(
     private val tradeRepository: TradeRepository,
     private val locationProvider: LocationProvider,
     private val stringProvider: StringProvider
-) : UseCase<Unit, CreateTradeItem>() {
+) : UseCase<Unit, CreateTradeDomainModel>() {
 
-    override suspend fun run(params: CreateTradeItem): Either<Failure, Unit> {
+    override suspend fun run(params: CreateTradeDomainModel): Either<Failure, Unit> {
         locationProvider.getCurrentLocation()?.let {
             return tradeRepository.createTrade(params, it)
         }

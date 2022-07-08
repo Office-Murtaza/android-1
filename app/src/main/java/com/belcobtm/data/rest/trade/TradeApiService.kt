@@ -15,7 +15,7 @@ import com.belcobtm.domain.Either
 import com.belcobtm.domain.Failure
 import com.belcobtm.domain.trade.model.order.OrderStatus
 import com.belcobtm.domain.trade.model.trade.TradeStatus
-import com.belcobtm.presentation.screens.wallet.trade.create.model.CreateTradeItem
+import com.belcobtm.domain.trade.model.CreateTradeDomainModel
 import com.belcobtm.presentation.screens.wallet.trade.edit.EditTradeItem
 import com.belcobtm.presentation.screens.wallet.trade.order.create.model.TradeOrderItem
 
@@ -40,7 +40,7 @@ class TradeApiService(
             response.body()?.let { Either.Right(it) } ?: Either.Left(Failure.ServerError())
         }
 
-    suspend fun createTrade(createTradeItem: CreateTradeItem, location: Location): Either<Failure, TradeResponse> =
+    suspend fun createTrade(createTradeItem: CreateTradeDomainModel, location: Location): Either<Failure, TradeResponse> =
         withErrorHandling {
             val request = with(createTradeItem) {
                 CreateTradeRequest(
@@ -49,10 +49,10 @@ class TradeApiService(
                     price = price,
                     minLimit = minLimit,
                     maxLimit = maxLimit,
-                    paymentMethods = paymentOptions.joinToString(","),
-                    terms = terms,
-                    feePercent = feePercent,
                     fiatAmount = fiatAmount,
+                    feePercent = feePercent,
+                    paymentMethods = paymentOptions.map { it.name },
+                    terms = terms,
                     longitude = location.longitude,
                     latitude = location.latitude
                 )

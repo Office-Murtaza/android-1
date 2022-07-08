@@ -11,8 +11,14 @@ data class RecoverWalletRequest(
     val timezone: String,
     val notificationToken: String?,
     val coins: List<RecoverWalletCoinRequest>,
-    val platform: Int = 2, //android
-)
+    val platform: String = PLATFORM,
+) {
+
+    companion object {
+
+        private const val PLATFORM = "ANDROID"
+    }
+}
 
 data class RecoverWalletCoinRequest(
     val coin: String,

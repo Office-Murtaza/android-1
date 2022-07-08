@@ -104,7 +104,7 @@
             android:id="@+id/ic_order_id_copy"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="@dimen/margin_main"
+            android:layout_marginEnd="@dimen/defaultMargin"
             android:src="@drawable/ic_order_id_copy"
             app:layout_constraintBottom_toBottomOf="@id/order_id_label"
             app:layout_constraintEnd_toEndOf="parent"

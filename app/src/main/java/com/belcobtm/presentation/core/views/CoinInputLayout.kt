@@ -27,12 +27,28 @@ class CoinInputLayout @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
 ) : ConstraintLayout(context, attrs, defStyleAttr) {
 
+    private val binding =
+        ViewCoinInputLayoutBinding.inflate(LayoutInflater.from(context), this, true)
+
     private val textColorOrigin: Int
     private val textColorError = ContextCompat.getColor(context, R.color.colorError)
-    private val binding = ViewCoinInputLayoutBinding.inflate(LayoutInflater.from(context), this, true)
 
     init {
+        val typedArray =
+            context.theme.obtainStyledAttributes(attrs, R.styleable.CoinInputLayout, 0, 0)
+        try {
+            setMaxButtonVisible(
+                typedArray.getBoolean(R.styleable.CoinInputLayout_isMaxButtonVisible, true)
+            )
+        } finally {
+            typedArray.recycle()
+        }
+
         textColorOrigin = binding.coinInputEditText.textColors.defaultColor
+        initView()
+    }
+
+    private fun initView() {
         setErrorText(null, false)
         binding.coinInputEditText.actionDoneListener {
             val imm = context.getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
@@ -53,10 +69,6 @@ class CoinInputLayout @JvmOverloads constructor(
 
     fun setOnCoinButtonClickListener(listener: OnClickListener) {
         binding.coinButton.setOnClickListener(listener)
-    }
-
-    fun setOnMaxClickListener(listener: OnClickListener) {
-        binding.tvMax.setOnClickListener(listener)
     }
 
     fun setCoinData(
@@ -97,9 +109,13 @@ class CoinInputLayout @JvmOverloads constructor(
         binding.tvHelperText.text = ss
     }
 
-    fun setMaxVisible(visible: Boolean) {
+    fun setMaxButtonVisible(visible: Boolean) {
         binding.tvMax.isEnabled = visible
         binding.tvMax.isInvisible = visible.not()
+    }
+
+    fun setOnMaxClickListener(listener: OnClickListener) {
+        binding.tvMax.setOnClickListener(listener)
     }
 
     fun setHelperText2(charSequence: CharSequence?) {
@@ -112,10 +128,6 @@ class CoinInputLayout @JvmOverloads constructor(
 
     fun setHint(hint: String) {
         binding.coinInputLayout.hint = hint
-    }
-
-    fun setMaxButtonEnabled(enabled: Boolean) {
-        binding.tvMax.visibility = if (enabled) View.VISIBLE else View.GONE
     }
 
     fun setErrorText(text: CharSequence?, highlightAmount: Boolean) {

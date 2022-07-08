@@ -9,7 +9,7 @@
         style="@style/TextInputLayoutOutline"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/margin_main"
+        android:layout_margin="@dimen/defaultMargin"
         android:hint="@string/update_phone_hint"
         app:layout_constraintTop_toTopOf="parent">
 

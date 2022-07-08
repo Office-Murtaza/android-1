@@ -85,7 +85,6 @@ class EditTradeFragment : BaseFragment<FragmentEditTradeBinding>() {
 
     override fun FragmentEditTradeBinding.initViews() {
         setToolbarTitle(R.string.edit_trade_screen_title)
-        coinDetailsView.setMaxButtonEnabled(false)
         coinDetailsView.setErrorEnabled(false)
         coinDetailsView.getEditText().setText("0")
         coinDetailsView.setHint(requireContext().getString(R.string.create_trade_price_input_hint))
@@ -189,7 +188,7 @@ class EditTradeFragment : BaseFragment<FragmentEditTradeBinding>() {
             hideKeyboard()
             amountMaxLimitEditText.clearFocus()
         }
-        limitDetails.setOnClickListener {
+        limitDetailsButton.setOnClickListener {
             navigate(EditTradeFragmentDirections.toServiceInfoDialog(ServiceType.TRADE))
         }
     }

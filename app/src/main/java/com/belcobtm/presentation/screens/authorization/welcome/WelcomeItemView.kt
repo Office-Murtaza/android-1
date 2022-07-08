@@ -18,12 +18,8 @@ class WelcomeItemView @JvmOverloads constructor(
         ViewWelcomeItemBinding.inflate(LayoutInflater.from(context), this)
 
     init {
-        val typedArray = context.theme.obtainStyledAttributes(
-            attrs,
-            R.styleable.WelcomeItemView,
-            0,
-            0
-        )
+        val typedArray =
+            context.theme.obtainStyledAttributes(attrs, R.styleable.WelcomeItemView, 0, 0)
         try {
             setImage(typedArray.getDrawable(R.styleable.WelcomeItemView_welcomeItemSrc))
             setTitle(typedArray.getString(R.styleable.WelcomeItemView_welcomeItemTitle))

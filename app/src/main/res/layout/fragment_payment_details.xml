@@ -8,7 +8,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="@dimen/margin_main">
+        android:padding="@dimen/defaultMargin">
 
         <TextView
             android:id="@+id/id_label"
@@ -64,7 +64,7 @@
             style="@style/Text.Regular2"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_main"
+            android:layout_marginTop="@dimen/defaultMargin"
             android:text="@string/payment_details_payment_type"
             android:textSize="14sp"
             app:layout_constraintStart_toStartOf="parent"
@@ -96,7 +96,7 @@
             style="@style/Text.Regular2"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_main"
+            android:layout_marginTop="@dimen/defaultMargin"
             android:text="@string/payment_details_account_type"
             android:textSize="14sp"
             app:layout_constraintStart_toStartOf="parent"
@@ -128,7 +128,7 @@
             style="@style/Text.Regular2"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_main"
+            android:layout_marginTop="@dimen/defaultMargin"
             android:textSize="14sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/fourth_separator"
@@ -147,7 +147,7 @@
             style="@style/Text.Regular1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_main"
+            android:layout_marginTop="@dimen/defaultMargin"
             android:text="@string/payment_details_amount"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/fifth_separator" />
@@ -200,7 +200,7 @@
             style="@style/Text.Regular1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_main"
+            android:layout_marginTop="@dimen/defaultMargin"
             android:text="@string/payment_details_fee"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/sixth_separator" />
@@ -234,7 +234,7 @@
             style="@style/Text.Regular1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_main"
+            android:layout_marginTop="@dimen/defaultMargin"
             android:text="@string/payment_details_platform_fee"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/sixth_separator" />
@@ -286,7 +286,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="10dp"
-            android:layout_marginTop="@dimen/margin_main"
+            android:layout_marginTop="@dimen/defaultMargin"
             android:textColor="@color/black"
             android:textSize="16sp"
             app:layout_constraintStart_toEndOf="@id/iv_first_step"
@@ -383,7 +383,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="10dp"
-            android:layout_marginTop="@dimen/margin_main"
+            android:layout_marginTop="@dimen/defaultMargin"
             android:textColor="@color/black"
             android:textSize="16sp"
             app:layout_constraintStart_toEndOf="@id/iv_second_step"

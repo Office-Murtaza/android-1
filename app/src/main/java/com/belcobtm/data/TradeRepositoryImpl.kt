@@ -19,7 +19,7 @@ import com.belcobtm.domain.trade.model.filter.TradeFilter
 import com.belcobtm.domain.trade.model.order.OrderDomainModel
 import com.belcobtm.domain.trade.model.trade.TradeDomainModel
 import com.belcobtm.domain.wallet.LocalCoinType
-import com.belcobtm.presentation.screens.wallet.trade.create.model.CreateTradeItem
+import com.belcobtm.domain.trade.model.CreateTradeDomainModel
 import com.belcobtm.presentation.screens.wallet.trade.edit.EditTradeItem
 import com.belcobtm.presentation.screens.wallet.trade.list.filter.model.TradeFilterItem
 import com.belcobtm.presentation.screens.wallet.trade.order.create.model.TradeOrderItem
@@ -91,7 +91,7 @@ class TradeRepositoryImpl(
         tradeApiService.sendLocation(location)
     }
 
-    override suspend fun createTrade(createTradeItem: CreateTradeItem, location: Location): Either<Failure, Unit> {
+    override suspend fun createTrade(createTradeItem: CreateTradeDomainModel, location: Location): Either<Failure, Unit> {
         val response = tradeApiService.createTrade(createTradeItem, location)
         return response.mapSuspend {
             tradeInMemoryCache.updateTrades(it)

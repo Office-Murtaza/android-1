@@ -29,9 +29,9 @@
             android:gravity="end"
             android:imeOptions="actionDone"
             android:inputType="numberDecimal"
-            android:paddingStart="@dimen/margin_main"
+            android:paddingStart="@dimen/defaultMargin"
             android:paddingTop="@dimen/margin_half"
-            android:paddingEnd="@dimen/margin_main"
+            android:paddingEnd="@dimen/defaultMargin"
             android:paddingBottom="@dimen/margin_half"
             android:singleLine="true"
             tools:hint="Coin amount"
@@ -43,7 +43,7 @@
         android:id="@+id/coinButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/margin_main"
+        android:layout_marginStart="@dimen/defaultMargin"
         android:gravity="center"
         android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="@id/coinInputLayout"
@@ -75,13 +75,6 @@
 
     </LinearLayout>
 
-    <androidx.constraintlayout.widget.Barrier
-        android:id="@+id/coin_barrier"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:barrierDirection="bottom"
-        app:constraint_referenced_ids="coinButton,coinInputLayout" />
-
     <TextView
         android:id="@+id/tvHelperText"
         style="@style/Text.Regular1"
@@ -89,11 +82,20 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_half"
         android:lineSpacingExtra="@dimen/margin_half"
-        android:paddingStart="@dimen/margin_main"
-        android:paddingEnd="@dimen/margin_main"
+        android:paddingStart="@dimen/defaultMargin"
+        android:paddingEnd="@dimen/defaultMargin"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/coin_barrier"
+        app:layout_constraintTop_toBottomOf="@id/coinInputLayout"
         tools:text="Balance: 0.6583 BTC\nFee ~0.6555 BTC" />
+
+    <TextView
+        android:id="@+id/tvMax"
+        style="@style/EditText.TextLink"
+        android:padding="@dimen/margin_half"
+        android:text="@string/max"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/coinInputLayout" />
 
     <TextView
         android:id="@+id/tvHelperText2"
@@ -102,22 +104,10 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_half"
         android:lineSpacingExtra="@dimen/margin_half"
-        android:paddingStart="@dimen/margin_normal"
-        android:paddingEnd="@dimen/margin_normal"
+        android:paddingHorizontal="@dimen/margin_normal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tvMax"
         tools:text="Staked" />
-
-    <TextView
-        android:id="@+id/tvMax"
-        style="@style/EditText.TextLink"
-        android:padding="@dimen/margin_half"
-        android:text="@string/max"
-        android:textStyle="bold"
-        app:layout_constraintBaseline_toBaselineOf="@id/tvHelperText"
-        app:layout_constraintBottom_toTopOf="@id/tvError"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/coin_barrier" />
 
 
     <androidx.appcompat.widget.AppCompatTextView
@@ -125,14 +115,13 @@
         style="@style/Text.Regular1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/margin_main"
+        android:layout_marginStart="@dimen/defaultMargin"
         android:layout_marginTop="4dp"
-        android:layout_marginEnd="@dimen/margin_main"
+        android:layout_marginEnd="@dimen/defaultMargin"
         android:drawableStart="@drawable/ic_error"
         android:drawablePadding="@dimen/margin_half"
         android:textColor="@color/colorError"
         android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tvHelperText2"
         tools:text="Error message here"

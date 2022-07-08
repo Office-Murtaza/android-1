@@ -161,7 +161,7 @@ class StakingFragment : BaseFragment<FragmentStakingBinding>() {
                 unStakeWithPermissionCheck()
             }
         }
-        limitDetails.setOnClickListener {
+        limitDetailsButton.setOnClickListener {
             navigate(StakingFragmentDirections.toServiceInfoDialog(ServiceType.STAKING))
         }
         coinInputLayout.getEditText()
@@ -178,7 +178,7 @@ class StakingFragment : BaseFragment<FragmentStakingBinding>() {
                         invalidateStakingDetails()
                         // header
                         coinInputLayout.getEditText().isEnabled = true
-                        coinInputLayout.setMaxVisible(true)
+                        coinInputLayout.setMaxButtonVisible(true)
                         coinInputLayout.setHelperText2(null)
                         // left row
                         tvAnualPercent.show()
@@ -202,7 +202,7 @@ class StakingFragment : BaseFragment<FragmentStakingBinding>() {
                         thirdDivider.hide()
                         tvWithdraw.hide()
                         createButtonView.show()
-                        limitDetails.show()
+                        limitDetailsButton.show()
                         cancelButtonView.hide()
                         withdrawButtonView.hide()
                     }
@@ -211,7 +211,7 @@ class StakingFragment : BaseFragment<FragmentStakingBinding>() {
                         invalidateStakingDetails()
                         // header
                         coinInputLayout.getEditText().isEnabled = false
-                        coinInputLayout.setMaxVisible(false)
+                        coinInputLayout.setMaxButtonVisible(false)
                         // left row
                         tvAnualPercent.show()
                         tvAnualPercentValue.show()
@@ -236,13 +236,13 @@ class StakingFragment : BaseFragment<FragmentStakingBinding>() {
                         createButtonView.hide()
                         cancelButtonView.hide()
                         withdrawButtonView.hide()
-                        limitDetails.hide()
+                        limitDetailsButton.hide()
                     }
                     StakeDetailsStatus.CREATED -> {
                         invalidateStakingDetails()
                         // header
                         coinInputLayout.getEditText().isEnabled = false
-                        coinInputLayout.setMaxVisible(false)
+                        coinInputLayout.setMaxButtonVisible(false)
                         // left row
                         tvAnualPercent.show()
                         tvAnualPercentValue.show()
@@ -267,13 +267,13 @@ class StakingFragment : BaseFragment<FragmentStakingBinding>() {
                         createButtonView.hide()
                         cancelButtonView.show()
                         withdrawButtonView.hide()
-                        limitDetails.hide()
+                        limitDetailsButton.hide()
                     }
                     StakeDetailsStatus.CANCEL_PENDING -> {
                         invalidateStakingDetails()
                         // header
                         coinInputLayout.getEditText().isEnabled = false
-                        coinInputLayout.setMaxVisible(false)
+                        coinInputLayout.setMaxButtonVisible(false)
                         // left row
                         tvAnualPercent.show()
                         tvAnualPercentValue.show()
@@ -298,7 +298,7 @@ class StakingFragment : BaseFragment<FragmentStakingBinding>() {
                         createButtonView.hide()
                         cancelButtonView.hide()
                         withdrawButtonView.hide()
-                        limitDetails.hide()
+                        limitDetailsButton.hide()
                     }
                     // WITHDRAW
                     StakeDetailsStatus.CANCEL -> {
@@ -306,7 +306,7 @@ class StakingFragment : BaseFragment<FragmentStakingBinding>() {
                         invalidateStakingDetails()
                         // header
                         coinInputLayout.getEditText().isEnabled = false
-                        coinInputLayout.setMaxVisible(false)
+                        coinInputLayout.setMaxButtonVisible(false)
                         // left row
                         tvAnualPercent.show()
                         tvAnualPercentValue.show()
@@ -331,13 +331,13 @@ class StakingFragment : BaseFragment<FragmentStakingBinding>() {
                         createButtonView.hide()
                         cancelButtonView.hide()
                         withdrawButtonView.toggle(showWithdrawButton)
-                        limitDetails.toggle(showWithdrawButton)
+                        limitDetailsButton.toggle(showWithdrawButton)
                     }
                     StakeDetailsStatus.WITHDRAW_PENDING -> {
                         invalidateStakingDetails()
                         // header
                         coinInputLayout.getEditText().isEnabled = false
-                        coinInputLayout.setMaxVisible(false)
+                        coinInputLayout.setMaxButtonVisible(false)
                         // left row
                         tvAnualPercent.show()
                         tvAnualPercentValue.show()
@@ -362,13 +362,13 @@ class StakingFragment : BaseFragment<FragmentStakingBinding>() {
                         createButtonView.hide()
                         cancelButtonView.hide()
                         withdrawButtonView.hide()
-                        limitDetails.hide()
+                        limitDetailsButton.hide()
                     }
                     else -> {
                         createButtonView.hide()
                         cancelButtonView.hide()
                         withdrawButtonView.hide()
-                        limitDetails.hide()
+                        limitDetailsButton.hide()
                     }
                 }
             }

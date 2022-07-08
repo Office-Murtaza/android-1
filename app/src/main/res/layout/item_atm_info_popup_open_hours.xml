@@ -10,7 +10,7 @@
         android:id="@+id/day"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="@dimen/margin_main"
+        android:layout_marginEnd="@dimen/defaultMargin"
         android:textSize="14sp"
         app:layout_constraintEnd_toStartOf="@id/open_hours"
         app:layout_constraintStart_toStartOf="parent"

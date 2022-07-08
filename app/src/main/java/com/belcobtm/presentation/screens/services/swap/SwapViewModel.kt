@@ -261,21 +261,6 @@ class SwapViewModel(
         )
     }
 
-    fun setMaxReceiveAmount() {
-        val currentCoinToSend = coinToReceiveLiveData.value ?: return
-        val transactionPlanItem = toTransactionPlanItem ?: return
-        getMaxValueBySignedTransactionUseCase(
-            GetMaxValueBySignedTransactionUseCase.Params(
-                transactionPlanItem,
-                currentCoinToSend,
-            ),
-            onSuccess = {
-                _sendFeeAmount.value = it.fee
-                setReceiveAmountInternal(it.amount, useMax = true)
-            }, onError = { /* error impossible */ }
-        )
-    }
-
     fun executeSwap() = viewModelScope.launch {
         val sendCoinItem = coinToSendLiveData.value ?: return@launch
         val receiveCoinItem = coinToReceiveLiveData.value ?: return@launch
@@ -623,6 +608,7 @@ class SwapViewModel(
             )
         }
     }
+
 }
 
 data class SwapFeeModelView(

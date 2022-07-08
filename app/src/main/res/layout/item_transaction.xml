@@ -8,7 +8,7 @@
     android:focusable="true"
     android:gravity="center_vertical"
     android:orientation="horizontal"
-    android:padding="@dimen/margin_main">
+    android:padding="@dimen/defaultMargin">
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/date_view"

@@ -13,9 +13,9 @@
             android:id="@+id/payment_info_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/margin_main"
+            android:layout_margin="@dimen/defaultMargin"
             android:background="@drawable/button_blue"
-            android:padding="@dimen/margin_main"
+            android:padding="@dimen/defaultMargin"
             app:layout_constraintTop_toTopOf="parent">
 
             <androidx.appcompat.widget.AppCompatTextView
@@ -70,7 +70,7 @@
                 android:id="@+id/first_separator"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:layout_marginTop="@dimen/margin_main"
+                android:layout_marginTop="@dimen/defaultMargin"
                 android:background="@color/colorWhiteWithTransparency"
                 app:layout_constraintTop_toBottomOf="@id/exchange_value_from_view" />
 
@@ -79,7 +79,7 @@
                 style="@style/Text.Regular1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin_main"
+                android:layout_marginTop="@dimen/defaultMargin"
                 android:text="@string/payment_details_payment_type"
                 android:textColor="@color/colorWhiteWithTransparency"
                 app:layout_constraintStart_toStartOf="parent"
@@ -105,7 +105,7 @@
                 style="@style/Text.Regular1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin_main"
+                android:layout_marginTop="@dimen/defaultMargin"
                 android:text="@string/payment_details_account_type"
                 android:textColor="@color/colorWhiteWithTransparency"
                 app:layout_constraintBaseline_toBaselineOf="@id/tvPaymentTypeLabel"
@@ -251,8 +251,8 @@
             android:id="@+id/second_separator"
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:layout_marginHorizontal="@dimen/margin_main"
-            android:layout_marginTop="@dimen/margin_main"
+            android:layout_marginHorizontal="@dimen/defaultMargin"
+            android:layout_marginTop="@dimen/defaultMargin"
             android:background="@color/dark_bg"
             app:layout_constraintTop_toBottomOf="@id/tvPlatformFeeValue" />
 
@@ -262,7 +262,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="@dimen/margin_main"
+            android:padding="@dimen/defaultMargin"
             android:visibility="visible"
             app:layout_constraintTop_toBottomOf="@id/second_separator">
 

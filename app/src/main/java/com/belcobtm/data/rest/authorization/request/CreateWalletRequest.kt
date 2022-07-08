@@ -12,8 +12,14 @@ data class CreateWalletRequest(
     val timezone: String,
     val notificationToken: String?,
     val coins: List<CreateWalletCoinRequest>,
-    val platform: String//android
-)
+    val platform: String = PLATFORM,
+) {
+
+    companion object {
+
+        private const val PLATFORM = "ANDROID"
+    }
+}
 
 data class CreateWalletCoinRequest(
     val coin: String,

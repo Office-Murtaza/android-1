@@ -4,8 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingTop="@dimen/margin_main"
-    android:paddingBottom="@dimen/margin_main">
+    android:paddingTop="@dimen/defaultMargin"
+    android:paddingBottom="@dimen/defaultMargin">
 
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/gifContainer"
@@ -32,7 +32,7 @@
         style="@style/CoinDetails.Table.Value"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/margin_main"
+        android:layout_marginStart="@dimen/defaultMargin"
         android:textColor="@color/light_gray"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/gifContainer"

@@ -49,20 +49,20 @@ class AuthApiService(
     ): Either<Failure, CreateRecoverWalletResponse> = try {
         val coinList = coinMap.map { CreateWalletCoinRequest(it.key, it.value) }
         val request = CreateWalletRequest(
-            phone,
-            password,
-            email,
-            deviceModel,
-            deviceOS,
-            appVersion,
-            lat,
-            lng,
-//           40.74371337890625,
-//            -73.980727954218736,
-            timezone,
-            notificationToken,
-            coinList,
-            "ANDROID"
+            phone = phone,
+            password = password,
+            email = email,
+            deviceModel = deviceModel,
+            deviceOS = deviceOS,
+            appVersion = appVersion,
+            latitude = lat,
+            longitude = lng,
+//            latitude = 40.74371337890625,
+//            longitude = -73.980727954218736,
+            timezone = timezone,
+            notificationToken = notificationToken,
+            coins = coinList,
+            platform = "ANDROID"
         )
         val response = authApi.createWalletAsync(request)
         response.body()?.let { Either.Right(it) } ?: Either.Left(Failure.ServerError())
@@ -82,18 +82,18 @@ class AuthApiService(
     ): Either<Failure, CreateRecoverWalletResponse> = try {
         val coinList = coinMap.map { RecoverWalletCoinRequest(it.key, it.value) }
         val request = RecoverWalletRequest(
-            phone,
-            password,
-            deviceModel,
-            deviceOS,
-            appVersion,
-            lat,
-            lng,
-//            40.74371337890625,
-//            -73.980727954218736,
-            timezone,
-            notificationToken,
-            coinList
+            phone = phone,
+            password = password,
+            deviceModel = deviceModel,
+            deviceOS = deviceOS,
+            appVersion = appVersion,
+            latitude = lat,
+            longitude = lng,
+//            latitude = 40.74371337890625,
+//            longitude = -73.980727954218736,
+            timezone = timezone,
+            notificationToken = notificationToken,
+            coins = coinList
         )
         val response = authApi.recoverWalletAsync(request)
         response.body()?.let { Either.Right(it) } ?: Either.Left(Failure.ServerError())

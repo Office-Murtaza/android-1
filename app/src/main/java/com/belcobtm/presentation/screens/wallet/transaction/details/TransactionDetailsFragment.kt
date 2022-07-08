@@ -8,10 +8,10 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.belcobtm.R
 import com.belcobtm.databinding.FragmentTransactionDetailsBinding
-import com.belcobtm.presentation.tools.decorator.DividerDecorator
-import com.belcobtm.presentation.tools.decorator.SpaceDecorator
 import com.belcobtm.presentation.core.ui.fragment.BaseFragment
 import com.belcobtm.presentation.screens.wallet.transaction.details.adapter.TransactionDetailsAdapter
+import com.belcobtm.presentation.tools.decorator.DividerDecorator
+import com.belcobtm.presentation.tools.decorator.SpaceDecorator
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 
@@ -46,7 +46,7 @@ class TransactionDetailsFragment :
 
     private fun initTransactionDetailsRecyclerView() {
         val divider = ContextCompat.getDrawable(requireContext(), R.drawable.divider_transactions)
-        val hSpace = resources.getDimensionPixelOffset(R.dimen.margin_main)
+        val hSpace = resources.getDimensionPixelOffset(R.dimen.defaultMargin)
         val spaceDecoration = SpaceDecorator(0, 0, hSpace, hSpace)
         val dividerDecorator = DividerDecorator(divider!!.mutate(), hSpace, hSpace)
         with(binding.rvTransactionDetails) {
@@ -63,4 +63,5 @@ class TransactionDetailsFragment :
         i.data = Uri.parse(link)
         startActivity(i)
     }
+
 }

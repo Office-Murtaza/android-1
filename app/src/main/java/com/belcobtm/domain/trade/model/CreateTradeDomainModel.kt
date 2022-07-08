@@ -1,9 +1,8 @@
-package com.belcobtm.presentation.screens.wallet.trade.create.model
+package com.belcobtm.domain.trade.model
 
-import com.belcobtm.domain.trade.model.PaymentMethodType
 import com.belcobtm.domain.trade.model.trade.TradeType
 
-data class CreateTradeItem(
+data class CreateTradeDomainModel(
     val tradeType: TradeType,
     val coinCode: String,
     val price: Int,

@@ -9,6 +9,7 @@ import com.belcobtm.databinding.FragmentSwapBinding
 import com.belcobtm.domain.Failure
 import com.belcobtm.domain.service.ServiceType
 import com.belcobtm.domain.wallet.LocalCoinType
+import com.belcobtm.domain.wallet.item.CoinDataItem
 import com.belcobtm.domain.wallet.item.isEthRelatedCoinCode
 import com.belcobtm.presentation.core.coin.model.ValidationResult
 import com.belcobtm.presentation.core.helper.AlertHelper
@@ -76,35 +77,62 @@ class SwapFragment : BaseFragment<FragmentSwapBinding>() {
         }
     }
 
-    override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<String>,
-        grantResults: IntArray
-    ) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        // NOTE: delegate the permission handling to generated method
-        onRequestPermissionsResult(requestCode, grantResults)
-    }
-
-    override fun FragmentSwapBinding.initViews() {
-        setToolbarTitle(R.string.swap_screen_title)
-        sendCoinInputLayout.setHint(getString(R.string.text_amount))
-        receiveCoinInputLayout.setHint(getString(R.string.text_amount))
-        sendCoinInputLayout.getEditText().apply {
-            setText("0")
-            addTextChangedListener(sendTextWatcher)
-        }
-        receiveCoinInputLayout.getEditText().apply {
-            setText("0")
-            addTextChangedListener(receiveTextWatcher)
-        }
-    }
-
     override fun createBinding(
         inflater: LayoutInflater,
         container: ViewGroup?
     ): FragmentSwapBinding =
         FragmentSwapBinding.inflate(inflater, container, false)
+
+    override fun FragmentSwapBinding.initViews() {
+        setToolbarTitle(R.string.swap_screen_title)
+        initSendCoinLayout()
+        initReceiveCoinInputLayout()
+    }
+
+    private fun initSendCoinLayout() {
+        binding.sendCoinInputLayout.apply {
+            setHint(getString(R.string.text_amount))
+            getEditText().apply {
+                setText("0")
+                addTextChangedListener(sendTextWatcher)
+            }
+            setOnMaxClickListener {
+                viewModel.setMaxSendAmount()
+            }
+            setOnCoinButtonClickListener {
+                showCoinsDropDownList { selectedCoin ->
+                    viewModel.setCoinToSend(selectedCoin)
+                }
+            }
+        }
+    }
+
+    private fun showCoinsDropDownList(function: (CoinDataItem) -> Unit) {
+        val coinToSend = viewModel.coinToSendLiveData.value ?: return
+        val coinToReceive = viewModel.coinToReceiveLiveData.value ?: return
+        val coinsToExclude = listOf(coinToSend, coinToReceive)
+        val coinsList = viewModel.originCoinsData.toMutableList().apply {
+            removeAll(coinsToExclude)
+        }
+        AlertHelper.showSelectCoinDialog(requireContext(), coinsList) {
+            function(it)
+        }
+    }
+
+    private fun initReceiveCoinInputLayout() {
+        binding.receiveCoinInputLayout.apply {
+            setHint(getString(R.string.text_amount))
+            getEditText().apply {
+                setText("0")
+                addTextChangedListener(receiveTextWatcher)
+            }
+            setOnCoinButtonClickListener(View.OnClickListener {
+                showCoinsDropDownList { selectedCoin ->
+                    viewModel.setCoinToReceive(selectedCoin)
+                }
+            })
+        }
+    }
 
     override fun FragmentSwapBinding.initListeners() {
         limitDetails.setOnClickListener {
@@ -116,34 +144,16 @@ class SwapFragment : BaseFragment<FragmentSwapBinding>() {
         viewCircle.setOnClickListener {
             viewModel.changeCoins()
         }
-        sendCoinInputLayout.setOnMaxClickListener {
-            viewModel.setMaxSendAmount()
-        }
-        receiveCoinInputLayout.setOnMaxClickListener {
-            viewModel.setMaxReceiveAmount()
-        }
-        sendCoinInputLayout.setOnCoinButtonClickListener(View.OnClickListener {
-            val coinToSend = viewModel.coinToSendLiveData.value ?: return@OnClickListener
-            val coinToReceive = viewModel.coinToReceiveLiveData.value ?: return@OnClickListener
-            val coinsToExclude = listOf(coinToSend, coinToReceive)
-            val coinsList = viewModel.originCoinsData.toMutableList().apply {
-                removeAll(coinsToExclude)
-            }
-            AlertHelper.showSelectCoinDialog(requireContext(), coinsList) {
-                viewModel.setCoinToSend(it)
-            }
-        })
-        receiveCoinInputLayout.setOnCoinButtonClickListener(View.OnClickListener {
-            val coinToSend = viewModel.coinToSendLiveData.value ?: return@OnClickListener
-            val coinToReceive = viewModel.coinToReceiveLiveData.value ?: return@OnClickListener
-            val coinsToExclude = listOf(coinToSend, coinToReceive)
-            val coinsList = viewModel.originCoinsData.toMutableList().apply {
-                removeAll(coinsToExclude)
-            }
-            AlertHelper.showSelectCoinDialog(requireContext(), coinsList) {
-                viewModel.setCoinToReceive(it)
-            }
-        })
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        // NOTE: delegate the permission handling to generated method
+        onRequestPermissionsResult(requestCode, grantResults)
     }
 
     @NeedsPermission(
