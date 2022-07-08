@@ -45,11 +45,11 @@ class SwapViewModel(
 
     val originCoinsData = mutableListOf<CoinDataItem>()
 
-    private val _coinToSend = MutableLiveData<CoinDataItem>()
-    val coinToSend: LiveData<CoinDataItem> = _coinToSend
+    private val _coinToSendLiveData = MutableLiveData<CoinDataItem>()
+    val coinToSendLiveData: LiveData<CoinDataItem> = _coinToSendLiveData
 
-    private val _coinToReceive = MutableLiveData<CoinDataItem>()
-    val coinToReceive: LiveData<CoinDataItem> = _coinToReceive
+    private val _coinToReceiveLiveData = MutableLiveData<CoinDataItem>()
+    val coinToReceiveLiveData: LiveData<CoinDataItem> = _coinToReceiveLiveData
 
     private val _coinToSendModel = MutableLiveData<CoinPresentationModel>()
     val coinToSendModel: LiveData<CoinPresentationModel> = _coinToSendModel
@@ -121,26 +121,7 @@ class SwapViewModel(
                         // move to next step
                         val coinToSend = originCoinsData[0]
                         val coinToReceive = originCoinsData[1]
-                        getTransactionPlanUseCase(coinToSend.code,
-                            onSuccess = { fromPlanItem ->
-                                fromTransactionPlanItem = fromPlanItem
-                                getTransactionPlanUseCase(coinToReceive.code,
-                                    onSuccess = { toPlanItem ->
-                                        toTransactionPlanItem = toPlanItem
-                                        updateCoinsInternal(
-                                            coinToSend,
-                                            coinToReceive,
-                                            _initLoadingData
-                                        )
-                                        _initLoadingData.value = LoadingData.Success(Unit)
-                                    }, onError = {
-                                        _initLoadingData.value =
-                                            LoadingData.Error(Failure.OperationCannotBePerformed)
-                                    })
-                            }, onError = {
-                                _initLoadingData.value =
-                                    LoadingData.Error(Failure.OperationCannotBePerformed)
-                            })
+                        getInitialTransactionPlans(coinToSend, coinToReceive)
                     } else {
                         _initLoadingData.value =
                             LoadingData.Error(Failure.OperationCannotBePerformed)
@@ -151,15 +132,38 @@ class SwapViewModel(
         }
     }
 
+    private fun getInitialTransactionPlans(coinToSend: CoinDataItem, coinToReceive: CoinDataItem) {
+        getTransactionPlanUseCase(coinToSend.code,
+            onSuccess = { fromPlanItem ->
+                fromTransactionPlanItem = fromPlanItem
+                getTransactionPlanUseCase(coinToReceive.code,
+                    onSuccess = { toPlanItem ->
+                        toTransactionPlanItem = toPlanItem
+                        updateCoinsInternal(
+                            coinToSend,
+                            coinToReceive,
+                            _initLoadingData
+                        )
+                        _initLoadingData.value = LoadingData.Success(Unit)
+                    }, onError = {
+                        _initLoadingData.value =
+                            LoadingData.Error(Failure.OperationCannotBePerformed)
+                    })
+            }, onError = {
+                _initLoadingData.value =
+                    LoadingData.Error(Failure.OperationCannotBePerformed)
+            })
+    }
+
     fun setCoinToSend(coin: CoinDataItem) {
-        if (coin != coinToSend.value) {
-            updateCoins(coin, coinToReceive.value!!)
+        if (coin != coinToSendLiveData.value) {
+            updateCoins(coin, coinToReceiveLiveData.value!!)
         }
     }
 
     fun setCoinToReceive(coin: CoinDataItem) {
-        if (coin != coinToReceive.value) {
-            updateCoins(coinToSend.value!!, coin)
+        if (coin != coinToReceiveLiveData.value) {
+            updateCoins(coinToSendLiveData.value!!, coin)
         }
     }
 
@@ -172,16 +176,25 @@ class SwapViewModel(
     }
 
     fun changeCoins() {
-        val coinToSend = coinToSend.value ?: return
-        val coinToReceive = coinToReceive.value ?: return
+        val coinToReceive = _coinToSendLiveData.value ?: return
+        val coinToSend = _coinToReceiveLiveData.value ?: return
+
+        _initLoadingData.value = LoadingData.Loading(Unit)
+
         _coinToSendError.value = ValidationResult.Valid
         _coinToReceiveError.value = ValidationResult.Valid
-        updateCoins(coinToReceive, coinToSend)
+
+        _coinToSendLiveData.value = coinToSend
+        _coinToReceiveLiveData.value = coinToReceive
+
+        clearSendAndReceiveAmount() // to be sure coin amounts are 0
+
+        getInitialTransactionPlans(coinToSend, coinToReceive) // like after the screen init
     }
 
     fun setSendAmount(sendAmount: Double) {
         if (_sendCoinAmount.value?.useMax == true) {
-            val coinToSend = _coinToSend.value ?: return
+            val coinToSend = _coinToSendLiveData.value ?: return
             fromTransactionPlanItem?.let { plan ->
                 getFakeSignedTransactionPlanUseCase(
                     GetFakeSignedTransactionPlanUseCase.Params(
@@ -208,7 +221,7 @@ class SwapViewModel(
 
     fun setReceiveAmount(receiveAmount: Double) {
         if (_sendCoinAmount.value?.useMax == true) {
-            val coinToSend = _coinToSend.value ?: return
+            val coinToSend = _coinToSendLiveData.value ?: return
             toTransactionPlanItem?.let { plan ->
                 getFakeSignedTransactionPlanUseCase(
                     GetFakeSignedTransactionPlanUseCase.Params(
@@ -234,7 +247,7 @@ class SwapViewModel(
     }
 
     fun setMaxSendAmount() {
-        val currentCoinToSend = coinToSend.value ?: return
+        val currentCoinToSend = coinToSendLiveData.value ?: return
         val transactionPlanItem = fromTransactionPlanItem ?: return
         getMaxValueBySignedTransactionUseCase(
             GetMaxValueBySignedTransactionUseCase.Params(
@@ -249,7 +262,7 @@ class SwapViewModel(
     }
 
     fun setMaxReceiveAmount() {
-        val currentCoinToSend = coinToReceive.value ?: return
+        val currentCoinToSend = coinToReceiveLiveData.value ?: return
         val transactionPlanItem = toTransactionPlanItem ?: return
         getMaxValueBySignedTransactionUseCase(
             GetMaxValueBySignedTransactionUseCase.Params(
@@ -264,8 +277,8 @@ class SwapViewModel(
     }
 
     fun executeSwap() = viewModelScope.launch {
-        val sendCoinItem = coinToSend.value ?: return@launch
-        val receiveCoinItem = coinToReceive.value ?: return@launch
+        val sendCoinItem = coinToSendLiveData.value ?: return@launch
+        val receiveCoinItem = coinToReceiveLiveData.value ?: return@launch
         val sendCoinAmount = sendCoinAmount.value?.amount ?: return@launch
         val receiveCoinAmount = receiveCoinAmount.value?.amount ?: return@launch
         _coinToReceiveError.value = ValidationResult.Valid
@@ -374,8 +387,8 @@ class SwapViewModel(
         if (coinToSend == coinToReceive) {
             return
         }
-        _coinToSend.value = coinToSend
-        _coinToReceive.value = coinToReceive
+        _coinToSendLiveData.value = coinToSend
+        _coinToReceiveLiveData.value = coinToReceive
         fetchTransactionPlans(coinToSend, coinToReceive)
     }
 
@@ -429,8 +442,8 @@ class SwapViewModel(
         fromPlanItem: TransactionPlanItem,
         toPlanItem: TransactionPlanItem
     ) {
-        _coinToSend.value = coinToSend
-        _coinToReceive.value = coinToReceive
+        _coinToSendLiveData.value = coinToSend
+        _coinToReceiveLiveData.value = coinToReceive
         val sendAmount = sendCoinAmount.value?.amount ?: 0.0
         val atomicSwapAmount = calcCoinsRatio(coinToSend, coinToReceive)
         _swapRate.value = SwapRateModelView(
@@ -471,7 +484,7 @@ class SwapViewModel(
     }
 
     private fun isSufficientFromBalance(): Boolean {
-        val coinDataItem = coinToSend.value ?: return false
+        val coinDataItem = coinToSendLiveData.value ?: return false
         val amount = _sendCoinAmount.value?.amount ?: 0.0
         val fee = _sendFeeAmount.value ?: 0.0
         return if (coinDataItem.isBtcCoin()) {
@@ -489,8 +502,8 @@ class SwapViewModel(
     }
 
     private suspend fun calcReceiveAmountFromSend(sendAmount: Double): Double {
-        val currentCoinToSend = coinToSend.value ?: return 0.0
-        val currentCoinToReceive = coinToReceive.value ?: return 0.0
+        val currentCoinToSend = coinToSendLiveData.value ?: return 0.0
+        val currentCoinToReceive = coinToReceiveLiveData.value ?: return 0.0
         return calcSwapAmountFromSend(
             currentCoinToSend,
             currentCoinToReceive,
@@ -499,8 +512,8 @@ class SwapViewModel(
     }
 
     private suspend fun calcSendAmountFromReceive(receiveAmount: Double): Double {
-        val currentCoinToSend = coinToSend.value ?: return 0.0
-        val currentCoinToReceive = coinToReceive.value ?: return 0.0
+        val currentCoinToSend = coinToSendLiveData.value ?: return 0.0
+        val currentCoinToReceive = coinToReceiveLiveData.value ?: return 0.0
         return calcSwapAmountFromReceive(
             currentCoinToSend,
             currentCoinToReceive,
@@ -554,8 +567,8 @@ class SwapViewModel(
     }
 
     private fun updatePlatformFeeInfo(sendAmount: Double) = viewModelScope.launch {
-        val coinToSend = coinToSend.value ?: return@launch
-        val coinToReceive = coinToReceive.value ?: return@launch
+        val coinToSend = coinToSendLiveData.value ?: return@launch
+        val coinToReceive = coinToReceiveLiveData.value ?: return@launch
         // Platform fee(B) = amount(A) x price(A) / price(B) x (swapProfitPercent / 100)
         val receiveRawAmount = sendAmount * calcCoinsRatio(coinToSend, coinToReceive)
         val platformFeeActual = serviceInfoProvider.getService(ServiceType.SWAP)?.feePercent ?: 0.0
@@ -569,13 +582,13 @@ class SwapViewModel(
     }
 
     private fun clearSendAndReceiveAmount() {
-        _sendCoinAmount.value = AmountItem(0.0, useMax = false)
-        _receiveCoinAmount.value = AmountItem(0.0, useMax = false)
+        _sendCoinAmount.value = AmountItem()
+        _receiveCoinAmount.value = AmountItem()
     }
 
     fun reFetchTransactionPlans() {
-        val coinToSend = coinToSend.value ?: return
-        val coinToReceive = coinToReceive.value ?: return
+        val coinToSend = coinToSendLiveData.value ?: return
+        val coinToReceive = coinToReceiveLiveData.value ?: return
         fetchTransactionPlans(coinToSend, coinToReceive)
     }
 

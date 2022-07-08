@@ -5,16 +5,16 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.belcobtm.R
-import com.belcobtm.domain.service.ServiceType
 import com.belcobtm.databinding.FragmentSwapBinding
 import com.belcobtm.domain.Failure
+import com.belcobtm.domain.service.ServiceType
 import com.belcobtm.domain.wallet.LocalCoinType
 import com.belcobtm.domain.wallet.item.isEthRelatedCoinCode
 import com.belcobtm.presentation.core.coin.model.ValidationResult
 import com.belcobtm.presentation.core.helper.AlertHelper
 import com.belcobtm.presentation.core.mvvm.LoadingData
 import com.belcobtm.presentation.core.ui.fragment.BaseFragment
-import com.belcobtm.presentation.core.watcher.DoubleTextWatcher
+import com.belcobtm.presentation.core.views.listeners.SafeDecimalEditTextWatcher
 import com.belcobtm.presentation.tools.extensions.getDouble
 import com.belcobtm.presentation.tools.extensions.resIcon
 import com.belcobtm.presentation.tools.extensions.setTextSilently
@@ -41,22 +41,18 @@ class SwapFragment : BaseFragment<FragmentSwapBinding>() {
     private val currencyFormatter: Formatter<Double> by inject(
         named(CurrencyPriceFormatter.CURRENCY_PRICE_FORMATTER_QUALIFIER)
     )
-    private val textWatcher = DoubleTextWatcher(
-        maxCharsAfterDotFirst = DoubleTextWatcher.MAX_CHARS_AFTER_DOT_CRYPTO,
-        maxCharsAfterDotSecond = DoubleTextWatcher.MAX_CHARS_AFTER_DOT_CRYPTO,
-        firstTextWatcher = { editable ->
-            val parsedCoinAmount = editable.getDouble()
-            if (parsedCoinAmount != viewModel.sendCoinAmount.value?.amount) {
-                viewModel.setSendAmount(parsedCoinAmount)
-            }
-        },
-        secondTextWatcher = { editable ->
-            val parsedCoinAmount = editable.getDouble()
-            if (parsedCoinAmount != viewModel.receiveCoinAmount.value?.amount) {
-                viewModel.setReceiveAmount(parsedCoinAmount)
-            }
+    private val sendTextWatcher = SafeDecimalEditTextWatcher { editable ->
+        val parsedCoinAmount = editable.getDouble()
+        if (parsedCoinAmount != viewModel.sendCoinAmount.value?.amount) {
+            viewModel.setSendAmount(parsedCoinAmount)
         }
-    )
+    }
+    private val receiveTextWatcher = SafeDecimalEditTextWatcher { editable ->
+        val parsedCoinAmount = editable.getDouble()
+        if (parsedCoinAmount != viewModel.receiveCoinAmount.value?.amount) {
+            viewModel.setReceiveAmount(parsedCoinAmount)
+        }
+    }
 
     override val isBackButtonEnabled: Boolean = true
     override var isMenuEnabled: Boolean = true
@@ -94,8 +90,14 @@ class SwapFragment : BaseFragment<FragmentSwapBinding>() {
         setToolbarTitle(R.string.swap_screen_title)
         sendCoinInputLayout.setHint(getString(R.string.text_amount))
         receiveCoinInputLayout.setHint(getString(R.string.text_amount))
-        sendCoinInputLayout.getEditText().setTextSilently(textWatcher.firstTextWatcher, "0")
-        receiveCoinInputLayout.getEditText().setTextSilently(textWatcher.secondTextWatcher, "0")
+        sendCoinInputLayout.getEditText().apply {
+            setText("0")
+            addTextChangedListener(sendTextWatcher)
+        }
+        receiveCoinInputLayout.getEditText().apply {
+            setText("0")
+            addTextChangedListener(receiveTextWatcher)
+        }
     }
 
     override fun createBinding(
@@ -121,8 +123,8 @@ class SwapFragment : BaseFragment<FragmentSwapBinding>() {
             viewModel.setMaxReceiveAmount()
         }
         sendCoinInputLayout.setOnCoinButtonClickListener(View.OnClickListener {
-            val coinToSend = viewModel.coinToSend.value ?: return@OnClickListener
-            val coinToReceive = viewModel.coinToReceive.value ?: return@OnClickListener
+            val coinToSend = viewModel.coinToSendLiveData.value ?: return@OnClickListener
+            val coinToReceive = viewModel.coinToReceiveLiveData.value ?: return@OnClickListener
             val coinsToExclude = listOf(coinToSend, coinToReceive)
             val coinsList = viewModel.originCoinsData.toMutableList().apply {
                 removeAll(coinsToExclude)
@@ -132,8 +134,8 @@ class SwapFragment : BaseFragment<FragmentSwapBinding>() {
             }
         })
         receiveCoinInputLayout.setOnCoinButtonClickListener(View.OnClickListener {
-            val coinToSend = viewModel.coinToSend.value ?: return@OnClickListener
-            val coinToReceive = viewModel.coinToReceive.value ?: return@OnClickListener
+            val coinToSend = viewModel.coinToSendLiveData.value ?: return@OnClickListener
+            val coinToReceive = viewModel.coinToReceiveLiveData.value ?: return@OnClickListener
             val coinsToExclude = listOf(coinToSend, coinToReceive)
             val coinsList = viewModel.originCoinsData.toMutableList().apply {
                 removeAll(coinsToExclude)
@@ -142,8 +144,6 @@ class SwapFragment : BaseFragment<FragmentSwapBinding>() {
                 viewModel.setCoinToReceive(it)
             }
         })
-        sendCoinInputLayout.getEditText().addTextChangedListener(textWatcher.firstTextWatcher)
-        receiveCoinInputLayout.getEditText().addTextChangedListener(textWatcher.secondTextWatcher)
     }
 
     @NeedsPermission(
@@ -273,22 +273,20 @@ class SwapFragment : BaseFragment<FragmentSwapBinding>() {
             }
         }
         viewModel.sendCoinAmount.observe(viewLifecycleOwner) { sendAmount ->
-            val targetEditText = sendCoinInputLayout.getEditText()
-            if (targetEditText.text.getDouble() == 0.0 && sendAmount.amount == 0.0) {
+            val editText = sendCoinInputLayout.getEditText()
+            val coinAmountString = sendAmount.amount.toStringCoin()
+            if (editText.text.toString() == coinAmountString) {
                 return@observe
             }
-            val coinAmountString = sendAmount.amount.toStringCoin()
-            val watcher = textWatcher.firstTextWatcher
-            targetEditText.setTextSilently(watcher, coinAmountString)
+            editText.setTextSilently(sendTextWatcher, coinAmountString)
         }
         viewModel.receiveCoinAmount.observe(viewLifecycleOwner) { receiveAmount ->
-            val targetEditText = receiveCoinInputLayout.getEditText()
-            if (targetEditText.text.getDouble() == 0.0 && receiveAmount.amount == 0.0) {
+            val editText = receiveCoinInputLayout.getEditText()
+            val coinAmountString = receiveAmount.amount.toStringCoin()
+            if (editText.text.toString() == coinAmountString) {
                 return@observe
             }
-            val coinAmountString = receiveAmount.amount.toStringCoin()
-            val watcher = textWatcher.secondTextWatcher
-            targetEditText.setTextSilently(watcher, coinAmountString)
+            editText.setTextSilently(receiveTextWatcher, coinAmountString)
         }
         viewModel.submitEnabled.observe(viewLifecycleOwner) { enabled ->
             nextButtonView.isEnabled = enabled

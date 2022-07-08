@@ -211,7 +211,7 @@ class WithdrawViewModel(
                 )
             }
         }
-        _amount.value = AmountItem(amount, useMax = false)
+        _amount.value = AmountItem(amount)
     }
 
     fun setMaxAmount() {

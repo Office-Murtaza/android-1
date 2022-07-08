@@ -184,7 +184,7 @@ class SendGiftViewModel(
                 )
             }
         }
-        _amount.value = AmountItem(amount, useMax = false)
+        _amount.value = AmountItem(amount)
     }
 
     fun setMaxAmount() {
@@ -302,7 +302,7 @@ class SendGiftViewModel(
     }
 
     fun selectCoin(phoneNumber: String, coinDataItem: CoinDataItem) {
-        _amount.value = AmountItem(0.0, false)
+        _amount.value = AmountItem()
         _coinToSend.value = coinDataItem
         _transactionPlanLiveData.value = LoadingData.Loading()
         fetchTransactionPlan(phoneNumber, coinDataItem, _transactionPlanLiveData)
