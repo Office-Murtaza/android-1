@@ -1,4 +1,4 @@
-package com.belcobtm.presentation.screens.wallet.trade.recall
+package com.belcobtm.presentation.screens.wallet.recall
 
 import android.view.LayoutInflater
 import android.view.View
@@ -13,7 +13,7 @@ import com.belcobtm.presentation.core.helper.AlertHelper
 import com.belcobtm.presentation.core.mvvm.LoadingData
 import com.belcobtm.presentation.core.ui.fragment.BaseFragment
 import com.belcobtm.presentation.core.views.listeners.SafeDecimalEditTextWatcher
-import com.belcobtm.presentation.screens.wallet.trade.reserve.InputFieldState
+import com.belcobtm.presentation.screens.wallet.reserve.InputFieldState
 import com.belcobtm.presentation.tools.extensions.actionDoneListener
 import com.belcobtm.presentation.tools.extensions.clearError
 import com.belcobtm.presentation.tools.extensions.getDouble

@@ -47,6 +47,8 @@ import com.belcobtm.presentation.screens.settings.wallets.WalletsViewModel
 import com.belcobtm.presentation.screens.sms.code.SmsCodeViewModel
 import com.belcobtm.presentation.screens.wallet.balance.WalletViewModel
 import com.belcobtm.presentation.screens.wallet.deposit.DepositViewModel
+import com.belcobtm.presentation.screens.wallet.recall.TradeRecallViewModel
+import com.belcobtm.presentation.screens.wallet.reserve.TradeReserveViewModel
 import com.belcobtm.presentation.screens.wallet.send.gift.SendGiftViewModel
 import com.belcobtm.presentation.screens.wallet.trade.container.TradeContainerViewModel
 import com.belcobtm.presentation.screens.wallet.trade.create.CreateTradeViewModel
@@ -62,8 +64,6 @@ import com.belcobtm.presentation.screens.wallet.trade.order.create.TradeCreateOr
 import com.belcobtm.presentation.screens.wallet.trade.order.details.TradeOrderDetailsViewModel
 import com.belcobtm.presentation.screens.wallet.trade.order.historychat.HistoryChatViewModel
 import com.belcobtm.presentation.screens.wallet.trade.order.rate.TradeOrderRateViewModel
-import com.belcobtm.presentation.screens.wallet.trade.recall.TradeRecallViewModel
-import com.belcobtm.presentation.screens.wallet.trade.reserve.TradeReserveViewModel
 import com.belcobtm.presentation.screens.wallet.trade.statistic.TradeUserStatisticViewModel
 import com.belcobtm.presentation.screens.wallet.transaction.details.TransactionDetailsViewModel
 import com.belcobtm.presentation.screens.wallet.transactions.TransactionsViewModel
@@ -81,6 +81,8 @@ import com.belcobtm.presentation.tools.formatter.MilesFormatter
 import com.belcobtm.presentation.tools.formatter.MilesFormatter.Companion.MILES_FORMATTER_QUALIFIER
 import com.belcobtm.presentation.tools.formatter.PhoneNumberFormatter
 import com.belcobtm.presentation.tools.formatter.TradeCountFormatter
+import com.belcobtm.presentation.tools.formatter.TraderRatingFormatter
+import com.belcobtm.presentation.tools.formatter.TraderRatingFormatter.Companion.TRADER_RATING_FORMATTER_QUALIFIER
 import com.belcobtm.presentation.tools.validator.PhoneNumberValidator
 import io.michaelrocks.libphonenumber.android.PhoneNumberUtil
 import org.koin.android.ext.koin.androidApplication
@@ -201,7 +203,8 @@ val viewModelModule = module {
     viewModel { (transactionId: String, coinCode: String) ->
         TransactionDetailsViewModel(
             transactionId, coinCode, get(), get(),
-            get(named(CURRENCY_PRICE_FORMATTER_QUALIFIER)), get()
+            get(named(CURRENCY_PRICE_FORMATTER_QUALIFIER)),
+            get()
         )
     }
     viewModel {
@@ -219,7 +222,11 @@ val viewModelModule = module {
     viewModel { ContactListViewModel(get(), get<PhoneNumberValidator>(), get()) }
     viewModel { TradeContainerViewModel(get(), get()) }
     viewModel { TradeListViewModel(get(), get()) }
-    viewModel { TradeUserStatisticViewModel(get()) }
+    viewModel {
+        TradeUserStatisticViewModel(
+            observeUserTradeStatisticUseCase = get()
+        )
+    }
     viewModel { InviteFromContactsViewModel(get(), get(), get(), get()) }
     viewModel { MyTradeDetailsViewModel(get(), get(), get()) }
     viewModel { EditTradeViewModel(get(), get(), get(), get(), get(), get()) }
@@ -303,6 +310,11 @@ val helperModule = module {
     }
     factory<Formatter<Double>>(named(CRYPTO_PRICE_FORMATTER_QUALIFIER)) {
         CryptoPriceFormatter(
+            get()
+        )
+    }
+    factory<Formatter<Double>>(named(TRADER_RATING_FORMATTER_QUALIFIER)) {
+        TraderRatingFormatter(
             get()
         )
     }

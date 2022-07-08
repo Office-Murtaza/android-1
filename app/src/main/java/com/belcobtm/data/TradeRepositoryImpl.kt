@@ -34,13 +34,8 @@ class TradeRepositoryImpl(
     private val mapper: TradeFilterItemMapper
 ) : TradeRepository {
 
-    override fun getAvailablePaymentOptions(): List<PaymentMethodType> = listOf(
-        PaymentMethodType.CASH,
-        PaymentMethodType.PAYPAL,
-        PaymentMethodType.VENMO,
-        PaymentMethodType.CASHAPP,
-        PaymentMethodType.PAYONEER
-    )
+    override fun getAvailablePaymentOptions(): List<PaymentMethodType> =
+        PaymentMethodType.values().toList()
 
     override fun observeTradeData(): Flow<Either<Failure, TradeHistoryDomainModel>?> =
         tradeInMemoryCache.observableData

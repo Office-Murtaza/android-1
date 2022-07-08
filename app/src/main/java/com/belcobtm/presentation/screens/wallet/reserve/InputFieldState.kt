@@ -1,4 +1,4 @@
-package com.belcobtm.presentation.screens.wallet.trade.reserve
+package com.belcobtm.presentation.screens.wallet.reserve
 
 sealed class InputFieldState {
     object Valid: InputFieldState()

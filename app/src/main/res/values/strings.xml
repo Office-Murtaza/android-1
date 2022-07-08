@@ -829,6 +829,9 @@
     <string name="create_trade_venmo_label">Venmo</string>
     <string name="create_trade_cash_app_label">Cash App</string>
     <string name="create_trade_payoneer_label">Payoneer</string>
+    <string name="create_trade_zelle_label">Zelle</string>
+    <string name="create_trade_western_union_label">Western Union</string>
+    <string name="create_trade_money_gram_label">MoneyGram</string>
     <string name="create_trade_other_label">Other</string>
 
     <string name="min_price_value_label">$0</string>
@@ -864,7 +867,7 @@
     <string name="distance_label_formatted">%1$s mi away</string>
     <string name="trade_filter_dialog_sort_option_price_label">Price</string>
     <string name="trade_filter_dialog_sort_option_distance_label">Distance</string>
-    <string name="trade_filter_dialog_reset_filter_button_label">Reset all</string>
+    <string name="trade_filter_dialog_reset_filter_button_label">RESET ALL</string>
     <string name="trade_filter_dialog_sort_label">Sort by</string>
     <string name="trade_filter_distance_label">Distance range, mi</string>
     <string name="trade_filter_dialog_coins_label">Coins</string>

@@ -25,7 +25,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
-class TradeFilterBottomSheetDialogFragment : BottomSheetDialogFragment() {
+class TradeFilterDialog : BottomSheetDialogFragment() {
 
     private val coinsAdapter: MultiTypeAdapter by lazy {
         MultiTypeAdapter().apply { registerDelegate(ItemTradeFilterCoinCodeDelegate(viewModel::selectCoin)) }
@@ -52,7 +52,7 @@ class TradeFilterBottomSheetDialogFragment : BottomSheetDialogFragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = FragmentTradeFilterBinding.inflate(inflater, container, false)
-        binding.coins.adapter = coinsAdapter
+        binding.coinsRecycler.adapter = coinsAdapter
         binding.paymentOptions.adapter = paymentsAdapter
         viewModel.fetchInitialData()
         binding.distanceMinLimitEditText.addTextChangedListener(minDistanceTextWatcher)

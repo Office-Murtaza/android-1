@@ -195,7 +195,7 @@
 
     <dialog
         android:id="@+id/filter_trade_fragment"
-        android:name="com.belcobtm.presentation.screens.wallet.trade.list.filter.TradeFilterBottomSheetDialogFragment"
+        android:name="com.belcobtm.presentation.screens.wallet.trade.list.filter.TradeFilterDialog"
         android:label="FilterFragmen"
         tools:layout="@layout/fragment_trade_filter" />
 

@@ -1,4 +1,4 @@
-package com.belcobtm.presentation.screens.wallet.trade.recall
+package com.belcobtm.presentation.screens.wallet.recall
 
 import android.text.Editable
 import androidx.lifecycle.LiveData
@@ -15,7 +15,7 @@ import com.belcobtm.presentation.core.coin.CoinCodeProvider
 import com.belcobtm.presentation.core.item.CoinScreenItem
 import com.belcobtm.presentation.core.item.mapToScreenItem
 import com.belcobtm.presentation.core.mvvm.LoadingData
-import com.belcobtm.presentation.screens.wallet.trade.reserve.InputFieldState
+import com.belcobtm.presentation.screens.wallet.reserve.InputFieldState
 import com.belcobtm.presentation.tools.extensions.withScale
 
 class TradeRecallViewModel(

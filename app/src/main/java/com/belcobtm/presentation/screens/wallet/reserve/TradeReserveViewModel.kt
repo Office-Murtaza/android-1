@@ -1,4 +1,4 @@
-package com.belcobtm.presentation.screens.wallet.trade.reserve
+package com.belcobtm.presentation.screens.wallet.reserve
 
 import android.text.Editable
 import androidx.lifecycle.LiveData

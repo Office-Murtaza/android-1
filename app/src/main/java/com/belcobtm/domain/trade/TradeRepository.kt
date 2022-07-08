@@ -3,11 +3,11 @@ package com.belcobtm.domain.trade
 import android.location.Location
 import com.belcobtm.domain.Either
 import com.belcobtm.domain.Failure
-import com.belcobtm.domain.trade.model.order.OrderDomainModel
 import com.belcobtm.domain.trade.model.PaymentMethodType
-import com.belcobtm.domain.trade.model.trade.TradeDomainModel
 import com.belcobtm.domain.trade.model.TradeHistoryDomainModel
 import com.belcobtm.domain.trade.model.filter.TradeFilter
+import com.belcobtm.domain.trade.model.order.OrderDomainModel
+import com.belcobtm.domain.trade.model.trade.TradeDomainModel
 import com.belcobtm.presentation.screens.wallet.trade.create.model.CreateTradeItem
 import com.belcobtm.presentation.screens.wallet.trade.edit.EditTradeItem
 import com.belcobtm.presentation.screens.wallet.trade.list.filter.model.TradeFilterItem

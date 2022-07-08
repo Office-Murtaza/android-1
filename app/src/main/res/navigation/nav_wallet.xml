@@ -123,7 +123,7 @@
 
     <fragment
         android:id="@+id/reserve_fragment"
-        android:name="com.belcobtm.presentation.screens.wallet.trade.reserve.TradeReserveFragment"
+        android:name="com.belcobtm.presentation.screens.wallet.reserve.TradeReserveFragment"
         android:label="ReserveFragment"
         tools:layout="@layout/fragment_trade_reserve">
         <argument
@@ -135,7 +135,7 @@
 
     <fragment
         android:id="@+id/recall_fragment"
-        android:name="com.belcobtm.presentation.screens.wallet.trade.recall.TradeRecallFragment"
+        android:name="com.belcobtm.presentation.screens.wallet.recall.TradeRecallFragment"
         android:label="RecallFragment"
         tools:layout="@layout/fragment_trade_recall">
         <argument

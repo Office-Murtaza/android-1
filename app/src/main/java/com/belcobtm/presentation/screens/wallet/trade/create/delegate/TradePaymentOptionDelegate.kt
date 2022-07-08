@@ -29,14 +29,18 @@ class TradePaymentOptionViewHolder(
 ) : MultiTypeViewHolder<AvailableTradePaymentOption>(binding.root) {
 
     override fun bind(model: AvailableTradePaymentOption) {
-        binding.paymentOption.setOnCheckedChangeListener(null)
-        binding.paymentOption.setChipIconResource(model.payment.icon)
-        binding.paymentOption.setText(model.payment.title)
-        binding.paymentOption.isChecked = model.selected
         updateStroke(model.selected)
-        binding.paymentOption.setOnCheckedChangeListener { _, isChecked ->
-            paymentOptionClickListener(model)
-            updateStroke(isChecked)
+        binding.paymentOption.apply {
+            setOnCheckedChangeListener(null)
+            setChipIconResource(
+                model.payment.icon
+            )
+            setText(model.payment.title)
+            isChecked = model.selected
+            setOnCheckedChangeListener { _, isChecked ->
+                paymentOptionClickListener(model)
+                updateStroke(isChecked)
+            }
         }
     }
 
