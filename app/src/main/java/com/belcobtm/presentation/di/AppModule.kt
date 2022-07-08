@@ -38,7 +38,7 @@ import com.belcobtm.presentation.screens.settings.referral.ReferralViewModel
 import com.belcobtm.presentation.screens.settings.referral.contacts.InviteFromContactsViewModel
 import com.belcobtm.presentation.screens.settings.security.SecurityViewModel
 import com.belcobtm.presentation.screens.settings.security.password.PasswordViewModel
-import com.belcobtm.presentation.screens.settings.security.phone.PhoneChangeViewModel
+import com.belcobtm.presentation.screens.settings.security.phone.UpdatePhoneViewModel
 import com.belcobtm.presentation.screens.settings.security.unlink.UnlinkViewModel
 import com.belcobtm.presentation.screens.settings.security.update_password.UpdatePasswordViewModel
 import com.belcobtm.presentation.screens.settings.verification.blank.VerificationBlankViewModel
@@ -196,7 +196,7 @@ val viewModelModule = module {
     viewModel { PasswordViewModel(get(), get()) }
     viewModel { UnlinkViewModel(get(), get()) }
     viewModel { UpdatePasswordViewModel(get()) }
-    viewModel { PhoneChangeViewModel(get(), get(), get<PhoneNumberValidator>()) }
+    viewModel { UpdatePhoneViewModel(get(), get(), get<PhoneNumberValidator>()) }
     viewModel { AtmViewModel(get()) }
     viewModel { (transactionId: String, coinCode: String) ->
         TransactionDetailsViewModel(

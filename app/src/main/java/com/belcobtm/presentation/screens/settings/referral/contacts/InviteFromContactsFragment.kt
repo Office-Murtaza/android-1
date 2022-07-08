@@ -4,23 +4,24 @@ import android.Manifest
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.telephony.PhoneNumberFormattingTextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.widget.addTextChangedListener
 import androidx.navigation.fragment.navArgs
 import com.belcobtm.R
 import com.belcobtm.databinding.FragmentInviteFromContactsBinding
 import com.belcobtm.presentation.core.adapter.MultiTypeAdapter
-import com.belcobtm.presentation.tools.extensions.actionDoneListener
-import com.belcobtm.presentation.tools.extensions.toHtmlSpan
 import com.belcobtm.presentation.core.ui.fragment.BaseFragment
 import com.belcobtm.presentation.core.views.listeners.SafeDecimalEditTextWatcher
 import com.belcobtm.presentation.screens.contacts.adapter.delegate.ContactHeaderDelegate
 import com.belcobtm.presentation.screens.settings.referral.contacts.adapter.InviteContactsDelegate
+import com.belcobtm.presentation.tools.extensions.actionDoneListener
+import com.belcobtm.presentation.tools.extensions.toHtmlSpan
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import permissions.dispatcher.NeedsPermission
 import permissions.dispatcher.RuntimePermissions
-
 
 @RuntimePermissions
 class InviteFromContactsFragment : BaseFragment<FragmentInviteFromContactsBinding>() {
@@ -62,7 +63,9 @@ class InviteFromContactsFragment : BaseFragment<FragmentInviteFromContactsBindin
     fun loadInitialData() {
         viewModel.loadInitialData(binding.searchEditText.text.toString())
         // add textwatcher only after permission granting
-        binding.searchEditText.addTextChangedListener(searchQueryTextWatcher)
+        binding.searchEditText.addTextChangedListener {
+
+        }
     }
 
     override fun onRequestPermissionsResult(
@@ -76,9 +79,12 @@ class InviteFromContactsFragment : BaseFragment<FragmentInviteFromContactsBindin
     }
 
     override fun FragmentInviteFromContactsBinding.initListeners() {
-        searchEditText.actionDoneListener {
-            hideKeyboard()
-            viewModel.createFormattedRecipients()
+        searchEditText.apply {
+            addTextChangedListener(PhoneNumberFormattingTextWatcher())
+            actionDoneListener {
+                hideKeyboard()
+                viewModel.createFormattedRecipients()
+            }
         }
         nextButton.setOnClickListener {
             viewModel.createFormattedRecipients()
@@ -114,4 +120,5 @@ class InviteFromContactsFragment : BaseFragment<FragmentInviteFromContactsBindin
         container: ViewGroup?
     ): FragmentInviteFromContactsBinding =
         FragmentInviteFromContactsBinding.inflate(inflater, container, false)
+
 }

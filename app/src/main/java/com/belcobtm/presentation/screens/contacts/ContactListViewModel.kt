@@ -14,19 +14,20 @@ class ContactListViewModel(
     private val phoneNumberValidator: Validator<String>,
     private val phoneNumberFormatter: PhoneNumberFormatter
 ) : ViewModel() {
+
     private val _contacts = MutableLiveData<List<ListItem>>()
     val contacts: LiveData<List<ListItem>>
         get() = _contacts
 
     private val _selectedContact = MutableLiveData<Contact?>()
-    val selectedContact: LiveData<Contact?>
-        get() = _selectedContact
+    val selectedContact: LiveData<Contact?> = _selectedContact
 
     fun loadContacts(query: String = "") {
-        if (query.contains("+")) {
-            getContactsUseCase.invoke(getRawQuery(query), onSuccess = _contacts::setValue)
+        val formattedQuery = getFormattedPhoneNumber(query.trim())
+        if (formattedQuery.contains("+")) {
+            getContactsUseCase.invoke(getRawQuery(formattedQuery), onSuccess = _contacts::setValue)
         } else {
-            getContactsUseCase.invoke(query, onSuccess = _contacts::setValue)
+            getContactsUseCase.invoke(formattedQuery, onSuccess = _contacts::setValue)
         }
     }
 
@@ -35,10 +36,12 @@ class ContactListViewModel(
     }
 
     fun selectContact(contact: Contact) {
-        _selectedContact.value = contact
+        val phoneNumber = contact.phoneNumber
+        _selectedContact.value = contact.copy(phoneNumber = getFormattedPhoneNumber(phoneNumber))
+        loadContacts(phoneNumber)
     }
 
-    fun getFormattedPhoneNumber(phone: String): String =
+    private fun getFormattedPhoneNumber(phone: String): String =
         phoneNumberFormatter.format(phone)
 
     fun isValidMobileNumber(phoneNumber: String) =
@@ -49,4 +52,5 @@ class ContactListViewModel(
             .replace("(", "")
             .replace(")", "")
             .replace(" ", "")
+
 }

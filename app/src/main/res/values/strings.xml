@@ -388,31 +388,31 @@
     <string name="xrp_additional_transaction_comission">%1$s, locked amount 20 XRP</string>
     <string name="transactions_no_transactions">Your transactions will appear here</string>
 
-    <!--transaction status-->
-    <string name="transaction_status_unknown">Unknown</string>
-    <string name="transaction_status_pending">Pending</string>
+    <!-- Transaction status -->
     <string name="transaction_status_complete">Complete</string>
+    <string name="transaction_status_pending">Pending</string>
     <string name="transaction_status_fail">Fail</string>
+    <string name="transaction_status_unknown">Unknown</string>
 
-    <!--transaction type-->
-    <string name="transaction_type_unknown">Unknown</string>
+    <!-- Transaction type -->
     <string name="transaction_type_deposit">Deposit</string>
     <string name="transaction_type_withdraw">Withdraw</string>
-    <string name="transaction_type_send_gift">Send transfer</string>
-    <string name="transaction_type_receive_gift">Receive transfer</string>
-    <string name="transaction_type_buy">Buy</string>
-    <string name="transaction_type_sell">Sell</string>
+    <string name="transaction_type_send_transfer">Send Transfer</string>
+    <string name="transaction_type_receive_transfer">Receive Transfer</string>
+    <string name="transaction_type_atm_buy">ATM Buy</string>
+    <string name="transaction_type_atm_sell">ATM Sell</string>
     <string name="transaction_type_move">Move</string>
-    <string name="transaction_type_send_exchange">Send swap</string>
-    <string name="transaction_type_send_transfer">Send transfer</string>
-    <string name="transaction_type_receive_exchange">Receive swap</string>
-    <string name="transaction_type_receive_transfer">Receive transfer</string>
+    <string name="transaction_type_send_swap">Send Swap</string>
+    <string name="transaction_type_receive_swap">Receive Swap</string>
     <string name="transaction_type_reserve">Reserve</string>
     <string name="transaction_type_recall">Recall</string>
     <string name="transaction_type_self">Self</string>
-    <string name="transaction_type_stake_create">Create stake</string>
-    <string name="transaction_type_stake_cancel">Cancel stake</string>
-    <string name="transaction_type_stake_withdraw">Withdraw stake</string>
+    <string name="transaction_type_create_stake">Create Stake</string>
+    <string name="transaction_type_cancel_stake">Cancel Stake</string>
+    <string name="transaction_type_withdraw_stake">Withdraw Stake</string>
+    <string name="transaction_type_buy">Buy</string>
+    <string name="transaction_type_sell">Sell</string>
+    <string name="transaction_type_unknown">Unknown</string>
 
     <!-- Transaction Details -->
     <string name="transaction_details_screen_title">Transaction Details</string>

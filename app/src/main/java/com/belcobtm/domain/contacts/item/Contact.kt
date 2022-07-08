@@ -7,7 +7,7 @@ data class Contact(
     override val id: String,
     val displayName: String,
     val photoUri: String,
-    val phoneNumber: String,
+    var phoneNumber: String,
     val displayNameHighlightRange: IntRange?,
     val phoneNumberHighlightRange: IntRange?
 ) : ListItem {

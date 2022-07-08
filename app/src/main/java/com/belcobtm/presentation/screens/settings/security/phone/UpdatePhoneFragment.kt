@@ -7,34 +7,34 @@ import android.view.ViewGroup
 import androidx.core.os.bundleOf
 import androidx.core.widget.addTextChangedListener
 import com.belcobtm.R
-import com.belcobtm.databinding.FragmentChangePhoneBinding
+import com.belcobtm.databinding.FragmentUpdatePhoneBinding
 import com.belcobtm.domain.Failure
 import com.belcobtm.presentation.core.mvvm.LoadingData
 import com.belcobtm.presentation.core.ui.fragment.BaseFragment
-import com.belcobtm.presentation.screens.settings.security.phone.PhoneChangeViewModel.Companion.ERROR_UPDATE_PHONE_IS_SAME
-import com.belcobtm.presentation.screens.settings.security.phone.PhoneChangeViewModel.Companion.ERROR_UPDATE_PHONE_IS_USED
+import com.belcobtm.presentation.screens.settings.security.phone.UpdatePhoneViewModel.Companion.ERROR_UPDATE_PHONE_IS_SAME
+import com.belcobtm.presentation.screens.settings.security.phone.UpdatePhoneViewModel.Companion.ERROR_UPDATE_PHONE_IS_USED
 import com.belcobtm.presentation.screens.sms.code.SmsCodeFragment
 import com.belcobtm.presentation.tools.extensions.getPhoneForRequest
 import com.belcobtm.presentation.tools.extensions.getString
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class PhoneChangeFragment : BaseFragment<FragmentChangePhoneBinding>() {
+class UpdatePhoneFragment : BaseFragment<FragmentUpdatePhoneBinding>() {
 
-    val viewModel by viewModel<PhoneChangeViewModel>()
+    val viewModel by viewModel<UpdatePhoneViewModel>()
 
-    private var appliedState: LoadingData<PhoneChangeState>? = null
+    private var appliedState: LoadingData<UpdatePhoneState>? = null
     override val isBackButtonEnabled = true
     override var isMenuEnabled = true
     override val retryListener = View.OnClickListener {
         viewModel.onNextClick()
     }
 
-    override fun FragmentChangePhoneBinding.initViews() {
+    override fun FragmentUpdatePhoneBinding.initViews() {
         appliedState = null
         setToolbarTitle(R.string.update_phone_label)
     }
 
-    override fun FragmentChangePhoneBinding.initListeners() {
+    override fun FragmentUpdatePhoneBinding.initListeners() {
         nextButton.setOnClickListener {
             viewModel.onNextClick()
         }
@@ -44,7 +44,7 @@ class PhoneChangeFragment : BaseFragment<FragmentChangePhoneBinding>() {
         phoneView.addTextChangedListener(PhoneNumberFormattingTextWatcher())
     }
 
-    override fun FragmentChangePhoneBinding.initObservers() {
+    override fun FragmentUpdatePhoneBinding.initObservers() {
         viewModel.stateData.listen(
             success = { state ->
                 state.doIfChanged(appliedState) {
@@ -77,7 +77,7 @@ class PhoneChangeFragment : BaseFragment<FragmentChangePhoneBinding>() {
         )
         viewModel.actionData.observe(viewLifecycleOwner) { action ->
             when (action) {
-                is PhoneChangeAction.GoToSmsVerification -> {
+                is UpdatePhoneAction.GoToSmsVerification -> {
                     navigate(
                         R.id.phone_change_to_sms_fragment,
                         bundleOf(
@@ -90,8 +90,8 @@ class PhoneChangeFragment : BaseFragment<FragmentChangePhoneBinding>() {
         }
     }
 
-    override fun createBinding(inflater: LayoutInflater, container: ViewGroup?): FragmentChangePhoneBinding =
-        FragmentChangePhoneBinding.inflate(inflater, container, false)
+    override fun createBinding(inflater: LayoutInflater, container: ViewGroup?): FragmentUpdatePhoneBinding =
+        FragmentUpdatePhoneBinding.inflate(inflater, container, false)
 
     private fun getPhone(): String = binding.phoneView.getString().getPhoneForRequest()
 

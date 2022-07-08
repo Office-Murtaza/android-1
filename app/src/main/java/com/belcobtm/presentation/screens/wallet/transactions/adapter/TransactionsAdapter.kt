@@ -11,7 +11,6 @@ import com.belcobtm.R
 import com.belcobtm.databinding.ItemTransactionBinding
 import com.belcobtm.domain.transaction.type.TransactionStatusType
 import com.belcobtm.presentation.screens.wallet.transactions.item.TransactionsAdapterItem
-import com.belcobtm.presentation.tools.extensions.getResText
 import com.belcobtm.presentation.tools.extensions.toStringCoin
 
 class TransactionsAdapter(

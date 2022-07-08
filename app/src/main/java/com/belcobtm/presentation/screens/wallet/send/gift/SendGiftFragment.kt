@@ -181,7 +181,8 @@ class SendGiftFragment : BaseFragment<FragmentSendGiftBinding>(),
         viewModel.transactionPlanLiveData.listen()
         viewModel.amount.observe(viewLifecycleOwner) { cryptoAmount ->
             with(sendCoinInputLayout.getEditText()) {
-                if (cryptoAmount.amount < 0.0) {
+                val coinsAmountText = cryptoAmount.amount.toStringCoin()
+                if (cryptoAmount.amount < 0.0 || text.toString() == coinsAmountText) {
                     return@observe
                 }
                 removeTextChangedListener(cryptoAmountTextWatcher)
@@ -227,7 +228,7 @@ class SendGiftFragment : BaseFragment<FragmentSendGiftBinding>(),
         viewModel.giftFee.observe(viewLifecycleOwner) { fee ->
             platformFeeTextView.text = getString(
                 R.string.sell_screen_fee_formatted,
-                fee.platformFeePercent.toStringCoin(),
+                fee.platformFeePercents.toStringCoin(),
                 fee.platformFeeCoinAmount.toStringCoin(),
                 fee.swapCoinCode
             ).toHtmlSpan()

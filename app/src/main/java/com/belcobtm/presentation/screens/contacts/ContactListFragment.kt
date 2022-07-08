@@ -3,19 +3,22 @@ package com.belcobtm.presentation.screens.contacts
 import android.Manifest
 import android.content.Context
 import android.os.Bundle
+import android.telephony.PhoneNumberFormattingTextWatcher
+import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
+import androidx.core.widget.addTextChangedListener
 import com.belcobtm.R
 import com.belcobtm.databinding.FragmentContactListBinding
 import com.belcobtm.presentation.core.adapter.MultiTypeAdapter
-import com.belcobtm.presentation.tools.extensions.actionDoneListener
 import com.belcobtm.presentation.core.ui.fragment.BaseFragment
-import com.belcobtm.presentation.core.views.listeners.SafeDecimalEditTextWatcher
 import com.belcobtm.presentation.screens.contacts.adapter.ContactListDiffUtil
 import com.belcobtm.presentation.screens.contacts.adapter.delegate.ContactDelegate
 import com.belcobtm.presentation.screens.contacts.adapter.delegate.ContactHeaderDelegate
+import com.belcobtm.presentation.tools.extensions.actionDoneListener
+import com.belcobtm.presentation.tools.extensions.setTextSilently
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import permissions.dispatcher.NeedsPermission
 import permissions.dispatcher.RuntimePermissions
@@ -33,17 +36,7 @@ class ContactListFragment : BaseFragment<FragmentContactListBinding>() {
             registerDelegate(ContactHeaderDelegate())
         }
     }
-    private val searchQueryTextWatcher by lazy {
-        SafeDecimalEditTextWatcher { editable ->
-            val formattedSearchQuery = viewModel.getFormattedPhoneNumber(editable.toString())
-            if (formattedSearchQuery != editable.toString()) {
-                editable.replace(0, editable.length, formattedSearchQuery)
-                return@SafeDecimalEditTextWatcher
-            }
-            viewModel.clearSelectedContact()
-            viewModel.loadContacts(formattedSearchQuery)
-        }
-    }
+    private lateinit var searchQueryTextWatcher: TextWatcher
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -62,7 +55,10 @@ class ContactListFragment : BaseFragment<FragmentContactListBinding>() {
     fun loadInitialData() {
         viewModel.loadContacts(binding.searchEditText.text.toString())
         // add textwatcher only after permission granting
-        binding.searchEditText.addTextChangedListener(searchQueryTextWatcher)
+        searchQueryTextWatcher = binding.searchEditText.addTextChangedListener { editable ->
+            viewModel.clearSelectedContact()
+            viewModel.loadContacts(editable.toString())
+        }
     }
 
     override fun onRequestPermissionsResult(
@@ -76,9 +72,12 @@ class ContactListFragment : BaseFragment<FragmentContactListBinding>() {
     }
 
     override fun FragmentContactListBinding.initListeners() {
-        searchEditText.actionDoneListener {
-            hideKeyboard()
-            validateSearchQuery()
+        searchEditText.apply {
+            addTextChangedListener(PhoneNumberFormattingTextWatcher())
+            actionDoneListener {
+                hideKeyboard()
+                validateSearchQuery()
+            }
         }
         nextButton.setOnClickListener {
             validateSearchQuery()
@@ -94,10 +93,7 @@ class ContactListFragment : BaseFragment<FragmentContactListBinding>() {
         viewModel.contacts.observe(viewLifecycleOwner, adapter::update)
         viewModel.selectedContact.observe(viewLifecycleOwner) {
             if (it != null) {
-                searchEditText.removeTextChangedListener(searchQueryTextWatcher)
-                searchEditText.setText(viewModel.getFormattedPhoneNumber(it.phoneNumber))
-                viewModel.loadContacts(it.phoneNumber)
-                searchEditText.addTextChangedListener(searchQueryTextWatcher)
+                searchEditText.setTextSilently(searchQueryTextWatcher, it.phoneNumber)
             }
         }
     }

@@ -29,7 +29,6 @@ import com.belcobtm.domain.wallet.item.isEthRelatedCoin
 import com.belcobtm.presentation.core.livedata.DoubleCombinedLiveData
 import com.belcobtm.presentation.core.mvvm.LoadingData
 import com.belcobtm.presentation.core.provider.string.StringProvider
-import com.belcobtm.presentation.screens.services.atm.sell.AtmSellFeeModelView
 import kotlinx.coroutines.launch
 
 class SendGiftViewModel(
@@ -101,12 +100,11 @@ class SendGiftViewModel(
 
     private val feePercent = MutableLiveData(0.0)
 
-    val giftFee: LiveData<AtmSellFeeModelView> =
-        DoubleCombinedLiveData(usdAmount, coinToSend) { amount, coin ->
-            val price = coin?.priceUsd ?: 0.0
-            AtmSellFeeModelView(
-                platformFeePercent = feePercent.value ?: 0.0,
-                platformFeeCoinAmount = (amount?.toDouble() ?: 0.0) / price * (feePercent.value ?: 0.0 / 100.0),
+    val giftFee: LiveData<GiftFeeModelView> =
+        DoubleCombinedLiveData(usdAmount, coinToSend) { _, coin ->
+            GiftFeeModelView(
+                platformFeePercents = feePercent.value ?: 0.0,
+                platformFeeCoinAmount = (amount.value?.amount ?: 0.0) * (feePercent.value ?: 0.0) / 100.0,
                 swapCoinCode = coin?.code.orEmpty()
             )
         }

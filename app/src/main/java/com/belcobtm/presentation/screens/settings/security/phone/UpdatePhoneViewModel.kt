@@ -10,20 +10,20 @@ import com.belcobtm.presentation.core.mvvm.LoadingData
 import com.belcobtm.presentation.tools.extensions.getPhoneForRequest
 import com.belcobtm.presentation.tools.validator.Validator
 
-class PhoneChangeViewModel(
+class UpdatePhoneViewModel(
     private val isPhoneUsedUseCase: IsPhoneUsedUseCase,
     private val preferences: PreferencesInteractor,
     private val phoneNumberValidator: Validator<String>
 ) : ViewModel() {
 
     val stateData =
-        MutableLiveData<LoadingData<PhoneChangeState>>(LoadingData.Success(PhoneChangeState()))
-    val actionData = SingleLiveData<PhoneChangeAction>()
+        MutableLiveData<LoadingData<UpdatePhoneState>>(LoadingData.Success(UpdatePhoneState()))
+    val actionData = SingleLiveData<UpdatePhoneAction>()
     private var phone = ""
 
     fun onPhoneInput(text: String) {
         phone = text.getPhoneForRequest()
-        stateData.value = LoadingData.Success(PhoneChangeState(isValidMobileNumber(phone)))
+        stateData.value = LoadingData.Success(UpdatePhoneState(isValidMobileNumber(phone)))
     }
 
     fun onNextClick() {
@@ -60,7 +60,7 @@ class PhoneChangeViewModel(
     }
 
     private fun goToSmsVerification() {
-        actionData.value = PhoneChangeAction.GoToSmsVerification(phone)
+        actionData.value = UpdatePhoneAction.GoToSmsVerification(phone)
     }
 
     private fun isValidMobileNumber(phone: String): Boolean =
@@ -74,11 +74,11 @@ class PhoneChangeViewModel(
 
 }
 
-data class PhoneChangeState(
+data class UpdatePhoneState(
     val isNextButtonEnabled: Boolean = false,
     val isPhoneError: Boolean = false
 )
 
-sealed class PhoneChangeAction {
-    data class GoToSmsVerification(val phone: String) : PhoneChangeAction()
+sealed class UpdatePhoneAction {
+    data class GoToSmsVerification(val phone: String) : UpdatePhoneAction()
 }

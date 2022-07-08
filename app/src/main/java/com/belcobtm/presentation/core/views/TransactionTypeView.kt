@@ -12,7 +12,6 @@ import android.view.View
 import androidx.core.content.ContextCompat
 import com.belcobtm.R
 import com.belcobtm.domain.transaction.type.TransactionType
-import com.belcobtm.presentation.tools.extensions.getResText
 import kotlin.math.min
 
 class TransactionTypeView @JvmOverloads constructor(

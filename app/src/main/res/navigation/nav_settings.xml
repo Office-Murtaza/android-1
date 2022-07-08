@@ -116,9 +116,9 @@
 
     <fragment
         android:id="@+id/change_phone_fragment"
-        android:name="com.belcobtm.presentation.screens.settings.security.phone.PhoneChangeFragment"
+        android:name="com.belcobtm.presentation.screens.settings.security.phone.UpdatePhoneFragment"
         android:label="ChangePhoneFragment"
-        tools:layout="@layout/fragment_change_phone">
+        tools:layout="@layout/fragment_update_phone">
 
         <action
             android:id="@+id/phone_change_to_sms_fragment"

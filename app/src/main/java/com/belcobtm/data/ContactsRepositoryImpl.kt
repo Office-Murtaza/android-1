@@ -17,11 +17,11 @@ class ContactsRepositoryImpl(private val contentResolver: ContentResolver) : Con
             createSelection(searchQuery), createSelectionArgs(searchQuery),
             "${Phone.DISPLAY_NAME_PRIMARY} ASC"
         )?.use { cursor ->
-            val contacts = ArrayList<Contact>()
+            val contacts = LinkedHashMap<String, Contact>()
             while (cursor.moveToNext()) {
                 val displayName = cursor.getString(Phone.DISPLAY_NAME_PRIMARY)
                 val phoneNumber = cursor.getString(Phone.NUMBER)
-                contacts.add(
+                contacts[phoneNumber] =
                     Contact(
                         cursor.getString(Phone._ID),
                         displayName,
@@ -30,9 +30,8 @@ class ContactsRepositoryImpl(private val contentResolver: ContentResolver) : Con
                         calculateRangeFor(searchQuery, displayName),
                         calculateRangeFor(searchQuery, phoneNumber)
                     )
-                )
             }
-            contacts
+            contacts.values.toList()
         }.orEmpty()
 
     private fun calculateRangeFor(searchQuery: String, sourceString: String): IntRange? =

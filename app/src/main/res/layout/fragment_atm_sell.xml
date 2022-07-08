@@ -219,13 +219,9 @@
 
             <TextView
                 android:id="@+id/update_limits_button"
+                style="@style/Button.Transparent"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:padding="16dp"
                 android:text="@string/update_limits_button_label"
-                android:textColor="@color/colorPrimary"
-                android:textStyle="bold"
                 tools:visibility="visible" />
 
         </LinearLayout>
