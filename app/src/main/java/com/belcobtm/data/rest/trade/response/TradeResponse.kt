@@ -8,18 +8,24 @@ import com.belcobtm.domain.wallet.LocalCoinType
 
 data class TradeResponse(
     val id: String?,
-    val type: String?,
     val coin: String?,
+    val type: String?,
     val status: String?,
     val price: Double?,
     val minLimit: Double?,
     val maxLimit: Double?,
     val fiatAmount: Double?,
     val feePercent: Double?,
+    val lockedCryptoAmount: Double?,
     val paymentMethods: List<String?>?,
     val terms: String?,
-    val latitude: Double?,
-    val longitude: Double?
+    val openOrders: Int?,
+    val makerUserId: String?,
+    val makerUsername: String?,
+    val makerTradeTotal: Int?,
+    val makerTradeRate: Double?,
+    val makerLocation: LocationResponse?,
+    val timestamp: Long?
 ) {
 
     fun mapToDomain(): TradeDomainModel = TradeDomainModel(
@@ -36,14 +42,14 @@ data class TradeResponse(
             PaymentMethodType.values().firstOrNull { type -> type.name == it }
         }.orEmpty(),
         terms = terms.orEmpty(),
-        timestamp = 0L,
-        ordersCount = 0,
-        makerId = "",
-        makerUsername = "",
-        makerLatitude = latitude ?: 0.0,
-        makerLongitude = longitude ?: 0.0,
-        makerTotalTrades = 0,
-        makerTradingRate = 0.0
+        timestamp = timestamp ?: 0L,
+        ordersCount = openOrders ?: 0,
+        makerId = makerUserId.orEmpty(),
+        makerUsername = makerUsername.orEmpty(),
+        makerLatitude = makerLocation?.latitude ?: 0.0,
+        makerLongitude = makerLocation?.longitude ?: 0.0,
+        makerTotalTrades = makerTradeTotal ?: 0,
+        makerTradingRate = makerTradeRate ?: 0.0
     )
 
 }

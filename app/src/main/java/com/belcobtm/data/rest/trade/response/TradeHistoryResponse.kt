@@ -11,8 +11,8 @@ data class TradeHistoryResponse(
     val makerUsername: String?,
     val makerTradeTotal: Int?,
     val makerTradeRate: Double?,
-    val trades: List<TradeDetailsResponse?>?,
-    val orders: List<TradeOrderDetailsResponse?>?,
+    val trades: List<TradeResponse?>?,
+    val orders: List<TradeOrderResponse?>?,
     val messages: List<ChatMessageResponse?>?
 ) {
 

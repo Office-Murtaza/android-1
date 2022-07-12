@@ -15,7 +15,6 @@ import com.belcobtm.domain.trade.model.filter.TradeFilter
 import com.belcobtm.domain.trade.model.order.OrderDomainModel
 import com.belcobtm.domain.trade.model.trade.TradeDomainModel
 import com.belcobtm.domain.trade.order.mapper.ChatMessageMapper
-import com.belcobtm.domain.wallet.LocalCoinType
 import com.belcobtm.presentation.screens.wallet.trade.list.filter.model.TradeFilterItem
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
@@ -122,7 +121,6 @@ class TradeInMemoryCache(
         withContext(cacheDispatcher) {
             cache.value?.map { history ->
                 val mappedOrder = order.mapToDomain(
-                    order.tradeId?.let { history.trades[it]?.coin } ?: LocalCoinType.CATM, // nothing else to make default
                     history.orders[order.id]?.chatHistory.orEmpty()
                 )
                 val orders = HashMap(history.orders)

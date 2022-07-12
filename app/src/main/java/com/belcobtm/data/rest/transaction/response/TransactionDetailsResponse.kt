@@ -7,14 +7,15 @@ import com.belcobtm.domain.transaction.type.TransactionType
 import java.util.Calendar
 
 data class TransactionDetailsResponse(
+    val id: String?,
     val hash: String?,
     val gbId: String?,
     val link: String?,
     val coin: String?,
     val userId: String?,
     val type: String?,
-    val status: TransactionStatusType?,
-    val cashStatus: TransactionCashStatusType?,
+    val status: String?,
+    val cashStatus: String?,
     val cryptoAmount: Double?,
     val fiatAmount: Double?,
     val feePercent: Double?,
@@ -57,8 +58,8 @@ data class TransactionDetailsResponse(
         feePercent = feePercent,
         confiramtions = confirmations,
         type = TransactionType.values().firstOrNull { it.name == type } ?: TransactionType.UNKNOWN,
-        statusType = status ?: TransactionStatusType.UNKNOWN,
-        cashStatusType = cashStatus ?: TransactionCashStatusType.UNKNOWN
+        statusType = TransactionStatusType.values().firstOrNull { it.name == status } ?: TransactionStatusType.UNKNOWN,
+        cashStatusType = TransactionCashStatusType.values().firstOrNull { it.name == cashStatus } ?: TransactionCashStatusType.UNKNOWN
     )
 
 }
