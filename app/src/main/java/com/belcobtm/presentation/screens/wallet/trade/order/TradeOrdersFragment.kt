@@ -29,9 +29,6 @@ class TradeOrdersFragment : BaseFragment<FragmentTradeOrdersBinding>() {
         }
     }
 
-    override val isToolbarEnabled: Boolean
-        get() = false
-
     private val parentViewModel by lazy {
         requireParentFragment().viewModel<TradeContainerViewModel>().value
     }
@@ -46,12 +43,13 @@ class TradeOrdersFragment : BaseFragment<FragmentTradeOrdersBinding>() {
         orderList.addItemDecoration(DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL))
     }
 
+    // to not create second toolbar in child fragment and leave the one in parent
     override fun initToolbar() {
         baseBinding.toolbarView.hide()
     }
 
     override fun updateActionBar() {
-
+        // to not create second toolbar in child fragment and leave the one in parent
     }
 
     override fun FragmentTradeOrdersBinding.initObservers() {

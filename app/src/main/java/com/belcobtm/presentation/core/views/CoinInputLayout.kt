@@ -16,7 +16,7 @@ import androidx.annotation.DrawableRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
-import androidx.core.view.isInvisible
+import androidx.core.view.isVisible
 import com.belcobtm.R
 import com.belcobtm.databinding.ViewCoinInputLayoutBinding
 import com.belcobtm.presentation.tools.extensions.actionDoneListener
@@ -110,8 +110,7 @@ class CoinInputLayout @JvmOverloads constructor(
     }
 
     fun setMaxButtonVisible(visible: Boolean) {
-        binding.tvMax.isEnabled = visible
-        binding.tvMax.isInvisible = visible.not()
+        binding.tvMax.isVisible = visible
     }
 
     fun setOnMaxClickListener(listener: OnClickListener) {

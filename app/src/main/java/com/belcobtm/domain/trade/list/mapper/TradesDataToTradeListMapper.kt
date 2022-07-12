@@ -22,9 +22,7 @@ class TradesDataToTradeListMapper(
         tradeData.trades
             .values
             .asSequence()
-            .filter { it.type == params.tradeType }
-            .filter { it.status != TradeStatus.DELETED }
-            .filter { it.makerId != userId }
+            .filter { it.type == params.tradeType && it.status != TradeStatus.DELETED && it.makerId != userId }
             .let { sequence ->
                 filter?.let { filter ->
                     sequence.filter { it.coin.name == filter.coinCode }

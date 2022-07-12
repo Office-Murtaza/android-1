@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import androidx.core.net.toUri
 import androidx.navigation.fragment.findNavController
 import com.belcobtm.R
-import com.belcobtm.databinding.FragmentCreateTradeBinding
+import com.belcobtm.databinding.FragmentTradeCreateBinding
 import com.belcobtm.domain.Failure
 import com.belcobtm.domain.service.ServiceType
 import com.belcobtm.domain.trade.model.trade.TradeType
@@ -38,7 +38,7 @@ import permissions.dispatcher.OnPermissionDenied
 import permissions.dispatcher.RuntimePermissions
 
 @RuntimePermissions
-class CreateTradeFragment : BaseFragment<FragmentCreateTradeBinding>() {
+class CreateTradeFragment : BaseFragment<FragmentTradeCreateBinding>() {
 
     override val isBackButtonEnabled: Boolean
         get() = true
@@ -91,15 +91,15 @@ class CreateTradeFragment : BaseFragment<FragmentCreateTradeBinding>() {
     override fun createBinding(
         inflater: LayoutInflater,
         container: ViewGroup?
-    ): FragmentCreateTradeBinding =
-        FragmentCreateTradeBinding.inflate(inflater, container, false)
+    ): FragmentTradeCreateBinding =
+        FragmentTradeCreateBinding.inflate(inflater, container, false)
 
-    override fun FragmentCreateTradeBinding.initViews() {
+    override fun FragmentTradeCreateBinding.initViews() {
         setToolbarTitle(R.string.create_trade_screen_title)
         coinDetailsView.setErrorEnabled(false)
         coinDetailsView.getEditText().setText("0")
         coinDetailsView.setHint(requireContext().getString(R.string.create_trade_price_input_hint))
-        coinDetailsView.setPadding(0, 0, 0, 0)
+
         paymentOptions.adapter = adapter
         paymentOptions.setHasFixedSize(true)
         paymentOptions.overScrollMode = View.OVER_SCROLL_NEVER
@@ -109,7 +109,7 @@ class CreateTradeFragment : BaseFragment<FragmentCreateTradeBinding>() {
         binding.amountMaxLimitEditText.setText(initialMaxAmountValue.toString())
     }
 
-    override fun FragmentCreateTradeBinding.initObservers() {
+    override fun FragmentTradeCreateBinding.initObservers() {
         viewModel.selectedCoin.observe(viewLifecycleOwner, ::setCoinData)
         viewModel.cryptoAmountError.observe(viewLifecycleOwner) {
             coinDetailsView.setErrorText(it, true)
@@ -170,7 +170,7 @@ class CreateTradeFragment : BaseFragment<FragmentCreateTradeBinding>() {
             })
     }
 
-    override fun FragmentCreateTradeBinding.initListeners() {
+    override fun FragmentTradeCreateBinding.initListeners() {
         setupTradeTypeCheckChangeListener(tradeTypeBuyChip)
         setupTradeTypeCheckChangeListener(tradeTypeSellChip)
         coinDetailsView.getEditText().addTextChangedListener(priceTextWatcher)

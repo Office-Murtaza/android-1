@@ -8,20 +8,20 @@ import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.navigation.fragment.navArgs
 import com.belcobtm.R
-import com.belcobtm.domain.trade.model.trade.TradeType
-import com.belcobtm.databinding.FragmentMyTradeDetailsBinding
+import com.belcobtm.databinding.FragmentTradeMyDetailsBinding
 import com.belcobtm.domain.Failure
+import com.belcobtm.domain.trade.model.trade.TradeType
 import com.belcobtm.presentation.core.adapter.MultiTypeAdapter
-import com.belcobtm.presentation.tools.extensions.resIcon
-import com.belcobtm.presentation.tools.extensions.setDrawableStart
-import com.belcobtm.presentation.tools.extensions.toggle
 import com.belcobtm.presentation.core.helper.AlertHelper
 import com.belcobtm.presentation.core.mvvm.LoadingData
 import com.belcobtm.presentation.core.ui.fragment.BaseFragment
 import com.belcobtm.presentation.screens.wallet.trade.list.delegate.TradePaymentOptionDelegate
+import com.belcobtm.presentation.tools.extensions.resIcon
+import com.belcobtm.presentation.tools.extensions.setDrawableStart
+import com.belcobtm.presentation.tools.extensions.toggle
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class MyTradeDetailsFragment : BaseFragment<FragmentMyTradeDetailsBinding>() {
+class MyTradeDetailsFragment : BaseFragment<FragmentTradeMyDetailsBinding>() {
 
     override var isBackButtonEnabled: Boolean = true
 
@@ -44,8 +44,8 @@ class MyTradeDetailsFragment : BaseFragment<FragmentMyTradeDetailsBinding>() {
     override fun createBinding(
         inflater: LayoutInflater,
         container: ViewGroup?
-    ): FragmentMyTradeDetailsBinding =
-        FragmentMyTradeDetailsBinding.inflate(inflater, container, false)
+    ): FragmentTradeMyDetailsBinding =
+        FragmentTradeMyDetailsBinding.inflate(inflater, container, false)
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -57,7 +57,7 @@ class MyTradeDetailsFragment : BaseFragment<FragmentMyTradeDetailsBinding>() {
         return root
     }
 
-    override fun FragmentMyTradeDetailsBinding.initListeners() {
+    override fun FragmentTradeMyDetailsBinding.initListeners() {
         editButton.setOnClickListener {
             navigate(MyTradeDetailsFragmentDirections.toEditMyTradeDetails(args.tradeId))
         }
@@ -66,12 +66,12 @@ class MyTradeDetailsFragment : BaseFragment<FragmentMyTradeDetailsBinding>() {
         }
     }
 
-    override fun FragmentMyTradeDetailsBinding.initViews() {
+    override fun FragmentTradeMyDetailsBinding.initViews() {
         setToolbarTitle(R.string.my_trade_details_screen_title)
         paymentOptions.adapter = adapter
     }
 
-    override fun FragmentMyTradeDetailsBinding.initObservers() {
+    override fun FragmentTradeMyDetailsBinding.initObservers() {
         viewModel.initialLoadingData.listen()
         viewModel.price.observe(viewLifecycleOwner, price::setText)
         viewModel.paymentOptions.observe(viewLifecycleOwner, adapter::update)
@@ -147,4 +147,5 @@ class MyTradeDetailsFragment : BaseFragment<FragmentMyTradeDetailsBinding>() {
                 }
             })
     }
+
 }

@@ -299,7 +299,7 @@
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/limitDetailsButton"
-            style="@style/Button.Secondary.NoOutlined"
+            style="@style/Button.Transparent"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/defaultMargin"

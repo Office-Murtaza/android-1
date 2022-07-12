@@ -8,15 +8,15 @@ import com.belcobtm.data.websockets.base.model.StompSocketRequest
 import com.belcobtm.data.websockets.manager.SocketManager.Companion.DESTINATION_HEADER
 import com.belcobtm.data.websockets.manager.SocketManager.Companion.ID_HEADER
 import com.belcobtm.data.websockets.manager.WebSocketManager
-import com.belcobtm.domain.mapSuspend
+import com.belcobtm.domain.Either
 import com.squareup.moshi.Moshi
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.filterIsInstance
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 
 class WebSocketTradesObserver(
@@ -47,13 +47,12 @@ class WebSocketTradesObserver(
                     )
                     socketManager.subscribe(DESTINATION_VALUE, request)
                 }.filterNotNull()
-                .collectLatest { response ->
-                    response.mapSuspend { response ->
-                        moshi.adapter(TradeResponse::class.java)
-                            .fromJson(response.body)
-                            ?.let {
-                                tradeInMemoryCache.updateTrades(it)
-                            }
+                .onEach { response ->
+                    if (response.isRight) {
+                        val tradeResponse = (response as Either.Right).b.body
+                        moshi.adapter(TradeResponse::class.java).fromJson(tradeResponse)?.let {
+                            tradeInMemoryCache.updateTrades(it)
+                        }
                     }
                 }
         }

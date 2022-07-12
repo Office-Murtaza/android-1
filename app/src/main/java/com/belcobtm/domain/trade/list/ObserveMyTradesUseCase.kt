@@ -1,15 +1,13 @@
 package com.belcobtm.domain.trade.list
 
-import com.belcobtm.domain.trade.model.TradeHistoryDomainModel
 import com.belcobtm.domain.Either
 import com.belcobtm.domain.Failure
 import com.belcobtm.domain.PreferencesInteractor
 import com.belcobtm.domain.trade.TradeRepository
 import com.belcobtm.domain.trade.list.mapper.TradesDataToMyTradeMapper
-import com.belcobtm.presentation.core.adapter.model.ListItem
-import kotlinx.coroutines.Dispatchers
+import com.belcobtm.domain.trade.model.TradeHistoryDomainModel
+import com.belcobtm.presentation.screens.wallet.trade.list.model.TradeItem
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 
 class ObserveMyTradesUseCase(
@@ -18,7 +16,7 @@ class ObserveMyTradesUseCase(
     private val mapper: TradesDataToMyTradeMapper
 ) {
 
-    operator fun invoke(): Flow<Either<Failure, List<ListItem>>?> =
+    operator fun invoke(): Flow<Either<Failure, List<TradeItem>>?> =
         tradeRepository.observeTradeData()
             .map {
                 when {
@@ -28,6 +26,6 @@ class ObserveMyTradesUseCase(
                     else ->
                         it as Either.Left<Failure>
                 }
-            }.flowOn(Dispatchers.Default)
+            }
 
 }

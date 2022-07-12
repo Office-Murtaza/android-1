@@ -24,9 +24,10 @@ class ObserveTradesUseCase(
                 tradeData.isRight ->
                     Either.Right(
                         mapper.map(
-                            (tradeData as Either.Right<TradeHistoryDomainModel>).b,
-                            params, filter,
-                            preferences.userId
+                            tradeData = (tradeData as Either.Right<TradeHistoryDomainModel>).b,
+                            params = params,
+                            filter = filter,
+                            userId = preferences.userId
                         )
                     )
                 else ->

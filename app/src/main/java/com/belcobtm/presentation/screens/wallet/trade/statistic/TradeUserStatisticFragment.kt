@@ -17,9 +17,6 @@ import org.koin.core.qualifier.named
 
 class TradeUserStatisticFragment : BaseFragment<FragmentTradeUserInfoBinding>() {
 
-    override val isToolbarEnabled: Boolean
-        get() = false
-
     private val parentViewModel by lazy {
         requireParentFragment().viewModel<TradeContainerViewModel>().value
     }
@@ -33,12 +30,13 @@ class TradeUserStatisticFragment : BaseFragment<FragmentTradeUserInfoBinding>() 
     override fun createBinding(inflater: LayoutInflater, container: ViewGroup?): FragmentTradeUserInfoBinding =
         FragmentTradeUserInfoBinding.inflate(inflater, container, false)
 
-    override fun updateActionBar() {
-
-    }
-
+    // to not create second toolbar in child fragment and leave the one in parent
     override fun initToolbar() {
         baseBinding.toolbarView.hide()
+    }
+
+    override fun updateActionBar() {
+        // to not create second toolbar in child fragment and leave the one in parent
     }
 
     override fun FragmentTradeUserInfoBinding.initObservers() {

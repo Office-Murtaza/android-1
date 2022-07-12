@@ -12,8 +12,9 @@ import com.belcobtm.presentation.core.adapter.model.ListItem
 import com.belcobtm.presentation.core.mvvm.LoadingData
 import com.belcobtm.presentation.screens.wallet.trade.list.model.TradeItem
 import com.belcobtm.presentation.screens.wallet.trade.mytrade.list.model.TradesLoadingItem
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.flow.filterNotNull
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 
 class MyTradesViewModel(
     private val observeMyTradesUseCase: ObserveMyTradesUseCase,
@@ -26,9 +27,8 @@ class MyTradesViewModel(
 
     private val tradeToDelete = MutableLiveData<TradeItem?>()
 
-    private val _tradesLiveData = MutableLiveData<Either<Failure, List<ListItem>>?>()
-    val tradesLiveData: LiveData<Either<Failure, List<ListItem>>?>
-        get() = _tradesLiveData
+    private val _tradesLiveData = MutableLiveData<Either<Failure, List<ListItem>>>()
+    val tradesLiveData: LiveData<Either<Failure, List<ListItem>>> = _tradesLiveData
 
     init {
         tradeToDelete.observeForever {
@@ -36,14 +36,13 @@ class MyTradesViewModel(
                 deleteTrade(it.tradeId)
             }
         }
+        subscribeOnMyTrades()
     }
 
-    fun observeMyTrades() {
-        viewModelScope.launch {
-            observeMyTradesUseCase().collectLatest {
-                _tradesLiveData.value = it
-            }
-        }
+    private fun subscribeOnMyTrades() {
+        observeMyTradesUseCase().filterNotNull().onEach {
+            _tradesLiveData.value = it
+        }.launchIn(viewModelScope)
     }
 
     fun delete(item: TradeItem) {
@@ -62,4 +61,5 @@ class MyTradesViewModel(
             onError = { _deleteTradeLoadingData.value = LoadingData.Error(it) }
         )
     }
+
 }

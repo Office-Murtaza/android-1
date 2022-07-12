@@ -139,7 +139,7 @@
 
     <Button
         android:id="@+id/limit_details"
-        style="@style/Button.Secondary.NoOutlined"
+        style="@style/Button.Transparent"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_half"

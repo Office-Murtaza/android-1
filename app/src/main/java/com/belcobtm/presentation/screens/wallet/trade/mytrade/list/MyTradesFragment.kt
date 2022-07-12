@@ -1,34 +1,25 @@
 package com.belcobtm.presentation.screens.wallet.trade.mytrade.list
 
-import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.DividerItemDecoration
 import com.belcobtm.R
-import com.belcobtm.databinding.FragmentMyTradesBinding
+import com.belcobtm.databinding.FragmentTradeMyListBinding
 import com.belcobtm.domain.Either
 import com.belcobtm.domain.Failure
 import com.belcobtm.presentation.core.adapter.MultiTypeAdapter
 import com.belcobtm.presentation.core.adapter.model.ListItem
-import com.belcobtm.presentation.tools.extensions.hide
 import com.belcobtm.presentation.core.ui.fragment.BaseFragment
 import com.belcobtm.presentation.screens.wallet.trade.container.TradeContainerFragmentDirections
 import com.belcobtm.presentation.screens.wallet.trade.container.TradeContainerViewModel
 import com.belcobtm.presentation.screens.wallet.trade.mytrade.list.delegate.MyTradeDelegate
 import com.belcobtm.presentation.screens.wallet.trade.mytrade.list.delegate.MyTradesLoadingDelegate
-import com.belcobtm.presentation.screens.wallet.trade.mytrade.list.delegate.MyTradesNoTradesDelegate
+import com.belcobtm.presentation.tools.extensions.hide
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class MyTradesFragment : BaseFragment<FragmentMyTradesBinding>() {
-
-    override val isToolbarEnabled: Boolean
-        get() = false
-
-    override val isBackButtonEnabled: Boolean
-        get() = false
-
-    override var isMenuEnabled: Boolean = false
+class MyTradesFragment : BaseFragment<FragmentTradeMyListBinding>() {
 
     override val retryListener: View.OnClickListener =
         View.OnClickListener { viewModel.retryDelete() }
@@ -38,19 +29,8 @@ class MyTradesFragment : BaseFragment<FragmentMyTradesBinding>() {
             registerDelegate(MyTradeDelegate(viewModel::delete) {
                 navigate(TradeContainerFragmentDirections.toMyTradeDetails(it.tradeId))
             })
-            registerDelegate(MyTradesNoTradesDelegate {
-                navigate(R.id.create_trade_fragment)
-            })
             registerDelegate(MyTradesLoadingDelegate())
         }
-    }
-
-    override fun initToolbar() {
-        baseBinding.toolbarView.hide()
-    }
-
-    override fun updateActionBar() {
-
     }
 
     private val viewModel by viewModel<MyTradesViewModel>()
@@ -59,31 +39,48 @@ class MyTradesFragment : BaseFragment<FragmentMyTradesBinding>() {
         requireParentFragment().viewModel<TradeContainerViewModel>().value
     }
 
+    // to not create second toolbar in child fragment and leave the one in parent
+    override fun initToolbar() {
+        baseBinding.toolbarView.hide()
+    }
+
+    override fun updateActionBar() {
+        // to not create second toolbar in child fragment and leave the one in parent
+    }
+
     override fun createBinding(
         inflater: LayoutInflater,
         container: ViewGroup?
-    ): FragmentMyTradesBinding = FragmentMyTradesBinding.inflate(inflater, container, false)
+    ): FragmentTradeMyListBinding = FragmentTradeMyListBinding.inflate(inflater, container, false)
 
-    override fun FragmentMyTradesBinding.initViews() {
-        val dividerItemDecoration =
-            DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL)
-        myTradesList.adapter = adapter
-        myTradesList.addItemDecoration(dividerItemDecoration)
+    override fun FragmentTradeMyListBinding.initViews() {
+        tradesRecyclerView.apply {
+            adapter = this@MyTradesFragment.adapter
+            addItemDecoration(
+                DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL)
+            )
+        }
+        openCreateTradeButton.setOnClickListener {
+            navigate(R.id.create_trade_fragment)
+        }
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        viewModel.observeMyTrades()
-    }
-
-    override fun FragmentMyTradesBinding.initObservers() {
+    override fun FragmentTradeMyListBinding.initObservers() {
         viewModel.tradesLiveData.observe(viewLifecycleOwner) {
-            if (it?.isRight == true) {
-                adapter.update((it as Either.Right<List<ListItem>>).b)
+            if (it.isRight) {
+                val list = (it as Either.Right<List<ListItem>>).b
+                toggleEmptyState(list.isEmpty())
+                adapter.update(list)
             } else {
                 parentViewModel.showError((it as Either.Left<Failure>).a)
             }
         }
         viewModel.deleteTradeLoadingData.listen()
     }
+
+    private fun toggleEmptyState(isEmpty: Boolean) {
+        binding.tradesRecyclerView.isVisible = isEmpty.not()
+        binding.emptyStateLayout.isVisible = isEmpty
+    }
+
 }

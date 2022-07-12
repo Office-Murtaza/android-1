@@ -8,6 +8,7 @@ import com.belcobtm.data.disk.database.wallet.toDataItem
 import com.belcobtm.data.disk.shared.preferences.SharedPreferencesHelper
 import com.belcobtm.data.inmemory.transactions.TransactionsInMemoryCache
 import com.belcobtm.data.rest.transaction.TransactionApiService
+import com.belcobtm.data.rest.transaction.response.TransactionDetailsResponse
 import com.belcobtm.data.rest.transaction.response.hash.UtxoItemData
 import com.belcobtm.domain.Either
 import com.belcobtm.domain.Failure
@@ -125,7 +126,8 @@ class TransactionRepositoryImpl(
                 useMaxAmountFlag, toAddress, coinType, fromCoinAmount,
                 fromTransactionPlan, utxosPerCoint[fromCoin].orEmpty()
             )
-        return if (hashResponse.isRight) hashResponse as Either.Right else hashResponse as Either.Left
+        return if (hashResponse.isRight) hashResponse as Either.Right
+        else hashResponse as Either.Left
     }
 
     override suspend fun receiverAccountActivated(
@@ -166,10 +168,7 @@ class TransactionRepositoryImpl(
                 price = price,
                 fiatAmount = fiatAmount
             )
-            if (transaction.isRight) {
-                cache.update((transaction as Either.Right).b)
-                Either.Right(Unit)
-            } else transaction as Either.Left
+            return handleTransactionResponse(transaction)
         } else {
             hashResponse as Either.Left
         }
@@ -214,10 +213,7 @@ class TransactionRepositoryImpl(
                 fromAddress = fromAddress,
                 toAddress = toAddress,
             )
-            if (transaction.isRight) {
-                cache.update((transaction as Either.Right).b)
-                Either.Right(Unit)
-            } else transaction as Either.Left
+            handleTransactionResponse(transaction)
         } else {
             hashResponse as Either.Left
         }
@@ -254,10 +250,7 @@ class TransactionRepositoryImpl(
             price = getCoinByCode(coin).priceUsd,
             fee = fee
         )
-        return if (transaction.isRight) {
-            cache.update((transaction as Either.Right).b)
-            Either.Right(Unit)
-        } else transaction as Either.Left
+        return handleTransactionResponse(transaction)
     }
 
     override suspend fun exchange(
@@ -303,13 +296,8 @@ class TransactionRepositoryImpl(
                 toAddress = toAddressSend,
                 location = location
             )
-            if (transaction.isRight) {
-                cache.update((transaction as Either.Right).b)
-                Either.Right(Unit)
-            } else transaction as Either.Left
-        } else {
-            hashResponse as Either.Left
-        }
+            return handleTransactionResponse(transaction)
+        } else hashResponse as Either.Left
     }
 
     override suspend fun tradeRecallTransactionComplete(
@@ -324,10 +312,7 @@ class TransactionRepositoryImpl(
             price = price,
             fiatAmount = fiatAmount,
         )
-        return if (transaction.isRight) {
-            cache.update((transaction as Either.Right).b)
-            Either.Right(Unit)
-        } else transaction as Either.Left
+        return handleTransactionResponse(transaction)
     }
 
     override suspend fun tradeReserveTransactionCreate(
@@ -374,10 +359,7 @@ class TransactionRepositoryImpl(
             price = price,
             fiatAmount = fiatAmount
         )
-        return if (transaction.isRight) {
-            cache.update((transaction as Either.Right).b)
-            Either.Right(Unit)
-        } else transaction as Either.Left
+        return handleTransactionResponse(transaction)
     }
 
     override suspend fun stakeDetails(
@@ -395,12 +377,12 @@ class TransactionRepositoryImpl(
         val coinItem = getCoinByCode(coinCode)
         val toAddress = coinItem.details.walletAddress
         val fromAddress = coinItem.publicKey
-        val hash = transactionRepository.createTransactionStakeHash(
+        val hashResponse = transactionRepository.createTransactionStakeHash(
             cryptoAmount,
             coinItem.details.contractAddress,
             transactionPlanItem
         )
-        return hash.flatMapSuspend {
+        return if (hashResponse.isRight) {
             val transaction = apiService.stakeCreate(
                 coinCode = coinCode,
                 fromAddress = fromAddress,
@@ -409,14 +391,11 @@ class TransactionRepositoryImpl(
                 fee = transactionPlanItem.nativeTxFee,
                 feePercent = feePercent,
                 fiatAMount = fiatAMount,
-                hex = it,
+                hex = (hashResponse as Either.Right).b,
                 location = location
             )
-            if (transaction.isRight) {
-                cache.update((transaction as Either.Right).b)
-                Either.Right(Unit)
-            } else transaction as Either.Left
-        }
+            handleTransactionResponse(transaction)
+        } else hashResponse as Either.Left
     }
 
     override suspend fun stakeCancel(
@@ -425,7 +404,7 @@ class TransactionRepositoryImpl(
         location: Location
     ): Either<Failure, Unit> {
         val coinItem = getCoinByCode(coinCode)
-        val hash = transactionRepository.createTransactionStakeCancelHash(
+        val hashResponse = transactionRepository.createTransactionStakeCancelHash(
             0.0,
             coinItem.details.contractAddress,
             transactionPlanItem
@@ -433,21 +412,18 @@ class TransactionRepositoryImpl(
         val fromAddress = coinItem.details.walletAddress
         val toAddress = coinItem.publicKey
         val fee = transactionPlanItem.nativeTxFee
-        return hash.flatMapSuspend {
+        return if (hashResponse.isRight) {
             val transaction = apiService.stakeCancel(
                 coinCode = coinCode,
                 fromAddress = fromAddress,
                 toAddress = toAddress,
                 cryptoAmount = 0.0,
                 fee = fee,
-                hex = it,
+                hex = (hashResponse as Either.Right).b,
                 location = location
             )
-            if (transaction.isRight) {
-                cache.update((transaction as Either.Right).b)
-                Either.Right(Unit)
-            } else transaction as Either.Left
-        }
+            handleTransactionResponse(transaction)
+        } else hashResponse as Either.Left
     }
 
     override suspend fun stakeWithdraw(
@@ -457,7 +433,7 @@ class TransactionRepositoryImpl(
         location: Location
     ): Either<Failure, Unit> {
         val coinItem = getCoinByCode(coinCode)
-        val hash = transactionRepository.createTransactionUnStakeHash(
+        val hashResponse = transactionRepository.createTransactionUnStakeHash(
             cryptoAmount,
             coinItem.details.contractAddress,
             transactionPlanItem
@@ -465,22 +441,29 @@ class TransactionRepositoryImpl(
         val fromAddress = coinItem.details.walletAddress
         val toAddress = coinItem.publicKey
         val fee = transactionPlanItem.nativeTxFee
-        return hash.flatMapSuspend {
+        return if (hashResponse.isRight) {
             val transaction = apiService.unStake(
                 coinCode = coinCode,
                 fromAddress = fromAddress,
                 toAddress = toAddress,
                 cryptoAmount = cryptoAmount,
                 fee = fee,
-                hex = it,
+                hex = (hashResponse as Either.Right).b,
                 location = location
             )
             if (transaction.isRight) {
                 cache.update((transaction as Either.Right).b)
                 Either.Right(Unit)
             } else transaction as Either.Left
-        }
+        } else hashResponse as Either.Left
     }
+
+    private fun handleTransactionResponse(
+        transaction: Either<Failure, TransactionDetailsResponse>
+    ): Either<Failure, Unit> = if (transaction.isRight) {
+        cache.update((transaction as Either.Right).b)
+        Either.Right(Unit)
+    } else transaction as Either.Left
 
     override suspend fun getTransferAddress(
         phone: String,

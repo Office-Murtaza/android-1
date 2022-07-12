@@ -33,9 +33,6 @@ class TradeListFragment : BaseFragment<FragmentTradeListBinding>() {
             }
     }
 
-    override val isToolbarEnabled: Boolean
-        get() = false
-
     private val parentViewModel by lazy {
         requireParentFragment().viewModel<TradeContainerViewModel>().value
     }
@@ -50,12 +47,13 @@ class TradeListFragment : BaseFragment<FragmentTradeListBinding>() {
         }
     }
 
+    // to not create second toolbar in child fragment and leave the one in parent
     override fun initToolbar() {
         baseBinding.toolbarView.hide()
     }
 
     override fun updateActionBar() {
-
+        // to not create second toolbar in child fragment and leave the one in parent
     }
 
     override fun createBinding(inflater: LayoutInflater, container: ViewGroup?): FragmentTradeListBinding =

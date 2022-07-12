@@ -8,10 +8,10 @@ import androidx.core.net.toUri
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.belcobtm.R
+import com.belcobtm.databinding.FragmentTradeEditBinding
+import com.belcobtm.domain.Failure
 import com.belcobtm.domain.service.ServiceType
 import com.belcobtm.domain.trade.model.trade.TradeType
-import com.belcobtm.databinding.FragmentEditTradeBinding
-import com.belcobtm.domain.Failure
 import com.belcobtm.domain.wallet.LocalCoinType
 import com.belcobtm.domain.wallet.item.CoinDataItem
 import com.belcobtm.presentation.core.adapter.MultiTypeAdapter
@@ -35,7 +35,7 @@ import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.qualifier.named
 
-class EditTradeFragment : BaseFragment<FragmentEditTradeBinding>() {
+class EditTradeFragment : BaseFragment<FragmentTradeEditBinding>() {
 
     override var isBackButtonEnabled: Boolean = true
 
@@ -80,10 +80,10 @@ class EditTradeFragment : BaseFragment<FragmentEditTradeBinding>() {
         return root
     }
 
-    override fun createBinding(inflater: LayoutInflater, container: ViewGroup?): FragmentEditTradeBinding =
-        FragmentEditTradeBinding.inflate(inflater, container, false)
+    override fun createBinding(inflater: LayoutInflater, container: ViewGroup?): FragmentTradeEditBinding =
+        FragmentTradeEditBinding.inflate(inflater, container, false)
 
-    override fun FragmentEditTradeBinding.initViews() {
+    override fun FragmentTradeEditBinding.initViews() {
         setToolbarTitle(R.string.edit_trade_screen_title)
         coinDetailsView.setErrorEnabled(false)
         coinDetailsView.getEditText().setText("0")
@@ -94,7 +94,7 @@ class EditTradeFragment : BaseFragment<FragmentEditTradeBinding>() {
         paymentOptions.overScrollMode = View.OVER_SCROLL_NEVER
     }
 
-    override fun FragmentEditTradeBinding.initObservers() {
+    override fun FragmentTradeEditBinding.initObservers() {
         viewModel.selectedCoin.observe(viewLifecycleOwner, ::setCoinData)
         viewModel.initialTerms.observe(viewLifecycleOwner) {
             termsInput.editText?.setText(it)
@@ -171,7 +171,7 @@ class EditTradeFragment : BaseFragment<FragmentEditTradeBinding>() {
             })
     }
 
-    override fun FragmentEditTradeBinding.initListeners() {
+    override fun FragmentTradeEditBinding.initListeners() {
         setupTradeTypeCheckChangeListener(tradeTypeBuyChip)
         setupTradeTypeCheckChangeListener(tradeTypeSellChip)
         coinDetailsView.getEditText().addTextChangedListener(priceTextWatcher)

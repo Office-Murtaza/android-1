@@ -427,7 +427,7 @@
     <string name="transaction_details_to_phone">To Phone</string>
     <string name="transaction_details_swap_amount">Swap Amount</string>
     <string name="transaction_details_sell_amount">Fiat Amount</string>
-    <string name="transaction_details_fee_percent">Platform fee</string>
+    <string name="transaction_details_fee_percent">Platform Fee</string>
     <string name="transaction_details_fee_percent_value_format">%1$s%%</string>
     <string name="transaction_details_hash">Hash</string>
     <string name="transaction_details_swap_id">Swap Id</string>
@@ -1006,7 +1006,7 @@
     <string name="services_dialog_tx_limit_label">Tx Limit</string>
     <string name="services_dialog_daily_limit_label">Daily Limit</string>
     <string name="services_dialog_remain_limit_label">Remain Limit</string>
-    <string name="limit_details_button_title">LIMIT DETAILS</string>
+    <string name="limit_details_button_title">Limit details</string>
     <string name="limits_exceeded_validation_message">Converted amount exceeds limits</string>
     <string name="location_required_on_trade_creation">Trade not created, please share your location</string>
     <string name="settings_verify_dialog_title">Verification</string>

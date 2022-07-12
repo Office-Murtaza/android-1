@@ -40,8 +40,7 @@ class TradeInMemoryCache(
     private val tradeFilter = MutableStateFlow<TradeFilter?>(null)
     private val lastSeenMessageTimestamp = MutableStateFlow<Long>(0)
 
-    val observableData: StateFlow<Either<Failure, TradeHistoryDomainModel>?>
-        get() = cache
+    val observableData: StateFlow<Either<Failure, TradeHistoryDomainModel>?> = cache
 
     val observableLastSeenMessageTimestamp: StateFlow<Long>
         get() = lastSeenMessageTimestamp
