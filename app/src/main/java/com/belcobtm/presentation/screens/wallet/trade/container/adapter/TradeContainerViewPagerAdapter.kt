@@ -14,6 +14,7 @@ class TradeContainerViewPagerAdapter(
 ) : FragmentStateAdapter(fragmentManager, lifecycle) {
 
     companion object {
+
         const val BUY_TRADES_TAB_POSITION = 0
         const val SELL_TRADES_TAB_POSITION = 1
         const val TRADE_INFO_TAB_POSITION = 2
@@ -23,9 +24,10 @@ class TradeContainerViewPagerAdapter(
 
     override fun createFragment(position: Int): Fragment =
         when (position) {
-            BUY_TRADES_TAB_POSITION -> TradeListFragment.newInstance(TradeType.SELL)
-            SELL_TRADES_TAB_POSITION -> TradeListFragment.newInstance(TradeType.BUY)
+            BUY_TRADES_TAB_POSITION -> TradeListFragment.newInstance(TradeType.BUY)
+            SELL_TRADES_TAB_POSITION -> TradeListFragment.newInstance(TradeType.SELL)
             TRADE_INFO_TAB_POSITION -> TradeInfoContainerFragment()
             else -> throw RuntimeException("Illegal position of tab $position")
         }
+
 }

@@ -165,11 +165,15 @@ class TradeInMemoryCache(
         withContext(chatDispatcher) {
             val mappedMessage = chatMessageMapper.map(response, isFromHistory = false)
             cache.value?.map {
-                val chatOrder = it.orders.getValue(response.orderId.orEmpty())
-                val orders = HashMap(it.orders)
-                orders[chatOrder.id] =
-                    chatOrder.copy(chatHistory = chatOrder.chatHistory + mappedMessage)
-                cache.value = Either.Right(it.copy(orders = orders))
+                it.orders.getOrDefault(
+                    key = response.orderId.orEmpty(),
+                    defaultValue = null
+                )?.let { chatOrder ->
+                    val orders = HashMap(it.orders)
+                    orders[chatOrder.id] =
+                        chatOrder.copy(chatHistory = chatOrder.chatHistory + mappedMessage)
+                    cache.value = Either.Right(it.copy(orders = orders))
+                }
             }
         }
     }

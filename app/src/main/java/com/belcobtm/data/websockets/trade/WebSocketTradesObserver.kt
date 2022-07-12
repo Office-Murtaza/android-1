@@ -13,6 +13,7 @@ import com.squareup.moshi.Moshi
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.filterIsInstance
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.flatMapLatest
@@ -47,7 +48,7 @@ class WebSocketTradesObserver(
                     )
                     socketManager.subscribe(DESTINATION_VALUE, request)
                 }.filterNotNull()
-                .onEach { response ->
+                .collectLatest { response ->
                     if (response.isRight) {
                         val tradeResponse = (response as Either.Right).b.body
                         moshi.adapter(TradeResponse::class.java).fromJson(tradeResponse)?.let {
