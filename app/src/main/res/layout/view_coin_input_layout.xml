@@ -27,6 +27,7 @@
             android:background="@android:color/transparent"
             android:digits="1234567890."
             android:gravity="end"
+            android:text="@string/zero"
             android:imeOptions="actionDone"
             android:inputType="numberDecimal"
             android:paddingStart="@dimen/defaultMargin"
@@ -34,8 +35,7 @@
             android:paddingEnd="@dimen/defaultMargin"
             android:paddingBottom="@dimen/margin_half"
             android:singleLine="true"
-            tools:hint="Coin amount"
-            tools:text="100" />
+            tools:hint="Coin amount" />
 
     </com.google.android.material.textfield.TextInputLayout>
 

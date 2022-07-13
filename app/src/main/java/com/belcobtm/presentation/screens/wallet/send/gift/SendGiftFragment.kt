@@ -118,7 +118,6 @@ class SendGiftFragment : BaseFragment<FragmentSendGiftBinding>(),
             .transform(CircleCrop())
             .apply(RequestOptions().override(contactImage.width, contactImage.height))
             .into(contactImage)
-        sendCoinInputLayout.getEditText().setText("0")
         amountUsdView.text = currencyFormatter.format(0.0)
     }
 

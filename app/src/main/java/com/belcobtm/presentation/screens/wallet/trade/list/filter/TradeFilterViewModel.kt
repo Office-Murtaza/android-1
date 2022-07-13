@@ -4,10 +4,10 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.belcobtm.R
-import com.belcobtm.domain.trade.model.filter.SortOption
 import com.belcobtm.domain.trade.list.filter.ApplyFilterUseCase
 import com.belcobtm.domain.trade.list.filter.LoadFilterDataUseCase
 import com.belcobtm.domain.trade.list.filter.ResetFilterUseCase
+import com.belcobtm.domain.trade.model.filter.SortOption
 import com.belcobtm.presentation.core.parser.StringParser
 import com.belcobtm.presentation.core.provider.string.StringProvider
 import com.belcobtm.presentation.screens.wallet.trade.create.model.AvailableTradePaymentOption
@@ -58,17 +58,19 @@ class TradeFilterViewModel(
 
     fun fetchInitialData() {
         loadFilterDataUseCase.invoke(Unit, onSuccess = {
-            _paymentOptions.value = it.paymentOptions
-            _coins.value = it.coins
-            _distanceEnabled.value = it.distanceFilterEnabled
-            _distanceMinLimit.value = it.minDistance
-            _initialDistanceMinLimit.value = it.minDistance
-            _distanceMaxLimit.value = it.maxDistance
-            _initialDistanceMaxLimit.value = it.maxDistance
-            _sortOption.value = it.sortOption
-        }, onError = {
-
+            processFilterData(it)
         })
+    }
+
+    private fun processFilterData(data: TradeFilterItem) {
+        _paymentOptions.value = data.paymentOptions
+        _coins.value = data.coins
+        _distanceEnabled.value = data.distanceFilterEnabled
+        _distanceMinLimit.value = data.minDistance
+        _initialDistanceMinLimit.value = data.minDistance
+        _distanceMaxLimit.value = data.maxDistance
+        _initialDistanceMaxLimit.value = data.maxDistance
+        _sortOption.value = data.sortOption
     }
 
     fun updateMinDistance(distance: Int) {
@@ -97,7 +99,10 @@ class TradeFilterViewModel(
 
     fun resetFilter() {
         resetFilterUseCase.invoke(Unit, onSuccess = {
-            fetchInitialData()
+            loadFilterDataUseCase.invoke(Unit, onSuccess = {
+                processFilterData(it)
+                applyFilter()
+            })
         })
     }
 
@@ -119,9 +124,12 @@ class TradeFilterViewModel(
             }
         }
         val newFilter = TradeFilterItem(
-            coins.value.orEmpty(), paymentOptions.value.orEmpty(),
-            distanceEnabled, minDistance, maxDistance,
-            sortOption.value ?: SortOption.PRICE
+            coins = _coins.value.orEmpty(),
+            paymentOptions = _paymentOptions.value.orEmpty(),
+            distanceFilterEnabled = distanceEnabled,
+            minDistance = minDistance,
+            maxDistance = maxDistance,
+            sortOption = _sortOption.value ?: SortOption.PRICE
         )
         applyFilterUseCase.invoke(newFilter, onSuccess = {
             _closeFilter.value = true

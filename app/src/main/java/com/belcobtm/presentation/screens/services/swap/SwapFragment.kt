@@ -93,7 +93,6 @@ class SwapFragment : BaseFragment<FragmentSwapBinding>() {
         binding.sendCoinInputLayout.apply {
             setHint(getString(R.string.text_amount))
             getEditText().apply {
-                setText("0")
                 addTextChangedListener(sendTextWatcher)
             }
             setOnMaxClickListener {
@@ -122,15 +121,12 @@ class SwapFragment : BaseFragment<FragmentSwapBinding>() {
     private fun initReceiveCoinInputLayout() {
         binding.receiveCoinInputLayout.apply {
             setHint(getString(R.string.text_amount))
-            getEditText().apply {
-                setText("0")
-                addTextChangedListener(receiveTextWatcher)
-            }
-            setOnCoinButtonClickListener(View.OnClickListener {
+            getEditText().addTextChangedListener(receiveTextWatcher)
+            setOnCoinButtonClickListener {
                 showCoinsDropDownList { selectedCoin ->
                     viewModel.setCoinToReceive(selectedCoin)
                 }
-            })
+            }
         }
     }
 

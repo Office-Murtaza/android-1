@@ -214,6 +214,7 @@
             android:layout_marginTop="@dimen/defaultMargin"
             app:checkedChip="@id/trade_type_buy_chip"
             app:layout_constraintEnd_toEndOf="@id/sort_label"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="@id/sort_label"
             app:layout_constraintTop_toBottomOf="@id/sort_label"
             app:singleSelection="true">
@@ -222,7 +223,6 @@
                 android:id="@+id/sort_by_price"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="4dp"
                 android:layout_marginTop="2dp"
                 android:layout_marginEnd="4dp"
                 android:layout_marginBottom="2dp"

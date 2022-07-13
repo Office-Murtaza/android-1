@@ -135,7 +135,6 @@ class StakingFragment : BaseFragment<FragmentStakingBinding>() {
     override fun FragmentStakingBinding.initViews() {
         setToolbarTitle(R.string.staking_screen_title)
         coinInputLayout.setHint(getString(R.string.text_amount))
-        coinInputLayout.getEditText().setText("0")
     }
 
     override fun FragmentStakingBinding.initListeners() {

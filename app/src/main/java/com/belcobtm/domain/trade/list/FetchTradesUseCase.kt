@@ -17,7 +17,9 @@ class FetchTradesUseCase(
                 tradeRepository.sendLocation(it)
             }
         }
-        return Either.Right(tradeRepository.fetchTrades(params.calculateDistanceEnabled))
+        return Either.Right(
+            tradeRepository.fetchTrades(params.calculateDistanceEnabled)
+        )
     }
 
     data class Params(val calculateDistanceEnabled: Boolean)

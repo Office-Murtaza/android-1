@@ -7,8 +7,8 @@ import android.widget.EditText
 
 fun EditText.getString(): String = text.toString()
 
-fun EditText.afterTextChanged(afterTextChanged: (Editable) -> Unit) {
-    this.addTextChangedListener(object : TextWatcher {
+fun EditText.afterTextChanged(afterTextChanged: (Editable) -> Unit): TextWatcher =
+    object : TextWatcher {
         override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) = Unit
 
         override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) = Unit
@@ -16,8 +16,9 @@ fun EditText.afterTextChanged(afterTextChanged: (Editable) -> Unit) {
         override fun afterTextChanged(editable: Editable) {
             afterTextChanged.invoke(editable)
         }
-    })
-}
+    }.also { textWatcher ->
+        this.addTextChangedListener(textWatcher)
+    }
 
 fun EditText.onTextChanged(textChanged: (String) -> Unit) {
     this.addTextChangedListener(object : TextWatcher {

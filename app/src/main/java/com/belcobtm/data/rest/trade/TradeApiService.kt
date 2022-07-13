@@ -13,9 +13,9 @@ import com.belcobtm.data.rest.trade.response.TradeOrderResponse
 import com.belcobtm.data.rest.trade.response.TradeResponse
 import com.belcobtm.domain.Either
 import com.belcobtm.domain.Failure
+import com.belcobtm.domain.trade.model.CreateTradeDomainModel
 import com.belcobtm.domain.trade.model.order.OrderStatus
 import com.belcobtm.domain.trade.model.trade.TradeStatus
-import com.belcobtm.domain.trade.model.CreateTradeDomainModel
 import com.belcobtm.presentation.screens.wallet.trade.edit.EditTradeItem
 import com.belcobtm.presentation.screens.wallet.trade.order.create.model.TradeOrderItem
 
@@ -35,7 +35,10 @@ class TradeApiService(
             val response =
                 tradeApi.sendLocationAsync(
                     prefHelper.userId,
-                    UserLocationRequest(location.latitude, location.longitude)
+                    UserLocationRequest(
+                        location.latitude,
+                        location.longitude
+                    )
                 )
             response.body()?.let { Either.Right(it) } ?: Either.Left(Failure.ServerError())
         }
@@ -69,7 +72,7 @@ class TradeApiService(
                     price = price,
                     minLimit = minAmount,
                     maxLimit = maxAmount,
-                    paymentMethods = paymentOptions.joinToString(","),
+                    paymentMethods = paymentOptions.map { it.name },
                     terms = terms,
                     feePercent = feePercent,
                     fiatAmount = fiatAmount

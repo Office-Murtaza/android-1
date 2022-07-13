@@ -50,12 +50,24 @@ class CoinInputLayout @JvmOverloads constructor(
 
     private fun initView() {
         setErrorText(null, false)
-        binding.coinInputEditText.actionDoneListener {
-            val imm = context.getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
-            val activity = context as AppCompatActivity
-            imm?.hideSoftInputFromWindow(activity.currentFocus?.windowToken, 0)
-            binding.coinInputEditText.clearFocus()
+        binding.coinInputEditText.apply {
+            actionDoneListener {
+                closeKeyBoard()
+            }
+            setOnFocusChangeListener { _, hasFocus ->
+                when {
+                    hasFocus && text.toString() == "0" -> setText("") //                    setTextSilently(textWatcher, "", )
+                    hasFocus.not() && text.toString().isEmpty() -> setText("0")
+                }
+            }
         }
+    }
+
+    private fun closeKeyBoard() {
+        val activity = context as AppCompatActivity
+        val imm = activity.getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
+        imm?.hideSoftInputFromWindow(activity.currentFocus?.windowToken, 0)
+        binding.coinInputEditText.clearFocus()
     }
 
     fun getEditText(): EditText = binding.coinInputEditText
@@ -79,6 +91,10 @@ class CoinInputLayout @JvmOverloads constructor(
         binding.tvCoinName.text = coinName
         binding.ivCoin.setImageResource(coinImage)
         binding.ivCoinArrow.toggle(showCoinArrow)
+    }
+
+    fun setHint(hint: String) {
+        binding.coinInputLayout.hint = hint
     }
 
     fun setHelperText(text: CharSequence?) {
@@ -123,10 +139,6 @@ class CoinInputLayout @JvmOverloads constructor(
 
     fun setErrorEnabled(enabled: Boolean) {
         binding.tvError.visibility = if (enabled) View.VISIBLE else View.GONE
-    }
-
-    fun setHint(hint: String) {
-        binding.coinInputLayout.hint = hint
     }
 
     fun setErrorText(text: CharSequence?, highlightAmount: Boolean) {
