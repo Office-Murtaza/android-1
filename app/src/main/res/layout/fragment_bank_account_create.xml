@@ -63,7 +63,7 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/thick_divider_size"
-                android:background="@color/thin_divider" />
+                android:background="@color/dividerGray" />
 
         </LinearLayout>
 
@@ -152,7 +152,7 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/thick_divider_size"
-                android:background="@color/thin_divider" />
+                android:background="@color/dividerGray" />
 
         </LinearLayout>
 
@@ -195,7 +195,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="32dp"
             android:gravity="center"
-            android:textColor="@color/colorText"
+            android:textColor="@color/darkGray"
             android:textSize="12sp"
             tools:text="@string/bank_create_usdc_terms_text" />
 

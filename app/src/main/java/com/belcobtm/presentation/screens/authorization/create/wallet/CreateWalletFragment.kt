@@ -133,7 +133,7 @@ class CreateWalletFragment : BaseFragment<FragmentCreateWalletBinding>() {
             onClick = { tncCheckBoxView.isChecked = !tncCheckBoxView.isChecked },
             updateDrawState = {
                 it.isUnderlineText = false
-                it.color = ContextCompat.getColor(requireContext(), R.color.colorText)
+                it.color = ContextCompat.getColor(requireContext(), R.color.darkGray)
             }
         )
         val fullText =

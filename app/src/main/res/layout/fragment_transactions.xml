@@ -104,7 +104,7 @@
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_marginTop="4dp"
-        android:background="@color/divider_gray"
+        android:background="@color/dividerGray"
         app:layout_constraintTop_toBottomOf="@id/chart_chip_group_view" />
 
     <androidx.appcompat.widget.AppCompatTextView
@@ -203,7 +203,7 @@
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_marginTop="16dp"
-        android:background="@color/divider_gray"
+        android:background="@color/dividerGray"
         app:layout_constraintTop_toBottomOf="@id/reserved_title_view" />
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
@@ -232,7 +232,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
         android:text="@string/transactions_no_transactions"
-        android:textColor="@color/light_gray"
+        android:textColor="@color/grey"
         android:textSize="16sp"
         android:visibility="visible"
         app:layout_constraintEnd_toEndOf="parent"

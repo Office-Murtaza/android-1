@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.net.toUri
+import androidx.core.view.isVisible
 import androidx.navigation.fragment.findNavController
 import com.belcobtm.R
 import com.belcobtm.databinding.FragmentTradeCreateBinding
@@ -139,9 +140,6 @@ class CreateTradeFragment : BaseFragment<FragmentTradeCreateBinding>() {
             it?.let(paymentOptionsError::setText)
             paymentOptionsError.toggle(it != null)
         }
-        viewModel.snackbarMessage.observe(viewLifecycleOwner) {
-            Snackbar.make(root, it, Snackbar.LENGTH_SHORT).show()
-        }
         viewModel.availablePaymentOptions.observe(viewLifecycleOwner, adapter::update)
         viewModel.createTradeLoadingData.listen(
             success = {
@@ -162,7 +160,11 @@ class CreateTradeFragment : BaseFragment<FragmentTradeCreateBinding>() {
                     }
                     is Failure.ServerError -> showErrorServerError()
                     is Failure.ValidationError -> showError(it.message.orEmpty())
-                    is Failure.ClientValidationError -> showContent()
+                    is Failure.ClientValidationError -> {
+                        binding.errorTextView.text = it.message.orEmpty()
+                        binding.errorTextView.isVisible = true
+                        showContent()
+                    }
                     is Failure.LocationError -> showError(it.message.orEmpty())
                     else -> showErrorSomethingWrong()
                 }
@@ -201,6 +203,7 @@ class CreateTradeFragment : BaseFragment<FragmentTradeCreateBinding>() {
         Manifest.permission.ACCESS_COARSE_LOCATION
     )
     fun createTrade() {
+        binding.errorTextView.isVisible = false
         viewModel.createTrade(
             when {
                 binding.tradeTypeBuyChip.isChecked -> TradeType.BUY

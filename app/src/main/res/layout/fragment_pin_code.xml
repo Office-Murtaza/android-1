@@ -184,7 +184,7 @@
                 android:focusable="true"
                 android:scaleType="center"
                 app:srcCompat="@drawable/ic_arrow_left"
-                app:tint="@color/colorText" />
+                app:tint="@color/darkGray" />
         </TableRow>
     </TableLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

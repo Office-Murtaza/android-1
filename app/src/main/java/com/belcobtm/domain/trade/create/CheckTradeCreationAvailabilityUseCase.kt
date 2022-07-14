@@ -23,7 +23,7 @@ class CheckTradeCreationAvailabilityUseCase(
                 it.makerId == userId &&
                     it.type == params.tradeType &&
                     it.coin.name == params.coinCode &&
-                    it.status != TradeStatus.DELETED
+                    it.status == TradeStatus.ACTIVE
             }
             Either.Right(canCreateTrade)
         } else {

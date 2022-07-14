@@ -56,9 +56,6 @@ class CreateTradeViewModel(
     private val _amountRangeError = MutableLiveData<String?>()
     val amountRangeError: LiveData<String?> = _amountRangeError
 
-    private val _snackbarMessage = MutableLiveData<String>()
-    val snackbarMessage: LiveData<String> = _snackbarMessage
-
     private val _tradeTypeError = MutableLiveData<String?>()
     val tradeTypeError: LiveData<String?> = _tradeTypeError
 
@@ -234,11 +231,12 @@ class CreateTradeViewModel(
                             R.string.trade_type_buy_label
                         }
                     )
-                    _snackbarMessage.value = stringProvider.getString(
-                        R.string.create_trade_already_exists, coinCode, tradeLabel
-                    )
                     _createTradeLoadingData.value =
-                        LoadingData.Error(Failure.ClientValidationError())
+                        LoadingData.Error(Failure.ClientValidationError(
+                            stringProvider.getString(
+                                R.string.create_trade_already_exists, coinCode, tradeLabel
+                            )
+                        ))
                 }
             },
             onError = {

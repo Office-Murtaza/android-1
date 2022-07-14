@@ -109,7 +109,7 @@
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_marginHorizontal="15dp"
-        android:background="@color/thin_divider"
+        android:background="@color/dividerGray"
         app:layout_constraintBottom_toBottomOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

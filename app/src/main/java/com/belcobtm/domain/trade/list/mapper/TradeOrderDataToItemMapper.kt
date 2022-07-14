@@ -60,13 +60,13 @@ class TradeOrderDataToItemMapper(
             )
         }
 
-    private fun OrderDomainModel.formatDistance(): String? =
+    private fun OrderDomainModel.formatDistance(): String =
         if (takerLatitude > 0 && takerLongitude > 0 && makerLatitude > 0 && makerLongitude > 0)
             milesFormatter.format(
                 distanceCalculator.calculateDistance(
                     takerLatitude, takerLongitude, makerLatitude, makerLongitude
                 )
-            ) else null
+            ) else ""
 
     private fun resolveTradeType(order: OrderDomainModel, trade: TradeItem, myId: String): TradeType =
         when {

@@ -19,58 +19,58 @@
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_marginTop="32dp"
-        android:background="@color/thin_divider" />
+        android:background="@color/dividerGray" />
 
     <com.belcobtm.presentation.core.views.SettingsItemView
         android:id="@+id/privacy_item"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="@dimen/margin_quarter"
-        android:paddingBottom="@dimen/margin_quarter"
+        android:paddingTop="4dp"
+        android:paddingBottom="4dp"
         app:text="@string/privacy_label" />
 
     <View
         android:layout_width="match_parent"
         android:layout_height="@dimen/divider_size"
-        android:background="@color/thin_divider" />
+        android:background="@color/dividerGray" />
 
     <com.belcobtm.presentation.core.views.SettingsItemView
         android:id="@+id/complaint_item"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="@dimen/margin_quarter"
-        android:paddingBottom="@dimen/margin_quarter"
+        android:paddingTop="4dp"
+        android:paddingBottom="4dp"
         app:text="@string/comlaint_label" />
 
     <View
         android:layout_width="match_parent"
         android:layout_height="@dimen/divider_size"
-        android:background="@color/thin_divider" />
+        android:background="@color/dividerGray" />
 
     <com.belcobtm.presentation.core.views.SettingsItemView
         android:id="@+id/terms_item"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="@dimen/margin_quarter"
-        android:paddingBottom="@dimen/margin_quarter"
+        android:paddingTop="4dp"
+        android:paddingBottom="4dp"
         app:text="@string/terms_label" />
 
     <View
         android:layout_width="match_parent"
         android:layout_height="@dimen/divider_size"
-        android:background="@color/thin_divider" />
+        android:background="@color/dividerGray" />
 
     <com.belcobtm.presentation.core.views.SettingsItemView
         android:id="@+id/version_item"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="@dimen/margin_quarter"
-        android:paddingBottom="@dimen/margin_quarter"
+        android:paddingTop="4dp"
+        android:paddingBottom="4dp"
         app:text="@string/version_label" />
 
     <View
         android:layout_width="match_parent"
         android:layout_height="@dimen/divider_size"
-        android:background="@color/thin_divider" />
+        android:background="@color/dividerGray" />
 
 </androidx.appcompat.widget.LinearLayoutCompat>

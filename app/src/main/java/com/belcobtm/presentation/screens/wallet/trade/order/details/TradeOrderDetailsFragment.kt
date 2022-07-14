@@ -14,6 +14,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.belcobtm.R
@@ -57,6 +58,7 @@ class TradeOrderDetailsFragment : BaseFragment<FragmentTradeOrderDetailsBinding>
     }
     private val args by navArgs<TradeOrderDetailsFragmentArgs>()
     private val viewModel by viewModel<TradeOrderDetailsViewModel>()
+
     private val adapter by lazy {
         MultiTypeAdapter().apply {
             registerDelegate(TradePaymentOptionDelegate())
@@ -138,7 +140,7 @@ class TradeOrderDetailsFragment : BaseFragment<FragmentTradeOrderDetailsBinding>
         }
         viewModel.distance.observe(viewLifecycleOwner) {
             binding.distanceLabel.text = it
-            binding.distanceLabel.toggle(isVisible = it.orEmpty().isNotEmpty())
+            binding.distanceLabel.isVisible = it.isNullOrEmpty().not()
         }
         viewModel.partnerPublicId.observe(viewLifecycleOwner, partnerPublicId::setText)
         viewModel.partnerTradeRate.observe(viewLifecycleOwner) {
@@ -195,7 +197,7 @@ class TradeOrderDetailsFragment : BaseFragment<FragmentTradeOrderDetailsBinding>
         viewModel.observeMissedMessageCount(args.orderId).observe(viewLifecycleOwner) {
             val badge = BadgeDrawable.create(requireContext())
             badge.badgeGravity = TOP_END
-            badge.backgroundColor = ContextCompat.getColor(requireContext(), R.color.colorPrimary)
+            badge.backgroundColor = ContextCompat.getColor(requireContext(), R.color.mainRed)
             badge.badgeTextColor = ContextCompat.getColor(requireContext(), R.color.gph_white)
             BadgeUtils.detachBadgeDrawable(badge, baseBinding.toolbarView, R.id.chat_menu_item)
             if (it > 0) {

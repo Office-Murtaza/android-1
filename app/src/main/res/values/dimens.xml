@@ -1,5 +1,4 @@
 <resources>
-    <!-- Default screen margins, per the Android Design guidelines. -->
 
     <dimen name="defaultMargin">16dp</dimen>
 
@@ -7,7 +6,6 @@
     <dimen name="margin_x4">64dp</dimen>
     <dimen name="margin_x2">32dp</dimen>
     <dimen name="margin_half">8dp</dimen>
-    <dimen name="margin_quarter">4dp</dimen>
     <dimen name="margin_normal">12dp</dimen>
     <dimen name="margin_quoter">4dp</dimen>
     <dimen name="margin_large">24dp</dimen>
@@ -26,10 +24,5 @@
     <dimen name="chip_default_right_margin">2dp</dimen>
 
     <dimen name="verification_step_radius">35dp</dimen>
-    <dimen name="payment_step_radius">25dp</dimen>
 
-    //settings
-    <dimen name="settings_item_height">56dp</dimen>
-
-    <dimen name="delete_button_text_size">14sp</dimen>
 </resources>

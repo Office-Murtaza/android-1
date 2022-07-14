@@ -47,7 +47,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/defaultMargin"
         android:text="@string/verification_status"
-        android:textColor="@color/colorText"
+        android:textColor="@color/darkGray"
         app:layout_constraintBottom_toBottomOf="@id/status_value_view"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@id/status_value_view" />
@@ -57,7 +57,7 @@
         android:layout_width="0dp"
         android:layout_height="@dimen/divider_size"
         android:layout_marginTop="@dimen/defaultMargin"
-        android:background="@color/thin_divider"
+        android:background="@color/dividerGray"
         app:layout_constraintEnd_toEndOf="@id/status_value_view"
         app:layout_constraintStart_toStartOf="@id/status_key_view"
         app:layout_constraintTop_toBottomOf="@id/status_key_view" />
@@ -69,7 +69,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
         android:layout_marginEnd="@dimen/defaultMargin"
-        android:drawablePadding="@dimen/margin_quarter"
+        android:drawablePadding="4dp"
         android:textColor="@color/primaryTextColor"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
@@ -106,7 +106,7 @@
         android:layout_width="0dp"
         android:layout_height="@dimen/divider_size"
         android:layout_marginTop="@dimen/defaultMargin"
-        android:background="@color/thin_divider"
+        android:background="@color/dividerGray"
         app:layout_constraintEnd_toEndOf="@id/daily_limit_key_view"
         app:layout_constraintStart_toStartOf="@id/tx_limit_key_view"
         app:layout_constraintTop_toBottomOf="@id/daily_limit_value_view" />

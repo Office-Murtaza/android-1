@@ -96,7 +96,7 @@
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_marginTop="10dp"
-        android:background="@color/thin_divider"
+        android:background="@color/dividerGray"
         app:layout_constraintTop_toBottomOf="@id/date_view" />
 
 

@@ -8,7 +8,6 @@
     <color name="colorWhiteWithTransparency">#99FFFFFF</color>
     <color name="primaryTextColor">#DE000000</color>
 
-    <color name="colorText">#58585a</color>
     <color name="gray_text_color">#7c7c7c</color>
     <color name="disabled_text_color">#D3D3D3</color>
     <color name="black_text_color">#000</color>
@@ -16,6 +15,11 @@
     <color name="dark_text_color">#212121</color>
     <color name="dark_bg">#14212121</color>
     <color name="almostBlackBg">#DE000000</color>
+
+    <color name="grey">#8D8D8D</color>
+    <color name="lightGray">#F3F3F3</color>
+    <color name="dividerGray">#EEEEEE</color>
+    <color name="darkGray">#58585A</color>
 
     <color name="colorError">#B00020</color>
 
@@ -30,7 +34,6 @@
 
     <color name="light_gray_stroke">#e0e0e0</color>
 
-    <color name="bg_color">#f3f3f3</color>
     <color name="bg_blue">#EAF3FE</color>
 
     <color name="bt_gray">#afb0ab</color>
@@ -53,8 +56,6 @@
     <color name="chip_wire_text_color">#8E5BF9</color>
     <color name="chip_ach_text_color">#F7931A</color>
 
-    <color name="thin_divider">#11000000</color>
-
     <color name="verified_background">#f8ffed</color>
     <color name="verified_border">#9fd256</color>
     <color name="pending_border">#ffcd4c</color>
@@ -67,11 +68,7 @@
 
     <color name="trade_type_sell_trade_text_color">#C54B61</color>
 
-    <color name="lighter_gray">#198d8d8d</color>
-    <color name="light_gray">#8d8d8d</color>
-    <color name="divider_gray">#eeeeee</color>
     <color name="light_text_color">#FEFEFE</color>
-    <color name="colorLightGray">#F3F3F3</color>
     <color name="colorLightGray2">#DADADA</color>
     <color name="edit_text_drawable_tint">#c6c6c6</color>
     <color name="atm_location_label_text_color">#99000000</color>

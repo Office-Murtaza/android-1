@@ -50,6 +50,7 @@
         <include
             android:id="@+id/error_view"
             layout="@layout/include_error_screen" />
+
     </com.belcobtm.presentation.core.views.InterceptableFrameLayout>
 
 </LinearLayout>

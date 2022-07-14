@@ -89,7 +89,7 @@
         android:layout_height="1dp"
         android:layout_marginHorizontal="15dp"
         android:layout_marginTop="15dp"
-        android:background="@color/thin_divider"
+        android:background="@color/dividerGray"
         app:layout_constraintTop_toBottomOf="@id/chip_container" />
 
 

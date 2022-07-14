@@ -23,7 +23,7 @@
             android:layout_width="match_parent"
             android:layout_height="2dp"
             android:layout_marginTop="8dp"
-            android:background="@color/thin_divider" />
+            android:background="@color/dividerGray" />
 
         <LinearLayout
             android:id="@+id/account_details_account_number_container"
@@ -98,7 +98,7 @@
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_marginTop="8dp"
-            android:background="@color/thin_divider" />
+            android:background="@color/dividerGray" />
     </LinearLayout>
     <LinearLayout
         android:id="@+id/billing_details_container"
@@ -119,7 +119,7 @@
             android:layout_width="match_parent"
             android:layout_height="2dp"
             android:layout_marginTop="8dp"
-            android:background="@color/thin_divider" />
+            android:background="@color/dividerGray" />
 
         <LinearLayout
             android:id="@+id/billing_details_name_container"
@@ -309,7 +309,7 @@
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_marginTop="8dp"
-            android:background="@color/thin_divider" />
+            android:background="@color/dividerGray" />
     </LinearLayout>
 
 
@@ -332,7 +332,7 @@
             android:layout_width="match_parent"
             android:layout_height="2dp"
             android:layout_marginTop="8dp"
-            android:background="@color/thin_divider" />
+            android:background="@color/dividerGray" />
 
         <LinearLayout
             android:id="@+id/plaid_details_account_id_container"
@@ -476,7 +476,7 @@
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_marginTop="8dp"
-            android:background="@color/thin_divider" />
+            android:background="@color/dividerGray" />
     </LinearLayout>
 
     <LinearLayout
@@ -497,7 +497,7 @@
             android:layout_width="match_parent"
             android:layout_height="2dp"
             android:layout_marginTop="8dp"
-            android:background="@color/thin_divider" />
+            android:background="@color/dividerGray" />
 
         <LinearLayout
             android:id="@+id/circle_details_ach_account_id_container"
@@ -552,7 +552,7 @@
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_marginTop="8dp"
-            android:background="@color/thin_divider" />
+            android:background="@color/dividerGray" />
     </LinearLayout>
 
     <TextView

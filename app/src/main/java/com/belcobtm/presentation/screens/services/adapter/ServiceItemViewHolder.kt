@@ -36,15 +36,15 @@ class ServiceItemViewHolder(
             binding.labelText.setTextColor(
                 ContextCompat.getColor(
                     binding.root.context,
-                    R.color.light_gray
+                    R.color.grey
                 )
             )
             binding.imageView.setColorFilter(
-                ContextCompat.getColor(binding.root.context, R.color.light_gray),
+                ContextCompat.getColor(binding.root.context, R.color.grey),
                 android.graphics.PorterDuff.Mode.SRC_IN
             )
             binding.ivChevron.setColorFilter(
-                ContextCompat.getColor(binding.root.context, R.color.light_gray),
+                ContextCompat.getColor(binding.root.context, R.color.grey),
                 android.graphics.PorterDuff.Mode.SRC_IN
             )
 

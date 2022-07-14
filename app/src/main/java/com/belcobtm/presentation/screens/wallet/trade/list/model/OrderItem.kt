@@ -1,6 +1,5 @@
 package com.belcobtm.presentation.screens.wallet.trade.list.model
 
-import androidx.annotation.DrawableRes
 import com.belcobtm.domain.trade.model.trade.TradeType
 import com.belcobtm.domain.wallet.LocalCoinType
 import com.belcobtm.presentation.core.adapter.model.ListItem
@@ -36,10 +35,11 @@ data class OrderItem(
     val takerTotalTrades: Int,
     val takerTotalTradesFormatted: String,
     val takerTradingRate: Double?,
-    val distanceFormatted: String?
+    val distanceFormatted: String
 ) : ListItem {
 
     companion object {
+
         const val OPEN_ORDER_TYPE = 4
     }
 

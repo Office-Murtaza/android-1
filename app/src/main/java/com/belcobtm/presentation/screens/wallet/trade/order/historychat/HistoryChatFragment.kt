@@ -17,7 +17,9 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 class HistoryChatFragment : BaseFragment<FragmentHistoryChatBinding>() {
 
     override var isBackButtonEnabled: Boolean = true
+
     private val args by navArgs<HistoryChatFragmentArgs>()
+
     private val viewModel by viewModel<HistoryChatViewModel>()
     private val parentViewModel by lazy {
         requireParentFragment().viewModel<TradeContainerViewModel>().value
@@ -39,7 +41,7 @@ class HistoryChatFragment : BaseFragment<FragmentHistoryChatBinding>() {
 
     override fun FragmentHistoryChatBinding.initViews() {
         setToolbarTitle(args.partnerPublicId)
-        binding.chatList.adapter = adapter
+        binding.chatRecyclerView.adapter = adapter
     }
 
     override fun FragmentHistoryChatBinding.initObservers() {
@@ -52,4 +54,5 @@ class HistoryChatFragment : BaseFragment<FragmentHistoryChatBinding>() {
             }
         }
     }
+
 }

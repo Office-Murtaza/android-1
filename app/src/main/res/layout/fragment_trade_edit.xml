@@ -8,6 +8,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:animateLayoutChanges="true"
         android:paddingBottom="16dp">
 
         <TextView
@@ -27,7 +28,7 @@
             android:id="@+id/trade_type_chip_group"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/defaultMargin"
+            android:layout_marginTop="8dp"
             app:layout_constraintEnd_toEndOf="@id/trade_type_label"
             app:layout_constraintStart_toStartOf="@id/trade_type_label"
             app:layout_constraintTop_toBottomOf="@id/trade_type_label"
@@ -69,7 +70,7 @@
             android:layout_marginStart="@dimen/defaultMargin"
             android:layout_marginTop="@dimen/defaultMargin"
             android:layout_marginEnd="@dimen/defaultMargin"
-            android:background="@color/thin_divider"
+            android:background="@color/dividerGray"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/trade_type_chip_group" />
@@ -90,7 +91,7 @@
             android:layout_marginStart="@dimen/defaultMargin"
             android:layout_marginTop="@dimen/defaultMargin"
             android:layout_marginEnd="@dimen/defaultMargin"
-            android:background="@color/thin_divider"
+            android:background="@color/dividerGray"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/coin_details_view" />
@@ -145,7 +146,7 @@
             android:layout_marginStart="@dimen/defaultMargin"
             android:layout_marginTop="@dimen/defaultMargin"
             android:layout_marginEnd="@dimen/defaultMargin"
-            android:background="@color/thin_divider"
+            android:background="@color/dividerGray"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/payment_options_error" />
@@ -262,7 +263,7 @@
             android:layout_marginStart="@dimen/defaultMargin"
             android:layout_marginTop="@dimen/defaultMargin"
             android:layout_marginEnd="@dimen/defaultMargin"
-            android:background="@color/thin_divider"
+            android:background="@color/dividerGray"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/amount_range_error" />

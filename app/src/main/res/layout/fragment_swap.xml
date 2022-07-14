@@ -17,7 +17,7 @@
             android:id="@+id/top_divider"
             android:layout_width="0dp"
             android:layout_height="1dp"
-            android:background="@color/thin_divider"
+            android:background="@color/dividerGray"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -34,7 +34,7 @@
             android:id="@+id/receive_coin_Input_layout"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:background="@color/colorLightGray"
+            android:background="@color/lightGray"
             android:paddingTop="@dimen/margin_half"
             android:paddingBottom="@dimen/margin_x2"
             app:isMaxButtonVisible="false"

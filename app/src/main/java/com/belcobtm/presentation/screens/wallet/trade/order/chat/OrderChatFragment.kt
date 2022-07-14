@@ -12,23 +12,23 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.navigation.fragment.navArgs
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.belcobtm.R
 import com.belcobtm.databinding.FragmentOrderChatBinding
 import com.belcobtm.presentation.core.adapter.MultiTypeAdapter
-import com.belcobtm.presentation.tools.extensions.toggle
 import com.belcobtm.presentation.core.ui.fragment.BaseFragment
+import com.belcobtm.presentation.screens.MainFragment
 import com.belcobtm.presentation.screens.wallet.trade.order.chat.delegate.MyMessageDelegate
 import com.belcobtm.presentation.screens.wallet.trade.order.chat.delegate.PartnerMessageDelegate
+import com.belcobtm.presentation.tools.extensions.toggle
 import com.google.android.material.snackbar.Snackbar
 import org.koin.androidx.viewmodel.ext.android.viewModel
-
 
 class OrderChatFragment : BaseFragment<FragmentOrderChatBinding>() {
 
     override var isBackButtonEnabled: Boolean = true
     private val viewModel by viewModel<OrderChatViewModel>()
     private val args by navArgs<OrderChatFragmentArgs>()
+
     private val imagePicker = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
         if (result.resultCode == Activity.RESULT_OK) {
             result.data?.data?.let { uri ->
@@ -59,7 +59,7 @@ class OrderChatFragment : BaseFragment<FragmentOrderChatBinding>() {
 
     override fun FragmentOrderChatBinding.initViews() {
         setToolbarTitle(args.orderId)
-        binding.chatList.adapter = adapter
+        binding.chatRecyclerView.adapter = adapter
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -91,12 +91,9 @@ class OrderChatFragment : BaseFragment<FragmentOrderChatBinding>() {
             binding.attachmentRemove.toggle(it != null)
             binding.attachment.setImageBitmap(it)
         }
-        chatList.layoutManager = LinearLayoutManager(requireContext()).apply {
-            stackFromEnd = true
-        }
         viewModel.chatData(args.orderId).observe(viewLifecycleOwner) {
             adapter.update(it)
-            binding.chatList.smoothScrollToPosition(it.size)
+            binding.chatRecyclerView.smoothScrollToPosition(it.size)
             viewModel.updateTimestamp()
         }
     }
@@ -108,4 +105,15 @@ class OrderChatFragment : BaseFragment<FragmentOrderChatBinding>() {
         }
         imagePicker.launch(intent)
     }
+
+    override fun onStart() {
+        super.onStart()
+        (parentFragment as MainFragment?)?.toggleBottomNavigation(false)
+    }
+
+    override fun onStop() {
+        super.onStop()
+        (parentFragment as MainFragment?)?.toggleBottomNavigation(true)
+    }
+
 }

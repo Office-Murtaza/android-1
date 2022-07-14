@@ -17,7 +17,7 @@
             android:id="@+id/top_divider"
             android:layout_width="0dp"
             android:layout_height="1dp"
-            android:background="@color/thin_divider"
+            android:background="@color/dividerGray"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -26,7 +26,7 @@
             android:id="@+id/coin_input_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/colorLightGray"
+            android:background="@color/lightGray"
             app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.appcompat.widget.AppCompatTextView
@@ -80,7 +80,7 @@
             android:layout_width="@dimen/divider_size"
             android:layout_height="44dp"
             android:layout_marginTop="@dimen/margin_large"
-            android:background="@color/divider_gray"
+            android:background="@color/dividerGray"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/rate_text_view" />
@@ -147,7 +147,7 @@
             android:layout_width="@dimen/divider_size"
             android:layout_height="44dp"
             android:layout_marginTop="@dimen/margin_large"
-            android:background="@color/divider_gray"
+            android:background="@color/dividerGray"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/day_limit_divider" />

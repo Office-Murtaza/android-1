@@ -4,15 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingStart="@dimen/defaultMargin"
-    android:paddingEnd="@dimen/defaultMargin">
+    android:paddingHorizontal="@dimen/defaultMargin"
+    android:paddingVertical="24dp">
 
     <TextView
         android:id="@+id/usd_amount_label"
         style="@style/Text.Regular2"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
         android:gravity="end"
         android:text="@string/usd_amount_label"
         android:textColor="@color/gray_text_color"
@@ -38,11 +37,12 @@
             android:imeOptions="actionDone"
             android:inputType="number"
             android:padding="0dp"
+            android:text="@string/zero"
             android:textColor="@color/black_text_color"
             android:textSize="24sp"
             android:textStyle="bold"
             tools:ignore="TouchTargetSizeCheck"
-            tools:text="$1,500">
+            tools:text="1,500">
 
         </androidx.appcompat.widget.AppCompatEditText>
 
@@ -65,8 +65,7 @@
         style="@style/Text.Regular2"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/defaultMargin"
-        android:layout_marginEnd="@dimen/margin_half"
+        android:layout_marginTop="24dp"
         android:gravity="end"
         android:textColor="@color/gray_text_color"
         app:drawableEndCompat="@drawable/ic_chevron_right"
@@ -83,8 +82,7 @@
         style="@style/Text.Regular2"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/margin_quarter"
-        android:layout_marginEnd="@dimen/margin_half"
+        android:layout_marginTop="16dp"
         android:gravity="end"
         android:textColor="@color/gray_text_color"
         app:layout_constraintEnd_toEndOf="parent"
@@ -99,8 +97,7 @@
         style="@style/Text.Regular2"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/margin_quarter"
-        android:layout_marginEnd="@dimen/margin_half"
+        android:layout_marginTop="8dp"
         android:gravity="end"
         android:textColor="@color/gray_text_color"
         app:layout_constraintEnd_toEndOf="parent"
@@ -115,15 +112,14 @@
         style="@style/Text.Regular2"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/margin_quarter"
-        android:layout_marginEnd="@dimen/margin_half"
+        android:layout_marginTop="8dp"
         android:gravity="end"
-        android:textStyle="bold"
         android:textColor="@color/gray_text_color"
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/platform_fee"
-        tools:text="You will get 0.002 BTC"/>
+        tools:text="You will get 0.002 BTC" />
 
     <Button
         android:id="@+id/submit_button"
@@ -137,13 +133,10 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/total_crypto" />
 
-    <Button
+    <TextView
         android:id="@+id/limit_details"
         style="@style/Button.Transparent"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/margin_half"
-        android:layout_marginBottom="@dimen/margin_x2"
         android:text="@string/limit_details_button_title"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@id/submit_button" />

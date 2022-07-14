@@ -9,7 +9,7 @@
         android:id="@+id/amount_layout"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:background="@color/lighter_gray"
+        android:background="@color/lightGray"
         android:paddingTop="@dimen/margin_half"
         android:paddingBottom="@dimen/defaultMargin"
         app:layout_constraintEnd_toEndOf="parent"

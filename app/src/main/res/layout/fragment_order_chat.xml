@@ -6,73 +6,71 @@
     android:layout_height="match_parent">
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/chat_list"
-        android:layout_width="0dp"
+        android:id="@+id/chat_recycler_view"
+        android:layout_width="match_parent"
         android:layout_height="0dp"
         android:orientation="vertical"
+        android:paddingHorizontal="@dimen/defaultMargin"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintBottom_toTopOf="@id/attachment_background"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:listitem="@layout/item_partner_message" />
 
-    <View
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/attachment_background"
-        android:layout_width="0dp"
-        android:layout_height="88dp"
-        android:background="@color/lighter_gray"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:background="@color/lightGray"
+        android:paddingTop="12dp"
         android:visibility="gone"
         app:layout_constraintBottom_toTopOf="@id/chat_divider"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        tools:visibility="visible">
 
-    <ImageView
-        android:id="@+id/attachment"
-        android:layout_width="wrap_content"
-        android:layout_height="64dp"
-        android:layout_marginStart="16dp"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="@id/chat_divider"
-        app:layout_constraintStart_toStartOf="parent"
-        tools:src="@drawable/bg_auth"
-        tools:visibility="visible" />
+        <ImageView
+            android:id="@+id/attachment"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginBottom="12dp"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            tools:src="@drawable/bg_auth"
+            tools:visibility="visible" />
 
-    <ImageView
-        android:id="@+id/attachment_remove"
-        android:layout_width="24dp"
-        android:layout_height="24dp"
-        android:src="@drawable/ic_remove_gif"
-        android:visibility="gone"
-        app:layout_constraintEnd_toEndOf="@id/attachment"
-        app:layout_constraintStart_toEndOf="@id/attachment"
-        app:layout_constraintTop_toTopOf="@id/attachment" />
+        <ImageView
+            android:id="@+id/attachment_remove"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@drawable/ic_remove_gif"
+            android:visibility="gone"
+            app:layout_constraintBottom_toTopOf="@id/attachment"
+            app:layout_constraintEnd_toEndOf="@id/attachment"
+            app:layout_constraintStart_toEndOf="@id/attachment"
+            app:layout_constraintTop_toTopOf="@id/attachment"
+            tools:visibility="visible" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <View
         android:id="@+id/chat_divider"
         android:layout_width="0dp"
         android:layout_height="@dimen/divider_size"
-        android:layout_marginBottom="16dp"
-        android:background="@color/thin_divider"
-        app:layout_constraintBottom_toTopOf="@id/chat_input_top_barrier"
+        android:layout_marginBottom="12dp"
+        android:background="@color/dividerGray"
+        app:layout_constraintBottom_toTopOf="@id/message_input"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/chat_list"
+        app:layout_constraintTop_toBottomOf="@id/chat_recycler_view"
         app:layout_constraintVertical_bias="1" />
-
-    <androidx.constraintlayout.widget.Barrier
-        android:id="@+id/chat_input_top_barrier"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:barrierDirection="top"
-        app:constraint_referenced_ids="attachment_button,message_input" />
 
     <ImageView
         android:id="@+id/attachment_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
+        android:paddingVertical="8dp"
+        android:paddingStart="16dp"
+        android:paddingEnd="8dp"
         android:src="@drawable/ic_attachment"
         app:layout_constraintBottom_toBottomOf="@id/message_input"
         app:layout_constraintStart_toStartOf="parent"
@@ -82,12 +80,11 @@
         android:id="@+id/message_input"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
+        android:layout_marginBottom="@dimen/defaultMargin"
         app:hintEnabled="false"
-        app:layout_constraintBottom_toBottomOf="@id/send_button"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/send_button"
-        app:layout_constraintStart_toEndOf="@id/attachment_button"
-        app:layout_constraintTop_toTopOf="@id/send_button">
+        app:layout_constraintStart_toEndOf="@id/attachment_button">
 
         <androidx.appcompat.widget.AppCompatEditText
             android:id="@+id/message"
@@ -97,20 +94,22 @@
             android:hint="Type your message"
             android:imeOptions="actionDone"
             android:inputType="text"
-            android:padding="8dp"
-            tools:text="$100" />
+            android:padding="8dp" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
-    <Button
+    <TextView
         android:id="@+id/send_button"
-        style="@style/Button.Secondary.NoOutlined"
         android:layout_width="wrap_content"
-        android:layout_marginBottom="0dp"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:padding="12dp"
         android:text="@string/fragment_trade_order_chat_send_button"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:textColor="@color/darkGray"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@id/message_input"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/message_input"
-        app:layout_constraintTop_toTopOf="@id/chat_divider" />
+        app:layout_constraintTop_toTopOf="@id/message_input" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

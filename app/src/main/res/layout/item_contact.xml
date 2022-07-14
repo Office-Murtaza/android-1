@@ -48,7 +48,7 @@
         android:layout_width="0dp"
         android:layout_height="1dp"
         android:layout_marginTop="12dp"
-        android:background="@color/thin_divider"
+        android:background="@color/dividerGray"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@id/contactPhone"
         app:layout_constraintTop_toBottomOf="@id/contactPhone" />

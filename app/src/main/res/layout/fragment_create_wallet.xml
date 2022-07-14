@@ -122,7 +122,7 @@
             android:paddingStart="8dp"
             android:paddingEnd="8dp"
             android:text="@string/welcome_screen_accept_terms_and_conditions"
-            android:textColor="#58585a"
+            android:textColor="@color/darkGray"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="@id/tnc_check_box_view"
             app:layout_constraintStart_toEndOf="@id/tnc_check_box_view"

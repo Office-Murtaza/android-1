@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.belcobtm.R
@@ -39,5 +40,9 @@ class MainFragment : BaseFragment<FragmentNavigationBinding>() {
         container: ViewGroup?
     ): FragmentNavigationBinding =
         FragmentNavigationBinding.inflate(inflater, container, false)
+
+    fun toggleBottomNavigation(toShow: Boolean) {
+        binding.bottomNavigationView.isVisible = toShow
+    }
 
 }

@@ -45,7 +45,7 @@
             android:layout_marginStart="@dimen/defaultMargin"
             android:layout_marginTop="@dimen/defaultMargin"
             android:layout_marginEnd="@dimen/defaultMargin"
-            android:background="@color/thin_divider"
+            android:background="@color/dividerGray"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/coinsRecycler" />
@@ -85,7 +85,7 @@
             android:layout_marginStart="@dimen/defaultMargin"
             android:layout_marginTop="@dimen/defaultMargin"
             android:layout_marginEnd="@dimen/defaultMargin"
-            android:background="@color/thin_divider"
+            android:background="@color/dividerGray"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/payment_options" />
@@ -188,7 +188,7 @@
             android:layout_marginStart="@dimen/defaultMargin"
             android:layout_marginTop="@dimen/defaultMargin"
             android:layout_marginEnd="@dimen/defaultMargin"
-            android:background="@color/thin_divider"
+            android:background="@color/dividerGray"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/distance_range_error" />

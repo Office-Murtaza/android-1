@@ -21,7 +21,7 @@
             android:layout_height="1dp"
             android:layout_marginStart="@dimen/defaultMargin"
             android:layout_marginEnd="@dimen/defaultMargin"
-            android:background="@color/thin_divider"
+            android:background="@color/dividerGray"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -74,7 +74,7 @@
             android:layout_marginStart="@dimen/defaultMargin"
             android:layout_marginTop="@dimen/margin_large"
             android:layout_marginEnd="@dimen/defaultMargin"
-            android:background="@color/thin_divider"
+            android:background="@color/dividerGray"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/contactPhone" />
@@ -96,7 +96,7 @@
             android:layout_marginStart="@dimen/defaultMargin"
             android:layout_marginTop="@dimen/margin_half"
             android:layout_marginEnd="@dimen/defaultMargin"
-            android:background="@color/thin_divider"
+            android:background="@color/dividerGray"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/sendCoinInputLayout" />
@@ -132,7 +132,7 @@
             android:layout_width="1dp"
             android:layout_height="90dp"
             android:layout_marginTop="@dimen/defaultMargin"
-            android:background="@color/thin_divider"
+            android:background="@color/dividerGray"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/amountUsdView" />
@@ -212,8 +212,8 @@
                 android:gravity="start|top"
                 android:imeOptions="actionDone"
                 android:inputType="text"
-                android:paddingStart="@dimen/margin_quarter"
-                android:paddingEnd="@dimen/margin_quarter"
+                android:paddingStart="4dp"
+                android:paddingEnd="4dp"
                 tools:text="aglgkjalskgjalkgjalksgjajsglkajglkjglaskgjlasg" />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -244,9 +244,7 @@
             android:layout_marginHorizontal="16dp"
             android:layout_marginBottom="16dp"
             android:text="@string/limit_details_button_title"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintBottom_toBottomOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

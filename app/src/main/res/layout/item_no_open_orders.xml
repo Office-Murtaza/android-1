@@ -14,7 +14,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_chainStyle="packed"
-        app:tint="@color/light_gray" />
+        app:tint="@color/grey" />
 
     <TextView
         android:id="@+id/no_orders_message"
