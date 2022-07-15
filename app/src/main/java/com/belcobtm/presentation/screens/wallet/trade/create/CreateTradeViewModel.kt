@@ -11,6 +11,7 @@ import com.belcobtm.domain.service.ServiceType
 import com.belcobtm.domain.trade.create.CheckTradeCreationAvailabilityUseCase
 import com.belcobtm.domain.trade.create.CreateTradeUseCase
 import com.belcobtm.domain.trade.create.GetAvailableTradePaymentOptionsUseCase
+import com.belcobtm.domain.trade.model.CreateTradeDomainModel
 import com.belcobtm.domain.trade.model.PaymentMethodType
 import com.belcobtm.domain.trade.model.trade.TradeType
 import com.belcobtm.domain.wallet.interactor.GetCoinListUseCase
@@ -19,7 +20,6 @@ import com.belcobtm.presentation.core.livedata.TripleCombinedLiveData
 import com.belcobtm.presentation.core.mvvm.LoadingData
 import com.belcobtm.presentation.core.provider.string.StringProvider
 import com.belcobtm.presentation.screens.wallet.trade.create.model.AvailableTradePaymentOption
-import com.belcobtm.domain.trade.model.CreateTradeDomainModel
 import com.belcobtm.presentation.tools.extensions.toStringCoin
 import kotlinx.coroutines.launch
 
@@ -232,11 +232,13 @@ class CreateTradeViewModel(
                         }
                     )
                     _createTradeLoadingData.value =
-                        LoadingData.Error(Failure.ClientValidationError(
-                            stringProvider.getString(
-                                R.string.create_trade_already_exists, coinCode, tradeLabel
+                        LoadingData.Error(
+                            Failure.ClientValidationError(
+                                stringProvider.getString(
+                                    R.string.create_trade_already_exists, coinCode, tradeLabel.lowercase()
+                                )
                             )
-                        ))
+                        )
                 }
             },
             onError = {
