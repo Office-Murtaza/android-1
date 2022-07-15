@@ -12,8 +12,9 @@ class ObserveChatMessagesUseCase(private val tradeRepository: TradeRepository) {
     operator fun invoke(orderId: String): Flow<List<ListItem>> =
         tradeRepository.observeTradeData()
             .map {
-                ((it?.map { tradeData ->
+                (it.map { tradeData ->
                     tradeData.orders.getValue(orderId).chatHistory
-                } ?: Either.Right(emptyList())) as Either.Right<List<ListItem>>).b
+                } as Either.Right<List<ListItem>>).b
             }
+
 }

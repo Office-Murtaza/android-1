@@ -15,8 +15,9 @@ class GetChatHistoryUseCase(
     operator fun invoke(orderId: String): Flow<Either<Failure, List<ListItem>>> =
         tradeRepository.observeTradeData()
             .map {
-                it?.map { tradeData ->
+                it.map { tradeData ->
                     tradeData.orders.getValue(orderId).chatHistory
-                } ?: Either.Left(Failure.ServerError())
+                }
             }
+
 }

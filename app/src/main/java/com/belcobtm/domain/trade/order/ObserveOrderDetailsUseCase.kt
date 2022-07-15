@@ -20,10 +20,12 @@ class ObserveOrderDetailsUseCase(
 
     operator fun invoke(params: String): Flow<Either<Failure, OrderItem?>> =
         tradeRepository.observeTradeData()
-            .map {
-                it?.map { tradeData ->
-                    mapper.map(tradeData.orders[params], tradeData, preferences.userId)
-                } ?: Either.Left(Failure.ServerError())
-            }.flowOn(Dispatchers.Default)
+            .map { data ->
+                data.map { tradeData ->
+                    tradeData.orders[params]?.let {
+                        mapper.map(it, tradeData, preferences.userId)
+                    }
+                }
+            }
 
 }

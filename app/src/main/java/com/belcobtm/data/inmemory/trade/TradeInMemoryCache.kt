@@ -23,6 +23,7 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
@@ -39,7 +40,7 @@ class TradeInMemoryCache(
     private val tradeFilter = MutableStateFlow<TradeFilter?>(null)
     private val lastSeenMessageTimestamp = MutableStateFlow<Long>(0)
 
-    val observableData: StateFlow<Either<Failure, TradeHistoryDomainModel>?> = cache
+    val observableData: Flow<Either<Failure, TradeHistoryDomainModel>> = cache.filterNotNull()
 
     val observableLastSeenMessageTimestamp: StateFlow<Long>
         get() = lastSeenMessageTimestamp

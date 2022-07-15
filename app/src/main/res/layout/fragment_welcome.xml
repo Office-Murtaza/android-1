@@ -1,108 +1,101 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fillViewport="true">
+    android:clipChildren="false"
+    android:clipToPadding="false"
+    android:paddingHorizontal="16dp"
+    android:paddingBottom="16dp">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <View
+        android:id="@+id/logoView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="40dp"
+        android:background="@drawable/ic_logo"
+        app:layout_constraintDimensionRatio="3:1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintWidth_percent=".33" />
+
+    <com.belcobtm.presentation.screens.authorization.welcome.WelcomeItemView
+        android:id="@+id/privacyWelcomeItem"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:clipChildren="false"
-        android:clipToPadding="false"
-        android:paddingHorizontal="16dp"
-        android:paddingBottom="30dp">
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        app:layout_constraintTop_toBottomOf="@id/logoView"
+        app:welcomeItemDescription="@string/welcome_screen_privacy_description"
+        app:welcomeItemSrc="@drawable/ic_privacy"
+        app:welcomeItemTitle="@string/welcome_screen_privacy_title" />
 
-        <View
-            android:id="@+id/logoView"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_marginTop="42dp"
-            android:background="@drawable/ic_logo"
-            app:layout_constraintDimensionRatio="3:1"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintWidth_percent=".33" />
+    <com.belcobtm.presentation.screens.authorization.welcome.WelcomeItemView
+        android:id="@+id/transferWelcomeItem"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        app:layout_constraintTop_toBottomOf="@id/privacyWelcomeItem"
+        app:welcomeItemDescription="@string/welcome_screen_transfer_description"
+        app:welcomeItemSrc="@drawable/ic_transfer"
+        app:welcomeItemTitle="@string/welcome_screen_transfer_title" />
 
-        <com.belcobtm.presentation.screens.authorization.welcome.WelcomeItemView
-            android:id="@+id/privacyWelcomeItem"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="42dp"
-            app:layout_constraintTop_toBottomOf="@id/logoView"
-            app:welcomeItemDescription="@string/welcome_screen_privacy_description"
-            app:welcomeItemSrc="@drawable/ic_privacy"
-            app:welcomeItemTitle="@string/welcome_screen_privacy_title" />
+    <com.belcobtm.presentation.screens.authorization.welcome.WelcomeItemView
+        android:id="@+id/swapWelcomeItem"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        app:layout_constraintTop_toBottomOf="@id/transferWelcomeItem"
+        app:welcomeItemDescription="@string/welcome_screen_swap_description"
+        app:welcomeItemSrc="@drawable/ic_swap"
+        app:welcomeItemTitle="@string/welcome_screen_swap_title" />
 
-        <com.belcobtm.presentation.screens.authorization.welcome.WelcomeItemView
-            android:id="@+id/transferWelcomeItem"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            app:layout_constraintTop_toBottomOf="@id/privacyWelcomeItem"
-            app:welcomeItemDescription="@string/welcome_screen_transfer_description"
-            app:welcomeItemSrc="@drawable/ic_transfer"
-            app:welcomeItemTitle="@string/welcome_screen_transfer_title" />
+    <com.belcobtm.presentation.screens.authorization.welcome.WelcomeItemView
+        android:id="@+id/p2prWelcomeItem"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        app:layout_constraintTop_toBottomOf="@id/swapWelcomeItem"
+        app:welcomeItemDescription="@string/welcome_screen_p2p_description"
+        app:welcomeItemSrc="@drawable/ic_trade"
+        app:welcomeItemTitle="@string/welcome_screen_p2p_title" />
 
-        <com.belcobtm.presentation.screens.authorization.welcome.WelcomeItemView
-            android:id="@+id/swapWelcomeItem"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            app:layout_constraintTop_toBottomOf="@id/transferWelcomeItem"
-            app:welcomeItemDescription="@string/welcome_screen_swap_description"
-            app:welcomeItemSrc="@drawable/ic_swap"
-            app:welcomeItemTitle="@string/welcome_screen_swap_title" />
+    <com.belcobtm.presentation.screens.authorization.welcome.WelcomeItemView
+        android:id="@+id/bankWelcomeItem"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        app:layout_constraintTop_toBottomOf="@id/p2prWelcomeItem"
+        app:welcomeItemDescription="@string/welcome_screen_bank_description"
+        app:welcomeItemSrc="@drawable/ic_bank"
+        app:welcomeItemTitle="@string/welcome_screen_bank_title" />
 
-        <com.belcobtm.presentation.screens.authorization.welcome.WelcomeItemView
-            android:id="@+id/p2prWelcomeItem"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            app:layout_constraintTop_toBottomOf="@id/swapWelcomeItem"
-            app:welcomeItemDescription="@string/welcome_screen_p2p_description"
-            app:welcomeItemSrc="@drawable/ic_trade"
-            app:welcomeItemTitle="@string/welcome_screen_p2p_title" />
+    <com.belcobtm.presentation.screens.authorization.welcome.WelcomeItemView
+        android:id="@+id/nftWelcomeItem"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="6dp"
+        app:layout_constraintTop_toBottomOf="@id/bankWelcomeItem"
+        app:welcomeItemDescription="@string/welcome_screen_nft_description"
+        app:welcomeItemSrc="@drawable/ic_nft"
+        app:welcomeItemTitle="@string/welcome_screen_nft_title" />
 
-        <com.belcobtm.presentation.screens.authorization.welcome.WelcomeItemView
-            android:id="@+id/bankWelcomeItem"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            app:layout_constraintTop_toBottomOf="@id/p2prWelcomeItem"
-            app:welcomeItemDescription="@string/welcome_screen_bank_description"
-            app:welcomeItemSrc="@drawable/ic_bank"
-            app:welcomeItemTitle="@string/welcome_screen_bank_title" />
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/createWalletButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp"
+        android:text="@string/welcome_screen_create_new_wallet"
+        app:layout_constraintBottom_toTopOf="@id/recoverWalletButton"
+        app:layout_constraintTop_toBottomOf="@id/nftWelcomeItem"
+        app:layout_constraintVertical_bias="1" />
 
-        <com.belcobtm.presentation.screens.authorization.welcome.WelcomeItemView
-            android:id="@+id/nftWelcomeItem"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            app:layout_constraintTop_toBottomOf="@id/bankWelcomeItem"
-            app:welcomeItemDescription="@string/welcome_screen_nft_description"
-            app:welcomeItemSrc="@drawable/ic_nft"
-            app:welcomeItemTitle="@string/welcome_screen_nft_title" />
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/recoverWalletButton"
+        style="@style/Button.Secondary"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/welcome_screen_recover_old_wallet"
+        app:layout_constraintBottom_toBottomOf="parent" />
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/createWalletButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="38dp"
-            android:padding="16dp"
-            android:text="@string/welcome_screen_create_new_wallet"
-            app:layout_constraintTop_toBottomOf="@id/nftWelcomeItem" />
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/recoverWalletButton"
-            style="@style/Button.Secondary"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="16dp"
-            android:text="@string/welcome_screen_recover_old_wallet"
-            app:layout_constraintTop_toBottomOf="@id/createWalletButton" />
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-</androidx.core.widget.NestedScrollView>
+</androidx.constraintlayout.widget.ConstraintLayout>

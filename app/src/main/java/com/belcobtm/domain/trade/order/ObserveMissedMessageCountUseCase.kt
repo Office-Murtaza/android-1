@@ -14,12 +14,13 @@ class ObserveMissedMessageCountUseCase(private val tradeRepository: TradeReposit
     operator fun invoke(orderId: String): Flow<Int> =
         tradeRepository.observeTradeData()
             .map {
-                ((it?.map { tradeData ->
+                (it.map { tradeData ->
                     tradeData.orders[orderId]?.chatHistory.orEmpty()
-                } ?: Either.Right(emptyList())) as Either.Right<List<ChatMessageItem>>).b
+                } as Either.Right<List<ChatMessageItem>>).b
             }.combine(tradeRepository.observeLastSeenMessageTimestamp()) { chat, timestamp ->
                 chat.count {
                     !it.isFromHistory && it.timestamp > timestamp && it.type == PARTNER_MESSAGE_TYPE
                 }
             }
+
 }

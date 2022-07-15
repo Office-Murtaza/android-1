@@ -21,9 +21,8 @@ class TradeOrderDataToItemMapper(
     private val milesFormatter: Formatter<Double>,
 ) {
 
-    fun map(order: OrderDomainModel?, tradeData: TradeHistoryDomainModel, myId: String): OrderItem? =
+    fun map(order: OrderDomainModel, tradeData: TradeHistoryDomainModel, myId: String): OrderItem? =
         with(order) {
-            this ?: return null
             val cachedTrade = tradeData.trades[tradeId] ?: return@with null
             val trade = tradeItemMapper.map(cachedTrade)
             OrderItem(

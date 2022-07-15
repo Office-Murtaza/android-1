@@ -47,7 +47,6 @@ class RecoverWalletFragment : BaseFragment<FragmentRecoverWalletBinding>() {
         passwordView.editText?.afterTextChanged { updateNextButton() }
 
         passwordView.editText?.actionDoneListener {
-            hideKeyboard()
             checkCredentialsWithPermissionCheck()
         }
         phoneEditView.addTextChangedListener(PhoneNumberFormattingTextWatcher())
@@ -107,6 +106,7 @@ class RecoverWalletFragment : BaseFragment<FragmentRecoverWalletBinding>() {
         val phone = getPhone()
         val password = binding.passwordView.getString()
 
+        hideKeyboard()
         if (isValidFields(phone, password)) {
             viewModel.checkCredentials(phone, password)
         }

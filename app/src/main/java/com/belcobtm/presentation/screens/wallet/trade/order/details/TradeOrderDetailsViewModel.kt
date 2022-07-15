@@ -26,7 +26,6 @@ import com.belcobtm.presentation.screens.wallet.trade.order.details.model.Update
 import com.belcobtm.presentation.tools.extensions.toStringCoin
 import com.belcobtm.presentation.tools.formatter.Formatter
 import com.belcobtm.presentation.tools.formatter.GoogleMapsDirectionQueryFormatter
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
@@ -115,8 +114,7 @@ class TradeOrderDetailsViewModel(
             observeOrderDetailsUseCase(orderId)
                 .collect {
                     if (it.isRight) {
-                        val orderItem = (it as Either.Right<OrderItem?>).b
-                        if (orderItem != null) {
+                        (it as Either.Right<OrderItem?>).b?.let { orderItem ->
                             showContent(orderItem)
                         }
                     } else {
@@ -129,7 +127,7 @@ class TradeOrderDetailsViewModel(
 
     fun observeMissedMessageCount(orderId: String) =
         observeMissedMessageCountUseCase(orderId)
-            .asLiveData(Dispatchers.Default)
+            .asLiveData(viewModelScope.coroutineContext)
 
     fun updateOrderPrimaryAction(orderId: String) {
         val newStatus = buttonsState.value?.primaryStatus ?: return
@@ -284,4 +282,5 @@ class TradeOrderDetailsViewModel(
                 )
             else -> OrderActionButtonsState()
         }
+
 }

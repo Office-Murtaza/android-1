@@ -38,7 +38,7 @@ class TradeRepositoryImpl(
     override fun getAvailablePaymentOptions(): List<PaymentMethodType> =
         PaymentMethodType.values().toList()
 
-    override fun observeTradeData(): Flow<Either<Failure, TradeHistoryDomainModel>?> =
+    override fun observeTradeData(): Flow<Either<Failure, TradeHistoryDomainModel>> =
         tradeInMemoryCache.observableData
 
     override fun observeFilter(): Flow<TradeFilter?> =
@@ -93,23 +93,27 @@ class TradeRepositoryImpl(
     }
 
     override suspend fun createTrade(createTradeItem: CreateTradeDomainModel, location: Location): Either<Failure, Unit> {
-        val response = tradeApiService.createTrade(createTradeItem, location)
-        return handleTradeResponse(response)
+        return handleTradeResponse(
+            tradeApiService.createTrade(createTradeItem, location)
+        )
     }
 
     override suspend fun editTrade(editTrade: EditTradeItem): Either<Failure, Unit> {
-        val response = tradeApiService.editTrade(editTrade)
-        return handleTradeResponse(response)
+        return handleTradeResponse(
+            tradeApiService.editTrade(editTrade)
+        )
     }
 
     override suspend fun cancelTrade(tradeId: String): Either<Failure, Unit> {
-        val response = tradeApiService.cancelTrade(tradeId)
-        return handleTradeResponse(response)
+        return handleTradeResponse(
+            tradeApiService.cancelTrade(tradeId)
+        )
     }
 
     override suspend fun deleteTrade(tradeId: String): Either<Failure, Unit> {
-        val response = tradeApiService.deleteTrade(tradeId)
-        return handleTradeResponse(response)
+        return handleTradeResponse(
+            tradeApiService.deleteTrade(tradeId)
+        )
     }
 
     private suspend fun handleTradeResponse(
@@ -132,18 +136,21 @@ class TradeRepositoryImpl(
     }
 
     override suspend fun updateOrder(status: UpdateOrderStatusItem): Either<Failure, Unit> {
-        val response = tradeApiService.updateOrder(status.orderId, status = status.newStatus)
-        return handleOrderResponse(response)
+        return handleOrderResponse(
+            tradeApiService.updateOrder(status.orderId, status = status.newStatus)
+        )
     }
 
     override suspend fun rateOrder(orderId: String, rate: Int): Either<Failure, Unit> {
-        val response = tradeApiService.updateOrder(orderId, rate = rate)
-        return handleOrderResponse(response)
+        return handleOrderResponse(
+            tradeApiService.updateOrder(orderId, rate = rate)
+        )
     }
 
     override suspend fun cancelOrder(orderId: String): Either<Failure, Unit> {
-        val response = tradeApiService.deleteOrder(orderId)
-        return handleOrderResponse(response)
+        return handleOrderResponse(
+            tradeApiService.deleteOrder(orderId)
+        )
     }
 
     private suspend fun handleOrderResponse(

@@ -16,11 +16,10 @@ class ObserveMyTradesUseCase(
     private val mapper: TradesDataToMyTradeMapper
 ) {
 
-    operator fun invoke(): Flow<Either<Failure, List<TradeItem>>?> =
+    operator fun invoke(): Flow<Either<Failure, List<TradeItem>>> =
         tradeRepository.observeTradeData()
             .map {
                 when {
-                    it == null -> null
                     it.isRight ->
                         Either.Right(mapper.map((it as Either.Right<TradeHistoryDomainModel>).b, preferences.userId))
                     else ->

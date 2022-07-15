@@ -19,7 +19,7 @@ interface TradeRepository {
 
     fun getAvailablePaymentOptions(): List<PaymentMethodType>
 
-    fun observeTradeData(): Flow<Either<Failure, TradeHistoryDomainModel>?>
+    fun observeTradeData(): Flow<Either<Failure, TradeHistoryDomainModel>>
 
     fun observeFilter(): Flow<TradeFilter?>
 

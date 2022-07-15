@@ -6,13 +6,13 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
+import androidx.lifecycle.viewModelScope
 import com.belcobtm.data.core.RandomStringGenerator
 import com.belcobtm.domain.trade.order.ObserveChatMessagesUseCase
 import com.belcobtm.domain.trade.order.SendChatMessageUseCase
 import com.belcobtm.domain.trade.order.UpdateLastSeenMessageTimeStampUseCase
 import com.belcobtm.presentation.core.adapter.model.ListItem
 import com.belcobtm.presentation.core.mvvm.LoadingData
-import kotlinx.coroutines.Dispatchers
 
 class OrderChatViewModel(
     private val sendChatMessageUseCase: SendChatMessageUseCase,
@@ -22,6 +22,7 @@ class OrderChatViewModel(
 ) : ViewModel() {
 
     private companion object {
+
         const val FILE_NAME_LENGTH = 10
         const val FILE_EXTENSION = "jpg"
     }
@@ -36,7 +37,7 @@ class OrderChatViewModel(
 
     fun chatData(orderId: String): LiveData<List<ListItem>> =
         observeChatUseCase(orderId)
-            .asLiveData(Dispatchers.Default)
+            .asLiveData(viewModelScope.coroutineContext)
 
     fun updateTimestamp() {
         updateLastSeenMessageTimeStampUseCase(Unit)
@@ -58,4 +59,5 @@ class OrderChatViewModel(
         _attachmentImage.value = attachment
         attachmentName = uri?.lastPathSegment
     }
+
 }
