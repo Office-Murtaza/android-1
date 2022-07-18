@@ -71,7 +71,7 @@ class TradeItemViewHolder(
                 }
             }
             binding.priceLabel.text = priceFormatted
-            binding.makerTradeCountLabel.text = makerTotalTradesFormatted.toHtmlSpan()
+            binding.makerTradeCountLabel.text = makerTotalTradesFormatted
             binding.makerRateLabel.text = makerTradingRate.toString()
             paymentAdapter.update(paymentMethods)
             if (distance == UNDEFINED_DISTANCE) {

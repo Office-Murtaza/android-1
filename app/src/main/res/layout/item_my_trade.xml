@@ -29,8 +29,7 @@
         android:layout_marginEnd="16dp"
         android:background="@android:color/white"
         android:padding="16dp"
-        android:paddingBottom="16dp"
-        tools:visibility="gone">
+        android:paddingBottom="16dp">
 
         <ImageView
             android:id="@+id/coin_icon"

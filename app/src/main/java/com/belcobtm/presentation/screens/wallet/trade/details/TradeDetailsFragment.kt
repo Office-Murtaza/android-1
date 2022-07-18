@@ -73,7 +73,7 @@ class TradeDetailsFragment : BaseFragment<FragmentTradeDetailsBinding>() {
             makerRateLabel.text = it.toString()
         }
         viewModel.totalTrades.observe(viewLifecycleOwner) {
-            makerTradeCountLabel.text = it.toHtmlSpan()
+            makerTradeCountLabel.text = it
         }
         viewModel.distance.observe(viewLifecycleOwner) {
             binding.distanceLabel.text = it

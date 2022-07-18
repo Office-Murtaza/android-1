@@ -320,7 +320,8 @@ val useCaseModule = module {
             get(),
             get(named(FirebaseCloudStorage.CHAT_STORAGE)),
             get(),
-            SimpleDateFormat(CHAT_DATE_FORMAT, Locale.getDefault())
+            SimpleDateFormat(CHAT_DATE_FORMAT, Locale.getDefault()),
+            androidApplication()
         )
     }
     factory {

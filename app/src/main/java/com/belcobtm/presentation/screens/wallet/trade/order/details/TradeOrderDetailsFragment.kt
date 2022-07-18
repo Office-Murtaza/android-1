@@ -110,7 +110,7 @@ class TradeOrderDetailsFragment : BaseFragment<FragmentTradeOrderDetailsBinding>
             }
         }
         viewModel.partnerTotalTrades.observe(viewLifecycleOwner) {
-            partnerTradeCountLabel.text = it.toHtmlSpan()
+            partnerTradeCountLabel.text = it
         }
         viewModel.orderId.observe(viewLifecycleOwner) {
             orderIdValue.text = it

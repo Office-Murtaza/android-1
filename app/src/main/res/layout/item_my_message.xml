@@ -50,7 +50,7 @@
             android:layout_marginTop="@dimen/chatVerticalMargin"
             android:gravity="end"
             android:textColor="@color/black_text_color"
-            android:textSize="14sp"
+            android:textSize="16sp"
             tools:text="Selling cryptocurrency" />
 
     </LinearLayout>
@@ -60,7 +60,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="2dp"
-        android:textColor="@color/darkGray"
+        android:textColor="@color/grey"
         android:textSize="12sp"
         app:layout_constraintEnd_toEndOf="@id/background"
         app:layout_constraintTop_toBottomOf="@id/background"

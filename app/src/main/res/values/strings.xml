@@ -900,8 +900,8 @@
     <string name="trade_order_details_screen_update_release_button_title">Release</string>
     <string name="trade_order_details_screen_update_cancel_button_title">Cancel</string>
     <string name="google_maps_package">com.google.android.apps.maps</string>
-    <string name="trade_count_over_threshold_formatted"><![CDATA[<b>%d+</b>]]> trades</string>
-    <string name="trade_count_not_over_threshold_formatted"><![CDATA[<b>%d</b>]]> trades</string>
+    <string name="trade_count_over_threshold_formatted">%d+ trades</string>
+    <string name="trade_count_not_over_threshold_formatted">%d trades</string>
     <string name="trade_rate_done_button_title">Done</string>
     <string name="trade_rate_header">How was your trade?</string>
     <string name="low_rating_label">Terrible</string>
@@ -1000,6 +1000,7 @@
     <string name="about_screen_complaint_picker_title">Complaint Policy</string>
     <string name="fragment_trade_order_chat_send_button">Send</string>
     <string name="addresses_match_singing_error">Receiver can\'t be current address</string>
+    <string name="chat_hint_type_your_message">Type your message</string>
 
     <string name="location_required_on_recover_or_register_validation_message">Location is required for security reasons</string>
     <string name="services_dialog_limits_details_label">Limits Details</string>

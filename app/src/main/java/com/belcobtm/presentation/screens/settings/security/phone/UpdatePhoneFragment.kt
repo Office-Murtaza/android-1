@@ -14,8 +14,6 @@ import com.belcobtm.presentation.core.ui.fragment.BaseFragment
 import com.belcobtm.presentation.screens.settings.security.phone.UpdatePhoneViewModel.Companion.ERROR_UPDATE_PHONE_IS_SAME
 import com.belcobtm.presentation.screens.settings.security.phone.UpdatePhoneViewModel.Companion.ERROR_UPDATE_PHONE_IS_USED
 import com.belcobtm.presentation.screens.sms.code.SmsCodeFragment
-import com.belcobtm.presentation.tools.extensions.getPhoneForRequest
-import com.belcobtm.presentation.tools.extensions.getString
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class UpdatePhoneFragment : BaseFragment<FragmentUpdatePhoneBinding>() {
@@ -92,7 +90,5 @@ class UpdatePhoneFragment : BaseFragment<FragmentUpdatePhoneBinding>() {
 
     override fun createBinding(inflater: LayoutInflater, container: ViewGroup?): FragmentUpdatePhoneBinding =
         FragmentUpdatePhoneBinding.inflate(inflater, container, false)
-
-    private fun getPhone(): String = binding.phoneView.getString().getPhoneForRequest()
 
 }
