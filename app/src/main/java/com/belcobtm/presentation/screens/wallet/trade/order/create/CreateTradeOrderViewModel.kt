@@ -27,7 +27,7 @@ import com.belcobtm.presentation.tools.extensions.toStringCoin
 import com.belcobtm.presentation.tools.formatter.Formatter
 import kotlinx.coroutines.launch
 
-class TradeCreateOrderViewModel(
+class CreateTradeOrderViewModel(
     private val getTradeDetailsUseCase: GetTradeDetailsUseCase,
     private val getCoinByCodeUseCase: GetCoinByCodeUseCase,
     private val createOrderUseCase: CreateOrderUseCase,

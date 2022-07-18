@@ -26,8 +26,8 @@
         android:layout_marginEnd="6dp"
         android:background="@drawable/my_chat_message_bg"
         android:orientation="vertical"
-        android:paddingHorizontal="12dp"
-        android:paddingVertical="8dp"
+        android:paddingHorizontal="@dimen/chatHorizontalMargin"
+        android:paddingBottom="@dimen/chatVerticalMargin"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -36,7 +36,7 @@
             android:layout_width="64dp"
             android:layout_height="64dp"
             android:layout_gravity="end"
-            android:layout_marginBottom="16dp"
+            android:layout_marginTop="@dimen/chatVerticalMargin"
             android:visibility="gone"
             tools:ignore="ContentDescription"
             tools:src="@drawable/bg_auth"
@@ -47,8 +47,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="end"
+            android:layout_marginTop="@dimen/chatVerticalMargin"
             android:gravity="end"
-            android:paddingBottom="12dp"
             android:textColor="@color/black_text_color"
             android:textSize="14sp"
             tools:text="Selling cryptocurrency" />

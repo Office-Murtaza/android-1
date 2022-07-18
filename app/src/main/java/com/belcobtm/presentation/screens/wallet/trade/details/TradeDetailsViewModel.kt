@@ -8,7 +8,6 @@ import com.belcobtm.R
 import com.belcobtm.domain.Either
 import com.belcobtm.domain.Failure
 import com.belcobtm.domain.trade.details.ObserveTradeDetailsUseCase
-import com.belcobtm.domain.trade.model.trade.TradeDomainModel.Companion.UNDEFINED_DISTANCE
 import com.belcobtm.domain.trade.model.trade.TradeType
 import com.belcobtm.domain.wallet.LocalCoinType
 import com.belcobtm.presentation.core.mvvm.LoadingData
@@ -74,7 +73,9 @@ class TradeDetailsViewModel(
                 .filterNotNull()
                 .collectLatest {
                     if (it.isRight) {
-                        updateTradeData((it as Either.Right<TradeItem>).b)
+                        updateTradeData(
+                            tradeItem = (it as Either.Right<TradeItem>).b
+                        )
                     } else {
                         _initialLoadingData.value = LoadingData.Error(
                             (it as Either.Left<Failure>).a
@@ -104,9 +105,7 @@ class TradeDetailsViewModel(
         _publicId.value = tradeItem.makerPublicId
         _tradeType.value = tradeItem.tradeType to !isOutOfStock
         _terms.value = tradeItem.terms
-        if (tradeItem.distance != UNDEFINED_DISTANCE) {
-            _distance.value = tradeItem.distanceFormatted
-        }
+        _distance.value = tradeItem.distanceFormatted
         toTradeLat = tradeItem.makerLatitude
         toTradeLong = tradeItem.makerLongitude
         _initialLoadingData.value = LoadingData.Success(Unit)

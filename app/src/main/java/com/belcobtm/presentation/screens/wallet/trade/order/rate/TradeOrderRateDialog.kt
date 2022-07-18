@@ -12,7 +12,7 @@ import com.belcobtm.databinding.IncludeErrorScreenBinding
 import com.belcobtm.presentation.core.ui.fragment.BaseBottomSheetFragment
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class TradeOrderRateBottomSheetFragment : BaseBottomSheetFragment() {
+class TradeOrderRateDialog : BaseBottomSheetFragment() {
 
     override val errorBinding: IncludeErrorScreenBinding
         get() = binding.errorView
@@ -22,7 +22,7 @@ class TradeOrderRateBottomSheetFragment : BaseBottomSheetFragment() {
         get() = binding.contentGroup
 
     private lateinit var binding: FragmentTradeRateBinding
-    private val args by navArgs<TradeOrderRateBottomSheetFragmentArgs>()
+    private val args by navArgs<TradeOrderRateDialogArgs>()
     private val viewModel by viewModel<TradeOrderRateViewModel>()
     override val retryListener: View.OnClickListener = View.OnClickListener {
         viewModel.rateOrder(args.orderId)
@@ -49,4 +49,5 @@ class TradeOrderRateBottomSheetFragment : BaseBottomSheetFragment() {
         }
         return binding.root
     }
+
 }

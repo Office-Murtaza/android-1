@@ -19,16 +19,17 @@ import androidx.core.net.toUri
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.belcobtm.R
-import com.belcobtm.domain.service.ServiceType
 import com.belcobtm.databinding.FragmentTradeCreateOrderBinding
 import com.belcobtm.databinding.IncludeErrorScreenBinding
 import com.belcobtm.domain.Failure
-import com.belcobtm.presentation.tools.extensions.getDouble
-import com.belcobtm.presentation.tools.extensions.toStringCoin
-import com.belcobtm.presentation.tools.extensions.toggle
+import com.belcobtm.domain.service.ServiceType
 import com.belcobtm.presentation.core.mvvm.LoadingData
 import com.belcobtm.presentation.core.ui.fragment.BaseBottomSheetFragment
 import com.belcobtm.presentation.core.views.listeners.SafeDecimalEditTextWatcher
+import com.belcobtm.presentation.tools.extensions.actionDoneListener
+import com.belcobtm.presentation.tools.extensions.getDouble
+import com.belcobtm.presentation.tools.extensions.toStringCoin
+import com.belcobtm.presentation.tools.extensions.toggle
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -37,12 +38,13 @@ import permissions.dispatcher.OnPermissionDenied
 import permissions.dispatcher.RuntimePermissions
 
 @RuntimePermissions
-class TradeCreateOrderBottomSheetFragment : BaseBottomSheetFragment() {
+class CreateTradeOrderDialog : BaseBottomSheetFragment() {
 
     private lateinit var binding: FragmentTradeCreateOrderBinding
 
-    private val args by navArgs<TradeCreateOrderBottomSheetFragmentArgs>()
-    private val viewModel by viewModel<TradeCreateOrderViewModel>()
+    private val viewModel by viewModel<CreateTradeOrderViewModel>()
+
+    private val args by navArgs<CreateTradeOrderDialogArgs>()
 
     override val errorBinding: IncludeErrorScreenBinding
         get() = binding.errorView
@@ -94,11 +96,24 @@ class TradeCreateOrderBottomSheetFragment : BaseBottomSheetFragment() {
         )
         binding = FragmentTradeCreateOrderBinding.inflate(inflater, container, false)
         viewModel.fetchTradeDetails(args.tradeId)
-        binding.amountEditText.addTextChangedListener(amountTextWatcher)
+        binding.amountEditText.apply {
+            addTextChangedListener(amountTextWatcher)
+            actionDoneListener {
+                val imm = requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
+                imm?.hideSoftInputFromWindow(requireActivity().currentFocus?.windowToken, 0)
+                clearFocus()
+            }
+            setOnFocusChangeListener { _, hasFocus ->
+                when {
+                    hasFocus && text.toString() == "0" -> setText("")
+                    hasFocus.not() && text.toString().isEmpty() -> setText("0")
+                }
+            }
+        }
         viewModel.initialLoadingData.listen()
         viewModel.createTradeOrderLoadingData.listen(success = {
             findNavController().navigate(
-                TradeCreateOrderBottomSheetFragmentDirections.toOrderDetails(
+                CreateTradeOrderDialogDirections.toOrderDetails(
                     it
                 )
             )
@@ -204,7 +219,7 @@ class TradeCreateOrderBottomSheetFragment : BaseBottomSheetFragment() {
             createOrderWithPermissionCheck()
         }
         binding.limitDetails.setOnClickListener {
-            findNavController().navigate(TradeCreateOrderBottomSheetFragmentDirections.toServiceInfoDialog(ServiceType.TRADE))
+            findNavController().navigate(CreateTradeOrderDialogDirections.toServiceInfoDialog(ServiceType.TRADE))
         }
         return binding.root
     }
@@ -240,4 +255,5 @@ class TradeCreateOrderBottomSheetFragment : BaseBottomSheetFragment() {
     fun showLocationError() {
         viewModel.showLocationError()
     }
+
 }

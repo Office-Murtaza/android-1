@@ -56,7 +56,7 @@ class CoinInputLayout @JvmOverloads constructor(
             }
             setOnFocusChangeListener { _, hasFocus ->
                 when {
-                    hasFocus && text.toString() == "0" -> setText("") //                    setTextSilently(textWatcher, "", )
+                    hasFocus && text.toString() == "0" -> setText("")
                     hasFocus.not() && text.toString().isEmpty() -> setText("0")
                 }
             }

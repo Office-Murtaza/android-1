@@ -7,7 +7,7 @@ import com.belcobtm.presentation.core.adapter.model.ListItem
 data class OrderItem(
     val orderId: String,
     val trade: TradeItem,
-    val myTradeId: String,
+    val myUserId: String,
     val mappedTradeType: TradeType,
     val coin: LocalCoinType,
     val orderStatus: OrderStatusItem,

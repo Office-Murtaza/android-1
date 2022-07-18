@@ -21,15 +21,15 @@ class TradeOrderDataToItemMapper(
     private val milesFormatter: Formatter<Double>,
 ) {
 
-    fun map(order: OrderDomainModel, tradeData: TradeHistoryDomainModel, myId: String): OrderItem? =
+    fun map(order: OrderDomainModel, tradeData: TradeHistoryDomainModel, myUserId: String): OrderItem? =
         with(order) {
             val cachedTrade = tradeData.trades[tradeId] ?: return@with null
             val trade = tradeItemMapper.map(cachedTrade)
             OrderItem(
                 orderId = id,
                 trade = trade,
-                myTradeId = myId,
-                mappedTradeType = resolveTradeType(this, trade, myId),
+                myUserId = myUserId,
+                mappedTradeType = resolveTradeType(this, trade, myUserId),
                 coin = coin,
                 orderStatus = OrderStatusItem(status, getStatusLabel(status), getStatusDrawable(status)),
                 timestamp = timestamp,
@@ -59,17 +59,15 @@ class TradeOrderDataToItemMapper(
             )
         }
 
-    private fun OrderDomainModel.formatDistance(): String =
-        if (takerLatitude > 0 && takerLongitude > 0 && makerLatitude > 0 && makerLongitude > 0)
-            milesFormatter.format(
-                distanceCalculator.calculateDistance(
-                    takerLatitude, takerLongitude, makerLatitude, makerLongitude
-                )
-            ) else ""
+    private fun OrderDomainModel.formatDistance(): String = milesFormatter.format(
+        distanceCalculator.calculateDistance(
+            takerLatitude, takerLongitude, makerLatitude, makerLongitude
+        )
+    )
 
-    private fun resolveTradeType(order: OrderDomainModel, trade: TradeItem, myId: String): TradeType =
+    private fun resolveTradeType(order: OrderDomainModel, trade: TradeItem, myUserId: String): TradeType =
         when {
-            order.makerUserId == myId -> trade.tradeType
+            order.makerUserId == myUserId -> trade.tradeType
             trade.tradeType == TradeType.BUY -> TradeType.SELL
             else -> TradeType.BUY
         }

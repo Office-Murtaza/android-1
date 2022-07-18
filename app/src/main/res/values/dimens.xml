@@ -2,13 +2,9 @@
 
     <dimen name="defaultMargin">16dp</dimen>
 
-    <dimen name="margin_x3">48dp</dimen>
-    <dimen name="margin_x4">64dp</dimen>
-    <dimen name="margin_x2">32dp</dimen>
-    <dimen name="margin_half">8dp</dimen>
-    <dimen name="margin_normal">12dp</dimen>
-    <dimen name="margin_quoter">4dp</dimen>
-    <dimen name="margin_large">24dp</dimen>
+    <dimen name="chatVerticalMargin">8dp</dimen>
+    <dimen name="chatHorizontalMargin">12dp</dimen>
+
     <dimen name="divider_size">1dp</dimen>
     <dimen name="thick_divider_size">2dp</dimen>
     <dimen name="corner_radius">16dp</dimen>
@@ -16,6 +12,14 @@
     <dimen name="photo_picker_column_size">100dp</dimen>
 
     <integer name="slide_animation_duration">300</integer>
+
+    <dimen name="margin_x3">48dp</dimen>
+    <dimen name="margin_x4">64dp</dimen>
+    <dimen name="margin_x2">32dp</dimen>
+    <dimen name="margin_half">8dp</dimen>
+    <dimen name="margin_normal">12dp</dimen>
+    <dimen name="margin_quoter">4dp</dimen>
+    <dimen name="margin_large">24dp</dimen>
 
     <dimen name="chip_default_height">24sp</dimen>
     <dimen name="chip_default_padding_edge">10dp</dimen>

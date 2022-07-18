@@ -9,11 +9,11 @@ import androidx.core.view.isVisible
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.belcobtm.R
-import com.belcobtm.databinding.FragmentNavigationBinding
+import com.belcobtm.databinding.FragmentMainBinding
 import com.belcobtm.presentation.core.ui.fragment.BaseFragment
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class MainFragment : BaseFragment<FragmentNavigationBinding>() {
+class MainFragment : BaseFragment<FragmentMainBinding>() {
 
     private val viewModel: MainViewModel by viewModel()
 
@@ -38,8 +38,8 @@ class MainFragment : BaseFragment<FragmentNavigationBinding>() {
     override fun createBinding(
         inflater: LayoutInflater,
         container: ViewGroup?
-    ): FragmentNavigationBinding =
-        FragmentNavigationBinding.inflate(inflater, container, false)
+    ): FragmentMainBinding =
+        FragmentMainBinding.inflate(inflater, container, false)
 
     fun toggleBottomNavigation(toShow: Boolean) {
         binding.bottomNavigationView.isVisible = toShow

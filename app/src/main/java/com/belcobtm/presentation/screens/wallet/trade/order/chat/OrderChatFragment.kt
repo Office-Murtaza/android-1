@@ -108,12 +108,14 @@ class OrderChatFragment : BaseFragment<FragmentOrderChatBinding>() {
 
     override fun onStart() {
         super.onStart()
-        (parentFragment as MainFragment?)?.toggleBottomNavigation(false)
+        // child-fragment's parent is NavHostFragment and NavHostFragment's parent is parent-fragment
+        (parentFragment?.parentFragment as MainFragment?)?.toggleBottomNavigation(false)
     }
 
     override fun onStop() {
+        // child-fragment's parent is NavHostFragment and NavHostFragment's parent is parent-fragment
+        (parentFragment?.parentFragment as MainFragment?)?.toggleBottomNavigation(true)
         super.onStop()
-        (parentFragment as MainFragment?)?.toggleBottomNavigation(true)
     }
 
 }

@@ -26,7 +26,7 @@ import com.belcobtm.presentation.screens.wallet.trade.order.details.model.Update
 import com.belcobtm.presentation.tools.extensions.toStringCoin
 import com.belcobtm.presentation.tools.formatter.Formatter
 import com.belcobtm.presentation.tools.formatter.GoogleMapsDirectionQueryFormatter
-import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 class TradeOrderDetailsViewModel(
@@ -67,8 +67,8 @@ class TradeOrderDetailsViewModel(
     private val _traderStatusIcon = MutableLiveData<@DrawableRes Int>()
     val traderStatusIcon: LiveData<Int> = _traderStatusIcon
 
-    private val _distance = MutableLiveData<String?>()
-    val distance: LiveData<String?> = _distance
+    private val _distance = MutableLiveData<String>()
+    val distance: LiveData<String> = _distance
 
     private val _terms = MutableLiveData<String>()
     val terms: LiveData<String> = _terms
@@ -112,10 +112,12 @@ class TradeOrderDetailsViewModel(
         viewModelScope.launch {
             _initialLoadingData.value = LoadingData.Loading()
             observeOrderDetailsUseCase(orderId)
-                .collect {
+                .collectLatest {
                     if (it.isRight) {
-                        (it as Either.Right<OrderItem?>).b?.let { orderItem ->
-                            showContent(orderItem)
+                        (it as Either.Right<OrderItem?>).b?.let { order ->
+                            showContent(
+                                order = order
+                            )
                         }
                     } else {
                         _initialLoadingData.value =
@@ -202,7 +204,7 @@ class TradeOrderDetailsViewModel(
         val isOrderResolved = with(order.orderStatus) {
             statusId == OrderStatus.RELEASED || statusId == OrderStatus.SOLVED
         }
-        if (order.myTradeId == order.makerId) {
+        if (order.myUserId == order.makerId) {
             _myScore.value = order.makerRate
             _partnerScore.value = order.takerRate
             this._partnerPublicId.value = order.takerPublicId
@@ -210,7 +212,7 @@ class TradeOrderDetailsViewModel(
             partnerLong = order.takerLongitude
             _partnerTradeRate.value = order.takerTradingRate ?: 0.0
             _partnerTotalTrades.value = order.takerTotalTradesFormatted
-            _openRateScreen.value = order.makerRate == null && isOrderResolved
+            _openRateScreen.value = order.makerRate == 0 && isOrderResolved
         } else {
             _myScore.value = order.takerRate
             _partnerScore.value = order.makerRate
@@ -219,7 +221,7 @@ class TradeOrderDetailsViewModel(
             partnerLong = order.makerLongitude
             _partnerTradeRate.value = order.makerTradingRate ?: 0.0
             _partnerTotalTrades.value = order.makerTotalTradesFormatted
-            _openRateScreen.value = order.takerRate == null && isOrderResolved
+            _openRateScreen.value = order.takerRate == 0 && isOrderResolved
         }
         this.order = order
         isBuyer = order.mappedTradeType == TradeType.BUY
@@ -249,10 +251,10 @@ class TradeOrderDetailsViewModel(
                 )
             OrderStatus.PAID ->
                 OrderActionButtonsState(
-                    primaryButtonTitleRes = R.string.trade_order_details_screen_update_dispute_button_title,
-                    showPrimaryButton = true,
-                    showSecondaryButton = false,
-                    primaryStatus = OrderStatus.DISPUTING
+                    secondaryButtonTitleRes = R.string.trade_order_details_screen_update_dispute_button_title,
+                    showPrimaryButton = false,
+                    showSecondaryButton = true,
+                    secondaryStatus = OrderStatus.DISPUTING
                 )
             else -> OrderActionButtonsState()
         }

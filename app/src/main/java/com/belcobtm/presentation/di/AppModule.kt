@@ -60,7 +60,7 @@ import com.belcobtm.presentation.screens.wallet.trade.mytrade.details.MyTradeDet
 import com.belcobtm.presentation.screens.wallet.trade.mytrade.list.MyTradesViewModel
 import com.belcobtm.presentation.screens.wallet.trade.order.TradeOrdersViewModel
 import com.belcobtm.presentation.screens.wallet.trade.order.chat.OrderChatViewModel
-import com.belcobtm.presentation.screens.wallet.trade.order.create.TradeCreateOrderViewModel
+import com.belcobtm.presentation.screens.wallet.trade.order.create.CreateTradeOrderViewModel
 import com.belcobtm.presentation.screens.wallet.trade.order.details.TradeOrderDetailsViewModel
 import com.belcobtm.presentation.screens.wallet.trade.order.historychat.HistoryChatViewModel
 import com.belcobtm.presentation.screens.wallet.trade.order.rate.TradeOrderRateViewModel
@@ -274,7 +274,7 @@ val viewModelModule = module {
         )
     }
     viewModel {
-        TradeCreateOrderViewModel(
+        CreateTradeOrderViewModel(
             getTradeDetailsUseCase = get(),
             getCoinByCodeUseCase = get(),
             createOrderUseCase = get(),

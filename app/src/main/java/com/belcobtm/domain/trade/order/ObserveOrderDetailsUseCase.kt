@@ -7,9 +7,7 @@ import com.belcobtm.domain.map
 import com.belcobtm.domain.trade.TradeRepository
 import com.belcobtm.domain.trade.list.mapper.TradeOrderDataToItemMapper
 import com.belcobtm.presentation.screens.wallet.trade.list.model.OrderItem
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 
 class ObserveOrderDetailsUseCase(
@@ -23,7 +21,11 @@ class ObserveOrderDetailsUseCase(
             .map { data ->
                 data.map { tradeData ->
                     tradeData.orders[params]?.let {
-                        mapper.map(it, tradeData, preferences.userId)
+                        mapper.map(
+                            order = it,
+                            tradeData = tradeData,
+                            myUserId = preferences.userId
+                        )
                     }
                 }
             }

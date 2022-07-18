@@ -16,7 +16,6 @@ data class OrderDomainModel(
     val takerRate: Int,
     val takerLatitude: Double,
     val takerLongitude: Double,
-
     val takerUserId: String,
     val takerUsername: String,
     val takerTradeTotal: Int,

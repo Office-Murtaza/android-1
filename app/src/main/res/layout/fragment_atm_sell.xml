@@ -206,7 +206,7 @@
             android:id="@+id/buttonsContainer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="16dp"
+            android:layout_marginHorizontal="@dimen/defaultMargin"
             android:layout_marginBottom="@dimen/defaultMargin"
             android:orientation="vertical"
             app:layout_constraintBottom_toBottomOf="parent">
@@ -221,8 +221,7 @@
                 android:id="@+id/update_limits_button"
                 style="@style/Button.Transparent"
                 android:layout_width="match_parent"
-                android:text="@string/update_limits_button_label"
-                tools:visibility="visible" />
+                android:text="@string/update_limits_button_label" />
 
         </LinearLayout>
 

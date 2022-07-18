@@ -99,9 +99,9 @@ class TradeOrderDetailsFragment : BaseFragment<FragmentTradeOrderDetailsBinding>
             )
         }
         viewModel.openRateScreen.observe(viewLifecycleOwner) { showRateDialog ->
-            val isRateDialogShowing =
-                findNavController().currentDestination?.id != R.id.rate_order_fragment
-            if (showRateDialog && isRateDialogShowing) {
+            val isRateDialogOpened =
+                findNavController().currentDestination?.id == R.id.rate_order_fragment
+            if (showRateDialog && isRateDialogOpened.not()) {
                 navigate(
                     TradeOrderDetailsFragmentDirections.toRateOrderFragment(
                         viewModel.partnerPublicId.value.orEmpty(), args.orderId
@@ -140,7 +140,7 @@ class TradeOrderDetailsFragment : BaseFragment<FragmentTradeOrderDetailsBinding>
         }
         viewModel.distance.observe(viewLifecycleOwner) {
             binding.distanceLabel.text = it
-            binding.distanceLabel.isVisible = it.isNullOrEmpty().not()
+            binding.distanceLabel.isVisible = it.isNotEmpty()
         }
         viewModel.partnerPublicId.observe(viewLifecycleOwner, partnerPublicId::setText)
         viewModel.partnerTradeRate.observe(viewLifecycleOwner) {
@@ -156,8 +156,8 @@ class TradeOrderDetailsFragment : BaseFragment<FragmentTradeOrderDetailsBinding>
             if (it.showSecondaryButton) {
                 binding.secondaryActionButton.setText(it.secondaryButtonTitleRes)
             }
-            binding.primaryActionButton.toggle(it.showPrimaryButton)
-            binding.secondaryActionButton.toggle(it.showSecondaryButton)
+            binding.primaryActionButton.isVisible = it.showPrimaryButton
+            binding.secondaryActionButton.isVisible = it.showSecondaryButton
         }
         viewModel.tradeType.observe(viewLifecycleOwner) {
             with(tradeType) {

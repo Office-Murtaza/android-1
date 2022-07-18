@@ -8,16 +8,17 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
 import androidx.navigation.fragment.navArgs
 import com.belcobtm.R
-import com.belcobtm.domain.trade.model.trade.TradeType
 import com.belcobtm.databinding.FragmentTradeDetailsBinding
+import com.belcobtm.domain.trade.model.trade.TradeType
 import com.belcobtm.presentation.core.adapter.MultiTypeAdapter
+import com.belcobtm.presentation.core.ui.fragment.BaseFragment
+import com.belcobtm.presentation.screens.wallet.trade.list.delegate.TradePaymentOptionDelegate
 import com.belcobtm.presentation.tools.extensions.resIcon
 import com.belcobtm.presentation.tools.extensions.toHtmlSpan
 import com.belcobtm.presentation.tools.extensions.toggle
-import com.belcobtm.presentation.core.ui.fragment.BaseFragment
-import com.belcobtm.presentation.screens.wallet.trade.list.delegate.TradePaymentOptionDelegate
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class TradeDetailsFragment : BaseFragment<FragmentTradeDetailsBinding>() {
@@ -76,12 +77,12 @@ class TradeDetailsFragment : BaseFragment<FragmentTradeDetailsBinding>() {
         }
         viewModel.distance.observe(viewLifecycleOwner) {
             binding.distanceLabel.text = it
-            binding.distanceLabel.toggle(isVisible = true)
+            binding.distanceLabel.isVisible = it.isNotEmpty()
         }
         viewModel.terms.observe(viewLifecycleOwner, terms::setText)
         viewModel.amountRange.observe(viewLifecycleOwner, amountRange::setText)
         viewModel.isOutOfStock.observe(viewLifecycleOwner) { isOutOfStock ->
-            if(isOutOfStock) {
+            if (isOutOfStock) {
                 with(amountRange) {
                     setTextColor(ContextCompat.getColor(context, R.color.colorError))
                     setTypeface(typeface, Typeface.BOLD)
@@ -112,4 +113,5 @@ class TradeDetailsFragment : BaseFragment<FragmentTradeDetailsBinding>() {
             startActivity(mapIntent)
         }
     }
+
 }

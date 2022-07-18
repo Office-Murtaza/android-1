@@ -239,7 +239,7 @@
 
     <dialog
         android:id="@+id/trade_details_buy_sell"
-        android:name="com.belcobtm.presentation.screens.wallet.trade.order.create.TradeCreateOrderBottomSheetFragment"
+        android:name="com.belcobtm.presentation.screens.wallet.trade.order.create.CreateTradeOrderDialog"
         android:label="BuySellTradeFragment"
         tools:layout="@layout/fragment_trade_create_order">
 
@@ -351,7 +351,7 @@
 
     <dialog
         android:id="@+id/rate_order_fragment"
-        android:name="com.belcobtm.presentation.screens.wallet.trade.order.rate.TradeOrderRateBottomSheetFragment"
+        android:name="com.belcobtm.presentation.screens.wallet.trade.order.rate.TradeOrderRateDialog"
         android:label="OrderDetailsFragment"
         tools:layout="@layout/fragment_trade_rate">
 
